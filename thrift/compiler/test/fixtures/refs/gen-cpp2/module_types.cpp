@@ -1832,6 +1832,153 @@ static_assert(
 
 } // cpp2
 
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::StructWithString>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::cpp2::StructWithString>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace cpp2 {
+
+StructWithString::StructWithString(const StructWithString& srcObj) {
+  def_unique_string_ref = ::apache::thrift::detail::st::copy_field<
+        ::apache::thrift::type_class::string>(srcObj.def_unique_string_ref);
+  def_shared_string_ref = srcObj.def_shared_string_ref;
+  def_shared_string_const_ref = srcObj.def_shared_string_const_ref;
+  unique_string_ref = ::apache::thrift::detail::st::copy_field<
+        ::apache::thrift::type_class::string>(srcObj.unique_string_ref);
+  shared_string_ref = srcObj.shared_string_ref;
+}
+
+StructWithString& StructWithString::operator=(const StructWithString& src) {
+  StructWithString tmp(src);
+  swap(*this, tmp);
+  return *this;
+}
+
+StructWithString::StructWithString() :
+      def_unique_string_ref(std::make_unique<::std::string>()),
+      def_shared_string_ref(std::make_shared<::std::string>()),
+      def_shared_string_const_ref(std::make_shared<::std::string>()) {
+}
+
+
+StructWithString::~StructWithString() {}
+
+StructWithString::StructWithString(StructWithString&& other) noexcept  :
+    def_unique_string_ref(std::move(other.def_unique_string_ref)),
+    def_shared_string_ref(std::move(other.def_shared_string_ref)),
+    def_shared_string_const_ref(std::move(other.def_shared_string_const_ref)),
+    unique_string_ref(std::move(other.unique_string_ref)),
+    shared_string_ref(std::move(other.shared_string_ref)) {
+}
+
+StructWithString& StructWithString::operator=(FOLLY_MAYBE_UNUSED StructWithString&& other) noexcept {
+    this->def_unique_string_ref = std::move(other.def_unique_string_ref);
+    this->def_shared_string_ref = std::move(other.def_shared_string_ref);
+    this->def_shared_string_const_ref = std::move(other.def_shared_string_const_ref);
+    this->unique_string_ref = std::move(other.unique_string_ref);
+    this->shared_string_ref = std::move(other.shared_string_ref);
+    return *this;
+}
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+StructWithString::StructWithString(apache::thrift::FragileConstructor, ::std::unique_ptr<::std::string> def_unique_string_ref__arg, ::std::shared_ptr<::std::string> def_shared_string_ref__arg, ::std::shared_ptr<const ::std::string> def_shared_string_const_ref__arg, ::std::unique_ptr<::std::string> unique_string_ref__arg, ::std::shared_ptr<::std::string> shared_string_ref__arg) :
+    def_unique_string_ref(std::move(def_unique_string_ref__arg)),
+    def_shared_string_ref(std::move(def_shared_string_ref__arg)),
+    def_shared_string_const_ref(std::move(def_shared_string_const_ref__arg)),
+    unique_string_ref(std::move(unique_string_ref__arg)),
+    shared_string_ref(std::move(shared_string_ref__arg)) {
+}
+
+
+void StructWithString::__clear() {
+  // clear all fields
+}
+
+bool StructWithString::operator==(const StructWithString& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if ((!::apache::thrift::detail::pointer_equal(lhs.def_unique_string_ref_ref(), rhs.def_unique_string_ref_ref()))) {
+    return false;
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.def_shared_string_ref_ref(), rhs.def_shared_string_ref_ref()))) {
+    return false;
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.def_shared_string_const_ref_ref(), rhs.def_shared_string_const_ref_ref()))) {
+    return false;
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.unique_string_ref_ref(), rhs.unique_string_ref_ref()))) {
+    return false;
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.shared_string_ref_ref(), rhs.shared_string_ref_ref()))) {
+    return false;
+  }
+  return true;
+}
+
+bool StructWithString::operator<(const StructWithString& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if ((!::apache::thrift::detail::pointer_equal(lhs.def_unique_string_ref_ref(), rhs.def_unique_string_ref_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.def_unique_string_ref_ref(), rhs.def_unique_string_ref_ref());
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.def_shared_string_ref_ref(), rhs.def_shared_string_ref_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.def_shared_string_ref_ref(), rhs.def_shared_string_ref_ref());
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.def_shared_string_const_ref_ref(), rhs.def_shared_string_const_ref_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.def_shared_string_const_ref_ref(), rhs.def_shared_string_const_ref_ref());
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.unique_string_ref_ref(), rhs.unique_string_ref_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.unique_string_ref_ref(), rhs.unique_string_ref_ref());
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.shared_string_ref_ref(), rhs.shared_string_ref_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.shared_string_ref_ref(), rhs.shared_string_ref_ref());
+  }
+  return false;
+}
+
+
+void swap(StructWithString& a, StructWithString& b) {
+  using ::std::swap;
+  swap(a.def_unique_string_ref, b.def_unique_string_ref);
+  swap(a.def_shared_string_ref, b.def_shared_string_ref);
+  swap(a.def_shared_string_const_ref, b.def_shared_string_const_ref);
+  swap(a.unique_string_ref, b.unique_string_ref);
+  swap(a.shared_string_ref, b.shared_string_ref);
+}
+
+template void StructWithString::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t StructWithString::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t StructWithString::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t StructWithString::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void StructWithString::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t StructWithString::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t StructWithString::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t StructWithString::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+
+
+} // cpp2
+
 namespace cpp2 { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 }

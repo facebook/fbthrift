@@ -92,6 +92,11 @@ class StructMetadata<::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
+template <>
+class StructMetadata<::cpp2::StructWithString> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
 } // namespace md
 } // namespace detail
 } // namespace thrift

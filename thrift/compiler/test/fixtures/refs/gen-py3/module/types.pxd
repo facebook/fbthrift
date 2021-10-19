@@ -299,6 +299,27 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         unique_ptr[cEmpty] def_field
 
 
+    cdef cppclass cStructWithString "::cpp2::StructWithString":
+        cStructWithString() except +
+        cStructWithString(const cStructWithString&) except +
+        bint operator==(cStructWithString&)
+        bint operator!=(cStructWithString&)
+        bint operator<(cStructWithString&)
+        bint operator>(cStructWithString&)
+        bint operator<=(cStructWithString&)
+        bint operator>=(cStructWithString&)
+        unique_ptr[string] def_unique_string_ref_ref()
+        shared_ptr[string] def_shared_string_ref_ref()
+        shared_ptr[const string] def_shared_string_const_ref_ref()
+        unique_ptr[string] unique_string_ref_ref()
+        shared_ptr[string] shared_string_ref_ref()
+        unique_ptr[string] def_unique_string_ref
+        shared_ptr[string] def_shared_string_ref
+        shared_ptr[const string] def_shared_string_const_ref
+        unique_ptr[string] unique_string_ref
+        shared_ptr[string] shared_string_ref
+
+
 cdef class __MyUnionType(thrift.py3.types.CompiledEnum):
     pass
 
@@ -459,6 +480,15 @@ cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor])
+
+
+
+cdef class StructWithString(thrift.py3.types.Struct):
+    cdef shared_ptr[cStructWithString] _cpp_obj
+    cdef _fbthrift_types_fields.__StructWithString_FieldsSetter _fields_setter
+
+    @staticmethod
+    cdef create(shared_ptr[cStructWithString])
 
 
 cdef class List__RecursiveStruct(thrift.py3.types.List):

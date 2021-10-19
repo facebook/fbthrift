@@ -560,3 +560,70 @@ cdef class __StructWithRefAndAnnotCppNoexceptMoveCtor_FieldsSetter(__StructField
             raise TypeError(f'def_field is not a { _module_types.Empty !r}.')
         assign_unique_ptr[_module_types.cEmpty](deref(self._struct_cpp_obj).def_field_ref(), make_unique[_module_types.cEmpty](deref((<_module_types.Empty?>_fbthrift_value)._cpp_obj)))
 
+
+@__cython.auto_pickle(False)
+cdef class __StructWithString_FieldsSetter(__StructFieldsSetter):
+
+    @staticmethod
+    cdef __StructWithString_FieldsSetter create(_module_types.cStructWithString* struct_cpp_obj):
+        cdef __StructWithString_FieldsSetter __fbthrift_inst = __StructWithString_FieldsSetter.__new__(__StructWithString_FieldsSetter)
+        __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
+        __fbthrift_inst._setters[__cstring_view(<const char*>"def_unique_string_ref")] = __StructWithString_FieldsSetter._set_field_0
+        __fbthrift_inst._setters[__cstring_view(<const char*>"def_shared_string_ref")] = __StructWithString_FieldsSetter._set_field_1
+        __fbthrift_inst._setters[__cstring_view(<const char*>"def_shared_string_const_ref")] = __StructWithString_FieldsSetter._set_field_2
+        __fbthrift_inst._setters[__cstring_view(<const char*>"unique_string_ref")] = __StructWithString_FieldsSetter._set_field_3
+        __fbthrift_inst._setters[__cstring_view(<const char*>"shared_string_ref")] = __StructWithString_FieldsSetter._set_field_4
+        return __fbthrift_inst
+
+    cdef void set_field(__StructWithString_FieldsSetter self, const char* name, object value) except *:
+        cdef __cstring_view cname = __cstring_view(name)
+        cdef cumap[__cstring_view, __StructWithString_FieldsSetterFunc].iterator found = self._setters.find(cname)
+        if found == self._setters.end():
+            raise TypeError(f"invalid field name {name.decode('utf-8')}")
+        deref(found).second(self, value)
+
+    cdef void _set_field_0(self, _fbthrift_value) except *:
+        # for field def_unique_string_ref
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cStructWithString](deref(self._struct_cpp_obj), 0)
+            return
+        if not isinstance(_fbthrift_value, str):
+            raise TypeError(f'def_unique_string_ref is not a { str !r}.')
+        assign_unique_ptr[string](deref(self._struct_cpp_obj).def_unique_string_ref_ref(), make_unique[string](deref((<str?>_fbthrift_value)._cpp_obj)))
+
+    cdef void _set_field_1(self, _fbthrift_value) except *:
+        # for field def_shared_string_ref
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cStructWithString](deref(self._struct_cpp_obj), 1)
+            return
+        if not isinstance(_fbthrift_value, str):
+            raise TypeError(f'def_shared_string_ref is not a { str !r}.')
+        assign_shared_ptr[string](deref(self._struct_cpp_obj).def_shared_string_ref_ref(), (<str?>_fbthrift_value)._cpp_obj)
+
+    cdef void _set_field_2(self, _fbthrift_value) except *:
+        # for field def_shared_string_const_ref
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cStructWithString](deref(self._struct_cpp_obj), 2)
+            return
+        if not isinstance(_fbthrift_value, str):
+            raise TypeError(f'def_shared_string_const_ref is not a { str !r}.')
+        assign_shared_const_ptr[string](deref(self._struct_cpp_obj).def_shared_string_const_ref_ref(), const_pointer_cast((<str?>_fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_3(self, _fbthrift_value) except *:
+        # for field unique_string_ref
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cStructWithString](deref(self._struct_cpp_obj), 3)
+            return
+        if not isinstance(_fbthrift_value, str):
+            raise TypeError(f'unique_string_ref is not a { str !r}.')
+        assign_unique_ptr[string](deref(self._struct_cpp_obj).unique_string_ref_ref(), make_unique[string](deref((<str?>_fbthrift_value)._cpp_obj)))
+
+    cdef void _set_field_4(self, _fbthrift_value) except *:
+        # for field shared_string_ref
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cStructWithString](deref(self._struct_cpp_obj), 4)
+            return
+        if not isinstance(_fbthrift_value, str):
+            raise TypeError(f'shared_string_ref is not a { str !r}.')
+        assign_shared_ptr[string](deref(self._struct_cpp_obj).shared_string_ref_ref(), (<str?>_fbthrift_value)._cpp_obj)
+

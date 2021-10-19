@@ -50,6 +50,11 @@ struct def_field;
 struct opt_field;
 struct req_field;
 struct def_field;
+struct def_unique_string_ref;
+struct def_shared_string_ref;
+struct def_shared_string_const_ref;
+struct unique_string_ref;
+struct shared_string_ref;
 } // namespace tag
 namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_anInteger
@@ -200,6 +205,26 @@ APACHE_THRIFT_DEFINE_ACCESSOR(req_field);
 #define APACHE_THRIFT_ACCESSOR_def_field
 APACHE_THRIFT_DEFINE_ACCESSOR(def_field);
 #endif
+#ifndef APACHE_THRIFT_ACCESSOR_def_unique_string_ref
+#define APACHE_THRIFT_ACCESSOR_def_unique_string_ref
+APACHE_THRIFT_DEFINE_ACCESSOR(def_unique_string_ref);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_def_shared_string_ref
+#define APACHE_THRIFT_ACCESSOR_def_shared_string_ref
+APACHE_THRIFT_DEFINE_ACCESSOR(def_shared_string_ref);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_def_shared_string_const_ref
+#define APACHE_THRIFT_ACCESSOR_def_shared_string_const_ref
+APACHE_THRIFT_DEFINE_ACCESSOR(def_shared_string_const_ref);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_unique_string_ref
+#define APACHE_THRIFT_ACCESSOR_unique_string_ref
+APACHE_THRIFT_DEFINE_ACCESSOR(unique_string_ref);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_shared_string_ref
+#define APACHE_THRIFT_ACCESSOR_shared_string_ref
+APACHE_THRIFT_DEFINE_ACCESSOR(shared_string_ref);
+#endif
 } // namespace detail
 } // namespace thrift
 } // namespace apache
@@ -303,6 +328,7 @@ class StructWithRefTypeUnique;
 class StructWithRefTypeShared;
 class StructWithRefTypeSharedConst;
 class StructWithRefAndAnnotCppNoexceptMoveCtor;
+class StructWithString;
 } // cpp2
 // END forward_declare
 // BEGIN typedefs
@@ -1849,6 +1875,136 @@ class StructWithRefAndAnnotCppNoexceptMoveCtor final  {
 
 template <class Protocol_>
 uint32_t StructWithRefAndAnnotCppNoexceptMoveCtor::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+} // cpp2
+namespace cpp2 {
+class StructWithString final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+
+ public:
+  using __fbthrift_cpp2_type = StructWithString;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
+
+
+ public:
+
+  StructWithString();
+
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  StructWithString(apache::thrift::FragileConstructor, ::std::unique_ptr<::std::string> def_unique_string_ref__arg, ::std::shared_ptr<::std::string> def_shared_string_ref__arg, ::std::shared_ptr<const ::std::string> def_shared_string_const_ref__arg, ::std::unique_ptr<::std::string> unique_string_ref__arg, ::std::shared_ptr<::std::string> shared_string_ref__arg);
+
+  StructWithString(StructWithString&&) noexcept;
+  StructWithString(const StructWithString& src);
+
+
+  StructWithString& operator=(StructWithString&&) noexcept;
+  StructWithString& operator=(const StructWithString& src);
+  void __clear();
+
+  ~StructWithString();
+
+ public:
+  ::std::unique_ptr<::std::string> def_unique_string_ref;
+ public:
+  ::std::shared_ptr<::std::string> def_shared_string_ref;
+ public:
+  ::std::shared_ptr<const ::std::string> def_shared_string_const_ref;
+ public:
+  ::std::unique_ptr<::std::string> unique_string_ref;
+ public:
+  ::std::shared_ptr<::std::string> shared_string_ref;
+
+ public:
+
+  bool operator==(const StructWithString&) const;
+  bool operator<(const StructWithString&) const;
+  template <typename ..., typename T = ::std::unique_ptr<::std::string>>
+  FOLLY_ERASE T& def_unique_string_ref_ref() & { return def_unique_string_ref; }
+
+  template <typename ..., typename T = ::std::unique_ptr<::std::string>>
+  FOLLY_ERASE const T& def_unique_string_ref_ref() const& { return def_unique_string_ref; }
+
+  template <typename ..., typename T = ::std::unique_ptr<::std::string>>
+  FOLLY_ERASE T&& def_unique_string_ref_ref() && { return std::move(def_unique_string_ref); }
+
+  template <typename ..., typename T = ::std::unique_ptr<::std::string>>
+  FOLLY_ERASE const T&& def_unique_string_ref_ref() const&& { return std::move(def_unique_string_ref); }
+  template <typename ..., typename T = ::std::shared_ptr<::std::string>>
+  FOLLY_ERASE T& def_shared_string_ref_ref() & { return def_shared_string_ref; }
+
+  template <typename ..., typename T = ::std::shared_ptr<::std::string>>
+  FOLLY_ERASE const T& def_shared_string_ref_ref() const& { return def_shared_string_ref; }
+
+  template <typename ..., typename T = ::std::shared_ptr<::std::string>>
+  FOLLY_ERASE T&& def_shared_string_ref_ref() && { return std::move(def_shared_string_ref); }
+
+  template <typename ..., typename T = ::std::shared_ptr<::std::string>>
+  FOLLY_ERASE const T&& def_shared_string_ref_ref() const&& { return std::move(def_shared_string_ref); }
+  template <typename ..., typename T = ::std::shared_ptr<const ::std::string>>
+  FOLLY_ERASE T& def_shared_string_const_ref_ref() & { return def_shared_string_const_ref; }
+
+  template <typename ..., typename T = ::std::shared_ptr<const ::std::string>>
+  FOLLY_ERASE const T& def_shared_string_const_ref_ref() const& { return def_shared_string_const_ref; }
+
+  template <typename ..., typename T = ::std::shared_ptr<const ::std::string>>
+  FOLLY_ERASE T&& def_shared_string_const_ref_ref() && { return std::move(def_shared_string_const_ref); }
+
+  template <typename ..., typename T = ::std::shared_ptr<const ::std::string>>
+  FOLLY_ERASE const T&& def_shared_string_const_ref_ref() const&& { return std::move(def_shared_string_const_ref); }
+  template <typename ..., typename T = ::std::unique_ptr<::std::string>>
+  FOLLY_ERASE T& unique_string_ref_ref() & { return unique_string_ref; }
+
+  template <typename ..., typename T = ::std::unique_ptr<::std::string>>
+  FOLLY_ERASE const T& unique_string_ref_ref() const& { return unique_string_ref; }
+
+  template <typename ..., typename T = ::std::unique_ptr<::std::string>>
+  FOLLY_ERASE T&& unique_string_ref_ref() && { return std::move(unique_string_ref); }
+
+  template <typename ..., typename T = ::std::unique_ptr<::std::string>>
+  FOLLY_ERASE const T&& unique_string_ref_ref() const&& { return std::move(unique_string_ref); }
+  template <typename ..., typename T = ::std::shared_ptr<::std::string>>
+  FOLLY_ERASE T& shared_string_ref_ref() & { return shared_string_ref; }
+
+  template <typename ..., typename T = ::std::shared_ptr<::std::string>>
+  FOLLY_ERASE const T& shared_string_ref_ref() const& { return shared_string_ref; }
+
+  template <typename ..., typename T = ::std::shared_ptr<::std::string>>
+  FOLLY_ERASE T&& shared_string_ref_ref() && { return std::move(shared_string_ref); }
+
+  template <typename ..., typename T = ::std::shared_ptr<::std::string>>
+  FOLLY_ERASE const T&& shared_string_ref_ref() const&& { return std::move(shared_string_ref); }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops<StructWithString>;
+  friend void swap(StructWithString& a, StructWithString& b);
+};
+
+template <class Protocol_>
+uint32_t StructWithString::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

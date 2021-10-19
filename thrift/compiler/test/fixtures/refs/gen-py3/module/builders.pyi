@@ -116,3 +116,13 @@ class StructWithRefAndAnnotCppNoexceptMoveCtor_Builder(thrift.py3.builder.Struct
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
 
+class StructWithString_Builder(thrift.py3.builder.StructBuilder):
+    def_unique_string_ref: _typing.Optional[str]
+    def_shared_string_ref: _typing.Optional[str]
+    def_shared_string_const_ref: _typing.Optional[str]
+    unique_string_ref: _typing.Optional[str]
+    shared_string_ref: _typing.Optional[str]
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+

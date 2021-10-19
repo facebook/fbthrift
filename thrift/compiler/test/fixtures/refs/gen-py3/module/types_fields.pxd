@@ -197,3 +197,18 @@ cdef class __StructWithRefAndAnnotCppNoexceptMoveCtor_FieldsSetter(__StructField
     cdef __StructWithRefAndAnnotCppNoexceptMoveCtor_FieldsSetter create(_module_types.cStructWithRefAndAnnotCppNoexceptMoveCtor* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
 
+
+ctypedef void (*__StructWithString_FieldsSetterFunc)(__StructWithString_FieldsSetter, object) except *
+
+cdef class __StructWithString_FieldsSetter(__StructFieldsSetter):
+    cdef _module_types.cStructWithString* _struct_cpp_obj
+    cdef cumap[__cstring_view, __StructWithString_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __StructWithString_FieldsSetter create(_module_types.cStructWithString* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
+    cdef void _set_field_4(self, _fbthrift_value) except *
+

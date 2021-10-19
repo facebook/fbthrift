@@ -241,5 +241,27 @@ const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::StructWithRefAnd
   TType::T_STRUCT,
 }};
 
+const std::array<folly::StringPiece, 5> TStructDataStorage<::cpp2::StructWithString>::fields_names = {{
+  "def_unique_string_ref",
+  "def_shared_string_ref",
+  "def_shared_string_const_ref",
+  "unique_string_ref",
+  "shared_string_ref",
+}};
+const std::array<int16_t, 5> TStructDataStorage<::cpp2::StructWithString>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+  5,
+}};
+const std::array<protocol::TType, 5> TStructDataStorage<::cpp2::StructWithString>::fields_types = {{
+  TType::T_STRING,
+  TType::T_STRING,
+  TType::T_STRING,
+  TType::T_STRING,
+  TType::T_STRING,
+}};
+
 } // namespace thrift
 } // namespace apache

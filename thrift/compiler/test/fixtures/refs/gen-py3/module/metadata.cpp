@@ -26,6 +26,7 @@ namespace cpp2 {
   ::apache::thrift::detail::md::StructMetadata<StructWithRefTypeShared>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<StructWithRefTypeSharedConst>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<StructWithRefAndAnnotCppNoexceptMoveCtor>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<StructWithString>::gen(metadata);
   return metadata;
 }
 } // namespace cpp2

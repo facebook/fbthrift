@@ -40,6 +40,8 @@ cdef __StructSpec get_reflection__StructWithRefTypeSharedConst()
 
 cdef __StructSpec get_reflection__StructWithRefAndAnnotCppNoexceptMoveCtor()
 
+cdef __StructSpec get_reflection__StructWithString()
+
 cdef __ListSpec get_reflection__List__RecursiveStruct()
 
 cdef __ListSpec get_reflection__List__i32()

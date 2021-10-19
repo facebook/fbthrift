@@ -631,6 +631,79 @@ cdef __StructSpec get_reflection__StructWithRefAndAnnotCppNoexceptMoveCtor():
         ),
     )
     return spec
+cdef __StructSpec get_reflection__StructWithString():
+    cdef _module_types.StructWithString defaults = _module_types.StructWithString.create(
+        constant_shared_ptr[_module_types.cStructWithString](
+            default_inst[_module_types.cStructWithString]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec.create(
+        name="StructWithString",
+        kind=__StructType.STRUCT,
+        annotations={
+        },
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=1,
+            name="def_unique_string_ref",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=defaults.def_unique_string_ref,
+            annotations={
+                """cpp.ref_type""": """unique""",                """cpp2.ref_type""": """unique""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=2,
+            name="def_shared_string_ref",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=defaults.def_shared_string_ref,
+            annotations={
+                """cpp.ref_type""": """shared""",                """cpp2.ref_type""": """shared""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=3,
+            name="def_shared_string_const_ref",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=defaults.def_shared_string_const_ref,
+            annotations={
+                """cpp.ref_type""": """shared_const""",                """cpp2.ref_type""": """shared_const""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=4,
+            name="unique_string_ref",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+                """cpp.ref_type""": """unique""",                """cpp2.ref_type""": """unique""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=5,
+            name="shared_string_ref",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+                """cpp.ref_type""": """shared""",                """cpp2.ref_type""": """shared""",            },
+        ),
+    )
+    return spec
 cdef __ListSpec get_reflection__List__RecursiveStruct():
     return __ListSpec.create(
         value=_module_types.RecursiveStruct,

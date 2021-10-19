@@ -241,6 +241,28 @@ void reset_field<::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor>(
 }
 
 template<>
+void reset_field<::cpp2::StructWithString>(
+    ::cpp2::StructWithString& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.def_unique_string_ref_ref().reset();
+      return;
+    case 1:
+      obj.def_shared_string_ref_ref().reset();
+      return;
+    case 2:
+      obj.def_shared_string_const_ref_ref().reset();
+      return;
+    case 3:
+      obj.unique_string_ref_ref().reset();
+      return;
+    case 4:
+      obj.shared_string_ref_ref().reset();
+      return;
+  }
+}
+
+template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::cpp2::MyUnion>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
@@ -363,6 +385,16 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::cpp2::StructWithString>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

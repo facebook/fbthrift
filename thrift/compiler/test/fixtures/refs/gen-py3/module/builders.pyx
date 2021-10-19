@@ -107,3 +107,13 @@ cdef class StructWithRefAndAnnotCppNoexceptMoveCtor_Builder(thrift.py3.builder.S
     def __iter__(self):
         yield "def_field", self.def_field
 
+cdef class StructWithString_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.StructWithString
+
+    def __iter__(self):
+        yield "def_unique_string_ref", self.def_unique_string_ref
+        yield "def_shared_string_ref", self.def_shared_string_ref
+        yield "def_shared_string_const_ref", self.def_shared_string_const_ref
+        yield "unique_string_ref", self.unique_string_ref
+        yield "shared_string_ref", self.shared_string_ref
+

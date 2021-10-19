@@ -143,3 +143,26 @@ const StructWithRefTypeSharedConst kStructWithRefTypeSharedConst = {
 struct StructWithRefAndAnnotCppNoexceptMoveCtor {
   1: Empty def_field (cpp.ref);
 }
+
+struct StructWithString {
+  1: string def_unique_string_ref = "..." (
+    cpp.ref_type = "unique",
+    cpp2.ref_type = "unique",
+  );
+  2: string def_shared_string_ref = "..." (
+    cpp.ref_type = "shared",
+    cpp2.ref_type = "shared",
+  );
+  3: string def_shared_string_const_ref = "..." (
+    cpp.ref_type = "shared_const",
+    cpp2.ref_type = "shared_const",
+  );
+  4: string unique_string_ref (
+    cpp.ref_type = "unique",
+    cpp2.ref_type = "unique",
+  );
+  5: string shared_string_ref (
+    cpp.ref_type = "shared",
+    cpp2.ref_type = "shared",
+  );
+}

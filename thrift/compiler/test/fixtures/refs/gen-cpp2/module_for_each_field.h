@@ -140,6 +140,18 @@ struct ForEachField<::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor> {
     f(0, static_cast<T&&>(t).def_field_ref()...);
   }
 };
+
+template <>
+struct ForEachField<::cpp2::StructWithString> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).def_unique_string_ref_ref()...);
+    f(1, static_cast<T&&>(t).def_shared_string_ref_ref()...);
+    f(2, static_cast<T&&>(t).def_shared_string_const_ref_ref()...);
+    f(3, static_cast<T&&>(t).unique_string_ref_ref()...);
+    f(4, static_cast<T&&>(t).shared_string_ref_ref()...);
+  }
+};
 } // namespace detail
 } // namespace thrift
 } // namespace apache

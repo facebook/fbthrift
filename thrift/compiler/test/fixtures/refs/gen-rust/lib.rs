@@ -142,6 +142,15 @@ pub mod types {
         pub def_field: crate::types::Empty,
     }
 
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    pub struct StructWithString {
+        pub def_unique_string_ref: ::std::string::String,
+        pub def_shared_string_ref: ::std::string::String,
+        pub def_shared_string_const_ref: ::std::string::String,
+        pub unique_string_ref: ::std::string::String,
+        pub shared_string_ref: ::std::string::String,
+    }
+
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
     pub struct MyEnum(pub ::std::primitive::i32);
 
@@ -1308,6 +1317,94 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
                 def_field: field_def_field.unwrap_or_default(),
+            })
+        }
+    }
+
+
+    impl ::std::default::Default for self::StructWithString {
+        fn default() -> Self {
+            Self {
+                def_unique_string_ref: "...".to_owned(),
+                def_shared_string_ref: "...".to_owned(),
+                def_shared_string_const_ref: "...".to_owned(),
+                unique_string_ref: ::std::default::Default::default(),
+                shared_string_ref: ::std::default::Default::default(),
+            }
+        }
+    }
+
+    unsafe impl ::std::marker::Send for self::StructWithString {}
+    unsafe impl ::std::marker::Sync for self::StructWithString {}
+
+    impl ::fbthrift::GetTType for self::StructWithString {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for self::StructWithString
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("StructWithString");
+            p.write_field_begin("def_unique_string_ref", ::fbthrift::TType::String, 1);
+            ::fbthrift::Serialize::write(&self.def_unique_string_ref, p);
+            p.write_field_end();
+            p.write_field_begin("def_shared_string_ref", ::fbthrift::TType::String, 2);
+            ::fbthrift::Serialize::write(&self.def_shared_string_ref, p);
+            p.write_field_end();
+            p.write_field_begin("def_shared_string_const_ref", ::fbthrift::TType::String, 3);
+            ::fbthrift::Serialize::write(&self.def_shared_string_const_ref, p);
+            p.write_field_end();
+            p.write_field_begin("unique_string_ref", ::fbthrift::TType::String, 4);
+            ::fbthrift::Serialize::write(&self.unique_string_ref, p);
+            p.write_field_end();
+            p.write_field_begin("shared_string_ref", ::fbthrift::TType::String, 5);
+            ::fbthrift::Serialize::write(&self.shared_string_ref, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for self::StructWithString
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("def_shared_string_const_ref", ::fbthrift::TType::String, 3),
+                ::fbthrift::Field::new("def_shared_string_ref", ::fbthrift::TType::String, 2),
+                ::fbthrift::Field::new("def_unique_string_ref", ::fbthrift::TType::String, 1),
+                ::fbthrift::Field::new("shared_string_ref", ::fbthrift::TType::String, 5),
+                ::fbthrift::Field::new("unique_string_ref", ::fbthrift::TType::String, 4),
+            ];
+            let mut field_def_unique_string_ref = ::std::option::Option::None;
+            let mut field_def_shared_string_ref = ::std::option::Option::None;
+            let mut field_def_shared_string_const_ref = ::std::option::Option::None;
+            let mut field_unique_string_ref = ::std::option::Option::None;
+            let mut field_shared_string_ref = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::String, 1) => field_def_unique_string_ref = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 2) => field_def_shared_string_ref = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 3) => field_def_shared_string_const_ref = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 4) => field_unique_string_ref = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 5) => field_shared_string_ref = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                def_unique_string_ref: field_def_unique_string_ref.unwrap_or_else(|| "...".to_owned()),
+                def_shared_string_ref: field_def_shared_string_ref.unwrap_or_else(|| "...".to_owned()),
+                def_shared_string_const_ref: field_def_shared_string_const_ref.unwrap_or_else(|| "...".to_owned()),
+                unique_string_ref: field_unique_string_ref.unwrap_or_default(),
+                shared_string_ref: field_shared_string_ref.unwrap_or_default(),
             })
         }
     }

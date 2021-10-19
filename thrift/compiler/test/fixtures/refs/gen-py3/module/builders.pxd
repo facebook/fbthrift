@@ -90,3 +90,11 @@ cdef class StructWithRefAndAnnotCppNoexceptMoveCtor_Builder(thrift.py3.builder.S
     cdef public object def_field
 
 
+cdef class StructWithString_Builder(thrift.py3.builder.StructBuilder):
+    cdef public str def_unique_string_ref
+    cdef public str def_shared_string_ref
+    cdef public str def_shared_string_const_ref
+    cdef public str unique_string_ref
+    cdef public str shared_string_ref
+
+
