@@ -29,6 +29,8 @@
 #endif
 #endif
 
+#include <assert.h>
+#include <limits.h>
 #include <folly/CPortability.h>
 #include <folly/CppAttributes.h>
 #include <folly/Portability.h>
@@ -49,6 +51,67 @@ struct ensure_isset_unsafe_fn;
 struct unset_unsafe_fn;
 struct alias_isset_fn;
 
+template <typename T>
+class BitSet {
+  template <typename U>
+  friend class BitSet;
+
+ public:
+  explicit BitSet(T value = 0) : value_(value) {}
+
+  template <typename U>
+  explicit BitSet(const BitSet<U>& other) noexcept : value_(other.value_) {}
+
+  class reference {
+   public:
+    reference(BitSet& BitSet, const uint8_t bit) : BitSet_(BitSet), bit_(bit) {}
+
+    reference(const reference& other)
+        : BitSet_(other.BitSet_), bit_(other.bit_) {}
+
+    reference& operator=(bool flag) {
+      if (flag) {
+        BitSet_.set(bit_);
+      } else {
+        BitSet_.reset(bit_);
+      }
+      return *this;
+    }
+
+    operator bool() const { return BitSet_.get(bit_); }
+
+    reference& operator=(reference& other) { return *this = bool(other); }
+
+   private:
+    BitSet& BitSet_;
+    const uint8_t bit_;
+  };
+
+  bool operator[](const uint8_t bit) const { return get(bit); }
+
+  reference operator[](const uint8_t bit) {
+    assert(bit < NUM_BITS);
+    return reference(*this, bit);
+  }
+
+  T& value() { return value_; }
+
+  const T& value() const { return value_; }
+
+ private:
+  void set(const uint8_t bit) { value_ |= (1 << bit); }
+
+  void reset(const uint8_t bit) { value_ &= ~(1 << bit); }
+
+  bool get(const uint8_t bit) const {
+    assert(bit < NUM_BITS);
+    return (value_ >> bit) & 1;
+  }
+
+  T value_;
+
+  static constexpr int NUM_BITS = sizeof(T) * CHAR_BIT;
+};
 } // namespace detail
 
 // A reference to an unqualified field of the possibly const-qualified type
