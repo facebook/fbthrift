@@ -31,6 +31,8 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
+std::atomic<bool> gLazyDeserializationIsDisabledDueToChecksumMismatch{false};
+
 Xxh3Hasher::Xxh3Hasher() {
   state = static_cast<void*>(XXH3_createState());
   XXH3_64bits_reset(static_cast<XXH3_state_t*>(state));
@@ -61,6 +63,8 @@ int64_t random_64bits_integer() {
 }
 
 void throwChecksumMismatch(int64_t expected, int64_t actual) {
+  gLazyDeserializationIsDisabledDueToChecksumMismatch.store(
+      true, std::memory_order_relaxed);
   throw TProtocolException(
       TProtocolException::CHECKSUM_MISMATCH,
       fmt::format("expected ({}) != actual ({})", expected, actual));
