@@ -27,6 +27,7 @@
 
 #include <folly/DefaultKeepAliveExecutor.h>
 #include <folly/Executor.h>
+#include <folly/Portability.h>
 #include <folly/executors/Codel.h>
 #include <folly/executors/QueueObserver.h>
 #include <folly/io/async/Request.h>
@@ -390,6 +391,8 @@ class PriorityThreadManager : public ThreadManager {
   class PriorityImpl;
 };
 
+FOLLY_PUSH_WARNING
+FOLLY_MSVC_DISABLE_WARNING(4250) // inherits keepAliveAcq/Rel via dominance
 // Adapter class that converts a folly::Executor to a ThreadManager interface
 class ThreadManagerExecutorAdapter : public ThreadManager,
                                      public folly::DefaultKeepAliveExecutor {
@@ -455,7 +458,10 @@ class ThreadManagerExecutorAdapter : public ThreadManager,
 
   bool keepAliveJoined_{false};
 };
+FOLLY_POP_WARNING
 
+FOLLY_PUSH_WARNING
+FOLLY_MSVC_DISABLE_WARNING(4250) // inherits keepAliveAcq/Rel via dominance
 class SimpleThreadManager : public ThreadManager,
                             public folly::DefaultKeepAliveExecutor {
  public:
@@ -507,6 +513,7 @@ class SimpleThreadManager : public ThreadManager,
   std::unique_ptr<Impl> impl_;
   bool keepAliveJoined_{false};
 };
+FOLLY_POP_WARNING
 
 inline std::shared_ptr<ThreadFactory> Factory(
     PosixThreadFactory::THREAD_PRIORITY prio) {
