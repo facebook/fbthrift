@@ -21,7 +21,7 @@ ParamServiceSvIf::CreateMethodMetadataResult ParamServiceSvIf::createMethodMetad
 
 
 void ParamServiceSvIf::async_eb_void_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int16_t /*param1*/) {
-  callback->exception(apache::thrift::TApplicationException("Function void_ret_i16_param is unimplemented"));
+  callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("void_ret_i16_param"));
 }
 
 void ParamServiceSvIf::void_ret_byte_i16_param(::std::int8_t /*param1*/, ::std::int16_t /*param2*/) {
@@ -723,7 +723,7 @@ void ParamServiceSvIf::async_tm_i64_ret_string_typedef_param(std::unique_ptr<apa
 }
 
 void ParamServiceSvIf::async_eb_i64_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback, ::std::int32_t /*param1*/, ::std::int32_t /*param2*/, ::std::int32_t /*param3*/, ::std::int32_t /*param4*/, ::std::int32_t /*param5*/) {
-  callback->exception(apache::thrift::TApplicationException("Function i64_ret_i32_i32_i32_i32_i32_param is unimplemented"));
+  callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("i64_ret_i32_i32_i32_i32_i32_param"));
 }
 
 double ParamServiceSvIf::double_ret_setstruct_param(std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> /*param1*/) {
@@ -1146,7 +1146,7 @@ void ParamServiceSvIf::async_tm_typedef_ret_i32_param(std::unique_ptr<apache::th
 }
 
 void ParamServiceSvIf::async_eb_listtypedef_ret_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::simpleTypeDef>>>> callback, std::unique_ptr<::some::valid::ns::complexStructTypeDef> /*param1*/) {
-  callback->exception(apache::thrift::TApplicationException("Function listtypedef_ret_typedef_param is unimplemented"));
+  callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("listtypedef_ret_typedef_param"));
 }
 
 ::some::valid::ns::MyEnumA ParamServiceSvIf::enum_ret_double_param(double /*param1*/) {
@@ -1325,7 +1325,7 @@ void ParamServiceSvIf::async_tm_listenum_ret_map_param(std::unique_ptr<apache::t
 }
 
 void ParamServiceSvIf::async_eb_struct_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::MyStruct>>> callback, ::std::int16_t /*param1*/) {
-  callback->exception(apache::thrift::TApplicationException("Function struct_ret_i16_param is unimplemented"));
+  callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("struct_ret_i16_param"));
 }
 
 void ParamServiceSvIf::setstruct_ret_set_param(::std::set<::some::valid::ns::MyStruct>& /*_return*/, std::unique_ptr<::std::set<::std::string>> /*param1*/) {

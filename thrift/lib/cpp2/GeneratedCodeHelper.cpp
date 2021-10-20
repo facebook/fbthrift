@@ -207,9 +207,16 @@ MessageBegin deserializeMessageBegin(
 
 namespace detail {
 namespace si {
+std::string formatUnimplementedMethodException(std::string_view methodName) {
+  return fmt::format("Function {} is unimplemented", methodName);
+}
+
+TApplicationException create_app_exn_unimplemented(const char* name) {
+  return TApplicationException(formatUnimplementedMethodException(name));
+}
+
 [[noreturn]] void throw_app_exn_unimplemented(char const* const name) {
-  throw TApplicationException(
-      fmt::format("Function {} is unimplemented", name));
+  throw create_app_exn_unimplemented(name);
 }
 } // namespace si
 } // namespace detail

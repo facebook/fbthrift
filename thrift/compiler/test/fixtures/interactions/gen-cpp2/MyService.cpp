@@ -423,7 +423,7 @@ void MyServiceSvIf::MyInteractionIf::async_tm_encode(std::unique_ptr<apache::thr
 }
 
 void MyServiceSvIf::MyInteractionFastIf::async_eb_frobnicate(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
-  callback->exception(apache::thrift::TApplicationException("Function frobnicate is unimplemented"));
+  callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("frobnicate"));
 }
 
 void MyServiceSvIf::MyInteractionFastIf::async_eb_ping(std::unique_ptr<apache::thrift::HandlerCallbackBase> /*callback*/) {
@@ -431,11 +431,11 @@ void MyServiceSvIf::MyInteractionFastIf::async_eb_ping(std::unique_ptr<apache::t
 }
 
 void MyServiceSvIf::MyInteractionFastIf::async_eb_truthify(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<bool>>> callback) {
-  callback->exception(apache::thrift::TApplicationException("Function truthify is unimplemented"));
+  callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("truthify"));
 }
 
 void MyServiceSvIf::MyInteractionFastIf::async_eb_encode(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>>> callback) {
-  callback->exception(apache::thrift::TApplicationException("Function encode is unimplemented"));
+  callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("encode"));
 }
 
 void MyServiceSvIf::SerialInteractionIf::frobnicate() {

@@ -181,7 +181,7 @@ void <% > service_common/service_class_name%>::async_eb_<%function:cpp_name%>(st
 <%^function:oneway?%>
 
 void <% > service_common/service_class_name%>::async_eb_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/function_param_list_commented_out%>) {
-  callback->exception(apache::thrift::TApplicationException("Function <%function:cpp_name%> is unimplemented"));
+  callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("<%function:name%>"));
 }
 <%/function:oneway?%>
 <%/function:eb%>

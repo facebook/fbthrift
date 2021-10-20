@@ -363,7 +363,7 @@ void SinkServiceSvIf::async_tm_methodBothThrow(std::unique_ptr<apache::thrift::H
 }
 
 void SinkServiceSvIf::async_eb_methodFast(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) {
-  callback->exception(apache::thrift::TApplicationException("Function methodFast is unimplemented"));
+  callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("methodFast"));
 }
 
 ::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse> SinkServiceSvNull::method() {

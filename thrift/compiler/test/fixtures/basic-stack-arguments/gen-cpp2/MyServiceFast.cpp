@@ -21,15 +21,15 @@ MyServiceFastSvIf::CreateMethodMetadataResult MyServiceFastSvIf::createMethodMet
 
 
 void MyServiceFastSvIf::async_eb_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int64_t /*id*/) {
-  callback->exception(apache::thrift::TApplicationException("Function hasDataById is unimplemented"));
+  callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("hasDataById"));
 }
 
 void MyServiceFastSvIf::async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<::std::string>> callback, ::std::int64_t /*id*/) {
-  callback->exception(apache::thrift::TApplicationException("Function getDataById is unimplemented"));
+  callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("getDataById"));
 }
 
 void MyServiceFastSvIf::async_eb_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int64_t /*id*/, const ::std::string& /*data*/) {
-  callback->exception(apache::thrift::TApplicationException("Function putDataById is unimplemented"));
+  callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("putDataById"));
 }
 
 void MyServiceFastSvIf::async_eb_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> /*callback*/, ::std::int64_t /*id*/, const ::std::string& /*data*/) {

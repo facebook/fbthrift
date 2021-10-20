@@ -78,7 +78,7 @@ void ExtraServiceSvIf::async_tm_simple_function(std::unique_ptr<apache::thrift::
 }
 
 void ExtraServiceSvIf::async_eb_throws_function(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
-  callback->exception(apache::thrift::TApplicationException("Function throws_function is unimplemented"));
+  callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("throws_function"));
 }
 
 bool ExtraServiceSvIf::throws_function2(bool /*param1*/) {

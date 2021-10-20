@@ -249,7 +249,7 @@ void PubSubStreamingServiceSvIf::async_tm_responseandstreamthrows(std::unique_pt
 }
 
 void PubSubStreamingServiceSvIf::async_eb_returnstreamFast(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>> callback, ::std::int32_t /*i32_from*/, ::std::int32_t /*i32_to*/) {
-  callback->exception(apache::thrift::TApplicationException("Function returnstreamFast is unimplemented"));
+  callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("returnstreamFast"));
 }
 
 

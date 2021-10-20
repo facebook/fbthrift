@@ -21,7 +21,7 @@ ReturnServiceSvIf::CreateMethodMetadataResult ReturnServiceSvIf::createMethodMet
 
 
 void ReturnServiceSvIf::async_eb_noReturn(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
-  callback->exception(apache::thrift::TApplicationException("Function noReturn is unimplemented"));
+  callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("noReturn"));
 }
 
 bool ReturnServiceSvIf::boolReturn() {
@@ -367,7 +367,7 @@ void ReturnServiceSvIf::async_tm_doubleReturn(std::unique_ptr<apache::thrift::Ha
 }
 
 void ReturnServiceSvIf::async_eb_stringReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) {
-  callback->exception(apache::thrift::TApplicationException("Function stringReturn is unimplemented"));
+  callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("stringReturn"));
 }
 
 void ReturnServiceSvIf::binaryReturn(::std::string& /*_return*/) {
@@ -672,11 +672,11 @@ void ReturnServiceSvIf::async_tm_list_mostComplexTypedefReturn(std::unique_ptr<a
 }
 
 void ReturnServiceSvIf::async_eb_enumReturn(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>> callback) {
-  callback->exception(apache::thrift::TApplicationException("Function enumReturn is unimplemented"));
+  callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("enumReturn"));
 }
 
 void ReturnServiceSvIf::async_eb_list_EnumReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>>> callback) {
-  callback->exception(apache::thrift::TApplicationException("Function list_EnumReturn is unimplemented"));
+  callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("list_EnumReturn"));
 }
 
 void ReturnServiceSvIf::structReturn(::some::valid::ns::MyStruct& /*_return*/) {
@@ -802,7 +802,7 @@ void ReturnServiceSvIf::async_tm_set_StructReturn(std::unique_ptr<apache::thrift
 }
 
 void ReturnServiceSvIf::async_eb_unionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::ComplexUnion>>> callback) {
-  callback->exception(apache::thrift::TApplicationException("Function unionReturn is unimplemented"));
+  callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("unionReturn"));
 }
 
 void ReturnServiceSvIf::list_UnionReturn(::std::vector<::some::valid::ns::ComplexUnion>& /*_return*/) {
@@ -867,7 +867,7 @@ void ReturnServiceSvIf::async_tm_list_UnionReturn(std::unique_ptr<apache::thrift
 }
 
 void ReturnServiceSvIf::async_eb_readDataEb(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::IOBuf>>> callback, ::std::int64_t /*size*/) {
-  callback->exception(apache::thrift::TApplicationException("Function readDataEb is unimplemented"));
+  callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("readDataEb"));
 }
 
 void ReturnServiceSvIf::readData(::some::valid::ns::IOBufPtr& /*_return*/, ::std::int64_t /*size*/) {

@@ -276,7 +276,7 @@ void MyServiceSvIf::async_tm_hasDataById(std::unique_ptr<apache::thrift::Handler
 }
 
 void MyServiceSvIf::async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, ::std::int64_t /*id*/) {
-  callback->exception(apache::thrift::TApplicationException("Function getDataById is unimplemented"));
+  callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("getDataById"));
 }
 
 void MyServiceSvIf::putDataById(::std::int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) {
