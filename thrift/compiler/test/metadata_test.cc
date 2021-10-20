@@ -39,7 +39,8 @@ class MetadataCodegenTest : public testing::Test {
   ThriftType getResolvedType(const ThriftType& type) {
     ThriftType ret = type;
     while (ret.getType() == ThriftType::Type::t_typedef) {
-      auto underlyingType = std::move(ret.mutable_t_typedef().underlyingType);
+      auto underlyingType =
+          std::move(ret.mutable_t_typedef().underlyingType_ref());
       EXPECT_NE(underlyingType.get(), nullptr);
       ret = std::move(*underlyingType);
     }

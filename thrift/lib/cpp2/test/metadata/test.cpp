@@ -327,7 +327,7 @@ TEST_F(ServiceMetadataTest, NestedStructsTest) {
   EXPECT_EQ(*s3.fields_ref()[1].name_ref(), "foos");
   auto listType = *s3.fields_ref()[1].type_ref();
   EXPECT_EQ(listType.getType(), ThriftType::Type::t_list);
-  auto elemType = listType.get_t_list().valueType.get();
+  auto elemType = listType.get_t_list().valueType_ref().get();
   auto ttypedef = elemType->get_t_typedef();
   EXPECT_EQ(
       *ttypedef.underlyingType->get_t_struct().name_ref(),
@@ -381,13 +381,13 @@ TEST_F(ServiceMetadataTest, IncludeTest) {
       *s1.fields_ref()[3].type_ref()->get_t_typedef().name_ref(),
       "typedef_test.StringMap");
   auto utype1 =
-      s1.fields_ref()[3].type_ref()->get_t_typedef().underlyingType.get();
+      s1.fields_ref()[3].type_ref()->get_t_typedef().underlyingType_ref().get();
   EXPECT_EQ(utype1->getType(), ThriftType::Type::t_map);
-  auto keyType1 = utype1->get_t_map().keyType.get();
+  auto keyType1 = utype1->get_t_map().keyType_ref().get();
   EXPECT_EQ(keyType1->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
       keyType1->get_t_primitive(), ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  auto valType1 = utype1->get_t_map().valueType.get();
+  auto valType1 = utype1->get_t_map().valueType_ref().get();
   EXPECT_EQ(valType1->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
       valType1->get_t_primitive(), ThriftPrimitiveType::THRIFT_STRING_TYPE);
@@ -399,7 +399,7 @@ TEST_F(ServiceMetadataTest, IncludeTest) {
       *s1.fields_ref()[4].type_ref()->get_t_typedef().name_ref(),
       "include_test.CoolString");
   auto utype2 =
-      s1.fields_ref()[4].type_ref()->get_t_typedef().underlyingType.get();
+      s1.fields_ref()[4].type_ref()->get_t_typedef().underlyingType_ref().get();
   EXPECT_EQ(utype2->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(utype2->get_t_primitive(), ThriftPrimitiveType::THRIFT_STRING_TYPE);
 
@@ -501,13 +501,13 @@ TEST_F(ServiceMetadataTest, TypedefTest) {
       *s1.fields_ref()[0].type_ref()->get_t_typedef().name_ref(),
       "typedef_test.StringMap");
   auto utype1 =
-      s1.fields_ref()[0].type_ref()->get_t_typedef().underlyingType.get();
+      s1.fields_ref()[0].type_ref()->get_t_typedef().underlyingType_ref().get();
   EXPECT_EQ(utype1->getType(), ThriftType::Type::t_map);
-  auto keyType1 = utype1->get_t_map().keyType.get();
+  auto keyType1 = utype1->get_t_map().keyType_ref().get();
   EXPECT_EQ(keyType1->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
       keyType1->get_t_primitive(), ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  auto valType1 = utype1->get_t_map().valueType.get();
+  auto valType1 = utype1->get_t_map().valueType_ref().get();
   EXPECT_EQ(valType1->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
       valType1->get_t_primitive(), ThriftPrimitiveType::THRIFT_STRING_TYPE);
@@ -521,14 +521,14 @@ TEST_F(ServiceMetadataTest, TypedefTest) {
       *s1.fields_ref()[1].type_ref()->get_t_typedef().name_ref(),
       "typedef_test.MapList");
   auto utype2 =
-      s1.fields_ref()[1].type_ref()->get_t_typedef().underlyingType.get();
+      s1.fields_ref()[1].type_ref()->get_t_typedef().underlyingType_ref().get();
   EXPECT_EQ(utype2->getType(), ThriftType::Type::t_list);
-  auto elemType = utype2->get_t_list().valueType.get();
+  auto elemType = utype2->get_t_list().valueType_ref().get();
   EXPECT_EQ(elemType->getType(), ThriftType::Type::t_map);
-  auto elemKey = elemType->get_t_map().keyType.get();
+  auto elemKey = elemType->get_t_map().keyType_ref().get();
   EXPECT_EQ(elemKey->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(elemKey->get_t_primitive(), ThriftPrimitiveType::THRIFT_I32_TYPE);
-  auto elemValue = elemType->get_t_map().valueType.get();
+  auto elemValue = elemType->get_t_map().valueType_ref().get();
   EXPECT_EQ(elemValue->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
       elemValue->get_t_primitive(), ThriftPrimitiveType::THRIFT_STRING_TYPE);
@@ -542,25 +542,25 @@ TEST_F(ServiceMetadataTest, TypedefTest) {
       *s1.fields_ref()[2].type_ref()->get_t_typedef().name_ref(),
       "typedef_test.VeryComplex");
   auto utype3 =
-      s1.fields_ref()[2].type_ref()->get_t_typedef().underlyingType.get();
+      s1.fields_ref()[2].type_ref()->get_t_typedef().underlyingType_ref().get();
   EXPECT_EQ(utype3->getType(), ThriftType::Type::t_map);
   // Map key
-  auto keyType3 = utype3->get_t_map().keyType.get();
+  auto keyType3 = utype3->get_t_map().keyType_ref().get();
   EXPECT_EQ(keyType3->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
       keyType3->get_t_primitive(), ThriftPrimitiveType::THRIFT_STRING_TYPE);
   // Map value (also a map)
-  auto valueType3 = utype3->get_t_map().valueType.get();
+  auto valueType3 = utype3->get_t_map().valueType_ref().get();
   EXPECT_EQ(valueType3->getType(), ThriftType::Type::t_map);
   // Inner map's key (i32)
-  auto valueKeyType = valueType3->get_t_map().keyType.get();
+  auto valueKeyType = valueType3->get_t_map().keyType_ref().get();
   EXPECT_EQ(valueKeyType->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
       valueKeyType->get_t_primitive(), ThriftPrimitiveType::THRIFT_I32_TYPE);
   // Inner map's value (list<i64>)
-  auto valueValType = valueType3->get_t_map().valueType.get();
+  auto valueValType = valueType3->get_t_map().valueType_ref().get();
   EXPECT_EQ(valueValType->getType(), ThriftType::Type::t_list);
-  auto valueValElemType = valueValType->get_t_list().valueType.get();
+  auto valueValElemType = valueValType->get_t_list().valueType_ref().get();
   EXPECT_EQ(valueValElemType->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
       valueValElemType->get_t_primitive(),
@@ -624,7 +624,7 @@ TEST_F(ServiceMetadataTest, ServiceTest) {
   EXPECT_EQ(*f0.name_ref(), "getAllTypes");
   EXPECT_EQ(f0.return_type_ref()->getType(), ThriftType::Type::t_list);
   auto retType1 = f0.return_type_ref()->get_t_list();
-  auto elemType = retType1.valueType.get();
+  auto elemType = retType1.valueType_ref().get();
   EXPECT_EQ(elemType->getType(), ThriftType::Type::t_struct);
   EXPECT_EQ(*elemType->get_t_struct().name_ref(), "typedef_test.Types");
   EXPECT_EQ(f0.arguments_ref()->size(), 0);

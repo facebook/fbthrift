@@ -24,13 +24,13 @@ using namespace apache::thrift::test;
 TEST(Recursive, copy) {
   RecList list1;
   *list1.item_ref() = 10;
-  list1.next.reset(new RecList);
-  *list1.next->item_ref() = 20;
+  list1.next_ref().reset(new RecList);
+  *list1.next_ref()->item_ref() = 20;
   RecList list2{list1};
   EXPECT_EQ(list2, list1);
 
   CoRec c1;
-  c1.other.reset(new CoRec2);
+  c1.other_ref().reset(new CoRec2);
   CoRec c2{c1};
   EXPECT_EQ(c1, c2);
 }
@@ -38,8 +38,8 @@ TEST(Recursive, copy) {
 TEST(Recursive, assign) {
   RecList list1, list2;
   *list1.item_ref() = 11;
-  list2.next.reset(new RecList);
-  *list2.next->item_ref() = 22;
+  list2.next_ref().reset(new RecList);
+  *list2.next_ref()->item_ref() = 22;
   list2 = list1;
   EXPECT_EQ(list1, list2);
 }
@@ -61,7 +61,7 @@ TEST(Recursive, Tree) {
 TEST(Recursive, list) {
   RecList l;
   std::unique_ptr<RecList> l2(new RecList);
-  l.next = std::move(l2);
+  l.next_ref() = std::move(l2);
 
   auto serializer = apache::thrift::CompactSerializer();
   folly::IOBufQueue bufq;
@@ -78,7 +78,7 @@ TEST(Recursive, list) {
 TEST(Recursive, CoRec) {
   CoRec c;
   std::unique_ptr<CoRec2> r(new CoRec2);
-  c.other = std::move(r);
+  c.other_ref() = std::move(r);
 
   auto serializer = apache::thrift::CompactSerializer();
   folly::IOBufQueue bufq;
@@ -93,7 +93,7 @@ TEST(Recursive, CoRec) {
 TEST(Recursive, Roundtrip) {
   MyStruct strct;
   std::unique_ptr<MyField> field(new MyField);
-  strct.field = std::move(field);
+  strct.field_ref() = std::move(field);
 
   auto serializer = apache::thrift::CompactSerializer();
   folly::IOBufQueue bufq;
@@ -107,7 +107,7 @@ TEST(Recursive, Roundtrip) {
 TEST(Recursive, CoRecJson) {
   CoRec c;
   std::unique_ptr<CoRec2> r(new CoRec2);
-  c.other = std::move(r);
+  c.other_ref() = std::move(r);
 
   auto serializer = apache::thrift::SimpleJSONSerializer();
   folly::IOBufQueue bufq;

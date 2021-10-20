@@ -219,19 +219,19 @@ TestStructRecursive makeTestStructRecursive(size_t levels) {
   for (size_t i = levels; i > 0; --i) {
     auto t = make_unique<TestStructRecursive>();
     *t->tag_ref() = fmt::format("level-{}", i);
-    t->cdr = std::move(s);
+    t->cdr_ref() = std::move(s);
     s = std::move(t);
   }
   TestStructRecursive ret;
   *ret.tag_ref() = "level-0";
-  ret.cdr = std::move(s);
+  ret.cdr_ref() = std::move(s);
   return ret;
 }
 
 size_t getRecDepth(const TestStructRecursive& s) {
   auto p = &s;
   size_t depth = 0;
-  while ((p = p->cdr.get())) {
+  while ((p = p->cdr_ref().get())) {
     ++depth;
   }
   return depth;

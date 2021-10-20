@@ -45,8 +45,8 @@ void fillTree(std::unique_ptr<Node>& node, int min, int max) {
   int mid = (max + min) / 2;
   node = std::make_unique<Node>();
   *node->id_ref() = mid;
-  fillTree(node->left, min, mid);
-  fillTree(node->right, mid + 1, max);
+  fillTree(node->left_ref(), min, mid);
+  fillTree(node->right_ref(), mid + 1, max);
 }
 
 const std::string s1 = "sailing";
@@ -54,11 +54,11 @@ const std::string s2 = "shenandoah";
 
 TEST(Frozen, simple_ref) {
   SimpleRef t;
-  t.c1r = makePerson("c1r");
-  t.c2r = makePerson("c2r");
-  t.c2s_opt = makePerson("c2s_opt");
-  t.c2u_opt = makePerson("c2u_opt");
-  t.c2r_opt = makePerson("c2r_opt");
+  t.c1r_ref() = makePerson("c1r");
+  t.c2r_ref() = makePerson("c2r");
+  t.c2s_opt_ref() = makePerson("c2s_opt");
+  t.c2u_opt_ref() = makePerson("c2u_opt");
+  t.c2r_opt_ref() = makePerson("c2r_opt");
   // unset default ref fields have default value
   EXPECT_EQ(*t.c2s->name_ref(), "");
   EXPECT_EQ(*t.c2u->name_ref(), "");
@@ -98,8 +98,8 @@ TEST(Frozen, simple_ref) {
 TEST(Frozen, recursive_node_ref) {
   Node root;
   *root.id_ref() = 8;
-  root.left = makeNode(3, s1);
-  root.right = makeNode(5, s2);
+  root.left_ref() = makeNode(3, s1);
+  root.right_ref() = makeNode(5, s2);
   *root.content_ref() = s2;
   EXPECT_EQ(root.left->left, nullptr);
 
@@ -144,7 +144,7 @@ TEST(Frozen, recursive_node_ref) {
 TEST(Frozen, instance_cycle_1) {
   auto a = std::make_shared<LinkedListNode>();
   *a->id_ref() = 1;
-  a->next = a;
+  a->next_ref() = a;
 
   // Note: It's possible to freeze the shared_ptr directly, not *a.
   auto fa = freeze(a);
@@ -155,7 +155,7 @@ TEST(Frozen, instance_cycle_1) {
 
   // unloop the thrift object to avoid memory leak. Note no need to unloop the
   // frozen object as we handle the pointers carefully to avoid loop(s)
-  a->next = nullptr;
+  a->next_ref() = nullptr;
 }
 
 TEST(Frozen, instance_cycle_2) {
@@ -164,8 +164,8 @@ TEST(Frozen, instance_cycle_2) {
   auto b = std::make_shared<LinkedListNode>();
   *b->id_ref() = 2;
 
-  a->next = b;
-  b->next = a;
+  a->next_ref() = b;
+  b->next_ref() = a;
 
   // Note: Freeze the shared_ptr, not *a.
   auto fa = freeze(a);
@@ -180,7 +180,7 @@ TEST(Frozen, instance_cycle_2) {
 
   // unloop the thrift object to avoid memory leak. Note no need to unloop the
   // frozen object as we handle the pointers carefully to avoid loop(s)
-  a->next = nullptr;
+  a->next_ref() = nullptr;
 }
 
 // 1000 node only takes 4001 byte!! While the nomal obj will need 32 KByte
@@ -216,8 +216,8 @@ TEST(Frozen, list_size) {
   LinkedListNode first;
   LinkedListNode* current = &first;
   for (size_t i = 1; i <= 100; ++i) {
-    current->next = std::make_unique<LinkedListNode>();
-    current = current->next.get();
+    current->next_ref() = std::make_unique<LinkedListNode>();
+    current = current->next_ref().get();
     *current->id_ref() = i;
   }
   EXPECT_EQ(frozenSize(first), 201);
@@ -227,8 +227,8 @@ TEST(Frozen, shared_ref) {
   SharedRef t;
   *t.id_ref() = 9527;
   std::shared_ptr<Person> that = makePerson(s2);
-  t.p1 = that;
-  t.p2 = that;
+  t.p1_ref() = that;
+  t.p2_ref() = that;
   EXPECT_EQ(t.p1, t.p2);
 
   auto f = freeze(t);
@@ -246,8 +246,8 @@ TEST(Frozen, shared_ref_schema_evolution) {
   SharedRef t;
   *t.id_ref() = 9527;
   std::shared_ptr<Person> that = makePerson(s2);
-  t.p1 = that;
-  t.p2 = that;
+  t.p1_ref() = that;
+  t.p2_ref() = that;
 
   auto str = freezeToString(t);
   auto f2 = mapFrozen<SharedRef2>(std::move(str));

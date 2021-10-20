@@ -468,32 +468,35 @@ struct SharedConstHelper {
 template <typename Structure, typename Helper>
 void ref_test() {
   Structure allNull;
-  allNull.aStruct = Helper::template build<structA>();
-  allNull.aList = Helper::template build<std::deque<std::string>>();
-  allNull.aSet = Helper::template build<std::unordered_set<std::string>>();
-  allNull.aMap =
+  allNull.aStruct_ref() = Helper::template build<structA>();
+  allNull.aList_ref() = Helper::template build<std::deque<std::string>>();
+  allNull.aSet_ref() =
+      Helper::template build<std::unordered_set<std::string>>();
+  allNull.aMap_ref() =
       Helper::template build<std::unordered_map<std::string, std::string>>();
-  allNull.aUnion = Helper::template build<unionA>();
-  allNull.anOptionalStruct = nullptr;
-  allNull.anOptionalList = nullptr;
-  allNull.anOptionalSet = nullptr;
-  allNull.anOptionalMap = nullptr;
-  allNull.anOptionalUnion = nullptr;
+  allNull.aUnion_ref() = Helper::template build<unionA>();
+  allNull.anOptionalStruct_ref() = nullptr;
+  allNull.anOptionalList_ref() = nullptr;
+  allNull.anOptionalSet_ref() = nullptr;
+  allNull.anOptionalMap_ref() = nullptr;
+  allNull.anOptionalUnion_ref() = nullptr;
 
   Structure allDefault;
-  allDefault.aStruct = Helper::template build<structA>();
-  allDefault.anOptionalStruct = Helper::template build<structA>();
-  allDefault.aList = Helper::template build<std::deque<std::string>>();
-  allDefault.anOptionalList = Helper::template build<std::deque<std::string>>();
-  allDefault.aSet = Helper::template build<std::unordered_set<std::string>>();
-  allDefault.anOptionalSet =
+  allDefault.aStruct_ref() = Helper::template build<structA>();
+  allDefault.anOptionalStruct_ref() = Helper::template build<structA>();
+  allDefault.aList_ref() = Helper::template build<std::deque<std::string>>();
+  allDefault.anOptionalList_ref() =
+      Helper::template build<std::deque<std::string>>();
+  allDefault.aSet_ref() =
       Helper::template build<std::unordered_set<std::string>>();
-  allDefault.aMap =
+  allDefault.anOptionalSet_ref() =
+      Helper::template build<std::unordered_set<std::string>>();
+  allDefault.aMap_ref() =
       Helper::template build<std::unordered_map<std::string, std::string>>();
-  allDefault.anOptionalMap =
+  allDefault.anOptionalMap_ref() =
       Helper::template build<std::unordered_map<std::string, std::string>>();
-  allDefault.aUnion = Helper::template build<unionA>();
-  allDefault.anOptionalUnion = Helper::template build<unionA>();
+  allDefault.aUnion_ref() = Helper::template build<unionA>();
+  allDefault.anOptionalUnion_ref() = Helper::template build<unionA>();
   TEST_IMPL(allNull, allDefault, R"(
     $.anOptionalStruct:
     + <struct>{

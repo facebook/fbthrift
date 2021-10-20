@@ -485,26 +485,27 @@ void ref_test() {
     "anOptionalMap": null,
     "anOptionalUnion": null
   })");
-  v.aStruct = Helper::template build<structA>();
-  v.aList = Helper::template build<std::vector<std::string>>(hello);
-  v.aSet = Helper::template build<std::set<std::string>>(hello);
-  v.aMap =
+  v.aStruct_ref() = Helper::template build<structA>();
+  v.aList_ref() = Helper::template build<std::vector<std::string>>(hello);
+  v.aSet_ref() = Helper::template build<std::set<std::string>>(hello);
+  v.aMap_ref() =
       Helper::template build<std::map<std::string, std::string>>(helloWorld);
-  v.aUnion = Helper::template build<unionA>();
-  v.anOptionalStruct = nullptr;
-  v.anOptionalList = nullptr;
-  v.anOptionalSet = nullptr;
-  v.anOptionalMap = nullptr;
-  v.anOptionalUnion = nullptr;
+  v.aUnion_ref() = Helper::template build<unionA>();
+  v.anOptionalStruct_ref() = nullptr;
+  v.anOptionalList_ref() = nullptr;
+  v.anOptionalSet_ref() = nullptr;
+  v.anOptionalMap_ref() = nullptr;
+  v.anOptionalUnion_ref() = nullptr;
   auto const json = folly::parseJson(rawJson);
   test_to_from(v, json);
 
-  v.anOptionalStruct = Helper::template build<structA>();
-  v.anOptionalList = Helper::template build<std::vector<std::string>>(hello);
-  v.anOptionalSet = Helper::template build<std::set<std::string>>(hello);
-  v.anOptionalMap =
+  v.anOptionalStruct_ref() = Helper::template build<structA>();
+  v.anOptionalList_ref() =
+      Helper::template build<std::vector<std::string>>(hello);
+  v.anOptionalSet_ref() = Helper::template build<std::set<std::string>>(hello);
+  v.anOptionalMap_ref() =
       Helper::template build<std::map<std::string, std::string>>(helloWorld);
-  v.anOptionalUnion = Helper::template build<unionA>();
+  v.anOptionalUnion_ref() = Helper::template build<unionA>();
   const auto rawJson2 = R"(
     {
       "aStruct": {

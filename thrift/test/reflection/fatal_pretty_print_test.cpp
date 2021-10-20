@@ -637,35 +637,37 @@ void ref_test() {
       anOptionalMap: null,
       anOptionalUnion: null
     })";
-  v.aStruct = nullptr;
-  v.aList = nullptr;
-  v.aSet = nullptr;
-  v.aMap = nullptr;
-  v.aUnion = nullptr;
-  v.anOptionalStruct = nullptr;
-  v.anOptionalList = nullptr;
-  v.anOptionalSet = nullptr;
-  v.anOptionalMap = nullptr;
-  v.anOptionalUnion = nullptr;
+  v.aStruct_ref() = nullptr;
+  v.aList_ref() = nullptr;
+  v.aSet_ref() = nullptr;
+  v.aMap_ref() = nullptr;
+  v.aUnion_ref() = nullptr;
+  v.anOptionalStruct_ref() = nullptr;
+  v.anOptionalList_ref() = nullptr;
+  v.anOptionalSet_ref() = nullptr;
+  v.anOptionalMap_ref() = nullptr;
+  v.anOptionalUnion_ref() = nullptr;
   TEST_IMPL(adjust(expectedStr1), v);
 
   using namespace std::string_literals;
   std::initializer_list<std::string> hello = {"Hello"s};
   std::unordered_map<std::string, std::string> helloWorld{{"Hello"s, "World"s}};
-  v.aStruct = Helper::template build<structA>();
-  v.anOptionalStruct = Helper::template build<structA>();
-  v.aList = Helper::template build<std::deque<std::string>>(hello);
-  v.anOptionalList = Helper::template build<std::deque<std::string>>(hello);
-  v.aSet = Helper::template build<std::unordered_set<std::string>>(hello);
-  v.anOptionalSet =
+  v.aStruct_ref() = Helper::template build<structA>();
+  v.anOptionalStruct_ref() = Helper::template build<structA>();
+  v.aList_ref() = Helper::template build<std::deque<std::string>>(hello);
+  v.anOptionalList_ref() =
+      Helper::template build<std::deque<std::string>>(hello);
+  v.aSet_ref() = Helper::template build<std::unordered_set<std::string>>(hello);
+  v.anOptionalSet_ref() =
       Helper::template build<std::unordered_set<std::string>>(hello);
-  v.aMap = Helper::template build<std::unordered_map<std::string, std::string>>(
-      helloWorld);
-  v.anOptionalMap =
+  v.aMap_ref() =
       Helper::template build<std::unordered_map<std::string, std::string>>(
           helloWorld);
-  v.aUnion = Helper::template build<unionA>();
-  v.anOptionalUnion = Helper::template build<unionA>();
+  v.anOptionalMap_ref() =
+      Helper::template build<std::unordered_map<std::string, std::string>>(
+          helloWorld);
+  v.aUnion_ref() = Helper::template build<unionA>();
+  v.anOptionalUnion_ref() = Helper::template build<unionA>();
   const char* expectedStr2 = R"(
     <struct>{
       aStruct: <struct>{

@@ -180,11 +180,11 @@ TYPED_TEST(MultiProtocolTest, test_other_containers) {
 
 TYPED_TEST(MultiProtocolTest, test_blank_default_ref_field) {
   struct3 a, b;
-  a.opt_nested = std::make_unique<smallstruct>();
-  a.req_nested = std::make_unique<smallstruct>();
+  a.opt_nested_ref() = std::make_unique<smallstruct>();
+  a.req_nested_ref() = std::make_unique<smallstruct>();
 
-  *a.opt_nested->f1_ref() = 5;
-  *a.req_nested->f1_ref() = 10;
+  *a.opt_nested_ref()->f1_ref() = 5;
+  *a.req_nested_ref()->f1_ref() = 10;
 
   // ref fields, interesting enough, do not have an __isset,
   // but are xfered based on the pointer value (nullptr or not)
@@ -202,11 +202,11 @@ TYPED_TEST(MultiProtocolTest, test_blank_default_ref_field) {
 
 TYPED_TEST(MultiProtocolTest, test_blank_optional_ref_field) {
   struct3 a, b;
-  a.def_nested = std::make_unique<smallstruct>();
-  a.req_nested = std::make_unique<smallstruct>();
+  a.def_nested_ref() = std::make_unique<smallstruct>();
+  a.req_nested_ref() = std::make_unique<smallstruct>();
 
-  *a.def_nested->f1_ref() = 5;
-  *a.req_nested->f1_ref() = 10;
+  *a.def_nested_ref()->f1_ref() = 5;
+  *a.req_nested_ref()->f1_ref() = 10;
 
   serializer_write(a, this->writer);
   this->prep_read();
@@ -222,11 +222,11 @@ TYPED_TEST(MultiProtocolTest, test_blank_optional_ref_field) {
 
 TYPED_TEST(MultiProtocolTest, test_blank_required_ref_field) {
   struct3 a, b;
-  a.def_nested = std::make_unique<smallstruct>();
-  a.opt_nested = std::make_unique<smallstruct>();
+  a.def_nested_ref() = std::make_unique<smallstruct>();
+  a.opt_nested_ref() = std::make_unique<smallstruct>();
 
-  *a.def_nested->f1_ref() = 5;
-  *a.opt_nested->f1_ref() = 10;
+  *a.def_nested_ref()->f1_ref() = 5;
+  *a.opt_nested_ref()->f1_ref() = 10;
 
   serializer_write(a, this->writer);
   this->prep_read();
@@ -383,9 +383,9 @@ TYPED_TEST(MultiProtocolTest, test_workaround_binary) {
 
 TYPED_TEST(MultiProtocolTest, shared_ptr_test) {
   struct6 a, b;
-  a.def_field = std::make_shared<smallstruct>();
-  a.req_field = std::make_shared<smallstruct>();
-  a.opt_field = a.req_field;
+  a.def_field_ref() = std::make_shared<smallstruct>();
+  a.req_field_ref() = std::make_shared<smallstruct>();
+  a.opt_field_ref() = a.req_field_ref();
 
   serializer_write(a, this->writer);
   this->prep_read();
@@ -401,15 +401,15 @@ TYPED_TEST(MultiProtocolTest, shared_const_ptr_test) {
 
   auto def_field = std::make_unique<smallstruct>();
   *def_field->f1_ref() = 10;
-  a.def_field = std::move(def_field);
+  a.def_field_ref() = std::move(def_field);
 
   auto opt_field = std::make_unique<smallstruct>();
   *opt_field->f1_ref() = 20;
-  a.opt_field = std::move(opt_field);
+  a.opt_field_ref() = std::move(opt_field);
 
   auto req_field = std::make_unique<smallstruct>();
   *req_field->f1_ref() = 30;
-  a.req_field = std::move(req_field);
+  a.req_field_ref() = std::move(req_field);
 
   serializer_write(a, this->writer);
   this->prep_read();

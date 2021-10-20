@@ -57,8 +57,8 @@ TEST(References, recursive_ref_fields) {
     EXPECT_EQ(0, buff.front()->length());
   }
 
-  a.def_field = std::make_unique<cpp2::RecursiveStruct>();
-  a.opt_field = std::make_unique<cpp2::RecursiveStruct>();
+  a.def_field_ref() = std::make_unique<cpp2::RecursiveStruct>();
+  a.opt_field_ref() = std::make_unique<cpp2::RecursiveStruct>();
   EXPECT_EQ(415, a.serializedSize(&writer));
   EXPECT_EQ(415, a.serializedSizeZC(&writer));
 

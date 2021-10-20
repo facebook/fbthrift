@@ -75,8 +75,8 @@ class List : public MetadataTypeInterface {
       : elemType_(::std::move(elemType)) {}
   void writeAndGenType(ThriftType& ty, ThriftMetadata& metadata) override {
     ::apache::thrift::metadata::ThriftListType tyList;
-    tyList.valueType = ::std::make_unique<ThriftType>();
-    elemType_->writeAndGenType(*tyList.valueType, metadata);
+    tyList.valueType_ref() = ::std::make_unique<ThriftType>();
+    elemType_->writeAndGenType(*tyList.valueType_ref(), metadata);
     ty.t_list_ref() = ::std::move(tyList);
   }
 
@@ -90,8 +90,8 @@ class Set : public MetadataTypeInterface {
       : elemType_(::std::move(elemType)) {}
   void writeAndGenType(ThriftType& ty, ThriftMetadata& metadata) override {
     ::apache::thrift::metadata::ThriftSetType tySet;
-    tySet.valueType = ::std::make_unique<ThriftType>();
-    elemType_->writeAndGenType(*tySet.valueType, metadata);
+    tySet.valueType_ref() = ::std::make_unique<ThriftType>();
+    elemType_->writeAndGenType(*tySet.valueType_ref(), metadata);
     ty.t_set_ref() = ::std::move(tySet);
   }
 
@@ -106,10 +106,10 @@ class Map : public MetadataTypeInterface {
       : keyType_(::std::move(keyType)), valueType_(::std::move(valueType)) {}
   void writeAndGenType(ThriftType& ty, ThriftMetadata& metadata) override {
     ::apache::thrift::metadata::ThriftMapType tyMap;
-    tyMap.keyType = ::std::make_unique<ThriftType>();
-    keyType_->writeAndGenType(*tyMap.keyType, metadata);
-    tyMap.valueType = ::std::make_unique<ThriftType>();
-    valueType_->writeAndGenType(*tyMap.valueType, metadata);
+    tyMap.keyType_ref() = ::std::make_unique<ThriftType>();
+    keyType_->writeAndGenType(*tyMap.keyType_ref(), metadata);
+    tyMap.valueType_ref() = ::std::make_unique<ThriftType>();
+    valueType_->writeAndGenType(*tyMap.valueType_ref(), metadata);
     ty.t_map_ref() = ::std::move(tyMap);
   }
 
@@ -175,9 +175,9 @@ class Typedef : public MetadataTypeInterface {
   void writeAndGenType(ThriftType& ty, ThriftMetadata& metadata) override {
     ::apache::thrift::metadata::ThriftTypedefType tyTypedef;
     tyTypedef.name_ref() = name_;
-    tyTypedef.underlyingType = ::std::make_unique<ThriftType>();
+    tyTypedef.underlyingType_ref() = ::std::make_unique<ThriftType>();
     tyTypedef.structured_annotations_ref() = structured_annotations_;
-    underlyingType_->writeAndGenType(*tyTypedef.underlyingType, metadata);
+    underlyingType_->writeAndGenType(*tyTypedef.underlyingType_ref(), metadata);
     ty.t_typedef_ref() = ::std::move(tyTypedef);
   }
 
@@ -196,12 +196,12 @@ class Stream : public MetadataTypeInterface {
         initialResponseType_(::std::move(initialResponseType)) {}
   void writeAndGenType(ThriftType& ty, ThriftMetadata& metadata) override {
     ::apache::thrift::metadata::ThriftStreamType tyStream;
-    tyStream.elemType = ::std::make_unique<ThriftType>();
-    elemType_->writeAndGenType(*tyStream.elemType, metadata);
+    tyStream.elemType_ref() = ::std::make_unique<ThriftType>();
+    elemType_->writeAndGenType(*tyStream.elemType_ref(), metadata);
     if (initialResponseType_) {
-      tyStream.initialResponseType = ::std::make_unique<ThriftType>();
+      tyStream.initialResponseType_ref() = ::std::make_unique<ThriftType>();
       initialResponseType_->writeAndGenType(
-          *tyStream.initialResponseType, metadata);
+          *tyStream.initialResponseType_ref(), metadata);
     }
     ty.t_stream_ref() = ::std::move(tyStream);
   }
@@ -222,14 +222,15 @@ class Sink : public MetadataTypeInterface {
         initialResponseType_(::std::move(initialResponseType)) {}
   void writeAndGenType(ThriftType& ty, ThriftMetadata& metadata) override {
     ::apache::thrift::metadata::ThriftSinkType tySink;
-    tySink.elemType = ::std::make_unique<ThriftType>();
-    elemType_->writeAndGenType(*tySink.elemType, metadata);
-    tySink.finalResponseType = ::std::make_unique<ThriftType>();
-    finalResponseType_->writeAndGenType(*tySink.finalResponseType, metadata);
+    tySink.elemType_ref() = ::std::make_unique<ThriftType>();
+    elemType_->writeAndGenType(*tySink.elemType_ref(), metadata);
+    tySink.finalResponseType_ref() = ::std::make_unique<ThriftType>();
+    finalResponseType_->writeAndGenType(
+        *tySink.finalResponseType_ref(), metadata);
     if (initialResponseType_) {
-      tySink.initialResponseType = ::std::make_unique<ThriftType>();
+      tySink.initialResponseType_ref() = ::std::make_unique<ThriftType>();
       initialResponseType_->writeAndGenType(
-          *tySink.initialResponseType, metadata);
+          *tySink.initialResponseType_ref(), metadata);
     }
     ty.t_sink_ref() = ::std::move(tySink);
   }

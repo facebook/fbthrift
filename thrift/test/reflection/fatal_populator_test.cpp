@@ -63,7 +63,7 @@ TYPED_TEST(MultiProtocolTest, test_structs_populate) {
     ASSERT_EQ(abuf, bbuf);
 
     ASSERT_EQ(*a.field12_ref(), *b.field12_ref());
-    if (a.field13) {
+    if (a.field13_ref()) {
       ASSERT_EQ(*(a.field13), *(b.field13));
     } else {
       ASSERT_EQ(nullptr, b.field13);
