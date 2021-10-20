@@ -29,11 +29,11 @@
   }
 <%/field:lazy?%>
 <%^field:transitively_refers_to_unique?%>
-  <%field:cpp_name%> = srcObj.<%field:cpp_name%>;
+  <%field:cpp_storage_name%> = srcObj.<%field:cpp_storage_name%>;
 <%/field:transitively_refers_to_unique?%>
 <%#field:transitively_refers_to_unique?%>
-  <%field:cpp_name%> = ::apache::thrift::detail::st::copy_field<
-        <%type:type_class%>>(srcObj.<%field:cpp_name%>);
+  <%field:cpp_storage_name%> = ::apache::thrift::detail::st::copy_field<
+        <%type:type_class%>>(srcObj.<%field:cpp_storage_name%>);
 <%/field:transitively_refers_to_unique?%>
 <%^field:cpp_ref?%><%^field:required?%>
   __isset.__fbthrift_set(folly::index_constant<<%field:isset_index%>>(),srcObj.__isset.__fbthrift_get(folly::index_constant<<%field:isset_index%>>()));

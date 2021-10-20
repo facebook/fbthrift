@@ -20,7 +20,7 @@
     __fbthrift_alloc(alloc),
 <%/struct:cpp_allocator_via%>
 <%#struct:fields_in_layout_order%>
-    <%field:cpp_name%>(<%#field:type%><%!
+    <%field:cpp_storage_name%>(<%#field:type%><%!
     %><%#type:cpp_use_allocator?%>alloc<%/type:cpp_use_allocator?%><%!
     %>)<%/field:type%><%^last?%>,<%/last?%><%#last?%> {}<%/last?%>
 <%/struct:fields_in_layout_order%>
@@ -30,7 +30,7 @@
     __fbthrift_alloc(alloc),
 <%/struct:cpp_allocator_via%>
 <%#struct:fields_in_layout_order%>
-    <%field:cpp_name%>(<%#field:type%>other.<%field:cpp_name%><%!
+    <%field:cpp_storage_name%>(<%#field:type%>other.<%field:cpp_storage_name%><%!
     %><%#type:cpp_use_allocator?%>, alloc<%/type:cpp_use_allocator?%><%!
     %>)<%/field:type%><%^last?%>,<%/last?%><%#last?%><%#struct:isset_fields?%>,<%/struct:isset_fields?%><%/last?%>
 <%/struct:fields_in_layout_order%>
@@ -45,7 +45,7 @@
     __fbthrift_alloc(alloc),
 <%/struct:cpp_allocator_via%>
 <%#struct:fields_in_layout_order%>
-    <%field:cpp_name%>(<%#field:type%>std::move(other.<%field:cpp_name%>)<%!
+    <%field:cpp_storage_name%>(<%#field:type%>std::move(other.<%field:cpp_storage_name%>)<%!
     %><%#type:cpp_use_allocator?%>, alloc<%/type:cpp_use_allocator?%><%!
     %>)<%/field:type%><%^last?%>,<%/last?%><%#last?%><%#struct:isset_fields?%>,<%/struct:isset_fields?%><%/last?%>
 <%/struct:fields_in_layout_order%>

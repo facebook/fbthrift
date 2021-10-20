@@ -18,7 +18,7 @@
 %><%^struct:fields?%>{ (void)other; }<%/struct:fields?%><%!
 %><%#struct:fields?%> :
 <%#struct:fields_in_layout_order%>
-    <%field:cpp_name%>(std::move(other.<%field:cpp_name%>))<%^last?%>,
+    <%field:cpp_storage_name%>(std::move(other.<%field:cpp_storage_name%>))<%^last?%>,
 <%/last?%><%!
       %><%#last?%><%#struct:isset_fields?%>,<%/struct:isset_fields?%><%!
                 %><%^struct:isset_fields?%><%#struct:lazy_fields?%>,<%/struct:lazy_fields?%><%!

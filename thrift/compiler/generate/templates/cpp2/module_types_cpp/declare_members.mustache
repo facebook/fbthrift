@@ -36,7 +36,7 @@
     __fbthrift_serializedData_ = std::move(other.__fbthrift_serializedData_);
 <%/struct:lazy_fields?%>
 <%#struct:fields_in_layout_order%>
-    this-><%field:cpp_name%> = std::move(other.<%field:cpp_name%>);
+    this-><%field:cpp_storage_name%> = std::move(other.<%field:cpp_storage_name%>);
 <%#field:lazy?%>
     {
       const auto isDeserialized = other.__fbthrift_isDeserialized_.<%field:cpp_name%>.load(relaxed);

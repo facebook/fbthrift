@@ -27,7 +27,7 @@
       // Unset comes first.
       %>!lhs.<%field:cpp_name%>_ref().has_value() || (rhs.<%field:cpp_name%>_ref().has_value() && <%
     %><%/field:optional?%><%
-    %>apache::thrift::StringTraits<<% > types/indirected_string_type%>>::isLess(<% > types/apply_indirection_pre%>lhs.<%field:cpp_name%><% > types/apply_indirection_post%>, <% > types/apply_indirection_pre%>rhs.<%field:cpp_name%><% > types/apply_indirection_post%>)<%
+    %>apache::thrift::StringTraits<<% > types/indirected_string_type%>>::isLess(<% > types/apply_indirection_pre%>lhs.<%field:cpp_storage_name%><% > types/apply_indirection_post%>, <% > types/apply_indirection_pre%>rhs.<%field:cpp_storage_name%><% > types/apply_indirection_post%>)<%
     %><%#field:optional?%>)<%/field:optional?%><%
   %><%/type:raw_binary?%><%
   %><%^type:raw_binary?%><%
@@ -36,7 +36,7 @@
         %>::apache::thrift::adapt_detail::neq_less_opt<<%field:cpp_adapter%>>(lhs.<%field:cpp_name%>_ref(), rhs.<%field:cpp_name%>_ref())<%
       %><%/field:optional?%><%
       %><%^field:optional?%><%
-        %>::apache::thrift::adapt_detail::less<<%field:cpp_adapter%>>(lhs.<%field:cpp_name%>, rhs.<%field:cpp_name%>)<%
+        %>::apache::thrift::adapt_detail::less<<%field:cpp_adapter%>>(lhs.<%field:cpp_storage_name%>, rhs.<%field:cpp_storage_name%>)<%
       %><%/field:optional?%><%
     %><%/field:cpp_adapter%><%
     %><%^field:cpp_adapter%><%
