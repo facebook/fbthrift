@@ -68,9 +68,9 @@ DEFINE_string(
 THRIFT_FLAG_DEFINE_bool(server_alpn_prefer_rocket, true);
 THRIFT_FLAG_DEFINE_bool(server_enable_stoptls, false);
 THRIFT_FLAG_DEFINE_bool(ssl_policy_default_required, true);
+THRIFT_FLAG_DEFINE_bool(alpn_allow_mismatch, true);
 
 THRIFT_FLAG_DEFINE_bool(dump_snapshot_on_long_shutdown, true);
-THRIFT_FLAG_DEFINE_bool(alpn_allow_mismatch, true);
 
 namespace apache::thrift::detail {
 THRIFT_PLUGGABLE_FUNC_REGISTER(
