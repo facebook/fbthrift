@@ -17,13 +17,11 @@
 #pragma once
 
 #include <folly/Portability.h>
-#if FOLLY_HAS_COROUTINES
+#include <folly/Try.h>
 #include <folly/experimental/coro/AsyncGenerator.h>
 #include <folly/experimental/coro/Baton.h>
 #include <folly/experimental/coro/Invoke.h>
 #include <folly/experimental/coro/Task.h>
-#endif // FOLLY_HAS_COROUTINES
-#include <folly/Try.h>
 #include <thrift/lib/cpp2/async/ServerStreamDetail.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/async/TwoWayBridge.h>

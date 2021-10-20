@@ -16,16 +16,14 @@
 
 #include <thrift/lib/cpp2/async/ServerStream.h>
 
+#include <folly/experimental/coro/Baton.h>
+#include <folly/experimental/coro/BlockingWait.h>
+#include <folly/experimental/coro/Sleep.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <folly/portability/GTest.h>
 #include <folly/synchronization/Baton.h>
 #include <thrift/lib/cpp2/async/ClientBufferedStream.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
-#if FOLLY_HAS_COROUTINES
-#include <folly/experimental/coro/Baton.h>
-#include <folly/experimental/coro/BlockingWait.h>
-#include <folly/experimental/coro/Sleep.h>
-#endif // FOLLY_HAS_COROUTINES
 
 namespace apache {
 namespace thrift {

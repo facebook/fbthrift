@@ -26,9 +26,8 @@
 
 #include <glog/logging.h>
 
-#include <folly/Portability.h>
-
 #include <folly/Optional.h>
+#include <folly/Portability.h>
 #include <folly/io/IOBuf.h>
 
 #include <thrift/lib/cpp/TApplicationException.h>
@@ -37,9 +36,7 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
-#if FOLLY_HAS_COROUTINES
 #include <thrift/lib/cpp2/async/Sink.h>
-#endif
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/ServerConfigs.h>

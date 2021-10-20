@@ -26,11 +26,9 @@
 #include <folly/io/IOBufQueue.h>
 
 #include <thrift/lib/cpp/protocol/TBase64Utils.h>
-#include <thrift/lib/cpp2/async/StreamCallbacks.h>
-#if FOLLY_HAS_COROUTINES
-#include <thrift/lib/cpp2/async/ServerSinkBridge.h>
-#endif
 #include <thrift/lib/cpp2/SerializationSwitch.h>
+#include <thrift/lib/cpp2/async/ServerSinkBridge.h>
+#include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/server/LoggingEvent.h>
 #include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>

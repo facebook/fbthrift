@@ -20,23 +20,19 @@
 #include <memory>
 #include <thread>
 
-#include <folly/portability/GTest.h>
-
+#include <folly/Portability.h>
+#include <folly/experimental/coro/BlockingWait.h>
 #include <folly/futures/Future.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
+#include <folly/portability/GTest.h>
 
 #include <thrift/lib/cpp2/async/ClientStreamBridge.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
+#include <thrift/lib/cpp2/gen/client_cpp.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TAsyncSocketIntercepted.h>
 #include <thrift/lib/cpp2/transport/rocket/test/util/TestServiceMock.h>
 #include <thrift/lib/cpp2/transport/rocket/test/util/TestUtil.h>
-
-#include <folly/Portability.h>
-#include <thrift/lib/cpp2/gen/client_cpp.h>
-#if FOLLY_HAS_COROUTINES
-#include <folly/experimental/coro/BlockingWait.h>
-#endif // FOLLY_HAS_COROUTINES
 
 namespace apache {
 namespace thrift {

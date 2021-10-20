@@ -16,15 +16,11 @@
 
 #pragma once
 
+#include <folly/CancellationToken.h>
 #include <folly/Portability.h>
-
-#if FOLLY_HAS_COROUTINES
 #include <folly/experimental/coro/AsyncGenerator.h>
 #include <folly/experimental/coro/Baton.h>
 #include <folly/experimental/coro/Task.h>
-#else
-#include <folly/CancellationToken.h>
-#endif
 
 #include <thrift/lib/cpp2/async/SinkBridgeUtil.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>

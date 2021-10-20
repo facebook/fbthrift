@@ -17,11 +17,9 @@
 #include <thrift/lib/cpp2/async/ReconnectingRequestChannel.h>
 
 #include <folly/Portability.h>
-#if FOLLY_HAS_COROUTINES
 #include <folly/experimental/coro/AsyncGenerator.h>
 #include <folly/experimental/coro/BlockingWait.h>
 #include <folly/experimental/coro/Task.h>
-#endif
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/ScopedEventBaseThread.h>

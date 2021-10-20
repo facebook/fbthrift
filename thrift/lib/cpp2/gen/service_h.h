@@ -20,6 +20,7 @@
 #include <unordered_set>
 
 #include <folly/Portability.h>
+#include <folly/experimental/coro/Task.h>
 #include <folly/futures/Future.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
@@ -27,10 +28,6 @@
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
-
-#if FOLLY_HAS_COROUTINES
-#include <folly/experimental/coro/Task.h>
-#endif
 
 namespace folly {
 

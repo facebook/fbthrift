@@ -26,6 +26,7 @@
 #include <fmt/core.h>
 #include <folly/Traits.h>
 #include <folly/Utility.h>
+#include <folly/experimental/coro/FutureUtil.h>
 #include <folly/futures/Future.h>
 #include <folly/io/Cursor.h>
 #include <thrift/lib/cpp/protocol/TBase64Utils.h>
@@ -46,10 +47,6 @@
 #include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>
 #include <thrift/lib/cpp2/util/Frozen2ViewHelpers.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
-
-#if FOLLY_HAS_COROUTINES
-#include <folly/experimental/coro/FutureUtil.h>
-#endif
 
 namespace apache {
 namespace thrift {

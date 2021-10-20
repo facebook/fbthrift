@@ -20,12 +20,9 @@
 #include <memory>
 
 #include <folly/Portability.h>
-
 #include <folly/Try.h>
-#if FOLLY_HAS_COROUTINES
 #include <folly/experimental/coro/AsyncGenerator.h>
 #include <folly/experimental/coro/Task.h>
-#endif
 
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/async/ClientSinkBridge.h>
