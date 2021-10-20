@@ -16,7 +16,6 @@
 
 #pragma once
 
-#include <folly/system/ThreadName.h>
 #include <thrift/perf/cpp2/if/gen-cpp2/StreamBenchmark.h>
 #include <thrift/perf/cpp2/util/QPSStats.h>
 
