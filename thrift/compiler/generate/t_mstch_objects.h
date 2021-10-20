@@ -117,8 +117,8 @@ class type_generator {
 
 struct field_generator_context {
   int isset_index = -1;
-  const t_field* prev_ = nullptr;
-  const t_field* next_ = nullptr;
+  const t_field* prev = nullptr;
+  const t_field* next = nullptr;
 };
 
 class field_generator {
@@ -1007,9 +1007,9 @@ class mstch_struct : public mstch_base {
       if (cpp2::field_has_isset(field)) {
         ctx.isset_index++;
       }
-      ctx.next_ = (it + 1) != fields.end() ? &*(it + 1) : nullptr;
+      ctx.next = (it + 1) != fields.end() ? &*(it + 1) : nullptr;
       context_map[field] = ctx;
-      ctx.prev_ = field;
+      ctx.prev = field;
     }
   }
   mstch::node name() { return strct_->get_name(); }
