@@ -12,9 +12,15 @@ pub mod types {
     #![allow(clippy::redundant_closure)]
 
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Fiery {
         pub message: ::std::string::String,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
     impl ::fbthrift::ExceptionInfo for Fiery {
@@ -34,9 +40,15 @@ pub mod types {
         }
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Serious {
         pub sonnet: ::std::option::Option<::std::string::String>,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
     impl ::fbthrift::ExceptionInfo for Serious {
@@ -56,10 +68,16 @@ pub mod types {
         }
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct ComplexFieldNames {
         pub error_message: ::std::string::String,
         pub internal_error_message: ::std::string::String,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
     impl ::fbthrift::ExceptionInfo for ComplexFieldNames {
@@ -79,10 +97,16 @@ pub mod types {
         }
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct CustomFieldNames {
         pub error_message: ::std::string::String,
         pub internal_error_message: ::std::string::String,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
     impl ::fbthrift::ExceptionInfo for CustomFieldNames {
@@ -102,10 +126,16 @@ pub mod types {
         }
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct ExceptionWithPrimitiveField {
         pub message: ::std::string::String,
         pub error_code: ::std::primitive::i32,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
     impl ::fbthrift::ExceptionInfo for ExceptionWithPrimitiveField {
@@ -125,8 +155,14 @@ pub mod types {
         }
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Banal {
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
     impl ::fbthrift::ExceptionInfo for Banal {
@@ -150,7 +186,17 @@ pub mod types {
         fn default() -> Self {
             Self {
                 message: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::Fiery {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("Fiery")
+                .field("message", &self.message)
+                .finish()
         }
     }
 
@@ -197,6 +243,7 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
                 message: field_message.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -206,7 +253,17 @@ pub mod types {
         fn default() -> Self {
             Self {
                 sonnet: ::std::option::Option::None,
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::Serious {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("Serious")
+                .field("sonnet", &self.sonnet)
+                .finish()
         }
     }
 
@@ -255,6 +312,7 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
                 sonnet: field_sonnet,
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -265,7 +323,18 @@ pub mod types {
             Self {
                 error_message: ::std::default::Default::default(),
                 internal_error_message: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::ComplexFieldNames {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("ComplexFieldNames")
+                .field("error_message", &self.error_message)
+                .field("internal_error_message", &self.internal_error_message)
+                .finish()
         }
     }
 
@@ -319,6 +388,7 @@ pub mod types {
             ::std::result::Result::Ok(Self {
                 error_message: field_error_message.unwrap_or_default(),
                 internal_error_message: field_internal_error_message.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -329,7 +399,18 @@ pub mod types {
             Self {
                 error_message: ::std::default::Default::default(),
                 internal_error_message: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::CustomFieldNames {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("CustomFieldNames")
+                .field("error_message", &self.error_message)
+                .field("internal_error_message", &self.internal_error_message)
+                .finish()
         }
     }
 
@@ -383,6 +464,7 @@ pub mod types {
             ::std::result::Result::Ok(Self {
                 error_message: field_error_message.unwrap_or_default(),
                 internal_error_message: field_internal_error_message.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -393,7 +475,18 @@ pub mod types {
             Self {
                 message: ::std::default::Default::default(),
                 error_code: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::ExceptionWithPrimitiveField {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("ExceptionWithPrimitiveField")
+                .field("message", &self.message)
+                .field("error_code", &self.error_code)
+                .finish()
         }
     }
 
@@ -447,6 +540,7 @@ pub mod types {
             ::std::result::Result::Ok(Self {
                 message: field_message.unwrap_or_default(),
                 error_code: field_error_code.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -455,7 +549,16 @@ pub mod types {
     impl ::std::default::Default for self::Banal {
         fn default() -> Self {
             Self {
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::Banal {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("Banal")
+                .finish()
         }
     }
 
@@ -495,10 +598,16 @@ pub mod types {
             }
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
 
+
+    mod dot_dot {
+        #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+        pub struct OtherFields(pub(crate) ());
+    }
 }
 
 #[doc(hidden)]

@@ -35,7 +35,10 @@ fn test_large_roundtrip() -> Result<()> {
         ..Default::default()
     };
 
-    let u = Un::un1(UnOne { one: 1 });
+    let u = Un::un1(UnOne {
+        one: 1,
+        ..Default::default()
+    });
     let e = En::TWO;
 
     let mut int_keys = BTreeMap::new();
@@ -47,11 +50,23 @@ fn test_large_roundtrip() -> Result<()> {
         m,
         bar: "test".to_string(),
         s: sub,
-        l: vec![Small { num: 1, two: 2 }, Small { num: 2, two: 3 }],
+        l: vec![
+            Small {
+                num: 1,
+                two: 2,
+                ..Default::default()
+            },
+            Small {
+                num: 2,
+                two: 3,
+                ..Default::default()
+            },
+        ],
         u,
         e,
         int_keys,
         opt: None,
+        ..Default::default()
     };
 
     // serialize it and assert that it serializes correctly
@@ -285,7 +300,10 @@ fn infinite_spaces() -> Result<()> {
         ..Default::default()
     };
 
-    let u = Un::un1(UnOne { one: 1 });
+    let u = Un::un1(UnOne {
+        one: 1,
+        ..Default::default()
+    });
     let e = En::TWO;
 
     let mut int_keys = BTreeMap::new();
@@ -297,11 +315,23 @@ fn infinite_spaces() -> Result<()> {
         m,
         bar: "test".to_string(),
         s: sub,
-        l: vec![Small { num: 1, two: 2 }, Small { num: 2, two: 3 }],
+        l: vec![
+            Small {
+                num: 1,
+                two: 2,
+                ..Default::default()
+            },
+            Small {
+                num: 2,
+                two: 3,
+                ..Default::default()
+            },
+        ],
         u,
         e,
         int_keys,
         opt: None,
+        ..Default::default()
     };
 
     let input = r#"{
@@ -344,7 +374,10 @@ fn test_serde_compat() -> Result<()> {
     m.insert("m1".to_string(), 1);
     m.insert("m2".to_string(), 2);
 
-    let u = Un::un1(UnOne { one: 1 });
+    let u = Un::un1(UnOne {
+        one: 1,
+        ..Default::default()
+    });
     let e = En::TWO;
 
     let mut int_keys = BTreeMap::new();
@@ -355,11 +388,23 @@ fn test_serde_compat() -> Result<()> {
         foo: "foo".to_string(),
         m,
         bar: "test".to_string(),
-        l: vec![Small { num: 1, two: 2 }, Small { num: 2, two: 3 }],
+        l: vec![
+            Small {
+                num: 1,
+                two: 2,
+                ..Default::default()
+            },
+            Small {
+                num: 2,
+                two: 3,
+                ..Default::default()
+            },
+        ],
         u,
         e,
         int_keys,
         opt: None,
+        ..Default::default()
     };
 
     let fbthrift_s = String::from_utf8(serialize(&r).to_vec()).unwrap();

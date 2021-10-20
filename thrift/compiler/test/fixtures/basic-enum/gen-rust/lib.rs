@@ -25,10 +25,16 @@ pub mod types {
     #![allow(clippy::redundant_closure)]
 
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct MyStruct {
         pub myEnum: crate::types::MyEnum,
         pub myBigEnum: crate::types::MyBigEnum,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
@@ -462,7 +468,18 @@ pub mod types {
             Self {
                 myEnum: ::std::default::Default::default(),
                 myBigEnum: crate::types::MyBigEnum::ONE,
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::MyStruct {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("MyStruct")
+                .field("myEnum", &self.myEnum)
+                .field("myBigEnum", &self.myBigEnum)
+                .finish()
         }
     }
 
@@ -516,10 +533,16 @@ pub mod types {
             ::std::result::Result::Ok(Self {
                 myEnum: field_myEnum.unwrap_or_default(),
                 myBigEnum: field_myBigEnum.unwrap_or_else(|| crate::types::MyBigEnum::ONE),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
 
+
+    mod dot_dot {
+        #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+        pub struct OtherFields(pub(crate) ());
+    }
 }
 
 /// Error return types.

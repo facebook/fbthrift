@@ -21,13 +21,19 @@ pub mod types {
     #[derive(Default, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct BytesType(pub ::fbthrift::builtin_types::Bytes);
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct MyStruct {
         pub the_map: crate::types::MapType,
         pub the_bin: crate::types::BinType,
         pub inline_bin: ::smallvec::SmallVec<[u8; 32]>,
         pub the_bytes: crate::types::BytesType,
         pub inline_bytes: ::fbthrift::builtin_types::Bytes,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
     impl ::fbthrift::GetTType for MapType {
@@ -105,7 +111,21 @@ pub mod types {
                 inline_bin: ::std::default::Default::default(),
                 the_bytes: ::std::default::Default::default(),
                 inline_bytes: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::MyStruct {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("MyStruct")
+                .field("the_map", &self.the_map)
+                .field("the_bin", &self.the_bin)
+                .field("inline_bin", &self.inline_bin)
+                .field("the_bytes", &self.the_bytes)
+                .field("inline_bytes", &self.inline_bytes)
+                .finish()
         }
     }
 
@@ -180,10 +200,16 @@ pub mod types {
                 inline_bin: field_inline_bin.unwrap_or_default(),
                 the_bytes: field_the_bytes.unwrap_or_default(),
                 inline_bytes: field_inline_bytes.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
 
+
+    mod dot_dot {
+        #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+        pub struct OtherFields(pub(crate) ());
+    }
 }
 
 /// Error return types.

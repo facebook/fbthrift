@@ -12,12 +12,18 @@ pub mod types {
     #![allow(clippy::redundant_closure)]
 
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct MyStructNestedAnnotation {
         pub name: ::std::string::String,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct MyStruct {
         pub major: ::std::primitive::i64,
         pub package: ::std::string::String,
@@ -25,12 +31,24 @@ pub mod types {
         pub class_: ::std::string::String,
         pub annotation_with_trailing_comma: ::std::string::String,
         pub empty_annotations: ::std::string::String,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct SecretStruct {
         pub id: ::std::primitive::i64,
         pub password: ::std::string::String,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
@@ -153,7 +171,17 @@ pub mod types {
         fn default() -> Self {
             Self {
                 name: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::MyStructNestedAnnotation {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("MyStructNestedAnnotation")
+                .field("name", &self.name)
+                .finish()
         }
     }
 
@@ -200,6 +228,7 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
                 name: field_name.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -214,7 +243,22 @@ pub mod types {
                 class_: ::std::default::Default::default(),
                 annotation_with_trailing_comma: ::std::default::Default::default(),
                 empty_annotations: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::MyStruct {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("MyStruct")
+                .field("major", &self.major)
+                .field("package", &self.package)
+                .field("annotation_with_quote", &self.annotation_with_quote)
+                .field("class_", &self.class_)
+                .field("annotation_with_trailing_comma", &self.annotation_with_trailing_comma)
+                .field("empty_annotations", &self.empty_annotations)
+                .finish()
         }
     }
 
@@ -296,6 +340,7 @@ pub mod types {
                 class_: field_class_.unwrap_or_default(),
                 annotation_with_trailing_comma: field_annotation_with_trailing_comma.unwrap_or_default(),
                 empty_annotations: field_empty_annotations.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -306,7 +351,18 @@ pub mod types {
             Self {
                 id: ::std::default::Default::default(),
                 password: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::SecretStruct {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("SecretStruct")
+                .field("id", &self.id)
+                .field("password", &self.password)
+                .finish()
         }
     }
 
@@ -360,10 +416,16 @@ pub mod types {
             ::std::result::Result::Ok(Self {
                 id: field_id.unwrap_or_default(),
                 password: field_password.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
 
+
+    mod dot_dot {
+        #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+        pub struct OtherFields(pub(crate) ());
+    }
 }
 
 #[doc(hidden)]

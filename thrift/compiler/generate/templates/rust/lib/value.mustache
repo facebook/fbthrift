@@ -102,7 +102,10 @@
             }}{{#field:value}}{{>lib/fieldvalue}}{{/field:value}}{{!
             }}{{^field:value}}::std::default::Default::default(){{/field:value}}{{!
             }},{{!
-        }}{{/value:structFields}}
+        }}{{/value:structFields}}{{!
+        }}{{^value:exhaustive?}}
+            {{value:indent}}..::std::default::Default::default(){{!
+        }}{{/value:exhaustive?}}
         {{value:indent}}}{{!
 }}{{/value:struct?}}{{!
 }}{{#value:union?}}{{!

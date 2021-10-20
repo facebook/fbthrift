@@ -42,6 +42,7 @@ fn test_nonstandard_collection_types() {
         indexmap_c: IndexMap::new(),
         bin_smallvec: SmallVec::from(&b"smallvec"[..]),
         bin_bytes: Bytes::from(&b"bytes"[..]),
+        ..Default::default()
     });
 }
 
@@ -141,6 +142,7 @@ fn test_bytes_shared() {
     // should be somewhere within the serialized buffer.
     let original = TestBytesShared {
         b: Bytes::from(&b"data"[..]),
+        ..Default::default()
     };
     let bytes = serialize!(CompactProtocol, |w| Serialize::write(&original, w));
     let mut deserializer1 = <CompactProtocol>::deserializer(Cursor::new(bytes.clone()));

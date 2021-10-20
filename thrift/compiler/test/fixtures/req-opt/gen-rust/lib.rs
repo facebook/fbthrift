@@ -12,12 +12,18 @@ pub mod types {
     #![allow(clippy::redundant_closure)]
 
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Foo {
         pub myInteger: ::std::primitive::i32,
         pub myString: ::std::option::Option<::std::string::String>,
         pub myBools: ::std::vec::Vec<::std::primitive::bool>,
         pub myNumbers: ::std::vec::Vec<::std::primitive::i32>,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
     impl ::std::default::Default for self::Foo {
@@ -27,7 +33,20 @@ pub mod types {
                 myString: ::std::option::Option::None,
                 myBools: ::std::default::Default::default(),
                 myNumbers: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::Foo {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("Foo")
+                .field("myInteger", &self.myInteger)
+                .field("myString", &self.myString)
+                .field("myBools", &self.myBools)
+                .field("myNumbers", &self.myNumbers)
+                .finish()
         }
     }
 
@@ -97,10 +116,16 @@ pub mod types {
                 myString: field_myString,
                 myBools: field_myBools.unwrap_or_default(),
                 myNumbers: field_myNumbers.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
 
+
+    mod dot_dot {
+        #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+        pub struct OtherFields(pub(crate) ());
+    }
 }
 
 /// Error return types.

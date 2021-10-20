@@ -20,7 +20,7 @@ pub mod types {
 
     pub type UnionWithAdapter = crate::types::Baz;
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct Foo {
         pub intField: ::std::primitive::i32,
         pub optionalIntField: ::std::option::Option<::std::primitive::i32>,
@@ -30,9 +30,15 @@ pub mod types {
         pub mapField: ::std::collections::BTreeMap<::std::string::String, crate::types::ListWithElemAdapter>,
         pub optionalMapField: ::std::option::Option<::std::collections::BTreeMap<::std::string::String, crate::types::ListWithElemAdapter>>,
         pub binaryField: ::std::vec::Vec<::std::primitive::u8>,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq, Debug)]
     pub enum Baz {
         intField(::std::primitive::i32),
         setField(crate::types::SetWithAdapter),
@@ -41,7 +47,7 @@ pub mod types {
         UnknownField(::std::primitive::i32),
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct Bar {
         pub structField: crate::types::Foo,
         pub optionalStructField: ::std::option::Option<crate::types::Foo>,
@@ -49,11 +55,23 @@ pub mod types {
         pub optionalStructListField: ::std::option::Option<::std::vec::Vec<crate::types::Foo>>,
         pub unionField: crate::types::Baz,
         pub optionalUnionField: ::std::option::Option<crate::types::Baz>,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct StructWithFieldAdapter {
         pub field: ::std::primitive::i32,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
 
@@ -71,7 +89,24 @@ pub mod types {
                 mapField: ::std::default::Default::default(),
                 optionalMapField: ::std::option::Option::None,
                 binaryField: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::Foo {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("Foo")
+                .field("intField", &self.intField)
+                .field("optionalIntField", &self.optionalIntField)
+                .field("intFieldWithDefault", &self.intFieldWithDefault)
+                .field("setField", &self.setField)
+                .field("optionalSetField", &self.optionalSetField)
+                .field("mapField", &self.mapField)
+                .field("optionalMapField", &self.optionalMapField)
+                .field("binaryField", &self.binaryField)
+                .finish()
         }
     }
 
@@ -173,6 +208,7 @@ pub mod types {
                 mapField: field_mapField.unwrap_or_default(),
                 optionalMapField: field_optionalMapField,
                 binaryField: field_binaryField.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -284,7 +320,22 @@ pub mod types {
                 optionalStructListField: ::std::option::Option::None,
                 unionField: ::std::default::Default::default(),
                 optionalUnionField: ::std::option::Option::None,
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::Bar {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("Bar")
+                .field("structField", &self.structField)
+                .field("optionalStructField", &self.optionalStructField)
+                .field("structListField", &self.structListField)
+                .field("optionalStructListField", &self.optionalStructListField)
+                .field("unionField", &self.unionField)
+                .field("optionalUnionField", &self.optionalUnionField)
+                .finish()
         }
     }
 
@@ -372,6 +423,7 @@ pub mod types {
                 optionalStructListField: field_optionalStructListField,
                 unionField: field_unionField.unwrap_or_default(),
                 optionalUnionField: field_optionalUnionField,
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -381,7 +433,17 @@ pub mod types {
         fn default() -> Self {
             Self {
                 field: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::StructWithFieldAdapter {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("StructWithFieldAdapter")
+                .field("field", &self.field)
+                .finish()
         }
     }
 
@@ -428,10 +490,16 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
                 field: field_field.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
 
+
+    mod dot_dot {
+        #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+        pub struct OtherFields(pub(crate) ());
+    }
 }
 
 #[doc(hidden)]

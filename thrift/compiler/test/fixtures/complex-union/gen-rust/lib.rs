@@ -14,7 +14,7 @@ pub mod types {
 
     pub type containerTypedef = ::std::collections::BTreeMap<::std::primitive::i16, ::std::string::String>;
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq, Debug)]
     pub enum ComplexUnion {
         intValue(::std::primitive::i64),
         stringValue(::std::string::String),
@@ -25,47 +25,59 @@ pub mod types {
         UnknownField(::std::primitive::i32),
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]
     pub enum ListUnion {
         intListValue(::std::vec::Vec<::std::primitive::i64>),
         stringListValue(::std::vec::Vec<::std::string::String>),
         UnknownField(::std::primitive::i32),
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]
     pub enum DataUnion {
         binaryData(::std::vec::Vec<::std::primitive::u8>),
         stringData(::std::string::String),
         UnknownField(::std::primitive::i32),
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct Val {
         pub strVal: ::std::string::String,
         pub intVal: ::std::primitive::i32,
         pub typedefValue: crate::types::containerTypedef,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq, Debug)]
     pub enum ValUnion {
         v1(crate::types::Val),
         v2(crate::types::Val),
         UnknownField(::std::primitive::i32),
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]
     pub enum VirtualComplexUnion {
         thingOne(::std::string::String),
         thingTwo(::std::string::String),
         UnknownField(::std::primitive::i32),
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct NonCopyableStruct {
         pub num: ::std::primitive::i64,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq, Debug)]
     pub enum NonCopyableUnion {
         s(crate::types::NonCopyableStruct),
         UnknownField(::std::primitive::i32),
@@ -349,7 +361,19 @@ pub mod types {
                 strVal: ::std::default::Default::default(),
                 intVal: ::std::default::Default::default(),
                 typedefValue: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::Val {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("Val")
+                .field("strVal", &self.strVal)
+                .field("intVal", &self.intVal)
+                .field("typedefValue", &self.typedefValue)
+                .finish()
         }
     }
 
@@ -410,6 +434,7 @@ pub mod types {
                 strVal: field_strVal.unwrap_or_default(),
                 intVal: field_intVal.unwrap_or_default(),
                 typedefValue: field_typedefValue.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -573,7 +598,17 @@ pub mod types {
         fn default() -> Self {
             Self {
                 num: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::NonCopyableStruct {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("NonCopyableStruct")
+                .field("num", &self.num)
+                .finish()
         }
     }
 
@@ -620,6 +655,7 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
                 num: field_num.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -690,6 +726,11 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(alt.unwrap_or_default())
         }
+    }
+
+    mod dot_dot {
+        #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+        pub struct OtherFields(pub(crate) ());
     }
 }
 

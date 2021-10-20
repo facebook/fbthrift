@@ -334,6 +334,8 @@ class mstch_rust_program : public mstch_program {
             {"program:types?", &mstch_rust_program::rust_has_types},
             {"program:structsOrEnums?",
              &mstch_rust_program::rust_structs_or_enums},
+            {"program:nonexhaustiveStructs?",
+             &mstch_rust_program::rust_nonexhaustive_structs},
             {"program:serde?", &mstch_rust_program::rust_serde},
             {"program:server?", &mstch_rust_program::rust_server},
             {"program:multifile?", &mstch_rust_program::rust_multifile},
@@ -358,6 +360,20 @@ class mstch_rust_program : public mstch_program {
   mstch::node rust_structs_or_enums() {
     return !program_->structs().empty() || !program_->enums().empty() ||
         !program_->xceptions().empty();
+  }
+  mstch::node rust_nonexhaustive_structs() {
+    for (auto& strct : program_->structs()) {
+      // The is_struct is because `union` are also in this collection.
+      if (strct->is_struct() && !strct->has_annotation("rust.exhaustive")) {
+        return true;
+      }
+    }
+    for (auto& strct : program_->xceptions()) {
+      if (!strct->has_annotation("rust.exhaustive")) {
+        return true;
+      }
+    }
+    return false;
   }
   mstch::node rust_serde() { return options_.serde; }
   mstch::node rust_server() { return !options_.noserver; }
@@ -467,6 +483,7 @@ class mstch_rust_struct : public mstch_struct {
             {"struct:package", &mstch_rust_struct::rust_package},
             {"struct:ord?", &mstch_rust_struct::rust_is_ord},
             {"struct:copy?", &mstch_rust_struct::rust_is_copy},
+            {"struct:exhaustive?", &mstch_rust_struct::rust_is_exhaustive},
             {"struct:fields_by_name", &mstch_rust_struct::rust_fields_by_name},
             {"struct:docs?", &mstch_rust_struct::rust_has_doc},
             {"struct:docs", &mstch_rust_struct::rust_doc},
@@ -499,6 +516,9 @@ class mstch_rust_struct : public mstch_struct {
     return true;
   }
   mstch::node rust_is_copy() { return strct_->has_annotation("rust.copy"); }
+  mstch::node rust_is_exhaustive() {
+    return strct_->has_annotation("rust.exhaustive");
+  }
   mstch::node rust_fields_by_name() {
     auto fields = strct_->fields().copy();
     std::sort(fields.begin(), fields.end(), [](auto a, auto b) {
@@ -875,6 +895,7 @@ class mstch_rust_value : public mstch_base {
             {"value:mapEntries", &mstch_rust_value::map_entries},
             {"value:struct?", &mstch_rust_value::is_struct},
             {"value:structFields", &mstch_rust_value::struct_fields},
+            {"value:exhaustive?", &mstch_rust_value::is_exhaustive},
             {"value:union?", &mstch_rust_value::is_union},
             {"value:unionVariant", &mstch_rust_value::union_variant},
             {"value:unionValue", &mstch_rust_value::union_value},
@@ -988,6 +1009,7 @@ class mstch_rust_value : public mstch_base {
         const_value_->get_type() == value_type::CV_MAP;
   }
   mstch::node struct_fields();
+  mstch::node is_exhaustive();
   mstch::node is_union() {
     if (!type_->is_union() || const_value_->get_type() != value_type::CV_MAP) {
       return false;
@@ -1228,6 +1250,11 @@ mstch::node mstch_rust_value::struct_fields() {
         &field, value, depth_ + 1, generators_, cache_, pos_, options_));
   }
   return fields;
+}
+
+mstch::node mstch_rust_value::is_exhaustive() {
+  auto struct_type = dynamic_cast<const t_struct*>(type_);
+  return struct_type && struct_type->has_annotation("rust.exhaustive");
 }
 
 class mstch_rust_const : public mstch_const {

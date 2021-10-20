@@ -24,6 +24,7 @@ use std::error::Error;
 fn test_should_implement_error() -> Result<()> {
     let err = TestException {
         message: "invalid grape peeler".into(),
+        ..Default::default()
     };
     assert!(matches!(err.source(), None));
 
@@ -34,6 +35,7 @@ fn test_should_implement_error() -> Result<()> {
 fn test_should_print_debug_by_default() -> Result<()> {
     let err = TestException {
         message: "invalid grape peeler".into(),
+        ..Default::default()
     };
     assert_eq!(format!("{}", err), format!("{:?}", err),);
 
@@ -44,6 +46,7 @@ fn test_should_print_debug_by_default() -> Result<()> {
 fn test_should_use_message_field_override() -> Result<()> {
     let err = TestExceptionMsgOverride {
         message: "invalid grape peeler".into(),
+        ..Default::default()
     };
     assert_eq!(
         format!("TestExceptionMsgOverride: {}: {:?}", err.message, err),
@@ -57,6 +60,7 @@ fn test_should_use_message_field_override() -> Result<()> {
 fn test_should_use_message_field_override_optional() -> Result<()> {
     let err = TestExceptionMsgOverrideOptional {
         message: Some("invalid grape peeler".into()),
+        ..Default::default()
     };
     assert_eq!(
         format!(
@@ -67,7 +71,10 @@ fn test_should_use_message_field_override_optional() -> Result<()> {
         format!("{}", err)
     );
 
-    let err = TestExceptionMsgOverrideOptional { message: None };
+    let err = TestExceptionMsgOverrideOptional {
+        message: None,
+        ..Default::default()
+    };
     assert_eq!(
         format!("TestExceptionMsgOverrideOptional: None: {:?}", err),
         format!("{}", err)

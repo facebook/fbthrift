@@ -18,8 +18,9 @@
 
     #[derive({{!
         }}{{#struct:copy?}}Copy, {{/struct:copy?}}{{!
-        }}Clone, Debug, PartialEq{{!
+        }}Clone, PartialEq{{!
         }}{{#struct:ord?}}, Eq, PartialOrd, Ord, Hash{{/struct:ord?}}{{!
+        }}{{#struct:union?}}, Debug{{/struct:union?}}{{!
         }}{{#program:serde?}}, ::serde_derive::Serialize, ::serde_derive::Deserialize{{/program:serde?}}{{!
         }}{{#struct:exception?}}{{#struct:union?}}, ::thiserror::Error{{/struct:union?}}{{/struct:exception?}}{{!
         }}{{#struct:derive}}, {{.}}{{/struct:derive}}{{!
@@ -38,7 +39,18 @@
         #[doc = {{field:docs}}]{{!
         }}{{/field:docs?}}
         pub {{field:rust_name}}: {{>lib/fieldtype}},{{!
-    }}{{/struct:fields}}
+    }}{{/struct:fields}}{{!
+    }}{{^struct:exhaustive?}}
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]{{!
+        }}{{#program:serde?}}
+        #[serde(skip, default = "self::dot_dot::default_for_serde_deserialize")]{{!
+        }}{{/program:serde?}}
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,{{!
+    }}{{/struct:exhaustive?}}
     }
     {{#struct:exception?}}
 

@@ -34,8 +34,22 @@
                         }}{{/field:optional?}}{{!
                     }}{{/field:default}}{{!
                 }},{{!
-            }}{{/struct:fields}}
+            }}{{/struct:fields}}{{!
+            }}{{^struct:exhaustive?}}
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),{{!
+            }}{{/struct:exhaustive?}}
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::{{struct:rust_name}} {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("{{struct:rust_name}}"){{!
+                }}{{#struct:fields}}
+                .field("{{field:rust_name}}", &self.{{field:rust_name}}){{!
+                }}{{/struct:fields}}
+                .finish()
         }
     }
 
@@ -122,7 +136,10 @@
                         }}{{/field:default}}{{!
                     }}{{/field:optional?}}{{!
                 }},{{!
-                }}{{/struct:fields}}
+                }}{{/struct:fields}}{{!
+                }}{{^struct:exhaustive?}}
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),{{!
+                }}{{/struct:exhaustive?}}
             })
         }
     }

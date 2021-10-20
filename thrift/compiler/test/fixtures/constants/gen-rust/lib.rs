@@ -60,6 +60,7 @@ pub mod consts {
             employer: ::std::option::Option::Some(crate::types::Company::INSTAGRAM),
             compensation: ::std::option::Option::Some(1200.0),
             school: ::std::option::Option::Some("Monters University".to_owned()),
+            ..::std::default::Default::default()
         });
 
     pub static partial_const: ::once_cell::sync::Lazy<crate::types::Internship> = ::once_cell::sync::Lazy::new(|| crate::types::Internship {
@@ -68,16 +69,19 @@ pub mod consts {
             employer: ::std::default::Default::default(),
             compensation: ::std::default::Default::default(),
             school: ::std::default::Default::default(),
+            ..::std::default::Default::default()
         });
 
     pub static kRanges: ::once_cell::sync::Lazy<::std::vec::Vec<crate::types::Range>> = ::once_cell::sync::Lazy::new(|| vec![
             crate::types::Range {
                 min: 1,
                 max: 2,
+                ..::std::default::Default::default()
             },
             crate::types::Range {
                 min: 5,
                 max: 6,
+                ..::std::default::Default::default()
             },
         ]);
 
@@ -88,6 +92,7 @@ pub mod consts {
                 employer: ::std::option::Option::Some(crate::types::Company::INSTAGRAM),
                 compensation: ::std::option::Option::Some(1200.0),
                 school: ::std::option::Option::Some("Monters University".to_owned()),
+                ..::std::default::Default::default()
             },
             crate::types::Internship {
                 weeks: 10,
@@ -95,27 +100,32 @@ pub mod consts {
                 employer: ::std::option::Option::Some(crate::types::Company::FACEBOOK),
                 compensation: ::std::option::Option::Some(1000.0),
                 school: ::std::default::Default::default(),
+                ..::std::default::Default::default()
             },
         ]);
 
     pub static pod_0: ::once_cell::sync::Lazy<crate::types::struct1> = ::once_cell::sync::Lazy::new(|| crate::types::struct1 {
             a: 1234567,
             b: "<uninitialized>".to_owned(),
+            ..::std::default::Default::default()
         });
 
     pub static pod_s_0: ::once_cell::sync::Lazy<crate::types::struct1> = ::once_cell::sync::Lazy::new(|| crate::types::struct1 {
             a: 1234567,
             b: "<uninitialized>".to_owned(),
+            ..::std::default::Default::default()
         });
 
     pub static pod_1: ::once_cell::sync::Lazy<crate::types::struct1> = ::once_cell::sync::Lazy::new(|| crate::types::struct1 {
             a: 10,
             b: "foo".to_owned(),
+            ..::std::default::Default::default()
         });
 
     pub static pod_s_1: ::once_cell::sync::Lazy<crate::types::struct1> = ::once_cell::sync::Lazy::new(|| crate::types::struct1 {
             a: 10,
             b: "foo".to_owned(),
+            ..::std::default::Default::default()
         });
 
     pub static pod_2: ::once_cell::sync::Lazy<crate::types::struct2> = ::once_cell::sync::Lazy::new(|| crate::types::struct2 {
@@ -124,12 +134,14 @@ pub mod consts {
             c: crate::types::struct1 {
                 a: 12,
                 b: "bar".to_owned(),
+                ..::std::default::Default::default()
             },
             d: vec![
                 11,
                 22,
                 33,
             ],
+            ..::std::default::Default::default()
         });
 
     pub static pod_trailing_commas: ::once_cell::sync::Lazy<crate::types::struct2> = ::once_cell::sync::Lazy::new(|| crate::types::struct2 {
@@ -138,12 +150,14 @@ pub mod consts {
             c: crate::types::struct1 {
                 a: 12,
                 b: "bar".to_owned(),
+                ..::std::default::Default::default()
             },
             d: vec![
                 11,
                 22,
                 33,
             ],
+            ..::std::default::Default::default()
         });
 
     pub static pod_s_2: ::once_cell::sync::Lazy<crate::types::struct2> = ::once_cell::sync::Lazy::new(|| crate::types::struct2 {
@@ -152,12 +166,14 @@ pub mod consts {
             c: crate::types::struct1 {
                 a: 12,
                 b: "bar".to_owned(),
+                ..::std::default::Default::default()
             },
             d: vec![
                 11,
                 22,
                 33,
             ],
+            ..::std::default::Default::default()
         });
 
     pub static pod_3: ::once_cell::sync::Lazy<crate::types::struct3> = ::once_cell::sync::Lazy::new(|| crate::types::struct3 {
@@ -169,13 +185,16 @@ pub mod consts {
                 c: crate::types::struct1 {
                     a: 1234567,
                     b: "gaz".to_owned(),
+                    ..::std::default::Default::default()
                 },
                 d: vec![
                     1,
                     2,
                     3,
                 ],
+                ..::std::default::Default::default()
             },
+            ..::std::default::Default::default()
         });
 
     pub static pod_s_3: ::once_cell::sync::Lazy<crate::types::struct3> = ::once_cell::sync::Lazy::new(|| crate::types::struct3 {
@@ -187,19 +206,23 @@ pub mod consts {
                 c: crate::types::struct1 {
                     a: 1234567,
                     b: "gaz".to_owned(),
+                    ..::std::default::Default::default()
                 },
                 d: vec![
                     1,
                     2,
                     3,
                 ],
+                ..::std::default::Default::default()
             },
+            ..::std::default::Default::default()
         });
 
     pub static pod_4: ::once_cell::sync::Lazy<crate::types::struct4> = ::once_cell::sync::Lazy::new(|| crate::types::struct4 {
             a: 1234,
             b: ::std::option::Option::Some(0.333),
             c: ::std::option::Option::Some(25),
+            ..::std::default::Default::default()
         });
 
     pub static u_1_1: ::once_cell::sync::Lazy<crate::types::union1> = ::once_cell::sync::Lazy::new(|| crate::types::union1::i(97));
@@ -215,6 +238,7 @@ pub mod consts {
     pub static u_2_3: ::once_cell::sync::Lazy<crate::types::union2> = ::once_cell::sync::Lazy::new(|| crate::types::union2::s(crate::types::struct1 {
                 a: 8,
                 b: "abacabb".to_owned(),
+                ..::std::default::Default::default()
             }));
 
     pub static u_2_4: ::once_cell::sync::Lazy<crate::types::union2> = ::once_cell::sync::Lazy::new(|| crate::types::union2::u(crate::types::union1::i(43)));
@@ -307,57 +331,93 @@ pub mod types {
 
     pub type MyMapIdentifier = ::std::collections::BTreeMap<::std::string::String, ::std::string::String>;
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct Internship {
         pub weeks: ::std::primitive::i32,
         pub title: ::std::string::String,
         pub employer: ::std::option::Option<crate::types::Company>,
         pub compensation: ::std::option::Option<::std::primitive::f64>,
         pub school: ::std::option::Option<::std::string::String>,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Range {
         pub min: ::std::primitive::i32,
         pub max: ::std::primitive::i32,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct struct1 {
         pub a: ::std::primitive::i32,
         pub b: ::std::string::String,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct struct2 {
         pub a: ::std::primitive::i32,
         pub b: ::std::string::String,
         pub c: crate::types::struct1,
         pub d: ::std::vec::Vec<::std::primitive::i32>,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct struct3 {
         pub a: ::std::string::String,
         pub b: ::std::primitive::i32,
         pub c: crate::types::struct2,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct struct4 {
         pub a: ::std::primitive::i32,
         pub b: ::std::option::Option<::std::primitive::f64>,
         pub c: ::std::option::Option<::std::primitive::i8>,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq, Debug)]
     pub enum union1 {
         i(::std::primitive::i32),
         d(::std::primitive::f64),
         UnknownField(::std::primitive::i32),
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq, Debug)]
     pub enum union2 {
         i(::std::primitive::i32),
         d(::std::primitive::f64),
@@ -720,7 +780,21 @@ pub mod types {
                 employer: ::std::option::Option::None,
                 compensation: ::std::option::Option::None,
                 school: ::std::option::Option::None,
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::Internship {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("Internship")
+                .field("weeks", &self.weeks)
+                .field("title", &self.title)
+                .field("employer", &self.employer)
+                .field("compensation", &self.compensation)
+                .field("school", &self.school)
+                .finish()
         }
     }
 
@@ -801,6 +875,7 @@ pub mod types {
                 employer: field_employer,
                 compensation: field_compensation,
                 school: field_school,
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -811,7 +886,18 @@ pub mod types {
             Self {
                 min: ::std::default::Default::default(),
                 max: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::Range {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("Range")
+                .field("min", &self.min)
+                .field("max", &self.max)
+                .finish()
         }
     }
 
@@ -865,6 +951,7 @@ pub mod types {
             ::std::result::Result::Ok(Self {
                 min: field_min.unwrap_or_default(),
                 max: field_max.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -875,7 +962,18 @@ pub mod types {
             Self {
                 a: 1234567,
                 b: "<uninitialized>".to_owned(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::struct1 {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("struct1")
+                .field("a", &self.a)
+                .field("b", &self.b)
+                .finish()
         }
     }
 
@@ -929,6 +1027,7 @@ pub mod types {
             ::std::result::Result::Ok(Self {
                 a: field_a.unwrap_or_else(|| 1234567),
                 b: field_b.unwrap_or_else(|| "<uninitialized>".to_owned()),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -941,7 +1040,20 @@ pub mod types {
                 b: ::std::default::Default::default(),
                 c: ::std::default::Default::default(),
                 d: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::struct2 {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("struct2")
+                .field("a", &self.a)
+                .field("b", &self.b)
+                .field("c", &self.c)
+                .field("d", &self.d)
+                .finish()
         }
     }
 
@@ -1009,6 +1121,7 @@ pub mod types {
                 b: field_b.unwrap_or_default(),
                 c: field_c.unwrap_or_default(),
                 d: field_d.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -1020,7 +1133,19 @@ pub mod types {
                 a: ::std::default::Default::default(),
                 b: ::std::default::Default::default(),
                 c: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::struct3 {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("struct3")
+                .field("a", &self.a)
+                .field("b", &self.b)
+                .field("c", &self.c)
+                .finish()
         }
     }
 
@@ -1081,6 +1206,7 @@ pub mod types {
                 a: field_a.unwrap_or_default(),
                 b: field_b.unwrap_or_default(),
                 c: field_c.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -1092,7 +1218,19 @@ pub mod types {
                 a: ::std::default::Default::default(),
                 b: ::std::option::Option::None,
                 c: ::std::option::Option::None,
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::struct4 {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("struct4")
+                .field("a", &self.a)
+                .field("b", &self.b)
+                .field("c", &self.c)
+                .finish()
         }
     }
 
@@ -1157,6 +1295,7 @@ pub mod types {
                 a: field_a.unwrap_or_default(),
                 b: field_b,
                 c: field_c,
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -1334,6 +1473,11 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(alt.unwrap_or_default())
         }
+    }
+
+    mod dot_dot {
+        #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+        pub struct OtherFields(pub(crate) ());
     }
 }
 

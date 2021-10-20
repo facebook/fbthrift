@@ -26,5 +26,21 @@
 
 }}{{#program:typedefs}}{{>lib/typedefimpl}}{{/program:typedefs}}{{!
 
-}}{{#program:structs}}{{>lib/structimpl}}{{>lib/unionimpl}}{{/program:structs}}
+}}{{#program:structs}}{{>lib/structimpl}}{{>lib/unionimpl}}{{/program:structs}}{{!
+
+}}{{#program:nonexhaustiveStructs?}}
+
+    mod dot_dot {{>lib/block}}{{!
+        NOTE: intentionally no Default impl}}
+        #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+        pub struct OtherFields(pub(crate) ());{{!
+
+        }}{{#program:serde?}}
+
+        pub(super) fn default_for_serde_deserialize() -> OtherFields {
+            OtherFields(())
+        }{{!
+        }}{{/program:serde?}}
+    }{{!
+}}{{/program:nonexhaustiveStructs?}}
 {{!newline}}

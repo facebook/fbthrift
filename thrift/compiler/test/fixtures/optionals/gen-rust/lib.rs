@@ -14,24 +14,36 @@ pub mod types {
 
     pub type PersonID = ::std::primitive::i64;
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct Color {
         pub red: ::std::primitive::f64,
         pub green: ::std::primitive::f64,
         pub blue: ::std::primitive::f64,
         pub alpha: ::std::primitive::f64,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct Vehicle {
         pub color: crate::types::Color,
         pub licensePlate: ::std::option::Option<::std::string::String>,
         pub description: ::std::option::Option<::std::string::String>,
         pub name: ::std::option::Option<::std::string::String>,
         pub hasAC: ::std::option::Option<::std::primitive::bool>,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct Person {
         pub id: crate::types::PersonID,
         pub name: ::std::string::String,
@@ -43,6 +55,12 @@ pub mod types {
         pub petNames: ::std::option::Option<::std::collections::BTreeMap<crate::types::Animal, ::std::string::String>>,
         pub afraidOfAnimal: ::std::option::Option<crate::types::Animal>,
         pub vehicles: ::std::option::Option<::std::vec::Vec<crate::types::Vehicle>>,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
@@ -169,7 +187,20 @@ pub mod types {
                 green: ::std::default::Default::default(),
                 blue: ::std::default::Default::default(),
                 alpha: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::Color {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("Color")
+                .field("red", &self.red)
+                .field("green", &self.green)
+                .field("blue", &self.blue)
+                .field("alpha", &self.alpha)
+                .finish()
         }
     }
 
@@ -237,6 +268,7 @@ pub mod types {
                 green: field_green.unwrap_or_default(),
                 blue: field_blue.unwrap_or_default(),
                 alpha: field_alpha.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -250,7 +282,21 @@ pub mod types {
                 description: ::std::option::Option::None,
                 name: ::std::option::Option::None,
                 hasAC: ::std::option::Option::Some(false),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::Vehicle {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("Vehicle")
+                .field("color", &self.color)
+                .field("licensePlate", &self.licensePlate)
+                .field("description", &self.description)
+                .field("name", &self.name)
+                .field("hasAC", &self.hasAC)
+                .finish()
         }
     }
 
@@ -333,6 +379,7 @@ pub mod types {
                 description: field_description,
                 name: field_name,
                 hasAC: field_hasAC,
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -351,7 +398,26 @@ pub mod types {
                 petNames: ::std::option::Option::None,
                 afraidOfAnimal: ::std::option::Option::None,
                 vehicles: ::std::option::Option::None,
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::Person {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("Person")
+                .field("id", &self.id)
+                .field("name", &self.name)
+                .field("age", &self.age)
+                .field("address", &self.address)
+                .field("favoriteColor", &self.favoriteColor)
+                .field("friends", &self.friends)
+                .field("bestFriend", &self.bestFriend)
+                .field("petNames", &self.petNames)
+                .field("afraidOfAnimal", &self.afraidOfAnimal)
+                .field("vehicles", &self.vehicles)
+                .finish()
         }
     }
 
@@ -477,10 +543,16 @@ pub mod types {
                 petNames: field_petNames,
                 afraidOfAnimal: field_afraidOfAnimal,
                 vehicles: field_vehicles,
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
 
+
+    mod dot_dot {
+        #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+        pub struct OtherFields(pub(crate) ());
+    }
 }
 
 /// Error return types.

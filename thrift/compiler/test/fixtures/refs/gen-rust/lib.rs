@@ -12,38 +12,54 @@ pub use self::types::*;
 pub mod consts {
     pub static kStructWithRef: ::once_cell::sync::Lazy<crate::types::StructWithRef> = ::once_cell::sync::Lazy::new(|| crate::types::StructWithRef {
             def_field: crate::types::Empty {
+                ..::std::default::Default::default()
             },
             opt_field: ::std::option::Option::Some(crate::types::Empty {
+                ..::std::default::Default::default()
             }),
             req_field: crate::types::Empty {
+                ..::std::default::Default::default()
             },
+            ..::std::default::Default::default()
         });
 
     pub static kStructWithRefTypeUnique: ::once_cell::sync::Lazy<crate::types::StructWithRefTypeUnique> = ::once_cell::sync::Lazy::new(|| crate::types::StructWithRefTypeUnique {
             def_field: crate::types::Empty {
+                ..::std::default::Default::default()
             },
             opt_field: ::std::option::Option::Some(crate::types::Empty {
+                ..::std::default::Default::default()
             }),
             req_field: crate::types::Empty {
+                ..::std::default::Default::default()
             },
+            ..::std::default::Default::default()
         });
 
     pub static kStructWithRefTypeShared: ::once_cell::sync::Lazy<crate::types::StructWithRefTypeShared> = ::once_cell::sync::Lazy::new(|| crate::types::StructWithRefTypeShared {
             def_field: crate::types::Empty {
+                ..::std::default::Default::default()
             },
             opt_field: ::std::option::Option::Some(crate::types::Empty {
+                ..::std::default::Default::default()
             }),
             req_field: crate::types::Empty {
+                ..::std::default::Default::default()
             },
+            ..::std::default::Default::default()
         });
 
     pub static kStructWithRefTypeSharedConst: ::once_cell::sync::Lazy<crate::types::StructWithRefTypeSharedConst> = ::once_cell::sync::Lazy::new(|| crate::types::StructWithRefTypeSharedConst {
             def_field: crate::types::Empty {
+                ..::std::default::Default::default()
             },
             opt_field: ::std::option::Option::Some(crate::types::Empty {
+                ..::std::default::Default::default()
             }),
             req_field: crate::types::Empty {
+                ..::std::default::Default::default()
             },
+            ..::std::default::Default::default()
         });
 }
 
@@ -52,14 +68,14 @@ pub mod types {
     #![allow(clippy::redundant_closure)]
 
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]
     pub enum MyUnion {
         anInteger(::std::primitive::i32),
         aString(::std::string::String),
         UnknownField(::std::primitive::i32),
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct MyField {
         pub opt_value: ::std::option::Option<::std::primitive::i64>,
         pub value: ::std::primitive::i64,
@@ -67,28 +83,52 @@ pub mod types {
         pub opt_enum_value: ::std::option::Option<crate::types::MyEnum>,
         pub enum_value: crate::types::MyEnum,
         pub req_enum_value: crate::types::MyEnum,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct MyStruct {
         pub opt_ref: ::std::option::Option<crate::types::MyField>,
         pub r#ref: crate::types::MyField,
         pub req_ref: crate::types::MyField,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct StructWithUnion {
         pub u: crate::types::MyUnion,
         pub aDouble: ::std::primitive::f64,
         pub f: crate::types::MyField,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct RecursiveStruct {
         pub mes: ::std::option::Option<::std::vec::Vec<crate::types::RecursiveStruct>>,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct StructWithContainers {
         pub list_ref: ::std::vec::Vec<::std::primitive::i32>,
         pub set_ref: ::std::collections::BTreeSet<::std::primitive::i32>,
@@ -96,59 +136,113 @@ pub mod types {
         pub list_ref_unique: ::std::vec::Vec<::std::primitive::i32>,
         pub set_ref_shared: ::std::collections::BTreeSet<::std::primitive::i32>,
         pub list_ref_shared_const: ::std::vec::Vec<::std::primitive::i32>,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct StructWithSharedConst {
         pub opt_shared_const: ::std::option::Option<crate::types::MyField>,
         pub shared_const: crate::types::MyField,
         pub req_shared_const: crate::types::MyField,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Empty {
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct StructWithRef {
         pub def_field: crate::types::Empty,
         pub opt_field: ::std::option::Option<crate::types::Empty>,
         pub req_field: crate::types::Empty,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct StructWithRefTypeUnique {
         pub def_field: crate::types::Empty,
         pub opt_field: ::std::option::Option<crate::types::Empty>,
         pub req_field: crate::types::Empty,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct StructWithRefTypeShared {
         pub def_field: crate::types::Empty,
         pub opt_field: ::std::option::Option<crate::types::Empty>,
         pub req_field: crate::types::Empty,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct StructWithRefTypeSharedConst {
         pub def_field: crate::types::Empty,
         pub opt_field: ::std::option::Option<crate::types::Empty>,
         pub req_field: crate::types::Empty,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct StructWithRefAndAnnotCppNoexceptMoveCtor {
         pub def_field: crate::types::Empty,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct StructWithString {
         pub def_unique_string_ref: ::std::string::String,
         pub def_shared_string_ref: ::std::string::String,
         pub def_shared_string_const_ref: ::std::string::String,
         pub unique_string_ref: ::std::string::String,
         pub shared_string_ref: ::std::string::String,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
@@ -457,7 +551,22 @@ pub mod types {
                 opt_enum_value: ::std::option::Option::None,
                 enum_value: ::std::default::Default::default(),
                 req_enum_value: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::MyField {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("MyField")
+                .field("opt_value", &self.opt_value)
+                .field("value", &self.value)
+                .field("req_value", &self.req_value)
+                .field("opt_enum_value", &self.opt_enum_value)
+                .field("enum_value", &self.enum_value)
+                .field("req_enum_value", &self.req_enum_value)
+                .finish()
         }
     }
 
@@ -543,6 +652,7 @@ pub mod types {
                 opt_enum_value: field_opt_enum_value,
                 enum_value: field_enum_value.unwrap_or_default(),
                 req_enum_value: field_req_enum_value.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -554,7 +664,19 @@ pub mod types {
                 opt_ref: ::std::option::Option::None,
                 r#ref: ::std::default::Default::default(),
                 req_ref: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::MyStruct {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("MyStruct")
+                .field("opt_ref", &self.opt_ref)
+                .field("r#ref", &self.r#ref)
+                .field("req_ref", &self.req_ref)
+                .finish()
         }
     }
 
@@ -617,6 +739,7 @@ pub mod types {
                 opt_ref: field_opt_ref,
                 r#ref: field_ref.unwrap_or_default(),
                 req_ref: field_req_ref.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -628,7 +751,19 @@ pub mod types {
                 u: ::std::default::Default::default(),
                 aDouble: ::std::default::Default::default(),
                 f: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::StructWithUnion {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("StructWithUnion")
+                .field("u", &self.u)
+                .field("aDouble", &self.aDouble)
+                .field("f", &self.f)
+                .finish()
         }
     }
 
@@ -689,6 +824,7 @@ pub mod types {
                 u: field_u.unwrap_or_default(),
                 aDouble: field_aDouble.unwrap_or_default(),
                 f: field_f.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -698,7 +834,17 @@ pub mod types {
         fn default() -> Self {
             Self {
                 mes: ::std::option::Option::None,
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::RecursiveStruct {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("RecursiveStruct")
+                .field("mes", &self.mes)
+                .finish()
         }
     }
 
@@ -747,6 +893,7 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
                 mes: field_mes,
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -761,7 +908,22 @@ pub mod types {
                 list_ref_unique: ::std::default::Default::default(),
                 set_ref_shared: ::std::default::Default::default(),
                 list_ref_shared_const: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::StructWithContainers {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("StructWithContainers")
+                .field("list_ref", &self.list_ref)
+                .field("set_ref", &self.set_ref)
+                .field("map_ref", &self.map_ref)
+                .field("list_ref_unique", &self.list_ref_unique)
+                .field("set_ref_shared", &self.set_ref_shared)
+                .field("list_ref_shared_const", &self.list_ref_shared_const)
+                .finish()
         }
     }
 
@@ -843,6 +1005,7 @@ pub mod types {
                 list_ref_unique: field_list_ref_unique.unwrap_or_default(),
                 set_ref_shared: field_set_ref_shared.unwrap_or_default(),
                 list_ref_shared_const: field_list_ref_shared_const.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -854,7 +1017,19 @@ pub mod types {
                 opt_shared_const: ::std::option::Option::None,
                 shared_const: ::std::default::Default::default(),
                 req_shared_const: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::StructWithSharedConst {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("StructWithSharedConst")
+                .field("opt_shared_const", &self.opt_shared_const)
+                .field("shared_const", &self.shared_const)
+                .field("req_shared_const", &self.req_shared_const)
+                .finish()
         }
     }
 
@@ -917,6 +1092,7 @@ pub mod types {
                 opt_shared_const: field_opt_shared_const,
                 shared_const: field_shared_const.unwrap_or_default(),
                 req_shared_const: field_req_shared_const.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -925,7 +1101,16 @@ pub mod types {
     impl ::std::default::Default for self::Empty {
         fn default() -> Self {
             Self {
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::Empty {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("Empty")
+                .finish()
         }
     }
 
@@ -965,6 +1150,7 @@ pub mod types {
             }
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -976,7 +1162,19 @@ pub mod types {
                 def_field: ::std::default::Default::default(),
                 opt_field: ::std::option::Option::None,
                 req_field: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::StructWithRef {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("StructWithRef")
+                .field("def_field", &self.def_field)
+                .field("opt_field", &self.opt_field)
+                .field("req_field", &self.req_field)
+                .finish()
         }
     }
 
@@ -1039,6 +1237,7 @@ pub mod types {
                 def_field: field_def_field.unwrap_or_default(),
                 opt_field: field_opt_field,
                 req_field: field_req_field.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -1050,7 +1249,19 @@ pub mod types {
                 def_field: ::std::default::Default::default(),
                 opt_field: ::std::option::Option::None,
                 req_field: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::StructWithRefTypeUnique {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("StructWithRefTypeUnique")
+                .field("def_field", &self.def_field)
+                .field("opt_field", &self.opt_field)
+                .field("req_field", &self.req_field)
+                .finish()
         }
     }
 
@@ -1113,6 +1324,7 @@ pub mod types {
                 def_field: field_def_field.unwrap_or_default(),
                 opt_field: field_opt_field,
                 req_field: field_req_field.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -1124,7 +1336,19 @@ pub mod types {
                 def_field: ::std::default::Default::default(),
                 opt_field: ::std::option::Option::None,
                 req_field: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::StructWithRefTypeShared {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("StructWithRefTypeShared")
+                .field("def_field", &self.def_field)
+                .field("opt_field", &self.opt_field)
+                .field("req_field", &self.req_field)
+                .finish()
         }
     }
 
@@ -1187,6 +1411,7 @@ pub mod types {
                 def_field: field_def_field.unwrap_or_default(),
                 opt_field: field_opt_field,
                 req_field: field_req_field.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -1198,7 +1423,19 @@ pub mod types {
                 def_field: ::std::default::Default::default(),
                 opt_field: ::std::option::Option::None,
                 req_field: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::StructWithRefTypeSharedConst {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("StructWithRefTypeSharedConst")
+                .field("def_field", &self.def_field)
+                .field("opt_field", &self.opt_field)
+                .field("req_field", &self.req_field)
+                .finish()
         }
     }
 
@@ -1261,6 +1498,7 @@ pub mod types {
                 def_field: field_def_field.unwrap_or_default(),
                 opt_field: field_opt_field,
                 req_field: field_req_field.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -1270,7 +1508,17 @@ pub mod types {
         fn default() -> Self {
             Self {
                 def_field: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::StructWithRefAndAnnotCppNoexceptMoveCtor {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("StructWithRefAndAnnotCppNoexceptMoveCtor")
+                .field("def_field", &self.def_field)
+                .finish()
         }
     }
 
@@ -1317,6 +1565,7 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
                 def_field: field_def_field.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -1330,7 +1579,21 @@ pub mod types {
                 def_shared_string_const_ref: "...".to_owned(),
                 unique_string_ref: ::std::default::Default::default(),
                 shared_string_ref: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::StructWithString {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("StructWithString")
+                .field("def_unique_string_ref", &self.def_unique_string_ref)
+                .field("def_shared_string_ref", &self.def_shared_string_ref)
+                .field("def_shared_string_const_ref", &self.def_shared_string_const_ref)
+                .field("unique_string_ref", &self.unique_string_ref)
+                .field("shared_string_ref", &self.shared_string_ref)
+                .finish()
         }
     }
 
@@ -1405,10 +1668,16 @@ pub mod types {
                 def_shared_string_const_ref: field_def_shared_string_const_ref.unwrap_or_else(|| "...".to_owned()),
                 unique_string_ref: field_unique_string_ref.unwrap_or_default(),
                 shared_string_ref: field_shared_string_ref.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
 
+
+    mod dot_dot {
+        #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+        pub struct OtherFields(pub(crate) ());
+    }
 }
 
 /// Error return types.

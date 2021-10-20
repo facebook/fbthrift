@@ -18,12 +18,18 @@ pub mod types {
 
     pub type UintTypedef = crate::types::IntTypedef;
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct decorated_struct {
         pub field: ::std::string::String,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct ContainerStruct {
         pub fieldA: ::std::vec::Vec<::std::primitive::i32>,
         pub fieldB: ::std::vec::Vec<::std::primitive::i32>,
@@ -33,106 +39,214 @@ pub mod types {
         pub fieldF: ::sorted_vector_map::SortedVectorSet<::std::primitive::i32>,
         pub fieldG: ::sorted_vector_map::SortedVectorMap<::std::primitive::i32, ::std::string::String>,
         pub fieldH: include::types::SomeMap,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct CppTypeStruct {
         pub fieldA: ::std::vec::Vec<::std::primitive::i32>,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct VirtualStruct {
         pub MyIntField: ::std::primitive::i64,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct MyStructWithForwardRefEnum {
         pub a: crate::types::MyForwardRefEnum,
         pub b: crate::types::MyForwardRefEnum,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct TrivialNumeric {
         pub a: ::std::primitive::i32,
         pub b: ::std::primitive::bool,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct TrivialNestedWithDefault {
         pub z: ::std::primitive::i32,
         pub n: crate::types::TrivialNumeric,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct ComplexString {
         pub a: ::std::string::String,
         pub b: ::std::collections::BTreeMap<::std::string::String, ::std::primitive::i32>,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct ComplexNestedWithDefault {
         pub z: ::std::string::String,
         pub n: crate::types::ComplexString,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct MinPadding {
         pub small: ::std::primitive::i8,
         pub big: ::std::primitive::i64,
         pub medium: ::std::primitive::i16,
         pub biggish: ::std::primitive::i32,
         pub tiny: ::std::primitive::i8,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct MyStruct {
         pub MyIntField: ::std::primitive::i64,
         pub MyStringField: ::std::string::String,
         pub majorVer: ::std::primitive::i64,
         pub data: crate::types::MyDataItem,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct MyDataItem {
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Renaming {
         pub foo: ::std::primitive::i64,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct AnnotatedTypes {
         pub binary_field: crate::types::TBinary,
         pub list_field: include::types::SomeListOfTypeMap,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct ForwardUsageRoot {
         pub ForwardUsageStruct: ::std::option::Option<crate::types::ForwardUsageStruct>,
         pub ForwardUsageByRef: ::std::option::Option<crate::types::ForwardUsageByRef>,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct ForwardUsageStruct {
         pub foo: ::std::option::Option<crate::types::ForwardUsageRoot>,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct ForwardUsageByRef {
         pub foo: ::std::option::Option<crate::types::ForwardUsageRoot>,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct NoexceptMoveEmpty {
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct NoexceptMoveSimpleStruct {
         pub boolField: ::std::primitive::i64,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct NoexceptMoveComplexStruct {
         pub MyBoolField: ::std::primitive::bool,
         pub MyIntField: ::std::primitive::i64,
@@ -143,39 +257,69 @@ pub mod types {
         pub MyBinaryField3: ::std::vec::Vec<::std::primitive::u8>,
         pub MyBinaryListField4: ::std::vec::Vec<::std::vec::Vec<::std::primitive::u8>>,
         pub MyMapEnumAndInt: ::std::collections::BTreeMap<crate::types::MyEnumA, ::std::string::String>,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]
     pub enum NoExceptMoveUnion {
         string_field(::std::string::String),
         i32_field(::std::primitive::i32),
         UnknownField(::std::primitive::i32),
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, PartialEq)]
     pub struct AllocatorAware {
         pub aa_list: ::std::vec::Vec<::std::primitive::i32>,
         pub aa_set: ::std::collections::BTreeSet<::std::primitive::i32>,
         pub aa_map: ::std::collections::BTreeMap<::std::primitive::i32, ::std::primitive::i32>,
         pub aa_string: ::std::string::String,
         pub not_a_container: ::std::primitive::i32,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct AllocatorAware2 {
         pub not_a_container: ::std::primitive::i32,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct TypedefStruct {
         pub i32_field: ::std::primitive::i32,
         pub IntTypedef_field: crate::types::IntTypedef,
         pub UintTypedef_field: crate::types::UintTypedef,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct StructWithDoubleUnderscores {
         pub __field: ::std::primitive::i32,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
@@ -649,7 +793,17 @@ pub mod types {
         fn default() -> Self {
             Self {
                 field: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::decorated_struct {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("decorated_struct")
+                .field("field", &self.field)
+                .finish()
         }
     }
 
@@ -696,6 +850,7 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
                 field: field_field.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -712,7 +867,24 @@ pub mod types {
                 fieldF: ::std::default::Default::default(),
                 fieldG: ::std::default::Default::default(),
                 fieldH: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::ContainerStruct {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("ContainerStruct")
+                .field("fieldA", &self.fieldA)
+                .field("fieldB", &self.fieldB)
+                .field("fieldC", &self.fieldC)
+                .field("fieldD", &self.fieldD)
+                .field("fieldE", &self.fieldE)
+                .field("fieldF", &self.fieldF)
+                .field("fieldG", &self.fieldG)
+                .field("fieldH", &self.fieldH)
+                .finish()
         }
     }
 
@@ -808,6 +980,7 @@ pub mod types {
                 fieldF: field_fieldF.unwrap_or_default(),
                 fieldG: field_fieldG.unwrap_or_default(),
                 fieldH: field_fieldH.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -817,7 +990,17 @@ pub mod types {
         fn default() -> Self {
             Self {
                 fieldA: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::CppTypeStruct {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("CppTypeStruct")
+                .field("fieldA", &self.fieldA)
+                .finish()
         }
     }
 
@@ -864,6 +1047,7 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
                 fieldA: field_fieldA.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -873,7 +1057,17 @@ pub mod types {
         fn default() -> Self {
             Self {
                 MyIntField: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::VirtualStruct {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("VirtualStruct")
+                .field("MyIntField", &self.MyIntField)
+                .finish()
         }
     }
 
@@ -920,6 +1114,7 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
                 MyIntField: field_MyIntField.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -930,7 +1125,18 @@ pub mod types {
             Self {
                 a: crate::types::MyForwardRefEnum::NONZERO,
                 b: crate::types::MyForwardRefEnum::NONZERO,
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::MyStructWithForwardRefEnum {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("MyStructWithForwardRefEnum")
+                .field("a", &self.a)
+                .field("b", &self.b)
+                .finish()
         }
     }
 
@@ -984,6 +1190,7 @@ pub mod types {
             ::std::result::Result::Ok(Self {
                 a: field_a.unwrap_or_else(|| crate::types::MyForwardRefEnum::NONZERO),
                 b: field_b.unwrap_or_else(|| crate::types::MyForwardRefEnum::NONZERO),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -994,7 +1201,18 @@ pub mod types {
             Self {
                 a: ::std::default::Default::default(),
                 b: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::TrivialNumeric {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("TrivialNumeric")
+                .field("a", &self.a)
+                .field("b", &self.b)
+                .finish()
         }
     }
 
@@ -1048,6 +1266,7 @@ pub mod types {
             ::std::result::Result::Ok(Self {
                 a: field_a.unwrap_or_default(),
                 b: field_b.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -1060,8 +1279,20 @@ pub mod types {
                 n: crate::types::TrivialNumeric {
                     a: 3,
                     b: true,
+                    ..::std::default::Default::default()
                 },
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::TrivialNestedWithDefault {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("TrivialNestedWithDefault")
+                .field("z", &self.z)
+                .field("n", &self.n)
+                .finish()
         }
     }
 
@@ -1117,7 +1348,9 @@ pub mod types {
                 n: field_n.unwrap_or_else(|| crate::types::TrivialNumeric {
                     a: 3,
                     b: true,
+                    ..::std::default::Default::default()
                 }),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -1128,7 +1361,18 @@ pub mod types {
             Self {
                 a: ::std::default::Default::default(),
                 b: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::ComplexString {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("ComplexString")
+                .field("a", &self.a)
+                .field("b", &self.b)
+                .finish()
         }
     }
 
@@ -1182,6 +1426,7 @@ pub mod types {
             ::std::result::Result::Ok(Self {
                 a: field_a.unwrap_or_default(),
                 b: field_b.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -1198,8 +1443,20 @@ pub mod types {
                         map.insert("a".to_owned(), 3);
                         map
                     },
+                    ..::std::default::Default::default()
                 },
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::ComplexNestedWithDefault {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("ComplexNestedWithDefault")
+                .field("z", &self.z)
+                .field("n", &self.n)
+                .finish()
         }
     }
 
@@ -1259,7 +1516,9 @@ pub mod types {
                         map.insert("a".to_owned(), 3);
                         map
                     },
+                    ..::std::default::Default::default()
                 }),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -1273,7 +1532,21 @@ pub mod types {
                 medium: ::std::default::Default::default(),
                 biggish: ::std::default::Default::default(),
                 tiny: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::MinPadding {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("MinPadding")
+                .field("small", &self.small)
+                .field("big", &self.big)
+                .field("medium", &self.medium)
+                .field("biggish", &self.biggish)
+                .field("tiny", &self.tiny)
+                .finish()
         }
     }
 
@@ -1348,6 +1621,7 @@ pub mod types {
                 medium: field_medium.unwrap_or_default(),
                 biggish: field_biggish.unwrap_or_default(),
                 tiny: field_tiny.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -1360,7 +1634,20 @@ pub mod types {
                 MyStringField: ::std::default::Default::default(),
                 majorVer: ::std::default::Default::default(),
                 data: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::MyStruct {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("MyStruct")
+                .field("MyIntField", &self.MyIntField)
+                .field("MyStringField", &self.MyStringField)
+                .field("majorVer", &self.majorVer)
+                .field("data", &self.data)
+                .finish()
         }
     }
 
@@ -1428,6 +1715,7 @@ pub mod types {
                 MyStringField: field_MyStringField.unwrap_or_default(),
                 majorVer: field_majorVer.unwrap_or_default(),
                 data: field_data.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -1436,7 +1724,16 @@ pub mod types {
     impl ::std::default::Default for self::MyDataItem {
         fn default() -> Self {
             Self {
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::MyDataItem {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("MyDataItem")
+                .finish()
         }
     }
 
@@ -1476,6 +1773,7 @@ pub mod types {
             }
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -1485,7 +1783,17 @@ pub mod types {
         fn default() -> Self {
             Self {
                 foo: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::Renaming {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("Renaming")
+                .field("foo", &self.foo)
+                .finish()
         }
     }
 
@@ -1532,6 +1840,7 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
                 foo: field_foo.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -1542,7 +1851,18 @@ pub mod types {
             Self {
                 binary_field: ::std::default::Default::default(),
                 list_field: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::AnnotatedTypes {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("AnnotatedTypes")
+                .field("binary_field", &self.binary_field)
+                .field("list_field", &self.list_field)
+                .finish()
         }
     }
 
@@ -1596,6 +1916,7 @@ pub mod types {
             ::std::result::Result::Ok(Self {
                 binary_field: field_binary_field.unwrap_or_default(),
                 list_field: field_list_field.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -1606,7 +1927,18 @@ pub mod types {
             Self {
                 ForwardUsageStruct: ::std::option::Option::None,
                 ForwardUsageByRef: ::std::option::Option::None,
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::ForwardUsageRoot {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("ForwardUsageRoot")
+                .field("ForwardUsageStruct", &self.ForwardUsageStruct)
+                .field("ForwardUsageByRef", &self.ForwardUsageByRef)
+                .finish()
         }
     }
 
@@ -1664,6 +1996,7 @@ pub mod types {
             ::std::result::Result::Ok(Self {
                 ForwardUsageStruct: field_ForwardUsageStruct,
                 ForwardUsageByRef: field_ForwardUsageByRef,
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -1673,7 +2006,17 @@ pub mod types {
         fn default() -> Self {
             Self {
                 foo: ::std::option::Option::None,
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::ForwardUsageStruct {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("ForwardUsageStruct")
+                .field("foo", &self.foo)
+                .finish()
         }
     }
 
@@ -1722,6 +2065,7 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
                 foo: field_foo,
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -1731,7 +2075,17 @@ pub mod types {
         fn default() -> Self {
             Self {
                 foo: ::std::option::Option::None,
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::ForwardUsageByRef {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("ForwardUsageByRef")
+                .field("foo", &self.foo)
+                .finish()
         }
     }
 
@@ -1780,6 +2134,7 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
                 foo: field_foo,
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -1788,7 +2143,16 @@ pub mod types {
     impl ::std::default::Default for self::NoexceptMoveEmpty {
         fn default() -> Self {
             Self {
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::NoexceptMoveEmpty {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("NoexceptMoveEmpty")
+                .finish()
         }
     }
 
@@ -1828,6 +2192,7 @@ pub mod types {
             }
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -1837,7 +2202,17 @@ pub mod types {
         fn default() -> Self {
             Self {
                 boolField: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::NoexceptMoveSimpleStruct {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("NoexceptMoveSimpleStruct")
+                .field("boolField", &self.boolField)
+                .finish()
         }
     }
 
@@ -1884,6 +2259,7 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
                 boolField: field_boolField.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -1906,7 +2282,25 @@ pub mod types {
                     map.insert(crate::types::MyEnumA::fieldC, "fieldC".to_owned());
                     map
                 },
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::NoexceptMoveComplexStruct {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("NoexceptMoveComplexStruct")
+                .field("MyBoolField", &self.MyBoolField)
+                .field("MyIntField", &self.MyIntField)
+                .field("MyStringField", &self.MyStringField)
+                .field("MyStringField2", &self.MyStringField2)
+                .field("MyBinaryField", &self.MyBinaryField)
+                .field("MyBinaryField2", &self.MyBinaryField2)
+                .field("MyBinaryField3", &self.MyBinaryField3)
+                .field("MyBinaryListField4", &self.MyBinaryListField4)
+                .field("MyMapEnumAndInt", &self.MyMapEnumAndInt)
+                .finish()
         }
     }
 
@@ -2016,6 +2410,7 @@ pub mod types {
                     map.insert(crate::types::MyEnumA::fieldC, "fieldC".to_owned());
                     map
                 }),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -2106,7 +2501,21 @@ pub mod types {
                 aa_map: ::std::default::Default::default(),
                 aa_string: ::std::default::Default::default(),
                 not_a_container: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::AllocatorAware {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("AllocatorAware")
+                .field("aa_list", &self.aa_list)
+                .field("aa_set", &self.aa_set)
+                .field("aa_map", &self.aa_map)
+                .field("aa_string", &self.aa_string)
+                .field("not_a_container", &self.not_a_container)
+                .finish()
         }
     }
 
@@ -2181,6 +2590,7 @@ pub mod types {
                 aa_map: field_aa_map.unwrap_or_default(),
                 aa_string: field_aa_string.unwrap_or_default(),
                 not_a_container: field_not_a_container.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -2190,7 +2600,17 @@ pub mod types {
         fn default() -> Self {
             Self {
                 not_a_container: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::AllocatorAware2 {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("AllocatorAware2")
+                .field("not_a_container", &self.not_a_container)
+                .finish()
         }
     }
 
@@ -2237,6 +2657,7 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
                 not_a_container: field_not_a_container.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -2248,7 +2669,19 @@ pub mod types {
                 i32_field: ::std::default::Default::default(),
                 IntTypedef_field: ::std::default::Default::default(),
                 UintTypedef_field: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::TypedefStruct {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("TypedefStruct")
+                .field("i32_field", &self.i32_field)
+                .field("IntTypedef_field", &self.IntTypedef_field)
+                .field("UintTypedef_field", &self.UintTypedef_field)
+                .finish()
         }
     }
 
@@ -2309,6 +2742,7 @@ pub mod types {
                 i32_field: field_i32_field.unwrap_or_default(),
                 IntTypedef_field: field_IntTypedef_field.unwrap_or_default(),
                 UintTypedef_field: field_UintTypedef_field.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
@@ -2318,7 +2752,17 @@ pub mod types {
         fn default() -> Self {
             Self {
                 __field: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::StructWithDoubleUnderscores {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("StructWithDoubleUnderscores")
+                .field("__field", &self.__field)
+                .finish()
         }
     }
 
@@ -2365,10 +2809,16 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
                 __field: field___field.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
     }
 
+
+    mod dot_dot {
+        #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+        pub struct OtherFields(pub(crate) ());
+    }
 }
 
 #[doc(hidden)]
