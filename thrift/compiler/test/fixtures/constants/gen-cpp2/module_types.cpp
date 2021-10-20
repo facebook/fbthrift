@@ -165,7 +165,6 @@ Internship& Internship::operator=(FOLLY_MAYBE_UNUSED Internship&& other) noexcep
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Internship::Internship(apache::thrift::FragileConstructor, ::std::int32_t weeks__arg, ::std::string title__arg, ::cpp2::Company employer__arg, double compensation__arg, ::std::string school__arg) :
     weeks(std::move(weeks__arg)),
     title(std::move(title__arg)),
@@ -281,7 +280,6 @@ void TccStructTraits<::cpp2::Range>::translateFieldName(
 namespace cpp2 {
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Range::Range(apache::thrift::FragileConstructor, ::std::int32_t min__arg, ::std::int32_t max__arg) :
     min(std::move(min__arg)),
     max(std::move(max__arg)) {
@@ -379,7 +377,6 @@ struct1& struct1::operator=(FOLLY_MAYBE_UNUSED struct1&& other) noexcept {
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct1::struct1(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::std::string b__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)) {
@@ -485,7 +482,6 @@ struct2& struct2::operator=(FOLLY_MAYBE_UNUSED struct2&& other) noexcept {
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct2::struct2(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::std::string b__arg, ::cpp2::struct1 c__arg, ::std::vector<::std::int32_t> d__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)),
@@ -637,7 +633,6 @@ struct3& struct3::operator=(FOLLY_MAYBE_UNUSED struct3&& other) noexcept {
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct3::struct3(apache::thrift::FragileConstructor, ::std::string a__arg, ::std::int32_t b__arg, ::cpp2::struct2 c__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)),
@@ -771,7 +766,6 @@ struct4& struct4::operator=(FOLLY_MAYBE_UNUSED struct4&& other) noexcept {
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct4::struct4(apache::thrift::FragileConstructor, ::std::int32_t a__arg, double b__arg, ::std::int8_t c__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)),

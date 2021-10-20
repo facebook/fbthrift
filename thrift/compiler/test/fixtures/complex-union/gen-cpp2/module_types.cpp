@@ -414,7 +414,6 @@ Val& Val::operator=(FOLLY_MAYBE_UNUSED Val&& other) noexcept {
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Val::Val(apache::thrift::FragileConstructor, ::std::string strVal__arg, ::std::int32_t intVal__arg, ::cpp2::containerTypedef typedefValue__arg) :
     strVal(std::move(strVal__arg)),
     intVal(std::move(intVal__arg)),
@@ -763,7 +762,6 @@ void TccStructTraits<::cpp2::NonCopyableStruct>::translateFieldName(
 namespace cpp2 {
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 NonCopyableStruct::NonCopyableStruct(apache::thrift::FragileConstructor, ::std::int64_t num__arg) :
     num(std::move(num__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);

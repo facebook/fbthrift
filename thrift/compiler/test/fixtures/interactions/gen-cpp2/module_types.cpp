@@ -55,7 +55,6 @@ CustomException& CustomException::operator=(FOLLY_MAYBE_UNUSED CustomException&&
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CustomException::CustomException(apache::thrift::FragileConstructor, ::std::string message__arg) :
     message(std::move(message__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);

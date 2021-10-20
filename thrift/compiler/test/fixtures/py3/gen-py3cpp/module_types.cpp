@@ -122,7 +122,6 @@ SimpleException& SimpleException::operator=(FOLLY_MAYBE_UNUSED SimpleException&&
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SimpleException::SimpleException(apache::thrift::FragileConstructor, ::std::int16_t err_code__arg) :
     err_code(std::move(err_code__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
@@ -222,7 +221,6 @@ OptionalRefStruct& OptionalRefStruct::operator=(FOLLY_MAYBE_UNUSED OptionalRefSt
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 OptionalRefStruct::OptionalRefStruct(apache::thrift::FragileConstructor, ::py3::simple::IOBufPtr optional_blob__arg) :
     optional_blob(std::move(optional_blob__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
@@ -326,7 +324,6 @@ SimpleStruct& SimpleStruct::operator=(FOLLY_MAYBE_UNUSED SimpleStruct&& other) n
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SimpleStruct::SimpleStruct(apache::thrift::FragileConstructor, bool is_on__arg, ::std::int8_t tiny_int__arg, ::std::int16_t small_int__arg, ::std::int32_t nice_sized_int__arg, ::std::int64_t big_int__arg, double real__arg, float smaller_real__arg, ::std::int16_t hidden_field__arg) :
     is_on(std::move(is_on__arg)),
     tiny_int(std::move(tiny_int__arg)),
@@ -510,7 +507,6 @@ ComplexStruct& ComplexStruct::operator=(FOLLY_MAYBE_UNUSED ComplexStruct&& other
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexStruct::ComplexStruct(apache::thrift::FragileConstructor, ::py3::simple::SimpleStruct structOne__arg, ::py3::simple::SimpleStruct structTwo__arg, ::std::int32_t an_integer__arg, ::std::string name__arg, ::py3::simple::AnEnum an_enum__arg, ::std::string some_bytes__arg, ::std::string from__arg, ::std::string cdef__arg, ::py3::simple::foo_bar bytes_with_cpp_type__arg) :
     structOne(std::move(structOne__arg)),
     structTwo(std::move(structTwo__arg)),
@@ -799,7 +795,6 @@ BinaryUnionStruct& BinaryUnionStruct::operator=(FOLLY_MAYBE_UNUSED BinaryUnionSt
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 BinaryUnionStruct::BinaryUnionStruct(apache::thrift::FragileConstructor, ::py3::simple::BinaryUnion u__arg) :
     u(std::move(u__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);

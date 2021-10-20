@@ -36,7 +36,6 @@ void TccStructTraits<::matching_module_name::MyStruct>::translateFieldName(
 namespace matching_module_name {
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(apache::thrift::FragileConstructor, ::matching_module_name::OtherStruct OtherStructField__arg) :
     OtherStructField(std::move(OtherStructField__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);

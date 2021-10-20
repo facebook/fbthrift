@@ -69,7 +69,6 @@ void TccStructTraits<::a::different::ns::AStruct>::translateFieldName(
 namespace a { namespace different { namespace ns {
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AStruct::AStruct(apache::thrift::FragileConstructor, ::std::int32_t FieldA__arg) :
     FieldA(std::move(FieldA__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
@@ -161,7 +160,6 @@ AStructB& AStructB::operator=(FOLLY_MAYBE_UNUSED AStructB&& other) noexcept {
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AStructB::AStructB(apache::thrift::FragileConstructor, ::std::shared_ptr<const ::a::different::ns::AStruct> FieldA__arg) :
     FieldA(std::move(FieldA__arg)) {
 }

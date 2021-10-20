@@ -74,7 +74,6 @@ MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::string myString__arg) :
     myString(std::move(myString__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
@@ -281,7 +280,6 @@ MyException& MyException::operator=(FOLLY_MAYBE_UNUSED MyException&& other) noex
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyException::MyException(apache::thrift::FragileConstructor, ::std::string myString__arg) :
     myString(std::move(myString__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);

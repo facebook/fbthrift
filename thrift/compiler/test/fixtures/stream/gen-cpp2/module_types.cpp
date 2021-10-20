@@ -49,7 +49,6 @@ FooEx& FooEx::operator=(FOLLY_MAYBE_UNUSED FooEx&& other) noexcept {
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 FooEx::FooEx(apache::thrift::FragileConstructor) {}
 
 

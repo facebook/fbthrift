@@ -84,7 +84,6 @@ structured_annotation_inline& structured_annotation_inline::operator=(FOLLY_MAYB
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_inline::structured_annotation_inline(apache::thrift::FragileConstructor, ::std::int64_t count__arg, ::std::string name__arg) :
     count(std::move(count__arg)),
     name(std::move(name__arg)) {
@@ -184,7 +183,6 @@ structured_annotation_with_default& structured_annotation_with_default::operator
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_with_default::structured_annotation_with_default(apache::thrift::FragileConstructor, ::std::string name__arg) :
     name(std::move(name__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
@@ -261,7 +259,6 @@ void TccStructTraits<::cpp2::structured_annotation_forward>::translateFieldName(
 namespace cpp2 {
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_forward::structured_annotation_forward(apache::thrift::FragileConstructor, ::std::int64_t count__arg) :
     count(std::move(count__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
@@ -355,7 +352,6 @@ structured_annotation_recursive& structured_annotation_recursive::operator=(FOLL
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_recursive::structured_annotation_recursive(apache::thrift::FragileConstructor, ::std::string name__arg, ::cpp2::structured_annotation_recursive recurse__arg, ::cpp2::structured_annotation_forward forward__arg) :
     name(std::move(name__arg)),
     recurse(std::move(recurse__arg)),
@@ -507,7 +503,6 @@ structured_annotation_nested& structured_annotation_nested::operator=(FOLLY_MAYB
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_nested::structured_annotation_nested(apache::thrift::FragileConstructor, ::std::string name__arg, ::cpp2::structured_annotation_with_default nest__arg) :
     name(std::move(name__arg)),
     nest(std::move(nest__arg)) {
@@ -633,7 +628,6 @@ MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t annotated_field__arg, ::cpp2::annotated_inline_string annotated_type__arg, ::std::string annotated_recursive__arg, ::std::int64_t annotated_nested__arg) :
     annotated_field(std::move(annotated_field__arg)),
     annotated_type(std::move(annotated_type__arg)),
@@ -759,7 +753,6 @@ MyException& MyException::operator=(FOLLY_MAYBE_UNUSED MyException&& other) noex
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyException::MyException(apache::thrift::FragileConstructor, ::std::string context__arg) :
     context(std::move(context__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);

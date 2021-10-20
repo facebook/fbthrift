@@ -51,7 +51,6 @@ Struct& Struct::operator=(FOLLY_MAYBE_UNUSED Struct&& other) noexcept {
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Struct::Struct(apache::thrift::FragileConstructor, ::module0::Struct first__arg, ::module1::Struct second__arg) :
     first(std::move(first__arg)),
     second(std::move(second__arg)) {
@@ -193,7 +192,6 @@ BigStruct& BigStruct::operator=(FOLLY_MAYBE_UNUSED BigStruct&& other) noexcept {
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 BigStruct::BigStruct(apache::thrift::FragileConstructor, ::module2::Struct s__arg, ::std::int32_t id__arg) :
     s(std::move(s__arg)),
     id(std::move(id__arg)) {

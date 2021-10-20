@@ -55,7 +55,6 @@ Foo& Foo::operator=(FOLLY_MAYBE_UNUSED Foo&& other) noexcept {
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Foo::Foo(apache::thrift::FragileConstructor, ::std::vector<double> field1__arg, ::std::vector<::std::int32_t> field2__arg, ::std::vector<double> field3__arg, ::std::vector<::std::int32_t> field4__arg) :
     field1(std::move(field1__arg)),
     field2(std::move(field2__arg)),
@@ -266,7 +265,6 @@ LazyFoo& LazyFoo::operator=(FOLLY_MAYBE_UNUSED LazyFoo&& other) noexcept {
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 LazyFoo::LazyFoo(apache::thrift::FragileConstructor, ::std::vector<double> field1__arg, ::std::vector<::std::int32_t> field2__arg, ::std::vector<double> field3__arg, ::std::vector<::std::int32_t> field4__arg) :
     field1(std::move(field1__arg)),
     field2(std::move(field2__arg)),
@@ -493,7 +491,6 @@ OptionalFoo& OptionalFoo::operator=(FOLLY_MAYBE_UNUSED OptionalFoo&& other) noex
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 OptionalFoo::OptionalFoo(apache::thrift::FragileConstructor, ::std::vector<double> field1__arg, ::std::vector<::std::int32_t> field2__arg, ::std::vector<double> field3__arg, ::std::vector<::std::int32_t> field4__arg) :
     field1(std::move(field1__arg)),
     field2(std::move(field2__arg)),
@@ -704,7 +701,6 @@ OptionalLazyFoo& OptionalLazyFoo::operator=(FOLLY_MAYBE_UNUSED OptionalLazyFoo&&
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 OptionalLazyFoo::OptionalLazyFoo(apache::thrift::FragileConstructor, ::std::vector<double> field1__arg, ::std::vector<::std::int32_t> field2__arg, ::std::vector<double> field3__arg, ::std::vector<::std::int32_t> field4__arg) :
     field1(std::move(field1__arg)),
     field2(std::move(field2__arg)),
@@ -990,7 +986,6 @@ LazyCppRef& LazyCppRef::operator=(FOLLY_MAYBE_UNUSED LazyCppRef&& other) noexcep
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 LazyCppRef::LazyCppRef(apache::thrift::FragileConstructor, ::std::unique_ptr<::std::vector<::std::int32_t>> field1__arg, ::std::shared_ptr<::std::vector<::std::int32_t>> field2__arg, ::std::shared_ptr<const ::std::vector<::std::int32_t>> field3__arg) :
     field1(std::move(field1__arg)),
     field2(std::move(field2__arg)),
@@ -1238,7 +1233,6 @@ IndexedFoo& IndexedFoo::operator=(FOLLY_MAYBE_UNUSED IndexedFoo&& other) noexcep
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 IndexedFoo::IndexedFoo(apache::thrift::FragileConstructor, double serialized_data_size__arg, ::std::vector<double> field1__arg, ::std::vector<::std::int32_t> field2__arg, ::std::vector<double> field3__arg, ::std::vector<::std::int32_t> field4__arg, ::std::map<::std::int16_t, ::std::int64_t> field_id_to_size__arg) :
     serialized_data_size(std::move(serialized_data_size__arg)),
     field1(std::move(field1__arg)),
@@ -1435,7 +1429,6 @@ OptionalIndexedFoo& OptionalIndexedFoo::operator=(FOLLY_MAYBE_UNUSED OptionalInd
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 OptionalIndexedFoo::OptionalIndexedFoo(apache::thrift::FragileConstructor, double serialized_data_size__arg, ::std::vector<double> field1__arg, ::std::vector<::std::int32_t> field2__arg, ::std::vector<double> field3__arg, ::std::vector<::std::int32_t> field4__arg, ::std::map<::std::int16_t, ::std::int64_t> field_id_to_size__arg) :
     serialized_data_size(std::move(serialized_data_size__arg)),
     field1(std::move(field1__arg)),
@@ -1602,7 +1595,6 @@ void TccStructTraits<::apache::thrift::test::Empty>::translateFieldName(
 namespace apache { namespace thrift { namespace test {
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Empty::Empty(apache::thrift::FragileConstructor) {}
 
 

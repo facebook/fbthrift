@@ -57,7 +57,6 @@ Fiery& Fiery::operator=(FOLLY_MAYBE_UNUSED Fiery&& other) noexcept {
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Fiery::Fiery(apache::thrift::FragileConstructor, ::std::string message__arg) :
     message(std::move(message__arg)) {
 }
@@ -154,7 +153,6 @@ Serious& Serious::operator=(FOLLY_MAYBE_UNUSED Serious&& other) noexcept {
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Serious::Serious(apache::thrift::FragileConstructor, ::std::string sonnet__arg) :
     sonnet(std::move(sonnet__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
@@ -256,7 +254,6 @@ ComplexFieldNames& ComplexFieldNames::operator=(FOLLY_MAYBE_UNUSED ComplexFieldN
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexFieldNames::ComplexFieldNames(apache::thrift::FragileConstructor, ::std::string error_message__arg, ::std::string internal_error_message__arg) :
     error_message(std::move(error_message__arg)),
     internal_error_message(std::move(internal_error_message__arg)) {
@@ -368,7 +365,6 @@ CustomFieldNames& CustomFieldNames::operator=(FOLLY_MAYBE_UNUSED CustomFieldName
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CustomFieldNames::CustomFieldNames(apache::thrift::FragileConstructor, ::std::string error_message__arg, ::std::string internal_error_message__arg) :
     error_message(std::move(error_message__arg)),
     internal_error_message(std::move(internal_error_message__arg)) {
@@ -481,7 +477,6 @@ ExceptionWithPrimitiveField& ExceptionWithPrimitiveField::operator=(FOLLY_MAYBE_
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::int32_t error_code__arg) :
     message(std::move(message__arg)),
     error_code(std::move(error_code__arg)) {
@@ -581,7 +576,6 @@ Banal& Banal::operator=(FOLLY_MAYBE_UNUSED Banal&& other) noexcept {
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Banal::Banal(apache::thrift::FragileConstructor) {}
 
 

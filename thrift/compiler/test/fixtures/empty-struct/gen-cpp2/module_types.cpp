@@ -36,7 +36,6 @@ void TccStructTraits<::cpp2::Empty>::translateFieldName(
 namespace cpp2 {
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Empty::Empty(apache::thrift::FragileConstructor) {}
 
 
