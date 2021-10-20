@@ -55,7 +55,6 @@ Foo& Foo::operator=(FOLLY_MAYBE_UNUSED Foo&& other) noexcept {
 }
 
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Foo::Foo(apache::thrift::FragileConstructor, ::std::int32_t field1__arg, ::std::int32_t field2__arg, ::std::string field3__arg, double field4__arg) :
     field1(std::move(field1__arg)),
     field2(std::move(field2__arg)),
