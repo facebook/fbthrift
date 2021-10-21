@@ -12,61 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import asyncio
-import contextlib
-import tempfile
-import time
 import unittest
-from multiprocessing import Process
 
-from thrift.py3.server import ThriftServer
 from thrift.py3lite.serializer import Protocol
 from thrift.py3lite.sync_client import ClientType, get_client
-from thrift.py3lite.test import types, lite_types
 from thrift.py3lite.test.lite_clients import TestService
-from thrift.py3lite.test.services import TestServiceInterface
-
-
-class Handler(TestServiceInterface):
-    async def add(self, num1: int, num2: int) -> int:
-        return num1 + num2
-
-    async def divide(self, dividend: float, divisor: float) -> float:
-        try:
-            return dividend / divisor
-        except ZeroDivisionError as e:
-            raise types.ArithmeticException(str(e))
-
-    async def noop(self) -> None:
-        pass
-
-    async def oops(self) -> None:
-        raise types.EmptyException()
-
-    async def oneway(self) -> None:
-        pass
-
-
-@contextlib.contextmanager
-def server_in_another_process():
-    async def start_server_async(path):
-        server = ThriftServer(Handler(), path=path)
-        await server.serve()
-
-    def start_server(path):
-        asyncio.run(start_server_async(path))
-
-    with tempfile.NamedTemporaryFile() as socket:
-        socket.close()
-        process = Process(target=start_server, args=(socket.name,))
-        process.start()
-        time.sleep(1)  # wait for server to start up
-        try:
-            yield socket.name
-        finally:
-            time.sleep(1)  # wait for server to clear the queue
-            process.terminate()
-            process.join()
+from thrift.py3lite.test.lite_types import ArithmeticException, EmptyException
+from thrift.py3lite.test.test_server import server_in_another_process
 
 
 class SyncClientTests(unittest.TestCase):
@@ -95,13 +47,13 @@ class SyncClientTests(unittest.TestCase):
         with server_in_another_process() as path:
             with get_client(TestService, path=path) as client:
                 self.assertAlmostEqual(2, client.divide(6, 3))
-                with self.assertRaises(lite_types.ArithmeticException):
+                with self.assertRaises(ArithmeticException):
                     client.divide(1, 0)
 
     def test_void_return_with_exception(self) -> None:
         with server_in_another_process() as path:
             with get_client(TestService, path=path) as client:
-                with self.assertRaises(lite_types.EmptyException):
+                with self.assertRaises(EmptyException):
                     client.oops()
 
     def test_oneway(self) -> None:

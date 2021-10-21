@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from folly cimport cFollySemiFuture
 from folly.iobuf cimport cIOBuf
 from libc.stdint cimport uint16_t
 from libcpp.memory cimport unique_ptr
@@ -30,6 +31,10 @@ cdef extern from "thrift/lib/py3lite/client/OmniClient.h" namespace "::thrift::p
             unique_ptr[cIOBuf] args,
         )
         void oneway_send(
+            const string& methodName,
+            unique_ptr[cIOBuf] args,
+        )
+        cFollySemiFuture[cOmniClientResponseWithHeaders] semifuture_send(
             const string& methodName,
             unique_ptr[cIOBuf] args,
         )
