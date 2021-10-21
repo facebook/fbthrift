@@ -49,7 +49,17 @@ class OmniClient : public apache::thrift::TClientBase {
 
   OmniClientResponseWithHeaders sync_send(
       const std::string& functionName,
+      std::unique_ptr<folly::IOBuf> args,
+      const std::unordered_map<std::string, std::string>& headers = {});
+
+  OmniClientResponseWithHeaders sync_send(
+      const std::string& functionName,
       const std::string& args,
+      const std::unordered_map<std::string, std::string>& headers = {});
+
+  void oneway_send(
+      const std::string& functionName,
+      std::unique_ptr<folly::IOBuf> args,
       const std::unordered_map<std::string, std::string>& headers = {});
 
   void oneway_send(
@@ -64,6 +74,11 @@ class OmniClient : public apache::thrift::TClientBase {
    */
   folly::SemiFuture<OmniClientResponseWithHeaders> semifuture_send(
       const std::string& functionName,
+      std::unique_ptr<folly::IOBuf> args,
+      const std::unordered_map<std::string, std::string>& headers = {});
+
+  folly::SemiFuture<OmniClientResponseWithHeaders> semifuture_send(
+      const std::string& functionName,
       const std::string& args,
       const std::unordered_map<std::string, std::string>& headers = {});
 
@@ -75,8 +90,8 @@ class OmniClient : public apache::thrift::TClientBase {
    */
   void sendImpl(
       apache::thrift::RpcOptions rpcOptions,
-      const std::string& args,
       const std::string& functionName,
+      std::unique_ptr<folly::IOBuf> args,
       const char* serviceNameForContextStack,
       const char* functionNameForContextStack,
       std::unique_ptr<apache::thrift::RequestCallback> callback);

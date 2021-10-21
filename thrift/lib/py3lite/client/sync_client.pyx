@@ -18,8 +18,10 @@ import time
 cimport folly.iobuf
 
 from cython.operator cimport dereference as deref
+from folly.iobuf cimport IOBuf
 from libc.stdint cimport uint32_t
 from libcpp.memory cimport make_unique
+from libcpp.string cimport string
 from libcpp.utility cimport move as cmove
 from thrift.py3lite.client.request_channel cimport (
     sync_createThriftChannelTCP,
@@ -29,7 +31,7 @@ from thrift.py3lite.client.request_channel cimport (
 )
 from thrift.py3lite.client.request_channel import ClientType
 from thrift.py3lite.serializer cimport Protocol as cProtocol
-from thrift.py3lite.serializer import serialize, deserialize
+from thrift.py3lite.serializer import serialize_iobuf, deserialize
 
 
 cdef class SyncClient:
@@ -51,12 +53,12 @@ cdef class SyncClient:
         response_cls,
     ):
         protocol = deref(self._omni_client).getChannelProtocolId()
-        args_bytes = serialize(args, protocol=protocol)
+        cdef IOBuf args_iobuf = serialize_iobuf(args, protocol=protocol)
         if response_cls is None:
-            deref(self._omni_client).oneway_send(function_name, args_bytes)
+            deref(self._omni_client).oneway_send(function_name, args_iobuf.c_clone())
         else:
             response_iobuf = folly.iobuf.from_unique_ptr(
-                deref(self._omni_client).sync_send(function_name, args_bytes).buf
+                deref(self._omni_client).sync_send(function_name, args_iobuf.c_clone()).buf
             )
             return deserialize(response_cls, response_iobuf, protocol=protocol)
 

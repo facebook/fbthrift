@@ -12,21 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from folly.iobuf cimport cIOBuf
-from libc.stdint cimport uint16_t
 from libcpp.memory cimport unique_ptr
-from libcpp.string cimport string
-from thrift.py3lite.client.request_channel cimport cRequestChannel_ptr
+from thrift.py3lite.client.omni_client cimport cOmniClient
 
-cdef extern from "thrift/lib/py3lite/client/OmniClient.h" namespace "::thrift::py3lite::client":
-    cdef cppclass cOmniClientResponseWithHeaders "::thrift::py3lite::client::OmniClientResponseWithHeaders":
-        unique_ptr[cIOBuf] buf
-
-    cdef cppclass cOmniClient "::thrift::py3lite::client::OmniClient":
-        cOmniClient(cRequestChannel_ptr channel, const string& serviceName)
-        cOmniClientResponseWithHeaders sync_send(const string& methodName, const string& args)
-        void oneway_send(const string& methodName, const string& args)
-        uint16_t getChannelProtocolId()
 
 cdef class SyncClient:
     cdef unique_ptr[cOmniClient] _omni_client

@@ -75,15 +75,22 @@ OmniClient::~OmniClient() {
 
 OmniClientResponseWithHeaders OmniClient::sync_send(
     const std::string& functionName,
-    const std::string& args,
+    std::unique_ptr<folly::IOBuf> args,
     const std::unordered_map<std::string, std::string>& headers) {
   return folly::coro::blockingWait(
-      semifuture_send(functionName, args, headers));
+      semifuture_send(functionName, std::move(args), headers));
+}
+
+OmniClientResponseWithHeaders OmniClient::sync_send(
+    const std::string& functionName,
+    const std::string& args,
+    const std::unordered_map<std::string, std::string>& headers) {
+  return sync_send(functionName, folly::IOBuf::copyBuffer(args), headers);
 }
 
 void OmniClient::oneway_send(
     const std::string& functionName,
-    const std::string& args,
+    std::unique_ptr<folly::IOBuf> args,
     const std::unordered_map<std::string, std::string>& headers) {
   RpcOptions rpcOpts;
   auto header = std::make_shared<apache::thrift::transport::THeader>();
@@ -93,7 +100,7 @@ void OmniClient::oneway_send(
     header->setHeader(entry.first, entry.second);
   }
 
-  SerializedRequest serializedRequest(folly::IOBuf::copyBuffer(args));
+  SerializedRequest serializedRequest(std::move(args));
 
   channel_->sendRequestNoResponse(
       std::move(rpcOpts),
@@ -103,9 +110,16 @@ void OmniClient::oneway_send(
       nullptr);
 }
 
-folly::SemiFuture<OmniClientResponseWithHeaders> OmniClient::semifuture_send(
+void OmniClient::oneway_send(
     const std::string& functionName,
     const std::string& args,
+    const std::unordered_map<std::string, std::string>& headers) {
+  oneway_send(functionName, folly::IOBuf::copyBuffer(args), headers);
+}
+
+folly::SemiFuture<OmniClientResponseWithHeaders> OmniClient::semifuture_send(
+    const std::string& functionName,
+    std::unique_ptr<folly::IOBuf> args,
     const std::unordered_map<std::string, std::string>& headers) {
   RpcOptions rpcOpts;
   for (const auto& entry : headers) {
@@ -124,7 +138,7 @@ folly::SemiFuture<OmniClientResponseWithHeaders> OmniClient::semifuture_send(
   sendImpl(
       rpcOpts,
       functionName,
-      args,
+      std::move(args),
       serviceAndFunction->first.c_str(),
       serviceAndFunction->second.c_str(),
       std::make_unique<SemiFutureCallback>(std::move(promise), channel_));
@@ -143,10 +157,17 @@ folly::SemiFuture<OmniClientResponseWithHeaders> OmniClient::semifuture_send(
       });
 }
 
+folly::SemiFuture<OmniClientResponseWithHeaders> OmniClient::semifuture_send(
+    const std::string& functionName,
+    const std::string& args,
+    const std::unordered_map<std::string, std::string>& headers) {
+  return semifuture_send(functionName, folly::IOBuf::copyBuffer(args), headers);
+}
+
 void OmniClient::sendImpl(
     RpcOptions rpcOptions,
     const std::string& functionName,
-    const std::string& args,
+    std::unique_ptr<folly::IOBuf> args,
     const char* serviceNameForContextStack,
     const char* functionNameForContextStack,
     std::unique_ptr<RequestCallback> callback) {
@@ -161,7 +182,7 @@ void OmniClient::sendImpl(
   callbackContext.protocolId = channel_->getProtocolId();
   callbackContext.ctx = std::move(ctx);
 
-  SerializedRequest serializedRequest(folly::IOBuf::copyBuffer(args));
+  SerializedRequest serializedRequest(std::move(args));
 
   // Send the request!
   channel_->sendRequestAsync<RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE>(
