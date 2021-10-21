@@ -228,7 +228,7 @@ uint8_t writeVarintBMI2(Cursor& c, T valueS) {
     c.ensure(10);
     uint8_t* p = c.writableData();
     folly::storeUnaligned<uint64_t>(p, v);
-    p[sizeof(uint64_t) + 0] = value >> 56;
+    p[sizeof(uint64_t) + 0] = static_cast<uint64_t>(value) >> 56;
     p[sizeof(uint64_t) + 1] = 1;
     c.append(size);
   }
