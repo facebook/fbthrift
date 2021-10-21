@@ -28,7 +28,8 @@ namespace thrift {
 namespace detail {
 template <class T>
 struct VisitByFieldId {
-  static_assert(sizeof(T) < 0, "Must include visitation header");
+  static_assert(is_thrift_class_v<T>, "Type must be thrift class");
+  static_assert(!is_thrift_class_v<T>, "Must include visitation header");
 };
 [[noreturn]] void throwInvalidThriftId(size_t id, std::string_view type);
 } // namespace detail

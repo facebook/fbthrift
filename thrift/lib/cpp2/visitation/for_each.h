@@ -25,7 +25,8 @@ namespace thrift {
 namespace detail {
 template <class T>
 struct ForEachField {
-  static_assert(sizeof(T) < 0, "Must include visitation header");
+  static_assert(is_thrift_class_v<T>, "Type must be thrift class");
+  static_assert(!is_thrift_class_v<T>, "Must include visitation header");
 };
 } // namespace detail
 /**
