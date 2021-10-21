@@ -15,15 +15,14 @@
 import types
 import typing
 
+from thrift.py3lite.client.request_channel import RequestChannel
 from thrift.py3lite.serializer import Protocol
 from thrift.py3lite.types import Struct, Union
 
 StructOrUnion = typing.TypeVar("StructOrUnion", bound=typing.Union[Struct, Union])
 
-class RequestChannel: ...
-
 class SyncClient:
-    def __init__(self, channel: RequestChannel, service_name: str) -> SyncClient: ...
+    def __init__(self, channel: RequestChannel, service_name: str) -> None: ...
     def __enter__() -> SyncClient: ...
     def __exit__(
         self,

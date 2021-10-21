@@ -15,26 +15,26 @@
 # cython: c_string_type=unicode, c_string_encoding=utf8
 
 import time
+cimport folly.iobuf
 
+from cython.operator cimport dereference as deref
 from libc.stdint cimport uint32_t
 from libcpp.memory cimport make_unique
 from libcpp.utility cimport move as cmove
-from cython.operator cimport dereference as deref
-from thrift.py3lite.serializer import serialize, deserialize
+from thrift.py3lite.client.request_channel cimport (
+    sync_createThriftChannelTCP,
+    sync_createThriftChannelUnix,
+    ClientType as cClientType,
+    RequestChannel,
+)
+from thrift.py3lite.client.request_channel import ClientType
 from thrift.py3lite.serializer cimport Protocol as cProtocol
-from thrift.py3lite.types import Struct, Union
-cimport folly.iobuf
+from thrift.py3lite.serializer import serialize, deserialize
 
-cdef class RequestChannel:
-    @staticmethod
-    cdef RequestChannel create(cRequestChannel_ptr channel):
-        cdef RequestChannel inst = RequestChannel.__new__(RequestChannel)
-        inst._cpp_obj = cmove(channel)
-        return inst
 
 cdef class SyncClient:
     def __init__(self, RequestChannel channel, string service_name):
-        self._cpp_obj = make_unique[cOmniClient](
+        self._omni_client = make_unique[cOmniClient](
             cmove(channel._cpp_obj), service_name)
 
     def __enter__(self):
@@ -50,14 +50,13 @@ cdef class SyncClient:
         args,
         response_cls,
     ):
-        protocol = deref(self._cpp_obj).getChannelProtocolId()
+        protocol = deref(self._omni_client).getChannelProtocolId()
         args_bytes = serialize(args, protocol=protocol)
         if response_cls is None:
-            # oneway
-            deref(self._cpp_obj).oneway_send(function_name, args_bytes)
+            deref(self._omni_client).oneway_send(function_name, args_bytes)
         else:
             response_iobuf = folly.iobuf.from_unique_ptr(
-                deref(self._cpp_obj).sync_send(function_name, args_bytes).buf
+                deref(self._omni_client).sync_send(function_name, args_bytes).buf
             )
             return deserialize(response_cls, response_iobuf, protocol=protocol)
 
@@ -69,7 +68,7 @@ def get_client(
     port=None,
     path=None,
     double timeout=1,
-    ClientType client_type = ClientType.THRIFT_HEADER_CLIENT_TYPE,
+    cClientType client_type = ClientType.THRIFT_HEADER_CLIENT_TYPE,
     cProtocol protocol = cProtocol.COMPACT,
 ):
     if not issubclass(clientKlass, SyncClient):
@@ -82,11 +81,11 @@ def get_client(
     if host is not None and port is not None:
         if path is not None:
             raise ValueError("Can not set path and host/port at same time")
-        channel = RequestChannel.create(createThriftChannelTCP(
+        channel = RequestChannel.create(sync_createThriftChannelTCP(
             host, port, _timeout_ms, client_type, protocol
         ))
     elif path is not None:
-        channel = RequestChannel.create(createThriftChannelUnix(
+        channel = RequestChannel.create(sync_createThriftChannelUnix(
             path, _timeout_ms, client_type, protocol
         ))
     else:

@@ -22,7 +22,7 @@
 
 namespace thrift {
 namespace py3lite {
-namespace sync_client {
+namespace client {
 
 using RequestChannel_ptr = std::unique_ptr<
     apache::thrift::RequestChannel,
@@ -31,7 +31,14 @@ using RequestChannel_ptr = std::unique_ptr<
 /**
  * Create a thrift channel by connecting to a host:port over TCP.
  */
-RequestChannel_ptr createThriftChannelTCP(
+folly::Future<RequestChannel_ptr> createThriftChannelTCP(
+    const std::string& host,
+    uint16_t port,
+    uint32_t connect_timeout,
+    CLIENT_TYPE client_t,
+    apache::thrift::protocol::PROTOCOL_TYPES proto);
+
+RequestChannel_ptr sync_createThriftChannelTCP(
     const std::string& host,
     uint16_t port,
     uint32_t connect_timeout,
@@ -41,12 +48,18 @@ RequestChannel_ptr createThriftChannelTCP(
 /**
  * Create a thrift channel by connecting to a Unix domain socket.
  */
-RequestChannel_ptr createThriftChannelUnix(
+folly::Future<RequestChannel_ptr> createThriftChannelUnix(
     const std::string& path,
     uint32_t connect_timeout,
     CLIENT_TYPE client_t,
     apache::thrift::protocol::PROTOCOL_TYPES proto);
 
-} // namespace sync_client
+RequestChannel_ptr sync_createThriftChannelUnix(
+    const std::string& path,
+    uint32_t connect_timeout,
+    CLIENT_TYPE client_t,
+    apache::thrift::protocol::PROTOCOL_TYPES proto);
+
+} // namespace client
 } // namespace py3lite
 } // namespace thrift

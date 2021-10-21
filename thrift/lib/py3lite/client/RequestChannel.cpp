@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/py3lite/client/SyncClient.h>
+#include <thrift/lib/py3lite/client/RequestChannel.h>
 
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp/transport/THeader.h>
@@ -24,14 +24,11 @@
 
 namespace thrift {
 namespace py3lite {
-namespace sync_client {
+namespace client {
 
 using namespace apache::thrift;
 
-/**
- * Create a thrift channel by connecting to a host:port over TCP.
- */
-RequestChannel_ptr createThriftChannelTCP(
+folly::Future<RequestChannel_ptr> createThriftChannelTCP(
     const std::string& host,
     uint16_t port,
     uint32_t connect_timeout,
@@ -55,13 +52,21 @@ RequestChannel_ptr createThriftChannelTCP(
       throw std::runtime_error("Unsupported client type");
     }
   });
+  return future;
+}
+
+RequestChannel_ptr sync_createThriftChannelTCP(
+    const std::string& host,
+    uint16_t port,
+    uint32_t connect_timeout,
+    CLIENT_TYPE client_t,
+    apache::thrift::protocol::PROTOCOL_TYPES proto) {
+  auto future =
+      createThriftChannelTCP(host, port, connect_timeout, client_t, proto);
   return std::move(future.wait().value());
 }
 
-/**
- * Create a thrift channel by connecting to a Unix domain socket.
- */
-RequestChannel_ptr createThriftChannelUnix(
+folly::Future<RequestChannel_ptr> createThriftChannelUnix(
     const std::string& path,
     uint32_t connect_timeout,
     CLIENT_TYPE client_t,
@@ -84,9 +89,18 @@ RequestChannel_ptr createThriftChannelUnix(
       throw std::runtime_error("Unsupported client type");
     }
   });
+  return future;
+}
+
+RequestChannel_ptr sync_createThriftChannelUnix(
+    const std::string& path,
+    uint32_t connect_timeout,
+    CLIENT_TYPE client_t,
+    apache::thrift::protocol::PROTOCOL_TYPES proto) {
+  auto future = createThriftChannelUnix(path, connect_timeout, client_t, proto);
   return std::move(future.wait().value());
 }
 
-} // namespace sync_client
+} // namespace client
 } // namespace py3lite
 } // namespace thrift
