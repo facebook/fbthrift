@@ -32,7 +32,7 @@
 #include <thrift/lib/thrift/gen-cpp2/RocketUpgradeAsyncClient.h>
 
 THRIFT_FLAG_DEFINE_bool(raw_client_rocket_upgrade_enabled_v2, true);
-THRIFT_FLAG_DEFINE_int64(raw_client_rocket_upgrade_timeout_ms, 500);
+THRIFT_FLAG_DEFINE_int64(raw_client_rocket_upgrade_timeout_ms, 2000);
 
 using folly::IOBuf;
 using folly::IOBufQueue;
