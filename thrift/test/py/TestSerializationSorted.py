@@ -24,7 +24,7 @@ from thrift.protocol import TSimpleJSONProtocol
 from thrift.transport.TTransport import TMemoryBuffer
 
 # The sorted one.
-from SortKeys.ttypes import SortedStruct
+from SortKeys.ttypes import SortedStruct, NegativeId
 from SortSets.ttypes import SortedSetStruct
 
 
@@ -75,3 +75,9 @@ class TestSortKeys(unittest.TestCase):
         self.assertNotEqual(blob, unsorted_blob)
         self.assertEqual(blob, sorted_blob)
         self.assertEqual(static_struct, sorted_struct)
+
+    def testNegativeId(self):
+        obj = NegativeId()
+        self.assertEqual(obj.field1, 1)
+        self.assertEqual(obj.field2, 2)
+        self.assertEqual(obj.field3, 3)

@@ -286,7 +286,7 @@ NegativeId.thrift_struct_annotations = {
 NegativeId.thrift_field_annotations = {
 }
 
-def NegativeId__init__(self, field1=NegativeId.thrift_spec[-1][4], field2=NegativeId.thrift_spec[-2][4], field3=NegativeId.thrift_spec[1][4],):
+def NegativeId__init__(self, field1=NegativeId.thrift_spec[1][4], field2=NegativeId.thrift_spec[0][4], field3=NegativeId.thrift_spec[3][4],):
   self.field1 = field1
   self.field2 = field2
   self.field3 = field3

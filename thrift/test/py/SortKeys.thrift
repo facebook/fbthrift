@@ -19,3 +19,9 @@ namespace py SortKeys
 struct SortedStruct {
   1: map<string, double> aMap;
 }
+
+struct NegativeId {
+  -1: i32 field1 = 1;
+  -2: i32 field2 = 2;
+  1: i32 field3 = 3;
+}

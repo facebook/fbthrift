@@ -277,7 +277,7 @@ class t_py_generator : public t_concat_generator {
   std::string rename_reserved_keywords(const std::string& value);
   std::string render_includes();
   std::string render_fastproto_includes();
-  std::string declare_argument(std::string structname, const t_field* tfield);
+  std::string declare_argument(const t_struct* tstruct, const t_field* tfield);
   std::string render_field_default_value(const t_field* tfield);
   std::string type_name(const t_type* ttype);
   std::string function_signature(
@@ -354,6 +354,7 @@ class t_py_generator : public t_concat_generator {
   std::map<std::string, const std::vector<t_function*>> func_map_;
 
   void generate_json_reader_fn_signature(ofstream& out);
+  static int32_t get_thrift_spec_key(const t_struct*, const t_field*);
 };
 
 std::string t_py_generator::get_real_py_module(const t_program* program) {
@@ -1475,10 +1476,7 @@ void t_py_generator::generate_py_thrift_spec(
     } else {
       for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
         // This fills in default values, as opposed to nulls
-        out << " "
-            << declare_argument(
-                   rename_reserved_keywords(tstruct->get_name()), *m_iter)
-            << ",";
+        out << " " << declare_argument(tstruct, *m_iter) << ",";
       }
     }
     out << "):" << endl;
@@ -1493,7 +1491,8 @@ void t_py_generator::generate_py_thrift_spec(
                     << "\",\n";
         if (member->get_value() != nullptr) {
           indent(out) << "  " << rename_reserved_keywords(tstruct->get_name())
-                      << ".thrift_spec[" << member->get_key() << "][4],\n";
+                      << ".thrift_spec[" << get_thrift_spec_key(tstruct, member)
+                      << "][4],\n";
         } else {
           indent(out) << "  None,\n";
         }
@@ -1528,7 +1527,8 @@ void t_py_generator::generate_py_thrift_spec(
             (*m_iter)->get_value() != nullptr) {
           indent(out) << "if "
                       << rename_reserved_keywords((*m_iter)->get_name())
-                      << " is self.thrift_spec[" << (*m_iter)->get_key()
+                      << " is self.thrift_spec["
+                      << get_thrift_spec_key(tstruct, *m_iter)
                       << "][4]:" << endl;
           indent(out) << "  " << rename_reserved_keywords((*m_iter)->get_name())
                       << " = " << render_field_default_value(*m_iter) << endl;
@@ -1988,7 +1988,8 @@ void t_py_generator::generate_py_struct_writer(
       // the value equals the default value
       out << " and self." << rename_reserved_keywords((*f_iter)->get_name())
           << " != "
-          << "self.thrift_spec[" << (*f_iter)->get_key() << "][4]";
+          << "self.thrift_spec[" << get_thrift_spec_key(tstruct, *f_iter)
+          << "][4]";
     }
     out << ":" << endl;
     indent_up();
@@ -3390,11 +3391,12 @@ void t_py_generator::generate_python_docstring(
  * @param tfield The field
  */
 string t_py_generator::declare_argument(
-    std::string structname, const t_field* tfield) {
+    const t_struct* tstruct, const t_field* tfield) {
   std::ostringstream result;
   result << rename_reserved_keywords(tfield->get_name()) << "=";
   if (tfield->get_value() != nullptr) {
-    result << structname << ".thrift_spec[" << tfield->get_key() << "][4]";
+    result << rename_reserved_keywords(tstruct->get_name()) << ".thrift_spec["
+           << get_thrift_spec_key(tstruct, tfield) << "][4]";
   } else {
     result << "None";
   }
@@ -3601,6 +3603,32 @@ const std::vector<t_function*>& t_py_generator::get_functions(
   }
   auto inserted = func_map_.emplace(name, std::move(funcs));
   return inserted.first->second;
+}
+
+int32_t t_py_generator::get_thrift_spec_key(
+    const t_struct* s, const t_field* f) {
+  // If struct contains negative ids, e.g. for following struct
+  //
+  // struct NegativeId {
+  //   -2: i32 field1 = 1;
+  //   2: i32 field2 = 2;
+  // }
+  //
+  // The generated thrift_sepc looks like this
+  //
+  // NegativeId.thrift_spec = (
+  //   (-2, TType.I32, 'field2', None, 2, 2, ), # -2
+  //   None, # -1,
+  //   None, # 0
+  //   None, # 1,
+  //   (2, TType.I32, 'field3', None, 3, 2, ), # 2
+  // )
+  //
+  // In this case, to get thrift_spec of corresponding field, we need to add
+  // offset to field id: `thrift_spec[id + offset]`
+  const int32_t smallest_id = s->get_sorted_members()[0]->get_key();
+  const int32_t offset = -std::min(smallest_id, 0);
+  return f->get_key() + offset;
 }
 
 THRIFT_REGISTER_GENERATOR(
