@@ -27,7 +27,6 @@ use crate::Result;
 use bufsize::SizeCounter;
 use bytes::{Bytes, BytesMut};
 use ghost::phantom;
-use std::convert::TryFrom;
 
 pub const BINARY_VERSION_MASK: u32 = 0xffff_0000;
 pub const BINARY_VERSION_1: u32 = 0x8001_0000;

@@ -21,7 +21,6 @@ use fbthrift_test_if::{
     Basic, Containers, En, MainStruct, MainStructNoBinary, Small, SubStruct, Un, UnOne,
 };
 use std::collections::BTreeMap;
-use std::default::Default;
 use std::io::Cursor;
 
 #[test]

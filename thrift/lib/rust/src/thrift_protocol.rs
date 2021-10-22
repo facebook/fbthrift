@@ -18,7 +18,6 @@ use crate::errors::ProtocolError;
 use crate::Result;
 use num_derive::FromPrimitive;
 use num_traits::FromPrimitive;
-use std::convert::TryFrom;
 
 /// Protocol kind. int16
 #[repr(i16)]

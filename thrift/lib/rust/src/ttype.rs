@@ -20,7 +20,6 @@ use bytes::Bytes;
 use ordered_float::OrderedFloat;
 use std::{
     collections::{BTreeMap, BTreeSet, HashMap, HashSet},
-    convert::TryFrom,
     hash::Hash,
 };
 

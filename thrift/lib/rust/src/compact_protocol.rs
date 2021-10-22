@@ -28,7 +28,6 @@ use crate::Result;
 use bufsize::SizeCounter;
 use bytes::{Bytes, BytesMut};
 use ghost::phantom;
-use std::convert::TryFrom;
 use std::io::Cursor;
 
 const COMPACT_PROTOCOL_VERSION: u8 = 0x02;
