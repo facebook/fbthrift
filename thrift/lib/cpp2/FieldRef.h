@@ -1267,10 +1267,10 @@ class union_field_ref {
         vtable_(vt) {}
 
   template <
-      typename U,
+      typename U = value_type,
       std::enable_if_t<
-          std::is_convertible<U, value_type>::value ||
-              std::is_assignable<value_type, U>::value,
+          std::is_assignable<reference_type, U&&>::value &&
+              std::is_constructible<value_type, U&&>::value,
           int> = 0>
   FOLLY_ERASE union_field_ref& operator=(U&& other) noexcept(
       std::is_nothrow_constructible<value_type, U>::value&&

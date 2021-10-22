@@ -77,6 +77,18 @@ TEST(UnionFieldTest, operator_deref) {
   EXPECT_THROW(*a.int64_ref(), bad_field_access);
 }
 
+TEST(UnionFieldTest, operator_assign) {
+  Basic a;
+  a.int64_ref() = 4;
+  a.list_i32_ref() = {1, 2};
+
+  // `folly::StringPiece` has explicit support for explicit conversion to
+  // `std::string`-like types, make sure that keeps working here.
+  folly::StringPiece lvalue = "lvalue";
+  a.str_ref() = lvalue;
+  a.str_ref() = folly::StringPiece("xvalue");
+}
+
 TEST(UnionFieldTest, duplicate_type) {
   DuplicateType a;
 
