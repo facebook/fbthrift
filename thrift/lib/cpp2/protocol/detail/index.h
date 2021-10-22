@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <cmath>
+
 #include <folly/MapUtil.h>
 #include <folly/Optional.h>
 #include <folly/Range.h>
@@ -327,6 +329,10 @@ class ProtocolReaderStructReadStateWithIndexImpl
     double indexOffset;
     p.readDouble(indexOffset);
     p.readFieldEnd();
+    if (std::isnan(indexOffset)) {
+      return false;
+    }
+
     indexOffset_ = indexOffset;
     return true;
   }
