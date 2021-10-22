@@ -6,6 +6,7 @@
 #
 
 from fbcode.thrift.py3lite.sync_client import SyncClient as _fbthrift_py3lite_SyncClient
+from fbcode.thrift.py3lite.async_client import AsyncClient as _fbthrift_py3lite_AsyncClient
 import fbcode.thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 import module.lite_types as _module_lite_types
 
@@ -739,6 +740,734 @@ class SimpleService:
                 "Empty Response",
             )
 
+    class Async(_fbthrift_py3lite_AsyncClient):
+        def __init__(self):
+            super().__init__("SimpleService")
+
+        async def get_five(
+            self
+        ):
+            resp = await self._send_request(
+                "get_five",
+                _module_lite_types._fbthrift_SimpleService_get_five_args(),
+                _module_lite_types._fbthrift_SimpleService_get_five_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def add_five(
+            self,
+            num
+        ):
+            resp = await self._send_request(
+                "add_five",
+                _module_lite_types._fbthrift_SimpleService_add_five_args(
+                    num=num,),
+                _module_lite_types._fbthrift_SimpleService_add_five_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def do_nothing(
+            self
+        ):
+            resp = await self._send_request(
+                "do_nothing",
+                _module_lite_types._fbthrift_SimpleService_do_nothing_args(),
+                _module_lite_types._fbthrift_SimpleService_do_nothing_result,
+            )
+
+        async def concat(
+            self,
+            first,
+            second
+        ):
+            resp = await self._send_request(
+                "concat",
+                _module_lite_types._fbthrift_SimpleService_concat_args(
+                    first=first,
+                    second=second,),
+                _module_lite_types._fbthrift_SimpleService_concat_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def get_value(
+            self,
+            simple_struct
+        ):
+            resp = await self._send_request(
+                "get_value",
+                _module_lite_types._fbthrift_SimpleService_get_value_args(
+                    simple_struct=simple_struct,),
+                _module_lite_types._fbthrift_SimpleService_get_value_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def negate(
+            self,
+            input
+        ):
+            resp = await self._send_request(
+                "negate",
+                _module_lite_types._fbthrift_SimpleService_negate_args(
+                    input=input,),
+                _module_lite_types._fbthrift_SimpleService_negate_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def tiny(
+            self,
+            input
+        ):
+            resp = await self._send_request(
+                "tiny",
+                _module_lite_types._fbthrift_SimpleService_tiny_args(
+                    input=input,),
+                _module_lite_types._fbthrift_SimpleService_tiny_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def small(
+            self,
+            input
+        ):
+            resp = await self._send_request(
+                "small",
+                _module_lite_types._fbthrift_SimpleService_small_args(
+                    input=input,),
+                _module_lite_types._fbthrift_SimpleService_small_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def big(
+            self,
+            input
+        ):
+            resp = await self._send_request(
+                "big",
+                _module_lite_types._fbthrift_SimpleService_big_args(
+                    input=input,),
+                _module_lite_types._fbthrift_SimpleService_big_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def two(
+            self,
+            input
+        ):
+            resp = await self._send_request(
+                "two",
+                _module_lite_types._fbthrift_SimpleService_two_args(
+                    input=input,),
+                _module_lite_types._fbthrift_SimpleService_two_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def expected_exception(
+            self
+        ):
+            resp = await self._send_request(
+                "expected_exception",
+                _module_lite_types._fbthrift_SimpleService_expected_exception_args(),
+                _module_lite_types._fbthrift_SimpleService_expected_exception_result,
+            )
+            if resp.se is not None:
+                raise resp.se
+
+        async def unexpected_exception(
+            self
+        ):
+            resp = await self._send_request(
+                "unexpected_exception",
+                _module_lite_types._fbthrift_SimpleService_unexpected_exception_args(),
+                _module_lite_types._fbthrift_SimpleService_unexpected_exception_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def sum_i16_list(
+            self,
+            numbers
+        ):
+            resp = await self._send_request(
+                "sum_i16_list",
+                _module_lite_types._fbthrift_SimpleService_sum_i16_list_args(
+                    numbers=numbers,),
+                _module_lite_types._fbthrift_SimpleService_sum_i16_list_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def sum_i32_list(
+            self,
+            numbers
+        ):
+            resp = await self._send_request(
+                "sum_i32_list",
+                _module_lite_types._fbthrift_SimpleService_sum_i32_list_args(
+                    numbers=numbers,),
+                _module_lite_types._fbthrift_SimpleService_sum_i32_list_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def sum_i64_list(
+            self,
+            numbers
+        ):
+            resp = await self._send_request(
+                "sum_i64_list",
+                _module_lite_types._fbthrift_SimpleService_sum_i64_list_args(
+                    numbers=numbers,),
+                _module_lite_types._fbthrift_SimpleService_sum_i64_list_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def concat_many(
+            self,
+            words
+        ):
+            resp = await self._send_request(
+                "concat_many",
+                _module_lite_types._fbthrift_SimpleService_concat_many_args(
+                    words=words,),
+                _module_lite_types._fbthrift_SimpleService_concat_many_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def count_structs(
+            self,
+            items
+        ):
+            resp = await self._send_request(
+                "count_structs",
+                _module_lite_types._fbthrift_SimpleService_count_structs_args(
+                    items=items,),
+                _module_lite_types._fbthrift_SimpleService_count_structs_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def sum_set(
+            self,
+            numbers
+        ):
+            resp = await self._send_request(
+                "sum_set",
+                _module_lite_types._fbthrift_SimpleService_sum_set_args(
+                    numbers=numbers,),
+                _module_lite_types._fbthrift_SimpleService_sum_set_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def contains_word(
+            self,
+            words,
+            word
+        ):
+            resp = await self._send_request(
+                "contains_word",
+                _module_lite_types._fbthrift_SimpleService_contains_word_args(
+                    words=words,
+                    word=word,),
+                _module_lite_types._fbthrift_SimpleService_contains_word_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def get_map_value(
+            self,
+            words,
+            key
+        ):
+            resp = await self._send_request(
+                "get_map_value",
+                _module_lite_types._fbthrift_SimpleService_get_map_value_args(
+                    words=words,
+                    key=key,),
+                _module_lite_types._fbthrift_SimpleService_get_map_value_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def map_length(
+            self,
+            items
+        ):
+            resp = await self._send_request(
+                "map_length",
+                _module_lite_types._fbthrift_SimpleService_map_length_args(
+                    items=items,),
+                _module_lite_types._fbthrift_SimpleService_map_length_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def sum_map_values(
+            self,
+            items
+        ):
+            resp = await self._send_request(
+                "sum_map_values",
+                _module_lite_types._fbthrift_SimpleService_sum_map_values_args(
+                    items=items,),
+                _module_lite_types._fbthrift_SimpleService_sum_map_values_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def complex_sum_i32(
+            self,
+            counter
+        ):
+            resp = await self._send_request(
+                "complex_sum_i32",
+                _module_lite_types._fbthrift_SimpleService_complex_sum_i32_args(
+                    counter=counter,),
+                _module_lite_types._fbthrift_SimpleService_complex_sum_i32_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def repeat_name(
+            self,
+            counter
+        ):
+            resp = await self._send_request(
+                "repeat_name",
+                _module_lite_types._fbthrift_SimpleService_repeat_name_args(
+                    counter=counter,),
+                _module_lite_types._fbthrift_SimpleService_repeat_name_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def get_struct(
+            self
+        ):
+            resp = await self._send_request(
+                "get_struct",
+                _module_lite_types._fbthrift_SimpleService_get_struct_args(),
+                _module_lite_types._fbthrift_SimpleService_get_struct_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def fib(
+            self,
+            n
+        ):
+            resp = await self._send_request(
+                "fib",
+                _module_lite_types._fbthrift_SimpleService_fib_args(
+                    n=n,),
+                _module_lite_types._fbthrift_SimpleService_fib_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def unique_words(
+            self,
+            words
+        ):
+            resp = await self._send_request(
+                "unique_words",
+                _module_lite_types._fbthrift_SimpleService_unique_words_args(
+                    words=words,),
+                _module_lite_types._fbthrift_SimpleService_unique_words_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def words_count(
+            self,
+            words
+        ):
+            resp = await self._send_request(
+                "words_count",
+                _module_lite_types._fbthrift_SimpleService_words_count_args(
+                    words=words,),
+                _module_lite_types._fbthrift_SimpleService_words_count_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def set_enum(
+            self,
+            in_enum
+        ):
+            resp = await self._send_request(
+                "set_enum",
+                _module_lite_types._fbthrift_SimpleService_set_enum_args(
+                    in_enum=in_enum,),
+                _module_lite_types._fbthrift_SimpleService_set_enum_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def list_of_lists(
+            self,
+            num_lists,
+            num_items
+        ):
+            resp = await self._send_request(
+                "list_of_lists",
+                _module_lite_types._fbthrift_SimpleService_list_of_lists_args(
+                    num_lists=num_lists,
+                    num_items=num_items,),
+                _module_lite_types._fbthrift_SimpleService_list_of_lists_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def word_character_frequency(
+            self,
+            sentence
+        ):
+            resp = await self._send_request(
+                "word_character_frequency",
+                _module_lite_types._fbthrift_SimpleService_word_character_frequency_args(
+                    sentence=sentence,),
+                _module_lite_types._fbthrift_SimpleService_word_character_frequency_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def list_of_sets(
+            self,
+            some_words
+        ):
+            resp = await self._send_request(
+                "list_of_sets",
+                _module_lite_types._fbthrift_SimpleService_list_of_sets_args(
+                    some_words=some_words,),
+                _module_lite_types._fbthrift_SimpleService_list_of_sets_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def nested_map_argument(
+            self,
+            struct_map
+        ):
+            resp = await self._send_request(
+                "nested_map_argument",
+                _module_lite_types._fbthrift_SimpleService_nested_map_argument_args(
+                    struct_map=struct_map,),
+                _module_lite_types._fbthrift_SimpleService_nested_map_argument_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def make_sentence(
+            self,
+            word_chars
+        ):
+            resp = await self._send_request(
+                "make_sentence",
+                _module_lite_types._fbthrift_SimpleService_make_sentence_args(
+                    word_chars=word_chars,),
+                _module_lite_types._fbthrift_SimpleService_make_sentence_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def get_union(
+            self,
+            sets
+        ):
+            resp = await self._send_request(
+                "get_union",
+                _module_lite_types._fbthrift_SimpleService_get_union_args(
+                    sets=sets,),
+                _module_lite_types._fbthrift_SimpleService_get_union_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def get_keys(
+            self,
+            string_map
+        ):
+            resp = await self._send_request(
+                "get_keys",
+                _module_lite_types._fbthrift_SimpleService_get_keys_args(
+                    string_map=string_map,),
+                _module_lite_types._fbthrift_SimpleService_get_keys_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def lookup_double(
+            self,
+            key
+        ):
+            resp = await self._send_request(
+                "lookup_double",
+                _module_lite_types._fbthrift_SimpleService_lookup_double_args(
+                    key=key,),
+                _module_lite_types._fbthrift_SimpleService_lookup_double_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def retrieve_binary(
+            self,
+            something
+        ):
+            resp = await self._send_request(
+                "retrieve_binary",
+                _module_lite_types._fbthrift_SimpleService_retrieve_binary_args(
+                    something=something,),
+                _module_lite_types._fbthrift_SimpleService_retrieve_binary_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def contain_binary(
+            self,
+            binaries
+        ):
+            resp = await self._send_request(
+                "contain_binary",
+                _module_lite_types._fbthrift_SimpleService_contain_binary_args(
+                    binaries=binaries,),
+                _module_lite_types._fbthrift_SimpleService_contain_binary_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def contain_enum(
+            self,
+            the_enum
+        ):
+            resp = await self._send_request(
+                "contain_enum",
+                _module_lite_types._fbthrift_SimpleService_contain_enum_args(
+                    the_enum=the_enum,),
+                _module_lite_types._fbthrift_SimpleService_contain_enum_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def get_binary_union_struct(
+            self,
+            u
+        ):
+            resp = await self._send_request(
+                "get_binary_union_struct",
+                _module_lite_types._fbthrift_SimpleService_get_binary_union_struct_args(
+                    u=u,),
+                _module_lite_types._fbthrift_SimpleService_get_binary_union_struct_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
 
 class DerivedService:
     class Sync(_fbthrift_py3lite_SyncClient):
@@ -761,6 +1490,26 @@ class DerivedService:
                 "Empty Response",
             )
 
+    class Async(_fbthrift_py3lite_AsyncClient):
+        def __init__(self):
+            super().__init__("DerivedService")
+
+        async def get_six(
+            self
+        ):
+            resp = await self._send_request(
+                "get_six",
+                _module_lite_types._fbthrift_DerivedService_get_six_args(),
+                _module_lite_types._fbthrift_DerivedService_get_six_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
 
 class RederivedService:
     class Sync(_fbthrift_py3lite_SyncClient):
@@ -771,6 +1520,26 @@ class RederivedService:
             self
         ):
             resp = self._send_request(
+                "get_seven",
+                _module_lite_types._fbthrift_RederivedService_get_seven_args(),
+                _module_lite_types._fbthrift_RederivedService_get_seven_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+    class Async(_fbthrift_py3lite_AsyncClient):
+        def __init__(self):
+            super().__init__("RederivedService")
+
+        async def get_seven(
+            self
+        ):
+            resp = await self._send_request(
                 "get_seven",
                 _module_lite_types._fbthrift_RederivedService_get_seven_args(),
                 _module_lite_types._fbthrift_RederivedService_get_seven_result,

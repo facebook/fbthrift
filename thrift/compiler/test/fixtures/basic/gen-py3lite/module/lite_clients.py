@@ -6,6 +6,7 @@
 #
 
 from thrift.py3lite.sync_client import SyncClient as _fbthrift_py3lite_SyncClient
+from thrift.py3lite.async_client import AsyncClient as _fbthrift_py3lite_AsyncClient
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 import module.lite_types as _module_lite_types
 
@@ -124,6 +125,119 @@ class MyService:
                 None,
             )
 
+    class Async(_fbthrift_py3lite_AsyncClient):
+        def __init__(self):
+            super().__init__("MyService")
+
+        async def ping(
+            self
+        ):
+            resp = await self._send_request(
+                "ping",
+                _module_lite_types._fbthrift_MyService_ping_args(),
+                _module_lite_types._fbthrift_MyService_ping_result,
+            )
+
+        async def getRandomData(
+            self
+        ):
+            resp = await self._send_request(
+                "getRandomData",
+                _module_lite_types._fbthrift_MyService_getRandomData_args(),
+                _module_lite_types._fbthrift_MyService_getRandomData_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def sink(
+            self,
+            sink
+        ):
+            resp = await self._send_request(
+                "sink",
+                _module_lite_types._fbthrift_MyService_sink_args(
+                    sink=sink,),
+                _module_lite_types._fbthrift_MyService_sink_result,
+            )
+
+        async def putDataById(
+            self,
+            id,
+            data
+        ):
+            resp = await self._send_request(
+                "putDataById",
+                _module_lite_types._fbthrift_MyService_putDataById_args(
+                    id=id,
+                    data=data,),
+                _module_lite_types._fbthrift_MyService_putDataById_result,
+            )
+
+        async def hasDataById(
+            self,
+            id
+        ):
+            resp = await self._send_request(
+                "hasDataById",
+                _module_lite_types._fbthrift_MyService_hasDataById_args(
+                    id=id,),
+                _module_lite_types._fbthrift_MyService_hasDataById_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def getDataById(
+            self,
+            id
+        ):
+            resp = await self._send_request(
+                "getDataById",
+                _module_lite_types._fbthrift_MyService_getDataById_args(
+                    id=id,),
+                _module_lite_types._fbthrift_MyService_getDataById_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def deleteDataById(
+            self,
+            id
+        ):
+            resp = await self._send_request(
+                "deleteDataById",
+                _module_lite_types._fbthrift_MyService_deleteDataById_args(
+                    id=id,),
+                _module_lite_types._fbthrift_MyService_deleteDataById_result,
+            )
+
+        async def lobDataById(
+            self,
+            id,
+            data
+        ):
+            resp = await self._send_request(
+                "lobDataById",
+                _module_lite_types._fbthrift_MyService_lobDataById_args(
+                    id=id,
+                    data=data,),
+                None,
+            )
+
 
 class DbMixedStackArguments:
     class Sync(_fbthrift_py3lite_SyncClient):
@@ -153,6 +267,46 @@ class DbMixedStackArguments:
             key
         ):
             resp = self._send_request(
+                "getDataByKey1",
+                _module_lite_types._fbthrift_DbMixedStackArguments_getDataByKey1_args(
+                    key=key,),
+                _module_lite_types._fbthrift_DbMixedStackArguments_getDataByKey1_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+    class Async(_fbthrift_py3lite_AsyncClient):
+        def __init__(self):
+            super().__init__("DbMixedStackArguments")
+
+        async def getDataByKey0(
+            self,
+            key
+        ):
+            resp = await self._send_request(
+                "getDataByKey0",
+                _module_lite_types._fbthrift_DbMixedStackArguments_getDataByKey0_args(
+                    key=key,),
+                _module_lite_types._fbthrift_DbMixedStackArguments_getDataByKey0_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def getDataByKey1(
+            self,
+            key
+        ):
+            resp = await self._send_request(
                 "getDataByKey1",
                 _module_lite_types._fbthrift_DbMixedStackArguments_getDataByKey1_args(
                     key=key,),

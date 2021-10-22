@@ -13,41 +13,24 @@
 # limitations under the License.
 
 from later.unittest import TestCase
-from thrift.py3lite.async_client import AsyncClient, ClientType, get_client
+from thrift.py3lite.async_client import ClientType, get_client
 from thrift.py3lite.serializer import Protocol
-
-# @manual=//thrift/lib/py3lite/client/test:test_service-py3lite-types
-from thrift.py3lite.test.lite_types import (
-    _fbthrift_TestService_add_args,
-    _fbthrift_TestService_add_result,
-)
+from thrift.py3lite.test.lite_clients import TestService
+from thrift.py3lite.test.lite_types import ArithmeticException, EmptyException
 from thrift.py3lite.test.test_server import server_in_event_loop
-
-
-class Client(AsyncClient):
-    def __init__(self):
-        super().__init__("TestService")
-
-    async def add(self, num1: int, num2: int) -> int:
-        resp = await self._send_request(
-            "add",
-            _fbthrift_TestService_add_args(num1=num1, num2=num2),
-            _fbthrift_TestService_add_result,
-        )
-        return resp.success
 
 
 class SyncClientTests(TestCase):
     async def test_basic(self) -> None:
         async with server_in_event_loop() as addr:
-            async with get_client(Client, host=addr.ip, port=addr.port) as client:
+            async with get_client(TestService, host=addr.ip, port=addr.port) as client:
                 sum = await client.add(1, 2)
                 self.assertEqual(3, sum)
 
     async def test_client_type_and_protocol(self) -> None:
         async with server_in_event_loop() as addr:
             async with get_client(
-                Client,
+                TestService,
                 host=addr.ip,
                 port=addr.port,
                 client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
@@ -55,3 +38,29 @@ class SyncClientTests(TestCase):
             ) as client:
                 sum = await client.add(1, 2)
                 self.assertEqual(3, sum)
+
+    async def test_void_return(self) -> None:
+        async with server_in_event_loop() as addr:
+            async with get_client(TestService, host=addr.ip, port=addr.port) as client:
+                res = await client.noop()
+                self.assertIsNone(res)
+
+    async def test_exception(self) -> None:
+        async with server_in_event_loop() as addr:
+            async with get_client(TestService, host=addr.ip, port=addr.port) as client:
+                res = await client.divide(6, 3)
+                self.assertAlmostEqual(2, res)
+                with self.assertRaises(ArithmeticException):
+                    await client.divide(1, 0)
+
+    async def test_void_return_with_exception(self) -> None:
+        async with server_in_event_loop() as addr:
+            async with get_client(TestService, host=addr.ip, port=addr.port) as client:
+                with self.assertRaises(EmptyException):
+                    await client.oops()
+
+    async def test_oneway(self) -> None:
+        async with server_in_event_loop() as addr:
+            async with get_client(TestService, host=addr.ip, port=addr.port) as client:
+                res = await client.oneway()
+                self.assertIsNone(res)

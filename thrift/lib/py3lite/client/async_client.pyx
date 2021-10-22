@@ -86,14 +86,20 @@ cdef class AsyncClient:
 
         loop = asyncio.get_event_loop()
         future = loop.create_future()
-        userdata = (future, response_cls, protocol)
-        bridgeSemiFutureWith[cOmniClientResponseWithHeaders](
-            self._executor,
-            deref(self._omni_client).semifuture_send(function_name, args_iobuf.c_clone()),
-            _async_client_send_request_callback,
-            <PyObject *> userdata,
-        )
-        return asyncio.shield(future)
+
+        if response_cls is None:
+            deref(self._omni_client).oneway_send(function_name, args_iobuf.c_clone())
+            future.set_result(None)
+            return future
+        else:
+            userdata = (future, response_cls, protocol)
+            bridgeSemiFutureWith[cOmniClientResponseWithHeaders](
+                self._executor,
+                deref(self._omni_client).semifuture_send(function_name, args_iobuf.c_clone()),
+                _async_client_send_request_callback,
+                <PyObject *> userdata,
+            )
+            return asyncio.shield(future)
 
 
 cdef void _async_client_send_request_callback(
