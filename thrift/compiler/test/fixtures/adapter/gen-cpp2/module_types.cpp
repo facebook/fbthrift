@@ -144,14 +144,14 @@ Foo::Foo(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::ada
 
 void Foo::__clear() {
   // clear all fields
-  this->intField = {};
-  this->optionalIntField = {};
-  this->intFieldWithDefault = {};
+  this->intField = decltype(this->intField)();
+  this->optionalIntField = decltype(this->optionalIntField)();
+  this->intFieldWithDefault = decltype(this->intFieldWithDefault)();
   this->setField.clear();
   this->optionalSetField.clear();
   this->mapField.clear();
   this->optionalMapField.clear();
-  this->binaryField = {};
+  this->binaryField = decltype(this->binaryField)();
   __isset = {};
 }
 
@@ -470,12 +470,12 @@ Bar::Bar(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::ada
 
 void Bar::__clear() {
   // clear all fields
-  this->structField = {};
-  this->optionalStructField = {};
+  this->structField = decltype(this->structField)();
+  this->optionalStructField = decltype(this->optionalStructField)();
   this->structListField.clear();
   this->optionalStructListField.clear();
-  this->unionField = {};
-  this->optionalUnionField = {};
+  this->unionField = decltype(this->unionField)();
+  this->optionalUnionField = decltype(this->optionalUnionField)();
   __isset = {};
 }
 
@@ -663,7 +663,7 @@ StructWithFieldAdapter::StructWithFieldAdapter(apache::thrift::FragileConstructo
 
 void StructWithFieldAdapter::__clear() {
   // clear all fields
-  this->field = {};
+  this->field = decltype(this->field)();
   __isset = {};
 }
 

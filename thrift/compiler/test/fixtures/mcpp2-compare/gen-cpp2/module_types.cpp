@@ -502,8 +502,8 @@ void MyStruct::__clear() {
   this->MyBinaryField3 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->MyBinaryListField4.clear();
   this->MyMapEnumAndInt.clear();
-  this->MyCustomField = {};
-  this->MyOptCustomField = {};
+  this->MyCustomField = decltype(this->MyCustomField)();
+  this->MyOptCustomField = decltype(this->MyOptCustomField)();
   __isset = {};
 }
 
@@ -1358,8 +1358,8 @@ void AnException::__clear() {
   this->a_union_list.clear();
   this->union_typedef.clear();
   this->a_union_typedef_list.clear();
-  this->MyCustomField = {};
-  this->MyOptCustomField = {};
+  this->MyCustomField = decltype(this->MyCustomField)();
+  this->MyOptCustomField = decltype(this->MyOptCustomField)();
   __isset = {};
 }
 

@@ -29,6 +29,8 @@ template <typename T>
 struct Wrapper {
   T value;
 
+  Wrapper& operator=(const T&) = delete;
+
   bool operator==(const Wrapper& other) const { return value == other.value; }
   bool operator<(const Wrapper& other) const { return value < other.value; }
 };

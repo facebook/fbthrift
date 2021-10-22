@@ -64,7 +64,7 @@ void <%struct:name%>::__clear() {
 %><%#type:resolves_to_base_or_enum?%><%!
   TODO(dokwon) replace special cases after replacing StringTraits and cpp.indirection with cpp.adapter.
   %>  <% > types/apply_indirection_pre%><% > field/member%><% > types/apply_indirection_post%> = <%!
-  %><%#field:cpp_adapter%>{}<%/field:cpp_adapter%><%!
+  %><%#field:cpp_adapter%>decltype(<% > field/member%>)()<%/field:cpp_adapter%><%!
   %><%^field:cpp_adapter%><% > field/default%><%/field:cpp_adapter%>;
 <%/type:resolves_to_base_or_enum?%>
 <%/field:cpp_ref?%>
@@ -83,7 +83,7 @@ void <%struct:name%>::__clear() {
 <%/type:resolves_to_container?%>
 <%#type:non_empty_struct?%>
 <%^field:cpp_ref?%>
-  <%#field:cpp_adapter%><% > field/member%> = {};<%/field:cpp_adapter%><%^field:cpp_adapter%><% > field/member%>.__clear();<%/field:cpp_adapter%>
+  <%#field:cpp_adapter%><% > field/member%> = decltype(<% > field/member%>)();<%/field:cpp_adapter%><%^field:cpp_adapter%><% > field/member%>.__clear();<%/field:cpp_adapter%>
 <%/field:cpp_ref?%>
 <%#field:cpp_ref_unique?%>
 <%^field:optional?%>
