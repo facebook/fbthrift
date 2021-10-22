@@ -16,35 +16,22 @@
 
 #pragma once
 
-#include <atomic>
-
 #include <folly/MapUtil.h>
 #include <folly/Optional.h>
 #include <folly/Range.h>
 #include <folly/Traits.h>
 #include <folly/container/F14Map.h>
 #include <folly/io/Cursor.h>
-#include <folly/portability/GFlags.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
+#include <thrift/lib/cpp2/protocol/LazyDeserializationFlags.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/ProtocolReaderStructReadState.h>
 #include <thrift/lib/cpp2/protocol/Traits.h>
 #include <thrift/lib/cpp2/protocol/detail/ReservedId.h>
 
-DECLARE_bool(thrift_enable_lazy_deserialization);
-
 namespace apache {
 namespace thrift {
 namespace detail {
-
-extern std::atomic<bool> gLazyDeserializationIsDisabledDueToChecksumMismatch;
-
-inline bool isLazyDeserializationDisabled() {
-  return !FLAGS_thrift_enable_lazy_deserialization ||
-      gLazyDeserializationIsDisabledDueToChecksumMismatch.load(
-          std::memory_order_relaxed);
-}
-
 /*
  * When index is enabled, we will inject following fields to thrift struct
  *
@@ -389,10 +376,5 @@ using ProtocolReaderStructReadStateWithIndex = std::conditional_t<
     ProtocolReaderStructReadState<Protocol>>;
 
 } // namespace detail
-
-inline bool lazyDeserializationIsDisabledDueToChecksumMismatch() {
-  return detail::gLazyDeserializationIsDisabledDueToChecksumMismatch.load(
-      std::memory_order_relaxed);
-}
 } // namespace thrift
 } // namespace apache

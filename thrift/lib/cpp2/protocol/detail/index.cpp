@@ -22,16 +22,9 @@
 
 #include <xxhash.h>
 
-DEFINE_bool(
-    thrift_enable_lazy_deserialization,
-    true,
-    "Whether to enable lazy deserialization");
-
 namespace apache {
 namespace thrift {
 namespace detail {
-
-std::atomic<bool> gLazyDeserializationIsDisabledDueToChecksumMismatch{false};
 
 Xxh3Hasher::Xxh3Hasher() {
   state = static_cast<void*>(XXH3_createState());
