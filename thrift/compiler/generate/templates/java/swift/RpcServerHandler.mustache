@@ -59,7 +59,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
     {{/service:supportedFunctions}}
   }
 
-  {{#service:supportedFunctions}}
+  {{#service:requestResponseFunctions}}
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_{{function:javaName}}_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
@@ -219,7 +219,59 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
 
           return _internalResponse;
   }
-  {{/service:supportedFunctions}}
+  {{/service:requestResponseFunctions}}
+
+  {{#service:onewayFunctions}}
+  private static java.util.List<com.facebook.thrift.payload.Reader> _create_{{function:javaName}}_request_readers() {
+    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+
+    {{#function:args}}
+    {{function:unsetIsNested}}
+    _readerList.add(oprot -> {
+      try {
+        {{#field:type}}
+        {{> ReadReturnType }}
+
+        return _r;
+
+        {{/field:type}}
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    });
+    {{/function:args}}
+
+    return _readerList;
+  }
+
+  private static reactor.core.publisher.Mono<Void>
+    _do{{function:javaName}}(
+    {{service:javaCapitalName}}.Reactive _delegate,
+    String _name,
+    com.facebook.thrift.payload.ServerRequestPayload _payload,
+    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+    final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
+    _chain.preRead();
+    java.util.List<Object>_data = _payload.getData(_readers);
+    java.util.Iterator<Object> _iterator = _data.iterator();
+
+    {{#function:args}}
+    {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}} = ({{#field:type}}{{> Type}}{{/field:type}}) _iterator.next();
+    {{/function:args}}
+
+    _chain.postRead(_data);
+
+    reactor.core.publisher.Mono<Void> _internalResponse =
+      _delegate
+      .{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
+    if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+      _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+    }
+
+    return _internalResponse;
+  }
+  {{/service:onewayFunctions}}
 
   @Override
   public reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> singleRequestSingleResponse(com.facebook.thrift.payload.ServerRequestPayload _payload) {
@@ -228,14 +280,42 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
     reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _result;
     try {
       switch (_name) {
-        {{#service:supportedFunctions}}
+        {{#service:requestResponseFunctions}}
         case "{{function:javaName}}":
           _result = _do{{function:javaName}}(_delegate, _name, _payload, _{{function:javaName}}Readers, _eventHandlers);
         break;
-        {{/service:supportedFunctions}}
+        {{/service:requestResponseFunctions}}
         default: {
           {{#service:extends}}
           _result =  super.singleRequestSingleResponse(_payload);
+          {{/service:extends}}
+          {{^service:extends}}
+          _result = reactor.core.publisher.Mono.error(new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.UNKNOWN_METHOD, "no method found with name " + _name));
+          {{/service:extends}}
+        }
+      }
+    } catch (Throwable _t) {
+      _result = reactor.core.publisher.Mono.error(_t);
+    }
+
+    return _result;
+  }
+
+  @Override
+  public reactor.core.publisher.Mono<Void> singleRequestNoResponse(com.facebook.thrift.payload.ServerRequestPayload _payload) {
+    final String _name = _payload.getRequestRpcMetadata().getName();
+
+    reactor.core.publisher.Mono<Void> _result;
+    try {
+      switch (_name) {
+        {{#service:onewayFunctions}}
+        case "{{function:javaName}}":
+          _result = _do{{function:javaName}}(_delegate, _name, _payload, _{{function:javaName}}Readers, _eventHandlers);
+        break;
+        {{/service:onewayFunctions}}
+        default: {
+          {{#service:extends}}
+          _result =  super.singleRequestNoResponse(_payload);
           {{/service:extends}}
           {{^service:extends}}
           _result = reactor.core.publisher.Mono.error(new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.UNKNOWN_METHOD, "no method found with name " + _name));

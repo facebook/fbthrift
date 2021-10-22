@@ -127,6 +127,7 @@ public class MyLeafRpcServerHandler  extends test.fixtures.inheritance.MyNodeRpc
           return _internalResponse;
   }
 
+
   @Override
   public reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> singleRequestSingleResponse(com.facebook.thrift.payload.ServerRequestPayload _payload) {
     final String _name = _payload.getRequestRpcMetadata().getName();
@@ -139,6 +140,24 @@ public class MyLeafRpcServerHandler  extends test.fixtures.inheritance.MyNodeRpc
         break;
         default: {
           _result =  super.singleRequestSingleResponse(_payload);
+        }
+      }
+    } catch (Throwable _t) {
+      _result = reactor.core.publisher.Mono.error(_t);
+    }
+
+    return _result;
+  }
+
+  @Override
+  public reactor.core.publisher.Mono<Void> singleRequestNoResponse(com.facebook.thrift.payload.ServerRequestPayload _payload) {
+    final String _name = _payload.getRequestRpcMetadata().getName();
+
+    reactor.core.publisher.Mono<Void> _result;
+    try {
+      switch (_name) {
+        default: {
+          _result =  super.singleRequestNoResponse(_payload);
         }
       }
     } catch (Throwable _t) {

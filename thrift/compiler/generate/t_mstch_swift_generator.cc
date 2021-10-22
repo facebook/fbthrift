@@ -412,6 +412,10 @@ class mstch_swift_service : public mstch_service {
             {"service:javaPackage", &mstch_swift_service::java_package},
             {"service:javaCapitalName",
              &mstch_swift_service::java_capital_name},
+            {"service:onewayFunctions",
+             &mstch_swift_service::get_oneway_functions},
+            {"service:requestResponseFunctions",
+             &mstch_swift_service::get_request_response_functions},
             {"service:supportedFunctions",
              &mstch_swift_service::get_supported_functions},
             {"service:streamingFunctions",
@@ -426,6 +430,25 @@ class mstch_swift_service : public mstch_service {
   }
   mstch::node java_capital_name() {
     return java::mangle_java_name(service_->get_name(), true);
+  }
+  mstch::node get_oneway_functions() {
+    std::vector<t_function*> funcs;
+    for (auto func : service_->get_functions()) {
+      if (func->is_oneway()) {
+        funcs.push_back(func);
+      }
+    }
+    return generate_functions(funcs);
+  }
+  mstch::node get_request_response_functions() {
+    std::vector<t_function*> funcs;
+    for (auto func : service_->get_functions()) {
+      if (!func->returns_stream() && !func->returns_sink() &&
+          !func->get_returntype()->is_service() && !func->is_oneway()) {
+        funcs.push_back(func);
+      }
+    }
+    return generate_functions(funcs);
   }
   mstch::node get_supported_functions() {
     std::vector<t_function*> funcs;
