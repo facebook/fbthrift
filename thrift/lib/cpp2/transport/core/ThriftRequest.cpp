@@ -23,6 +23,11 @@ THRIFT_FLAG_DEFINE_int64(queue_time_logging_threshold_ms, 5);
 namespace apache {
 namespace thrift {
 
+namespace detail {
+THRIFT_PLUGGABLE_FUNC_REGISTER(
+    void, handleFrameworkMetadata, std::unique_ptr<folly::IOBuf>&&) {}
+} // namespace detail
+
 ThriftRequestCore::ThriftRequestCore(
     server::ServerConfigs& serverConfigs,
     RequestRpcMetadata&& metadata,
@@ -83,6 +88,11 @@ ThriftRequestCore::ThriftRequestCore(
 
   if (auto* observer = serverConfigs_.getObserver()) {
     observer->receivedRequest(&reqContext_.getMethodName());
+  }
+
+  if (auto frameworkMetadata = metadata.frameworkMetadata_ref()) {
+    DCHECK(*frameworkMetadata && !(**frameworkMetadata).empty());
+    detail::handleFrameworkMetadata(std::move(*frameworkMetadata));
   }
 }
 

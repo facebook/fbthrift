@@ -20,6 +20,7 @@
 
 #include <folly/Optional.h>
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/util/ManagedStringView.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
@@ -34,6 +35,9 @@ inline constexpr std::string_view kHeaderUex = "uex";
 inline constexpr std::string_view kHeaderUexw = "uexw";
 inline constexpr std::string_view kHeaderEx = "ex";
 inline constexpr std::string_view kHeaderExMeta = "exm";
+
+THRIFT_PLUGGABLE_FUNC_DECLARE(
+    std::unique_ptr<folly::IOBuf>, makeFrameworkMetadata, const RpcOptions&);
 
 RequestRpcMetadata makeRequestRpcMetadata(
     const RpcOptions& rpcOptions,

@@ -35,6 +35,7 @@
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/Flags.h>
+#include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/async/Sink.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
@@ -48,6 +49,11 @@ THRIFT_FLAG_DECLARE_int64(queue_time_logging_threshold_ms);
 
 namespace apache {
 namespace thrift {
+
+namespace detail {
+THRIFT_PLUGGABLE_FUNC_DECLARE(
+    void, handleFrameworkMetadata, std::unique_ptr<folly::IOBuf>&&);
+} // namespace detail
 
 /**
  * Manages per-RPC state.  There is one of these objects for each RPC.

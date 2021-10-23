@@ -31,6 +31,11 @@
 
 namespace apache::thrift::detail {
 
+THRIFT_PLUGGABLE_FUNC_REGISTER(
+    std::unique_ptr<folly::IOBuf>, makeFrameworkMetadata, const RpcOptions&) {
+  return nullptr;
+}
+
 RequestRpcMetadata makeRequestRpcMetadata(
     const RpcOptions& rpcOptions,
     RpcKind kind,
@@ -87,6 +92,11 @@ RequestRpcMetadata makeRequestRpcMetadata(
 
   if (!writeHeaders.empty()) {
     metadata.otherMetadata_ref() = std::move(writeHeaders);
+  }
+
+  auto frameworkMetadata = makeFrameworkMetadata(rpcOptions);
+  if (frameworkMetadata) {
+    metadata.frameworkMetadata_ref() = std::move(frameworkMetadata);
   }
 
   return metadata;
