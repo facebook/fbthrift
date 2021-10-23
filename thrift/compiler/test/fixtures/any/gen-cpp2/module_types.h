@@ -89,7 +89,7 @@ class MyStruct final  {
   MyStruct& operator=(const MyStruct& src);
   void __clear();
  private:
-  ::std::string myString;
+  ::std::string __fbthrift_field_myString;
 private:
   apache::thrift::detail::isset_bitset<1> __isset;
 
@@ -100,37 +100,37 @@ private:
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myString_ref() const& {
-    return {this->myString, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_myString, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> myString_ref() const&& {
-    return {std::move(this->myString), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_myString), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> myString_ref() & {
-    return {this->myString, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_myString, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myString_ref() && {
-    return {std::move(this->myString), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_myString), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   const ::std::string& get_myString() const& {
-    return myString;
+    return __fbthrift_field_myString;
   }
 
   ::std::string get_myString() && {
-    return std::move(myString);
+    return std::move(__fbthrift_field_myString);
   }
 
   template <typename T_MyStruct_myString_struct_setter = ::std::string>
   [[deprecated("Use `FOO.myString_ref() = BAR;` instead of `FOO.set_myString(BAR);`")]]
   ::std::string& set_myString(T_MyStruct_myString_struct_setter&& myString_) {
     myString_ref() = std::forward<T_MyStruct_myString_struct_setter>(myString_);
-    return myString;
+    return __fbthrift_field_myString;
   }
 
   template <class Protocol_>

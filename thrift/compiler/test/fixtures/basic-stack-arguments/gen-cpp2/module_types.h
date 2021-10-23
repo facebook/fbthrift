@@ -115,7 +115,7 @@ class MyStruct final  {
  public:
 
   MyStruct() :
-      MyIntField() {
+      __fbthrift_field_MyIntField() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -130,9 +130,9 @@ class MyStruct final  {
   MyStruct& operator=(const MyStruct& src);
   void __clear();
  private:
-  ::std::int64_t MyIntField;
+  ::std::int64_t __fbthrift_field_MyIntField;
  private:
-  ::std::string MyStringField;
+  ::std::string __fbthrift_field_MyStringField;
 private:
   apache::thrift::detail::isset_bitset<2> __isset;
 
@@ -143,67 +143,67 @@ private:
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {
-    return {this->MyIntField, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_MyIntField, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIntField_ref() const&& {
-    return {std::move(this->MyIntField), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_MyIntField), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIntField_ref() & {
-    return {this->MyIntField, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_MyIntField, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField_ref() && {
-    return {std::move(this->MyIntField), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_MyIntField), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyStringField_ref() const& {
-    return {this->MyStringField, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_MyStringField, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyStringField_ref() const&& {
-    return {std::move(this->MyStringField), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_MyStringField), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyStringField_ref() & {
-    return {this->MyStringField, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_MyStringField, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyStringField_ref() && {
-    return {std::move(this->MyStringField), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_MyStringField), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   ::std::int64_t get_MyIntField() const {
-    return MyIntField;
+    return __fbthrift_field_MyIntField;
   }
 
   [[deprecated("Use `FOO.MyIntField_ref() = BAR;` instead of `FOO.set_MyIntField(BAR);`")]]
   ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField_ref() = MyIntField_;
-    return MyIntField;
+    return __fbthrift_field_MyIntField;
   }
 
   const ::std::string& get_MyStringField() const& {
-    return MyStringField;
+    return __fbthrift_field_MyStringField;
   }
 
   ::std::string get_MyStringField() && {
-    return std::move(MyStringField);
+    return std::move(__fbthrift_field_MyStringField);
   }
 
   template <typename T_MyStruct_MyStringField_struct_setter = ::std::string>
   [[deprecated("Use `FOO.MyStringField_ref() = BAR;` instead of `FOO.set_MyStringField(BAR);`")]]
   ::std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
     MyStringField_ref() = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
-    return MyStringField;
+    return __fbthrift_field_MyStringField;
   }
 
   template <class Protocol_>

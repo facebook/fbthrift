@@ -72,8 +72,8 @@ class Included final  {
  public:
 
   Included() :
-      MyIntField(static_cast<::std::int64_t>(0)),
-      MyTransitiveField(static_cast<::cpp2::Foo>(::apache::thrift::detail::make_constant< ::cpp2::Foo>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(static_cast<::std::int64_t>(2))))) {
+      __fbthrift_field_MyIntField(static_cast<::std::int64_t>(0)),
+      __fbthrift_field_MyTransitiveField(static_cast<::cpp2::Foo>(::apache::thrift::detail::make_constant< ::cpp2::Foo>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(static_cast<::std::int64_t>(2))))) {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -89,9 +89,9 @@ class Included final  {
   Included& operator=(const Included&) = default;
   void __clear();
  private:
-  ::std::int64_t MyIntField;
+  ::std::int64_t __fbthrift_field_MyIntField;
  private:
-  ::cpp2::Foo MyTransitiveField;
+  ::cpp2::Foo __fbthrift_field_MyTransitiveField;
 private:
   apache::thrift::detail::isset_bitset<2> __isset;
 
@@ -102,52 +102,52 @@ private:
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {
-    return {this->MyIntField, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_MyIntField, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIntField_ref() const&& {
-    return {std::move(this->MyIntField), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_MyIntField), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIntField_ref() & {
-    return {this->MyIntField, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_MyIntField, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField_ref() && {
-    return {std::move(this->MyIntField), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_MyIntField), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::cpp2::Foo>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyTransitiveField_ref() const& {
-    return {this->MyTransitiveField, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_MyTransitiveField, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::Foo>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyTransitiveField_ref() const&& {
-    return {std::move(this->MyTransitiveField), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_MyTransitiveField), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::Foo>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyTransitiveField_ref() & {
-    return {this->MyTransitiveField, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_MyTransitiveField, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::Foo>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyTransitiveField_ref() && {
-    return {std::move(this->MyTransitiveField), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_MyTransitiveField), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   ::std::int64_t get_MyIntField() const {
-    return MyIntField;
+    return __fbthrift_field_MyIntField;
   }
 
   [[deprecated("Use `FOO.MyIntField_ref() = BAR;` instead of `FOO.set_MyIntField(BAR);`")]]
   ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField_ref() = MyIntField_;
-    return MyIntField;
+    return __fbthrift_field_MyIntField;
   }
   const ::cpp2::Foo& get_MyTransitiveField() const&;
   ::cpp2::Foo get_MyTransitiveField() &&;
@@ -156,7 +156,7 @@ private:
   [[deprecated("Use `FOO.MyTransitiveField_ref() = BAR;` instead of `FOO.set_MyTransitiveField(BAR);`")]]
   ::cpp2::Foo& set_MyTransitiveField(T_Included_MyTransitiveField_struct_setter&& MyTransitiveField_) {
     MyTransitiveField_ref() = std::forward<T_Included_MyTransitiveField_struct_setter>(MyTransitiveField_);
-    return MyTransitiveField;
+    return __fbthrift_field_MyTransitiveField;
   }
 
   template <class Protocol_>

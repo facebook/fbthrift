@@ -396,9 +396,9 @@ Bar::Bar(const Bar& srcObj) {
   __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
   optionalStructField = srcObj.optionalStructField;
   __isset.__fbthrift_set(folly::index_constant<1>(),srcObj.__isset.__fbthrift_get(folly::index_constant<1>()));
-  structListField = srcObj.structListField;
+  __fbthrift_field_structListField = srcObj.__fbthrift_field_structListField;
   __isset.__fbthrift_set(folly::index_constant<2>(),srcObj.__isset.__fbthrift_get(folly::index_constant<2>()));
-  optionalStructListField = srcObj.optionalStructListField;
+  __fbthrift_field_optionalStructListField = srcObj.__fbthrift_field_optionalStructListField;
   __isset.__fbthrift_set(folly::index_constant<3>(),srcObj.__isset.__fbthrift_get(folly::index_constant<3>()));
   unionField = srcObj.unionField;
   __isset.__fbthrift_set(folly::index_constant<4>(),srcObj.__isset.__fbthrift_get(folly::index_constant<4>()));
@@ -425,8 +425,8 @@ Bar::~Bar() {}
 Bar::Bar(Bar&& other) noexcept  :
     structField(std::move(other.structField)),
     optionalStructField(std::move(other.optionalStructField)),
-    structListField(std::move(other.structListField)),
-    optionalStructListField(std::move(other.optionalStructListField)),
+    __fbthrift_field_structListField(std::move(other.__fbthrift_field_structListField)),
+    __fbthrift_field_optionalStructListField(std::move(other.__fbthrift_field_optionalStructListField)),
     unionField(std::move(other.unionField)),
     optionalUnionField(std::move(other.optionalUnionField)),
     __isset(other.__isset) {
@@ -439,8 +439,8 @@ Bar::Bar(Bar&& other) noexcept  :
 Bar& Bar::operator=(FOLLY_MAYBE_UNUSED Bar&& other) noexcept {
     this->structField = std::move(other.structField);
     this->optionalStructField = std::move(other.optionalStructField);
-    this->structListField = std::move(other.structListField);
-    this->optionalStructListField = std::move(other.optionalStructListField);
+    this->__fbthrift_field_structListField = std::move(other.__fbthrift_field_structListField);
+    this->__fbthrift_field_optionalStructListField = std::move(other.__fbthrift_field_optionalStructListField);
     this->unionField = std::move(other.unionField);
     this->optionalUnionField = std::move(other.optionalUnionField);
     __isset = other.__isset;
@@ -451,8 +451,8 @@ Bar& Bar::operator=(FOLLY_MAYBE_UNUSED Bar&& other) noexcept {
 Bar::Bar(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo> structField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo> optionalStructField__arg, ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>> structListField__arg, ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>> optionalStructListField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz> unionField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz> optionalUnionField__arg) :
     structField(std::move(structField__arg)),
     optionalStructField(std::move(optionalStructField__arg)),
-    structListField(std::move(structListField__arg)),
-    optionalStructListField(std::move(optionalStructListField__arg)),
+    __fbthrift_field_structListField(std::move(structListField__arg)),
+    __fbthrift_field_optionalStructListField(std::move(optionalStructListField__arg)),
     unionField(std::move(unionField__arg)),
     optionalUnionField(std::move(optionalUnionField__arg)) {
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(structField, *this);
@@ -472,8 +472,8 @@ void Bar::__clear() {
   // clear all fields
   this->structField = decltype(this->structField)();
   this->optionalStructField = decltype(this->optionalStructField)();
-  this->structListField.clear();
-  this->optionalStructListField.clear();
+  this->__fbthrift_field_structListField.clear();
+  this->__fbthrift_field_optionalStructListField.clear();
   this->unionField = decltype(this->unionField)();
   this->optionalUnionField = decltype(this->optionalUnionField)();
   __isset = {};
@@ -530,19 +530,19 @@ bool Bar::operator<(const Bar& rhs) const {
 }
 
 const ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>& Bar::get_structListField() const& {
-  return structListField;
+  return __fbthrift_field_structListField;
 }
 
 ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>> Bar::get_structListField() && {
-  return std::move(structListField);
+  return std::move(__fbthrift_field_structListField);
 }
 
 const ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>* Bar::get_optionalStructListField() const& {
-  return optionalStructListField_ref().has_value() ? std::addressof(optionalStructListField) : nullptr;
+  return optionalStructListField_ref().has_value() ? std::addressof(__fbthrift_field_optionalStructListField) : nullptr;
 }
 
 ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>* Bar::get_optionalStructListField() & {
-  return optionalStructListField_ref().has_value() ? std::addressof(optionalStructListField) : nullptr;
+  return optionalStructListField_ref().has_value() ? std::addressof(__fbthrift_field_optionalStructListField) : nullptr;
 }
 
 

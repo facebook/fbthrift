@@ -38,113 +38,113 @@ namespace cpp2 {
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
 MyStruct::MyStruct() :
-      MyIntField(),
-      myEnum(),
-      MyBoolField(),
-      MyByteField(),
-      MyShortField(),
-      MyLongField(),
-      MyDoubleField() {
+      __fbthrift_field_MyIntField(),
+      __fbthrift_field_myEnum(),
+      __fbthrift_field_MyBoolField(),
+      __fbthrift_field_MyByteField(),
+      __fbthrift_field_MyShortField(),
+      __fbthrift_field_MyLongField(),
+      __fbthrift_field_MyDoubleField() {
 }
 
 
 MyStruct::~MyStruct() {}
 
 MyStruct::MyStruct(MyStruct&& other) noexcept  :
-    MyIntField(std::move(other.MyIntField)),
-    MyStringField(std::move(other.MyStringField)),
-    MyDataField(std::move(other.MyDataField)),
-    myEnum(std::move(other.myEnum)),
-    MyBoolField(std::move(other.MyBoolField)),
-    MyByteField(std::move(other.MyByteField)),
-    MyShortField(std::move(other.MyShortField)),
-    MyLongField(std::move(other.MyLongField)),
-    MyDoubleField(std::move(other.MyDoubleField)),
-    lDouble(std::move(other.lDouble)),
-    lShort(std::move(other.lShort)),
-    lInteger(std::move(other.lInteger)),
-    lLong(std::move(other.lLong)),
-    lString(std::move(other.lString)),
-    lBool(std::move(other.lBool)),
-    lByte(std::move(other.lByte)),
-    mShortString(std::move(other.mShortString)),
-    mIntegerString(std::move(other.mIntegerString)),
-    mStringMyStruct(std::move(other.mStringMyStruct)),
-    mStringBool(std::move(other.mStringBool)),
-    mIntegerInteger(std::move(other.mIntegerInteger)),
-    mIntegerBool(std::move(other.mIntegerBool)),
-    sShort(std::move(other.sShort)),
-    sMyStruct(std::move(other.sMyStruct)),
-    sLong(std::move(other.sLong)),
-    sString(std::move(other.sString)),
-    sByte(std::move(other.sByte)),
-    mListList(std::move(other.mListList)),
+    __fbthrift_field_MyIntField(std::move(other.__fbthrift_field_MyIntField)),
+    __fbthrift_field_MyStringField(std::move(other.__fbthrift_field_MyStringField)),
+    __fbthrift_field_MyDataField(std::move(other.__fbthrift_field_MyDataField)),
+    __fbthrift_field_myEnum(std::move(other.__fbthrift_field_myEnum)),
+    __fbthrift_field_MyBoolField(std::move(other.__fbthrift_field_MyBoolField)),
+    __fbthrift_field_MyByteField(std::move(other.__fbthrift_field_MyByteField)),
+    __fbthrift_field_MyShortField(std::move(other.__fbthrift_field_MyShortField)),
+    __fbthrift_field_MyLongField(std::move(other.__fbthrift_field_MyLongField)),
+    __fbthrift_field_MyDoubleField(std::move(other.__fbthrift_field_MyDoubleField)),
+    __fbthrift_field_lDouble(std::move(other.__fbthrift_field_lDouble)),
+    __fbthrift_field_lShort(std::move(other.__fbthrift_field_lShort)),
+    __fbthrift_field_lInteger(std::move(other.__fbthrift_field_lInteger)),
+    __fbthrift_field_lLong(std::move(other.__fbthrift_field_lLong)),
+    __fbthrift_field_lString(std::move(other.__fbthrift_field_lString)),
+    __fbthrift_field_lBool(std::move(other.__fbthrift_field_lBool)),
+    __fbthrift_field_lByte(std::move(other.__fbthrift_field_lByte)),
+    __fbthrift_field_mShortString(std::move(other.__fbthrift_field_mShortString)),
+    __fbthrift_field_mIntegerString(std::move(other.__fbthrift_field_mIntegerString)),
+    __fbthrift_field_mStringMyStruct(std::move(other.__fbthrift_field_mStringMyStruct)),
+    __fbthrift_field_mStringBool(std::move(other.__fbthrift_field_mStringBool)),
+    __fbthrift_field_mIntegerInteger(std::move(other.__fbthrift_field_mIntegerInteger)),
+    __fbthrift_field_mIntegerBool(std::move(other.__fbthrift_field_mIntegerBool)),
+    __fbthrift_field_sShort(std::move(other.__fbthrift_field_sShort)),
+    __fbthrift_field_sMyStruct(std::move(other.__fbthrift_field_sMyStruct)),
+    __fbthrift_field_sLong(std::move(other.__fbthrift_field_sLong)),
+    __fbthrift_field_sString(std::move(other.__fbthrift_field_sString)),
+    __fbthrift_field_sByte(std::move(other.__fbthrift_field_sByte)),
+    __fbthrift_field_mListList(std::move(other.__fbthrift_field_mListList)),
     __isset(other.__isset) {
 }
 
 MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
-    this->MyIntField = std::move(other.MyIntField);
-    this->MyStringField = std::move(other.MyStringField);
-    this->MyDataField = std::move(other.MyDataField);
-    this->myEnum = std::move(other.myEnum);
-    this->MyBoolField = std::move(other.MyBoolField);
-    this->MyByteField = std::move(other.MyByteField);
-    this->MyShortField = std::move(other.MyShortField);
-    this->MyLongField = std::move(other.MyLongField);
-    this->MyDoubleField = std::move(other.MyDoubleField);
-    this->lDouble = std::move(other.lDouble);
-    this->lShort = std::move(other.lShort);
-    this->lInteger = std::move(other.lInteger);
-    this->lLong = std::move(other.lLong);
-    this->lString = std::move(other.lString);
-    this->lBool = std::move(other.lBool);
-    this->lByte = std::move(other.lByte);
-    this->mShortString = std::move(other.mShortString);
-    this->mIntegerString = std::move(other.mIntegerString);
-    this->mStringMyStruct = std::move(other.mStringMyStruct);
-    this->mStringBool = std::move(other.mStringBool);
-    this->mIntegerInteger = std::move(other.mIntegerInteger);
-    this->mIntegerBool = std::move(other.mIntegerBool);
-    this->sShort = std::move(other.sShort);
-    this->sMyStruct = std::move(other.sMyStruct);
-    this->sLong = std::move(other.sLong);
-    this->sString = std::move(other.sString);
-    this->sByte = std::move(other.sByte);
-    this->mListList = std::move(other.mListList);
+    this->__fbthrift_field_MyIntField = std::move(other.__fbthrift_field_MyIntField);
+    this->__fbthrift_field_MyStringField = std::move(other.__fbthrift_field_MyStringField);
+    this->__fbthrift_field_MyDataField = std::move(other.__fbthrift_field_MyDataField);
+    this->__fbthrift_field_myEnum = std::move(other.__fbthrift_field_myEnum);
+    this->__fbthrift_field_MyBoolField = std::move(other.__fbthrift_field_MyBoolField);
+    this->__fbthrift_field_MyByteField = std::move(other.__fbthrift_field_MyByteField);
+    this->__fbthrift_field_MyShortField = std::move(other.__fbthrift_field_MyShortField);
+    this->__fbthrift_field_MyLongField = std::move(other.__fbthrift_field_MyLongField);
+    this->__fbthrift_field_MyDoubleField = std::move(other.__fbthrift_field_MyDoubleField);
+    this->__fbthrift_field_lDouble = std::move(other.__fbthrift_field_lDouble);
+    this->__fbthrift_field_lShort = std::move(other.__fbthrift_field_lShort);
+    this->__fbthrift_field_lInteger = std::move(other.__fbthrift_field_lInteger);
+    this->__fbthrift_field_lLong = std::move(other.__fbthrift_field_lLong);
+    this->__fbthrift_field_lString = std::move(other.__fbthrift_field_lString);
+    this->__fbthrift_field_lBool = std::move(other.__fbthrift_field_lBool);
+    this->__fbthrift_field_lByte = std::move(other.__fbthrift_field_lByte);
+    this->__fbthrift_field_mShortString = std::move(other.__fbthrift_field_mShortString);
+    this->__fbthrift_field_mIntegerString = std::move(other.__fbthrift_field_mIntegerString);
+    this->__fbthrift_field_mStringMyStruct = std::move(other.__fbthrift_field_mStringMyStruct);
+    this->__fbthrift_field_mStringBool = std::move(other.__fbthrift_field_mStringBool);
+    this->__fbthrift_field_mIntegerInteger = std::move(other.__fbthrift_field_mIntegerInteger);
+    this->__fbthrift_field_mIntegerBool = std::move(other.__fbthrift_field_mIntegerBool);
+    this->__fbthrift_field_sShort = std::move(other.__fbthrift_field_sShort);
+    this->__fbthrift_field_sMyStruct = std::move(other.__fbthrift_field_sMyStruct);
+    this->__fbthrift_field_sLong = std::move(other.__fbthrift_field_sLong);
+    this->__fbthrift_field_sString = std::move(other.__fbthrift_field_sString);
+    this->__fbthrift_field_sByte = std::move(other.__fbthrift_field_sByte);
+    this->__fbthrift_field_mListList = std::move(other.__fbthrift_field_mListList);
     __isset = other.__isset;
     return *this;
 }
 
 
 MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::cpp2::MyDataItem MyDataField__arg, ::cpp2::MyEnum myEnum__arg, bool MyBoolField__arg, ::std::int8_t MyByteField__arg, ::std::int16_t MyShortField__arg, ::std::int64_t MyLongField__arg, double MyDoubleField__arg, ::std::vector<double> lDouble__arg, ::std::vector<::std::int16_t> lShort__arg, ::std::vector<::std::int32_t> lInteger__arg, ::std::vector<::std::int64_t> lLong__arg, ::std::vector<::std::string> lString__arg, ::std::vector<bool> lBool__arg, ::std::vector<::std::int8_t> lByte__arg, ::std::map<::std::int16_t, ::std::string> mShortString__arg, ::std::map<::std::int32_t, ::std::string> mIntegerString__arg, ::std::map<::std::string, ::cpp2::MyStruct> mStringMyStruct__arg, ::std::map<::std::string, bool> mStringBool__arg, ::std::map<::std::int32_t, ::std::int32_t> mIntegerInteger__arg, ::std::map<::std::int32_t, bool> mIntegerBool__arg, ::std::set<::std::int16_t> sShort__arg, ::std::set<::cpp2::MyStruct> sMyStruct__arg, ::std::set<::std::int64_t> sLong__arg, ::std::set<::std::string> sString__arg, ::std::set<::std::int8_t> sByte__arg, ::std::map<::std::vector<::std::int32_t>, ::std::vector<::std::int32_t>> mListList__arg) :
-    MyIntField(std::move(MyIntField__arg)),
-    MyStringField(std::move(MyStringField__arg)),
-    MyDataField(std::move(MyDataField__arg)),
-    myEnum(std::move(myEnum__arg)),
-    MyBoolField(std::move(MyBoolField__arg)),
-    MyByteField(std::move(MyByteField__arg)),
-    MyShortField(std::move(MyShortField__arg)),
-    MyLongField(std::move(MyLongField__arg)),
-    MyDoubleField(std::move(MyDoubleField__arg)),
-    lDouble(std::move(lDouble__arg)),
-    lShort(std::move(lShort__arg)),
-    lInteger(std::move(lInteger__arg)),
-    lLong(std::move(lLong__arg)),
-    lString(std::move(lString__arg)),
-    lBool(std::move(lBool__arg)),
-    lByte(std::move(lByte__arg)),
-    mShortString(std::move(mShortString__arg)),
-    mIntegerString(std::move(mIntegerString__arg)),
-    mStringMyStruct(std::move(mStringMyStruct__arg)),
-    mStringBool(std::move(mStringBool__arg)),
-    mIntegerInteger(std::move(mIntegerInteger__arg)),
-    mIntegerBool(std::move(mIntegerBool__arg)),
-    sShort(std::move(sShort__arg)),
-    sMyStruct(std::move(sMyStruct__arg)),
-    sLong(std::move(sLong__arg)),
-    sString(std::move(sString__arg)),
-    sByte(std::move(sByte__arg)),
-    mListList(std::move(mListList__arg)) {
+    __fbthrift_field_MyIntField(std::move(MyIntField__arg)),
+    __fbthrift_field_MyStringField(std::move(MyStringField__arg)),
+    __fbthrift_field_MyDataField(std::move(MyDataField__arg)),
+    __fbthrift_field_myEnum(std::move(myEnum__arg)),
+    __fbthrift_field_MyBoolField(std::move(MyBoolField__arg)),
+    __fbthrift_field_MyByteField(std::move(MyByteField__arg)),
+    __fbthrift_field_MyShortField(std::move(MyShortField__arg)),
+    __fbthrift_field_MyLongField(std::move(MyLongField__arg)),
+    __fbthrift_field_MyDoubleField(std::move(MyDoubleField__arg)),
+    __fbthrift_field_lDouble(std::move(lDouble__arg)),
+    __fbthrift_field_lShort(std::move(lShort__arg)),
+    __fbthrift_field_lInteger(std::move(lInteger__arg)),
+    __fbthrift_field_lLong(std::move(lLong__arg)),
+    __fbthrift_field_lString(std::move(lString__arg)),
+    __fbthrift_field_lBool(std::move(lBool__arg)),
+    __fbthrift_field_lByte(std::move(lByte__arg)),
+    __fbthrift_field_mShortString(std::move(mShortString__arg)),
+    __fbthrift_field_mIntegerString(std::move(mIntegerString__arg)),
+    __fbthrift_field_mStringMyStruct(std::move(mStringMyStruct__arg)),
+    __fbthrift_field_mStringBool(std::move(mStringBool__arg)),
+    __fbthrift_field_mIntegerInteger(std::move(mIntegerInteger__arg)),
+    __fbthrift_field_mIntegerBool(std::move(mIntegerBool__arg)),
+    __fbthrift_field_sShort(std::move(sShort__arg)),
+    __fbthrift_field_sMyStruct(std::move(sMyStruct__arg)),
+    __fbthrift_field_sLong(std::move(sLong__arg)),
+    __fbthrift_field_sString(std::move(sString__arg)),
+    __fbthrift_field_sByte(std::move(sByte__arg)),
+    __fbthrift_field_mListList(std::move(mListList__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -178,33 +178,33 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField
 
 void MyStruct::__clear() {
   // clear all fields
-  this->MyIntField = ::std::int64_t();
-  this->MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->myEnum = ::cpp2::MyEnum();
-  this->MyBoolField = bool();
-  this->MyByteField = ::std::int8_t();
-  this->MyShortField = ::std::int16_t();
-  this->MyLongField = ::std::int64_t();
-  this->MyDoubleField = double();
-  this->lDouble.clear();
-  this->lShort.clear();
-  this->lInteger.clear();
-  this->lLong.clear();
-  this->lString.clear();
-  this->lBool.clear();
-  this->lByte.clear();
-  this->mShortString.clear();
-  this->mIntegerString.clear();
-  this->mStringMyStruct.clear();
-  this->mStringBool.clear();
-  this->mIntegerInteger.clear();
-  this->mIntegerBool.clear();
-  this->sShort.clear();
-  this->sMyStruct.clear();
-  this->sLong.clear();
-  this->sString.clear();
-  this->sByte.clear();
-  this->mListList.clear();
+  this->__fbthrift_field_MyIntField = ::std::int64_t();
+  this->__fbthrift_field_MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_myEnum = ::cpp2::MyEnum();
+  this->__fbthrift_field_MyBoolField = bool();
+  this->__fbthrift_field_MyByteField = ::std::int8_t();
+  this->__fbthrift_field_MyShortField = ::std::int16_t();
+  this->__fbthrift_field_MyLongField = ::std::int64_t();
+  this->__fbthrift_field_MyDoubleField = double();
+  this->__fbthrift_field_lDouble.clear();
+  this->__fbthrift_field_lShort.clear();
+  this->__fbthrift_field_lInteger.clear();
+  this->__fbthrift_field_lLong.clear();
+  this->__fbthrift_field_lString.clear();
+  this->__fbthrift_field_lBool.clear();
+  this->__fbthrift_field_lByte.clear();
+  this->__fbthrift_field_mShortString.clear();
+  this->__fbthrift_field_mIntegerString.clear();
+  this->__fbthrift_field_mStringMyStruct.clear();
+  this->__fbthrift_field_mStringBool.clear();
+  this->__fbthrift_field_mIntegerInteger.clear();
+  this->__fbthrift_field_mIntegerBool.clear();
+  this->__fbthrift_field_sShort.clear();
+  this->__fbthrift_field_sMyStruct.clear();
+  this->__fbthrift_field_sLong.clear();
+  this->__fbthrift_field_sString.clear();
+  this->__fbthrift_field_sByte.clear();
+  this->__fbthrift_field_mListList.clear();
   __isset = {};
 }
 
@@ -391,163 +391,163 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
 }
 
 const ::cpp2::MyDataItem& MyStruct::get_MyDataField() const& {
-  return MyDataField;
+  return __fbthrift_field_MyDataField;
 }
 
 ::cpp2::MyDataItem MyStruct::get_MyDataField() && {
-  return std::move(MyDataField);
+  return std::move(__fbthrift_field_MyDataField);
 }
 
 const ::std::vector<double>& MyStruct::get_lDouble() const& {
-  return lDouble;
+  return __fbthrift_field_lDouble;
 }
 
 ::std::vector<double> MyStruct::get_lDouble() && {
-  return std::move(lDouble);
+  return std::move(__fbthrift_field_lDouble);
 }
 
 const ::std::vector<::std::int16_t>& MyStruct::get_lShort() const& {
-  return lShort;
+  return __fbthrift_field_lShort;
 }
 
 ::std::vector<::std::int16_t> MyStruct::get_lShort() && {
-  return std::move(lShort);
+  return std::move(__fbthrift_field_lShort);
 }
 
 const ::std::vector<::std::int32_t>& MyStruct::get_lInteger() const& {
-  return lInteger;
+  return __fbthrift_field_lInteger;
 }
 
 ::std::vector<::std::int32_t> MyStruct::get_lInteger() && {
-  return std::move(lInteger);
+  return std::move(__fbthrift_field_lInteger);
 }
 
 const ::std::vector<::std::int64_t>& MyStruct::get_lLong() const& {
-  return lLong;
+  return __fbthrift_field_lLong;
 }
 
 ::std::vector<::std::int64_t> MyStruct::get_lLong() && {
-  return std::move(lLong);
+  return std::move(__fbthrift_field_lLong);
 }
 
 const ::std::vector<::std::string>& MyStruct::get_lString() const& {
-  return lString;
+  return __fbthrift_field_lString;
 }
 
 ::std::vector<::std::string> MyStruct::get_lString() && {
-  return std::move(lString);
+  return std::move(__fbthrift_field_lString);
 }
 
 const ::std::vector<bool>& MyStruct::get_lBool() const& {
-  return lBool;
+  return __fbthrift_field_lBool;
 }
 
 ::std::vector<bool> MyStruct::get_lBool() && {
-  return std::move(lBool);
+  return std::move(__fbthrift_field_lBool);
 }
 
 const ::std::vector<::std::int8_t>& MyStruct::get_lByte() const& {
-  return lByte;
+  return __fbthrift_field_lByte;
 }
 
 ::std::vector<::std::int8_t> MyStruct::get_lByte() && {
-  return std::move(lByte);
+  return std::move(__fbthrift_field_lByte);
 }
 
 const ::std::map<::std::int16_t, ::std::string>& MyStruct::get_mShortString() const& {
-  return mShortString;
+  return __fbthrift_field_mShortString;
 }
 
 ::std::map<::std::int16_t, ::std::string> MyStruct::get_mShortString() && {
-  return std::move(mShortString);
+  return std::move(__fbthrift_field_mShortString);
 }
 
 const ::std::map<::std::int32_t, ::std::string>& MyStruct::get_mIntegerString() const& {
-  return mIntegerString;
+  return __fbthrift_field_mIntegerString;
 }
 
 ::std::map<::std::int32_t, ::std::string> MyStruct::get_mIntegerString() && {
-  return std::move(mIntegerString);
+  return std::move(__fbthrift_field_mIntegerString);
 }
 
 const ::std::map<::std::string, ::cpp2::MyStruct>& MyStruct::get_mStringMyStruct() const& {
-  return mStringMyStruct;
+  return __fbthrift_field_mStringMyStruct;
 }
 
 ::std::map<::std::string, ::cpp2::MyStruct> MyStruct::get_mStringMyStruct() && {
-  return std::move(mStringMyStruct);
+  return std::move(__fbthrift_field_mStringMyStruct);
 }
 
 const ::std::map<::std::string, bool>& MyStruct::get_mStringBool() const& {
-  return mStringBool;
+  return __fbthrift_field_mStringBool;
 }
 
 ::std::map<::std::string, bool> MyStruct::get_mStringBool() && {
-  return std::move(mStringBool);
+  return std::move(__fbthrift_field_mStringBool);
 }
 
 const ::std::map<::std::int32_t, ::std::int32_t>& MyStruct::get_mIntegerInteger() const& {
-  return mIntegerInteger;
+  return __fbthrift_field_mIntegerInteger;
 }
 
 ::std::map<::std::int32_t, ::std::int32_t> MyStruct::get_mIntegerInteger() && {
-  return std::move(mIntegerInteger);
+  return std::move(__fbthrift_field_mIntegerInteger);
 }
 
 const ::std::map<::std::int32_t, bool>& MyStruct::get_mIntegerBool() const& {
-  return mIntegerBool;
+  return __fbthrift_field_mIntegerBool;
 }
 
 ::std::map<::std::int32_t, bool> MyStruct::get_mIntegerBool() && {
-  return std::move(mIntegerBool);
+  return std::move(__fbthrift_field_mIntegerBool);
 }
 
 const ::std::set<::std::int16_t>& MyStruct::get_sShort() const& {
-  return sShort;
+  return __fbthrift_field_sShort;
 }
 
 ::std::set<::std::int16_t> MyStruct::get_sShort() && {
-  return std::move(sShort);
+  return std::move(__fbthrift_field_sShort);
 }
 
 const ::std::set<::cpp2::MyStruct>& MyStruct::get_sMyStruct() const& {
-  return sMyStruct;
+  return __fbthrift_field_sMyStruct;
 }
 
 ::std::set<::cpp2::MyStruct> MyStruct::get_sMyStruct() && {
-  return std::move(sMyStruct);
+  return std::move(__fbthrift_field_sMyStruct);
 }
 
 const ::std::set<::std::int64_t>& MyStruct::get_sLong() const& {
-  return sLong;
+  return __fbthrift_field_sLong;
 }
 
 ::std::set<::std::int64_t> MyStruct::get_sLong() && {
-  return std::move(sLong);
+  return std::move(__fbthrift_field_sLong);
 }
 
 const ::std::set<::std::string>& MyStruct::get_sString() const& {
-  return sString;
+  return __fbthrift_field_sString;
 }
 
 ::std::set<::std::string> MyStruct::get_sString() && {
-  return std::move(sString);
+  return std::move(__fbthrift_field_sString);
 }
 
 const ::std::set<::std::int8_t>& MyStruct::get_sByte() const& {
-  return sByte;
+  return __fbthrift_field_sByte;
 }
 
 ::std::set<::std::int8_t> MyStruct::get_sByte() && {
-  return std::move(sByte);
+  return std::move(__fbthrift_field_sByte);
 }
 
 const ::std::map<::std::vector<::std::int32_t>, ::std::vector<::std::int32_t>>& MyStruct::get_mListList() const& {
-  return mListList;
+  return __fbthrift_field_mListList;
 }
 
 ::std::map<::std::vector<::std::int32_t>, ::std::vector<::std::int32_t>> MyStruct::get_mListList() && {
-  return std::move(mListList);
+  return std::move(__fbthrift_field_mListList);
 }
 
 
@@ -635,51 +635,51 @@ namespace cpp2 {
 MyStructTypeDef::MyStructTypeDef(const MyStructTypeDef&) = default;
 MyStructTypeDef& MyStructTypeDef::operator=(const MyStructTypeDef&) = default;
 MyStructTypeDef::MyStructTypeDef() :
-      myLongField(),
-      myLongTypeDef() {
+      __fbthrift_field_myLongField(),
+      __fbthrift_field_myLongTypeDef() {
 }
 
 
 MyStructTypeDef::~MyStructTypeDef() {}
 
 MyStructTypeDef::MyStructTypeDef(MyStructTypeDef&& other) noexcept  :
-    myLongField(std::move(other.myLongField)),
-    myLongTypeDef(std::move(other.myLongTypeDef)),
-    myStringField(std::move(other.myStringField)),
-    myStringTypedef(std::move(other.myStringTypedef)),
-    myMapField(std::move(other.myMapField)),
-    myMapTypedef(std::move(other.myMapTypedef)),
-    myListField(std::move(other.myListField)),
-    myListTypedef(std::move(other.myListTypedef)),
-    myMapListOfTypeDef(std::move(other.myMapListOfTypeDef)),
+    __fbthrift_field_myLongField(std::move(other.__fbthrift_field_myLongField)),
+    __fbthrift_field_myLongTypeDef(std::move(other.__fbthrift_field_myLongTypeDef)),
+    __fbthrift_field_myStringField(std::move(other.__fbthrift_field_myStringField)),
+    __fbthrift_field_myStringTypedef(std::move(other.__fbthrift_field_myStringTypedef)),
+    __fbthrift_field_myMapField(std::move(other.__fbthrift_field_myMapField)),
+    __fbthrift_field_myMapTypedef(std::move(other.__fbthrift_field_myMapTypedef)),
+    __fbthrift_field_myListField(std::move(other.__fbthrift_field_myListField)),
+    __fbthrift_field_myListTypedef(std::move(other.__fbthrift_field_myListTypedef)),
+    __fbthrift_field_myMapListOfTypeDef(std::move(other.__fbthrift_field_myMapListOfTypeDef)),
     __isset(other.__isset) {
 }
 
 MyStructTypeDef& MyStructTypeDef::operator=(FOLLY_MAYBE_UNUSED MyStructTypeDef&& other) noexcept {
-    this->myLongField = std::move(other.myLongField);
-    this->myLongTypeDef = std::move(other.myLongTypeDef);
-    this->myStringField = std::move(other.myStringField);
-    this->myStringTypedef = std::move(other.myStringTypedef);
-    this->myMapField = std::move(other.myMapField);
-    this->myMapTypedef = std::move(other.myMapTypedef);
-    this->myListField = std::move(other.myListField);
-    this->myListTypedef = std::move(other.myListTypedef);
-    this->myMapListOfTypeDef = std::move(other.myMapListOfTypeDef);
+    this->__fbthrift_field_myLongField = std::move(other.__fbthrift_field_myLongField);
+    this->__fbthrift_field_myLongTypeDef = std::move(other.__fbthrift_field_myLongTypeDef);
+    this->__fbthrift_field_myStringField = std::move(other.__fbthrift_field_myStringField);
+    this->__fbthrift_field_myStringTypedef = std::move(other.__fbthrift_field_myStringTypedef);
+    this->__fbthrift_field_myMapField = std::move(other.__fbthrift_field_myMapField);
+    this->__fbthrift_field_myMapTypedef = std::move(other.__fbthrift_field_myMapTypedef);
+    this->__fbthrift_field_myListField = std::move(other.__fbthrift_field_myListField);
+    this->__fbthrift_field_myListTypedef = std::move(other.__fbthrift_field_myListTypedef);
+    this->__fbthrift_field_myMapListOfTypeDef = std::move(other.__fbthrift_field_myMapListOfTypeDef);
     __isset = other.__isset;
     return *this;
 }
 
 
 MyStructTypeDef::MyStructTypeDef(apache::thrift::FragileConstructor, ::std::int64_t myLongField__arg, ::cpp2::longTypeDef myLongTypeDef__arg, ::std::string myStringField__arg, ::cpp2::stringTypedef myStringTypedef__arg, ::std::map<::std::int16_t, ::std::string> myMapField__arg, ::cpp2::mapTypedef myMapTypedef__arg, ::std::vector<double> myListField__arg, ::cpp2::listTypedef myListTypedef__arg, ::std::map<::std::int16_t, ::std::vector<::cpp2::listTypedef>> myMapListOfTypeDef__arg) :
-    myLongField(std::move(myLongField__arg)),
-    myLongTypeDef(std::move(myLongTypeDef__arg)),
-    myStringField(std::move(myStringField__arg)),
-    myStringTypedef(std::move(myStringTypedef__arg)),
-    myMapField(std::move(myMapField__arg)),
-    myMapTypedef(std::move(myMapTypedef__arg)),
-    myListField(std::move(myListField__arg)),
-    myListTypedef(std::move(myListTypedef__arg)),
-    myMapListOfTypeDef(std::move(myMapListOfTypeDef__arg)) {
+    __fbthrift_field_myLongField(std::move(myLongField__arg)),
+    __fbthrift_field_myLongTypeDef(std::move(myLongTypeDef__arg)),
+    __fbthrift_field_myStringField(std::move(myStringField__arg)),
+    __fbthrift_field_myStringTypedef(std::move(myStringTypedef__arg)),
+    __fbthrift_field_myMapField(std::move(myMapField__arg)),
+    __fbthrift_field_myMapTypedef(std::move(myMapTypedef__arg)),
+    __fbthrift_field_myListField(std::move(myListField__arg)),
+    __fbthrift_field_myListTypedef(std::move(myListTypedef__arg)),
+    __fbthrift_field_myMapListOfTypeDef(std::move(myMapListOfTypeDef__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -694,15 +694,15 @@ MyStructTypeDef::MyStructTypeDef(apache::thrift::FragileConstructor, ::std::int6
 
 void MyStructTypeDef::__clear() {
   // clear all fields
-  this->myLongField = ::std::int64_t();
-  this->myLongTypeDef = ::cpp2::longTypeDef();
-  this->myStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->myStringTypedef = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->myMapField.clear();
-  this->myMapTypedef.clear();
-  this->myListField.clear();
-  this->myListTypedef.clear();
-  this->myMapListOfTypeDef.clear();
+  this->__fbthrift_field_myLongField = ::std::int64_t();
+  this->__fbthrift_field_myLongTypeDef = ::cpp2::longTypeDef();
+  this->__fbthrift_field_myStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_myStringTypedef = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_myMapField.clear();
+  this->__fbthrift_field_myMapTypedef.clear();
+  this->__fbthrift_field_myListField.clear();
+  this->__fbthrift_field_myListTypedef.clear();
+  this->__fbthrift_field_myMapListOfTypeDef.clear();
   __isset = {};
 }
 
@@ -775,43 +775,43 @@ bool MyStructTypeDef::operator<(const MyStructTypeDef& rhs) const {
 }
 
 const ::std::map<::std::int16_t, ::std::string>& MyStructTypeDef::get_myMapField() const& {
-  return myMapField;
+  return __fbthrift_field_myMapField;
 }
 
 ::std::map<::std::int16_t, ::std::string> MyStructTypeDef::get_myMapField() && {
-  return std::move(myMapField);
+  return std::move(__fbthrift_field_myMapField);
 }
 
 const ::cpp2::mapTypedef& MyStructTypeDef::get_myMapTypedef() const& {
-  return myMapTypedef;
+  return __fbthrift_field_myMapTypedef;
 }
 
 ::cpp2::mapTypedef MyStructTypeDef::get_myMapTypedef() && {
-  return std::move(myMapTypedef);
+  return std::move(__fbthrift_field_myMapTypedef);
 }
 
 const ::std::vector<double>& MyStructTypeDef::get_myListField() const& {
-  return myListField;
+  return __fbthrift_field_myListField;
 }
 
 ::std::vector<double> MyStructTypeDef::get_myListField() && {
-  return std::move(myListField);
+  return std::move(__fbthrift_field_myListField);
 }
 
 const ::cpp2::listTypedef& MyStructTypeDef::get_myListTypedef() const& {
-  return myListTypedef;
+  return __fbthrift_field_myListTypedef;
 }
 
 ::cpp2::listTypedef MyStructTypeDef::get_myListTypedef() && {
-  return std::move(myListTypedef);
+  return std::move(__fbthrift_field_myListTypedef);
 }
 
 const ::std::map<::std::int16_t, ::std::vector<::cpp2::listTypedef>>& MyStructTypeDef::get_myMapListOfTypeDef() const& {
-  return myMapListOfTypeDef;
+  return __fbthrift_field_myMapListOfTypeDef;
 }
 
 ::std::map<::std::int16_t, ::std::vector<::cpp2::listTypedef>> MyStructTypeDef::get_myMapListOfTypeDef() && {
-  return std::move(myMapListOfTypeDef);
+  return std::move(__fbthrift_field_myMapListOfTypeDef);
 }
 
 

@@ -67,7 +67,7 @@ class Foo final  {
  public:
 
   Foo() :
-      foo(),
+      __fbthrift_field_foo(),
       bar() {
   }
   // FragileConstructor for use in initialization lists only.
@@ -84,7 +84,7 @@ class Foo final  {
   Foo& operator=(const Foo&) = default;
   void __clear();
  private:
-  ::std::int32_t foo;
+  ::std::int32_t __fbthrift_field_foo;
  public:
   ::std::int32_t bar;
 private:
@@ -97,22 +97,22 @@ private:
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> foo_ref() const& {
-    return {this->foo, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_foo, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> foo_ref() const&& {
-    return {std::move(this->foo), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_foo), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> foo_ref() & {
-    return {this->foo, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_foo, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> foo_ref() && {
-    return {std::move(this->foo), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_foo), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -136,18 +136,18 @@ private:
   }
 
   const ::std::int32_t* get_foo() const& {
-    return foo_ref() ? std::addressof(foo) : nullptr;
+    return foo_ref() ? std::addressof(__fbthrift_field_foo) : nullptr;
   }
 
   ::std::int32_t* get_foo() & {
-    return foo_ref() ? std::addressof(foo) : nullptr;
+    return foo_ref() ? std::addressof(__fbthrift_field_foo) : nullptr;
   }
   ::std::int32_t* get_foo() && = delete;
 
   [[deprecated("Use `FOO.foo_ref() = BAR;` instead of `FOO.set_foo(BAR);`")]]
   ::std::int32_t& set_foo(::std::int32_t foo_) {
     foo_ref() = foo_;
-    return foo;
+    return __fbthrift_field_foo;
   }
 
   ::std::int32_t get_bar() const {

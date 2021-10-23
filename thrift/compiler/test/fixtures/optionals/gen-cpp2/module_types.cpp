@@ -70,10 +70,10 @@ namespace cpp2 {
 
 
 Color::Color(apache::thrift::FragileConstructor, double red__arg, double green__arg, double blue__arg, double alpha__arg) :
-    red(std::move(red__arg)),
-    green(std::move(green__arg)),
-    blue(std::move(blue__arg)),
-    alpha(std::move(alpha__arg)) {
+    __fbthrift_field_red(std::move(red__arg)),
+    __fbthrift_field_green(std::move(green__arg)),
+    __fbthrift_field_blue(std::move(blue__arg)),
+    __fbthrift_field_alpha(std::move(alpha__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -83,10 +83,10 @@ Color::Color(apache::thrift::FragileConstructor, double red__arg, double green__
 
 void Color::__clear() {
   // clear all fields
-  this->red = double();
-  this->green = double();
-  this->blue = double();
-  this->alpha = double();
+  this->__fbthrift_field_red = double();
+  this->__fbthrift_field_green = double();
+  this->__fbthrift_field_blue = double();
+  this->__fbthrift_field_alpha = double();
   __isset = {};
 }
 
@@ -177,38 +177,38 @@ namespace cpp2 {
 Vehicle::Vehicle(const Vehicle&) = default;
 Vehicle& Vehicle::operator=(const Vehicle&) = default;
 Vehicle::Vehicle() :
-      hasAC(static_cast<bool>(false)) {
+      __fbthrift_field_hasAC(static_cast<bool>(false)) {
 }
 
 
 Vehicle::~Vehicle() {}
 
 Vehicle::Vehicle(Vehicle&& other) noexcept  :
-    color(std::move(other.color)),
-    licensePlate(std::move(other.licensePlate)),
-    description(std::move(other.description)),
-    name(std::move(other.name)),
-    hasAC(std::move(other.hasAC)),
+    __fbthrift_field_color(std::move(other.__fbthrift_field_color)),
+    __fbthrift_field_licensePlate(std::move(other.__fbthrift_field_licensePlate)),
+    __fbthrift_field_description(std::move(other.__fbthrift_field_description)),
+    __fbthrift_field_name(std::move(other.__fbthrift_field_name)),
+    __fbthrift_field_hasAC(std::move(other.__fbthrift_field_hasAC)),
     __isset(other.__isset) {
 }
 
 Vehicle& Vehicle::operator=(FOLLY_MAYBE_UNUSED Vehicle&& other) noexcept {
-    this->color = std::move(other.color);
-    this->licensePlate = std::move(other.licensePlate);
-    this->description = std::move(other.description);
-    this->name = std::move(other.name);
-    this->hasAC = std::move(other.hasAC);
+    this->__fbthrift_field_color = std::move(other.__fbthrift_field_color);
+    this->__fbthrift_field_licensePlate = std::move(other.__fbthrift_field_licensePlate);
+    this->__fbthrift_field_description = std::move(other.__fbthrift_field_description);
+    this->__fbthrift_field_name = std::move(other.__fbthrift_field_name);
+    this->__fbthrift_field_hasAC = std::move(other.__fbthrift_field_hasAC);
     __isset = other.__isset;
     return *this;
 }
 
 
 Vehicle::Vehicle(apache::thrift::FragileConstructor, ::cpp2::Color color__arg, ::std::string licensePlate__arg, ::std::string description__arg, ::std::string name__arg, bool hasAC__arg) :
-    color(std::move(color__arg)),
-    licensePlate(std::move(licensePlate__arg)),
-    description(std::move(description__arg)),
-    name(std::move(name__arg)),
-    hasAC(std::move(hasAC__arg)) {
+    __fbthrift_field_color(std::move(color__arg)),
+    __fbthrift_field_licensePlate(std::move(licensePlate__arg)),
+    __fbthrift_field_description(std::move(description__arg)),
+    __fbthrift_field_name(std::move(name__arg)),
+    __fbthrift_field_hasAC(std::move(hasAC__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -219,11 +219,11 @@ Vehicle::Vehicle(apache::thrift::FragileConstructor, ::cpp2::Color color__arg, :
 
 void Vehicle::__clear() {
   // clear all fields
-  this->color.__clear();
-  this->licensePlate = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->description = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->hasAC = static_cast<bool>(false);
+  this->__fbthrift_field_color.__clear();
+  this->__fbthrift_field_licensePlate = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_description = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_hasAC = static_cast<bool>(false);
   __isset = {};
 }
 
@@ -272,11 +272,11 @@ bool Vehicle::operator<(const Vehicle& rhs) const {
 }
 
 const ::cpp2::Color& Vehicle::get_color() const& {
-  return color;
+  return __fbthrift_field_color;
 }
 
 ::cpp2::Color Vehicle::get_color() && {
-  return std::move(color);
+  return std::move(__fbthrift_field_color);
 }
 
 
@@ -341,56 +341,56 @@ namespace cpp2 {
 Person::Person(const Person&) = default;
 Person& Person::operator=(const Person&) = default;
 Person::Person() :
-      id(),
-      age(),
-      bestFriend(),
-      afraidOfAnimal() {
+      __fbthrift_field_id(),
+      __fbthrift_field_age(),
+      __fbthrift_field_bestFriend(),
+      __fbthrift_field_afraidOfAnimal() {
 }
 
 
 Person::~Person() {}
 
 Person::Person(Person&& other) noexcept  :
-    id(std::move(other.id)),
-    name(std::move(other.name)),
-    age(std::move(other.age)),
-    address(std::move(other.address)),
-    favoriteColor(std::move(other.favoriteColor)),
-    friends(std::move(other.friends)),
-    bestFriend(std::move(other.bestFriend)),
-    petNames(std::move(other.petNames)),
-    afraidOfAnimal(std::move(other.afraidOfAnimal)),
-    vehicles(std::move(other.vehicles)),
+    __fbthrift_field_id(std::move(other.__fbthrift_field_id)),
+    __fbthrift_field_name(std::move(other.__fbthrift_field_name)),
+    __fbthrift_field_age(std::move(other.__fbthrift_field_age)),
+    __fbthrift_field_address(std::move(other.__fbthrift_field_address)),
+    __fbthrift_field_favoriteColor(std::move(other.__fbthrift_field_favoriteColor)),
+    __fbthrift_field_friends(std::move(other.__fbthrift_field_friends)),
+    __fbthrift_field_bestFriend(std::move(other.__fbthrift_field_bestFriend)),
+    __fbthrift_field_petNames(std::move(other.__fbthrift_field_petNames)),
+    __fbthrift_field_afraidOfAnimal(std::move(other.__fbthrift_field_afraidOfAnimal)),
+    __fbthrift_field_vehicles(std::move(other.__fbthrift_field_vehicles)),
     __isset(other.__isset) {
 }
 
 Person& Person::operator=(FOLLY_MAYBE_UNUSED Person&& other) noexcept {
-    this->id = std::move(other.id);
-    this->name = std::move(other.name);
-    this->age = std::move(other.age);
-    this->address = std::move(other.address);
-    this->favoriteColor = std::move(other.favoriteColor);
-    this->friends = std::move(other.friends);
-    this->bestFriend = std::move(other.bestFriend);
-    this->petNames = std::move(other.petNames);
-    this->afraidOfAnimal = std::move(other.afraidOfAnimal);
-    this->vehicles = std::move(other.vehicles);
+    this->__fbthrift_field_id = std::move(other.__fbthrift_field_id);
+    this->__fbthrift_field_name = std::move(other.__fbthrift_field_name);
+    this->__fbthrift_field_age = std::move(other.__fbthrift_field_age);
+    this->__fbthrift_field_address = std::move(other.__fbthrift_field_address);
+    this->__fbthrift_field_favoriteColor = std::move(other.__fbthrift_field_favoriteColor);
+    this->__fbthrift_field_friends = std::move(other.__fbthrift_field_friends);
+    this->__fbthrift_field_bestFriend = std::move(other.__fbthrift_field_bestFriend);
+    this->__fbthrift_field_petNames = std::move(other.__fbthrift_field_petNames);
+    this->__fbthrift_field_afraidOfAnimal = std::move(other.__fbthrift_field_afraidOfAnimal);
+    this->__fbthrift_field_vehicles = std::move(other.__fbthrift_field_vehicles);
     __isset = other.__isset;
     return *this;
 }
 
 
 Person::Person(apache::thrift::FragileConstructor, ::cpp2::PersonID id__arg, ::std::string name__arg, ::std::int16_t age__arg, ::std::string address__arg, ::cpp2::Color favoriteColor__arg, ::std::set<::cpp2::PersonID> friends__arg, ::cpp2::PersonID bestFriend__arg, ::std::map<::cpp2::Animal, ::std::string> petNames__arg, ::cpp2::Animal afraidOfAnimal__arg, ::std::vector<::cpp2::Vehicle> vehicles__arg) :
-    id(std::move(id__arg)),
-    name(std::move(name__arg)),
-    age(std::move(age__arg)),
-    address(std::move(address__arg)),
-    favoriteColor(std::move(favoriteColor__arg)),
-    friends(std::move(friends__arg)),
-    bestFriend(std::move(bestFriend__arg)),
-    petNames(std::move(petNames__arg)),
-    afraidOfAnimal(std::move(afraidOfAnimal__arg)),
-    vehicles(std::move(vehicles__arg)) {
+    __fbthrift_field_id(std::move(id__arg)),
+    __fbthrift_field_name(std::move(name__arg)),
+    __fbthrift_field_age(std::move(age__arg)),
+    __fbthrift_field_address(std::move(address__arg)),
+    __fbthrift_field_favoriteColor(std::move(favoriteColor__arg)),
+    __fbthrift_field_friends(std::move(friends__arg)),
+    __fbthrift_field_bestFriend(std::move(bestFriend__arg)),
+    __fbthrift_field_petNames(std::move(petNames__arg)),
+    __fbthrift_field_afraidOfAnimal(std::move(afraidOfAnimal__arg)),
+    __fbthrift_field_vehicles(std::move(vehicles__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -406,16 +406,16 @@ Person::Person(apache::thrift::FragileConstructor, ::cpp2::PersonID id__arg, ::s
 
 void Person::__clear() {
   // clear all fields
-  this->id = ::cpp2::PersonID();
-  this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->age = ::std::int16_t();
-  this->address = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->favoriteColor.__clear();
-  this->friends.clear();
-  this->bestFriend = ::cpp2::PersonID();
-  this->petNames.clear();
-  this->afraidOfAnimal = ::cpp2::Animal();
-  this->vehicles.clear();
+  this->__fbthrift_field_id = ::cpp2::PersonID();
+  this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_age = ::std::int16_t();
+  this->__fbthrift_field_address = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_favoriteColor.__clear();
+  this->__fbthrift_field_friends.clear();
+  this->__fbthrift_field_bestFriend = ::cpp2::PersonID();
+  this->__fbthrift_field_petNames.clear();
+  this->__fbthrift_field_afraidOfAnimal = ::cpp2::Animal();
+  this->__fbthrift_field_vehicles.clear();
   __isset = {};
 }
 
@@ -494,35 +494,35 @@ bool Person::operator<(const Person& rhs) const {
 }
 
 const ::cpp2::Color* Person::get_favoriteColor() const& {
-  return favoriteColor_ref().has_value() ? std::addressof(favoriteColor) : nullptr;
+  return favoriteColor_ref().has_value() ? std::addressof(__fbthrift_field_favoriteColor) : nullptr;
 }
 
 ::cpp2::Color* Person::get_favoriteColor() & {
-  return favoriteColor_ref().has_value() ? std::addressof(favoriteColor) : nullptr;
+  return favoriteColor_ref().has_value() ? std::addressof(__fbthrift_field_favoriteColor) : nullptr;
 }
 
 const ::std::set<::cpp2::PersonID>* Person::get_friends() const& {
-  return friends_ref().has_value() ? std::addressof(friends) : nullptr;
+  return friends_ref().has_value() ? std::addressof(__fbthrift_field_friends) : nullptr;
 }
 
 ::std::set<::cpp2::PersonID>* Person::get_friends() & {
-  return friends_ref().has_value() ? std::addressof(friends) : nullptr;
+  return friends_ref().has_value() ? std::addressof(__fbthrift_field_friends) : nullptr;
 }
 
 const ::std::map<::cpp2::Animal, ::std::string>* Person::get_petNames() const& {
-  return petNames_ref().has_value() ? std::addressof(petNames) : nullptr;
+  return petNames_ref().has_value() ? std::addressof(__fbthrift_field_petNames) : nullptr;
 }
 
 ::std::map<::cpp2::Animal, ::std::string>* Person::get_petNames() & {
-  return petNames_ref().has_value() ? std::addressof(petNames) : nullptr;
+  return petNames_ref().has_value() ? std::addressof(__fbthrift_field_petNames) : nullptr;
 }
 
 const ::std::vector<::cpp2::Vehicle>* Person::get_vehicles() const& {
-  return vehicles_ref().has_value() ? std::addressof(vehicles) : nullptr;
+  return vehicles_ref().has_value() ? std::addressof(__fbthrift_field_vehicles) : nullptr;
 }
 
 ::std::vector<::cpp2::Vehicle>* Person::get_vehicles() & {
-  return vehicles_ref().has_value() ? std::addressof(vehicles) : nullptr;
+  return vehicles_ref().has_value() ? std::addressof(__fbthrift_field_vehicles) : nullptr;
 }
 
 

@@ -112,7 +112,7 @@ class InitialResponse final  {
   InitialResponse& operator=(const InitialResponse& src);
   void __clear();
  private:
-  ::std::string content;
+  ::std::string __fbthrift_field_content;
 private:
   apache::thrift::detail::isset_bitset<1> __isset;
 
@@ -123,37 +123,37 @@ private:
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> content_ref() const& {
-    return {this->content, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_content, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> content_ref() const&& {
-    return {std::move(this->content), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_content), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> content_ref() & {
-    return {this->content, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_content, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> content_ref() && {
-    return {std::move(this->content), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_content), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   const ::std::string& get_content() const& {
-    return content;
+    return __fbthrift_field_content;
   }
 
   ::std::string get_content() && {
-    return std::move(content);
+    return std::move(__fbthrift_field_content);
   }
 
   template <typename T_InitialResponse_content_struct_setter = ::std::string>
   [[deprecated("Use `FOO.content_ref() = BAR;` instead of `FOO.set_content(BAR);`")]]
   ::std::string& set_content(T_InitialResponse_content_struct_setter&& content_) {
     content_ref() = std::forward<T_InitialResponse_content_struct_setter>(content_);
-    return content;
+    return __fbthrift_field_content;
   }
 
   template <class Protocol_>
@@ -214,7 +214,7 @@ class FinalResponse final  {
   FinalResponse& operator=(const FinalResponse& src);
   void __clear();
  private:
-  ::std::string content;
+  ::std::string __fbthrift_field_content;
 private:
   apache::thrift::detail::isset_bitset<1> __isset;
 
@@ -225,37 +225,37 @@ private:
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> content_ref() const& {
-    return {this->content, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_content, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> content_ref() const&& {
-    return {std::move(this->content), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_content), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> content_ref() & {
-    return {this->content, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_content, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> content_ref() && {
-    return {std::move(this->content), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_content), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   const ::std::string& get_content() const& {
-    return content;
+    return __fbthrift_field_content;
   }
 
   ::std::string get_content() && {
-    return std::move(content);
+    return std::move(__fbthrift_field_content);
   }
 
   template <typename T_FinalResponse_content_struct_setter = ::std::string>
   [[deprecated("Use `FOO.content_ref() = BAR;` instead of `FOO.set_content(BAR);`")]]
   ::std::string& set_content(T_FinalResponse_content_struct_setter&& content_) {
     content_ref() = std::forward<T_FinalResponse_content_struct_setter>(content_);
-    return content;
+    return __fbthrift_field_content;
   }
 
   template <class Protocol_>
@@ -316,7 +316,7 @@ class SinkPayload final  {
   SinkPayload& operator=(const SinkPayload& src);
   void __clear();
  private:
-  ::std::string content;
+  ::std::string __fbthrift_field_content;
 private:
   apache::thrift::detail::isset_bitset<1> __isset;
 
@@ -327,37 +327,37 @@ private:
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> content_ref() const& {
-    return {this->content, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_content, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> content_ref() const&& {
-    return {std::move(this->content), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_content), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> content_ref() & {
-    return {this->content, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_content, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> content_ref() && {
-    return {std::move(this->content), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_content), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   const ::std::string& get_content() const& {
-    return content;
+    return __fbthrift_field_content;
   }
 
   ::std::string get_content() && {
-    return std::move(content);
+    return std::move(__fbthrift_field_content);
   }
 
   template <typename T_SinkPayload_content_struct_setter = ::std::string>
   [[deprecated("Use `FOO.content_ref() = BAR;` instead of `FOO.set_content(BAR);`")]]
   ::std::string& set_content(T_SinkPayload_content_struct_setter&& content_) {
     content_ref() = std::forward<T_SinkPayload_content_struct_setter>(content_);
-    return content;
+    return __fbthrift_field_content;
   }
 
   template <class Protocol_>
@@ -418,7 +418,7 @@ class CompatibleWithKeywordSink final  {
   CompatibleWithKeywordSink& operator=(const CompatibleWithKeywordSink& src);
   void __clear();
  private:
-  ::std::string sink;
+  ::std::string __fbthrift_field_sink;
 private:
   apache::thrift::detail::isset_bitset<1> __isset;
 
@@ -429,37 +429,37 @@ private:
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> sink_ref() const& {
-    return {this->sink, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_sink, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> sink_ref() const&& {
-    return {std::move(this->sink), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_sink), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> sink_ref() & {
-    return {this->sink, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_sink, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> sink_ref() && {
-    return {std::move(this->sink), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_sink), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   const ::std::string& get_sink() const& {
-    return sink;
+    return __fbthrift_field_sink;
   }
 
   ::std::string get_sink() && {
-    return std::move(sink);
+    return std::move(__fbthrift_field_sink);
   }
 
   template <typename T_CompatibleWithKeywordSink_sink_struct_setter = ::std::string>
   [[deprecated("Use `FOO.sink_ref() = BAR;` instead of `FOO.set_sink(BAR);`")]]
   ::std::string& set_sink(T_CompatibleWithKeywordSink_sink_struct_setter&& sink_) {
     sink_ref() = std::forward<T_CompatibleWithKeywordSink_sink_struct_setter>(sink_);
-    return sink;
+    return __fbthrift_field_sink;
   }
 
   template <class Protocol_>

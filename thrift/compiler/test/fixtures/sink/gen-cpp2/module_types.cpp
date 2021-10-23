@@ -38,26 +38,26 @@ namespace cpp2 {
 InitialResponse::InitialResponse(const InitialResponse&) = default;
 InitialResponse& InitialResponse::operator=(const InitialResponse&) = default;
 InitialResponse::InitialResponse(InitialResponse&& other) noexcept  :
-    content(std::move(other.content)),
+    __fbthrift_field_content(std::move(other.__fbthrift_field_content)),
     __isset(other.__isset) {
 }
 
 InitialResponse& InitialResponse::operator=(FOLLY_MAYBE_UNUSED InitialResponse&& other) noexcept {
-    this->content = std::move(other.content);
+    this->__fbthrift_field_content = std::move(other.__fbthrift_field_content);
     __isset = other.__isset;
     return *this;
 }
 
 
 InitialResponse::InitialResponse(apache::thrift::FragileConstructor, ::std::string content__arg) :
-    content(std::move(content__arg)) {
+    __fbthrift_field_content(std::move(content__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 
 
 void InitialResponse::__clear() {
   // clear all fields
-  this->content = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_content = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 
@@ -127,26 +127,26 @@ namespace cpp2 {
 FinalResponse::FinalResponse(const FinalResponse&) = default;
 FinalResponse& FinalResponse::operator=(const FinalResponse&) = default;
 FinalResponse::FinalResponse(FinalResponse&& other) noexcept  :
-    content(std::move(other.content)),
+    __fbthrift_field_content(std::move(other.__fbthrift_field_content)),
     __isset(other.__isset) {
 }
 
 FinalResponse& FinalResponse::operator=(FOLLY_MAYBE_UNUSED FinalResponse&& other) noexcept {
-    this->content = std::move(other.content);
+    this->__fbthrift_field_content = std::move(other.__fbthrift_field_content);
     __isset = other.__isset;
     return *this;
 }
 
 
 FinalResponse::FinalResponse(apache::thrift::FragileConstructor, ::std::string content__arg) :
-    content(std::move(content__arg)) {
+    __fbthrift_field_content(std::move(content__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 
 
 void FinalResponse::__clear() {
   // clear all fields
-  this->content = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_content = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 
@@ -216,26 +216,26 @@ namespace cpp2 {
 SinkPayload::SinkPayload(const SinkPayload&) = default;
 SinkPayload& SinkPayload::operator=(const SinkPayload&) = default;
 SinkPayload::SinkPayload(SinkPayload&& other) noexcept  :
-    content(std::move(other.content)),
+    __fbthrift_field_content(std::move(other.__fbthrift_field_content)),
     __isset(other.__isset) {
 }
 
 SinkPayload& SinkPayload::operator=(FOLLY_MAYBE_UNUSED SinkPayload&& other) noexcept {
-    this->content = std::move(other.content);
+    this->__fbthrift_field_content = std::move(other.__fbthrift_field_content);
     __isset = other.__isset;
     return *this;
 }
 
 
 SinkPayload::SinkPayload(apache::thrift::FragileConstructor, ::std::string content__arg) :
-    content(std::move(content__arg)) {
+    __fbthrift_field_content(std::move(content__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 
 
 void SinkPayload::__clear() {
   // clear all fields
-  this->content = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_content = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 
@@ -305,26 +305,26 @@ namespace cpp2 {
 CompatibleWithKeywordSink::CompatibleWithKeywordSink(const CompatibleWithKeywordSink&) = default;
 CompatibleWithKeywordSink& CompatibleWithKeywordSink::operator=(const CompatibleWithKeywordSink&) = default;
 CompatibleWithKeywordSink::CompatibleWithKeywordSink(CompatibleWithKeywordSink&& other) noexcept  :
-    sink(std::move(other.sink)),
+    __fbthrift_field_sink(std::move(other.__fbthrift_field_sink)),
     __isset(other.__isset) {
 }
 
 CompatibleWithKeywordSink& CompatibleWithKeywordSink::operator=(FOLLY_MAYBE_UNUSED CompatibleWithKeywordSink&& other) noexcept {
-    this->sink = std::move(other.sink);
+    this->__fbthrift_field_sink = std::move(other.__fbthrift_field_sink);
     __isset = other.__isset;
     return *this;
 }
 
 
 CompatibleWithKeywordSink::CompatibleWithKeywordSink(apache::thrift::FragileConstructor, ::std::string sink__arg) :
-    sink(std::move(sink__arg)) {
+    __fbthrift_field_sink(std::move(sink__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 
 
 void CompatibleWithKeywordSink::__clear() {
   // clear all fields
-  this->sink = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_sink = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 

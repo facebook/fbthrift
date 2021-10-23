@@ -38,22 +38,22 @@ namespace cpp2 {
 MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(const MyStructMapFloatThrowExp&) = default;
 MyStructMapFloatThrowExp& MyStructMapFloatThrowExp::operator=(const MyStructMapFloatThrowExp&) = default;
 MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(MyStructMapFloatThrowExp&& other) noexcept  :
-    myLongField(std::move(other.myLongField)),
-    mapListOfFloats(std::move(other.mapListOfFloats)),
+    __fbthrift_field_myLongField(std::move(other.__fbthrift_field_myLongField)),
+    __fbthrift_field_mapListOfFloats(std::move(other.__fbthrift_field_mapListOfFloats)),
     __isset(other.__isset) {
 }
 
 MyStructMapFloatThrowExp& MyStructMapFloatThrowExp::operator=(FOLLY_MAYBE_UNUSED MyStructMapFloatThrowExp&& other) noexcept {
-    this->myLongField = std::move(other.myLongField);
-    this->mapListOfFloats = std::move(other.mapListOfFloats);
+    this->__fbthrift_field_myLongField = std::move(other.__fbthrift_field_myLongField);
+    this->__fbthrift_field_mapListOfFloats = std::move(other.__fbthrift_field_mapListOfFloats);
     __isset = other.__isset;
     return *this;
 }
 
 
 MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(apache::thrift::FragileConstructor, ::std::int64_t myLongField__arg, ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::floatTypedef>>> mapListOfFloats__arg) :
-    myLongField(std::move(myLongField__arg)),
-    mapListOfFloats(std::move(mapListOfFloats__arg)) {
+    __fbthrift_field_myLongField(std::move(myLongField__arg)),
+    __fbthrift_field_mapListOfFloats(std::move(mapListOfFloats__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
@@ -61,8 +61,8 @@ MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(apache::thrift::FragileConstr
 
 void MyStructMapFloatThrowExp::__clear() {
   // clear all fields
-  this->myLongField = ::std::int64_t();
-  this->mapListOfFloats.clear();
+  this->__fbthrift_field_myLongField = ::std::int64_t();
+  this->__fbthrift_field_mapListOfFloats.clear();
   __isset = {};
 }
 
@@ -93,11 +93,11 @@ bool MyStructMapFloatThrowExp::operator<(const MyStructMapFloatThrowExp& rhs) co
 }
 
 const ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::floatTypedef>>>& MyStructMapFloatThrowExp::get_mapListOfFloats() const& {
-  return mapListOfFloats;
+  return __fbthrift_field_mapListOfFloats;
 }
 
 ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::floatTypedef>>> MyStructMapFloatThrowExp::get_mapListOfFloats() && {
-  return std::move(mapListOfFloats);
+  return std::move(__fbthrift_field_mapListOfFloats);
 }
 
 
@@ -147,39 +147,39 @@ namespace cpp2 {
 defaultStruct::defaultStruct(const defaultStruct&) = default;
 defaultStruct& defaultStruct::operator=(const defaultStruct&) = default;
 defaultStruct::defaultStruct() :
-      myLongDFset(static_cast<::std::int64_t>(10)),
-      myLongDF(),
-      portDFset(static_cast<::std::int32_t>(3456)),
-      portNum(),
-      myBinaryDFset(apache::thrift::StringTraits<std::string>::fromStringLiteral("abc")),
-      myByteDFSet(static_cast<::std::int8_t>(17)),
-      myByte(),
-      myDoubleDFset(static_cast<double>(99.7678)),
-      myDoubleDFZero(static_cast<double>(0)),
-      myDouble(),
-      field3(static_cast<::std::map<::std::int32_t, ::std::string>>(std::initializer_list<std::pair<const ::std::int32_t, ::std::string>>{{15, apache::thrift::StringTraits<std::string>::fromStringLiteral("a_value")},
+      __fbthrift_field_myLongDFset(static_cast<::std::int64_t>(10)),
+      __fbthrift_field_myLongDF(),
+      __fbthrift_field_portDFset(static_cast<::std::int32_t>(3456)),
+      __fbthrift_field_portNum(),
+      __fbthrift_field_myBinaryDFset(apache::thrift::StringTraits<std::string>::fromStringLiteral("abc")),
+      __fbthrift_field_myByteDFSet(static_cast<::std::int8_t>(17)),
+      __fbthrift_field_myByte(),
+      __fbthrift_field_myDoubleDFset(static_cast<double>(99.7678)),
+      __fbthrift_field_myDoubleDFZero(static_cast<double>(0)),
+      __fbthrift_field_myDouble(),
+      __fbthrift_field_field3(static_cast<::std::map<::std::int32_t, ::std::string>>(std::initializer_list<std::pair<const ::std::int32_t, ::std::string>>{{15, apache::thrift::StringTraits<std::string>::fromStringLiteral("a_value")},
   {2, apache::thrift::StringTraits<std::string>::fromStringLiteral("b_value")}})),
-      myList(static_cast<::std::vector<::cpp2::MyEnum>>(std::initializer_list<::cpp2::MyEnum>{ ::cpp2::MyEnum::MyValue1,
+      __fbthrift_field_myList(static_cast<::std::vector<::cpp2::MyEnum>>(std::initializer_list<::cpp2::MyEnum>{ ::cpp2::MyEnum::MyValue1,
    ::cpp2::MyEnum::MyValue1,
    ::cpp2::MyEnum::MyValue2})),
-      mySet(static_cast<::std::set<::std::string>>(std::initializer_list<::std::string>{apache::thrift::StringTraits<std::string>::fromStringLiteral("house"),
+      __fbthrift_field_mySet(static_cast<::std::set<::std::string>>(std::initializer_list<::std::string>{apache::thrift::StringTraits<std::string>::fromStringLiteral("house"),
   apache::thrift::StringTraits<std::string>::fromStringLiteral("car"),
   apache::thrift::StringTraits<std::string>::fromStringLiteral("dog")})),
-      simpleStruct(static_cast<::cpp2::SimpleStruct>(::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(static_cast<::std::int64_t>(40)), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits<std::string>::fromStringLiteral("John"))))),
-      listStructDFset(static_cast<::std::vector<::cpp2::SimpleStruct>>(std::initializer_list<::cpp2::SimpleStruct>{::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(static_cast<::std::int64_t>(40)), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits<std::string>::fromStringLiteral("IronMan"))),
+      __fbthrift_field_simpleStruct(static_cast<::cpp2::SimpleStruct>(::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(static_cast<::std::int64_t>(40)), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits<std::string>::fromStringLiteral("John"))))),
+      __fbthrift_field_listStructDFset(static_cast<::std::vector<::cpp2::SimpleStruct>>(std::initializer_list<::cpp2::SimpleStruct>{::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(static_cast<::std::int64_t>(40)), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits<std::string>::fromStringLiteral("IronMan"))),
   ::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(static_cast<::std::int64_t>(999)), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits<std::string>::fromStringLiteral("Thanos")))})),
-      myUnion(static_cast<::cpp2::MyUnion>(::apache::thrift::detail::make_constant< ::cpp2::MyUnion>(::apache::thrift::type_class::variant{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::myEnum>(static_cast<::cpp2::MyEnum>( ::cpp2::MyEnum::MyValue2))))),
-      listUnionDFset(static_cast<::std::vector<::cpp2::MyUnion>>(std::initializer_list<::cpp2::MyUnion>{::apache::thrift::detail::make_constant< ::cpp2::MyUnion>(::apache::thrift::type_class::variant{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::myEnum>(static_cast<::cpp2::MyEnum>( ::cpp2::MyEnum::MyValue2))),
+      __fbthrift_field_myUnion(static_cast<::cpp2::MyUnion>(::apache::thrift::detail::make_constant< ::cpp2::MyUnion>(::apache::thrift::type_class::variant{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::myEnum>(static_cast<::cpp2::MyEnum>( ::cpp2::MyEnum::MyValue2))))),
+      __fbthrift_field_listUnionDFset(static_cast<::std::vector<::cpp2::MyUnion>>(std::initializer_list<::cpp2::MyUnion>{::apache::thrift::detail::make_constant< ::cpp2::MyUnion>(::apache::thrift::type_class::variant{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::myEnum>(static_cast<::cpp2::MyEnum>( ::cpp2::MyEnum::MyValue2))),
   ::apache::thrift::detail::make_constant< ::cpp2::MyUnion>(::apache::thrift::type_class::variant{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::intValue>(static_cast<::std::int32_t>(123)))})),
-      mapNestlistStructDfSet(static_cast<::std::map<::std::int32_t, ::std::vector<::cpp2::SimpleStruct>>>(std::initializer_list<std::pair<const ::std::int32_t, ::std::vector<::cpp2::SimpleStruct>>>{{1, std::initializer_list<::cpp2::SimpleStruct>{::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(static_cast<::std::int64_t>(40)), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits<std::string>::fromStringLiteral("IronMan"))),
+      __fbthrift_field_mapNestlistStructDfSet(static_cast<::std::map<::std::int32_t, ::std::vector<::cpp2::SimpleStruct>>>(std::initializer_list<std::pair<const ::std::int32_t, ::std::vector<::cpp2::SimpleStruct>>>{{1, std::initializer_list<::cpp2::SimpleStruct>{::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(static_cast<::std::int64_t>(40)), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits<std::string>::fromStringLiteral("IronMan"))),
   ::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(static_cast<::std::int64_t>(999)), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits<std::string>::fromStringLiteral("Thanos")))}},
   {2, std::initializer_list<::cpp2::SimpleStruct>{::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(static_cast<::std::int64_t>(28)), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits<std::string>::fromStringLiteral("BatMan"))),
   ::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(static_cast<::std::int64_t>(12)), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits<std::string>::fromStringLiteral("Robin")))}},
   {5, std::initializer_list<::cpp2::SimpleStruct>{::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(static_cast<::std::int64_t>(12)), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits<std::string>::fromStringLiteral("RatMan"))),
   ::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(static_cast<::std::int64_t>(6)), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits<std::string>::fromStringLiteral("Catman")))}}})),
-      mapJavaTypeDFset(static_cast<::std::map<::std::int64_t, ::std::string>>(std::initializer_list<std::pair<const ::std::int64_t, ::std::string>>{{15, apache::thrift::StringTraits<std::string>::fromStringLiteral("a_value")},
+      __fbthrift_field_mapJavaTypeDFset(static_cast<::std::map<::std::int64_t, ::std::string>>(std::initializer_list<std::pair<const ::std::int64_t, ::std::string>>{{15, apache::thrift::StringTraits<std::string>::fromStringLiteral("a_value")},
   {2, apache::thrift::StringTraits<std::string>::fromStringLiteral("b_value")}})),
-      enumMapDFset(static_cast<::std::map<::std::string, ::std::map<::std::int32_t, ::cpp2::MyEnum>>>(std::initializer_list<std::pair<const ::std::string, ::std::map<::std::int32_t, ::cpp2::MyEnum>>>{{apache::thrift::StringTraits<std::string>::fromStringLiteral("SANDY BRIDGE"), std::initializer_list<std::pair<const ::std::int32_t, ::cpp2::MyEnum>>{{16,  ::cpp2::MyEnum::MyValue1},
+      __fbthrift_field_enumMapDFset(static_cast<::std::map<::std::string, ::std::map<::std::int32_t, ::cpp2::MyEnum>>>(std::initializer_list<std::pair<const ::std::string, ::std::map<::std::int32_t, ::cpp2::MyEnum>>>{{apache::thrift::StringTraits<std::string>::fromStringLiteral("SANDY BRIDGE"), std::initializer_list<std::pair<const ::std::int32_t, ::cpp2::MyEnum>>{{16,  ::cpp2::MyEnum::MyValue1},
   {144,  ::cpp2::MyEnum::MyValue1}}},
   {apache::thrift::StringTraits<std::string>::fromStringLiteral("IVY BRIDGE"), std::initializer_list<std::pair<const ::std::int32_t, ::cpp2::MyEnum>>{{32,  ::cpp2::MyEnum::MyValue2},
   {144,  ::cpp2::MyEnum::MyValue2}}},
@@ -192,82 +192,82 @@ defaultStruct::defaultStruct() :
 defaultStruct::~defaultStruct() {}
 
 defaultStruct::defaultStruct(defaultStruct&& other) noexcept  :
-    myLongDFset(std::move(other.myLongDFset)),
-    myLongDF(std::move(other.myLongDF)),
-    portDFset(std::move(other.portDFset)),
-    portNum(std::move(other.portNum)),
-    myBinaryDFset(std::move(other.myBinaryDFset)),
-    myBinary(std::move(other.myBinary)),
-    myByteDFSet(std::move(other.myByteDFSet)),
-    myByte(std::move(other.myByte)),
-    myDoubleDFset(std::move(other.myDoubleDFset)),
-    myDoubleDFZero(std::move(other.myDoubleDFZero)),
-    myDouble(std::move(other.myDouble)),
-    field3(std::move(other.field3)),
-    myList(std::move(other.myList)),
-    mySet(std::move(other.mySet)),
-    simpleStruct(std::move(other.simpleStruct)),
-    listStructDFset(std::move(other.listStructDFset)),
-    myUnion(std::move(other.myUnion)),
-    listUnionDFset(std::move(other.listUnionDFset)),
-    mapNestlistStructDfSet(std::move(other.mapNestlistStructDfSet)),
-    mapJavaTypeDFset(std::move(other.mapJavaTypeDFset)),
-    emptyMap(std::move(other.emptyMap)),
-    enumMapDFset(std::move(other.enumMapDFset)),
+    __fbthrift_field_myLongDFset(std::move(other.__fbthrift_field_myLongDFset)),
+    __fbthrift_field_myLongDF(std::move(other.__fbthrift_field_myLongDF)),
+    __fbthrift_field_portDFset(std::move(other.__fbthrift_field_portDFset)),
+    __fbthrift_field_portNum(std::move(other.__fbthrift_field_portNum)),
+    __fbthrift_field_myBinaryDFset(std::move(other.__fbthrift_field_myBinaryDFset)),
+    __fbthrift_field_myBinary(std::move(other.__fbthrift_field_myBinary)),
+    __fbthrift_field_myByteDFSet(std::move(other.__fbthrift_field_myByteDFSet)),
+    __fbthrift_field_myByte(std::move(other.__fbthrift_field_myByte)),
+    __fbthrift_field_myDoubleDFset(std::move(other.__fbthrift_field_myDoubleDFset)),
+    __fbthrift_field_myDoubleDFZero(std::move(other.__fbthrift_field_myDoubleDFZero)),
+    __fbthrift_field_myDouble(std::move(other.__fbthrift_field_myDouble)),
+    __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
+    __fbthrift_field_myList(std::move(other.__fbthrift_field_myList)),
+    __fbthrift_field_mySet(std::move(other.__fbthrift_field_mySet)),
+    __fbthrift_field_simpleStruct(std::move(other.__fbthrift_field_simpleStruct)),
+    __fbthrift_field_listStructDFset(std::move(other.__fbthrift_field_listStructDFset)),
+    __fbthrift_field_myUnion(std::move(other.__fbthrift_field_myUnion)),
+    __fbthrift_field_listUnionDFset(std::move(other.__fbthrift_field_listUnionDFset)),
+    __fbthrift_field_mapNestlistStructDfSet(std::move(other.__fbthrift_field_mapNestlistStructDfSet)),
+    __fbthrift_field_mapJavaTypeDFset(std::move(other.__fbthrift_field_mapJavaTypeDFset)),
+    __fbthrift_field_emptyMap(std::move(other.__fbthrift_field_emptyMap)),
+    __fbthrift_field_enumMapDFset(std::move(other.__fbthrift_field_enumMapDFset)),
     __isset(other.__isset) {
 }
 
 defaultStruct& defaultStruct::operator=(FOLLY_MAYBE_UNUSED defaultStruct&& other) noexcept {
-    this->myLongDFset = std::move(other.myLongDFset);
-    this->myLongDF = std::move(other.myLongDF);
-    this->portDFset = std::move(other.portDFset);
-    this->portNum = std::move(other.portNum);
-    this->myBinaryDFset = std::move(other.myBinaryDFset);
-    this->myBinary = std::move(other.myBinary);
-    this->myByteDFSet = std::move(other.myByteDFSet);
-    this->myByte = std::move(other.myByte);
-    this->myDoubleDFset = std::move(other.myDoubleDFset);
-    this->myDoubleDFZero = std::move(other.myDoubleDFZero);
-    this->myDouble = std::move(other.myDouble);
-    this->field3 = std::move(other.field3);
-    this->myList = std::move(other.myList);
-    this->mySet = std::move(other.mySet);
-    this->simpleStruct = std::move(other.simpleStruct);
-    this->listStructDFset = std::move(other.listStructDFset);
-    this->myUnion = std::move(other.myUnion);
-    this->listUnionDFset = std::move(other.listUnionDFset);
-    this->mapNestlistStructDfSet = std::move(other.mapNestlistStructDfSet);
-    this->mapJavaTypeDFset = std::move(other.mapJavaTypeDFset);
-    this->emptyMap = std::move(other.emptyMap);
-    this->enumMapDFset = std::move(other.enumMapDFset);
+    this->__fbthrift_field_myLongDFset = std::move(other.__fbthrift_field_myLongDFset);
+    this->__fbthrift_field_myLongDF = std::move(other.__fbthrift_field_myLongDF);
+    this->__fbthrift_field_portDFset = std::move(other.__fbthrift_field_portDFset);
+    this->__fbthrift_field_portNum = std::move(other.__fbthrift_field_portNum);
+    this->__fbthrift_field_myBinaryDFset = std::move(other.__fbthrift_field_myBinaryDFset);
+    this->__fbthrift_field_myBinary = std::move(other.__fbthrift_field_myBinary);
+    this->__fbthrift_field_myByteDFSet = std::move(other.__fbthrift_field_myByteDFSet);
+    this->__fbthrift_field_myByte = std::move(other.__fbthrift_field_myByte);
+    this->__fbthrift_field_myDoubleDFset = std::move(other.__fbthrift_field_myDoubleDFset);
+    this->__fbthrift_field_myDoubleDFZero = std::move(other.__fbthrift_field_myDoubleDFZero);
+    this->__fbthrift_field_myDouble = std::move(other.__fbthrift_field_myDouble);
+    this->__fbthrift_field_field3 = std::move(other.__fbthrift_field_field3);
+    this->__fbthrift_field_myList = std::move(other.__fbthrift_field_myList);
+    this->__fbthrift_field_mySet = std::move(other.__fbthrift_field_mySet);
+    this->__fbthrift_field_simpleStruct = std::move(other.__fbthrift_field_simpleStruct);
+    this->__fbthrift_field_listStructDFset = std::move(other.__fbthrift_field_listStructDFset);
+    this->__fbthrift_field_myUnion = std::move(other.__fbthrift_field_myUnion);
+    this->__fbthrift_field_listUnionDFset = std::move(other.__fbthrift_field_listUnionDFset);
+    this->__fbthrift_field_mapNestlistStructDfSet = std::move(other.__fbthrift_field_mapNestlistStructDfSet);
+    this->__fbthrift_field_mapJavaTypeDFset = std::move(other.__fbthrift_field_mapJavaTypeDFset);
+    this->__fbthrift_field_emptyMap = std::move(other.__fbthrift_field_emptyMap);
+    this->__fbthrift_field_enumMapDFset = std::move(other.__fbthrift_field_enumMapDFset);
     __isset = other.__isset;
     return *this;
 }
 
 
 defaultStruct::defaultStruct(apache::thrift::FragileConstructor, ::std::int64_t myLongDFset__arg, ::std::int64_t myLongDF__arg, ::std::int32_t portDFset__arg, ::std::int32_t portNum__arg, ::std::string myBinaryDFset__arg, ::std::string myBinary__arg, ::std::int8_t myByteDFSet__arg, ::std::int8_t myByte__arg, double myDoubleDFset__arg, double myDoubleDFZero__arg, double myDouble__arg, ::std::map<::std::int32_t, ::std::string> field3__arg, ::std::vector<::cpp2::MyEnum> myList__arg, ::std::set<::std::string> mySet__arg, ::cpp2::SimpleStruct simpleStruct__arg, ::std::vector<::cpp2::SimpleStruct> listStructDFset__arg, ::cpp2::MyUnion myUnion__arg, ::std::vector<::cpp2::MyUnion> listUnionDFset__arg, ::std::map<::std::int32_t, ::std::vector<::cpp2::SimpleStruct>> mapNestlistStructDfSet__arg, ::std::map<::std::int64_t, ::std::string> mapJavaTypeDFset__arg, ::std::map<::std::int64_t, ::std::int32_t> emptyMap__arg, ::std::map<::std::string, ::std::map<::std::int32_t, ::cpp2::MyEnum>> enumMapDFset__arg) :
-    myLongDFset(std::move(myLongDFset__arg)),
-    myLongDF(std::move(myLongDF__arg)),
-    portDFset(std::move(portDFset__arg)),
-    portNum(std::move(portNum__arg)),
-    myBinaryDFset(std::move(myBinaryDFset__arg)),
-    myBinary(std::move(myBinary__arg)),
-    myByteDFSet(std::move(myByteDFSet__arg)),
-    myByte(std::move(myByte__arg)),
-    myDoubleDFset(std::move(myDoubleDFset__arg)),
-    myDoubleDFZero(std::move(myDoubleDFZero__arg)),
-    myDouble(std::move(myDouble__arg)),
-    field3(std::move(field3__arg)),
-    myList(std::move(myList__arg)),
-    mySet(std::move(mySet__arg)),
-    simpleStruct(std::move(simpleStruct__arg)),
-    listStructDFset(std::move(listStructDFset__arg)),
-    myUnion(std::move(myUnion__arg)),
-    listUnionDFset(std::move(listUnionDFset__arg)),
-    mapNestlistStructDfSet(std::move(mapNestlistStructDfSet__arg)),
-    mapJavaTypeDFset(std::move(mapJavaTypeDFset__arg)),
-    emptyMap(std::move(emptyMap__arg)),
-    enumMapDFset(std::move(enumMapDFset__arg)) {
+    __fbthrift_field_myLongDFset(std::move(myLongDFset__arg)),
+    __fbthrift_field_myLongDF(std::move(myLongDF__arg)),
+    __fbthrift_field_portDFset(std::move(portDFset__arg)),
+    __fbthrift_field_portNum(std::move(portNum__arg)),
+    __fbthrift_field_myBinaryDFset(std::move(myBinaryDFset__arg)),
+    __fbthrift_field_myBinary(std::move(myBinary__arg)),
+    __fbthrift_field_myByteDFSet(std::move(myByteDFSet__arg)),
+    __fbthrift_field_myByte(std::move(myByte__arg)),
+    __fbthrift_field_myDoubleDFset(std::move(myDoubleDFset__arg)),
+    __fbthrift_field_myDoubleDFZero(std::move(myDoubleDFZero__arg)),
+    __fbthrift_field_myDouble(std::move(myDouble__arg)),
+    __fbthrift_field_field3(std::move(field3__arg)),
+    __fbthrift_field_myList(std::move(myList__arg)),
+    __fbthrift_field_mySet(std::move(mySet__arg)),
+    __fbthrift_field_simpleStruct(std::move(simpleStruct__arg)),
+    __fbthrift_field_listStructDFset(std::move(listStructDFset__arg)),
+    __fbthrift_field_myUnion(std::move(myUnion__arg)),
+    __fbthrift_field_listUnionDFset(std::move(listUnionDFset__arg)),
+    __fbthrift_field_mapNestlistStructDfSet(std::move(mapNestlistStructDfSet__arg)),
+    __fbthrift_field_mapJavaTypeDFset(std::move(mapJavaTypeDFset__arg)),
+    __fbthrift_field_emptyMap(std::move(emptyMap__arg)),
+    __fbthrift_field_enumMapDFset(std::move(enumMapDFset__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -295,28 +295,28 @@ defaultStruct::defaultStruct(apache::thrift::FragileConstructor, ::std::int64_t 
 
 void defaultStruct::__clear() {
   // clear all fields
-  this->myLongDFset = static_cast<::std::int64_t>(10);
-  this->myLongDF = ::std::int64_t();
-  this->portDFset = static_cast<::std::int32_t>(3456);
-  this->portNum = ::std::int32_t();
-  this->myBinaryDFset = apache::thrift::StringTraits<std::string>::fromStringLiteral("abc");
-  this->myBinary = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->myByteDFSet = static_cast<::std::int8_t>(17);
-  this->myByte = ::std::int8_t();
-  this->myDoubleDFset = static_cast<double>(99.7678);
-  this->myDoubleDFZero = static_cast<double>(0);
-  this->myDouble = double();
-  this->field3.clear();
-  this->myList.clear();
-  this->mySet.clear();
-  this->simpleStruct.__clear();
-  this->listStructDFset.clear();
-  this->myUnion.__clear();
-  this->listUnionDFset.clear();
-  this->mapNestlistStructDfSet.clear();
-  this->mapJavaTypeDFset.clear();
-  this->emptyMap.clear();
-  this->enumMapDFset.clear();
+  this->__fbthrift_field_myLongDFset = static_cast<::std::int64_t>(10);
+  this->__fbthrift_field_myLongDF = ::std::int64_t();
+  this->__fbthrift_field_portDFset = static_cast<::std::int32_t>(3456);
+  this->__fbthrift_field_portNum = ::std::int32_t();
+  this->__fbthrift_field_myBinaryDFset = apache::thrift::StringTraits<std::string>::fromStringLiteral("abc");
+  this->__fbthrift_field_myBinary = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_myByteDFSet = static_cast<::std::int8_t>(17);
+  this->__fbthrift_field_myByte = ::std::int8_t();
+  this->__fbthrift_field_myDoubleDFset = static_cast<double>(99.7678);
+  this->__fbthrift_field_myDoubleDFZero = static_cast<double>(0);
+  this->__fbthrift_field_myDouble = double();
+  this->__fbthrift_field_field3.clear();
+  this->__fbthrift_field_myList.clear();
+  this->__fbthrift_field_mySet.clear();
+  this->__fbthrift_field_simpleStruct.__clear();
+  this->__fbthrift_field_listStructDFset.clear();
+  this->__fbthrift_field_myUnion.__clear();
+  this->__fbthrift_field_listUnionDFset.clear();
+  this->__fbthrift_field_mapNestlistStructDfSet.clear();
+  this->__fbthrift_field_mapJavaTypeDFset.clear();
+  this->__fbthrift_field_emptyMap.clear();
+  this->__fbthrift_field_enumMapDFset.clear();
   __isset = {};
 }
 
@@ -336,10 +336,10 @@ bool defaultStruct::operator==(const defaultStruct& rhs) const {
   if (!(lhs.portNum_ref() == rhs.portNum_ref())) {
     return false;
   }
-  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.myBinaryDFset, rhs.myBinaryDFset)) {
+  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_myBinaryDFset, rhs.__fbthrift_field_myBinaryDFset)) {
     return false;
   }
-  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.myBinary, rhs.myBinary)) {
+  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_myBinary, rhs.__fbthrift_field_myBinary)) {
     return false;
   }
   if (!(lhs.myByteDFSet_ref() == rhs.myByteDFSet_ref())) {
@@ -409,11 +409,11 @@ bool defaultStruct::operator<(const defaultStruct& rhs) const {
   if (!(lhs.portNum_ref() == rhs.portNum_ref())) {
     return lhs.portNum_ref() < rhs.portNum_ref();
   }
-  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.myBinaryDFset, rhs.myBinaryDFset)) {
-    return apache::thrift::StringTraits<std::string>::isLess(lhs.myBinaryDFset, rhs.myBinaryDFset);
+  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_myBinaryDFset, rhs.__fbthrift_field_myBinaryDFset)) {
+    return apache::thrift::StringTraits<std::string>::isLess(lhs.__fbthrift_field_myBinaryDFset, rhs.__fbthrift_field_myBinaryDFset);
   }
-  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.myBinary, rhs.myBinary)) {
-    return apache::thrift::StringTraits<std::string>::isLess(lhs.myBinary, rhs.myBinary);
+  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_myBinary, rhs.__fbthrift_field_myBinary)) {
+    return apache::thrift::StringTraits<std::string>::isLess(lhs.__fbthrift_field_myBinary, rhs.__fbthrift_field_myBinary);
   }
   if (!(lhs.myByteDFSet_ref() == rhs.myByteDFSet_ref())) {
     return lhs.myByteDFSet_ref() < rhs.myByteDFSet_ref();
@@ -467,91 +467,91 @@ bool defaultStruct::operator<(const defaultStruct& rhs) const {
 }
 
 const ::std::map<::std::int32_t, ::std::string>& defaultStruct::get_field3() const& {
-  return field3;
+  return __fbthrift_field_field3;
 }
 
 ::std::map<::std::int32_t, ::std::string> defaultStruct::get_field3() && {
-  return std::move(field3);
+  return std::move(__fbthrift_field_field3);
 }
 
 const ::std::vector<::cpp2::MyEnum>& defaultStruct::get_myList() const& {
-  return myList;
+  return __fbthrift_field_myList;
 }
 
 ::std::vector<::cpp2::MyEnum> defaultStruct::get_myList() && {
-  return std::move(myList);
+  return std::move(__fbthrift_field_myList);
 }
 
 const ::std::set<::std::string>& defaultStruct::get_mySet() const& {
-  return mySet;
+  return __fbthrift_field_mySet;
 }
 
 ::std::set<::std::string> defaultStruct::get_mySet() && {
-  return std::move(mySet);
+  return std::move(__fbthrift_field_mySet);
 }
 
 const ::cpp2::SimpleStruct& defaultStruct::get_simpleStruct() const& {
-  return simpleStruct;
+  return __fbthrift_field_simpleStruct;
 }
 
 ::cpp2::SimpleStruct defaultStruct::get_simpleStruct() && {
-  return std::move(simpleStruct);
+  return std::move(__fbthrift_field_simpleStruct);
 }
 
 const ::std::vector<::cpp2::SimpleStruct>& defaultStruct::get_listStructDFset() const& {
-  return listStructDFset;
+  return __fbthrift_field_listStructDFset;
 }
 
 ::std::vector<::cpp2::SimpleStruct> defaultStruct::get_listStructDFset() && {
-  return std::move(listStructDFset);
+  return std::move(__fbthrift_field_listStructDFset);
 }
 
 const ::cpp2::MyUnion& defaultStruct::get_myUnion() const& {
-  return myUnion;
+  return __fbthrift_field_myUnion;
 }
 
 ::cpp2::MyUnion defaultStruct::get_myUnion() && {
-  return std::move(myUnion);
+  return std::move(__fbthrift_field_myUnion);
 }
 
 const ::std::vector<::cpp2::MyUnion>& defaultStruct::get_listUnionDFset() const& {
-  return listUnionDFset;
+  return __fbthrift_field_listUnionDFset;
 }
 
 ::std::vector<::cpp2::MyUnion> defaultStruct::get_listUnionDFset() && {
-  return std::move(listUnionDFset);
+  return std::move(__fbthrift_field_listUnionDFset);
 }
 
 const ::std::map<::std::int32_t, ::std::vector<::cpp2::SimpleStruct>>& defaultStruct::get_mapNestlistStructDfSet() const& {
-  return mapNestlistStructDfSet;
+  return __fbthrift_field_mapNestlistStructDfSet;
 }
 
 ::std::map<::std::int32_t, ::std::vector<::cpp2::SimpleStruct>> defaultStruct::get_mapNestlistStructDfSet() && {
-  return std::move(mapNestlistStructDfSet);
+  return std::move(__fbthrift_field_mapNestlistStructDfSet);
 }
 
 const ::std::map<::std::int64_t, ::std::string>& defaultStruct::get_mapJavaTypeDFset() const& {
-  return mapJavaTypeDFset;
+  return __fbthrift_field_mapJavaTypeDFset;
 }
 
 ::std::map<::std::int64_t, ::std::string> defaultStruct::get_mapJavaTypeDFset() && {
-  return std::move(mapJavaTypeDFset);
+  return std::move(__fbthrift_field_mapJavaTypeDFset);
 }
 
 const ::std::map<::std::int64_t, ::std::int32_t>& defaultStruct::get_emptyMap() const& {
-  return emptyMap;
+  return __fbthrift_field_emptyMap;
 }
 
 ::std::map<::std::int64_t, ::std::int32_t> defaultStruct::get_emptyMap() && {
-  return std::move(emptyMap);
+  return std::move(__fbthrift_field_emptyMap);
 }
 
 const ::std::map<::std::string, ::std::map<::std::int32_t, ::cpp2::MyEnum>>& defaultStruct::get_enumMapDFset() const& {
-  return enumMapDFset;
+  return __fbthrift_field_enumMapDFset;
 }
 
 ::std::map<::std::string, ::std::map<::std::int32_t, ::cpp2::MyEnum>> defaultStruct::get_enumMapDFset() && {
-  return std::move(enumMapDFset);
+  return std::move(__fbthrift_field_enumMapDFset);
 }
 
 
@@ -843,28 +843,28 @@ namespace cpp2 {
 TypeRemapped::TypeRemapped(const TypeRemapped&) = default;
 TypeRemapped& TypeRemapped::operator=(const TypeRemapped&) = default;
 TypeRemapped::TypeRemapped(TypeRemapped&& other) noexcept  :
-    lsMap(std::move(other.lsMap)),
-    ioMap(std::move(other.ioMap)),
-    BigInteger(std::move(other.BigInteger)),
-    binaryTestBuffer(std::move(other.binaryTestBuffer)),
+    __fbthrift_field_lsMap(std::move(other.__fbthrift_field_lsMap)),
+    __fbthrift_field_ioMap(std::move(other.__fbthrift_field_ioMap)),
+    __fbthrift_field_BigInteger(std::move(other.__fbthrift_field_BigInteger)),
+    __fbthrift_field_binaryTestBuffer(std::move(other.__fbthrift_field_binaryTestBuffer)),
     __isset(other.__isset) {
 }
 
 TypeRemapped& TypeRemapped::operator=(FOLLY_MAYBE_UNUSED TypeRemapped&& other) noexcept {
-    this->lsMap = std::move(other.lsMap);
-    this->ioMap = std::move(other.ioMap);
-    this->BigInteger = std::move(other.BigInteger);
-    this->binaryTestBuffer = std::move(other.binaryTestBuffer);
+    this->__fbthrift_field_lsMap = std::move(other.__fbthrift_field_lsMap);
+    this->__fbthrift_field_ioMap = std::move(other.__fbthrift_field_ioMap);
+    this->__fbthrift_field_BigInteger = std::move(other.__fbthrift_field_BigInteger);
+    this->__fbthrift_field_binaryTestBuffer = std::move(other.__fbthrift_field_binaryTestBuffer);
     __isset = other.__isset;
     return *this;
 }
 
 
 TypeRemapped::TypeRemapped(apache::thrift::FragileConstructor, ::std::map<::std::int64_t, ::std::string> lsMap__arg, ::std::map<::std::int32_t, ::cpp2::FMap> ioMap__arg, ::std::int32_t BigInteger__arg, ::std::string binaryTestBuffer__arg) :
-    lsMap(std::move(lsMap__arg)),
-    ioMap(std::move(ioMap__arg)),
-    BigInteger(std::move(BigInteger__arg)),
-    binaryTestBuffer(std::move(binaryTestBuffer__arg)) {
+    __fbthrift_field_lsMap(std::move(lsMap__arg)),
+    __fbthrift_field_ioMap(std::move(ioMap__arg)),
+    __fbthrift_field_BigInteger(std::move(BigInteger__arg)),
+    __fbthrift_field_binaryTestBuffer(std::move(binaryTestBuffer__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -874,10 +874,10 @@ TypeRemapped::TypeRemapped(apache::thrift::FragileConstructor, ::std::map<::std:
 
 void TypeRemapped::__clear() {
   // clear all fields
-  this->lsMap.clear();
-  this->ioMap.clear();
-  this->BigInteger = ::std::int32_t();
-  this->binaryTestBuffer = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_lsMap.clear();
+  this->__fbthrift_field_ioMap.clear();
+  this->__fbthrift_field_BigInteger = ::std::int32_t();
+  this->__fbthrift_field_binaryTestBuffer = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 
@@ -894,7 +894,7 @@ bool TypeRemapped::operator==(const TypeRemapped& rhs) const {
   if (!(lhs.BigInteger_ref() == rhs.BigInteger_ref())) {
     return false;
   }
-  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.binaryTestBuffer, rhs.binaryTestBuffer)) {
+  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_binaryTestBuffer, rhs.__fbthrift_field_binaryTestBuffer)) {
     return false;
   }
   return true;
@@ -913,26 +913,26 @@ bool TypeRemapped::operator<(const TypeRemapped& rhs) const {
   if (!(lhs.BigInteger_ref() == rhs.BigInteger_ref())) {
     return lhs.BigInteger_ref() < rhs.BigInteger_ref();
   }
-  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.binaryTestBuffer, rhs.binaryTestBuffer)) {
-    return apache::thrift::StringTraits<std::string>::isLess(lhs.binaryTestBuffer, rhs.binaryTestBuffer);
+  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_binaryTestBuffer, rhs.__fbthrift_field_binaryTestBuffer)) {
+    return apache::thrift::StringTraits<std::string>::isLess(lhs.__fbthrift_field_binaryTestBuffer, rhs.__fbthrift_field_binaryTestBuffer);
   }
   return false;
 }
 
 const ::std::map<::std::int64_t, ::std::string>& TypeRemapped::get_lsMap() const& {
-  return lsMap;
+  return __fbthrift_field_lsMap;
 }
 
 ::std::map<::std::int64_t, ::std::string> TypeRemapped::get_lsMap() && {
-  return std::move(lsMap);
+  return std::move(__fbthrift_field_lsMap);
 }
 
 const ::std::map<::std::int32_t, ::cpp2::FMap>& TypeRemapped::get_ioMap() const& {
-  return ioMap;
+  return __fbthrift_field_ioMap;
 }
 
 ::std::map<::std::int32_t, ::cpp2::FMap> TypeRemapped::get_ioMap() && {
-  return std::move(ioMap);
+  return std::move(__fbthrift_field_ioMap);
 }
 
 

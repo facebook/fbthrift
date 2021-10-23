@@ -38,26 +38,26 @@ namespace cpp2 {
 Mixin1::Mixin1(const Mixin1&) = default;
 Mixin1& Mixin1::operator=(const Mixin1&) = default;
 Mixin1::Mixin1(Mixin1&& other) noexcept  :
-    field1(std::move(other.field1)),
+    __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
     __isset(other.__isset) {
 }
 
 Mixin1& Mixin1::operator=(FOLLY_MAYBE_UNUSED Mixin1&& other) noexcept {
-    this->field1 = std::move(other.field1);
+    this->__fbthrift_field_field1 = std::move(other.__fbthrift_field_field1);
     __isset = other.__isset;
     return *this;
 }
 
 
 Mixin1::Mixin1(apache::thrift::FragileConstructor, ::std::string field1__arg) :
-    field1(std::move(field1__arg)) {
+    __fbthrift_field_field1(std::move(field1__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 
 
 void Mixin1::__clear() {
   // clear all fields
-  this->field1 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_field1 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 
@@ -127,22 +127,22 @@ namespace cpp2 {
 Mixin2::Mixin2(const Mixin2&) = default;
 Mixin2& Mixin2::operator=(const Mixin2&) = default;
 Mixin2::Mixin2(Mixin2&& other) noexcept  :
-    m1(std::move(other.m1)),
-    field2(std::move(other.field2)),
+    __fbthrift_field_m1(std::move(other.__fbthrift_field_m1)),
+    __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
     __isset(other.__isset) {
 }
 
 Mixin2& Mixin2::operator=(FOLLY_MAYBE_UNUSED Mixin2&& other) noexcept {
-    this->m1 = std::move(other.m1);
-    this->field2 = std::move(other.field2);
+    this->__fbthrift_field_m1 = std::move(other.__fbthrift_field_m1);
+    this->__fbthrift_field_field2 = std::move(other.__fbthrift_field_field2);
     __isset = other.__isset;
     return *this;
 }
 
 
 Mixin2::Mixin2(apache::thrift::FragileConstructor, ::cpp2::Mixin1 m1__arg, ::std::string field2__arg) :
-    m1(std::move(m1__arg)),
-    field2(std::move(field2__arg)) {
+    __fbthrift_field_m1(std::move(m1__arg)),
+    __fbthrift_field_field2(std::move(field2__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
@@ -150,8 +150,8 @@ Mixin2::Mixin2(apache::thrift::FragileConstructor, ::cpp2::Mixin1 m1__arg, ::std
 
 void Mixin2::__clear() {
   // clear all fields
-  this->m1.__clear();
-  this->field2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_m1.__clear();
+  this->__fbthrift_field_field2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 
@@ -182,11 +182,11 @@ bool Mixin2::operator<(const Mixin2& rhs) const {
 }
 
 const ::cpp2::Mixin1& Mixin2::get_m1() const& {
-  return m1;
+  return __fbthrift_field_m1;
 }
 
 ::cpp2::Mixin1 Mixin2::get_m1() && {
-  return std::move(m1);
+  return std::move(__fbthrift_field_m1);
 }
 
 
@@ -248,26 +248,26 @@ namespace cpp2 {
 Mixin3Base::Mixin3Base(const Mixin3Base&) = default;
 Mixin3Base& Mixin3Base::operator=(const Mixin3Base&) = default;
 Mixin3Base::Mixin3Base(Mixin3Base&& other) noexcept  :
-    field3(std::move(other.field3)),
+    __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
     __isset(other.__isset) {
 }
 
 Mixin3Base& Mixin3Base::operator=(FOLLY_MAYBE_UNUSED Mixin3Base&& other) noexcept {
-    this->field3 = std::move(other.field3);
+    this->__fbthrift_field_field3 = std::move(other.__fbthrift_field_field3);
     __isset = other.__isset;
     return *this;
 }
 
 
 Mixin3Base::Mixin3Base(apache::thrift::FragileConstructor, ::std::string field3__arg) :
-    field3(std::move(field3__arg)) {
+    __fbthrift_field_field3(std::move(field3__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 
 
 void Mixin3Base::__clear() {
   // clear all fields
-  this->field3 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_field3 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 
@@ -337,25 +337,25 @@ namespace cpp2 {
 Foo::Foo(const Foo&) = default;
 Foo& Foo::operator=(const Foo&) = default;
 Foo::Foo(Foo&& other) noexcept  :
-    field4(std::move(other.field4)),
-    m2(std::move(other.m2)),
-    m3(std::move(other.m3)),
+    __fbthrift_field_field4(std::move(other.__fbthrift_field_field4)),
+    __fbthrift_field_m2(std::move(other.__fbthrift_field_m2)),
+    __fbthrift_field_m3(std::move(other.__fbthrift_field_m3)),
     __isset(other.__isset) {
 }
 
 Foo& Foo::operator=(FOLLY_MAYBE_UNUSED Foo&& other) noexcept {
-    this->field4 = std::move(other.field4);
-    this->m2 = std::move(other.m2);
-    this->m3 = std::move(other.m3);
+    this->__fbthrift_field_field4 = std::move(other.__fbthrift_field_field4);
+    this->__fbthrift_field_m2 = std::move(other.__fbthrift_field_m2);
+    this->__fbthrift_field_m3 = std::move(other.__fbthrift_field_m3);
     __isset = other.__isset;
     return *this;
 }
 
 
 Foo::Foo(apache::thrift::FragileConstructor, ::std::string field4__arg, ::cpp2::Mixin2 m2__arg, ::cpp2::Mixin3 m3__arg) :
-    field4(std::move(field4__arg)),
-    m2(std::move(m2__arg)),
-    m3(std::move(m3__arg)) {
+    __fbthrift_field_field4(std::move(field4__arg)),
+    __fbthrift_field_m2(std::move(m2__arg)),
+    __fbthrift_field_m3(std::move(m3__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -364,9 +364,9 @@ Foo::Foo(apache::thrift::FragileConstructor, ::std::string field4__arg, ::cpp2::
 
 void Foo::__clear() {
   // clear all fields
-  this->field4 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->m2.__clear();
-  this->m3.__clear();
+  this->__fbthrift_field_field4 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_m2.__clear();
+  this->__fbthrift_field_m3.__clear();
   __isset = {};
 }
 
@@ -403,19 +403,19 @@ bool Foo::operator<(const Foo& rhs) const {
 }
 
 const ::cpp2::Mixin2& Foo::get_m2() const& {
-  return m2;
+  return __fbthrift_field_m2;
 }
 
 ::cpp2::Mixin2 Foo::get_m2() && {
-  return std::move(m2);
+  return std::move(__fbthrift_field_m2);
 }
 
 const ::cpp2::Mixin3& Foo::get_m3() const& {
-  return m3;
+  return __fbthrift_field_m3;
 }
 
 ::cpp2::Mixin3 Foo::get_m3() && {
-  return std::move(m3);
+  return std::move(__fbthrift_field_m3);
 }
 
 

@@ -38,22 +38,22 @@ namespace module2 {
 Struct::Struct(const Struct&) = default;
 Struct& Struct::operator=(const Struct&) = default;
 Struct::Struct(Struct&& other) noexcept  :
-    first(std::move(other.first)),
-    second(std::move(other.second)),
+    __fbthrift_field_first(std::move(other.__fbthrift_field_first)),
+    __fbthrift_field_second(std::move(other.__fbthrift_field_second)),
     __isset(other.__isset) {
 }
 
 Struct& Struct::operator=(FOLLY_MAYBE_UNUSED Struct&& other) noexcept {
-    this->first = std::move(other.first);
-    this->second = std::move(other.second);
+    this->__fbthrift_field_first = std::move(other.__fbthrift_field_first);
+    this->__fbthrift_field_second = std::move(other.__fbthrift_field_second);
     __isset = other.__isset;
     return *this;
 }
 
 
 Struct::Struct(apache::thrift::FragileConstructor, ::module0::Struct first__arg, ::module1::Struct second__arg) :
-    first(std::move(first__arg)),
-    second(std::move(second__arg)) {
+    __fbthrift_field_first(std::move(first__arg)),
+    __fbthrift_field_second(std::move(second__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
@@ -61,8 +61,8 @@ Struct::Struct(apache::thrift::FragileConstructor, ::module0::Struct first__arg,
 
 void Struct::__clear() {
   // clear all fields
-  this->first.__clear();
-  this->second.__clear();
+  this->__fbthrift_field_first.__clear();
+  this->__fbthrift_field_second.__clear();
   __isset = {};
 }
 
@@ -93,19 +93,19 @@ bool Struct::operator<(const Struct& rhs) const {
 }
 
 const ::module0::Struct& Struct::get_first() const& {
-  return first;
+  return __fbthrift_field_first;
 }
 
 ::module0::Struct Struct::get_first() && {
-  return std::move(first);
+  return std::move(__fbthrift_field_first);
 }
 
 const ::module1::Struct& Struct::get_second() const& {
-  return second;
+  return __fbthrift_field_second;
 }
 
 ::module1::Struct Struct::get_second() && {
-  return std::move(second);
+  return std::move(__fbthrift_field_second);
 }
 
 
@@ -179,22 +179,22 @@ namespace module2 {
 BigStruct::BigStruct(const BigStruct&) = default;
 BigStruct& BigStruct::operator=(const BigStruct&) = default;
 BigStruct::BigStruct(BigStruct&& other) noexcept  :
-    s(std::move(other.s)),
-    id(std::move(other.id)),
+    __fbthrift_field_s(std::move(other.__fbthrift_field_s)),
+    __fbthrift_field_id(std::move(other.__fbthrift_field_id)),
     __isset(other.__isset) {
 }
 
 BigStruct& BigStruct::operator=(FOLLY_MAYBE_UNUSED BigStruct&& other) noexcept {
-    this->s = std::move(other.s);
-    this->id = std::move(other.id);
+    this->__fbthrift_field_s = std::move(other.__fbthrift_field_s);
+    this->__fbthrift_field_id = std::move(other.__fbthrift_field_id);
     __isset = other.__isset;
     return *this;
 }
 
 
 BigStruct::BigStruct(apache::thrift::FragileConstructor, ::module2::Struct s__arg, ::std::int32_t id__arg) :
-    s(std::move(s__arg)),
-    id(std::move(id__arg)) {
+    __fbthrift_field_s(std::move(s__arg)),
+    __fbthrift_field_id(std::move(id__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
@@ -202,8 +202,8 @@ BigStruct::BigStruct(apache::thrift::FragileConstructor, ::module2::Struct s__ar
 
 void BigStruct::__clear() {
   // clear all fields
-  this->s.__clear();
-  this->id = ::std::int32_t();
+  this->__fbthrift_field_s.__clear();
+  this->__fbthrift_field_id = ::std::int32_t();
   __isset = {};
 }
 
@@ -234,11 +234,11 @@ bool BigStruct::operator<(const BigStruct& rhs) const {
 }
 
 const ::module2::Struct& BigStruct::get_s() const& {
-  return s;
+  return __fbthrift_field_s;
 }
 
 ::module2::Struct BigStruct::get_s() && {
-  return std::move(s);
+  return std::move(__fbthrift_field_s);
 }
 
 

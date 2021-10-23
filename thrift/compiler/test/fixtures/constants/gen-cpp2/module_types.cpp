@@ -138,8 +138,8 @@ Internship::Internship(const Internship&) = default;
 Internship& Internship::operator=(const Internship&) = default;
 Internship::Internship() :
       weeks(),
-      employer(),
-      compensation() {
+      __fbthrift_field_employer(),
+      __fbthrift_field_compensation() {
 }
 
 
@@ -147,19 +147,19 @@ Internship::~Internship() {}
 
 Internship::Internship(Internship&& other) noexcept  :
     weeks(std::move(other.weeks)),
-    title(std::move(other.title)),
-    employer(std::move(other.employer)),
-    compensation(std::move(other.compensation)),
-    school(std::move(other.school)),
+    __fbthrift_field_title(std::move(other.__fbthrift_field_title)),
+    __fbthrift_field_employer(std::move(other.__fbthrift_field_employer)),
+    __fbthrift_field_compensation(std::move(other.__fbthrift_field_compensation)),
+    __fbthrift_field_school(std::move(other.__fbthrift_field_school)),
     __isset(other.__isset) {
 }
 
 Internship& Internship::operator=(FOLLY_MAYBE_UNUSED Internship&& other) noexcept {
     this->weeks = std::move(other.weeks);
-    this->title = std::move(other.title);
-    this->employer = std::move(other.employer);
-    this->compensation = std::move(other.compensation);
-    this->school = std::move(other.school);
+    this->__fbthrift_field_title = std::move(other.__fbthrift_field_title);
+    this->__fbthrift_field_employer = std::move(other.__fbthrift_field_employer);
+    this->__fbthrift_field_compensation = std::move(other.__fbthrift_field_compensation);
+    this->__fbthrift_field_school = std::move(other.__fbthrift_field_school);
     __isset = other.__isset;
     return *this;
 }
@@ -167,10 +167,10 @@ Internship& Internship::operator=(FOLLY_MAYBE_UNUSED Internship&& other) noexcep
 
 Internship::Internship(apache::thrift::FragileConstructor, ::std::int32_t weeks__arg, ::std::string title__arg, ::cpp2::Company employer__arg, double compensation__arg, ::std::string school__arg) :
     weeks(std::move(weeks__arg)),
-    title(std::move(title__arg)),
-    employer(std::move(employer__arg)),
-    compensation(std::move(compensation__arg)),
-    school(std::move(school__arg)) {
+    __fbthrift_field_title(std::move(title__arg)),
+    __fbthrift_field_employer(std::move(employer__arg)),
+    __fbthrift_field_compensation(std::move(compensation__arg)),
+    __fbthrift_field_school(std::move(school__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -181,10 +181,10 @@ Internship::Internship(apache::thrift::FragileConstructor, ::std::int32_t weeks_
 void Internship::__clear() {
   // clear all fields
   this->weeks = ::std::int32_t();
-  this->title = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->employer = ::cpp2::Company();
-  this->compensation = double();
-  this->school = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_title = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_employer = ::cpp2::Company();
+  this->__fbthrift_field_compensation = double();
+  this->__fbthrift_field_school = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 
@@ -364,22 +364,22 @@ namespace cpp2 {
 struct1::struct1(const struct1&) = default;
 struct1& struct1::operator=(const struct1&) = default;
 struct1::struct1(struct1&& other) noexcept  :
-    a(std::move(other.a)),
-    b(std::move(other.b)),
+    __fbthrift_field_a(std::move(other.__fbthrift_field_a)),
+    __fbthrift_field_b(std::move(other.__fbthrift_field_b)),
     __isset(other.__isset) {
 }
 
 struct1& struct1::operator=(FOLLY_MAYBE_UNUSED struct1&& other) noexcept {
-    this->a = std::move(other.a);
-    this->b = std::move(other.b);
+    this->__fbthrift_field_a = std::move(other.__fbthrift_field_a);
+    this->__fbthrift_field_b = std::move(other.__fbthrift_field_b);
     __isset = other.__isset;
     return *this;
 }
 
 
 struct1::struct1(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::std::string b__arg) :
-    a(std::move(a__arg)),
-    b(std::move(b__arg)) {
+    __fbthrift_field_a(std::move(a__arg)),
+    __fbthrift_field_b(std::move(b__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
@@ -387,8 +387,8 @@ struct1::struct1(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::st
 
 void struct1::__clear() {
   // clear all fields
-  this->a = static_cast<::std::int32_t>(1234567);
-  this->b = apache::thrift::StringTraits<std::string>::fromStringLiteral("<uninitialized>");
+  this->__fbthrift_field_a = static_cast<::std::int32_t>(1234567);
+  this->__fbthrift_field_b = apache::thrift::StringTraits<std::string>::fromStringLiteral("<uninitialized>");
   __isset = {};
 }
 
@@ -465,28 +465,28 @@ namespace cpp2 {
 struct2::struct2(const struct2&) = default;
 struct2& struct2::operator=(const struct2&) = default;
 struct2::struct2(struct2&& other) noexcept  :
-    a(std::move(other.a)),
-    b(std::move(other.b)),
-    c(std::move(other.c)),
-    d(std::move(other.d)),
+    __fbthrift_field_a(std::move(other.__fbthrift_field_a)),
+    __fbthrift_field_b(std::move(other.__fbthrift_field_b)),
+    __fbthrift_field_c(std::move(other.__fbthrift_field_c)),
+    __fbthrift_field_d(std::move(other.__fbthrift_field_d)),
     __isset(other.__isset) {
 }
 
 struct2& struct2::operator=(FOLLY_MAYBE_UNUSED struct2&& other) noexcept {
-    this->a = std::move(other.a);
-    this->b = std::move(other.b);
-    this->c = std::move(other.c);
-    this->d = std::move(other.d);
+    this->__fbthrift_field_a = std::move(other.__fbthrift_field_a);
+    this->__fbthrift_field_b = std::move(other.__fbthrift_field_b);
+    this->__fbthrift_field_c = std::move(other.__fbthrift_field_c);
+    this->__fbthrift_field_d = std::move(other.__fbthrift_field_d);
     __isset = other.__isset;
     return *this;
 }
 
 
 struct2::struct2(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::std::string b__arg, ::cpp2::struct1 c__arg, ::std::vector<::std::int32_t> d__arg) :
-    a(std::move(a__arg)),
-    b(std::move(b__arg)),
-    c(std::move(c__arg)),
-    d(std::move(d__arg)) {
+    __fbthrift_field_a(std::move(a__arg)),
+    __fbthrift_field_b(std::move(b__arg)),
+    __fbthrift_field_c(std::move(c__arg)),
+    __fbthrift_field_d(std::move(d__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -496,10 +496,10 @@ struct2::struct2(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::st
 
 void struct2::__clear() {
   // clear all fields
-  this->a = ::std::int32_t();
-  this->b = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->c.__clear();
-  this->d.clear();
+  this->__fbthrift_field_a = ::std::int32_t();
+  this->__fbthrift_field_b = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_c.__clear();
+  this->__fbthrift_field_d.clear();
   __isset = {};
 }
 
@@ -542,19 +542,19 @@ bool struct2::operator<(const struct2& rhs) const {
 }
 
 const ::cpp2::struct1& struct2::get_c() const& {
-  return c;
+  return __fbthrift_field_c;
 }
 
 ::cpp2::struct1 struct2::get_c() && {
-  return std::move(c);
+  return std::move(__fbthrift_field_c);
 }
 
 const ::std::vector<::std::int32_t>& struct2::get_d() const& {
-  return d;
+  return __fbthrift_field_d;
 }
 
 ::std::vector<::std::int32_t> struct2::get_d() && {
-  return std::move(d);
+  return std::move(__fbthrift_field_d);
 }
 
 
@@ -618,25 +618,25 @@ namespace cpp2 {
 struct3::struct3(const struct3&) = default;
 struct3& struct3::operator=(const struct3&) = default;
 struct3::struct3(struct3&& other) noexcept  :
-    a(std::move(other.a)),
-    b(std::move(other.b)),
-    c(std::move(other.c)),
+    __fbthrift_field_a(std::move(other.__fbthrift_field_a)),
+    __fbthrift_field_b(std::move(other.__fbthrift_field_b)),
+    __fbthrift_field_c(std::move(other.__fbthrift_field_c)),
     __isset(other.__isset) {
 }
 
 struct3& struct3::operator=(FOLLY_MAYBE_UNUSED struct3&& other) noexcept {
-    this->a = std::move(other.a);
-    this->b = std::move(other.b);
-    this->c = std::move(other.c);
+    this->__fbthrift_field_a = std::move(other.__fbthrift_field_a);
+    this->__fbthrift_field_b = std::move(other.__fbthrift_field_b);
+    this->__fbthrift_field_c = std::move(other.__fbthrift_field_c);
     __isset = other.__isset;
     return *this;
 }
 
 
 struct3::struct3(apache::thrift::FragileConstructor, ::std::string a__arg, ::std::int32_t b__arg, ::cpp2::struct2 c__arg) :
-    a(std::move(a__arg)),
-    b(std::move(b__arg)),
-    c(std::move(c__arg)) {
+    __fbthrift_field_a(std::move(a__arg)),
+    __fbthrift_field_b(std::move(b__arg)),
+    __fbthrift_field_c(std::move(c__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -645,9 +645,9 @@ struct3::struct3(apache::thrift::FragileConstructor, ::std::string a__arg, ::std
 
 void struct3::__clear() {
   // clear all fields
-  this->a = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->b = ::std::int32_t();
-  this->c.__clear();
+  this->__fbthrift_field_a = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_b = ::std::int32_t();
+  this->__fbthrift_field_c.__clear();
   __isset = {};
 }
 
@@ -684,11 +684,11 @@ bool struct3::operator<(const struct3& rhs) const {
 }
 
 const ::cpp2::struct2& struct3::get_c() const& {
-  return c;
+  return __fbthrift_field_c;
 }
 
 ::cpp2::struct2 struct3::get_c() && {
-  return std::move(c);
+  return std::move(__fbthrift_field_c);
 }
 
 
@@ -751,25 +751,25 @@ namespace cpp2 {
 struct4::struct4(const struct4&) = default;
 struct4& struct4::operator=(const struct4&) = default;
 struct4::struct4(struct4&& other) noexcept  :
-    a(std::move(other.a)),
-    b(std::move(other.b)),
-    c(std::move(other.c)),
+    __fbthrift_field_a(std::move(other.__fbthrift_field_a)),
+    __fbthrift_field_b(std::move(other.__fbthrift_field_b)),
+    __fbthrift_field_c(std::move(other.__fbthrift_field_c)),
     __isset(other.__isset) {
 }
 
 struct4& struct4::operator=(FOLLY_MAYBE_UNUSED struct4&& other) noexcept {
-    this->a = std::move(other.a);
-    this->b = std::move(other.b);
-    this->c = std::move(other.c);
+    this->__fbthrift_field_a = std::move(other.__fbthrift_field_a);
+    this->__fbthrift_field_b = std::move(other.__fbthrift_field_b);
+    this->__fbthrift_field_c = std::move(other.__fbthrift_field_c);
     __isset = other.__isset;
     return *this;
 }
 
 
 struct4::struct4(apache::thrift::FragileConstructor, ::std::int32_t a__arg, double b__arg, ::std::int8_t c__arg) :
-    a(std::move(a__arg)),
-    b(std::move(b__arg)),
-    c(std::move(c__arg)) {
+    __fbthrift_field_a(std::move(a__arg)),
+    __fbthrift_field_b(std::move(b__arg)),
+    __fbthrift_field_c(std::move(c__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -778,9 +778,9 @@ struct4::struct4(apache::thrift::FragileConstructor, ::std::int32_t a__arg, doub
 
 void struct4::__clear() {
   // clear all fields
-  this->a = ::std::int32_t();
-  this->b = double();
-  this->c = ::std::int8_t();
+  this->__fbthrift_field_a = ::std::int32_t();
+  this->__fbthrift_field_b = double();
+  this->__fbthrift_field_c = ::std::int8_t();
   __isset = {};
 }
 

@@ -38,28 +38,28 @@ namespace apache { namespace thrift { namespace test {
 Foo::Foo(const Foo&) = default;
 Foo& Foo::operator=(const Foo&) = default;
 Foo::Foo(Foo&& other) noexcept  :
-    field1(std::move(other.field1)),
-    field2(std::move(other.field2)),
-    field3(std::move(other.field3)),
-    field4(std::move(other.field4)),
+    __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
+    __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
+    __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
+    __fbthrift_field_field4(std::move(other.__fbthrift_field_field4)),
     __isset(other.__isset) {
 }
 
 Foo& Foo::operator=(FOLLY_MAYBE_UNUSED Foo&& other) noexcept {
-    this->field1 = std::move(other.field1);
-    this->field2 = std::move(other.field2);
-    this->field3 = std::move(other.field3);
-    this->field4 = std::move(other.field4);
+    this->__fbthrift_field_field1 = std::move(other.__fbthrift_field_field1);
+    this->__fbthrift_field_field2 = std::move(other.__fbthrift_field_field2);
+    this->__fbthrift_field_field3 = std::move(other.__fbthrift_field_field3);
+    this->__fbthrift_field_field4 = std::move(other.__fbthrift_field_field4);
     __isset = other.__isset;
     return *this;
 }
 
 
 Foo::Foo(apache::thrift::FragileConstructor, ::std::vector<double> field1__arg, ::std::vector<::std::int32_t> field2__arg, ::std::vector<double> field3__arg, ::std::vector<::std::int32_t> field4__arg) :
-    field1(std::move(field1__arg)),
-    field2(std::move(field2__arg)),
-    field3(std::move(field3__arg)),
-    field4(std::move(field4__arg)) {
+    __fbthrift_field_field1(std::move(field1__arg)),
+    __fbthrift_field_field2(std::move(field2__arg)),
+    __fbthrift_field_field3(std::move(field3__arg)),
+    __fbthrift_field_field4(std::move(field4__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -69,10 +69,10 @@ Foo::Foo(apache::thrift::FragileConstructor, ::std::vector<double> field1__arg, 
 
 void Foo::__clear() {
   // clear all fields
-  this->field1.clear();
-  this->field2.clear();
-  this->field3.clear();
-  this->field4.clear();
+  this->__fbthrift_field_field1.clear();
+  this->__fbthrift_field_field2.clear();
+  this->__fbthrift_field_field3.clear();
+  this->__fbthrift_field_field4.clear();
   __isset = {};
 }
 
@@ -115,35 +115,35 @@ bool Foo::operator<(const Foo& rhs) const {
 }
 
 const ::std::vector<double>& Foo::get_field1() const& {
-  return field1;
+  return __fbthrift_field_field1;
 }
 
 ::std::vector<double> Foo::get_field1() && {
-  return std::move(field1);
+  return std::move(__fbthrift_field_field1);
 }
 
 const ::std::vector<::std::int32_t>& Foo::get_field2() const& {
-  return field2;
+  return __fbthrift_field_field2;
 }
 
 ::std::vector<::std::int32_t> Foo::get_field2() && {
-  return std::move(field2);
+  return std::move(__fbthrift_field_field2);
 }
 
 const ::std::vector<double>& Foo::get_field3() const& {
-  return field3;
+  return __fbthrift_field_field3;
 }
 
 ::std::vector<double> Foo::get_field3() && {
-  return std::move(field3);
+  return std::move(__fbthrift_field_field3);
 }
 
 const ::std::vector<::std::int32_t>& Foo::get_field4() const& {
-  return field4;
+  return __fbthrift_field_field4;
 }
 
 ::std::vector<::std::int32_t> Foo::get_field4() && {
-  return std::move(field4);
+  return std::move(__fbthrift_field_field4);
 }
 
 
@@ -197,21 +197,21 @@ LazyFoo::LazyFoo(const LazyFoo& srcObj) {
   std::lock_guard<std::mutex> lock(srcObj.__fbthrift_deserializationMutex_);
   __fbthrift_protocol_ = srcObj.__fbthrift_protocol_;
   __fbthrift_serializedData_ = srcObj.__fbthrift_serializedData_;
-  field1 = srcObj.field1;
+  __fbthrift_field_field1 = srcObj.__fbthrift_field_field1;
   __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
-  field2 = srcObj.field2;
+  __fbthrift_field_field2 = srcObj.__fbthrift_field_field2;
   __isset.__fbthrift_set(folly::index_constant<1>(),srcObj.__isset.__fbthrift_get(folly::index_constant<1>()));
   {
     const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field3.load(relaxed);
     __fbthrift_isDeserialized_.field3.store(isDeserialized, relaxed);
   }
-  field3 = srcObj.field3;
+  __fbthrift_field_field3 = srcObj.__fbthrift_field_field3;
   __isset.__fbthrift_set(folly::index_constant<2>(),srcObj.__isset.__fbthrift_get(folly::index_constant<2>()));
   {
     const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field4.load(relaxed);
     __fbthrift_isDeserialized_.field4.store(isDeserialized, relaxed);
   }
-  field4 = srcObj.field4;
+  __fbthrift_field_field4 = srcObj.__fbthrift_field_field4;
   __isset.__fbthrift_set(folly::index_constant<3>(),srcObj.__isset.__fbthrift_get(folly::index_constant<3>()));
 }
 
@@ -222,10 +222,10 @@ LazyFoo& LazyFoo::operator=(const LazyFoo& src) {
 }
 
 LazyFoo::LazyFoo(LazyFoo&& other) noexcept  :
-    field1(std::move(other.field1)),
-    field2(std::move(other.field2)),
-    field3(std::move(other.field3)),
-    field4(std::move(other.field4)),
+    __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
+    __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
+    __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
+    __fbthrift_field_field4(std::move(other.__fbthrift_field_field4)),
     __isset(other.__isset),
     __fbthrift_protocol_(other.__fbthrift_protocol_),
     __fbthrift_serializedData_(std::move(other.__fbthrift_serializedData_)) {
@@ -246,15 +246,15 @@ LazyFoo& LazyFoo::operator=(FOLLY_MAYBE_UNUSED LazyFoo&& other) noexcept {
     const auto relaxed = std::memory_order::memory_order_relaxed;
     __fbthrift_protocol_ = other.__fbthrift_protocol_;
     __fbthrift_serializedData_ = std::move(other.__fbthrift_serializedData_);
-    this->field1 = std::move(other.field1);
-    this->field2 = std::move(other.field2);
-    this->field3 = std::move(other.field3);
+    this->__fbthrift_field_field1 = std::move(other.__fbthrift_field_field1);
+    this->__fbthrift_field_field2 = std::move(other.__fbthrift_field_field2);
+    this->__fbthrift_field_field3 = std::move(other.__fbthrift_field_field3);
     {
       const auto isDeserialized = other.__fbthrift_isDeserialized_.field3.load(relaxed);
       __fbthrift_isDeserialized_.field3.store(isDeserialized, relaxed);
       other.__fbthrift_isDeserialized_.field3.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
     }
-    this->field4 = std::move(other.field4);
+    this->__fbthrift_field_field4 = std::move(other.__fbthrift_field_field4);
     {
       const auto isDeserialized = other.__fbthrift_isDeserialized_.field4.load(relaxed);
       __fbthrift_isDeserialized_.field4.store(isDeserialized, relaxed);
@@ -266,10 +266,10 @@ LazyFoo& LazyFoo::operator=(FOLLY_MAYBE_UNUSED LazyFoo&& other) noexcept {
 
 
 LazyFoo::LazyFoo(apache::thrift::FragileConstructor, ::std::vector<double> field1__arg, ::std::vector<::std::int32_t> field2__arg, ::std::vector<double> field3__arg, ::std::vector<::std::int32_t> field4__arg) :
-    field1(std::move(field1__arg)),
-    field2(std::move(field2__arg)),
-    field3(std::move(field3__arg)),
-    field4(std::move(field4__arg)) {
+    __fbthrift_field_field1(std::move(field1__arg)),
+    __fbthrift_field_field2(std::move(field2__arg)),
+    __fbthrift_field_field3(std::move(field3__arg)),
+    __fbthrift_field_field4(std::move(field4__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -281,7 +281,7 @@ const ::std::vector<double>& LazyFoo::__fbthrift_read_field_field3() const {
   if (!(isDeserialized & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED)) {
     __fbthrift_read_field_field3_slow();
   }
-  return field3;
+  return __fbthrift_field_field3;
 }
 
 ::std::vector<double>& LazyFoo::__fbthrift_read_field_field3() {
@@ -291,7 +291,7 @@ const ::std::vector<double>& LazyFoo::__fbthrift_read_field_field3() const {
   } else if (isDeserialized & ::apache::thrift::detail::LazyDeserializationState::UNTAINTED) {
     __fbthrift_isDeserialized_.field3 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
   }
-  return field3;
+  return __fbthrift_field_field3;
 }
 
 void LazyFoo::__fbthrift_read_field_field3_slow() const {
@@ -318,7 +318,7 @@ const ::std::vector<::std::int32_t>& LazyFoo::__fbthrift_read_field_field4() con
   if (!(isDeserialized & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED)) {
     __fbthrift_read_field_field4_slow();
   }
-  return field4;
+  return __fbthrift_field_field4;
 }
 
 ::std::vector<::std::int32_t>& LazyFoo::__fbthrift_read_field_field4() {
@@ -328,7 +328,7 @@ const ::std::vector<::std::int32_t>& LazyFoo::__fbthrift_read_field_field4() con
   } else if (isDeserialized & ::apache::thrift::detail::LazyDeserializationState::UNTAINTED) {
     __fbthrift_isDeserialized_.field4 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
   }
-  return field4;
+  return __fbthrift_field_field4;
 }
 
 void LazyFoo::__fbthrift_read_field_field4_slow() const {
@@ -353,10 +353,10 @@ void LazyFoo::__fbthrift_read_field_field4_slow() const {
 
 void LazyFoo::__clear() {
   // clear all fields
-  this->field1.clear();
-  this->field2.clear();
-  this->field3.clear();
-  this->field4.clear();
+  this->__fbthrift_field_field1.clear();
+  this->__fbthrift_field_field2.clear();
+  this->__fbthrift_field_field3.clear();
+  this->__fbthrift_field_field4.clear();
   __fbthrift_serializedData_ = {};
   __fbthrift_isDeserialized_.~__fbthrift_IsDeserialized();
   new (&__fbthrift_isDeserialized_) __fbthrift_IsDeserialized();
@@ -410,19 +410,19 @@ bool LazyFoo::operator<(const LazyFoo& rhs) const {
 }
 
 const ::std::vector<double>& LazyFoo::get_field1() const& {
-  return field1;
+  return __fbthrift_field_field1;
 }
 
 ::std::vector<double> LazyFoo::get_field1() && {
-  return std::move(field1);
+  return std::move(__fbthrift_field_field1);
 }
 
 const ::std::vector<::std::int32_t>& LazyFoo::get_field2() const& {
-  return field2;
+  return __fbthrift_field_field2;
 }
 
 ::std::vector<::std::int32_t> LazyFoo::get_field2() && {
-  return std::move(field2);
+  return std::move(__fbthrift_field_field2);
 }
 
 
@@ -474,28 +474,28 @@ namespace apache { namespace thrift { namespace test {
 OptionalFoo::OptionalFoo(const OptionalFoo&) = default;
 OptionalFoo& OptionalFoo::operator=(const OptionalFoo&) = default;
 OptionalFoo::OptionalFoo(OptionalFoo&& other) noexcept  :
-    field1(std::move(other.field1)),
-    field2(std::move(other.field2)),
-    field3(std::move(other.field3)),
-    field4(std::move(other.field4)),
+    __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
+    __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
+    __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
+    __fbthrift_field_field4(std::move(other.__fbthrift_field_field4)),
     __isset(other.__isset) {
 }
 
 OptionalFoo& OptionalFoo::operator=(FOLLY_MAYBE_UNUSED OptionalFoo&& other) noexcept {
-    this->field1 = std::move(other.field1);
-    this->field2 = std::move(other.field2);
-    this->field3 = std::move(other.field3);
-    this->field4 = std::move(other.field4);
+    this->__fbthrift_field_field1 = std::move(other.__fbthrift_field_field1);
+    this->__fbthrift_field_field2 = std::move(other.__fbthrift_field_field2);
+    this->__fbthrift_field_field3 = std::move(other.__fbthrift_field_field3);
+    this->__fbthrift_field_field4 = std::move(other.__fbthrift_field_field4);
     __isset = other.__isset;
     return *this;
 }
 
 
 OptionalFoo::OptionalFoo(apache::thrift::FragileConstructor, ::std::vector<double> field1__arg, ::std::vector<::std::int32_t> field2__arg, ::std::vector<double> field3__arg, ::std::vector<::std::int32_t> field4__arg) :
-    field1(std::move(field1__arg)),
-    field2(std::move(field2__arg)),
-    field3(std::move(field3__arg)),
-    field4(std::move(field4__arg)) {
+    __fbthrift_field_field1(std::move(field1__arg)),
+    __fbthrift_field_field2(std::move(field2__arg)),
+    __fbthrift_field_field3(std::move(field3__arg)),
+    __fbthrift_field_field4(std::move(field4__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -505,10 +505,10 @@ OptionalFoo::OptionalFoo(apache::thrift::FragileConstructor, ::std::vector<doubl
 
 void OptionalFoo::__clear() {
   // clear all fields
-  this->field1.clear();
-  this->field2.clear();
-  this->field3.clear();
-  this->field4.clear();
+  this->__fbthrift_field_field1.clear();
+  this->__fbthrift_field_field2.clear();
+  this->__fbthrift_field_field3.clear();
+  this->__fbthrift_field_field4.clear();
   __isset = {};
 }
 
@@ -551,35 +551,35 @@ bool OptionalFoo::operator<(const OptionalFoo& rhs) const {
 }
 
 const ::std::vector<double>* OptionalFoo::get_field1() const& {
-  return field1_ref().has_value() ? std::addressof(field1) : nullptr;
+  return field1_ref().has_value() ? std::addressof(__fbthrift_field_field1) : nullptr;
 }
 
 ::std::vector<double>* OptionalFoo::get_field1() & {
-  return field1_ref().has_value() ? std::addressof(field1) : nullptr;
+  return field1_ref().has_value() ? std::addressof(__fbthrift_field_field1) : nullptr;
 }
 
 const ::std::vector<::std::int32_t>* OptionalFoo::get_field2() const& {
-  return field2_ref().has_value() ? std::addressof(field2) : nullptr;
+  return field2_ref().has_value() ? std::addressof(__fbthrift_field_field2) : nullptr;
 }
 
 ::std::vector<::std::int32_t>* OptionalFoo::get_field2() & {
-  return field2_ref().has_value() ? std::addressof(field2) : nullptr;
+  return field2_ref().has_value() ? std::addressof(__fbthrift_field_field2) : nullptr;
 }
 
 const ::std::vector<double>* OptionalFoo::get_field3() const& {
-  return field3_ref().has_value() ? std::addressof(field3) : nullptr;
+  return field3_ref().has_value() ? std::addressof(__fbthrift_field_field3) : nullptr;
 }
 
 ::std::vector<double>* OptionalFoo::get_field3() & {
-  return field3_ref().has_value() ? std::addressof(field3) : nullptr;
+  return field3_ref().has_value() ? std::addressof(__fbthrift_field_field3) : nullptr;
 }
 
 const ::std::vector<::std::int32_t>* OptionalFoo::get_field4() const& {
-  return field4_ref().has_value() ? std::addressof(field4) : nullptr;
+  return field4_ref().has_value() ? std::addressof(__fbthrift_field_field4) : nullptr;
 }
 
 ::std::vector<::std::int32_t>* OptionalFoo::get_field4() & {
-  return field4_ref().has_value() ? std::addressof(field4) : nullptr;
+  return field4_ref().has_value() ? std::addressof(__fbthrift_field_field4) : nullptr;
 }
 
 
@@ -633,21 +633,21 @@ OptionalLazyFoo::OptionalLazyFoo(const OptionalLazyFoo& srcObj) {
   std::lock_guard<std::mutex> lock(srcObj.__fbthrift_deserializationMutex_);
   __fbthrift_protocol_ = srcObj.__fbthrift_protocol_;
   __fbthrift_serializedData_ = srcObj.__fbthrift_serializedData_;
-  field1 = srcObj.field1;
+  __fbthrift_field_field1 = srcObj.__fbthrift_field_field1;
   __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
-  field2 = srcObj.field2;
+  __fbthrift_field_field2 = srcObj.__fbthrift_field_field2;
   __isset.__fbthrift_set(folly::index_constant<1>(),srcObj.__isset.__fbthrift_get(folly::index_constant<1>()));
   {
     const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field3.load(relaxed);
     __fbthrift_isDeserialized_.field3.store(isDeserialized, relaxed);
   }
-  field3 = srcObj.field3;
+  __fbthrift_field_field3 = srcObj.__fbthrift_field_field3;
   __isset.__fbthrift_set(folly::index_constant<2>(),srcObj.__isset.__fbthrift_get(folly::index_constant<2>()));
   {
     const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field4.load(relaxed);
     __fbthrift_isDeserialized_.field4.store(isDeserialized, relaxed);
   }
-  field4 = srcObj.field4;
+  __fbthrift_field_field4 = srcObj.__fbthrift_field_field4;
   __isset.__fbthrift_set(folly::index_constant<3>(),srcObj.__isset.__fbthrift_get(folly::index_constant<3>()));
 }
 
@@ -658,10 +658,10 @@ OptionalLazyFoo& OptionalLazyFoo::operator=(const OptionalLazyFoo& src) {
 }
 
 OptionalLazyFoo::OptionalLazyFoo(OptionalLazyFoo&& other) noexcept  :
-    field1(std::move(other.field1)),
-    field2(std::move(other.field2)),
-    field3(std::move(other.field3)),
-    field4(std::move(other.field4)),
+    __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
+    __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
+    __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
+    __fbthrift_field_field4(std::move(other.__fbthrift_field_field4)),
     __isset(other.__isset),
     __fbthrift_protocol_(other.__fbthrift_protocol_),
     __fbthrift_serializedData_(std::move(other.__fbthrift_serializedData_)) {
@@ -682,15 +682,15 @@ OptionalLazyFoo& OptionalLazyFoo::operator=(FOLLY_MAYBE_UNUSED OptionalLazyFoo&&
     const auto relaxed = std::memory_order::memory_order_relaxed;
     __fbthrift_protocol_ = other.__fbthrift_protocol_;
     __fbthrift_serializedData_ = std::move(other.__fbthrift_serializedData_);
-    this->field1 = std::move(other.field1);
-    this->field2 = std::move(other.field2);
-    this->field3 = std::move(other.field3);
+    this->__fbthrift_field_field1 = std::move(other.__fbthrift_field_field1);
+    this->__fbthrift_field_field2 = std::move(other.__fbthrift_field_field2);
+    this->__fbthrift_field_field3 = std::move(other.__fbthrift_field_field3);
     {
       const auto isDeserialized = other.__fbthrift_isDeserialized_.field3.load(relaxed);
       __fbthrift_isDeserialized_.field3.store(isDeserialized, relaxed);
       other.__fbthrift_isDeserialized_.field3.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
     }
-    this->field4 = std::move(other.field4);
+    this->__fbthrift_field_field4 = std::move(other.__fbthrift_field_field4);
     {
       const auto isDeserialized = other.__fbthrift_isDeserialized_.field4.load(relaxed);
       __fbthrift_isDeserialized_.field4.store(isDeserialized, relaxed);
@@ -702,10 +702,10 @@ OptionalLazyFoo& OptionalLazyFoo::operator=(FOLLY_MAYBE_UNUSED OptionalLazyFoo&&
 
 
 OptionalLazyFoo::OptionalLazyFoo(apache::thrift::FragileConstructor, ::std::vector<double> field1__arg, ::std::vector<::std::int32_t> field2__arg, ::std::vector<double> field3__arg, ::std::vector<::std::int32_t> field4__arg) :
-    field1(std::move(field1__arg)),
-    field2(std::move(field2__arg)),
-    field3(std::move(field3__arg)),
-    field4(std::move(field4__arg)) {
+    __fbthrift_field_field1(std::move(field1__arg)),
+    __fbthrift_field_field2(std::move(field2__arg)),
+    __fbthrift_field_field3(std::move(field3__arg)),
+    __fbthrift_field_field4(std::move(field4__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -717,7 +717,7 @@ const ::std::vector<double>& OptionalLazyFoo::__fbthrift_read_field_field3() con
   if (!(isDeserialized & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED)) {
     __fbthrift_read_field_field3_slow();
   }
-  return field3;
+  return __fbthrift_field_field3;
 }
 
 ::std::vector<double>& OptionalLazyFoo::__fbthrift_read_field_field3() {
@@ -727,7 +727,7 @@ const ::std::vector<double>& OptionalLazyFoo::__fbthrift_read_field_field3() con
   } else if (isDeserialized & ::apache::thrift::detail::LazyDeserializationState::UNTAINTED) {
     __fbthrift_isDeserialized_.field3 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
   }
-  return field3;
+  return __fbthrift_field_field3;
 }
 
 void OptionalLazyFoo::__fbthrift_read_field_field3_slow() const {
@@ -754,7 +754,7 @@ const ::std::vector<::std::int32_t>& OptionalLazyFoo::__fbthrift_read_field_fiel
   if (!(isDeserialized & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED)) {
     __fbthrift_read_field_field4_slow();
   }
-  return field4;
+  return __fbthrift_field_field4;
 }
 
 ::std::vector<::std::int32_t>& OptionalLazyFoo::__fbthrift_read_field_field4() {
@@ -764,7 +764,7 @@ const ::std::vector<::std::int32_t>& OptionalLazyFoo::__fbthrift_read_field_fiel
   } else if (isDeserialized & ::apache::thrift::detail::LazyDeserializationState::UNTAINTED) {
     __fbthrift_isDeserialized_.field4 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
   }
-  return field4;
+  return __fbthrift_field_field4;
 }
 
 void OptionalLazyFoo::__fbthrift_read_field_field4_slow() const {
@@ -789,10 +789,10 @@ void OptionalLazyFoo::__fbthrift_read_field_field4_slow() const {
 
 void OptionalLazyFoo::__clear() {
   // clear all fields
-  this->field1.clear();
-  this->field2.clear();
-  this->field3.clear();
-  this->field4.clear();
+  this->__fbthrift_field_field1.clear();
+  this->__fbthrift_field_field2.clear();
+  this->__fbthrift_field_field3.clear();
+  this->__fbthrift_field_field4.clear();
   __fbthrift_serializedData_ = {};
   __fbthrift_isDeserialized_.~__fbthrift_IsDeserialized();
   new (&__fbthrift_isDeserialized_) __fbthrift_IsDeserialized();
@@ -846,19 +846,19 @@ bool OptionalLazyFoo::operator<(const OptionalLazyFoo& rhs) const {
 }
 
 const ::std::vector<double>* OptionalLazyFoo::get_field1() const& {
-  return field1_ref().has_value() ? std::addressof(field1) : nullptr;
+  return field1_ref().has_value() ? std::addressof(__fbthrift_field_field1) : nullptr;
 }
 
 ::std::vector<double>* OptionalLazyFoo::get_field1() & {
-  return field1_ref().has_value() ? std::addressof(field1) : nullptr;
+  return field1_ref().has_value() ? std::addressof(__fbthrift_field_field1) : nullptr;
 }
 
 const ::std::vector<::std::int32_t>* OptionalLazyFoo::get_field2() const& {
-  return field2_ref().has_value() ? std::addressof(field2) : nullptr;
+  return field2_ref().has_value() ? std::addressof(__fbthrift_field_field2) : nullptr;
 }
 
 ::std::vector<::std::int32_t>* OptionalLazyFoo::get_field2() & {
-  return field2_ref().has_value() ? std::addressof(field2) : nullptr;
+  return field2_ref().has_value() ? std::addressof(__fbthrift_field_field2) : nullptr;
 }
 
 
@@ -1205,41 +1205,41 @@ namespace apache { namespace thrift { namespace test {
 IndexedFoo::IndexedFoo(const IndexedFoo&) = default;
 IndexedFoo& IndexedFoo::operator=(const IndexedFoo&) = default;
 IndexedFoo::IndexedFoo() :
-      serialized_data_size() {
+      __fbthrift_field_serialized_data_size() {
 }
 
 
 IndexedFoo::~IndexedFoo() {}
 
 IndexedFoo::IndexedFoo(IndexedFoo&& other) noexcept  :
-    serialized_data_size(std::move(other.serialized_data_size)),
-    field1(std::move(other.field1)),
-    field2(std::move(other.field2)),
-    field3(std::move(other.field3)),
-    field4(std::move(other.field4)),
-    field_id_to_size(std::move(other.field_id_to_size)),
+    __fbthrift_field_serialized_data_size(std::move(other.__fbthrift_field_serialized_data_size)),
+    __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
+    __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
+    __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
+    __fbthrift_field_field4(std::move(other.__fbthrift_field_field4)),
+    __fbthrift_field_field_id_to_size(std::move(other.__fbthrift_field_field_id_to_size)),
     __isset(other.__isset) {
 }
 
 IndexedFoo& IndexedFoo::operator=(FOLLY_MAYBE_UNUSED IndexedFoo&& other) noexcept {
-    this->serialized_data_size = std::move(other.serialized_data_size);
-    this->field1 = std::move(other.field1);
-    this->field2 = std::move(other.field2);
-    this->field3 = std::move(other.field3);
-    this->field4 = std::move(other.field4);
-    this->field_id_to_size = std::move(other.field_id_to_size);
+    this->__fbthrift_field_serialized_data_size = std::move(other.__fbthrift_field_serialized_data_size);
+    this->__fbthrift_field_field1 = std::move(other.__fbthrift_field_field1);
+    this->__fbthrift_field_field2 = std::move(other.__fbthrift_field_field2);
+    this->__fbthrift_field_field3 = std::move(other.__fbthrift_field_field3);
+    this->__fbthrift_field_field4 = std::move(other.__fbthrift_field_field4);
+    this->__fbthrift_field_field_id_to_size = std::move(other.__fbthrift_field_field_id_to_size);
     __isset = other.__isset;
     return *this;
 }
 
 
 IndexedFoo::IndexedFoo(apache::thrift::FragileConstructor, double serialized_data_size__arg, ::std::vector<double> field1__arg, ::std::vector<::std::int32_t> field2__arg, ::std::vector<double> field3__arg, ::std::vector<::std::int32_t> field4__arg, ::std::map<::std::int16_t, ::std::int64_t> field_id_to_size__arg) :
-    serialized_data_size(std::move(serialized_data_size__arg)),
-    field1(std::move(field1__arg)),
-    field2(std::move(field2__arg)),
-    field3(std::move(field3__arg)),
-    field4(std::move(field4__arg)),
-    field_id_to_size(std::move(field_id_to_size__arg)) {
+    __fbthrift_field_serialized_data_size(std::move(serialized_data_size__arg)),
+    __fbthrift_field_field1(std::move(field1__arg)),
+    __fbthrift_field_field2(std::move(field2__arg)),
+    __fbthrift_field_field3(std::move(field3__arg)),
+    __fbthrift_field_field4(std::move(field4__arg)),
+    __fbthrift_field_field_id_to_size(std::move(field_id_to_size__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -1251,12 +1251,12 @@ IndexedFoo::IndexedFoo(apache::thrift::FragileConstructor, double serialized_dat
 
 void IndexedFoo::__clear() {
   // clear all fields
-  this->serialized_data_size = double();
-  this->field1.clear();
-  this->field2.clear();
-  this->field3.clear();
-  this->field4.clear();
-  this->field_id_to_size.clear();
+  this->__fbthrift_field_serialized_data_size = double();
+  this->__fbthrift_field_field1.clear();
+  this->__fbthrift_field_field2.clear();
+  this->__fbthrift_field_field3.clear();
+  this->__fbthrift_field_field4.clear();
+  this->__fbthrift_field_field_id_to_size.clear();
   __isset = {};
 }
 
@@ -1311,43 +1311,43 @@ bool IndexedFoo::operator<(const IndexedFoo& rhs) const {
 }
 
 const ::std::vector<double>& IndexedFoo::get_field1() const& {
-  return field1;
+  return __fbthrift_field_field1;
 }
 
 ::std::vector<double> IndexedFoo::get_field1() && {
-  return std::move(field1);
+  return std::move(__fbthrift_field_field1);
 }
 
 const ::std::vector<::std::int32_t>& IndexedFoo::get_field2() const& {
-  return field2;
+  return __fbthrift_field_field2;
 }
 
 ::std::vector<::std::int32_t> IndexedFoo::get_field2() && {
-  return std::move(field2);
+  return std::move(__fbthrift_field_field2);
 }
 
 const ::std::vector<double>& IndexedFoo::get_field3() const& {
-  return field3;
+  return __fbthrift_field_field3;
 }
 
 ::std::vector<double> IndexedFoo::get_field3() && {
-  return std::move(field3);
+  return std::move(__fbthrift_field_field3);
 }
 
 const ::std::vector<::std::int32_t>& IndexedFoo::get_field4() const& {
-  return field4;
+  return __fbthrift_field_field4;
 }
 
 ::std::vector<::std::int32_t> IndexedFoo::get_field4() && {
-  return std::move(field4);
+  return std::move(__fbthrift_field_field4);
 }
 
 const ::std::map<::std::int16_t, ::std::int64_t>& IndexedFoo::get_field_id_to_size() const& {
-  return field_id_to_size;
+  return __fbthrift_field_field_id_to_size;
 }
 
 ::std::map<::std::int16_t, ::std::int64_t> IndexedFoo::get_field_id_to_size() && {
-  return std::move(field_id_to_size);
+  return std::move(__fbthrift_field_field_id_to_size);
 }
 
 
@@ -1401,41 +1401,41 @@ namespace apache { namespace thrift { namespace test {
 OptionalIndexedFoo::OptionalIndexedFoo(const OptionalIndexedFoo&) = default;
 OptionalIndexedFoo& OptionalIndexedFoo::operator=(const OptionalIndexedFoo&) = default;
 OptionalIndexedFoo::OptionalIndexedFoo() :
-      serialized_data_size() {
+      __fbthrift_field_serialized_data_size() {
 }
 
 
 OptionalIndexedFoo::~OptionalIndexedFoo() {}
 
 OptionalIndexedFoo::OptionalIndexedFoo(OptionalIndexedFoo&& other) noexcept  :
-    serialized_data_size(std::move(other.serialized_data_size)),
-    field1(std::move(other.field1)),
-    field2(std::move(other.field2)),
-    field3(std::move(other.field3)),
-    field4(std::move(other.field4)),
-    field_id_to_size(std::move(other.field_id_to_size)),
+    __fbthrift_field_serialized_data_size(std::move(other.__fbthrift_field_serialized_data_size)),
+    __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
+    __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
+    __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
+    __fbthrift_field_field4(std::move(other.__fbthrift_field_field4)),
+    __fbthrift_field_field_id_to_size(std::move(other.__fbthrift_field_field_id_to_size)),
     __isset(other.__isset) {
 }
 
 OptionalIndexedFoo& OptionalIndexedFoo::operator=(FOLLY_MAYBE_UNUSED OptionalIndexedFoo&& other) noexcept {
-    this->serialized_data_size = std::move(other.serialized_data_size);
-    this->field1 = std::move(other.field1);
-    this->field2 = std::move(other.field2);
-    this->field3 = std::move(other.field3);
-    this->field4 = std::move(other.field4);
-    this->field_id_to_size = std::move(other.field_id_to_size);
+    this->__fbthrift_field_serialized_data_size = std::move(other.__fbthrift_field_serialized_data_size);
+    this->__fbthrift_field_field1 = std::move(other.__fbthrift_field_field1);
+    this->__fbthrift_field_field2 = std::move(other.__fbthrift_field_field2);
+    this->__fbthrift_field_field3 = std::move(other.__fbthrift_field_field3);
+    this->__fbthrift_field_field4 = std::move(other.__fbthrift_field_field4);
+    this->__fbthrift_field_field_id_to_size = std::move(other.__fbthrift_field_field_id_to_size);
     __isset = other.__isset;
     return *this;
 }
 
 
 OptionalIndexedFoo::OptionalIndexedFoo(apache::thrift::FragileConstructor, double serialized_data_size__arg, ::std::vector<double> field1__arg, ::std::vector<::std::int32_t> field2__arg, ::std::vector<double> field3__arg, ::std::vector<::std::int32_t> field4__arg, ::std::map<::std::int16_t, ::std::int64_t> field_id_to_size__arg) :
-    serialized_data_size(std::move(serialized_data_size__arg)),
-    field1(std::move(field1__arg)),
-    field2(std::move(field2__arg)),
-    field3(std::move(field3__arg)),
-    field4(std::move(field4__arg)),
-    field_id_to_size(std::move(field_id_to_size__arg)) {
+    __fbthrift_field_serialized_data_size(std::move(serialized_data_size__arg)),
+    __fbthrift_field_field1(std::move(field1__arg)),
+    __fbthrift_field_field2(std::move(field2__arg)),
+    __fbthrift_field_field3(std::move(field3__arg)),
+    __fbthrift_field_field4(std::move(field4__arg)),
+    __fbthrift_field_field_id_to_size(std::move(field_id_to_size__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -1447,12 +1447,12 @@ OptionalIndexedFoo::OptionalIndexedFoo(apache::thrift::FragileConstructor, doubl
 
 void OptionalIndexedFoo::__clear() {
   // clear all fields
-  this->serialized_data_size = double();
-  this->field1.clear();
-  this->field2.clear();
-  this->field3.clear();
-  this->field4.clear();
-  this->field_id_to_size.clear();
+  this->__fbthrift_field_serialized_data_size = double();
+  this->__fbthrift_field_field1.clear();
+  this->__fbthrift_field_field2.clear();
+  this->__fbthrift_field_field3.clear();
+  this->__fbthrift_field_field4.clear();
+  this->__fbthrift_field_field_id_to_size.clear();
   __isset = {};
 }
 
@@ -1507,43 +1507,43 @@ bool OptionalIndexedFoo::operator<(const OptionalIndexedFoo& rhs) const {
 }
 
 const ::std::vector<double>* OptionalIndexedFoo::get_field1() const& {
-  return field1_ref().has_value() ? std::addressof(field1) : nullptr;
+  return field1_ref().has_value() ? std::addressof(__fbthrift_field_field1) : nullptr;
 }
 
 ::std::vector<double>* OptionalIndexedFoo::get_field1() & {
-  return field1_ref().has_value() ? std::addressof(field1) : nullptr;
+  return field1_ref().has_value() ? std::addressof(__fbthrift_field_field1) : nullptr;
 }
 
 const ::std::vector<::std::int32_t>* OptionalIndexedFoo::get_field2() const& {
-  return field2_ref().has_value() ? std::addressof(field2) : nullptr;
+  return field2_ref().has_value() ? std::addressof(__fbthrift_field_field2) : nullptr;
 }
 
 ::std::vector<::std::int32_t>* OptionalIndexedFoo::get_field2() & {
-  return field2_ref().has_value() ? std::addressof(field2) : nullptr;
+  return field2_ref().has_value() ? std::addressof(__fbthrift_field_field2) : nullptr;
 }
 
 const ::std::vector<double>* OptionalIndexedFoo::get_field3() const& {
-  return field3_ref().has_value() ? std::addressof(field3) : nullptr;
+  return field3_ref().has_value() ? std::addressof(__fbthrift_field_field3) : nullptr;
 }
 
 ::std::vector<double>* OptionalIndexedFoo::get_field3() & {
-  return field3_ref().has_value() ? std::addressof(field3) : nullptr;
+  return field3_ref().has_value() ? std::addressof(__fbthrift_field_field3) : nullptr;
 }
 
 const ::std::vector<::std::int32_t>* OptionalIndexedFoo::get_field4() const& {
-  return field4_ref().has_value() ? std::addressof(field4) : nullptr;
+  return field4_ref().has_value() ? std::addressof(__fbthrift_field_field4) : nullptr;
 }
 
 ::std::vector<::std::int32_t>* OptionalIndexedFoo::get_field4() & {
-  return field4_ref().has_value() ? std::addressof(field4) : nullptr;
+  return field4_ref().has_value() ? std::addressof(__fbthrift_field_field4) : nullptr;
 }
 
 const ::std::map<::std::int16_t, ::std::int64_t>& OptionalIndexedFoo::get_field_id_to_size() const& {
-  return field_id_to_size;
+  return __fbthrift_field_field_id_to_size;
 }
 
 ::std::map<::std::int16_t, ::std::int64_t> OptionalIndexedFoo::get_field_id_to_size() && {
-  return std::move(field_id_to_size);
+  return std::move(__fbthrift_field_field_id_to_size);
 }
 
 

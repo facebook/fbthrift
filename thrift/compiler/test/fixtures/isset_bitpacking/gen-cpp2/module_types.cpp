@@ -38,28 +38,28 @@ namespace cpp2 {
 Foo::Foo(const Foo&) = default;
 Foo& Foo::operator=(const Foo&) = default;
 Foo::Foo(Foo&& other) noexcept  :
-    field1(std::move(other.field1)),
-    field2(std::move(other.field2)),
-    field3(std::move(other.field3)),
-    field4(std::move(other.field4)),
+    __fbthrift_field_field1(std::move(other.__fbthrift_field_field1)),
+    __fbthrift_field_field2(std::move(other.__fbthrift_field_field2)),
+    __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
+    __fbthrift_field_field4(std::move(other.__fbthrift_field_field4)),
     __isset(other.__isset) {
 }
 
 Foo& Foo::operator=(FOLLY_MAYBE_UNUSED Foo&& other) noexcept {
-    this->field1 = std::move(other.field1);
-    this->field2 = std::move(other.field2);
-    this->field3 = std::move(other.field3);
-    this->field4 = std::move(other.field4);
+    this->__fbthrift_field_field1 = std::move(other.__fbthrift_field_field1);
+    this->__fbthrift_field_field2 = std::move(other.__fbthrift_field_field2);
+    this->__fbthrift_field_field3 = std::move(other.__fbthrift_field_field3);
+    this->__fbthrift_field_field4 = std::move(other.__fbthrift_field_field4);
     __isset = other.__isset;
     return *this;
 }
 
 
 Foo::Foo(apache::thrift::FragileConstructor, ::std::int32_t field1__arg, ::std::int32_t field2__arg, ::std::string field3__arg, double field4__arg) :
-    field1(std::move(field1__arg)),
-    field2(std::move(field2__arg)),
-    field3(std::move(field3__arg)),
-    field4(std::move(field4__arg)) {
+    __fbthrift_field_field1(std::move(field1__arg)),
+    __fbthrift_field_field2(std::move(field2__arg)),
+    __fbthrift_field_field3(std::move(field3__arg)),
+    __fbthrift_field_field4(std::move(field4__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -69,10 +69,10 @@ Foo::Foo(apache::thrift::FragileConstructor, ::std::int32_t field1__arg, ::std::
 
 void Foo::__clear() {
   // clear all fields
-  this->field1 = ::std::int32_t();
-  this->field2 = ::std::int32_t();
-  this->field3 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->field4 = double();
+  this->__fbthrift_field_field1 = ::std::int32_t();
+  this->__fbthrift_field_field2 = ::std::int32_t();
+  this->__fbthrift_field_field3 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_field4 = double();
   __isset = {};
 }
 

@@ -37,8 +37,8 @@ namespace cpp2 {
 
 
 Included::Included(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::cpp2::Foo MyTransitiveField__arg) :
-    MyIntField(std::move(MyIntField__arg)),
-    MyTransitiveField(std::move(MyTransitiveField__arg)) {
+    __fbthrift_field_MyIntField(std::move(MyIntField__arg)),
+    __fbthrift_field_MyTransitiveField(std::move(MyTransitiveField__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
@@ -46,8 +46,8 @@ Included::Included(apache::thrift::FragileConstructor, ::std::int64_t MyIntField
 
 void Included::__clear() {
   // clear all fields
-  this->MyIntField = static_cast<::std::int64_t>(0);
-  this->MyTransitiveField.__clear();
+  this->__fbthrift_field_MyIntField = static_cast<::std::int64_t>(0);
+  this->__fbthrift_field_MyTransitiveField.__clear();
   __isset = {};
 }
 
@@ -78,11 +78,11 @@ bool Included::operator<(const Included& rhs) const {
 }
 
 const ::cpp2::Foo& Included::get_MyTransitiveField() const& {
-  return MyTransitiveField;
+  return __fbthrift_field_MyTransitiveField;
 }
 
 ::cpp2::Foo Included::get_MyTransitiveField() && {
-  return std::move(MyTransitiveField);
+  return std::move(__fbthrift_field_MyTransitiveField);
 }
 
 

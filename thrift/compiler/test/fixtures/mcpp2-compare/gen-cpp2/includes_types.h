@@ -120,7 +120,7 @@ class AStruct final  {
  public:
 
   AStruct() :
-      FieldA() {
+      __fbthrift_field_FieldA() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -136,7 +136,7 @@ class AStruct final  {
   AStruct& operator=(const AStruct&) = default;
   void __clear();
  private:
-  ::std::int32_t FieldA;
+  ::std::int32_t __fbthrift_field_FieldA;
 private:
   apache::thrift::detail::isset_bitset<1> __isset;
 
@@ -147,32 +147,32 @@ private:
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> FieldA_ref() const& {
-    return {this->FieldA, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_FieldA, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> FieldA_ref() const&& {
-    return {std::move(this->FieldA), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_FieldA), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> FieldA_ref() & {
-    return {this->FieldA, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_FieldA, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> FieldA_ref() && {
-    return {std::move(this->FieldA), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_FieldA), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   ::std::int32_t get_FieldA() const {
-    return FieldA;
+    return __fbthrift_field_FieldA;
   }
 
   [[deprecated("Use `FOO.FieldA_ref() = BAR;` instead of `FOO.set_FieldA(BAR);`")]]
   ::std::int32_t& set_FieldA(::std::int32_t FieldA_) {
     FieldA_ref() = FieldA_;
-    return FieldA;
+    return __fbthrift_field_FieldA;
   }
 
   template <class Protocol_>

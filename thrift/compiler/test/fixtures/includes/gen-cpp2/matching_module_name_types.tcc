@@ -48,7 +48,7 @@ void MyStruct::readNoXfer(Protocol_* iprot) {
 _readField_OtherStructField:
   {
     _readState.beforeSubobject(iprot);
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::matching_module_name::OtherStruct>::readWithContext(*iprot, this->OtherStructField, _readState);
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::matching_module_name::OtherStruct>::readWithContext(*iprot, this->__fbthrift_field_OtherStructField, _readState);
     _readState.afterSubobject(iprot);
     
   }
@@ -102,7 +102,7 @@ uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("MyStruct");
   {
     xfer += prot_->serializedFieldSize("OtherStructField", apache::thrift::protocol::T_STRUCT, 1);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::matching_module_name::OtherStruct>::serializedSize<false>(*prot_, this->OtherStructField);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::matching_module_name::OtherStruct>::serializedSize<false>(*prot_, this->__fbthrift_field_OtherStructField);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -114,7 +114,7 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("MyStruct");
   {
     xfer += prot_->serializedFieldSize("OtherStructField", apache::thrift::protocol::T_STRUCT, 1);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::matching_module_name::OtherStruct>::serializedSize<true>(*prot_, this->OtherStructField);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::matching_module_name::OtherStruct>::serializedSize<true>(*prot_, this->__fbthrift_field_OtherStructField);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -129,7 +129,7 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 0;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 1, kPrevFieldId>(*prot_, "OtherStructField", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::matching_module_name::OtherStruct>::write(*prot_, this->OtherStructField);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::matching_module_name::OtherStruct>::write(*prot_, this->__fbthrift_field_OtherStructField);
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();

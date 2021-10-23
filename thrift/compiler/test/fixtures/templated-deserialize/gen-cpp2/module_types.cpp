@@ -70,8 +70,8 @@ namespace cpp2 {
 
 
 SmallStruct::SmallStruct(apache::thrift::FragileConstructor, bool small_A__arg, ::std::int32_t small_B__arg) :
-    small_A(std::move(small_A__arg)),
-    small_B(std::move(small_B__arg)) {
+    __fbthrift_field_small_A(std::move(small_A__arg)),
+    __fbthrift_field_small_B(std::move(small_B__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
@@ -79,8 +79,8 @@ SmallStruct::SmallStruct(apache::thrift::FragileConstructor, bool small_A__arg, 
 
 void SmallStruct::__clear() {
   // clear all fields
-  this->small_A = bool();
-  this->small_B = ::std::int32_t();
+  this->__fbthrift_field_small_A = bool();
+  this->__fbthrift_field_small_B = ::std::int32_t();
   __isset = {};
 }
 
@@ -155,39 +155,39 @@ void TccStructTraits<::cpp2::containerStruct>::translateFieldName(
 namespace cpp2 {
 
 containerStruct::containerStruct(const containerStruct& srcObj) {
-  fieldA = srcObj.fieldA;
+  __fbthrift_field_fieldA = srcObj.__fbthrift_field_fieldA;
   __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
-  fieldB = srcObj.fieldB;
+  __fbthrift_field_fieldB = srcObj.__fbthrift_field_fieldB;
   __isset.__fbthrift_set(folly::index_constant<1>(),srcObj.__isset.__fbthrift_get(folly::index_constant<1>()));
-  fieldC = srcObj.fieldC;
+  __fbthrift_field_fieldC = srcObj.__fbthrift_field_fieldC;
   __isset.__fbthrift_set(folly::index_constant<2>(),srcObj.__isset.__fbthrift_get(folly::index_constant<2>()));
-  fieldD = srcObj.fieldD;
+  __fbthrift_field_fieldD = srcObj.__fbthrift_field_fieldD;
   __isset.__fbthrift_set(folly::index_constant<3>(),srcObj.__isset.__fbthrift_get(folly::index_constant<3>()));
-  fieldE = srcObj.fieldE;
+  __fbthrift_field_fieldE = srcObj.__fbthrift_field_fieldE;
   __isset.__fbthrift_set(folly::index_constant<4>(),srcObj.__isset.__fbthrift_get(folly::index_constant<4>()));
-  fieldF = srcObj.fieldF;
+  __fbthrift_field_fieldF = srcObj.__fbthrift_field_fieldF;
   __isset.__fbthrift_set(folly::index_constant<5>(),srcObj.__isset.__fbthrift_get(folly::index_constant<5>()));
-  fieldG = srcObj.fieldG;
+  __fbthrift_field_fieldG = srcObj.__fbthrift_field_fieldG;
   __isset.__fbthrift_set(folly::index_constant<6>(),srcObj.__isset.__fbthrift_get(folly::index_constant<6>()));
-  fieldH = srcObj.fieldH;
+  __fbthrift_field_fieldH = srcObj.__fbthrift_field_fieldH;
   __isset.__fbthrift_set(folly::index_constant<7>(),srcObj.__isset.__fbthrift_get(folly::index_constant<7>()));
-  fieldI = srcObj.fieldI;
+  __fbthrift_field_fieldI = srcObj.__fbthrift_field_fieldI;
   __isset.__fbthrift_set(folly::index_constant<8>(),srcObj.__isset.__fbthrift_get(folly::index_constant<8>()));
-  fieldJ = srcObj.fieldJ;
+  __fbthrift_field_fieldJ = srcObj.__fbthrift_field_fieldJ;
   __isset.__fbthrift_set(folly::index_constant<9>(),srcObj.__isset.__fbthrift_get(folly::index_constant<9>()));
-  fieldK = srcObj.fieldK;
+  __fbthrift_field_fieldK = srcObj.__fbthrift_field_fieldK;
   __isset.__fbthrift_set(folly::index_constant<10>(),srcObj.__isset.__fbthrift_get(folly::index_constant<10>()));
-  fieldL = srcObj.fieldL;
+  __fbthrift_field_fieldL = srcObj.__fbthrift_field_fieldL;
   __isset.__fbthrift_set(folly::index_constant<11>(),srcObj.__isset.__fbthrift_get(folly::index_constant<11>()));
-  fieldM = srcObj.fieldM;
+  __fbthrift_field_fieldM = srcObj.__fbthrift_field_fieldM;
   __isset.__fbthrift_set(folly::index_constant<12>(),srcObj.__isset.__fbthrift_get(folly::index_constant<12>()));
-  fieldN = srcObj.fieldN;
+  __fbthrift_field_fieldN = srcObj.__fbthrift_field_fieldN;
   __isset.__fbthrift_set(folly::index_constant<13>(),srcObj.__isset.__fbthrift_get(folly::index_constant<13>()));
-  fieldO = srcObj.fieldO;
+  __fbthrift_field_fieldO = srcObj.__fbthrift_field_fieldO;
   __isset.__fbthrift_set(folly::index_constant<14>(),srcObj.__isset.__fbthrift_get(folly::index_constant<14>()));
-  fieldP = srcObj.fieldP;
+  __fbthrift_field_fieldP = srcObj.__fbthrift_field_fieldP;
   __isset.__fbthrift_set(folly::index_constant<15>(),srcObj.__isset.__fbthrift_get(folly::index_constant<15>()));
-  fieldQ = srcObj.fieldQ;
+  __fbthrift_field_fieldQ = srcObj.__fbthrift_field_fieldQ;
   __isset.__fbthrift_set(folly::index_constant<16>(),srcObj.__isset.__fbthrift_get(folly::index_constant<16>()));
   fieldR = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>>(srcObj.fieldR);
@@ -206,14 +206,14 @@ containerStruct& containerStruct::operator=(const containerStruct& src) {
 }
 
 containerStruct::containerStruct() :
-      fieldA(),
-      fieldC(static_cast<::std::set<::std::int32_t>>(std::initializer_list<::std::int32_t>{1,
+      __fbthrift_field_fieldA(),
+      __fbthrift_field_fieldC(static_cast<::std::set<::std::int32_t>>(std::initializer_list<::std::int32_t>{1,
   2,
   3,
   4})),
-      fieldE(apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring")),
-      fieldI(static_cast<bool>(true)),
-      fieldJ(static_cast<::std::map<::std::string, ::std::vector<::std::int32_t>>>(std::initializer_list<std::pair<const ::std::string, ::std::vector<::std::int32_t>>>{{apache::thrift::StringTraits<std::string>::fromStringLiteral("subfieldA"), std::initializer_list<::std::int32_t>{1,
+      __fbthrift_field_fieldE(apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring")),
+      __fbthrift_field_fieldI(static_cast<bool>(true)),
+      __fbthrift_field_fieldJ(static_cast<::std::map<::std::string, ::std::vector<::std::int32_t>>>(std::initializer_list<std::pair<const ::std::string, ::std::vector<::std::int32_t>>>{{apache::thrift::StringTraits<std::string>::fromStringLiteral("subfieldA"), std::initializer_list<::std::int32_t>{1,
   4,
   8,
   12}},
@@ -221,7 +221,7 @@ containerStruct::containerStruct() :
   5,
   9,
   13}}})),
-      fieldQ(),
+      __fbthrift_field_fieldQ(),
       fieldR(std::make_unique<::std::map<::std::string, bool>>()),
       fieldS(std::make_unique<::cpp2::SmallStruct>()),
       fieldT(std::make_shared<::cpp2::SmallStruct>()),
@@ -233,23 +233,23 @@ containerStruct::containerStruct() :
 containerStruct::~containerStruct() {}
 
 containerStruct::containerStruct(containerStruct&& other) noexcept  :
-    fieldA(std::move(other.fieldA)),
-    fieldB(std::move(other.fieldB)),
-    fieldC(std::move(other.fieldC)),
-    fieldD(std::move(other.fieldD)),
-    fieldE(std::move(other.fieldE)),
-    fieldF(std::move(other.fieldF)),
-    fieldG(std::move(other.fieldG)),
-    fieldH(std::move(other.fieldH)),
-    fieldI(std::move(other.fieldI)),
-    fieldJ(std::move(other.fieldJ)),
-    fieldK(std::move(other.fieldK)),
-    fieldL(std::move(other.fieldL)),
-    fieldM(std::move(other.fieldM)),
-    fieldN(std::move(other.fieldN)),
-    fieldO(std::move(other.fieldO)),
-    fieldP(std::move(other.fieldP)),
-    fieldQ(std::move(other.fieldQ)),
+    __fbthrift_field_fieldA(std::move(other.__fbthrift_field_fieldA)),
+    __fbthrift_field_fieldB(std::move(other.__fbthrift_field_fieldB)),
+    __fbthrift_field_fieldC(std::move(other.__fbthrift_field_fieldC)),
+    __fbthrift_field_fieldD(std::move(other.__fbthrift_field_fieldD)),
+    __fbthrift_field_fieldE(std::move(other.__fbthrift_field_fieldE)),
+    __fbthrift_field_fieldF(std::move(other.__fbthrift_field_fieldF)),
+    __fbthrift_field_fieldG(std::move(other.__fbthrift_field_fieldG)),
+    __fbthrift_field_fieldH(std::move(other.__fbthrift_field_fieldH)),
+    __fbthrift_field_fieldI(std::move(other.__fbthrift_field_fieldI)),
+    __fbthrift_field_fieldJ(std::move(other.__fbthrift_field_fieldJ)),
+    __fbthrift_field_fieldK(std::move(other.__fbthrift_field_fieldK)),
+    __fbthrift_field_fieldL(std::move(other.__fbthrift_field_fieldL)),
+    __fbthrift_field_fieldM(std::move(other.__fbthrift_field_fieldM)),
+    __fbthrift_field_fieldN(std::move(other.__fbthrift_field_fieldN)),
+    __fbthrift_field_fieldO(std::move(other.__fbthrift_field_fieldO)),
+    __fbthrift_field_fieldP(std::move(other.__fbthrift_field_fieldP)),
+    __fbthrift_field_fieldQ(std::move(other.__fbthrift_field_fieldQ)),
     fieldR(std::move(other.fieldR)),
     fieldS(std::move(other.fieldS)),
     fieldT(std::move(other.fieldT)),
@@ -259,23 +259,23 @@ containerStruct::containerStruct(containerStruct&& other) noexcept  :
 }
 
 containerStruct& containerStruct::operator=(FOLLY_MAYBE_UNUSED containerStruct&& other) noexcept {
-    this->fieldA = std::move(other.fieldA);
-    this->fieldB = std::move(other.fieldB);
-    this->fieldC = std::move(other.fieldC);
-    this->fieldD = std::move(other.fieldD);
-    this->fieldE = std::move(other.fieldE);
-    this->fieldF = std::move(other.fieldF);
-    this->fieldG = std::move(other.fieldG);
-    this->fieldH = std::move(other.fieldH);
-    this->fieldI = std::move(other.fieldI);
-    this->fieldJ = std::move(other.fieldJ);
-    this->fieldK = std::move(other.fieldK);
-    this->fieldL = std::move(other.fieldL);
-    this->fieldM = std::move(other.fieldM);
-    this->fieldN = std::move(other.fieldN);
-    this->fieldO = std::move(other.fieldO);
-    this->fieldP = std::move(other.fieldP);
-    this->fieldQ = std::move(other.fieldQ);
+    this->__fbthrift_field_fieldA = std::move(other.__fbthrift_field_fieldA);
+    this->__fbthrift_field_fieldB = std::move(other.__fbthrift_field_fieldB);
+    this->__fbthrift_field_fieldC = std::move(other.__fbthrift_field_fieldC);
+    this->__fbthrift_field_fieldD = std::move(other.__fbthrift_field_fieldD);
+    this->__fbthrift_field_fieldE = std::move(other.__fbthrift_field_fieldE);
+    this->__fbthrift_field_fieldF = std::move(other.__fbthrift_field_fieldF);
+    this->__fbthrift_field_fieldG = std::move(other.__fbthrift_field_fieldG);
+    this->__fbthrift_field_fieldH = std::move(other.__fbthrift_field_fieldH);
+    this->__fbthrift_field_fieldI = std::move(other.__fbthrift_field_fieldI);
+    this->__fbthrift_field_fieldJ = std::move(other.__fbthrift_field_fieldJ);
+    this->__fbthrift_field_fieldK = std::move(other.__fbthrift_field_fieldK);
+    this->__fbthrift_field_fieldL = std::move(other.__fbthrift_field_fieldL);
+    this->__fbthrift_field_fieldM = std::move(other.__fbthrift_field_fieldM);
+    this->__fbthrift_field_fieldN = std::move(other.__fbthrift_field_fieldN);
+    this->__fbthrift_field_fieldO = std::move(other.__fbthrift_field_fieldO);
+    this->__fbthrift_field_fieldP = std::move(other.__fbthrift_field_fieldP);
+    this->__fbthrift_field_fieldQ = std::move(other.__fbthrift_field_fieldQ);
     this->fieldR = std::move(other.fieldR);
     this->fieldS = std::move(other.fieldS);
     this->fieldT = std::move(other.fieldT);
@@ -287,23 +287,23 @@ containerStruct& containerStruct::operator=(FOLLY_MAYBE_UNUSED containerStruct&&
 
 
 containerStruct::containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, ::std::map<::std::string, bool> fieldB__arg, ::std::set<::std::int32_t> fieldC__arg, ::std::string fieldD__arg, ::std::string fieldE__arg, ::std::vector<::std::vector<::std::vector<::std::int32_t>>> fieldF__arg, ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>> fieldG__arg, ::std::vector<::std::set<::std::int32_t>> fieldH__arg, bool fieldI__arg, ::std::map<::std::string, ::std::vector<::std::int32_t>> fieldJ__arg, ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>> fieldK__arg, ::std::set<::std::set<::std::set<bool>>> fieldL__arg, ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM__arg, ::std::vector<::cpp2::IndirectionA> fieldN__arg, ::std::vector<::cpp2::IndirectionB> fieldO__arg, ::std::vector<::cpp2::IndirectionC> fieldP__arg, ::cpp2::MyEnumA fieldQ__arg, ::std::unique_ptr<::std::map<::std::string, bool>> fieldR__arg, ::std::unique_ptr<::cpp2::SmallStruct> fieldS__arg, ::std::shared_ptr<::cpp2::SmallStruct> fieldT__arg, ::std::shared_ptr<const ::cpp2::SmallStruct> fieldU__arg, ::std::unique_ptr<::cpp2::SmallStruct> fieldX__arg) :
-    fieldA(std::move(fieldA__arg)),
-    fieldB(std::move(fieldB__arg)),
-    fieldC(std::move(fieldC__arg)),
-    fieldD(std::move(fieldD__arg)),
-    fieldE(std::move(fieldE__arg)),
-    fieldF(std::move(fieldF__arg)),
-    fieldG(std::move(fieldG__arg)),
-    fieldH(std::move(fieldH__arg)),
-    fieldI(std::move(fieldI__arg)),
-    fieldJ(std::move(fieldJ__arg)),
-    fieldK(std::move(fieldK__arg)),
-    fieldL(std::move(fieldL__arg)),
-    fieldM(std::move(fieldM__arg)),
-    fieldN(std::move(fieldN__arg)),
-    fieldO(std::move(fieldO__arg)),
-    fieldP(std::move(fieldP__arg)),
-    fieldQ(std::move(fieldQ__arg)),
+    __fbthrift_field_fieldA(std::move(fieldA__arg)),
+    __fbthrift_field_fieldB(std::move(fieldB__arg)),
+    __fbthrift_field_fieldC(std::move(fieldC__arg)),
+    __fbthrift_field_fieldD(std::move(fieldD__arg)),
+    __fbthrift_field_fieldE(std::move(fieldE__arg)),
+    __fbthrift_field_fieldF(std::move(fieldF__arg)),
+    __fbthrift_field_fieldG(std::move(fieldG__arg)),
+    __fbthrift_field_fieldH(std::move(fieldH__arg)),
+    __fbthrift_field_fieldI(std::move(fieldI__arg)),
+    __fbthrift_field_fieldJ(std::move(fieldJ__arg)),
+    __fbthrift_field_fieldK(std::move(fieldK__arg)),
+    __fbthrift_field_fieldL(std::move(fieldL__arg)),
+    __fbthrift_field_fieldM(std::move(fieldM__arg)),
+    __fbthrift_field_fieldN(std::move(fieldN__arg)),
+    __fbthrift_field_fieldO(std::move(fieldO__arg)),
+    __fbthrift_field_fieldP(std::move(fieldP__arg)),
+    __fbthrift_field_fieldQ(std::move(fieldQ__arg)),
     fieldR(std::move(fieldR__arg)),
     fieldS(std::move(fieldS__arg)),
     fieldT(std::move(fieldT__arg)),
@@ -331,23 +331,23 @@ containerStruct::containerStruct(apache::thrift::FragileConstructor, bool fieldA
 
 void containerStruct::__clear() {
   // clear all fields
-  this->fieldA = bool();
-  this->fieldB.clear();
-  this->fieldC.clear();
-  this->fieldD = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
-  this->fieldF.clear();
-  this->fieldG.clear();
-  this->fieldH.clear();
-  this->fieldI = static_cast<bool>(true);
-  this->fieldJ.clear();
-  this->fieldK.clear();
-  this->fieldL.clear();
-  this->fieldM.clear();
-  this->fieldN.clear();
-  this->fieldO.clear();
-  this->fieldP.clear();
-  this->fieldQ = ::cpp2::MyEnumA();
+  this->__fbthrift_field_fieldA = bool();
+  this->__fbthrift_field_fieldB.clear();
+  this->__fbthrift_field_fieldC.clear();
+  this->__fbthrift_field_fieldD = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
+  this->__fbthrift_field_fieldF.clear();
+  this->__fbthrift_field_fieldG.clear();
+  this->__fbthrift_field_fieldH.clear();
+  this->__fbthrift_field_fieldI = static_cast<bool>(true);
+  this->__fbthrift_field_fieldJ.clear();
+  this->__fbthrift_field_fieldK.clear();
+  this->__fbthrift_field_fieldL.clear();
+  this->__fbthrift_field_fieldM.clear();
+  this->__fbthrift_field_fieldN.clear();
+  this->__fbthrift_field_fieldO.clear();
+  this->__fbthrift_field_fieldP.clear();
+  this->__fbthrift_field_fieldQ = ::cpp2::MyEnumA();
   this->fieldR = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::map<::std::string, bool>>>();
   if (this->fieldS) this->fieldS->__clear();
   if (this->fieldT) this->fieldT->__clear();
@@ -503,99 +503,99 @@ bool containerStruct::operator<(const containerStruct& rhs) const {
 }
 
 const ::std::map<::std::string, bool>& containerStruct::get_fieldB() const& {
-  return fieldB;
+  return __fbthrift_field_fieldB;
 }
 
 ::std::map<::std::string, bool> containerStruct::get_fieldB() && {
-  return std::move(fieldB);
+  return std::move(__fbthrift_field_fieldB);
 }
 
 const ::std::set<::std::int32_t>& containerStruct::get_fieldC() const& {
-  return fieldC;
+  return __fbthrift_field_fieldC;
 }
 
 ::std::set<::std::int32_t> containerStruct::get_fieldC() && {
-  return std::move(fieldC);
+  return std::move(__fbthrift_field_fieldC);
 }
 
 const ::std::vector<::std::vector<::std::vector<::std::int32_t>>>& containerStruct::get_fieldF() const& {
-  return fieldF;
+  return __fbthrift_field_fieldF;
 }
 
 ::std::vector<::std::vector<::std::vector<::std::int32_t>>> containerStruct::get_fieldF() && {
-  return std::move(fieldF);
+  return std::move(__fbthrift_field_fieldF);
 }
 
 const ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>& containerStruct::get_fieldG() const& {
-  return fieldG;
+  return __fbthrift_field_fieldG;
 }
 
 ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>> containerStruct::get_fieldG() && {
-  return std::move(fieldG);
+  return std::move(__fbthrift_field_fieldG);
 }
 
 const ::std::vector<::std::set<::std::int32_t>>& containerStruct::get_fieldH() const& {
-  return fieldH;
+  return __fbthrift_field_fieldH;
 }
 
 ::std::vector<::std::set<::std::int32_t>> containerStruct::get_fieldH() && {
-  return std::move(fieldH);
+  return std::move(__fbthrift_field_fieldH);
 }
 
 const ::std::map<::std::string, ::std::vector<::std::int32_t>>& containerStruct::get_fieldJ() const& {
-  return fieldJ;
+  return __fbthrift_field_fieldJ;
 }
 
 ::std::map<::std::string, ::std::vector<::std::int32_t>> containerStruct::get_fieldJ() && {
-  return std::move(fieldJ);
+  return std::move(__fbthrift_field_fieldJ);
 }
 
 const ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& containerStruct::get_fieldK() const& {
-  return fieldK;
+  return __fbthrift_field_fieldK;
 }
 
 ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>> containerStruct::get_fieldK() && {
-  return std::move(fieldK);
+  return std::move(__fbthrift_field_fieldK);
 }
 
 const ::std::set<::std::set<::std::set<bool>>>& containerStruct::get_fieldL() const& {
-  return fieldL;
+  return __fbthrift_field_fieldL;
 }
 
 ::std::set<::std::set<::std::set<bool>>> containerStruct::get_fieldL() && {
-  return std::move(fieldL);
+  return std::move(__fbthrift_field_fieldL);
 }
 
 const ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& containerStruct::get_fieldM() const& {
-  return fieldM;
+  return __fbthrift_field_fieldM;
 }
 
 ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> containerStruct::get_fieldM() && {
-  return std::move(fieldM);
+  return std::move(__fbthrift_field_fieldM);
 }
 
 const ::std::vector<::cpp2::IndirectionA>& containerStruct::get_fieldN() const& {
-  return fieldN;
+  return __fbthrift_field_fieldN;
 }
 
 ::std::vector<::cpp2::IndirectionA> containerStruct::get_fieldN() && {
-  return std::move(fieldN);
+  return std::move(__fbthrift_field_fieldN);
 }
 
 const ::std::vector<::cpp2::IndirectionB>& containerStruct::get_fieldO() const& {
-  return fieldO;
+  return __fbthrift_field_fieldO;
 }
 
 ::std::vector<::cpp2::IndirectionB> containerStruct::get_fieldO() && {
-  return std::move(fieldO);
+  return std::move(__fbthrift_field_fieldO);
 }
 
 const ::std::vector<::cpp2::IndirectionC>& containerStruct::get_fieldP() const& {
-  return fieldP;
+  return __fbthrift_field_fieldP;
 }
 
 ::std::vector<::cpp2::IndirectionC> containerStruct::get_fieldP() && {
-  return std::move(fieldP);
+  return std::move(__fbthrift_field_fieldP);
 }
 
 

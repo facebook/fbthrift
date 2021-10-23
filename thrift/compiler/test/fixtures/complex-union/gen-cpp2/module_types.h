@@ -1322,7 +1322,7 @@ class Val final  {
  public:
 
   Val() :
-      intVal() {
+      __fbthrift_field_intVal() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -1337,11 +1337,11 @@ class Val final  {
   Val& operator=(const Val& src);
   void __clear();
  private:
-  ::std::string strVal;
+  ::std::string __fbthrift_field_strVal;
  private:
-  ::std::int32_t intVal;
+  ::std::int32_t __fbthrift_field_intVal;
  private:
-  ::cpp2::containerTypedef typedefValue;
+  ::cpp2::containerTypedef __fbthrift_field_typedefValue;
 private:
   apache::thrift::detail::isset_bitset<3> __isset;
 
@@ -1352,87 +1352,87 @@ private:
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> strVal_ref() const& {
-    return {this->strVal, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_strVal, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> strVal_ref() const&& {
-    return {std::move(this->strVal), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_strVal), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> strVal_ref() & {
-    return {this->strVal, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_strVal, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> strVal_ref() && {
-    return {std::move(this->strVal), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_strVal), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> intVal_ref() const& {
-    return {this->intVal, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_intVal, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> intVal_ref() const&& {
-    return {std::move(this->intVal), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_intVal), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> intVal_ref() & {
-    return {this->intVal, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_intVal, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> intVal_ref() && {
-    return {std::move(this->intVal), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_intVal), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::containerTypedef>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> typedefValue_ref() const& {
-    return {this->typedefValue, __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {this->__fbthrift_field_typedefValue, __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::cpp2::containerTypedef>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> typedefValue_ref() const&& {
-    return {std::move(this->typedefValue), __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {std::move(this->__fbthrift_field_typedefValue), __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::cpp2::containerTypedef>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> typedefValue_ref() & {
-    return {this->typedefValue, __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {this->__fbthrift_field_typedefValue, __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::cpp2::containerTypedef>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> typedefValue_ref() && {
-    return {std::move(this->typedefValue), __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {std::move(this->__fbthrift_field_typedefValue), __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   const ::std::string& get_strVal() const& {
-    return strVal;
+    return __fbthrift_field_strVal;
   }
 
   ::std::string get_strVal() && {
-    return std::move(strVal);
+    return std::move(__fbthrift_field_strVal);
   }
 
   template <typename T_Val_strVal_struct_setter = ::std::string>
   [[deprecated("Use `FOO.strVal_ref() = BAR;` instead of `FOO.set_strVal(BAR);`")]]
   ::std::string& set_strVal(T_Val_strVal_struct_setter&& strVal_) {
     strVal_ref() = std::forward<T_Val_strVal_struct_setter>(strVal_);
-    return strVal;
+    return __fbthrift_field_strVal;
   }
 
   ::std::int32_t get_intVal() const {
-    return intVal;
+    return __fbthrift_field_intVal;
   }
 
   [[deprecated("Use `FOO.intVal_ref() = BAR;` instead of `FOO.set_intVal(BAR);`")]]
   ::std::int32_t& set_intVal(::std::int32_t intVal_) {
     intVal_ref() = intVal_;
-    return intVal;
+    return __fbthrift_field_intVal;
   }
   const ::cpp2::containerTypedef& get_typedefValue() const&;
   ::cpp2::containerTypedef get_typedefValue() &&;
@@ -1441,7 +1441,7 @@ private:
   [[deprecated("Use `FOO.typedefValue_ref() = BAR;` instead of `FOO.set_typedefValue(BAR);`")]]
   ::cpp2::containerTypedef& set_typedefValue(T_Val_typedefValue_struct_setter&& typedefValue_) {
     typedefValue_ref() = std::forward<T_Val_typedefValue_struct_setter>(typedefValue_);
-    return typedefValue;
+    return __fbthrift_field_typedefValue;
   }
 
   template <class Protocol_>
@@ -2061,7 +2061,7 @@ class NonCopyableStruct final  {
  public:
 
   NonCopyableStruct() :
-      num() {
+      __fbthrift_field_num() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -2073,7 +2073,7 @@ class NonCopyableStruct final  {
   NonCopyableStruct& operator=(NonCopyableStruct&&) = default;
   void __clear();
  private:
-  ::std::int64_t num;
+  ::std::int64_t __fbthrift_field_num;
 private:
   apache::thrift::detail::isset_bitset<1> __isset;
 
@@ -2084,32 +2084,32 @@ private:
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> num_ref() const& {
-    return {this->num, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_num, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> num_ref() const&& {
-    return {std::move(this->num), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_num), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> num_ref() & {
-    return {this->num, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_num, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> num_ref() && {
-    return {std::move(this->num), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_num), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   ::std::int64_t get_num() const {
-    return num;
+    return __fbthrift_field_num;
   }
 
   [[deprecated("Use `FOO.num_ref() = BAR;` instead of `FOO.set_num(BAR);`")]]
   ::std::int64_t& set_num(::std::int64_t num_) {
     num_ref() = num_;
-    return num;
+    return __fbthrift_field_num;
   }
 
   template <class Protocol_>

@@ -70,14 +70,14 @@ namespace cpp2 {
 
 
 A::A(apache::thrift::FragileConstructor, ::std::int32_t useless_field__arg) :
-    useless_field(std::move(useless_field__arg)) {
+    __fbthrift_field_useless_field(std::move(useless_field__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 
 
 void A::__clear() {
   // clear all fields
-  this->useless_field = ::std::int32_t();
+  this->__fbthrift_field_useless_field = ::std::int32_t();
   __isset = {};
 }
 

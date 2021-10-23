@@ -299,40 +299,40 @@ namespace py3 { namespace simple {
 SimpleStruct::SimpleStruct(const SimpleStruct&) = default;
 SimpleStruct& SimpleStruct::operator=(const SimpleStruct&) = default;
 SimpleStruct::SimpleStruct(SimpleStruct&& other) noexcept  :
-    is_on(std::move(other.is_on)),
-    tiny_int(std::move(other.tiny_int)),
-    small_int(std::move(other.small_int)),
-    nice_sized_int(std::move(other.nice_sized_int)),
-    big_int(std::move(other.big_int)),
-    real(std::move(other.real)),
-    smaller_real(std::move(other.smaller_real)),
-    hidden_field(std::move(other.hidden_field)),
+    __fbthrift_field_is_on(std::move(other.__fbthrift_field_is_on)),
+    __fbthrift_field_tiny_int(std::move(other.__fbthrift_field_tiny_int)),
+    __fbthrift_field_small_int(std::move(other.__fbthrift_field_small_int)),
+    __fbthrift_field_nice_sized_int(std::move(other.__fbthrift_field_nice_sized_int)),
+    __fbthrift_field_big_int(std::move(other.__fbthrift_field_big_int)),
+    __fbthrift_field_real(std::move(other.__fbthrift_field_real)),
+    __fbthrift_field_smaller_real(std::move(other.__fbthrift_field_smaller_real)),
+    __fbthrift_field_hidden_field(std::move(other.__fbthrift_field_hidden_field)),
     __isset(other.__isset) {
 }
 
 SimpleStruct& SimpleStruct::operator=(FOLLY_MAYBE_UNUSED SimpleStruct&& other) noexcept {
-    this->is_on = std::move(other.is_on);
-    this->tiny_int = std::move(other.tiny_int);
-    this->small_int = std::move(other.small_int);
-    this->nice_sized_int = std::move(other.nice_sized_int);
-    this->big_int = std::move(other.big_int);
-    this->real = std::move(other.real);
-    this->smaller_real = std::move(other.smaller_real);
-    this->hidden_field = std::move(other.hidden_field);
+    this->__fbthrift_field_is_on = std::move(other.__fbthrift_field_is_on);
+    this->__fbthrift_field_tiny_int = std::move(other.__fbthrift_field_tiny_int);
+    this->__fbthrift_field_small_int = std::move(other.__fbthrift_field_small_int);
+    this->__fbthrift_field_nice_sized_int = std::move(other.__fbthrift_field_nice_sized_int);
+    this->__fbthrift_field_big_int = std::move(other.__fbthrift_field_big_int);
+    this->__fbthrift_field_real = std::move(other.__fbthrift_field_real);
+    this->__fbthrift_field_smaller_real = std::move(other.__fbthrift_field_smaller_real);
+    this->__fbthrift_field_hidden_field = std::move(other.__fbthrift_field_hidden_field);
     __isset = other.__isset;
     return *this;
 }
 
 
 SimpleStruct::SimpleStruct(apache::thrift::FragileConstructor, bool is_on__arg, ::std::int8_t tiny_int__arg, ::std::int16_t small_int__arg, ::std::int32_t nice_sized_int__arg, ::std::int64_t big_int__arg, double real__arg, float smaller_real__arg, ::std::int16_t hidden_field__arg) :
-    is_on(std::move(is_on__arg)),
-    tiny_int(std::move(tiny_int__arg)),
-    small_int(std::move(small_int__arg)),
-    nice_sized_int(std::move(nice_sized_int__arg)),
-    big_int(std::move(big_int__arg)),
-    real(std::move(real__arg)),
-    smaller_real(std::move(smaller_real__arg)),
-    hidden_field(std::move(hidden_field__arg)) {
+    __fbthrift_field_is_on(std::move(is_on__arg)),
+    __fbthrift_field_tiny_int(std::move(tiny_int__arg)),
+    __fbthrift_field_small_int(std::move(small_int__arg)),
+    __fbthrift_field_nice_sized_int(std::move(nice_sized_int__arg)),
+    __fbthrift_field_big_int(std::move(big_int__arg)),
+    __fbthrift_field_real(std::move(real__arg)),
+    __fbthrift_field_smaller_real(std::move(smaller_real__arg)),
+    __fbthrift_field_hidden_field(std::move(hidden_field__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -346,14 +346,14 @@ SimpleStruct::SimpleStruct(apache::thrift::FragileConstructor, bool is_on__arg, 
 
 void SimpleStruct::__clear() {
   // clear all fields
-  this->is_on = bool();
-  this->tiny_int = ::std::int8_t();
-  this->small_int = ::std::int16_t();
-  this->nice_sized_int = ::std::int32_t();
-  this->big_int = ::std::int64_t();
-  this->real = double();
-  this->smaller_real = float();
-  this->hidden_field = ::std::int16_t();
+  this->__fbthrift_field_is_on = bool();
+  this->__fbthrift_field_tiny_int = ::std::int8_t();
+  this->__fbthrift_field_small_int = ::std::int16_t();
+  this->__fbthrift_field_nice_sized_int = ::std::int32_t();
+  this->__fbthrift_field_big_int = ::std::int64_t();
+  this->__fbthrift_field_real = double();
+  this->__fbthrift_field_smaller_real = float();
+  this->__fbthrift_field_hidden_field = ::std::int16_t();
   __isset = {};
 }
 
@@ -472,51 +472,51 @@ namespace py3 { namespace simple {
 ComplexStruct::ComplexStruct(const ComplexStruct&) = default;
 ComplexStruct& ComplexStruct::operator=(const ComplexStruct&) = default;
 ComplexStruct::ComplexStruct() :
-      an_integer(),
-      an_enum() {
+      __fbthrift_field_an_integer(),
+      __fbthrift_field_an_enum() {
 }
 
 
 ComplexStruct::~ComplexStruct() {}
 
 ComplexStruct::ComplexStruct(ComplexStruct&& other) noexcept  :
-    structOne(std::move(other.structOne)),
-    structTwo(std::move(other.structTwo)),
-    an_integer(std::move(other.an_integer)),
-    name(std::move(other.name)),
-    an_enum(std::move(other.an_enum)),
-    some_bytes(std::move(other.some_bytes)),
-    from(std::move(other.from)),
-    cdef(std::move(other.cdef)),
-    bytes_with_cpp_type(std::move(other.bytes_with_cpp_type)),
+    __fbthrift_field_structOne(std::move(other.__fbthrift_field_structOne)),
+    __fbthrift_field_structTwo(std::move(other.__fbthrift_field_structTwo)),
+    __fbthrift_field_an_integer(std::move(other.__fbthrift_field_an_integer)),
+    __fbthrift_field_name(std::move(other.__fbthrift_field_name)),
+    __fbthrift_field_an_enum(std::move(other.__fbthrift_field_an_enum)),
+    __fbthrift_field_some_bytes(std::move(other.__fbthrift_field_some_bytes)),
+    __fbthrift_field_from(std::move(other.__fbthrift_field_from)),
+    __fbthrift_field_cdef(std::move(other.__fbthrift_field_cdef)),
+    __fbthrift_field_bytes_with_cpp_type(std::move(other.__fbthrift_field_bytes_with_cpp_type)),
     __isset(other.__isset) {
 }
 
 ComplexStruct& ComplexStruct::operator=(FOLLY_MAYBE_UNUSED ComplexStruct&& other) noexcept {
-    this->structOne = std::move(other.structOne);
-    this->structTwo = std::move(other.structTwo);
-    this->an_integer = std::move(other.an_integer);
-    this->name = std::move(other.name);
-    this->an_enum = std::move(other.an_enum);
-    this->some_bytes = std::move(other.some_bytes);
-    this->from = std::move(other.from);
-    this->cdef = std::move(other.cdef);
-    this->bytes_with_cpp_type = std::move(other.bytes_with_cpp_type);
+    this->__fbthrift_field_structOne = std::move(other.__fbthrift_field_structOne);
+    this->__fbthrift_field_structTwo = std::move(other.__fbthrift_field_structTwo);
+    this->__fbthrift_field_an_integer = std::move(other.__fbthrift_field_an_integer);
+    this->__fbthrift_field_name = std::move(other.__fbthrift_field_name);
+    this->__fbthrift_field_an_enum = std::move(other.__fbthrift_field_an_enum);
+    this->__fbthrift_field_some_bytes = std::move(other.__fbthrift_field_some_bytes);
+    this->__fbthrift_field_from = std::move(other.__fbthrift_field_from);
+    this->__fbthrift_field_cdef = std::move(other.__fbthrift_field_cdef);
+    this->__fbthrift_field_bytes_with_cpp_type = std::move(other.__fbthrift_field_bytes_with_cpp_type);
     __isset = other.__isset;
     return *this;
 }
 
 
 ComplexStruct::ComplexStruct(apache::thrift::FragileConstructor, ::py3::simple::SimpleStruct structOne__arg, ::py3::simple::SimpleStruct structTwo__arg, ::std::int32_t an_integer__arg, ::std::string name__arg, ::py3::simple::AnEnum an_enum__arg, ::std::string some_bytes__arg, ::std::string from__arg, ::std::string cdef__arg, ::py3::simple::foo_bar bytes_with_cpp_type__arg) :
-    structOne(std::move(structOne__arg)),
-    structTwo(std::move(structTwo__arg)),
-    an_integer(std::move(an_integer__arg)),
-    name(std::move(name__arg)),
-    an_enum(std::move(an_enum__arg)),
-    some_bytes(std::move(some_bytes__arg)),
-    from(std::move(from__arg)),
-    cdef(std::move(cdef__arg)),
-    bytes_with_cpp_type(std::move(bytes_with_cpp_type__arg)) {
+    __fbthrift_field_structOne(std::move(structOne__arg)),
+    __fbthrift_field_structTwo(std::move(structTwo__arg)),
+    __fbthrift_field_an_integer(std::move(an_integer__arg)),
+    __fbthrift_field_name(std::move(name__arg)),
+    __fbthrift_field_an_enum(std::move(an_enum__arg)),
+    __fbthrift_field_some_bytes(std::move(some_bytes__arg)),
+    __fbthrift_field_from(std::move(from__arg)),
+    __fbthrift_field_cdef(std::move(cdef__arg)),
+    __fbthrift_field_bytes_with_cpp_type(std::move(bytes_with_cpp_type__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -531,15 +531,15 @@ ComplexStruct::ComplexStruct(apache::thrift::FragileConstructor, ::py3::simple::
 
 void ComplexStruct::__clear() {
   // clear all fields
-  this->structOne.__clear();
-  this->structTwo.__clear();
-  this->an_integer = ::std::int32_t();
-  this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->an_enum = ::py3::simple::AnEnum();
-  this->some_bytes = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->from = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->cdef = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->bytes_with_cpp_type = apache::thrift::StringTraits<foo::Bar>::fromStringLiteral("");
+  this->__fbthrift_field_structOne.__clear();
+  this->__fbthrift_field_structTwo.__clear();
+  this->__fbthrift_field_an_integer = ::std::int32_t();
+  this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_an_enum = ::py3::simple::AnEnum();
+  this->__fbthrift_field_some_bytes = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_from = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_cdef = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_bytes_with_cpp_type = apache::thrift::StringTraits<foo::Bar>::fromStringLiteral("");
   __isset = {};
 }
 
@@ -562,7 +562,7 @@ bool ComplexStruct::operator==(const ComplexStruct& rhs) const {
   if (!(lhs.an_enum_ref() == rhs.an_enum_ref())) {
     return false;
   }
-  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.some_bytes, rhs.some_bytes)) {
+  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_some_bytes, rhs.__fbthrift_field_some_bytes)) {
     return false;
   }
   if (!(lhs.from_ref() == rhs.from_ref())) {
@@ -571,7 +571,7 @@ bool ComplexStruct::operator==(const ComplexStruct& rhs) const {
   if (!(lhs.cdef_ref() == rhs.cdef_ref())) {
     return false;
   }
-  if (!apache::thrift::StringTraits<foo::Bar>::isEqual(lhs.bytes_with_cpp_type, rhs.bytes_with_cpp_type)) {
+  if (!apache::thrift::StringTraits<foo::Bar>::isEqual(lhs.__fbthrift_field_bytes_with_cpp_type, rhs.__fbthrift_field_bytes_with_cpp_type)) {
     return false;
   }
   return true;
@@ -596,8 +596,8 @@ bool ComplexStruct::operator<(const ComplexStruct& rhs) const {
   if (!(lhs.an_enum_ref() == rhs.an_enum_ref())) {
     return lhs.an_enum_ref() < rhs.an_enum_ref();
   }
-  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.some_bytes, rhs.some_bytes)) {
-    return apache::thrift::StringTraits<std::string>::isLess(lhs.some_bytes, rhs.some_bytes);
+  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_some_bytes, rhs.__fbthrift_field_some_bytes)) {
+    return apache::thrift::StringTraits<std::string>::isLess(lhs.__fbthrift_field_some_bytes, rhs.__fbthrift_field_some_bytes);
   }
   if (!(lhs.from_ref() == rhs.from_ref())) {
     return lhs.from_ref() < rhs.from_ref();
@@ -605,26 +605,26 @@ bool ComplexStruct::operator<(const ComplexStruct& rhs) const {
   if (!(lhs.cdef_ref() == rhs.cdef_ref())) {
     return lhs.cdef_ref() < rhs.cdef_ref();
   }
-  if (!apache::thrift::StringTraits<foo::Bar>::isEqual(lhs.bytes_with_cpp_type, rhs.bytes_with_cpp_type)) {
-    return apache::thrift::StringTraits<foo::Bar>::isLess(lhs.bytes_with_cpp_type, rhs.bytes_with_cpp_type);
+  if (!apache::thrift::StringTraits<foo::Bar>::isEqual(lhs.__fbthrift_field_bytes_with_cpp_type, rhs.__fbthrift_field_bytes_with_cpp_type)) {
+    return apache::thrift::StringTraits<foo::Bar>::isLess(lhs.__fbthrift_field_bytes_with_cpp_type, rhs.__fbthrift_field_bytes_with_cpp_type);
   }
   return false;
 }
 
 const ::py3::simple::SimpleStruct& ComplexStruct::get_structOne() const& {
-  return structOne;
+  return __fbthrift_field_structOne;
 }
 
 ::py3::simple::SimpleStruct ComplexStruct::get_structOne() && {
-  return std::move(structOne);
+  return std::move(__fbthrift_field_structOne);
 }
 
 const ::py3::simple::SimpleStruct& ComplexStruct::get_structTwo() const& {
-  return structTwo;
+  return __fbthrift_field_structTwo;
 }
 
 ::py3::simple::SimpleStruct ComplexStruct::get_structTwo() && {
-  return std::move(structTwo);
+  return std::move(__fbthrift_field_structTwo);
 }
 
 
@@ -784,37 +784,37 @@ namespace py3 { namespace simple {
 BinaryUnionStruct::BinaryUnionStruct(const BinaryUnionStruct&) = default;
 BinaryUnionStruct& BinaryUnionStruct::operator=(const BinaryUnionStruct&) = default;
 BinaryUnionStruct::BinaryUnionStruct(BinaryUnionStruct&& other) noexcept  :
-    u(std::move(other.u)),
+    __fbthrift_field_u(std::move(other.__fbthrift_field_u)),
     __isset(other.__isset) {
 }
 
 BinaryUnionStruct& BinaryUnionStruct::operator=(FOLLY_MAYBE_UNUSED BinaryUnionStruct&& other) noexcept {
-    this->u = std::move(other.u);
+    this->__fbthrift_field_u = std::move(other.__fbthrift_field_u);
     __isset = other.__isset;
     return *this;
 }
 
 
 BinaryUnionStruct::BinaryUnionStruct(apache::thrift::FragileConstructor, ::py3::simple::BinaryUnion u__arg) :
-    u(std::move(u__arg)) {
+    __fbthrift_field_u(std::move(u__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 
 
 void BinaryUnionStruct::__clear() {
   // clear all fields
-  this->u.__clear();
+  this->__fbthrift_field_u.__clear();
   __isset = {};
 }
 
 
 
 const ::py3::simple::BinaryUnion& BinaryUnionStruct::get_u() const& {
-  return u;
+  return __fbthrift_field_u;
 }
 
 ::py3::simple::BinaryUnion BinaryUnionStruct::get_u() && {
-  return std::move(u);
+  return std::move(__fbthrift_field_u);
 }
 
 

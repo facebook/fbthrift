@@ -63,26 +63,26 @@ const char* MyStruct::__fbthrift_cpp2_gen_thrift_uri() {
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
 MyStruct::MyStruct(MyStruct&& other) noexcept  :
-    myString(std::move(other.myString)),
+    __fbthrift_field_myString(std::move(other.__fbthrift_field_myString)),
     __isset(other.__isset) {
 }
 
 MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
-    this->myString = std::move(other.myString);
+    this->__fbthrift_field_myString = std::move(other.__fbthrift_field_myString);
     __isset = other.__isset;
     return *this;
 }
 
 
 MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::string myString__arg) :
-    myString(std::move(myString__arg)) {
+    __fbthrift_field_myString(std::move(myString__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 
 
 void MyStruct::__clear() {
   // clear all fields
-  this->myString = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_myString = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 

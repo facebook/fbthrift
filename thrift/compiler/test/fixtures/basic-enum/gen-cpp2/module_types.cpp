@@ -136,8 +136,8 @@ namespace test { namespace fixtures { namespace enumstrict {
 
 
 MyStruct::MyStruct(apache::thrift::FragileConstructor, ::test::fixtures::enumstrict::MyEnum myEnum__arg, ::test::fixtures::enumstrict::MyBigEnum myBigEnum__arg) :
-    myEnum(std::move(myEnum__arg)),
-    myBigEnum(std::move(myBigEnum__arg)) {
+    __fbthrift_field_myEnum(std::move(myEnum__arg)),
+    __fbthrift_field_myBigEnum(std::move(myBigEnum__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
@@ -145,8 +145,8 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::test::fixtures::enumstr
 
 void MyStruct::__clear() {
   // clear all fields
-  this->myEnum = ::test::fixtures::enumstrict::MyEnum();
-  this->myBigEnum =  ::test::fixtures::enumstrict::MyBigEnum::ONE;
+  this->__fbthrift_field_myEnum = ::test::fixtures::enumstrict::MyEnum();
+  this->__fbthrift_field_myBigEnum =  ::test::fixtures::enumstrict::MyBigEnum::ONE;
   __isset = {};
 }
 

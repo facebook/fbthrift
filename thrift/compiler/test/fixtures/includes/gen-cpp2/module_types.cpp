@@ -38,25 +38,25 @@ namespace cpp2 {
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
 MyStruct::MyStruct(MyStruct&& other) noexcept  :
-    MyIncludedField(std::move(other.MyIncludedField)),
-    MyOtherIncludedField(std::move(other.MyOtherIncludedField)),
-    MyIncludedInt(std::move(other.MyIncludedInt)),
+    __fbthrift_field_MyIncludedField(std::move(other.__fbthrift_field_MyIncludedField)),
+    __fbthrift_field_MyOtherIncludedField(std::move(other.__fbthrift_field_MyOtherIncludedField)),
+    __fbthrift_field_MyIncludedInt(std::move(other.__fbthrift_field_MyIncludedInt)),
     __isset(other.__isset) {
 }
 
 MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
-    this->MyIncludedField = std::move(other.MyIncludedField);
-    this->MyOtherIncludedField = std::move(other.MyOtherIncludedField);
-    this->MyIncludedInt = std::move(other.MyIncludedInt);
+    this->__fbthrift_field_MyIncludedField = std::move(other.__fbthrift_field_MyIncludedField);
+    this->__fbthrift_field_MyOtherIncludedField = std::move(other.__fbthrift_field_MyOtherIncludedField);
+    this->__fbthrift_field_MyIncludedInt = std::move(other.__fbthrift_field_MyIncludedInt);
     __isset = other.__isset;
     return *this;
 }
 
 
 MyStruct::MyStruct(apache::thrift::FragileConstructor, ::cpp2::Included MyIncludedField__arg, ::cpp2::Included MyOtherIncludedField__arg, ::cpp2::IncludedInt64 MyIncludedInt__arg) :
-    MyIncludedField(std::move(MyIncludedField__arg)),
-    MyOtherIncludedField(std::move(MyOtherIncludedField__arg)),
-    MyIncludedInt(std::move(MyIncludedInt__arg)) {
+    __fbthrift_field_MyIncludedField(std::move(MyIncludedField__arg)),
+    __fbthrift_field_MyOtherIncludedField(std::move(MyOtherIncludedField__arg)),
+    __fbthrift_field_MyIncludedInt(std::move(MyIncludedInt__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -65,9 +65,9 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::cpp2::Included MyInclud
 
 void MyStruct::__clear() {
   // clear all fields
-  this->MyIncludedField.__clear();
-  this->MyOtherIncludedField.__clear();
-  this->MyIncludedInt = static_cast<::cpp2::IncludedInt64>(42);
+  this->__fbthrift_field_MyIncludedField.__clear();
+  this->__fbthrift_field_MyOtherIncludedField.__clear();
+  this->__fbthrift_field_MyIncludedInt = static_cast<::cpp2::IncludedInt64>(42);
   __isset = {};
 }
 
@@ -104,19 +104,19 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
 }
 
 const ::cpp2::Included& MyStruct::get_MyIncludedField() const& {
-  return MyIncludedField;
+  return __fbthrift_field_MyIncludedField;
 }
 
 ::cpp2::Included MyStruct::get_MyIncludedField() && {
-  return std::move(MyIncludedField);
+  return std::move(__fbthrift_field_MyIncludedField);
 }
 
 const ::cpp2::Included& MyStruct::get_MyOtherIncludedField() const& {
-  return MyOtherIncludedField;
+  return __fbthrift_field_MyOtherIncludedField;
 }
 
 ::cpp2::Included MyStruct::get_MyOtherIncludedField() && {
-  return std::move(MyOtherIncludedField);
+  return std::move(__fbthrift_field_MyOtherIncludedField);
 }
 
 

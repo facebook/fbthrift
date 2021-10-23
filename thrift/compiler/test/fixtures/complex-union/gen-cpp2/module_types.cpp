@@ -399,25 +399,25 @@ namespace cpp2 {
 Val::Val(const Val&) = default;
 Val& Val::operator=(const Val&) = default;
 Val::Val(Val&& other) noexcept  :
-    strVal(std::move(other.strVal)),
-    intVal(std::move(other.intVal)),
-    typedefValue(std::move(other.typedefValue)),
+    __fbthrift_field_strVal(std::move(other.__fbthrift_field_strVal)),
+    __fbthrift_field_intVal(std::move(other.__fbthrift_field_intVal)),
+    __fbthrift_field_typedefValue(std::move(other.__fbthrift_field_typedefValue)),
     __isset(other.__isset) {
 }
 
 Val& Val::operator=(FOLLY_MAYBE_UNUSED Val&& other) noexcept {
-    this->strVal = std::move(other.strVal);
-    this->intVal = std::move(other.intVal);
-    this->typedefValue = std::move(other.typedefValue);
+    this->__fbthrift_field_strVal = std::move(other.__fbthrift_field_strVal);
+    this->__fbthrift_field_intVal = std::move(other.__fbthrift_field_intVal);
+    this->__fbthrift_field_typedefValue = std::move(other.__fbthrift_field_typedefValue);
     __isset = other.__isset;
     return *this;
 }
 
 
 Val::Val(apache::thrift::FragileConstructor, ::std::string strVal__arg, ::std::int32_t intVal__arg, ::cpp2::containerTypedef typedefValue__arg) :
-    strVal(std::move(strVal__arg)),
-    intVal(std::move(intVal__arg)),
-    typedefValue(std::move(typedefValue__arg)) {
+    __fbthrift_field_strVal(std::move(strVal__arg)),
+    __fbthrift_field_intVal(std::move(intVal__arg)),
+    __fbthrift_field_typedefValue(std::move(typedefValue__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -426,9 +426,9 @@ Val::Val(apache::thrift::FragileConstructor, ::std::string strVal__arg, ::std::i
 
 void Val::__clear() {
   // clear all fields
-  this->strVal = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->intVal = ::std::int32_t();
-  this->typedefValue.clear();
+  this->__fbthrift_field_strVal = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_intVal = ::std::int32_t();
+  this->__fbthrift_field_typedefValue.clear();
   __isset = {};
 }
 
@@ -465,11 +465,11 @@ bool Val::operator<(const Val& rhs) const {
 }
 
 const ::cpp2::containerTypedef& Val::get_typedefValue() const& {
-  return typedefValue;
+  return __fbthrift_field_typedefValue;
 }
 
 ::cpp2::containerTypedef Val::get_typedefValue() && {
-  return std::move(typedefValue);
+  return std::move(__fbthrift_field_typedefValue);
 }
 
 
@@ -763,14 +763,14 @@ namespace cpp2 {
 
 
 NonCopyableStruct::NonCopyableStruct(apache::thrift::FragileConstructor, ::std::int64_t num__arg) :
-    num(std::move(num__arg)) {
+    __fbthrift_field_num(std::move(num__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 
 
 void NonCopyableStruct::__clear() {
   // clear all fields
-  this->num = ::std::int64_t();
+  this->__fbthrift_field_num = ::std::int64_t();
   __isset = {};
 }
 

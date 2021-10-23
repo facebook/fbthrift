@@ -71,28 +71,28 @@ namespace cpp2 {
 SomeStruct::SomeStruct(const SomeStruct&) = default;
 SomeStruct& SomeStruct::operator=(const SomeStruct&) = default;
 SomeStruct::SomeStruct(SomeStruct&& other) noexcept  :
-    reasonable(std::move(other.reasonable)),
-    fine(std::move(other.fine)),
-    questionable(std::move(other.questionable)),
-    tags(std::move(other.tags)),
+    __fbthrift_field_reasonable(std::move(other.__fbthrift_field_reasonable)),
+    __fbthrift_field_fine(std::move(other.__fbthrift_field_fine)),
+    __fbthrift_field_questionable(std::move(other.__fbthrift_field_questionable)),
+    __fbthrift_field_tags(std::move(other.__fbthrift_field_tags)),
     __isset(other.__isset) {
 }
 
 SomeStruct& SomeStruct::operator=(FOLLY_MAYBE_UNUSED SomeStruct&& other) noexcept {
-    this->reasonable = std::move(other.reasonable);
-    this->fine = std::move(other.fine);
-    this->questionable = std::move(other.questionable);
-    this->tags = std::move(other.tags);
+    this->__fbthrift_field_reasonable = std::move(other.__fbthrift_field_reasonable);
+    this->__fbthrift_field_fine = std::move(other.__fbthrift_field_fine);
+    this->__fbthrift_field_questionable = std::move(other.__fbthrift_field_questionable);
+    this->__fbthrift_field_tags = std::move(other.__fbthrift_field_tags);
     __isset = other.__isset;
     return *this;
 }
 
 
 SomeStruct::SomeStruct(apache::thrift::FragileConstructor, ::cpp2::Metasyntactic reasonable__arg, ::cpp2::Metasyntactic fine__arg, ::cpp2::Metasyntactic questionable__arg, ::std::set<::std::int32_t> tags__arg) :
-    reasonable(std::move(reasonable__arg)),
-    fine(std::move(fine__arg)),
-    questionable(std::move(questionable__arg)),
-    tags(std::move(tags__arg)) {
+    __fbthrift_field_reasonable(std::move(reasonable__arg)),
+    __fbthrift_field_fine(std::move(fine__arg)),
+    __fbthrift_field_questionable(std::move(questionable__arg)),
+    __fbthrift_field_tags(std::move(tags__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -102,10 +102,10 @@ SomeStruct::SomeStruct(apache::thrift::FragileConstructor, ::cpp2::Metasyntactic
 
 void SomeStruct::__clear() {
   // clear all fields
-  this->reasonable =  ::cpp2::Metasyntactic::FOO;
-  this->fine =  ::cpp2::Metasyntactic::BAR;
-  this->questionable = static_cast< ::cpp2::Metasyntactic>(-1);
-  this->tags.clear();
+  this->__fbthrift_field_reasonable =  ::cpp2::Metasyntactic::FOO;
+  this->__fbthrift_field_fine =  ::cpp2::Metasyntactic::BAR;
+  this->__fbthrift_field_questionable = static_cast< ::cpp2::Metasyntactic>(-1);
+  this->__fbthrift_field_tags.clear();
   __isset = {};
 }
 
@@ -148,11 +148,11 @@ bool SomeStruct::operator<(const SomeStruct& rhs) const {
 }
 
 const ::std::set<::std::int32_t>& SomeStruct::get_tags() const& {
-  return tags;
+  return __fbthrift_field_tags;
 }
 
 ::std::set<::std::int32_t> SomeStruct::get_tags() && {
-  return std::move(tags);
+  return std::move(__fbthrift_field_tags);
 }
 
 

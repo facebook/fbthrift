@@ -238,19 +238,19 @@ class MyStruct final  {
   ~MyStruct();
 
  private:
-  ::std::int64_t MyIntField;
+  ::std::int64_t __fbthrift_field_MyIntField;
  private:
-  ::std::string MyStringField;
+  ::std::string __fbthrift_field_MyStringField;
  private:
-  ::cpp2::MyDataItem MyDataField;
+  ::cpp2::MyDataItem __fbthrift_field_MyDataField;
  private:
-  ::cpp2::MyEnum myEnum;
+  ::cpp2::MyEnum __fbthrift_field_myEnum;
  private:
-  bool oneway;
+  bool __fbthrift_field_oneway;
  private:
-  bool readonly;
+  bool __fbthrift_field_readonly;
  private:
-  bool idempotent;
+  bool __fbthrift_field_idempotent;
 private:
   apache::thrift::detail::isset_bitset<7> __isset;
 
@@ -261,167 +261,167 @@ private:
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {
-    return {this->MyIntField, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_MyIntField, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIntField_ref() const&& {
-    return {std::move(this->MyIntField), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_MyIntField), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIntField_ref() & {
-    return {this->MyIntField, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_MyIntField, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField_ref() && {
-    return {std::move(this->MyIntField), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_MyIntField), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyStringField_ref() const& {
-    return {this->MyStringField, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_MyStringField, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyStringField_ref() const&& {
-    return {std::move(this->MyStringField), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_MyStringField), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyStringField_ref() & {
-    return {this->MyStringField, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_MyStringField, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyStringField_ref() && {
-    return {std::move(this->MyStringField), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_MyStringField), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyDataField_ref() const& {
-    return {this->MyDataField, __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {this->__fbthrift_field_MyDataField, __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyDataField_ref() const&& {
-    return {std::move(this->MyDataField), __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {std::move(this->__fbthrift_field_MyDataField), __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyDataField_ref() & {
-    return {this->MyDataField, __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {this->__fbthrift_field_MyDataField, __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyDataField_ref() && {
-    return {std::move(this->MyDataField), __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {std::move(this->__fbthrift_field_MyDataField), __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myEnum_ref() const& {
-    return {this->myEnum, __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {this->__fbthrift_field_myEnum, __isset.__fbthrift_at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> myEnum_ref() const&& {
-    return {std::move(this->myEnum), __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {std::move(this->__fbthrift_field_myEnum), __isset.__fbthrift_at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> myEnum_ref() & {
-    return {this->myEnum, __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {this->__fbthrift_field_myEnum, __isset.__fbthrift_at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myEnum_ref() && {
-    return {std::move(this->myEnum), __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {std::move(this->__fbthrift_field_myEnum), __isset.__fbthrift_at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> oneway_ref() const& {
-    return {this->oneway, __isset.__fbthrift_at(folly::index_constant<4>())};
+    return {this->__fbthrift_field_oneway, __isset.__fbthrift_at(folly::index_constant<4>())};
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> oneway_ref() const&& {
-    return {std::move(this->oneway), __isset.__fbthrift_at(folly::index_constant<4>())};
+    return {std::move(this->__fbthrift_field_oneway), __isset.__fbthrift_at(folly::index_constant<4>())};
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> oneway_ref() & {
-    return {this->oneway, __isset.__fbthrift_at(folly::index_constant<4>())};
+    return {this->__fbthrift_field_oneway, __isset.__fbthrift_at(folly::index_constant<4>())};
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> oneway_ref() && {
-    return {std::move(this->oneway), __isset.__fbthrift_at(folly::index_constant<4>())};
+    return {std::move(this->__fbthrift_field_oneway), __isset.__fbthrift_at(folly::index_constant<4>())};
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> readonly_ref() const& {
-    return {this->readonly, __isset.__fbthrift_at(folly::index_constant<5>())};
+    return {this->__fbthrift_field_readonly, __isset.__fbthrift_at(folly::index_constant<5>())};
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> readonly_ref() const&& {
-    return {std::move(this->readonly), __isset.__fbthrift_at(folly::index_constant<5>())};
+    return {std::move(this->__fbthrift_field_readonly), __isset.__fbthrift_at(folly::index_constant<5>())};
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> readonly_ref() & {
-    return {this->readonly, __isset.__fbthrift_at(folly::index_constant<5>())};
+    return {this->__fbthrift_field_readonly, __isset.__fbthrift_at(folly::index_constant<5>())};
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> readonly_ref() && {
-    return {std::move(this->readonly), __isset.__fbthrift_at(folly::index_constant<5>())};
+    return {std::move(this->__fbthrift_field_readonly), __isset.__fbthrift_at(folly::index_constant<5>())};
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> idempotent_ref() const& {
-    return {this->idempotent, __isset.__fbthrift_at(folly::index_constant<6>())};
+    return {this->__fbthrift_field_idempotent, __isset.__fbthrift_at(folly::index_constant<6>())};
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> idempotent_ref() const&& {
-    return {std::move(this->idempotent), __isset.__fbthrift_at(folly::index_constant<6>())};
+    return {std::move(this->__fbthrift_field_idempotent), __isset.__fbthrift_at(folly::index_constant<6>())};
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> idempotent_ref() & {
-    return {this->idempotent, __isset.__fbthrift_at(folly::index_constant<6>())};
+    return {this->__fbthrift_field_idempotent, __isset.__fbthrift_at(folly::index_constant<6>())};
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> idempotent_ref() && {
-    return {std::move(this->idempotent), __isset.__fbthrift_at(folly::index_constant<6>())};
+    return {std::move(this->__fbthrift_field_idempotent), __isset.__fbthrift_at(folly::index_constant<6>())};
   }
 
   ::std::int64_t get_MyIntField() const {
-    return MyIntField;
+    return __fbthrift_field_MyIntField;
   }
 
   [[deprecated("Use `FOO.MyIntField_ref() = BAR;` instead of `FOO.set_MyIntField(BAR);`")]]
   ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField_ref() = MyIntField_;
-    return MyIntField;
+    return __fbthrift_field_MyIntField;
   }
 
   const ::std::string& get_MyStringField() const& {
-    return MyStringField;
+    return __fbthrift_field_MyStringField;
   }
 
   ::std::string get_MyStringField() && {
-    return std::move(MyStringField);
+    return std::move(__fbthrift_field_MyStringField);
   }
 
   template <typename T_MyStruct_MyStringField_struct_setter = ::std::string>
   [[deprecated("Use `FOO.MyStringField_ref() = BAR;` instead of `FOO.set_MyStringField(BAR);`")]]
   ::std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
     MyStringField_ref() = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
-    return MyStringField;
+    return __fbthrift_field_MyStringField;
   }
   const ::cpp2::MyDataItem& get_MyDataField() const&;
   ::cpp2::MyDataItem get_MyDataField() &&;
@@ -430,47 +430,47 @@ private:
   [[deprecated("Use `FOO.MyDataField_ref() = BAR;` instead of `FOO.set_MyDataField(BAR);`")]]
   ::cpp2::MyDataItem& set_MyDataField(T_MyStruct_MyDataField_struct_setter&& MyDataField_) {
     MyDataField_ref() = std::forward<T_MyStruct_MyDataField_struct_setter>(MyDataField_);
-    return MyDataField;
+    return __fbthrift_field_MyDataField;
   }
 
   ::cpp2::MyEnum get_myEnum() const {
-    return myEnum;
+    return __fbthrift_field_myEnum;
   }
 
   [[deprecated("Use `FOO.myEnum_ref() = BAR;` instead of `FOO.set_myEnum(BAR);`")]]
   ::cpp2::MyEnum& set_myEnum(::cpp2::MyEnum myEnum_) {
     myEnum_ref() = myEnum_;
-    return myEnum;
+    return __fbthrift_field_myEnum;
   }
 
   bool get_oneway() const {
-    return oneway;
+    return __fbthrift_field_oneway;
   }
 
   [[deprecated("Use `FOO.oneway_ref() = BAR;` instead of `FOO.set_oneway(BAR);`")]]
   bool& set_oneway(bool oneway_) {
     oneway_ref() = oneway_;
-    return oneway;
+    return __fbthrift_field_oneway;
   }
 
   bool get_readonly() const {
-    return readonly;
+    return __fbthrift_field_readonly;
   }
 
   [[deprecated("Use `FOO.readonly_ref() = BAR;` instead of `FOO.set_readonly(BAR);`")]]
   bool& set_readonly(bool readonly_) {
     readonly_ref() = readonly_;
-    return readonly;
+    return __fbthrift_field_readonly;
   }
 
   bool get_idempotent() const {
-    return idempotent;
+    return __fbthrift_field_idempotent;
   }
 
   [[deprecated("Use `FOO.idempotent_ref() = BAR;` instead of `FOO.set_idempotent(BAR);`")]]
   bool& set_idempotent(bool idempotent_) {
     idempotent_ref() = idempotent_;
-    return idempotent;
+    return __fbthrift_field_idempotent;
   }
 
   template <class Protocol_>

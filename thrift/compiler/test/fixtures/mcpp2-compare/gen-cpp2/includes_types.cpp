@@ -70,14 +70,14 @@ namespace a { namespace different { namespace ns {
 
 
 AStruct::AStruct(apache::thrift::FragileConstructor, ::std::int32_t FieldA__arg) :
-    FieldA(std::move(FieldA__arg)) {
+    __fbthrift_field_FieldA(std::move(FieldA__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 
 
 void AStruct::__clear() {
   // clear all fields
-  this->FieldA = ::std::int32_t();
+  this->__fbthrift_field_FieldA = ::std::int32_t();
   __isset = {};
 }
 

@@ -621,10 +621,11 @@ class mstch_cpp2_field : public mstch_field {
   }
   mstch::node cpp_name() { return cpp2::get_name(field_); }
   mstch::node cpp_storage_name() {
-    // Internal data member name in C++ struct. We need this as preparation for
-    // removing _ref() suffix, since after that, data member name will be
-    // different from cpp_name.
-    return cpp2::get_name(field_);
+    if (!is_eligible_for_storage_name_mangling()) {
+      return cpp2::get_name(field_);
+    }
+
+    return "__fbthrift_field_" + cpp2::get_name(field_);
   }
   mstch::node cpp_storage_type() {
     return context_->resolver().get_storage_type_name(field_);
@@ -741,7 +742,19 @@ class mstch_cpp2_field : public mstch_field {
         throw std::runtime_error("unknown required qualifier");
     }
   }
+
   mstch::node visibility() {
+    return std::string(is_private() ? "private" : "public");
+  }
+
+  mstch::node metadata_name() {
+    auto key = field_->get_key();
+    auto suffix = key >= 0 ? std::to_string(key) : "_" + std::to_string(-key);
+    return field_->get_name() + "_" + suffix;
+  }
+
+ private:
+  bool is_private() const {
     auto req = field_->get_req();
     bool isPrivate = true;
     if (cpp2::is_lazy(field_)) {
@@ -753,15 +766,34 @@ class mstch_cpp2_field : public mstch_field {
     } else if (req == t_field::e_req::opt_in_req_out) {
       isPrivate = !has_option("deprecated_public_fields");
     }
-    return std::string(isPrivate ? "private" : "public");
-  }
-  mstch::node metadata_name() {
-    auto key = field_->get_key();
-    auto suffix = key >= 0 ? std::to_string(key) : "_" + std::to_string(-key);
-    return field_->get_name() + "_" + suffix;
+    return isPrivate;
   }
 
- private:
+  bool is_eligible_for_storage_name_mangling() const {
+    const auto* strct = field_context_->strct;
+
+    if (strct->is_union() || strct->is_exception()) {
+      return false;
+    }
+
+    for (auto opt : {"frozen", "frozen2", "reflection", "tablebased"}) {
+      if (has_option(opt)) {
+        return false;
+      }
+    }
+
+    if (strct->has_annotation(
+            {"cpp.methods",
+             "cpp2.methods",
+             "cpp.allocator_via",
+             "cpp2.allocator_via"})) {
+      return false;
+    }
+
+    return is_private() && !cpp2::is_ref(field_) &&
+        gen::cpp::type_resolver::find_first_adapter(field_) == nullptr;
+  }
+
   std::shared_ptr<cpp2_generator_context> context_;
 };
 

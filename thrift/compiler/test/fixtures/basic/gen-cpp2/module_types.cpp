@@ -136,48 +136,48 @@ namespace cpp2 {
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
 MyStruct::MyStruct() :
-      MyIntField(),
-      myEnum(),
-      oneway(),
-      readonly(),
-      idempotent() {
+      __fbthrift_field_MyIntField(),
+      __fbthrift_field_myEnum(),
+      __fbthrift_field_oneway(),
+      __fbthrift_field_readonly(),
+      __fbthrift_field_idempotent() {
 }
 
 
 MyStruct::~MyStruct() {}
 
 MyStruct::MyStruct(MyStruct&& other) noexcept  :
-    MyIntField(std::move(other.MyIntField)),
-    MyStringField(std::move(other.MyStringField)),
-    MyDataField(std::move(other.MyDataField)),
-    myEnum(std::move(other.myEnum)),
-    oneway(std::move(other.oneway)),
-    readonly(std::move(other.readonly)),
-    idempotent(std::move(other.idempotent)),
+    __fbthrift_field_MyIntField(std::move(other.__fbthrift_field_MyIntField)),
+    __fbthrift_field_MyStringField(std::move(other.__fbthrift_field_MyStringField)),
+    __fbthrift_field_MyDataField(std::move(other.__fbthrift_field_MyDataField)),
+    __fbthrift_field_myEnum(std::move(other.__fbthrift_field_myEnum)),
+    __fbthrift_field_oneway(std::move(other.__fbthrift_field_oneway)),
+    __fbthrift_field_readonly(std::move(other.__fbthrift_field_readonly)),
+    __fbthrift_field_idempotent(std::move(other.__fbthrift_field_idempotent)),
     __isset(other.__isset) {
 }
 
 MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
-    this->MyIntField = std::move(other.MyIntField);
-    this->MyStringField = std::move(other.MyStringField);
-    this->MyDataField = std::move(other.MyDataField);
-    this->myEnum = std::move(other.myEnum);
-    this->oneway = std::move(other.oneway);
-    this->readonly = std::move(other.readonly);
-    this->idempotent = std::move(other.idempotent);
+    this->__fbthrift_field_MyIntField = std::move(other.__fbthrift_field_MyIntField);
+    this->__fbthrift_field_MyStringField = std::move(other.__fbthrift_field_MyStringField);
+    this->__fbthrift_field_MyDataField = std::move(other.__fbthrift_field_MyDataField);
+    this->__fbthrift_field_myEnum = std::move(other.__fbthrift_field_myEnum);
+    this->__fbthrift_field_oneway = std::move(other.__fbthrift_field_oneway);
+    this->__fbthrift_field_readonly = std::move(other.__fbthrift_field_readonly);
+    this->__fbthrift_field_idempotent = std::move(other.__fbthrift_field_idempotent);
     __isset = other.__isset;
     return *this;
 }
 
 
 MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::cpp2::MyDataItem MyDataField__arg, ::cpp2::MyEnum myEnum__arg, bool oneway__arg, bool readonly__arg, bool idempotent__arg) :
-    MyIntField(std::move(MyIntField__arg)),
-    MyStringField(std::move(MyStringField__arg)),
-    MyDataField(std::move(MyDataField__arg)),
-    myEnum(std::move(myEnum__arg)),
-    oneway(std::move(oneway__arg)),
-    readonly(std::move(readonly__arg)),
-    idempotent(std::move(idempotent__arg)) {
+    __fbthrift_field_MyIntField(std::move(MyIntField__arg)),
+    __fbthrift_field_MyStringField(std::move(MyStringField__arg)),
+    __fbthrift_field_MyDataField(std::move(MyDataField__arg)),
+    __fbthrift_field_myEnum(std::move(myEnum__arg)),
+    __fbthrift_field_oneway(std::move(oneway__arg)),
+    __fbthrift_field_readonly(std::move(readonly__arg)),
+    __fbthrift_field_idempotent(std::move(idempotent__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -190,12 +190,12 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField
 
 void MyStruct::__clear() {
   // clear all fields
-  this->MyIntField = ::std::int64_t();
-  this->MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->myEnum = ::cpp2::MyEnum();
-  this->oneway = bool();
-  this->readonly = bool();
-  this->idempotent = bool();
+  this->__fbthrift_field_MyIntField = ::std::int64_t();
+  this->__fbthrift_field_MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_myEnum = ::cpp2::MyEnum();
+  this->__fbthrift_field_oneway = bool();
+  this->__fbthrift_field_readonly = bool();
+  this->__fbthrift_field_idempotent = bool();
   __isset = {};
 }
 
@@ -256,11 +256,11 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
 }
 
 const ::cpp2::MyDataItem& MyStruct::get_MyDataField() const& {
-  return MyDataField;
+  return __fbthrift_field_MyDataField;
 }
 
 ::cpp2::MyDataItem MyStruct::get_MyDataField() && {
-  return std::move(MyDataField);
+  return std::move(__fbthrift_field_MyDataField);
 }
 
 

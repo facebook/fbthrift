@@ -199,8 +199,8 @@ class structured_annotation_inline final  {
  public:
 
   structured_annotation_inline() :
-      count(),
-      name(apache::thrift::StringTraits<std::string>::fromStringLiteral("abacaba")) {
+      __fbthrift_field_count(),
+      __fbthrift_field_name(apache::thrift::StringTraits<std::string>::fromStringLiteral("abacaba")) {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -215,9 +215,9 @@ class structured_annotation_inline final  {
   structured_annotation_inline& operator=(const structured_annotation_inline& src);
   void __clear();
  private:
-  ::std::int64_t count;
+  ::std::int64_t __fbthrift_field_count;
  private:
-  ::std::string name;
+  ::std::string __fbthrift_field_name;
 private:
   apache::thrift::detail::isset_bitset<2> __isset;
 
@@ -228,67 +228,67 @@ private:
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> count_ref() const& {
-    return {this->count, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_count, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> count_ref() const&& {
-    return {std::move(this->count), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_count), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> count_ref() & {
-    return {this->count, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_count, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> count_ref() && {
-    return {std::move(this->count), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_count), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
-    return {this->name, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_name, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> name_ref() const&& {
-    return {std::move(this->name), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_name), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> name_ref() & {
-    return {this->name, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_name, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name_ref() && {
-    return {std::move(this->name), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_name), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   ::std::int64_t get_count() const {
-    return count;
+    return __fbthrift_field_count;
   }
 
   [[deprecated("Use `FOO.count_ref() = BAR;` instead of `FOO.set_count(BAR);`")]]
   ::std::int64_t& set_count(::std::int64_t count_) {
     count_ref() = count_;
-    return count;
+    return __fbthrift_field_count;
   }
 
   const ::std::string& get_name() const& {
-    return name;
+    return __fbthrift_field_name;
   }
 
   ::std::string get_name() && {
-    return std::move(name);
+    return std::move(__fbthrift_field_name);
   }
 
   template <typename T_structured_annotation_inline_name_struct_setter = ::std::string>
   [[deprecated("Use `FOO.name_ref() = BAR;` instead of `FOO.set_name(BAR);`")]]
   ::std::string& set_name(T_structured_annotation_inline_name_struct_setter&& name_) {
     name_ref() = std::forward<T_structured_annotation_inline_name_struct_setter>(name_);
-    return name;
+    return __fbthrift_field_name;
   }
 
   template <class Protocol_>
@@ -335,7 +335,7 @@ class structured_annotation_with_default final  {
  public:
 
   structured_annotation_with_default() :
-      name(apache::thrift::StringTraits<std::string>::fromStringLiteral("abacabadabacaba")) {
+      __fbthrift_field_name(apache::thrift::StringTraits<std::string>::fromStringLiteral("abacabadabacaba")) {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -350,7 +350,7 @@ class structured_annotation_with_default final  {
   structured_annotation_with_default& operator=(const structured_annotation_with_default& src);
   void __clear();
  private:
-  ::std::string name;
+  ::std::string __fbthrift_field_name;
 private:
   apache::thrift::detail::isset_bitset<1> __isset;
 
@@ -361,37 +361,37 @@ private:
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
-    return {this->name, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_name, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> name_ref() const&& {
-    return {std::move(this->name), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_name), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> name_ref() & {
-    return {this->name, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_name, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name_ref() && {
-    return {std::move(this->name), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_name), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   const ::std::string& get_name() const& {
-    return name;
+    return __fbthrift_field_name;
   }
 
   ::std::string get_name() && {
-    return std::move(name);
+    return std::move(__fbthrift_field_name);
   }
 
   template <typename T_structured_annotation_with_default_name_struct_setter = ::std::string>
   [[deprecated("Use `FOO.name_ref() = BAR;` instead of `FOO.set_name(BAR);`")]]
   ::std::string& set_name(T_structured_annotation_with_default_name_struct_setter&& name_) {
     name_ref() = std::forward<T_structured_annotation_with_default_name_struct_setter>(name_);
-    return name;
+    return __fbthrift_field_name;
   }
 
   template <class Protocol_>
@@ -438,7 +438,7 @@ class structured_annotation_forward final  {
  public:
 
   structured_annotation_forward() :
-      count() {
+      __fbthrift_field_count() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -454,7 +454,7 @@ class structured_annotation_forward final  {
   structured_annotation_forward& operator=(const structured_annotation_forward&) = default;
   void __clear();
  private:
-  ::std::int64_t count;
+  ::std::int64_t __fbthrift_field_count;
 private:
   apache::thrift::detail::isset_bitset<1> __isset;
 
@@ -465,32 +465,32 @@ private:
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> count_ref() const& {
-    return {this->count, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_count, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> count_ref() const&& {
-    return {std::move(this->count), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_count), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> count_ref() & {
-    return {this->count, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_count, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> count_ref() && {
-    return {std::move(this->count), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_count), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   ::std::int64_t get_count() const {
-    return count;
+    return __fbthrift_field_count;
   }
 
   [[deprecated("Use `FOO.count_ref() = BAR;` instead of `FOO.set_count(BAR);`")]]
   ::std::int64_t& set_count(::std::int64_t count_) {
     count_ref() = count_;
-    return count;
+    return __fbthrift_field_count;
   }
 
   template <class Protocol_>
@@ -551,11 +551,11 @@ class structured_annotation_recursive final  {
   structured_annotation_recursive& operator=(const structured_annotation_recursive& src);
   void __clear();
  private:
-  ::std::string name;
+  ::std::string __fbthrift_field_name;
  private:
-  ::cpp2::structured_annotation_recursive recurse;
+  ::cpp2::structured_annotation_recursive __fbthrift_field_recurse;
  private:
-  ::cpp2::structured_annotation_forward forward;
+  ::cpp2::structured_annotation_forward __fbthrift_field_forward;
 private:
   apache::thrift::detail::isset_bitset<3> __isset;
 
@@ -566,77 +566,77 @@ private:
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
-    return {this->name, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_name, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> name_ref() const&& {
-    return {std::move(this->name), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_name), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> name_ref() & {
-    return {this->name, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_name, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name_ref() && {
-    return {std::move(this->name), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_name), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_recursive>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> recurse_ref() const& {
-    return {this->recurse, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_recurse, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_recursive>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> recurse_ref() const&& {
-    return {std::move(this->recurse), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_recurse), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_recursive>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> recurse_ref() & {
-    return {this->recurse, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_recurse, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_recursive>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> recurse_ref() && {
-    return {std::move(this->recurse), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_recurse), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_forward>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> forward_ref() const& {
-    return {this->forward, __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {this->__fbthrift_field_forward, __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_forward>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> forward_ref() const&& {
-    return {std::move(this->forward), __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {std::move(this->__fbthrift_field_forward), __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_forward>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> forward_ref() & {
-    return {this->forward, __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {this->__fbthrift_field_forward, __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_forward>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> forward_ref() && {
-    return {std::move(this->forward), __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {std::move(this->__fbthrift_field_forward), __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   const ::std::string& get_name() const& {
-    return name;
+    return __fbthrift_field_name;
   }
 
   ::std::string get_name() && {
-    return std::move(name);
+    return std::move(__fbthrift_field_name);
   }
 
   template <typename T_structured_annotation_recursive_name_struct_setter = ::std::string>
   [[deprecated("Use `FOO.name_ref() = BAR;` instead of `FOO.set_name(BAR);`")]]
   ::std::string& set_name(T_structured_annotation_recursive_name_struct_setter&& name_) {
     name_ref() = std::forward<T_structured_annotation_recursive_name_struct_setter>(name_);
-    return name;
+    return __fbthrift_field_name;
   }
   const ::cpp2::structured_annotation_recursive& get_recurse() const&;
   ::cpp2::structured_annotation_recursive get_recurse() &&;
@@ -645,7 +645,7 @@ private:
   [[deprecated("Use `FOO.recurse_ref() = BAR;` instead of `FOO.set_recurse(BAR);`")]]
   ::cpp2::structured_annotation_recursive& set_recurse(T_structured_annotation_recursive_recurse_struct_setter&& recurse_) {
     recurse_ref() = std::forward<T_structured_annotation_recursive_recurse_struct_setter>(recurse_);
-    return recurse;
+    return __fbthrift_field_recurse;
   }
   const ::cpp2::structured_annotation_forward& get_forward() const&;
   ::cpp2::structured_annotation_forward get_forward() &&;
@@ -654,7 +654,7 @@ private:
   [[deprecated("Use `FOO.forward_ref() = BAR;` instead of `FOO.set_forward(BAR);`")]]
   ::cpp2::structured_annotation_forward& set_forward(T_structured_annotation_recursive_forward_struct_setter&& forward_) {
     forward_ref() = std::forward<T_structured_annotation_recursive_forward_struct_setter>(forward_);
-    return forward;
+    return __fbthrift_field_forward;
   }
 
   template <class Protocol_>
@@ -715,9 +715,9 @@ class structured_annotation_nested final  {
   structured_annotation_nested& operator=(const structured_annotation_nested& src);
   void __clear();
  private:
-  ::std::string name;
+  ::std::string __fbthrift_field_name;
  private:
-  ::cpp2::structured_annotation_with_default nest;
+  ::cpp2::structured_annotation_with_default __fbthrift_field_nest;
 private:
   apache::thrift::detail::isset_bitset<2> __isset;
 
@@ -728,57 +728,57 @@ private:
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
-    return {this->name, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_name, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> name_ref() const&& {
-    return {std::move(this->name), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_name), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> name_ref() & {
-    return {this->name, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_name, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name_ref() && {
-    return {std::move(this->name), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_name), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_with_default>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> nest_ref() const& {
-    return {this->nest, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_nest, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_with_default>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> nest_ref() const&& {
-    return {std::move(this->nest), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_nest), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_with_default>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> nest_ref() & {
-    return {this->nest, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_nest, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_with_default>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> nest_ref() && {
-    return {std::move(this->nest), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_nest), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   const ::std::string& get_name() const& {
-    return name;
+    return __fbthrift_field_name;
   }
 
   ::std::string get_name() && {
-    return std::move(name);
+    return std::move(__fbthrift_field_name);
   }
 
   template <typename T_structured_annotation_nested_name_struct_setter = ::std::string>
   [[deprecated("Use `FOO.name_ref() = BAR;` instead of `FOO.set_name(BAR);`")]]
   ::std::string& set_name(T_structured_annotation_nested_name_struct_setter&& name_) {
     name_ref() = std::forward<T_structured_annotation_nested_name_struct_setter>(name_);
-    return name;
+    return __fbthrift_field_name;
   }
   const ::cpp2::structured_annotation_with_default& get_nest() const&;
   ::cpp2::structured_annotation_with_default get_nest() &&;
@@ -787,7 +787,7 @@ private:
   [[deprecated("Use `FOO.nest_ref() = BAR;` instead of `FOO.set_nest(BAR);`")]]
   ::cpp2::structured_annotation_with_default& set_nest(T_structured_annotation_nested_nest_struct_setter&& nest_) {
     nest_ref() = std::forward<T_structured_annotation_nested_nest_struct_setter>(nest_);
-    return nest;
+    return __fbthrift_field_nest;
   }
 
   template <class Protocol_>
@@ -834,8 +834,8 @@ class MyStruct final  {
  public:
 
   MyStruct() :
-      annotated_field(),
-      annotated_nested() {
+      __fbthrift_field_annotated_field(),
+      __fbthrift_field_annotated_nested() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -850,13 +850,13 @@ class MyStruct final  {
   MyStruct& operator=(const MyStruct& src);
   void __clear();
  private:
-  ::std::int64_t annotated_field;
+  ::std::int64_t __fbthrift_field_annotated_field;
  private:
-  ::cpp2::annotated_inline_string annotated_type;
+  ::cpp2::annotated_inline_string __fbthrift_field_annotated_type;
  private:
-  ::std::string annotated_recursive;
+  ::std::string __fbthrift_field_annotated_recursive;
  private:
-  ::std::int64_t annotated_nested;
+  ::std::int64_t __fbthrift_field_annotated_nested;
 private:
   apache::thrift::detail::isset_bitset<4> __isset;
 
@@ -867,132 +867,132 @@ private:
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotated_field_ref() const& {
-    return {this->annotated_field, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_annotated_field, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> annotated_field_ref() const&& {
-    return {std::move(this->annotated_field), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_annotated_field), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> annotated_field_ref() & {
-    return {this->annotated_field, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_annotated_field, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotated_field_ref() && {
-    return {std::move(this->annotated_field), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_annotated_field), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::cpp2::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotated_type_ref() const& {
-    return {this->annotated_type, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_annotated_type, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> annotated_type_ref() const&& {
-    return {std::move(this->annotated_type), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_annotated_type), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> annotated_type_ref() & {
-    return {this->annotated_type, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_annotated_type, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotated_type_ref() && {
-    return {std::move(this->annotated_type), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_annotated_type), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotated_recursive_ref() const& {
-    return {this->annotated_recursive, __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {this->__fbthrift_field_annotated_recursive, __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> annotated_recursive_ref() const&& {
-    return {std::move(this->annotated_recursive), __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {std::move(this->__fbthrift_field_annotated_recursive), __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> annotated_recursive_ref() & {
-    return {this->annotated_recursive, __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {this->__fbthrift_field_annotated_recursive, __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotated_recursive_ref() && {
-    return {std::move(this->annotated_recursive), __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {std::move(this->__fbthrift_field_annotated_recursive), __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotated_nested_ref() const& {
-    return {this->annotated_nested, __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {this->__fbthrift_field_annotated_nested, __isset.__fbthrift_at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> annotated_nested_ref() const&& {
-    return {std::move(this->annotated_nested), __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {std::move(this->__fbthrift_field_annotated_nested), __isset.__fbthrift_at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> annotated_nested_ref() & {
-    return {this->annotated_nested, __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {this->__fbthrift_field_annotated_nested, __isset.__fbthrift_at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotated_nested_ref() && {
-    return {std::move(this->annotated_nested), __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {std::move(this->__fbthrift_field_annotated_nested), __isset.__fbthrift_at(folly::index_constant<3>())};
   }
 
   ::std::int64_t get_annotated_field() const {
-    return annotated_field;
+    return __fbthrift_field_annotated_field;
   }
 
   [[deprecated("Use `FOO.annotated_field_ref() = BAR;` instead of `FOO.set_annotated_field(BAR);`")]]
   ::std::int64_t& set_annotated_field(::std::int64_t annotated_field_) {
     annotated_field_ref() = annotated_field_;
-    return annotated_field;
+    return __fbthrift_field_annotated_field;
   }
 
   const ::cpp2::annotated_inline_string& get_annotated_type() const& {
-    return annotated_type;
+    return __fbthrift_field_annotated_type;
   }
 
   ::cpp2::annotated_inline_string get_annotated_type() && {
-    return std::move(annotated_type);
+    return std::move(__fbthrift_field_annotated_type);
   }
 
   template <typename T_MyStruct_annotated_type_struct_setter = ::cpp2::annotated_inline_string>
   [[deprecated("Use `FOO.annotated_type_ref() = BAR;` instead of `FOO.set_annotated_type(BAR);`")]]
   ::cpp2::annotated_inline_string& set_annotated_type(T_MyStruct_annotated_type_struct_setter&& annotated_type_) {
     annotated_type_ref() = std::forward<T_MyStruct_annotated_type_struct_setter>(annotated_type_);
-    return annotated_type;
+    return __fbthrift_field_annotated_type;
   }
 
   const ::std::string& get_annotated_recursive() const& {
-    return annotated_recursive;
+    return __fbthrift_field_annotated_recursive;
   }
 
   ::std::string get_annotated_recursive() && {
-    return std::move(annotated_recursive);
+    return std::move(__fbthrift_field_annotated_recursive);
   }
 
   template <typename T_MyStruct_annotated_recursive_struct_setter = ::std::string>
   [[deprecated("Use `FOO.annotated_recursive_ref() = BAR;` instead of `FOO.set_annotated_recursive(BAR);`")]]
   ::std::string& set_annotated_recursive(T_MyStruct_annotated_recursive_struct_setter&& annotated_recursive_) {
     annotated_recursive_ref() = std::forward<T_MyStruct_annotated_recursive_struct_setter>(annotated_recursive_);
-    return annotated_recursive;
+    return __fbthrift_field_annotated_recursive;
   }
 
   ::std::int64_t get_annotated_nested() const {
-    return annotated_nested;
+    return __fbthrift_field_annotated_nested;
   }
 
   [[deprecated("Use `FOO.annotated_nested_ref() = BAR;` instead of `FOO.set_annotated_nested(BAR);`")]]
   ::std::int64_t& set_annotated_nested(::std::int64_t annotated_nested_) {
     annotated_nested_ref() = annotated_nested_;
-    return annotated_nested;
+    return __fbthrift_field_annotated_nested;
   }
 
   template <class Protocol_>

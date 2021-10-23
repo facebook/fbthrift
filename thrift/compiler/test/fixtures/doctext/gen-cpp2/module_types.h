@@ -130,7 +130,7 @@ class A final  {
  public:
 
   A() :
-      useless_field() {
+      __fbthrift_field_useless_field() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -146,7 +146,7 @@ class A final  {
   A& operator=(const A&) = default;
   void __clear();
  private:
-  ::std::int32_t useless_field;
+  ::std::int32_t __fbthrift_field_useless_field;
 private:
   apache::thrift::detail::isset_bitset<1> __isset;
 
@@ -157,32 +157,32 @@ private:
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> useless_field_ref() const& {
-    return {this->useless_field, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_useless_field, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> useless_field_ref() const&& {
-    return {std::move(this->useless_field), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_useless_field), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> useless_field_ref() & {
-    return {this->useless_field, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_useless_field, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> useless_field_ref() && {
-    return {std::move(this->useless_field), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_useless_field), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   ::std::int32_t get_useless_field() const {
-    return useless_field;
+    return __fbthrift_field_useless_field;
   }
 
   [[deprecated("Use `FOO.useless_field_ref() = BAR;` instead of `FOO.set_useless_field(BAR);`")]]
   ::std::int32_t& set_useless_field(::std::int32_t useless_field_) {
     useless_field_ref() = useless_field_;
-    return useless_field;
+    return __fbthrift_field_useless_field;
   }
 
   template <class Protocol_>

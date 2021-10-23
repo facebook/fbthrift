@@ -127,9 +127,9 @@ class SomeStruct final  {
  public:
 
   SomeStruct() :
-      reasonable( ::cpp2::Metasyntactic::FOO),
-      fine( ::cpp2::Metasyntactic::BAR),
-      questionable(static_cast< ::cpp2::Metasyntactic>(-1)) {
+      __fbthrift_field_reasonable( ::cpp2::Metasyntactic::FOO),
+      __fbthrift_field_fine( ::cpp2::Metasyntactic::BAR),
+      __fbthrift_field_questionable(static_cast< ::cpp2::Metasyntactic>(-1)) {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -144,13 +144,13 @@ class SomeStruct final  {
   SomeStruct& operator=(const SomeStruct& src);
   void __clear();
  private:
-  ::cpp2::Metasyntactic reasonable;
+  ::cpp2::Metasyntactic __fbthrift_field_reasonable;
  private:
-  ::cpp2::Metasyntactic fine;
+  ::cpp2::Metasyntactic __fbthrift_field_fine;
  private:
-  ::cpp2::Metasyntactic questionable;
+  ::cpp2::Metasyntactic __fbthrift_field_questionable;
  private:
-  ::std::set<::std::int32_t> tags;
+  ::std::set<::std::int32_t> __fbthrift_field_tags;
 private:
   apache::thrift::detail::isset_bitset<4> __isset;
 
@@ -161,112 +161,112 @@ private:
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> reasonable_ref() const& {
-    return {this->reasonable, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_reasonable, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> reasonable_ref() const&& {
-    return {std::move(this->reasonable), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_reasonable), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> reasonable_ref() & {
-    return {this->reasonable, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_reasonable, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> reasonable_ref() && {
-    return {std::move(this->reasonable), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_reasonable), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fine_ref() const& {
-    return {this->fine, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_fine, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fine_ref() const&& {
-    return {std::move(this->fine), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_fine), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fine_ref() & {
-    return {this->fine, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_fine, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fine_ref() && {
-    return {std::move(this->fine), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_fine), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> questionable_ref() const& {
-    return {this->questionable, __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {this->__fbthrift_field_questionable, __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> questionable_ref() const&& {
-    return {std::move(this->questionable), __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {std::move(this->__fbthrift_field_questionable), __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> questionable_ref() & {
-    return {this->questionable, __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {this->__fbthrift_field_questionable, __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> questionable_ref() && {
-    return {std::move(this->questionable), __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {std::move(this->__fbthrift_field_questionable), __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> tags_ref() const& {
-    return {this->tags, __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {this->__fbthrift_field_tags, __isset.__fbthrift_at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> tags_ref() const&& {
-    return {std::move(this->tags), __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {std::move(this->__fbthrift_field_tags), __isset.__fbthrift_at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> tags_ref() & {
-    return {this->tags, __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {this->__fbthrift_field_tags, __isset.__fbthrift_at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> tags_ref() && {
-    return {std::move(this->tags), __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {std::move(this->__fbthrift_field_tags), __isset.__fbthrift_at(folly::index_constant<3>())};
   }
 
   ::cpp2::Metasyntactic get_reasonable() const {
-    return reasonable;
+    return __fbthrift_field_reasonable;
   }
 
   [[deprecated("Use `FOO.reasonable_ref() = BAR;` instead of `FOO.set_reasonable(BAR);`")]]
   ::cpp2::Metasyntactic& set_reasonable(::cpp2::Metasyntactic reasonable_) {
     reasonable_ref() = reasonable_;
-    return reasonable;
+    return __fbthrift_field_reasonable;
   }
 
   ::cpp2::Metasyntactic get_fine() const {
-    return fine;
+    return __fbthrift_field_fine;
   }
 
   [[deprecated("Use `FOO.fine_ref() = BAR;` instead of `FOO.set_fine(BAR);`")]]
   ::cpp2::Metasyntactic& set_fine(::cpp2::Metasyntactic fine_) {
     fine_ref() = fine_;
-    return fine;
+    return __fbthrift_field_fine;
   }
 
   ::cpp2::Metasyntactic get_questionable() const {
-    return questionable;
+    return __fbthrift_field_questionable;
   }
 
   [[deprecated("Use `FOO.questionable_ref() = BAR;` instead of `FOO.set_questionable(BAR);`")]]
   ::cpp2::Metasyntactic& set_questionable(::cpp2::Metasyntactic questionable_) {
     questionable_ref() = questionable_;
-    return questionable;
+    return __fbthrift_field_questionable;
   }
   const ::std::set<::std::int32_t>& get_tags() const&;
   ::std::set<::std::int32_t> get_tags() &&;
@@ -275,7 +275,7 @@ private:
   [[deprecated("Use `FOO.tags_ref() = BAR;` instead of `FOO.set_tags(BAR);`")]]
   ::std::set<::std::int32_t>& set_tags(T_SomeStruct_tags_struct_setter&& tags_) {
     tags_ref() = std::forward<T_SomeStruct_tags_struct_setter>(tags_);
-    return tags;
+    return __fbthrift_field_tags;
   }
 
   template <class Protocol_>

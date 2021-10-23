@@ -71,26 +71,26 @@ namespace cpp2 {
 MyStructNestedAnnotation::MyStructNestedAnnotation(const MyStructNestedAnnotation&) = default;
 MyStructNestedAnnotation& MyStructNestedAnnotation::operator=(const MyStructNestedAnnotation&) = default;
 MyStructNestedAnnotation::MyStructNestedAnnotation(MyStructNestedAnnotation&& other) noexcept  :
-    name(std::move(other.name)),
+    __fbthrift_field_name(std::move(other.__fbthrift_field_name)),
     __isset(other.__isset) {
 }
 
 MyStructNestedAnnotation& MyStructNestedAnnotation::operator=(FOLLY_MAYBE_UNUSED MyStructNestedAnnotation&& other) noexcept {
-    this->name = std::move(other.name);
+    this->__fbthrift_field_name = std::move(other.__fbthrift_field_name);
     __isset = other.__isset;
     return *this;
 }
 
 
 MyStructNestedAnnotation::MyStructNestedAnnotation(apache::thrift::FragileConstructor, ::std::string name__arg) :
-    name(std::move(name__arg)) {
+    __fbthrift_field_name(std::move(name__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 
 
 void MyStructNestedAnnotation::__clear() {
   // clear all fields
-  this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 
@@ -160,41 +160,41 @@ namespace cpp2 {
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
 MyStruct::MyStruct() :
-      majorVer() {
+      __fbthrift_field_majorVer() {
 }
 
 
 MyStruct::~MyStruct() {}
 
 MyStruct::MyStruct(MyStruct&& other) noexcept  :
-    majorVer(std::move(other.majorVer)),
-    package(std::move(other.package)),
-    annotation_with_quote(std::move(other.annotation_with_quote)),
-    class_(std::move(other.class_)),
-    annotation_with_trailing_comma(std::move(other.annotation_with_trailing_comma)),
-    empty_annotations(std::move(other.empty_annotations)),
+    __fbthrift_field_majorVer(std::move(other.__fbthrift_field_majorVer)),
+    __fbthrift_field_package(std::move(other.__fbthrift_field_package)),
+    __fbthrift_field_annotation_with_quote(std::move(other.__fbthrift_field_annotation_with_quote)),
+    __fbthrift_field_class_(std::move(other.__fbthrift_field_class_)),
+    __fbthrift_field_annotation_with_trailing_comma(std::move(other.__fbthrift_field_annotation_with_trailing_comma)),
+    __fbthrift_field_empty_annotations(std::move(other.__fbthrift_field_empty_annotations)),
     __isset(other.__isset) {
 }
 
 MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
-    this->majorVer = std::move(other.majorVer);
-    this->package = std::move(other.package);
-    this->annotation_with_quote = std::move(other.annotation_with_quote);
-    this->class_ = std::move(other.class_);
-    this->annotation_with_trailing_comma = std::move(other.annotation_with_trailing_comma);
-    this->empty_annotations = std::move(other.empty_annotations);
+    this->__fbthrift_field_majorVer = std::move(other.__fbthrift_field_majorVer);
+    this->__fbthrift_field_package = std::move(other.__fbthrift_field_package);
+    this->__fbthrift_field_annotation_with_quote = std::move(other.__fbthrift_field_annotation_with_quote);
+    this->__fbthrift_field_class_ = std::move(other.__fbthrift_field_class_);
+    this->__fbthrift_field_annotation_with_trailing_comma = std::move(other.__fbthrift_field_annotation_with_trailing_comma);
+    this->__fbthrift_field_empty_annotations = std::move(other.__fbthrift_field_empty_annotations);
     __isset = other.__isset;
     return *this;
 }
 
 
 MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg) :
-    majorVer(std::move(majorVer__arg)),
-    package(std::move(package__arg)),
-    annotation_with_quote(std::move(annotation_with_quote__arg)),
-    class_(std::move(class___arg)),
-    annotation_with_trailing_comma(std::move(annotation_with_trailing_comma__arg)),
-    empty_annotations(std::move(empty_annotations__arg)) {
+    __fbthrift_field_majorVer(std::move(majorVer__arg)),
+    __fbthrift_field_package(std::move(package__arg)),
+    __fbthrift_field_annotation_with_quote(std::move(annotation_with_quote__arg)),
+    __fbthrift_field_class_(std::move(class___arg)),
+    __fbthrift_field_annotation_with_trailing_comma(std::move(annotation_with_trailing_comma__arg)),
+    __fbthrift_field_empty_annotations(std::move(empty_annotations__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -206,12 +206,12 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__
 
 void MyStruct::__clear() {
   // clear all fields
-  this->majorVer = ::std::int64_t();
-  this->package = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->annotation_with_quote = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->class_ = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->annotation_with_trailing_comma = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->empty_annotations = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_majorVer = ::std::int64_t();
+  this->__fbthrift_field_package = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_annotation_with_quote = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_class_ = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_annotation_with_trailing_comma = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_empty_annotations = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 
@@ -316,22 +316,22 @@ namespace cpp2 {
 SecretStruct::SecretStruct(const SecretStruct&) = default;
 SecretStruct& SecretStruct::operator=(const SecretStruct&) = default;
 SecretStruct::SecretStruct(SecretStruct&& other) noexcept  :
-    id(std::move(other.id)),
-    password(std::move(other.password)),
+    __fbthrift_field_id(std::move(other.__fbthrift_field_id)),
+    __fbthrift_field_password(std::move(other.__fbthrift_field_password)),
     __isset(other.__isset) {
 }
 
 SecretStruct& SecretStruct::operator=(FOLLY_MAYBE_UNUSED SecretStruct&& other) noexcept {
-    this->id = std::move(other.id);
-    this->password = std::move(other.password);
+    this->__fbthrift_field_id = std::move(other.__fbthrift_field_id);
+    this->__fbthrift_field_password = std::move(other.__fbthrift_field_password);
     __isset = other.__isset;
     return *this;
 }
 
 
 SecretStruct::SecretStruct(apache::thrift::FragileConstructor, ::std::int64_t id__arg, ::std::string password__arg) :
-    id(std::move(id__arg)),
-    password(std::move(password__arg)) {
+    __fbthrift_field_id(std::move(id__arg)),
+    __fbthrift_field_password(std::move(password__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
@@ -339,8 +339,8 @@ SecretStruct::SecretStruct(apache::thrift::FragileConstructor, ::std::int64_t id
 
 void SecretStruct::__clear() {
   // clear all fields
-  this->id = ::std::int64_t();
-  this->password = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_id = ::std::int64_t();
+  this->__fbthrift_field_password = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 

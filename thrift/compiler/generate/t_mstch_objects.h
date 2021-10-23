@@ -116,9 +116,10 @@ class type_generator {
 };
 
 struct field_generator_context {
-  int isset_index = -1;
+  const t_struct* strct = nullptr;
   const t_field* prev = nullptr;
   const t_field* next = nullptr;
+  int isset_index = -1;
 };
 
 class field_generator {
@@ -1001,6 +1002,7 @@ class mstch_struct : public mstch_base {
 
     // Populate field_context_generator for each field.
     auto ctx = field_generator_context{};
+    ctx.strct = strct_;
     auto fields = strct->fields();
     for (auto it = fields.begin(); it != fields.end(); it++) {
       const auto* field = &*it;

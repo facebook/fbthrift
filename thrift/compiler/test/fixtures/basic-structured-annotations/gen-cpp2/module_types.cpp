@@ -71,22 +71,22 @@ namespace cpp2 {
 structured_annotation_inline::structured_annotation_inline(const structured_annotation_inline&) = default;
 structured_annotation_inline& structured_annotation_inline::operator=(const structured_annotation_inline&) = default;
 structured_annotation_inline::structured_annotation_inline(structured_annotation_inline&& other) noexcept  :
-    count(std::move(other.count)),
-    name(std::move(other.name)),
+    __fbthrift_field_count(std::move(other.__fbthrift_field_count)),
+    __fbthrift_field_name(std::move(other.__fbthrift_field_name)),
     __isset(other.__isset) {
 }
 
 structured_annotation_inline& structured_annotation_inline::operator=(FOLLY_MAYBE_UNUSED structured_annotation_inline&& other) noexcept {
-    this->count = std::move(other.count);
-    this->name = std::move(other.name);
+    this->__fbthrift_field_count = std::move(other.__fbthrift_field_count);
+    this->__fbthrift_field_name = std::move(other.__fbthrift_field_name);
     __isset = other.__isset;
     return *this;
 }
 
 
 structured_annotation_inline::structured_annotation_inline(apache::thrift::FragileConstructor, ::std::int64_t count__arg, ::std::string name__arg) :
-    count(std::move(count__arg)),
-    name(std::move(name__arg)) {
+    __fbthrift_field_count(std::move(count__arg)),
+    __fbthrift_field_name(std::move(name__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
@@ -94,8 +94,8 @@ structured_annotation_inline::structured_annotation_inline(apache::thrift::Fragi
 
 void structured_annotation_inline::__clear() {
   // clear all fields
-  this->count = ::std::int64_t();
-  this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("abacaba");
+  this->__fbthrift_field_count = ::std::int64_t();
+  this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("abacaba");
   __isset = {};
 }
 
@@ -172,26 +172,26 @@ namespace cpp2 {
 structured_annotation_with_default::structured_annotation_with_default(const structured_annotation_with_default&) = default;
 structured_annotation_with_default& structured_annotation_with_default::operator=(const structured_annotation_with_default&) = default;
 structured_annotation_with_default::structured_annotation_with_default(structured_annotation_with_default&& other) noexcept  :
-    name(std::move(other.name)),
+    __fbthrift_field_name(std::move(other.__fbthrift_field_name)),
     __isset(other.__isset) {
 }
 
 structured_annotation_with_default& structured_annotation_with_default::operator=(FOLLY_MAYBE_UNUSED structured_annotation_with_default&& other) noexcept {
-    this->name = std::move(other.name);
+    this->__fbthrift_field_name = std::move(other.__fbthrift_field_name);
     __isset = other.__isset;
     return *this;
 }
 
 
 structured_annotation_with_default::structured_annotation_with_default(apache::thrift::FragileConstructor, ::std::string name__arg) :
-    name(std::move(name__arg)) {
+    __fbthrift_field_name(std::move(name__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 
 
 void structured_annotation_with_default::__clear() {
   // clear all fields
-  this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("abacabadabacaba");
+  this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("abacabadabacaba");
   __isset = {};
 }
 
@@ -260,14 +260,14 @@ namespace cpp2 {
 
 
 structured_annotation_forward::structured_annotation_forward(apache::thrift::FragileConstructor, ::std::int64_t count__arg) :
-    count(std::move(count__arg)) {
+    __fbthrift_field_count(std::move(count__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 
 
 void structured_annotation_forward::__clear() {
   // clear all fields
-  this->count = ::std::int64_t();
+  this->__fbthrift_field_count = ::std::int64_t();
   __isset = {};
 }
 
@@ -337,25 +337,25 @@ namespace cpp2 {
 structured_annotation_recursive::structured_annotation_recursive(const structured_annotation_recursive&) = default;
 structured_annotation_recursive& structured_annotation_recursive::operator=(const structured_annotation_recursive&) = default;
 structured_annotation_recursive::structured_annotation_recursive(structured_annotation_recursive&& other) noexcept  :
-    name(std::move(other.name)),
-    recurse(std::move(other.recurse)),
-    forward(std::move(other.forward)),
+    __fbthrift_field_name(std::move(other.__fbthrift_field_name)),
+    __fbthrift_field_recurse(std::move(other.__fbthrift_field_recurse)),
+    __fbthrift_field_forward(std::move(other.__fbthrift_field_forward)),
     __isset(other.__isset) {
 }
 
 structured_annotation_recursive& structured_annotation_recursive::operator=(FOLLY_MAYBE_UNUSED structured_annotation_recursive&& other) noexcept {
-    this->name = std::move(other.name);
-    this->recurse = std::move(other.recurse);
-    this->forward = std::move(other.forward);
+    this->__fbthrift_field_name = std::move(other.__fbthrift_field_name);
+    this->__fbthrift_field_recurse = std::move(other.__fbthrift_field_recurse);
+    this->__fbthrift_field_forward = std::move(other.__fbthrift_field_forward);
     __isset = other.__isset;
     return *this;
 }
 
 
 structured_annotation_recursive::structured_annotation_recursive(apache::thrift::FragileConstructor, ::std::string name__arg, ::cpp2::structured_annotation_recursive recurse__arg, ::cpp2::structured_annotation_forward forward__arg) :
-    name(std::move(name__arg)),
-    recurse(std::move(recurse__arg)),
-    forward(std::move(forward__arg)) {
+    __fbthrift_field_name(std::move(name__arg)),
+    __fbthrift_field_recurse(std::move(recurse__arg)),
+    __fbthrift_field_forward(std::move(forward__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -364,9 +364,9 @@ structured_annotation_recursive::structured_annotation_recursive(apache::thrift:
 
 void structured_annotation_recursive::__clear() {
   // clear all fields
-  this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->recurse.__clear();
-  this->forward.__clear();
+  this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_recurse.__clear();
+  this->__fbthrift_field_forward.__clear();
   __isset = {};
 }
 
@@ -403,19 +403,19 @@ bool structured_annotation_recursive::operator<(const structured_annotation_recu
 }
 
 const ::cpp2::structured_annotation_recursive& structured_annotation_recursive::get_recurse() const& {
-  return recurse;
+  return __fbthrift_field_recurse;
 }
 
 ::cpp2::structured_annotation_recursive structured_annotation_recursive::get_recurse() && {
-  return std::move(recurse);
+  return std::move(__fbthrift_field_recurse);
 }
 
 const ::cpp2::structured_annotation_forward& structured_annotation_recursive::get_forward() const& {
-  return forward;
+  return __fbthrift_field_forward;
 }
 
 ::cpp2::structured_annotation_forward structured_annotation_recursive::get_forward() && {
-  return std::move(forward);
+  return std::move(__fbthrift_field_forward);
 }
 
 
@@ -490,22 +490,22 @@ namespace cpp2 {
 structured_annotation_nested::structured_annotation_nested(const structured_annotation_nested&) = default;
 structured_annotation_nested& structured_annotation_nested::operator=(const structured_annotation_nested&) = default;
 structured_annotation_nested::structured_annotation_nested(structured_annotation_nested&& other) noexcept  :
-    name(std::move(other.name)),
-    nest(std::move(other.nest)),
+    __fbthrift_field_name(std::move(other.__fbthrift_field_name)),
+    __fbthrift_field_nest(std::move(other.__fbthrift_field_nest)),
     __isset(other.__isset) {
 }
 
 structured_annotation_nested& structured_annotation_nested::operator=(FOLLY_MAYBE_UNUSED structured_annotation_nested&& other) noexcept {
-    this->name = std::move(other.name);
-    this->nest = std::move(other.nest);
+    this->__fbthrift_field_name = std::move(other.__fbthrift_field_name);
+    this->__fbthrift_field_nest = std::move(other.__fbthrift_field_nest);
     __isset = other.__isset;
     return *this;
 }
 
 
 structured_annotation_nested::structured_annotation_nested(apache::thrift::FragileConstructor, ::std::string name__arg, ::cpp2::structured_annotation_with_default nest__arg) :
-    name(std::move(name__arg)),
-    nest(std::move(nest__arg)) {
+    __fbthrift_field_name(std::move(name__arg)),
+    __fbthrift_field_nest(std::move(nest__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
@@ -513,8 +513,8 @@ structured_annotation_nested::structured_annotation_nested(apache::thrift::Fragi
 
 void structured_annotation_nested::__clear() {
   // clear all fields
-  this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->nest.__clear();
+  this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_nest.__clear();
   __isset = {};
 }
 
@@ -545,11 +545,11 @@ bool structured_annotation_nested::operator<(const structured_annotation_nested&
 }
 
 const ::cpp2::structured_annotation_with_default& structured_annotation_nested::get_nest() const& {
-  return nest;
+  return __fbthrift_field_nest;
 }
 
 ::cpp2::structured_annotation_with_default structured_annotation_nested::get_nest() && {
-  return std::move(nest);
+  return std::move(__fbthrift_field_nest);
 }
 
 
@@ -611,28 +611,28 @@ namespace cpp2 {
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
 MyStruct::MyStruct(MyStruct&& other) noexcept  :
-    annotated_field(std::move(other.annotated_field)),
-    annotated_type(std::move(other.annotated_type)),
-    annotated_recursive(std::move(other.annotated_recursive)),
-    annotated_nested(std::move(other.annotated_nested)),
+    __fbthrift_field_annotated_field(std::move(other.__fbthrift_field_annotated_field)),
+    __fbthrift_field_annotated_type(std::move(other.__fbthrift_field_annotated_type)),
+    __fbthrift_field_annotated_recursive(std::move(other.__fbthrift_field_annotated_recursive)),
+    __fbthrift_field_annotated_nested(std::move(other.__fbthrift_field_annotated_nested)),
     __isset(other.__isset) {
 }
 
 MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
-    this->annotated_field = std::move(other.annotated_field);
-    this->annotated_type = std::move(other.annotated_type);
-    this->annotated_recursive = std::move(other.annotated_recursive);
-    this->annotated_nested = std::move(other.annotated_nested);
+    this->__fbthrift_field_annotated_field = std::move(other.__fbthrift_field_annotated_field);
+    this->__fbthrift_field_annotated_type = std::move(other.__fbthrift_field_annotated_type);
+    this->__fbthrift_field_annotated_recursive = std::move(other.__fbthrift_field_annotated_recursive);
+    this->__fbthrift_field_annotated_nested = std::move(other.__fbthrift_field_annotated_nested);
     __isset = other.__isset;
     return *this;
 }
 
 
 MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t annotated_field__arg, ::cpp2::annotated_inline_string annotated_type__arg, ::std::string annotated_recursive__arg, ::std::int64_t annotated_nested__arg) :
-    annotated_field(std::move(annotated_field__arg)),
-    annotated_type(std::move(annotated_type__arg)),
-    annotated_recursive(std::move(annotated_recursive__arg)),
-    annotated_nested(std::move(annotated_nested__arg)) {
+    __fbthrift_field_annotated_field(std::move(annotated_field__arg)),
+    __fbthrift_field_annotated_type(std::move(annotated_type__arg)),
+    __fbthrift_field_annotated_recursive(std::move(annotated_recursive__arg)),
+    __fbthrift_field_annotated_nested(std::move(annotated_nested__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -642,10 +642,10 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t annotated_
 
 void MyStruct::__clear() {
   // clear all fields
-  this->annotated_field = ::std::int64_t();
-  this->annotated_type = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->annotated_recursive = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->annotated_nested = ::std::int64_t();
+  this->__fbthrift_field_annotated_field = ::std::int64_t();
+  this->__fbthrift_field_annotated_type = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_annotated_recursive = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_annotated_nested = ::std::int64_t();
   __isset = {};
 }
 

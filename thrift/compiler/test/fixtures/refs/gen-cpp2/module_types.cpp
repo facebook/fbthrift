@@ -535,7 +535,7 @@ StructWithUnion::StructWithUnion(const StructWithUnion& srcObj) {
         ::apache::thrift::type_class::variant>(srcObj.u);
   aDouble = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::floating_point>(srcObj.aDouble);
-  f = srcObj.f;
+  __fbthrift_field_f = srcObj.__fbthrift_field_f;
   __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
 }
 
@@ -548,14 +548,14 @@ StructWithUnion& StructWithUnion::operator=(const StructWithUnion& src) {
 StructWithUnion::StructWithUnion(StructWithUnion&& other) noexcept  :
     u(std::move(other.u)),
     aDouble(std::move(other.aDouble)),
-    f(std::move(other.f)),
+    __fbthrift_field_f(std::move(other.__fbthrift_field_f)),
     __isset(other.__isset) {
 }
 
 StructWithUnion& StructWithUnion::operator=(FOLLY_MAYBE_UNUSED StructWithUnion&& other) noexcept {
     this->u = std::move(other.u);
     this->aDouble = std::move(other.aDouble);
-    this->f = std::move(other.f);
+    this->__fbthrift_field_f = std::move(other.__fbthrift_field_f);
     __isset = other.__isset;
     return *this;
 }
@@ -564,7 +564,7 @@ StructWithUnion& StructWithUnion::operator=(FOLLY_MAYBE_UNUSED StructWithUnion&&
 StructWithUnion::StructWithUnion(apache::thrift::FragileConstructor, ::std::unique_ptr<::cpp2::MyUnion> u__arg, ::std::unique_ptr<double> aDouble__arg, ::cpp2::MyField f__arg) :
     u(std::move(u__arg)),
     aDouble(std::move(aDouble__arg)),
-    f(std::move(f__arg)) {
+    __fbthrift_field_f(std::move(f__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 
@@ -572,7 +572,7 @@ StructWithUnion::StructWithUnion(apache::thrift::FragileConstructor, ::std::uniq
 void StructWithUnion::__clear() {
   // clear all fields
   if (this->u) this->u->__clear();
-  this->f.__clear();
+  this->__fbthrift_field_f.__clear();
   __isset = {};
 }
 
@@ -609,11 +609,11 @@ bool StructWithUnion::operator<(const StructWithUnion& rhs) const {
 }
 
 const ::cpp2::MyField& StructWithUnion::get_f() const& {
-  return f;
+  return __fbthrift_field_f;
 }
 
 ::cpp2::MyField StructWithUnion::get_f() && {
-  return std::move(f);
+  return std::move(__fbthrift_field_f);
 }
 
 
@@ -688,26 +688,26 @@ namespace cpp2 {
 RecursiveStruct::RecursiveStruct(const RecursiveStruct&) = default;
 RecursiveStruct& RecursiveStruct::operator=(const RecursiveStruct&) = default;
 RecursiveStruct::RecursiveStruct(RecursiveStruct&& other) noexcept  :
-    mes(std::move(other.mes)),
+    __fbthrift_field_mes(std::move(other.__fbthrift_field_mes)),
     __isset(other.__isset) {
 }
 
 RecursiveStruct& RecursiveStruct::operator=(FOLLY_MAYBE_UNUSED RecursiveStruct&& other) noexcept {
-    this->mes = std::move(other.mes);
+    this->__fbthrift_field_mes = std::move(other.__fbthrift_field_mes);
     __isset = other.__isset;
     return *this;
 }
 
 
 RecursiveStruct::RecursiveStruct(apache::thrift::FragileConstructor, ::std::vector<::cpp2::RecursiveStruct> mes__arg) :
-    mes(std::move(mes__arg)) {
+    __fbthrift_field_mes(std::move(mes__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 
 
 void RecursiveStruct::__clear() {
   // clear all fields
-  this->mes.clear();
+  this->__fbthrift_field_mes.clear();
   __isset = {};
 }
 
@@ -732,11 +732,11 @@ bool RecursiveStruct::operator<(const RecursiveStruct& rhs) const {
 }
 
 const ::std::vector<::cpp2::RecursiveStruct>* RecursiveStruct::get_mes() const& {
-  return mes_ref().has_value() ? std::addressof(mes) : nullptr;
+  return mes_ref().has_value() ? std::addressof(__fbthrift_field_mes) : nullptr;
 }
 
 ::std::vector<::cpp2::RecursiveStruct>* RecursiveStruct::get_mes() & {
-  return mes_ref().has_value() ? std::addressof(mes) : nullptr;
+  return mes_ref().has_value() ? std::addressof(__fbthrift_field_mes) : nullptr;
 }
 
 

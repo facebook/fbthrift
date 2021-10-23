@@ -68,7 +68,7 @@ void A::readNoXfer(Protocol_* iprot) {
   }
 _readField_useless_field:
   {
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, this->useless_field, _readState);
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, this->__fbthrift_field_useless_field, _readState);
     
   }
  this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
@@ -121,7 +121,7 @@ uint32_t A::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("A");
   {
     xfer += prot_->serializedFieldSize("useless_field", apache::thrift::protocol::T_I32, 1);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->useless_field);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->__fbthrift_field_useless_field);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -133,7 +133,7 @@ uint32_t A::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("A");
   {
     xfer += prot_->serializedFieldSize("useless_field", apache::thrift::protocol::T_I32, 1);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->useless_field);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->__fbthrift_field_useless_field);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -148,7 +148,7 @@ uint32_t A::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 0;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 1, kPrevFieldId>(*prot_, "useless_field", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->useless_field);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->__fbthrift_field_useless_field);
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();

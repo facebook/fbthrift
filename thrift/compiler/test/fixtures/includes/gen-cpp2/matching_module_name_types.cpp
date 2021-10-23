@@ -37,14 +37,14 @@ namespace matching_module_name {
 
 
 MyStruct::MyStruct(apache::thrift::FragileConstructor, ::matching_module_name::OtherStruct OtherStructField__arg) :
-    OtherStructField(std::move(OtherStructField__arg)) {
+    __fbthrift_field_OtherStructField(std::move(OtherStructField__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 
 
 void MyStruct::__clear() {
   // clear all fields
-  this->OtherStructField.__clear();
+  this->__fbthrift_field_OtherStructField.__clear();
   __isset = {};
 }
 
@@ -69,11 +69,11 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
 }
 
 const ::matching_module_name::OtherStruct& MyStruct::get_OtherStructField() const& {
-  return OtherStructField;
+  return __fbthrift_field_OtherStructField;
 }
 
 ::matching_module_name::OtherStruct MyStruct::get_OtherStructField() && {
-  return std::move(OtherStructField);
+  return std::move(__fbthrift_field_OtherStructField);
 }
 
 
