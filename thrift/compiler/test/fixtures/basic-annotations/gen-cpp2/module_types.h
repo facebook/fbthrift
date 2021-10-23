@@ -196,6 +196,26 @@ private:
     return {std::move(this->__fbthrift_field_name), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> name() & {
+    return name_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> name() const& {
+    return name_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> name() && {
+    return name_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> name() const&& {
+    return name_ref();
+  }
+
   const ::std::string& get_name() const& {
     return __fbthrift_field_name;
   }
@@ -317,6 +337,26 @@ private:
     return {std::move(this->__fbthrift_field_majorVer), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> majorVer() & {
+    return majorVer_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> majorVer() const& {
+    return majorVer_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> majorVer() && {
+    return majorVer_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> majorVer() const&& {
+    return majorVer_ref();
+  }
+
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> package_ref() const& {
     return {this->__fbthrift_field_package, __isset.__fbthrift_at(folly::index_constant<1>())};
@@ -335,6 +375,26 @@ private:
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> package_ref() && {
     return {std::move(this->__fbthrift_field_package), __isset.__fbthrift_at(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> package() & {
+    return package_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> package() const& {
+    return package_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> package() && {
+    return package_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> package() const&& {
+    return package_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -358,6 +418,26 @@ private:
   }
 
   template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> annotation_with_quote() & {
+    return annotation_with_quote_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotation_with_quote() const& {
+    return annotation_with_quote_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotation_with_quote() && {
+    return annotation_with_quote_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> annotation_with_quote() const&& {
+    return annotation_with_quote_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> class__ref() const& {
     return {this->__fbthrift_field_class_, __isset.__fbthrift_at(folly::index_constant<3>())};
   }
@@ -375,6 +455,26 @@ private:
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> class__ref() && {
     return {std::move(this->__fbthrift_field_class_), __isset.__fbthrift_at(folly::index_constant<3>())};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> class_() & {
+    return class__ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> class_() const& {
+    return class__ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> class_() && {
+    return class__ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> class_() const&& {
+    return class__ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -398,6 +498,26 @@ private:
   }
 
   template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> annotation_with_trailing_comma() & {
+    return annotation_with_trailing_comma_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotation_with_trailing_comma() const& {
+    return annotation_with_trailing_comma_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotation_with_trailing_comma() && {
+    return annotation_with_trailing_comma_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> annotation_with_trailing_comma() const&& {
+    return annotation_with_trailing_comma_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> empty_annotations_ref() const& {
     return {this->__fbthrift_field_empty_annotations, __isset.__fbthrift_at(folly::index_constant<5>())};
   }
@@ -415,6 +535,26 @@ private:
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> empty_annotations_ref() && {
     return {std::move(this->__fbthrift_field_empty_annotations), __isset.__fbthrift_at(folly::index_constant<5>())};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> empty_annotations() & {
+    return empty_annotations_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> empty_annotations() const& {
+    return empty_annotations_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> empty_annotations() && {
+    return empty_annotations_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> empty_annotations() const&& {
+    return empty_annotations_ref();
   }
 
   ::std::int64_t get_majorVer() const {
@@ -592,6 +732,26 @@ private:
     return {std::move(this->__fbthrift_field_id), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> id() & {
+    return id_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> id() const& {
+    return id_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> id() && {
+    return id_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> id() const&& {
+    return id_ref();
+  }
+
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> password_ref() const& {
     return {this->__fbthrift_field_password, __isset.__fbthrift_at(folly::index_constant<1>())};
@@ -610,6 +770,26 @@ private:
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> password_ref() && {
     return {std::move(this->__fbthrift_field_password), __isset.__fbthrift_at(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> password() & {
+    return password_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> password() const& {
+    return password_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> password() && {
+    return password_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> password() const&& {
+    return password_ref();
   }
 
   ::std::int64_t get_id() const {

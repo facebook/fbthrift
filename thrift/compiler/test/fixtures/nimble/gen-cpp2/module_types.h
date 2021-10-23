@@ -151,6 +151,26 @@ private:
     return {std::move(this->__fbthrift_field_second), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> second() & {
+    return second_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> second() const& {
+    return second_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> second() && {
+    return second_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> second() const&& {
+    return second_ref();
+  }
+
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> third_ref() const& {
     return {this->__fbthrift_field_third, __isset.__fbthrift_at(folly::index_constant<1>())};
@@ -171,6 +191,26 @@ private:
     return {std::move(this->__fbthrift_field_third), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> third() & {
+    return third_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> third() const& {
+    return third_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> third() && {
+    return third_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> third() const&& {
+    return third_ref();
+  }
+
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> isTrue_ref() const& {
     return {this->__fbthrift_field_isTrue, __isset.__fbthrift_at(folly::index_constant<2>())};
@@ -189,6 +229,26 @@ private:
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> isTrue_ref() && {
     return {std::move(this->__fbthrift_field_isTrue), __isset.__fbthrift_at(folly::index_constant<2>())};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> isTrue() & {
+    return isTrue_ref();
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> isTrue() const& {
+    return isTrue_ref();
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> isTrue() && {
+    return isTrue_ref();
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> isTrue() const&& {
+    return isTrue_ref();
   }
 
   ::std::int32_t get_first() const {

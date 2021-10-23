@@ -609,6 +609,8 @@ class mstch_cpp2_field : public mstch_field {
             {"field:boxed_ref?", &mstch_cpp2_field::boxed_ref},
             {"field:transitively_refers_to_unique?",
              &mstch_cpp2_field::transitively_refers_to_unique},
+            {"field:eligible_for_storage_name_mangling?",
+             &mstch_cpp2_field::eligible_for_storage_name_mangling},
         });
   }
   mstch::node name_hash() {
@@ -629,6 +631,9 @@ class mstch_cpp2_field : public mstch_field {
   }
   mstch::node cpp_storage_type() {
     return context_->resolver().get_storage_type_name(field_);
+  }
+  mstch::node eligible_for_storage_name_mangling() {
+    return is_eligible_for_storage_name_mangling();
   }
   mstch::node cpp_deprecated_accessor_type() {
     // The type to use for pre-field_ref backwards compatiblity functions.

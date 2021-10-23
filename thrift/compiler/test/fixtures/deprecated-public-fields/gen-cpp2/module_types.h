@@ -116,6 +116,26 @@ private:
   }
 
   template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> foo() & {
+    return foo_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> foo() const& {
+    return foo_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> foo() && {
+    return foo_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> foo() const&& {
+    return foo_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> bar_ref() const& {
     return {this->bar, __isset.__fbthrift_at(folly::index_constant<1>())};
   }

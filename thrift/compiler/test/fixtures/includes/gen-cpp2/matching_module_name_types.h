@@ -106,6 +106,26 @@ private:
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> OtherStructField_ref() && {
     return {std::move(this->__fbthrift_field_OtherStructField), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
+
+  template <typename..., typename T = ::matching_module_name::OtherStruct>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> OtherStructField() & {
+    return OtherStructField_ref();
+  }
+
+  template <typename..., typename T = ::matching_module_name::OtherStruct>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> OtherStructField() const& {
+    return OtherStructField_ref();
+  }
+
+  template <typename..., typename T = ::matching_module_name::OtherStruct>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> OtherStructField() && {
+    return OtherStructField_ref();
+  }
+
+  template <typename..., typename T = ::matching_module_name::OtherStruct>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> OtherStructField() const&& {
+    return OtherStructField_ref();
+  }
   const ::matching_module_name::OtherStruct& get_OtherStructField() const&;
   ::matching_module_name::OtherStruct get_OtherStructField() &&;
 

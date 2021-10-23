@@ -243,6 +243,26 @@ private:
     return {std::move(this->__fbthrift_field_myEnum), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
+  template <typename..., typename T = ::test::fixtures::enumstrict::MyEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> myEnum() & {
+    return myEnum_ref();
+  }
+
+  template <typename..., typename T = ::test::fixtures::enumstrict::MyEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> myEnum() const& {
+    return myEnum_ref();
+  }
+
+  template <typename..., typename T = ::test::fixtures::enumstrict::MyEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> myEnum() && {
+    return myEnum_ref();
+  }
+
+  template <typename..., typename T = ::test::fixtures::enumstrict::MyEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> myEnum() const&& {
+    return myEnum_ref();
+  }
+
   template <typename..., typename T = ::test::fixtures::enumstrict::MyBigEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myBigEnum_ref() const& {
     return {this->__fbthrift_field_myBigEnum, __isset.__fbthrift_at(folly::index_constant<1>())};
@@ -261,6 +281,26 @@ private:
   template <typename..., typename T = ::test::fixtures::enumstrict::MyBigEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myBigEnum_ref() && {
     return {std::move(this->__fbthrift_field_myBigEnum), __isset.__fbthrift_at(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::test::fixtures::enumstrict::MyBigEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> myBigEnum() & {
+    return myBigEnum_ref();
+  }
+
+  template <typename..., typename T = ::test::fixtures::enumstrict::MyBigEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> myBigEnum() const& {
+    return myBigEnum_ref();
+  }
+
+  template <typename..., typename T = ::test::fixtures::enumstrict::MyBigEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> myBigEnum() && {
+    return myBigEnum_ref();
+  }
+
+  template <typename..., typename T = ::test::fixtures::enumstrict::MyBigEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> myBigEnum() const&& {
+    return myBigEnum_ref();
   }
 
   ::test::fixtures::enumstrict::MyEnum get_myEnum() const {

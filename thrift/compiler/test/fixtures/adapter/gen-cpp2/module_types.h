@@ -931,6 +931,26 @@ private:
   }
 
   template <typename..., typename T = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> structListField() & {
+    return structListField_ref();
+  }
+
+  template <typename..., typename T = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> structListField() const& {
+    return structListField_ref();
+  }
+
+  template <typename..., typename T = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> structListField() && {
+    return structListField_ref();
+  }
+
+  template <typename..., typename T = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> structListField() const&& {
+    return structListField_ref();
+  }
+
+  template <typename..., typename T = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> optionalStructListField_ref() const& {
     return {this->__fbthrift_field_optionalStructListField, __isset.__fbthrift_at(folly::index_constant<3>())};
   }
@@ -948,6 +968,26 @@ private:
   template <typename..., typename T = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> optionalStructListField_ref() && {
     return {std::move(this->__fbthrift_field_optionalStructListField), __isset.__fbthrift_at(folly::index_constant<3>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> optionalStructListField() & {
+    return optionalStructListField_ref();
+  }
+
+  template <typename..., typename T = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> optionalStructListField() const& {
+    return optionalStructListField_ref();
+  }
+
+  template <typename..., typename T = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> optionalStructListField() && {
+    return optionalStructListField_ref();
+  }
+
+  template <typename..., typename T = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> optionalStructListField() const&& {
+    return optionalStructListField_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz>>

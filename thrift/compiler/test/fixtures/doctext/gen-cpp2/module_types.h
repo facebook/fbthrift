@@ -175,6 +175,26 @@ private:
     return {std::move(this->__fbthrift_field_useless_field), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> useless_field() & {
+    return useless_field_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> useless_field() const& {
+    return useless_field_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> useless_field() && {
+    return useless_field_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> useless_field() const&& {
+    return useless_field_ref();
+  }
+
   ::std::int32_t get_useless_field() const {
     return __fbthrift_field_useless_field;
   }

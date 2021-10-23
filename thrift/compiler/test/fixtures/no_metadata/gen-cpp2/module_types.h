@@ -257,6 +257,26 @@ private:
     return {std::move(this->__fbthrift_field_MyIntField), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIntField() & {
+    return MyIntField_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField() const& {
+    return MyIntField_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField() && {
+    return MyIntField_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIntField() const&& {
+    return MyIntField_ref();
+  }
+
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyStringField_ref() const& {
     return {this->__fbthrift_field_MyStringField, __isset.__fbthrift_at(folly::index_constant<1>())};
@@ -275,6 +295,26 @@ private:
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyStringField_ref() && {
     return {std::move(this->__fbthrift_field_MyStringField), __isset.__fbthrift_at(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyStringField() & {
+    return MyStringField_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyStringField() const& {
+    return MyStringField_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyStringField() && {
+    return MyStringField_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyStringField() const&& {
+    return MyStringField_ref();
   }
 
   template <typename..., typename T = ::cpp2::MyDataItem>
@@ -297,6 +337,26 @@ private:
     return {std::move(this->__fbthrift_field_MyDataField), __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
+  template <typename..., typename T = ::cpp2::MyDataItem>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyDataField() & {
+    return MyDataField_ref();
+  }
+
+  template <typename..., typename T = ::cpp2::MyDataItem>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyDataField() const& {
+    return MyDataField_ref();
+  }
+
+  template <typename..., typename T = ::cpp2::MyDataItem>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyDataField() && {
+    return MyDataField_ref();
+  }
+
+  template <typename..., typename T = ::cpp2::MyDataItem>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyDataField() const&& {
+    return MyDataField_ref();
+  }
+
   template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myEnum_ref() const& {
     return {this->__fbthrift_field_myEnum, __isset.__fbthrift_at(folly::index_constant<3>())};
@@ -315,6 +375,26 @@ private:
   template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myEnum_ref() && {
     return {std::move(this->__fbthrift_field_myEnum), __isset.__fbthrift_at(folly::index_constant<3>())};
+  }
+
+  template <typename..., typename T = ::cpp2::MyEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> myEnum() & {
+    return myEnum_ref();
+  }
+
+  template <typename..., typename T = ::cpp2::MyEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> myEnum() const& {
+    return myEnum_ref();
+  }
+
+  template <typename..., typename T = ::cpp2::MyEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> myEnum() && {
+    return myEnum_ref();
+  }
+
+  template <typename..., typename T = ::cpp2::MyEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> myEnum() const&& {
+    return myEnum_ref();
   }
 
   ::std::int64_t get_MyIntField() const {

@@ -123,6 +123,26 @@ private:
   }
 
   template <typename..., typename T = ::cpp2::Included>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIncludedField() & {
+    return MyIncludedField_ref();
+  }
+
+  template <typename..., typename T = ::cpp2::Included>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIncludedField() const& {
+    return MyIncludedField_ref();
+  }
+
+  template <typename..., typename T = ::cpp2::Included>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIncludedField() && {
+    return MyIncludedField_ref();
+  }
+
+  template <typename..., typename T = ::cpp2::Included>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIncludedField() const&& {
+    return MyIncludedField_ref();
+  }
+
+  template <typename..., typename T = ::cpp2::Included>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyOtherIncludedField_ref() const& {
     return {this->__fbthrift_field_MyOtherIncludedField, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
@@ -140,6 +160,26 @@ private:
   template <typename..., typename T = ::cpp2::Included>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyOtherIncludedField_ref() && {
     return {std::move(this->__fbthrift_field_MyOtherIncludedField), __isset.__fbthrift_at(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::cpp2::Included>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyOtherIncludedField() & {
+    return MyOtherIncludedField_ref();
+  }
+
+  template <typename..., typename T = ::cpp2::Included>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyOtherIncludedField() const& {
+    return MyOtherIncludedField_ref();
+  }
+
+  template <typename..., typename T = ::cpp2::Included>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyOtherIncludedField() && {
+    return MyOtherIncludedField_ref();
+  }
+
+  template <typename..., typename T = ::cpp2::Included>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyOtherIncludedField() const&& {
+    return MyOtherIncludedField_ref();
   }
 
   template <typename..., typename T = ::cpp2::IncludedInt64>
@@ -160,6 +200,26 @@ private:
   template <typename..., typename T = ::cpp2::IncludedInt64>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIncludedInt_ref() && {
     return {std::move(this->__fbthrift_field_MyIncludedInt), __isset.__fbthrift_at(folly::index_constant<2>())};
+  }
+
+  template <typename..., typename T = ::cpp2::IncludedInt64>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIncludedInt() & {
+    return MyIncludedInt_ref();
+  }
+
+  template <typename..., typename T = ::cpp2::IncludedInt64>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIncludedInt() const& {
+    return MyIncludedInt_ref();
+  }
+
+  template <typename..., typename T = ::cpp2::IncludedInt64>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIncludedInt() && {
+    return MyIncludedInt_ref();
+  }
+
+  template <typename..., typename T = ::cpp2::IncludedInt64>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIncludedInt() const&& {
+    return MyIncludedInt_ref();
   }
   const ::cpp2::Included& get_MyIncludedField() const&;
   ::cpp2::Included get_MyIncludedField() &&;
