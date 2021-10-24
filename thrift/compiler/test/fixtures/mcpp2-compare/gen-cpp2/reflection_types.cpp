@@ -37,14 +37,14 @@ namespace cpp2 {
 
 
 ReflectionStruct::ReflectionStruct(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg) :
-    fieldA(std::move(fieldA__arg)) {
+    __fbthrift_field_fieldA(std::move(fieldA__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 
 
 void ReflectionStruct::__clear() {
   // clear all fields
-  this->fieldA = static_cast<::std::int32_t>(5);
+  this->__fbthrift_field_fieldA = static_cast<::std::int32_t>(5);
   __isset = {};
 }
 

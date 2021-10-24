@@ -781,7 +781,7 @@ class mstch_cpp2_field : public mstch_field {
       return false;
     }
 
-    for (auto opt : {"frozen", "frozen2", "reflection", "tablebased"}) {
+    for (auto opt : {"frozen", "frozen2", "tablebased"}) {
       if (has_option(opt)) {
         return false;
       }

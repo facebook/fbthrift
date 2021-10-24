@@ -62,7 +62,7 @@ class ReflectionStruct final  {
  public:
 
   ReflectionStruct() :
-      fieldA(static_cast<::std::int32_t>(5)) {
+      __fbthrift_field_fieldA(static_cast<::std::int32_t>(5)) {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -78,7 +78,7 @@ class ReflectionStruct final  {
   ReflectionStruct& operator=(const ReflectionStruct&) = default;
   void __clear();
  private:
-  ::std::int32_t fieldA;
+  ::std::int32_t __fbthrift_field_fieldA;
 private:
   apache::thrift::detail::isset_bitset<1> __isset;
 
@@ -89,32 +89,52 @@ private:
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {
-    return {this->fieldA, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_fieldA, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldA_ref() const&& {
-    return {std::move(this->fieldA), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_fieldA), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldA_ref() & {
-    return {this->fieldA, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_fieldA, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldA_ref() && {
-    return {std::move(this->fieldA), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_fieldA), __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldA() & {
+    return fieldA_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA() const& {
+    return fieldA_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldA() && {
+    return fieldA_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldA() const&& {
+    return fieldA_ref();
   }
 
   ::std::int32_t get_fieldA() const {
-    return fieldA;
+    return __fbthrift_field_fieldA;
   }
 
   [[deprecated("Use `FOO.fieldA_ref() = BAR;` instead of `FOO.set_fieldA(BAR);`")]]
   ::std::int32_t& set_fieldA(::std::int32_t fieldA_) {
     fieldA_ref() = fieldA_;
-    return fieldA;
+    return __fbthrift_field_fieldA;
   }
 
   template <class Protocol_>

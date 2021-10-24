@@ -23,16 +23,16 @@ constexpr auto&& member_accessor(Tag<kMemberPtr>, U&& u) {
   return static_cast<U&&>(u).*kMemberPtr;
 }
 
-#define FBTHRIFT_DEFINE_MEMBER_ACCESSOR(FUNC, CLASS, MEMBER) \
-  constexpr auto&& FUNC(const CLASS&);                       \
-  template <auto>                                            \
-  struct FBTHRIFT_MEMBER_ACCESSOR_TAG;                       \
-  template <>                                                \
-  struct FBTHRIFT_MEMBER_ACCESSOR_TAG<&CLASS::MEMBER> {      \
-    friend constexpr auto&& FUNC(const CLASS& obj) {         \
-      return ::apache::thrift::test::member_accessor(        \
-          FBTHRIFT_MEMBER_ACCESSOR_TAG{}, obj);              \
-    }                                                        \
+#define FBTHRIFT_DEFINE_MEMBER_ACCESSOR(FUNC, CLASS, MEMBER)               \
+  constexpr auto&& FUNC(const CLASS&);                                     \
+  template <auto>                                                          \
+  struct FBTHRIFT_MEMBER_ACCESSOR_TAG;                                     \
+  template <>                                                              \
+  struct FBTHRIFT_MEMBER_ACCESSOR_TAG<&CLASS::__fbthrift_field_##MEMBER> { \
+    friend constexpr auto&& FUNC(const CLASS& obj) {                       \
+      return ::apache::thrift::test::member_accessor(                      \
+          FBTHRIFT_MEMBER_ACCESSOR_TAG{}, obj);                            \
+    }                                                                      \
   }
 
 } // namespace apache::thrift::test

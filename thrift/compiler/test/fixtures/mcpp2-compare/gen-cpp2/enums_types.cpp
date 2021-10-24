@@ -202,14 +202,14 @@ namespace facebook { namespace ns { namespace qwerty {
 
 
 SomeStruct::SomeStruct(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg) :
-    fieldA(std::move(fieldA__arg)) {
+    __fbthrift_field_fieldA(std::move(fieldA__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 
 
 void SomeStruct::__clear() {
   // clear all fields
-  this->fieldA = ::std::int32_t();
+  this->__fbthrift_field_fieldA = ::std::int32_t();
   __isset = {};
 }
 

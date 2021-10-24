@@ -587,7 +587,7 @@ class decorated_struct final  {
   decorated_struct& operator=(const decorated_struct& src);
   void __clear();
  private:
-  ::std::string field;
+  ::std::string __fbthrift_field_field;
 private:
   apache::thrift::detail::isset_bitset<1> __isset;
 
@@ -598,37 +598,57 @@ private:
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field_ref() const& {
-    return {this->field, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_field, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field_ref() const&& {
-    return {std::move(this->field), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_field), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> field_ref() & {
-    return {this->field, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_field, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field_ref() && {
-    return {std::move(this->field), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_field), __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> field() & {
+    return field_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> field() const& {
+    return field_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field() && {
+    return field_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field() const&& {
+    return field_ref();
   }
 
   const ::std::string& get_field() const& {
-    return field;
+    return __fbthrift_field_field;
   }
 
   ::std::string get_field() && {
-    return std::move(field);
+    return std::move(__fbthrift_field_field);
   }
 
   template <typename T_decorated_struct_field_struct_setter = ::std::string>
   [[deprecated("Use `FOO.field_ref() = BAR;` instead of `FOO.set_field(BAR);`")]]
   ::std::string& set_field(T_decorated_struct_field_struct_setter&& field_) {
     field_ref() = std::forward<T_decorated_struct_field_struct_setter>(field_);
-    return field;
+    return __fbthrift_field_field;
   }
 
   template <class Protocol_>
@@ -692,21 +712,21 @@ class ContainerStruct final  {
   ~ContainerStruct();
 
  private:
-  ::std::vector<::std::int32_t> fieldA;
+  ::std::vector<::std::int32_t> __fbthrift_field_fieldA;
  private:
-  std::list<::std::int32_t> fieldB;
+  std::list<::std::int32_t> __fbthrift_field_fieldB;
  private:
-  std::deque<::std::int32_t> fieldC;
+  std::deque<::std::int32_t> __fbthrift_field_fieldC;
  private:
-  folly::fbvector<::std::int32_t> fieldD;
+  folly::fbvector<::std::int32_t> __fbthrift_field_fieldD;
  private:
-  folly::small_vector<::std::int32_t> fieldE;
+  folly::small_vector<::std::int32_t> __fbthrift_field_fieldE;
  private:
-  folly::sorted_vector_set<::std::int32_t> fieldF;
+  folly::sorted_vector_set<::std::int32_t> __fbthrift_field_fieldF;
  private:
-  folly::sorted_vector_map<::std::int32_t, ::std::string> fieldG;
+  folly::sorted_vector_map<::std::int32_t, ::std::string> __fbthrift_field_fieldG;
  private:
-  ::apache::thrift::fixtures::types::SomeMap fieldH;
+  ::apache::thrift::fixtures::types::SomeMap __fbthrift_field_fieldH;
 private:
   apache::thrift::detail::isset_bitset<8> __isset;
 
@@ -717,162 +737,322 @@ private:
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {
-    return {this->fieldA, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_fieldA, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldA_ref() const&& {
-    return {std::move(this->fieldA), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_fieldA), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldA_ref() & {
-    return {this->fieldA, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_fieldA, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldA_ref() && {
-    return {std::move(this->fieldA), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_fieldA), __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldA() & {
+    return fieldA_ref();
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA() const& {
+    return fieldA_ref();
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldA() && {
+    return fieldA_ref();
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldA() const&& {
+    return fieldA_ref();
   }
 
   template <typename..., typename T = std::list<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldB_ref() const& {
-    return {this->fieldB, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_fieldB, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = std::list<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldB_ref() const&& {
-    return {std::move(this->fieldB), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_fieldB), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = std::list<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldB_ref() & {
-    return {this->fieldB, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_fieldB, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = std::list<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldB_ref() && {
-    return {std::move(this->fieldB), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_fieldB), __isset.__fbthrift_at(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = std::list<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldB() & {
+    return fieldB_ref();
+  }
+
+  template <typename..., typename T = std::list<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldB() const& {
+    return fieldB_ref();
+  }
+
+  template <typename..., typename T = std::list<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldB() && {
+    return fieldB_ref();
+  }
+
+  template <typename..., typename T = std::list<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldB() const&& {
+    return fieldB_ref();
   }
 
   template <typename..., typename T = std::deque<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldC_ref() const& {
-    return {this->fieldC, __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {this->__fbthrift_field_fieldC, __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = std::deque<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldC_ref() const&& {
-    return {std::move(this->fieldC), __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {std::move(this->__fbthrift_field_fieldC), __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = std::deque<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldC_ref() & {
-    return {this->fieldC, __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {this->__fbthrift_field_fieldC, __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = std::deque<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldC_ref() && {
-    return {std::move(this->fieldC), __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {std::move(this->__fbthrift_field_fieldC), __isset.__fbthrift_at(folly::index_constant<2>())};
+  }
+
+  template <typename..., typename T = std::deque<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldC() & {
+    return fieldC_ref();
+  }
+
+  template <typename..., typename T = std::deque<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldC() const& {
+    return fieldC_ref();
+  }
+
+  template <typename..., typename T = std::deque<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldC() && {
+    return fieldC_ref();
+  }
+
+  template <typename..., typename T = std::deque<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldC() const&& {
+    return fieldC_ref();
   }
 
   template <typename..., typename T = folly::fbvector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldD_ref() const& {
-    return {this->fieldD, __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {this->__fbthrift_field_fieldD, __isset.__fbthrift_at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = folly::fbvector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldD_ref() const&& {
-    return {std::move(this->fieldD), __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {std::move(this->__fbthrift_field_fieldD), __isset.__fbthrift_at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = folly::fbvector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldD_ref() & {
-    return {this->fieldD, __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {this->__fbthrift_field_fieldD, __isset.__fbthrift_at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = folly::fbvector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldD_ref() && {
-    return {std::move(this->fieldD), __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {std::move(this->__fbthrift_field_fieldD), __isset.__fbthrift_at(folly::index_constant<3>())};
+  }
+
+  template <typename..., typename T = folly::fbvector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldD() & {
+    return fieldD_ref();
+  }
+
+  template <typename..., typename T = folly::fbvector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldD() const& {
+    return fieldD_ref();
+  }
+
+  template <typename..., typename T = folly::fbvector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldD() && {
+    return fieldD_ref();
+  }
+
+  template <typename..., typename T = folly::fbvector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldD() const&& {
+    return fieldD_ref();
   }
 
   template <typename..., typename T = folly::small_vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldE_ref() const& {
-    return {this->fieldE, __isset.__fbthrift_at(folly::index_constant<4>())};
+    return {this->__fbthrift_field_fieldE, __isset.__fbthrift_at(folly::index_constant<4>())};
   }
 
   template <typename..., typename T = folly::small_vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldE_ref() const&& {
-    return {std::move(this->fieldE), __isset.__fbthrift_at(folly::index_constant<4>())};
+    return {std::move(this->__fbthrift_field_fieldE), __isset.__fbthrift_at(folly::index_constant<4>())};
   }
 
   template <typename..., typename T = folly::small_vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldE_ref() & {
-    return {this->fieldE, __isset.__fbthrift_at(folly::index_constant<4>())};
+    return {this->__fbthrift_field_fieldE, __isset.__fbthrift_at(folly::index_constant<4>())};
   }
 
   template <typename..., typename T = folly::small_vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldE_ref() && {
-    return {std::move(this->fieldE), __isset.__fbthrift_at(folly::index_constant<4>())};
+    return {std::move(this->__fbthrift_field_fieldE), __isset.__fbthrift_at(folly::index_constant<4>())};
+  }
+
+  template <typename..., typename T = folly::small_vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldE() & {
+    return fieldE_ref();
+  }
+
+  template <typename..., typename T = folly::small_vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldE() const& {
+    return fieldE_ref();
+  }
+
+  template <typename..., typename T = folly::small_vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldE() && {
+    return fieldE_ref();
+  }
+
+  template <typename..., typename T = folly::small_vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldE() const&& {
+    return fieldE_ref();
   }
 
   template <typename..., typename T = folly::sorted_vector_set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldF_ref() const& {
-    return {this->fieldF, __isset.__fbthrift_at(folly::index_constant<5>())};
+    return {this->__fbthrift_field_fieldF, __isset.__fbthrift_at(folly::index_constant<5>())};
   }
 
   template <typename..., typename T = folly::sorted_vector_set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldF_ref() const&& {
-    return {std::move(this->fieldF), __isset.__fbthrift_at(folly::index_constant<5>())};
+    return {std::move(this->__fbthrift_field_fieldF), __isset.__fbthrift_at(folly::index_constant<5>())};
   }
 
   template <typename..., typename T = folly::sorted_vector_set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldF_ref() & {
-    return {this->fieldF, __isset.__fbthrift_at(folly::index_constant<5>())};
+    return {this->__fbthrift_field_fieldF, __isset.__fbthrift_at(folly::index_constant<5>())};
   }
 
   template <typename..., typename T = folly::sorted_vector_set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldF_ref() && {
-    return {std::move(this->fieldF), __isset.__fbthrift_at(folly::index_constant<5>())};
+    return {std::move(this->__fbthrift_field_fieldF), __isset.__fbthrift_at(folly::index_constant<5>())};
+  }
+
+  template <typename..., typename T = folly::sorted_vector_set<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldF() & {
+    return fieldF_ref();
+  }
+
+  template <typename..., typename T = folly::sorted_vector_set<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldF() const& {
+    return fieldF_ref();
+  }
+
+  template <typename..., typename T = folly::sorted_vector_set<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldF() && {
+    return fieldF_ref();
+  }
+
+  template <typename..., typename T = folly::sorted_vector_set<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldF() const&& {
+    return fieldF_ref();
   }
 
   template <typename..., typename T = folly::sorted_vector_map<::std::int32_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldG_ref() const& {
-    return {this->fieldG, __isset.__fbthrift_at(folly::index_constant<6>())};
+    return {this->__fbthrift_field_fieldG, __isset.__fbthrift_at(folly::index_constant<6>())};
   }
 
   template <typename..., typename T = folly::sorted_vector_map<::std::int32_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldG_ref() const&& {
-    return {std::move(this->fieldG), __isset.__fbthrift_at(folly::index_constant<6>())};
+    return {std::move(this->__fbthrift_field_fieldG), __isset.__fbthrift_at(folly::index_constant<6>())};
   }
 
   template <typename..., typename T = folly::sorted_vector_map<::std::int32_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldG_ref() & {
-    return {this->fieldG, __isset.__fbthrift_at(folly::index_constant<6>())};
+    return {this->__fbthrift_field_fieldG, __isset.__fbthrift_at(folly::index_constant<6>())};
   }
 
   template <typename..., typename T = folly::sorted_vector_map<::std::int32_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldG_ref() && {
-    return {std::move(this->fieldG), __isset.__fbthrift_at(folly::index_constant<6>())};
+    return {std::move(this->__fbthrift_field_fieldG), __isset.__fbthrift_at(folly::index_constant<6>())};
+  }
+
+  template <typename..., typename T = folly::sorted_vector_map<::std::int32_t, ::std::string>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldG() & {
+    return fieldG_ref();
+  }
+
+  template <typename..., typename T = folly::sorted_vector_map<::std::int32_t, ::std::string>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldG() const& {
+    return fieldG_ref();
+  }
+
+  template <typename..., typename T = folly::sorted_vector_map<::std::int32_t, ::std::string>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldG() && {
+    return fieldG_ref();
+  }
+
+  template <typename..., typename T = folly::sorted_vector_map<::std::int32_t, ::std::string>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldG() const&& {
+    return fieldG_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::SomeMap>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldH_ref() const& {
-    return {this->fieldH, __isset.__fbthrift_at(folly::index_constant<7>())};
+    return {this->__fbthrift_field_fieldH, __isset.__fbthrift_at(folly::index_constant<7>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::SomeMap>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldH_ref() const&& {
-    return {std::move(this->fieldH), __isset.__fbthrift_at(folly::index_constant<7>())};
+    return {std::move(this->__fbthrift_field_fieldH), __isset.__fbthrift_at(folly::index_constant<7>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::SomeMap>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldH_ref() & {
-    return {this->fieldH, __isset.__fbthrift_at(folly::index_constant<7>())};
+    return {this->__fbthrift_field_fieldH, __isset.__fbthrift_at(folly::index_constant<7>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::SomeMap>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldH_ref() && {
-    return {std::move(this->fieldH), __isset.__fbthrift_at(folly::index_constant<7>())};
+    return {std::move(this->__fbthrift_field_fieldH), __isset.__fbthrift_at(folly::index_constant<7>())};
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::SomeMap>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldH() & {
+    return fieldH_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::SomeMap>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldH() const& {
+    return fieldH_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::SomeMap>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldH() && {
+    return fieldH_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::SomeMap>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldH() const&& {
+    return fieldH_ref();
   }
   const ::std::vector<::std::int32_t>& get_fieldA() const&;
   ::std::vector<::std::int32_t> get_fieldA() &&;
@@ -881,7 +1061,7 @@ private:
   [[deprecated("Use `FOO.fieldA_ref() = BAR;` instead of `FOO.set_fieldA(BAR);`")]]
   ::std::vector<::std::int32_t>& set_fieldA(T_ContainerStruct_fieldA_struct_setter&& fieldA_) {
     fieldA_ref() = std::forward<T_ContainerStruct_fieldA_struct_setter>(fieldA_);
-    return fieldA;
+    return __fbthrift_field_fieldA;
   }
   const std::list<::std::int32_t>& get_fieldB() const&;
   std::list<::std::int32_t> get_fieldB() &&;
@@ -890,7 +1070,7 @@ private:
   [[deprecated("Use `FOO.fieldB_ref() = BAR;` instead of `FOO.set_fieldB(BAR);`")]]
   std::list<::std::int32_t>& set_fieldB(T_ContainerStruct_fieldB_struct_setter&& fieldB_) {
     fieldB_ref() = std::forward<T_ContainerStruct_fieldB_struct_setter>(fieldB_);
-    return fieldB;
+    return __fbthrift_field_fieldB;
   }
   const std::deque<::std::int32_t>& get_fieldC() const&;
   std::deque<::std::int32_t> get_fieldC() &&;
@@ -899,7 +1079,7 @@ private:
   [[deprecated("Use `FOO.fieldC_ref() = BAR;` instead of `FOO.set_fieldC(BAR);`")]]
   std::deque<::std::int32_t>& set_fieldC(T_ContainerStruct_fieldC_struct_setter&& fieldC_) {
     fieldC_ref() = std::forward<T_ContainerStruct_fieldC_struct_setter>(fieldC_);
-    return fieldC;
+    return __fbthrift_field_fieldC;
   }
   const folly::fbvector<::std::int32_t>& get_fieldD() const&;
   folly::fbvector<::std::int32_t> get_fieldD() &&;
@@ -908,7 +1088,7 @@ private:
   [[deprecated("Use `FOO.fieldD_ref() = BAR;` instead of `FOO.set_fieldD(BAR);`")]]
   folly::fbvector<::std::int32_t>& set_fieldD(T_ContainerStruct_fieldD_struct_setter&& fieldD_) {
     fieldD_ref() = std::forward<T_ContainerStruct_fieldD_struct_setter>(fieldD_);
-    return fieldD;
+    return __fbthrift_field_fieldD;
   }
   const folly::small_vector<::std::int32_t>& get_fieldE() const&;
   folly::small_vector<::std::int32_t> get_fieldE() &&;
@@ -917,7 +1097,7 @@ private:
   [[deprecated("Use `FOO.fieldE_ref() = BAR;` instead of `FOO.set_fieldE(BAR);`")]]
   folly::small_vector<::std::int32_t>& set_fieldE(T_ContainerStruct_fieldE_struct_setter&& fieldE_) {
     fieldE_ref() = std::forward<T_ContainerStruct_fieldE_struct_setter>(fieldE_);
-    return fieldE;
+    return __fbthrift_field_fieldE;
   }
   const folly::sorted_vector_set<::std::int32_t>& get_fieldF() const&;
   folly::sorted_vector_set<::std::int32_t> get_fieldF() &&;
@@ -926,7 +1106,7 @@ private:
   [[deprecated("Use `FOO.fieldF_ref() = BAR;` instead of `FOO.set_fieldF(BAR);`")]]
   folly::sorted_vector_set<::std::int32_t>& set_fieldF(T_ContainerStruct_fieldF_struct_setter&& fieldF_) {
     fieldF_ref() = std::forward<T_ContainerStruct_fieldF_struct_setter>(fieldF_);
-    return fieldF;
+    return __fbthrift_field_fieldF;
   }
   const folly::sorted_vector_map<::std::int32_t, ::std::string>& get_fieldG() const&;
   folly::sorted_vector_map<::std::int32_t, ::std::string> get_fieldG() &&;
@@ -935,7 +1115,7 @@ private:
   [[deprecated("Use `FOO.fieldG_ref() = BAR;` instead of `FOO.set_fieldG(BAR);`")]]
   folly::sorted_vector_map<::std::int32_t, ::std::string>& set_fieldG(T_ContainerStruct_fieldG_struct_setter&& fieldG_) {
     fieldG_ref() = std::forward<T_ContainerStruct_fieldG_struct_setter>(fieldG_);
-    return fieldG;
+    return __fbthrift_field_fieldG;
   }
   const ::apache::thrift::fixtures::types::SomeMap& get_fieldH() const&;
   ::apache::thrift::fixtures::types::SomeMap get_fieldH() &&;
@@ -944,7 +1124,7 @@ private:
   [[deprecated("Use `FOO.fieldH_ref() = BAR;` instead of `FOO.set_fieldH(BAR);`")]]
   ::apache::thrift::fixtures::types::SomeMap& set_fieldH(T_ContainerStruct_fieldH_struct_setter&& fieldH_) {
     fieldH_ref() = std::forward<T_ContainerStruct_fieldH_struct_setter>(fieldH_);
-    return fieldH;
+    return __fbthrift_field_fieldH;
   }
 
   template <class Protocol_>
@@ -1005,7 +1185,7 @@ class CppTypeStruct final  {
   CppTypeStruct& operator=(const CppTypeStruct& src);
   void __clear();
  private:
-  std::list<int32_t> fieldA;
+  std::list<int32_t> __fbthrift_field_fieldA;
 private:
   apache::thrift::detail::isset_bitset<1> __isset;
 
@@ -1016,22 +1196,42 @@ private:
 
   template <typename..., typename T = std::list<int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {
-    return {this->fieldA, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_fieldA, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = std::list<int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldA_ref() const&& {
-    return {std::move(this->fieldA), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_fieldA), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = std::list<int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldA_ref() & {
-    return {this->fieldA, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_fieldA, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = std::list<int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldA_ref() && {
-    return {std::move(this->fieldA), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_fieldA), __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = std::list<int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldA() & {
+    return fieldA_ref();
+  }
+
+  template <typename..., typename T = std::list<int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA() const& {
+    return fieldA_ref();
+  }
+
+  template <typename..., typename T = std::list<int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldA() && {
+    return fieldA_ref();
+  }
+
+  template <typename..., typename T = std::list<int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldA() const&& {
+    return fieldA_ref();
   }
   const std::list<int32_t>& get_fieldA() const&;
   std::list<int32_t> get_fieldA() &&;
@@ -1040,7 +1240,7 @@ private:
   [[deprecated("Use `FOO.fieldA_ref() = BAR;` instead of `FOO.set_fieldA(BAR);`")]]
   std::list<int32_t>& set_fieldA(T_CppTypeStruct_fieldA_struct_setter&& fieldA_) {
     fieldA_ref() = std::forward<T_CppTypeStruct_fieldA_struct_setter>(fieldA_);
-    return fieldA;
+    return __fbthrift_field_fieldA;
   }
 
   template <class Protocol_>
@@ -1087,7 +1287,7 @@ class VirtualStruct  {
  public:
 
   VirtualStruct() :
-      MyIntField() {
+      __fbthrift_field_MyIntField() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -1105,7 +1305,7 @@ class VirtualStruct  {
   virtual ~VirtualStruct() {}
 
  private:
-  ::std::int64_t MyIntField;
+  ::std::int64_t __fbthrift_field_MyIntField;
 private:
   apache::thrift::detail::isset_bitset<1> __isset;
 
@@ -1116,32 +1316,52 @@ private:
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {
-    return {this->MyIntField, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_MyIntField, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIntField_ref() const&& {
-    return {std::move(this->MyIntField), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_MyIntField), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIntField_ref() & {
-    return {this->MyIntField, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_MyIntField, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField_ref() && {
-    return {std::move(this->MyIntField), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_MyIntField), __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIntField() & {
+    return MyIntField_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField() const& {
+    return MyIntField_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField() && {
+    return MyIntField_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIntField() const&& {
+    return MyIntField_ref();
   }
 
   ::std::int64_t get_MyIntField() const {
-    return MyIntField;
+    return __fbthrift_field_MyIntField;
   }
 
   [[deprecated("Use `FOO.MyIntField_ref() = BAR;` instead of `FOO.set_MyIntField(BAR);`")]]
   ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField_ref() = MyIntField_;
-    return MyIntField;
+    return __fbthrift_field_MyIntField;
   }
 
   template <class Protocol_>
@@ -1188,8 +1408,8 @@ class MyStructWithForwardRefEnum final  {
  public:
 
   MyStructWithForwardRefEnum() :
-      a( ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO),
-      b( ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO) {
+      __fbthrift_field_a( ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO),
+      __fbthrift_field_b( ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO) {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -1204,9 +1424,9 @@ class MyStructWithForwardRefEnum final  {
   MyStructWithForwardRefEnum& operator=(const MyStructWithForwardRefEnum& src);
   void __clear();
  private:
-  ::apache::thrift::fixtures::types::MyForwardRefEnum a;
+  ::apache::thrift::fixtures::types::MyForwardRefEnum __fbthrift_field_a;
  private:
-  ::apache::thrift::fixtures::types::MyForwardRefEnum b;
+  ::apache::thrift::fixtures::types::MyForwardRefEnum __fbthrift_field_b;
 private:
   apache::thrift::detail::isset_bitset<2> __isset;
 
@@ -1217,62 +1437,102 @@ private:
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> a_ref() const& {
-    return {this->a, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_a, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> a_ref() const&& {
-    return {std::move(this->a), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_a), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> a_ref() & {
-    return {this->a, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_a, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> a_ref() && {
-    return {std::move(this->a), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_a), __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> a() & {
+    return a_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> a() const& {
+    return a_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> a() && {
+    return a_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> a() const&& {
+    return a_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> b_ref() const& {
-    return {this->b, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_b, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> b_ref() const&& {
-    return {std::move(this->b), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_b), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> b_ref() & {
-    return {this->b, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_b, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> b_ref() && {
-    return {std::move(this->b), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_b), __isset.__fbthrift_at(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> b() & {
+    return b_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> b() const& {
+    return b_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> b() && {
+    return b_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::MyForwardRefEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> b() const&& {
+    return b_ref();
   }
 
   ::apache::thrift::fixtures::types::MyForwardRefEnum get_a() const {
-    return a;
+    return __fbthrift_field_a;
   }
 
   [[deprecated("Use `FOO.a_ref() = BAR;` instead of `FOO.set_a(BAR);`")]]
   ::apache::thrift::fixtures::types::MyForwardRefEnum& set_a(::apache::thrift::fixtures::types::MyForwardRefEnum a_) {
     a_ref() = a_;
-    return a;
+    return __fbthrift_field_a;
   }
 
   ::apache::thrift::fixtures::types::MyForwardRefEnum get_b() const {
-    return b;
+    return __fbthrift_field_b;
   }
 
   [[deprecated("Use `FOO.b_ref() = BAR;` instead of `FOO.set_b(BAR);`")]]
   ::apache::thrift::fixtures::types::MyForwardRefEnum& set_b(::apache::thrift::fixtures::types::MyForwardRefEnum b_) {
     b_ref() = b_;
-    return b;
+    return __fbthrift_field_b;
   }
 
   template <class Protocol_>
@@ -1319,8 +1579,8 @@ class TrivialNumeric final  {
  public:
 
   TrivialNumeric() :
-      a(),
-      b() {
+      __fbthrift_field_a(),
+      __fbthrift_field_b() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -1336,9 +1596,9 @@ class TrivialNumeric final  {
   TrivialNumeric& operator=(const TrivialNumeric&) = default;
   void __clear();
  private:
-  ::std::int32_t a;
+  ::std::int32_t __fbthrift_field_a;
  private:
-  bool b;
+  bool __fbthrift_field_b;
 private:
   apache::thrift::detail::isset_bitset<2> __isset;
 
@@ -1349,62 +1609,102 @@ private:
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> a_ref() const& {
-    return {this->a, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_a, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> a_ref() const&& {
-    return {std::move(this->a), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_a), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> a_ref() & {
-    return {this->a, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_a, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> a_ref() && {
-    return {std::move(this->a), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_a), __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> a() & {
+    return a_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> a() const& {
+    return a_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> a() && {
+    return a_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> a() const&& {
+    return a_ref();
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> b_ref() const& {
-    return {this->b, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_b, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> b_ref() const&& {
-    return {std::move(this->b), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_b), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> b_ref() & {
-    return {this->b, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_b, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> b_ref() && {
-    return {std::move(this->b), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_b), __isset.__fbthrift_at(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> b() & {
+    return b_ref();
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> b() const& {
+    return b_ref();
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> b() && {
+    return b_ref();
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> b() const&& {
+    return b_ref();
   }
 
   ::std::int32_t get_a() const {
-    return a;
+    return __fbthrift_field_a;
   }
 
   [[deprecated("Use `FOO.a_ref() = BAR;` instead of `FOO.set_a(BAR);`")]]
   ::std::int32_t& set_a(::std::int32_t a_) {
     a_ref() = a_;
-    return a;
+    return __fbthrift_field_a;
   }
 
   bool get_b() const {
-    return b;
+    return __fbthrift_field_b;
   }
 
   [[deprecated("Use `FOO.b_ref() = BAR;` instead of `FOO.set_b(BAR);`")]]
   bool& set_b(bool b_) {
     b_ref() = b_;
-    return b;
+    return __fbthrift_field_b;
   }
 
   template <class Protocol_>
@@ -1451,8 +1751,8 @@ class TrivialNestedWithDefault final  {
  public:
 
   TrivialNestedWithDefault() :
-      z(static_cast<::std::int32_t>(4)),
-      n(static_cast<::apache::thrift::fixtures::types::TrivialNumeric>(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::TrivialNumeric>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(static_cast<::std::int32_t>(3)), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(static_cast<bool>(true))))) {
+      __fbthrift_field_z(static_cast<::std::int32_t>(4)),
+      __fbthrift_field_n(static_cast<::apache::thrift::fixtures::types::TrivialNumeric>(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::TrivialNumeric>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(static_cast<::std::int32_t>(3)), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(static_cast<bool>(true))))) {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -1468,9 +1768,9 @@ class TrivialNestedWithDefault final  {
   TrivialNestedWithDefault& operator=(const TrivialNestedWithDefault&) = default;
   void __clear();
  private:
-  ::std::int32_t z;
+  ::std::int32_t __fbthrift_field_z;
  private:
-  ::apache::thrift::fixtures::types::TrivialNumeric n;
+  ::apache::thrift::fixtures::types::TrivialNumeric __fbthrift_field_n;
 private:
   apache::thrift::detail::isset_bitset<2> __isset;
 
@@ -1481,52 +1781,92 @@ private:
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> z_ref() const& {
-    return {this->z, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_z, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> z_ref() const&& {
-    return {std::move(this->z), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_z), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> z_ref() & {
-    return {this->z, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_z, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> z_ref() && {
-    return {std::move(this->z), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_z), __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> z() & {
+    return z_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> z() const& {
+    return z_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> z() && {
+    return z_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> z() const&& {
+    return z_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::TrivialNumeric>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> n_ref() const& {
-    return {this->n, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_n, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::TrivialNumeric>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> n_ref() const&& {
-    return {std::move(this->n), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_n), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::TrivialNumeric>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> n_ref() & {
-    return {this->n, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_n, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::TrivialNumeric>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> n_ref() && {
-    return {std::move(this->n), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_n), __isset.__fbthrift_at(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::TrivialNumeric>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> n() & {
+    return n_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::TrivialNumeric>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> n() const& {
+    return n_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::TrivialNumeric>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> n() && {
+    return n_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::TrivialNumeric>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> n() const&& {
+    return n_ref();
   }
 
   ::std::int32_t get_z() const {
-    return z;
+    return __fbthrift_field_z;
   }
 
   [[deprecated("Use `FOO.z_ref() = BAR;` instead of `FOO.set_z(BAR);`")]]
   ::std::int32_t& set_z(::std::int32_t z_) {
     z_ref() = z_;
-    return z;
+    return __fbthrift_field_z;
   }
   const ::apache::thrift::fixtures::types::TrivialNumeric& get_n() const&;
   ::apache::thrift::fixtures::types::TrivialNumeric get_n() &&;
@@ -1535,7 +1875,7 @@ private:
   [[deprecated("Use `FOO.n_ref() = BAR;` instead of `FOO.set_n(BAR);`")]]
   ::apache::thrift::fixtures::types::TrivialNumeric& set_n(T_TrivialNestedWithDefault_n_struct_setter&& n_) {
     n_ref() = std::forward<T_TrivialNestedWithDefault_n_struct_setter>(n_);
-    return n;
+    return __fbthrift_field_n;
   }
 
   template <class Protocol_>
@@ -1596,9 +1936,9 @@ class ComplexString final  {
   ComplexString& operator=(const ComplexString& src);
   void __clear();
  private:
-  ::std::string a;
+  ::std::string __fbthrift_field_a;
  private:
-  ::std::map<::std::string, ::std::int32_t> b;
+  ::std::map<::std::string, ::std::int32_t> __fbthrift_field_b;
 private:
   apache::thrift::detail::isset_bitset<2> __isset;
 
@@ -1609,57 +1949,97 @@ private:
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> a_ref() const& {
-    return {this->a, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_a, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> a_ref() const&& {
-    return {std::move(this->a), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_a), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> a_ref() & {
-    return {this->a, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_a, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> a_ref() && {
-    return {std::move(this->a), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_a), __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> a() & {
+    return a_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> a() const& {
+    return a_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> a() && {
+    return a_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> a() const&& {
+    return a_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> b_ref() const& {
-    return {this->b, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_b, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> b_ref() const&& {
-    return {std::move(this->b), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_b), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> b_ref() & {
-    return {this->b, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_b, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> b_ref() && {
-    return {std::move(this->b), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_b), __isset.__fbthrift_at(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> b() & {
+    return b_ref();
+  }
+
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> b() const& {
+    return b_ref();
+  }
+
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> b() && {
+    return b_ref();
+  }
+
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> b() const&& {
+    return b_ref();
   }
 
   const ::std::string& get_a() const& {
-    return a;
+    return __fbthrift_field_a;
   }
 
   ::std::string get_a() && {
-    return std::move(a);
+    return std::move(__fbthrift_field_a);
   }
 
   template <typename T_ComplexString_a_struct_setter = ::std::string>
   [[deprecated("Use `FOO.a_ref() = BAR;` instead of `FOO.set_a(BAR);`")]]
   ::std::string& set_a(T_ComplexString_a_struct_setter&& a_) {
     a_ref() = std::forward<T_ComplexString_a_struct_setter>(a_);
-    return a;
+    return __fbthrift_field_a;
   }
   const ::std::map<::std::string, ::std::int32_t>& get_b() const&;
   ::std::map<::std::string, ::std::int32_t> get_b() &&;
@@ -1668,7 +2048,7 @@ private:
   [[deprecated("Use `FOO.b_ref() = BAR;` instead of `FOO.set_b(BAR);`")]]
   ::std::map<::std::string, ::std::int32_t>& set_b(T_ComplexString_b_struct_setter&& b_) {
     b_ref() = std::forward<T_ComplexString_b_struct_setter>(b_);
-    return b;
+    return __fbthrift_field_b;
   }
 
   template <class Protocol_>
@@ -1715,8 +2095,8 @@ class ComplexNestedWithDefault final  {
  public:
 
   ComplexNestedWithDefault() :
-      z(apache::thrift::StringTraits<std::string>::fromStringLiteral("4")),
-      n(static_cast<::apache::thrift::fixtures::types::ComplexString>(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::ComplexString>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(apache::thrift::StringTraits<std::string>::fromStringLiteral("3")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(static_cast<::std::map<::std::string, ::std::int32_t>>(std::initializer_list<std::pair<const ::std::string, ::std::int32_t>>{{apache::thrift::StringTraits<std::string>::fromStringLiteral("a"), 3}}))))) {
+      __fbthrift_field_z(apache::thrift::StringTraits<std::string>::fromStringLiteral("4")),
+      __fbthrift_field_n(static_cast<::apache::thrift::fixtures::types::ComplexString>(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::ComplexString>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(apache::thrift::StringTraits<std::string>::fromStringLiteral("3")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(static_cast<::std::map<::std::string, ::std::int32_t>>(std::initializer_list<std::pair<const ::std::string, ::std::int32_t>>{{apache::thrift::StringTraits<std::string>::fromStringLiteral("a"), 3}}))))) {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -1731,9 +2111,9 @@ class ComplexNestedWithDefault final  {
   ComplexNestedWithDefault& operator=(const ComplexNestedWithDefault& src);
   void __clear();
  private:
-  ::std::string z;
+  ::std::string __fbthrift_field_z;
  private:
-  ::apache::thrift::fixtures::types::ComplexString n;
+  ::apache::thrift::fixtures::types::ComplexString __fbthrift_field_n;
 private:
   apache::thrift::detail::isset_bitset<2> __isset;
 
@@ -1744,57 +2124,97 @@ private:
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> z_ref() const& {
-    return {this->z, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_z, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> z_ref() const&& {
-    return {std::move(this->z), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_z), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> z_ref() & {
-    return {this->z, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_z, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> z_ref() && {
-    return {std::move(this->z), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_z), __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> z() & {
+    return z_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> z() const& {
+    return z_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> z() && {
+    return z_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> z() const&& {
+    return z_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::ComplexString>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> n_ref() const& {
-    return {this->n, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_n, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::ComplexString>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> n_ref() const&& {
-    return {std::move(this->n), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_n), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::ComplexString>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> n_ref() & {
-    return {this->n, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_n, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::ComplexString>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> n_ref() && {
-    return {std::move(this->n), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_n), __isset.__fbthrift_at(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ComplexString>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> n() & {
+    return n_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ComplexString>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> n() const& {
+    return n_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ComplexString>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> n() && {
+    return n_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ComplexString>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> n() const&& {
+    return n_ref();
   }
 
   const ::std::string& get_z() const& {
-    return z;
+    return __fbthrift_field_z;
   }
 
   ::std::string get_z() && {
-    return std::move(z);
+    return std::move(__fbthrift_field_z);
   }
 
   template <typename T_ComplexNestedWithDefault_z_struct_setter = ::std::string>
   [[deprecated("Use `FOO.z_ref() = BAR;` instead of `FOO.set_z(BAR);`")]]
   ::std::string& set_z(T_ComplexNestedWithDefault_z_struct_setter&& z_) {
     z_ref() = std::forward<T_ComplexNestedWithDefault_z_struct_setter>(z_);
-    return z;
+    return __fbthrift_field_z;
   }
   const ::apache::thrift::fixtures::types::ComplexString& get_n() const&;
   ::apache::thrift::fixtures::types::ComplexString get_n() &&;
@@ -1803,7 +2223,7 @@ private:
   [[deprecated("Use `FOO.n_ref() = BAR;` instead of `FOO.set_n(BAR);`")]]
   ::apache::thrift::fixtures::types::ComplexString& set_n(T_ComplexNestedWithDefault_n_struct_setter&& n_) {
     n_ref() = std::forward<T_ComplexNestedWithDefault_n_struct_setter>(n_);
-    return n;
+    return __fbthrift_field_n;
   }
 
   template <class Protocol_>
@@ -2139,8 +2559,8 @@ class MyStruct final  {
  public:
 
   MyStruct() :
-      MyIntField(),
-      majorVer() {
+      __fbthrift_field_MyIntField(),
+      __fbthrift_field_majorVer() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -2155,13 +2575,13 @@ class MyStruct final  {
   MyStruct& operator=(const MyStruct& src);
   void __clear();
  private:
-  ::std::int64_t MyIntField;
+  ::std::int64_t __fbthrift_field_MyIntField;
  private:
-  ::std::string MyStringField;
+  ::std::string __fbthrift_field_MyStringField;
  private:
-  ::std::int64_t majorVer;
+  ::std::int64_t __fbthrift_field_majorVer;
  private:
-  ::apache::thrift::fixtures::types::MyDataItem data;
+  ::apache::thrift::fixtures::types::MyDataItem __fbthrift_field_data;
 private:
   apache::thrift::detail::isset_bitset<4> __isset;
 
@@ -2169,117 +2589,197 @@ private:
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {
-    return {this->MyIntField, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_MyIntField, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIntField_ref() const&& {
-    return {std::move(this->MyIntField), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_MyIntField), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIntField_ref() & {
-    return {this->MyIntField, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_MyIntField, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField_ref() && {
-    return {std::move(this->MyIntField), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_MyIntField), __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIntField() & {
+    return MyIntField_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField() const& {
+    return MyIntField_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField() && {
+    return MyIntField_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIntField() const&& {
+    return MyIntField_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyStringField_ref() const& {
-    return {this->MyStringField, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_MyStringField, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyStringField_ref() const&& {
-    return {std::move(this->MyStringField), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_MyStringField), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyStringField_ref() & {
-    return {this->MyStringField, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_MyStringField, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyStringField_ref() && {
-    return {std::move(this->MyStringField), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_MyStringField), __isset.__fbthrift_at(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyStringField() & {
+    return MyStringField_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyStringField() const& {
+    return MyStringField_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyStringField() && {
+    return MyStringField_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyStringField() const&& {
+    return MyStringField_ref();
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> majorVer_ref() const& {
-    return {this->majorVer, __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {this->__fbthrift_field_majorVer, __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> majorVer_ref() const&& {
-    return {std::move(this->majorVer), __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {std::move(this->__fbthrift_field_majorVer), __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> majorVer_ref() & {
-    return {this->majorVer, __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {this->__fbthrift_field_majorVer, __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> majorVer_ref() && {
-    return {std::move(this->majorVer), __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {std::move(this->__fbthrift_field_majorVer), __isset.__fbthrift_at(folly::index_constant<2>())};
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> majorVer() & {
+    return majorVer_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> majorVer() const& {
+    return majorVer_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> majorVer() && {
+    return majorVer_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> majorVer() const&& {
+    return majorVer_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::MyDataItem>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> data_ref() const& {
-    return {this->data, __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {this->__fbthrift_field_data, __isset.__fbthrift_at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::MyDataItem>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> data_ref() const&& {
-    return {std::move(this->data), __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {std::move(this->__fbthrift_field_data), __isset.__fbthrift_at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::MyDataItem>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> data_ref() & {
-    return {this->data, __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {this->__fbthrift_field_data, __isset.__fbthrift_at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::MyDataItem>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> data_ref() && {
-    return {std::move(this->data), __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {std::move(this->__fbthrift_field_data), __isset.__fbthrift_at(folly::index_constant<3>())};
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::MyDataItem>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> data() & {
+    return data_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::MyDataItem>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> data() const& {
+    return data_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::MyDataItem>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> data() && {
+    return data_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::MyDataItem>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> data() const&& {
+    return data_ref();
   }
 
   ::std::int64_t get_MyIntField() const {
-    return MyIntField;
+    return __fbthrift_field_MyIntField;
   }
 
   [[deprecated("Use `FOO.MyIntField_ref() = BAR;` instead of `FOO.set_MyIntField(BAR);`")]]
   ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField_ref() = MyIntField_;
-    return MyIntField;
+    return __fbthrift_field_MyIntField;
   }
 
   const ::std::string& get_MyStringField() const& {
-    return MyStringField;
+    return __fbthrift_field_MyStringField;
   }
 
   ::std::string get_MyStringField() && {
-    return std::move(MyStringField);
+    return std::move(__fbthrift_field_MyStringField);
   }
 
   template <typename T_MyStruct_MyStringField_struct_setter = ::std::string>
   [[deprecated("Use `FOO.MyStringField_ref() = BAR;` instead of `FOO.set_MyStringField(BAR);`")]]
   ::std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
     MyStringField_ref() = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
-    return MyStringField;
+    return __fbthrift_field_MyStringField;
   }
 
   ::std::int64_t get_majorVer() const {
-    return majorVer;
+    return __fbthrift_field_majorVer;
   }
 
   [[deprecated("Use `FOO.majorVer_ref() = BAR;` instead of `FOO.set_majorVer(BAR);`")]]
   ::std::int64_t& set_majorVer(::std::int64_t majorVer_) {
     majorVer_ref() = majorVer_;
-    return majorVer;
+    return __fbthrift_field_majorVer;
   }
   const ::apache::thrift::fixtures::types::MyDataItem& get_data() const&;
   ::apache::thrift::fixtures::types::MyDataItem get_data() &&;
@@ -2288,7 +2788,7 @@ private:
   [[deprecated("Use `FOO.data_ref() = BAR;` instead of `FOO.set_data(BAR);`")]]
   ::apache::thrift::fixtures::types::MyDataItem& set_data(T_MyStruct_data_struct_setter&& data_) {
     data_ref() = std::forward<T_MyStruct_data_struct_setter>(data_);
-    return data;
+    return __fbthrift_field_data;
   }
 
   template <class Protocol_>
@@ -2335,7 +2835,7 @@ class Renaming final  {
  public:
 
   Renaming() :
-      bar() {
+      __fbthrift_field_bar() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -2351,7 +2851,7 @@ class Renaming final  {
   Renaming& operator=(const Renaming&) = default;
   void __clear();
  private:
-  ::std::int64_t bar;
+  ::std::int64_t __fbthrift_field_bar;
 private:
   apache::thrift::detail::isset_bitset<1> __isset;
 
@@ -2362,32 +2862,52 @@ private:
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> bar_ref() const& {
-    return {this->bar, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_bar, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> bar_ref() const&& {
-    return {std::move(this->bar), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_bar), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> bar_ref() & {
-    return {this->bar, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_bar, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> bar_ref() && {
-    return {std::move(this->bar), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_bar), __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> bar() & {
+    return bar_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> bar() const& {
+    return bar_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> bar() && {
+    return bar_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> bar() const&& {
+    return bar_ref();
   }
 
   ::std::int64_t get_bar() const {
-    return bar;
+    return __fbthrift_field_bar;
   }
 
   [[deprecated("Use `FOO.bar_ref() = BAR;` instead of `FOO.set_bar(BAR);`")]]
   ::std::int64_t& set_bar(::std::int64_t bar_) {
     bar_ref() = bar_;
-    return bar;
+    return __fbthrift_field_bar;
   }
 
   template <class Protocol_>
@@ -2448,9 +2968,9 @@ class AnnotatedTypes final  {
   AnnotatedTypes& operator=(const AnnotatedTypes& src);
   void __clear();
  private:
-  ::apache::thrift::fixtures::types::TBinary binary_field;
+  ::apache::thrift::fixtures::types::TBinary __fbthrift_field_binary_field;
  private:
-  ::apache::thrift::fixtures::types::SomeListOfTypeMap list_field;
+  ::apache::thrift::fixtures::types::SomeListOfTypeMap __fbthrift_field_list_field;
 private:
   apache::thrift::detail::isset_bitset<2> __isset;
 
@@ -2461,57 +2981,97 @@ private:
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::TBinary>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> binary_field_ref() const& {
-    return {this->binary_field, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_binary_field, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::TBinary>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> binary_field_ref() const&& {
-    return {std::move(this->binary_field), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_binary_field), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::TBinary>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> binary_field_ref() & {
-    return {this->binary_field, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_binary_field, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::TBinary>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> binary_field_ref() && {
-    return {std::move(this->binary_field), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_binary_field), __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::TBinary>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> binary_field() & {
+    return binary_field_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::TBinary>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> binary_field() const& {
+    return binary_field_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::TBinary>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> binary_field() && {
+    return binary_field_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::TBinary>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> binary_field() const&& {
+    return binary_field_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::SomeListOfTypeMap>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> list_field_ref() const& {
-    return {this->list_field, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_list_field, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::SomeListOfTypeMap>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> list_field_ref() const&& {
-    return {std::move(this->list_field), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_list_field), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::SomeListOfTypeMap>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> list_field_ref() & {
-    return {this->list_field, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_list_field, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::SomeListOfTypeMap>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> list_field_ref() && {
-    return {std::move(this->list_field), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_list_field), __isset.__fbthrift_at(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::SomeListOfTypeMap>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> list_field() & {
+    return list_field_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::SomeListOfTypeMap>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> list_field() const& {
+    return list_field_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::SomeListOfTypeMap>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> list_field() && {
+    return list_field_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::SomeListOfTypeMap>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> list_field() const&& {
+    return list_field_ref();
   }
 
   const ::apache::thrift::fixtures::types::TBinary& get_binary_field() const& {
-    return binary_field;
+    return __fbthrift_field_binary_field;
   }
 
   ::apache::thrift::fixtures::types::TBinary get_binary_field() && {
-    return std::move(binary_field);
+    return std::move(__fbthrift_field_binary_field);
   }
 
   template <typename T_AnnotatedTypes_binary_field_struct_setter = ::apache::thrift::fixtures::types::TBinary>
   [[deprecated("Use `FOO.binary_field_ref() = BAR;` instead of `FOO.set_binary_field(BAR);`")]]
   ::apache::thrift::fixtures::types::TBinary& set_binary_field(T_AnnotatedTypes_binary_field_struct_setter&& binary_field_) {
     binary_field_ref() = std::forward<T_AnnotatedTypes_binary_field_struct_setter>(binary_field_);
-    return binary_field;
+    return __fbthrift_field_binary_field;
   }
   const ::apache::thrift::fixtures::types::SomeListOfTypeMap& get_list_field() const&;
   ::apache::thrift::fixtures::types::SomeListOfTypeMap get_list_field() &&;
@@ -2520,7 +3080,7 @@ private:
   [[deprecated("Use `FOO.list_field_ref() = BAR;` instead of `FOO.set_list_field(BAR);`")]]
   ::apache::thrift::fixtures::types::SomeListOfTypeMap& set_list_field(T_AnnotatedTypes_list_field_struct_setter&& list_field_) {
     list_field_ref() = std::forward<T_AnnotatedTypes_list_field_struct_setter>(list_field_);
-    return list_field;
+    return __fbthrift_field_list_field;
   }
 
   template <class Protocol_>
@@ -2581,7 +3141,7 @@ class ForwardUsageStruct final  {
   ForwardUsageStruct& operator=(const ForwardUsageStruct& src);
   void __clear();
  private:
-  ::apache::thrift::fixtures::types::ForwardUsageRoot foo;
+  ::apache::thrift::fixtures::types::ForwardUsageRoot __fbthrift_field_foo;
 private:
   apache::thrift::detail::isset_bitset<1> __isset;
 
@@ -2592,22 +3152,42 @@ private:
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> foo_ref() const& {
-    return {this->foo, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_foo, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> foo_ref() const&& {
-    return {std::move(this->foo), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_foo), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> foo_ref() & {
-    return {this->foo, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_foo, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> foo_ref() && {
-    return {std::move(this->foo), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_foo), __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> foo() & {
+    return foo_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> foo() const& {
+    return foo_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> foo() && {
+    return foo_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> foo() const&& {
+    return foo_ref();
   }
   const ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() const&;
   ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() &;
@@ -2617,7 +3197,7 @@ private:
   [[deprecated("Use `FOO.foo_ref() = BAR;` instead of `FOO.set_foo(BAR);`")]]
   ::apache::thrift::fixtures::types::ForwardUsageRoot& set_foo(T_ForwardUsageStruct_foo_struct_setter&& foo_) {
     foo_ref() = std::forward<T_ForwardUsageStruct_foo_struct_setter>(foo_);
-    return foo;
+    return __fbthrift_field_foo;
   }
 
   template <class Protocol_>
@@ -2677,7 +3257,7 @@ class ForwardUsageRoot final  {
   ForwardUsageRoot& operator=(const ForwardUsageRoot& src);
   void __clear();
  private:
-  ::apache::thrift::fixtures::types::ForwardUsageStruct ForwardUsageStruct;
+  ::apache::thrift::fixtures::types::ForwardUsageStruct __fbthrift_field_ForwardUsageStruct;
  public:
   ::std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef> ForwardUsageByRef;
 private:
@@ -2690,22 +3270,42 @@ private:
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageStruct>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> ForwardUsageStruct_ref() const& {
-    return {this->ForwardUsageStruct, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_ForwardUsageStruct, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageStruct>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> ForwardUsageStruct_ref() const&& {
-    return {std::move(this->ForwardUsageStruct), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_ForwardUsageStruct), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageStruct>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> ForwardUsageStruct_ref() & {
-    return {this->ForwardUsageStruct, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_ForwardUsageStruct, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageStruct>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> ForwardUsageStruct_ref() && {
-    return {std::move(this->ForwardUsageStruct), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_ForwardUsageStruct), __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageStruct>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> ForwardUsageStruct() & {
+    return ForwardUsageStruct_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageStruct>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> ForwardUsageStruct() const& {
+    return ForwardUsageStruct_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageStruct>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> ForwardUsageStruct() && {
+    return ForwardUsageStruct_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageStruct>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> ForwardUsageStruct() const&& {
+    return ForwardUsageStruct_ref();
   }
   template <typename ..., typename T = ::std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef>>
   FOLLY_ERASE T& ForwardUsageByRef_ref() & { return ForwardUsageByRef; }
@@ -2726,7 +3326,7 @@ private:
   [[deprecated("Use `FOO.ForwardUsageStruct_ref() = BAR;` instead of `FOO.set_ForwardUsageStruct(BAR);`")]]
   ::apache::thrift::fixtures::types::ForwardUsageStruct& set_ForwardUsageStruct(T_ForwardUsageRoot_ForwardUsageStruct_struct_setter&& ForwardUsageStruct_) {
     ForwardUsageStruct_ref() = std::forward<T_ForwardUsageRoot_ForwardUsageStruct_struct_setter>(ForwardUsageStruct_);
-    return ForwardUsageStruct;
+    return __fbthrift_field_ForwardUsageStruct;
   }
 
   template <class Protocol_>
@@ -2787,7 +3387,7 @@ class ForwardUsageByRef final  {
   ForwardUsageByRef& operator=(const ForwardUsageByRef& src);
   void __clear();
  private:
-  ::apache::thrift::fixtures::types::ForwardUsageRoot foo;
+  ::apache::thrift::fixtures::types::ForwardUsageRoot __fbthrift_field_foo;
 private:
   apache::thrift::detail::isset_bitset<1> __isset;
 
@@ -2798,22 +3398,42 @@ private:
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> foo_ref() const& {
-    return {this->foo, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_foo, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> foo_ref() const&& {
-    return {std::move(this->foo), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_foo), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> foo_ref() & {
-    return {this->foo, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_foo, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> foo_ref() && {
-    return {std::move(this->foo), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_foo), __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> foo() & {
+    return foo_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> foo() const& {
+    return foo_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> foo() && {
+    return foo_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::ForwardUsageRoot>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> foo() const&& {
+    return foo_ref();
   }
   const ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() const&;
   ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() &;
@@ -2823,7 +3443,7 @@ private:
   [[deprecated("Use `FOO.foo_ref() = BAR;` instead of `FOO.set_foo(BAR);`")]]
   ::apache::thrift::fixtures::types::ForwardUsageRoot& set_foo(T_ForwardUsageByRef_foo_struct_setter&& foo_) {
     foo_ref() = std::forward<T_ForwardUsageByRef_foo_struct_setter>(foo_);
-    return foo;
+    return __fbthrift_field_foo;
   }
 
   template <class Protocol_>
@@ -2934,7 +3554,7 @@ class NoexceptMoveSimpleStruct final  {
  public:
 
   NoexceptMoveSimpleStruct() :
-      boolField() {
+      __fbthrift_field_boolField() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -2950,7 +3570,7 @@ class NoexceptMoveSimpleStruct final  {
   NoexceptMoveSimpleStruct& operator=(const NoexceptMoveSimpleStruct&) = default;
   void __clear();
  private:
-  ::std::int64_t boolField;
+  ::std::int64_t __fbthrift_field_boolField;
 private:
   apache::thrift::detail::isset_bitset<1> __isset;
 
@@ -2961,32 +3581,52 @@ private:
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> boolField_ref() const& {
-    return {this->boolField, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_boolField, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> boolField_ref() const&& {
-    return {std::move(this->boolField), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_boolField), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> boolField_ref() & {
-    return {this->boolField, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_boolField, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> boolField_ref() && {
-    return {std::move(this->boolField), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_boolField), __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> boolField() & {
+    return boolField_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> boolField() const& {
+    return boolField_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> boolField() && {
+    return boolField_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> boolField() const&& {
+    return boolField_ref();
   }
 
   ::std::int64_t get_boolField() const {
-    return boolField;
+    return __fbthrift_field_boolField;
   }
 
   [[deprecated("Use `FOO.boolField_ref() = BAR;` instead of `FOO.set_boolField(BAR);`")]]
   ::std::int64_t& set_boolField(::std::int64_t boolField_) {
     boolField_ref() = boolField_;
-    return boolField;
+    return __fbthrift_field_boolField;
   }
 
   template <class Protocol_>
@@ -3050,23 +3690,23 @@ class NoexceptMoveComplexStruct final  {
   ~NoexceptMoveComplexStruct();
 
  private:
-  bool MyBoolField;
+  bool __fbthrift_field_MyBoolField;
  private:
-  ::std::int64_t MyIntField;
+  ::std::int64_t __fbthrift_field_MyIntField;
  private:
-  ::std::string MyStringField;
+  ::std::string __fbthrift_field_MyStringField;
  private:
-  ::std::string MyStringField2;
+  ::std::string __fbthrift_field_MyStringField2;
  private:
-  ::std::string MyBinaryField;
+  ::std::string __fbthrift_field_MyBinaryField;
  private:
-  ::std::string MyBinaryField2;
+  ::std::string __fbthrift_field_MyBinaryField2;
  public:
   ::std::string MyBinaryField3;
  private:
-  ::std::vector<::std::string> MyBinaryListField4;
+  ::std::vector<::std::string> __fbthrift_field_MyBinaryListField4;
  private:
-  ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string> MyMapEnumAndInt;
+  ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string> __fbthrift_field_MyMapEnumAndInt;
 private:
   apache::thrift::detail::isset_bitset<8> __isset;
 
@@ -3077,122 +3717,242 @@ private:
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyBoolField_ref() const& {
-    return {this->MyBoolField, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_MyBoolField, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyBoolField_ref() const&& {
-    return {std::move(this->MyBoolField), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_MyBoolField), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyBoolField_ref() & {
-    return {this->MyBoolField, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_MyBoolField, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyBoolField_ref() && {
-    return {std::move(this->MyBoolField), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_MyBoolField), __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyBoolField() & {
+    return MyBoolField_ref();
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyBoolField() const& {
+    return MyBoolField_ref();
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyBoolField() && {
+    return MyBoolField_ref();
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyBoolField() const&& {
+    return MyBoolField_ref();
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {
-    return {this->MyIntField, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_MyIntField, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIntField_ref() const&& {
-    return {std::move(this->MyIntField), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_MyIntField), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIntField_ref() & {
-    return {this->MyIntField, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_MyIntField, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField_ref() && {
-    return {std::move(this->MyIntField), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_MyIntField), __isset.__fbthrift_at(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIntField() & {
+    return MyIntField_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField() const& {
+    return MyIntField_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField() && {
+    return MyIntField_ref();
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIntField() const&& {
+    return MyIntField_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyStringField_ref() const& {
-    return {this->MyStringField, __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {this->__fbthrift_field_MyStringField, __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyStringField_ref() const&& {
-    return {std::move(this->MyStringField), __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {std::move(this->__fbthrift_field_MyStringField), __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyStringField_ref() & {
-    return {this->MyStringField, __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {this->__fbthrift_field_MyStringField, __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyStringField_ref() && {
-    return {std::move(this->MyStringField), __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {std::move(this->__fbthrift_field_MyStringField), __isset.__fbthrift_at(folly::index_constant<2>())};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyStringField() & {
+    return MyStringField_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyStringField() const& {
+    return MyStringField_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyStringField() && {
+    return MyStringField_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyStringField() const&& {
+    return MyStringField_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyStringField2_ref() const& {
-    return {this->MyStringField2, __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {this->__fbthrift_field_MyStringField2, __isset.__fbthrift_at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyStringField2_ref() const&& {
-    return {std::move(this->MyStringField2), __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {std::move(this->__fbthrift_field_MyStringField2), __isset.__fbthrift_at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyStringField2_ref() & {
-    return {this->MyStringField2, __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {this->__fbthrift_field_MyStringField2, __isset.__fbthrift_at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyStringField2_ref() && {
-    return {std::move(this->MyStringField2), __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {std::move(this->__fbthrift_field_MyStringField2), __isset.__fbthrift_at(folly::index_constant<3>())};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyStringField2() & {
+    return MyStringField2_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyStringField2() const& {
+    return MyStringField2_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyStringField2() && {
+    return MyStringField2_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyStringField2() const&& {
+    return MyStringField2_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyBinaryField_ref() const& {
-    return {this->MyBinaryField, __isset.__fbthrift_at(folly::index_constant<4>())};
+    return {this->__fbthrift_field_MyBinaryField, __isset.__fbthrift_at(folly::index_constant<4>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyBinaryField_ref() const&& {
-    return {std::move(this->MyBinaryField), __isset.__fbthrift_at(folly::index_constant<4>())};
+    return {std::move(this->__fbthrift_field_MyBinaryField), __isset.__fbthrift_at(folly::index_constant<4>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyBinaryField_ref() & {
-    return {this->MyBinaryField, __isset.__fbthrift_at(folly::index_constant<4>())};
+    return {this->__fbthrift_field_MyBinaryField, __isset.__fbthrift_at(folly::index_constant<4>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyBinaryField_ref() && {
-    return {std::move(this->MyBinaryField), __isset.__fbthrift_at(folly::index_constant<4>())};
+    return {std::move(this->__fbthrift_field_MyBinaryField), __isset.__fbthrift_at(folly::index_constant<4>())};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyBinaryField() & {
+    return MyBinaryField_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyBinaryField() const& {
+    return MyBinaryField_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyBinaryField() && {
+    return MyBinaryField_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyBinaryField() const&& {
+    return MyBinaryField_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> MyBinaryField2_ref() const& {
-    return {this->MyBinaryField2, __isset.__fbthrift_at(folly::index_constant<5>())};
+    return {this->__fbthrift_field_MyBinaryField2, __isset.__fbthrift_at(folly::index_constant<5>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> MyBinaryField2_ref() const&& {
-    return {std::move(this->MyBinaryField2), __isset.__fbthrift_at(folly::index_constant<5>())};
+    return {std::move(this->__fbthrift_field_MyBinaryField2), __isset.__fbthrift_at(folly::index_constant<5>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> MyBinaryField2_ref() & {
-    return {this->MyBinaryField2, __isset.__fbthrift_at(folly::index_constant<5>())};
+    return {this->__fbthrift_field_MyBinaryField2, __isset.__fbthrift_at(folly::index_constant<5>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> MyBinaryField2_ref() && {
-    return {std::move(this->MyBinaryField2), __isset.__fbthrift_at(folly::index_constant<5>())};
+    return {std::move(this->__fbthrift_field_MyBinaryField2), __isset.__fbthrift_at(folly::index_constant<5>())};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> MyBinaryField2() & {
+    return MyBinaryField2_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> MyBinaryField2() const& {
+    return MyBinaryField2_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> MyBinaryField2() && {
+    return MyBinaryField2_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> MyBinaryField2() const&& {
+    return MyBinaryField2_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -3217,115 +3977,155 @@ private:
 
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyBinaryListField4_ref() const& {
-    return {this->MyBinaryListField4, __isset.__fbthrift_at(folly::index_constant<6>())};
+    return {this->__fbthrift_field_MyBinaryListField4, __isset.__fbthrift_at(folly::index_constant<6>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyBinaryListField4_ref() const&& {
-    return {std::move(this->MyBinaryListField4), __isset.__fbthrift_at(folly::index_constant<6>())};
+    return {std::move(this->__fbthrift_field_MyBinaryListField4), __isset.__fbthrift_at(folly::index_constant<6>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyBinaryListField4_ref() & {
-    return {this->MyBinaryListField4, __isset.__fbthrift_at(folly::index_constant<6>())};
+    return {this->__fbthrift_field_MyBinaryListField4, __isset.__fbthrift_at(folly::index_constant<6>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyBinaryListField4_ref() && {
-    return {std::move(this->MyBinaryListField4), __isset.__fbthrift_at(folly::index_constant<6>())};
+    return {std::move(this->__fbthrift_field_MyBinaryListField4), __isset.__fbthrift_at(folly::index_constant<6>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::string>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyBinaryListField4() & {
+    return MyBinaryListField4_ref();
+  }
+
+  template <typename..., typename T = ::std::vector<::std::string>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyBinaryListField4() const& {
+    return MyBinaryListField4_ref();
+  }
+
+  template <typename..., typename T = ::std::vector<::std::string>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyBinaryListField4() && {
+    return MyBinaryListField4_ref();
+  }
+
+  template <typename..., typename T = ::std::vector<::std::string>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyBinaryListField4() const&& {
+    return MyBinaryListField4_ref();
   }
 
   template <typename..., typename T = ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyMapEnumAndInt_ref() const& {
-    return {this->MyMapEnumAndInt, __isset.__fbthrift_at(folly::index_constant<7>())};
+    return {this->__fbthrift_field_MyMapEnumAndInt, __isset.__fbthrift_at(folly::index_constant<7>())};
   }
 
   template <typename..., typename T = ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyMapEnumAndInt_ref() const&& {
-    return {std::move(this->MyMapEnumAndInt), __isset.__fbthrift_at(folly::index_constant<7>())};
+    return {std::move(this->__fbthrift_field_MyMapEnumAndInt), __isset.__fbthrift_at(folly::index_constant<7>())};
   }
 
   template <typename..., typename T = ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyMapEnumAndInt_ref() & {
-    return {this->MyMapEnumAndInt, __isset.__fbthrift_at(folly::index_constant<7>())};
+    return {this->__fbthrift_field_MyMapEnumAndInt, __isset.__fbthrift_at(folly::index_constant<7>())};
   }
 
   template <typename..., typename T = ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyMapEnumAndInt_ref() && {
-    return {std::move(this->MyMapEnumAndInt), __isset.__fbthrift_at(folly::index_constant<7>())};
+    return {std::move(this->__fbthrift_field_MyMapEnumAndInt), __isset.__fbthrift_at(folly::index_constant<7>())};
+  }
+
+  template <typename..., typename T = ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyMapEnumAndInt() & {
+    return MyMapEnumAndInt_ref();
+  }
+
+  template <typename..., typename T = ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyMapEnumAndInt() const& {
+    return MyMapEnumAndInt_ref();
+  }
+
+  template <typename..., typename T = ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyMapEnumAndInt() && {
+    return MyMapEnumAndInt_ref();
+  }
+
+  template <typename..., typename T = ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyMapEnumAndInt() const&& {
+    return MyMapEnumAndInt_ref();
   }
 
   bool get_MyBoolField() const {
-    return MyBoolField;
+    return __fbthrift_field_MyBoolField;
   }
 
   [[deprecated("Use `FOO.MyBoolField_ref() = BAR;` instead of `FOO.set_MyBoolField(BAR);`")]]
   bool& set_MyBoolField(bool MyBoolField_) {
     MyBoolField_ref() = MyBoolField_;
-    return MyBoolField;
+    return __fbthrift_field_MyBoolField;
   }
 
   ::std::int64_t get_MyIntField() const {
-    return MyIntField;
+    return __fbthrift_field_MyIntField;
   }
 
   [[deprecated("Use `FOO.MyIntField_ref() = BAR;` instead of `FOO.set_MyIntField(BAR);`")]]
   ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField_ref() = MyIntField_;
-    return MyIntField;
+    return __fbthrift_field_MyIntField;
   }
 
   const ::std::string& get_MyStringField() const& {
-    return MyStringField;
+    return __fbthrift_field_MyStringField;
   }
 
   ::std::string get_MyStringField() && {
-    return std::move(MyStringField);
+    return std::move(__fbthrift_field_MyStringField);
   }
 
   template <typename T_NoexceptMoveComplexStruct_MyStringField_struct_setter = ::std::string>
   [[deprecated("Use `FOO.MyStringField_ref() = BAR;` instead of `FOO.set_MyStringField(BAR);`")]]
   ::std::string& set_MyStringField(T_NoexceptMoveComplexStruct_MyStringField_struct_setter&& MyStringField_) {
     MyStringField_ref() = std::forward<T_NoexceptMoveComplexStruct_MyStringField_struct_setter>(MyStringField_);
-    return MyStringField;
+    return __fbthrift_field_MyStringField;
   }
 
   const ::std::string& get_MyStringField2() const& {
-    return MyStringField2;
+    return __fbthrift_field_MyStringField2;
   }
 
   ::std::string get_MyStringField2() && {
-    return std::move(MyStringField2);
+    return std::move(__fbthrift_field_MyStringField2);
   }
 
   template <typename T_NoexceptMoveComplexStruct_MyStringField2_struct_setter = ::std::string>
   [[deprecated("Use `FOO.MyStringField2_ref() = BAR;` instead of `FOO.set_MyStringField2(BAR);`")]]
   ::std::string& set_MyStringField2(T_NoexceptMoveComplexStruct_MyStringField2_struct_setter&& MyStringField2_) {
     MyStringField2_ref() = std::forward<T_NoexceptMoveComplexStruct_MyStringField2_struct_setter>(MyStringField2_);
-    return MyStringField2;
+    return __fbthrift_field_MyStringField2;
   }
 
   const ::std::string& get_MyBinaryField() const& {
-    return MyBinaryField;
+    return __fbthrift_field_MyBinaryField;
   }
 
   ::std::string get_MyBinaryField() && {
-    return std::move(MyBinaryField);
+    return std::move(__fbthrift_field_MyBinaryField);
   }
 
   template <typename T_NoexceptMoveComplexStruct_MyBinaryField_struct_setter = ::std::string>
   [[deprecated("Use `FOO.MyBinaryField_ref() = BAR;` instead of `FOO.set_MyBinaryField(BAR);`")]]
   ::std::string& set_MyBinaryField(T_NoexceptMoveComplexStruct_MyBinaryField_struct_setter&& MyBinaryField_) {
     MyBinaryField_ref() = std::forward<T_NoexceptMoveComplexStruct_MyBinaryField_struct_setter>(MyBinaryField_);
-    return MyBinaryField;
+    return __fbthrift_field_MyBinaryField;
   }
 
   const ::std::string* get_MyBinaryField2() const& {
-    return MyBinaryField2_ref() ? std::addressof(MyBinaryField2) : nullptr;
+    return MyBinaryField2_ref() ? std::addressof(__fbthrift_field_MyBinaryField2) : nullptr;
   }
 
   ::std::string* get_MyBinaryField2() & {
-    return MyBinaryField2_ref() ? std::addressof(MyBinaryField2) : nullptr;
+    return MyBinaryField2_ref() ? std::addressof(__fbthrift_field_MyBinaryField2) : nullptr;
   }
   ::std::string* get_MyBinaryField2() && = delete;
 
@@ -3333,7 +4133,7 @@ private:
   [[deprecated("Use `FOO.MyBinaryField2_ref() = BAR;` instead of `FOO.set_MyBinaryField2(BAR);`")]]
   ::std::string& set_MyBinaryField2(T_NoexceptMoveComplexStruct_MyBinaryField2_struct_setter&& MyBinaryField2_) {
     MyBinaryField2_ref() = std::forward<T_NoexceptMoveComplexStruct_MyBinaryField2_struct_setter>(MyBinaryField2_);
-    return MyBinaryField2;
+    return __fbthrift_field_MyBinaryField2;
   }
 
   const ::std::string& get_MyBinaryField3() const& {
@@ -3357,7 +4157,7 @@ private:
   [[deprecated("Use `FOO.MyBinaryListField4_ref() = BAR;` instead of `FOO.set_MyBinaryListField4(BAR);`")]]
   ::std::vector<::std::string>& set_MyBinaryListField4(T_NoexceptMoveComplexStruct_MyBinaryListField4_struct_setter&& MyBinaryListField4_) {
     MyBinaryListField4_ref() = std::forward<T_NoexceptMoveComplexStruct_MyBinaryListField4_struct_setter>(MyBinaryListField4_);
-    return MyBinaryListField4;
+    return __fbthrift_field_MyBinaryListField4;
   }
   const ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string>& get_MyMapEnumAndInt() const&;
   ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string> get_MyMapEnumAndInt() &&;
@@ -3366,7 +4166,7 @@ private:
   [[deprecated("Use `FOO.MyMapEnumAndInt_ref() = BAR;` instead of `FOO.set_MyMapEnumAndInt(BAR);`")]]
   ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string>& set_MyMapEnumAndInt(T_NoexceptMoveComplexStruct_MyMapEnumAndInt_struct_setter&& MyMapEnumAndInt_) {
     MyMapEnumAndInt_ref() = std::forward<T_NoexceptMoveComplexStruct_MyMapEnumAndInt_struct_setter>(MyMapEnumAndInt_);
-    return MyMapEnumAndInt;
+    return __fbthrift_field_MyMapEnumAndInt;
   }
 
   template <class Protocol_>
@@ -3703,28 +4503,28 @@ class AllocatorAware final  {
 
   explicit AllocatorAware(const allocator_type& alloc) noexcept :
     __fbthrift_alloc(alloc),
-    aa_list(alloc),
-    aa_set(alloc),
-    aa_map(alloc),
-    aa_string(alloc),
-    not_a_container() {}
+    __fbthrift_field_aa_list(alloc),
+    __fbthrift_field_aa_set(alloc),
+    __fbthrift_field_aa_map(alloc),
+    __fbthrift_field_aa_string(alloc),
+    __fbthrift_field_not_a_container() {}
 
   explicit AllocatorAware(const AllocatorAware& other, const allocator_type& alloc) :
     __fbthrift_alloc(alloc),
-    aa_list(other.aa_list, alloc),
-    aa_set(other.aa_set, alloc),
-    aa_map(other.aa_map, alloc),
-    aa_string(other.aa_string, alloc),
-    not_a_container(other.not_a_container),
+    __fbthrift_field_aa_list(other.__fbthrift_field_aa_list, alloc),
+    __fbthrift_field_aa_set(other.__fbthrift_field_aa_set, alloc),
+    __fbthrift_field_aa_map(other.__fbthrift_field_aa_map, alloc),
+    __fbthrift_field_aa_string(other.__fbthrift_field_aa_string, alloc),
+    __fbthrift_field_not_a_container(other.__fbthrift_field_not_a_container),
     __isset(other.__isset) {}
 
   explicit AllocatorAware(AllocatorAware&& other, const allocator_type& alloc) :
     __fbthrift_alloc(alloc),
-    aa_list(std::move(other.aa_list), alloc),
-    aa_set(std::move(other.aa_set), alloc),
-    aa_map(std::move(other.aa_map), alloc),
-    aa_string(std::move(other.aa_string), alloc),
-    not_a_container(std::move(other.not_a_container)),
+    __fbthrift_field_aa_list(std::move(other.__fbthrift_field_aa_list), alloc),
+    __fbthrift_field_aa_set(std::move(other.__fbthrift_field_aa_set), alloc),
+    __fbthrift_field_aa_map(std::move(other.__fbthrift_field_aa_map), alloc),
+    __fbthrift_field_aa_string(std::move(other.__fbthrift_field_aa_string), alloc),
+    __fbthrift_field_not_a_container(std::move(other.__fbthrift_field_not_a_container)),
     __isset(other.__isset) {}
 
   AllocatorAware& operator=(AllocatorAware&&) noexcept;
@@ -3734,15 +4534,15 @@ class AllocatorAware final  {
   ~AllocatorAware();
 
  private:
-  ::std::vector<::std::int32_t> aa_list;
+  ::std::vector<::std::int32_t> __fbthrift_field_aa_list;
  private:
-  ::std::set<::std::int32_t> aa_set;
+  ::std::set<::std::int32_t> __fbthrift_field_aa_set;
  private:
-  ::std::map<::std::int32_t, ::std::int32_t> aa_map;
+  ::std::map<::std::int32_t, ::std::int32_t> __fbthrift_field_aa_map;
  private:
-  ::std::string aa_string;
+  ::std::string __fbthrift_field_aa_string;
  private:
-  ::std::int32_t not_a_container;
+  ::std::int32_t __fbthrift_field_not_a_container;
 private:
   apache::thrift::detail::isset_bitset<5> __isset;
 
@@ -3753,102 +4553,202 @@ private:
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> aa_list_ref() const& {
-    return {this->aa_list, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_aa_list, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> aa_list_ref() const&& {
-    return {std::move(this->aa_list), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_aa_list), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> aa_list_ref() & {
-    return {this->aa_list, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_aa_list, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> aa_list_ref() && {
-    return {std::move(this->aa_list), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_aa_list), __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> aa_list() & {
+    return aa_list_ref();
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> aa_list() const& {
+    return aa_list_ref();
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> aa_list() && {
+    return aa_list_ref();
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> aa_list() const&& {
+    return aa_list_ref();
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> aa_set_ref() const& {
-    return {this->aa_set, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_aa_set, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> aa_set_ref() const&& {
-    return {std::move(this->aa_set), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_aa_set), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> aa_set_ref() & {
-    return {this->aa_set, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_aa_set, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> aa_set_ref() && {
-    return {std::move(this->aa_set), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_aa_set), __isset.__fbthrift_at(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::std::set<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> aa_set() & {
+    return aa_set_ref();
+  }
+
+  template <typename..., typename T = ::std::set<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> aa_set() const& {
+    return aa_set_ref();
+  }
+
+  template <typename..., typename T = ::std::set<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> aa_set() && {
+    return aa_set_ref();
+  }
+
+  template <typename..., typename T = ::std::set<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> aa_set() const&& {
+    return aa_set_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::int32_t, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> aa_map_ref() const& {
-    return {this->aa_map, __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {this->__fbthrift_field_aa_map, __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::map<::std::int32_t, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> aa_map_ref() const&& {
-    return {std::move(this->aa_map), __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {std::move(this->__fbthrift_field_aa_map), __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::map<::std::int32_t, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> aa_map_ref() & {
-    return {this->aa_map, __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {this->__fbthrift_field_aa_map, __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::map<::std::int32_t, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> aa_map_ref() && {
-    return {std::move(this->aa_map), __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {std::move(this->__fbthrift_field_aa_map), __isset.__fbthrift_at(folly::index_constant<2>())};
+  }
+
+  template <typename..., typename T = ::std::map<::std::int32_t, ::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> aa_map() & {
+    return aa_map_ref();
+  }
+
+  template <typename..., typename T = ::std::map<::std::int32_t, ::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> aa_map() const& {
+    return aa_map_ref();
+  }
+
+  template <typename..., typename T = ::std::map<::std::int32_t, ::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> aa_map() && {
+    return aa_map_ref();
+  }
+
+  template <typename..., typename T = ::std::map<::std::int32_t, ::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> aa_map() const&& {
+    return aa_map_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> aa_string_ref() const& {
-    return {this->aa_string, __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {this->__fbthrift_field_aa_string, __isset.__fbthrift_at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> aa_string_ref() const&& {
-    return {std::move(this->aa_string), __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {std::move(this->__fbthrift_field_aa_string), __isset.__fbthrift_at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> aa_string_ref() & {
-    return {this->aa_string, __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {this->__fbthrift_field_aa_string, __isset.__fbthrift_at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> aa_string_ref() && {
-    return {std::move(this->aa_string), __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {std::move(this->__fbthrift_field_aa_string), __isset.__fbthrift_at(folly::index_constant<3>())};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> aa_string() & {
+    return aa_string_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> aa_string() const& {
+    return aa_string_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> aa_string() && {
+    return aa_string_ref();
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> aa_string() const&& {
+    return aa_string_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> not_a_container_ref() const& {
-    return {this->not_a_container, __isset.__fbthrift_at(folly::index_constant<4>())};
+    return {this->__fbthrift_field_not_a_container, __isset.__fbthrift_at(folly::index_constant<4>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> not_a_container_ref() const&& {
-    return {std::move(this->not_a_container), __isset.__fbthrift_at(folly::index_constant<4>())};
+    return {std::move(this->__fbthrift_field_not_a_container), __isset.__fbthrift_at(folly::index_constant<4>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> not_a_container_ref() & {
-    return {this->not_a_container, __isset.__fbthrift_at(folly::index_constant<4>())};
+    return {this->__fbthrift_field_not_a_container, __isset.__fbthrift_at(folly::index_constant<4>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> not_a_container_ref() && {
-    return {std::move(this->not_a_container), __isset.__fbthrift_at(folly::index_constant<4>())};
+    return {std::move(this->__fbthrift_field_not_a_container), __isset.__fbthrift_at(folly::index_constant<4>())};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> not_a_container() & {
+    return not_a_container_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> not_a_container() const& {
+    return not_a_container_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> not_a_container() && {
+    return not_a_container_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> not_a_container() const&& {
+    return not_a_container_ref();
   }
   const ::std::vector<::std::int32_t>& get_aa_list() const&;
   ::std::vector<::std::int32_t> get_aa_list() &&;
@@ -3857,7 +4757,7 @@ private:
   [[deprecated("Use `FOO.aa_list_ref() = BAR;` instead of `FOO.set_aa_list(BAR);`")]]
   ::std::vector<::std::int32_t>& set_aa_list(T_AllocatorAware_aa_list_struct_setter&& aa_list_) {
     aa_list_ref() = std::forward<T_AllocatorAware_aa_list_struct_setter>(aa_list_);
-    return aa_list;
+    return __fbthrift_field_aa_list;
   }
   const ::std::set<::std::int32_t>& get_aa_set() const&;
   ::std::set<::std::int32_t> get_aa_set() &&;
@@ -3866,7 +4766,7 @@ private:
   [[deprecated("Use `FOO.aa_set_ref() = BAR;` instead of `FOO.set_aa_set(BAR);`")]]
   ::std::set<::std::int32_t>& set_aa_set(T_AllocatorAware_aa_set_struct_setter&& aa_set_) {
     aa_set_ref() = std::forward<T_AllocatorAware_aa_set_struct_setter>(aa_set_);
-    return aa_set;
+    return __fbthrift_field_aa_set;
   }
   const ::std::map<::std::int32_t, ::std::int32_t>& get_aa_map() const&;
   ::std::map<::std::int32_t, ::std::int32_t> get_aa_map() &&;
@@ -3875,32 +4775,32 @@ private:
   [[deprecated("Use `FOO.aa_map_ref() = BAR;` instead of `FOO.set_aa_map(BAR);`")]]
   ::std::map<::std::int32_t, ::std::int32_t>& set_aa_map(T_AllocatorAware_aa_map_struct_setter&& aa_map_) {
     aa_map_ref() = std::forward<T_AllocatorAware_aa_map_struct_setter>(aa_map_);
-    return aa_map;
+    return __fbthrift_field_aa_map;
   }
 
   const ::std::string& get_aa_string() const& {
-    return aa_string;
+    return __fbthrift_field_aa_string;
   }
 
   ::std::string get_aa_string() && {
-    return std::move(aa_string);
+    return std::move(__fbthrift_field_aa_string);
   }
 
   template <typename T_AllocatorAware_aa_string_struct_setter = ::std::string>
   [[deprecated("Use `FOO.aa_string_ref() = BAR;` instead of `FOO.set_aa_string(BAR);`")]]
   ::std::string& set_aa_string(T_AllocatorAware_aa_string_struct_setter&& aa_string_) {
     aa_string_ref() = std::forward<T_AllocatorAware_aa_string_struct_setter>(aa_string_);
-    return aa_string;
+    return __fbthrift_field_aa_string;
   }
 
   ::std::int32_t get_not_a_container() const {
-    return not_a_container;
+    return __fbthrift_field_not_a_container;
   }
 
   [[deprecated("Use `FOO.not_a_container_ref() = BAR;` instead of `FOO.set_not_a_container(BAR);`")]]
   ::std::int32_t& set_not_a_container(::std::int32_t not_a_container_) {
     not_a_container_ref() = not_a_container_;
-    return not_a_container;
+    return __fbthrift_field_not_a_container;
   }
 
   template <class Protocol_>
@@ -3954,7 +4854,7 @@ class AllocatorAware2 final  {
  public:
 
   AllocatorAware2() :
-      not_a_container() {
+      __fbthrift_field_not_a_container() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -3966,23 +4866,23 @@ class AllocatorAware2 final  {
 
   explicit AllocatorAware2(const allocator_type& alloc) noexcept :
     __fbthrift_alloc(alloc),
-    not_a_container() {}
+    __fbthrift_field_not_a_container() {}
 
   explicit AllocatorAware2(const AllocatorAware2& other, const allocator_type& alloc) :
     __fbthrift_alloc(alloc),
-    not_a_container(other.not_a_container),
+    __fbthrift_field_not_a_container(other.__fbthrift_field_not_a_container),
     __isset(other.__isset) {}
 
   explicit AllocatorAware2(AllocatorAware2&& other, const allocator_type& alloc) :
     __fbthrift_alloc(alloc),
-    not_a_container(std::move(other.not_a_container)),
+    __fbthrift_field_not_a_container(std::move(other.__fbthrift_field_not_a_container)),
     __isset(other.__isset) {}
 
   AllocatorAware2& operator=(AllocatorAware2&&) noexcept;
   AllocatorAware2& operator=(const AllocatorAware2& src);
   void __clear();
  private:
-  ::std::int32_t not_a_container;
+  ::std::int32_t __fbthrift_field_not_a_container;
 private:
   apache::thrift::detail::isset_bitset<1> __isset;
 
@@ -3993,32 +4893,52 @@ private:
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> not_a_container_ref() const& {
-    return {this->not_a_container, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_not_a_container, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> not_a_container_ref() const&& {
-    return {std::move(this->not_a_container), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_not_a_container), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> not_a_container_ref() & {
-    return {this->not_a_container, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_not_a_container, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> not_a_container_ref() && {
-    return {std::move(this->not_a_container), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_not_a_container), __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> not_a_container() & {
+    return not_a_container_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> not_a_container() const& {
+    return not_a_container_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> not_a_container() && {
+    return not_a_container_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> not_a_container() const&& {
+    return not_a_container_ref();
   }
 
   ::std::int32_t get_not_a_container() const {
-    return not_a_container;
+    return __fbthrift_field_not_a_container;
   }
 
   [[deprecated("Use `FOO.not_a_container_ref() = BAR;` instead of `FOO.set_not_a_container(BAR);`")]]
   ::std::int32_t& set_not_a_container(::std::int32_t not_a_container_) {
     not_a_container_ref() = not_a_container_;
-    return not_a_container;
+    return __fbthrift_field_not_a_container;
   }
 
   template <class Protocol_>
@@ -4065,9 +4985,9 @@ class TypedefStruct final  {
  public:
 
   TypedefStruct() :
-      i32_field(),
-      IntTypedef_field(),
-      UintTypedef_field() {
+      __fbthrift_field_i32_field(),
+      __fbthrift_field_IntTypedef_field(),
+      __fbthrift_field_UintTypedef_field() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -4082,11 +5002,11 @@ class TypedefStruct final  {
   TypedefStruct& operator=(const TypedefStruct& src);
   void __clear();
  private:
-  ::std::int32_t i32_field;
+  ::std::int32_t __fbthrift_field_i32_field;
  private:
-  ::apache::thrift::fixtures::types::IntTypedef IntTypedef_field;
+  ::apache::thrift::fixtures::types::IntTypedef __fbthrift_field_IntTypedef_field;
  private:
-  std::uint32_t UintTypedef_field;
+  std::uint32_t __fbthrift_field_UintTypedef_field;
 private:
   apache::thrift::detail::isset_bitset<3> __isset;
 
@@ -4097,92 +5017,152 @@ private:
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> i32_field_ref() const& {
-    return {this->i32_field, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_i32_field, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> i32_field_ref() const&& {
-    return {std::move(this->i32_field), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_i32_field), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> i32_field_ref() & {
-    return {this->i32_field, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_i32_field, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> i32_field_ref() && {
-    return {std::move(this->i32_field), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_i32_field), __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> i32_field() & {
+    return i32_field_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> i32_field() const& {
+    return i32_field_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> i32_field() && {
+    return i32_field_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> i32_field() const&& {
+    return i32_field_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::IntTypedef>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> IntTypedef_field_ref() const& {
-    return {this->IntTypedef_field, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_IntTypedef_field, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::IntTypedef>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> IntTypedef_field_ref() const&& {
-    return {std::move(this->IntTypedef_field), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_IntTypedef_field), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::IntTypedef>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> IntTypedef_field_ref() & {
-    return {this->IntTypedef_field, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {this->__fbthrift_field_IntTypedef_field, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::apache::thrift::fixtures::types::IntTypedef>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> IntTypedef_field_ref() && {
-    return {std::move(this->IntTypedef_field), __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {std::move(this->__fbthrift_field_IntTypedef_field), __isset.__fbthrift_at(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::IntTypedef>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> IntTypedef_field() & {
+    return IntTypedef_field_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::IntTypedef>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> IntTypedef_field() const& {
+    return IntTypedef_field_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::IntTypedef>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> IntTypedef_field() && {
+    return IntTypedef_field_ref();
+  }
+
+  template <typename..., typename T = ::apache::thrift::fixtures::types::IntTypedef>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> IntTypedef_field() const&& {
+    return IntTypedef_field_ref();
   }
 
   template <typename..., typename T = std::uint32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> UintTypedef_field_ref() const& {
-    return {this->UintTypedef_field, __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {this->__fbthrift_field_UintTypedef_field, __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = std::uint32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> UintTypedef_field_ref() const&& {
-    return {std::move(this->UintTypedef_field), __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {std::move(this->__fbthrift_field_UintTypedef_field), __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = std::uint32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> UintTypedef_field_ref() & {
-    return {this->UintTypedef_field, __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {this->__fbthrift_field_UintTypedef_field, __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = std::uint32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> UintTypedef_field_ref() && {
-    return {std::move(this->UintTypedef_field), __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {std::move(this->__fbthrift_field_UintTypedef_field), __isset.__fbthrift_at(folly::index_constant<2>())};
+  }
+
+  template <typename..., typename T = std::uint32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> UintTypedef_field() & {
+    return UintTypedef_field_ref();
+  }
+
+  template <typename..., typename T = std::uint32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> UintTypedef_field() const& {
+    return UintTypedef_field_ref();
+  }
+
+  template <typename..., typename T = std::uint32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> UintTypedef_field() && {
+    return UintTypedef_field_ref();
+  }
+
+  template <typename..., typename T = std::uint32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> UintTypedef_field() const&& {
+    return UintTypedef_field_ref();
   }
 
   ::std::int32_t get_i32_field() const {
-    return i32_field;
+    return __fbthrift_field_i32_field;
   }
 
   [[deprecated("Use `FOO.i32_field_ref() = BAR;` instead of `FOO.set_i32_field(BAR);`")]]
   ::std::int32_t& set_i32_field(::std::int32_t i32_field_) {
     i32_field_ref() = i32_field_;
-    return i32_field;
+    return __fbthrift_field_i32_field;
   }
 
   ::apache::thrift::fixtures::types::IntTypedef get_IntTypedef_field() const {
-    return IntTypedef_field;
+    return __fbthrift_field_IntTypedef_field;
   }
 
   [[deprecated("Use `FOO.IntTypedef_field_ref() = BAR;` instead of `FOO.set_IntTypedef_field(BAR);`")]]
   ::apache::thrift::fixtures::types::IntTypedef& set_IntTypedef_field(::apache::thrift::fixtures::types::IntTypedef IntTypedef_field_) {
     IntTypedef_field_ref() = IntTypedef_field_;
-    return IntTypedef_field;
+    return __fbthrift_field_IntTypedef_field;
   }
 
   std::uint32_t get_UintTypedef_field() const {
-    return UintTypedef_field;
+    return __fbthrift_field_UintTypedef_field;
   }
 
   [[deprecated("Use `FOO.UintTypedef_field_ref() = BAR;` instead of `FOO.set_UintTypedef_field(BAR);`")]]
   std::uint32_t& set_UintTypedef_field(std::uint32_t UintTypedef_field_) {
     UintTypedef_field_ref() = UintTypedef_field_;
-    return UintTypedef_field;
+    return __fbthrift_field_UintTypedef_field;
   }
 
   template <class Protocol_>
@@ -4229,7 +5209,7 @@ class StructWithDoubleUnderscores final  {
  public:
 
   StructWithDoubleUnderscores() :
-      __field() {
+      __fbthrift_field___field() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -4245,7 +5225,7 @@ class StructWithDoubleUnderscores final  {
   StructWithDoubleUnderscores& operator=(const StructWithDoubleUnderscores&) = default;
   void __clear();
  private:
-  ::std::int32_t __field;
+  ::std::int32_t __fbthrift_field___field;
 private:
   apache::thrift::detail::isset_bitset<1> __isset;
 
@@ -4256,32 +5236,52 @@ private:
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> __field_ref() const& {
-    return {this->__field, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field___field, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> __field_ref() const&& {
-    return {std::move(this->__field), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field___field), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> __field_ref() & {
-    return {this->__field, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field___field, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> __field_ref() && {
-    return {std::move(this->__field), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field___field), __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> __field() & {
+    return __field_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> __field() const& {
+    return __field_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> __field() && {
+    return __field_ref();
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> __field() const&& {
+    return __field_ref();
   }
 
   ::std::int32_t get___field() const {
-    return __field;
+    return __fbthrift_field___field;
   }
 
   [[deprecated("Use `FOO.__field_ref() = BAR;` instead of `FOO.set___field(BAR);`")]]
   ::std::int32_t& set___field(::std::int32_t __field_) {
     __field_ref() = __field_;
-    return __field;
+    return __fbthrift_field___field;
   }
 
   template <class Protocol_>
