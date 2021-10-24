@@ -38,22 +38,22 @@ namespace some { namespace ns {
 IncludedA::IncludedA(const IncludedA&) = default;
 IncludedA& IncludedA::operator=(const IncludedA&) = default;
 IncludedA::IncludedA(IncludedA&& other) noexcept  :
-    i32Field(std::move(other.i32Field)),
-    strField(std::move(other.strField)),
+    __fbthrift_field_i32Field(std::move(other.__fbthrift_field_i32Field)),
+    __fbthrift_field_strField(std::move(other.__fbthrift_field_strField)),
     __isset(other.__isset) {
 }
 
 IncludedA& IncludedA::operator=(FOLLY_MAYBE_UNUSED IncludedA&& other) noexcept {
-    this->i32Field = std::move(other.i32Field);
-    this->strField = std::move(other.strField);
+    this->__fbthrift_field_i32Field = std::move(other.__fbthrift_field_i32Field);
+    this->__fbthrift_field_strField = std::move(other.__fbthrift_field_strField);
     __isset = other.__isset;
     return *this;
 }
 
 
 IncludedA::IncludedA(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::std::string strField__arg) :
-    i32Field(std::move(i32Field__arg)),
-    strField(std::move(strField__arg)) {
+    __fbthrift_field_i32Field(std::move(i32Field__arg)),
+    __fbthrift_field_strField(std::move(strField__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
@@ -61,8 +61,8 @@ IncludedA::IncludedA(apache::thrift::FragileConstructor, ::std::int32_t i32Field
 
 void IncludedA::__clear() {
   // clear all fields
-  this->i32Field = ::std::int32_t();
-  this->strField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_i32Field = ::std::int32_t();
+  this->__fbthrift_field_strField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 

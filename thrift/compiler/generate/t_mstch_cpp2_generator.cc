@@ -781,12 +781,6 @@ class mstch_cpp2_field : public mstch_field {
       return false;
     }
 
-    for (auto opt : {"frozen", "frozen2", "tablebased"}) {
-      if (has_option(opt)) {
-        return false;
-      }
-    }
-
     if (strct->has_annotation(
             {"cpp.methods",
              "cpp2.methods",

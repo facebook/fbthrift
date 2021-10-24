@@ -61,7 +61,7 @@ template<>
 constexpr ptrdiff_t fieldOffset<<% > common/namespace_cpp2 %><%struct:name%>>(std::int16_t fieldIndex) {
   constexpr ptrdiff_t offsets[] = {
     <%#struct:fields_in_key_order%>
-    offsetof(<% > common/namespace_cpp2 %><%struct:name%>, <%field:name%>)<%!
+    offsetof(<% > common/namespace_cpp2 %><%struct:name%>, <%field:cpp_storage_name%>)<%!
     %><% > common/comma_newline%><%/struct:fields_in_key_order%>};
   return offsets[fieldIndex];
 }

@@ -52,11 +52,11 @@ FOLLY_GNU_DISABLE_WARNING("-Winvalid-offsetof")
 template<>
 constexpr ptrdiff_t fieldOffset<::test::fixtures::tablebased::TrivialTypesStruct>(std::int16_t fieldIndex) {
   constexpr ptrdiff_t offsets[] = {
-    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, fieldA),
-    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, fieldB),
-    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, fieldC),
+    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, __fbthrift_field_fieldA),
+    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, __fbthrift_field_fieldB),
+    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, __fbthrift_field_fieldC),
     offsetof(::test::fixtures::tablebased::TrivialTypesStruct, fieldD),
-    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, fieldE)};
+    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, __fbthrift_field_fieldE)};
   return offsets[fieldIndex];
 }
 
@@ -74,14 +74,14 @@ constexpr ptrdiff_t issetOffset<::test::fixtures::tablebased::TrivialTypesStruct
 template<>
 constexpr ptrdiff_t fieldOffset<::test::fixtures::tablebased::ContainerStruct>(std::int16_t fieldIndex) {
   constexpr ptrdiff_t offsets[] = {
-    offsetof(::test::fixtures::tablebased::ContainerStruct, fieldB),
-    offsetof(::test::fixtures::tablebased::ContainerStruct, fieldC),
-    offsetof(::test::fixtures::tablebased::ContainerStruct, fieldD),
-    offsetof(::test::fixtures::tablebased::ContainerStruct, fieldE),
-    offsetof(::test::fixtures::tablebased::ContainerStruct, fieldF),
-    offsetof(::test::fixtures::tablebased::ContainerStruct, fieldG),
-    offsetof(::test::fixtures::tablebased::ContainerStruct, fieldH),
-    offsetof(::test::fixtures::tablebased::ContainerStruct, fieldA)};
+    offsetof(::test::fixtures::tablebased::ContainerStruct, __fbthrift_field_fieldB),
+    offsetof(::test::fixtures::tablebased::ContainerStruct, __fbthrift_field_fieldC),
+    offsetof(::test::fixtures::tablebased::ContainerStruct, __fbthrift_field_fieldD),
+    offsetof(::test::fixtures::tablebased::ContainerStruct, __fbthrift_field_fieldE),
+    offsetof(::test::fixtures::tablebased::ContainerStruct, __fbthrift_field_fieldF),
+    offsetof(::test::fixtures::tablebased::ContainerStruct, __fbthrift_field_fieldG),
+    offsetof(::test::fixtures::tablebased::ContainerStruct, __fbthrift_field_fieldH),
+    offsetof(::test::fixtures::tablebased::ContainerStruct, __fbthrift_field_fieldA)};
   return offsets[fieldIndex];
 }
 
@@ -110,16 +110,16 @@ FOLLY_POP_WARNING
 namespace test { namespace fixtures { namespace tablebased {
 
 TrivialTypesStruct::TrivialTypesStruct(const TrivialTypesStruct& srcObj) {
-  fieldA = srcObj.fieldA;
+  __fbthrift_field_fieldA = srcObj.__fbthrift_field_fieldA;
   __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
-  fieldB = srcObj.fieldB;
+  __fbthrift_field_fieldB = srcObj.__fbthrift_field_fieldB;
   __isset.__fbthrift_set(folly::index_constant<1>(),srcObj.__isset.__fbthrift_get(folly::index_constant<1>()));
-  fieldC = srcObj.fieldC;
+  __fbthrift_field_fieldC = srcObj.__fbthrift_field_fieldC;
   __isset.__fbthrift_set(folly::index_constant<2>(),srcObj.__isset.__fbthrift_get(folly::index_constant<2>()));
   fieldD = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::binary>(srcObj.fieldD);
   __isset.__fbthrift_set(folly::index_constant<3>(),srcObj.__isset.__fbthrift_get(folly::index_constant<3>()));
-  fieldE = srcObj.fieldE;
+  __fbthrift_field_fieldE = srcObj.__fbthrift_field_fieldE;
   __isset.__fbthrift_set(folly::index_constant<4>(),srcObj.__isset.__fbthrift_get(folly::index_constant<4>()));
 }
 
@@ -130,39 +130,39 @@ TrivialTypesStruct& TrivialTypesStruct::operator=(const TrivialTypesStruct& src)
 }
 
 TrivialTypesStruct::TrivialTypesStruct() :
-      fieldA(),
-      fieldE() {
+      __fbthrift_field_fieldA(),
+      __fbthrift_field_fieldE() {
 }
 
 
 TrivialTypesStruct::~TrivialTypesStruct() {}
 
 TrivialTypesStruct::TrivialTypesStruct(TrivialTypesStruct&& other) noexcept  :
-    fieldA(std::move(other.fieldA)),
-    fieldB(std::move(other.fieldB)),
-    fieldC(std::move(other.fieldC)),
+    __fbthrift_field_fieldA(std::move(other.__fbthrift_field_fieldA)),
+    __fbthrift_field_fieldB(std::move(other.__fbthrift_field_fieldB)),
+    __fbthrift_field_fieldC(std::move(other.__fbthrift_field_fieldC)),
     fieldD(std::move(other.fieldD)),
-    fieldE(std::move(other.fieldE)),
+    __fbthrift_field_fieldE(std::move(other.__fbthrift_field_fieldE)),
     __isset(other.__isset) {
 }
 
 TrivialTypesStruct& TrivialTypesStruct::operator=(FOLLY_MAYBE_UNUSED TrivialTypesStruct&& other) noexcept {
-    this->fieldA = std::move(other.fieldA);
-    this->fieldB = std::move(other.fieldB);
-    this->fieldC = std::move(other.fieldC);
+    this->__fbthrift_field_fieldA = std::move(other.__fbthrift_field_fieldA);
+    this->__fbthrift_field_fieldB = std::move(other.__fbthrift_field_fieldB);
+    this->__fbthrift_field_fieldC = std::move(other.__fbthrift_field_fieldC);
     this->fieldD = std::move(other.fieldD);
-    this->fieldE = std::move(other.fieldE);
+    this->__fbthrift_field_fieldE = std::move(other.__fbthrift_field_fieldE);
     __isset = other.__isset;
     return *this;
 }
 
 
 TrivialTypesStruct::TrivialTypesStruct(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg, ::std::string fieldB__arg, ::std::string fieldC__arg, ::test::fixtures::tablebased::IOBufPtr fieldD__arg, ::test::fixtures::tablebased::ExampleEnum fieldE__arg) :
-    fieldA(std::move(fieldA__arg)),
-    fieldB(std::move(fieldB__arg)),
-    fieldC(std::move(fieldC__arg)),
+    __fbthrift_field_fieldA(std::move(fieldA__arg)),
+    __fbthrift_field_fieldB(std::move(fieldB__arg)),
+    __fbthrift_field_fieldC(std::move(fieldC__arg)),
     fieldD(std::move(fieldD__arg)),
-    fieldE(std::move(fieldE__arg)) {
+    __fbthrift_field_fieldE(std::move(fieldE__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -173,11 +173,11 @@ TrivialTypesStruct::TrivialTypesStruct(apache::thrift::FragileConstructor, ::std
 
 void TrivialTypesStruct::__clear() {
   // clear all fields
-  this->fieldA = ::std::int32_t();
-  this->fieldB = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->fieldC = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_fieldA = ::std::int32_t();
+  this->__fbthrift_field_fieldB = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_fieldC = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->fieldD = apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::fromStringLiteral("");
-  this->fieldE = ::test::fixtures::tablebased::ExampleEnum();
+  this->__fbthrift_field_fieldE = ::test::fixtures::tablebased::ExampleEnum();
   __isset = {};
 }
 
@@ -191,7 +191,7 @@ bool TrivialTypesStruct::operator==(const TrivialTypesStruct& rhs) const {
   if (!(lhs.fieldB_ref() == rhs.fieldB_ref())) {
     return false;
   }
-  if (lhs.fieldC_ref().has_value() != rhs.fieldC_ref().has_value() || (lhs.fieldC_ref().has_value() && !apache::thrift::StringTraits<std::string>::isEqual(lhs.fieldC, rhs.fieldC))) {
+  if (lhs.fieldC_ref().has_value() != rhs.fieldC_ref().has_value() || (lhs.fieldC_ref().has_value() && !apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_fieldC, rhs.__fbthrift_field_fieldC))) {
     return false;
   }
   if (lhs.fieldD_ref().has_value() != rhs.fieldD_ref().has_value() || (lhs.fieldD_ref().has_value() && !apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(lhs.fieldD, rhs.fieldD))) {
@@ -213,8 +213,8 @@ bool TrivialTypesStruct::operator<(const TrivialTypesStruct& rhs) const {
   if (!(lhs.fieldB_ref() == rhs.fieldB_ref())) {
     return lhs.fieldB_ref() < rhs.fieldB_ref();
   }
-  if (lhs.fieldC_ref().has_value() != rhs.fieldC_ref().has_value() || (lhs.fieldC_ref().has_value() && !apache::thrift::StringTraits<std::string>::isEqual(lhs.fieldC, rhs.fieldC))) {
-    return !lhs.fieldC_ref().has_value() || (rhs.fieldC_ref().has_value() && apache::thrift::StringTraits<std::string>::isLess(lhs.fieldC, rhs.fieldC));
+  if (lhs.fieldC_ref().has_value() != rhs.fieldC_ref().has_value() || (lhs.fieldC_ref().has_value() && !apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_fieldC, rhs.__fbthrift_field_fieldC))) {
+    return !lhs.fieldC_ref().has_value() || (rhs.fieldC_ref().has_value() && apache::thrift::StringTraits<std::string>::isLess(lhs.__fbthrift_field_fieldC, rhs.__fbthrift_field_fieldC));
   }
   if (lhs.fieldD_ref().has_value() != rhs.fieldD_ref().has_value() || (lhs.fieldD_ref().has_value() && !apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(lhs.fieldD, rhs.fieldD))) {
     return !lhs.fieldD_ref().has_value() || (rhs.fieldD_ref().has_value() && apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isLess(lhs.fieldD, rhs.fieldD));
@@ -313,40 +313,40 @@ ContainerStruct::ContainerStruct() {
 ContainerStruct::~ContainerStruct() {}
 
 ContainerStruct::ContainerStruct(ContainerStruct&& other) noexcept  :
-    fieldA(std::move(other.fieldA)),
-    fieldB(std::move(other.fieldB)),
-    fieldC(std::move(other.fieldC)),
-    fieldD(std::move(other.fieldD)),
-    fieldE(std::move(other.fieldE)),
-    fieldF(std::move(other.fieldF)),
-    fieldG(std::move(other.fieldG)),
-    fieldH(std::move(other.fieldH)),
+    __fbthrift_field_fieldA(std::move(other.__fbthrift_field_fieldA)),
+    __fbthrift_field_fieldB(std::move(other.__fbthrift_field_fieldB)),
+    __fbthrift_field_fieldC(std::move(other.__fbthrift_field_fieldC)),
+    __fbthrift_field_fieldD(std::move(other.__fbthrift_field_fieldD)),
+    __fbthrift_field_fieldE(std::move(other.__fbthrift_field_fieldE)),
+    __fbthrift_field_fieldF(std::move(other.__fbthrift_field_fieldF)),
+    __fbthrift_field_fieldG(std::move(other.__fbthrift_field_fieldG)),
+    __fbthrift_field_fieldH(std::move(other.__fbthrift_field_fieldH)),
     __isset(other.__isset) {
 }
 
 ContainerStruct& ContainerStruct::operator=(FOLLY_MAYBE_UNUSED ContainerStruct&& other) noexcept {
-    this->fieldA = std::move(other.fieldA);
-    this->fieldB = std::move(other.fieldB);
-    this->fieldC = std::move(other.fieldC);
-    this->fieldD = std::move(other.fieldD);
-    this->fieldE = std::move(other.fieldE);
-    this->fieldF = std::move(other.fieldF);
-    this->fieldG = std::move(other.fieldG);
-    this->fieldH = std::move(other.fieldH);
+    this->__fbthrift_field_fieldA = std::move(other.__fbthrift_field_fieldA);
+    this->__fbthrift_field_fieldB = std::move(other.__fbthrift_field_fieldB);
+    this->__fbthrift_field_fieldC = std::move(other.__fbthrift_field_fieldC);
+    this->__fbthrift_field_fieldD = std::move(other.__fbthrift_field_fieldD);
+    this->__fbthrift_field_fieldE = std::move(other.__fbthrift_field_fieldE);
+    this->__fbthrift_field_fieldF = std::move(other.__fbthrift_field_fieldF);
+    this->__fbthrift_field_fieldG = std::move(other.__fbthrift_field_fieldG);
+    this->__fbthrift_field_fieldH = std::move(other.__fbthrift_field_fieldH);
     __isset = other.__isset;
     return *this;
 }
 
 
 ContainerStruct::ContainerStruct(apache::thrift::FragileConstructor, ::std::vector<::std::int32_t> fieldA__arg, std::list<::std::int32_t> fieldB__arg, std::deque<::std::int32_t> fieldC__arg, folly::fbvector<::std::int32_t> fieldD__arg, folly::small_vector<::std::int32_t> fieldE__arg, folly::sorted_vector_set<::std::int32_t> fieldF__arg, folly::sorted_vector_map<::std::int32_t, ::std::string> fieldG__arg, ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct> fieldH__arg) :
-    fieldA(std::move(fieldA__arg)),
-    fieldB(std::move(fieldB__arg)),
-    fieldC(std::move(fieldC__arg)),
-    fieldD(std::move(fieldD__arg)),
-    fieldE(std::move(fieldE__arg)),
-    fieldF(std::move(fieldF__arg)),
-    fieldG(std::move(fieldG__arg)),
-    fieldH(std::move(fieldH__arg)) {
+    __fbthrift_field_fieldA(std::move(fieldA__arg)),
+    __fbthrift_field_fieldB(std::move(fieldB__arg)),
+    __fbthrift_field_fieldC(std::move(fieldC__arg)),
+    __fbthrift_field_fieldD(std::move(fieldD__arg)),
+    __fbthrift_field_fieldE(std::move(fieldE__arg)),
+    __fbthrift_field_fieldF(std::move(fieldF__arg)),
+    __fbthrift_field_fieldG(std::move(fieldG__arg)),
+    __fbthrift_field_fieldH(std::move(fieldH__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -360,14 +360,14 @@ ContainerStruct::ContainerStruct(apache::thrift::FragileConstructor, ::std::vect
 
 void ContainerStruct::__clear() {
   // clear all fields
-  this->fieldA.clear();
-  this->fieldB.clear();
-  this->fieldC.clear();
-  this->fieldD.clear();
-  this->fieldE.clear();
-  this->fieldF.clear();
-  this->fieldG.clear();
-  this->fieldH.clear();
+  this->__fbthrift_field_fieldA.clear();
+  this->__fbthrift_field_fieldB.clear();
+  this->__fbthrift_field_fieldC.clear();
+  this->__fbthrift_field_fieldD.clear();
+  this->__fbthrift_field_fieldE.clear();
+  this->__fbthrift_field_fieldF.clear();
+  this->__fbthrift_field_fieldG.clear();
+  this->__fbthrift_field_fieldH.clear();
   __isset = {};
 }
 
@@ -403,67 +403,67 @@ bool ContainerStruct::operator==(const ContainerStruct& rhs) const {
 }
 
 const ::std::vector<::std::int32_t>& ContainerStruct::get_fieldA() const& {
-  return fieldA;
+  return __fbthrift_field_fieldA;
 }
 
 ::std::vector<::std::int32_t> ContainerStruct::get_fieldA() && {
-  return std::move(fieldA);
+  return std::move(__fbthrift_field_fieldA);
 }
 
 const std::list<::std::int32_t>& ContainerStruct::get_fieldB() const& {
-  return fieldB;
+  return __fbthrift_field_fieldB;
 }
 
 std::list<::std::int32_t> ContainerStruct::get_fieldB() && {
-  return std::move(fieldB);
+  return std::move(__fbthrift_field_fieldB);
 }
 
 const std::deque<::std::int32_t>& ContainerStruct::get_fieldC() const& {
-  return fieldC;
+  return __fbthrift_field_fieldC;
 }
 
 std::deque<::std::int32_t> ContainerStruct::get_fieldC() && {
-  return std::move(fieldC);
+  return std::move(__fbthrift_field_fieldC);
 }
 
 const folly::fbvector<::std::int32_t>& ContainerStruct::get_fieldD() const& {
-  return fieldD;
+  return __fbthrift_field_fieldD;
 }
 
 folly::fbvector<::std::int32_t> ContainerStruct::get_fieldD() && {
-  return std::move(fieldD);
+  return std::move(__fbthrift_field_fieldD);
 }
 
 const folly::small_vector<::std::int32_t>& ContainerStruct::get_fieldE() const& {
-  return fieldE;
+  return __fbthrift_field_fieldE;
 }
 
 folly::small_vector<::std::int32_t> ContainerStruct::get_fieldE() && {
-  return std::move(fieldE);
+  return std::move(__fbthrift_field_fieldE);
 }
 
 const folly::sorted_vector_set<::std::int32_t>& ContainerStruct::get_fieldF() const& {
-  return fieldF;
+  return __fbthrift_field_fieldF;
 }
 
 folly::sorted_vector_set<::std::int32_t> ContainerStruct::get_fieldF() && {
-  return std::move(fieldF);
+  return std::move(__fbthrift_field_fieldF);
 }
 
 const folly::sorted_vector_map<::std::int32_t, ::std::string>& ContainerStruct::get_fieldG() const& {
-  return fieldG;
+  return __fbthrift_field_fieldG;
 }
 
 folly::sorted_vector_map<::std::int32_t, ::std::string> ContainerStruct::get_fieldG() && {
-  return std::move(fieldG);
+  return std::move(__fbthrift_field_fieldG);
 }
 
 const ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct>& ContainerStruct::get_fieldH() const& {
-  return fieldH;
+  return __fbthrift_field_fieldH;
 }
 
 ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct> ContainerStruct::get_fieldH() && {
-  return std::move(fieldH);
+  return std::move(__fbthrift_field_fieldH);
 }
 
 

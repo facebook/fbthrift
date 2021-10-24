@@ -71,41 +71,41 @@ namespace some { namespace ns {
 ModuleA::ModuleA(const ModuleA&) = default;
 ModuleA& ModuleA::operator=(const ModuleA&) = default;
 ModuleA::ModuleA() :
-      i32Field() {
+      __fbthrift_field_i32Field() {
 }
 
 
 ModuleA::~ModuleA() {}
 
 ModuleA::ModuleA(ModuleA&& other) noexcept  :
-    i32Field(std::move(other.i32Field)),
-    strField(std::move(other.strField)),
-    listField(std::move(other.listField)),
-    mapField(std::move(other.mapField)),
-    inclAField(std::move(other.inclAField)),
-    inclBField(std::move(other.inclBField)),
+    __fbthrift_field_i32Field(std::move(other.__fbthrift_field_i32Field)),
+    __fbthrift_field_strField(std::move(other.__fbthrift_field_strField)),
+    __fbthrift_field_listField(std::move(other.__fbthrift_field_listField)),
+    __fbthrift_field_mapField(std::move(other.__fbthrift_field_mapField)),
+    __fbthrift_field_inclAField(std::move(other.__fbthrift_field_inclAField)),
+    __fbthrift_field_inclBField(std::move(other.__fbthrift_field_inclBField)),
     __isset(other.__isset) {
 }
 
 ModuleA& ModuleA::operator=(FOLLY_MAYBE_UNUSED ModuleA&& other) noexcept {
-    this->i32Field = std::move(other.i32Field);
-    this->strField = std::move(other.strField);
-    this->listField = std::move(other.listField);
-    this->mapField = std::move(other.mapField);
-    this->inclAField = std::move(other.inclAField);
-    this->inclBField = std::move(other.inclBField);
+    this->__fbthrift_field_i32Field = std::move(other.__fbthrift_field_i32Field);
+    this->__fbthrift_field_strField = std::move(other.__fbthrift_field_strField);
+    this->__fbthrift_field_listField = std::move(other.__fbthrift_field_listField);
+    this->__fbthrift_field_mapField = std::move(other.__fbthrift_field_mapField);
+    this->__fbthrift_field_inclAField = std::move(other.__fbthrift_field_inclAField);
+    this->__fbthrift_field_inclBField = std::move(other.__fbthrift_field_inclBField);
     __isset = other.__isset;
     return *this;
 }
 
 
 ModuleA::ModuleA(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::std::string strField__arg, ::std::vector<::std::int16_t> listField__arg, ::std::map<::std::string, ::std::int32_t> mapField__arg, ::some::ns::IncludedA inclAField__arg, ::some::ns::IncludedB inclBField__arg) :
-    i32Field(std::move(i32Field__arg)),
-    strField(std::move(strField__arg)),
-    listField(std::move(listField__arg)),
-    mapField(std::move(mapField__arg)),
-    inclAField(std::move(inclAField__arg)),
-    inclBField(std::move(inclBField__arg)) {
+    __fbthrift_field_i32Field(std::move(i32Field__arg)),
+    __fbthrift_field_strField(std::move(strField__arg)),
+    __fbthrift_field_listField(std::move(listField__arg)),
+    __fbthrift_field_mapField(std::move(mapField__arg)),
+    __fbthrift_field_inclAField(std::move(inclAField__arg)),
+    __fbthrift_field_inclBField(std::move(inclBField__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -117,12 +117,12 @@ ModuleA::ModuleA(apache::thrift::FragileConstructor, ::std::int32_t i32Field__ar
 
 void ModuleA::__clear() {
   // clear all fields
-  this->i32Field = ::std::int32_t();
-  this->strField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->listField.clear();
-  this->mapField.clear();
-  this->inclAField.__clear();
-  this->inclBField.__clear();
+  this->__fbthrift_field_i32Field = ::std::int32_t();
+  this->__fbthrift_field_strField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_listField.clear();
+  this->__fbthrift_field_mapField.clear();
+  this->__fbthrift_field_inclAField.__clear();
+  this->__fbthrift_field_inclBField.__clear();
   __isset = {};
 }
 
@@ -177,35 +177,35 @@ bool ModuleA::operator<(const ModuleA& rhs) const {
 }
 
 const ::std::vector<::std::int16_t>& ModuleA::get_listField() const& {
-  return listField;
+  return __fbthrift_field_listField;
 }
 
 ::std::vector<::std::int16_t> ModuleA::get_listField() && {
-  return std::move(listField);
+  return std::move(__fbthrift_field_listField);
 }
 
 const ::std::map<::std::string, ::std::int32_t>& ModuleA::get_mapField() const& {
-  return mapField;
+  return __fbthrift_field_mapField;
 }
 
 ::std::map<::std::string, ::std::int32_t> ModuleA::get_mapField() && {
-  return std::move(mapField);
+  return std::move(__fbthrift_field_mapField);
 }
 
 const ::some::ns::IncludedA& ModuleA::get_inclAField() const& {
-  return inclAField;
+  return __fbthrift_field_inclAField;
 }
 
 ::some::ns::IncludedA ModuleA::get_inclAField() && {
-  return std::move(inclAField);
+  return std::move(__fbthrift_field_inclAField);
 }
 
 const ::some::ns::IncludedB& ModuleA::get_inclBField() const& {
-  return inclBField;
+  return __fbthrift_field_inclBField;
 }
 
 ::some::ns::IncludedB ModuleA::get_inclBField() && {
-  return std::move(inclBField);
+  return std::move(__fbthrift_field_inclBField);
 }
 
 
@@ -282,8 +282,8 @@ namespace some { namespace ns {
 
 
 ModuleB::ModuleB(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::some::ns::EnumB inclEnumB__arg) :
-    i32Field(std::move(i32Field__arg)),
-    inclEnumB(std::move(inclEnumB__arg)) {
+    __fbthrift_field_i32Field(std::move(i32Field__arg)),
+    __fbthrift_field_inclEnumB(std::move(inclEnumB__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
@@ -291,8 +291,8 @@ ModuleB::ModuleB(apache::thrift::FragileConstructor, ::std::int32_t i32Field__ar
 
 void ModuleB::__clear() {
   // clear all fields
-  this->i32Field = ::std::int32_t();
-  this->inclEnumB = ::some::ns::EnumB();
+  this->__fbthrift_field_i32Field = ::std::int32_t();
+  this->__fbthrift_field_inclEnumB = ::some::ns::EnumB();
   __isset = {};
 }
 
