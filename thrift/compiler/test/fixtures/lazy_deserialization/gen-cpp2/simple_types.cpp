@@ -193,7 +193,7 @@ void TccStructTraits<::apache::thrift::test::LazyFoo>::translateFieldName(
 namespace apache { namespace thrift { namespace test {
 
 LazyFoo::LazyFoo(const LazyFoo& srcObj) {
-  const auto relaxed = std::memory_order::memory_order_relaxed;
+  const auto relaxed = std::memory_order_relaxed;
   std::lock_guard<std::mutex> lock(srcObj.__fbthrift_deserializationMutex_);
   __fbthrift_protocol_ = srcObj.__fbthrift_protocol_;
   __fbthrift_serializedData_ = srcObj.__fbthrift_serializedData_;
@@ -229,7 +229,7 @@ LazyFoo::LazyFoo(LazyFoo&& other) noexcept  :
     __isset(other.__isset),
     __fbthrift_protocol_(other.__fbthrift_protocol_),
     __fbthrift_serializedData_(std::move(other.__fbthrift_serializedData_)) {
-  const auto relaxed = std::memory_order::memory_order_relaxed;
+  const auto relaxed = std::memory_order_relaxed;
   {
     const auto isDeserialized = other.__fbthrift_isDeserialized_.field3.load(relaxed);
     __fbthrift_isDeserialized_.field3.store(isDeserialized, relaxed);
@@ -243,7 +243,7 @@ LazyFoo::LazyFoo(LazyFoo&& other) noexcept  :
 }
 
 LazyFoo& LazyFoo::operator=(FOLLY_MAYBE_UNUSED LazyFoo&& other) noexcept {
-    const auto relaxed = std::memory_order::memory_order_relaxed;
+    const auto relaxed = std::memory_order_relaxed;
     __fbthrift_protocol_ = other.__fbthrift_protocol_;
     __fbthrift_serializedData_ = std::move(other.__fbthrift_serializedData_);
     this->__fbthrift_field_field1 = std::move(other.__fbthrift_field_field1);
@@ -629,7 +629,7 @@ void TccStructTraits<::apache::thrift::test::OptionalLazyFoo>::translateFieldNam
 namespace apache { namespace thrift { namespace test {
 
 OptionalLazyFoo::OptionalLazyFoo(const OptionalLazyFoo& srcObj) {
-  const auto relaxed = std::memory_order::memory_order_relaxed;
+  const auto relaxed = std::memory_order_relaxed;
   std::lock_guard<std::mutex> lock(srcObj.__fbthrift_deserializationMutex_);
   __fbthrift_protocol_ = srcObj.__fbthrift_protocol_;
   __fbthrift_serializedData_ = srcObj.__fbthrift_serializedData_;
@@ -665,7 +665,7 @@ OptionalLazyFoo::OptionalLazyFoo(OptionalLazyFoo&& other) noexcept  :
     __isset(other.__isset),
     __fbthrift_protocol_(other.__fbthrift_protocol_),
     __fbthrift_serializedData_(std::move(other.__fbthrift_serializedData_)) {
-  const auto relaxed = std::memory_order::memory_order_relaxed;
+  const auto relaxed = std::memory_order_relaxed;
   {
     const auto isDeserialized = other.__fbthrift_isDeserialized_.field3.load(relaxed);
     __fbthrift_isDeserialized_.field3.store(isDeserialized, relaxed);
@@ -679,7 +679,7 @@ OptionalLazyFoo::OptionalLazyFoo(OptionalLazyFoo&& other) noexcept  :
 }
 
 OptionalLazyFoo& OptionalLazyFoo::operator=(FOLLY_MAYBE_UNUSED OptionalLazyFoo&& other) noexcept {
-    const auto relaxed = std::memory_order::memory_order_relaxed;
+    const auto relaxed = std::memory_order_relaxed;
     __fbthrift_protocol_ = other.__fbthrift_protocol_;
     __fbthrift_serializedData_ = std::move(other.__fbthrift_serializedData_);
     this->__fbthrift_field_field1 = std::move(other.__fbthrift_field_field1);
@@ -908,7 +908,7 @@ void TccStructTraits<::apache::thrift::test::LazyCppRef>::translateFieldName(
 namespace apache { namespace thrift { namespace test {
 
 LazyCppRef::LazyCppRef(const LazyCppRef& srcObj) {
-  const auto relaxed = std::memory_order::memory_order_relaxed;
+  const auto relaxed = std::memory_order_relaxed;
   std::lock_guard<std::mutex> lock(srcObj.__fbthrift_deserializationMutex_);
   __fbthrift_protocol_ = srcObj.__fbthrift_protocol_;
   __fbthrift_serializedData_ = srcObj.__fbthrift_serializedData_;
@@ -942,7 +942,7 @@ LazyCppRef::LazyCppRef(LazyCppRef&& other) noexcept  :
     field3(std::move(other.field3)),
     __fbthrift_protocol_(other.__fbthrift_protocol_),
     __fbthrift_serializedData_(std::move(other.__fbthrift_serializedData_)) {
-  const auto relaxed = std::memory_order::memory_order_relaxed;
+  const auto relaxed = std::memory_order_relaxed;
   {
     const auto isDeserialized = other.__fbthrift_isDeserialized_.field1.load(relaxed);
     __fbthrift_isDeserialized_.field1.store(isDeserialized, relaxed);
@@ -961,7 +961,7 @@ LazyCppRef::LazyCppRef(LazyCppRef&& other) noexcept  :
 }
 
 LazyCppRef& LazyCppRef::operator=(FOLLY_MAYBE_UNUSED LazyCppRef&& other) noexcept {
-    const auto relaxed = std::memory_order::memory_order_relaxed;
+    const auto relaxed = std::memory_order_relaxed;
     __fbthrift_protocol_ = other.__fbthrift_protocol_;
     __fbthrift_serializedData_ = std::move(other.__fbthrift_serializedData_);
     this->field1 = std::move(other.field1);

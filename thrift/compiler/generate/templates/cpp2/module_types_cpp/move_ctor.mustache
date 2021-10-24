@@ -38,7 +38,7 @@
 <%/field:cpp_adapter%>
 <%/struct:fields%>
 <%#struct:lazy_fields?%>
-  const auto relaxed = std::memory_order::memory_order_relaxed;
+  const auto relaxed = std::memory_order_relaxed;
 <%#struct:fields%><%#field:lazy?%>
   {
     const auto isDeserialized = other.__fbthrift_isDeserialized_.<%field:cpp_name%>.load(relaxed);

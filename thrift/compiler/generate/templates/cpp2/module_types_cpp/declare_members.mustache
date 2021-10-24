@@ -31,7 +31,7 @@
 <%struct:name%>::<% > module_types_cpp/move_ctor%>
 <%struct:name%>& <%struct:name%>::operator=(FOLLY_MAYBE_UNUSED <%struct:name%>&& other) noexcept {
 <%#struct:lazy_fields?%>
-    const auto relaxed = std::memory_order::memory_order_relaxed;
+    const auto relaxed = std::memory_order_relaxed;
     __fbthrift_protocol_ = other.__fbthrift_protocol_;
     __fbthrift_serializedData_ = std::move(other.__fbthrift_serializedData_);
 <%/struct:lazy_fields?%>
