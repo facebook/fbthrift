@@ -79,8 +79,8 @@ class MyStruct final  {
   void __clear();
  private:
   ::matching_module_name::OtherStruct __fbthrift_field_OtherStructField;
-private:
-  apache::thrift::detail::isset_bitset<1> __isset;
+ private:
+  apache::thrift::detail::isset_bitset<1, false> __isset;
 
  public:
 
@@ -89,22 +89,22 @@ private:
 
   template <typename..., typename T = ::matching_module_name::OtherStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> OtherStructField_ref() const& {
-    return {this->__fbthrift_field_OtherStructField, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_OtherStructField, __isset.__fbthrift_at(folly::index_constant<0>()), __isset.__fbthrift_bit(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::matching_module_name::OtherStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> OtherStructField_ref() const&& {
-    return {std::move(this->__fbthrift_field_OtherStructField), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_OtherStructField), __isset.__fbthrift_at(folly::index_constant<0>()), __isset.__fbthrift_bit(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::matching_module_name::OtherStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> OtherStructField_ref() & {
-    return {this->__fbthrift_field_OtherStructField, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {this->__fbthrift_field_OtherStructField, __isset.__fbthrift_at(folly::index_constant<0>()), __isset.__fbthrift_bit(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::matching_module_name::OtherStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> OtherStructField_ref() && {
-    return {std::move(this->__fbthrift_field_OtherStructField), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_OtherStructField), __isset.__fbthrift_at(folly::index_constant<0>()), __isset.__fbthrift_bit(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::matching_module_name::OtherStruct>

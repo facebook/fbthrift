@@ -21,15 +21,15 @@
 #include <memory>
 #include <type_traits>
 
+#include <folly/CPortability.h>
+#include <folly/Traits.h>
 #include <thrift/lib/cpp2/Adapt.h>
+#include <thrift/lib/cpp2/FieldRef.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/TypeClass.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/TableBasedForwardTypes.h>
-
-#include <folly/CPortability.h>
-#include <folly/Traits.h>
 
 #ifdef SWIG
 #error SWIG
@@ -207,26 +207,22 @@ class isset_bitset {
   template <size_t field_index>
   bool __fbthrift_get(folly::index_constant<field_index>) const {
     check<field_index>();
-    return array_isset[field_index / kBits] >> (field_index % kBits) & 1;
+    return array_isset[field_index / kBits][field_index % kBits];
   }
   template <size_t field_index>
   void __fbthrift_set(folly::index_constant<field_index>, bool isset_flag) {
     check<field_index>();
-    if (isset_flag) {
-      array_isset[field_index / kBits] |= 1 << (field_index % kBits);
-    } else {
-      array_isset[field_index / kBits] &= ~(1 << (field_index % kBits));
-    }
+    array_isset[field_index / kBits][field_index % kBits] = isset_flag;
   }
   template <size_t field_index>
   const uint8_t& __fbthrift_at(folly::index_constant<field_index>) const {
     check<field_index>();
-    return array_isset[field_index / kBits];
+    return array_isset[field_index / kBits].value();
   }
   template <size_t field_index>
   uint8_t& __fbthrift_at(folly::index_constant<field_index>) {
     check<field_index>();
-    return array_isset[field_index / kBits];
+    return array_isset[field_index / kBits].value();
   }
   template <size_t field_index>
   uint8_t __fbthrift_bit(folly::index_constant<field_index>) const {
@@ -246,7 +242,10 @@ class isset_bitset {
 
  private:
   static constexpr size_t kBits = packed ? 8 : 1;
-  std::array<uint8_t, (NumBits + kBits - 1) / kBits> array_isset{};
+  std::array<
+      apache::thrift::detail::BitSet<uint8_t>,
+      (NumBits + kBits - 1) / kBits>
+      array_isset;
 };
 
 } // namespace detail

@@ -19,6 +19,6 @@
   <%#field:lazy?%>mutable <%/field:lazy?%><%field:cpp_storage_type%> <%field:cpp_storage_name%>;
 <%/field:type%><%/struct:fields_in_layout_order%>
 <%#struct:isset_fields?%>
-private:
-  apache::thrift::detail::isset_bitset<<%struct:isset_fields_size%>> __isset;
+ private:
+  apache::thrift::detail::isset_bitset<<%struct:isset_fields_size%>, <%struct:packed_isset%>> __isset;
 <%/struct:isset_fields?%>
