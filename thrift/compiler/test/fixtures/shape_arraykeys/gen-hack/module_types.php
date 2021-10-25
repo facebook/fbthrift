@@ -116,11 +116,11 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   public static function __stringifyMapKeys<T>(Map<arraykey, T> $m)[]: Map<string, T> {
-    $new_map = Map {};
+    $new = dict[];
     foreach ($m as $k => $v) {
-      $new_map[(string)$k] = $v;
+      $new[(string)$k] = $v;
     }
-    return $new_map;
+    return new Map($new);
   }
 
   public static function __fromShape(self::TShape $shape)[]: this {
@@ -1568,11 +1568,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   public static function __stringifyMapKeys<T>(Map<arraykey, T> $m)[]: Map<string, T> {
-    $new_map = Map {};
+    $new = dict[];
     foreach ($m as $k => $v) {
-      $new_map[(string)$k] = $v;
+      $new[(string)$k] = $v;
     }
-    return $new_map;
+    return new Map($new);
   }
 
   public static function __fromShape(self::TShape $shape)[]: this {

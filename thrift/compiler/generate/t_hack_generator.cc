@@ -2445,13 +2445,13 @@ void t_hack_generator::generate_php_struct_shape_methods(
       indent(out)
           << "return darray(Dict\\map_keys($m, $key ==> (string)$key));\n";
     } else {
-      indent(out) << "$new_map = Map {};\n";
+      indent(out) << "$new = dict[];\n";
       indent(out) << "foreach ($m as $k => $v) {\n";
       indent_up();
-      indent(out) << "$new_map[(string)$k] = $v;\n";
+      indent(out) << "$new[(string)$k] = $v;\n";
       indent_down();
       indent(out) << "}\n";
-      indent(out) << "return $new_map;\n";
+      indent(out) << "return new Map($new);\n";
     }
     indent_down();
     indent(out) << "}\n\n";
