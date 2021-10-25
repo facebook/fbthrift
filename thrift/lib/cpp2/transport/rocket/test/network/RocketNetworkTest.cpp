@@ -940,8 +940,8 @@ struct FirstResponseCallback
       apache::thrift::FirstResponsePayload&& firstPayload,
       apache::thrift::detail::ClientSinkBridge::Ptr sinkBridge) override {
     firstResponse_.payload_.emplace(std::move(firstPayload));
-    firstResponse_.baton_.post();
     firstResponse_.sinkBridge_ = std::move(sinkBridge);
+    firstResponse_.baton_.post();
     delete this;
   }
 
