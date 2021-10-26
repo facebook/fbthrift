@@ -119,7 +119,7 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         void setIsOverloaded(cIsOverloadedFunc isOverloaded)
         void useExistingSocket(int socket) except +
         cBaseThriftServerMetadata& metadata()
-        void setThreadManagerFromExecutor(cFollyExecutor*)
+        void setThreadManagerFromExecutor(cFollyExecutor*, string)
         void setStopWorkersOnStopListening(cbool stopWorkers)
         cbool getStopWorkersOnStopListening()
 

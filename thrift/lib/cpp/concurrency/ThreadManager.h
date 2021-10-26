@@ -397,11 +397,20 @@ FOLLY_MSVC_DISABLE_WARNING(4250) // inherits keepAliveAcq/Rel via dominance
 class ThreadManagerExecutorAdapter : public ThreadManager,
                                      public folly::DefaultKeepAliveExecutor {
  public:
+  struct Options {
+    Options() = default;
+    explicit Options(std::string name) : wrappedExecutorName(std::move(name)) {}
+    std::string wrappedExecutorName;
+  };
+
   /* implicit */
-  ThreadManagerExecutorAdapter(std::shared_ptr<folly::Executor> exe);
-  explicit ThreadManagerExecutorAdapter(folly::Executor::KeepAlive<> ka);
   explicit ThreadManagerExecutorAdapter(
-      std::array<std::shared_ptr<Executor>, N_PRIORITIES>);
+      std::shared_ptr<folly::Executor> exe, Options opts = Options());
+  explicit ThreadManagerExecutorAdapter(
+      folly::Executor::KeepAlive<> ka, Options opts = Options());
+  explicit ThreadManagerExecutorAdapter(
+      std::array<std::shared_ptr<Executor>, N_PRIORITIES>,
+      Options opts = Options());
 
   ~ThreadManagerExecutorAdapter() override;
 
@@ -457,6 +466,7 @@ class ThreadManagerExecutorAdapter : public ThreadManager,
   }
 
   bool keepAliveJoined_{false};
+  Options opts_;
 };
 FOLLY_POP_WARNING
 

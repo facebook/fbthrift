@@ -571,12 +571,14 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @param executor folly::Executor to be set as the threadManager
    */
-  void setThreadManagerFromExecutor(folly::Executor* executor) {
+  void setThreadManagerFromExecutor(
+      folly::Executor* executor, std::string name = "") {
     CHECK(configMutable());
     std::lock_guard<std::mutex> lock(threadManagerMutex_);
+    concurrency::ThreadManagerExecutorAdapter::Options opts(std::move(name));
     threadManager_ =
         std::make_shared<concurrency::ThreadManagerExecutorAdapter>(
-            folly::getKeepAliveToken(executor));
+            folly::getKeepAliveToken(executor), std::move(opts));
   }
 
   /**

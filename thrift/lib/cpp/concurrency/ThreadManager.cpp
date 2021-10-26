@@ -1467,16 +1467,20 @@ void forEachThreadManager(
 } // namespace
 
 ThreadManagerExecutorAdapter::ThreadManagerExecutorAdapter(
-    std::shared_ptr<folly::Executor> exe)
-    : ThreadManagerExecutorAdapter(fillArrayWith<N_PRIORITIES>(exe)) {}
-
-ThreadManagerExecutorAdapter::ThreadManagerExecutorAdapter(
-    folly::Executor::KeepAlive<> ka)
+    std::shared_ptr<folly::Executor> exe, Options opts)
     : ThreadManagerExecutorAdapter(
-          std::make_shared<folly::VirtualExecutor>(std::move(ka))) {}
+          fillArrayWith<N_PRIORITIES>(exe), std::move(opts)) {}
 
 ThreadManagerExecutorAdapter::ThreadManagerExecutorAdapter(
-    std::array<std::shared_ptr<folly::Executor>, N_PRIORITIES> executors) {
+    folly::Executor::KeepAlive<> ka, Options opts)
+    : ThreadManagerExecutorAdapter(
+          std::make_shared<folly::VirtualExecutor>(std::move(ka)),
+          std::move(opts)) {}
+
+ThreadManagerExecutorAdapter::ThreadManagerExecutorAdapter(
+    std::array<std::shared_ptr<folly::Executor>, N_PRIORITIES> executors,
+    Options opts)
+    : opts_(std::move(opts)) {
   for (size_t i = 0; i < executors.size(); i++) {
     auto& executor = executors[i];
     if (!executor) {
@@ -1494,7 +1498,6 @@ ThreadManagerExecutorAdapter::ThreadManagerExecutorAdapter(
         auto simpletm =
             dynamic_cast<SimpleThreadManagerImpl*>(executor.get())) {
       executors_[idxFromPriSrc(i, 0)] = executor.get();
-      std::unique_ptr<folly::MeteredExecutor> adapter;
       for (int j = 1; j < N_SOURCES; j++) {
         executors_[idxFromPriSrc(i, j)] =
             simpletm
@@ -1511,11 +1514,14 @@ ThreadManagerExecutorAdapter::ThreadManagerExecutorAdapter(
       executors_[idxFromPriSrc(i, 0)] = executor.get();
       std::unique_ptr<folly::MeteredExecutor> adapter;
       for (int j = 1; j < N_SOURCES; j++) {
+        folly::MeteredExecutor::Options opt;
+        opt.name = opts_.wrappedExecutorName;
         if (!adapter) {
-          adapter = std::make_unique<folly::MeteredExecutor>(executor.get());
+          adapter = std::make_unique<folly::MeteredExecutor>(
+              executor.get(), std::move(opt));
         } else {
-          adapter =
-              std::make_unique<folly::MeteredExecutor>(std::move(adapter));
+          adapter = std::make_unique<folly::MeteredExecutor>(
+              std::move(adapter), std::move(opt));
         }
         executors_[idxFromPriSrc(i, j)] = adapter.get();
       }
