@@ -28,7 +28,6 @@ import enum
 import functools
 
 from thrift.py3lite.exceptions cimport GeneratedError
-from thrift.py3lite.exceptions import GeneratedErrorMeta
 from thrift.py3lite.serializer cimport cserialize, cdeserialize
 
 
@@ -608,7 +607,7 @@ def fill_specs(*struct_types):
         cls._fbthrift_fill_spec()
 
     for cls in struct_types:
-        if isinstance(cls, (StructMeta, GeneratedErrorMeta)):
+        if not isinstance(cls, UnionMeta):
             cls._fbthrift_store_field_values()
 
 
