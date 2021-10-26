@@ -169,6 +169,10 @@ std::string get_out_dir_base(
   return options.find("py3cpp") != options.end() ? "gen-py3cpp" : "gen-cpp2";
 }
 
+std::string mangle_field_name(const std::string& name) {
+  return "__fbthrift_field_" + name;
+}
+
 } // namespace
 
 class cpp2_generator_context {
@@ -627,7 +631,7 @@ class mstch_cpp2_field : public mstch_field {
       return cpp2::get_name(field_);
     }
 
-    return "__fbthrift_field_" + cpp2::get_name(field_);
+    return mangle_field_name(cpp2::get_name(field_));
   }
   mstch::node cpp_storage_type() {
     return context_->resolver().get_storage_type_name(field_);
@@ -781,11 +785,7 @@ class mstch_cpp2_field : public mstch_field {
       return false;
     }
 
-    if (strct->has_annotation(
-            {"cpp.methods",
-             "cpp2.methods",
-             "cpp.allocator_via",
-             "cpp2.allocator_via"})) {
+    if (strct->has_annotation({"cpp.methods", "cpp2.methods"})) {
       return false;
     }
 
@@ -970,7 +970,7 @@ class mstch_cpp2_struct : public mstch_struct {
             strct_->find_annotation_or_null("cpp.allocator_via")) {
       for (const auto& field : strct_->fields()) {
         if (cpp2::get_name(&field) == *name) {
-          return *name;
+          return mangle_field_name(*name);
         }
       }
       throw std::runtime_error("No cpp.allocator_via field \"" + *name + "\"");
