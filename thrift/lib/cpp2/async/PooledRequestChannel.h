@@ -106,7 +106,8 @@ class PooledRequestChannel : public RequestChannel {
 
  protected:
   template <typename SendFunc>
-  void sendRequestImpl(SendFunc&& sendFunc, folly::EventBase& eb);
+  void sendRequestImpl(
+      SendFunc&& sendFunc, folly::Executor::KeepAlive<folly::EventBase>&& evb);
 
  private:
   PooledRequestChannel(
@@ -120,7 +121,8 @@ class PooledRequestChannel : public RequestChannel {
 
   Impl& impl(folly::EventBase& evb);
 
-  folly::EventBase& getEvb(const RpcOptions& options);
+  folly::Executor::KeepAlive<folly::EventBase> getEvb(
+      const RpcOptions& options);
 
   ImplCreator implCreator_;
 

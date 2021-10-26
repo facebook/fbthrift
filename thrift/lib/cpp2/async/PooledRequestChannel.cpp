@@ -40,17 +40,18 @@ static void maybeCreateInteraction(
 }
 } // namespace
 
-folly::EventBase& PooledRequestChannel::getEvb(const RpcOptions& options) {
+folly::Executor::KeepAlive<folly::EventBase> PooledRequestChannel::getEvb(
+    const RpcOptions& options) {
   if (options.getInteractionId()) {
-    return *reinterpret_cast<InteractionState*>(options.getInteractionId())
-                ->keepAlive.get();
+    return reinterpret_cast<InteractionState*>(options.getInteractionId())
+        ->keepAlive;
   }
 
   auto executor = executor_.lock();
   if (!executor) {
     throw std::logic_error("IO executor already destroyed.");
   }
-  return *executor->getEventBase();
+  return executor->getEventBase();
 }
 
 uint16_t PooledRequestChannel::getProtocolId() {
@@ -58,9 +59,9 @@ uint16_t PooledRequestChannel::getProtocolId() {
     return value;
   }
 
-  auto& evb = getEvb({});
-  evb.runImmediatelyOrRunInEventBaseThreadAndWait([&] {
-    protocolId_.store(impl(evb).getProtocolId(), std::memory_order_relaxed);
+  auto evb = getEvb({});
+  evb->runImmediatelyOrRunInEventBaseThreadAndWait([&] {
+    protocolId_.store(impl(*evb).getProtocolId(), std::memory_order_relaxed);
   });
 
   return protocolId_.load(std::memory_order_relaxed);
@@ -68,13 +69,10 @@ uint16_t PooledRequestChannel::getProtocolId() {
 
 template <typename SendFunc>
 void PooledRequestChannel::sendRequestImpl(
-    SendFunc&& sendFunc, folly::EventBase& evb) {
-  evb.runInEventBaseThread(
-      [this,
-       keepAlive = getKeepAliveToken(evb),
-       sendFunc = std::forward<SendFunc>(sendFunc)]() mutable {
-        sendFunc(impl(*keepAlive));
-      });
+    SendFunc&& sendFunc, folly::Executor::KeepAlive<folly::EventBase>&& evb) {
+  std::move(evb).add(
+      [this, sendFunc = std::forward<SendFunc>(sendFunc)](
+          auto&& keepAlive) mutable { sendFunc(impl(*keepAlive)); });
 }
 
 namespace {
@@ -137,7 +135,7 @@ void PooledRequestChannel::sendRequestResponse(
     cob = RequestClientCallback::Ptr(new ExecutorRequestCallback<false>(
         std::move(cob), getKeepAliveToken(callbackExecutor_)));
   }
-  auto& evb = getEvb(options);
+  auto evb = getEvb(options);
   sendRequestImpl(
       [options = std::move(options),
        methodMetadata = std::move(methodMetadata),
@@ -152,7 +150,7 @@ void PooledRequestChannel::sendRequestResponse(
             std::move(header),
             std::move(cob));
       },
-      evb);
+      std::move(evb));
 }
 
 void PooledRequestChannel::sendRequestNoResponse(
@@ -165,7 +163,7 @@ void PooledRequestChannel::sendRequestNoResponse(
     cob = RequestClientCallback::Ptr(new ExecutorRequestCallback<true>(
         std::move(cob), getKeepAliveToken(callbackExecutor_)));
   }
-  auto& evb = getEvb(options);
+  auto evb = getEvb(options);
   sendRequestImpl(
       [options = std::move(options),
        methodMetadata = std::move(methodMetadata),
@@ -180,7 +178,7 @@ void PooledRequestChannel::sendRequestNoResponse(
             std::move(header),
             std::move(cob));
       },
-      evb);
+      std::move(evb));
 }
 
 void PooledRequestChannel::sendRequestStream(
@@ -189,7 +187,7 @@ void PooledRequestChannel::sendRequestStream(
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     StreamClientCallback* cob) {
-  auto& evb = getEvb(options);
+  auto evb = getEvb(options);
   sendRequestImpl(
       [options = std::move(options),
        methodMetadata = std::move(methodMetadata),
@@ -204,7 +202,7 @@ void PooledRequestChannel::sendRequestStream(
             std::move(header),
             cob);
       },
-      evb);
+      std::move(evb));
 }
 
 void PooledRequestChannel::sendRequestSink(
@@ -213,7 +211,7 @@ void PooledRequestChannel::sendRequestSink(
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     SinkClientCallback* cob) {
-  auto& evb = getEvb(options);
+  auto evb = getEvb(options);
   sendRequestImpl(
       [options = std::move(options),
        methodMetadata = std::move(methodMetadata),
@@ -228,15 +226,14 @@ void PooledRequestChannel::sendRequestSink(
             std::move(header),
             cob);
       },
-      evb);
+      std::move(evb));
 }
 
 InteractionId PooledRequestChannel::createInteraction(
     ManagedStringView&& name) {
   CHECK(!name.view().empty());
-  auto& evb = getEvb({});
   return createInteractionId(reinterpret_cast<int64_t>(
-      new InteractionState{getKeepAliveToken(evb), std::move(name), {}}));
+      new InteractionState{getEvb({}), std::move(name), {}}));
 }
 
 void PooledRequestChannel::terminateInteraction(InteractionId idWrapper) {
