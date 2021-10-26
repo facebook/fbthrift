@@ -1324,11 +1324,11 @@ class LazyCppRef final  {
   LazyCppRef& operator=(const LazyCppRef& src);
   void __clear();
  private:
-  mutable ::std::unique_ptr<::std::vector<::std::int32_t>> field1;
+  mutable ::std::unique_ptr<::std::vector<::std::int32_t>> __fbthrift_field_field1;
  private:
-  mutable ::std::shared_ptr<::std::vector<::std::int32_t>> field2;
+  mutable ::std::shared_ptr<::std::vector<::std::int32_t>> __fbthrift_field_field2;
  private:
-  mutable ::std::shared_ptr<const ::std::vector<::std::int32_t>> field3;
+  mutable ::std::shared_ptr<const ::std::vector<::std::int32_t>> __fbthrift_field_field3;
 
  public:
 

@@ -789,7 +789,7 @@ class mstch_cpp2_field : public mstch_field {
       return false;
     }
 
-    return is_private() && !cpp2::is_ref(field_) &&
+    return is_private() &&
         gen::cpp::type_resolver::find_first_adapter(field_) == nullptr;
   }
 
