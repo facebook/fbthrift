@@ -38,8 +38,8 @@ cdef class ComplexStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public str name
     cdef public _module_types.AnEnum an_enum
     cdef public bytes some_bytes
-    cdef public str sender
-    cdef public str cdef_
+    cdef public str sender "from"
+    cdef public str cdef_ "cdef"
     cdef public bytes bytes_with_cpp_type
 
 

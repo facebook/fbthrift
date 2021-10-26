@@ -51,7 +51,7 @@ cdef class {{struct:name}}_Builder(thrift.py3.builder.StructBuilder):
         }}{{#type:cythonTypeNoneable?}}{{^type:struct?}}{{!
         }}{{> types/CythonPythonType}} {{!
         }}{{/type:struct?}}{{/type:cythonTypeNoneable?}}{{!
-        }}{{/field:type}}{{field:py_name}}
+        }}{{/field:type}}{{field:py_name}}{{#field:hasModifiedName?}} "{{field:cppName}}"{{/field:hasModifiedName?}}
     {{/struct:py3_fields}}
 
 

@@ -83,7 +83,7 @@ cdef class MyDataItem_Builder(thrift.py3.builder.StructBuilder):
 
 
 cdef class Renaming_Builder(thrift.py3.builder.StructBuilder):
-    cdef public pint foo
+    cdef public pint foo "bar"
 
 
 cdef class AnnotatedTypes_Builder(thrift.py3.builder.StructBuilder):

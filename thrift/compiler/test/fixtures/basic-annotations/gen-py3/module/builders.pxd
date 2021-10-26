@@ -18,7 +18,7 @@ cdef class MyStructNestedAnnotation_Builder(thrift.py3.builder.StructBuilder):
 
 
 cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
-    cdef public pint major
+    cdef public pint major "majorVer"
     cdef public str package
     cdef public str annotation_with_quote
     cdef public str class_
