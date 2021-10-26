@@ -223,6 +223,7 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
   void thaw(ViewPosition self, T& out) const {
     out.clear();
     auto v = view(self);
+    out.reserve(v.size());
     for (auto it = v.begin(); it != v.end(); ++it) {
       out.insert(it.thaw());
     }
