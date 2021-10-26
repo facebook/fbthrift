@@ -72,6 +72,8 @@ THRIFT_FLAG_DEFINE_bool(alpn_allow_mismatch, true);
 
 THRIFT_FLAG_DEFINE_bool(dump_snapshot_on_long_shutdown, true);
 
+THRIFT_FLAG_DEFINE_bool(server_check_unimplemented_extra_interfaces, true);
+
 namespace apache::thrift::detail {
 THRIFT_PLUGGABLE_FUNC_REGISTER(
     apache::thrift::ThriftServer::DumpSnapshotOnLongShutdownResult,
@@ -83,6 +85,13 @@ THRIFT_PLUGGABLE_FUNC_REGISTER(
     apache::thrift::ThriftServer::ExtraInterfaces,
     createDefaultExtraInterfaces) {
   return {nullptr /* monitoring */, nullptr /* status */};
+}
+
+THRIFT_PLUGGABLE_FUNC_REGISTER(
+    ThriftServer::UnimplementedExtraInterfacesResult,
+    serviceHasUnimplementedExtraInterfaces,
+    AsyncProcessorFactory& /* service */) {
+  return ThriftServer::UnimplementedExtraInterfacesResult::UNRECOGNIZED;
 }
 } // namespace apache::thrift::detail
 

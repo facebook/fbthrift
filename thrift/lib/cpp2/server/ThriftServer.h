@@ -1087,6 +1087,21 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     folly::SemiFuture<folly::Unit> task;
     std::chrono::milliseconds timeout;
   };
+
+  enum class UnimplementedExtraInterfacesResult {
+    /**
+     * The method is completely unrecognized by the service.
+     */
+    UNRECOGNIZED,
+    /**
+     * Extra interfaces are implemented directly by the service.
+     */
+    IMPLEMENTED,
+    /**
+     * Extra interfaces are left unimplemented but recognized by the service.
+     */
+    UNIMPLEMENTED,
+  };
 };
 
 template <typename AcceptorClass, typename SharedSSLContextManagerClass>
@@ -1136,6 +1151,11 @@ THRIFT_PLUGGABLE_FUNC_DECLARE(
 THRIFT_PLUGGABLE_FUNC_DECLARE(
     apache::thrift::ThriftServer::ExtraInterfaces,
     createDefaultExtraInterfaces);
+
+THRIFT_PLUGGABLE_FUNC_DECLARE(
+    ThriftServer::UnimplementedExtraInterfacesResult,
+    serviceHasUnimplementedExtraInterfaces,
+    AsyncProcessorFactory& service);
 
 } // namespace detail
 
