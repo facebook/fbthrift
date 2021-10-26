@@ -9,6 +9,7 @@
 #include <thrift/lib/cpp2/gen/module_types_h.h>
 
 
+#include "thrift/annotation/gen-cpp2/cpp_types.h"
 
 namespace apache {
 namespace thrift {
@@ -102,7 +103,7 @@ class Foo final  {
  private:
   double __fbthrift_field_field4;
  private:
-  apache::thrift::detail::isset_bitset<4, false> __isset;
+  apache::thrift::detail::isset_bitset<4, true> __isset;
 
  public:
 

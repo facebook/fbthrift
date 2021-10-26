@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+include "thrift/annotation/cpp.thrift"
+
+@cpp.PackIsset
 struct Foo {
   1: optional i32 field1;
   2: optional i32 field2;

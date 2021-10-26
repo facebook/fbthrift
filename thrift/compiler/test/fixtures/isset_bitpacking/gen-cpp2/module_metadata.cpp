@@ -44,6 +44,7 @@ StructMetadata<::cpp2::Foo>::gen(ThriftMetadata& metadata) {
     field.structured_annotations_ref() = f.structured_annotations;
     module_Foo.fields_ref()->push_back(std::move(field));
   }
+  module_Foo.structured_annotations_ref()->push_back(*cvStruct("cpp.PackIsset", {}).cv_struct_ref());
   return res.first->second;
 }
 
