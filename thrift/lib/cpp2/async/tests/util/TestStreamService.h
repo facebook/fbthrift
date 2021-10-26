@@ -17,6 +17,7 @@
 #pragma once
 
 #include <folly/io/async/ScopedEventBaseThread.h>
+#include <thrift/lib/cpp2/async/ServerStreamMultiPublisher.h>
 #include <thrift/lib/cpp2/async/tests/util/gen-cpp2/TestStreamService.h>
 
 namespace testutil {
@@ -68,6 +69,66 @@ class TestStreamPublisherWithHeaderService : public TestStreamServiceSvIf {
 
   apache::thrift::ServerStream<int32_t> rangeThrowUDE(
       int32_t from, int32_t to) override;
+};
+
+class TestStreamMultiPublisherService : public TestStreamServiceSvIf {
+ public:
+  apache::thrift::ServerStream<int32_t> range(
+      int32_t from, int32_t to) override;
+
+  apache::thrift::ServerStream<int32_t> rangeThrow(
+      int32_t from, int32_t to) override;
+
+  apache::thrift::ServerStream<int32_t> rangeThrowUDE(
+      int32_t from, int32_t to) override;
+
+  apache::thrift::ServerStream<int32_t> rangeWaitForCancellation(
+      int32_t from, int32_t to) override;
+
+  apache::thrift::ServerStream<int32_t> uncompletedPublisherDestructor()
+      override;
+
+  apache::thrift::ServerStream<int32_t> uncompletedPublisherMoveAssignment()
+      override;
+
+  folly::coro::Baton* waitForCancellation_;
+
+ private:
+  apache::thrift::ServerStream<int32_t> range(
+      int32_t from, int32_t to, bool slow, folly::exception_wrapper ew);
+
+  apache::thrift::ServerStreamMultiPublisher<int32_t> multipub_;
+  std::atomic<size_t> activeStreams_{0};
+};
+
+class TestStreamMultiPublisherWithHeaderService : public TestStreamServiceSvIf {
+ public:
+  apache::thrift::ServerStream<int32_t> range(
+      int32_t from, int32_t to) override;
+
+  apache::thrift::ServerStream<int32_t> rangeThrow(
+      int32_t from, int32_t to) override;
+
+  apache::thrift::ServerStream<int32_t> rangeThrowUDE(
+      int32_t from, int32_t to) override;
+
+  apache::thrift::ServerStream<int32_t> rangeWaitForCancellation(
+      int32_t from, int32_t to) override;
+
+  apache::thrift::ServerStream<int32_t> uncompletedPublisherDestructor()
+      override;
+
+  apache::thrift::ServerStream<int32_t> uncompletedPublisherMoveAssignment()
+      override;
+
+  folly::coro::Baton* waitForCancellation_;
+
+ private:
+  apache::thrift::ServerStream<int32_t> range(
+      int32_t from, int32_t to, bool slow, folly::exception_wrapper ew);
+
+  apache::thrift::ServerStreamMultiPublisher<int32_t, true> multipub_;
+  std::atomic<size_t> activeStreams_{0};
 };
 
 } // namespace testservice

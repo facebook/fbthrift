@@ -45,6 +45,20 @@ struct StreamPayload {
   StreamPayload(std::unique_ptr<folly::IOBuf> p, StreamPayloadMetadata&& md)
       : payload(std::move(p)), metadata(std::move(md)) {}
 
+  StreamPayload(const StreamPayload& oth) : metadata(oth.metadata) {
+    if (oth.payload) {
+      payload = oth.payload->clone();
+    }
+  }
+
+  StreamPayload& operator=(const StreamPayload& oth) {
+    if (oth.payload) {
+      payload = oth.payload->clone();
+    }
+    metadata = oth.metadata;
+    return *this;
+  }
+
   std::unique_ptr<folly::IOBuf> payload;
   StreamPayloadMetadata metadata;
 };

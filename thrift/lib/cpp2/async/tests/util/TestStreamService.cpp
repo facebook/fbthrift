@@ -16,6 +16,9 @@
 
 #include <thrift/lib/cpp2/async/tests/util/TestStreamService.h>
 
+#include <folly/experimental/coro/AsyncScope.h>
+#include <folly/portability/GTest.h>
+
 namespace testutil {
 namespace testservice {
 
@@ -155,6 +158,148 @@ TestStreamPublisherWithHeaderService::rangeThrowUDE(int32_t from, int32_t to) {
   std::move(publisher).complete(UserDefinedException());
 
   return std::move(stream);
+}
+
+apache::thrift::ServerStream<int32_t> TestStreamMultiPublisherService::range(
+    int32_t from, int32_t to) {
+  return range(from, to, false, folly::exception_wrapper());
+}
+
+apache::thrift::ServerStream<int32_t>
+TestStreamMultiPublisherService::rangeWaitForCancellation(
+    int32_t from, int32_t to) {
+  return range(from, to, true, folly::exception_wrapper());
+}
+
+apache::thrift::ServerStream<int32_t>
+TestStreamMultiPublisherService::rangeThrow(int32_t from, int32_t to) {
+  return range(from, to, false, std::runtime_error("oops"));
+}
+
+apache::thrift::ServerStream<int32_t>
+TestStreamMultiPublisherService::rangeThrowUDE(int32_t from, int32_t to) {
+  return range(from, to, false, UserDefinedException());
+}
+
+apache::thrift::ServerStream<int32_t>
+TestStreamMultiPublisherService::uncompletedPublisherDestructor() {
+  auto stream = multipub_.addStream();
+  EXPECT_DEATH(
+      [_ = std::move(multipub_)] {}(),
+      "StreamMultiPublisher must be completed or all streams must be cancelled");
+  return stream;
+}
+
+apache::thrift::ServerStream<int32_t>
+TestStreamMultiPublisherService::uncompletedPublisherMoveAssignment() {
+  auto stream = multipub_.addStream();
+  EXPECT_DEATH(
+      multipub_ = apache::thrift::ServerStreamMultiPublisher<int32_t>(),
+      "StreamMultiPublisher must be completed or all streams must be cancelled");
+  return stream;
+}
+
+apache::thrift::ServerStream<int32_t> TestStreamMultiPublisherService::range(
+    int32_t from,
+    int32_t to,
+    bool waitForCancellation,
+    folly::exception_wrapper ew) {
+  auto stream = multipub_.addStream([&] { --activeStreams_; });
+  if (++activeStreams_ == 5) {
+    getAsyncScope()->add(
+        folly::coro::co_invoke(
+            [=, ew = std::move(ew)]() mutable -> folly::coro::Task<void> {
+              for (int i = from; i <= to; i++) {
+                if (waitForCancellation && i == from + 1) {
+                  co_await *waitForCancellation_;
+                }
+                multipub_.next(i);
+                co_await folly::coro::co_reschedule_on_current_executor;
+              }
+              if (ew) {
+                std::move(multipub_).complete(std::move(ew));
+              } else {
+                std::move(multipub_).complete();
+              }
+              EXPECT_EQ(0, activeStreams_);
+            })
+            .scheduleOn(getEventBase()));
+  }
+  return stream;
+}
+
+apache::thrift::ServerStream<int32_t>
+TestStreamMultiPublisherWithHeaderService::range(int32_t from, int32_t to) {
+  return range(from, to, false, folly::exception_wrapper());
+}
+
+apache::thrift::ServerStream<int32_t>
+TestStreamMultiPublisherWithHeaderService::rangeWaitForCancellation(
+    int32_t from, int32_t to) {
+  return range(from, to, true, folly::exception_wrapper());
+}
+
+apache::thrift::ServerStream<int32_t>
+TestStreamMultiPublisherWithHeaderService::rangeThrow(
+    int32_t from, int32_t to) {
+  return range(from, to, false, std::runtime_error("oops"));
+}
+
+apache::thrift::ServerStream<int32_t>
+TestStreamMultiPublisherWithHeaderService::rangeThrowUDE(
+    int32_t from, int32_t to) {
+  return range(from, to, false, UserDefinedException());
+}
+
+apache::thrift::ServerStream<int32_t>
+TestStreamMultiPublisherWithHeaderService::uncompletedPublisherDestructor() {
+  auto stream = multipub_.addStream();
+  EXPECT_DEATH(
+      [_ = std::move(multipub_)] {}(),
+      "StreamMultiPublisher must be completed or all streams must be cancelled");
+  return stream;
+}
+apache::thrift::ServerStream<int32_t>
+TestStreamMultiPublisherWithHeaderService::
+    uncompletedPublisherMoveAssignment() {
+  auto stream = multipub_.addStream();
+  auto multipub = apache::thrift::ServerStreamMultiPublisher<int32_t, true>();
+  EXPECT_DEATH(
+      multipub_ = std::move(multipub),
+      "StreamMultiPublisher must be completed or all streams must be cancelled");
+  return stream;
+}
+
+apache::thrift::ServerStream<int32_t>
+TestStreamMultiPublisherWithHeaderService::range(
+    int32_t from,
+    int32_t to,
+    bool waitForCancellation,
+    folly::exception_wrapper ew) {
+  auto stream = multipub_.addStream([&] { --activeStreams_; });
+  if (++activeStreams_ == 5) {
+    getAsyncScope()->add(
+        folly::coro::co_invoke(
+            [=, ew = std::move(ew)]() mutable -> folly::coro::Task<void> {
+              for (int i = from; i <= to; i++) {
+                if (waitForCancellation && i == from + 1) {
+                  co_await *waitForCancellation_;
+                }
+                multipub_.next(Pair{i, {{"val", std::to_string(i)}}});
+                multipub_.next(
+                    Pair{std::nullopt, {{"val", std::to_string(i)}}});
+                co_await folly::coro::co_reschedule_on_current_executor;
+              }
+              if (ew) {
+                std::move(multipub_).complete(std::move(ew));
+              } else {
+                std::move(multipub_).complete();
+              }
+              EXPECT_EQ(0, activeStreams_);
+            })
+            .scheduleOn(getEventBase()));
+  }
+  return stream;
 }
 
 } // namespace testservice

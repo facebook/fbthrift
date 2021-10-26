@@ -24,4 +24,7 @@ service TestStreamService {
     1: i32 from,
     2: i32 to,
   );
+  stream<i32> rangeWaitForCancellation(1: i32 from, 2: i32 to);
+  stream<i32> uncompletedPublisherDestructor();
+  stream<i32> uncompletedPublisherMoveAssignment();
 }

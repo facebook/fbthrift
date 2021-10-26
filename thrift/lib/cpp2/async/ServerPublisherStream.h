@@ -28,6 +28,9 @@ namespace thrift {
 template <typename T, bool WithHeader = false>
 class ServerStreamPublisher;
 
+template <typename T, bool WithHeader>
+class ServerStreamMultiPublisher;
+
 namespace detail {
 template <typename T, bool WithHeader = false>
 class ServerPublisherStream : private StreamServerCallback {
@@ -203,49 +206,8 @@ class ServerPublisherStream : private StreamServerCallback {
              std::unique_ptr<ServerPublisherStream, CancelDeleter>(stream)](
             folly::Executor::KeepAlive<> serverExecutor,
             apache::thrift::detail::StreamElementEncoder<T>* encode) mutable {
-          stream->serverExecutor_ = std::move(serverExecutor);
-
-          while (auto messages =
-                     stream->encodeOrQueue_.closeOrGetMessages(encode)) {
-            for (; !messages.empty(); messages.pop()) {
-              auto message = std::move(messages.front());
-              if (message.hasValue()) {
-                if constexpr (WithHeader) {
-                  if (!message->payload) {
-                    StreamPayloadMetadata md;
-                    md.otherMetadata_ref() = std::move(message->metadata);
-                    stream->queue_.push(folly::Try<StreamPayload>(
-                        folly::in_place, nullptr, std::move(md)));
-                  } else {
-                    folly::Try<StreamPayload> sp =
-                        (*encode)(std::move(*message->payload));
-                    sp->metadata.otherMetadata_ref() =
-                        std::move(message->metadata);
-                    stream->queue_.push(std::move(sp));
-                  }
-                } else {
-                  stream->queue_.push((*encode)(std::move(message.value())));
-                }
-              } else if (message.hasException()) {
-                stream->queue_.push((*encode)(std::move(message.exception())));
-              } else {
-                stream->queue_.push((*encode)());
-              }
-            }
-          }
-
-          return ServerStreamFactory([stream = std::move(stream)](
-                                         FirstResponsePayload&& payload,
-                                         StreamClientCallback* callback,
-                                         folly::EventBase* clientEb,
-                                         TilePtr&& interaction) mutable {
-            stream->streamClientCallback_ = callback;
-            stream->clientEventBase_ = clientEb;
-            stream->interaction_ =
-                TileStreamGuard::transferFrom(std::move(interaction));
-            std::ignore = callback->onFirstResponse(
-                std::move(payload), clientEb, stream.release());
-          });
+          return establishStream(
+              std::move(stream), std::move(serverExecutor), encode);
         },
         ServerStreamPublisher<T, WithHeader>(stream->copy())};
   }
@@ -288,6 +250,16 @@ class ServerPublisherStream : private StreamServerCallback {
     }
   }
 
+  void publish(folly::Try<StreamPayload>&& payload) {
+    bool close = !payload.hasValue();
+    queue_.push(std::move(payload));
+    if (close) {
+      // ensure the callback has completed when we return from complete()
+      // (if started from onStreamCancel())
+      onStreamCompleteOrCancel_.callOrJoin();
+    }
+  }
+
   bool wasCancelled() { return !onStreamCompleteOrCancel_; }
 
   void consume() {
@@ -306,6 +278,52 @@ class ServerPublisherStream : private StreamServerCallback {
       : streamClientCallback_(nullptr),
         clientEventBase_(nullptr),
         onStreamCompleteOrCancel_(std::move(onStreamCompleteOrCancel)) {}
+
+  static ServerStreamFactory establishStream(
+      std::unique_ptr<ServerPublisherStream, CancelDeleter> stream,
+      folly::Executor::KeepAlive<> serverExecutor,
+      StreamElementEncoder<T>* encode) {
+    stream->serverExecutor_ = std::move(serverExecutor);
+    while (auto messages = stream->encodeOrQueue_.closeOrGetMessages(encode)) {
+      for (; !messages.empty(); messages.pop()) {
+        auto message = std::move(messages.front());
+        if (message.hasValue()) {
+          if constexpr (WithHeader) {
+            if (!message->payload) {
+              StreamPayloadMetadata md;
+              md.otherMetadata_ref() = std::move(message->metadata);
+              stream->queue_.push(folly::Try<StreamPayload>(
+                  folly::in_place, nullptr, std::move(md)));
+            } else {
+              folly::Try<StreamPayload> sp =
+                  (*encode)(std::move(*message->payload));
+              sp->metadata.otherMetadata_ref() = std::move(message->metadata);
+              stream->queue_.push(std::move(sp));
+            }
+          } else {
+            stream->queue_.push((*encode)(std::move(message.value())));
+          }
+        } else if (message.hasException()) {
+          stream->queue_.push((*encode)(std::move(message.exception())));
+        } else {
+          stream->queue_.push((*encode)());
+        }
+      }
+    }
+
+    return ServerStreamFactory([stream = std::move(stream)](
+                                   FirstResponsePayload&& payload,
+                                   StreamClientCallback* callback,
+                                   folly::EventBase* clientEb,
+                                   TilePtr&& interaction) mutable {
+      stream->streamClientCallback_ = callback;
+      stream->clientEventBase_ = clientEb;
+      stream->interaction_ =
+          TileStreamGuard::transferFrom(std::move(interaction));
+      std::ignore = callback->onFirstResponse(
+          std::move(payload), clientEb, stream.release());
+    });
+  }
 
   Ptr copy() {
     auto refCount = refCount_.fetch_add(1, std::memory_order_relaxed);
@@ -436,6 +454,8 @@ class ServerPublisherStream : private StreamServerCallback {
   CreditBuffer creditBuffer_;
 
   TileStreamGuard interaction_;
+
+  friend class ServerStreamMultiPublisher<T, WithHeader>;
 };
 
 } // namespace detail
