@@ -210,6 +210,8 @@ class t_hack_generator : public t_oop_generator {
       const t_service* tservice, const t_function* tfunction);
   void generate_php_stream_function_helpers(
       const t_function* tfunction, const std::string& prefix);
+  void generate_php_sink_function_helpers(
+      const t_function* tfunction, const std::string& prefix);
   void generate_php_interaction_function_helpers(
       const t_service* tservice,
       const t_service* interaction,
@@ -4037,6 +4039,7 @@ void t_hack_generator::generate_php_function_helpers(
     generate_php_stream_function_helpers(tfunction, service_name);
     return;
   } else if (tfunction->returns_sink()) {
+    generate_php_sink_function_helpers(tfunction, service_name);
     return;
   }
 
@@ -4112,6 +4115,16 @@ void t_hack_generator::generate_php_stream_function_helpers(
 }
 
 /**
+ * Generates a struct and helpers for a sink function.
+ *
+ * @param tfunction The function
+ */
+void t_hack_generator::generate_php_sink_function_helpers(
+    const t_function* tfunction, const std::string& prefix) {
+  generate_php_function_args_helpers(tfunction, prefix);
+}
+
+/**
  * Generates a struct and helpers for an interaction function
  */
 void t_hack_generator::generate_php_interaction_function_helpers(
@@ -4123,6 +4136,7 @@ void t_hack_generator::generate_php_interaction_function_helpers(
     generate_php_stream_function_helpers(tfunction, prefix);
     return;
   } else if (tfunction->returns_sink()) {
+    generate_php_sink_function_helpers(tfunction, prefix);
     return;
   }
   generate_php_function_args_helpers(tfunction, prefix);
