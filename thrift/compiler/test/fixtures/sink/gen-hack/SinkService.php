@@ -73,6 +73,281 @@ class SinkServiceStaticMetadata implements \IThriftServiceStaticMetadata {
     return tmeta_ThriftService::fromShape(
       shape(
         "name" => "module.SinkService",
+        "functions" => vec[
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "method",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_sink" => tmeta_ThriftSinkType::fromShape(
+                    shape(
+                      "elemType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.SinkPayload",
+                            )
+                          ),
+                        )
+                      ),
+                      "finalResponseType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.FinalResponse",
+                            )
+                          ),
+                        )
+                      ),
+                      "initialResponseType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+            )
+          ),
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "methodAndReponse",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_sink" => tmeta_ThriftSinkType::fromShape(
+                    shape(
+                      "elemType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.SinkPayload",
+                            )
+                          ),
+                        )
+                      ),
+                      "finalResponseType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.FinalResponse",
+                            )
+                          ),
+                        )
+                      ),
+                      "initialResponseType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.InitialResponse",
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+            )
+          ),
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "methodThrow",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_sink" => tmeta_ThriftSinkType::fromShape(
+                    shape(
+                      "elemType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.SinkPayload",
+                            )
+                          ),
+                        )
+                      ),
+                      "finalResponseType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.FinalResponse",
+                            )
+                          ),
+                        )
+                      ),
+                      "initialResponseType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "exceptions" => vec[
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 1,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_struct" => tmeta_ThriftStructType::fromShape(
+                          shape(
+                            "name" => "module.InitialException",
+                          )
+                        ),
+                      )
+                    ),
+                    "name" => "ex",
+                  )
+                ),
+              ],
+            )
+          ),
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "methodSinkThrow",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_sink" => tmeta_ThriftSinkType::fromShape(
+                    shape(
+                      "elemType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.SinkPayload",
+                            )
+                          ),
+                        )
+                      ),
+                      "finalResponseType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.FinalResponse",
+                            )
+                          ),
+                        )
+                      ),
+                      "initialResponseType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+            )
+          ),
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "methodFinalThrow",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_sink" => tmeta_ThriftSinkType::fromShape(
+                    shape(
+                      "elemType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.SinkPayload",
+                            )
+                          ),
+                        )
+                      ),
+                      "finalResponseType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.FinalResponse",
+                            )
+                          ),
+                        )
+                      ),
+                      "initialResponseType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+            )
+          ),
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "methodBothThrow",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_sink" => tmeta_ThriftSinkType::fromShape(
+                    shape(
+                      "elemType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.SinkPayload",
+                            )
+                          ),
+                        )
+                      ),
+                      "finalResponseType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.FinalResponse",
+                            )
+                          ),
+                        )
+                      ),
+                      "initialResponseType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+            )
+          ),
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "methodFast",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_sink" => tmeta_ThriftSinkType::fromShape(
+                    shape(
+                      "elemType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.SinkPayload",
+                            )
+                          ),
+                        )
+                      ),
+                      "finalResponseType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.FinalResponse",
+                            )
+                          ),
+                        )
+                      ),
+                      "initialResponseType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+            )
+          ),
+        ],
       )
     );
   }

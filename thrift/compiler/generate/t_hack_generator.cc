@@ -602,7 +602,7 @@ class t_hack_generator : public t_oop_generator {
   }
 
   bool is_client_only_function(const t_function* func) {
-    return func->returns_stream();
+    return func->returns_stream() || func->returns_sink();
   }
 
   std::vector<const t_service*> get_interactions(
@@ -1609,10 +1609,20 @@ std::unique_ptr<t_const_value> t_hack_generator::type_to_tmeta(
     tsink_tmeta->add_map(
         std::make_unique<t_const_value>("finalResponseType"),
         type_to_tmeta(tsink->get_final_response_type()));
-    tsink_tmeta->add_map(
-        std::make_unique<t_const_value>("initialResponseType"),
-        type_to_tmeta(tsink->get_first_response_type()));
-
+    if (tsink->sink_has_first_response()) {
+      tsink_tmeta->add_map(
+          std::make_unique<t_const_value>("initialResponseType"),
+          type_to_tmeta(tsink->get_first_response_type()));
+    } else {
+      auto first_response_type = std::make_unique<t_const_value>();
+      first_response_type->add_map(
+          std::make_unique<t_const_value>("t_primitive"),
+          std::make_unique<t_const_value>(
+              ThriftPrimitiveType::THRIFT_VOID_TYPE));
+      tsink_tmeta->add_map(
+          std::make_unique<t_const_value>("initialResponseType"),
+          std::move(first_response_type));
+    }
     tmeta_ThriftType->add_map(
         std::make_unique<t_const_value>("t_sink"), std::move(tsink_tmeta));
   } else if (
@@ -3999,6 +4009,9 @@ void t_hack_generator::generate_service_interactions(
 
     // Generate interaction method implementations
     for (const auto& function : get_supported_client_functions(interaction)) {
+      if (function->returns_sink()) {
+        continue;
+      }
       _generate_service_client_child_fn(
           f_service_, interaction, function, /*rpc_options*/ true);
       _generate_sendImpl(f_service_, interaction, function);
@@ -4022,6 +4035,8 @@ void t_hack_generator::generate_php_function_helpers(
   const std::string& service_name = tservice->name();
   if (tfunction->returns_stream()) {
     generate_php_stream_function_helpers(tfunction, service_name);
+    return;
+  } else if (tfunction->returns_sink()) {
     return;
   }
 
@@ -4107,6 +4122,8 @@ void t_hack_generator::generate_php_interaction_function_helpers(
   if (tfunction->returns_stream()) {
     generate_php_stream_function_helpers(tfunction, prefix);
     return;
+  } else if (tfunction->returns_sink()) {
+    return;
   }
   generate_php_function_args_helpers(tfunction, prefix);
 
@@ -4152,6 +4169,9 @@ void t_hack_generator::generate_php_docstring(
  */
 void t_hack_generator::generate_php_docstring(
     std::ofstream& out, const t_function* tfunction) {
+  if (tfunction->returns_sink()) {
+    return;
+  }
   indent(out) << "/**\n";
   // Copy the doc.
   if (tfunction->has_doc()) {
@@ -4598,6 +4618,9 @@ void t_hack_generator::generate_service_interface(
   auto functions = client ? get_supported_client_functions(tservice)
                           : get_supported_server_functions(tservice);
   for (const auto* function : functions) {
+    if (function->returns_sink()) {
+      continue;
+    }
     if (async && client && !is_client_only_function(function)) {
       continue;
     }
@@ -4661,6 +4684,9 @@ void t_hack_generator::_generate_service_client(
 
   // Generate client method implementations
   for (const auto* function : get_supported_client_functions(tservice)) {
+    if (function->returns_sink()) {
+      continue;
+    }
     _generate_sendImpl(out, tservice, function);
     if (function->qualifier() != t_function_qualifier::one_way) {
       _generate_recvImpl(out, tservice, function);
@@ -5239,6 +5265,9 @@ void t_hack_generator::_generate_service_client_children(
 
   // Generate functions as necessary.
   for (const auto* function : get_supported_client_functions(tservice)) {
+    if (function->returns_sink()) {
+      continue;
+    }
     _generate_service_client_child_fn(out, tservice, function, rpc_options);
     if (no_use_hack_collections_) {
       _generate_service_client_child_fn(
