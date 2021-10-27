@@ -56,7 +56,11 @@ std::ostream& operator<<(std::ostream& os, const diagnostic& e) {
   if (!e.token().empty()) {
     os << "(last token was '" << e.token() << "') ";
   }
-  return os << e.message();
+  os << e.message();
+  if (!e.name().empty()) {
+    return os << " [" << e.name() << "]";
+  }
+  return os;
 }
 
 void diagnostic_results::add(diagnostic diag) {

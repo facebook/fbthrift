@@ -51,31 +51,41 @@ class diagnostic {
    * @param file       - file path location of diagnostic
    * @param line       - line location of diagnostic in the file, if known
    * @param token      - the last token, if applicable.
+   * @param name       - name given to this diagnostic, if any
    */
   diagnostic(
       diagnostic_level level,
       std::string message,
       std::string file,
       int line = 0,
-      std::string token = {})
+      std::string token = "",
+      std::string name = "")
       : level_(level),
         message_(std::move(message)),
         file_(std::move(file)),
         line_(line),
-        token_(std::move(token)) {}
+        token_(std::move(token)),
+        name_(std::move(name)) {}
   diagnostic(
       diagnostic_level level,
       std::string message,
       const t_node* node,
-      const t_program* program)
-      : diagnostic(level, std::move(message), program->path(), node->lineno()) {
-  }
+      const t_program* program,
+      std::string name = "")
+      : diagnostic(
+            level,
+            std::move(message),
+            program->path(),
+            node->lineno(),
+            "",
+            std::move(name)) {}
 
   diagnostic_level level() const { return level_; }
   const std::string& message() const { return message_; }
   const std::string& file() const { return file_; }
   int lineno() const { return line_; }
   const std::string& token() const { return token_; }
+  const std::string& name() const { return name_; }
 
   std::string str() const;
 
@@ -85,11 +95,12 @@ class diagnostic {
   std::string file_;
   int line_;
   std::string token_;
+  std::string name_;
 
   friend bool operator==(const diagnostic& lhs, const diagnostic& rhs) {
     return lhs.level_ == rhs.level_ && lhs.line_ == rhs.line_ &&
         lhs.message_ == rhs.message_ && lhs.file_ == rhs.file_ &&
-        lhs.token_ == rhs.token_;
+        lhs.token_ == rhs.token_ && lhs.name_ == rhs.name_;
   }
   friend bool operator!=(const diagnostic& lhs, const diagnostic& rhs) {
     return !(lhs == rhs);
