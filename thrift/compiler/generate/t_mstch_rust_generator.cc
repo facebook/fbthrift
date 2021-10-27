@@ -363,8 +363,8 @@ class mstch_rust_program : public mstch_program {
   }
   mstch::node rust_nonexhaustive_structs() {
     for (auto& strct : program_->structs()) {
-      // The is_struct is because `union` are also in this collection.
-      if (strct->is_struct() && !strct->has_annotation("rust.exhaustive")) {
+      // The is_union is because `union` are also in this collection.
+      if (!strct->is_union() && !strct->has_annotation("rust.exhaustive")) {
         return true;
       }
     }
