@@ -31,6 +31,7 @@ service TestService {
   void noop();
   void oops() throws (1: EmptyException ee);
   oneway void oneway();
+  void surprise();
 }
 
 //

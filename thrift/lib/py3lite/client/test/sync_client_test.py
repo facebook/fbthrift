@@ -12,8 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import time
 import unittest
 
+import thrift.py3lite.types  # noqa: F401, TODO: remove after D31914637 lands
+from thrift.py3lite.exceptions import ApplicationError
 from thrift.py3lite.serializer import Protocol
 from thrift.py3lite.sync_client import ClientType, get_client
 from thrift.py3lite.test.lite_clients import TestService
@@ -60,3 +63,10 @@ class SyncClientTests(unittest.TestCase):
         with server_in_another_process() as path:
             with get_client(TestService, path=path) as client:
                 self.assertIsNone(client.oneway())
+                time.sleep(1)  # wait for server to clear the queue
+
+    def test_unexpected_exception(self) -> None:
+        with server_in_another_process() as path:
+            with get_client(TestService, path=path) as client:
+                with self.assertRaises(ApplicationError):
+                    client.surprise()

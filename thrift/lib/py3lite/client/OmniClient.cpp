@@ -159,6 +159,7 @@ folly::SemiFuture<OmniClientResponseWithHeaders> OmniClient::semifuture_send(
           state.exception().throw_exception();
         }
         OmniClientResponseWithHeaders resp;
+        resp.messageType = state.messageType();
         resp.buf = std::move(state.serializedResponse().buffer);
         resp.headers = state.header()->releaseHeaders();
         state.resetCtx(nullptr);

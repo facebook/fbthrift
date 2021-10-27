@@ -29,9 +29,7 @@ from folly.iobuf cimport IOBuf
 from libc.stdint cimport uint32_t
 from libcpp.memory cimport make_unique
 from libcpp.utility cimport move as cmove
-from thrift.py3lite.serializer cimport Protocol as cProtocol
-from thrift.py3lite.serializer import serialize_iobuf, deserialize
-from thrift.py3lite.client.omni_client cimport cOmniClientResponseWithHeaders
+from thrift.py3lite.client.omni_client cimport cOmniClientResponseWithHeaders, MessageType
 from thrift.py3lite.client.request_channel cimport (
     createThriftChannelTCP,
     createThriftChannelUnix,
@@ -39,6 +37,9 @@ from thrift.py3lite.client.request_channel cimport (
     RequestChannel,
 )
 from thrift.py3lite.client.request_channel import ClientType
+from thrift.py3lite.exceptions import ApplicationError, ApplicationErrorType
+from thrift.py3lite.serializer cimport Protocol as cProtocol
+from thrift.py3lite.serializer import serialize_iobuf, deserialize
 
 
 @cython.auto_pickle(False)
@@ -112,10 +113,23 @@ cdef void _async_client_send_request_callback(
     PyObject* userdata,
 ):
     pyfuture, response_cls, protocol = <object> userdata
-    response_iobuf = folly.iobuf.from_unique_ptr(cmove(result.value().buf))
-    pyfuture.set_result(
-        deserialize(response_cls, response_iobuf, protocol=protocol)
-    )
+    message_type = result.value().messageType
+    if message_type == MessageType.T_REPLY:
+        response_iobuf = folly.iobuf.from_unique_ptr(cmove(result.value().buf))
+        pyfuture.set_result(
+            deserialize(response_cls, response_iobuf, protocol=protocol)
+        )
+    elif message_type == MessageType.T_EXCEPTION:
+        # TODO: deserialize the actual error from buf
+        pyfuture.set_exception(ApplicationError(
+            ApplicationErrorType.UNKNOWN,
+            "Unknown error",
+        ))
+    else:
+        pyfuture.set_exception(ApplicationError(
+            ApplicationErrorType.INVALID_MESSAGE_TYPE,
+            f"Got invalid message type {message_type}",
+        ))
 
 
 

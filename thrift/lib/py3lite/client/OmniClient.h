@@ -33,6 +33,7 @@ using RequestChannel_ptr = std::unique_ptr<
     folly::DelayedDestruction::Destructor>;
 
 struct OmniClientResponseWithHeaders {
+  apache::thrift::MessageType messageType;
   std::unique_ptr<folly::IOBuf> buf;
   apache::thrift::transport::THeader::StringToStringMap headers;
 };

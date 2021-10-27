@@ -12,8 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import asyncio
+
+import thrift.py3lite.types  # noqa: F401, TODO: remove after D31914637 lands
 from later.unittest import TestCase
 from thrift.py3lite.async_client import ClientType, get_client
+from thrift.py3lite.exceptions import ApplicationError
 from thrift.py3lite.serializer import Protocol
 from thrift.py3lite.test.lite_clients import TestService
 from thrift.py3lite.test.lite_types import ArithmeticException, EmptyException
@@ -64,3 +68,10 @@ class SyncClientTests(TestCase):
             async with get_client(TestService, host=addr.ip, port=addr.port) as client:
                 res = await client.oneway()
                 self.assertIsNone(res)
+                await asyncio.sleep(1)  # wait for server to clear the queue
+
+    async def test_unexpected_exception(self) -> None:
+        async with server_in_event_loop() as addr:
+            async with get_client(TestService, host=addr.ip, port=addr.port) as client:
+                with self.assertRaises(ApplicationError):
+                    await client.surprise()

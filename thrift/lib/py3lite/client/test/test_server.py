@@ -42,6 +42,9 @@ class Handler(TestServiceInterface):
     async def oneway(self) -> None:
         pass
 
+    async def surprise(self) -> None:
+        raise RuntimeError("Surprise!")
+
 
 @contextlib.contextmanager
 def server_in_another_process():
