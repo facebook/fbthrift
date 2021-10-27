@@ -789,8 +789,7 @@ class mstch_cpp2_field : public mstch_field {
       return false;
     }
 
-    return is_private() &&
-        gen::cpp::type_resolver::find_first_adapter(field_) == nullptr;
+    return is_private();
   }
 
   std::shared_ptr<cpp2_generator_context> context_;

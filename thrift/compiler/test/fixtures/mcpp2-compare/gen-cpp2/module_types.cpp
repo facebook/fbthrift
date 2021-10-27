@@ -404,12 +404,12 @@ MyStruct::MyStruct(const MyStruct& srcObj) {
   __isset.__fbthrift_set(folly::index_constant<6>(),srcObj.__isset.__fbthrift_get(folly::index_constant<6>()));
   __fbthrift_field_MyMapEnumAndInt = srcObj.__fbthrift_field_MyMapEnumAndInt;
   __isset.__fbthrift_set(folly::index_constant<7>(),srcObj.__isset.__fbthrift_get(folly::index_constant<7>()));
-  MyCustomField = srcObj.MyCustomField;
+  __fbthrift_field_MyCustomField = srcObj.__fbthrift_field_MyCustomField;
   __isset.__fbthrift_set(folly::index_constant<8>(),srcObj.__isset.__fbthrift_get(folly::index_constant<8>()));
-  MyOptCustomField = srcObj.MyOptCustomField;
+  __fbthrift_field_MyOptCustomField = srcObj.__fbthrift_field_MyOptCustomField;
   __isset.__fbthrift_set(folly::index_constant<9>(),srcObj.__isset.__fbthrift_get(folly::index_constant<9>()));
-  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 10>(MyCustomField, *this);
-  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 11>(MyOptCustomField, *this);
+  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 10>(__fbthrift_field_MyCustomField, *this);
+  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 11>(__fbthrift_field_MyOptCustomField, *this);
 }
 
 MyStruct& MyStruct::operator=(const MyStruct& src) {
@@ -440,11 +440,11 @@ MyStruct::MyStruct(MyStruct&& other) noexcept  :
     MyBinaryField3(std::move(other.MyBinaryField3)),
     __fbthrift_field_MyBinaryListField4(std::move(other.__fbthrift_field_MyBinaryListField4)),
     __fbthrift_field_MyMapEnumAndInt(std::move(other.__fbthrift_field_MyMapEnumAndInt)),
-    MyCustomField(std::move(other.MyCustomField)),
-    MyOptCustomField(std::move(other.MyOptCustomField)),
+    __fbthrift_field_MyCustomField(std::move(other.__fbthrift_field_MyCustomField)),
+    __fbthrift_field_MyOptCustomField(std::move(other.__fbthrift_field_MyOptCustomField)),
     __isset(other.__isset) {
-  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 10>(MyCustomField, *this);
-  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 11>(MyOptCustomField, *this);
+  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 10>(__fbthrift_field_MyCustomField, *this);
+  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 11>(__fbthrift_field_MyOptCustomField, *this);
 }
 
 MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
@@ -457,8 +457,8 @@ MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
     this->MyBinaryField3 = std::move(other.MyBinaryField3);
     this->__fbthrift_field_MyBinaryListField4 = std::move(other.__fbthrift_field_MyBinaryListField4);
     this->__fbthrift_field_MyMapEnumAndInt = std::move(other.__fbthrift_field_MyMapEnumAndInt);
-    this->MyCustomField = std::move(other.MyCustomField);
-    this->MyOptCustomField = std::move(other.MyOptCustomField);
+    this->__fbthrift_field_MyCustomField = std::move(other.__fbthrift_field_MyCustomField);
+    this->__fbthrift_field_MyOptCustomField = std::move(other.__fbthrift_field_MyOptCustomField);
     __isset = other.__isset;
     return *this;
 }
@@ -474,10 +474,10 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, ::
     MyBinaryField3(std::move(MyBinaryField3__arg)),
     __fbthrift_field_MyBinaryListField4(std::move(MyBinaryListField4__arg)),
     __fbthrift_field_MyMapEnumAndInt(std::move(MyMapEnumAndInt__arg)),
-    MyCustomField(std::move(MyCustomField__arg)),
-    MyOptCustomField(std::move(MyOptCustomField__arg)) {
-  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 10>(MyCustomField, *this);
-  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 11>(MyOptCustomField, *this);
+    __fbthrift_field_MyCustomField(std::move(MyCustomField__arg)),
+    __fbthrift_field_MyOptCustomField(std::move(MyOptCustomField__arg)) {
+  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 10>(__fbthrift_field_MyCustomField, *this);
+  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 11>(__fbthrift_field_MyOptCustomField, *this);
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -502,8 +502,8 @@ void MyStruct::__clear() {
   this->MyBinaryField3 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_MyBinaryListField4.clear();
   this->__fbthrift_field_MyMapEnumAndInt.clear();
-  this->MyCustomField = decltype(this->MyCustomField)();
-  this->MyOptCustomField = decltype(this->MyOptCustomField)();
+  this->__fbthrift_field_MyCustomField = decltype(this->__fbthrift_field_MyCustomField)();
+  this->__fbthrift_field_MyOptCustomField = decltype(this->__fbthrift_field_MyOptCustomField)();
   __isset = {};
 }
 
@@ -538,7 +538,7 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   if (!(lhs.MyMapEnumAndInt_ref() == rhs.MyMapEnumAndInt_ref())) {
     return false;
   }
-  if (::apache::thrift::adapt_detail::not_equal<CustomProtocolAdapter>(lhs.MyCustomField, rhs.MyCustomField)) {
+  if (::apache::thrift::adapt_detail::not_equal<CustomProtocolAdapter>(lhs.__fbthrift_field_MyCustomField, rhs.__fbthrift_field_MyCustomField)) {
     return false;
   }
   if (::apache::thrift::adapt_detail::not_equal_opt<CustomProtocolAdapter>(lhs.MyOptCustomField_ref(), rhs.MyOptCustomField_ref())) {
@@ -578,8 +578,8 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   if (!(lhs.MyMapEnumAndInt_ref() == rhs.MyMapEnumAndInt_ref())) {
     return lhs.MyMapEnumAndInt_ref() < rhs.MyMapEnumAndInt_ref();
   }
-  if (::apache::thrift::adapt_detail::not_equal<CustomProtocolAdapter>(lhs.MyCustomField, rhs.MyCustomField)) {
-    return ::apache::thrift::adapt_detail::less<CustomProtocolAdapter>(lhs.MyCustomField, rhs.MyCustomField);
+  if (::apache::thrift::adapt_detail::not_equal<CustomProtocolAdapter>(lhs.__fbthrift_field_MyCustomField, rhs.__fbthrift_field_MyCustomField)) {
+    return ::apache::thrift::adapt_detail::less<CustomProtocolAdapter>(lhs.__fbthrift_field_MyCustomField, rhs.__fbthrift_field_MyCustomField);
   }
   if (::apache::thrift::adapt_detail::not_equal_opt<CustomProtocolAdapter>(lhs.MyOptCustomField_ref(), rhs.MyOptCustomField_ref())) {
     return ::apache::thrift::adapt_detail::neq_less_opt<CustomProtocolAdapter>(lhs.MyOptCustomField_ref(), rhs.MyOptCustomField_ref());

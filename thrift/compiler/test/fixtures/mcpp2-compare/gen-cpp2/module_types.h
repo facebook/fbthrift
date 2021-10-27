@@ -1463,9 +1463,9 @@ class MyStruct final  {
  private:
   ::std::map<::some::valid::ns::MyEnumA, ::std::string> __fbthrift_field_MyMapEnumAndInt;
  private:
-  ::some::valid::ns::CustomProtocolType MyCustomField;
+  ::some::valid::ns::CustomProtocolType __fbthrift_field_MyCustomField;
  private:
-  ::some::valid::ns::CustomProtocolType MyOptCustomField;
+  ::some::valid::ns::CustomProtocolType __fbthrift_field_MyOptCustomField;
  private:
   apache::thrift::detail::isset_bitset<10, false> __isset;
 
@@ -1816,42 +1816,82 @@ class MyStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyCustomField_ref() const& {
-    return {this->MyCustomField, __isset.__fbthrift_at(folly::index_constant<8>()), __isset.__fbthrift_bit(folly::index_constant<8>())};
+    return {this->__fbthrift_field_MyCustomField, __isset.__fbthrift_at(folly::index_constant<8>()), __isset.__fbthrift_bit(folly::index_constant<8>())};
   }
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyCustomField_ref() const&& {
-    return {std::move(this->MyCustomField), __isset.__fbthrift_at(folly::index_constant<8>()), __isset.__fbthrift_bit(folly::index_constant<8>())};
+    return {std::move(this->__fbthrift_field_MyCustomField), __isset.__fbthrift_at(folly::index_constant<8>()), __isset.__fbthrift_bit(folly::index_constant<8>())};
   }
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyCustomField_ref() & {
-    return {this->MyCustomField, __isset.__fbthrift_at(folly::index_constant<8>()), __isset.__fbthrift_bit(folly::index_constant<8>())};
+    return {this->__fbthrift_field_MyCustomField, __isset.__fbthrift_at(folly::index_constant<8>()), __isset.__fbthrift_bit(folly::index_constant<8>())};
   }
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyCustomField_ref() && {
-    return {std::move(this->MyCustomField), __isset.__fbthrift_at(folly::index_constant<8>()), __isset.__fbthrift_bit(folly::index_constant<8>())};
+    return {std::move(this->__fbthrift_field_MyCustomField), __isset.__fbthrift_at(folly::index_constant<8>()), __isset.__fbthrift_bit(folly::index_constant<8>())};
+  }
+
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyCustomField() & {
+    return MyCustomField_ref();
+  }
+
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyCustomField() const& {
+    return MyCustomField_ref();
+  }
+
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyCustomField() && {
+    return MyCustomField_ref();
+  }
+
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyCustomField() const&& {
+    return MyCustomField_ref();
   }
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> MyOptCustomField_ref() const& {
-    return {this->MyOptCustomField, __isset.__fbthrift_at(folly::index_constant<9>()), __isset.__fbthrift_bit(folly::index_constant<9>())};
+    return {this->__fbthrift_field_MyOptCustomField, __isset.__fbthrift_at(folly::index_constant<9>()), __isset.__fbthrift_bit(folly::index_constant<9>())};
   }
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> MyOptCustomField_ref() const&& {
-    return {std::move(this->MyOptCustomField), __isset.__fbthrift_at(folly::index_constant<9>()), __isset.__fbthrift_bit(folly::index_constant<9>())};
+    return {std::move(this->__fbthrift_field_MyOptCustomField), __isset.__fbthrift_at(folly::index_constant<9>()), __isset.__fbthrift_bit(folly::index_constant<9>())};
   }
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> MyOptCustomField_ref() & {
-    return {this->MyOptCustomField, __isset.__fbthrift_at(folly::index_constant<9>()), __isset.__fbthrift_bit(folly::index_constant<9>())};
+    return {this->__fbthrift_field_MyOptCustomField, __isset.__fbthrift_at(folly::index_constant<9>()), __isset.__fbthrift_bit(folly::index_constant<9>())};
   }
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> MyOptCustomField_ref() && {
-    return {std::move(this->MyOptCustomField), __isset.__fbthrift_at(folly::index_constant<9>()), __isset.__fbthrift_bit(folly::index_constant<9>())};
+    return {std::move(this->__fbthrift_field_MyOptCustomField), __isset.__fbthrift_at(folly::index_constant<9>()), __isset.__fbthrift_bit(folly::index_constant<9>())};
+  }
+
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> MyOptCustomField() & {
+    return MyOptCustomField_ref();
+  }
+
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> MyOptCustomField() const& {
+    return MyOptCustomField_ref();
+  }
+
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> MyOptCustomField() && {
+    return MyOptCustomField_ref();
+  }
+
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> MyOptCustomField() const&& {
+    return MyOptCustomField_ref();
   }
 
   bool get_MyBoolField() const {

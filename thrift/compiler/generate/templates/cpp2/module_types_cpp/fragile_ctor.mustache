@@ -24,7 +24,7 @@
 <%/struct:fields_in_layout_order%>
 <%#struct:fields%>
 <%#field:cpp_adapter%>
-  ::apache::thrift::adapt_detail::construct<<%field:cpp_adapter%>, <%field:key%>>(<%field:cpp_name%>, *this);
+  ::apache::thrift::adapt_detail::construct<<%field:cpp_adapter%>, <%field:key%>>(<%field:cpp_storage_name%>, *this);
 <%/field:cpp_adapter%>
 <%/struct:fields%>
 <%#struct:isset_fields%>

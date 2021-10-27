@@ -34,7 +34,7 @@
 %><%/struct:lazy_fields?%> {
 <%#struct:fields%>
 <%#field:cpp_adapter%>
-  ::apache::thrift::adapt_detail::construct<<%field:cpp_adapter%>, <%field:key%>>(<%field:cpp_name%>, *this);
+  ::apache::thrift::adapt_detail::construct<<%field:cpp_adapter%>, <%field:key%>>(<%field:cpp_storage_name%>, *this);
 <%/field:cpp_adapter%>
 <%/struct:fields%>
 <%#struct:lazy_fields?%>

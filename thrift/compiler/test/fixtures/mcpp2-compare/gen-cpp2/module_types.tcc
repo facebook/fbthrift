@@ -637,7 +637,7 @@ _readField_MyCustomField:
   {
     ::folly::IOBuf tvalue;
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::folly::IOBuf>::readWithContext(*iprot, tvalue, _readState);
-    this->MyCustomField = ::apache::thrift::adapt_detail::fromThriftField<CustomProtocolAdapter, 10>(::std::move(tvalue), *this);
+    this->__fbthrift_field_MyCustomField = ::apache::thrift::adapt_detail::fromThriftField<CustomProtocolAdapter, 10>(::std::move(tvalue), *this);
     
   }
  this->__isset.__fbthrift_set(folly::index_constant<8>(), true);
@@ -653,7 +653,7 @@ _readField_MyOptCustomField:
   {
     ::folly::IOBuf tvalue;
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::folly::IOBuf>::readWithContext(*iprot, tvalue, _readState);
-    this->MyOptCustomField = ::apache::thrift::adapt_detail::fromThriftField<CustomProtocolAdapter, 11>(::std::move(tvalue), *this);
+    this->__fbthrift_field_MyOptCustomField = ::apache::thrift::adapt_detail::fromThriftField<CustomProtocolAdapter, 11>(::std::move(tvalue), *this);
     
   }
  this->__isset.__fbthrift_set(folly::index_constant<9>(), true);
@@ -820,13 +820,13 @@ uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("MyMapEnumAndInt", apache::thrift::protocol::T_MAP, 9);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>, ::std::map<::some::valid::ns::MyEnumA, ::std::string>>::serializedSize<false>(*prot_, this->__fbthrift_field_MyMapEnumAndInt);
   }
-  if (!(this->MyCustomField == ::some::valid::ns::CustomProtocolType())) {
+  if (!(this->__fbthrift_field_MyCustomField == ::some::valid::ns::CustomProtocolType())) {
     xfer += prot_->serializedFieldSize("MyCustomField", apache::thrift::protocol::T_STRING, 10);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::folly::IOBuf>::serializedSize<false>(*prot_, CustomProtocolAdapter::toThrift(this->MyCustomField));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::folly::IOBuf>::serializedSize<false>(*prot_, CustomProtocolAdapter::toThrift(this->__fbthrift_field_MyCustomField));
   }
   if (this->__isset.__fbthrift_get(folly::index_constant<9>())) {
     xfer += prot_->serializedFieldSize("MyOptCustomField", apache::thrift::protocol::T_STRING, 11);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::folly::IOBuf>::serializedSize<false>(*prot_, CustomProtocolAdapter::toThrift(this->MyOptCustomField));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::folly::IOBuf>::serializedSize<false>(*prot_, CustomProtocolAdapter::toThrift(this->__fbthrift_field_MyOptCustomField));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -872,13 +872,13 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("MyMapEnumAndInt", apache::thrift::protocol::T_MAP, 9);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>, ::std::map<::some::valid::ns::MyEnumA, ::std::string>>::serializedSize<false>(*prot_, this->__fbthrift_field_MyMapEnumAndInt);
   }
-  if (!(this->MyCustomField == ::some::valid::ns::CustomProtocolType())) {
+  if (!(this->__fbthrift_field_MyCustomField == ::some::valid::ns::CustomProtocolType())) {
     xfer += prot_->serializedFieldSize("MyCustomField", apache::thrift::protocol::T_STRING, 10);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::folly::IOBuf>::serializedSize<true>(*prot_, CustomProtocolAdapter::toThrift(this->MyCustomField));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::folly::IOBuf>::serializedSize<true>(*prot_, CustomProtocolAdapter::toThrift(this->__fbthrift_field_MyCustomField));
   }
   if (this->__isset.__fbthrift_get(folly::index_constant<9>())) {
     xfer += prot_->serializedFieldSize("MyOptCustomField", apache::thrift::protocol::T_STRING, 11);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::folly::IOBuf>::serializedSize<true>(*prot_, CustomProtocolAdapter::toThrift(this->MyOptCustomField));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::folly::IOBuf>::serializedSize<true>(*prot_, CustomProtocolAdapter::toThrift(this->__fbthrift_field_MyOptCustomField));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -968,11 +968,11 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (!(this->MyCustomField == ::some::valid::ns::CustomProtocolType())) {
+  if (!(this->__fbthrift_field_MyCustomField == ::some::valid::ns::CustomProtocolType())) {
     constexpr int16_t kPrevFieldId = 9;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 10, kPrevFieldId>(*prot_, "MyCustomField", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::folly::IOBuf>::write(*prot_, CustomProtocolAdapter::toThrift(this->MyCustomField));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::folly::IOBuf>::write(*prot_, CustomProtocolAdapter::toThrift(this->__fbthrift_field_MyCustomField));
     xfer += prot_->writeFieldEnd();
   } else {
     previousFieldHasValue = false;
@@ -981,7 +981,7 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 10;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 11, kPrevFieldId>(*prot_, "MyOptCustomField", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::folly::IOBuf>::write(*prot_, CustomProtocolAdapter::toThrift(this->MyOptCustomField));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::folly::IOBuf>::write(*prot_, CustomProtocolAdapter::toThrift(this->__fbthrift_field_MyOptCustomField));
     xfer += prot_->writeFieldEnd();
   } else {
     previousFieldHasValue = false;
