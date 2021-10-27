@@ -14,10 +14,10 @@ import empty.lite_types as _empty_lite_types
 class NullService:
     class Sync(_fbthrift_py3lite_SyncClient):
         def __init__(self, channel):
-            super().__init__(channel, "NullService")
+            super().__init__(channel)
 
     class Async(_fbthrift_py3lite_AsyncClient):
         def __init__(self):
-            super().__init__("NullService")
+            super().__init__()
 
 

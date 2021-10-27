@@ -30,7 +30,7 @@ import {{#program:py3_namespaces}}{{value}}.{{/program:py3_namespaces}}{{program
 class {{service:name}}:
     class Sync(_fbthrift_py3lite_SyncClient):
         def __init__(self, channel):
-            super().__init__(channel, "{{service:name}}")
+            super().__init__(channel)
         {{#service:supported_functions}}
 
         def {{function:name}}(
@@ -38,6 +38,7 @@ class {{service:name}}:
             {{field:py_name}}{{/function:args}}
         ):
             resp = self._send_request(
+                "{{service:name}}",
                 "{{function:name}}",
                 _{{#program:py3_namespaces}}{{value}}_{{/program:py3_namespaces}}{{program:name}}_lite_types.{{> types/function_args_struct_name}}({{#function:args}}
                     {{field:py_name}}={{field:py_name}},{{/function:args}}),
@@ -65,7 +66,7 @@ class {{service:name}}:
 
     class Async(_fbthrift_py3lite_AsyncClient):
         def __init__(self):
-            super().__init__("{{service:name}}")
+            super().__init__()
         {{#service:supported_functions}}
 
         async def {{function:name}}(
@@ -73,6 +74,7 @@ class {{service:name}}:
             {{field:py_name}}{{/function:args}}
         ):
             resp = await self._send_request(
+                "{{service:name}}",
                 "{{function:name}}",
                 _{{#program:py3_namespaces}}{{value}}_{{/program:py3_namespaces}}{{program:name}}_lite_types.{{> types/function_args_struct_name}}({{#function:args}}
                     {{field:py_name}}={{field:py_name}},{{/function:args}}),

@@ -14,12 +14,13 @@ import module.lite_types as _module_lite_types
 class SimpleService:
     class Sync(_fbthrift_py3lite_SyncClient):
         def __init__(self, channel):
-            super().__init__(channel, "SimpleService")
+            super().__init__(channel)
 
         def get_five(
             self
         ):
             resp = self._send_request(
+                "SimpleService",
                 "get_five",
                 _module_lite_types._fbthrift_SimpleService_get_five_args(),
                 _module_lite_types._fbthrift_SimpleService_get_five_result,
@@ -37,6 +38,7 @@ class SimpleService:
             num
         ):
             resp = self._send_request(
+                "SimpleService",
                 "add_five",
                 _module_lite_types._fbthrift_SimpleService_add_five_args(
                     num=num,),
@@ -54,6 +56,7 @@ class SimpleService:
             self
         ):
             resp = self._send_request(
+                "SimpleService",
                 "do_nothing",
                 _module_lite_types._fbthrift_SimpleService_do_nothing_args(),
                 _module_lite_types._fbthrift_SimpleService_do_nothing_result,
@@ -65,6 +68,7 @@ class SimpleService:
             second
         ):
             resp = self._send_request(
+                "SimpleService",
                 "concat",
                 _module_lite_types._fbthrift_SimpleService_concat_args(
                     first=first,
@@ -84,6 +88,7 @@ class SimpleService:
             simple_struct
         ):
             resp = self._send_request(
+                "SimpleService",
                 "get_value",
                 _module_lite_types._fbthrift_SimpleService_get_value_args(
                     simple_struct=simple_struct,),
@@ -102,6 +107,7 @@ class SimpleService:
             input
         ):
             resp = self._send_request(
+                "SimpleService",
                 "negate",
                 _module_lite_types._fbthrift_SimpleService_negate_args(
                     input=input,),
@@ -120,6 +126,7 @@ class SimpleService:
             input
         ):
             resp = self._send_request(
+                "SimpleService",
                 "tiny",
                 _module_lite_types._fbthrift_SimpleService_tiny_args(
                     input=input,),
@@ -138,6 +145,7 @@ class SimpleService:
             input
         ):
             resp = self._send_request(
+                "SimpleService",
                 "small",
                 _module_lite_types._fbthrift_SimpleService_small_args(
                     input=input,),
@@ -156,6 +164,7 @@ class SimpleService:
             input
         ):
             resp = self._send_request(
+                "SimpleService",
                 "big",
                 _module_lite_types._fbthrift_SimpleService_big_args(
                     input=input,),
@@ -174,6 +183,7 @@ class SimpleService:
             input
         ):
             resp = self._send_request(
+                "SimpleService",
                 "two",
                 _module_lite_types._fbthrift_SimpleService_two_args(
                     input=input,),
@@ -191,6 +201,7 @@ class SimpleService:
             self
         ):
             resp = self._send_request(
+                "SimpleService",
                 "expected_exception",
                 _module_lite_types._fbthrift_SimpleService_expected_exception_args(),
                 _module_lite_types._fbthrift_SimpleService_expected_exception_result,
@@ -202,6 +213,7 @@ class SimpleService:
             self
         ):
             resp = self._send_request(
+                "SimpleService",
                 "unexpected_exception",
                 _module_lite_types._fbthrift_SimpleService_unexpected_exception_args(),
                 _module_lite_types._fbthrift_SimpleService_unexpected_exception_result,
@@ -219,6 +231,7 @@ class SimpleService:
             numbers
         ):
             resp = self._send_request(
+                "SimpleService",
                 "sum_i16_list",
                 _module_lite_types._fbthrift_SimpleService_sum_i16_list_args(
                     numbers=numbers,),
@@ -237,6 +250,7 @@ class SimpleService:
             numbers
         ):
             resp = self._send_request(
+                "SimpleService",
                 "sum_i32_list",
                 _module_lite_types._fbthrift_SimpleService_sum_i32_list_args(
                     numbers=numbers,),
@@ -255,6 +269,7 @@ class SimpleService:
             numbers
         ):
             resp = self._send_request(
+                "SimpleService",
                 "sum_i64_list",
                 _module_lite_types._fbthrift_SimpleService_sum_i64_list_args(
                     numbers=numbers,),
@@ -273,6 +288,7 @@ class SimpleService:
             words
         ):
             resp = self._send_request(
+                "SimpleService",
                 "concat_many",
                 _module_lite_types._fbthrift_SimpleService_concat_many_args(
                     words=words,),
@@ -291,6 +307,7 @@ class SimpleService:
             items
         ):
             resp = self._send_request(
+                "SimpleService",
                 "count_structs",
                 _module_lite_types._fbthrift_SimpleService_count_structs_args(
                     items=items,),
@@ -309,6 +326,7 @@ class SimpleService:
             numbers
         ):
             resp = self._send_request(
+                "SimpleService",
                 "sum_set",
                 _module_lite_types._fbthrift_SimpleService_sum_set_args(
                     numbers=numbers,),
@@ -328,6 +346,7 @@ class SimpleService:
             word
         ):
             resp = self._send_request(
+                "SimpleService",
                 "contains_word",
                 _module_lite_types._fbthrift_SimpleService_contains_word_args(
                     words=words,
@@ -348,6 +367,7 @@ class SimpleService:
             key
         ):
             resp = self._send_request(
+                "SimpleService",
                 "get_map_value",
                 _module_lite_types._fbthrift_SimpleService_get_map_value_args(
                     words=words,
@@ -367,6 +387,7 @@ class SimpleService:
             items
         ):
             resp = self._send_request(
+                "SimpleService",
                 "map_length",
                 _module_lite_types._fbthrift_SimpleService_map_length_args(
                     items=items,),
@@ -385,6 +406,7 @@ class SimpleService:
             items
         ):
             resp = self._send_request(
+                "SimpleService",
                 "sum_map_values",
                 _module_lite_types._fbthrift_SimpleService_sum_map_values_args(
                     items=items,),
@@ -403,6 +425,7 @@ class SimpleService:
             counter
         ):
             resp = self._send_request(
+                "SimpleService",
                 "complex_sum_i32",
                 _module_lite_types._fbthrift_SimpleService_complex_sum_i32_args(
                     counter=counter,),
@@ -421,6 +444,7 @@ class SimpleService:
             counter
         ):
             resp = self._send_request(
+                "SimpleService",
                 "repeat_name",
                 _module_lite_types._fbthrift_SimpleService_repeat_name_args(
                     counter=counter,),
@@ -438,6 +462,7 @@ class SimpleService:
             self
         ):
             resp = self._send_request(
+                "SimpleService",
                 "get_struct",
                 _module_lite_types._fbthrift_SimpleService_get_struct_args(),
                 _module_lite_types._fbthrift_SimpleService_get_struct_result,
@@ -455,6 +480,7 @@ class SimpleService:
             n
         ):
             resp = self._send_request(
+                "SimpleService",
                 "fib",
                 _module_lite_types._fbthrift_SimpleService_fib_args(
                     n=n,),
@@ -473,6 +499,7 @@ class SimpleService:
             words
         ):
             resp = self._send_request(
+                "SimpleService",
                 "unique_words",
                 _module_lite_types._fbthrift_SimpleService_unique_words_args(
                     words=words,),
@@ -491,6 +518,7 @@ class SimpleService:
             words
         ):
             resp = self._send_request(
+                "SimpleService",
                 "words_count",
                 _module_lite_types._fbthrift_SimpleService_words_count_args(
                     words=words,),
@@ -509,6 +537,7 @@ class SimpleService:
             in_enum
         ):
             resp = self._send_request(
+                "SimpleService",
                 "set_enum",
                 _module_lite_types._fbthrift_SimpleService_set_enum_args(
                     in_enum=in_enum,),
@@ -528,6 +557,7 @@ class SimpleService:
             num_items
         ):
             resp = self._send_request(
+                "SimpleService",
                 "list_of_lists",
                 _module_lite_types._fbthrift_SimpleService_list_of_lists_args(
                     num_lists=num_lists,
@@ -547,6 +577,7 @@ class SimpleService:
             sentence
         ):
             resp = self._send_request(
+                "SimpleService",
                 "word_character_frequency",
                 _module_lite_types._fbthrift_SimpleService_word_character_frequency_args(
                     sentence=sentence,),
@@ -565,6 +596,7 @@ class SimpleService:
             some_words
         ):
             resp = self._send_request(
+                "SimpleService",
                 "list_of_sets",
                 _module_lite_types._fbthrift_SimpleService_list_of_sets_args(
                     some_words=some_words,),
@@ -583,6 +615,7 @@ class SimpleService:
             struct_map
         ):
             resp = self._send_request(
+                "SimpleService",
                 "nested_map_argument",
                 _module_lite_types._fbthrift_SimpleService_nested_map_argument_args(
                     struct_map=struct_map,),
@@ -601,6 +634,7 @@ class SimpleService:
             word_chars
         ):
             resp = self._send_request(
+                "SimpleService",
                 "make_sentence",
                 _module_lite_types._fbthrift_SimpleService_make_sentence_args(
                     word_chars=word_chars,),
@@ -619,6 +653,7 @@ class SimpleService:
             sets
         ):
             resp = self._send_request(
+                "SimpleService",
                 "get_union",
                 _module_lite_types._fbthrift_SimpleService_get_union_args(
                     sets=sets,),
@@ -637,6 +672,7 @@ class SimpleService:
             string_map
         ):
             resp = self._send_request(
+                "SimpleService",
                 "get_keys",
                 _module_lite_types._fbthrift_SimpleService_get_keys_args(
                     string_map=string_map,),
@@ -655,6 +691,7 @@ class SimpleService:
             key
         ):
             resp = self._send_request(
+                "SimpleService",
                 "lookup_double",
                 _module_lite_types._fbthrift_SimpleService_lookup_double_args(
                     key=key,),
@@ -673,6 +710,7 @@ class SimpleService:
             something
         ):
             resp = self._send_request(
+                "SimpleService",
                 "retrieve_binary",
                 _module_lite_types._fbthrift_SimpleService_retrieve_binary_args(
                     something=something,),
@@ -691,6 +729,7 @@ class SimpleService:
             binaries
         ):
             resp = self._send_request(
+                "SimpleService",
                 "contain_binary",
                 _module_lite_types._fbthrift_SimpleService_contain_binary_args(
                     binaries=binaries,),
@@ -709,6 +748,7 @@ class SimpleService:
             the_enum
         ):
             resp = self._send_request(
+                "SimpleService",
                 "contain_enum",
                 _module_lite_types._fbthrift_SimpleService_contain_enum_args(
                     the_enum=the_enum,),
@@ -727,6 +767,7 @@ class SimpleService:
             u
         ):
             resp = self._send_request(
+                "SimpleService",
                 "get_binary_union_struct",
                 _module_lite_types._fbthrift_SimpleService_get_binary_union_struct_args(
                     u=u,),
@@ -742,12 +783,13 @@ class SimpleService:
 
     class Async(_fbthrift_py3lite_AsyncClient):
         def __init__(self):
-            super().__init__("SimpleService")
+            super().__init__()
 
         async def get_five(
             self
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "get_five",
                 _module_lite_types._fbthrift_SimpleService_get_five_args(),
                 _module_lite_types._fbthrift_SimpleService_get_five_result,
@@ -765,6 +807,7 @@ class SimpleService:
             num
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "add_five",
                 _module_lite_types._fbthrift_SimpleService_add_five_args(
                     num=num,),
@@ -782,6 +825,7 @@ class SimpleService:
             self
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "do_nothing",
                 _module_lite_types._fbthrift_SimpleService_do_nothing_args(),
                 _module_lite_types._fbthrift_SimpleService_do_nothing_result,
@@ -793,6 +837,7 @@ class SimpleService:
             second
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "concat",
                 _module_lite_types._fbthrift_SimpleService_concat_args(
                     first=first,
@@ -812,6 +857,7 @@ class SimpleService:
             simple_struct
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "get_value",
                 _module_lite_types._fbthrift_SimpleService_get_value_args(
                     simple_struct=simple_struct,),
@@ -830,6 +876,7 @@ class SimpleService:
             input
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "negate",
                 _module_lite_types._fbthrift_SimpleService_negate_args(
                     input=input,),
@@ -848,6 +895,7 @@ class SimpleService:
             input
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "tiny",
                 _module_lite_types._fbthrift_SimpleService_tiny_args(
                     input=input,),
@@ -866,6 +914,7 @@ class SimpleService:
             input
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "small",
                 _module_lite_types._fbthrift_SimpleService_small_args(
                     input=input,),
@@ -884,6 +933,7 @@ class SimpleService:
             input
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "big",
                 _module_lite_types._fbthrift_SimpleService_big_args(
                     input=input,),
@@ -902,6 +952,7 @@ class SimpleService:
             input
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "two",
                 _module_lite_types._fbthrift_SimpleService_two_args(
                     input=input,),
@@ -919,6 +970,7 @@ class SimpleService:
             self
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "expected_exception",
                 _module_lite_types._fbthrift_SimpleService_expected_exception_args(),
                 _module_lite_types._fbthrift_SimpleService_expected_exception_result,
@@ -930,6 +982,7 @@ class SimpleService:
             self
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "unexpected_exception",
                 _module_lite_types._fbthrift_SimpleService_unexpected_exception_args(),
                 _module_lite_types._fbthrift_SimpleService_unexpected_exception_result,
@@ -947,6 +1000,7 @@ class SimpleService:
             numbers
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "sum_i16_list",
                 _module_lite_types._fbthrift_SimpleService_sum_i16_list_args(
                     numbers=numbers,),
@@ -965,6 +1019,7 @@ class SimpleService:
             numbers
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "sum_i32_list",
                 _module_lite_types._fbthrift_SimpleService_sum_i32_list_args(
                     numbers=numbers,),
@@ -983,6 +1038,7 @@ class SimpleService:
             numbers
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "sum_i64_list",
                 _module_lite_types._fbthrift_SimpleService_sum_i64_list_args(
                     numbers=numbers,),
@@ -1001,6 +1057,7 @@ class SimpleService:
             words
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "concat_many",
                 _module_lite_types._fbthrift_SimpleService_concat_many_args(
                     words=words,),
@@ -1019,6 +1076,7 @@ class SimpleService:
             items
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "count_structs",
                 _module_lite_types._fbthrift_SimpleService_count_structs_args(
                     items=items,),
@@ -1037,6 +1095,7 @@ class SimpleService:
             numbers
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "sum_set",
                 _module_lite_types._fbthrift_SimpleService_sum_set_args(
                     numbers=numbers,),
@@ -1056,6 +1115,7 @@ class SimpleService:
             word
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "contains_word",
                 _module_lite_types._fbthrift_SimpleService_contains_word_args(
                     words=words,
@@ -1076,6 +1136,7 @@ class SimpleService:
             key
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "get_map_value",
                 _module_lite_types._fbthrift_SimpleService_get_map_value_args(
                     words=words,
@@ -1095,6 +1156,7 @@ class SimpleService:
             items
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "map_length",
                 _module_lite_types._fbthrift_SimpleService_map_length_args(
                     items=items,),
@@ -1113,6 +1175,7 @@ class SimpleService:
             items
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "sum_map_values",
                 _module_lite_types._fbthrift_SimpleService_sum_map_values_args(
                     items=items,),
@@ -1131,6 +1194,7 @@ class SimpleService:
             counter
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "complex_sum_i32",
                 _module_lite_types._fbthrift_SimpleService_complex_sum_i32_args(
                     counter=counter,),
@@ -1149,6 +1213,7 @@ class SimpleService:
             counter
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "repeat_name",
                 _module_lite_types._fbthrift_SimpleService_repeat_name_args(
                     counter=counter,),
@@ -1166,6 +1231,7 @@ class SimpleService:
             self
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "get_struct",
                 _module_lite_types._fbthrift_SimpleService_get_struct_args(),
                 _module_lite_types._fbthrift_SimpleService_get_struct_result,
@@ -1183,6 +1249,7 @@ class SimpleService:
             n
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "fib",
                 _module_lite_types._fbthrift_SimpleService_fib_args(
                     n=n,),
@@ -1201,6 +1268,7 @@ class SimpleService:
             words
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "unique_words",
                 _module_lite_types._fbthrift_SimpleService_unique_words_args(
                     words=words,),
@@ -1219,6 +1287,7 @@ class SimpleService:
             words
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "words_count",
                 _module_lite_types._fbthrift_SimpleService_words_count_args(
                     words=words,),
@@ -1237,6 +1306,7 @@ class SimpleService:
             in_enum
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "set_enum",
                 _module_lite_types._fbthrift_SimpleService_set_enum_args(
                     in_enum=in_enum,),
@@ -1256,6 +1326,7 @@ class SimpleService:
             num_items
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "list_of_lists",
                 _module_lite_types._fbthrift_SimpleService_list_of_lists_args(
                     num_lists=num_lists,
@@ -1275,6 +1346,7 @@ class SimpleService:
             sentence
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "word_character_frequency",
                 _module_lite_types._fbthrift_SimpleService_word_character_frequency_args(
                     sentence=sentence,),
@@ -1293,6 +1365,7 @@ class SimpleService:
             some_words
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "list_of_sets",
                 _module_lite_types._fbthrift_SimpleService_list_of_sets_args(
                     some_words=some_words,),
@@ -1311,6 +1384,7 @@ class SimpleService:
             struct_map
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "nested_map_argument",
                 _module_lite_types._fbthrift_SimpleService_nested_map_argument_args(
                     struct_map=struct_map,),
@@ -1329,6 +1403,7 @@ class SimpleService:
             word_chars
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "make_sentence",
                 _module_lite_types._fbthrift_SimpleService_make_sentence_args(
                     word_chars=word_chars,),
@@ -1347,6 +1422,7 @@ class SimpleService:
             sets
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "get_union",
                 _module_lite_types._fbthrift_SimpleService_get_union_args(
                     sets=sets,),
@@ -1365,6 +1441,7 @@ class SimpleService:
             string_map
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "get_keys",
                 _module_lite_types._fbthrift_SimpleService_get_keys_args(
                     string_map=string_map,),
@@ -1383,6 +1460,7 @@ class SimpleService:
             key
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "lookup_double",
                 _module_lite_types._fbthrift_SimpleService_lookup_double_args(
                     key=key,),
@@ -1401,6 +1479,7 @@ class SimpleService:
             something
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "retrieve_binary",
                 _module_lite_types._fbthrift_SimpleService_retrieve_binary_args(
                     something=something,),
@@ -1419,6 +1498,7 @@ class SimpleService:
             binaries
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "contain_binary",
                 _module_lite_types._fbthrift_SimpleService_contain_binary_args(
                     binaries=binaries,),
@@ -1437,6 +1517,7 @@ class SimpleService:
             the_enum
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "contain_enum",
                 _module_lite_types._fbthrift_SimpleService_contain_enum_args(
                     the_enum=the_enum,),
@@ -1455,6 +1536,7 @@ class SimpleService:
             u
         ):
             resp = await self._send_request(
+                "SimpleService",
                 "get_binary_union_struct",
                 _module_lite_types._fbthrift_SimpleService_get_binary_union_struct_args(
                     u=u,),
@@ -1472,12 +1554,13 @@ class SimpleService:
 class DerivedService:
     class Sync(_fbthrift_py3lite_SyncClient):
         def __init__(self, channel):
-            super().__init__(channel, "DerivedService")
+            super().__init__(channel)
 
         def get_six(
             self
         ):
             resp = self._send_request(
+                "DerivedService",
                 "get_six",
                 _module_lite_types._fbthrift_DerivedService_get_six_args(),
                 _module_lite_types._fbthrift_DerivedService_get_six_result,
@@ -1492,12 +1575,13 @@ class DerivedService:
 
     class Async(_fbthrift_py3lite_AsyncClient):
         def __init__(self):
-            super().__init__("DerivedService")
+            super().__init__()
 
         async def get_six(
             self
         ):
             resp = await self._send_request(
+                "DerivedService",
                 "get_six",
                 _module_lite_types._fbthrift_DerivedService_get_six_args(),
                 _module_lite_types._fbthrift_DerivedService_get_six_result,
@@ -1514,12 +1598,13 @@ class DerivedService:
 class RederivedService:
     class Sync(_fbthrift_py3lite_SyncClient):
         def __init__(self, channel):
-            super().__init__(channel, "RederivedService")
+            super().__init__(channel)
 
         def get_seven(
             self
         ):
             resp = self._send_request(
+                "RederivedService",
                 "get_seven",
                 _module_lite_types._fbthrift_RederivedService_get_seven_args(),
                 _module_lite_types._fbthrift_RederivedService_get_seven_result,
@@ -1534,12 +1619,13 @@ class RederivedService:
 
     class Async(_fbthrift_py3lite_AsyncClient):
         def __init__(self):
-            super().__init__("RederivedService")
+            super().__init__()
 
         async def get_seven(
             self
         ):
             resp = await self._send_request(
+                "RederivedService",
                 "get_seven",
                 _module_lite_types._fbthrift_RederivedService_get_seven_args(),
                 _module_lite_types._fbthrift_RederivedService_get_seven_result,

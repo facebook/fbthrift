@@ -27,14 +27,17 @@ cdef extern from "thrift/lib/py3lite/client/OmniClient.h" namespace "::thrift::p
     cdef cppclass cOmniClient "::thrift::py3lite::client::OmniClient":
         cOmniClient(cRequestChannel_ptr channel, const string& serviceName)
         cOmniClientResponseWithHeaders sync_send(
+            const string& serviceName,
             const string& methodName,
             unique_ptr[cIOBuf] args,
         )
         void oneway_send(
+            const string& serviceName,
             const string& methodName,
             unique_ptr[cIOBuf] args,
         )
         cFollySemiFuture[cOmniClientResponseWithHeaders] semifuture_send(
+            const string& serviceName,
             const string& methodName,
             unique_ptr[cIOBuf] args,
         )

@@ -14,12 +14,13 @@ import module.lite_types as _module_lite_types
 class MyService:
     class Sync(_fbthrift_py3lite_SyncClient):
         def __init__(self, channel):
-            super().__init__(channel, "MyService")
+            super().__init__(channel)
 
         def ping(
             self
         ):
             resp = self._send_request(
+                "MyService",
                 "ping",
                 _module_lite_types._fbthrift_MyService_ping_args(),
                 _module_lite_types._fbthrift_MyService_ping_result,
@@ -29,6 +30,7 @@ class MyService:
             self
         ):
             resp = self._send_request(
+                "MyService",
                 "getRandomData",
                 _module_lite_types._fbthrift_MyService_getRandomData_args(),
                 _module_lite_types._fbthrift_MyService_getRandomData_result,
@@ -46,6 +48,7 @@ class MyService:
             sink
         ):
             resp = self._send_request(
+                "MyService",
                 "sink",
                 _module_lite_types._fbthrift_MyService_sink_args(
                     sink=sink,),
@@ -58,6 +61,7 @@ class MyService:
             data
         ):
             resp = self._send_request(
+                "MyService",
                 "putDataById",
                 _module_lite_types._fbthrift_MyService_putDataById_args(
                     id=id,
@@ -70,6 +74,7 @@ class MyService:
             id
         ):
             resp = self._send_request(
+                "MyService",
                 "hasDataById",
                 _module_lite_types._fbthrift_MyService_hasDataById_args(
                     id=id,),
@@ -88,6 +93,7 @@ class MyService:
             id
         ):
             resp = self._send_request(
+                "MyService",
                 "getDataById",
                 _module_lite_types._fbthrift_MyService_getDataById_args(
                     id=id,),
@@ -106,6 +112,7 @@ class MyService:
             id
         ):
             resp = self._send_request(
+                "MyService",
                 "deleteDataById",
                 _module_lite_types._fbthrift_MyService_deleteDataById_args(
                     id=id,),
@@ -118,6 +125,7 @@ class MyService:
             data
         ):
             resp = self._send_request(
+                "MyService",
                 "lobDataById",
                 _module_lite_types._fbthrift_MyService_lobDataById_args(
                     id=id,
@@ -127,12 +135,13 @@ class MyService:
 
     class Async(_fbthrift_py3lite_AsyncClient):
         def __init__(self):
-            super().__init__("MyService")
+            super().__init__()
 
         async def ping(
             self
         ):
             resp = await self._send_request(
+                "MyService",
                 "ping",
                 _module_lite_types._fbthrift_MyService_ping_args(),
                 _module_lite_types._fbthrift_MyService_ping_result,
@@ -142,6 +151,7 @@ class MyService:
             self
         ):
             resp = await self._send_request(
+                "MyService",
                 "getRandomData",
                 _module_lite_types._fbthrift_MyService_getRandomData_args(),
                 _module_lite_types._fbthrift_MyService_getRandomData_result,
@@ -159,6 +169,7 @@ class MyService:
             sink
         ):
             resp = await self._send_request(
+                "MyService",
                 "sink",
                 _module_lite_types._fbthrift_MyService_sink_args(
                     sink=sink,),
@@ -171,6 +182,7 @@ class MyService:
             data
         ):
             resp = await self._send_request(
+                "MyService",
                 "putDataById",
                 _module_lite_types._fbthrift_MyService_putDataById_args(
                     id=id,
@@ -183,6 +195,7 @@ class MyService:
             id
         ):
             resp = await self._send_request(
+                "MyService",
                 "hasDataById",
                 _module_lite_types._fbthrift_MyService_hasDataById_args(
                     id=id,),
@@ -201,6 +214,7 @@ class MyService:
             id
         ):
             resp = await self._send_request(
+                "MyService",
                 "getDataById",
                 _module_lite_types._fbthrift_MyService_getDataById_args(
                     id=id,),
@@ -219,6 +233,7 @@ class MyService:
             id
         ):
             resp = await self._send_request(
+                "MyService",
                 "deleteDataById",
                 _module_lite_types._fbthrift_MyService_deleteDataById_args(
                     id=id,),
@@ -231,6 +246,7 @@ class MyService:
             data
         ):
             resp = await self._send_request(
+                "MyService",
                 "lobDataById",
                 _module_lite_types._fbthrift_MyService_lobDataById_args(
                     id=id,
@@ -242,13 +258,14 @@ class MyService:
 class DbMixedStackArguments:
     class Sync(_fbthrift_py3lite_SyncClient):
         def __init__(self, channel):
-            super().__init__(channel, "DbMixedStackArguments")
+            super().__init__(channel)
 
         def getDataByKey0(
             self,
             key
         ):
             resp = self._send_request(
+                "DbMixedStackArguments",
                 "getDataByKey0",
                 _module_lite_types._fbthrift_DbMixedStackArguments_getDataByKey0_args(
                     key=key,),
@@ -267,6 +284,7 @@ class DbMixedStackArguments:
             key
         ):
             resp = self._send_request(
+                "DbMixedStackArguments",
                 "getDataByKey1",
                 _module_lite_types._fbthrift_DbMixedStackArguments_getDataByKey1_args(
                     key=key,),
@@ -282,13 +300,14 @@ class DbMixedStackArguments:
 
     class Async(_fbthrift_py3lite_AsyncClient):
         def __init__(self):
-            super().__init__("DbMixedStackArguments")
+            super().__init__()
 
         async def getDataByKey0(
             self,
             key
         ):
             resp = await self._send_request(
+                "DbMixedStackArguments",
                 "getDataByKey0",
                 _module_lite_types._fbthrift_DbMixedStackArguments_getDataByKey0_args(
                     key=key,),
@@ -307,6 +326,7 @@ class DbMixedStackArguments:
             key
         ):
             resp = await self._send_request(
+                "DbMixedStackArguments",
                 "getDataByKey1",
                 _module_lite_types._fbthrift_DbMixedStackArguments_getDataByKey1_args(
                     key=key,),

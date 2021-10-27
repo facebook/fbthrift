@@ -89,7 +89,7 @@ class OmniClientTest : public ::testing::Test {
             ));
 
     // Create clients.
-    client_ = std::make_unique<OmniClient>(std::move(channel), "TestService");
+    client_ = std::make_unique<OmniClient>(std::move(channel));
   }
 
   void TearDown() override {
@@ -102,13 +102,14 @@ class OmniClientTest : public ::testing::Test {
   template <class S, class Request, class Result, class Client>
   void testSendHeaders(
       const std::unique_ptr<Client>& client,
+      const std::string& service,
       const std::string& function,
       const Request& req,
       const std::unordered_map<std::string, std::string>& headers,
       const Result& expected) {
     std::string args = S::template serialize<std::string>(req);
     testContains<S>(
-        client->semifuture_send(function, args, headers)
+        client->semifuture_send(service, function, args, headers)
             .via(eb_)
             .waitVia(eb_)
             .get(),
@@ -118,15 +119,18 @@ class OmniClientTest : public ::testing::Test {
   template <class Request, class Result, class Client>
   void testSend(
       const std::unique_ptr<Client>& client,
+      const std::string& service,
       const std::string& function,
       const Request& req,
       const Result& expected) {
     switch (client->getChannelProtocolId()) {
       case protocol::T_BINARY_PROTOCOL:
-        testSendHeaders<BinarySerializer>(client, function, req, {}, expected);
+        testSendHeaders<BinarySerializer>(
+            client, service, function, req, {}, expected);
         break;
       case protocol::T_COMPACT_PROTOCOL:
-        testSendHeaders<CompactSerializer>(client, function, req, {}, expected);
+        testSendHeaders<CompactSerializer>(
+            client, service, function, req, {}, expected);
         break;
       default:
         FAIL() << "Channel protocol not supported";
@@ -137,25 +141,29 @@ class OmniClientTest : public ::testing::Test {
   template <class S, class Request, class Client>
   void testOnewaySendHeaders(
       const std::unique_ptr<Client>& client,
+      const std::string& service,
       const std::string& function,
       const Request& req,
       const std::unordered_map<std::string, std::string>& headers) {
     std::string args = S::template serialize<std::string>(req);
-    client->oneway_send(function, args, headers);
+    client->oneway_send(service, function, args, headers);
   }
 
   template <class Request, class Client>
   void testOnewaySend(
       const std::unique_ptr<Client>& client,
+      const std::string& service,
       const std::string& function,
       const Request& req) {
     std::string args;
     switch (client->getChannelProtocolId()) {
       case protocol::T_BINARY_PROTOCOL:
-        testOnewaySendHeaders<BinarySerializer>(client, function, req, {});
+        testOnewaySendHeaders<BinarySerializer>(
+            client, service, function, req, {});
         break;
       case protocol::T_COMPACT_PROTOCOL:
-        testOnewaySendHeaders<CompactSerializer>(client, function, req, {});
+        testOnewaySendHeaders<CompactSerializer>(
+            client, service, function, req, {});
         break;
       default:
         FAIL() << "Channel protocol not supported";
@@ -183,10 +191,10 @@ TEST_F(OmniClientTest, AddTest) {
   request.num1_ref() = 1;
   request.num2_ref() = 41;
 
-  testSend(client_, "add", request, 42);
+  testSend(client_, "TestService", "add", request, 42);
 }
 
 TEST_F(OmniClientTest, OnewayTest) {
   EmptyRequest request;
-  testOnewaySend(client_, "oneway", request);
+  testOnewaySend(client_, "TestService", "oneway", request);
 }

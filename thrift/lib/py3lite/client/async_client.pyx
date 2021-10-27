@@ -43,9 +43,6 @@ from thrift.py3lite.client.request_channel import ClientType
 
 @cython.auto_pickle(False)
 cdef class AsyncClient:
-    def __init__(self, string service_name):
-        self._service_name = service_name
-
     def __cinit__(AsyncClient self):
         loop = asyncio.get_event_loop()
         self._executor = get_executor()
@@ -54,8 +51,7 @@ cdef class AsyncClient:
         self._connect_future = loop.create_future()
 
     cdef bind_client(self, cRequestChannel_ptr channel):
-        self._omni_client = make_unique[cOmniClient](
-            cmove(channel), self._service_name)
+        self._omni_client = make_unique[cOmniClient](cmove(channel))
 
     def __enter__(AsyncClient self):
         raise asyncio.InvalidStateError('Use an async context for thrift clients')
@@ -77,6 +73,7 @@ cdef class AsyncClient:
 
     def _send_request(
         AsyncClient self,
+        string service_name,
         string function_name,
         args,
         response_cls,
@@ -88,14 +85,22 @@ cdef class AsyncClient:
         future = loop.create_future()
 
         if response_cls is None:
-            deref(self._omni_client).oneway_send(function_name, args_iobuf.c_clone())
+            deref(self._omni_client).oneway_send(
+                service_name,
+                function_name,
+                args_iobuf.c_clone(),
+            )
             future.set_result(None)
             return future
         else:
             userdata = (future, response_cls, protocol)
             bridgeSemiFutureWith[cOmniClientResponseWithHeaders](
                 self._executor,
-                deref(self._omni_client).semifuture_send(function_name, args_iobuf.c_clone()),
+                deref(self._omni_client).semifuture_send(
+                    service_name,
+                    function_name,
+                    args_iobuf.c_clone(),
+                ),
                 _async_client_send_request_callback,
                 <PyObject *> userdata,
             )

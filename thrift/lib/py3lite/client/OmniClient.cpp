@@ -60,9 +60,8 @@ makeOmniClientRequestContext(
 
 } // namespace
 
-OmniClient::OmniClient(
-    RequestChannel_ptr channel, const std::string& serviceName)
-    : channel_(std::move(channel)), serviceName_(serviceName) {}
+OmniClient::OmniClient(RequestChannel_ptr channel)
+    : channel_(std::move(channel)) {}
 
 OmniClient::~OmniClient() {
   if (channel_) {
@@ -74,24 +73,32 @@ OmniClient::~OmniClient() {
 }
 
 OmniClientResponseWithHeaders OmniClient::sync_send(
+    const std::string& serviceName,
     const std::string& functionName,
     std::unique_ptr<folly::IOBuf> args,
     const std::unordered_map<std::string, std::string>& headers) {
   return folly::coro::blockingWait(
-      semifuture_send(functionName, std::move(args), headers));
+      semifuture_send(serviceName, functionName, std::move(args), headers));
 }
 
 OmniClientResponseWithHeaders OmniClient::sync_send(
+    const std::string& serviceName,
     const std::string& functionName,
     const std::string& args,
     const std::unordered_map<std::string, std::string>& headers) {
-  return sync_send(functionName, folly::IOBuf::copyBuffer(args), headers);
+  return sync_send(
+      serviceName, functionName, folly::IOBuf::copyBuffer(args), headers);
 }
 
 void OmniClient::oneway_send(
+    const std::string& serviceName,
     const std::string& functionName,
     std::unique_ptr<folly::IOBuf> args,
     const std::unordered_map<std::string, std::string>& headers) {
+  // service name is not used in oneway calls (yet?), but accepting the param
+  // for API consistency
+  (void)serviceName;
+
   RpcOptions rpcOpts;
   auto header = std::make_shared<apache::thrift::transport::THeader>();
   header->setProtocolId(channel_->getProtocolId());
@@ -111,13 +118,16 @@ void OmniClient::oneway_send(
 }
 
 void OmniClient::oneway_send(
+    const std::string& serviceName,
     const std::string& functionName,
     const std::string& args,
     const std::unordered_map<std::string, std::string>& headers) {
-  oneway_send(functionName, folly::IOBuf::copyBuffer(args), headers);
+  oneway_send(
+      serviceName, functionName, folly::IOBuf::copyBuffer(args), headers);
 }
 
 folly::SemiFuture<OmniClientResponseWithHeaders> OmniClient::semifuture_send(
+    const std::string& serviceName,
     const std::string& functionName,
     std::unique_ptr<folly::IOBuf> args,
     const std::unordered_map<std::string, std::string>& headers) {
@@ -131,7 +141,7 @@ folly::SemiFuture<OmniClientResponseWithHeaders> OmniClient::semifuture_send(
   // destroyed as part of ClientReceiveState's destructor).
   auto serviceAndFunction =
       std::make_unique<std::pair<std::string, std::string>>(
-          serviceName_, fmt::format("{}.{}", serviceName_, functionName));
+          serviceName, fmt::format("{}.{}", serviceName, functionName));
 
   folly::Promise<ClientReceiveState> promise;
   auto future = promise.getSemiFuture();
@@ -158,10 +168,12 @@ folly::SemiFuture<OmniClientResponseWithHeaders> OmniClient::semifuture_send(
 }
 
 folly::SemiFuture<OmniClientResponseWithHeaders> OmniClient::semifuture_send(
+    const std::string& serviceName,
     const std::string& functionName,
     const std::string& args,
     const std::unordered_map<std::string, std::string>& headers) {
-  return semifuture_send(functionName, folly::IOBuf::copyBuffer(args), headers);
+  return semifuture_send(
+      serviceName, functionName, folly::IOBuf::copyBuffer(args), headers);
 }
 
 void OmniClient::sendImpl(

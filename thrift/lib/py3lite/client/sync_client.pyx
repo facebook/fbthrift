@@ -35,9 +35,8 @@ from thrift.py3lite.serializer import serialize_iobuf, deserialize
 
 
 cdef class SyncClient:
-    def __init__(self, RequestChannel channel, string service_name):
-        self._omni_client = make_unique[cOmniClient](
-            cmove(channel._cpp_obj), service_name)
+    def __init__(self, RequestChannel channel):
+        self._omni_client = make_unique[cOmniClient](cmove(channel._cpp_obj))
 
     def __enter__(self):
         return self
@@ -48,6 +47,7 @@ cdef class SyncClient:
 
     def _send_request(
         self,
+        string service_name,
         string function_name,
         args,
         response_cls,
@@ -55,10 +55,18 @@ cdef class SyncClient:
         protocol = deref(self._omni_client).getChannelProtocolId()
         cdef IOBuf args_iobuf = serialize_iobuf(args, protocol=protocol)
         if response_cls is None:
-            deref(self._omni_client).oneway_send(function_name, args_iobuf.c_clone())
+            deref(self._omni_client).oneway_send(
+                service_name,
+                function_name,
+                args_iobuf.c_clone(),
+            )
         else:
             response_iobuf = folly.iobuf.from_unique_ptr(
-                deref(self._omni_client).sync_send(function_name, args_iobuf.c_clone()).buf
+                deref(self._omni_client).sync_send(
+                    service_name,
+                    function_name,
+                    args_iobuf.c_clone(),
+                ).buf
             )
             return deserialize(response_cls, response_iobuf, protocol=protocol)
 
