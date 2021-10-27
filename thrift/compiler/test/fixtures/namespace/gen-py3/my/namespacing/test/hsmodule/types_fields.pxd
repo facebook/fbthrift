@@ -39,17 +39,17 @@ from thrift.py3.types cimport (
 from folly.optional cimport cOptional as __cOptional
 
 
-cimport hsmodule.types as _hsmodule_types
+cimport my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
 
 
 
 ctypedef void (*__HsFoo_FieldsSetterFunc)(__HsFoo_FieldsSetter, object) except *
 
 cdef class __HsFoo_FieldsSetter(__StructFieldsSetter):
-    cdef _hsmodule_types.cHsFoo* _struct_cpp_obj
+    cdef _my_namespacing_test_hsmodule_types.cHsFoo* _struct_cpp_obj
     cdef cumap[__cstring_view, __HsFoo_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __HsFoo_FieldsSetter create(_hsmodule_types.cHsFoo* struct_cpp_obj)
+    cdef __HsFoo_FieldsSetter create(_my_namespacing_test_hsmodule_types.cHsFoo* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
 

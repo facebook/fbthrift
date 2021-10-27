@@ -11,7 +11,7 @@ import folly.iobuf as _fbthrift_iobuf
 import thrift.py3.builder
 
 
-import hsmodule.types as _hsmodule_types
+import my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
 
 
 class HsFoo_Builder(thrift.py3.builder.StructBuilder):

@@ -10,8 +10,8 @@ cimport folly.iobuf as _fbthrift_iobuf
 
 cimport thrift.py3.builder
 
-cimport hsmodule.types as _hsmodule_types
-cimport hsmodule.builders as _hsmodule_builders
+cimport my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
+cimport my.namespacing.test.hsmodule.builders as _my_namespacing_test_hsmodule_builders
 
 cimport my.namespacing.extend.test.extend.types as _my_namespacing_extend_test_extend_types
 

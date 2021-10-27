@@ -47,12 +47,12 @@ import sys
 import types as _py_types
 from asyncio import get_event_loop as asyncio_get_event_loop, shield as asyncio_shield, InvalidStateError as asyncio_InvalidStateError
 
-cimport hsmodule.types as _hsmodule_types
-import hsmodule.types as _hsmodule_types
+cimport my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
+import my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
 
-cimport hsmodule.services_reflection as _services_reflection
+cimport my.namespacing.test.hsmodule.services_reflection as _services_reflection
 
-from hsmodule.clients_wrapper cimport cHsTestServiceAsyncClient, cHsTestServiceClientWrapper
+from my.namespacing.test.hsmodule.clients_wrapper cimport cHsTestServiceAsyncClient, cHsTestServiceClientWrapper
 
 
 cdef void HsTestService_init_callback(

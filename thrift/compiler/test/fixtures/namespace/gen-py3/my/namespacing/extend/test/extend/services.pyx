@@ -53,10 +53,10 @@ from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
 cimport my.namespacing.extend.test.extend.types as _my_namespacing_extend_test_extend_types
 import my.namespacing.extend.test.extend.types as _my_namespacing_extend_test_extend_types
-cimport hsmodule.services as _hsmodule_services
-import hsmodule.services as _hsmodule_services
-import hsmodule.types as _hsmodule_types
-cimport hsmodule.types as _hsmodule_types
+cimport my.namespacing.test.hsmodule.services as _my_namespacing_test_hsmodule_services
+import my.namespacing.test.hsmodule.services as _my_namespacing_test_hsmodule_services
+import my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
+cimport my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
 
 cimport my.namespacing.extend.test.extend.services_reflection as _services_reflection
 
@@ -92,7 +92,7 @@ cdef object _ExtendTestService_annotations = _py_types.MappingProxyType({
 
 @cython.auto_pickle(False)
 cdef class ExtendTestServiceInterface(
-    _hsmodule_services.HsTestServiceInterface
+    _my_namespacing_test_hsmodule_services.HsTestServiceInterface
 ):
     annotations = _ExtendTestService_annotations
 
@@ -127,10 +127,10 @@ cdef api void call_cy_ExtendTestService_check(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cbool] cPromise,
-    unique_ptr[_hsmodule_types.cHsFoo] struct1
+    unique_ptr[_my_namespacing_test_hsmodule_types.cHsFoo] struct1
 ):
     cdef Promise_cbool __promise = Promise_cbool.create(cmove(cPromise))
-    arg_struct1 = _hsmodule_types.HsFoo.create(shared_ptr[_hsmodule_types.cHsFoo](struct1.release()))
+    arg_struct1 = _my_namespacing_test_hsmodule_types.HsFoo.create(shared_ptr[_my_namespacing_test_hsmodule_types.cHsFoo](struct1.release()))
     __context = RequestContext.create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(

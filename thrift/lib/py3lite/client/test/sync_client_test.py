@@ -17,9 +17,10 @@ import unittest
 
 import thrift.py3lite.types  # noqa: F401, TODO: remove after D31914637 lands
 from thrift.py3lite.exceptions import ApplicationError
+from thrift.py3lite.leaf.lite_clients import LeafService
 from thrift.py3lite.serializer import Protocol
 from thrift.py3lite.sync_client import ClientType, get_client
-from thrift.py3lite.test.lite_clients import TestService
+from thrift.py3lite.test.lite_clients import EchoService, TestService
 from thrift.py3lite.test.lite_types import ArithmeticException, EmptyException
 from thrift.py3lite.test.test_server import server_in_another_process
 
@@ -70,3 +71,17 @@ class SyncClientTests(unittest.TestCase):
             with get_client(TestService, path=path) as client:
                 with self.assertRaises(ApplicationError):
                     client.surprise()
+
+    def test_derived_service(self) -> None:
+        with server_in_another_process() as path:
+            with get_client(EchoService, path=path) as client:
+                self.assertEqual("hello", client.echo("hello"))
+                self.assertEqual(3, client.add(1, 2))
+
+    def test_deriving_from_external_service(self) -> None:
+        with server_in_another_process() as path:
+            with get_client(LeafService, path=path) as client:
+                # TODO: shouldn't need the explicit list conversion
+                self.assertEqual([3, 2, 1], list(client.reverse([1, 2, 3])))
+                self.assertEqual("hello", client.echo("hello"))
+                self.assertEqual(3, client.add(1, 2))

@@ -14,7 +14,7 @@ namespace cpp2 {
 HsTestServiceWrapper::HsTestServiceWrapper(PyObject *obj, folly::Executor* exc)
   : if_object(obj), executor(exc)
   {
-    import_hsmodule__services();
+    import_my__namespacing__test__hsmodule__services();
   }
 
 

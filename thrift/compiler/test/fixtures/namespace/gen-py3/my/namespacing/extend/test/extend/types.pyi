@@ -14,7 +14,7 @@ from typing_extensions import Final
 
 import sys
 import itertools
-import hsmodule.types as _hsmodule_types
+import my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
 
 
 __property__ = property

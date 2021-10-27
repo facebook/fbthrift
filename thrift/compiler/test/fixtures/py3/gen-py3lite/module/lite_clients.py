@@ -1552,7 +1552,7 @@ class SimpleService:
 
 
 class DerivedService:
-    class Sync(_fbthrift_py3lite_SyncClient):
+    class Sync(SimpleService.Sync):
         def __init__(self, channel):
             super().__init__(channel)
 
@@ -1573,7 +1573,7 @@ class DerivedService:
                 "Empty Response",
             )
 
-    class Async(_fbthrift_py3lite_AsyncClient):
+    class Async(SimpleService.Async):
         def __init__(self):
             super().__init__()
 
@@ -1596,7 +1596,7 @@ class DerivedService:
 
 
 class RederivedService:
-    class Sync(_fbthrift_py3lite_SyncClient):
+    class Sync(DerivedService.Sync):
         def __init__(self, channel):
             super().__init__(channel)
 
@@ -1617,7 +1617,7 @@ class RederivedService:
                 "Empty Response",
             )
 
-    class Async(_fbthrift_py3lite_AsyncClient):
+    class Async(DerivedService.Async):
         def __init__(self):
             super().__init__()
 

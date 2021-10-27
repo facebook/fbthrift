@@ -23,12 +23,27 @@ from {{program:base_library_package}}.sync_client import SyncClient as _fbthrift
 from {{program:base_library_package}}.async_client import AsyncClient as _fbthrift_py3lite_AsyncClient
 import {{program:base_library_package}}.exceptions as _fbthrift_py3lite_exceptions
 import {{#program:py3_namespaces}}{{value}}.{{/program:py3_namespaces}}{{program:name}}.lite_types as _{{#program:py3_namespaces}}{{value}}_{{/program:py3_namespaces}}{{program:name}}_lite_types
+{{#program:include_namespaces}}
+{{#has_types?}}
+import {{#include_namespace}}{{value}}.{{/include_namespace}}lite_types as _{{#include_namespace}}{{value}}_{{/include_namespace}}lite_types
+{{/has_types?}}
+{{#has_services?}}
+import {{#include_namespace}}{{value}}.{{/include_namespace}}lite_clients as _{{#include_namespace}}{{value}}_{{/include_namespace}}lite_clients
+{{/has_services?}}
+{{/program:include_namespaces}}
 
 
 {{#program:services?}}
 {{#program:services}}
 class {{service:name}}:
-    class Sync(_fbthrift_py3lite_SyncClient):
+    class Sync({{#service:extends}}{{!
+        }}{{#service:external_program?}}{{!
+            }}{{#service:py3_namespaces}}_{{value}}{{/service:py3_namespaces}}_{{service:program_name}}_lite_clients.{{!
+        }}{{/service:external_program?}}{{!
+        }}{{service:name}}.Sync{{!
+    }}{{/service:extends}}{{^service:extends?}}{{!
+        }}_fbthrift_py3lite_SyncClient{{!
+    }}{{/service:extends?}}):
         def __init__(self, channel):
             super().__init__(channel)
         {{#service:supported_functions}}
@@ -64,7 +79,14 @@ class {{service:name}}:
             {{/type:void?}}{{/function:return_type}}
         {{/service:supported_functions}}
 
-    class Async(_fbthrift_py3lite_AsyncClient):
+    class Async({{#service:extends}}{{!
+        }}{{#service:external_program?}}{{!
+            }}{{#service:py3_namespaces}}_{{value}}{{/service:py3_namespaces}}_{{service:program_name}}_lite_clients.{{!
+        }}{{/service:external_program?}}{{!
+        }}{{service:name}}.Async{{!
+    }}{{/service:extends}}{{^service:extends?}}{{!
+        }}_fbthrift_py3lite_AsyncClient{{!
+    }}{{/service:extends?}}):
         def __init__(self):
             super().__init__()
         {{#service:supported_functions}}

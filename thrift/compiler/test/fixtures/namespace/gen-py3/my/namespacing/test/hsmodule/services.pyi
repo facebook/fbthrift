@@ -10,7 +10,7 @@ import typing as _typing
 from thrift.py3.server import RequestContext, ServiceInterface
 from abc import abstractmethod, ABCMeta
 
-import hsmodule.types as _hsmodule_types
+import my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
 
 _HsTestServiceInterfaceT = _typing.TypeVar('_HsTestServiceInterfaceT', bound='HsTestServiceInterface')
 

@@ -11,14 +11,14 @@ from thrift.py3.server import RequestContext, ServiceInterface
 from abc import abstractmethod, ABCMeta
 
 import my.namespacing.extend.test.extend.types as _my_namespacing_extend_test_extend_types
-import hsmodule.services as _hsmodule_services
-import hsmodule.types as _hsmodule_types
+import my.namespacing.test.hsmodule.services as _my_namespacing_test_hsmodule_services
+import my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
 
 _ExtendTestServiceInterfaceT = _typing.TypeVar('_ExtendTestServiceInterfaceT', bound='ExtendTestServiceInterface')
 
 
 class ExtendTestServiceInterface(
-    _hsmodule_services.HsTestServiceInterface,
+    _my_namespacing_test_hsmodule_services.HsTestServiceInterface,
     metaclass=ABCMeta,
 ):
 
@@ -26,7 +26,7 @@ class ExtendTestServiceInterface(
     @abstractmethod
     async def check(
         self,
-        struct1: _hsmodule_types.HsFoo
+        struct1: _my_namespacing_test_hsmodule_types.HsFoo
     ) -> bool: ...
     pass
 

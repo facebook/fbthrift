@@ -17,13 +17,15 @@ import contextlib
 import tempfile
 import time
 from multiprocessing import Process
+from typing import List
 
 from thrift.py3.server import ThriftServer
-from thrift.py3lite.test.services import TestServiceInterface
+from thrift.py3lite.leaf.services import LeafServiceInterface
+from thrift.py3lite.test.services import EchoServiceInterface, TestServiceInterface
 from thrift.py3lite.test.types import ArithmeticException, EmptyException
 
 
-class Handler(TestServiceInterface):
+class TestServiceHandler(TestServiceInterface):
     async def add(self, num1: int, num2: int) -> int:
         return num1 + num2
 
@@ -46,10 +48,20 @@ class Handler(TestServiceInterface):
         raise RuntimeError("Surprise!")
 
 
+class EchoServiceHandler(TestServiceHandler, EchoServiceInterface):
+    async def echo(self, input: str) -> str:
+        return input
+
+
+class LeafServiceHandler(EchoServiceHandler, LeafServiceInterface):
+    async def reverse(self, input: List[int]) -> List[int]:
+        return reversed(input)
+
+
 @contextlib.contextmanager
 def server_in_another_process():
     async def start_server_async(path):
-        server = ThriftServer(Handler(), path=path)
+        server = ThriftServer(LeafServiceHandler(), path=path)
         await server.serve()
 
     def start_server(path):
@@ -63,14 +75,13 @@ def server_in_another_process():
         try:
             yield socket.name
         finally:
-            time.sleep(1)  # wait for server to clear the queue
             process.terminate()
             process.join()
 
 
 @contextlib.asynccontextmanager
 async def server_in_event_loop():
-    server = ThriftServer(Handler(), ip="::1")
+    server = ThriftServer(LeafServiceHandler(), ip="::1")
     serve_task = asyncio.get_event_loop().create_task(server.serve())
     addr = await server.get_address()
     try:

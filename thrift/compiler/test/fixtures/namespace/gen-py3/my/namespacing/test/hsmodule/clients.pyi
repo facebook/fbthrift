@@ -12,7 +12,7 @@ import thrift.py3.common
 import typing as _typing
 from types import TracebackType
 
-import hsmodule.types as _hsmodule_types
+import my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
 
 
 _HsTestServiceT = _typing.TypeVar('_HsTestServiceT', bound='HsTestService')

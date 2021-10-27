@@ -7,9 +7,9 @@
 
 from thrift.py3.server cimport ServiceInterface
 
-cimport hsmodule.services as _hsmodule_services
+cimport my.namespacing.test.hsmodule.services as _my_namespacing_test_hsmodule_services
 
-cdef class ExtendTestServiceInterface(_hsmodule_services.HsTestServiceInterface):
+cdef class ExtendTestServiceInterface(_my_namespacing_test_hsmodule_services.HsTestServiceInterface):
     # these are to avoid weird Cython multiple inheritance issue
     cdef bint _for_cython_check
     pass

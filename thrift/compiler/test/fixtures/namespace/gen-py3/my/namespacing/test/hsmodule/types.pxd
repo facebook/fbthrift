@@ -39,7 +39,7 @@ from thrift.py3.common cimport (
 )
 from folly.optional cimport cOptional as __cOptional
 
-cimport hsmodule.types_fields as _fbthrift_types_fields
+cimport my.namespacing.test.hsmodule.types_fields as _fbthrift_types_fields
 
 cdef extern from "gen-py3/hsmodule/types.h":
   pass

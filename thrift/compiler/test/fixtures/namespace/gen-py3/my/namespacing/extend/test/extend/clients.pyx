@@ -49,15 +49,15 @@ from asyncio import get_event_loop as asyncio_get_event_loop, shield as asyncio_
 
 cimport my.namespacing.extend.test.extend.types as _my_namespacing_extend_test_extend_types
 import my.namespacing.extend.test.extend.types as _my_namespacing_extend_test_extend_types
-cimport hsmodule.types as _hsmodule_types
-import hsmodule.types as _hsmodule_types
-cimport hsmodule.clients as _hsmodule_clients
-import hsmodule.clients as _hsmodule_clients
+cimport my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
+import my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
+cimport my.namespacing.test.hsmodule.clients as _my_namespacing_test_hsmodule_clients
+import my.namespacing.test.hsmodule.clients as _my_namespacing_test_hsmodule_clients
 
 cimport my.namespacing.extend.test.extend.services_reflection as _services_reflection
 
 from my.namespacing.extend.test.extend.clients_wrapper cimport cExtendTestServiceAsyncClient, cExtendTestServiceClientWrapper
-from hsmodule.clients_wrapper cimport cHsTestServiceClientWrapper
+from my.namespacing.test.hsmodule.clients_wrapper cimport cHsTestServiceClientWrapper
 
 
 cdef void ExtendTestService_check_callback(
@@ -79,7 +79,7 @@ cdef object _ExtendTestService_annotations = _py_types.MappingProxyType({
 
 
 @cython.auto_pickle(False)
-cdef class ExtendTestService(_hsmodule_clients.HsTestService):
+cdef class ExtendTestService(_my_namespacing_test_hsmodule_clients.HsTestService):
     annotations = _ExtendTestService_annotations
 
     cdef const type_info* _typeid(ExtendTestService self):
@@ -93,7 +93,7 @@ cdef class ExtendTestService(_hsmodule_clients.HsTestService):
     @cython.always_allow_keywords(True)
     def check(
             ExtendTestService self,
-            _hsmodule_types.HsFoo struct1 not None,
+            _my_namespacing_test_hsmodule_types.HsFoo struct1 not None,
             __RpcOptions rpc_options=None
     ):
         if rpc_options is None:
@@ -105,7 +105,7 @@ cdef class ExtendTestService(_hsmodule_clients.HsTestService):
         bridgeFutureWith[cbool](
             self._executor,
             down_cast_ptr[cExtendTestServiceClientWrapper, cClientWrapper](self._client.get()).check(rpc_options._cpp_obj, 
-                deref((<_hsmodule_types.HsFoo>struct1)._cpp_obj),
+                deref((<_my_namespacing_test_hsmodule_types.HsFoo>struct1)._cpp_obj),
             ),
             ExtendTestService_check_callback,
             <PyObject *> __userdata

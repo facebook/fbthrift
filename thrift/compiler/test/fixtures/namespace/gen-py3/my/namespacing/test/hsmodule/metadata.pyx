@@ -13,7 +13,7 @@ from apache.thrift.metadata.types cimport (
     ThriftMetadata,
 )
 
-from hsmodule.metadata cimport cGetThriftModuleMetadata
+from my.namespacing.test.hsmodule.metadata cimport cGetThriftModuleMetadata
 
 def getThriftModuleMetadata():
     cdef shared_ptr[cThriftMetadata] metadata

@@ -11,7 +11,7 @@ cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.builder
 
 
-cimport hsmodule.types as _hsmodule_types
+cimport my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
 
 cdef class HsFoo_Builder(thrift.py3.builder.StructBuilder):
     cdef public pint MyInt

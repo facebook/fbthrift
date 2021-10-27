@@ -14,7 +14,7 @@ from thrift.py3.reflection cimport (
 import folly.iobuf as _fbthrift_iobuf
 
 
-cimport hsmodule.types as _hsmodule_types
+cimport my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
 
 
 cdef __InterfaceSpec get_reflection__HsTestService(bint for_clients):

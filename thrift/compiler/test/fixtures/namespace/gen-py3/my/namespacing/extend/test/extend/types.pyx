@@ -53,8 +53,8 @@ import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
 import weakref as __weakref
 import builtins as _builtins
-cimport hsmodule.types as _hsmodule_types
-import hsmodule.types as _hsmodule_types
+cimport my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
+import my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
 
 cimport my.namespacing.extend.test.extend.types_reflection as _types_reflection
 

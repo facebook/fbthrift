@@ -5,7 +5,7 @@
 #  @generated
 #
 cdef class HsFoo_Builder(thrift.py3.builder.StructBuilder):
-    _struct_type = _hsmodule_types.HsFoo
+    _struct_type = _my_namespacing_test_hsmodule_types.HsFoo
 
     def __iter__(self):
         yield "MyInt", self.MyInt

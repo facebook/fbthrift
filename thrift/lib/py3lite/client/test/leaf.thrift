@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-namespace hs My.Namespacing.Test
-namespace py3 my.namespacing.test
+include "thrift/lib/py3lite/client/test/test.thrift"
 
-struct HsFoo {
-  1: i64 MyInt;
-}
+namespace cpp2 thrift.py3lite.test
+namespace py3 thrift.py3lite
 
-service HsTestService {
-  i64 init(1: i64 int1);
+service LeafService extends test.EchoService {
+  list<i32> reverse(1: list<i32> input);
 }

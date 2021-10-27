@@ -14,7 +14,7 @@ from thrift.py3.reflection cimport (
     Qualifier as __Qualifier,
 )
 
-cimport hsmodule.types as _hsmodule_types
+cimport my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
 
 cimport my.namespacing.extend.test.extend.types as _my_namespacing_extend_test_extend_types
 

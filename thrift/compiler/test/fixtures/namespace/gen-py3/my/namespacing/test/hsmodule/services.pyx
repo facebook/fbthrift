@@ -51,10 +51,10 @@ import folly.iobuf as _fbthrift_iobuf
 from folly.iobuf cimport move as move_iobuf
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
-cimport hsmodule.types as _hsmodule_types
-import hsmodule.types as _hsmodule_types
+cimport my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
+import my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
 
-cimport hsmodule.services_reflection as _services_reflection
+cimport my.namespacing.test.hsmodule.services_reflection as _services_reflection
 
 import asyncio
 import functools
@@ -62,7 +62,7 @@ import sys
 import traceback
 import types as _py_types
 
-from hsmodule.services_wrapper cimport cHsTestServiceInterface
+from my.namespacing.test.hsmodule.services_wrapper cimport cHsTestServiceInterface
 
 
 

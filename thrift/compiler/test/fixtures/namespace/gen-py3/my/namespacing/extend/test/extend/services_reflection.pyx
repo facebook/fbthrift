@@ -13,7 +13,7 @@ from thrift.py3.reflection cimport (
 
 import folly.iobuf as _fbthrift_iobuf
 
-cimport hsmodule.types as _hsmodule_types
+cimport my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
 
 cimport my.namespacing.extend.test.extend.types as _my_namespacing_extend_test_extend_types
 
@@ -30,7 +30,7 @@ cdef __InterfaceSpec get_reflection__ExtendTestService(bint for_clients):
             arguments=(
                 __ArgumentSpec.create(
                     name="struct1",
-                    type=_hsmodule_types.HsFoo,
+                    type=_my_namespacing_test_hsmodule_types.HsFoo,
                     kind=__NumberType.NOT_A_NUMBER,
                     annotations={
                     },

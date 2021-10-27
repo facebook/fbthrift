@@ -598,6 +598,8 @@ class mstch_py3lite_service : public mstch_service {
              &mstch_py3lite_service::parent_service_name},
             {"service:supported_functions",
              &mstch_py3lite_service::get_supported_functions},
+            {"service:external_program?",
+             &mstch_py3lite_service::is_external_program},
         });
   }
 
@@ -620,6 +622,8 @@ class mstch_py3lite_service : public mstch_service {
     }
     return generate_functions(funcs);
   }
+
+  mstch::node is_external_program() { return prog_ != service_->program(); }
 
  protected:
   const t_program* prog_;

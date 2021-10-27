@@ -13,18 +13,18 @@ import typing as _typing
 from types import TracebackType
 
 import my.namespacing.extend.test.extend.types as _my_namespacing_extend_test_extend_types
-import hsmodule.types as _hsmodule_types
-import hsmodule.clients as _hsmodule_clients
+import my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
+import my.namespacing.test.hsmodule.clients as _my_namespacing_test_hsmodule_clients
 
 
 _ExtendTestServiceT = _typing.TypeVar('_ExtendTestServiceT', bound='ExtendTestService')
 
 
-class ExtendTestService(_hsmodule_clients.HsTestService):
+class ExtendTestService(_my_namespacing_test_hsmodule_clients.HsTestService):
 
     async def check(
         self,
-        struct1: _hsmodule_types.HsFoo,
+        struct1: _my_namespacing_test_hsmodule_types.HsFoo,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> bool: ...
 

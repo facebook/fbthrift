@@ -34,6 +34,10 @@ service TestService {
   void surprise();
 }
 
+service EchoService extends TestService {
+  string echo(1: string input);
+}
+
 //
 // The following structures are defined to mimic the anonymous argument structs
 // for the related service functions. These request structures are used to test

@@ -54,7 +54,7 @@ from collections.abc import Sequence, Set, Mapping, Iterable
 import weakref as __weakref
 import builtins as _builtins
 
-cimport hsmodule.types_reflection as _types_reflection
+cimport my.namespacing.test.hsmodule.types_reflection as _types_reflection
 
 
 

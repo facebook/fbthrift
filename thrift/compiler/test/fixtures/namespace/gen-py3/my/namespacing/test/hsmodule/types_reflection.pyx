@@ -15,7 +15,7 @@ from thrift.py3.reflection cimport (
 )
 
 
-cimport hsmodule.types as _hsmodule_types
+cimport my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
 
 from thrift.py3.types cimport (
     constant_shared_ptr,
@@ -24,9 +24,9 @@ from thrift.py3.types cimport (
 
 
 cdef __StructSpec get_reflection__HsFoo():
-    cdef _hsmodule_types.HsFoo defaults = _hsmodule_types.HsFoo.create(
-        constant_shared_ptr[_hsmodule_types.cHsFoo](
-            default_inst[_hsmodule_types.cHsFoo]()
+    cdef _my_namespacing_test_hsmodule_types.HsFoo defaults = _my_namespacing_test_hsmodule_types.HsFoo.create(
+        constant_shared_ptr[_my_namespacing_test_hsmodule_types.cHsFoo](
+            default_inst[_my_namespacing_test_hsmodule_types.cHsFoo]()
         )
     )
     cdef __StructSpec spec = __StructSpec.create(

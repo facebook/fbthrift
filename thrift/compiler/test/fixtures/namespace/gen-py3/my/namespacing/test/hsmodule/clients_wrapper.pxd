@@ -24,7 +24,7 @@ cimport folly.iobuf as _fbthrift_iobuf
 from thrift.py3.common cimport cRpcOptions
 from thrift.py3.client cimport cClientWrapper
 
-cimport hsmodule.types as _hsmodule_types
+cimport my.namespacing.test.hsmodule.types as _my_namespacing_test_hsmodule_types
 
 
 cdef extern from "gen-cpp2/HsTestService.h" namespace "::cpp2":

@@ -18,8 +18,9 @@ import thrift.py3lite.types  # noqa: F401, TODO: remove after D31914637 lands
 from later.unittest import TestCase
 from thrift.py3lite.async_client import ClientType, get_client
 from thrift.py3lite.exceptions import ApplicationError
+from thrift.py3lite.leaf.lite_clients import LeafService
 from thrift.py3lite.serializer import Protocol
-from thrift.py3lite.test.lite_clients import TestService
+from thrift.py3lite.test.lite_clients import EchoService, TestService
 from thrift.py3lite.test.lite_types import ArithmeticException, EmptyException
 from thrift.py3lite.test.test_server import server_in_event_loop
 
@@ -75,3 +76,22 @@ class SyncClientTests(TestCase):
             async with get_client(TestService, host=addr.ip, port=addr.port) as client:
                 with self.assertRaises(ApplicationError):
                     await client.surprise()
+
+    async def test_derived_service(self) -> None:
+        async with server_in_event_loop() as addr:
+            async with get_client(EchoService, host=addr.ip, port=addr.port) as client:
+                out = await client.echo("hello")
+                self.assertEqual("hello", out)
+                sum = await client.add(1, 2)
+                self.assertEqual(3, sum)
+
+    async def test_deriving_from_external_service(self) -> None:
+        async with server_in_event_loop() as addr:
+            async with get_client(LeafService, host=addr.ip, port=addr.port) as client:
+                rev = await client.reverse([1, 2, 3])
+                # TODO: shouldn't need the explicit list conversion
+                self.assertEqual([3, 2, 1], list(rev))
+                out = await client.echo("hello")
+                self.assertEqual("hello", out)
+                sum = await client.add(1, 2)
+                self.assertEqual(3, sum)

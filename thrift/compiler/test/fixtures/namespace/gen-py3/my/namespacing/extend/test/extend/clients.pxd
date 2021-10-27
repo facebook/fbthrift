@@ -6,8 +6,8 @@
 #
 cimport thrift.py3.client
 
-cimport hsmodule.clients as _hsmodule_clients
+cimport my.namespacing.test.hsmodule.clients as _my_namespacing_test_hsmodule_clients
 
-cdef class ExtendTestService(_hsmodule_clients.HsTestService):
+cdef class ExtendTestService(_my_namespacing_test_hsmodule_clients.HsTestService):
     pass
 
