@@ -86,7 +86,7 @@ class ListTests(unittest.TestCase):
             y.index(4, 0, 2)
         self.assertEqual(x.index(4, -20, -2), y.index(4, -20, -2))
 
-    def test_splicing(self) -> None:
+    def test_slicing(self) -> None:
         x = I32List([1, 2, 3, 4, 1, 2, 3, 4])
         y = list(x)
         self.assertEqual(x[2:], y[2:])
