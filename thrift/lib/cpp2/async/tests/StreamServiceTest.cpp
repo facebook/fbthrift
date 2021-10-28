@@ -290,16 +290,18 @@ TYPED_TEST(MultiStreamServiceTest, Cancel) {
       });
 }
 
-TYPED_TEST(MultiStreamServiceTest, UncompetedPublisherDestructor) {
+TYPED_TEST(MultiStreamServiceTest, UncompletedPublisherDestructor) {
   this->connectToServer(
       [](TestStreamServiceAsyncClient& client) -> folly::coro::Task<void> {
-        co_await client.co_uncompletedPublisherDestructor();
+        co_await client.co_uncompletedPublisherDestructor(
+            RpcOptions().setTimeout(std::chrono::seconds{10}));
       });
 }
 
-TYPED_TEST(MultiStreamServiceTest, UncompetedPublisherMoveAssignment) {
+TYPED_TEST(MultiStreamServiceTest, UncompletedPublisherMoveAssignment) {
   this->connectToServer(
       [](TestStreamServiceAsyncClient& client) -> folly::coro::Task<void> {
-        co_await client.co_uncompletedPublisherMoveAssignment();
+        co_await client.co_uncompletedPublisherMoveAssignment(
+            RpcOptions().setTimeout(std::chrono::seconds{10}));
       });
 }
