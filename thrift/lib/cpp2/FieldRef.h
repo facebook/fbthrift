@@ -66,9 +66,6 @@ class BitSet {
    public:
     reference(BitSet& bitSet, const uint8_t bit) : bitSet_(bitSet), bit_(bit) {}
 
-    reference(const reference& other)
-        : bitSet_(other.bitSet_), bit_(other.bit_) {}
-
     reference& operator=(bool flag) {
       if (flag) {
         bitSet_.set(bit_);
