@@ -84,7 +84,7 @@ MyStructNestedAnnotation& MyStructNestedAnnotation::operator=(FOLLY_MAYBE_UNUSED
 
 MyStructNestedAnnotation::MyStructNestedAnnotation(apache::thrift::FragileConstructor, ::std::string name__arg) :
     __fbthrift_field_name(std::move(name__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 
@@ -195,12 +195,12 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__
     __fbthrift_field_class_(std::move(class___arg)),
     __fbthrift_field_annotation_with_trailing_comma(std::move(annotation_with_trailing_comma__arg)),
     __fbthrift_field_empty_annotations(std::move(empty_annotations__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
-  __isset.__fbthrift_set(folly::index_constant<3>(), true);
-  __isset.__fbthrift_set(folly::index_constant<4>(), true);
-  __isset.__fbthrift_set(folly::index_constant<5>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
+  __isset.set(folly::index_constant<3>(), true);
+  __isset.set(folly::index_constant<4>(), true);
+  __isset.set(folly::index_constant<5>(), true);
 }
 
 
@@ -332,8 +332,8 @@ SecretStruct& SecretStruct::operator=(FOLLY_MAYBE_UNUSED SecretStruct&& other) n
 SecretStruct::SecretStruct(apache::thrift::FragileConstructor, ::std::int64_t id__arg, ::std::string password__arg) :
     __fbthrift_field_id(std::move(id__arg)),
     __fbthrift_field_password(std::move(password__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
 }
 
 

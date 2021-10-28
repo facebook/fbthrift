@@ -37,21 +37,21 @@ namespace cpp2 {
 
 Foo::Foo(const Foo& srcObj) {
   __fbthrift_field_intField = srcObj.__fbthrift_field_intField;
-  __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
+  __isset.set(folly::index_constant<0>(),srcObj.__isset.get(folly::index_constant<0>()));
   __fbthrift_field_optionalIntField = srcObj.__fbthrift_field_optionalIntField;
-  __isset.__fbthrift_set(folly::index_constant<1>(),srcObj.__isset.__fbthrift_get(folly::index_constant<1>()));
+  __isset.set(folly::index_constant<1>(),srcObj.__isset.get(folly::index_constant<1>()));
   __fbthrift_field_intFieldWithDefault = srcObj.__fbthrift_field_intFieldWithDefault;
-  __isset.__fbthrift_set(folly::index_constant<2>(),srcObj.__isset.__fbthrift_get(folly::index_constant<2>()));
+  __isset.set(folly::index_constant<2>(),srcObj.__isset.get(folly::index_constant<2>()));
   __fbthrift_field_setField = srcObj.__fbthrift_field_setField;
-  __isset.__fbthrift_set(folly::index_constant<3>(),srcObj.__isset.__fbthrift_get(folly::index_constant<3>()));
+  __isset.set(folly::index_constant<3>(),srcObj.__isset.get(folly::index_constant<3>()));
   __fbthrift_field_optionalSetField = srcObj.__fbthrift_field_optionalSetField;
-  __isset.__fbthrift_set(folly::index_constant<4>(),srcObj.__isset.__fbthrift_get(folly::index_constant<4>()));
+  __isset.set(folly::index_constant<4>(),srcObj.__isset.get(folly::index_constant<4>()));
   __fbthrift_field_mapField = srcObj.__fbthrift_field_mapField;
-  __isset.__fbthrift_set(folly::index_constant<5>(),srcObj.__isset.__fbthrift_get(folly::index_constant<5>()));
+  __isset.set(folly::index_constant<5>(),srcObj.__isset.get(folly::index_constant<5>()));
   __fbthrift_field_optionalMapField = srcObj.__fbthrift_field_optionalMapField;
-  __isset.__fbthrift_set(folly::index_constant<6>(),srcObj.__isset.__fbthrift_get(folly::index_constant<6>()));
+  __isset.set(folly::index_constant<6>(),srcObj.__isset.get(folly::index_constant<6>()));
   __fbthrift_field_binaryField = srcObj.__fbthrift_field_binaryField;
-  __isset.__fbthrift_set(folly::index_constant<7>(),srcObj.__isset.__fbthrift_get(folly::index_constant<7>()));
+  __isset.set(folly::index_constant<7>(),srcObj.__isset.get(folly::index_constant<7>()));
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_intField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(__fbthrift_field_optionalIntField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 3>(__fbthrift_field_intFieldWithDefault, *this);
@@ -131,14 +131,14 @@ Foo::Foo(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::ada
   ::apache::thrift::adapt_detail::construct<my::Adapter3, 6>(__fbthrift_field_mapField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter3, 7>(__fbthrift_field_optionalMapField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 8>(__fbthrift_field_binaryField, *this);
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
-  __isset.__fbthrift_set(folly::index_constant<3>(), true);
-  __isset.__fbthrift_set(folly::index_constant<4>(), true);
-  __isset.__fbthrift_set(folly::index_constant<5>(), true);
-  __isset.__fbthrift_set(folly::index_constant<6>(), true);
-  __isset.__fbthrift_set(folly::index_constant<7>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
+  __isset.set(folly::index_constant<3>(), true);
+  __isset.set(folly::index_constant<4>(), true);
+  __isset.set(folly::index_constant<5>(), true);
+  __isset.set(folly::index_constant<6>(), true);
+  __isset.set(folly::index_constant<7>(), true);
 }
 
 
@@ -393,17 +393,17 @@ namespace cpp2 {
 
 Bar::Bar(const Bar& srcObj) {
   __fbthrift_field_structField = srcObj.__fbthrift_field_structField;
-  __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
+  __isset.set(folly::index_constant<0>(),srcObj.__isset.get(folly::index_constant<0>()));
   __fbthrift_field_optionalStructField = srcObj.__fbthrift_field_optionalStructField;
-  __isset.__fbthrift_set(folly::index_constant<1>(),srcObj.__isset.__fbthrift_get(folly::index_constant<1>()));
+  __isset.set(folly::index_constant<1>(),srcObj.__isset.get(folly::index_constant<1>()));
   __fbthrift_field_structListField = srcObj.__fbthrift_field_structListField;
-  __isset.__fbthrift_set(folly::index_constant<2>(),srcObj.__isset.__fbthrift_get(folly::index_constant<2>()));
+  __isset.set(folly::index_constant<2>(),srcObj.__isset.get(folly::index_constant<2>()));
   __fbthrift_field_optionalStructListField = srcObj.__fbthrift_field_optionalStructListField;
-  __isset.__fbthrift_set(folly::index_constant<3>(),srcObj.__isset.__fbthrift_get(folly::index_constant<3>()));
+  __isset.set(folly::index_constant<3>(),srcObj.__isset.get(folly::index_constant<3>()));
   __fbthrift_field_unionField = srcObj.__fbthrift_field_unionField;
-  __isset.__fbthrift_set(folly::index_constant<4>(),srcObj.__isset.__fbthrift_get(folly::index_constant<4>()));
+  __isset.set(folly::index_constant<4>(),srcObj.__isset.get(folly::index_constant<4>()));
   __fbthrift_field_optionalUnionField = srcObj.__fbthrift_field_optionalUnionField;
-  __isset.__fbthrift_set(folly::index_constant<5>(),srcObj.__isset.__fbthrift_get(folly::index_constant<5>()));
+  __isset.set(folly::index_constant<5>(),srcObj.__isset.get(folly::index_constant<5>()));
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_structField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(__fbthrift_field_optionalStructField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 5>(__fbthrift_field_unionField, *this);
@@ -459,12 +459,12 @@ Bar::Bar(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::ada
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(__fbthrift_field_optionalStructField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 5>(__fbthrift_field_unionField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 6>(__fbthrift_field_optionalUnionField, *this);
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
-  __isset.__fbthrift_set(folly::index_constant<3>(), true);
-  __isset.__fbthrift_set(folly::index_constant<4>(), true);
-  __isset.__fbthrift_set(folly::index_constant<5>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
+  __isset.set(folly::index_constant<3>(), true);
+  __isset.set(folly::index_constant<4>(), true);
+  __isset.set(folly::index_constant<5>(), true);
 }
 
 
@@ -643,7 +643,7 @@ namespace cpp2 {
 
 StructWithFieldAdapter::StructWithFieldAdapter(const StructWithFieldAdapter& srcObj) {
   __fbthrift_field_field = srcObj.__fbthrift_field_field;
-  __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
+  __isset.set(folly::index_constant<0>(),srcObj.__isset.get(folly::index_constant<0>()));
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_field, *this);
 }
 
@@ -657,7 +657,7 @@ StructWithFieldAdapter& StructWithFieldAdapter::operator=(const StructWithFieldA
 StructWithFieldAdapter::StructWithFieldAdapter(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 1, ::std::int32_t, __fbthrift_cpp2_type> field__arg) :
     __fbthrift_field_field(std::move(field__arg)) {
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_field, *this);
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 

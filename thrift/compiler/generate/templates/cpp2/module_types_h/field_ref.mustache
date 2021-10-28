@@ -78,22 +78,22 @@
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> <%field:cpp_name%>_ref() const& {
-    return {this-><% > common/field_value%>, __isset.__fbthrift_at(folly::index_constant<<%field:isset_index%>>()), __isset.__fbthrift_bit(folly::index_constant<<%field:isset_index%>>())};
+    return {this-><% > common/field_value%>, __isset.at(folly::index_constant<<%field:isset_index%>>()), __isset.bit(folly::index_constant<<%field:isset_index%>>())};
   }
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> <%field:cpp_name%>_ref() const&& {
-    return {std::move(this-><% > common/field_value%>), __isset.__fbthrift_at(folly::index_constant<<%field:isset_index%>>()), __isset.__fbthrift_bit(folly::index_constant<<%field:isset_index%>>())};
+    return {std::move(this-><% > common/field_value%>), __isset.at(folly::index_constant<<%field:isset_index%>>()), __isset.bit(folly::index_constant<<%field:isset_index%>>())};
   }
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> <%field:cpp_name%>_ref() & {
-    return {this-><% > common/field_value%>, __isset.__fbthrift_at(folly::index_constant<<%field:isset_index%>>()), __isset.__fbthrift_bit(folly::index_constant<<%field:isset_index%>>())};
+    return {this-><% > common/field_value%>, __isset.at(folly::index_constant<<%field:isset_index%>>()), __isset.bit(folly::index_constant<<%field:isset_index%>>())};
   }
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> <%field:cpp_name%>_ref() && {
-    return {std::move(this-><% > common/field_value%>), __isset.__fbthrift_at(folly::index_constant<<%field:isset_index%>>()), __isset.__fbthrift_bit(folly::index_constant<<%field:isset_index%>>())};
+    return {std::move(this-><% > common/field_value%>), __isset.at(folly::index_constant<<%field:isset_index%>>()), __isset.bit(folly::index_constant<<%field:isset_index%>>())};
   }
 <%#field:eligible_for_storage_name_mangling?%>
 
@@ -167,22 +167,22 @@
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> <%field:cpp_name%>_ref() const& {
-    return {this-><% > common/field_value%>, __isset.__fbthrift_at(folly::index_constant<<%field:isset_index%>>()), __isset.__fbthrift_bit(folly::index_constant<<%field:isset_index%>>())};
+    return {this-><% > common/field_value%>, __isset.at(folly::index_constant<<%field:isset_index%>>()), __isset.bit(folly::index_constant<<%field:isset_index%>>())};
   }
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> <%field:cpp_name%>_ref() const&& {
-    return {std::move(this-><% > common/field_value%>), __isset.__fbthrift_at(folly::index_constant<<%field:isset_index%>>()), __isset.__fbthrift_bit(folly::index_constant<<%field:isset_index%>>())};
+    return {std::move(this-><% > common/field_value%>), __isset.at(folly::index_constant<<%field:isset_index%>>()), __isset.bit(folly::index_constant<<%field:isset_index%>>())};
   }
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> <%field:cpp_name%>_ref() & {
-    return {this-><% > common/field_value%>, __isset.__fbthrift_at(folly::index_constant<<%field:isset_index%>>()), __isset.__fbthrift_bit(folly::index_constant<<%field:isset_index%>>())};
+    return {this-><% > common/field_value%>, __isset.at(folly::index_constant<<%field:isset_index%>>()), __isset.bit(folly::index_constant<<%field:isset_index%>>())};
   }
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> <%field:cpp_name%>_ref() && {
-    return {std::move(this-><% > common/field_value%>), __isset.__fbthrift_at(folly::index_constant<<%field:isset_index%>>()), __isset.__fbthrift_bit(folly::index_constant<<%field:isset_index%>>())};
+    return {std::move(this-><% > common/field_value%>), __isset.at(folly::index_constant<<%field:isset_index%>>()), __isset.bit(folly::index_constant<<%field:isset_index%>>())};
   }
 <%#field:eligible_for_storage_name_mangling?%>
 

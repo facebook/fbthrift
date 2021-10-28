@@ -28,7 +28,7 @@
 <%/field:cpp_adapter%>
 <%/struct:fields%>
 <%#struct:isset_fields%>
-  __isset.__fbthrift_set(folly::index_constant<<%field:index%>>(), true);
+  __isset.set(folly::index_constant<<%field:index%>>(), true);
 <%/struct:isset_fields%>
 }
 <%/struct:fields?%>

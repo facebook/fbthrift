@@ -106,12 +106,12 @@ ModuleA::ModuleA(apache::thrift::FragileConstructor, ::std::int32_t i32Field__ar
     __fbthrift_field_mapField(std::move(mapField__arg)),
     __fbthrift_field_inclAField(std::move(inclAField__arg)),
     __fbthrift_field_inclBField(std::move(inclBField__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
-  __isset.__fbthrift_set(folly::index_constant<3>(), true);
-  __isset.__fbthrift_set(folly::index_constant<4>(), true);
-  __isset.__fbthrift_set(folly::index_constant<5>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
+  __isset.set(folly::index_constant<3>(), true);
+  __isset.set(folly::index_constant<4>(), true);
+  __isset.set(folly::index_constant<5>(), true);
 }
 
 
@@ -284,8 +284,8 @@ namespace some { namespace ns {
 ModuleB::ModuleB(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::some::ns::EnumB inclEnumB__arg) :
     __fbthrift_field_i32Field(std::move(i32Field__arg)),
     __fbthrift_field_inclEnumB(std::move(inclEnumB__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
 }
 
 

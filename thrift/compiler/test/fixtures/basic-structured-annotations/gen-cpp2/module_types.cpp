@@ -87,8 +87,8 @@ structured_annotation_inline& structured_annotation_inline::operator=(FOLLY_MAYB
 structured_annotation_inline::structured_annotation_inline(apache::thrift::FragileConstructor, ::std::int64_t count__arg, ::std::string name__arg) :
     __fbthrift_field_count(std::move(count__arg)),
     __fbthrift_field_name(std::move(name__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
 }
 
 
@@ -185,7 +185,7 @@ structured_annotation_with_default& structured_annotation_with_default::operator
 
 structured_annotation_with_default::structured_annotation_with_default(apache::thrift::FragileConstructor, ::std::string name__arg) :
     __fbthrift_field_name(std::move(name__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 
@@ -261,7 +261,7 @@ namespace cpp2 {
 
 structured_annotation_forward::structured_annotation_forward(apache::thrift::FragileConstructor, ::std::int64_t count__arg) :
     __fbthrift_field_count(std::move(count__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 
@@ -356,9 +356,9 @@ structured_annotation_recursive::structured_annotation_recursive(apache::thrift:
     __fbthrift_field_name(std::move(name__arg)),
     __fbthrift_field_recurse(std::move(recurse__arg)),
     __fbthrift_field_forward(std::move(forward__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
 }
 
 
@@ -506,8 +506,8 @@ structured_annotation_nested& structured_annotation_nested::operator=(FOLLY_MAYB
 structured_annotation_nested::structured_annotation_nested(apache::thrift::FragileConstructor, ::std::string name__arg, ::cpp2::structured_annotation_with_default nest__arg) :
     __fbthrift_field_name(std::move(name__arg)),
     __fbthrift_field_nest(std::move(nest__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
 }
 
 
@@ -633,10 +633,10 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t annotated_
     __fbthrift_field_annotated_type(std::move(annotated_type__arg)),
     __fbthrift_field_annotated_recursive(std::move(annotated_recursive__arg)),
     __fbthrift_field_annotated_nested(std::move(annotated_nested__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
-  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
+  __isset.set(folly::index_constant<3>(), true);
 }
 
 
@@ -755,7 +755,7 @@ MyException& MyException::operator=(FOLLY_MAYBE_UNUSED MyException&& other) noex
 
 MyException::MyException(apache::thrift::FragileConstructor, ::std::string context__arg) :
     context(std::move(context__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 

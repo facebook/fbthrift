@@ -111,15 +111,15 @@ containerStruct2::containerStruct2(apache::thrift::FragileConstructor, bool fiel
     __fbthrift_field_fieldE(std::move(fieldE__arg)),
     req_fieldE(std::move(req_fieldE__arg)),
     __fbthrift_field_opt_fieldE(std::move(opt_fieldE__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
-  __isset.__fbthrift_set(folly::index_constant<3>(), true);
-  __isset.__fbthrift_set(folly::index_constant<4>(), true);
-  __isset.__fbthrift_set(folly::index_constant<5>(), true);
-  __isset.__fbthrift_set(folly::index_constant<6>(), true);
-  __isset.__fbthrift_set(folly::index_constant<7>(), true);
-  __isset.__fbthrift_set(folly::index_constant<8>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
+  __isset.set(folly::index_constant<3>(), true);
+  __isset.set(folly::index_constant<4>(), true);
+  __isset.set(folly::index_constant<5>(), true);
+  __isset.set(folly::index_constant<6>(), true);
+  __isset.set(folly::index_constant<7>(), true);
+  __isset.set(folly::index_constant<8>(), true);
 }
 
 

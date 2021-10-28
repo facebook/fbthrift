@@ -536,7 +536,7 @@ StructWithUnion::StructWithUnion(const StructWithUnion& srcObj) {
   aDouble = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::floating_point>(srcObj.aDouble);
   __fbthrift_field_f = srcObj.__fbthrift_field_f;
-  __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
+  __isset.set(folly::index_constant<0>(),srcObj.__isset.get(folly::index_constant<0>()));
 }
 
 StructWithUnion& StructWithUnion::operator=(const StructWithUnion& src) {
@@ -565,7 +565,7 @@ StructWithUnion::StructWithUnion(apache::thrift::FragileConstructor, ::std::uniq
     u(std::move(u__arg)),
     aDouble(std::move(aDouble__arg)),
     __fbthrift_field_f(std::move(f__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 
@@ -701,7 +701,7 @@ RecursiveStruct& RecursiveStruct::operator=(FOLLY_MAYBE_UNUSED RecursiveStruct&&
 
 RecursiveStruct::RecursiveStruct(apache::thrift::FragileConstructor, ::std::vector<::cpp2::RecursiveStruct> mes__arg) :
     __fbthrift_field_mes(std::move(mes__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 

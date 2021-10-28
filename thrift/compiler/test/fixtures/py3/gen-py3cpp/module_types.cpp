@@ -124,7 +124,7 @@ SimpleException& SimpleException::operator=(FOLLY_MAYBE_UNUSED SimpleException&&
 
 SimpleException::SimpleException(apache::thrift::FragileConstructor, ::std::int16_t err_code__arg) :
     err_code(std::move(err_code__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 
@@ -200,7 +200,7 @@ namespace py3 { namespace simple {
 OptionalRefStruct::OptionalRefStruct(const OptionalRefStruct& srcObj) {
   optional_blob = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::binary>(srcObj.optional_blob);
-  __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
+  __isset.set(folly::index_constant<0>(),srcObj.__isset.get(folly::index_constant<0>()));
 }
 
 OptionalRefStruct& OptionalRefStruct::operator=(const OptionalRefStruct& src) {
@@ -223,7 +223,7 @@ OptionalRefStruct& OptionalRefStruct::operator=(FOLLY_MAYBE_UNUSED OptionalRefSt
 
 OptionalRefStruct::OptionalRefStruct(apache::thrift::FragileConstructor, ::py3::simple::IOBufPtr optional_blob__arg) :
     optional_blob(std::move(optional_blob__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 
@@ -333,14 +333,14 @@ SimpleStruct::SimpleStruct(apache::thrift::FragileConstructor, bool is_on__arg, 
     __fbthrift_field_real(std::move(real__arg)),
     __fbthrift_field_smaller_real(std::move(smaller_real__arg)),
     __fbthrift_field_hidden_field(std::move(hidden_field__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
-  __isset.__fbthrift_set(folly::index_constant<3>(), true);
-  __isset.__fbthrift_set(folly::index_constant<4>(), true);
-  __isset.__fbthrift_set(folly::index_constant<5>(), true);
-  __isset.__fbthrift_set(folly::index_constant<6>(), true);
-  __isset.__fbthrift_set(folly::index_constant<7>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
+  __isset.set(folly::index_constant<3>(), true);
+  __isset.set(folly::index_constant<4>(), true);
+  __isset.set(folly::index_constant<5>(), true);
+  __isset.set(folly::index_constant<6>(), true);
+  __isset.set(folly::index_constant<7>(), true);
 }
 
 
@@ -517,15 +517,15 @@ ComplexStruct::ComplexStruct(apache::thrift::FragileConstructor, ::py3::simple::
     __fbthrift_field_from(std::move(from__arg)),
     __fbthrift_field_cdef(std::move(cdef__arg)),
     __fbthrift_field_bytes_with_cpp_type(std::move(bytes_with_cpp_type__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
-  __isset.__fbthrift_set(folly::index_constant<3>(), true);
-  __isset.__fbthrift_set(folly::index_constant<4>(), true);
-  __isset.__fbthrift_set(folly::index_constant<5>(), true);
-  __isset.__fbthrift_set(folly::index_constant<6>(), true);
-  __isset.__fbthrift_set(folly::index_constant<7>(), true);
-  __isset.__fbthrift_set(folly::index_constant<8>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
+  __isset.set(folly::index_constant<3>(), true);
+  __isset.set(folly::index_constant<4>(), true);
+  __isset.set(folly::index_constant<5>(), true);
+  __isset.set(folly::index_constant<6>(), true);
+  __isset.set(folly::index_constant<7>(), true);
+  __isset.set(folly::index_constant<8>(), true);
 }
 
 
@@ -797,7 +797,7 @@ BinaryUnionStruct& BinaryUnionStruct::operator=(FOLLY_MAYBE_UNUSED BinaryUnionSt
 
 BinaryUnionStruct::BinaryUnionStruct(apache::thrift::FragileConstructor, ::py3::simple::BinaryUnion u__arg) :
     __fbthrift_field_u(std::move(u__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 

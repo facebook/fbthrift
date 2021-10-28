@@ -183,7 +183,7 @@ decorated_struct& decorated_struct::operator=(FOLLY_MAYBE_UNUSED decorated_struc
 
 decorated_struct::decorated_struct(apache::thrift::FragileConstructor, ::std::string field__arg) :
     __fbthrift_field_field(std::move(field__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 
@@ -299,14 +299,14 @@ ContainerStruct::ContainerStruct(apache::thrift::FragileConstructor, ::std::vect
     __fbthrift_field_fieldF(std::move(fieldF__arg)),
     __fbthrift_field_fieldG(std::move(fieldG__arg)),
     __fbthrift_field_fieldH(std::move(fieldH__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
-  __isset.__fbthrift_set(folly::index_constant<3>(), true);
-  __isset.__fbthrift_set(folly::index_constant<4>(), true);
-  __isset.__fbthrift_set(folly::index_constant<5>(), true);
-  __isset.__fbthrift_set(folly::index_constant<6>(), true);
-  __isset.__fbthrift_set(folly::index_constant<7>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
+  __isset.set(folly::index_constant<3>(), true);
+  __isset.set(folly::index_constant<4>(), true);
+  __isset.set(folly::index_constant<5>(), true);
+  __isset.set(folly::index_constant<6>(), true);
+  __isset.set(folly::index_constant<7>(), true);
 }
 
 
@@ -484,7 +484,7 @@ CppTypeStruct& CppTypeStruct::operator=(FOLLY_MAYBE_UNUSED CppTypeStruct&& other
 
 CppTypeStruct::CppTypeStruct(apache::thrift::FragileConstructor, std::list<int32_t> fieldA__arg) :
     __fbthrift_field_fieldA(std::move(fieldA__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 
@@ -581,7 +581,7 @@ VirtualStruct& VirtualStruct::operator=(FOLLY_MAYBE_UNUSED VirtualStruct&& other
 
 VirtualStruct::VirtualStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg) :
     __fbthrift_field_MyIntField(std::move(MyIntField__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 
@@ -673,8 +673,8 @@ MyStructWithForwardRefEnum& MyStructWithForwardRefEnum::operator=(FOLLY_MAYBE_UN
 MyStructWithForwardRefEnum::MyStructWithForwardRefEnum(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::MyForwardRefEnum a__arg, ::apache::thrift::fixtures::types::MyForwardRefEnum b__arg) :
     __fbthrift_field_a(std::move(a__arg)),
     __fbthrift_field_b(std::move(b__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
 }
 
 
@@ -759,8 +759,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 TrivialNumeric::TrivialNumeric(apache::thrift::FragileConstructor, ::std::int32_t a__arg, bool b__arg) :
     __fbthrift_field_a(std::move(a__arg)),
     __fbthrift_field_b(std::move(b__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
 }
 
 
@@ -845,8 +845,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 TrivialNestedWithDefault::TrivialNestedWithDefault(apache::thrift::FragileConstructor, ::std::int32_t z__arg, ::apache::thrift::fixtures::types::TrivialNumeric n__arg) :
     __fbthrift_field_z(std::move(z__arg)),
     __fbthrift_field_n(std::move(n__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
 }
 
 
@@ -966,8 +966,8 @@ ComplexString& ComplexString::operator=(FOLLY_MAYBE_UNUSED ComplexString&& other
 ComplexString::ComplexString(apache::thrift::FragileConstructor, ::std::string a__arg, ::std::map<::std::string, ::std::int32_t> b__arg) :
     __fbthrift_field_a(std::move(a__arg)),
     __fbthrift_field_b(std::move(b__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
 }
 
 
@@ -1075,8 +1075,8 @@ ComplexNestedWithDefault& ComplexNestedWithDefault::operator=(FOLLY_MAYBE_UNUSED
 ComplexNestedWithDefault::ComplexNestedWithDefault(apache::thrift::FragileConstructor, ::std::string z__arg, ::apache::thrift::fixtures::types::ComplexString n__arg) :
     __fbthrift_field_z(std::move(z__arg)),
     __fbthrift_field_n(std::move(n__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
 }
 
 
@@ -1383,10 +1383,10 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField
     __fbthrift_field_MyStringField(std::move(MyStringField__arg)),
     __fbthrift_field_majorVer(std::move(majorVer__arg)),
     __fbthrift_field_data(std::move(data__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
-  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
+  __isset.set(folly::index_constant<3>(), true);
 }
 
 
@@ -1469,7 +1469,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 Renaming::Renaming(apache::thrift::FragileConstructor, ::std::int64_t bar__arg) :
     __fbthrift_field_bar(std::move(bar__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 
@@ -1561,8 +1561,8 @@ AnnotatedTypes& AnnotatedTypes::operator=(FOLLY_MAYBE_UNUSED AnnotatedTypes&& ot
 AnnotatedTypes::AnnotatedTypes(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::TBinary binary_field__arg, ::apache::thrift::fixtures::types::SomeListOfTypeMap list_field__arg) :
     __fbthrift_field_binary_field(std::move(binary_field__arg)),
     __fbthrift_field_list_field(std::move(list_field__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
 }
 
 
@@ -1654,7 +1654,7 @@ ForwardUsageStruct& ForwardUsageStruct::operator=(FOLLY_MAYBE_UNUSED ForwardUsag
 
 ForwardUsageStruct::ForwardUsageStruct(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg) :
     __fbthrift_field_foo(std::move(foo__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 
@@ -1749,7 +1749,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 ForwardUsageRoot::ForwardUsageRoot(const ForwardUsageRoot& srcObj) {
   __fbthrift_field_ForwardUsageStruct = srcObj.__fbthrift_field_ForwardUsageStruct;
-  __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
+  __isset.set(folly::index_constant<0>(),srcObj.__isset.get(folly::index_constant<0>()));
   ForwardUsageByRef = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::structure>(srcObj.ForwardUsageByRef);
 }
@@ -1777,7 +1777,7 @@ ForwardUsageRoot& ForwardUsageRoot::operator=(FOLLY_MAYBE_UNUSED ForwardUsageRoo
 ForwardUsageRoot::ForwardUsageRoot(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::ForwardUsageStruct ForwardUsageStruct__arg, ::std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef> ForwardUsageByRef__arg) :
     __fbthrift_field_ForwardUsageStruct(std::move(ForwardUsageStruct__arg)),
     ForwardUsageByRef(std::move(ForwardUsageByRef__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 
@@ -1906,7 +1906,7 @@ ForwardUsageByRef& ForwardUsageByRef::operator=(FOLLY_MAYBE_UNUSED ForwardUsageB
 
 ForwardUsageByRef::ForwardUsageByRef(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg) :
     __fbthrift_field_foo(std::move(foo__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 
@@ -2067,7 +2067,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 NoexceptMoveSimpleStruct::NoexceptMoveSimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t boolField__arg) :
     __fbthrift_field_boolField(std::move(boolField__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 
@@ -2191,14 +2191,14 @@ NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(apache::thrift::FragileCons
     MyBinaryField3(std::move(MyBinaryField3__arg)),
     __fbthrift_field_MyBinaryListField4(std::move(MyBinaryListField4__arg)),
     __fbthrift_field_MyMapEnumAndInt(std::move(MyMapEnumAndInt__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
-  __isset.__fbthrift_set(folly::index_constant<3>(), true);
-  __isset.__fbthrift_set(folly::index_constant<4>(), true);
-  __isset.__fbthrift_set(folly::index_constant<5>(), true);
-  __isset.__fbthrift_set(folly::index_constant<6>(), true);
-  __isset.__fbthrift_set(folly::index_constant<7>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
+  __isset.set(folly::index_constant<3>(), true);
+  __isset.set(folly::index_constant<4>(), true);
+  __isset.set(folly::index_constant<5>(), true);
+  __isset.set(folly::index_constant<6>(), true);
+  __isset.set(folly::index_constant<7>(), true);
 }
 
 
@@ -2496,11 +2496,11 @@ AllocatorAware::AllocatorAware(apache::thrift::FragileConstructor, ::std::vector
     __fbthrift_field_aa_map(std::move(aa_map__arg)),
     __fbthrift_field_aa_string(std::move(aa_string__arg)),
     __fbthrift_field_not_a_container(std::move(not_a_container__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
-  __isset.__fbthrift_set(folly::index_constant<3>(), true);
-  __isset.__fbthrift_set(folly::index_constant<4>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
+  __isset.set(folly::index_constant<3>(), true);
+  __isset.set(folly::index_constant<4>(), true);
 }
 
 
@@ -2645,7 +2645,7 @@ AllocatorAware2& AllocatorAware2::operator=(FOLLY_MAYBE_UNUSED AllocatorAware2&&
 
 AllocatorAware2::AllocatorAware2(apache::thrift::FragileConstructor, ::std::int32_t not_a_container__arg) :
     __fbthrift_field_not_a_container(std::move(not_a_container__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 
@@ -2740,9 +2740,9 @@ TypedefStruct::TypedefStruct(apache::thrift::FragileConstructor, ::std::int32_t 
     __fbthrift_field_i32_field(std::move(i32_field__arg)),
     __fbthrift_field_IntTypedef_field(std::move(IntTypedef_field__arg)),
     __fbthrift_field_UintTypedef_field(std::move(UintTypedef_field__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
 }
 
 
@@ -2834,7 +2834,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 StructWithDoubleUnderscores::StructWithDoubleUnderscores(apache::thrift::FragileConstructor, ::std::int32_t __field__arg) :
     __fbthrift_field___field(std::move(__field__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 

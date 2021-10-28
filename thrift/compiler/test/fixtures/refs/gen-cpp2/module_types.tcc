@@ -933,7 +933,7 @@ _readField_f:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
+ this->__isset.set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -1122,7 +1122,7 @@ _readField_mes:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
+ this->__isset.set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -1170,7 +1170,7 @@ template <class Protocol_>
 uint32_t RecursiveStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("RecursiveStruct");
-  if (this->__isset.__fbthrift_get(folly::index_constant<0>())) {
+  if (this->__isset.get(folly::index_constant<0>())) {
     xfer += prot_->serializedFieldSize("mes", apache::thrift::protocol::T_LIST, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector<::cpp2::RecursiveStruct>>::serializedSize<false>(*prot_, this->__fbthrift_field_mes);
   }
@@ -1182,7 +1182,7 @@ template <class Protocol_>
 uint32_t RecursiveStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("RecursiveStruct");
-  if (this->__isset.__fbthrift_get(folly::index_constant<0>())) {
+  if (this->__isset.get(folly::index_constant<0>())) {
     xfer += prot_->serializedFieldSize("mes", apache::thrift::protocol::T_LIST, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector<::cpp2::RecursiveStruct>>::serializedSize<false>(*prot_, this->__fbthrift_field_mes);
   }
@@ -1195,7 +1195,7 @@ uint32_t RecursiveStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("RecursiveStruct");
   bool previousFieldHasValue = true;
-  if (this->__isset.__fbthrift_get(folly::index_constant<0>())) {
+  if (this->__isset.get(folly::index_constant<0>())) {
     constexpr int16_t kPrevFieldId = 0;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 1, kPrevFieldId>(*prot_, "mes", previousFieldHasValue);
     previousFieldHasValue = true;

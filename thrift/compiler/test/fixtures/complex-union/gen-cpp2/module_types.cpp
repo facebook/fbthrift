@@ -418,9 +418,9 @@ Val::Val(apache::thrift::FragileConstructor, ::std::string strVal__arg, ::std::i
     __fbthrift_field_strVal(std::move(strVal__arg)),
     __fbthrift_field_intVal(std::move(intVal__arg)),
     __fbthrift_field_typedefValue(std::move(typedefValue__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
 }
 
 
@@ -764,7 +764,7 @@ namespace cpp2 {
 
 NonCopyableStruct::NonCopyableStruct(apache::thrift::FragileConstructor, ::std::int64_t num__arg) :
     __fbthrift_field_num(std::move(num__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 

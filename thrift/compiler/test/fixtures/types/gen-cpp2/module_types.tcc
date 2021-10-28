@@ -246,7 +246,7 @@ _readField_field:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->__fbthrift_field_field, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
+ this->__isset.set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -367,7 +367,7 @@ _readField_fieldA:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
+ this->__isset.set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -384,7 +384,7 @@ _readField_fieldB:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<1>(), true);
+ this->__isset.set(folly::index_constant<1>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -401,7 +401,7 @@ _readField_fieldC:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<2>(), true);
+ this->__isset.set(folly::index_constant<2>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -418,7 +418,7 @@ _readField_fieldD:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<3>(), true);
+ this->__isset.set(folly::index_constant<3>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -435,7 +435,7 @@ _readField_fieldE:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<4>(), true);
+ this->__isset.set(folly::index_constant<4>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -452,7 +452,7 @@ _readField_fieldF:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<5>(), true);
+ this->__isset.set(folly::index_constant<5>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -469,7 +469,7 @@ _readField_fieldG:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<6>(), true);
+ this->__isset.set(folly::index_constant<6>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -486,7 +486,7 @@ _readField_fieldH:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<7>(), true);
+ this->__isset.set(folly::index_constant<7>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -768,7 +768,7 @@ _readField_fieldA:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
+ this->__isset.set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -886,7 +886,7 @@ _readField_MyIntField:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, this->__fbthrift_field_MyIntField, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
+ this->__isset.set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -1004,7 +1004,7 @@ _readField_a:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::apache::thrift::fixtures::types::MyForwardRefEnum>::readWithContext(*iprot, this->__fbthrift_field_a, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
+ this->__isset.set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -1018,7 +1018,7 @@ _readField_b:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::apache::thrift::fixtures::types::MyForwardRefEnum>::readWithContext(*iprot, this->__fbthrift_field_b, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<1>(), true);
+ this->__isset.set(folly::index_constant<1>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -1159,7 +1159,7 @@ _readField_a:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, this->__fbthrift_field_a, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
+ this->__isset.set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -1173,7 +1173,7 @@ _readField_b:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, bool>::readWithContext(*iprot, this->__fbthrift_field_b, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<1>(), true);
+ this->__isset.set(folly::index_constant<1>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -1314,7 +1314,7 @@ _readField_z:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, this->__fbthrift_field_z, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
+ this->__isset.set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -1330,7 +1330,7 @@ _readField_n:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<1>(), true);
+ this->__isset.set(folly::index_constant<1>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -1471,7 +1471,7 @@ _readField_a:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->__fbthrift_field_a, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
+ this->__isset.set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -1488,7 +1488,7 @@ _readField_b:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<1>(), true);
+ this->__isset.set(folly::index_constant<1>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -1629,7 +1629,7 @@ _readField_z:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->__fbthrift_field_z, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
+ this->__isset.set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -1645,7 +1645,7 @@ _readField_n:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<1>(), true);
+ this->__isset.set(folly::index_constant<1>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -2126,7 +2126,7 @@ _readField_MyIntField:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, this->__fbthrift_field_MyIntField, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
+ this->__isset.set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -2140,7 +2140,7 @@ _readField_MyStringField:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->__fbthrift_field_MyStringField, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<1>(), true);
+ this->__isset.set(folly::index_constant<1>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -2154,7 +2154,7 @@ _readField_majorVer:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, this->__fbthrift_field_majorVer, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<2>(), true);
+ this->__isset.set(folly::index_constant<2>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -2170,7 +2170,7 @@ _readField_data:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<3>(), true);
+ this->__isset.set(folly::index_constant<3>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -2357,7 +2357,7 @@ _readField_bar:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, this->__fbthrift_field_bar, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
+ this->__isset.set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -2475,7 +2475,7 @@ _readField_binary_field:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::apache::thrift::fixtures::types::TBinary>::readWithContext(*iprot, this->__fbthrift_field_binary_field, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
+ this->__isset.set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -2492,7 +2492,7 @@ _readField_list_field:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<1>(), true);
+ this->__isset.set(folly::index_constant<1>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -2635,7 +2635,7 @@ _readField_foo:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
+ this->__isset.set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -2683,7 +2683,7 @@ template <class Protocol_>
 uint32_t ForwardUsageStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ForwardUsageStruct");
-  if (this->__isset.__fbthrift_get(folly::index_constant<0>())) {
+  if (this->__isset.get(folly::index_constant<0>())) {
     xfer += prot_->serializedFieldSize("foo", apache::thrift::protocol::T_STRUCT, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::apache::thrift::fixtures::types::ForwardUsageRoot>::serializedSize<false>(*prot_, this->__fbthrift_field_foo);
   }
@@ -2695,7 +2695,7 @@ template <class Protocol_>
 uint32_t ForwardUsageStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ForwardUsageStruct");
-  if (this->__isset.__fbthrift_get(folly::index_constant<0>())) {
+  if (this->__isset.get(folly::index_constant<0>())) {
     xfer += prot_->serializedFieldSize("foo", apache::thrift::protocol::T_STRUCT, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::apache::thrift::fixtures::types::ForwardUsageRoot>::serializedSize<true>(*prot_, this->__fbthrift_field_foo);
   }
@@ -2708,7 +2708,7 @@ uint32_t ForwardUsageStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("ForwardUsageStruct");
   bool previousFieldHasValue = true;
-  if (this->__isset.__fbthrift_get(folly::index_constant<0>())) {
+  if (this->__isset.get(folly::index_constant<0>())) {
     constexpr int16_t kPrevFieldId = 0;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 1, kPrevFieldId>(*prot_, "foo", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -2757,7 +2757,7 @@ _readField_ForwardUsageStruct:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
+ this->__isset.set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -2830,7 +2830,7 @@ template <class Protocol_>
 uint32_t ForwardUsageRoot::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ForwardUsageRoot");
-  if (this->__isset.__fbthrift_get(folly::index_constant<0>())) {
+  if (this->__isset.get(folly::index_constant<0>())) {
     xfer += prot_->serializedFieldSize("ForwardUsageStruct", apache::thrift::protocol::T_STRUCT, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::apache::thrift::fixtures::types::ForwardUsageStruct>::serializedSize<false>(*prot_, this->__fbthrift_field_ForwardUsageStruct);
   }
@@ -2846,7 +2846,7 @@ template <class Protocol_>
 uint32_t ForwardUsageRoot::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ForwardUsageRoot");
-  if (this->__isset.__fbthrift_get(folly::index_constant<0>())) {
+  if (this->__isset.get(folly::index_constant<0>())) {
     xfer += prot_->serializedFieldSize("ForwardUsageStruct", apache::thrift::protocol::T_STRUCT, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::apache::thrift::fixtures::types::ForwardUsageStruct>::serializedSize<true>(*prot_, this->__fbthrift_field_ForwardUsageStruct);
   }
@@ -2863,7 +2863,7 @@ uint32_t ForwardUsageRoot::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("ForwardUsageRoot");
   bool previousFieldHasValue = true;
-  if (this->__isset.__fbthrift_get(folly::index_constant<0>())) {
+  if (this->__isset.get(folly::index_constant<0>())) {
     constexpr int16_t kPrevFieldId = 0;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 1, kPrevFieldId>(*prot_, "ForwardUsageStruct", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -2921,7 +2921,7 @@ _readField_foo:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
+ this->__isset.set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -2969,7 +2969,7 @@ template <class Protocol_>
 uint32_t ForwardUsageByRef::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ForwardUsageByRef");
-  if (this->__isset.__fbthrift_get(folly::index_constant<0>())) {
+  if (this->__isset.get(folly::index_constant<0>())) {
     xfer += prot_->serializedFieldSize("foo", apache::thrift::protocol::T_STRUCT, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::apache::thrift::fixtures::types::ForwardUsageRoot>::serializedSize<false>(*prot_, this->__fbthrift_field_foo);
   }
@@ -2981,7 +2981,7 @@ template <class Protocol_>
 uint32_t ForwardUsageByRef::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ForwardUsageByRef");
-  if (this->__isset.__fbthrift_get(folly::index_constant<0>())) {
+  if (this->__isset.get(folly::index_constant<0>())) {
     xfer += prot_->serializedFieldSize("foo", apache::thrift::protocol::T_STRUCT, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::apache::thrift::fixtures::types::ForwardUsageRoot>::serializedSize<true>(*prot_, this->__fbthrift_field_foo);
   }
@@ -2994,7 +2994,7 @@ uint32_t ForwardUsageByRef::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("ForwardUsageByRef");
   bool previousFieldHasValue = true;
-  if (this->__isset.__fbthrift_get(folly::index_constant<0>())) {
+  if (this->__isset.get(folly::index_constant<0>())) {
     constexpr int16_t kPrevFieldId = 0;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 1, kPrevFieldId>(*prot_, "foo", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -3120,7 +3120,7 @@ _readField_boolField:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, this->__fbthrift_field_boolField, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
+ this->__isset.set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3238,7 +3238,7 @@ _readField_MyBoolField:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, bool>::readWithContext(*iprot, this->__fbthrift_field_MyBoolField, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
+ this->__isset.set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3252,7 +3252,7 @@ _readField_MyIntField:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, this->__fbthrift_field_MyIntField, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<1>(), true);
+ this->__isset.set(folly::index_constant<1>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3266,7 +3266,7 @@ _readField_MyStringField:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->__fbthrift_field_MyStringField, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<2>(), true);
+ this->__isset.set(folly::index_constant<2>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3280,7 +3280,7 @@ _readField_MyStringField2:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->__fbthrift_field_MyStringField2, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<3>(), true);
+ this->__isset.set(folly::index_constant<3>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3294,7 +3294,7 @@ _readField_MyBinaryField:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::std::string>::readWithContext(*iprot, this->__fbthrift_field_MyBinaryField, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<4>(), true);
+ this->__isset.set(folly::index_constant<4>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3308,7 +3308,7 @@ _readField_MyBinaryField2:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::std::string>::readWithContext(*iprot, this->__fbthrift_field_MyBinaryField2, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<5>(), true);
+ this->__isset.set(folly::index_constant<5>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3338,7 +3338,7 @@ _readField_MyBinaryListField4:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<6>(), true);
+ this->__isset.set(folly::index_constant<6>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3355,7 +3355,7 @@ _readField_MyMapEnumAndInt:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<7>(), true);
+ this->__isset.set(folly::index_constant<7>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3487,7 +3487,7 @@ uint32_t NoexceptMoveComplexStruct::serializedSize(Protocol_ const* prot_) const
     xfer += prot_->serializedFieldSize("MyBinaryField", apache::thrift::protocol::T_STRING, 5);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_MyBinaryField);
   }
-  if (this->__isset.__fbthrift_get(folly::index_constant<5>())) {
+  if (this->__isset.get(folly::index_constant<5>())) {
     xfer += prot_->serializedFieldSize("MyBinaryField2", apache::thrift::protocol::T_STRING, 6);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_MyBinaryField2);
   }
@@ -3531,7 +3531,7 @@ uint32_t NoexceptMoveComplexStruct::serializedSizeZC(Protocol_ const* prot_) con
     xfer += prot_->serializedFieldSize("MyBinaryField", apache::thrift::protocol::T_STRING, 5);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::std::string>::serializedSize<true>(*prot_, this->__fbthrift_field_MyBinaryField);
   }
-  if (this->__isset.__fbthrift_get(folly::index_constant<5>())) {
+  if (this->__isset.get(folly::index_constant<5>())) {
     xfer += prot_->serializedFieldSize("MyBinaryField2", apache::thrift::protocol::T_STRING, 6);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::std::string>::serializedSize<true>(*prot_, this->__fbthrift_field_MyBinaryField2);
   }
@@ -3591,7 +3591,7 @@ uint32_t NoexceptMoveComplexStruct::write(Protocol_* prot_) const {
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::std::string>::write(*prot_, this->__fbthrift_field_MyBinaryField);
     xfer += prot_->writeFieldEnd();
   }
-  if (this->__isset.__fbthrift_get(folly::index_constant<5>())) {
+  if (this->__isset.get(folly::index_constant<5>())) {
     constexpr int16_t kPrevFieldId = 5;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 6, kPrevFieldId>(*prot_, "MyBinaryField2", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -3800,7 +3800,7 @@ _readField_aa_list:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
+ this->__isset.set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3817,7 +3817,7 @@ _readField_aa_set:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<1>(), true);
+ this->__isset.set(folly::index_constant<1>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3834,7 +3834,7 @@ _readField_aa_map:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<2>(), true);
+ this->__isset.set(folly::index_constant<2>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3848,7 +3848,7 @@ _readField_aa_string:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->__fbthrift_field_aa_string, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<3>(), true);
+ this->__isset.set(folly::index_constant<3>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3862,7 +3862,7 @@ _readField_not_a_container:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, this->__fbthrift_field_not_a_container, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<4>(), true);
+ this->__isset.set(folly::index_constant<4>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -4072,7 +4072,7 @@ _readField_not_a_container:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, this->__fbthrift_field_not_a_container, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
+ this->__isset.set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -4190,7 +4190,7 @@ _readField_i32_field:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, this->__fbthrift_field_i32_field, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
+ this->__isset.set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -4204,7 +4204,7 @@ _readField_IntTypedef_field:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::apache::thrift::fixtures::types::IntTypedef>::readWithContext(*iprot, this->__fbthrift_field_IntTypedef_field, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<1>(), true);
+ this->__isset.set(folly::index_constant<1>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -4218,7 +4218,7 @@ _readField_UintTypedef_field:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, std::uint32_t>::readWithContext(*iprot, this->__fbthrift_field_UintTypedef_field, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<2>(), true);
+ this->__isset.set(folly::index_constant<2>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -4382,7 +4382,7 @@ _readField___field:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, this->__fbthrift_field___field, _readState);
     
   }
- this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
+ this->__isset.set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,

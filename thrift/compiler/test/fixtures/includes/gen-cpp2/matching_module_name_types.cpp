@@ -38,7 +38,7 @@ namespace matching_module_name {
 
 MyStruct::MyStruct(apache::thrift::FragileConstructor, ::matching_module_name::OtherStruct OtherStructField__arg) :
     __fbthrift_field_OtherStructField(std::move(OtherStructField__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 

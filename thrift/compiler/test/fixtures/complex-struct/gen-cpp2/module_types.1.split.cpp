@@ -54,8 +54,8 @@ MyStructMapFloatThrowExp& MyStructMapFloatThrowExp::operator=(FOLLY_MAYBE_UNUSED
 MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(apache::thrift::FragileConstructor, ::std::int64_t myLongField__arg, ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::floatTypedef>>> mapListOfFloats__arg) :
     __fbthrift_field_myLongField(std::move(myLongField__arg)),
     __fbthrift_field_mapListOfFloats(std::move(mapListOfFloats__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
 }
 
 
@@ -268,28 +268,28 @@ defaultStruct::defaultStruct(apache::thrift::FragileConstructor, ::std::int64_t 
     __fbthrift_field_mapJavaTypeDFset(std::move(mapJavaTypeDFset__arg)),
     __fbthrift_field_emptyMap(std::move(emptyMap__arg)),
     __fbthrift_field_enumMapDFset(std::move(enumMapDFset__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
-  __isset.__fbthrift_set(folly::index_constant<3>(), true);
-  __isset.__fbthrift_set(folly::index_constant<4>(), true);
-  __isset.__fbthrift_set(folly::index_constant<5>(), true);
-  __isset.__fbthrift_set(folly::index_constant<6>(), true);
-  __isset.__fbthrift_set(folly::index_constant<7>(), true);
-  __isset.__fbthrift_set(folly::index_constant<8>(), true);
-  __isset.__fbthrift_set(folly::index_constant<9>(), true);
-  __isset.__fbthrift_set(folly::index_constant<10>(), true);
-  __isset.__fbthrift_set(folly::index_constant<11>(), true);
-  __isset.__fbthrift_set(folly::index_constant<12>(), true);
-  __isset.__fbthrift_set(folly::index_constant<13>(), true);
-  __isset.__fbthrift_set(folly::index_constant<14>(), true);
-  __isset.__fbthrift_set(folly::index_constant<15>(), true);
-  __isset.__fbthrift_set(folly::index_constant<16>(), true);
-  __isset.__fbthrift_set(folly::index_constant<17>(), true);
-  __isset.__fbthrift_set(folly::index_constant<18>(), true);
-  __isset.__fbthrift_set(folly::index_constant<19>(), true);
-  __isset.__fbthrift_set(folly::index_constant<20>(), true);
-  __isset.__fbthrift_set(folly::index_constant<21>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
+  __isset.set(folly::index_constant<3>(), true);
+  __isset.set(folly::index_constant<4>(), true);
+  __isset.set(folly::index_constant<5>(), true);
+  __isset.set(folly::index_constant<6>(), true);
+  __isset.set(folly::index_constant<7>(), true);
+  __isset.set(folly::index_constant<8>(), true);
+  __isset.set(folly::index_constant<9>(), true);
+  __isset.set(folly::index_constant<10>(), true);
+  __isset.set(folly::index_constant<11>(), true);
+  __isset.set(folly::index_constant<12>(), true);
+  __isset.set(folly::index_constant<13>(), true);
+  __isset.set(folly::index_constant<14>(), true);
+  __isset.set(folly::index_constant<15>(), true);
+  __isset.set(folly::index_constant<16>(), true);
+  __isset.set(folly::index_constant<17>(), true);
+  __isset.set(folly::index_constant<18>(), true);
+  __isset.set(folly::index_constant<19>(), true);
+  __isset.set(folly::index_constant<20>(), true);
+  __isset.set(folly::index_constant<21>(), true);
 }
 
 
@@ -865,10 +865,10 @@ TypeRemapped::TypeRemapped(apache::thrift::FragileConstructor, ::std::map<::std:
     __fbthrift_field_ioMap(std::move(ioMap__arg)),
     __fbthrift_field_BigInteger(std::move(BigInteger__arg)),
     __fbthrift_field_binaryTestBuffer(std::move(binaryTestBuffer__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
-  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
+  __isset.set(folly::index_constant<3>(), true);
 }
 
 
@@ -1007,8 +1007,8 @@ optXcep& optXcep::operator=(FOLLY_MAYBE_UNUSED optXcep&& other) noexcept {
 optXcep::optXcep(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::int32_t errorCode__arg) :
     message(std::move(message__arg)),
     errorCode(std::move(errorCode__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
 }
 
 

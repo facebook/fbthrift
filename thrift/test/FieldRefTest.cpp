@@ -61,75 +61,71 @@ struct Nested {
 class TestStruct {
  public:
   field_ref<std::string&> name() {
-    return {name_, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {name_, __isset.at(folly::index_constant<0>())};
   }
 
   field_ref<const std::string&> name() const {
-    return {name_, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {name_, __isset.at(folly::index_constant<0>())};
   }
 
   optional_field_ref<std::string&> opt_name() & {
-    return {name_, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {name_, __isset.at(folly::index_constant<0>())};
   }
 
   optional_field_ref<std::string&&> opt_name() && {
-    return {
-        std::move(name_), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(name_), __isset.at(folly::index_constant<0>())};
   }
 
   optional_field_ref<const std::string&> opt_name() const& {
-    return {name_, __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {name_, __isset.at(folly::index_constant<0>())};
   }
 
   optional_field_ref<const std::string&&> opt_name() const&& {
-    return {
-        std::move(name_), __isset.__fbthrift_at(folly::index_constant<0>())};
+    return {std::move(name_), __isset.at(folly::index_constant<0>())};
   }
 
   field_ref<IntAssignable&> int_assign() {
-    return {int_assign_, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {int_assign_, __isset.at(folly::index_constant<1>())};
   }
 
   optional_field_ref<IntAssignable&> opt_int_assign() {
-    return {int_assign_, __isset.__fbthrift_at(folly::index_constant<1>())};
+    return {int_assign_, __isset.at(folly::index_constant<1>())};
   }
 
   optional_field_ref<std::shared_ptr<int>&> ptr_ref() {
-    return {ptr_, __isset.__fbthrift_at(folly::index_constant<2>())};
+    return {ptr_, __isset.at(folly::index_constant<2>())};
   }
 
   field_ref<int&> int_val() {
-    return {int_val_, __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {int_val_, __isset.at(folly::index_constant<3>())};
   }
 
   optional_field_ref<int&> opt_int_val() {
-    return {int_val_, __isset.__fbthrift_at(folly::index_constant<3>())};
+    return {int_val_, __isset.at(folly::index_constant<3>())};
   }
 
   field_ref<std::unique_ptr<int>&> uptr() & {
-    return {uptr_, __isset.__fbthrift_at(folly::index_constant<4>())};
+    return {uptr_, __isset.at(folly::index_constant<4>())};
   }
 
   field_ref<std::unique_ptr<int>&&> uptr() && {
-    return {
-        std::move(uptr_), __isset.__fbthrift_at(folly::index_constant<4>())};
+    return {std::move(uptr_), __isset.at(folly::index_constant<4>())};
   }
 
   optional_field_ref<std::unique_ptr<int>&> opt_uptr() & {
-    return {uptr_, __isset.__fbthrift_at(folly::index_constant<4>())};
+    return {uptr_, __isset.at(folly::index_constant<4>())};
   }
 
   optional_field_ref<std::unique_ptr<int>&&> opt_uptr() && {
-    return {
-        std::move(uptr_), __isset.__fbthrift_at(folly::index_constant<4>())};
+    return {std::move(uptr_), __isset.at(folly::index_constant<4>())};
   }
 
   field_ref<std::vector<bool>&> vec() & {
-    return {vec_, __isset.__fbthrift_at(folly::index_constant<5>())};
+    return {vec_, __isset.at(folly::index_constant<5>())};
   }
 
   optional_field_ref<Nested&> opt_nested() & {
-    return {nested_, __isset.__fbthrift_at(folly::index_constant<5>())};
+    return {nested_, __isset.at(folly::index_constant<5>())};
   }
 
  private:

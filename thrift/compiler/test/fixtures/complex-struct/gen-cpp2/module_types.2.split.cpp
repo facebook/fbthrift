@@ -145,34 +145,34 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField
     __fbthrift_field_sString(std::move(sString__arg)),
     __fbthrift_field_sByte(std::move(sByte__arg)),
     __fbthrift_field_mListList(std::move(mListList__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
-  __isset.__fbthrift_set(folly::index_constant<3>(), true);
-  __isset.__fbthrift_set(folly::index_constant<4>(), true);
-  __isset.__fbthrift_set(folly::index_constant<5>(), true);
-  __isset.__fbthrift_set(folly::index_constant<6>(), true);
-  __isset.__fbthrift_set(folly::index_constant<7>(), true);
-  __isset.__fbthrift_set(folly::index_constant<8>(), true);
-  __isset.__fbthrift_set(folly::index_constant<9>(), true);
-  __isset.__fbthrift_set(folly::index_constant<10>(), true);
-  __isset.__fbthrift_set(folly::index_constant<11>(), true);
-  __isset.__fbthrift_set(folly::index_constant<12>(), true);
-  __isset.__fbthrift_set(folly::index_constant<13>(), true);
-  __isset.__fbthrift_set(folly::index_constant<14>(), true);
-  __isset.__fbthrift_set(folly::index_constant<15>(), true);
-  __isset.__fbthrift_set(folly::index_constant<16>(), true);
-  __isset.__fbthrift_set(folly::index_constant<17>(), true);
-  __isset.__fbthrift_set(folly::index_constant<18>(), true);
-  __isset.__fbthrift_set(folly::index_constant<19>(), true);
-  __isset.__fbthrift_set(folly::index_constant<20>(), true);
-  __isset.__fbthrift_set(folly::index_constant<21>(), true);
-  __isset.__fbthrift_set(folly::index_constant<22>(), true);
-  __isset.__fbthrift_set(folly::index_constant<23>(), true);
-  __isset.__fbthrift_set(folly::index_constant<24>(), true);
-  __isset.__fbthrift_set(folly::index_constant<25>(), true);
-  __isset.__fbthrift_set(folly::index_constant<26>(), true);
-  __isset.__fbthrift_set(folly::index_constant<27>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
+  __isset.set(folly::index_constant<3>(), true);
+  __isset.set(folly::index_constant<4>(), true);
+  __isset.set(folly::index_constant<5>(), true);
+  __isset.set(folly::index_constant<6>(), true);
+  __isset.set(folly::index_constant<7>(), true);
+  __isset.set(folly::index_constant<8>(), true);
+  __isset.set(folly::index_constant<9>(), true);
+  __isset.set(folly::index_constant<10>(), true);
+  __isset.set(folly::index_constant<11>(), true);
+  __isset.set(folly::index_constant<12>(), true);
+  __isset.set(folly::index_constant<13>(), true);
+  __isset.set(folly::index_constant<14>(), true);
+  __isset.set(folly::index_constant<15>(), true);
+  __isset.set(folly::index_constant<16>(), true);
+  __isset.set(folly::index_constant<17>(), true);
+  __isset.set(folly::index_constant<18>(), true);
+  __isset.set(folly::index_constant<19>(), true);
+  __isset.set(folly::index_constant<20>(), true);
+  __isset.set(folly::index_constant<21>(), true);
+  __isset.set(folly::index_constant<22>(), true);
+  __isset.set(folly::index_constant<23>(), true);
+  __isset.set(folly::index_constant<24>(), true);
+  __isset.set(folly::index_constant<25>(), true);
+  __isset.set(folly::index_constant<26>(), true);
+  __isset.set(folly::index_constant<27>(), true);
 }
 
 
@@ -680,15 +680,15 @@ MyStructTypeDef::MyStructTypeDef(apache::thrift::FragileConstructor, ::std::int6
     __fbthrift_field_myListField(std::move(myListField__arg)),
     __fbthrift_field_myListTypedef(std::move(myListTypedef__arg)),
     __fbthrift_field_myMapListOfTypeDef(std::move(myMapListOfTypeDef__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
-  __isset.__fbthrift_set(folly::index_constant<3>(), true);
-  __isset.__fbthrift_set(folly::index_constant<4>(), true);
-  __isset.__fbthrift_set(folly::index_constant<5>(), true);
-  __isset.__fbthrift_set(folly::index_constant<6>(), true);
-  __isset.__fbthrift_set(folly::index_constant<7>(), true);
-  __isset.__fbthrift_set(folly::index_constant<8>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
+  __isset.set(folly::index_constant<3>(), true);
+  __isset.set(folly::index_constant<4>(), true);
+  __isset.set(folly::index_constant<5>(), true);
+  __isset.set(folly::index_constant<6>(), true);
+  __isset.set(folly::index_constant<7>(), true);
+  __isset.set(folly::index_constant<8>(), true);
 }
 
 
@@ -1129,12 +1129,12 @@ complexException::complexException(apache::thrift::FragileConstructor, ::std::st
     unionError(std::move(unionError__arg)),
     structError(std::move(structError__arg)),
     lsMap(std::move(lsMap__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
-  __isset.__fbthrift_set(folly::index_constant<3>(), true);
-  __isset.__fbthrift_set(folly::index_constant<4>(), true);
-  __isset.__fbthrift_set(folly::index_constant<5>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
+  __isset.set(folly::index_constant<3>(), true);
+  __isset.set(folly::index_constant<4>(), true);
+  __isset.set(folly::index_constant<5>(), true);
 }
 
 

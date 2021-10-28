@@ -155,7 +155,7 @@ Serious& Serious::operator=(FOLLY_MAYBE_UNUSED Serious&& other) noexcept {
 
 Serious::Serious(apache::thrift::FragileConstructor, ::std::string sonnet__arg) :
     sonnet(std::move(sonnet__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 
@@ -257,8 +257,8 @@ ComplexFieldNames& ComplexFieldNames::operator=(FOLLY_MAYBE_UNUSED ComplexFieldN
 ComplexFieldNames::ComplexFieldNames(apache::thrift::FragileConstructor, ::std::string error_message__arg, ::std::string internal_error_message__arg) :
     error_message(std::move(error_message__arg)),
     internal_error_message(std::move(internal_error_message__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
 }
 
 
@@ -368,8 +368,8 @@ CustomFieldNames& CustomFieldNames::operator=(FOLLY_MAYBE_UNUSED CustomFieldName
 CustomFieldNames::CustomFieldNames(apache::thrift::FragileConstructor, ::std::string error_message__arg, ::std::string internal_error_message__arg) :
     error_message(std::move(error_message__arg)),
     internal_error_message(std::move(internal_error_message__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
 }
 
 
@@ -480,8 +480,8 @@ ExceptionWithPrimitiveField& ExceptionWithPrimitiveField::operator=(FOLLY_MAYBE_
 ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::int32_t error_code__arg) :
     message(std::move(message__arg)),
     error_code(std::move(error_code__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
 }
 
 

@@ -205,27 +205,27 @@ template <size_t NumBits, bool packed = false>
 class isset_bitset {
  public:
   template <size_t field_index>
-  bool __fbthrift_get(folly::index_constant<field_index>) const {
+  bool get(folly::index_constant<field_index>) const {
     check<field_index>();
     return array_isset[field_index / kBits][field_index % kBits];
   }
   template <size_t field_index>
-  void __fbthrift_set(folly::index_constant<field_index>, bool isset_flag) {
+  void set(folly::index_constant<field_index>, bool isset_flag) {
     check<field_index>();
     array_isset[field_index / kBits][field_index % kBits] = isset_flag;
   }
   template <size_t field_index>
-  const uint8_t& __fbthrift_at(folly::index_constant<field_index>) const {
+  const uint8_t& at(folly::index_constant<field_index>) const {
     check<field_index>();
     return array_isset[field_index / kBits].value();
   }
   template <size_t field_index>
-  uint8_t& __fbthrift_at(folly::index_constant<field_index>) {
+  uint8_t& at(folly::index_constant<field_index>) {
     check<field_index>();
     return array_isset[field_index / kBits].value();
   }
   template <size_t field_index>
-  uint8_t __fbthrift_bit(folly::index_constant<field_index>) const {
+  uint8_t bit(folly::index_constant<field_index>) const {
     check<field_index>();
     return field_index % kBits;
   }

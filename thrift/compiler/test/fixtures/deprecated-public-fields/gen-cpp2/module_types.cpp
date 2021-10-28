@@ -39,8 +39,8 @@ namespace cpp2 {
 Foo::Foo(apache::thrift::FragileConstructor, ::std::int32_t foo__arg, ::std::int32_t bar__arg) :
     __fbthrift_field_foo(std::move(foo__arg)),
     bar(std::move(bar__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
 }
 
 

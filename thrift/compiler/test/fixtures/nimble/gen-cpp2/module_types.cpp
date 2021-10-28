@@ -41,9 +41,9 @@ BasicTypes::BasicTypes(apache::thrift::FragileConstructor, ::std::int32_t first_
     __fbthrift_field_second(std::move(second__arg)),
     __fbthrift_field_third(std::move(third__arg)),
     __fbthrift_field_isTrue(std::move(isTrue__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
 }
 
 

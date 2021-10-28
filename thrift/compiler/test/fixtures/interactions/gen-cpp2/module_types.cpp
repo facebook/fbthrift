@@ -57,7 +57,7 @@ CustomException& CustomException::operator=(FOLLY_MAYBE_UNUSED CustomException&&
 
 CustomException::CustomException(apache::thrift::FragileConstructor, ::std::string message__arg) :
     message(std::move(message__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 

@@ -30,16 +30,16 @@ TEST(IssetBitsetTest, basic) {
     }
     for (bool b : {true, false, true}) {
       boost::mp11::mp_with_index<N>(i, [&](auto index) {
-        packed.__fbthrift_set(index, b);
-        unpacked.__fbthrift_set(index, b);
-        EXPECT_EQ(packed.__fbthrift_get(index), b);
-        EXPECT_EQ(unpacked.__fbthrift_get(index), b);
+        packed.set(index, b);
+        unpacked.set(index, b);
+        EXPECT_EQ(packed.get(index), b);
+        EXPECT_EQ(unpacked.get(index), b);
 
         bits.set(index % 8, b);
-        EXPECT_EQ(packed.__fbthrift_at(index), bits.to_ulong());
-        EXPECT_EQ(unpacked.__fbthrift_at(index), b ? 1 : 0);
-        EXPECT_EQ(packed.__fbthrift_bit(index), index % 8);
-        EXPECT_EQ(unpacked.__fbthrift_bit(index), 0);
+        EXPECT_EQ(packed.at(index), bits.to_ulong());
+        EXPECT_EQ(unpacked.at(index), b ? 1 : 0);
+        EXPECT_EQ(packed.bit(index), index % 8);
+        EXPECT_EQ(unpacked.bit(index), 0);
       });
     }
   }

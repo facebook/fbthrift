@@ -71,7 +71,7 @@ namespace cpp2 {
 
 A::A(apache::thrift::FragileConstructor, ::std::int32_t useless_field__arg) :
     __fbthrift_field_useless_field(std::move(useless_field__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 
@@ -276,7 +276,7 @@ Bang& Bang::operator=(FOLLY_MAYBE_UNUSED Bang&& other) noexcept {
 
 Bang::Bang(apache::thrift::FragileConstructor, ::std::string message__arg) :
     message(std::move(message__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<0>(), true);
 }
 
 

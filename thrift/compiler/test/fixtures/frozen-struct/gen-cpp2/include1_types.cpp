@@ -54,8 +54,8 @@ IncludedA& IncludedA::operator=(FOLLY_MAYBE_UNUSED IncludedA&& other) noexcept {
 IncludedA::IncludedA(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::std::string strField__arg) :
     __fbthrift_field_i32Field(std::move(i32Field__arg)),
     __fbthrift_field_strField(std::move(strField__arg)) {
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
 }
 
 
