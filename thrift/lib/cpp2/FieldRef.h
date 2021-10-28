@@ -64,26 +64,26 @@ class BitSet {
 
   class reference {
    public:
-    reference(BitSet& BitSet, const uint8_t bit) : BitSet_(BitSet), bit_(bit) {}
+    reference(BitSet& bitSet, const uint8_t bit) : bitSet_(bitSet), bit_(bit) {}
 
     reference(const reference& other)
-        : BitSet_(other.BitSet_), bit_(other.bit_) {}
+        : bitSet_(other.bitSet_), bit_(other.bit_) {}
 
     reference& operator=(bool flag) {
       if (flag) {
-        BitSet_.set(bit_);
+        bitSet_.set(bit_);
       } else {
-        BitSet_.reset(bit_);
+        bitSet_.reset(bit_);
       }
       return *this;
     }
 
-    operator bool() const { return BitSet_.get(bit_); }
+    operator bool() const { return bitSet_.get(bit_); }
 
     reference& operator=(reference& other) { return *this = bool(other); }
 
    private:
-    BitSet& BitSet_;
+    BitSet& bitSet_;
     const uint8_t bit_;
   };
 
