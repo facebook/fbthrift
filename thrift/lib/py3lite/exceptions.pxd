@@ -12,7 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from folly cimport cFollyExceptionWrapper
 from libc.stdint cimport int16_t
+from libcpp.memory cimport unique_ptr
+from libcpp.string cimport string
+
+
+cdef extern from "thrift/lib/cpp/Thrift.h" namespace "apache::thrift":
+    cdef cppclass cTException "apache::thrift::TException":
+        const char* what() nogil
 
 
 cdef extern from "thrift/lib/cpp/TApplicationException.h" \
@@ -34,6 +42,14 @@ cdef extern from "thrift/lib/cpp/TApplicationException.h" \
         TIMEOUT "apache::thrift::TApplicationException::TIMEOUT"
         INJECTED_FAILURE "apache::thrift::TApplicationException::INJECTED_FAILURE"
 
+    cdef cppclass cTApplicationException "apache::thrift::TApplicationException"(cTException):
+        cTApplicationException(ApplicationErrorType type, const string& message) nogil except +
+        ApplicationErrorType getType() nogil
+
+
+cdef extern from "thrift/lib/py3lite/exceptions.h" namespace "::thrift::py3lite::exception":
+    cdef unique_ptr[T] try_make_unique_exception[T](const cFollyExceptionWrapper& ex)
+
 
 cdef class Error(Exception):
     """base class for all Thrift exceptions"""
@@ -42,6 +58,11 @@ cdef class Error(Exception):
 
 cdef class ApplicationError(Error):
     pass
+
+cdef ApplicationError create_ApplicationError(unique_ptr[cTApplicationException] ex)
+
+
+cdef object create_py_exception(const cFollyExceptionWrapper& ex)
 
 
 # Base class for all generated exceptions defined in Thrift IDL

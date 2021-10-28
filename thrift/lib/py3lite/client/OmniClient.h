@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/Expected.h>
 #include <folly/futures/Future.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/DelayedDestruction.h>
@@ -33,8 +34,7 @@ using RequestChannel_ptr = std::unique_ptr<
     folly::DelayedDestruction::Destructor>;
 
 struct OmniClientResponseWithHeaders {
-  apache::thrift::MessageType messageType;
-  std::unique_ptr<folly::IOBuf> buf;
+  folly::Expected<std::unique_ptr<folly::IOBuf>, folly::exception_wrapper> buf;
   apache::thrift::transport::THeader::StringToStringMap headers;
 };
 

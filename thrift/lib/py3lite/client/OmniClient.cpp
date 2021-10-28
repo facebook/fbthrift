@@ -21,6 +21,7 @@
 #include <folly/futures/Promise.h>
 #include <folly/io/IOBuf.h>
 #include <thrift/lib/cpp/ContextStack.h>
+#include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/TProcessorEventHandler.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp/transport/THeader.h>
@@ -56,6 +57,33 @@ makeOmniClientRequestContext(
       handlers, serviceName, functionName, *header);
 
   return {std::move(ctx), std::move(header)};
+}
+
+template <class Protocol>
+TApplicationException deserializeApplicationException(
+    std::unique_ptr<folly::IOBuf> buf) {
+  CHECK(buf);
+  Protocol in;
+  in.setInput(buf.get());
+  TApplicationException ex;
+  ex.read(&in);
+  return ex;
+}
+
+TApplicationException deserializeApplicationException(
+    uint16_t protocolId, std::unique_ptr<folly::IOBuf> buf) {
+  switch (protocolId) {
+    case protocol::T_BINARY_PROTOCOL:
+      return deserializeApplicationException<BinaryProtocolReader>(
+          std::move(buf));
+    case protocol::T_COMPACT_PROTOCOL:
+      return deserializeApplicationException<CompactProtocolReader>(
+          std::move(buf));
+    default:
+      return TApplicationException(
+          TApplicationException::TApplicationExceptionType::INVALID_PROTOCOL,
+          fmt::format("Invalid protocol {}", protocolId));
+  }
 }
 
 } // namespace
@@ -152,20 +180,30 @@ folly::SemiFuture<OmniClientResponseWithHeaders> OmniClient::semifuture_send(
       serviceAndFunction->first.c_str(),
       serviceAndFunction->second.c_str(),
       std::make_unique<SemiFutureCallback>(std::move(promise), channel_));
-  return std::move(future).deferValue(
-      [serviceAndFunction =
-           std::move(serviceAndFunction)](ClientReceiveState&& state) {
-        if (state.isException()) {
-          state.exception().throw_exception();
-        }
-        OmniClientResponseWithHeaders resp;
-        resp.messageType = state.messageType();
-        resp.buf = std::move(state.serializedResponse().buffer);
-        resp.headers = state.header()->releaseHeaders();
-        state.resetCtx(nullptr);
+  return std::move(future).deferValue([serviceAndFunction =
+                                           std::move(serviceAndFunction)](
+                                          ClientReceiveState&& state) {
+    if (state.isException()) {
+      state.exception().throw_exception();
+    }
+    OmniClientResponseWithHeaders resp;
+    if (state.messageType() == MessageType::T_REPLY) {
+      resp.buf = std::move(state.serializedResponse().buffer);
+    } else if (state.messageType() == MessageType::T_EXCEPTION) {
+      resp.buf = folly::makeUnexpected(deserializeApplicationException(
+          state.protocolId(), std::move(state.serializedResponse().buffer)));
+    } else {
+      resp.buf = folly::makeUnexpected(
+          folly::make_exception_wrapper<TApplicationException>(
+              TApplicationException::TApplicationExceptionType::
+                  INVALID_MESSAGE_TYPE,
+              fmt::format("Invalid message type: {}", state.messageType())));
+    }
+    resp.headers = state.header()->releaseHeaders();
+    state.resetCtx(nullptr);
 
-        return resp;
-      });
+    return resp;
+  });
 }
 
 folly::SemiFuture<OmniClientResponseWithHeaders> OmniClient::semifuture_send(

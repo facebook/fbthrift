@@ -15,7 +15,6 @@
 import time
 import unittest
 
-import thrift.py3lite.types  # noqa: F401, TODO: remove after D31914637 lands
 from thrift.py3lite.exceptions import ApplicationError
 from thrift.py3lite.leaf.lite_clients import LeafService
 from thrift.py3lite.serializer import Protocol
@@ -69,7 +68,7 @@ class SyncClientTests(unittest.TestCase):
     def test_unexpected_exception(self) -> None:
         with server_in_another_process() as path:
             with get_client(TestService, path=path) as client:
-                with self.assertRaises(ApplicationError):
+                with self.assertRaisesRegex(ApplicationError, "Surprise!"):
                     client.surprise()
 
     def test_derived_service(self) -> None:

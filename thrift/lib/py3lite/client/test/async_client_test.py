@@ -14,7 +14,6 @@
 
 import asyncio
 
-import thrift.py3lite.types  # noqa: F401, TODO: remove after D31914637 lands
 from later.unittest import TestCase
 from thrift.py3lite.async_client import ClientType, get_client
 from thrift.py3lite.exceptions import ApplicationError
@@ -74,7 +73,7 @@ class SyncClientTests(TestCase):
     async def test_unexpected_exception(self) -> None:
         async with server_in_event_loop() as addr:
             async with get_client(TestService, host=addr.ip, port=addr.port) as client:
-                with self.assertRaises(ApplicationError):
+                with self.assertRaisesRegex(ApplicationError, "Surprise!"):
                     await client.surprise()
 
     async def test_derived_service(self) -> None:

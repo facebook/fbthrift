@@ -23,7 +23,6 @@ from libc.stdint cimport uint32_t
 from libcpp.memory cimport make_unique
 from libcpp.string cimport string
 from libcpp.utility cimport move as cmove
-from thrift.py3lite.client.omni_client cimport MessageType
 from thrift.py3lite.client.request_channel cimport (
     sync_createThriftChannelTCP,
     sync_createThriftChannelUnix,
@@ -31,6 +30,7 @@ from thrift.py3lite.client.request_channel cimport (
     RequestChannel,
 )
 from thrift.py3lite.client.request_channel import ClientType
+from thrift.py3lite.exceptions cimport create_py_exception
 from thrift.py3lite.exceptions import ApplicationError, ApplicationErrorType
 from thrift.py3lite.serializer cimport Protocol as cProtocol
 from thrift.py3lite.serializer import serialize_iobuf, deserialize
@@ -68,19 +68,15 @@ cdef class SyncClient:
                 function_name,
                 args_iobuf.c_clone(),
             )
-            if resp.messageType == MessageType.T_REPLY:
-                response_iobuf = folly.iobuf.from_unique_ptr(cmove(resp.buf))
+            if resp.buf.hasValue():
+                response_iobuf = folly.iobuf.from_unique_ptr(cmove(resp.buf.value()))
                 return deserialize(response_cls, response_iobuf, protocol=protocol)
-            elif resp.messageType == MessageType.T_EXCEPTION:
-                # TODO: deserialize the actual error from buf
-                raise ApplicationError(
-                    ApplicationErrorType.UNKNOWN,
-                    "Unknown error",
-                )
+            elif resp.buf.hasError():
+                raise create_py_exception(resp.buf.error())
             else:
                 raise ApplicationError(
-                    ApplicationErrorType.INVALID_MESSAGE_TYPE,
-                    f"Got invalid message type {resp.messageType}",
+                    ApplicationErrorType.MISSING_RESULT,
+                    "Received no result nor error",
                 )
 
 

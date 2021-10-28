@@ -12,24 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from folly cimport cFollySemiFuture
+from folly cimport cFollyExceptionWrapper, cFollySemiFuture
+from folly.expected cimport cExpected
 from folly.iobuf cimport cIOBuf
 from libc.stdint cimport uint16_t
 from libcpp.memory cimport unique_ptr
 from libcpp.string cimport string
 from thrift.py3lite.client.request_channel cimport cRequestChannel_ptr
 
-cdef extern from "thrift/lib/cpp2/protocol/Protocol.h":
-    cpdef enum class MessageType "apache::thrift::MessageType":
-        T_CALL,
-        T_REPLY,
-        T_EXCEPTION,
-        T_ONEWAY,
-
 cdef extern from "thrift/lib/py3lite/client/OmniClient.h" namespace "::thrift::py3lite::client":
     cdef cppclass cOmniClientResponseWithHeaders "::thrift::py3lite::client::OmniClientResponseWithHeaders":
-        MessageType messageType
-        unique_ptr[cIOBuf] buf
+        cExpected[unique_ptr[cIOBuf], cFollyExceptionWrapper] buf
 
     cdef cppclass cOmniClient "::thrift::py3lite::client::OmniClient":
         cOmniClient(cRequestChannel_ptr channel, const string& serviceName)

@@ -173,7 +173,7 @@ class OmniClientTest : public ::testing::Test {
   template <class S, typename T>
   void testContains(OmniClientResponseWithHeaders response, const T& expected) {
     std::string expectedStr = S::template serialize<std::string>(expected);
-    std::string result = response.buf->moveToFbString().toStdString();
+    std::string result = response.buf.value()->moveToFbString().toStdString();
     // Contains instead of equals because of the envelope around the response.
     EXPECT_THAT(result, testing::HasSubstr(expectedStr));
   }

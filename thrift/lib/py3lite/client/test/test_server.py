@@ -45,7 +45,7 @@ class TestServiceHandler(TestServiceInterface):
         pass
 
     async def surprise(self) -> None:
-        raise RuntimeError("Surprise!")
+        raise ValueError("Surprise!")
 
 
 class EchoServiceHandler(TestServiceHandler, EchoServiceInterface):

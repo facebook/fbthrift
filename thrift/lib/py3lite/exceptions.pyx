@@ -15,6 +15,7 @@
 import copy
 import functools
 
+from cython.operator cimport dereference as deref
 from thrift.py3lite.types cimport StructInfo, createStructTuple, set_struct_field
 
 
@@ -25,6 +26,35 @@ cdef class ApplicationError(Error):
         assert message, "message is empty"
         self.type = type
         self.message = message
+
+
+cdef ApplicationError create_ApplicationError(unique_ptr[cTApplicationException] ex):
+    if not ex:
+        return
+    type = ApplicationErrorType(deref(ex).getType())
+    message = (<bytes>deref(ex).what()).decode('utf-8')
+    # Strip out the message prefix its verbose for python
+    message = message[message.startswith('TApplicationException: ')*23:]
+    inst = <ApplicationError>ApplicationError.__new__(
+        ApplicationError,
+        type,
+        message,
+    )
+    return inst
+
+
+cdef object create_py_exception(const cFollyExceptionWrapper& ex):
+    pyex = create_ApplicationError(try_make_unique_exception[cTApplicationException](ex))
+    if pyex:
+        return pyex
+
+    try:
+        # No clue what this is just throw it and let the default cython logic takeover
+        ex.throw_exception()
+    except Exception as pyex:
+        # We don't try to shorten the traceback because this is Unknown
+        # it will be helpful to know the most information possible.
+        return pyex
 
 
 cdef make_fget_error(i):
