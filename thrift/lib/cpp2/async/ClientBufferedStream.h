@@ -124,7 +124,8 @@ class ClientBufferedStream {
               std::move(streamBridge_),
               bufferOptions_.chunkSize,
               decode_,
-              bufferOptions_.memSize)
+              bufferOptions_.memSize,
+              bufferOptions_.maxChunkSize)
         : toAsyncGeneratorImpl<false>(
               std::move(streamBridge_), bufferOptions_.chunkSize, decode_);
   }
@@ -140,7 +141,8 @@ class ClientBufferedStream {
               std::move(streamBridge_),
               bufferOptions_.chunkSize,
               decode_,
-              bufferOptions_.memSize)
+              bufferOptions_.memSize,
+              bufferOptions_.maxChunkSize)
         : toAsyncGeneratorImpl<true>(
               std::move(streamBridge_), bufferOptions_.chunkSize, decode_);
   }
@@ -270,7 +272,8 @@ class ClientBufferedStream {
       apache::thrift::detail::ClientStreamBridge::ClientPtr streamBridge,
       int32_t chunkBufferSize,
       folly::Try<T> (*decode)(folly::Try<StreamPayload>&&),
-      size_t memBufferTarget) {
+      size_t memBufferTarget,
+      int32_t maxChunkBufferSize) {
     if (chunkBufferSize == 0) {
       streamBridge->requestN(1);
       ++chunkBufferSize;
@@ -370,6 +373,7 @@ class ClientBufferedStream {
           co_yield folly::coro::co_result(std::move(value));
         }
 
+        DCHECK_LT(0, outstanding);
         --outstanding;
         // Assuming all outstanding payloads come back with largest seen size.
         size_t outstandingSize = bufferMemSize + outstanding * maxPayloadSize;
@@ -382,9 +386,14 @@ class ClientBufferedStream {
             : memBufferTarget / 2;
 
         if (spaceAvailable >= threshold) {
-          // Convert to credits, again assuming largest size for new payloads.
+          // Convert to credits, again assuming largest size for new payloads,
+          // but cap credits and outstanding requests to maxChunkBufferSize if
+          // this was requested in BufferOptions
+          DCHECK_LE(outstanding, maxChunkBufferSize);
+          const int32_t remainingCredits = maxChunkBufferSize - outstanding;
           int32_t request =
               (spaceAvailable + maxPayloadSize - 1) / maxPayloadSize;
+          request = std::min(remainingCredits, request);
           streamBridge->requestN(request);
           outstanding += request;
         }

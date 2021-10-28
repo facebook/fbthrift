@@ -62,7 +62,10 @@ class RpcOptions {
 
   // Only one of these may be set
   RpcOptions& setChunkBufferSize(int32_t chunkBufferSize);
-  RpcOptions& setMemoryBufferSize(size_t targetBytes, int32_t initialChunks);
+  RpcOptions& setMemoryBufferSize(
+      size_t targetBytes,
+      int32_t initialChunks,
+      int32_t maxChunks = std::numeric_limits<int32_t>::max());
   int32_t getChunkBufferSize() const;
   const BufferOptions& getBufferOptions() const;
 

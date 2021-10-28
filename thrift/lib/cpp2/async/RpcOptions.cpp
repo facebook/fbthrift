@@ -92,12 +92,15 @@ RpcOptions& RpcOptions::setChunkBufferSize(int32_t chunkBufferSize) {
 }
 
 RpcOptions& RpcOptions::setMemoryBufferSize(
-    size_t targetBytes, int32_t initialChunks) {
+    size_t targetBytes, int32_t initialChunks, int32_t maxChunks) {
   CHECK_EQ(bufferOptions_.chunkSize, 100)
       << "Only one of setMemoryBufferSize and setChunkBufferSize should be called";
   CHECK_GT(targetBytes, 0);
+  CHECK_LE(0, initialChunks);
+  CHECK_LE(initialChunks, maxChunks);
   bufferOptions_.memSize = targetBytes;
   bufferOptions_.chunkSize = initialChunks;
+  bufferOptions_.maxChunkSize = maxChunks;
   return *this;
 }
 

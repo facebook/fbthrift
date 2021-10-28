@@ -54,7 +54,8 @@ auto decode(folly::Try<StreamPayload>&& i) -> folly::Try<int> {
 }
 
 struct ServerCallback : StreamServerCallback {
-  bool onStreamRequestN(uint64_t) override {
+  bool onStreamRequestN(uint64_t credits) override {
+    credits_ += credits;
     requested.post();
     return true;
   }
@@ -62,6 +63,7 @@ struct ServerCallback : StreamServerCallback {
   void resetClientCallback(StreamClientCallback&) override { std::terminate(); }
 
   folly::coro::Baton requested;
+  std::atomic<uint64_t> credits_{0};
 };
 
 struct FirstResponseCb : detail::ClientStreamBridge::FirstResponseCallback {
@@ -203,6 +205,44 @@ TEST_F(ClientBufferedStreamTest, RefillBySizeTarget) {
                   .scheduleOn(ebt.getEventBase())
                   .start();
   for (int i = 1; i <= 10; ++i) {
+    ebt.getEventBase()->runInEventBaseThreadAndWait(
+        [&] { std::ignore = client->onStreamNext(*encode(folly::Try(8))); });
+  }
+  ebt.getEventBase()->runInEventBaseThreadAndWait(
+      [&] { client->onStreamComplete(); });
+  std::move(task).get();
+}
+
+TEST_F(ClientBufferedStreamTest, MaxChunkSize) {
+  // Max credits 3
+  ClientBufferedStream<int> stream(
+      std::move(firstResponseCb.ptr), decode, {0, 64, 3});
+
+  auto task = folly::coro::co_invoke([&]() -> folly::coro::Task<void> {
+                auto gen = std::move(stream).toAsyncGenerator();
+                while (auto val = co_await gen.next()) {
+                  EXPECT_GE(3, serverCb.credits_);
+                }
+              })
+                  .scheduleOn(ebt.getEventBase())
+                  .start();
+
+  auto waitForCredits = [&]() {
+    folly::coro::co_invoke([&]() -> folly::coro::Task<void> {
+      LOG(INFO) << "Waiting for credits...";
+      co_await serverCb.requested;
+      serverCb.requested.reset();
+      LOG(INFO) << "Got credits " << serverCb.credits_;
+    })
+        .scheduleOn(ebt.getEventBase())
+        .start()
+        .get();
+  };
+
+  for (int i = 1; i <= 10; ++i) {
+    waitForCredits();
+    ASSERT_LT(0, serverCb.credits_);
+    serverCb.credits_--;
     ebt.getEventBase()->runInEventBaseThreadAndWait(
         [&] { std::ignore = client->onStreamNext(*encode(folly::Try(8))); });
   }

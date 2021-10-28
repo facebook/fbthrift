@@ -27,6 +27,11 @@ namespace thrift {
 struct BufferOptions {
   int32_t chunkSize{100};
   size_t memSize{0};
+  // Used only with memory buffer sized based throttling to cap the
+  // number of credits to the give maxChunks value even if there is
+  // enough buffer. Useful when we expect sudden spikes of large
+  // message payloads.
+  int32_t maxChunkSize{std::numeric_limits<int32_t>::max()};
 };
 
 namespace detail {
