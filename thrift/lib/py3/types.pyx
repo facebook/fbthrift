@@ -384,29 +384,17 @@ cdef class Set(Container):
     cdef _fbthrift_do_set_op(self, other, cSetOp op):
         raise NotImplementedError()
 
-    def __and__(self, other):
-        # TODO: Remove isinstance check after upgrading to Cython 3
-        if isinstance(self, Set):
-            return (<Set>self)._fbthrift_do_set_op(other, cSetOp.AND)
-        return (<Set>other)._fbthrift_do_set_op(self, cSetOp.AND)
+    def __and__(Set self, other):
+        return self._fbthrift_do_set_op(other, cSetOp.AND)
 
-    def __sub__(self, other):
-        # TODO: Remove isinstance check after upgrading to Cython 3
-        if isinstance(self, Set):
-            return (<Set>self)._fbthrift_do_set_op(other, cSetOp.SUB)
-        return  (<Set>other)._fbthrift_do_set_op(self, cSetOp.REVSUB)
+    def __sub__(Set self, other):
+        return self._fbthrift_do_set_op(other, cSetOp.SUB)
 
-    def __or__(self, other):
-        # TODO: Remove isinstance check after upgrading to Cython 3
-        if isinstance(self, Set):
-            return (<Set>self)._fbthrift_do_set_op(other, cSetOp.OR)
-        return  (<Set>other)._fbthrift_do_set_op(self, cSetOp.OR)
+    def __or__(Set self, other):
+        return self._fbthrift_do_set_op(other, cSetOp.OR)
 
-    def __xor__(self, other):
-        # TODO: Remove isinstance check after upgrading to Cython 3
-        if isinstance(self, Set):
-            return (<Set>self)._fbthrift_do_set_op(other, cSetOp.XOR)
-        return  (<Set>other)._fbthrift_do_set_op(self, cSetOp.XOR)
+    def __xor__(Set self, other):
+        return self._fbthrift_do_set_op(other, cSetOp.XOR)
 
     def __rand__(Set self, other):
         return self._fbthrift_do_set_op(other, cSetOp.AND)
