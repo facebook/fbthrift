@@ -30,9 +30,21 @@ in a different thrift file, or defined in the same thrift file.
   }}{{#type:external_program?}}{{type:module_path}}.{{/type:external_program?}}{{!
   }}{{struct:name}}{{!
 }}{{/type:struct}}{{!
-}}{{#type:list?}}tuple{{/type:list?}}{{!
-}}{{#type:set?}}frozenset{{/type:set?}}{{!
-}}{{#type:map?}}dict{{/type:map?}}{{!
+}}{{#type:list?}}{{!
+  }}_fbthrift_py3lite_types.ListTypeFactory({{!
+    }}{{#type:list_elem_type}}{{ >types/typeinfo }}{{/type:list_elem_type}}{{!
+  }}){{!
+}}{{/type:list?}}{{!
+}}{{#type:set?}}{{!
+  }}_fbthrift_py3lite_types.SetTypeFactory({{!
+    }}{{#type:set_elem_type}}{{ >types/typeinfo }}{{/type:set_elem_type}}{{!
+  }}){{!
+}}{{/type:set?}}{{!
+}}{{#type:map?}}{{!
+  }}_fbthrift_py3lite_types.MapTypeFactory({{!
+    }}{{#type:key_type}}{{ >types/typeinfo }}{{/type:key_type}}, {{!
+    }}{{#type:value_type}}{{ >types/typeinfo }}{{/type:value_type}}){{!
+}}{{/type:map?}}{{!
 }}{{#type:enum}}{{!
   }}{{#type:external_program?}}{{type:module_path}}.{{/type:external_program?}}{{!
   }}{{enum:name}}{{!

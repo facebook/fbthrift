@@ -508,6 +508,6 @@ constEnumUnion: MyUnion = ...
 stringTypedef = str
 longTypeDef = int
 mapTypedef = dict
-listTypedef = tuple
+listTypedef = list
 floatTypedef = float
 FMap = dict

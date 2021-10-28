@@ -264,7 +264,7 @@ is a
 multi line string.
 """
 
-states = ({"San Diego": 3211000, "Sacramento": 479600, "SF": 837400}, {"New York": 8406000, "Albany": 98400}, )
+states = _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_i32), (_fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_i32, {"San Diego": 3211000, "Sacramento": 479600, "SF": 837400}), _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_i32, {"New York": 8406000, "Albany": 98400}), ))
 
 x = float(1)
 
@@ -282,15 +282,15 @@ foo = "foo"
 
 bar = 42
 
-mymap = {"keys": "values"}
+mymap = _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_string, {"keys": "values"})
 
 instagram = Internship(weeks=12, title="Software Engineer", employer=Company.INSTAGRAM, compensation=float(1200), school="Monters University")
 
 partial_const = Internship(weeks=8, title="Some Job")
 
-kRanges = (Range(min=1, max=2), Range(min=5, max=6), )
+kRanges = _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.StructTypeInfo(Range), (Range(min=1, max=2), Range(min=5, max=6), ))
 
-internList = (Internship(weeks=12, title="Software Engineer", employer=Company.INSTAGRAM, compensation=float(1200), school="Monters University"), Internship(weeks=10, title="Sales Intern", employer=Company.FACEBOOK, compensation=float(1000)), )
+internList = _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.StructTypeInfo(Internship), (Internship(weeks=12, title="Software Engineer", employer=Company.INSTAGRAM, compensation=float(1200), school="Monters University"), Internship(weeks=10, title="Sales Intern", employer=Company.FACEBOOK, compensation=float(1000)), ))
 
 pod_0 = struct1()
 
@@ -300,15 +300,15 @@ pod_1 = struct1(a=10, b="foo")
 
 pod_s_1 = struct1(a=10, b="foo")
 
-pod_2 = struct2(a=98, b="gaz", c=struct1(a=12, b="bar"), d=(11, 22, 33, ))
+pod_2 = struct2(a=98, b="gaz", c=struct1(a=12, b="bar"), d=_fbthrift_py3lite_types.List(_fbthrift_py3lite_types.typeinfo_i32, (11, 22, 33, )))
 
-pod_trailing_commas = struct2(a=98, b="gaz", c=struct1(a=12, b="bar"), d=(11, 22, 33, ))
+pod_trailing_commas = struct2(a=98, b="gaz", c=struct1(a=12, b="bar"), d=_fbthrift_py3lite_types.List(_fbthrift_py3lite_types.typeinfo_i32, (11, 22, 33, )))
 
-pod_s_2 = struct2(a=98, b="gaz", c=struct1(a=12, b="bar"), d=(11, 22, 33, ))
+pod_s_2 = struct2(a=98, b="gaz", c=struct1(a=12, b="bar"), d=_fbthrift_py3lite_types.List(_fbthrift_py3lite_types.typeinfo_i32, (11, 22, 33, )))
 
-pod_3 = struct3(a="abc", b=456, c=struct2(a=888, c=struct1(b="gaz"), d=(1, 2, 3, )))
+pod_3 = struct3(a="abc", b=456, c=struct2(a=888, c=struct1(b="gaz"), d=_fbthrift_py3lite_types.List(_fbthrift_py3lite_types.typeinfo_i32, (1, 2, 3, ))))
 
-pod_s_3 = struct3(a="abc", b=456, c=struct2(a=888, c=struct1(b="gaz"), d=(1, 2, 3, )))
+pod_s_3 = struct3(a="abc", b=456, c=struct2(a=888, c=struct1(b="gaz"), d=_fbthrift_py3lite_types.List(_fbthrift_py3lite_types.typeinfo_i32, (1, 2, 3, ))))
 
 pod_4 = struct4(a=1234, b=float(0.333), c=25)
 
@@ -340,9 +340,9 @@ backslash = "\\"
 
 escaped_a = "\x61"
 
-char2ascii = {"'": 39, '"': 34, "\\": 92, "\x61": 97}
+char2ascii = _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_i32, {"'": 39, '"': 34, "\\": 92, "\x61": 97})
 
-escaped_strings = ("\x61", "\xab", "\x6a", "\xa6", "\x61yyy", "\xabyyy", "\x6ayyy", "\xa6yyy", "zzz\x61", "zzz\xab", "zzz\x6a", "zzz\xa6", "zzz\x61yyy", "zzz\xabyyy", "zzz\x6ayyy", "zzz\xa6yyy", )
+escaped_strings = _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.typeinfo_string, ("\x61", "\xab", "\x6a", "\xa6", "\x61yyy", "\xabyyy", "\x6ayyy", "\xa6yyy", "zzz\x61", "zzz\xab", "zzz\x6a", "zzz\xa6", "zzz\x61yyy", "zzz\xabyyy", "zzz\x6ayyy", "zzz\xa6yyy", ))
 
 false_c = False
 
@@ -360,23 +360,23 @@ zero_dot_zero = float(0)
 
 empty_string = 
 
-empty_int_list = ()
+empty_int_list = _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.typeinfo_i32, ())
 
-empty_string_list = ()
+empty_string_list = _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.typeinfo_string, ())
 
-empty_int_set = ()
+empty_int_set = _fbthrift_py3lite_types.Set(_fbthrift_py3lite_types.typeinfo_i32, ())
 
-empty_string_set = ()
+empty_string_set = _fbthrift_py3lite_types.Set(_fbthrift_py3lite_types.typeinfo_string, ())
 
-empty_int_int_map = {}
+empty_int_int_map = _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_i32, {})
 
-empty_int_string_map = {}
+empty_int_string_map = _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_string, {})
 
-empty_string_int_map = {}
+empty_string_int_map = _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_i32, {})
 
-empty_string_string_map = {}
+empty_string_string_map = _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_string, {})
 
 MyCompany = Company
 MyStringIdentifier = str
 MyIntIdentifier = int
-MyMapIdentifier = dict
+MyMapIdentifier = _fbthrift_py3lite_types.MapTypeFactory(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_string)

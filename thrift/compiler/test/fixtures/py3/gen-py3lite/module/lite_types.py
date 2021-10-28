@@ -232,13 +232,13 @@ SOME_BYTES = b"bytes"
 
 A_STRUCT = SimpleStruct(is_on=True, tiny_int=5, small_int=6, nice_sized_int=7, big_int=8, real=float(9.9))
 
-WORD_LIST = ("the", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog", )
+WORD_LIST = _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.typeinfo_string, ("the", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog", ))
 
-SOME_MAP = ({1: float(1.1), 2: float(2.2)}, {3: float(3.3)}, )
+SOME_MAP = _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_double), (_fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_double, {1: float(1.1), 2: float(2.2)}), _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_double, {3: float(3.3)}), ))
 
-DIGITS = (1, 2, 3, 4, 5, )
+DIGITS = _fbthrift_py3lite_types.Set(_fbthrift_py3lite_types.typeinfo_i32, (1, 2, 3, 4, 5, ))
 
-A_CONST_MAP = {"simple": SimpleStruct(is_on=False, tiny_int=50, small_int=61, nice_sized_int=72, big_int=83, real=float(99.9))}
+A_CONST_MAP = _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.StructTypeInfo(SimpleStruct), {"simple": SimpleStruct(is_on=False, tiny_int=50, small_int=61, nice_sized_int=72, big_int=83, real=float(99.9))})
 
 IOBufPtr = bytes
 IOBuf = bytes

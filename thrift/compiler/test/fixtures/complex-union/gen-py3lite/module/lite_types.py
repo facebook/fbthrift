@@ -192,4 +192,4 @@ _fbthrift_py3lite_types.fill_specs(
     NonCopyableUnion,
 )
 
-containerTypedef = dict
+containerTypedef = _fbthrift_py3lite_types.MapTypeFactory(_fbthrift_py3lite_types.typeinfo_i16, _fbthrift_py3lite_types.typeinfo_string)

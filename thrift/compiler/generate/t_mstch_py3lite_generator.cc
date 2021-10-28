@@ -139,6 +139,11 @@ class mstch_py3lite_const_value : public mstch_const_value {
              &mstch_py3lite_const_value::value_for_bool},
             {"value:value_for_floating_point?",
              &mstch_py3lite_const_value::value_for_floating_point},
+            {"value:list_elem_type",
+             &mstch_py3lite_const_value::list_elem_type},
+            {"value:value_for_set?", &mstch_py3lite_const_value::value_for_set},
+            {"value:map_key_type", &mstch_py3lite_const_value::map_key_type},
+            {"value:map_val_type", &mstch_py3lite_const_value::map_val_type},
         });
   }
   mstch::node is_string() {
@@ -211,6 +216,58 @@ class mstch_py3lite_const_value : public mstch_const_value {
     // the only possible case left: back = '"' and front = '\''
     string_val.pop_back(); // remove the last '"'
     return "\"\"\"" + string_val + "\"\"\"'\"'";
+  }
+
+  mstch::node list_elem_type() {
+    if (auto ttype = const_value_->ttype()) {
+      const auto* type = ttype->deref().get_true_type();
+      const t_type* elem_type = nullptr;
+      if (type->is_list()) {
+        elem_type = dynamic_cast<const t_list*>(type)->get_elem_type();
+      } else if (type->is_set()) {
+        elem_type = dynamic_cast<const t_set*>(type)->get_elem_type();
+      } else {
+        return {};
+      }
+      return generators_->type_generator_->generate(
+          elem_type, generators_, cache_, pos_);
+    }
+    return {};
+  }
+
+  mstch::node value_for_set() {
+    if (auto ttype = const_value_->ttype()) {
+      return ttype->deref().get_true_type()->is_set();
+    }
+    return false;
+  }
+
+  mstch::node map_key_type() {
+    if (auto ttype = const_value_->ttype()) {
+      const auto* type = ttype->deref().get_true_type();
+      if (type->is_map()) {
+        return generators_->type_generator_->generate(
+            dynamic_cast<const t_map*>(type)->get_key_type(),
+            generators_,
+            cache_,
+            pos_);
+      }
+    }
+    return {};
+  }
+
+  mstch::node map_val_type() {
+    if (auto ttype = const_value_->ttype()) {
+      const auto* type = ttype->deref().get_true_type();
+      if (type->is_map()) {
+        return generators_->type_generator_->generate(
+            dynamic_cast<const t_map*>(type)->get_val_type(),
+            generators_,
+            cache_,
+            pos_);
+      }
+    }
+    return {};
   }
 };
 

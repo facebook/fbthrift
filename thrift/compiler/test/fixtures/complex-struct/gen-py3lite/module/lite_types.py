@@ -374,21 +374,21 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             True,  # isUnqualified
             "field3",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
-            lambda: {15: "a_value", 2: "b_value"},  # default value
+            lambda: _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_string, {15: "a_value", 2: "b_value"}),  # default value
         ),
         (
             14,  # id
             True,  # isUnqualified
             "myList",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.EnumTypeInfo(MyEnum)),  # typeinfo
-            lambda: (MyEnum.MyValue1, MyEnum.MyValue1, MyEnum.MyValue2, ),  # default value
+            lambda: _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.EnumTypeInfo(MyEnum), (MyEnum.MyValue1, MyEnum.MyValue1, MyEnum.MyValue2, )),  # default value
         ),
         (
             15,  # id
             True,  # isUnqualified
             "mySet",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
-            lambda: ("house", "car", "dog", ),  # default value
+            lambda: _fbthrift_py3lite_types.Set(_fbthrift_py3lite_types.typeinfo_string, ("house", "car", "dog", )),  # default value
         ),
         (
             16,  # id
@@ -402,7 +402,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             True,  # isUnqualified
             "listStructDFset",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(SimpleStruct)),  # typeinfo
-            lambda: (SimpleStruct(age=40, name="IronMan"), SimpleStruct(age=999, name="Thanos"), ),  # default value
+            lambda: _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.StructTypeInfo(SimpleStruct), (SimpleStruct(age=40, name="IronMan"), SimpleStruct(age=999, name="Thanos"), )),  # default value
         ),
         (
             18,  # id
@@ -416,35 +416,35 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             True,  # isUnqualified
             "listUnionDFset",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(MyUnion)),  # typeinfo
-            lambda: (MyUnion(myEnum=MyEnum.MyValue2), MyUnion(intValue=123), ),  # default value
+            lambda: _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.StructTypeInfo(MyUnion), (MyUnion(myEnum=MyEnum.MyValue2), MyUnion(intValue=123), )),  # default value
         ),
         (
             20,  # id
             True,  # isUnqualified
             "mapNestlistStructDfSet",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(SimpleStruct))),  # typeinfo
-            lambda: {1: (SimpleStruct(age=40, name="IronMan"), SimpleStruct(age=999, name="Thanos"), ), 2: (SimpleStruct(age=28, name="BatMan"), SimpleStruct(age=12, name="Robin"), ), 5: (SimpleStruct(age=12, name="RatMan"), SimpleStruct(age=6, name="Catman"), )},  # default value
+            lambda: _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(SimpleStruct)), {1: _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.StructTypeInfo(SimpleStruct), (SimpleStruct(age=40, name="IronMan"), SimpleStruct(age=999, name="Thanos"), )), 2: _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.StructTypeInfo(SimpleStruct), (SimpleStruct(age=28, name="BatMan"), SimpleStruct(age=12, name="Robin"), )), 5: _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.StructTypeInfo(SimpleStruct), (SimpleStruct(age=12, name="RatMan"), SimpleStruct(age=6, name="Catman"), ))}),  # default value
         ),
         (
             21,  # id
             True,  # isUnqualified
             "mapJavaTypeDFset",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i64, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
-            lambda: {15: "a_value", 2: "b_value"},  # default value
+            lambda: _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i64, _fbthrift_py3lite_types.typeinfo_string, {15: "a_value", 2: "b_value"}),  # default value
         ),
         (
             22,  # id
             True,  # isUnqualified
             "emptyMap",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i64, _fbthrift_py3lite_types.typeinfo_i32),  # typeinfo
-            lambda: {},  # default value
+            lambda: _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i64, _fbthrift_py3lite_types.typeinfo_i32, {}),  # default value
         ),
         (
             23,  # id
             True,  # isUnqualified
             "enumMapDFset",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.EnumTypeInfo(MyEnum))),  # typeinfo
-            lambda: {"SANDY BRIDGE": {16: MyEnum.MyValue1, 144: MyEnum.MyValue1}, "IVY BRIDGE": {32: MyEnum.MyValue2, 144: MyEnum.MyValue2}, "HASWELL": {32: MyEnum.MyValue3, 128: MyEnum.MyValue3, 256: MyEnum.MyValue3}},  # default value
+            lambda: _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.EnumTypeInfo(MyEnum)), {"SANDY BRIDGE": _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.EnumTypeInfo(MyEnum), {16: MyEnum.MyValue1, 144: MyEnum.MyValue1}), "IVY BRIDGE": _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.EnumTypeInfo(MyEnum), {32: MyEnum.MyValue2, 144: MyEnum.MyValue2}), "HASWELL": _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.EnumTypeInfo(MyEnum), {32: MyEnum.MyValue3, 128: MyEnum.MyValue3, 256: MyEnum.MyValue3})}),  # default value
         ),
     )
 
@@ -881,7 +881,7 @@ constEnumUnion = MyUnion(myEnum=MyEnum.MyValue2)
 
 stringTypedef = str
 longTypeDef = int
-mapTypedef = dict
-listTypedef = tuple
+mapTypedef = _fbthrift_py3lite_types.MapTypeFactory(_fbthrift_py3lite_types.typeinfo_i16, _fbthrift_py3lite_types.typeinfo_string)
+listTypedef = _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.typeinfo_double)
 floatTypedef = float
-FMap = dict
+FMap = _fbthrift_py3lite_types.MapTypeFactory(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_i64)

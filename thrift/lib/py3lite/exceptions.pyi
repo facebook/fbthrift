@@ -12,10 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import enum
 import typing
 
 class Error(Exception):
     pass
+
+class ApplicationErrorType(enum.Enum): ...
 
 class ApplicationError(Error):
     def __init__(self, type: ApplicationErrorType, message: str) -> None: ...

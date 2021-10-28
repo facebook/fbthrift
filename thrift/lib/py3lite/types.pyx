@@ -13,11 +13,13 @@
 # limitations under the License.
 
 from collections import defaultdict
+from collections.abc import Iterable, Mapping, Sequence, Set as pySet
 from types import MappingProxyType
 
 from libcpp.utility cimport move as cmove
 from libcpp.memory cimport make_unique
 from cpython cimport bool as pbool, int as pint, float as pfloat
+from cpython.object cimport Py_LT, Py_EQ, Py_NE, Py_GT, Py_GE, Py_LE
 from cpython.tuple cimport PyTuple_New, PyTuple_SET_ITEM, PyTuple_GET_ITEM, PyTuple_Check
 from cpython.ref cimport Py_INCREF, Py_DECREF
 from cython.operator cimport dereference as deref
@@ -26,6 +28,7 @@ import copy
 import cython
 import enum
 import functools
+import itertools
 
 from thrift.py3lite.exceptions cimport GeneratedError
 from thrift.py3lite.serializer cimport cserialize, cdeserialize
@@ -60,7 +63,7 @@ cdef class IntegerTypeInfo:
         return inst
 
     # validate and convert to format serializer may understand
-    def to_internal_data(self, object value):
+    def to_internal_data(self, object value not None):
         if not isinstance(value, pint):
             raise TypeError(f"value {value} is not a <class 'int'>.")
         cdef int64_t cvalue = value
@@ -82,7 +85,7 @@ cdef class StringTypeInfo:
         return inst
 
     # validate and convert to format serializer may understand
-    def to_internal_data(self, str value):
+    def to_internal_data(self, str value not None):
         return value.encode("UTF-8")
 
     # convert deserialized data to user format
@@ -194,12 +197,17 @@ cdef class ListTypeInfo:
         return self.cpp_obj.get().get()
 
     # validate and convert to format serializer may understand
-    def to_internal_data(self, value):
+    def to_internal_data(self, value not None):
+        if isinstance(value, List):
+            return (<List>value)._fbthrift_data
         return tuple(self.val_info.to_internal_data(v) for v in value)
 
     # convert deserialized data to user format
     def to_python_value(self, object value):
-        return tuple(self.val_info.to_python_value(v) for v in value)
+        cdef List inst = List.__new__(List)
+        inst._fbthrift_val_info = self.val_info
+        inst._fbthrift_data = value
+        return inst
 
 
 cdef class SetTypeInfo:
@@ -211,12 +219,15 @@ cdef class SetTypeInfo:
         return self.cpp_obj.get().get()
 
     # validate and convert to format serializer may understand
-    def to_internal_data(self, value):
+    def to_internal_data(self, value not None):
         return frozenset(self.val_info.to_internal_data(v) for v in value)
 
     # convert deserialized data to user format
     def to_python_value(self, object value):
-        return frozenset(self.val_info.to_python_value(v) for v in value)
+        cdef Set inst = Set.__new__(Set)
+        inst._fbthrift_val_info = self.val_info
+        inst._fbthrift_data = value
+        return inst
 
 
 cdef class MapTypeInfo:
@@ -232,18 +243,20 @@ cdef class MapTypeInfo:
         return self.cpp_obj.get().get()
 
     # validate and convert to format serializer may understand
-    def to_internal_data(self, value):
+    def to_internal_data(self, value not None):
         return tuple(
             (self.key_info.to_internal_data(k), self.val_info.to_internal_data(v)) for k, v in value.items()
         )
 
     # convert deserialized data to user format
     def to_python_value(self, object value):
-        return MappingProxyType({
-            self.key_info.to_python_value(k):
-            self.val_info.to_python_value(v)
-            for k, v in value
-        })
+        cdef Map inst = Map.__new__(Map)
+        inst._fbthrift_key_info = self.key_info
+        inst._fbthrift_val_info = self.val_info
+        inst._fbthrift_data = {
+            k: v for k, v in value
+        }
+        return inst
 
 
 cdef class StructTypeInfo:
@@ -265,7 +278,7 @@ cdef class StructTypeInfo:
         return &self.cpp_obj
 
     # validate and convert to format serializer may understand
-    def to_internal_data(self, value):
+    def to_internal_data(self, value not None):
         if not isinstance(value, self._class):
             raise TypeError(f"value {value} is not a {self._class !r}.")
         if isinstance(value, Struct):
@@ -286,7 +299,7 @@ cdef class EnumTypeInfo:
         self._class = klass
 
     # validate and convert to format serializer may understand
-    def to_internal_data(self, value):
+    def to_internal_data(self, value not None):
         if not isinstance(value, self._class):
             raise TypeError(f"value {value} is not '{self._class}'.")
         return value._value_
@@ -595,6 +608,380 @@ cdef class BadEnum:
 
     def __ne__(self, other):
         return not(self == other)
+
+
+cdef list_compare(object first, object second, int op):
+    """ Take either Py_EQ or Py_LT, everything else is derived """
+    if not (isinstance(first, Iterable) and isinstance(second, Iterable)):
+        if op == Py_EQ:
+            return False
+        else:
+            return NotImplemented
+
+    if op == Py_EQ:
+        if len(first) != len(second):
+            return False
+
+    for x, y in zip(first, second):
+        if x != y:
+            if op == Py_LT:
+                return x < y
+            else:
+                return False
+
+    if op == Py_LT:
+        return len(first) < len(second)
+    return True
+
+
+cdef class ListTypeFactory:
+    cdef object val_info
+    def __init__(self, val_info):
+        self.val_info = val_info
+
+    def __call__(self, values=None):
+        if values is None:
+            values = ()
+        return List(self.val_info, values)
+
+
+cdef class List:
+    """
+    A immutable container used to prepresent a Thrift list. It has compatible
+    API with a Python list but has additional API to interact with other Python
+    iterators
+    """
+    def __init__(self, val_info, values):
+        self._fbthrift_val_info = val_info
+        if isinstance(values, (str, bytes)):
+            raise TypeError(
+                "If you really want to pass a string or bytes into a "
+                "_typing.Sequence[str] field, explicitly convert it first."
+            )
+        self._fbthrift_data = tuple(val_info.to_internal_data(v) for v in values)
+
+    def __hash__(self):
+        return hash(self._fbthrift_data)
+
+    def __add__(List self, other):
+        return list(itertools.chain(self, other))
+
+    def __radd__(List self, other):
+        return type(other)(itertools.chain(other, self))
+
+    def __eq__(self, other):
+        return list_compare(self, other, Py_EQ)
+
+    def __ne__(self, other):
+        return not list_compare(self, other, Py_EQ)
+
+    def __lt__(self, other):
+        return list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __repr__(self):
+        if not self:
+            return 'i[]'
+        return f'i[{", ".join(map(repr, self))}]'
+
+    def __reduce__(self):
+        return (List, (self._fbthrift_val_info, list(self),))
+
+    def __getitem__(self, object index_obj):
+        if not isinstance(index_obj, slice):
+            return self._fbthrift_val_info.to_python_value(self._fbthrift_data[index_obj])
+        return [self._fbthrift_val_info.to_python_value(v) for v in self._fbthrift_data[index_obj]]
+
+    def __contains__(self, item):
+        if item is None:
+            return False
+        try:
+            return self._fbthrift_val_info.to_internal_data(item) in self._fbthrift_data
+        except TypeError:
+            return False
+
+    def __iter__(self):
+        for v in self._fbthrift_data:
+            yield self._fbthrift_val_info.to_python_value(v)
+
+    def __reversed__(self):
+        for v in reversed(self._fbthrift_data):
+            yield self._fbthrift_val_info.to_python_value(v)
+
+    def __len__(self):
+        return len(self._fbthrift_data)
+
+    def index(self, item, start=0, stop=None):
+        try:
+            item_value = self._fbthrift_val_info.to_internal_data(item)
+        except TypeError:
+            raise ValueError(f"{item} is not in list")
+        if stop is None:
+            stop = len(self)
+        return self._fbthrift_data.index(item_value, start, stop)
+
+    def count(self, item):
+        try:
+            item_value = self._fbthrift_val_info.to_internal_data(item)
+        except TypeError:
+            return 0
+        return self._fbthrift_data.count(item_value)
+
+Sequence.register(List)
+
+
+cdef class SetTypeFactory:
+    cdef object val_info
+    def __init__(self, val_info):
+        self.val_info = val_info
+
+    def __call__(self, values=None):
+        if values is None:
+            values = ()
+        return Set(self.val_info, values)
+
+
+cdef class Set:
+    """
+    A immutable set used to prepresent a Thrift set. It has compatible
+    API with a Python set but has additional API to interact with other Python
+    iterators
+    """
+    def __init__(self, val_info, values):
+        self._fbthrift_val_info = val_info
+        if isinstance(values, (str, bytes)):
+            raise TypeError(
+                "If you really want to pass a string or bytes into a "
+                "_typing.Sequence[str] field, explicitly convert it first."
+            )
+        self._fbthrift_data = frozenset(val_info.to_internal_data(v) for v in values)
+
+    def __hash__(self):
+        return hash(self._fbthrift_data)
+
+    def __and__(Set self, other):
+        if isinstance(other, Set):
+            return frozenset(
+                self._fbthrift_val_info.to_python_value(v)
+                for v in self._fbthrift_data & (<Set>other)._fbthrift_data
+            )
+        return frozenset(self) & other
+
+    def __rand__(Set self, other):
+        return other & frozenset(self)
+
+    def __sub__(Set self, other):
+        if isinstance(other, Set):
+            return frozenset(
+                self._fbthrift_val_info.to_python_value(v)
+                for v in self._fbthrift_data - (<Set>other)._fbthrift_data
+            )
+        return frozenset(self) - other
+
+    def __rsub__(Set self, other):
+        return other - frozenset(self)
+
+    def __or__(Set self, other):
+        if isinstance(other, Set):
+            return frozenset(
+                self._fbthrift_val_info.to_python_value(v)
+                for v in self._fbthrift_data | (<Set>other)._fbthrift_data
+            )
+        return frozenset(self) | other
+
+    def __ror__(Set self, other):
+        return other | frozenset(self)
+
+    def __xor__(Set self, other):
+        if isinstance(other, Set):
+            return frozenset(
+                self._fbthrift_val_info.to_python_value(v)
+                for v in self._fbthrift_data ^ (<Set>other)._fbthrift_data
+            )
+        return frozenset(self) ^ other
+
+    def __rxor__(Set self, other):
+        return other ^ frozenset(self)
+
+    def __eq__(Set self, other):
+        if isinstance(other, Set):
+            return self._fbthrift_data == (<Set>other)._fbthrift_data
+        return frozenset(self) == other
+
+    def __ne__(Set self, other):
+        return not self == other
+
+    def __lt__(Set self, other):
+        if isinstance(other, Set):
+            return self._fbthrift_data < (<Set>other)._fbthrift_data
+        return frozenset(self) < other
+
+    def __gt__(Set self, other):
+        return not (self == other or self < other)
+
+    def __le__(Set self, other):
+        return self == other or self < other
+
+    def __ge__(Set self, other):
+        return not self < other
+
+    def __repr__(self):
+        if not self:
+            return 'iset()'
+        return f'i{{{", ".join(map(repr, self))}}}'
+
+    def __reduce__(self):
+        return (Set, (self._fbthrift_val_info, set(self),))
+
+    def __contains__(self, item):
+        if item is None:
+            return False
+        try:
+            return self._fbthrift_val_info.to_internal_data(item) in self._fbthrift_data
+        except TypeError:
+            return False
+
+    def __iter__(self):
+        for v in self._fbthrift_data:
+            yield self._fbthrift_val_info.to_python_value(v)
+
+    def __reversed__(self):
+        for v in reversed(self._fbthrift_data):
+            yield self._fbthrift_val_info.to_python_value(v)
+
+    def __len__(self):
+        return len(self._fbthrift_data)
+
+    def isdisjoint(self, other):
+        return len(self & other) == 0
+
+    def union(self, other):
+        return self | other
+
+    def intersection(self, other):
+        return self & other
+
+    def difference(self, other):
+        return self - other
+
+    def symmetric_difference(self, other):
+        return self ^ other
+
+    def issubset(self, other):
+        return self <= other
+
+    def issuperset(self, other):
+        return self >= other
+
+pySet.register(Set)
+
+
+cdef class MapTypeFactory:
+    cdef object key_info
+    cdef object val_info
+    def __init__(self, key_info, val_info):
+        self.key_info = key_info
+        self.val_info = val_info
+
+    def __call__(self, values=None):
+        if values is None:
+            values = {}
+        return Map(self.key_info, self.val_info, values)
+
+
+cdef class Map:
+    """
+    A immutable container used to prepresent a Thrift map. It has compatible
+    API with a Python map but has additional API to interact with other Python
+    iterators
+    """
+    def __init__(self, key_info, val_info, values):
+        self._fbthrift_key_info = key_info
+        self._fbthrift_val_info = val_info
+        self._fbthrift_data = {
+            key_info.to_internal_data(k): val_info.to_internal_data(v)
+            for k, v in values.items()
+        }
+
+    def __hash__(self):
+        return hash(tuple(self._fbthrift_data.items()))
+
+    def __eq__(Map self, other):
+        if isinstance(other, Map):
+            return self._fbthrift_data == (<Map>other)._fbthrift_data
+        if not isinstance(other, Mapping):
+            return False
+        if len(self) != len(other):
+            return False
+        for key in self:
+            if key not in other:
+                return False
+            if other[key] != self[key]:
+                return False
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __repr__(self):
+        if not self:
+            return 'i{}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
+
+    def __reduce__(Map self):
+        return (Map, (self._fbthrift_val_info, dict(self),))
+
+    def __getitem__(Map self, object key):
+        try:
+            key_obj = self._fbthrift_key_info.to_internal_data(key)
+        except TypeError:
+            raise KeyError(repr(key))
+        return self._fbthrift_val_info.to_python_value(self._fbthrift_data[key_obj])
+
+    def __contains__(self, key):
+        try:
+            key_obj = self._fbthrift_key_info.to_internal_data(key)
+        except TypeError:
+            return False
+        return key_obj in self._fbthrift_data
+
+    def __iter__(Map self):
+        for k in self._fbthrift_data:
+            yield self._fbthrift_key_info.to_python_value(k)
+
+    def __len__(Map self):
+        return len(self._fbthrift_data)
+
+    def keys(Map self):
+        return self.__iter__()
+
+    def values(Map self):
+        for v in self._fbthrift_data.values():
+            yield self._fbthrift_val_info.to_python_value(v)
+
+    def items(self):
+        for k, v in self._fbthrift_data.items():
+            yield self._fbthrift_key_info.to_python_value(k), self._fbthrift_val_info.to_python_value(v)
+
+    def get(Map self, key, default=None):
+        try:
+            return self[key]
+        except KeyError:
+            return default
+
+
+Mapping.register(Map)
+
 
 # To support dependent classes not defined in order.
 # If struct A has a field of type struct B, but the generated class A is
