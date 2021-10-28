@@ -20,9 +20,7 @@ cimport cython
 cimport folly.iobuf
 import folly.executor
 
-from cpython.ref cimport PyObject
 from cython.operator cimport dereference as deref
-from folly cimport cFollyTry
 from folly.executor cimport get_executor
 from folly.futures cimport bridgeFutureWith, bridgeSemiFutureWith
 from folly.iobuf cimport IOBuf

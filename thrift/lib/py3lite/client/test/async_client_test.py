@@ -24,7 +24,7 @@ from thrift.py3lite.test.lite_types import ArithmeticException, EmptyException
 from thrift.py3lite.test.test_server import server_in_event_loop
 
 
-class SyncClientTests(TestCase):
+class AsyncClientTests(TestCase):
     async def test_basic(self) -> None:
         async with server_in_event_loop() as addr:
             async with get_client(TestService, host=addr.ip, port=addr.port) as client:

@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from folly cimport cFollyExecutor
+from cpython.ref cimport PyObject
+from folly cimport cFollyExecutor, cFollyTry
 from libcpp.memory cimport unique_ptr
 from libcpp.string cimport string
 from thrift.py3lite.client.omni_client cimport cOmniClient
@@ -25,3 +26,9 @@ cdef class AsyncClient:
     cdef object _connect_future
     cdef unique_ptr[cOmniClient] _omni_client
     cdef bind_client(self, cRequestChannel_ptr&& channel)
+
+
+cdef void requestchannel_callback(
+    cFollyTry[cRequestChannel_ptr]&& result,
+    PyObject* userData,
+)
