@@ -60,14 +60,22 @@
 void <%struct:name%>::__clear() {
   // clear all fields
 <%#struct:fields%><%#field:type%><%!
-%><%^field:cpp_ref?%><%!
 %><%#type:resolves_to_base_or_enum?%><%!
-  TODO(dokwon) replace special cases after replacing StringTraits and cpp.indirection with cpp.adapter.
-  %>  <% > types/apply_indirection_pre%><% > field/member%><% > types/apply_indirection_post%> = <%!
-  %><%#field:cpp_adapter%>decltype(<% > field/member%>)()<%/field:cpp_adapter%><%!
-  %><%^field:cpp_adapter%><% > field/default%><%/field:cpp_adapter%>;
+  %><%^field:cpp_ref?%><%!
+  TODO(dokwon): Replace special cases after replacing StringTraits and cpp.indirection with cpp.adapter.
+    %>  <% > types/apply_indirection_pre%><% > field/member%><% > types/apply_indirection_post%> = <%!
+    %><%#field:cpp_adapter%>decltype(<% > field/member%>)()<%/field:cpp_adapter%><%!
+    %><%^field:cpp_adapter%><% > field/default%><%/field:cpp_adapter%>;<%!
+  %><%/field:cpp_ref?%><%!
+  %><%#field:cpp_ref?%><%!
+    %><%^field:optional?%><%!
+      %>  <% > field/member%> = ::apache::thrift::detail::make_mutable_smart_ptr<<%field:cpp_storage_type%>>();<%!
+    %><%/field:optional?%><%!
+    %><%#field:optional?%><%!
+      %>  <% > field/member%>.reset();<%!
+    %><%/field:optional?%><%!
+  %><%/field:cpp_ref?%>
 <%/type:resolves_to_base_or_enum?%>
-<%/field:cpp_ref?%>
 <%#type:resolves_to_container?%>
 <%#field:cpp_ref?%>
 <%^field:optional?%>

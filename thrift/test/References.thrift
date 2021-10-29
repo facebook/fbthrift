@@ -47,6 +47,21 @@ struct ReferringStruct {
   );
 }
 
+struct ReferringStructWithBaseTypeFields {
+  1: i64 def_field (cpp2.ref = "true");
+  2: optional i64 opt_field (cpp2.ref = "true");
+  3: required i64 req_field (cpp2.ref = "true");
+  4: i64 def_unique_field (cpp2.ref_type = "unique");
+  5: optional i64 opt_unique_field (cpp2.ref_type = "unique");
+  6: required i64 req_unique_field (cpp2.ref_type = "unique");
+  7: i64 def_shared_field (cpp2.ref_type = "shared");
+  8: optional i64 opt_shared_field (cpp2.ref_type = "shared");
+  9: required i64 req_shared_field (cpp2.ref_type = "shared");
+  10: i64 def_shared_const_field (cpp2.ref_type = "shared_const");
+  11: optional i64 opt_shared_const_field (cpp2.ref_type = "shared_const");
+  12: required i64 req_shared_const_field (cpp2.ref_type = "shared_const");
+}
+
 struct StructuredAnnotation {
   @cpp.Ref{type = cpp.RefType.Unique}
   1: optional PlainStruct opt_unique_field;

@@ -156,6 +156,51 @@ TEST(References, ref_struct_fields_clear) {
   EXPECT_EQ(nullptr, a.opt_shared_const_field_ref());
 }
 
+TEST(References, ref_struct_base_fields_clear) {
+  ReferringStructWithBaseTypeFields a;
+
+  *a.def_field_ref() = 1;
+  *a.req_field_ref() = 2;
+  a.opt_field_ref() = std::make_unique<int64_t>(3);
+  *a.def_unique_field_ref() = 4;
+  *a.req_unique_field_ref() = 5;
+  a.opt_unique_field_ref() = std::make_unique<int64_t>(6);
+  *a.def_shared_field_ref() = 7;
+  *a.req_shared_field_ref() = 8;
+  a.opt_shared_field_ref() = std::make_shared<int64_t>(9);
+  a.def_shared_const_field_ref() = std::make_shared<int64_t>(10);
+  a.req_shared_const_field_ref() = std::make_shared<int64_t>(11);
+  a.opt_shared_const_field_ref() = std::make_shared<int64_t>(12);
+
+  EXPECT_EQ(*a.def_field_ref(), 1);
+  EXPECT_EQ(*a.req_field_ref(), 2);
+  EXPECT_EQ(*a.opt_field_ref(), 3);
+  EXPECT_EQ(*a.def_unique_field_ref(), 4);
+  EXPECT_EQ(*a.req_unique_field_ref(), 5);
+  EXPECT_EQ(*a.opt_unique_field_ref(), 6);
+  EXPECT_EQ(*a.def_shared_field_ref(), 7);
+  EXPECT_EQ(*a.req_shared_field_ref(), 8);
+  EXPECT_EQ(*a.opt_shared_field_ref(), 9);
+  EXPECT_EQ(*a.def_shared_const_field_ref(), 10);
+  EXPECT_EQ(*a.req_shared_const_field_ref(), 11);
+  EXPECT_EQ(*a.opt_shared_const_field_ref(), 12);
+
+  a.__clear();
+
+  EXPECT_EQ(*a.def_field_ref(), 0);
+  EXPECT_EQ(*a.req_field_ref(), 0);
+  EXPECT_EQ(nullptr, a.opt_field_ref());
+  EXPECT_EQ(*a.def_unique_field_ref(), 0);
+  EXPECT_EQ(*a.req_unique_field_ref(), 0);
+  EXPECT_EQ(nullptr, a.opt_unique_field_ref());
+  EXPECT_EQ(*a.def_shared_field_ref(), 0);
+  EXPECT_EQ(*a.req_shared_field_ref(), 0);
+  EXPECT_EQ(nullptr, a.opt_shared_field_ref());
+  EXPECT_EQ(*a.def_shared_const_field_ref(), 0);
+  EXPECT_EQ(*a.req_shared_const_field_ref(), 0);
+  EXPECT_EQ(nullptr, a.opt_shared_const_field_ref());
+}
+
 TEST(References, ref_container_fields) {
   StructWithContainers a;
 

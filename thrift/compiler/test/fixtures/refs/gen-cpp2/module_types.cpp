@@ -276,6 +276,12 @@ MyField::MyField(apache::thrift::FragileConstructor, ::std::unique_ptr<::std::in
 
 void MyField::__clear() {
   // clear all fields
+  this->opt_value.reset();
+  this->value = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::int64_t>>();
+  this->req_value = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::int64_t>>();
+  this->opt_enum_value.reset();
+  this->enum_value = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::cpp2::MyEnum>>();
+  this->req_enum_value = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::cpp2::MyEnum>>();
 }
 
 bool MyField::operator==(const MyField& rhs) const {
@@ -572,6 +578,7 @@ StructWithUnion::StructWithUnion(apache::thrift::FragileConstructor, ::std::uniq
 void StructWithUnion::__clear() {
   // clear all fields
   if (this->u) this->u->__clear();
+  this->aDouble = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<double>>();
   this->__fbthrift_field_f.__clear();
   __isset = {};
 }
@@ -1897,6 +1904,11 @@ StructWithString::StructWithString(apache::thrift::FragileConstructor, ::std::un
 
 void StructWithString::__clear() {
   // clear all fields
+  this->def_unique_string_ref = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::string>>();
+  this->def_shared_string_ref = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<::std::string>>();
+  this->def_shared_string_const_ref = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::std::string>>();
+  this->unique_string_ref = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::string>>();
+  this->shared_string_ref = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<::std::string>>();
 }
 
 bool StructWithString::operator==(const StructWithString& rhs) const {
