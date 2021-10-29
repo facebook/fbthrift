@@ -4012,13 +4012,14 @@ void t_hack_generator::generate_service_interactions(
     // Generate interaction method implementations
     for (const auto& function : get_supported_client_functions(interaction)) {
       if (function->returns_sink()) {
-        continue;
-      }
-      _generate_service_client_child_fn(
-          f_service_, interaction, function, /*rpc_options*/ true);
-      _generate_sendImpl(f_service_, interaction, function);
-      if (function->qualifier() != t_function_qualifier::one_way) {
-        _generate_recvImpl(f_service_, interaction, function);
+        _generate_sendImpl(f_service_, interaction, function);
+      } else {
+        _generate_service_client_child_fn(
+            f_service_, interaction, function, /*rpc_options*/ true);
+        _generate_sendImpl(f_service_, interaction, function);
+        if (function->qualifier() != t_function_qualifier::one_way) {
+          _generate_recvImpl(f_service_, interaction, function);
+        }
       }
     }
 
@@ -4698,11 +4699,9 @@ void t_hack_generator::_generate_service_client(
 
   // Generate client method implementations
   for (const auto* function : get_supported_client_functions(tservice)) {
-    if (function->returns_sink()) {
-      continue;
-    }
     _generate_sendImpl(out, tservice, function);
-    if (function->qualifier() != t_function_qualifier::one_way) {
+    if (!function->returns_sink() &&
+        function->qualifier() != t_function_qualifier::one_way) {
       _generate_recvImpl(out, tservice, function);
     }
     out << "\n";

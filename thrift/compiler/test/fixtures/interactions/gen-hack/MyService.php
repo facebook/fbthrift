@@ -651,6 +651,44 @@ class MyService_MyInteraction extends \ThriftClientBase {
     $this->eventHandler_->postRecv('MyInteraction.truthify', $expectedsequenceid, null);
     return;
   }
+  protected function sendImpl_encode(): int {
+    $currentseqid = $this->getNextSequenceID();
+    $args = MyService_MyInteraction_encode_args::withDefaultValues();
+    try {
+      $this->eventHandler_->preSend('MyInteraction.encode', $args, $currentseqid);
+      if ($this->output_ is \TBinaryProtocolAccelerated)
+      {
+        \thrift_protocol_write_binary($this->output_, 'MyInteraction.encode', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
+      }
+      else if ($this->output_ is \TCompactProtocolAccelerated)
+      {
+        \thrift_protocol_write_compact($this->output_, 'MyInteraction.encode', \TMessageType::CALL, $args, $currentseqid, false);
+      }
+      else
+      {
+        $this->output_->writeMessageBegin('MyInteraction.encode', \TMessageType::CALL, $currentseqid);
+        $args->write($this->output_);
+        $this->output_->writeMessageEnd();
+        $this->output_->getTransport()->flush();
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->sendError('MyInteraction.encode', $args, $currentseqid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postSend('MyInteraction.encode', $args, $currentseqid);
+          return $currentseqid;
+      }
+    } catch (\Exception $ex) {
+      $this->eventHandler_->sendError('MyInteraction.encode', $args, $currentseqid, $ex);
+      throw $ex;
+    }
+    $this->eventHandler_->postSend('MyInteraction.encode', $args, $currentseqid);
+    return $currentseqid;
+  }
 }
 
 class MyService_MyInteractionFast extends \ThriftClientBase {
@@ -1006,6 +1044,44 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     }
     $this->eventHandler_->postRecv('MyInteractionFast.truthify', $expectedsequenceid, null);
     return;
+  }
+  protected function sendImpl_encode(): int {
+    $currentseqid = $this->getNextSequenceID();
+    $args = MyService_MyInteractionFast_encode_args::withDefaultValues();
+    try {
+      $this->eventHandler_->preSend('MyInteractionFast.encode', $args, $currentseqid);
+      if ($this->output_ is \TBinaryProtocolAccelerated)
+      {
+        \thrift_protocol_write_binary($this->output_, 'MyInteractionFast.encode', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
+      }
+      else if ($this->output_ is \TCompactProtocolAccelerated)
+      {
+        \thrift_protocol_write_compact($this->output_, 'MyInteractionFast.encode', \TMessageType::CALL, $args, $currentseqid, false);
+      }
+      else
+      {
+        $this->output_->writeMessageBegin('MyInteractionFast.encode', \TMessageType::CALL, $currentseqid);
+        $args->write($this->output_);
+        $this->output_->writeMessageEnd();
+        $this->output_->getTransport()->flush();
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->sendError('MyInteractionFast.encode', $args, $currentseqid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postSend('MyInteractionFast.encode', $args, $currentseqid);
+          return $currentseqid;
+      }
+    } catch (\Exception $ex) {
+      $this->eventHandler_->sendError('MyInteractionFast.encode', $args, $currentseqid, $ex);
+      throw $ex;
+    }
+    $this->eventHandler_->postSend('MyInteractionFast.encode', $args, $currentseqid);
+    return $currentseqid;
   }
 }
 
