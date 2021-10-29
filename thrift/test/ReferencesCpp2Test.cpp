@@ -101,6 +101,61 @@ TEST(References, ref_struct_fields) {
   EXPECT_EQ(nullptr, a.opt_shared_const_field_ref());
 }
 
+TEST(References, ref_struct_fields_clear) {
+  ReferringStruct a;
+
+  auto s1 = std::make_shared<cpp2::PlainStruct>();
+  auto s2 = std::make_shared<cpp2::PlainStruct>();
+  auto s3 = std::make_shared<cpp2::PlainStruct>();
+  s1->field() = 10;
+  s2->field() = 11;
+  s3->field() = 12;
+
+  a.def_field_ref()->field_ref() = 1;
+  a.req_field_ref()->field_ref() = 2;
+  a.opt_field_ref() = std::make_unique<cpp2::PlainStruct>();
+  a.opt_field_ref()->field_ref() = 3;
+  a.def_unique_field_ref()->field_ref() = 4;
+  a.req_unique_field_ref()->field_ref() = 5;
+  a.opt_unique_field_ref() = std::make_unique<cpp2::PlainStruct>();
+  a.opt_unique_field_ref()->field_ref() = 6;
+  a.def_shared_field_ref()->field_ref() = 7;
+  a.req_shared_field_ref()->field_ref() = 8;
+  a.opt_shared_field_ref() = std::make_shared<cpp2::PlainStruct>();
+  a.opt_shared_field_ref()->field_ref() = 9;
+  a.def_shared_const_field_ref() = std::move(s1);
+  a.req_shared_const_field_ref() = std::move(s2);
+  a.opt_shared_const_field_ref() = std::move(s3);
+
+  EXPECT_EQ(a.def_field_ref()->field_ref(), 1);
+  EXPECT_EQ(a.req_field_ref()->field_ref(), 2);
+  EXPECT_EQ(a.opt_field_ref()->field_ref(), 3);
+  EXPECT_EQ(a.def_unique_field_ref()->field_ref(), 4);
+  EXPECT_EQ(a.req_unique_field_ref()->field_ref(), 5);
+  EXPECT_EQ(a.opt_unique_field_ref()->field_ref(), 6);
+  EXPECT_EQ(a.def_shared_field_ref()->field_ref(), 7);
+  EXPECT_EQ(a.req_shared_field_ref()->field_ref(), 8);
+  EXPECT_EQ(a.opt_shared_field_ref()->field_ref(), 9);
+  EXPECT_EQ(a.def_shared_const_field_ref()->field_ref(), 10);
+  EXPECT_EQ(a.req_shared_const_field_ref()->field_ref(), 11);
+  EXPECT_EQ(a.opt_shared_const_field_ref()->field_ref(), 12);
+
+  a.__clear();
+
+  EXPECT_EQ(a.def_field_ref()->field_ref(), 0);
+  EXPECT_EQ(a.req_field_ref()->field_ref(), 0);
+  EXPECT_EQ(nullptr, a.opt_field_ref());
+  EXPECT_EQ(a.def_unique_field_ref()->field_ref(), 0);
+  EXPECT_EQ(a.req_unique_field_ref()->field_ref(), 0);
+  EXPECT_EQ(nullptr, a.opt_unique_field_ref());
+  EXPECT_EQ(a.def_shared_field_ref()->field_ref(), 0);
+  EXPECT_EQ(a.req_shared_field_ref()->field_ref(), 0);
+  EXPECT_EQ(nullptr, a.opt_shared_field_ref());
+  EXPECT_EQ(a.def_shared_const_field_ref()->field_ref(), 0);
+  EXPECT_EQ(a.req_shared_const_field_ref()->field_ref(), 0);
+  EXPECT_EQ(nullptr, a.opt_shared_const_field_ref());
+}
+
 TEST(References, ref_container_fields) {
   StructWithContainers a;
 

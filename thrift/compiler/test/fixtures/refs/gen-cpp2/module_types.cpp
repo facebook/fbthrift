@@ -976,8 +976,8 @@ StructWithSharedConst::StructWithSharedConst(apache::thrift::FragileConstructor,
 void StructWithSharedConst::__clear() {
   // clear all fields
   this->opt_shared_const.reset();
-  if (this->shared_const) this->shared_const.reset(new typename decltype(this->shared_const)::element_type());
-  if (this->req_shared_const) this->req_shared_const.reset(new typename decltype(this->req_shared_const)::element_type());
+  if (this->shared_const) this->shared_const = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::cpp2::MyField>>();
+  if (this->req_shared_const) this->req_shared_const = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::cpp2::MyField>>();
 }
 
 bool StructWithSharedConst::operator==(const StructWithSharedConst& rhs) const {

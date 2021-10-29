@@ -103,12 +103,7 @@ void <%struct:name%>::__clear() {
 <%/field:cpp_ref_shared?%>
 <%#field:cpp_ref_shared_const?%>
 <%^field:optional?%>
-<%^field:cpp_ref_shared_or_shared_const?%>
-  if (<% > field/member%>) <% > field/member%>.reset(new typename decltype(<% > field/member%>)::element_type());
-<%/field:cpp_ref_shared_or_shared_const?%>
-<%#field:cpp_ref_shared_or_shared_const?%>
-  if (<% > field/member%>) <% > field/member%> = std::make_shared<<%type:cpp_type%>>();
-<%/field:cpp_ref_shared_or_shared_const?%>
+  if (<% > field/member%>) <% > field/member%> = ::apache::thrift::detail::make_mutable_smart_ptr<<%field:cpp_storage_type%>>();
 <%/field:optional?%>
 <%#field:optional?%>
   <% > field/member%>.reset();

@@ -351,7 +351,7 @@ void containerStruct::__clear() {
   this->fieldR = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::map<::std::string, bool>>>();
   if (this->fieldS) this->fieldS->__clear();
   if (this->fieldT) this->fieldT->__clear();
-  if (this->fieldU) this->fieldU.reset(new typename decltype(this->fieldU)::element_type());
+  if (this->fieldU) this->fieldU = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::cpp2::SmallStruct>>();
   if (this->fieldX) this->fieldX->__clear();
   __isset = {};
 }

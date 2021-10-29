@@ -3022,7 +3022,7 @@ void AnnotatedStruct::__clear() {
   if (this->ref_type_shared) this->ref_type_shared->__clear();
   this->ref_type_const = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>();
   if (this->req_ref_type_shared) this->req_ref_type_shared->__clear();
-  if (this->req_ref_type_const) this->req_ref_type_const.reset(new typename decltype(this->req_ref_type_const)::element_type());
+  if (this->req_ref_type_const) this->req_ref_type_const = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::some::valid::ns::containerStruct>>();
   this->req_ref_type_unique = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::vector<::std::string>>>();
   this->opt_ref_type_const.reset();
   this->opt_ref_type_unique.reset();
