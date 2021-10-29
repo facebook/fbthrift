@@ -72,7 +72,7 @@ file.
     }}c{{constant:name}}()))
 {{/type:container?}}
 {{#type:enum}}
-{{constant:name}} = {{#type:externalProgram?}}{{> common/ModulePath}}.{{!
-    }}{{/type:externalProgram?}}{{enum:name}}(<int> (c{{constant:name}}()))
+{{constant:name}} = {{#type:need_module_path?}}{{type:modulePath}}.{{!
+    }}{{/type:need_module_path?}}{{enum:name}}(<int> (c{{constant:name}}()))
 {{/type:enum}}
 {{/constant:type}}

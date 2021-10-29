@@ -29,24 +29,15 @@ This is for python types, suitable for isinstance check_types
   }}{{^type:iobufWrapper?}}bytes{{/type:iobufWrapper?}}{{!
 }}{{/type:binary?}}{{!
 }}{{#type:struct}}{{!
-  }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
-  }}{{^type:externalProgram?}}{{^program:typeContext?}}{{!
-    }}{{> common/ModulePath}}.{{!
-  }}{{/program:typeContext?}}{{/type:externalProgram?}}{{!
+  }}{{#type:need_module_path?}}{{type:modulePath}}.{{/type:need_module_path?}}{{!
   }}{{struct:name}}{{!
 }}{{/type:struct}}{{!
 }}{{#type:container?}}{{!
-  }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
-  }}{{^type:externalProgram?}}{{^program:typeContext?}}{{!
-    }}{{> common/ModulePath}}.{{!
-  }}{{/program:typeContext?}}{{/type:externalProgram?}}{{!
+  }}{{#type:need_module_path?}}{{type:modulePath}}.{{/type:need_module_path?}}{{!
   }}{{> types/CythonPythonType}}{{!
 }}{{/type:container?}}{{!
 }}{{#type:void?}}object{{/type:void?}}{{!
 }}{{#type:enum}}{{!
-  }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
-  }}{{^type:externalProgram?}}{{^program:typeContext?}}{{!
-    }}{{> common/ModulePath}}.{{!
-  }}{{/program:typeContext?}}{{/type:externalProgram?}}{{!
+  }}{{#type:need_module_path?}}{{type:modulePath}}.{{/type:need_module_path?}}{{!
   }}{{enum:name}}{{!
 }}{{/type:enum}}

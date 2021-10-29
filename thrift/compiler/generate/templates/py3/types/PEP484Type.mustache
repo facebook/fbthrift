@@ -34,11 +34,7 @@ thrift-py3 specific container types.
   }}{{^type:iobufWrapper?}}bytes{{/type:iobufWrapper?}}{{!
 }}{{/type:binary?}}{{!
 }}{{#type:struct}}{{!
-  }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
-  }}{{^type:externalProgram?}}{{^program:typeContext?}}{{!
-    }}{{> common/ModulePath}}.{{!
-  }}{{/program:typeContext?}}{{!
-  }}{{/type:externalProgram?}}{{!
+  }}{{#type:need_module_path?}}{{type:modulePath}}.{{/type:need_module_path?}}{{!
   }}{{struct:name}}{{!
 }}{{/type:struct}}{{!
 }}{{#type:container?}}{{!
@@ -46,9 +42,6 @@ thrift-py3 specific container types.
 }}{{/type:container?}}{{!
 }}{{#type:void?}}None{{/type:void?}}{{!
 }}{{#type:enum}}{{!
-  }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
-  }}{{^type:externalProgram?}}{{^program:typeContext?}}{{!
-    }}{{> common/ModulePath}}.{{!
-  }}{{/program:typeContext?}}{{/type:externalProgram?}}{{!
+  }}{{#type:need_module_path?}}{{type:modulePath}}.{{/type:need_module_path?}}{{!
   }}{{enum:name}}{{!
 }}{{/type:enum}}

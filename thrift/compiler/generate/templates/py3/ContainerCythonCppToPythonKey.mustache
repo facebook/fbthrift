@@ -37,5 +37,5 @@ ckey.
     }}{{> types/CythonPythonType}}.create(ckey){{!
 }}{{/type:enum?}}{{/type:base?}}{{!
 }}{{#type:enum}}translate_cpp_enum_to_python({{!
-    }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{enum:name}}, {{!
+    }}{{#type:need_module_path?}}{{type:modulePath}}.{{/type:need_module_path?}}{{enum:name}}, {{!
     }}<int> ckey){{/type:enum}}

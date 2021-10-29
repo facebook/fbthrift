@@ -15,6 +15,7 @@
  */
 
 #include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
 
@@ -125,7 +126,7 @@ class mstch_py3_type : public mstch_type {
         this,
         {
             {"type:modulePath", &mstch_py3_type::modulePath},
-            {"type:externalProgram?", &mstch_py3_type::isExternalProgram},
+            {"type:need_module_path?", &mstch_py3_type::need_module_path},
             {"type:flat_name", &mstch_py3_type::flatName},
             {"type:cppNamespaces", &mstch_py3_type::cppNamespaces},
             {"type:cppTemplate", &mstch_py3_type::cppTemplate},
@@ -151,13 +152,20 @@ class mstch_py3_type : public mstch_type {
         });
   }
 
-  mstch::node modulePath() {
-    return createStringArray(get_type_py3_namespace());
+  mstch::node need_module_path() {
+    if (!has_option("is_types_file")) {
+      return true;
+    }
+    if (const t_program* prog = type_->program()) {
+      if (prog != prog_) {
+        return true;
+      }
+    }
+    return false;
   }
 
-  mstch::node isExternalProgram() {
-    auto p = type_->program();
-    return p && p != prog_;
+  mstch::node modulePath() {
+    return "_" + boost::algorithm::join(get_type_py3_namespace(), "_");
   }
 
   mstch::node flatName() { return cachedProps_.flatName; }
@@ -368,7 +376,6 @@ class mstch_py3_program : public mstch_program {
             {"program:customTypes", &mstch_py3_program::getCustomTypes},
             {"program:moveContainerTypes",
              &mstch_py3_program::getMoveContainerTypes},
-            {"program:typeContext?", &mstch_py3_program::isTypeContext},
             {"program:has_stream?", &mstch_py3_program::hasStream},
             {"program:stream_types", &mstch_py3_program::getStreamTypes},
             {"program:response_and_stream_types",
@@ -484,10 +491,6 @@ class mstch_py3_program : public mstch_program {
   mstch::node hasStream() {
     return !has_option("no_stream") && !streamTypes_.empty();
   }
-
-  mstch::node isTypeContext() { return typeContext_; }
-
-  void setTypeContext(bool val) { typeContext_ = val; }
 
  protected:
   struct Namespace {
@@ -665,7 +668,6 @@ class mstch_py3_program : public mstch_program {
     return flatName;
   }
 
-  bool typeContext_ = false;
   std::vector<const t_type*> containers_;
   std::map<std::string, const t_type*> moveContainers_;
   std::vector<const t_type*> customTemplates_;
@@ -1315,8 +1317,9 @@ class t_mstch_py3_generator : public t_mstch_generator {
   void set_mstch_generators();
   void generate_init_files();
   void generate_file(
-      const std::string& file, const boost::filesystem::path& base);
-  void setTypeContext(bool val);
+      const std::string& file,
+      bool is_types_file,
+      const boost::filesystem::path& base);
   void generate_types();
   void generate_services();
   boost::filesystem::path package_to_path();
@@ -1382,17 +1385,17 @@ boost::filesystem::path t_mstch_py3_generator::package_to_path() {
   return boost::algorithm::replace_all_copy(package, ".", "/");
 }
 
-void t_mstch_py3_generator::setTypeContext(bool val) {
-  auto nodePtr = generators_->program_generator_->generate(
-      get_program(), generators_, cache_);
-  auto programNodePtr = std::static_pointer_cast<mstch_py3_program>(nodePtr);
-  programNodePtr->setTypeContext(val);
-}
-
 void t_mstch_py3_generator::generate_file(
-    const std::string& file, const boost::filesystem::path& base = {}) {
+    const std::string& file,
+    bool is_types_file,
+    const boost::filesystem::path& base = {}) {
   auto program = get_program();
   const auto& name = program->name();
+  if (is_types_file) {
+    cache_->parsed_options_["is_types_file"] = "";
+  } else {
+    cache_->parsed_options_.erase("is_types_file");
+  }
   auto nodePtr =
       generators_->program_generator_->generate(program, generators_, cache_);
   render_to_file(nodePtr, file, base / name / file);
@@ -1427,19 +1430,17 @@ void t_mstch_py3_generator::generate_types() {
       "metadata.cpp",
   };
 
-  setTypeContext(true);
   for (const auto& file : cythonFilesWithTypeContext) {
-    generate_file(file, generateRootPath_);
+    generate_file(file, true, generateRootPath_);
   }
   for (const auto& file : cppFilesWithTypeContext) {
-    generate_file(file);
+    generate_file(file, true);
   }
-  setTypeContext(false);
   for (const auto& file : cythonFilesNoTypeContext) {
-    generate_file(file, generateRootPath_);
+    generate_file(file, false, generateRootPath_);
   }
   for (const auto& file : cppFilesWithNoTypeContext) {
-    generate_file(file);
+    generate_file(file, false);
   }
 }
 
@@ -1450,7 +1451,6 @@ void t_mstch_py3_generator::generate_services() {
     return;
   }
 
-  setTypeContext(false);
   std::vector<std::string> cythonFiles{
       "clients.pxd",
       "clients.pyx",
@@ -1472,10 +1472,10 @@ void t_mstch_py3_generator::generate_services() {
   };
 
   for (const auto& file : cythonFiles) {
-    generate_file(file, generateRootPath_);
+    generate_file(file, false, generateRootPath_);
   }
   for (const auto& file : cppFiles) {
-    generate_file(file);
+    generate_file(file, false);
   }
 }
 
