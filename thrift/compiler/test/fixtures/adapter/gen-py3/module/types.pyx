@@ -949,7 +949,7 @@ cdef class List__Foo(thrift.py3.types.List):
         if items is not None:
             for item in items:
                 if not isinstance(item, Foo):
-                    raise TypeError(f"{item!r} is not of type 'Foo'")
+                    raise TypeError(f"{item!r} is not of type Foo")
                 deref(c_inst).push_back(deref((<Foo>item)._cpp_obj))
         return c_inst
 

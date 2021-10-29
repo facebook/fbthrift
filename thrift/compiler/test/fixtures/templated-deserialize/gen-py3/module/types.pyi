@@ -114,13 +114,13 @@ class containerStruct(thrift.py3.types.Struct, _typing.Hashable):
 
     fieldR: Final[_typing.Optional[_typing.Mapping[str, bool]]] = ...
 
-    fieldS: Final[_typing.Optional['SmallStruct']] = ...
+    fieldS: Final[_typing.Optional[SmallStruct]] = ...
 
-    fieldT: Final[_typing.Optional['SmallStruct']] = ...
+    fieldT: Final[_typing.Optional[SmallStruct]] = ...
 
-    fieldU: Final[_typing.Optional['SmallStruct']] = ...
+    fieldU: Final[_typing.Optional[SmallStruct]] = ...
 
-    fieldX: Final[_typing.Optional['SmallStruct']] = ...
+    fieldX: Final[_typing.Optional[SmallStruct]] = ...
 
     def __init__(
         self, *,
@@ -142,10 +142,10 @@ class containerStruct(thrift.py3.types.Struct, _typing.Hashable):
         fieldP: _typing.Optional[_typing.Sequence[int]]=None,
         fieldQ: _typing.Optional[MyEnumA]=None,
         fieldR: _typing.Optional[_typing.Mapping[str, bool]]=None,
-        fieldS: _typing.Optional['SmallStruct']=None,
-        fieldT: _typing.Optional['SmallStruct']=None,
-        fieldU: _typing.Optional['SmallStruct']=None,
-        fieldX: _typing.Optional['SmallStruct']=None
+        fieldS: _typing.Optional[SmallStruct]=None,
+        fieldT: _typing.Optional[SmallStruct]=None,
+        fieldU: _typing.Optional[SmallStruct]=None,
+        fieldX: _typing.Optional[SmallStruct]=None
     ) -> None: ...
 
     def __call__(
@@ -168,10 +168,10 @@ class containerStruct(thrift.py3.types.Struct, _typing.Hashable):
         fieldP: _typing.Union[_typing.Sequence[int], __NotSet, None]=NOTSET,
         fieldQ: _typing.Union[MyEnumA, __NotSet, None]=NOTSET,
         fieldR: _typing.Union[_typing.Mapping[str, bool], __NotSet, None]=NOTSET,
-        fieldS: _typing.Union['SmallStruct', __NotSet, None]=NOTSET,
-        fieldT: _typing.Union['SmallStruct', __NotSet, None]=NOTSET,
-        fieldU: _typing.Union['SmallStruct', __NotSet, None]=NOTSET,
-        fieldX: _typing.Union['SmallStruct', __NotSet, None]=NOTSET
+        fieldS: _typing.Union[SmallStruct, __NotSet, None]=NOTSET,
+        fieldT: _typing.Union[SmallStruct, __NotSet, None]=NOTSET,
+        fieldU: _typing.Union[SmallStruct, __NotSet, None]=NOTSET,
+        fieldX: _typing.Union[SmallStruct, __NotSet, None]=NOTSET
     ) -> containerStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['containerStruct'], bytes]]: ...

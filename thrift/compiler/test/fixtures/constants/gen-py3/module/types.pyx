@@ -1649,7 +1649,7 @@ cdef class List__Range(thrift.py3.types.List):
         if items is not None:
             for item in items:
                 if not isinstance(item, Range):
-                    raise TypeError(f"{item!r} is not of type 'Range'")
+                    raise TypeError(f"{item!r} is not of type Range")
                 deref(c_inst).push_back(deref((<Range>item)._cpp_obj))
         return c_inst
 
@@ -1726,7 +1726,7 @@ cdef class List__Internship(thrift.py3.types.List):
         if items is not None:
             for item in items:
                 if not isinstance(item, Internship):
-                    raise TypeError(f"{item!r} is not of type 'Internship'")
+                    raise TypeError(f"{item!r} is not of type Internship")
                 deref(c_inst).push_back(deref((<Internship>item)._cpp_obj))
         return c_inst
 

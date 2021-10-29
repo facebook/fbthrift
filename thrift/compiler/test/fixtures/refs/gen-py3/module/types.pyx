@@ -1981,7 +1981,7 @@ cdef class List__RecursiveStruct(thrift.py3.types.List):
         if items is not None:
             for item in items:
                 if not isinstance(item, RecursiveStruct):
-                    raise TypeError(f"{item!r} is not of type 'RecursiveStruct'")
+                    raise TypeError(f"{item!r} is not of type RecursiveStruct")
                 deref(c_inst).push_back(deref((<RecursiveStruct>item)._cpp_obj))
         return c_inst
 

@@ -114,24 +114,24 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
         pass
 
-    opt_ref: Final[_typing.Optional['MyField']] = ...
+    opt_ref: Final[_typing.Optional[MyField]] = ...
 
-    ref: Final[_typing.Optional['MyField']] = ...
+    ref: Final[_typing.Optional[MyField]] = ...
 
-    req_ref: Final[_typing.Optional['MyField']] = ...
+    req_ref: Final[_typing.Optional[MyField]] = ...
 
     def __init__(
         self, *,
-        opt_ref: _typing.Optional['MyField']=None,
-        ref: _typing.Optional['MyField']=None,
-        req_ref: _typing.Optional['MyField']=None
+        opt_ref: _typing.Optional[MyField]=None,
+        ref: _typing.Optional[MyField]=None,
+        req_ref: _typing.Optional[MyField]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        opt_ref: _typing.Union['MyField', __NotSet, None]=NOTSET,
-        ref: _typing.Union['MyField', __NotSet, None]=NOTSET,
-        req_ref: _typing.Union['MyField', __NotSet, None]=NOTSET
+        opt_ref: _typing.Union[MyField, __NotSet, None]=NOTSET,
+        ref: _typing.Union[MyField, __NotSet, None]=NOTSET,
+        req_ref: _typing.Union[MyField, __NotSet, None]=NOTSET
     ) -> MyStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStruct'], bytes]]: ...
@@ -149,24 +149,24 @@ class StructWithUnion(thrift.py3.types.Struct, _typing.Hashable):
         f: bool
         pass
 
-    u: Final[_typing.Optional['MyUnion']] = ...
+    u: Final[_typing.Optional[MyUnion]] = ...
 
     aDouble: Final[_typing.Optional[float]] = ...
 
-    f: Final['MyField'] = ...
+    f: Final[MyField] = ...
 
     def __init__(
         self, *,
-        u: _typing.Optional['MyUnion']=None,
+        u: _typing.Optional[MyUnion]=None,
         aDouble: _typing.Optional[float]=None,
-        f: _typing.Optional['MyField']=None
+        f: _typing.Optional[MyField]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        u: _typing.Union['MyUnion', __NotSet, None]=NOTSET,
+        u: _typing.Union[MyUnion, __NotSet, None]=NOTSET,
         aDouble: _typing.Union[float, __NotSet, None]=NOTSET,
-        f: _typing.Union['MyField', __NotSet, None]=NOTSET
+        f: _typing.Union[MyField, __NotSet, None]=NOTSET
     ) -> StructWithUnion: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['StructWithUnion'], bytes]]: ...
@@ -184,16 +184,16 @@ class RecursiveStruct(thrift.py3.types.Struct, _typing.Hashable):
         mes: bool
         pass
 
-    mes: Final[_typing.Optional[_typing.Sequence['RecursiveStruct']]] = ...
+    mes: Final[_typing.Optional[_typing.Sequence[RecursiveStruct]]] = ...
 
     def __init__(
         self, *,
-        mes: _typing.Optional[_typing.Sequence['RecursiveStruct']]=None
+        mes: _typing.Optional[_typing.Sequence[RecursiveStruct]]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        mes: _typing.Union[_typing.Sequence['RecursiveStruct'], __NotSet, None]=NOTSET
+        mes: _typing.Union[_typing.Sequence[RecursiveStruct], __NotSet, None]=NOTSET
     ) -> RecursiveStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['RecursiveStruct'], bytes]]: ...
@@ -256,24 +256,24 @@ class StructWithSharedConst(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
         pass
 
-    opt_shared_const: Final[_typing.Optional['MyField']] = ...
+    opt_shared_const: Final[_typing.Optional[MyField]] = ...
 
-    shared_const: Final[_typing.Optional['MyField']] = ...
+    shared_const: Final[_typing.Optional[MyField]] = ...
 
-    req_shared_const: Final[_typing.Optional['MyField']] = ...
+    req_shared_const: Final[_typing.Optional[MyField]] = ...
 
     def __init__(
         self, *,
-        opt_shared_const: _typing.Optional['MyField']=None,
-        shared_const: _typing.Optional['MyField']=None,
-        req_shared_const: _typing.Optional['MyField']=None
+        opt_shared_const: _typing.Optional[MyField]=None,
+        shared_const: _typing.Optional[MyField]=None,
+        req_shared_const: _typing.Optional[MyField]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        opt_shared_const: _typing.Union['MyField', __NotSet, None]=NOTSET,
-        shared_const: _typing.Union['MyField', __NotSet, None]=NOTSET,
-        req_shared_const: _typing.Union['MyField', __NotSet, None]=NOTSET
+        opt_shared_const: _typing.Union[MyField, __NotSet, None]=NOTSET,
+        shared_const: _typing.Union[MyField, __NotSet, None]=NOTSET,
+        req_shared_const: _typing.Union[MyField, __NotSet, None]=NOTSET
     ) -> StructWithSharedConst: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['StructWithSharedConst'], bytes]]: ...
@@ -312,24 +312,24 @@ class StructWithRef(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
         pass
 
-    def_field: Final[_typing.Optional['Empty']] = ...
+    def_field: Final[_typing.Optional[Empty]] = ...
 
-    opt_field: Final[_typing.Optional['Empty']] = ...
+    opt_field: Final[_typing.Optional[Empty]] = ...
 
-    req_field: Final[_typing.Optional['Empty']] = ...
+    req_field: Final[_typing.Optional[Empty]] = ...
 
     def __init__(
         self, *,
-        def_field: _typing.Optional['Empty']=None,
-        opt_field: _typing.Optional['Empty']=None,
-        req_field: _typing.Optional['Empty']=None
+        def_field: _typing.Optional[Empty]=None,
+        opt_field: _typing.Optional[Empty]=None,
+        req_field: _typing.Optional[Empty]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        def_field: _typing.Union['Empty', __NotSet, None]=NOTSET,
-        opt_field: _typing.Union['Empty', __NotSet, None]=NOTSET,
-        req_field: _typing.Union['Empty', __NotSet, None]=NOTSET
+        def_field: _typing.Union[Empty, __NotSet, None]=NOTSET,
+        opt_field: _typing.Union[Empty, __NotSet, None]=NOTSET,
+        req_field: _typing.Union[Empty, __NotSet, None]=NOTSET
     ) -> StructWithRef: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['StructWithRef'], bytes]]: ...
@@ -383,24 +383,24 @@ class StructWithRefTypeUnique(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
         pass
 
-    def_field: Final[_typing.Optional['Empty']] = ...
+    def_field: Final[_typing.Optional[Empty]] = ...
 
-    opt_field: Final[_typing.Optional['Empty']] = ...
+    opt_field: Final[_typing.Optional[Empty]] = ...
 
-    req_field: Final[_typing.Optional['Empty']] = ...
+    req_field: Final[_typing.Optional[Empty]] = ...
 
     def __init__(
         self, *,
-        def_field: _typing.Optional['Empty']=None,
-        opt_field: _typing.Optional['Empty']=None,
-        req_field: _typing.Optional['Empty']=None
+        def_field: _typing.Optional[Empty]=None,
+        opt_field: _typing.Optional[Empty]=None,
+        req_field: _typing.Optional[Empty]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        def_field: _typing.Union['Empty', __NotSet, None]=NOTSET,
-        opt_field: _typing.Union['Empty', __NotSet, None]=NOTSET,
-        req_field: _typing.Union['Empty', __NotSet, None]=NOTSET
+        def_field: _typing.Union[Empty, __NotSet, None]=NOTSET,
+        opt_field: _typing.Union[Empty, __NotSet, None]=NOTSET,
+        req_field: _typing.Union[Empty, __NotSet, None]=NOTSET
     ) -> StructWithRefTypeUnique: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['StructWithRefTypeUnique'], bytes]]: ...
@@ -417,24 +417,24 @@ class StructWithRefTypeShared(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
         pass
 
-    def_field: Final[_typing.Optional['Empty']] = ...
+    def_field: Final[_typing.Optional[Empty]] = ...
 
-    opt_field: Final[_typing.Optional['Empty']] = ...
+    opt_field: Final[_typing.Optional[Empty]] = ...
 
-    req_field: Final[_typing.Optional['Empty']] = ...
+    req_field: Final[_typing.Optional[Empty]] = ...
 
     def __init__(
         self, *,
-        def_field: _typing.Optional['Empty']=None,
-        opt_field: _typing.Optional['Empty']=None,
-        req_field: _typing.Optional['Empty']=None
+        def_field: _typing.Optional[Empty]=None,
+        opt_field: _typing.Optional[Empty]=None,
+        req_field: _typing.Optional[Empty]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        def_field: _typing.Union['Empty', __NotSet, None]=NOTSET,
-        opt_field: _typing.Union['Empty', __NotSet, None]=NOTSET,
-        req_field: _typing.Union['Empty', __NotSet, None]=NOTSET
+        def_field: _typing.Union[Empty, __NotSet, None]=NOTSET,
+        opt_field: _typing.Union[Empty, __NotSet, None]=NOTSET,
+        req_field: _typing.Union[Empty, __NotSet, None]=NOTSET
     ) -> StructWithRefTypeShared: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['StructWithRefTypeShared'], bytes]]: ...
@@ -451,24 +451,24 @@ class StructWithRefTypeSharedConst(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
         pass
 
-    def_field: Final[_typing.Optional['Empty']] = ...
+    def_field: Final[_typing.Optional[Empty]] = ...
 
-    opt_field: Final[_typing.Optional['Empty']] = ...
+    opt_field: Final[_typing.Optional[Empty]] = ...
 
-    req_field: Final[_typing.Optional['Empty']] = ...
+    req_field: Final[_typing.Optional[Empty]] = ...
 
     def __init__(
         self, *,
-        def_field: _typing.Optional['Empty']=None,
-        opt_field: _typing.Optional['Empty']=None,
-        req_field: _typing.Optional['Empty']=None
+        def_field: _typing.Optional[Empty]=None,
+        opt_field: _typing.Optional[Empty]=None,
+        req_field: _typing.Optional[Empty]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        def_field: _typing.Union['Empty', __NotSet, None]=NOTSET,
-        opt_field: _typing.Union['Empty', __NotSet, None]=NOTSET,
-        req_field: _typing.Union['Empty', __NotSet, None]=NOTSET
+        def_field: _typing.Union[Empty, __NotSet, None]=NOTSET,
+        opt_field: _typing.Union[Empty, __NotSet, None]=NOTSET,
+        req_field: _typing.Union[Empty, __NotSet, None]=NOTSET
     ) -> StructWithRefTypeSharedConst: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['StructWithRefTypeSharedConst'], bytes]]: ...
@@ -485,16 +485,16 @@ class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct, _typing.
     class __fbthrift_IsSet:
         pass
 
-    def_field: Final[_typing.Optional['Empty']] = ...
+    def_field: Final[_typing.Optional[Empty]] = ...
 
     def __init__(
         self, *,
-        def_field: _typing.Optional['Empty']=None
+        def_field: _typing.Optional[Empty]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        def_field: _typing.Union['Empty', __NotSet, None]=NOTSET
+        def_field: _typing.Union[Empty, __NotSet, None]=NOTSET
     ) -> StructWithRefAndAnnotCppNoexceptMoveCtor: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['StructWithRefAndAnnotCppNoexceptMoveCtor'], bytes]]: ...
@@ -549,22 +549,22 @@ class StructWithString(thrift.py3.types.Struct, _typing.Hashable):
     def __ge__(self, other: 'StructWithString') -> bool: ...
 
 
-_List__RecursiveStructT = _typing.TypeVar('_List__RecursiveStructT', bound=_typing.Sequence['RecursiveStruct'])
+_List__RecursiveStructT = _typing.TypeVar('_List__RecursiveStructT', bound=_typing.Sequence[RecursiveStruct])
 
 
-class List__RecursiveStruct(_typing.Sequence['RecursiveStruct'], _typing.Hashable):
-    def __init__(self, items: _typing.Optional[_typing.Sequence['RecursiveStruct']]=None) -> None: ...
+class List__RecursiveStruct(_typing.Sequence[RecursiveStruct], _typing.Hashable):
+    def __init__(self, items: _typing.Optional[_typing.Sequence[RecursiveStruct]]=None) -> None: ...
     def __len__(self) -> int: ...
     def __hash__(self) -> int: ...
-    def __copy__(self) -> _typing.Sequence['RecursiveStruct']: ...
+    def __copy__(self) -> _typing.Sequence[RecursiveStruct]: ...
     @_typing.overload
-    def __getitem__(self, i: int) -> 'RecursiveStruct': ...
+    def __getitem__(self, i: int) -> RecursiveStruct: ...
     @_typing.overload
-    def __getitem__(self, s: slice) -> _typing.Sequence['RecursiveStruct']: ...
-    def __add__(self, other: _typing.Sequence['RecursiveStruct']) -> 'List__RecursiveStruct': ...
+    def __getitem__(self, s: slice) -> _typing.Sequence[RecursiveStruct]: ...
+    def __add__(self, other: _typing.Sequence[RecursiveStruct]) -> 'List__RecursiveStruct': ...
     def __radd__(self, other: _List__RecursiveStructT) -> _List__RecursiveStructT: ...
-    def __reversed__(self) -> _typing.Iterator['RecursiveStruct']: ...
-    def __iter__(self) -> _typing.Iterator['RecursiveStruct']: ...
+    def __reversed__(self) -> _typing.Iterator[RecursiveStruct]: ...
+    def __iter__(self) -> _typing.Iterator[RecursiveStruct]: ...
 
 
 _List__i32T = _typing.TypeVar('_List__i32T', bound=_typing.Sequence[int])

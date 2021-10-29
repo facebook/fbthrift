@@ -39,7 +39,7 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
 
     MyStringField: Final[str] = ...
 
-    MyDataField: Final['MyDataItem'] = ...
+    MyDataField: Final[MyDataItem] = ...
 
     myEnum: Final[MyEnum] = ...
 
@@ -53,7 +53,7 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
         self, *,
         MyIntField: _typing.Optional[int]=None,
         MyStringField: _typing.Optional[str]=None,
-        MyDataField: _typing.Optional['MyDataItem']=None,
+        MyDataField: _typing.Optional[MyDataItem]=None,
         myEnum: _typing.Optional[MyEnum]=None,
         oneway: _typing.Optional[bool]=None,
         readonly: _typing.Optional[bool]=None,
@@ -64,7 +64,7 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
         self, *,
         MyIntField: _typing.Union[int, __NotSet, None]=NOTSET,
         MyStringField: _typing.Union[str, __NotSet, None]=NOTSET,
-        MyDataField: _typing.Union['MyDataItem', __NotSet, None]=NOTSET,
+        MyDataField: _typing.Union[MyDataItem, __NotSet, None]=NOTSET,
         myEnum: _typing.Union[MyEnum, __NotSet, None]=NOTSET,
         oneway: _typing.Union[bool, __NotSet, None]=NOTSET,
         readonly: _typing.Union[bool, __NotSet, None]=NOTSET,
@@ -112,15 +112,15 @@ class MyUnion(thrift.py3.types.Union, _typing.Hashable):
 
     myEnum: Final[MyEnum] = ...
 
-    myStruct: Final['MyStruct'] = ...
+    myStruct: Final[MyStruct] = ...
 
-    myDataItem: Final['MyDataItem'] = ...
+    myDataItem: Final[MyDataItem] = ...
 
     def __init__(
         self, *,
         myEnum: _typing.Optional[MyEnum]=None,
-        myStruct: _typing.Optional['MyStruct']=None,
-        myDataItem: _typing.Optional['MyDataItem']=None
+        myStruct: _typing.Optional[MyStruct]=None,
+        myDataItem: _typing.Optional[MyDataItem]=None
     ) -> None: ...
 
     def __hash__(self) -> int: ...
@@ -138,9 +138,9 @@ class MyUnion(thrift.py3.types.Union, _typing.Hashable):
         myDataItem: MyUnion.Type = ...
 
     @staticmethod
-    def fromValue(value: _typing.Union[None, MyEnum, 'MyStruct', 'MyDataItem']) -> MyUnion: ...
+    def fromValue(value: _typing.Union[None, MyEnum, MyStruct, MyDataItem]) -> MyUnion: ...
     @__property__
-    def value(self) -> _typing.Union[None, MyEnum, 'MyStruct', 'MyDataItem']: ...
+    def value(self) -> _typing.Union[None, MyEnum, MyStruct, MyDataItem]: ...
     @__property__
     def type(self) -> "MyUnion.Type": ...
 

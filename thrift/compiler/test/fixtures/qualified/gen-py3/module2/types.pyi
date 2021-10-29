@@ -59,19 +59,19 @@ class BigStruct(thrift.py3.types.Struct, _typing.Hashable):
         id: bool
         pass
 
-    s: Final['Struct'] = ...
+    s: Final[Struct] = ...
 
     id: Final[int] = ...
 
     def __init__(
         self, *,
-        s: _typing.Optional['Struct']=None,
+        s: _typing.Optional[Struct]=None,
         id: _typing.Optional[int]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        s: _typing.Union['Struct', __NotSet, None]=NOTSET,
+        s: _typing.Union[Struct, __NotSet, None]=NOTSET,
         id: _typing.Union[int, __NotSet, None]=NOTSET
     ) -> BigStruct: ...
 

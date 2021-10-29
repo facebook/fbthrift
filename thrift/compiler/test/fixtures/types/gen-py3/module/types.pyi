@@ -255,18 +255,18 @@ class TrivialNestedWithDefault(thrift.py3.types.Struct, _typing.Hashable):
 
     z: Final[int] = ...
 
-    n: Final['TrivialNumeric'] = ...
+    n: Final[TrivialNumeric] = ...
 
     def __init__(
         self, *,
         z: _typing.Optional[int]=None,
-        n: _typing.Optional['TrivialNumeric']=None
+        n: _typing.Optional[TrivialNumeric]=None
     ) -> None: ...
 
     def __call__(
         self, *,
         z: _typing.Union[int, __NotSet, None]=NOTSET,
-        n: _typing.Union['TrivialNumeric', __NotSet, None]=NOTSET
+        n: _typing.Union[TrivialNumeric, __NotSet, None]=NOTSET
     ) -> TrivialNestedWithDefault: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['TrivialNestedWithDefault'], bytes]]: ...
@@ -319,18 +319,18 @@ class ComplexNestedWithDefault(thrift.py3.types.Struct, _typing.Hashable):
 
     z: Final[str] = ...
 
-    n: Final['ComplexString'] = ...
+    n: Final[ComplexString] = ...
 
     def __init__(
         self, *,
         z: _typing.Optional[str]=None,
-        n: _typing.Optional['ComplexString']=None
+        n: _typing.Optional[ComplexString]=None
     ) -> None: ...
 
     def __call__(
         self, *,
         z: _typing.Union[str, __NotSet, None]=NOTSET,
-        n: _typing.Union['ComplexString', __NotSet, None]=NOTSET
+        n: _typing.Union[ComplexString, __NotSet, None]=NOTSET
     ) -> ComplexNestedWithDefault: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['ComplexNestedWithDefault'], bytes]]: ...
@@ -404,14 +404,14 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
 
     majorVer: Final[int] = ...
 
-    data: Final['MyDataItem'] = ...
+    data: Final[MyDataItem] = ...
 
     def __init__(
         self, *,
         MyIntField: _typing.Optional[int]=None,
         MyStringField: _typing.Optional[str]=None,
         majorVer: _typing.Optional[int]=None,
-        data: _typing.Optional['MyDataItem']=None
+        data: _typing.Optional[MyDataItem]=None
     ) -> None: ...
 
     def __call__(
@@ -419,7 +419,7 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
         MyIntField: _typing.Union[int, __NotSet, None]=NOTSET,
         MyStringField: _typing.Union[str, __NotSet, None]=NOTSET,
         majorVer: _typing.Union[int, __NotSet, None]=NOTSET,
-        data: _typing.Union['MyDataItem', __NotSet, None]=NOTSET
+        data: _typing.Union[MyDataItem, __NotSet, None]=NOTSET
     ) -> MyStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStruct'], bytes]]: ...
@@ -514,20 +514,20 @@ class ForwardUsageRoot(thrift.py3.types.Struct, _typing.Hashable):
         ForwardUsageStruct: bool
         pass
 
-    ForwardUsageStruct: Final[_typing.Optional['ForwardUsageStruct']] = ...
+    ForwardUsageStruct: Final[_typing.Optional[ForwardUsageStruct]] = ...
 
-    ForwardUsageByRef: Final[_typing.Optional['ForwardUsageByRef']] = ...
+    ForwardUsageByRef: Final[_typing.Optional[ForwardUsageByRef]] = ...
 
     def __init__(
         self, *,
-        ForwardUsageStruct: _typing.Optional['ForwardUsageStruct']=None,
-        ForwardUsageByRef: _typing.Optional['ForwardUsageByRef']=None
+        ForwardUsageStruct: _typing.Optional[ForwardUsageStruct]=None,
+        ForwardUsageByRef: _typing.Optional[ForwardUsageByRef]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        ForwardUsageStruct: _typing.Union['ForwardUsageStruct', __NotSet, None]=NOTSET,
-        ForwardUsageByRef: _typing.Union['ForwardUsageByRef', __NotSet, None]=NOTSET
+        ForwardUsageStruct: _typing.Union[ForwardUsageStruct, __NotSet, None]=NOTSET,
+        ForwardUsageByRef: _typing.Union[ForwardUsageByRef, __NotSet, None]=NOTSET
     ) -> ForwardUsageRoot: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['ForwardUsageRoot'], bytes]]: ...
@@ -545,16 +545,16 @@ class ForwardUsageStruct(thrift.py3.types.Struct, _typing.Hashable):
         foo: bool
         pass
 
-    foo: Final[_typing.Optional['ForwardUsageRoot']] = ...
+    foo: Final[_typing.Optional[ForwardUsageRoot]] = ...
 
     def __init__(
         self, *,
-        foo: _typing.Optional['ForwardUsageRoot']=None
+        foo: _typing.Optional[ForwardUsageRoot]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        foo: _typing.Union['ForwardUsageRoot', __NotSet, None]=NOTSET
+        foo: _typing.Union[ForwardUsageRoot, __NotSet, None]=NOTSET
     ) -> ForwardUsageStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['ForwardUsageStruct'], bytes]]: ...
@@ -572,16 +572,16 @@ class ForwardUsageByRef(thrift.py3.types.Struct, _typing.Hashable):
         foo: bool
         pass
 
-    foo: Final[_typing.Optional['ForwardUsageRoot']] = ...
+    foo: Final[_typing.Optional[ForwardUsageRoot]] = ...
 
     def __init__(
         self, *,
-        foo: _typing.Optional['ForwardUsageRoot']=None
+        foo: _typing.Optional[ForwardUsageRoot]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        foo: _typing.Union['ForwardUsageRoot', __NotSet, None]=NOTSET
+        foo: _typing.Union[ForwardUsageRoot, __NotSet, None]=NOTSET
     ) -> ForwardUsageByRef: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['ForwardUsageByRef'], bytes]]: ...

@@ -55,16 +55,16 @@ class AStructB(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
         pass
 
-    FieldA: Final[_typing.Optional['AStruct']] = ...
+    FieldA: Final[_typing.Optional[AStruct]] = ...
 
     def __init__(
         self, *,
-        FieldA: _typing.Optional['AStruct']=None
+        FieldA: _typing.Optional[AStruct]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        FieldA: _typing.Union['AStruct', __NotSet, None]=NOTSET
+        FieldA: _typing.Union[AStruct, __NotSet, None]=NOTSET
     ) -> AStructB: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['AStructB'], bytes]]: ...

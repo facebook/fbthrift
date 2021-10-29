@@ -305,7 +305,7 @@ cdef class List__MyStruct(thrift.py3.types.List):
         if items is not None:
             for item in items:
                 if not isinstance(item, MyStruct):
-                    raise TypeError(f"{item!r} is not of type 'MyStruct'")
+                    raise TypeError(f"{item!r} is not of type MyStruct")
                 deref(c_inst).push_back(deref((<MyStruct>item)._cpp_obj))
         return c_inst
 
@@ -382,7 +382,7 @@ cdef class List__List__MyStruct(thrift.py3.types.List):
         if items is not None:
             for item in items:
                 if item is None:
-                    raise TypeError("None is not of the type _typing.Sequence['MyStruct']")
+                    raise TypeError("None is not of the type _typing.Sequence[MyStruct]")
                 if not isinstance(item, List__MyStruct):
                     item = List__MyStruct(item)
                 deref(c_inst).push_back(deref((<List__MyStruct>item)._cpp_obj))

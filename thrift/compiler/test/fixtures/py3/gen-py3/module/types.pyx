@@ -1190,7 +1190,7 @@ cdef class List__SimpleStruct(thrift.py3.types.List):
         if items is not None:
             for item in items:
                 if not isinstance(item, SimpleStruct):
-                    raise TypeError(f"{item!r} is not of type 'SimpleStruct'")
+                    raise TypeError(f"{item!r} is not of type SimpleStruct")
                 deref(c_inst).push_back(deref((<SimpleStruct>item)._cpp_obj))
         return c_inst
 
@@ -1527,7 +1527,7 @@ cdef class Map__string_SimpleStruct(thrift.py3.types.Map):
                 if not isinstance(key, str):
                     raise TypeError(f"{key!r} is not of type str")
                 if not isinstance(item, SimpleStruct):
-                    raise TypeError(f"{item!r} is not of type 'SimpleStruct'")
+                    raise TypeError(f"{item!r} is not of type SimpleStruct")
 
                 deref(c_inst)[key.encode('UTF-8')] = deref((<SimpleStruct>item)._cpp_obj)
         return c_inst
@@ -2077,7 +2077,7 @@ cdef class Map__string_List__SimpleStruct(thrift.py3.types.Map):
                 if not isinstance(key, str):
                     raise TypeError(f"{key!r} is not of type str")
                 if item is None:
-                    raise TypeError("None is not of type _typing.Sequence['SimpleStruct']")
+                    raise TypeError("None is not of type _typing.Sequence[SimpleStruct]")
                 if not isinstance(item, List__SimpleStruct):
                     item = List__SimpleStruct(item)
 

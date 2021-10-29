@@ -3435,9 +3435,9 @@ cdef class Map__Empty_MyStruct(thrift.py3.types.Map):
         if items is not None:
             for key, item in items.items():
                 if not isinstance(key, Empty):
-                    raise TypeError(f"{key!r} is not of type 'Empty'")
+                    raise TypeError(f"{key!r} is not of type Empty")
                 if not isinstance(item, MyStruct):
-                    raise TypeError(f"{item!r} is not of type 'MyStruct'")
+                    raise TypeError(f"{item!r} is not of type MyStruct")
 
                 deref(c_inst)[deref((<Empty>key)._cpp_obj)] = deref((<MyStruct>item)._cpp_obj)
         return c_inst
@@ -3530,7 +3530,7 @@ cdef class List__Map__Empty_MyStruct(thrift.py3.types.List):
         if items is not None:
             for item in items:
                 if item is None:
-                    raise TypeError("None is not of the type _typing.Mapping['Empty', 'MyStruct']")
+                    raise TypeError("None is not of the type _typing.Mapping[Empty, MyStruct]")
                 if not isinstance(item, Map__Empty_MyStruct):
                     item = Map__Empty_MyStruct(item)
                 deref(c_inst).push_back(deref((<Map__Empty_MyStruct>item)._cpp_obj))
@@ -3613,7 +3613,7 @@ cdef class List__List__Map__Empty_MyStruct(thrift.py3.types.List):
         if items is not None:
             for item in items:
                 if item is None:
-                    raise TypeError("None is not of the type _typing.Sequence[_typing.Mapping['Empty', 'MyStruct']]")
+                    raise TypeError("None is not of the type _typing.Sequence[_typing.Mapping[Empty, MyStruct]]")
                 if not isinstance(item, List__Map__Empty_MyStruct):
                     item = List__Map__Empty_MyStruct(item)
                 deref(c_inst).push_back(deref((<List__Map__Empty_MyStruct>item)._cpp_obj))
@@ -3696,7 +3696,7 @@ cdef class List__List__List__Map__Empty_MyStruct(thrift.py3.types.List):
         if items is not None:
             for item in items:
                 if item is None:
-                    raise TypeError("None is not of the type _typing.Sequence[_typing.Sequence[_typing.Mapping['Empty', 'MyStruct']]]")
+                    raise TypeError("None is not of the type _typing.Sequence[_typing.Sequence[_typing.Mapping[Empty, MyStruct]]]")
                 if not isinstance(item, List__List__Map__Empty_MyStruct):
                     item = List__List__Map__Empty_MyStruct(item)
                 deref(c_inst).push_back(deref((<List__List__Map__Empty_MyStruct>item)._cpp_obj))
@@ -3856,7 +3856,7 @@ cdef class Set__MyStruct(thrift.py3.types.Set):
         if items is not None:
             for item in items:
                 if not isinstance(item, MyStruct):
-                    raise TypeError(f"{item!r} is not of type 'MyStruct'")
+                    raise TypeError(f"{item!r} is not of type MyStruct")
                 deref(c_inst).insert(deref((<MyStruct>item)._cpp_obj))
         return c_inst
 
@@ -3936,7 +3936,7 @@ cdef class List__ComplexUnion(thrift.py3.types.List):
         if items is not None:
             for item in items:
                 if not isinstance(item, ComplexUnion):
-                    raise TypeError(f"{item!r} is not of type 'ComplexUnion'")
+                    raise TypeError(f"{item!r} is not of type ComplexUnion")
                 deref(c_inst).push_back(deref((<ComplexUnion>item)._cpp_obj))
         return c_inst
 
@@ -4179,7 +4179,7 @@ cdef class Set__List__List__Map__Empty_MyStruct(thrift.py3.types.Set):
         if items is not None:
             for item in items:
                 if item is None:
-                    raise TypeError("None is not of type _typing.Sequence[_typing.Sequence[_typing.Mapping['Empty', 'MyStruct']]]")
+                    raise TypeError("None is not of type _typing.Sequence[_typing.Sequence[_typing.Mapping[Empty, MyStruct]]]")
                 if not isinstance(item, List__List__Map__Empty_MyStruct):
                     item = List__List__Map__Empty_MyStruct(item)
                 deref(c_inst).insert(deref((<List__List__Map__Empty_MyStruct>item)._cpp_obj))
@@ -5575,7 +5575,7 @@ cdef class List__SimpleUnion(thrift.py3.types.List):
         if items is not None:
             for item in items:
                 if not isinstance(item, SimpleUnion):
-                    raise TypeError(f"{item!r} is not of type 'SimpleUnion'")
+                    raise TypeError(f"{item!r} is not of type SimpleUnion")
                 deref(c_inst).push_back(deref((<SimpleUnion>item)._cpp_obj))
         return c_inst
 
@@ -5652,7 +5652,7 @@ cdef class Set__SimpleUnion(thrift.py3.types.Set):
         if items is not None:
             for item in items:
                 if not isinstance(item, SimpleUnion):
-                    raise TypeError(f"{item!r} is not of type 'SimpleUnion'")
+                    raise TypeError(f"{item!r} is not of type SimpleUnion")
                 deref(c_inst).insert(deref((<SimpleUnion>item)._cpp_obj))
         return c_inst
 
@@ -5732,7 +5732,7 @@ cdef class List__Set__SimpleUnion(thrift.py3.types.List):
         if items is not None:
             for item in items:
                 if item is None:
-                    raise TypeError("None is not of the type _typing.AbstractSet['SimpleUnion']")
+                    raise TypeError("None is not of the type _typing.AbstractSet[SimpleUnion]")
                 if not isinstance(item, Set__SimpleUnion):
                     item = Set__SimpleUnion(item)
                 deref(c_inst).push_back(deref((<Set__SimpleUnion>item)._cpp_obj))
@@ -6973,7 +6973,7 @@ cdef class std_unordered_map_std_string_containerStruct__Map__string_containerSt
                 if not isinstance(key, str):
                     raise TypeError(f"{key!r} is not of type str")
                 if not isinstance(item, containerStruct):
-                    raise TypeError(f"{item!r} is not of type 'containerStruct'")
+                    raise TypeError(f"{item!r} is not of type containerStruct")
 
                 deref(c_inst)[key.encode('UTF-8')] = deref((<containerStruct>item)._cpp_obj)
         return c_inst
@@ -8107,7 +8107,7 @@ cdef class List__MyStruct(thrift.py3.types.List):
         if items is not None:
             for item in items:
                 if not isinstance(item, MyStruct):
-                    raise TypeError(f"{item!r} is not of type 'MyStruct'")
+                    raise TypeError(f"{item!r} is not of type MyStruct")
                 deref(c_inst).push_back(deref((<MyStruct>item)._cpp_obj))
         return c_inst
 

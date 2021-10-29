@@ -76,7 +76,7 @@ class Vehicle(thrift.py3.types.Struct, _typing.Hashable):
         hasAC: bool
         pass
 
-    color: Final['Color'] = ...
+    color: Final[Color] = ...
 
     licensePlate: Final[_typing.Optional[str]] = ...
 
@@ -88,7 +88,7 @@ class Vehicle(thrift.py3.types.Struct, _typing.Hashable):
 
     def __init__(
         self, *,
-        color: _typing.Optional['Color']=None,
+        color: _typing.Optional[Color]=None,
         licensePlate: _typing.Optional[str]=None,
         description: _typing.Optional[str]=None,
         name: _typing.Optional[str]=None,
@@ -97,7 +97,7 @@ class Vehicle(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        color: _typing.Union['Color', __NotSet, None]=NOTSET,
+        color: _typing.Union[Color, __NotSet, None]=NOTSET,
         licensePlate: _typing.Union[str, __NotSet, None]=NOTSET,
         description: _typing.Union[str, __NotSet, None]=NOTSET,
         name: _typing.Union[str, __NotSet, None]=NOTSET,
@@ -136,7 +136,7 @@ class Person(thrift.py3.types.Struct, _typing.Hashable):
 
     address: Final[_typing.Optional[str]] = ...
 
-    favoriteColor: Final[_typing.Optional['Color']] = ...
+    favoriteColor: Final[_typing.Optional[Color]] = ...
 
     friends: Final[_typing.Optional[_typing.AbstractSet[int]]] = ...
 
@@ -146,7 +146,7 @@ class Person(thrift.py3.types.Struct, _typing.Hashable):
 
     afraidOfAnimal: Final[_typing.Optional[Animal]] = ...
 
-    vehicles: Final[_typing.Optional[_typing.Sequence['Vehicle']]] = ...
+    vehicles: Final[_typing.Optional[_typing.Sequence[Vehicle]]] = ...
 
     def __init__(
         self, *,
@@ -154,12 +154,12 @@ class Person(thrift.py3.types.Struct, _typing.Hashable):
         name: _typing.Optional[str]=None,
         age: _typing.Optional[int]=None,
         address: _typing.Optional[str]=None,
-        favoriteColor: _typing.Optional['Color']=None,
+        favoriteColor: _typing.Optional[Color]=None,
         friends: _typing.Optional[_typing.AbstractSet[int]]=None,
         bestFriend: _typing.Optional[int]=None,
         petNames: _typing.Optional[_typing.Mapping[Animal, str]]=None,
         afraidOfAnimal: _typing.Optional[Animal]=None,
-        vehicles: _typing.Optional[_typing.Sequence['Vehicle']]=None
+        vehicles: _typing.Optional[_typing.Sequence[Vehicle]]=None
     ) -> None: ...
 
     def __call__(
@@ -168,12 +168,12 @@ class Person(thrift.py3.types.Struct, _typing.Hashable):
         name: _typing.Union[str, __NotSet, None]=NOTSET,
         age: _typing.Union[int, __NotSet, None]=NOTSET,
         address: _typing.Union[str, __NotSet, None]=NOTSET,
-        favoriteColor: _typing.Union['Color', __NotSet, None]=NOTSET,
+        favoriteColor: _typing.Union[Color, __NotSet, None]=NOTSET,
         friends: _typing.Union[_typing.AbstractSet[int], __NotSet, None]=NOTSET,
         bestFriend: _typing.Union[int, __NotSet, None]=NOTSET,
         petNames: _typing.Union[_typing.Mapping[Animal, str], __NotSet, None]=NOTSET,
         afraidOfAnimal: _typing.Union[Animal, __NotSet, None]=NOTSET,
-        vehicles: _typing.Union[_typing.Sequence['Vehicle'], __NotSet, None]=NOTSET
+        vehicles: _typing.Union[_typing.Sequence[Vehicle], __NotSet, None]=NOTSET
     ) -> Person: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Person'], bytes]]: ...
@@ -210,22 +210,22 @@ class Map__Animal_string(_typing.Mapping[Animal, str], _typing.Hashable):
     def __iter__(self) -> _typing.Iterator[Animal]: ...
 
 
-_List__VehicleT = _typing.TypeVar('_List__VehicleT', bound=_typing.Sequence['Vehicle'])
+_List__VehicleT = _typing.TypeVar('_List__VehicleT', bound=_typing.Sequence[Vehicle])
 
 
-class List__Vehicle(_typing.Sequence['Vehicle'], _typing.Hashable):
-    def __init__(self, items: _typing.Optional[_typing.Sequence['Vehicle']]=None) -> None: ...
+class List__Vehicle(_typing.Sequence[Vehicle], _typing.Hashable):
+    def __init__(self, items: _typing.Optional[_typing.Sequence[Vehicle]]=None) -> None: ...
     def __len__(self) -> int: ...
     def __hash__(self) -> int: ...
-    def __copy__(self) -> _typing.Sequence['Vehicle']: ...
+    def __copy__(self) -> _typing.Sequence[Vehicle]: ...
     @_typing.overload
-    def __getitem__(self, i: int) -> 'Vehicle': ...
+    def __getitem__(self, i: int) -> Vehicle: ...
     @_typing.overload
-    def __getitem__(self, s: slice) -> _typing.Sequence['Vehicle']: ...
-    def __add__(self, other: _typing.Sequence['Vehicle']) -> 'List__Vehicle': ...
+    def __getitem__(self, s: slice) -> _typing.Sequence[Vehicle]: ...
+    def __add__(self, other: _typing.Sequence[Vehicle]) -> 'List__Vehicle': ...
     def __radd__(self, other: _List__VehicleT) -> _List__VehicleT: ...
-    def __reversed__(self) -> _typing.Iterator['Vehicle']: ...
-    def __iter__(self) -> _typing.Iterator['Vehicle']: ...
+    def __reversed__(self) -> _typing.Iterator[Vehicle]: ...
+    def __iter__(self) -> _typing.Iterator[Vehicle]: ...
 
 
 PersonID = int
