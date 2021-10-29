@@ -353,20 +353,20 @@ class StructWithBox(thrift.py3.types.Struct, _typing.Hashable):
 
     b: Final[_typing.Optional[_typing.Sequence[int]]] = ...
 
-    c: Final[_typing.Optional['StructWithRef']] = ...
+    c: Final[_typing.Optional[StructWithRef]] = ...
 
     def __init__(
         self, *,
         a: _typing.Optional[str]=None,
         b: _typing.Optional[_typing.Sequence[int]]=None,
-        c: _typing.Optional['StructWithRef']=None
+        c: _typing.Optional[StructWithRef]=None
     ) -> None: ...
 
     def __call__(
         self, *,
         a: _typing.Union[str, __NotSet, None]=NOTSET,
         b: _typing.Union[_typing.Sequence[int], __NotSet, None]=NOTSET,
-        c: _typing.Union['StructWithRef', __NotSet, None]=NOTSET
+        c: _typing.Union[StructWithRef, __NotSet, None]=NOTSET
     ) -> StructWithBox: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['StructWithBox'], bytes]]: ...
