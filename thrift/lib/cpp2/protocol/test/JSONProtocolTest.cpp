@@ -98,17 +98,15 @@ struct ProtocolWriteTestCase {
 };
 
 #ifdef __cpp_char8_t
-template <size_t N>
-string from_u8_string(const char8_t (&str)[N]) {
-  return string(str, str + (N - 1));
-}
+using u8_char_type = char8_t;
 #else
-// u8 literals before C++20 are just const char[N]
+using u8_char_type = char;
+#endif
+
 template <size_t N>
-string from_u8_string(const char (&str)[N]) {
+string from_u8_string(const u8_char_type (&str)[N]) {
   return string(str, str + (N - 1));
 }
-#endif
 
 } // namespace
 
