@@ -73,8 +73,10 @@ class AsyncClientTests(TestCase):
     async def test_unexpected_exception(self) -> None:
         async with server_in_event_loop() as addr:
             async with get_client(TestService, host=addr.ip, port=addr.port) as client:
-                with self.assertRaisesRegex(ApplicationError, "Surprise!"):
+                with self.assertRaises(ApplicationError) as ex:
                     await client.surprise()
+                self.assertEqual(ex.exception.message, "ValueError('Surprise!')")
+                self.assertEqual(ex.exception.type, 0)
 
     async def test_derived_service(self) -> None:
         async with server_in_event_loop() as addr:

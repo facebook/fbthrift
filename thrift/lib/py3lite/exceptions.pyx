@@ -26,6 +26,15 @@ cdef class ApplicationError(Error):
         assert message, "message is empty"
         self.type = type
         self.message = message
+        super().init(type, message)
+
+    @property
+    def type(self):
+        return self.args[0]
+
+    @property
+    def message(self):
+        return self.args[1]
 
 
 cdef ApplicationError create_ApplicationError(unique_ptr[cTApplicationException] ex):
