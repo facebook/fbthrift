@@ -105,3 +105,9 @@ struct StructWithContainers {
     cpp2.ref_type = "shared_const",
   );
 }
+
+struct StructWithString {
+  1: string def_unique_string_ref = "..." (cpp.ref_type = "unique");
+  2: string def_shared_string_ref = "..." (cpp.ref_type = "shared");
+  3: string def_shared_string_const_ref = "..." (cpp.ref_type = "shared_const");
+}

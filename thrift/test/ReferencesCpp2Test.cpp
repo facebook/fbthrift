@@ -226,4 +226,28 @@ TEST(References, structured_annotation) {
   EXPECT_EQ(30, a.opt_shared_mutable_field_ref()->field_ref());
 }
 
+TEST(References, string_ref) {
+  StructWithString a;
+  static_assert(std::is_same_v<
+                decltype(a.def_unique_string_ref_ref()),
+                std::unique_ptr<std::string>&>);
+  static_assert(std::is_same_v<
+                decltype(a.def_shared_string_ref_ref()),
+                std::shared_ptr<std::string>&>);
+  static_assert(std::is_same_v<
+                decltype(a.def_shared_string_const_ref_ref()),
+                std::shared_ptr<const std::string>&>);
+  EXPECT_EQ("...", *a.def_unique_string_ref_ref());
+  EXPECT_EQ("...", *a.def_shared_string_ref_ref());
+  EXPECT_EQ("...", *a.def_shared_string_const_ref_ref());
+
+  *a.def_unique_string_ref_ref() = "a";
+  *a.def_shared_string_ref_ref() = "b";
+
+  auto data = SimpleJSONSerializer::serialize<std::string>(a);
+  StructWithString b;
+  SimpleJSONSerializer::deserialize(data, b);
+  EXPECT_EQ(a, b);
+}
+
 } // namespace cpp2

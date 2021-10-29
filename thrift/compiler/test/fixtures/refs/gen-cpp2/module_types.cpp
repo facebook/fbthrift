@@ -1860,9 +1860,9 @@ StructWithString& StructWithString::operator=(const StructWithString& src) {
 }
 
 StructWithString::StructWithString() :
-      def_unique_string_ref(std::make_unique<::std::string>()),
-      def_shared_string_ref(std::make_shared<::std::string>()),
-      def_shared_string_const_ref(std::make_shared<::std::string>()) {
+      def_unique_string_ref(std::make_unique<::std::string>(apache::thrift::StringTraits<std::string>::fromStringLiteral("..."))),
+      def_shared_string_ref(std::make_shared<::std::string>(apache::thrift::StringTraits<std::string>::fromStringLiteral("..."))),
+      def_shared_string_const_ref(std::make_shared<::std::string>(apache::thrift::StringTraits<std::string>::fromStringLiteral("..."))) {
 }
 
 
