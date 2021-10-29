@@ -45,6 +45,7 @@ struct ReferringStruct {
   12: required PlainStruct req_shared_const_field (
     cpp2.ref_type = "shared_const",
   );
+  13: optional PlainStruct opt_box_field (cpp.box);
 }
 
 struct ReferringStructWithBaseTypeFields {
@@ -60,6 +61,7 @@ struct ReferringStructWithBaseTypeFields {
   10: i64 def_shared_const_field (cpp2.ref_type = "shared_const");
   11: optional i64 opt_shared_const_field (cpp2.ref_type = "shared_const");
   12: required i64 req_shared_const_field (cpp2.ref_type = "shared_const");
+  13: optional i64 opt_box_field (cpp.box);
 }
 
 struct StructuredAnnotation {
@@ -119,6 +121,9 @@ struct StructWithContainers {
     cpp.ref_type = "shared_const",
     cpp2.ref_type = "shared_const",
   );
+  19: optional list<i32> opt_box_list_ref (cpp.box);
+  20: optional set<i32> opt_box_set_ref (cpp.box);
+  21: optional map<i32, i32> opt_box_map_ref (cpp.box);
 }
 
 struct StructWithString {

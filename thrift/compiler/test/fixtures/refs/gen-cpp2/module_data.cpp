@@ -183,6 +183,22 @@ const std::array<protocol::TType, 3> TStructDataStorage<::cpp2::StructWithRef>::
   TType::T_STRUCT,
 }};
 
+const std::array<folly::StringPiece, 3> TStructDataStorage<::cpp2::StructWithBox>::fields_names = {{
+  "a",
+  "b",
+  "c",
+}};
+const std::array<int16_t, 3> TStructDataStorage<::cpp2::StructWithBox>::fields_ids = {{
+  1,
+  2,
+  3,
+}};
+const std::array<protocol::TType, 3> TStructDataStorage<::cpp2::StructWithBox>::fields_types = {{
+  TType::T_STRING,
+  TType::T_LIST,
+  TType::T_STRUCT,
+}};
+
 const std::array<folly::StringPiece, 3> TStructDataStorage<::cpp2::StructWithRefTypeUnique>::fields_names = {{
   "def_field",
   "opt_field",

@@ -235,6 +235,23 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         unique_ptr[cEmpty] req_field
 
 
+    cdef cppclass cStructWithBox "::cpp2::StructWithBox":
+        cStructWithBox() except +
+        cStructWithBox(const cStructWithBox&) except +
+        bint operator==(cStructWithBox&)
+        bint operator!=(cStructWithBox&)
+        bint operator<(cStructWithBox&)
+        bint operator>(cStructWithBox&)
+        bint operator<=(cStructWithBox&)
+        bint operator>=(cStructWithBox&)
+        __optional_field_ref[string] a_ref()
+        __optional_field_ref[vector[cint64_t]] b_ref()
+        __optional_field_ref[cStructWithRef] c_ref()
+        string a
+        vector[cint64_t] b
+        cStructWithRef c
+
+
     cdef cppclass cStructWithRefTypeUnique "::cpp2::StructWithRefTypeUnique":
         cStructWithRefTypeUnique() except +
         cStructWithRefTypeUnique(const cStructWithRefTypeUnique&) except +
@@ -437,6 +454,17 @@ cdef class StructWithRef(thrift.py3.types.Struct):
 
 
 
+cdef class StructWithBox(thrift.py3.types.Struct):
+    cdef shared_ptr[cStructWithBox] _cpp_obj
+    cdef _fbthrift_types_fields.__StructWithBox_FieldsSetter _fields_setter
+    cdef List__i64 __fbthrift_cached_b
+    cdef StructWithRef __fbthrift_cached_c
+
+    @staticmethod
+    cdef create(shared_ptr[cStructWithBox])
+
+
+
 cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithRefTypeUnique] _cpp_obj
     cdef _fbthrift_types_fields.__StructWithRefTypeUnique_FieldsSetter _fields_setter
@@ -518,6 +546,13 @@ cdef class Map__i32_i32(thrift.py3.types.Map):
     cdef create(shared_ptr[cmap[cint32_t,cint32_t]])
     @staticmethod
     cdef shared_ptr[cmap[cint32_t,cint32_t]] _make_instance(object items) except *
+
+cdef class List__i64(thrift.py3.types.List):
+    cdef shared_ptr[vector[cint64_t]] _cpp_obj
+    @staticmethod
+    cdef create(shared_ptr[vector[cint64_t]])
+    @staticmethod
+    cdef shared_ptr[vector[cint64_t]] _make_instance(object items) except *
 
 
 cdef extern from "src/gen-cpp2/module_constants.h" namespace "::cpp2":

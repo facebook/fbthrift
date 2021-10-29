@@ -97,26 +97,22 @@ void <%struct:name%>::__clear() {
 <%^field:optional?%>
   if (<% > field/member%>) <% > field/member%>->__clear();
 <%/field:optional?%>
-<%#field:optional?%>
-  <% > field/member%>.reset();
-<%/field:optional?%>
 <%/field:cpp_ref_unique?%>
 <%#field:cpp_ref_shared?%>
 <%^field:optional?%>
   if (<% > field/member%>) <% > field/member%>->__clear();
-<%/field:optional?%>
-<%#field:optional?%>
-  <% > field/member%>.reset();
 <%/field:optional?%>
 <%/field:cpp_ref_shared?%>
 <%#field:cpp_ref_shared_const?%>
 <%^field:optional?%>
   if (<% > field/member%>) <% > field/member%> = ::apache::thrift::detail::make_mutable_smart_ptr<<%field:cpp_storage_type%>>();
 <%/field:optional?%>
+<%/field:cpp_ref_shared_const?%>
+<%#field:cpp_ref?%>
 <%#field:optional?%>
   <% > field/member%>.reset();
 <%/field:optional?%>
-<%/field:cpp_ref_shared_const?%>
+<%/field:cpp_ref?%>
 <%/type:non_empty_struct?%>
 <%/field:type%><%/struct:fields%>
 <%#struct:lazy_fields?%>

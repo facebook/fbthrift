@@ -459,6 +459,55 @@ cdef __StructSpec get_reflection__StructWithRef():
         ),
     )
     return spec
+cdef __StructSpec get_reflection__StructWithBox():
+    cdef _module_types.StructWithBox defaults = _module_types.StructWithBox.create(
+        constant_shared_ptr[_module_types.cStructWithBox](
+            default_inst[_module_types.cStructWithBox]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec.create(
+        name="StructWithBox",
+        kind=__StructType.STRUCT,
+        annotations={
+        },
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=1,
+            name="a",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+                """cpp.box""": """1""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=2,
+            name="b",
+            type=_module_types.List__i64,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+                """cpp.box""": """1""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=3,
+            name="c",
+            type=_module_types.StructWithRef,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+                """cpp.box""": """1""",            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__StructWithRefTypeUnique():
     cdef _module_types.StructWithRefTypeUnique defaults = _module_types.StructWithRefTypeUnique.create(
         constant_shared_ptr[_module_types.cStructWithRefTypeUnique](
@@ -728,5 +777,11 @@ cdef __MapSpec get_reflection__Map__i32_i32():
         key_kind=__NumberType.I32,
         value=int,
         value_kind=__NumberType.I32,
+    )
+
+cdef __ListSpec get_reflection__List__i64():
+    return __ListSpec.create(
+        value=int,
+        kind=__NumberType.I64,
     )
 

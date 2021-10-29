@@ -181,6 +181,19 @@ pub mod types {
     }
 
     #[derive(Clone, PartialEq)]
+    pub struct StructWithBox {
+        pub a: ::std::option::Option<::std::string::String>,
+        pub b: ::std::option::Option<::std::vec::Vec<::std::primitive::i64>>,
+        pub c: ::std::option::Option<crate::types::StructWithRef>,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
+    }
+
+    #[derive(Clone, PartialEq)]
     pub struct StructWithRefTypeUnique {
         pub def_field: crate::types::Empty,
         pub opt_field: ::std::option::Option<crate::types::Empty>,
@@ -1237,6 +1250,97 @@ pub mod types {
                 def_field: field_def_field.unwrap_or_default(),
                 opt_field: field_opt_field,
                 req_field: field_req_field.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+            })
+        }
+    }
+
+
+    impl ::std::default::Default for self::StructWithBox {
+        fn default() -> Self {
+            Self {
+                a: ::std::option::Option::None,
+                b: ::std::option::Option::None,
+                c: ::std::option::Option::None,
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+            }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::StructWithBox {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("StructWithBox")
+                .field("a", &self.a)
+                .field("b", &self.b)
+                .field("c", &self.c)
+                .finish()
+        }
+    }
+
+    unsafe impl ::std::marker::Send for self::StructWithBox {}
+    unsafe impl ::std::marker::Sync for self::StructWithBox {}
+
+    impl ::fbthrift::GetTType for self::StructWithBox {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for self::StructWithBox
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("StructWithBox");
+            if let ::std::option::Option::Some(some) = &self.a {
+                p.write_field_begin("a", ::fbthrift::TType::String, 1);
+                ::fbthrift::Serialize::write(some, p);
+                p.write_field_end();
+            }
+            if let ::std::option::Option::Some(some) = &self.b {
+                p.write_field_begin("b", ::fbthrift::TType::List, 2);
+                ::fbthrift::Serialize::write(some, p);
+                p.write_field_end();
+            }
+            if let ::std::option::Option::Some(some) = &self.c {
+                p.write_field_begin("c", ::fbthrift::TType::Struct, 3);
+                ::fbthrift::Serialize::write(some, p);
+                p.write_field_end();
+            }
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for self::StructWithBox
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("a", ::fbthrift::TType::String, 1),
+                ::fbthrift::Field::new("b", ::fbthrift::TType::List, 2),
+                ::fbthrift::Field::new("c", ::fbthrift::TType::Struct, 3),
+            ];
+            let mut field_a = ::std::option::Option::None;
+            let mut field_b = ::std::option::Option::None;
+            let mut field_c = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::String, 1) => field_a = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::List, 2) => field_b = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 3) => field_c = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                a: field_a,
+                b: field_b,
+                c: field_c,
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }

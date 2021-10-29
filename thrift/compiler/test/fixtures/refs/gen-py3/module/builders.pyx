@@ -77,6 +77,14 @@ cdef class StructWithRef_Builder(thrift.py3.builder.StructBuilder):
         yield "opt_field", self.opt_field
         yield "req_field", self.req_field
 
+cdef class StructWithBox_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.StructWithBox
+
+    def __iter__(self):
+        yield "a", self.a
+        yield "b", self.b
+        yield "c", self.c
+
 cdef class StructWithRefTypeUnique_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.StructWithRefTypeUnique
 

@@ -40,6 +40,9 @@ struct req_shared_const;
 struct def_field;
 struct opt_field;
 struct req_field;
+struct a;
+struct b;
+struct c;
 struct def_field;
 struct opt_field;
 struct req_field;
@@ -164,6 +167,18 @@ APACHE_THRIFT_DEFINE_ACCESSOR(opt_field);
 #ifndef APACHE_THRIFT_ACCESSOR_req_field
 #define APACHE_THRIFT_ACCESSOR_req_field
 APACHE_THRIFT_DEFINE_ACCESSOR(req_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_a
+#define APACHE_THRIFT_ACCESSOR_a
+APACHE_THRIFT_DEFINE_ACCESSOR(a);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_b
+#define APACHE_THRIFT_ACCESSOR_b
+APACHE_THRIFT_DEFINE_ACCESSOR(b);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_c
+#define APACHE_THRIFT_ACCESSOR_c
+APACHE_THRIFT_DEFINE_ACCESSOR(c);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_def_field
 #define APACHE_THRIFT_ACCESSOR_def_field
@@ -324,6 +339,7 @@ class StructWithContainers;
 class StructWithSharedConst;
 class Empty;
 class StructWithRef;
+class StructWithBox;
 class StructWithRefTypeUnique;
 class StructWithRefTypeShared;
 class StructWithRefTypeSharedConst;
@@ -1528,6 +1544,132 @@ class StructWithRef final  {
 
 template <class Protocol_>
 uint32_t StructWithRef::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+} // cpp2
+namespace cpp2 {
+class StructWithBox final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+
+ public:
+  using __fbthrift_cpp2_type = StructWithBox;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
+
+
+ public:
+
+  StructWithBox() {
+  }
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  StructWithBox(apache::thrift::FragileConstructor, ::apache::thrift::detail::boxed_value_ptr<::std::string> a__arg, ::apache::thrift::detail::boxed_value_ptr<::std::vector<::std::int64_t>> b__arg, ::apache::thrift::detail::boxed_value_ptr<::cpp2::StructWithRef> c__arg);
+
+  StructWithBox(StructWithBox&&) noexcept;
+
+  StructWithBox(const StructWithBox& src);
+
+
+  StructWithBox& operator=(StructWithBox&&) noexcept;
+  StructWithBox& operator=(const StructWithBox& src);
+  void __clear();
+ public:
+  ::apache::thrift::detail::boxed_value_ptr<::std::string> a;
+ public:
+  ::apache::thrift::detail::boxed_value_ptr<::std::vector<::std::int64_t>> b;
+ public:
+  ::apache::thrift::detail::boxed_value_ptr<::cpp2::StructWithRef> c;
+
+ public:
+
+  bool operator==(const StructWithBox&) const;
+  bool operator<(const StructWithBox&) const;
+  template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::std::string>>
+  FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&> a_ref() const& {
+    return {this->a};
+  }
+
+  template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::std::string>>
+  FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&&> a_ref() const&& {
+    return {std::move(this->a)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::std::string>>
+  FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&> a_ref() & {
+    return {this->a};
+  }
+
+  template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::std::string>>
+  FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&&> a_ref() && {
+    return {std::move(this->a)};
+  }
+  template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::std::vector<::std::int64_t>>>
+  FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&> b_ref() const& {
+    return {this->b};
+  }
+
+  template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::std::vector<::std::int64_t>>>
+  FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&&> b_ref() const&& {
+    return {std::move(this->b)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::std::vector<::std::int64_t>>>
+  FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&> b_ref() & {
+    return {this->b};
+  }
+
+  template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::std::vector<::std::int64_t>>>
+  FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&&> b_ref() && {
+    return {std::move(this->b)};
+  }
+  template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::cpp2::StructWithRef>>
+  FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&> c_ref() const& {
+    return {this->c};
+  }
+
+  template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::cpp2::StructWithRef>>
+  FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&&> c_ref() const&& {
+    return {std::move(this->c)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::cpp2::StructWithRef>>
+  FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&> c_ref() & {
+    return {this->c};
+  }
+
+  template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::cpp2::StructWithRef>>
+  FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&&> c_ref() && {
+    return {std::move(this->c)};
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops<StructWithBox>;
+  friend void swap(StructWithBox& a, StructWithBox& b);
+};
+
+template <class Protocol_>
+uint32_t StructWithBox::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

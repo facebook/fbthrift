@@ -167,6 +167,23 @@ struct VisitByFieldId<::cpp2::StructWithRef> {
 };
 
 template <>
+struct VisitByFieldId<::cpp2::StructWithBox> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
+    case 1:
+      return f(0, static_cast<T&&>(t).a_ref());
+    case 2:
+      return f(1, static_cast<T&&>(t).b_ref());
+    case 3:
+      return f(2, static_cast<T&&>(t).c_ref());
+    default:
+      throwInvalidThriftId(fieldId, "::cpp2::StructWithBox");
+    }
+  }
+};
+
+template <>
 struct VisitByFieldId<::cpp2::StructWithRefTypeUnique> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {

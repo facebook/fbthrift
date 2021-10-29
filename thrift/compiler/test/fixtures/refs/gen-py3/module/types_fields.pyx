@@ -394,6 +394,51 @@ cdef class __StructWithRef_FieldsSetter(__StructFieldsSetter):
 
 
 @__cython.auto_pickle(False)
+cdef class __StructWithBox_FieldsSetter(__StructFieldsSetter):
+
+    @staticmethod
+    cdef __StructWithBox_FieldsSetter create(_module_types.cStructWithBox* struct_cpp_obj):
+        cdef __StructWithBox_FieldsSetter __fbthrift_inst = __StructWithBox_FieldsSetter.__new__(__StructWithBox_FieldsSetter)
+        __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
+        __fbthrift_inst._setters[__cstring_view(<const char*>"a")] = __StructWithBox_FieldsSetter._set_field_0
+        __fbthrift_inst._setters[__cstring_view(<const char*>"b")] = __StructWithBox_FieldsSetter._set_field_1
+        __fbthrift_inst._setters[__cstring_view(<const char*>"c")] = __StructWithBox_FieldsSetter._set_field_2
+        return __fbthrift_inst
+
+    cdef void set_field(__StructWithBox_FieldsSetter self, const char* name, object value) except *:
+        cdef __cstring_view cname = __cstring_view(name)
+        cdef cumap[__cstring_view, __StructWithBox_FieldsSetterFunc].iterator found = self._setters.find(cname)
+        if found == self._setters.end():
+            raise TypeError(f"invalid field name {name.decode('utf-8')}")
+        deref(found).second(self, value)
+
+    cdef void _set_field_0(self, _fbthrift_value) except *:
+        # for field a
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cStructWithBox](deref(self._struct_cpp_obj), 0)
+            return
+        if not isinstance(_fbthrift_value, str):
+            raise TypeError(f'a is not a { str !r}.')
+        deref(self._struct_cpp_obj).a_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
+
+    cdef void _set_field_1(self, _fbthrift_value) except *:
+        # for field b
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cStructWithBox](deref(self._struct_cpp_obj), 1)
+            return
+        deref(self._struct_cpp_obj).b_ref().assign(deref(_module_types.List__i64(_fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_2(self, _fbthrift_value) except *:
+        # for field c
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cStructWithBox](deref(self._struct_cpp_obj), 2)
+            return
+        if not isinstance(_fbthrift_value, _module_types.StructWithRef):
+            raise TypeError(f'c is not a { _module_types.StructWithRef !r}.')
+        deref(self._struct_cpp_obj).c_ref().assign(deref((<_module_types.StructWithRef?> _fbthrift_value)._cpp_obj))
+
+
+@__cython.auto_pickle(False)
 cdef class __StructWithRefTypeUnique_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod

@@ -98,6 +98,12 @@ struct StructWithRef {
   3: required Empty req_field (cpp.ref);
 }
 
+struct StructWithBox {
+  1: optional string a (cpp.box);
+  2: optional list<i64> b (cpp.box);
+  3: optional StructWithRef c (cpp.box);
+}
+
 const StructWithRef kStructWithRef = {
   "def_field": {},
   "opt_field": {},

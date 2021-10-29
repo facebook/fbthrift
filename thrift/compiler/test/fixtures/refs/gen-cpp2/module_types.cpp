@@ -1297,6 +1297,124 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
+void TccStructTraits<::cpp2::StructWithBox>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::cpp2::StructWithBox>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace cpp2 {
+
+StructWithBox::StructWithBox(const StructWithBox&) = default;
+StructWithBox& StructWithBox::operator=(const StructWithBox&) = default;
+StructWithBox::StructWithBox(StructWithBox&& other) noexcept  :
+    a(std::move(other.a)),
+    b(std::move(other.b)),
+    c(std::move(other.c)) {
+}
+
+StructWithBox& StructWithBox::operator=(FOLLY_MAYBE_UNUSED StructWithBox&& other) noexcept {
+    this->a = std::move(other.a);
+    this->b = std::move(other.b);
+    this->c = std::move(other.c);
+    return *this;
+}
+
+
+StructWithBox::StructWithBox(apache::thrift::FragileConstructor, ::apache::thrift::detail::boxed_value_ptr<::std::string> a__arg, ::apache::thrift::detail::boxed_value_ptr<::std::vector<::std::int64_t>> b__arg, ::apache::thrift::detail::boxed_value_ptr<::cpp2::StructWithRef> c__arg) :
+    a(std::move(a__arg)),
+    b(std::move(b__arg)),
+    c(std::move(c__arg)) {
+}
+
+
+void StructWithBox::__clear() {
+  // clear all fields
+  this->a.reset();
+  this->b.reset();
+  this->c.reset();
+}
+
+bool StructWithBox::operator==(const StructWithBox& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if ((!::apache::thrift::detail::pointer_equal(lhs.a_ref(), rhs.a_ref()))) {
+    return false;
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.b_ref(), rhs.b_ref()))) {
+    return false;
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.c_ref(), rhs.c_ref()))) {
+    return false;
+  }
+  return true;
+}
+
+bool StructWithBox::operator<(const StructWithBox& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if ((!::apache::thrift::detail::pointer_equal(lhs.a_ref(), rhs.a_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.a_ref(), rhs.a_ref());
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.b_ref(), rhs.b_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.b_ref(), rhs.b_ref());
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.c_ref(), rhs.c_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.c_ref(), rhs.c_ref());
+  }
+  return false;
+}
+
+
+void swap(StructWithBox& a, StructWithBox& b) {
+  using ::std::swap;
+  swap(a.a, b.a);
+  swap(a.b, b.b);
+  swap(a.c, b.c);
+}
+
+template void StructWithBox::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t StructWithBox::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t StructWithBox::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t StructWithBox::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void StructWithBox::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t StructWithBox::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t StructWithBox::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t StructWithBox::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        StructWithBox,
+        ::apache::thrift::type_class::structure,
+        ::cpp2::StructWithRef>,
+    "inconsistent use of json option");
+
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        StructWithBox,
+        ::apache::thrift::type_class::structure,
+        ::cpp2::StructWithRef>,
+    "inconsistent use of nimble option");
+
+} // cpp2
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
 void TccStructTraits<::cpp2::StructWithRefTypeUnique>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,

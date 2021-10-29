@@ -1256,6 +1256,123 @@ cdef class StructWithRef(thrift.py3.types.Struct):
 
 
 @__cython.auto_pickle(False)
+cdef class StructWithBox(thrift.py3.types.Struct):
+    def __init__(StructWithBox self, **kwargs):
+        self._cpp_obj = make_shared[cStructWithBox]()
+        self._fields_setter = _fbthrift_types_fields.__StructWithBox_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
+
+    def __call__(StructWithBox self, **kwargs):
+        if not kwargs:
+            return self
+        cdef StructWithBox __fbthrift_inst = StructWithBox.__new__(StructWithBox)
+        __fbthrift_inst._cpp_obj = make_shared[cStructWithBox](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__StructWithBox_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, _fbthrift_value in kwargs.items():
+            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
+        return __fbthrift_inst
+
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
+
+    cdef object _fbthrift_isset(self):
+        return thrift.py3.types._IsSet("StructWithBox", {
+          "a": deref(self._cpp_obj).a_ref().has_value(),
+          "b": deref(self._cpp_obj).b_ref().has_value(),
+          "c": deref(self._cpp_obj).c_ref().has_value(),
+        })
+
+    @staticmethod
+    cdef create(shared_ptr[cStructWithBox] cpp_obj):
+        __fbthrift_inst = <StructWithBox>StructWithBox.__new__(StructWithBox)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
+        return __fbthrift_inst
+
+    @property
+    def a(self):
+        if not deref(self._cpp_obj).a_ref().has_value():
+            return None
+
+        return (<bytes>deref(self._cpp_obj).a_ref().value()).decode('UTF-8')
+
+    @property
+    def b(self):
+        if not deref(self._cpp_obj).b_ref().has_value():
+            return None
+
+        if self.__fbthrift_cached_b is None:
+            self.__fbthrift_cached_b = List__i64.create(__reference_shared_ptr(deref(self._cpp_obj).b_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_b
+
+    @property
+    def c(self):
+        if not deref(self._cpp_obj).c_ref().has_value():
+            return None
+
+        if self.__fbthrift_cached_c is None:
+            self.__fbthrift_cached_c = StructWithRef.create(__reference_shared_ptr(deref(self._cpp_obj).c_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_c
+
+
+    def __hash__(StructWithBox self):
+        return super().__hash__()
+
+    def __repr__(StructWithBox self):
+        return super().__repr__()
+
+    def __str__(StructWithBox self):
+        return super().__str__()
+
+
+    def __copy__(StructWithBox self):
+        cdef shared_ptr[cStructWithBox] cpp_obj = make_shared[cStructWithBox](
+            deref(self._cpp_obj)
+        )
+        return StructWithBox.create(cmove(cpp_obj))
+
+    def __richcmp__(self, other, int op):
+        r = self._fbthrift_cmp_sametype(other, op)
+        return __richcmp[cStructWithBox](
+            self._cpp_obj,
+            (<StructWithBox>other)._cpp_obj,
+            op,
+        ) if r is None else r
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__StructWithBox()
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cStructWithBox].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.StructWithBox"
+
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cStructWithBox](idx)
+
+    def __cinit__(self):
+        self._fbthrift_struct_size = 3
+
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(StructWithBox self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cStructWithBox](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(StructWithBox self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cStructWithBox]()
+        with nogil:
+            needed = serializer.cdeserialize[cStructWithBox](buf, self._cpp_obj.get(), proto)
+        return needed
+
+
+@__cython.auto_pickle(False)
 cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
     def __init__(StructWithRefTypeUnique self, **kwargs):
         self._cpp_obj = make_shared[cStructWithRefTypeUnique]()
@@ -2167,6 +2284,84 @@ cdef class Map__i32_i32(thrift.py3.types.Map):
         return _types_reflection.get_reflection__Map__i32_i32()
 
 Mapping.register(Map__i32_i32)
+
+@__cython.auto_pickle(False)
+cdef class List__i64(thrift.py3.types.List):
+    def __init__(self, items=None):
+        if isinstance(items, List__i64):
+            self._cpp_obj = (<List__i64> items)._cpp_obj
+        else:
+            self._cpp_obj = List__i64._make_instance(items)
+
+    @staticmethod
+    cdef create(shared_ptr[vector[cint64_t]] c_items):
+        __fbthrift_inst = <List__i64>List__i64.__new__(List__i64)
+        __fbthrift_inst._cpp_obj = cmove(c_items)
+        return __fbthrift_inst
+
+    def __copy__(List__i64 self):
+        cdef shared_ptr[vector[cint64_t]] cpp_obj = make_shared[vector[cint64_t]](
+            deref(self._cpp_obj)
+        )
+        return List__i64.create(cmove(cpp_obj))
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    @staticmethod
+    cdef shared_ptr[vector[cint64_t]] _make_instance(object items) except *:
+        cdef shared_ptr[vector[cint64_t]] c_inst = make_shared[vector[cint64_t]]()
+        if items is not None:
+            for item in items:
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                item = <cint64_t> item
+                deref(c_inst).push_back(item)
+        return c_inst
+
+    cdef _get_slice(self, slice index_obj):
+        cdef int start, stop, step
+        start, stop, step = index_obj.indices(deref(self._cpp_obj).size())
+        return List__i64.create(
+            __list_slice[vector[cint64_t]](self._cpp_obj, start, stop, step)
+        )
+
+    cdef _get_single_item(self, size_t index):
+        cdef cint64_t citem = 0
+        __list_getitem(self._cpp_obj, index, citem)
+        return citem
+
+    cdef _check_item_type(self, item):
+        if not self or item is None:
+            return
+        if isinstance(item, int):
+            return item
+
+    def index(self, item, start=0, stop=None):
+        err = ValueError(f'{item} is not in list')
+        item = self._check_item_type(item)
+        if item is None:
+            raise err
+        cdef (int, int, int) indices = slice(start, stop).indices(deref(self._cpp_obj).size())
+        cdef cint64_t citem = item
+        cdef std_libcpp.optional[size_t] found = __list_index[vector[cint64_t]](self._cpp_obj, indices[0], indices[1], citem)
+        if not found.has_value():
+            raise err
+        return found.value()
+
+    def count(self, item):
+        item = self._check_item_type(item)
+        if item is None:
+            return 0
+        cdef cint64_t citem = item
+        return __list_count[vector[cint64_t]](self._cpp_obj, citem)
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__List__i64()
+
+
+Sequence.register(List__i64)
 
 kStructWithRef = StructWithRef.create(constant_shared_ptr(ckStructWithRef()))
 kStructWithRefTypeUnique = StructWithRefTypeUnique.create(constant_shared_ptr(ckStructWithRefTypeUnique()))

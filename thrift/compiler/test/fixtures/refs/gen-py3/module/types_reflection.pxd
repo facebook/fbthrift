@@ -32,6 +32,8 @@ cdef __StructSpec get_reflection__Empty()
 
 cdef __StructSpec get_reflection__StructWithRef()
 
+cdef __StructSpec get_reflection__StructWithBox()
+
 cdef __StructSpec get_reflection__StructWithRefTypeUnique()
 
 cdef __StructSpec get_reflection__StructWithRefTypeShared()
@@ -49,3 +51,5 @@ cdef __ListSpec get_reflection__List__i32()
 cdef __SetSpec get_reflection__Set__i32()
 
 cdef __MapSpec get_reflection__Map__i32_i32()
+
+cdef __ListSpec get_reflection__List__i64()

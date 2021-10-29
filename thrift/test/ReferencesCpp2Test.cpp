@@ -126,6 +126,8 @@ TEST(References, ref_struct_fields_clear) {
   a.def_shared_const_field_ref() = std::move(s1);
   a.req_shared_const_field_ref() = std::move(s2);
   a.opt_shared_const_field_ref() = std::move(s3);
+  a.opt_box_field_ref() = cpp2::PlainStruct();
+  a.opt_box_field_ref()->field_ref() = 13;
 
   EXPECT_EQ(a.def_field_ref()->field_ref(), 1);
   EXPECT_EQ(a.req_field_ref()->field_ref(), 2);
@@ -139,6 +141,7 @@ TEST(References, ref_struct_fields_clear) {
   EXPECT_EQ(a.def_shared_const_field_ref()->field_ref(), 10);
   EXPECT_EQ(a.req_shared_const_field_ref()->field_ref(), 11);
   EXPECT_EQ(a.opt_shared_const_field_ref()->field_ref(), 12);
+  EXPECT_EQ(a.opt_box_field_ref()->field_ref(), 13);
 
   a.__clear();
 
@@ -154,6 +157,7 @@ TEST(References, ref_struct_fields_clear) {
   EXPECT_EQ(a.def_shared_const_field_ref()->field_ref(), 0);
   EXPECT_EQ(a.req_shared_const_field_ref()->field_ref(), 0);
   EXPECT_EQ(nullptr, a.opt_shared_const_field_ref());
+  EXPECT_FALSE(a.opt_box_field_ref().has_value());
 }
 
 TEST(References, ref_struct_base_fields_clear) {
@@ -171,6 +175,7 @@ TEST(References, ref_struct_base_fields_clear) {
   a.def_shared_const_field_ref() = std::make_shared<int64_t>(10);
   a.req_shared_const_field_ref() = std::make_shared<int64_t>(11);
   a.opt_shared_const_field_ref() = std::make_shared<int64_t>(12);
+  a.opt_box_field_ref() = int64_t(13);
 
   EXPECT_EQ(*a.def_field_ref(), 1);
   EXPECT_EQ(*a.req_field_ref(), 2);
@@ -184,6 +189,7 @@ TEST(References, ref_struct_base_fields_clear) {
   EXPECT_EQ(*a.def_shared_const_field_ref(), 10);
   EXPECT_EQ(*a.req_shared_const_field_ref(), 11);
   EXPECT_EQ(*a.opt_shared_const_field_ref(), 12);
+  EXPECT_EQ(*a.opt_box_field_ref(), 13);
 
   a.__clear();
 
@@ -199,6 +205,7 @@ TEST(References, ref_struct_base_fields_clear) {
   EXPECT_EQ(*a.def_shared_const_field_ref(), 0);
   EXPECT_EQ(*a.req_shared_const_field_ref(), 0);
   EXPECT_EQ(nullptr, a.opt_shared_const_field_ref());
+  EXPECT_FALSE(a.opt_box_field_ref().has_value());
 }
 
 TEST(References, ref_container_fields) {
@@ -274,6 +281,13 @@ TEST(References, ref_container_fields_clear) {
   a.opt_set_ref_shared_ref() = std::make_shared<std::set<int32_t>>(s2);
   a.opt_list_ref_shared_const_ref() =
       std::make_unique<std::vector<int32_t>>(1, 18);
+  a.opt_box_list_ref_ref() = std::vector<int32_t>(1, 19);
+  auto s3 = std::set<int32_t>();
+  s3.insert(20);
+  a.opt_box_set_ref_ref() = std::move(s3);
+  auto m2 = std::map<int32_t, int32_t>();
+  m2.insert({21, 21});
+  a.opt_box_map_ref_ref() = std::move(m2);
 
   EXPECT_EQ(a.def_list_ref_ref()->at(0), 1);
   EXPECT_EQ(a.def_set_ref_ref()->count(2), 1);
@@ -293,6 +307,9 @@ TEST(References, ref_container_fields_clear) {
   EXPECT_EQ(a.opt_list_ref_unique_ref()->at(0), 16);
   EXPECT_EQ(a.opt_set_ref_shared_ref()->count(17), 1);
   EXPECT_EQ(a.opt_list_ref_shared_const_ref()->at(0), 18);
+  EXPECT_EQ(a.opt_box_list_ref_ref()->at(0), 19);
+  EXPECT_EQ(a.opt_box_set_ref_ref()->count(20), 1);
+  EXPECT_EQ(a.opt_box_map_ref_ref()->at(21), 21);
 
   a.__clear();
 
@@ -314,6 +331,9 @@ TEST(References, ref_container_fields_clear) {
   EXPECT_EQ(nullptr, a.opt_list_ref_unique_ref());
   EXPECT_EQ(nullptr, a.opt_set_ref_shared_ref());
   EXPECT_EQ(nullptr, a.opt_list_ref_shared_const_ref());
+  EXPECT_FALSE(a.opt_box_list_ref_ref().has_value());
+  EXPECT_FALSE(a.opt_box_set_ref_ref().has_value());
+  EXPECT_FALSE(a.opt_box_map_ref_ref().has_value());
 }
 
 TEST(References, field_ref) {
