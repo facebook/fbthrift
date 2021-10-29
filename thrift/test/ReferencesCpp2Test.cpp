@@ -244,6 +244,78 @@ TEST(References, ref_container_fields) {
   EXPECT_EQ(nullptr, a.opt_list_ref_shared_const_ref());
 }
 
+TEST(References, ref_container_fields_clear) {
+  StructWithContainers a;
+
+  a.def_list_ref_ref()->push_back(1);
+  a.def_set_ref_ref()->insert(2);
+  a.def_map_ref_ref()->insert({3, 3});
+  a.def_list_ref_unique_ref()->push_back(4);
+  a.def_set_ref_shared_ref()->insert(5);
+  a.def_list_ref_shared_const_ref() =
+      std::make_shared<std::vector<int32_t>>(1, 6);
+  a.req_list_ref_ref()->push_back(7);
+  a.req_set_ref_ref()->insert(8);
+  a.req_map_ref_ref()->insert({9, 9});
+  a.req_list_ref_unique_ref()->push_back(10);
+  a.req_set_ref_shared_ref()->insert(11);
+  a.req_list_ref_shared_const_ref() =
+      std::make_shared<std::vector<int32_t>>(1, 12);
+  a.opt_list_ref_ref() = std::make_unique<std::vector<int32_t>>(1, 13);
+  auto s1 = std::set<int32_t>();
+  s1.insert(14);
+  a.opt_set_ref_ref() = std::make_unique<std::set<int32_t>>(s1);
+  auto m1 = std::map<int32_t, int32_t>();
+  m1.insert({15, 15});
+  a.opt_map_ref_ref() = std::make_unique<std::map<int32_t, int32_t>>(m1);
+  a.opt_list_ref_unique_ref() = std::make_unique<std::vector<int32_t>>(1, 16);
+  auto s2 = std::set<int32_t>();
+  s2.insert(17);
+  a.opt_set_ref_shared_ref() = std::make_shared<std::set<int32_t>>(s2);
+  a.opt_list_ref_shared_const_ref() =
+      std::make_unique<std::vector<int32_t>>(1, 18);
+
+  EXPECT_EQ(a.def_list_ref_ref()->at(0), 1);
+  EXPECT_EQ(a.def_set_ref_ref()->count(2), 1);
+  EXPECT_EQ(a.def_map_ref_ref()->at(3), 3);
+  EXPECT_EQ(a.def_list_ref_unique_ref()->at(0), 4);
+  EXPECT_EQ(a.def_set_ref_shared_ref()->count(5), 1);
+  EXPECT_EQ(a.def_list_ref_shared_const_ref()->at(0), 6);
+  EXPECT_EQ(a.req_list_ref_ref()->at(0), 7);
+  EXPECT_EQ(a.req_set_ref_ref()->count(8), 1);
+  EXPECT_EQ(a.req_map_ref_ref()->at(9), 9);
+  EXPECT_EQ(a.req_list_ref_unique_ref()->at(0), 10);
+  EXPECT_EQ(a.req_set_ref_shared_ref()->count(11), 1);
+  EXPECT_EQ(a.req_list_ref_shared_const_ref()->at(0), 12);
+  EXPECT_EQ(a.opt_list_ref_ref()->at(0), 13);
+  EXPECT_EQ(a.opt_set_ref_ref()->count(14), 1);
+  EXPECT_EQ(a.opt_map_ref_ref()->at(15), 15);
+  EXPECT_EQ(a.opt_list_ref_unique_ref()->at(0), 16);
+  EXPECT_EQ(a.opt_set_ref_shared_ref()->count(17), 1);
+  EXPECT_EQ(a.opt_list_ref_shared_const_ref()->at(0), 18);
+
+  a.__clear();
+
+  EXPECT_EQ(a.def_list_ref_ref()->size(), 0);
+  EXPECT_EQ(a.def_set_ref_ref()->size(), 0);
+  EXPECT_EQ(a.def_map_ref_ref()->size(), 0);
+  EXPECT_EQ(a.def_list_ref_unique_ref()->size(), 0);
+  EXPECT_EQ(a.def_set_ref_shared_ref()->size(), 0);
+  EXPECT_EQ(a.def_list_ref_shared_const_ref()->size(), 0);
+  EXPECT_EQ(a.req_list_ref_ref()->size(), 0);
+  EXPECT_EQ(a.req_set_ref_ref()->size(), 0);
+  EXPECT_EQ(a.req_map_ref_ref()->size(), 0);
+  EXPECT_EQ(a.req_list_ref_unique_ref()->size(), 0);
+  EXPECT_EQ(a.req_set_ref_shared_ref()->size(), 0);
+  EXPECT_EQ(a.req_list_ref_shared_const_ref()->size(), 0);
+  EXPECT_EQ(nullptr, a.opt_list_ref_ref());
+  EXPECT_EQ(nullptr, a.opt_set_ref_ref());
+  EXPECT_EQ(nullptr, a.opt_map_ref_ref());
+  EXPECT_EQ(nullptr, a.opt_list_ref_unique_ref());
+  EXPECT_EQ(nullptr, a.opt_set_ref_shared_ref());
+  EXPECT_EQ(nullptr, a.opt_list_ref_shared_const_ref());
+}
+
 TEST(References, field_ref) {
   cpp2::ReferringStruct a;
 
