@@ -764,7 +764,7 @@ void RocketServerConnection::writeErr(
 }
 
 void RocketServerConnection::onEgressBuffered() {
-  const auto buffered = rawSocket_->getAppBytesBuffered();
+  const auto buffered = rawSocket_->getAllocatedBytesBuffered();
   const auto oldBuffered = egressBufferSize_;
   egressBufferSize_ = buffered;
   // track egress memory consumption, drop connection if necessary

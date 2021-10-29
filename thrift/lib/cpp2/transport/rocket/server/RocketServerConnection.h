@@ -273,8 +273,8 @@ class RocketServerConnection final
   // only bumps when sink is in waiting for final response state,
   // (onSinkComplete get called)
   size_t inflightSinkFinalResponses_{0};
-  // Write buffer size (aka egress size). Represents the amount of data that has
-  // not yet been delivered to the client.
+  // Write buffer size (aka egress size). Represents the total allocated size of
+  // buffers that have not yet been written to the underlying socket.
   size_t egressBufferSize_{0};
 
   enum class ConnectionState : uint8_t {

@@ -356,8 +356,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
               -> size_t { return **o < 0 ? 0ul : static_cast<size_t>(**o); })};
 
   /**
-   * Per-connection threshold for number of bytes allowed in egress buffer
-   * before applying backpressure by pausing streams.
+   * Per-connection threshold for number of allocated bytes allowed in egress
+   * buffer before applying backpressure by pausing streams.
    * (0 == disabled)
    */
   ServerAttributeDynamic<size_t> egressBufferBackpressureThreshold_{0};
@@ -1328,7 +1328,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   /**
    * Apply backpressure to all stream generators of a connection when combined
-   * size of inflight writes for that connection exceeds the threshold.
+   * allocation size of inflight writes for that connection exceeds the
+   * threshold.
    */
   void setEgressBufferBackpressureThreshold(
       size_t thresholdInBytes,

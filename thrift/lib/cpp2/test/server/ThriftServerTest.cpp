@@ -718,7 +718,8 @@ TEST(ThriftServer, EnforceEgressMemoryLimit) {
   // Reach the egress buffer limit. Notice that the server will report a bit
   // less memory than expected because a small portion of the response data will
   // be buffered in the kernel.
-  for (size_t b = 0; b < server.getEgressMemoryLimit(); b += kChunkSize) {
+  for (size_t b = 0; b + kChunkSize < server.getEgressMemoryLimit();
+       b += kChunkSize) {
     std::string data(kChunkSize, 'a');
     fv.emplace_back(client.semifuture_echoRequest(std::move(data)));
     flushClientWrites();
