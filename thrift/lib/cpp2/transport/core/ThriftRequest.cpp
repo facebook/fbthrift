@@ -247,16 +247,15 @@ ResponseRpcMetadata ThriftRequestCore::makeResponseRpcMetadata(
     metadata.otherMetadata_ref() = std::move(writeHeaders);
   }
 
-  // Queueing times are only recorded if they exceed a pre-defined threshold.
-  const int64_t thresholdMs = THRIFT_FLAG(queue_time_logging_threshold_ms);
-  if (auto queueTime = stateMachine_.queueingTime(); queueTime.hasValue() &&
-      queueTime.value() > std::chrono::milliseconds(thresholdMs)) {
-    auto& queueMetadata = metadata.queueMetadata_ref().ensure();
+  auto queueTime = stateMachine_.queueingTime();
+  auto& queueMetadata = metadata.queueMetadata_ref().ensure();
+  if (queueTime.hasValue()) {
     queueMetadata.queueingTimeMs_ref() = queueTime.value().count();
-    if (queueTimeoutUsed_ > std::chrono::milliseconds(0)) {
-      queueMetadata.queueTimeoutMs_ref() = queueTimeoutUsed_.count();
-    }
+  } else {
+    queueMetadata.queueingTimeMs_ref() = -1;
   }
+
+  queueMetadata.queueTimeoutMs_ref() = queueTimeoutUsed_.count();
 
   return metadata;
 }

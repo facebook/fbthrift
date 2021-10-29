@@ -45,8 +45,6 @@
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
-THRIFT_FLAG_DECLARE_int64(queue_time_logging_threshold_ms);
-
 namespace apache {
 namespace thrift {
 

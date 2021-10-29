@@ -2760,12 +2760,15 @@ TEST(ThriftServerTest, QueueTimeHeaderTest) {
           Gt(std::chrono::milliseconds(5)), Lt(std::chrono::milliseconds(50))));
 
   // Now send a request that will complete without any queueing.
-  // Verify that the headers are not present.
   auto [resp2, header2] =
       client->header_semifuture_sendResponse(options, 100).get();
   EXPECT_EQ(resp2, "100");
-  EXPECT_FALSE(header2->getServerQueueTimeout().hasValue());
-  EXPECT_FALSE(header2->getProcessDelay().hasValue());
+  auto queueTimeout2 = header2->getServerQueueTimeout();
+  auto procDelay2 = header2->getProcessDelay();
+  EXPECT_TRUE(queueTimeout2.hasValue());
+  EXPECT_EQ(queueTimeout2.value().count(), 100);
+  EXPECT_TRUE(procDelay2.hasValue());
+  EXPECT_EQ(procDelay2.value().count(), 0);
 }
 
 TEST(ThriftServer, QueueTimeoutStressTest) {
