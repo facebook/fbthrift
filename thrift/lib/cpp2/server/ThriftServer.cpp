@@ -136,13 +136,23 @@ std::unique_ptr<AsyncProcessorFactory> createDecoratedProcessorFactory(
     std::shared_ptr<MonitoringServerInterface> monitoringProcessorFactory) {
   std::vector<std::shared_ptr<AsyncProcessorFactory>> servicesToMultiplex;
   CHECK(processorFactory != nullptr);
-  servicesToMultiplex.emplace_back(std::move(processorFactory));
   if (statusProcessorFactory != nullptr) {
     servicesToMultiplex.emplace_back(std::move(statusProcessorFactory));
   }
   if (monitoringProcessorFactory != nullptr) {
     servicesToMultiplex.emplace_back(std::move(monitoringProcessorFactory));
   }
+
+  const bool shouldPlaceExtraInterfacesInFront =
+      THRIFT_FLAG(server_check_unimplemented_extra_interfaces) &&
+      apache::thrift::detail::serviceHasUnimplementedExtraInterfaces(
+          *processorFactory) ==
+          ThriftServer::UnimplementedExtraInterfacesResult::UNIMPLEMENTED;
+  auto userServicePosition = shouldPlaceExtraInterfacesInFront
+      ? servicesToMultiplex.end()
+      : servicesToMultiplex.begin();
+  servicesToMultiplex.insert(userServicePosition, std::move(processorFactory));
+
   return std::make_unique<MultiplexAsyncProcessorFactory>(
       std::move(servicesToMultiplex));
 }
