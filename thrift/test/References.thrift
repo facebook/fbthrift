@@ -61,7 +61,7 @@ struct ReferringStructWithBaseTypeFields {
   10: i64 def_shared_const_field (cpp2.ref_type = "shared_const");
   11: optional i64 opt_shared_const_field (cpp2.ref_type = "shared_const");
   12: required i64 req_shared_const_field (cpp2.ref_type = "shared_const");
-  13: optional i64 opt_box_field (cpp.box);
+  13: optional string opt_box_field (cpp.box);
 }
 
 struct StructuredAnnotation {

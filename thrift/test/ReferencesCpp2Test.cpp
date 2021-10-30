@@ -175,7 +175,7 @@ TEST(References, ref_struct_base_fields_clear) {
   a.def_shared_const_field_ref() = std::make_shared<int64_t>(10);
   a.req_shared_const_field_ref() = std::make_shared<int64_t>(11);
   a.opt_shared_const_field_ref() = std::make_shared<int64_t>(12);
-  a.opt_box_field_ref() = int64_t(13);
+  a.opt_box_field_ref() = "13";
 
   EXPECT_EQ(*a.def_field_ref(), 1);
   EXPECT_EQ(*a.req_field_ref(), 2);
@@ -189,7 +189,7 @@ TEST(References, ref_struct_base_fields_clear) {
   EXPECT_EQ(*a.def_shared_const_field_ref(), 10);
   EXPECT_EQ(*a.req_shared_const_field_ref(), 11);
   EXPECT_EQ(*a.opt_shared_const_field_ref(), 12);
-  EXPECT_EQ(*a.opt_box_field_ref(), 13);
+  EXPECT_EQ(*a.opt_box_field_ref(), "13");
 
   a.__clear();
 
