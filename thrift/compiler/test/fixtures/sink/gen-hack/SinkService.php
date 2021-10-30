@@ -389,6 +389,202 @@ class SinkService_method_args implements \IThriftStruct {
 
 }
 
+class SinkService_method_FirstResponse implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct(  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'SinkService_method_FirstResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.SinkService_method_FirstResponse",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class SinkService_method_SinkPayload implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::STRUCT,
+      'class' => SinkPayload::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?SinkPayload,
+  );
+
+  const int STRUCTURAL_ID = 5047864711357047518;
+  public ?SinkPayload $success;
+
+  public function __construct(?SinkPayload $success = null  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'SinkService_method_SinkPayload';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.SinkService_method_SinkPayload",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.SinkPayload",
+                    )
+                  ),
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class SinkService_method_FinalResponse implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::STRUCT,
+      'class' => FinalResponse::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?FinalResponse,
+  );
+
+  const int STRUCTURAL_ID = 7640464975912492398;
+  public ?FinalResponse $success;
+
+  public function __construct(?FinalResponse $success = null  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'SinkService_method_FinalResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.SinkService_method_FinalResponse",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.FinalResponse",
+                    )
+                  ),
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
 class SinkService_methodAndReponse_args implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
@@ -422,6 +618,228 @@ class SinkService_methodAndReponse_args implements \IThriftStruct {
     return tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.methodAndReponse_args",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class SinkService_methodAndReponse_FirstResponse implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::STRUCT,
+      'class' => InitialResponse::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?InitialResponse,
+  );
+
+  const int STRUCTURAL_ID = 1156060868779247352;
+  public ?InitialResponse $success;
+
+  public function __construct(?InitialResponse $success = null  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'SinkService_methodAndReponse_FirstResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.SinkService_methodAndReponse_FirstResponse",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.InitialResponse",
+                    )
+                  ),
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class SinkService_methodAndReponse_SinkPayload implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::STRUCT,
+      'class' => SinkPayload::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?SinkPayload,
+  );
+
+  const int STRUCTURAL_ID = 5047864711357047518;
+  public ?SinkPayload $success;
+
+  public function __construct(?SinkPayload $success = null  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'SinkService_methodAndReponse_SinkPayload';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.SinkService_methodAndReponse_SinkPayload",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.SinkPayload",
+                    )
+                  ),
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class SinkService_methodAndReponse_FinalResponse implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::STRUCT,
+      'class' => FinalResponse::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?FinalResponse,
+  );
+
+  const int STRUCTURAL_ID = 7640464975912492398;
+  public ?FinalResponse $success;
+
+  public function __construct(?FinalResponse $success = null  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'SinkService_methodAndReponse_FinalResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.SinkService_methodAndReponse_FinalResponse",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.FinalResponse",
+                    )
+                  ),
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+        ],
         "is_union" => false,
       )
     );
@@ -485,6 +903,228 @@ class SinkService_methodThrow_args implements \IThriftStruct {
 
 }
 
+class SinkService_methodThrow_FirstResponse implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'ex',
+      'type' => \TType::STRUCT,
+      'class' => InitialException::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'ex' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'ex' => ?InitialException,
+  );
+
+  const int STRUCTURAL_ID = 5881917388606205109;
+  public ?InitialException $ex;
+
+  public function __construct(?InitialException $ex = null  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'ex'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'SinkService_methodThrow_FirstResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.SinkService_methodThrow_FirstResponse",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.InitialException",
+                    )
+                  ),
+                )
+              ),
+              "name" => "ex",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class SinkService_methodThrow_SinkPayload implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::STRUCT,
+      'class' => SinkPayload::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?SinkPayload,
+  );
+
+  const int STRUCTURAL_ID = 5047864711357047518;
+  public ?SinkPayload $success;
+
+  public function __construct(?SinkPayload $success = null  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'SinkService_methodThrow_SinkPayload';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.SinkService_methodThrow_SinkPayload",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.SinkPayload",
+                    )
+                  ),
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class SinkService_methodThrow_FinalResponse implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::STRUCT,
+      'class' => FinalResponse::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?FinalResponse,
+  );
+
+  const int STRUCTURAL_ID = 7640464975912492398;
+  public ?FinalResponse $success;
+
+  public function __construct(?FinalResponse $success = null  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'SinkService_methodThrow_FinalResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.SinkService_methodThrow_FinalResponse",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.FinalResponse",
+                    )
+                  ),
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
 class SinkService_methodSinkThrow_args implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
@@ -518,6 +1158,226 @@ class SinkService_methodSinkThrow_args implements \IThriftStruct {
     return tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.methodSinkThrow_args",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class SinkService_methodSinkThrow_FirstResponse implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct(  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'SinkService_methodSinkThrow_FirstResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.SinkService_methodSinkThrow_FirstResponse",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class SinkService_methodSinkThrow_SinkPayload implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::STRUCT,
+      'class' => SinkPayload::class,
+    ),
+    1 => shape(
+      'var' => 'ex',
+      'type' => \TType::STRUCT,
+      'class' => SinkException1::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+    'ex' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?SinkPayload,
+    ?'ex' => ?SinkException1,
+  );
+
+  const int STRUCTURAL_ID = 8919728181176611439;
+  public ?SinkPayload $success;
+  public ?SinkException1 $ex;
+
+  public function __construct(?SinkPayload $success = null, ?SinkException1 $ex = null  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+      Shapes::idx($shape, 'ex'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'SinkService_methodSinkThrow_SinkPayload';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.SinkService_methodSinkThrow_SinkPayload",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.SinkPayload",
+                    )
+                  ),
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.SinkException1",
+                    )
+                  ),
+                )
+              ),
+              "name" => "ex",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class SinkService_methodSinkThrow_FinalResponse implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::STRUCT,
+      'class' => FinalResponse::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?FinalResponse,
+  );
+
+  const int STRUCTURAL_ID = 7640464975912492398;
+  public ?FinalResponse $success;
+
+  public function __construct(?FinalResponse $success = null  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'SinkService_methodSinkThrow_FinalResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.SinkService_methodSinkThrow_FinalResponse",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.FinalResponse",
+                    )
+                  ),
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+        ],
         "is_union" => false,
       )
     );
@@ -581,6 +1441,226 @@ class SinkService_methodFinalThrow_args implements \IThriftStruct {
 
 }
 
+class SinkService_methodFinalThrow_FirstResponse implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct(  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'SinkService_methodFinalThrow_FirstResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.SinkService_methodFinalThrow_FirstResponse",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class SinkService_methodFinalThrow_SinkPayload implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::STRUCT,
+      'class' => SinkPayload::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?SinkPayload,
+  );
+
+  const int STRUCTURAL_ID = 5047864711357047518;
+  public ?SinkPayload $success;
+
+  public function __construct(?SinkPayload $success = null  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'SinkService_methodFinalThrow_SinkPayload';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.SinkService_methodFinalThrow_SinkPayload",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.SinkPayload",
+                    )
+                  ),
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class SinkService_methodFinalThrow_FinalResponse implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::STRUCT,
+      'class' => FinalResponse::class,
+    ),
+    1 => shape(
+      'var' => 'ex',
+      'type' => \TType::STRUCT,
+      'class' => SinkException2::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+    'ex' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?FinalResponse,
+    ?'ex' => ?SinkException2,
+  );
+
+  const int STRUCTURAL_ID = 1352924921392902231;
+  public ?FinalResponse $success;
+  public ?SinkException2 $ex;
+
+  public function __construct(?FinalResponse $success = null, ?SinkException2 $ex = null  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+      Shapes::idx($shape, 'ex'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'SinkService_methodFinalThrow_FinalResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.SinkService_methodFinalThrow_FinalResponse",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.FinalResponse",
+                    )
+                  ),
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.SinkException2",
+                    )
+                  ),
+                )
+              ),
+              "name" => "ex",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
 class SinkService_methodBothThrow_args implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
@@ -629,6 +1709,250 @@ class SinkService_methodBothThrow_args implements \IThriftStruct {
 
 }
 
+class SinkService_methodBothThrow_FirstResponse implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct(  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'SinkService_methodBothThrow_FirstResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.SinkService_methodBothThrow_FirstResponse",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class SinkService_methodBothThrow_SinkPayload implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::STRUCT,
+      'class' => SinkPayload::class,
+    ),
+    1 => shape(
+      'var' => 'ex',
+      'type' => \TType::STRUCT,
+      'class' => SinkException1::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+    'ex' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?SinkPayload,
+    ?'ex' => ?SinkException1,
+  );
+
+  const int STRUCTURAL_ID = 8919728181176611439;
+  public ?SinkPayload $success;
+  public ?SinkException1 $ex;
+
+  public function __construct(?SinkPayload $success = null, ?SinkException1 $ex = null  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+      Shapes::idx($shape, 'ex'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'SinkService_methodBothThrow_SinkPayload';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.SinkService_methodBothThrow_SinkPayload",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.SinkPayload",
+                    )
+                  ),
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.SinkException1",
+                    )
+                  ),
+                )
+              ),
+              "name" => "ex",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class SinkService_methodBothThrow_FinalResponse implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::STRUCT,
+      'class' => FinalResponse::class,
+    ),
+    1 => shape(
+      'var' => 'ex',
+      'type' => \TType::STRUCT,
+      'class' => SinkException2::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+    'ex' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?FinalResponse,
+    ?'ex' => ?SinkException2,
+  );
+
+  const int STRUCTURAL_ID = 1352924921392902231;
+  public ?FinalResponse $success;
+  public ?SinkException2 $ex;
+
+  public function __construct(?FinalResponse $success = null, ?SinkException2 $ex = null  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+      Shapes::idx($shape, 'ex'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'SinkService_methodBothThrow_FinalResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.SinkService_methodBothThrow_FinalResponse",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.FinalResponse",
+                    )
+                  ),
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.SinkException2",
+                    )
+                  ),
+                )
+              ),
+              "name" => "ex",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
 class SinkService_methodFast_args implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
@@ -662,6 +1986,202 @@ class SinkService_methodFast_args implements \IThriftStruct {
     return tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.methodFast_args",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class SinkService_methodFast_FirstResponse implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct(  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'SinkService_methodFast_FirstResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.SinkService_methodFast_FirstResponse",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class SinkService_methodFast_SinkPayload implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::STRUCT,
+      'class' => SinkPayload::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?SinkPayload,
+  );
+
+  const int STRUCTURAL_ID = 5047864711357047518;
+  public ?SinkPayload $success;
+
+  public function __construct(?SinkPayload $success = null  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'SinkService_methodFast_SinkPayload';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.SinkService_methodFast_SinkPayload",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.SinkPayload",
+                    )
+                  ),
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class SinkService_methodFast_FinalResponse implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::STRUCT,
+      'class' => FinalResponse::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?FinalResponse,
+  );
+
+  const int STRUCTURAL_ID = 7640464975912492398;
+  public ?FinalResponse $success;
+
+  public function __construct(?FinalResponse $success = null  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'SinkService_methodFast_FinalResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.SinkService_methodFast_FinalResponse",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.FinalResponse",
+                    )
+                  ),
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+        ],
         "is_union" => false,
       )
     );

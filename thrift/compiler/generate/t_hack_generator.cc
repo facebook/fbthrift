@@ -15,6 +15,7 @@
  */
 
 #include <stdlib.h>
+#include <thrift/compiler/ast/t_sink.h>
 #include <thrift/compiler/ast/t_stream.h>
 
 #include <fstream>
@@ -4123,6 +4124,32 @@ void t_hack_generator::generate_php_stream_function_helpers(
 void t_hack_generator::generate_php_sink_function_helpers(
     const t_function* tfunction, const std::string& prefix) {
   generate_php_function_args_helpers(tfunction, prefix);
+
+  const auto* tsink = dynamic_cast<const t_sink*>(tfunction->get_returntype());
+
+  generate_php_function_result_helpers(
+      tfunction,
+      tsink->get_first_response_type(),
+      tfunction->exceptions(),
+      prefix,
+      "_FirstResponse",
+      !tsink->sink_has_first_response());
+
+  generate_php_function_result_helpers(
+      tfunction,
+      tsink->get_sink_type(),
+      tfunction->get_sink_xceptions(),
+      prefix,
+      "_SinkPayload",
+      /* is_void */ false);
+
+  generate_php_function_result_helpers(
+      tfunction,
+      tsink->get_final_response_type(),
+      tfunction->get_sink_final_response_xceptions(),
+      prefix,
+      "_FinalResponse",
+      /* is_void */ false);
 }
 
 /**
