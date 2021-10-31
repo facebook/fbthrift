@@ -328,6 +328,10 @@ class Mixin2 final  {
   FOLLY_ERASE auto field1_ref() const&  { return m1_ref()->field1_ref(); }
   FOLLY_ERASE auto field1_ref() &&      { return m1_ref()->field1_ref(); }
   FOLLY_ERASE auto field1_ref() const&& { return m1_ref()->field1_ref(); }
+  FOLLY_ERASE auto field1() &           { return field1_ref(); }
+  FOLLY_ERASE auto field1() const&      { return field1_ref(); }
+  FOLLY_ERASE auto field1() &&          { return field1_ref(); }
+  FOLLY_ERASE auto field1() const&&     { return field1_ref(); }
   const ::cpp2::Mixin1& get_m1() const&;
   ::cpp2::Mixin1 get_m1() &&;
 
@@ -670,18 +674,34 @@ class Foo final  {
   FOLLY_ERASE auto m1_ref() const&  { return m2_ref()->m1_ref(); }
   FOLLY_ERASE auto m1_ref() &&      { return m2_ref()->m1_ref(); }
   FOLLY_ERASE auto m1_ref() const&& { return m2_ref()->m1_ref(); }
+  FOLLY_ERASE auto m1() &           { return m1_ref(); }
+  FOLLY_ERASE auto m1() const&      { return m1_ref(); }
+  FOLLY_ERASE auto m1() &&          { return m1_ref(); }
+  FOLLY_ERASE auto m1() const&&     { return m1_ref(); }
   FOLLY_ERASE auto field2_ref() &       { return m2_ref()->field2_ref(); }
   FOLLY_ERASE auto field2_ref() const&  { return m2_ref()->field2_ref(); }
   FOLLY_ERASE auto field2_ref() &&      { return m2_ref()->field2_ref(); }
   FOLLY_ERASE auto field2_ref() const&& { return m2_ref()->field2_ref(); }
+  FOLLY_ERASE auto field2() &           { return field2_ref(); }
+  FOLLY_ERASE auto field2() const&      { return field2_ref(); }
+  FOLLY_ERASE auto field2() &&          { return field2_ref(); }
+  FOLLY_ERASE auto field2() const&&     { return field2_ref(); }
   FOLLY_ERASE auto field1_ref() &       { return m2_ref()->field1_ref(); }
   FOLLY_ERASE auto field1_ref() const&  { return m2_ref()->field1_ref(); }
   FOLLY_ERASE auto field1_ref() &&      { return m2_ref()->field1_ref(); }
   FOLLY_ERASE auto field1_ref() const&& { return m2_ref()->field1_ref(); }
+  FOLLY_ERASE auto field1() &           { return field1_ref(); }
+  FOLLY_ERASE auto field1() const&      { return field1_ref(); }
+  FOLLY_ERASE auto field1() &&          { return field1_ref(); }
+  FOLLY_ERASE auto field1() const&&     { return field1_ref(); }
   FOLLY_ERASE auto field3_ref() &       { return m3_ref()->field3_ref(); }
   FOLLY_ERASE auto field3_ref() const&  { return m3_ref()->field3_ref(); }
   FOLLY_ERASE auto field3_ref() &&      { return m3_ref()->field3_ref(); }
   FOLLY_ERASE auto field3_ref() const&& { return m3_ref()->field3_ref(); }
+  FOLLY_ERASE auto field3() &           { return field3_ref(); }
+  FOLLY_ERASE auto field3() const&      { return field3_ref(); }
+  FOLLY_ERASE auto field3() &&          { return field3_ref(); }
+  FOLLY_ERASE auto field3() const&&     { return field3_ref(); }
 
   const ::std::string& get_field4() const& {
     return __fbthrift_field_field4;
