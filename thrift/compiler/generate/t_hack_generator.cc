@@ -4012,15 +4012,13 @@ void t_hack_generator::generate_service_interactions(
 
     // Generate interaction method implementations
     for (const auto& function : get_supported_client_functions(interaction)) {
-      if (function->returns_sink()) {
-        _generate_sendImpl(f_service_, interaction, function);
-      } else {
+      if (!function->returns_sink()) {
         _generate_service_client_child_fn(
             f_service_, interaction, function, /*rpc_options*/ true);
-        _generate_sendImpl(f_service_, interaction, function);
-        if (function->qualifier() != t_function_qualifier::one_way) {
-          _generate_recvImpl(f_service_, interaction, function);
-        }
+      }
+      _generate_sendImpl(f_service_, interaction, function);
+      if (function->qualifier() != t_function_qualifier::one_way) {
+        _generate_recvImpl(f_service_, interaction, function);
       }
     }
 
@@ -4727,8 +4725,7 @@ void t_hack_generator::_generate_service_client(
   // Generate client method implementations
   for (const auto* function : get_supported_client_functions(tservice)) {
     _generate_sendImpl(out, tservice, function);
-    if (!function->returns_sink() &&
-        function->qualifier() != t_function_qualifier::one_way) {
+    if (function->qualifier() != t_function_qualifier::one_way) {
       _generate_recvImpl(out, tservice, function);
     }
     out << "\n";
@@ -4790,6 +4787,20 @@ void t_hack_generator::_generate_recvImpl(
 
     if (tstream->has_first_response()) {
       ttype = tstream->get_first_response_type();
+      return_typehint = type_to_typehint(ttype);
+    } else {
+      return_typehint = "void";
+      is_void = true;
+    }
+  } else if (const auto* tsink = dynamic_cast<const t_sink*>(ttype)) {
+    resultname = generate_function_helper_name(
+        tservice, tfunction, PhpFunctionNameSuffix::FIRST_RESPONSE);
+
+    recvImpl_method_name =
+        std::string("recvImpl_") + tfunction->name() + "_FirstResponse";
+
+    if (tsink->sink_has_first_response()) {
+      ttype = tsink->get_first_response_type();
       return_typehint = type_to_typehint(ttype);
     } else {
       return_typehint = "void";

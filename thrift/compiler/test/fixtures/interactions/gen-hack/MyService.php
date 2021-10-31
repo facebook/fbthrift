@@ -689,6 +689,66 @@ class MyService_MyInteraction extends \ThriftClientBase {
     $this->eventHandler_->postSend('MyInteraction.encode', $args, $currentseqid);
     return $currentseqid;
   }
+
+  protected function recvImpl_encode_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): Set<arraykey> {
+    try {
+      $this->eventHandler_->preRecv('MyInteraction.encode', $expectedsequenceid);
+      if ($this->input_ is \TBinaryProtocolAccelerated) {
+        $result = \thrift_protocol_read_binary($this->input_, 'MyService_MyInteraction_encode_FirstResponse', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
+      } else if ($this->input_ is \TCompactProtocolAccelerated)
+      {
+        $result = \thrift_protocol_read_compact($this->input_, 'MyService_MyInteraction_encode_FirstResponse', Shapes::idx($options, 'read_options', 0));
+      }
+      else
+      {
+        $rseqid = 0;
+        $fname = '';
+        $mtype = 0;
+
+        $this->input_->readMessageBegin(
+          inout $fname,
+          inout $mtype,
+          inout $rseqid,
+        );
+        if ($mtype === \TMessageType::EXCEPTION) {
+          $x = new \TApplicationException();
+          $x->read($this->input_);
+          $this->input_->readMessageEnd();
+          throw $x;
+        }
+        $result = MyService_MyInteraction_encode_FirstResponse::withDefaultValues();
+        $result->read($this->input_);
+        $this->input_->readMessageEnd();
+        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
+          throw new \TProtocolException("encode failed: sequence id is out of order");
+        }
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+          $this->eventHandler_->recvException('MyInteraction.encode', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->recvError('MyInteraction.encode', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postRecv('MyInteraction.encode', $expectedsequenceid, $ex->result);
+          return $ex->result;
+      }
+    } catch (\Exception $ex) {
+      $this->eventHandler_->recvError('MyInteraction.encode', $expectedsequenceid, $ex);
+      throw $ex;
+    }
+    if ($result->success !== null) {
+      $success = $result->success;
+      $this->eventHandler_->postRecv('MyInteraction.encode', $expectedsequenceid, $success);
+      return $success;
+    }
+    $x = new \TApplicationException("encode failed: unknown result", \TApplicationException::MISSING_RESULT);
+    $this->eventHandler_->recvError('MyInteraction.encode', $expectedsequenceid, $x);
+    throw $x;
+  }
 }
 
 class MyService_MyInteractionFast extends \ThriftClientBase {
@@ -1082,6 +1142,66 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     }
     $this->eventHandler_->postSend('MyInteractionFast.encode', $args, $currentseqid);
     return $currentseqid;
+  }
+
+  protected function recvImpl_encode_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): Set<arraykey> {
+    try {
+      $this->eventHandler_->preRecv('MyInteractionFast.encode', $expectedsequenceid);
+      if ($this->input_ is \TBinaryProtocolAccelerated) {
+        $result = \thrift_protocol_read_binary($this->input_, 'MyService_MyInteractionFast_encode_FirstResponse', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
+      } else if ($this->input_ is \TCompactProtocolAccelerated)
+      {
+        $result = \thrift_protocol_read_compact($this->input_, 'MyService_MyInteractionFast_encode_FirstResponse', Shapes::idx($options, 'read_options', 0));
+      }
+      else
+      {
+        $rseqid = 0;
+        $fname = '';
+        $mtype = 0;
+
+        $this->input_->readMessageBegin(
+          inout $fname,
+          inout $mtype,
+          inout $rseqid,
+        );
+        if ($mtype === \TMessageType::EXCEPTION) {
+          $x = new \TApplicationException();
+          $x->read($this->input_);
+          $this->input_->readMessageEnd();
+          throw $x;
+        }
+        $result = MyService_MyInteractionFast_encode_FirstResponse::withDefaultValues();
+        $result->read($this->input_);
+        $this->input_->readMessageEnd();
+        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
+          throw new \TProtocolException("encode failed: sequence id is out of order");
+        }
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+          $this->eventHandler_->recvException('MyInteractionFast.encode', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->recvError('MyInteractionFast.encode', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postRecv('MyInteractionFast.encode', $expectedsequenceid, $ex->result);
+          return $ex->result;
+      }
+    } catch (\Exception $ex) {
+      $this->eventHandler_->recvError('MyInteractionFast.encode', $expectedsequenceid, $ex);
+      throw $ex;
+    }
+    if ($result->success !== null) {
+      $success = $result->success;
+      $this->eventHandler_->postRecv('MyInteractionFast.encode', $expectedsequenceid, $success);
+      return $success;
+    }
+    $x = new \TApplicationException("encode failed: unknown result", \TApplicationException::MISSING_RESULT);
+    $this->eventHandler_->recvError('MyInteractionFast.encode', $expectedsequenceid, $x);
+    throw $x;
   }
 }
 
