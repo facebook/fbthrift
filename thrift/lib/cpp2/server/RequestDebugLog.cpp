@@ -77,16 +77,17 @@ class RequestDebugLog : public folly::RequestData {
 
 template <typename T>
 void appendRequestDebugLogImpl(T&& msg) {
-  auto rctx = folly::RequestContext::get();
-  auto ctxData = rctx->getContextData(getToken());
-  if (ctxData == nullptr) {
-    rctx->setContextDataIfAbsent(
-        getToken(), std::make_unique<RequestDebugLog>());
-    ctxData = rctx->getContextData(getToken());
-  }
+  if (auto rctx = folly::RequestContext::try_get()) {
+    auto ctxData = rctx->getContextData(getToken());
+    if (ctxData == nullptr) {
+      rctx->setContextDataIfAbsent(
+          getToken(), std::make_unique<RequestDebugLog>());
+      ctxData = rctx->getContextData(getToken());
+    }
 
-  if (auto log = dynamic_cast<RequestDebugLog*>(ctxData)) {
-    log->appendEntry(std::forward<T>(msg));
+    if (auto log = dynamic_cast<RequestDebugLog*>(ctxData)) {
+      log->appendEntry(std::forward<T>(msg));
+    }
   }
 }
 } // namespace
