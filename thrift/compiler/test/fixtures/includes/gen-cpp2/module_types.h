@@ -134,12 +134,12 @@ class MyStruct final  {
 
   template <typename..., typename T = ::cpp2::Included>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIncludedField() && {
-    return MyIncludedField_ref();
+    return std::move(*this).MyIncludedField_ref();
   }
 
   template <typename..., typename T = ::cpp2::Included>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIncludedField() const&& {
-    return MyIncludedField_ref();
+    return std::move(*this).MyIncludedField_ref();
   }
 
   template <typename..., typename T = ::cpp2::Included>
@@ -174,12 +174,12 @@ class MyStruct final  {
 
   template <typename..., typename T = ::cpp2::Included>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyOtherIncludedField() && {
-    return MyOtherIncludedField_ref();
+    return std::move(*this).MyOtherIncludedField_ref();
   }
 
   template <typename..., typename T = ::cpp2::Included>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyOtherIncludedField() const&& {
-    return MyOtherIncludedField_ref();
+    return std::move(*this).MyOtherIncludedField_ref();
   }
 
   template <typename..., typename T = ::cpp2::IncludedInt64>
@@ -214,12 +214,12 @@ class MyStruct final  {
 
   template <typename..., typename T = ::cpp2::IncludedInt64>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIncludedInt() && {
-    return MyIncludedInt_ref();
+    return std::move(*this).MyIncludedInt_ref();
   }
 
   template <typename..., typename T = ::cpp2::IncludedInt64>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIncludedInt() const&& {
-    return MyIncludedInt_ref();
+    return std::move(*this).MyIncludedInt_ref();
   }
   const ::cpp2::Included& get_MyIncludedField() const&;
   ::cpp2::Included get_MyIncludedField() &&;

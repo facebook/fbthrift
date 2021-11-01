@@ -233,12 +233,12 @@ class Foo final  {
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> intField() && {
-    return intField_ref();
+    return std::move(*this).intField_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> intField() const&& {
-    return intField_ref();
+    return std::move(*this).intField_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
@@ -273,12 +273,12 @@ class Foo final  {
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> optionalIntField() && {
-    return optionalIntField_ref();
+    return std::move(*this).optionalIntField_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> optionalIntField() const&& {
-    return optionalIntField_ref();
+    return std::move(*this).optionalIntField_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
@@ -313,12 +313,12 @@ class Foo final  {
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> intFieldWithDefault() && {
-    return intFieldWithDefault_ref();
+    return std::move(*this).intFieldWithDefault_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> intFieldWithDefault() const&& {
-    return intFieldWithDefault_ref();
+    return std::move(*this).intFieldWithDefault_ref();
   }
 
   template <typename..., typename T = ::cpp2::SetWithAdapter>
@@ -353,12 +353,12 @@ class Foo final  {
 
   template <typename..., typename T = ::cpp2::SetWithAdapter>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> setField() && {
-    return setField_ref();
+    return std::move(*this).setField_ref();
   }
 
   template <typename..., typename T = ::cpp2::SetWithAdapter>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> setField() const&& {
-    return setField_ref();
+    return std::move(*this).setField_ref();
   }
 
   template <typename..., typename T = ::cpp2::SetWithAdapter>
@@ -393,12 +393,12 @@ class Foo final  {
 
   template <typename..., typename T = ::cpp2::SetWithAdapter>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> optionalSetField() && {
-    return optionalSetField_ref();
+    return std::move(*this).optionalSetField_ref();
   }
 
   template <typename..., typename T = ::cpp2::SetWithAdapter>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> optionalSetField() const&& {
-    return optionalSetField_ref();
+    return std::move(*this).optionalSetField_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>>
@@ -433,12 +433,12 @@ class Foo final  {
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mapField() && {
-    return mapField_ref();
+    return std::move(*this).mapField_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> mapField() const&& {
-    return mapField_ref();
+    return std::move(*this).mapField_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>>
@@ -473,12 +473,12 @@ class Foo final  {
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> optionalMapField() && {
-    return optionalMapField_ref();
+    return std::move(*this).optionalMapField_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> optionalMapField() const&& {
-    return optionalMapField_ref();
+    return std::move(*this).optionalMapField_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>>
@@ -513,12 +513,12 @@ class Foo final  {
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> binaryField() && {
-    return binaryField_ref();
+    return std::move(*this).binaryField_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> binaryField() const&& {
-    return binaryField_ref();
+    return std::move(*this).binaryField_ref();
   }
 
   template <class Protocol_>
@@ -1062,12 +1062,12 @@ class Bar final  {
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> structField() && {
-    return structField_ref();
+    return std::move(*this).structField_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> structField() const&& {
-    return structField_ref();
+    return std::move(*this).structField_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>
@@ -1102,12 +1102,12 @@ class Bar final  {
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> optionalStructField() && {
-    return optionalStructField_ref();
+    return std::move(*this).optionalStructField_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> optionalStructField() const&& {
-    return optionalStructField_ref();
+    return std::move(*this).optionalStructField_ref();
   }
 
   template <typename..., typename T = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
@@ -1142,12 +1142,12 @@ class Bar final  {
 
   template <typename..., typename T = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> structListField() && {
-    return structListField_ref();
+    return std::move(*this).structListField_ref();
   }
 
   template <typename..., typename T = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> structListField() const&& {
-    return structListField_ref();
+    return std::move(*this).structListField_ref();
   }
 
   template <typename..., typename T = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
@@ -1182,12 +1182,12 @@ class Bar final  {
 
   template <typename..., typename T = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> optionalStructListField() && {
-    return optionalStructListField_ref();
+    return std::move(*this).optionalStructListField_ref();
   }
 
   template <typename..., typename T = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> optionalStructListField() const&& {
-    return optionalStructListField_ref();
+    return std::move(*this).optionalStructListField_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz>>
@@ -1222,12 +1222,12 @@ class Bar final  {
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> unionField() && {
-    return unionField_ref();
+    return std::move(*this).unionField_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> unionField() const&& {
-    return unionField_ref();
+    return std::move(*this).unionField_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz>>
@@ -1262,12 +1262,12 @@ class Bar final  {
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> optionalUnionField() && {
-    return optionalUnionField_ref();
+    return std::move(*this).optionalUnionField_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> optionalUnionField() const&& {
-    return optionalUnionField_ref();
+    return std::move(*this).optionalUnionField_ref();
   }
   const ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>& get_structListField() const&;
   ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>> get_structListField() &&;
@@ -1389,12 +1389,12 @@ class StructWithFieldAdapter final  {
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 1, ::std::int32_t, __fbthrift_cpp2_type>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field() && {
-    return field_ref();
+    return std::move(*this).field_ref();
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 1, ::std::int32_t, __fbthrift_cpp2_type>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field() const&& {
-    return field_ref();
+    return std::move(*this).field_ref();
   }
 
   template <class Protocol_>

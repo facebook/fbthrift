@@ -177,12 +177,12 @@ class AStruct final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> FieldA() && {
-    return FieldA_ref();
+    return std::move(*this).FieldA_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> FieldA() const&& {
-    return FieldA_ref();
+    return std::move(*this).FieldA_ref();
   }
 
   ::std::int32_t get_FieldA() const {

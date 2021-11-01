@@ -2324,12 +2324,12 @@ class structA final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> a() && {
-    return a_ref();
+    return std::move(*this).a_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> a() const&& {
-    return a_ref();
+    return std::move(*this).a_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -2364,12 +2364,12 @@ class structA final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> b() && {
-    return b_ref();
+    return std::move(*this).b_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> b() const&& {
-    return b_ref();
+    return std::move(*this).b_ref();
   }
 
   ::std::int32_t get_a() const {
@@ -2982,12 +2982,12 @@ class structB final  {
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> c() && {
-    return c_ref();
+    return std::move(*this).c_ref();
   }
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> c() const&& {
-    return c_ref();
+    return std::move(*this).c_ref();
   }
 
   template <typename..., typename T = bool>
@@ -3022,12 +3022,12 @@ class structB final  {
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> d() && {
-    return d_ref();
+    return std::move(*this).d_ref();
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> d() const&& {
-    return d_ref();
+    return std::move(*this).d_ref();
   }
 
   double get_c() const {
@@ -3210,12 +3210,12 @@ class structC final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> a() && {
-    return a_ref();
+    return std::move(*this).a_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> a() const&& {
-    return a_ref();
+    return std::move(*this).a_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -3250,12 +3250,12 @@ class structC final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> b() && {
-    return b_ref();
+    return std::move(*this).b_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> b() const&& {
-    return b_ref();
+    return std::move(*this).b_ref();
   }
 
   template <typename..., typename T = double>
@@ -3290,12 +3290,12 @@ class structC final  {
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> c() && {
-    return c_ref();
+    return std::move(*this).c_ref();
   }
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> c() const&& {
-    return c_ref();
+    return std::move(*this).c_ref();
   }
 
   template <typename..., typename T = bool>
@@ -3330,12 +3330,12 @@ class structC final  {
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> d() && {
-    return d_ref();
+    return std::move(*this).d_ref();
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> d() const&& {
-    return d_ref();
+    return std::move(*this).d_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum1>
@@ -3370,12 +3370,12 @@ class structC final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum1>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> e() && {
-    return e_ref();
+    return std::move(*this).e_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum1>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> e() const&& {
-    return e_ref();
+    return std::move(*this).e_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum2>
@@ -3410,12 +3410,12 @@ class structC final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum2>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> f() && {
-    return f_ref();
+    return std::move(*this).f_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum2>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> f() const&& {
-    return f_ref();
+    return std::move(*this).f_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::union1>
@@ -3450,12 +3450,12 @@ class structC final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::union1>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> g() && {
-    return g_ref();
+    return std::move(*this).g_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::union1>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> g() const&& {
-    return g_ref();
+    return std::move(*this).g_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::unionA>
@@ -3490,12 +3490,12 @@ class structC final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::unionA>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> h() && {
-    return h_ref();
+    return std::move(*this).h_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::unionA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> h() const&& {
-    return h_ref();
+    return std::move(*this).h_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::unionA>
@@ -3530,12 +3530,12 @@ class structC final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::unionA>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> i() && {
-    return i_ref();
+    return std::move(*this).i_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::unionA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> i() const&& {
-    return i_ref();
+    return std::move(*this).i_ref();
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -3570,12 +3570,12 @@ class structC final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> j() && {
-    return j_ref();
+    return std::move(*this).j_ref();
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> j() const&& {
-    return j_ref();
+    return std::move(*this).j_ref();
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -3610,12 +3610,12 @@ class structC final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> j1() && {
-    return j1_ref();
+    return std::move(*this).j1_ref();
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> j1() const&& {
-    return j1_ref();
+    return std::move(*this).j1_ref();
   }
 
   template <typename..., typename T = ::std::vector<::test_cpp2::cpp_reflection::enum1>>
@@ -3650,12 +3650,12 @@ class structC final  {
 
   template <typename..., typename T = ::std::vector<::test_cpp2::cpp_reflection::enum1>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> j2() && {
-    return j2_ref();
+    return std::move(*this).j2_ref();
   }
 
   template <typename..., typename T = ::std::vector<::test_cpp2::cpp_reflection::enum1>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> j2() const&& {
-    return j2_ref();
+    return std::move(*this).j2_ref();
   }
 
   template <typename..., typename T = ::std::vector<::test_cpp2::cpp_reflection::structA>>
@@ -3690,12 +3690,12 @@ class structC final  {
 
   template <typename..., typename T = ::std::vector<::test_cpp2::cpp_reflection::structA>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> j3() && {
-    return j3_ref();
+    return std::move(*this).j3_ref();
   }
 
   template <typename..., typename T = ::std::vector<::test_cpp2::cpp_reflection::structA>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> j3() const&& {
-    return j3_ref();
+    return std::move(*this).j3_ref();
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
@@ -3730,12 +3730,12 @@ class structC final  {
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> k() && {
-    return k_ref();
+    return std::move(*this).k_ref();
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> k() const&& {
-    return k_ref();
+    return std::move(*this).k_ref();
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
@@ -3770,12 +3770,12 @@ class structC final  {
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> k1() && {
-    return k1_ref();
+    return std::move(*this).k1_ref();
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> k1() const&& {
-    return k1_ref();
+    return std::move(*this).k1_ref();
   }
 
   template <typename..., typename T = ::std::set<::test_cpp2::cpp_reflection::enum2>>
@@ -3810,12 +3810,12 @@ class structC final  {
 
   template <typename..., typename T = ::std::set<::test_cpp2::cpp_reflection::enum2>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> k2() && {
-    return k2_ref();
+    return std::move(*this).k2_ref();
   }
 
   template <typename..., typename T = ::std::set<::test_cpp2::cpp_reflection::enum2>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> k2() const&& {
-    return k2_ref();
+    return std::move(*this).k2_ref();
   }
 
   template <typename..., typename T = ::std::set<::test_cpp2::cpp_reflection::structB>>
@@ -3850,12 +3850,12 @@ class structC final  {
 
   template <typename..., typename T = ::std::set<::test_cpp2::cpp_reflection::structB>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> k3() && {
-    return k3_ref();
+    return std::move(*this).k3_ref();
   }
 
   template <typename..., typename T = ::std::set<::test_cpp2::cpp_reflection::structB>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> k3() const&& {
-    return k3_ref();
+    return std::move(*this).k3_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::int32_t, ::std::int32_t>>
@@ -3890,12 +3890,12 @@ class structC final  {
 
   template <typename..., typename T = ::std::map<::std::int32_t, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> l() && {
-    return l_ref();
+    return std::move(*this).l_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::int32_t, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> l() const&& {
-    return l_ref();
+    return std::move(*this).l_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::int32_t, ::std::int32_t>>
@@ -3930,12 +3930,12 @@ class structC final  {
 
   template <typename..., typename T = ::std::map<::std::int32_t, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> l1() && {
-    return l1_ref();
+    return std::move(*this).l1_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::int32_t, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> l1() const&& {
-    return l1_ref();
+    return std::move(*this).l1_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::enum1>>
@@ -3970,12 +3970,12 @@ class structC final  {
 
   template <typename..., typename T = ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::enum1>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> l2() && {
-    return l2_ref();
+    return std::move(*this).l2_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::enum1>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> l2() const&& {
-    return l2_ref();
+    return std::move(*this).l2_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::structB>>
@@ -4010,12 +4010,12 @@ class structC final  {
 
   template <typename..., typename T = ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::structB>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> l3() && {
-    return l3_ref();
+    return std::move(*this).l3_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::structB>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> l3() const&& {
-    return l3_ref();
+    return std::move(*this).l3_ref();
   }
 
   template <typename..., typename T = ::std::map<::test_cpp2::cpp_reflection::enum1, ::std::int32_t>>
@@ -4050,12 +4050,12 @@ class structC final  {
 
   template <typename..., typename T = ::std::map<::test_cpp2::cpp_reflection::enum1, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> m1() && {
-    return m1_ref();
+    return std::move(*this).m1_ref();
   }
 
   template <typename..., typename T = ::std::map<::test_cpp2::cpp_reflection::enum1, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> m1() const&& {
-    return m1_ref();
+    return std::move(*this).m1_ref();
   }
 
   template <typename..., typename T = ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::enum2>>
@@ -4090,12 +4090,12 @@ class structC final  {
 
   template <typename..., typename T = ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::enum2>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> m2() && {
-    return m2_ref();
+    return std::move(*this).m2_ref();
   }
 
   template <typename..., typename T = ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::enum2>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> m2() const&& {
-    return m2_ref();
+    return std::move(*this).m2_ref();
   }
 
   template <typename..., typename T = ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::structB>>
@@ -4130,12 +4130,12 @@ class structC final  {
 
   template <typename..., typename T = ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::structB>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> m3() && {
-    return m3_ref();
+    return std::move(*this).m3_ref();
   }
 
   template <typename..., typename T = ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::structB>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> m3() const&& {
-    return m3_ref();
+    return std::move(*this).m3_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
@@ -4170,12 +4170,12 @@ class structC final  {
 
   template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> n1() && {
-    return n1_ref();
+    return std::move(*this).n1_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> n1() const&& {
-    return n1_ref();
+    return std::move(*this).n1_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::test_cpp2::cpp_reflection::enum1>>
@@ -4210,12 +4210,12 @@ class structC final  {
 
   template <typename..., typename T = ::std::map<::std::string, ::test_cpp2::cpp_reflection::enum1>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> n2() && {
-    return n2_ref();
+    return std::move(*this).n2_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::test_cpp2::cpp_reflection::enum1>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> n2() const&& {
-    return n2_ref();
+    return std::move(*this).n2_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>>
@@ -4250,12 +4250,12 @@ class structC final  {
 
   template <typename..., typename T = ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> n3() && {
-    return n3_ref();
+    return std::move(*this).n3_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> n3() const&& {
-    return n3_ref();
+    return std::move(*this).n3_ref();
   }
 
   template <typename..., typename T = ::std::map<::test_cpp2::cpp_reflection::structA, ::std::int32_t>>
@@ -4290,12 +4290,12 @@ class structC final  {
 
   template <typename..., typename T = ::std::map<::test_cpp2::cpp_reflection::structA, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> o1() && {
-    return o1_ref();
+    return std::move(*this).o1_ref();
   }
 
   template <typename..., typename T = ::std::map<::test_cpp2::cpp_reflection::structA, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> o1() const&& {
-    return o1_ref();
+    return std::move(*this).o1_ref();
   }
 
   template <typename..., typename T = ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::enum1>>
@@ -4330,12 +4330,12 @@ class structC final  {
 
   template <typename..., typename T = ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::enum1>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> o2() && {
-    return o2_ref();
+    return std::move(*this).o2_ref();
   }
 
   template <typename..., typename T = ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::enum1>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> o2() const&& {
-    return o2_ref();
+    return std::move(*this).o2_ref();
   }
 
   template <typename..., typename T = ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::structB>>
@@ -4370,12 +4370,12 @@ class structC final  {
 
   template <typename..., typename T = ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::structB>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> o3() && {
-    return o3_ref();
+    return std::move(*this).o3_ref();
   }
 
   template <typename..., typename T = ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::structB>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> o3() const&& {
-    return o3_ref();
+    return std::move(*this).o3_ref();
   }
 
   ::std::int32_t get_a() const {
@@ -4791,12 +4791,12 @@ class struct1 final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field1() && {
-    return field1_ref();
+    return std::move(*this).field1_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field1() const&& {
-    return field1_ref();
+    return std::move(*this).field1_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum1>
@@ -4831,12 +4831,12 @@ class struct1 final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum1>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field2() && {
-    return field2_ref();
+    return std::move(*this).field2_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum1>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field2() const&& {
-    return field2_ref();
+    return std::move(*this).field2_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum2>
@@ -4891,12 +4891,12 @@ class struct1 final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::union1>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field4() && {
-    return field4_ref();
+    return std::move(*this).field4_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::union1>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field4() const&& {
-    return field4_ref();
+    return std::move(*this).field4_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::union2>
@@ -4931,12 +4931,12 @@ class struct1 final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::union2>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field5() && {
-    return field5_ref();
+    return std::move(*this).field5_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::union2>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field5() const&& {
-    return field5_ref();
+    return std::move(*this).field5_ref();
   }
 
   ::std::int32_t get_field0() const {
@@ -5118,12 +5118,12 @@ class struct2 final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldA() && {
-    return fieldA_ref();
+    return std::move(*this).fieldA_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldA() const&& {
-    return fieldA_ref();
+    return std::move(*this).fieldA_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -5158,12 +5158,12 @@ class struct2 final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldB() && {
-    return fieldB_ref();
+    return std::move(*this).fieldB_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldB() const&& {
-    return fieldB_ref();
+    return std::move(*this).fieldB_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum1>
@@ -5198,12 +5198,12 @@ class struct2 final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum1>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldC() && {
-    return fieldC_ref();
+    return std::move(*this).fieldC_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum1>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldC() const&& {
-    return fieldC_ref();
+    return std::move(*this).fieldC_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum2>
@@ -5238,12 +5238,12 @@ class struct2 final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum2>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldD() && {
-    return fieldD_ref();
+    return std::move(*this).fieldD_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum2>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldD() const&& {
-    return fieldD_ref();
+    return std::move(*this).fieldD_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::union1>
@@ -5278,12 +5278,12 @@ class struct2 final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::union1>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldE() && {
-    return fieldE_ref();
+    return std::move(*this).fieldE_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::union1>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldE() const&& {
-    return fieldE_ref();
+    return std::move(*this).fieldE_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::union2>
@@ -5318,12 +5318,12 @@ class struct2 final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::union2>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldF() && {
-    return fieldF_ref();
+    return std::move(*this).fieldF_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::union2>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldF() const&& {
-    return fieldF_ref();
+    return std::move(*this).fieldF_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::struct1>
@@ -5358,12 +5358,12 @@ class struct2 final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::struct1>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldG() && {
-    return fieldG_ref();
+    return std::move(*this).fieldG_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::struct1>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldG() const&& {
-    return fieldG_ref();
+    return std::move(*this).fieldG_ref();
   }
 
   ::std::int32_t get_fieldA() const {
@@ -5574,12 +5574,12 @@ class struct3 final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldA() && {
-    return fieldA_ref();
+    return std::move(*this).fieldA_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldA() const&& {
-    return fieldA_ref();
+    return std::move(*this).fieldA_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -5614,12 +5614,12 @@ class struct3 final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldB() && {
-    return fieldB_ref();
+    return std::move(*this).fieldB_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldB() const&& {
-    return fieldB_ref();
+    return std::move(*this).fieldB_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum1>
@@ -5654,12 +5654,12 @@ class struct3 final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum1>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldC() && {
-    return fieldC_ref();
+    return std::move(*this).fieldC_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum1>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldC() const&& {
-    return fieldC_ref();
+    return std::move(*this).fieldC_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum2>
@@ -5694,12 +5694,12 @@ class struct3 final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum2>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldD() && {
-    return fieldD_ref();
+    return std::move(*this).fieldD_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum2>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldD() const&& {
-    return fieldD_ref();
+    return std::move(*this).fieldD_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::union1>
@@ -5734,12 +5734,12 @@ class struct3 final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::union1>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldE() && {
-    return fieldE_ref();
+    return std::move(*this).fieldE_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::union1>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldE() const&& {
-    return fieldE_ref();
+    return std::move(*this).fieldE_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::union2>
@@ -5774,12 +5774,12 @@ class struct3 final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::union2>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldF() && {
-    return fieldF_ref();
+    return std::move(*this).fieldF_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::union2>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldF() const&& {
-    return fieldF_ref();
+    return std::move(*this).fieldF_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::struct1>
@@ -5814,12 +5814,12 @@ class struct3 final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::struct1>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldG() && {
-    return fieldG_ref();
+    return std::move(*this).fieldG_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::struct1>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldG() const&& {
-    return fieldG_ref();
+    return std::move(*this).fieldG_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::union2>
@@ -5854,12 +5854,12 @@ class struct3 final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::union2>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldH() && {
-    return fieldH_ref();
+    return std::move(*this).fieldH_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::union2>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldH() const&& {
-    return fieldH_ref();
+    return std::move(*this).fieldH_ref();
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -5894,12 +5894,12 @@ class struct3 final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldI() && {
-    return fieldI_ref();
+    return std::move(*this).fieldI_ref();
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldI() const&& {
-    return fieldI_ref();
+    return std::move(*this).fieldI_ref();
   }
 
   template <typename..., typename T = ::std::vector<::std::string>>
@@ -5934,12 +5934,12 @@ class struct3 final  {
 
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldJ() && {
-    return fieldJ_ref();
+    return std::move(*this).fieldJ_ref();
   }
 
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldJ() const&& {
-    return fieldJ_ref();
+    return std::move(*this).fieldJ_ref();
   }
 
   template <typename..., typename T = ::std::vector<::std::string>>
@@ -5974,12 +5974,12 @@ class struct3 final  {
 
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldK() && {
-    return fieldK_ref();
+    return std::move(*this).fieldK_ref();
   }
 
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldK() const&& {
-    return fieldK_ref();
+    return std::move(*this).fieldK_ref();
   }
 
   template <typename..., typename T = ::std::vector<::test_cpp2::cpp_reflection::structA>>
@@ -6014,12 +6014,12 @@ class struct3 final  {
 
   template <typename..., typename T = ::std::vector<::test_cpp2::cpp_reflection::structA>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldL() && {
-    return fieldL_ref();
+    return std::move(*this).fieldL_ref();
   }
 
   template <typename..., typename T = ::std::vector<::test_cpp2::cpp_reflection::structA>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldL() const&& {
-    return fieldL_ref();
+    return std::move(*this).fieldL_ref();
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
@@ -6054,12 +6054,12 @@ class struct3 final  {
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldM() && {
-    return fieldM_ref();
+    return std::move(*this).fieldM_ref();
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldM() const&& {
-    return fieldM_ref();
+    return std::move(*this).fieldM_ref();
   }
 
   template <typename..., typename T = ::std::set<::std::string>>
@@ -6094,12 +6094,12 @@ class struct3 final  {
 
   template <typename..., typename T = ::std::set<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldN() && {
-    return fieldN_ref();
+    return std::move(*this).fieldN_ref();
   }
 
   template <typename..., typename T = ::std::set<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldN() const&& {
-    return fieldN_ref();
+    return std::move(*this).fieldN_ref();
   }
 
   template <typename..., typename T = ::std::set<::std::string>>
@@ -6134,12 +6134,12 @@ class struct3 final  {
 
   template <typename..., typename T = ::std::set<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldO() && {
-    return fieldO_ref();
+    return std::move(*this).fieldO_ref();
   }
 
   template <typename..., typename T = ::std::set<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldO() const&& {
-    return fieldO_ref();
+    return std::move(*this).fieldO_ref();
   }
 
   template <typename..., typename T = ::std::set<::test_cpp2::cpp_reflection::structB>>
@@ -6174,12 +6174,12 @@ class struct3 final  {
 
   template <typename..., typename T = ::std::set<::test_cpp2::cpp_reflection::structB>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldP() && {
-    return fieldP_ref();
+    return std::move(*this).fieldP_ref();
   }
 
   template <typename..., typename T = ::std::set<::test_cpp2::cpp_reflection::structB>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldP() const&& {
-    return fieldP_ref();
+    return std::move(*this).fieldP_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::test_cpp2::cpp_reflection::structA>>
@@ -6214,12 +6214,12 @@ class struct3 final  {
 
   template <typename..., typename T = ::std::map<::std::string, ::test_cpp2::cpp_reflection::structA>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldQ() && {
-    return fieldQ_ref();
+    return std::move(*this).fieldQ_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::test_cpp2::cpp_reflection::structA>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldQ() const&& {
-    return fieldQ_ref();
+    return std::move(*this).fieldQ_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>>
@@ -6254,12 +6254,12 @@ class struct3 final  {
 
   template <typename..., typename T = ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldR() && {
-    return fieldR_ref();
+    return std::move(*this).fieldR_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldR() const&& {
-    return fieldR_ref();
+    return std::move(*this).fieldR_ref();
   }
 
   ::std::int32_t get_fieldA() const {
@@ -6560,12 +6560,12 @@ class struct4 final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field1() && {
-    return field1_ref();
+    return std::move(*this).field1_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field1() const&& {
-    return field1_ref();
+    return std::move(*this).field1_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum1>
@@ -6600,12 +6600,12 @@ class struct4 final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum1>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field2() && {
-    return field2_ref();
+    return std::move(*this).field2_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum1>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field2() const&& {
-    return field2_ref();
+    return std::move(*this).field2_ref();
   }
   template <typename ..., typename T = ::std::unique_ptr<::test_cpp2::cpp_reflection::structA>>
   FOLLY_ERASE T& field3_ref() & { return field3; }
@@ -6785,12 +6785,12 @@ class struct5 final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field1() && {
-    return field1_ref();
+    return std::move(*this).field1_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field1() const&& {
-    return field1_ref();
+    return std::move(*this).field1_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum1>
@@ -6825,12 +6825,12 @@ class struct5 final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum1>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field2() && {
-    return field2_ref();
+    return std::move(*this).field2_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum1>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field2() const&& {
-    return field2_ref();
+    return std::move(*this).field2_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::structA>
@@ -6865,12 +6865,12 @@ class struct5 final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::structA>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field3() && {
-    return field3_ref();
+    return std::move(*this).field3_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::structA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field3() const&& {
-    return field3_ref();
+    return std::move(*this).field3_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::structB>
@@ -6905,12 +6905,12 @@ class struct5 final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::structB>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field4() && {
-    return field4_ref();
+    return std::move(*this).field4_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::structB>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field4() const&& {
-    return field4_ref();
+    return std::move(*this).field4_ref();
   }
 
   ::std::int32_t get_field0() const {
@@ -7066,12 +7066,12 @@ class struct_binary final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> bi() && {
-    return bi_ref();
+    return std::move(*this).bi_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> bi() const&& {
-    return bi_ref();
+    return std::move(*this).bi_ref();
   }
 
   const ::std::string& get_bi() const& {
@@ -7194,12 +7194,12 @@ class dep_A_struct final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::dep_B_struct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> b() && {
-    return b_ref();
+    return std::move(*this).b_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::dep_B_struct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> b() const&& {
-    return b_ref();
+    return std::move(*this).b_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::dep_C_struct>
@@ -7234,12 +7234,12 @@ class dep_A_struct final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::dep_C_struct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> c() && {
-    return c_ref();
+    return std::move(*this).c_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::dep_C_struct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> c() const&& {
-    return c_ref();
+    return std::move(*this).c_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -7274,12 +7274,12 @@ class dep_A_struct final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> i_a() && {
-    return i_a_ref();
+    return std::move(*this).i_a_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> i_a() const&& {
-    return i_a_ref();
+    return std::move(*this).i_a_ref();
   }
   const ::test_cpp2::cpp_reflection::dep_B_struct& get_b() const&;
   ::test_cpp2::cpp_reflection::dep_B_struct get_b() &&;
@@ -7415,12 +7415,12 @@ class dep_B_struct final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::dep_B_struct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> b() && {
-    return b_ref();
+    return std::move(*this).b_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::dep_B_struct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> b() const&& {
-    return b_ref();
+    return std::move(*this).b_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::dep_C_struct>
@@ -7455,12 +7455,12 @@ class dep_B_struct final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::dep_C_struct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> c() && {
-    return c_ref();
+    return std::move(*this).c_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::dep_C_struct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> c() const&& {
-    return c_ref();
+    return std::move(*this).c_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -7495,12 +7495,12 @@ class dep_B_struct final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> i_a() && {
-    return i_a_ref();
+    return std::move(*this).i_a_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> i_a() const&& {
-    return i_a_ref();
+    return std::move(*this).i_a_ref();
   }
   const ::test_cpp2::cpp_reflection::dep_B_struct& get_b() const&;
   ::test_cpp2::cpp_reflection::dep_B_struct get_b() &&;
@@ -7632,12 +7632,12 @@ class annotated final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> a() && {
-    return a_ref();
+    return std::move(*this).a_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> a() const&& {
-    return a_ref();
+    return std::move(*this).a_ref();
   }
 
   ::std::int32_t get_a() const {
@@ -9780,12 +9780,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> get() && {
-    return get_ref();
+    return std::move(*this).get_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> get() const&& {
-    return get_ref();
+    return std::move(*this).get_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -9820,12 +9820,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> getter() && {
-    return getter_ref();
+    return std::move(*this).getter_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> getter() const&& {
-    return getter_ref();
+    return std::move(*this).getter_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -9860,12 +9860,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> lists() && {
-    return lists_ref();
+    return std::move(*this).lists_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> lists() const&& {
-    return lists_ref();
+    return std::move(*this).lists_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -9900,12 +9900,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> maps() && {
-    return maps_ref();
+    return std::move(*this).maps_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> maps() const&& {
-    return maps_ref();
+    return std::move(*this).maps_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -9940,12 +9940,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name() && {
-    return name_ref();
+    return std::move(*this).name_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> name() const&& {
-    return name_ref();
+    return std::move(*this).name_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -9980,12 +9980,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name_to_value() && {
-    return name_to_value_ref();
+    return std::move(*this).name_to_value_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> name_to_value() const&& {
-    return name_to_value_ref();
+    return std::move(*this).name_to_value_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -10020,12 +10020,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> names() && {
-    return names_ref();
+    return std::move(*this).names_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> names() const&& {
-    return names_ref();
+    return std::move(*this).names_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -10060,12 +10060,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> prefix_tree() && {
-    return prefix_tree_ref();
+    return std::move(*this).prefix_tree_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> prefix_tree() const&& {
-    return prefix_tree_ref();
+    return std::move(*this).prefix_tree_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -10100,12 +10100,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> sets() && {
-    return sets_ref();
+    return std::move(*this).sets_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> sets() const&& {
-    return sets_ref();
+    return std::move(*this).sets_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -10140,12 +10140,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> setter() && {
-    return setter_ref();
+    return std::move(*this).setter_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> setter() const&& {
-    return setter_ref();
+    return std::move(*this).setter_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -10180,12 +10180,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> str() && {
-    return str_ref();
+    return std::move(*this).str_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> str() const&& {
-    return str_ref();
+    return std::move(*this).str_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -10220,12 +10220,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> strings() && {
-    return strings_ref();
+    return std::move(*this).strings_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> strings() const&& {
-    return strings_ref();
+    return std::move(*this).strings_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -10260,12 +10260,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> type() && {
-    return type_ref();
+    return std::move(*this).type_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> type() const&& {
-    return type_ref();
+    return std::move(*this).type_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -10300,12 +10300,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> value() && {
-    return value_ref();
+    return std::move(*this).value_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> value() const&& {
-    return value_ref();
+    return std::move(*this).value_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -10340,12 +10340,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> value_to_name() && {
-    return value_to_name_ref();
+    return std::move(*this).value_to_name_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> value_to_name() const&& {
-    return value_to_name_ref();
+    return std::move(*this).value_to_name_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -10380,12 +10380,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> values() && {
-    return values_ref();
+    return std::move(*this).values_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> values() const&& {
-    return values_ref();
+    return std::move(*this).values_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -10420,12 +10420,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> id() && {
-    return id_ref();
+    return std::move(*this).id_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> id() const&& {
-    return id_ref();
+    return std::move(*this).id_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -10460,12 +10460,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> ids() && {
-    return ids_ref();
+    return std::move(*this).ids_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> ids() const&& {
-    return ids_ref();
+    return std::move(*this).ids_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -10500,12 +10500,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> descriptor() && {
-    return descriptor_ref();
+    return std::move(*this).descriptor_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> descriptor() const&& {
-    return descriptor_ref();
+    return std::move(*this).descriptor_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -10540,12 +10540,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> descriptors() && {
-    return descriptors_ref();
+    return std::move(*this).descriptors_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> descriptors() const&& {
-    return descriptors_ref();
+    return std::move(*this).descriptors_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -10580,12 +10580,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> key() && {
-    return key_ref();
+    return std::move(*this).key_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> key() const&& {
-    return key_ref();
+    return std::move(*this).key_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -10620,12 +10620,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> keys() && {
-    return keys_ref();
+    return std::move(*this).keys_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> keys() const&& {
-    return keys_ref();
+    return std::move(*this).keys_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -10660,12 +10660,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotation() && {
-    return annotation_ref();
+    return std::move(*this).annotation_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> annotation() const&& {
-    return annotation_ref();
+    return std::move(*this).annotation_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -10700,12 +10700,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotations() && {
-    return annotations_ref();
+    return std::move(*this).annotations_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> annotations() const&& {
-    return annotations_ref();
+    return std::move(*this).annotations_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -10740,12 +10740,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> member() && {
-    return member_ref();
+    return std::move(*this).member_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> member() const&& {
-    return member_ref();
+    return std::move(*this).member_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -10780,12 +10780,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> members() && {
-    return members_ref();
+    return std::move(*this).members_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> members() const&& {
-    return members_ref();
+    return std::move(*this).members_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -10820,12 +10820,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field() && {
-    return field_ref();
+    return std::move(*this).field_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field() const&& {
-    return field_ref();
+    return std::move(*this).field_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -10860,12 +10860,12 @@ class struct_with_special_names final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fields() && {
-    return fields_ref();
+    return std::move(*this).fields_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fields() const&& {
-    return fields_ref();
+    return std::move(*this).fields_ref();
   }
 
   ::std::int32_t get_get() const {
@@ -11258,12 +11258,12 @@ class struct_with_indirections final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> real() && {
-    return real_ref();
+    return std::move(*this).real_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> real() const&& {
-    return real_ref();
+    return std::move(*this).real_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::FakeI32>
@@ -11298,12 +11298,12 @@ class struct_with_indirections final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::FakeI32>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fake() && {
-    return fake_ref();
+    return std::move(*this).fake_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::FakeI32>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fake() const&& {
-    return fake_ref();
+    return std::move(*this).fake_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::HasANumber>
@@ -11338,12 +11338,12 @@ class struct_with_indirections final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::HasANumber>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> number() && {
-    return number_ref();
+    return std::move(*this).number_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::HasANumber>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> number() const&& {
-    return number_ref();
+    return std::move(*this).number_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::HasAResult>
@@ -11378,12 +11378,12 @@ class struct_with_indirections final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::HasAResult>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> result() && {
-    return result_ref();
+    return std::move(*this).result_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::HasAResult>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> result() const&& {
-    return result_ref();
+    return std::move(*this).result_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::HasAPhrase>
@@ -11418,12 +11418,12 @@ class struct_with_indirections final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::HasAPhrase>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> phrase() && {
-    return phrase_ref();
+    return std::move(*this).phrase_ref();
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::HasAPhrase>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> phrase() const&& {
-    return phrase_ref();
+    return std::move(*this).phrase_ref();
   }
 
   ::std::int32_t get_real() const {

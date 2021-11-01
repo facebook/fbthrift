@@ -272,12 +272,12 @@ class Color final  {
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> red() && {
-    return red_ref();
+    return std::move(*this).red_ref();
   }
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> red() const&& {
-    return red_ref();
+    return std::move(*this).red_ref();
   }
 
   template <typename..., typename T = double>
@@ -312,12 +312,12 @@ class Color final  {
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> green() && {
-    return green_ref();
+    return std::move(*this).green_ref();
   }
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> green() const&& {
-    return green_ref();
+    return std::move(*this).green_ref();
   }
 
   template <typename..., typename T = double>
@@ -352,12 +352,12 @@ class Color final  {
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> blue() && {
-    return blue_ref();
+    return std::move(*this).blue_ref();
   }
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> blue() const&& {
-    return blue_ref();
+    return std::move(*this).blue_ref();
   }
 
   template <typename..., typename T = double>
@@ -392,12 +392,12 @@ class Color final  {
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> alpha() && {
-    return alpha_ref();
+    return std::move(*this).alpha_ref();
   }
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> alpha() const&& {
-    return alpha_ref();
+    return std::move(*this).alpha_ref();
   }
 
   double get_red() const {
@@ -550,12 +550,12 @@ class Vehicle final  {
 
   template <typename..., typename T = ::cpp2::Color>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> color() && {
-    return color_ref();
+    return std::move(*this).color_ref();
   }
 
   template <typename..., typename T = ::cpp2::Color>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> color() const&& {
-    return color_ref();
+    return std::move(*this).color_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -590,12 +590,12 @@ class Vehicle final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> licensePlate() && {
-    return licensePlate_ref();
+    return std::move(*this).licensePlate_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> licensePlate() const&& {
-    return licensePlate_ref();
+    return std::move(*this).licensePlate_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -630,12 +630,12 @@ class Vehicle final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> description() && {
-    return description_ref();
+    return std::move(*this).description_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> description() const&& {
-    return description_ref();
+    return std::move(*this).description_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -670,12 +670,12 @@ class Vehicle final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> name() && {
-    return name_ref();
+    return std::move(*this).name_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> name() const&& {
-    return name_ref();
+    return std::move(*this).name_ref();
   }
 
   template <typename..., typename T = bool>
@@ -710,12 +710,12 @@ class Vehicle final  {
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> hasAC() && {
-    return hasAC_ref();
+    return std::move(*this).hasAC_ref();
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> hasAC() const&& {
-    return hasAC_ref();
+    return std::move(*this).hasAC_ref();
   }
   const ::cpp2::Color& get_color() const&;
   ::cpp2::Color get_color() &&;
@@ -910,12 +910,12 @@ class Person final  {
 
   template <typename..., typename T = ::cpp2::PersonID>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> id() && {
-    return id_ref();
+    return std::move(*this).id_ref();
   }
 
   template <typename..., typename T = ::cpp2::PersonID>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> id() const&& {
-    return id_ref();
+    return std::move(*this).id_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -950,12 +950,12 @@ class Person final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name() && {
-    return name_ref();
+    return std::move(*this).name_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> name() const&& {
-    return name_ref();
+    return std::move(*this).name_ref();
   }
 
   template <typename..., typename T = ::std::int16_t>
@@ -990,12 +990,12 @@ class Person final  {
 
   template <typename..., typename T = ::std::int16_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> age() && {
-    return age_ref();
+    return std::move(*this).age_ref();
   }
 
   template <typename..., typename T = ::std::int16_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> age() const&& {
-    return age_ref();
+    return std::move(*this).age_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -1030,12 +1030,12 @@ class Person final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> address() && {
-    return address_ref();
+    return std::move(*this).address_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> address() const&& {
-    return address_ref();
+    return std::move(*this).address_ref();
   }
 
   template <typename..., typename T = ::cpp2::Color>
@@ -1070,12 +1070,12 @@ class Person final  {
 
   template <typename..., typename T = ::cpp2::Color>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> favoriteColor() && {
-    return favoriteColor_ref();
+    return std::move(*this).favoriteColor_ref();
   }
 
   template <typename..., typename T = ::cpp2::Color>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> favoriteColor() const&& {
-    return favoriteColor_ref();
+    return std::move(*this).favoriteColor_ref();
   }
 
   template <typename..., typename T = ::std::set<::cpp2::PersonID>>
@@ -1110,12 +1110,12 @@ class Person final  {
 
   template <typename..., typename T = ::std::set<::cpp2::PersonID>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> friends() && {
-    return friends_ref();
+    return std::move(*this).friends_ref();
   }
 
   template <typename..., typename T = ::std::set<::cpp2::PersonID>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> friends() const&& {
-    return friends_ref();
+    return std::move(*this).friends_ref();
   }
 
   template <typename..., typename T = ::cpp2::PersonID>
@@ -1150,12 +1150,12 @@ class Person final  {
 
   template <typename..., typename T = ::cpp2::PersonID>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> bestFriend() && {
-    return bestFriend_ref();
+    return std::move(*this).bestFriend_ref();
   }
 
   template <typename..., typename T = ::cpp2::PersonID>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> bestFriend() const&& {
-    return bestFriend_ref();
+    return std::move(*this).bestFriend_ref();
   }
 
   template <typename..., typename T = ::std::map<::cpp2::Animal, ::std::string>>
@@ -1190,12 +1190,12 @@ class Person final  {
 
   template <typename..., typename T = ::std::map<::cpp2::Animal, ::std::string>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> petNames() && {
-    return petNames_ref();
+    return std::move(*this).petNames_ref();
   }
 
   template <typename..., typename T = ::std::map<::cpp2::Animal, ::std::string>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> petNames() const&& {
-    return petNames_ref();
+    return std::move(*this).petNames_ref();
   }
 
   template <typename..., typename T = ::cpp2::Animal>
@@ -1230,12 +1230,12 @@ class Person final  {
 
   template <typename..., typename T = ::cpp2::Animal>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> afraidOfAnimal() && {
-    return afraidOfAnimal_ref();
+    return std::move(*this).afraidOfAnimal_ref();
   }
 
   template <typename..., typename T = ::cpp2::Animal>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> afraidOfAnimal() const&& {
-    return afraidOfAnimal_ref();
+    return std::move(*this).afraidOfAnimal_ref();
   }
 
   template <typename..., typename T = ::std::vector<::cpp2::Vehicle>>
@@ -1270,12 +1270,12 @@ class Person final  {
 
   template <typename..., typename T = ::std::vector<::cpp2::Vehicle>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> vehicles() && {
-    return vehicles_ref();
+    return std::move(*this).vehicles_ref();
   }
 
   template <typename..., typename T = ::std::vector<::cpp2::Vehicle>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> vehicles() const&& {
-    return vehicles_ref();
+    return std::move(*this).vehicles_ref();
   }
 
   ::cpp2::PersonID get_id() const {

@@ -67,3 +67,19 @@ TEST(Mixin, WithRefSuffix) {
   EXPECT_EQ(s.field5_ref().value(), "5");
   EXPECT_FALSE(s.field6_ref().has_value());
 }
+
+TEST(Mixin, Type) {
+  cpp2::Foo foo;
+  static_assert(std::is_same_v<
+                decltype(foo.field1()),
+                apache::thrift::field_ref<std::string&>>);
+  static_assert(std::is_same_v<
+                decltype(std::as_const(foo).field1()),
+                apache::thrift::field_ref<const std::string&>>);
+  static_assert(std::is_same_v<
+                decltype(std::move(foo).field1()),
+                apache::thrift::field_ref<std::string&&>>);
+  static_assert(std::is_same_v<
+                decltype(std::move(std::as_const(foo)).field1()),
+                apache::thrift::field_ref<const std::string&&>>);
+}

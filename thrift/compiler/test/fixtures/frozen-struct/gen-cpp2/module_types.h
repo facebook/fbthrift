@@ -215,12 +215,12 @@ class ModuleA final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> i32Field() && {
-    return i32Field_ref();
+    return std::move(*this).i32Field_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> i32Field() const&& {
-    return i32Field_ref();
+    return std::move(*this).i32Field_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -255,12 +255,12 @@ class ModuleA final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> strField() && {
-    return strField_ref();
+    return std::move(*this).strField_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> strField() const&& {
-    return strField_ref();
+    return std::move(*this).strField_ref();
   }
 
   template <typename..., typename T = ::std::vector<::std::int16_t>>
@@ -295,12 +295,12 @@ class ModuleA final  {
 
   template <typename..., typename T = ::std::vector<::std::int16_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> listField() && {
-    return listField_ref();
+    return std::move(*this).listField_ref();
   }
 
   template <typename..., typename T = ::std::vector<::std::int16_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> listField() const&& {
-    return listField_ref();
+    return std::move(*this).listField_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
@@ -335,12 +335,12 @@ class ModuleA final  {
 
   template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> mapField() && {
-    return mapField_ref();
+    return std::move(*this).mapField_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> mapField() const&& {
-    return mapField_ref();
+    return std::move(*this).mapField_ref();
   }
 
   template <typename..., typename T = ::some::ns::IncludedA>
@@ -375,12 +375,12 @@ class ModuleA final  {
 
   template <typename..., typename T = ::some::ns::IncludedA>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> inclAField() && {
-    return inclAField_ref();
+    return std::move(*this).inclAField_ref();
   }
 
   template <typename..., typename T = ::some::ns::IncludedA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> inclAField() const&& {
-    return inclAField_ref();
+    return std::move(*this).inclAField_ref();
   }
 
   template <typename..., typename T = ::some::ns::IncludedB>
@@ -415,12 +415,12 @@ class ModuleA final  {
 
   template <typename..., typename T = ::some::ns::IncludedB>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> inclBField() && {
-    return inclBField_ref();
+    return std::move(*this).inclBField_ref();
   }
 
   template <typename..., typename T = ::some::ns::IncludedB>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> inclBField() const&& {
-    return inclBField_ref();
+    return std::move(*this).inclBField_ref();
   }
 
   ::std::int32_t get_i32Field() const {
@@ -588,12 +588,12 @@ class ModuleB final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> i32Field() && {
-    return i32Field_ref();
+    return std::move(*this).i32Field_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> i32Field() const&& {
-    return i32Field_ref();
+    return std::move(*this).i32Field_ref();
   }
 
   template <typename..., typename T = ::some::ns::EnumB>
@@ -628,12 +628,12 @@ class ModuleB final  {
 
   template <typename..., typename T = ::some::ns::EnumB>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> inclEnumB() && {
-    return inclEnumB_ref();
+    return std::move(*this).inclEnumB_ref();
   }
 
   template <typename..., typename T = ::some::ns::EnumB>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> inclEnumB() const&& {
-    return inclEnumB_ref();
+    return std::move(*this).inclEnumB_ref();
   }
 
   ::std::int32_t get_i32Field() const {

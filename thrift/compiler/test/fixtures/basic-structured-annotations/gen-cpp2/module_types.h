@@ -258,12 +258,12 @@ class structured_annotation_inline final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> count() && {
-    return count_ref();
+    return std::move(*this).count_ref();
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> count() const&& {
-    return count_ref();
+    return std::move(*this).count_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -298,12 +298,12 @@ class structured_annotation_inline final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name() && {
-    return name_ref();
+    return std::move(*this).name_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> name() const&& {
-    return name_ref();
+    return std::move(*this).name_ref();
   }
 
   ::std::int64_t get_count() const {
@@ -431,12 +431,12 @@ class structured_annotation_with_default final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name() && {
-    return name_ref();
+    return std::move(*this).name_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> name() const&& {
-    return name_ref();
+    return std::move(*this).name_ref();
   }
 
   const ::std::string& get_name() const& {
@@ -555,12 +555,12 @@ class structured_annotation_forward final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> count() && {
-    return count_ref();
+    return std::move(*this).count_ref();
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> count() const&& {
-    return count_ref();
+    return std::move(*this).count_ref();
   }
 
   ::std::int64_t get_count() const {
@@ -676,12 +676,12 @@ class structured_annotation_recursive final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name() && {
-    return name_ref();
+    return std::move(*this).name_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> name() const&& {
-    return name_ref();
+    return std::move(*this).name_ref();
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_recursive>
@@ -716,12 +716,12 @@ class structured_annotation_recursive final  {
 
   template <typename..., typename T = ::cpp2::structured_annotation_recursive>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> recurse() && {
-    return recurse_ref();
+    return std::move(*this).recurse_ref();
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_recursive>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> recurse() const&& {
-    return recurse_ref();
+    return std::move(*this).recurse_ref();
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_forward>
@@ -756,12 +756,12 @@ class structured_annotation_recursive final  {
 
   template <typename..., typename T = ::cpp2::structured_annotation_forward>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> forward() && {
-    return forward_ref();
+    return std::move(*this).forward_ref();
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_forward>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> forward() const&& {
-    return forward_ref();
+    return std::move(*this).forward_ref();
   }
 
   const ::std::string& get_name() const& {
@@ -898,12 +898,12 @@ class structured_annotation_nested final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name() && {
-    return name_ref();
+    return std::move(*this).name_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> name() const&& {
-    return name_ref();
+    return std::move(*this).name_ref();
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_with_default>
@@ -938,12 +938,12 @@ class structured_annotation_nested final  {
 
   template <typename..., typename T = ::cpp2::structured_annotation_with_default>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> nest() && {
-    return nest_ref();
+    return std::move(*this).nest_ref();
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_with_default>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> nest() const&& {
-    return nest_ref();
+    return std::move(*this).nest_ref();
   }
 
   const ::std::string& get_name() const& {
@@ -1077,12 +1077,12 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotated_field() && {
-    return annotated_field_ref();
+    return std::move(*this).annotated_field_ref();
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> annotated_field() const&& {
-    return annotated_field_ref();
+    return std::move(*this).annotated_field_ref();
   }
 
   template <typename..., typename T = ::cpp2::annotated_inline_string>
@@ -1117,12 +1117,12 @@ class MyStruct final  {
 
   template <typename..., typename T = ::cpp2::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotated_type() && {
-    return annotated_type_ref();
+    return std::move(*this).annotated_type_ref();
   }
 
   template <typename..., typename T = ::cpp2::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> annotated_type() const&& {
-    return annotated_type_ref();
+    return std::move(*this).annotated_type_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -1157,12 +1157,12 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotated_recursive() && {
-    return annotated_recursive_ref();
+    return std::move(*this).annotated_recursive_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> annotated_recursive() const&& {
-    return annotated_recursive_ref();
+    return std::move(*this).annotated_recursive_ref();
   }
 
   template <typename..., typename T = ::std::int64_t>
@@ -1197,12 +1197,12 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotated_nested() && {
-    return annotated_nested_ref();
+    return std::move(*this).annotated_nested_ref();
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> annotated_nested() const&& {
-    return annotated_nested_ref();
+    return std::move(*this).annotated_nested_ref();
   }
 
   ::std::int64_t get_annotated_field() const {

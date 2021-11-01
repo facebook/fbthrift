@@ -205,12 +205,12 @@ class containerStruct2 final  {
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldA() && {
-    return fieldA_ref();
+    return std::move(*this).fieldA_ref();
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldA() const&& {
-    return fieldA_ref();
+    return std::move(*this).fieldA_ref();
   }
 
   template <typename..., typename T = bool>
@@ -265,12 +265,12 @@ class containerStruct2 final  {
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_fieldA() && {
-    return opt_fieldA_ref();
+    return std::move(*this).opt_fieldA_ref();
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> opt_fieldA() const&& {
-    return opt_fieldA_ref();
+    return std::move(*this).opt_fieldA_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::string, bool>>
@@ -305,12 +305,12 @@ class containerStruct2 final  {
 
   template <typename..., typename T = ::std::map<::std::string, bool>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldB() && {
-    return fieldB_ref();
+    return std::move(*this).fieldB_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::string, bool>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldB() const&& {
-    return fieldB_ref();
+    return std::move(*this).fieldB_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::string, bool>>
@@ -365,12 +365,12 @@ class containerStruct2 final  {
 
   template <typename..., typename T = ::std::map<::std::string, bool>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_fieldB() && {
-    return opt_fieldB_ref();
+    return std::move(*this).opt_fieldB_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::string, bool>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> opt_fieldB() const&& {
-    return opt_fieldB_ref();
+    return std::move(*this).opt_fieldB_ref();
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
@@ -405,12 +405,12 @@ class containerStruct2 final  {
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldC() && {
-    return fieldC_ref();
+    return std::move(*this).fieldC_ref();
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldC() const&& {
-    return fieldC_ref();
+    return std::move(*this).fieldC_ref();
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
@@ -465,12 +465,12 @@ class containerStruct2 final  {
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_fieldC() && {
-    return opt_fieldC_ref();
+    return std::move(*this).opt_fieldC_ref();
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> opt_fieldC() const&& {
-    return opt_fieldC_ref();
+    return std::move(*this).opt_fieldC_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -505,12 +505,12 @@ class containerStruct2 final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldD() && {
-    return fieldD_ref();
+    return std::move(*this).fieldD_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldD() const&& {
-    return fieldD_ref();
+    return std::move(*this).fieldD_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -545,12 +545,12 @@ class containerStruct2 final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldE() && {
-    return fieldE_ref();
+    return std::move(*this).fieldE_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldE() const&& {
-    return fieldE_ref();
+    return std::move(*this).fieldE_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -605,12 +605,12 @@ class containerStruct2 final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_fieldE() && {
-    return opt_fieldE_ref();
+    return std::move(*this).opt_fieldE_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> opt_fieldE() const&& {
-    return opt_fieldE_ref();
+    return std::move(*this).opt_fieldE_ref();
   }
 
   bool get_fieldA() const {

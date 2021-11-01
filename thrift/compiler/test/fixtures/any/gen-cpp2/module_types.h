@@ -130,12 +130,12 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myString() && {
-    return myString_ref();
+    return std::move(*this).myString_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> myString() const&& {
-    return myString_ref();
+    return std::move(*this).myString_ref();
   }
 
   const ::std::string& get_myString() const& {

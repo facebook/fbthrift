@@ -191,12 +191,12 @@ class SomeStruct final  {
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> reasonable() && {
-    return reasonable_ref();
+    return std::move(*this).reasonable_ref();
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> reasonable() const&& {
-    return reasonable_ref();
+    return std::move(*this).reasonable_ref();
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
@@ -231,12 +231,12 @@ class SomeStruct final  {
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fine() && {
-    return fine_ref();
+    return std::move(*this).fine_ref();
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fine() const&& {
-    return fine_ref();
+    return std::move(*this).fine_ref();
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
@@ -271,12 +271,12 @@ class SomeStruct final  {
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> questionable() && {
-    return questionable_ref();
+    return std::move(*this).questionable_ref();
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> questionable() const&& {
-    return questionable_ref();
+    return std::move(*this).questionable_ref();
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
@@ -311,12 +311,12 @@ class SomeStruct final  {
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> tags() && {
-    return tags_ref();
+    return std::move(*this).tags_ref();
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> tags() const&& {
-    return tags_ref();
+    return std::move(*this).tags_ref();
   }
 
   ::cpp2::Metasyntactic get_reasonable() const {

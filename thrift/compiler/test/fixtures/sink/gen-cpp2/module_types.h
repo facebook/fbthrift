@@ -153,12 +153,12 @@ class InitialResponse final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> content() && {
-    return content_ref();
+    return std::move(*this).content_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> content() const&& {
-    return content_ref();
+    return std::move(*this).content_ref();
   }
 
   const ::std::string& get_content() const& {
@@ -275,12 +275,12 @@ class FinalResponse final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> content() && {
-    return content_ref();
+    return std::move(*this).content_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> content() const&& {
-    return content_ref();
+    return std::move(*this).content_ref();
   }
 
   const ::std::string& get_content() const& {
@@ -397,12 +397,12 @@ class SinkPayload final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> content() && {
-    return content_ref();
+    return std::move(*this).content_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> content() const&& {
-    return content_ref();
+    return std::move(*this).content_ref();
   }
 
   const ::std::string& get_content() const& {
@@ -519,12 +519,12 @@ class CompatibleWithKeywordSink final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> sink() && {
-    return sink_ref();
+    return std::move(*this).sink_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> sink() const&& {
-    return sink_ref();
+    return std::move(*this).sink_ref();
   }
 
   const ::std::string& get_sink() const& {

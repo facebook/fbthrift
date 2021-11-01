@@ -547,12 +547,12 @@ class SimpleStruct final  {
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> is_on() && {
-    return is_on_ref();
+    return std::move(*this).is_on_ref();
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> is_on() const&& {
-    return is_on_ref();
+    return std::move(*this).is_on_ref();
   }
 
   template <typename..., typename T = ::std::int8_t>
@@ -587,12 +587,12 @@ class SimpleStruct final  {
 
   template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> tiny_int() && {
-    return tiny_int_ref();
+    return std::move(*this).tiny_int_ref();
   }
 
   template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> tiny_int() const&& {
-    return tiny_int_ref();
+    return std::move(*this).tiny_int_ref();
   }
 
   template <typename..., typename T = ::std::int16_t>
@@ -627,12 +627,12 @@ class SimpleStruct final  {
 
   template <typename..., typename T = ::std::int16_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> small_int() && {
-    return small_int_ref();
+    return std::move(*this).small_int_ref();
   }
 
   template <typename..., typename T = ::std::int16_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> small_int() const&& {
-    return small_int_ref();
+    return std::move(*this).small_int_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -667,12 +667,12 @@ class SimpleStruct final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> nice_sized_int() && {
-    return nice_sized_int_ref();
+    return std::move(*this).nice_sized_int_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> nice_sized_int() const&& {
-    return nice_sized_int_ref();
+    return std::move(*this).nice_sized_int_ref();
   }
 
   template <typename..., typename T = ::std::int64_t>
@@ -707,12 +707,12 @@ class SimpleStruct final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> big_int() && {
-    return big_int_ref();
+    return std::move(*this).big_int_ref();
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> big_int() const&& {
-    return big_int_ref();
+    return std::move(*this).big_int_ref();
   }
 
   template <typename..., typename T = double>
@@ -747,12 +747,12 @@ class SimpleStruct final  {
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> real() && {
-    return real_ref();
+    return std::move(*this).real_ref();
   }
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> real() const&& {
-    return real_ref();
+    return std::move(*this).real_ref();
   }
 
   template <typename..., typename T = float>
@@ -787,12 +787,12 @@ class SimpleStruct final  {
 
   template <typename..., typename T = float>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> smaller_real() && {
-    return smaller_real_ref();
+    return std::move(*this).smaller_real_ref();
   }
 
   template <typename..., typename T = float>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> smaller_real() const&& {
-    return smaller_real_ref();
+    return std::move(*this).smaller_real_ref();
   }
 
   template <typename..., typename T = ::std::int16_t>
@@ -827,12 +827,12 @@ class SimpleStruct final  {
 
   template <typename..., typename T = ::std::int16_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> hidden_field() && {
-    return hidden_field_ref();
+    return std::move(*this).hidden_field_ref();
   }
 
   template <typename..., typename T = ::std::int16_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> hidden_field() const&& {
-    return hidden_field_ref();
+    return std::move(*this).hidden_field_ref();
   }
 
   bool get_is_on() const {
@@ -1033,12 +1033,12 @@ class ComplexStruct final  {
 
   template <typename..., typename T = ::py3::simple::SimpleStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> structOne() && {
-    return structOne_ref();
+    return std::move(*this).structOne_ref();
   }
 
   template <typename..., typename T = ::py3::simple::SimpleStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> structOne() const&& {
-    return structOne_ref();
+    return std::move(*this).structOne_ref();
   }
 
   template <typename..., typename T = ::py3::simple::SimpleStruct>
@@ -1073,12 +1073,12 @@ class ComplexStruct final  {
 
   template <typename..., typename T = ::py3::simple::SimpleStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> structTwo() && {
-    return structTwo_ref();
+    return std::move(*this).structTwo_ref();
   }
 
   template <typename..., typename T = ::py3::simple::SimpleStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> structTwo() const&& {
-    return structTwo_ref();
+    return std::move(*this).structTwo_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -1113,12 +1113,12 @@ class ComplexStruct final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> an_integer() && {
-    return an_integer_ref();
+    return std::move(*this).an_integer_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> an_integer() const&& {
-    return an_integer_ref();
+    return std::move(*this).an_integer_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -1153,12 +1153,12 @@ class ComplexStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name() && {
-    return name_ref();
+    return std::move(*this).name_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> name() const&& {
-    return name_ref();
+    return std::move(*this).name_ref();
   }
 
   template <typename..., typename T = ::py3::simple::AnEnum>
@@ -1193,12 +1193,12 @@ class ComplexStruct final  {
 
   template <typename..., typename T = ::py3::simple::AnEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> an_enum() && {
-    return an_enum_ref();
+    return std::move(*this).an_enum_ref();
   }
 
   template <typename..., typename T = ::py3::simple::AnEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> an_enum() const&& {
-    return an_enum_ref();
+    return std::move(*this).an_enum_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -1233,12 +1233,12 @@ class ComplexStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> some_bytes() && {
-    return some_bytes_ref();
+    return std::move(*this).some_bytes_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> some_bytes() const&& {
-    return some_bytes_ref();
+    return std::move(*this).some_bytes_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -1273,12 +1273,12 @@ class ComplexStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> from() && {
-    return from_ref();
+    return std::move(*this).from_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> from() const&& {
-    return from_ref();
+    return std::move(*this).from_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -1313,12 +1313,12 @@ class ComplexStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> cdef() && {
-    return cdef_ref();
+    return std::move(*this).cdef_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> cdef() const&& {
-    return cdef_ref();
+    return std::move(*this).cdef_ref();
   }
 
   template <typename..., typename T = ::py3::simple::foo_bar>
@@ -1353,12 +1353,12 @@ class ComplexStruct final  {
 
   template <typename..., typename T = ::py3::simple::foo_bar>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> bytes_with_cpp_type() && {
-    return bytes_with_cpp_type_ref();
+    return std::move(*this).bytes_with_cpp_type_ref();
   }
 
   template <typename..., typename T = ::py3::simple::foo_bar>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> bytes_with_cpp_type() const&& {
-    return bytes_with_cpp_type_ref();
+    return std::move(*this).bytes_with_cpp_type_ref();
   }
   const ::py3::simple::SimpleStruct& get_structOne() const&;
   ::py3::simple::SimpleStruct get_structOne() &&;
@@ -1774,12 +1774,12 @@ class BinaryUnionStruct final  {
 
   template <typename..., typename T = ::py3::simple::BinaryUnion>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> u() && {
-    return u_ref();
+    return std::move(*this).u_ref();
   }
 
   template <typename..., typename T = ::py3::simple::BinaryUnion>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> u() const&& {
-    return u_ref();
+    return std::move(*this).u_ref();
   }
   const ::py3::simple::BinaryUnion& get_u() const&;
   ::py3::simple::BinaryUnion get_u() &&;

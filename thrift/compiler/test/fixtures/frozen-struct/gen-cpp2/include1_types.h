@@ -125,12 +125,12 @@ class IncludedA final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> i32Field() && {
-    return i32Field_ref();
+    return std::move(*this).i32Field_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> i32Field() const&& {
-    return i32Field_ref();
+    return std::move(*this).i32Field_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -165,12 +165,12 @@ class IncludedA final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> strField() && {
-    return strField_ref();
+    return std::move(*this).strField_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> strField() const&& {
-    return strField_ref();
+    return std::move(*this).strField_ref();
   }
 
   ::std::int32_t get_i32Field() const {

@@ -255,12 +255,12 @@ class MyStruct final  {
 
   template <typename..., typename T = ::test::fixtures::enumstrict::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myEnum() && {
-    return myEnum_ref();
+    return std::move(*this).myEnum_ref();
   }
 
   template <typename..., typename T = ::test::fixtures::enumstrict::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> myEnum() const&& {
-    return myEnum_ref();
+    return std::move(*this).myEnum_ref();
   }
 
   template <typename..., typename T = ::test::fixtures::enumstrict::MyBigEnum>
@@ -295,12 +295,12 @@ class MyStruct final  {
 
   template <typename..., typename T = ::test::fixtures::enumstrict::MyBigEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myBigEnum() && {
-    return myBigEnum_ref();
+    return std::move(*this).myBigEnum_ref();
   }
 
   template <typename..., typename T = ::test::fixtures::enumstrict::MyBigEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> myBigEnum() const&& {
-    return myBigEnum_ref();
+    return std::move(*this).myBigEnum_ref();
   }
 
   ::test::fixtures::enumstrict::MyEnum get_myEnum() const {

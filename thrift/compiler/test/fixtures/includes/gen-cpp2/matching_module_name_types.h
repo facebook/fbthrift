@@ -119,12 +119,12 @@ class MyStruct final  {
 
   template <typename..., typename T = ::matching_module_name::OtherStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> OtherStructField() && {
-    return OtherStructField_ref();
+    return std::move(*this).OtherStructField_ref();
   }
 
   template <typename..., typename T = ::matching_module_name::OtherStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> OtherStructField() const&& {
-    return OtherStructField_ref();
+    return std::move(*this).OtherStructField_ref();
   }
   const ::matching_module_name::OtherStruct& get_OtherStructField() const&;
   ::matching_module_name::OtherStruct get_OtherStructField() &&;

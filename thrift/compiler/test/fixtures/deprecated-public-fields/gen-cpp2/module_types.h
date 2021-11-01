@@ -127,12 +127,12 @@ class Foo final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> foo() && {
-    return foo_ref();
+    return std::move(*this).foo_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> foo() const&& {
-    return foo_ref();
+    return std::move(*this).foo_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>

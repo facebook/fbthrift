@@ -142,12 +142,12 @@ class Foo final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field1() && {
-    return field1_ref();
+    return std::move(*this).field1_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field1() const&& {
-    return field1_ref();
+    return std::move(*this).field1_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -182,12 +182,12 @@ class Foo final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field2() && {
-    return field2_ref();
+    return std::move(*this).field2_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field2() const&& {
-    return field2_ref();
+    return std::move(*this).field2_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -222,12 +222,12 @@ class Foo final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field3() && {
-    return field3_ref();
+    return std::move(*this).field3_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field3() const&& {
-    return field3_ref();
+    return std::move(*this).field3_ref();
   }
 
   template <typename..., typename T = double>
@@ -262,12 +262,12 @@ class Foo final  {
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field4() && {
-    return field4_ref();
+    return std::move(*this).field4_ref();
   }
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field4() const&& {
-    return field4_ref();
+    return std::move(*this).field4_ref();
   }
 
   const ::std::int32_t* get_field1() const& {

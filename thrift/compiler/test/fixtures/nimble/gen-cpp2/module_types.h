@@ -163,12 +163,12 @@ class BasicTypes final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> second() && {
-    return second_ref();
+    return std::move(*this).second_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> second() const&& {
-    return second_ref();
+    return std::move(*this).second_ref();
   }
 
   template <typename..., typename T = ::std::int64_t>
@@ -203,12 +203,12 @@ class BasicTypes final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> third() && {
-    return third_ref();
+    return std::move(*this).third_ref();
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> third() const&& {
-    return third_ref();
+    return std::move(*this).third_ref();
   }
 
   template <typename..., typename T = bool>
@@ -243,12 +243,12 @@ class BasicTypes final  {
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> isTrue() && {
-    return isTrue_ref();
+    return std::move(*this).isTrue_ref();
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> isTrue() const&& {
-    return isTrue_ref();
+    return std::move(*this).isTrue_ref();
   }
 
   ::std::int32_t get_first() const {

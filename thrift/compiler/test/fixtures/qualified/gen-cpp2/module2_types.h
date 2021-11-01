@@ -137,12 +137,12 @@ class Struct final  {
 
   template <typename..., typename T = ::module0::Struct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> first() && {
-    return first_ref();
+    return std::move(*this).first_ref();
   }
 
   template <typename..., typename T = ::module0::Struct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> first() const&& {
-    return first_ref();
+    return std::move(*this).first_ref();
   }
 
   template <typename..., typename T = ::module1::Struct>
@@ -177,12 +177,12 @@ class Struct final  {
 
   template <typename..., typename T = ::module1::Struct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> second() && {
-    return second_ref();
+    return std::move(*this).second_ref();
   }
 
   template <typename..., typename T = ::module1::Struct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> second() const&& {
-    return second_ref();
+    return std::move(*this).second_ref();
   }
   const ::module0::Struct& get_first() const&;
   ::module0::Struct get_first() &&;
@@ -305,12 +305,12 @@ class BigStruct final  {
 
   template <typename..., typename T = ::module2::Struct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> s() && {
-    return s_ref();
+    return std::move(*this).s_ref();
   }
 
   template <typename..., typename T = ::module2::Struct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> s() const&& {
-    return s_ref();
+    return std::move(*this).s_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -345,12 +345,12 @@ class BigStruct final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> id() && {
-    return id_ref();
+    return std::move(*this).id_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> id() const&& {
-    return id_ref();
+    return std::move(*this).id_ref();
   }
   const ::module2::Struct& get_s() const&;
   ::module2::Struct get_s() &&;

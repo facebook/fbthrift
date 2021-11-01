@@ -1382,12 +1382,12 @@ class Val final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> strVal() && {
-    return strVal_ref();
+    return std::move(*this).strVal_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> strVal() const&& {
-    return strVal_ref();
+    return std::move(*this).strVal_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -1422,12 +1422,12 @@ class Val final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> intVal() && {
-    return intVal_ref();
+    return std::move(*this).intVal_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> intVal() const&& {
-    return intVal_ref();
+    return std::move(*this).intVal_ref();
   }
 
   template <typename..., typename T = ::cpp2::containerTypedef>
@@ -1462,12 +1462,12 @@ class Val final  {
 
   template <typename..., typename T = ::cpp2::containerTypedef>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> typedefValue() && {
-    return typedefValue_ref();
+    return std::move(*this).typedefValue_ref();
   }
 
   template <typename..., typename T = ::cpp2::containerTypedef>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> typedefValue() const&& {
-    return typedefValue_ref();
+    return std::move(*this).typedefValue_ref();
   }
 
   const ::std::string& get_strVal() const& {
@@ -2174,12 +2174,12 @@ class NonCopyableStruct final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> num() && {
-    return num_ref();
+    return std::move(*this).num_ref();
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> num() const&& {
-    return num_ref();
+    return std::move(*this).num_ref();
   }
 
   ::std::int64_t get_num() const {

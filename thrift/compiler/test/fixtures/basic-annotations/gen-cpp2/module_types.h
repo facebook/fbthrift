@@ -208,12 +208,12 @@ class MyStructNestedAnnotation final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name() && {
-    return name_ref();
+    return std::move(*this).name_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> name() const&& {
-    return name_ref();
+    return std::move(*this).name_ref();
   }
 
   const ::std::string& get_name() const& {
@@ -349,12 +349,12 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> majorVer() && {
-    return majorVer_ref();
+    return std::move(*this).majorVer_ref();
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> majorVer() const&& {
-    return majorVer_ref();
+    return std::move(*this).majorVer_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -389,12 +389,12 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> package() && {
-    return package_ref();
+    return std::move(*this).package_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> package() const&& {
-    return package_ref();
+    return std::move(*this).package_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -429,12 +429,12 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotation_with_quote() && {
-    return annotation_with_quote_ref();
+    return std::move(*this).annotation_with_quote_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> annotation_with_quote() const&& {
-    return annotation_with_quote_ref();
+    return std::move(*this).annotation_with_quote_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -469,12 +469,12 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> class_() && {
-    return class__ref();
+    return std::move(*this).class__ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> class_() const&& {
-    return class__ref();
+    return std::move(*this).class__ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -509,12 +509,12 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotation_with_trailing_comma() && {
-    return annotation_with_trailing_comma_ref();
+    return std::move(*this).annotation_with_trailing_comma_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> annotation_with_trailing_comma() const&& {
-    return annotation_with_trailing_comma_ref();
+    return std::move(*this).annotation_with_trailing_comma_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -549,12 +549,12 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> empty_annotations() && {
-    return empty_annotations_ref();
+    return std::move(*this).empty_annotations_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> empty_annotations() const&& {
-    return empty_annotations_ref();
+    return std::move(*this).empty_annotations_ref();
   }
 
   ::std::int64_t get_majorVer() const {
@@ -744,12 +744,12 @@ class SecretStruct final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> id() && {
-    return id_ref();
+    return std::move(*this).id_ref();
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> id() const&& {
-    return id_ref();
+    return std::move(*this).id_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -784,12 +784,12 @@ class SecretStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> password() && {
-    return password_ref();
+    return std::move(*this).password_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> password() const&& {
-    return password_ref();
+    return std::move(*this).password_ref();
   }
 
   ::std::int64_t get_id() const {

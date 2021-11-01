@@ -292,12 +292,12 @@ class SmallStruct final  {
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> small_A() && {
-    return small_A_ref();
+    return std::move(*this).small_A_ref();
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> small_A() const&& {
-    return small_A_ref();
+    return std::move(*this).small_A_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -332,12 +332,12 @@ class SmallStruct final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> small_B() && {
-    return small_B_ref();
+    return std::move(*this).small_B_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> small_B() const&& {
-    return small_B_ref();
+    return std::move(*this).small_B_ref();
   }
 
   bool get_small_A() const {
@@ -503,12 +503,12 @@ class containerStruct final  {
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldA() && {
-    return fieldA_ref();
+    return std::move(*this).fieldA_ref();
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldA() const&& {
-    return fieldA_ref();
+    return std::move(*this).fieldA_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::string, bool>>
@@ -543,12 +543,12 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::string, bool>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldB() && {
-    return fieldB_ref();
+    return std::move(*this).fieldB_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::string, bool>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldB() const&& {
-    return fieldB_ref();
+    return std::move(*this).fieldB_ref();
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
@@ -583,12 +583,12 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldC() && {
-    return fieldC_ref();
+    return std::move(*this).fieldC_ref();
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldC() const&& {
-    return fieldC_ref();
+    return std::move(*this).fieldC_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -623,12 +623,12 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldD() && {
-    return fieldD_ref();
+    return std::move(*this).fieldD_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldD() const&& {
-    return fieldD_ref();
+    return std::move(*this).fieldD_ref();
   }
 
   template <typename..., typename T = ::std::string>
@@ -663,12 +663,12 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldE() && {
-    return fieldE_ref();
+    return std::move(*this).fieldE_ref();
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldE() const&& {
-    return fieldE_ref();
+    return std::move(*this).fieldE_ref();
   }
 
   template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::int32_t>>>>
@@ -703,12 +703,12 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::int32_t>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldF() && {
-    return fieldF_ref();
+    return std::move(*this).fieldF_ref();
   }
 
   template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::int32_t>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldF() const&& {
-    return fieldF_ref();
+    return std::move(*this).fieldF_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>>
@@ -743,12 +743,12 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldG() && {
-    return fieldG_ref();
+    return std::move(*this).fieldG_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldG() const&& {
-    return fieldG_ref();
+    return std::move(*this).fieldG_ref();
   }
 
   template <typename..., typename T = ::std::vector<::std::set<::std::int32_t>>>
@@ -783,12 +783,12 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::vector<::std::set<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldH() && {
-    return fieldH_ref();
+    return std::move(*this).fieldH_ref();
   }
 
   template <typename..., typename T = ::std::vector<::std::set<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldH() const&& {
-    return fieldH_ref();
+    return std::move(*this).fieldH_ref();
   }
 
   template <typename..., typename T = bool>
@@ -823,12 +823,12 @@ class containerStruct final  {
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldI() && {
-    return fieldI_ref();
+    return std::move(*this).fieldI_ref();
   }
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldI() const&& {
-    return fieldI_ref();
+    return std::move(*this).fieldI_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::std::vector<::std::int32_t>>>
@@ -863,12 +863,12 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::string, ::std::vector<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldJ() && {
-    return fieldJ_ref();
+    return std::move(*this).fieldJ_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::std::vector<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldJ() const&& {
-    return fieldJ_ref();
+    return std::move(*this).fieldJ_ref();
   }
 
   template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>>
@@ -903,12 +903,12 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldK() && {
-    return fieldK_ref();
+    return std::move(*this).fieldK_ref();
   }
 
   template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldK() const&& {
-    return fieldK_ref();
+    return std::move(*this).fieldK_ref();
   }
 
   template <typename..., typename T = ::std::set<::std::set<::std::set<bool>>>>
@@ -943,12 +943,12 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::set<::std::set<::std::set<bool>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldL() && {
-    return fieldL_ref();
+    return std::move(*this).fieldL_ref();
   }
 
   template <typename..., typename T = ::std::set<::std::set<::std::set<bool>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldL() const&& {
-    return fieldL_ref();
+    return std::move(*this).fieldL_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
@@ -983,12 +983,12 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldM() && {
-    return fieldM_ref();
+    return std::move(*this).fieldM_ref();
   }
 
   template <typename..., typename T = ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldM() const&& {
-    return fieldM_ref();
+    return std::move(*this).fieldM_ref();
   }
 
   template <typename..., typename T = ::std::vector<::cpp2::IndirectionA>>
@@ -1023,12 +1023,12 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::vector<::cpp2::IndirectionA>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldN() && {
-    return fieldN_ref();
+    return std::move(*this).fieldN_ref();
   }
 
   template <typename..., typename T = ::std::vector<::cpp2::IndirectionA>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldN() const&& {
-    return fieldN_ref();
+    return std::move(*this).fieldN_ref();
   }
 
   template <typename..., typename T = ::std::vector<::cpp2::IndirectionB>>
@@ -1063,12 +1063,12 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::vector<::cpp2::IndirectionB>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldO() && {
-    return fieldO_ref();
+    return std::move(*this).fieldO_ref();
   }
 
   template <typename..., typename T = ::std::vector<::cpp2::IndirectionB>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldO() const&& {
-    return fieldO_ref();
+    return std::move(*this).fieldO_ref();
   }
 
   template <typename..., typename T = ::std::vector<::cpp2::IndirectionC>>
@@ -1103,12 +1103,12 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::vector<::cpp2::IndirectionC>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldP() && {
-    return fieldP_ref();
+    return std::move(*this).fieldP_ref();
   }
 
   template <typename..., typename T = ::std::vector<::cpp2::IndirectionC>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldP() const&& {
-    return fieldP_ref();
+    return std::move(*this).fieldP_ref();
   }
 
   template <typename..., typename T = ::cpp2::MyEnumA>
@@ -1143,12 +1143,12 @@ class containerStruct final  {
 
   template <typename..., typename T = ::cpp2::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldQ() && {
-    return fieldQ_ref();
+    return std::move(*this).fieldQ_ref();
   }
 
   template <typename..., typename T = ::cpp2::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldQ() const&& {
-    return fieldQ_ref();
+    return std::move(*this).fieldQ_ref();
   }
   template <typename ..., typename T = ::std::unique_ptr<::std::map<::std::string, bool>>>
   FOLLY_ERASE T& fieldR_ref() & { return fieldR; }

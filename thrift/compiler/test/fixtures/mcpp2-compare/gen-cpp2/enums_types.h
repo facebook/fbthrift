@@ -295,12 +295,12 @@ class SomeStruct final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldA() && {
-    return fieldA_ref();
+    return std::move(*this).fieldA_ref();
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldA() const&& {
-    return fieldA_ref();
+    return std::move(*this).fieldA_ref();
   }
 
   ::std::int32_t get_fieldA() const {

@@ -50,12 +50,12 @@
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&&> <%field:cpp_name%>() && {
-    return <%field:cpp_name%>_ref();
+    return std::move(*this).<%field:cpp_name%>_ref();
   }
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&&> <%field:cpp_name%>() const&& {
-    return <%field:cpp_name%>_ref();
+    return std::move(*this).<%field:cpp_name%>_ref();
   }
 <%/field:eligible_for_storage_name_mangling?%>
 <%/field:boxed_ref?%>
@@ -109,12 +109,12 @@
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> <%field:cpp_name%>() && {
-    return <%field:cpp_name%>_ref();
+    return std::move(*this).<%field:cpp_name%>_ref();
   }
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> <%field:cpp_name%>() const&& {
-    return <%field:cpp_name%>_ref();
+    return std::move(*this).<%field:cpp_name%>_ref();
   }
 <%/field:eligible_for_storage_name_mangling?%>
 <%/field:optional?%>
@@ -154,12 +154,12 @@
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> <%field:cpp_name%>() && {
-    return <%field:cpp_name%>_ref();
+    return std::move(*this).<%field:cpp_name%>_ref();
   }
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> <%field:cpp_name%>() const&& {
-    return <%field:cpp_name%>_ref();
+    return std::move(*this).<%field:cpp_name%>_ref();
   }
 <%/field:eligible_for_storage_name_mangling?%>
 <%/field:required?%>
@@ -198,12 +198,12 @@
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> <%field:cpp_name%>() && {
-    return <%field:cpp_name%>_ref();
+    return std::move(*this).<%field:cpp_name%>_ref();
   }
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> <%field:cpp_name%>() const&& {
-    return <%field:cpp_name%>_ref();
+    return std::move(*this).<%field:cpp_name%>_ref();
   }
 <%/field:eligible_for_storage_name_mangling?%>
 <%/field:required?%><%/field:optional?%>
@@ -211,10 +211,10 @@
 <%#struct:mixin_fields%>
   FOLLY_ERASE auto <%mixin:field_name%>_ref() &       { return <%mixin:name%>_ref()-><%mixin:field_name%>_ref(); }
   FOLLY_ERASE auto <%mixin:field_name%>_ref() const&  { return <%mixin:name%>_ref()-><%mixin:field_name%>_ref(); }
-  FOLLY_ERASE auto <%mixin:field_name%>_ref() &&      { return <%mixin:name%>_ref()-><%mixin:field_name%>_ref(); }
-  FOLLY_ERASE auto <%mixin:field_name%>_ref() const&& { return <%mixin:name%>_ref()-><%mixin:field_name%>_ref(); }
+  FOLLY_ERASE auto <%mixin:field_name%>_ref() &&      { return std::move(*<%mixin:name%>_ref()).<%mixin:field_name%>_ref(); }
+  FOLLY_ERASE auto <%mixin:field_name%>_ref() const&& { return std::move(*<%mixin:name%>_ref()).<%mixin:field_name%>_ref(); }
   FOLLY_ERASE auto <%mixin:field_name%>() &           { return <%mixin:field_name%>_ref(); }
   FOLLY_ERASE auto <%mixin:field_name%>() const&      { return <%mixin:field_name%>_ref(); }
-  FOLLY_ERASE auto <%mixin:field_name%>() &&          { return <%mixin:field_name%>_ref(); }
-  FOLLY_ERASE auto <%mixin:field_name%>() const&&     { return <%mixin:field_name%>_ref(); }
+  FOLLY_ERASE auto <%mixin:field_name%>() &&          { return std::move(*this).<%mixin:field_name%>_ref(); }
+  FOLLY_ERASE auto <%mixin:field_name%>() const&&     { return std::move(*this).<%mixin:field_name%>_ref(); }
 <%/struct:mixin_fields%>
