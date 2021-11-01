@@ -124,6 +124,10 @@ FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field2, LazyFooNoChecksum, field2);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field3, LazyFooNoChecksum, field3);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field4, LazyFooNoChecksum, field4);
 
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field1, LazyCppRef, field1);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field2, LazyCppRef, field2);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field3, LazyCppRef, field3);
+
 TYPED_TEST(LazyDeserialization, CheckDataMember) {
   using LazyStruct = typename TypeParam::LazyStruct;
 
@@ -167,6 +171,41 @@ TYPED_TEST(Serialization, CppRef) {
     EXPECT_FALSE(bar.field2_ref());
     EXPECT_FALSE(bar.field3_ref());
   }
+}
+
+TYPED_TEST(Serialization, LazyDeserializeCppRef) {
+  LazyCppRef foo;
+  foo.field1_ref() = std::make_unique<std::vector<int32_t>>(10, 10);
+  foo.field2_ref() = std::make_shared<std::vector<int32_t>>(20, 20);
+  foo.field3_ref() = std::make_shared<std::vector<int32_t>>(30, 30);
+  auto bar = TypeParam::template deserialize<LazyCppRef>(
+      TypeParam::template serialize<std::string>(foo));
+  auto baz = TypeParam::template deserialize<LazyCppRef>(
+      TypeParam::template serialize<std::string>(bar));
+
+  // all fields are not deserialized
+  EXPECT_FALSE(get_field1(bar));
+  EXPECT_FALSE(get_field2(bar));
+  EXPECT_FALSE(get_field3(bar));
+  EXPECT_FALSE(get_field1(baz));
+  EXPECT_FALSE(get_field2(baz));
+  EXPECT_FALSE(get_field3(baz));
+
+  // access all fields
+  EXPECT_EQ(*bar.field1_ref(), std::vector<int32_t>(10, 10));
+  EXPECT_EQ(*bar.field2_ref(), std::vector<int32_t>(20, 20));
+  EXPECT_EQ(*bar.field3_ref(), std::vector<int32_t>(30, 30));
+  EXPECT_EQ(*baz.field1_ref(), std::vector<int32_t>(10, 10));
+  EXPECT_EQ(*baz.field2_ref(), std::vector<int32_t>(20, 20));
+  EXPECT_EQ(*baz.field3_ref(), std::vector<int32_t>(30, 30));
+
+  // now all fields are deserialized
+  EXPECT_TRUE(get_field1(bar));
+  EXPECT_TRUE(get_field2(bar));
+  EXPECT_TRUE(get_field3(bar));
+  EXPECT_TRUE(get_field1(baz));
+  EXPECT_TRUE(get_field2(baz));
+  EXPECT_TRUE(get_field3(baz));
 }
 
 TYPED_TEST(LazyDeserialization, Comparison) {

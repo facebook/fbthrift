@@ -1409,15 +1409,18 @@ template <class Protocol_>
 uint32_t LazyCppRef::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("LazyCppRef");
-  if (this->__fbthrift_field_field1) {
+  if (!(__fbthrift_isDeserialized_.field1 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) ||
+    this->__fbthrift_field_field1) {
     xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_LIST, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::serializedSize<false>(*prot_, *this->__fbthrift_field_field1);
   }
-  if (this->__fbthrift_field_field2) {
+  if (!(__fbthrift_isDeserialized_.field2 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) ||
+    this->__fbthrift_field_field2) {
     xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_LIST, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::serializedSize<false>(*prot_, *this->__fbthrift_field_field2);
   }
-  if (this->__fbthrift_field_field3) {
+  if (!(__fbthrift_isDeserialized_.field3 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) ||
+    this->__fbthrift_field_field3) {
     xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_LIST, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::serializedSize<false>(*prot_, *this->__fbthrift_field_field3);
   }
@@ -1429,15 +1432,18 @@ template <class Protocol_>
 uint32_t LazyCppRef::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("LazyCppRef");
-  if (this->__fbthrift_field_field1) {
+  if (!(__fbthrift_isDeserialized_.field1 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) ||
+    this->__fbthrift_field_field1) {
     xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_LIST, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::serializedSize<false>(*prot_, *this->__fbthrift_field_field1);
   }
-  if (this->__fbthrift_field_field2) {
+  if (!(__fbthrift_isDeserialized_.field2 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) ||
+    this->__fbthrift_field_field2) {
     xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_LIST, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::serializedSize<false>(*prot_, *this->__fbthrift_field_field2);
   }
-  if (this->__fbthrift_field_field3) {
+  if (!(__fbthrift_isDeserialized_.field3 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) ||
+    this->__fbthrift_field_field3) {
     xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_LIST, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::serializedSize<false>(*prot_, *this->__fbthrift_field_field3);
   }
@@ -1451,7 +1457,8 @@ uint32_t LazyCppRef::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("LazyCppRef");
   ::apache::thrift::detail::IndexWriter<Protocol_> indexWriter(prot_, xfer, true);
   bool previousFieldHasValue = true;
-  if (this->__fbthrift_field_field1) {
+  if (!(__fbthrift_isDeserialized_.field1 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) ||
+    this->__fbthrift_field_field1) {
     constexpr int16_t kPrevFieldId = ::apache::thrift::detail::kSizeField.id;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 1, kPrevFieldId>(*prot_, "field1", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -1473,7 +1480,8 @@ uint32_t LazyCppRef::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (this->__fbthrift_field_field2) {
+  if (!(__fbthrift_isDeserialized_.field2 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) ||
+    this->__fbthrift_field_field2) {
     constexpr int16_t kPrevFieldId = 1;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 2, kPrevFieldId>(*prot_, "field2", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -1495,7 +1503,8 @@ uint32_t LazyCppRef::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (this->__fbthrift_field_field3) {
+  if (!(__fbthrift_isDeserialized_.field3 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) ||
+    this->__fbthrift_field_field3) {
     constexpr int16_t kPrevFieldId = 2;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 3, kPrevFieldId>(*prot_, "field3", previousFieldHasValue);
     previousFieldHasValue = true;
