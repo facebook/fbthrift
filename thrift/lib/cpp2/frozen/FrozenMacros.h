@@ -132,7 +132,7 @@
 #define FROZEN_THAW_FIELD(NAME)                                  \
   thawField(self, this->NAME##Field, out.NAME##_ref().ensure()); \
   if (this->NAME##Field.layout.empty()) {                        \
-    ::apache::thrift::unset_unsafe(out.NAME##_ref());            \
+    out.NAME##_ref().reset();                                    \
   }
 #define FROZEN_THAW_FIELD_OPT(NAME) \
   thawField(self, this->NAME##Field, out.NAME##_ref());

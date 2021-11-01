@@ -1048,7 +1048,7 @@ void thawField(
 template <class T>
 void thawField(ViewPosition self, const Field<T>& f, field_ref<T&> ref) {
   if (f.layout.empty()) {
-    unset_unsafe(ref);
+    ref.reset();
   } else {
     f.layout.thaw(self(f.pos), ref.ensure());
   }
