@@ -81,8 +81,6 @@ cdef extern from "gen-cpp2/module0_types_custom_protocol.h" namespace "::module0
         bint operator>=(cStruct&)
         __field_ref[cint32_t] first_ref()
         __field_ref[string] second_ref()
-        cint32_t first
-        string second
 
 
 

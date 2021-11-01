@@ -98,11 +98,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[cCompany] employer_ref()
         __optional_field_ref[double] compensation_ref()
         __optional_field_ref[string] school_ref()
-        cint32_t weeks
-        string title
-        cCompany employer
-        double compensation
-        string school
 
 
     cdef cppclass cRange "::cpp2::Range":
@@ -116,8 +111,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cRange&)
         __required_field_ref[cint32_t] min_ref()
         __required_field_ref[cint32_t] max_ref()
-        cint32_t min
-        cint32_t max
 
 
     cdef cppclass cstruct1 "::cpp2::struct1":
@@ -131,8 +124,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cstruct1&)
         __field_ref[cint32_t] a_ref()
         __field_ref[string] b_ref()
-        cint32_t a
-        string b
 
 
     cdef cppclass cstruct2 "::cpp2::struct2":
@@ -148,10 +139,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[string] b_ref()
         __field_ref[cstruct1] c_ref()
         __field_ref[vector[cint32_t]] d_ref()
-        cint32_t a
-        string b
-        cstruct1 c
-        vector[cint32_t] d
 
 
     cdef cppclass cstruct3 "::cpp2::struct3":
@@ -166,9 +153,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[string] a_ref()
         __field_ref[cint32_t] b_ref()
         __field_ref[cstruct2] c_ref()
-        string a
-        cint32_t b
-        cstruct2 c
 
 
     cdef cppclass cstruct4 "::cpp2::struct4":
@@ -183,9 +167,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[cint32_t] a_ref()
         __optional_field_ref[double] b_ref()
         __optional_field_ref[cint8_t] c_ref()
-        cint32_t a
-        double b
-        cint8_t c
 
     cdef enum cunion1__type "::cpp2::union1::Type":
         cunion1__type___EMPTY__ "::cpp2::union1::Type::__EMPTY__",

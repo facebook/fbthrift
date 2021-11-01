@@ -76,14 +76,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[cmap[string,vector[string]]] mapField_ref()
         __optional_field_ref[cmap[string,vector[string]]] optionalMapField_ref()
         __field_ref[string] binaryField_ref()
-        cint32_t intField
-        cint32_t optionalIntField
-        cint32_t intFieldWithDefault
-        cset[string] setField
-        cset[string] optionalSetField
-        cmap[string,vector[string]] mapField
-        cmap[string,vector[string]] optionalMapField
-        string binaryField
 
     cdef enum cBaz__type "::cpp2::Baz::Type":
         cBaz__type___EMPTY__ "::cpp2::Baz::Type::__EMPTY__",
@@ -127,12 +119,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[vector[cFoo]] optionalStructListField_ref()
         __field_ref[cBaz] unionField_ref()
         __optional_field_ref[cBaz] optionalUnionField_ref()
-        cFoo structField
-        cFoo optionalStructField
-        vector[cFoo] structListField
-        vector[cFoo] optionalStructListField
-        cBaz unionField
-        cBaz optionalUnionField
 
 
     cdef cppclass cStructWithFieldAdapter "::cpp2::StructWithFieldAdapter":
@@ -145,7 +131,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cStructWithFieldAdapter&)
         bint operator>=(cStructWithFieldAdapter&)
         __field_ref[cint32_t] field_ref()
-        cint32_t field
 
 
 

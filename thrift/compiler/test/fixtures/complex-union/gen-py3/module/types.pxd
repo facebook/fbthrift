@@ -142,9 +142,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[string] strVal_ref()
         __field_ref[cint32_t] intVal_ref()
         __field_ref[cmap[cint16_t,string]] typedefValue_ref()
-        string strVal
-        cint32_t intVal
-        cmap[cint16_t,string] typedefValue
 
     cdef enum cValUnion__type "::cpp2::ValUnion::Type":
         cValUnion__type___EMPTY__ "::cpp2::ValUnion::Type::__EMPTY__",
@@ -196,7 +193,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cNonCopyableStruct&)
         bint operator>=(cNonCopyableStruct&)
         __field_ref[cint64_t] num_ref()
-        cint64_t num
 
     cdef enum cNonCopyableUnion__type "::cpp2::NonCopyableUnion::Type":
         cNonCopyableUnion__type___EMPTY__ "::cpp2::NonCopyableUnion::Type::__EMPTY__",

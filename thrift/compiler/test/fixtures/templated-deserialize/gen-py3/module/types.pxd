@@ -87,8 +87,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cSmallStruct&)
         __field_ref[cbool] small_A_ref()
         __field_ref[cint32_t] small_B_ref()
-        cbool small_A
-        cint32_t small_B
 
 
     cdef cppclass ccontainerStruct "::cpp2::containerStruct":
@@ -122,28 +120,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         shared_ptr[cSmallStruct] fieldT_ref()
         shared_ptr[const cSmallStruct] fieldU_ref()
         unique_ptr[cSmallStruct] fieldX_ref()
-        cbool fieldA
-        cmap[string,cbool] fieldB
-        cset[cint32_t] fieldC
-        string fieldD
-        string fieldE
-        vector[vector[vector[cint32_t]]] fieldF
-        cmap[string,cmap[string,cmap[string,cint32_t]]] fieldG
-        vector[cset[cint32_t]] fieldH
-        cbool fieldI
-        cmap[string,vector[cint32_t]] fieldJ
-        vector[vector[vector[vector[cint32_t]]]] fieldK
-        cset[cset[cset[cbool]]] fieldL
-        cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]] fieldM
-        vector[Foo] fieldN
-        vector[Bar] fieldO
-        vector[Baz] fieldP
-        cMyEnumA fieldQ
-        unique_ptr[cmap[string,cbool]] fieldR
-        unique_ptr[cSmallStruct] fieldS
-        shared_ptr[cSmallStruct] fieldT
-        shared_ptr[const cSmallStruct] fieldU
-        unique_ptr[cSmallStruct] fieldX
 
 
 

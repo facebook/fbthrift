@@ -80,7 +80,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cMyStructNestedAnnotation&)
         bint operator>=(cMyStructNestedAnnotation&)
         __field_ref[string] name_ref()
-        string name
 
 
     cdef cppclass cMyStruct "::cpp2::MyStruct":
@@ -98,12 +97,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[string] class__ref()
         __field_ref[string] annotation_with_trailing_comma_ref()
         __field_ref[string] empty_annotations_ref()
-        cint64_t major "majorVer"
-        string package
-        string annotation_with_quote
-        string class_
-        string annotation_with_trailing_comma
-        string empty_annotations
 
 
     cdef cppclass cSecretStruct "::cpp2::SecretStruct":
@@ -117,8 +110,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cSecretStruct&)
         __field_ref[cint64_t] id_ref()
         __field_ref[string] password_ref()
-        cint64_t id
-        string password
 
 
 

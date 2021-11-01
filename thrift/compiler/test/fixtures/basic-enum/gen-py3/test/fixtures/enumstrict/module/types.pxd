@@ -95,8 +95,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator>=(cMyStruct&)
         __field_ref[cMyEnum] myEnum_ref()
         __field_ref[cMyBigEnum] myBigEnum_ref()
-        cMyEnum myEnum
-        cMyBigEnum myBigEnum
 
 
 

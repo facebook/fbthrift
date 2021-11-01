@@ -161,9 +161,6 @@ cdef extern from "{{program:includePrefix}}{{program:cpp_gen_path}}/{{program:na
         {{/field:reference?}}
         {{/field:has_ref_accessor?}}
     {{/struct:fields_and_mixin_fields}}
-    {{#struct:py3_fields}}
-        {{#field:type}}{{> types/CythonCppStructFieldType}}{{/field:type}} {{field:py_name}}{{#field:hasModifiedName?}} "{{field:cppName}}"{{/field:hasModifiedName?}}
-    {{/struct:py3_fields}}
     {{/struct:union?}}
     {{#struct:union?}}
         c{{struct:name}}__type getType() const

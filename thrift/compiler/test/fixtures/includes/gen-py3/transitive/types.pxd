@@ -68,7 +68,6 @@ cdef extern from "gen-cpp2/transitive_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cFoo&)
         bint operator>=(cFoo&)
         __field_ref[cint64_t] a_ref()
-        cint64_t a
 
 
 

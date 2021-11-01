@@ -68,7 +68,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cFoo&)
         bint operator>=(cFoo&)
         __field_ref[cint64_t] MyInt_ref()
-        cint64_t MyInt
 
 
 

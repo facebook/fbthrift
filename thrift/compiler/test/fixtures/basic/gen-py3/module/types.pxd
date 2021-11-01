@@ -86,13 +86,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[cbool] oneway_ref()
         __field_ref[cbool] readonly_ref()
         __field_ref[cbool] idempotent_ref()
-        cint64_t MyIntField
-        string MyStringField
-        cMyDataItem MyDataField
-        cMyEnum myEnum
-        cbool oneway
-        cbool readonly
-        cbool idempotent
 
 
     cdef cppclass cMyDataItem "::cpp2::MyDataItem":

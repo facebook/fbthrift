@@ -68,7 +68,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cFiery&)
         bint operator>=(cFiery&)
         __required_field_ref[string] message_ref()
-        string message
 
 
     cdef cppclass cSerious "::cpp2::Serious"(cTException):
@@ -81,7 +80,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cSerious&)
         bint operator>=(cSerious&)
         __optional_field_ref[string] sonnet_ref()
-        string sonnet
 
 
     cdef cppclass cComplexFieldNames "::cpp2::ComplexFieldNames"(cTException):
@@ -95,8 +93,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cComplexFieldNames&)
         __field_ref[string] error_message_ref()
         __field_ref[string] internal_error_message_ref()
-        string error_message
-        string internal_error_message
 
 
     cdef cppclass cCustomFieldNames "::cpp2::CustomFieldNames"(cTException):
@@ -110,8 +106,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cCustomFieldNames&)
         __field_ref[string] error_message_ref()
         __field_ref[string] internal_error_message_ref()
-        string error_message
-        string internal_error_message
 
 
     cdef cppclass cExceptionWithPrimitiveField "::cpp2::ExceptionWithPrimitiveField"(cTException):
@@ -125,8 +119,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cExceptionWithPrimitiveField&)
         __field_ref[string] message_ref()
         __field_ref[cint32_t] error_code_ref()
-        string message
-        cint32_t error_code
 
 
     cdef cppclass cBanal "::cpp2::Banal"(cTException):

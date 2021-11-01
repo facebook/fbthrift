@@ -23,7 +23,7 @@ def simulate_HardError(str errortext, int32_t code):
     cdef shared_ptr[testing.types.cHardError] c_inst
     c_inst = make_shared[testing.types.cHardError]()
     deref(c_inst).errortext_ref().assign(<bytes>errortext.encode('utf-8'))
-    deref(c_inst).code = code
+    deref(c_inst).code_ref().assign(code)
     return testing.types.HardError.create(c_inst)
 
 def simulate_UnusedError(str message):

@@ -112,12 +112,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         unique_ptr[cMyEnum] opt_enum_value_ref()
         unique_ptr[cMyEnum] enum_value_ref()
         unique_ptr[cMyEnum] req_enum_value_ref()
-        unique_ptr[cint64_t] opt_value
-        unique_ptr[cint64_t] value
-        unique_ptr[cint64_t] req_value
-        unique_ptr[cMyEnum] opt_enum_value
-        unique_ptr[cMyEnum] enum_value
-        unique_ptr[cMyEnum] req_enum_value
 
 
     cdef cppclass cMyStruct "::cpp2::MyStruct":
@@ -132,9 +126,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         unique_ptr[cMyField] opt_ref_ref()
         unique_ptr[cMyField] ref_ref()
         unique_ptr[cMyField] req_ref_ref()
-        unique_ptr[cMyField] opt_ref
-        unique_ptr[cMyField] ref
-        unique_ptr[cMyField] req_ref
 
 
     cdef cppclass cStructWithUnion "::cpp2::StructWithUnion":
@@ -149,9 +140,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         unique_ptr[cMyUnion] u_ref()
         unique_ptr[double] aDouble_ref()
         __field_ref[cMyField] f_ref()
-        unique_ptr[cMyUnion] u
-        unique_ptr[double] aDouble
-        cMyField f
 
 
     cdef cppclass cRecursiveStruct "::cpp2::RecursiveStruct":
@@ -164,7 +152,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cRecursiveStruct&)
         bint operator>=(cRecursiveStruct&)
         __optional_field_ref[vector[cRecursiveStruct]] mes_ref()
-        vector[cRecursiveStruct] mes
 
 
     cdef cppclass cStructWithContainers "::cpp2::StructWithContainers":
@@ -182,12 +169,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         unique_ptr[vector[cint32_t]] list_ref_unique_ref()
         shared_ptr[cset[cint32_t]] set_ref_shared_ref()
         shared_ptr[const vector[cint32_t]] list_ref_shared_const_ref()
-        unique_ptr[vector[cint32_t]] list_ref
-        unique_ptr[cset[cint32_t]] set_ref
-        unique_ptr[cmap[cint32_t,cint32_t]] map_ref
-        unique_ptr[vector[cint32_t]] list_ref_unique
-        shared_ptr[cset[cint32_t]] set_ref_shared
-        shared_ptr[const vector[cint32_t]] list_ref_shared_const
 
 
     cdef cppclass cStructWithSharedConst "::cpp2::StructWithSharedConst":
@@ -202,9 +183,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         shared_ptr[const cMyField] opt_shared_const_ref()
         shared_ptr[const cMyField] shared_const_ref()
         shared_ptr[const cMyField] req_shared_const_ref()
-        shared_ptr[const cMyField] opt_shared_const
-        shared_ptr[const cMyField] shared_const
-        shared_ptr[const cMyField] req_shared_const
 
 
     cdef cppclass cEmpty "::cpp2::Empty":
@@ -230,9 +208,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         unique_ptr[cEmpty] def_field_ref()
         unique_ptr[cEmpty] opt_field_ref()
         unique_ptr[cEmpty] req_field_ref()
-        unique_ptr[cEmpty] def_field
-        unique_ptr[cEmpty] opt_field
-        unique_ptr[cEmpty] req_field
 
 
     cdef cppclass cStructWithBox "::cpp2::StructWithBox":
@@ -247,9 +222,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[string] a_ref()
         __optional_field_ref[vector[cint64_t]] b_ref()
         __optional_field_ref[cStructWithRef] c_ref()
-        string a
-        vector[cint64_t] b
-        cStructWithRef c
 
 
     cdef cppclass cStructWithRefTypeUnique "::cpp2::StructWithRefTypeUnique":
@@ -264,9 +236,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         unique_ptr[cEmpty] def_field_ref()
         unique_ptr[cEmpty] opt_field_ref()
         unique_ptr[cEmpty] req_field_ref()
-        unique_ptr[cEmpty] def_field
-        unique_ptr[cEmpty] opt_field
-        unique_ptr[cEmpty] req_field
 
 
     cdef cppclass cStructWithRefTypeShared "::cpp2::StructWithRefTypeShared":
@@ -281,9 +250,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         shared_ptr[cEmpty] def_field_ref()
         shared_ptr[cEmpty] opt_field_ref()
         shared_ptr[cEmpty] req_field_ref()
-        shared_ptr[cEmpty] def_field
-        shared_ptr[cEmpty] opt_field
-        shared_ptr[cEmpty] req_field
 
 
     cdef cppclass cStructWithRefTypeSharedConst "::cpp2::StructWithRefTypeSharedConst":
@@ -298,9 +264,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         shared_ptr[const cEmpty] def_field_ref()
         shared_ptr[const cEmpty] opt_field_ref()
         shared_ptr[const cEmpty] req_field_ref()
-        shared_ptr[const cEmpty] def_field
-        shared_ptr[const cEmpty] opt_field
-        shared_ptr[const cEmpty] req_field
 
 
     cdef cppclass cStructWithRefAndAnnotCppNoexceptMoveCtor "::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor":
@@ -313,7 +276,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cStructWithRefAndAnnotCppNoexceptMoveCtor&)
         bint operator>=(cStructWithRefAndAnnotCppNoexceptMoveCtor&)
         unique_ptr[cEmpty] def_field_ref()
-        unique_ptr[cEmpty] def_field
 
 
     cdef cppclass cStructWithString "::cpp2::StructWithString":
@@ -330,11 +292,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         shared_ptr[const string] def_shared_string_const_ref_ref()
         unique_ptr[string] unique_string_ref_ref()
         shared_ptr[string] shared_string_ref_ref()
-        unique_ptr[string] def_unique_string_ref
-        shared_ptr[string] def_shared_string_ref
-        shared_ptr[const string] def_shared_string_const_ref
-        unique_ptr[string] unique_string_ref
-        shared_ptr[string] shared_string_ref
 
 
 cdef class __MyUnionType(thrift.py3.types.CompiledEnum):

@@ -75,7 +75,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cCustomException&)
         bint operator>=(cCustomException&)
         __field_ref[string] message_ref()
-        string message
 
 
 

@@ -89,7 +89,6 @@ cdef extern from "src/gen-py3cpp/module_types_custom_protocol.h" namespace "::py
         bint operator<=(cSimpleException&)
         bint operator>=(cSimpleException&)
         __field_ref[cint16_t] err_code_ref()
-        cint16_t err_code
 
 
     cdef cppclass cOptionalRefStruct "::py3::simple::OptionalRefStruct":
@@ -102,7 +101,6 @@ cdef extern from "src/gen-py3cpp/module_types_custom_protocol.h" namespace "::py
         bint operator<=(cOptionalRefStruct&)
         bint operator>=(cOptionalRefStruct&)
         __optional_field_ref[unique_ptr[_fbthrift_iobuf.cIOBuf]] optional_blob_ref()
-        unique_ptr[_fbthrift_iobuf.cIOBuf] optional_blob
 
 
     cdef cppclass cSimpleStruct "::py3::simple::SimpleStruct":
@@ -121,13 +119,6 @@ cdef extern from "src/gen-py3cpp/module_types_custom_protocol.h" namespace "::py
         __field_ref[cint64_t] big_int_ref()
         __field_ref[double] real_ref()
         __field_ref[float] smaller_real_ref()
-        cbool is_on
-        cint8_t tiny_int
-        cint16_t small_int
-        cint32_t nice_sized_int
-        cint64_t big_int
-        double real
-        float smaller_real
 
 
     cdef cppclass cComplexStruct "::py3::simple::ComplexStruct":
@@ -148,15 +139,6 @@ cdef extern from "src/gen-py3cpp/module_types_custom_protocol.h" namespace "::py
         __field_ref[string] sender_ref "from_ref"()
         __field_ref[string] cdef__ref "cdef_ref"()
         __field_ref[foo_Bar] bytes_with_cpp_type_ref()
-        cSimpleStruct structOne
-        cSimpleStruct structTwo
-        cint32_t an_integer
-        string name
-        cAnEnum an_enum
-        string some_bytes
-        string sender "from"
-        string cdef_ "cdef"
-        foo_Bar bytes_with_cpp_type
 
     cdef enum cBinaryUnion__type "::py3::simple::BinaryUnion::Type":
         cBinaryUnion__type___EMPTY__ "::py3::simple::BinaryUnion::Type::__EMPTY__",
@@ -174,7 +156,6 @@ cdef extern from "src/gen-py3cpp/module_types_custom_protocol.h" namespace "::py
         cBinaryUnionStruct() except +
         cBinaryUnionStruct(const cBinaryUnionStruct&) except +
         __field_ref[cBinaryUnion] u_ref()
-        cBinaryUnion u
 
 
 

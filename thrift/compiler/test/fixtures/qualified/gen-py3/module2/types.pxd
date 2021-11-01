@@ -71,8 +71,6 @@ cdef extern from "src/gen-cpp2/module2_types_custom_protocol.h" namespace "::mod
         bint operator>=(cStruct&)
         __field_ref[_module0_types.cStruct] first_ref()
         __field_ref[_module1_types.cStruct] second_ref()
-        _module0_types.cStruct first
-        _module1_types.cStruct second
 
 
     cdef cppclass cBigStruct "::module2::BigStruct":
@@ -86,8 +84,6 @@ cdef extern from "src/gen-cpp2/module2_types_custom_protocol.h" namespace "::mod
         bint operator>=(cBigStruct&)
         __field_ref[cStruct] s_ref()
         __field_ref[cint32_t] id_ref()
-        cStruct s
-        cint32_t id
 
 
 

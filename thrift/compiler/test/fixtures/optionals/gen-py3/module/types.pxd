@@ -83,10 +83,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[double] green_ref()
         __field_ref[double] blue_ref()
         __field_ref[double] alpha_ref()
-        double red
-        double green
-        double blue
-        double alpha
 
 
     cdef cppclass cVehicle "::cpp2::Vehicle":
@@ -103,11 +99,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[string] description_ref()
         __optional_field_ref[string] name_ref()
         __optional_field_ref[cbool] hasAC_ref()
-        cColor color
-        string licensePlate
-        string description
-        string name
-        cbool hasAC
 
 
     cdef cppclass cPerson "::cpp2::Person":
@@ -129,16 +120,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[cmap[cAnimal,string]] petNames_ref()
         __optional_field_ref[cAnimal] afraidOfAnimal_ref()
         __optional_field_ref[vector[cVehicle]] vehicles_ref()
-        cint64_t id
-        string name
-        cint16_t age
-        string address
-        cColor favoriteColor
-        cset[cint64_t] friends
-        cint64_t bestFriend
-        cmap[cAnimal,string] petNames
-        cAnimal afraidOfAnimal
-        vector[cVehicle] vehicles
 
 
 
