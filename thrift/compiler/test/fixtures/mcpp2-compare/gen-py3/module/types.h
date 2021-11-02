@@ -478,7 +478,7 @@ void reset_field<::some::valid::ns::AnnotatedStruct>(
       obj.iobuf_type_ref().copy_from(default_inst<::some::valid::ns::AnnotatedStruct>().iobuf_type_ref());
       return;
     case 25:
-      obj.iobuf_ptr.reset();
+      obj.iobuf_ptr_ref()->reset();
       return;
     case 26:
       obj.list_i32_template_ref().copy_from(default_inst<::some::valid::ns::AnnotatedStruct>().list_i32_template_ref());
@@ -517,7 +517,7 @@ void reset_field<::some::valid::ns::AnnotatedStruct>(
       obj.iobuf_type_val_ref().copy_from(default_inst<::some::valid::ns::AnnotatedStruct>().iobuf_type_val_ref());
       return;
     case 38:
-      obj.iobuf_ptr_val.reset();
+      obj.iobuf_ptr_val_ref()->reset();
       return;
     case 39:
       obj.struct_struct_ref().copy_from(default_inst<::some::valid::ns::AnnotatedStruct>().struct_struct_ref());
