@@ -69,7 +69,7 @@ template <typename C>
 template <typename T>
 class ValueGeneratorTest : public ::testing::Test {
  public:
-  using native_type = typename T::native_type;
+  using standard_type = typename T::standard_type;
   static inline const auto values = ValueGenerator<T>::getInterestingValues();
   static inline const auto keyValues = ValueGenerator<T>::getKeyValues();
 };

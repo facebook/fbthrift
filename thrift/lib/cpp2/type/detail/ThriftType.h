@@ -60,7 +60,7 @@ struct map_to {
 template <typename T, typename = void>
 struct is_concrete_type : std::false_type {};
 template <typename T>
-struct is_concrete_type<T, folly::void_t<typename T::native_type>>
+struct is_concrete_type<T, folly::void_t<typename T::standard_type>>
     : std::true_type {};
 template <typename T>
 inline constexpr bool is_concrete_type_v = detail::is_concrete_type<T>::value;
@@ -114,14 +114,14 @@ struct get_name<base_type<B>> {
   }
 };
 
-template <typename Base, typename NativeTs>
+template <typename Base, typename StandardTs>
 struct concrete_type : Base {
-  using native_types = NativeTs;
-  using native_type = fatal::first<NativeTs>;
+  using standard_types = StandardTs;
+  using standard_type = fatal::first<StandardTs>;
 };
 
-template <typename Base, typename NativeTs>
-struct get_name<concrete_type<Base, NativeTs>> : get_name<Base> {};
+template <typename Base, typename StandardTs>
+struct get_name<concrete_type<Base, StandardTs>> : get_name<Base> {};
 
 template <BaseType B, typename T>
 struct cpp_type : concrete_type<base_type<B>, types<T>> {};
@@ -160,10 +160,10 @@ struct get_name<cpp_type<B, T>> {
 };
 
 template <typename T, typename A>
-using expand_types = fatal::transform<typename T::native_types, A>;
+using expand_types = fatal::transform<typename T::standard_types, A>;
 
-template <BaseType B, typename... NativeTs>
-using primitive_type = concrete_type<base_type<B>, types<NativeTs...>>;
+template <BaseType B, typename... StandardTs>
+using primitive_type = concrete_type<base_type<B>, types<StandardTs...>>;
 
 template <typename VT>
 struct base_list : base_type<BaseType::List> {
@@ -220,7 +220,7 @@ template <typename KT, typename VT>
 struct map<KT, VT, if_all_concrete<KT, VT>>
     : concrete_type<
           base_map<KT, VT>,
-          expand_types<VT, map_to<typename KT::native_type>>> {};
+          expand_types<VT, map_to<typename KT::standard_type>>> {};
 
 template <typename KT, typename VT>
 struct get_name<map<KT, VT>> {

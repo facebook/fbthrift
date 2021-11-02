@@ -22,7 +22,9 @@
 //
 // TODO(afuller): Lots more docs (for now see tests for usage).
 // TODO(afuller): Split the traits out of the tag classes, so
-// `type::bool_t::native_type` becomes `type::native_type<type::bool_t>`.
+// `type::bool_t::native_type` becomes `type::native_type<type::bool_t>`
+// and the tags themselves all become empty structs defined in an extremely
+// light weight header.
 #pragma once
 
 #include <thrift/lib/cpp2/type/detail/ThriftType.h>
@@ -249,5 +251,9 @@ constexpr inline BaseType toThriftBaseType(TType type) {
 // type tag's name.
 template <typename T>
 constexpr auto getName = detail::get_name<T>();
+
+// If T is a standard type for TT.
+template <typename TT, typename T>
+struct is_standard_type : fatal::contains<typename TT::standard_types, T> {};
 
 } // namespace apache::thrift::type

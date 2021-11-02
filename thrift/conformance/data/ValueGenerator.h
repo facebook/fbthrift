@@ -45,7 +45,7 @@ struct NamedValue {
 
 // A list of named values for the given thrift type.
 template <typename TT>
-using NamedValues = std::vector<NamedValue<typename TT::native_type>>;
+using NamedValues = std::vector<NamedValue<typename TT::standard_type>>;
 
 // Adds all the values using the given inserter.
 template <typename C, typename I>
@@ -60,7 +60,7 @@ struct BaseValueGenerator {
   static_assert(type::is_concrete_type_v<TT>, "not a concrete type");
 
   using thrift_type = TT;
-  using native_type = typename TT::native_type;
+  using standard_type = typename TT::standard_type;
   using Values = NamedValues<TT>;
 };
 
@@ -82,7 +82,7 @@ template <typename VT>
 struct ValueGenerator<type::list<VT>> : BaseValueGenerator<type::list<VT>> {
   using Base = BaseValueGenerator<type::list<VT>>;
   using Values = typename Base::Values;
-  using native_type = typename Base::native_type;
+  using standard_type = typename Base::standard_type;
 
   FOLLY_EXPORT static const Values& getKeyValues() {
     static auto* kValues =
@@ -105,7 +105,7 @@ template <typename VT>
 struct ValueGenerator<type::set<VT>> : BaseValueGenerator<type::set<VT>> {
   using Base = BaseValueGenerator<type::set<VT>>;
   using Values = typename Base::Values;
-  using native_type = typename Base::native_type;
+  using standard_type = typename Base::standard_type;
 
   FOLLY_EXPORT static const Values& getKeyValues() {
     static auto* kValues =
@@ -129,7 +129,7 @@ struct ValueGenerator<type::map<KT, VT>>
   using Values = typename Base::Values;
   using KeyValues = typename ValueGenerator<KT>::Values;
   using MappedValues = typename ValueGenerator<VT>::Values;
-  using native_type = typename Base::native_type;
+  using standard_type = typename Base::standard_type;
 
   FOLLY_EXPORT static const Values& getKeyValues() {
     // To be used as a 'key' all keys and values must also be usable
@@ -158,15 +158,15 @@ template <typename VT>
 auto ValueGenerator<type::list<VT>>::getValues(
     const typename ValueGenerator<VT>::Values& values) -> Values {
   Values result;
-  result.emplace_back(native_type{}, "empty");
+  result.emplace_back(standard_type{}, "empty");
 
   { // All values.
-    native_type all;
+    standard_type all;
     addValues(values, std::back_inserter(all));
     result.emplace_back(std::move(all), "all");
   }
   { // All values x 2.
-    native_type duplicate;
+    standard_type duplicate;
     addValues(values, std::back_inserter(duplicate));
     addValues(values, std::back_inserter(duplicate));
     result.emplace_back(std::move(duplicate), "duplicate");
@@ -174,14 +174,14 @@ auto ValueGenerator<type::list<VT>>::getValues(
 
   if (values.size() > 1) {
     // Reverse of all interesting values.
-    native_type reverse;
+    standard_type reverse;
     addValues(values, std::back_inserter(reverse));
     std::reverse(reverse.begin(), reverse.end());
     result.emplace_back(std::move(reverse), "reverse");
   }
 
   if (values.size() > 2) { // Otherwise would duplicate interesting or reverse.
-    native_type frontSwap;
+    standard_type frontSwap;
     addValues(values, std::back_inserter(frontSwap));
     std::swap(frontSwap[0], frontSwap[2]);
     result.emplace_back(std::move(frontSwap), "front swap");
@@ -193,14 +193,14 @@ template <typename VT>
 auto ValueGenerator<type::set<VT>>::getValues(
     const typename ValueGenerator<VT>::Values& values) -> Values {
   Values result;
-  result.emplace_back(native_type(), "empty");
+  result.emplace_back(standard_type(), "empty");
 
-  native_type all;
+  standard_type all;
   addValues(values, std::inserter(all, all.begin()));
   result.emplace_back(std::move(all), "all");
 
   for (const auto& value : values) {
-    native_type single;
+    standard_type single;
     single.emplace(value.value);
     result.emplace_back(std::move(single), fmt::format("set({})", value.name));
   }
@@ -211,13 +211,13 @@ template <typename KT, typename VT>
 auto ValueGenerator<type::map<KT, VT>>::getValues(
     const KeyValues& keys, const MappedValues& values) -> Values {
   Values result;
-  result.emplace_back(native_type(), "empty");
+  result.emplace_back(standard_type(), "empty");
   for (const auto& value : values) {
-    native_type allKeys;
+    standard_type allKeys;
     for (const auto& key : keys) {
       allKeys.emplace(key.value, value.value);
 
-      native_type single;
+      standard_type single;
       single.emplace(key.value, value.value);
       result.emplace_back(std::move(single), key.name + " -> " + value.name);
     }

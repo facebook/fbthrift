@@ -39,7 +39,7 @@ void addStringValues(NamedValues<TT>& values) {
 
 template <typename TT, bool key>
 void addNumericValues(NamedValues<TT>& values) {
-  using T = typename TT::native_type;
+  using T = typename TT::standard_type;
   using numeric_limits = std::numeric_limits<T>;
 
   values.emplace_back(0, "zero");
@@ -90,7 +90,7 @@ void addNumericValues(NamedValues<TT>& values) {
 template <typename TT, bool key>
 NamedValues<TT> generateValues() {
   static_assert(type::primitive_types::contains<TT>, "");
-  using T = typename TT::native_type;
+  using T = typename TT::standard_type;
   NamedValues<TT> values;
 
   if constexpr (TT::kBaseType == type::BaseType::Bool) {
