@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/type/UniversalType.h>
+#include <thrift/lib/cpp2/type/UniversalName.h>
 
 #include <algorithm>
 #include <limits>
@@ -103,7 +103,7 @@ void checkDomain(folly::StringPiece domain) {
   }
 }
 
-folly::fbstring TypeHashSha2_256(std::string_view uri) {
+folly::fbstring UniversalHashSha2_256(std::string_view uri) {
   // Save an initalized context.
   static EVP_MD_CTX* kBase = []() {
     auto ctx = newMdContext();
@@ -129,7 +129,7 @@ folly::fbstring TypeHashSha2_256(std::string_view uri) {
   return result;
 }
 
-type_hash_size_t TypeHashSizeSha2_256() {
+hash_size_t UniversalHashSizeSha2_256() {
   return EVP_MD_size(EVP_sha256());
 }
 
@@ -137,7 +137,7 @@ type_hash_size_t TypeHashSizeSha2_256() {
 
 // TODO(afuller): Consider 'normalizing' a folly::Uri instead of
 // requiring the uri be expressed in a restricted cononical form.
-void validateUniversalType(std::string_view uri) {
+void validateUniversalName(std::string_view uri) {
   // We require a minimum 1 domain and 2 path segements, though up to 4 path
   // segements is likely to be common.
   folly::small_vector<folly::StringPiece, 5> segs;
@@ -151,77 +151,79 @@ void validateUniversalType(std::string_view uri) {
   checkTypeSegment(segs[i]);
 }
 
-folly::fbstring getTypeHash(TypeHashAlgorithm alg, std::string_view uri) {
+folly::fbstring getUniversalHash(
+    UniversalHashAlgorithm alg, std::string_view uri) {
   switch (alg) {
-    case TypeHashAlgorithm::Sha2_256:
-      return TypeHashSha2_256(uri);
+    case UniversalHashAlgorithm::Sha2_256:
+      return UniversalHashSha2_256(uri);
     default:
       folly::throw_exception<std::runtime_error>(
           "Unsupported type hash algorithm: " + std::to_string((int)alg));
   }
 }
 
-type_hash_size_t getTypeHashSize(TypeHashAlgorithm alg) {
+hash_size_t getUniversalHashSize(UniversalHashAlgorithm alg) {
   switch (alg) {
-    case TypeHashAlgorithm::Sha2_256:
-      return TypeHashSizeSha2_256();
+    case UniversalHashAlgorithm::Sha2_256:
+      return UniversalHashSizeSha2_256();
     default:
       folly::throw_exception<std::runtime_error>(
           "Unsupported type hash algorithm: " + std::to_string((int)alg));
   }
 }
 
-void validateTypeHash(TypeHashAlgorithm alg, folly::StringPiece typeHash) {
-  auto maxBytes = getTypeHashSize(alg);
-  if (typeHash.size() > std::numeric_limits<type_hash_size_t>::max()) {
+void validateUniversalHash(
+    UniversalHashAlgorithm alg,
+    folly::StringPiece universalHash,
+    hash_size_t minHashBytes) {
+  auto maxBytes = getUniversalHashSize(alg);
+  if (universalHash.size() > std::numeric_limits<hash_size_t>::max()) {
     folly::throw_exception<std::invalid_argument>(fmt::format(
-        "Type hash size must be <= {}, was {}.", maxBytes, typeHash.size()));
+        "Hash size must be <= {}, was {}.", maxBytes, universalHash.size()));
   }
-  auto typeHashBytes = type_hash_size_t(typeHash.size());
-  if (typeHashBytes < kMinTypeHashBytes || typeHashBytes > maxBytes) {
+  auto hashBytes = hash_size_t(universalHash.size());
+  if (hashBytes < minHashBytes || hashBytes > maxBytes) {
     folly::throw_exception<std::invalid_argument>(fmt::format(
-        "Type hash size must be in the range [{}, {}], was {}.",
-        kMinTypeHashBytes,
+        "Hash size must be in the range [{}, {}], was {}.",
+        minHashBytes,
         maxBytes,
-        typeHashBytes));
+        hashBytes));
   }
 }
 
-void validateTypeHashBytes(type_hash_size_t typeHashBytes) {
-  if (typeHashBytes == kDisableTypeHash) {
+void validateUniversalHashBytes(
+    hash_size_t hashBytes, hash_size_t minHashBytes) {
+  if (hashBytes == kDisableUniversalHash) {
     return;
   }
-  if (typeHashBytes < kMinTypeHashBytes) {
+  if (hashBytes < minHashBytes) {
     folly::throw_exception<std::invalid_argument>(fmt::format(
-        "Type hash size must be >= {}, was {}.",
-        kMinTypeHashBytes,
-        typeHashBytes));
+        "Hash size must be >= {}, was {}.", minHashBytes, hashBytes));
   }
 }
 
-bool matchesTypeHash(folly::StringPiece typeHash, folly::StringPiece prefix) {
-  if (typeHash.size() < prefix.size() || prefix.empty()) {
+bool matchesUniversalHash(
+    folly::StringPiece universalHash, folly::StringPiece prefix) {
+  if (universalHash.size() < prefix.size() || prefix.empty()) {
     return false;
   }
-  return typeHash.subpiece(0, prefix.size()) == prefix;
+  return universalHash.subpiece(0, prefix.size()) == prefix;
 }
 
-folly::StringPiece getTypeHashPrefix(
-    folly::StringPiece typeHash, type_hash_size_t typeHashBytes) {
-  return typeHash.subpiece(0, typeHashBytes);
+folly::StringPiece getUniversalHashPrefix(
+    folly::StringPiece universalHash, hash_size_t hashBytes) {
+  return universalHash.subpiece(0, hashBytes);
 }
 
-folly::fbstring maybeGetTypeHashPrefix(
-    TypeHashAlgorithm alg,
-    std::string_view uri,
-    type_hash_size_t typeHashBytes) {
-  if (typeHashBytes == kDisableTypeHash || // Type hash disabled.
-      uri.size() <= size_t(typeHashBytes)) { // Type uri is smaller.
+folly::fbstring maybeGetUniversalHashPrefix(
+    UniversalHashAlgorithm alg, std::string_view uri, hash_size_t hashBytes) {
+  if (hashBytes == kDisableUniversalHash || // Type hash disabled.
+      uri.size() <= size_t(hashBytes)) { // Type uri is smaller.
     return {};
   }
-  folly::fbstring result = getTypeHash(alg, uri);
-  if (result.size() > size_t(typeHashBytes)) {
-    result.resize(typeHashBytes);
+  folly::fbstring result = getUniversalHash(alg, uri);
+  if (result.size() > size_t(hashBytes)) {
+    result.resize(hashBytes);
   }
   return result;
 }

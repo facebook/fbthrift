@@ -112,7 +112,7 @@ class AnyRegistry {
   const AnySerializer* getSerializerByUri(
       const std::string_view uri, const Protocol& protocol) const noexcept;
   const AnySerializer* getSerializerByHash(
-      type::TypeHashAlgorithm alg,
+      type::UniversalHashAlgorithm alg,
       const folly::fbstring& typeHash,
       const Protocol& protocol) const;
 

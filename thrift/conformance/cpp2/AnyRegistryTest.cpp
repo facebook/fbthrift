@@ -21,11 +21,10 @@
 #include <thrift/conformance/cpp2/Any.h>
 #include <thrift/conformance/cpp2/Object.h>
 #include <thrift/conformance/cpp2/Testing.h>
-#include <thrift/lib/cpp2/type/UniversalType.h>
+#include <thrift/lib/cpp2/type/UniversalName.h>
 
 namespace apache::thrift::conformance {
-using type::kDefaultTypeHashBytes;
-using type::kDisableTypeHash;
+using type::kDisableUniversalHash;
 
 namespace {
 
@@ -57,7 +56,7 @@ void checkLongType(int typeBytes, int expectedOutBytes) {
 
   // Should use the type id because it is shorter than the uri.
   Any any = registry.store(1, kFollyToStringProtocol);
-  if (expectedOutBytes == kDisableTypeHash) {
+  if (expectedOutBytes == kDisableUniversalHash) {
     EXPECT_FALSE(any.typeHashPrefixSha2_256_ref());
     EXPECT_TRUE(any.type_ref());
     EXPECT_EQ(
@@ -71,7 +70,7 @@ void checkLongType(int typeBytes, int expectedOutBytes) {
         expectedOutBytes);
     EXPECT_EQ(
         registry.getSerializerByHash(
-            type::TypeHashAlgorithm::Sha2_256,
+            type::UniversalHashAlgorithm::Sha2_256,
             *any.get_typeHashPrefixSha2_256(),
             intCodec.getProtocol()),
         &intCodec);
@@ -84,7 +83,8 @@ void checkLongType(int typeBytes, int expectedOutBytes) {
 
 TEST(AnyRegistryTest, LongType) {
   // Disabled is respected.
-  THRIFT_SCOPED_CHECK(checkLongType(kDisableTypeHash, kDisableTypeHash));
+  THRIFT_SCOPED_CHECK(
+      checkLongType(kDisableUniversalHash, kDisableUniversalHash));
 
   // Unset uses default.
   THRIFT_SCOPED_CHECK(

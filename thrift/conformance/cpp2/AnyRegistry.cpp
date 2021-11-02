@@ -24,17 +24,15 @@
 #include <folly/String.h>
 #include <folly/io/Cursor.h>
 #include <thrift/conformance/cpp2/Any.h>
-#include <thrift/lib/cpp2/type/UniversalType.h>
+#include <thrift/lib/cpp2/type/UniversalName.h>
 
 namespace apache::thrift::conformance {
-using type::containsTypeHash;
-using type::findByTypeHash;
-using type::getTypeHash;
-using type::getTypeHashPrefix;
-using type::kDefaultTypeHashBytes;
-using type::kMinTypeHashBytes;
-using type::maybeGetTypeHashPrefix;
-using type::type_hash_size_t;
+using type::containsUniversalHash;
+using type::findByUniversalHash;
+using type::getUniversalHash;
+using type::getUniversalHashPrefix;
+using type::hash_size_t;
+using type::maybeGetUniversalHashPrefix;
 namespace detail {
 
 AnyRegistry& getGeneratedAnyRegistry() {
@@ -48,13 +46,15 @@ namespace {
 
 folly::fbstring maybeGetTypeHash(
     const ThriftTypeInfo& type,
-    type_hash_size_t defaultTypeHashBytes = kDefaultTypeHashBytes) {
+    hash_size_t defaultTypeHashBytes = kDefaultTypeHashBytes) {
   if (type.typeHashBytes_ref().has_value()) {
     // Use the custom size.
     defaultTypeHashBytes = type.typeHashBytes_ref().value_unchecked();
   }
-  return maybeGetTypeHashPrefix(
-      type::TypeHashAlgorithm::Sha2_256, type.get_uri(), defaultTypeHashBytes);
+  return maybeGetUniversalHashPrefix(
+      type::UniversalHashAlgorithm::Sha2_256,
+      type.get_uri(),
+      defaultTypeHashBytes);
 }
 
 } // namespace
@@ -124,10 +124,10 @@ const AnySerializer* AnyRegistry::getSerializerByUri(
 }
 
 const AnySerializer* AnyRegistry::getSerializerByHash(
-    type::TypeHashAlgorithm alg,
+    type::UniversalHashAlgorithm alg,
     const folly::fbstring& typeHash,
     const Protocol& protocol) const {
-  if (alg != type::TypeHashAlgorithm::Sha2_256) {
+  if (alg != type::UniversalHashAlgorithm::Sha2_256) {
     folly::throw_exception<std::runtime_error>(
         "Unsupported hash algorithm: " + std::to_string(static_cast<int>(alg)));
   }
@@ -285,11 +285,12 @@ bool AnyRegistry::genTypeHashsAndCheckForConflicts(
     return false; // Already exists.
   }
 
-  auto typeHash = getTypeHash(type::TypeHashAlgorithm::Sha2_256, uri);
+  auto typeHash = getUniversalHash(type::UniversalHashAlgorithm::Sha2_256, uri);
   // Find shortest valid type hash prefix.
-  folly::fbstring minTypeHash(getTypeHashPrefix(typeHash, kMinTypeHashBytes));
+  folly::fbstring minTypeHash(
+      getUniversalHashPrefix(typeHash, kMinTypeHashBytes));
   // Check if the minimum type hash would be ambiguous.
-  if (containsTypeHash(hashIndex_, minTypeHash)) {
+  if (containsUniversalHash(hashIndex_, minTypeHash)) {
     return false; // Ambigous with another typeHash.
   }
   typeHashs->emplace_back(std::move(typeHash));
@@ -336,7 +337,7 @@ auto AnyRegistry::getTypeEntryByHash(
   if (typeHash.size() < kMinTypeHashBytes) {
     return nullptr;
   }
-  auto itr = findByTypeHash(hashIndex_, typeHash);
+  auto itr = findByUniversalHash(hashIndex_, typeHash);
   if (itr == hashIndex_.end()) {
     // No match.
     return nullptr;

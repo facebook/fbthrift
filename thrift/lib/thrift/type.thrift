@@ -74,6 +74,6 @@ const byte minTypeHashBytes = 8;
 const byte defaultTypeHashBytes = 16;
 
 // The hash algorithms that can be used with type names.
-enum TypeHashAlgorithm {
+enum UniversalHashAlgorithm {
   Sha2_256 = 1,
 }
