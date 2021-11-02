@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-// TODO(afuller): Switch static std::strings to using the folly singleton
-// library.
-
 #pragma once
 
 #include <map>
@@ -93,19 +90,27 @@ struct types {
 template <typename Ts, typename T, typename R = void>
 using if_contains = std::enable_if_t<Ts::template contains<T>, R>;
 
+// Helper to get human readable name for the type tag.
+template <typename T>
+struct get_name;
+
 template <BaseType B>
 struct base_type {
   static constexpr BaseType kBaseType = B;
-  FOLLY_EXPORT static const std::string& getName() {
-    static std::string kValue = []() {
+};
+
+template <BaseType B>
+struct get_name<base_type<B>> {
+  FOLLY_EXPORT const std::string& operator()() const noexcept {
+    static const auto* kName = new std::string([]() {
       std::string name;
       if (const char* cname = TEnumTraits<BaseType>::findName(B)) {
         name = cname;
         folly::toLowerAscii(name);
       }
       return name;
-    }();
-    return kValue;
+    }());
+    return *kName;
   }
 };
 
@@ -115,10 +120,16 @@ struct concrete_type : Base {
   using native_type = fatal::first<NativeTs>;
 };
 
+template <typename Base, typename NativeTs>
+struct get_name<concrete_type<Base, NativeTs>> : get_name<Base> {};
+
 template <BaseType B, typename T>
-struct cpp_type : concrete_type<base_type<B>, types<T>> {
-  FOLLY_EXPORT static const std::string& getName() {
-    static const std::string kName = []() {
+struct cpp_type : concrete_type<base_type<B>, types<T>> {};
+
+template <BaseType B, typename T>
+struct get_name<cpp_type<B, T>> {
+  FOLLY_EXPORT const std::string& operator()() const noexcept {
+    static const auto* kName = new std::string([]() {
       // TODO(afuller): Return thrift.uri if available.
       if constexpr (B == BaseType::Enum) {
         using info = reflect_enum<T>;
@@ -143,8 +154,8 @@ struct cpp_type : concrete_type<base_type<B>, types<T>> {
             fatal::z_data<typename module::name>(),
             fatal::z_data<typename info::name>());
       }
-    }();
-    return kName;
+    }());
+    return *kName;
   }
 };
 
@@ -157,11 +168,6 @@ using primitive_type = concrete_type<base_type<B>, types<NativeTs...>>;
 template <typename VT>
 struct base_list : base_type<BaseType::List> {
   using value_type = VT;
-
-  FOLLY_EXPORT static const std::string& getName() {
-    static const std::string kName = fmt::format("list<{}>", VT::getName());
-    return kName;
-  }
 };
 
 template <typename VT, typename = void>
@@ -172,12 +178,17 @@ struct list<VT, if_all_concrete<VT>>
     : concrete_type<base_list<VT>, expand_types<VT, vector_of>> {};
 
 template <typename VT>
+struct get_name<list<VT>> {
+  FOLLY_EXPORT const std::string& operator()() const noexcept {
+    static const auto* kName =
+        new std::string(fmt::format("list<{}>", get_name<VT>()()));
+    return *kName;
+  }
+};
+
+template <typename VT>
 struct base_set : base_type<BaseType::Set> {
   using value_type = VT;
-  FOLLY_EXPORT static const std::string& getName() {
-    static const std::string kName = fmt::format("set<{}>", VT::getName());
-    return kName;
-  }
 };
 
 template <typename VT, typename = void>
@@ -187,15 +198,19 @@ template <typename VT>
 struct set<VT, if_all_concrete<VT>>
     : concrete_type<base_set<VT>, expand_types<VT, set_of>> {};
 
+template <typename VT>
+struct get_name<set<VT>> {
+  FOLLY_EXPORT const std::string& operator()() const noexcept {
+    static const auto* kName =
+        new std::string(fmt::format("set<{}>", get_name<VT>()()));
+    return *kName;
+  }
+};
+
 template <typename KT, typename VT>
 struct base_map : base_type<BaseType::Map> {
   using key_type = KT;
   using mapped_type = VT;
-  FOLLY_EXPORT static const std::string& getName() {
-    static const std::string kName =
-        fmt::format("map<{}, {}>", KT::getName(), VT::getName());
-    return kName;
-  }
 };
 
 template <typename KT, typename VT, typename = void>
@@ -206,5 +221,14 @@ struct map<KT, VT, if_all_concrete<KT, VT>>
     : concrete_type<
           base_map<KT, VT>,
           expand_types<VT, map_to<typename KT::native_type>>> {};
+
+template <typename KT, typename VT>
+struct get_name<map<KT, VT>> {
+  FOLLY_EXPORT const std::string& operator()() const noexcept {
+    static const std::string* kName = new std::string(
+        fmt::format("map<{}, {}>", get_name<KT>()(), get_name<VT>()()));
+    return *kName;
+  }
+};
 
 } // namespace apache::thrift::type::detail

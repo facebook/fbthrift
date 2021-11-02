@@ -87,12 +87,12 @@ TYPED_TEST_CASE(
     FloatingPointGeneratorTest, gtest_types_t<type::floating_point_types>);
 
 TYPED_TEST(ValueGeneratorTest, UniqueKeys) {
-  SCOPED_TRACE(TypeParam::getName());
+  SCOPED_TRACE(type::getName<TypeParam>());
   EXPECT_TRUE(allUnique(this->keyValues));
 }
 
 TYPED_TEST(ValueGeneratorTest, List_Interesting) {
-  SCOPED_TRACE(TypeParam::getName());
+  SCOPED_TRACE(type::getName<TypeParam>());
   auto lists = ValueGenerator<type::list<TypeParam>>::getInterestingValues();
   size_t count = this->values.size();
   size_t extra = count > 2 ? 2 : (count == 2 ? 1 : 0);
@@ -107,7 +107,7 @@ TYPED_TEST(ValueGeneratorTest, List_Interesting) {
 }
 
 TYPED_TEST(ValueGeneratorTest, List_Key) {
-  SCOPED_TRACE(TypeParam::getName());
+  SCOPED_TRACE(type::getName<TypeParam>());
   auto lists = ValueGenerator<type::list<TypeParam>>::getKeyValues();
   size_t count = this->keyValues.size();
   size_t extra = count > 2 ? 2 : (count == 2 ? 1 : 0);
@@ -123,7 +123,7 @@ TYPED_TEST(ValueGeneratorTest, List_Key) {
 }
 
 TYPED_TEST(ValueGeneratorTest, Set) {
-  SCOPED_TRACE(TypeParam::getName());
+  SCOPED_TRACE(type::getName<TypeParam>());
   auto sets = ValueGenerator<type::set<TypeParam>>::getInterestingValues();
   EXPECT_EQ(ValueGenerator<type::set<TypeParam>>::getKeyValues(), sets);
   ASSERT_EQ(sets.size(), 2 + this->keyValues.size());
@@ -136,7 +136,7 @@ TYPED_TEST(ValueGeneratorTest, Set) {
 }
 
 TYPED_TEST(ValueGeneratorTest, Map_Interesting) {
-  SCOPED_TRACE(TypeParam::getName());
+  SCOPED_TRACE(type::getName<TypeParam>());
   size_t valueCount = this->values.size();
   size_t keyCount = this->keyValues.size();
   auto maps =
@@ -151,7 +151,7 @@ TYPED_TEST(ValueGeneratorTest, Map_Interesting) {
 }
 
 TYPED_TEST(ValueGeneratorTest, Map_Keys) {
-  SCOPED_TRACE(TypeParam::getName());
+  SCOPED_TRACE(type::getName<TypeParam>());
   size_t valueCount = this->keyValues.size();
   size_t keyCount = this->keyValues.size();
   auto maps = ValueGenerator<type::map<TypeParam, TypeParam>>::getKeyValues();
@@ -166,13 +166,13 @@ TYPED_TEST(ValueGeneratorTest, Map_Keys) {
 }
 
 TYPED_TEST(FloatingPointGeneratorTest, Nan) {
-  SCOPED_TRACE(TypeParam::getName());
+  SCOPED_TRACE(type::getName<TypeParam>());
   EXPECT_TRUE(includesNan(this->values));
   EXPECT_FALSE(includesNan(this->keyValues));
 }
 
 TYPED_TEST(FloatingPointGeneratorTest, NegZero) {
-  SCOPED_TRACE(TypeParam::getName());
+  SCOPED_TRACE(type::getName<TypeParam>());
   EXPECT_TRUE(includesNegZero(this->values));
   EXPECT_FALSE(includesNegZero(this->keyValues));
 }

@@ -22,7 +22,7 @@
 //
 // TODO(afuller): Lots more docs (for now see tests for usage).
 // TODO(afuller): Split the traits out of the tag classes, so
-// `type::bool_t::getName()` becomes `type::getName<type::bool_t>()`.
+// `type::bool_t::native_type` becomes `type::native_type<type::bool_t>`.
 #pragma once
 
 #include <thrift/lib/cpp2/type/detail/ThriftType.h>
@@ -244,5 +244,10 @@ constexpr inline BaseType toThriftBaseType(TType type) {
           "Unsupported conversion from: " + std::to_string(type));
   }
 }
+
+// When called, returns a std::string representing the given
+// type tag's name.
+template <typename T>
+constexpr auto getName = detail::get_name<T>();
 
 } // namespace apache::thrift::type
