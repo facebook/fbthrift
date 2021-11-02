@@ -75,6 +75,7 @@ class mstch_py3lite_type : public mstch_type {
         this,
         {
             {"type:module_path", &mstch_py3lite_type::module_path},
+            {"type:need_module_path?", &mstch_py3lite_type::need_module_path},
             {"type:external_program?",
              &mstch_py3lite_type::is_external_program},
             {"type:integer?", &mstch_py3lite_type::is_integer},
@@ -88,6 +89,18 @@ class mstch_py3lite_type : public mstch_type {
     }
     ss << "_lite_types";
     return ss.str();
+  }
+
+  mstch::node need_module_path() {
+    if (!has_option("is_types_file")) {
+      return true;
+    }
+    if (const t_program* prog = type_->program()) {
+      if (prog != prog_) {
+        return true;
+      }
+    }
+    return false;
   }
 
   mstch::node is_external_program() {
@@ -869,6 +882,7 @@ class t_mstch_py3lite_generator : public t_mstch_generator {
     set_mstch_generators();
     generate_types();
     generate_clients();
+    generate_services();
   }
 
   void fill_validator_list(validator_list& vl) const override {
@@ -876,13 +890,19 @@ class t_mstch_py3lite_generator : public t_mstch_generator {
     vl.add<enum_member_union_field_names_validator>();
   }
 
+  enum TypesFile { IsTypesFile, NotTypesFile };
+
  protected:
   bool should_resolve_typedefs() const override { return true; }
   void set_mstch_generators();
   void generate_file(
-      const std::string& file, const boost::filesystem::path& base);
+      const std::string& file,
+      TypesFile is_types_file,
+      const boost::filesystem::path& base);
+  void set_types_file(bool val);
   void generate_types();
   void generate_clients();
+  void generate_services();
   boost::filesystem::path package_to_path();
 
   const boost::filesystem::path generate_root_path_;
@@ -915,21 +935,37 @@ boost::filesystem::path t_mstch_py3lite_generator::package_to_path() {
 }
 
 void t_mstch_py3lite_generator::generate_file(
-    const std::string& file, const boost::filesystem::path& base = {}) {
+    const std::string& file,
+    TypesFile is_types_file,
+    const boost::filesystem::path& base = {}) {
   auto program = get_program();
   const auto& name = program->name();
+  if (is_types_file == IsTypesFile) {
+    cache_->parsed_options_["is_types_file"] = "";
+  } else {
+    cache_->parsed_options_.erase("is_types_file");
+  }
   auto node_ptr =
       generators_->program_generator_->generate(program, generators_, cache_);
   render_to_file(node_ptr, file, base / name / file);
 }
 
 void t_mstch_py3lite_generator::generate_types() {
-  generate_file("lite_types.py", generate_root_path_);
-  generate_file("lite_types.pyi", generate_root_path_);
+  generate_file("lite_types.py", IsTypesFile, generate_root_path_);
+  generate_file("lite_types.pyi", IsTypesFile, generate_root_path_);
 }
 
 void t_mstch_py3lite_generator::generate_clients() {
-  generate_file("lite_clients.py", generate_root_path_);
+  generate_file("lite_clients.py", NotTypesFile, generate_root_path_);
+}
+
+void t_mstch_py3lite_generator::generate_services() {
+  if (get_program()->services().empty()) {
+    // There is no need to generate empty / broken code for non existent
+    // services.
+    return;
+  }
+  generate_file("lite_services.py", NotTypesFile, generate_root_path_);
 }
 
 THRIFT_REGISTER_GENERATOR(

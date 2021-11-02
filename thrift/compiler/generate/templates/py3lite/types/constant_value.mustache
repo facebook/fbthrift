@@ -38,7 +38,7 @@ file.
 }}{{#value:py3_binary?}}b{{value:py3_string_value}}{{/value:py3_binary?}}{{!
 }}{{#value:const_struct?}}{{!
     }}{{#value:const_struct_type}}{{!
-    }}{{#type:external_program?}}{{type:module_path}}.{{/type:external_program?}}{{!
+    }}{{#type:need_module_path?}}{{type:module_path}}.{{/type:need_module_path?}}{{!
     }}{{#type:struct}}{{struct:name}}{{/type:struct}}{{!
     }}{{/value:const_struct_type}}{{!
     }}({{#value:const_struct}}{{!
@@ -62,8 +62,8 @@ file.
 }}){{/value:list?}}{{!
 }}{{/value:const_struct?}}{{!
 }}{{#value:enum?}}{{!
-    }}{{#value:const_enum_type}}{{#type:external_program?}}{{!
+    }}{{#value:const_enum_type}}{{#type:need_module_path?}}{{!
     }}{{type:module_path}}.{{!
-    }}{{/type:external_program?}}{{/value:const_enum_type}}{{!
+    }}{{/type:need_module_path?}}{{/value:const_enum_type}}{{!
     }}{{value:enum_name}}.{{value:enum_value_name}}{{!
 }}{{/value:enum?}}

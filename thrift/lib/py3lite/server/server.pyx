@@ -152,7 +152,7 @@ cdef class ServiceInterface:
         raise NotImplementedError("Service name not implemented")
 
     def getFunctionTable(self):
-        raise NotImplementedError("Function Table not implemented")
+        return {}
 
     async def __aenter__(self):
         # Establish async context managers as a way for end users to async initalize

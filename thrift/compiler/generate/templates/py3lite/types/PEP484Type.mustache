@@ -31,7 +31,7 @@ thrift-py3 specific container types.
 }}{{#type:string?}}str{{/type:string?}}{{!
 }}{{#type:binary?}}bytes{{/type:binary?}}{{!
 }}{{#type:struct}}{{!
-  }}{{#type:external_program?}}{{type:module_path}}.{{/type:external_program?}}{{!
+    }}{{#type:need_module_path?}}{{type:module_path}}.{{/type:need_module_path?}}{{!
   }}{{struct:name}}{{!
 }}{{/type:struct}}{{!
 }}{{#type:list?}}_typing.Sequence[{{!
@@ -46,6 +46,6 @@ thrift-py3 specific container types.
 }}]{{/type:map?}}{{!
 }}{{#type:void?}}None{{/type:void?}}{{!
 }}{{#type:enum}}{{!
-  }}{{#type:external_program?}}{{type:module_path}}.{{/type:external_program?}}{{!
+  }}{{#type:need_module_path?}}{{type:module_path}}.{{/type:need_module_path?}}{{!
   }}{{enum:name}}{{!
 }}{{/type:enum}}
