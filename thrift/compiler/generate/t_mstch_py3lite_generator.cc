@@ -930,7 +930,6 @@ void t_mstch_py3lite_generator::generate_types() {
 
 void t_mstch_py3lite_generator::generate_clients() {
   generate_file("lite_clients.py", generate_root_path_);
-  generate_file("lite_clients.pyi", generate_root_path_);
 }
 
 THRIFT_REGISTER_GENERATOR(
