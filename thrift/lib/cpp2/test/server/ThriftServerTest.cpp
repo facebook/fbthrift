@@ -388,12 +388,12 @@ void doLoadHeaderTest(bool isRocket) {
 
   auto makeClient = [=](auto& runner) {
     if (!isRocket) {
-      return runner.template newClient<TestServiceAsyncClient>(
+      return runner.template newStickyClient<TestServiceAsyncClient>(
           folly::getGlobalCPUExecutor().get(), [](auto socket) mutable {
             return HeaderClientChannel::newChannel(std::move(socket));
           });
     } else {
-      return runner.template newClient<TestServiceAsyncClient>(
+      return runner.template newStickyClient<TestServiceAsyncClient>(
           folly::getGlobalCPUExecutor().get(), RocketClientChannel::newChannel);
     }
   };
