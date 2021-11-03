@@ -654,6 +654,11 @@ class MyService_MyInteraction extends \ThriftClientBase {
     return;
   }
 
+  /**
+   * Original thrift definition:-
+   * set<float>, sink<string, binary>
+   *   encode();
+   */
   public async function encode(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<Set<arraykey>, string, string>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
@@ -1221,6 +1226,11 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     return;
   }
 
+  /**
+   * Original thrift definition:-
+   * set<float>, sink<string, binary>
+   *   encode();
+   */
   public async function encode(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<Set<arraykey>, string, string>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {

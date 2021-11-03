@@ -432,6 +432,8 @@ class t_hack_generator : public t_oop_generator {
       std::ofstream& out, const t_struct* tstruct, bool is_exception = false);
   void generate_php_docstring_args(
       std::ofstream& out, int start_pos, const t_struct* arg_list);
+  void generate_php_docstring_stream_exceptions(
+      std::ofstream& out, const t_throws* ex);
   std::string render_string(std::string value);
 
   std::string get_stream_function_return_typehint(
@@ -4225,9 +4227,6 @@ void t_hack_generator::generate_php_docstring(
  */
 void t_hack_generator::generate_php_docstring(
     std::ofstream& out, const t_function* tfunction) {
-  if (tfunction->returns_sink()) {
-    return;
-  }
   indent(out) << "/**\n";
   // Copy the doc.
   if (tfunction->has_doc()) {
@@ -4258,22 +4257,22 @@ void t_hack_generator::generate_php_docstring(
       out << "void, ";
     }
     out << "stream<" << thrift_type_name(tstream->get_elem_type());
-
-    // Exceptions.
-    if (t_throws::or_empty(tstream->exceptions())->has_fields()) {
-      out << ", throws (";
-      auto first = true;
-      for (const auto& param : tstream->exceptions()->fields()) {
-        if (first) {
-          first = false;
-        } else {
-          out << ", ";
-        }
-        out << param.id() << ": " << thrift_type_name(param.get_type()) << " "
-            << param.name();
-      }
-      out << ")";
+    generate_php_docstring_stream_exceptions(out, tstream->exceptions());
+    out << ">\n";
+  } else if (
+      const auto* tsink =
+          dynamic_cast<const t_sink*>(tfunction->get_returntype())) {
+    if (tsink->sink_has_first_response()) {
+      out << thrift_type_name(tsink->get_first_response_type()) << ", ";
+    } else {
+      out << "void, ";
     }
+    out << "sink<" << thrift_type_name(tsink->get_sink_type());
+    generate_php_docstring_stream_exceptions(out, tsink->sink_exceptions());
+
+    out << ", " << thrift_type_name(tsink->get_final_response_type());
+    generate_php_docstring_stream_exceptions(
+        out, tsink->final_response_exceptions());
     out << ">\n";
   } else {
     out << thrift_type_name(tfunction->get_returntype()) << "\n";
@@ -4475,6 +4474,24 @@ void t_hack_generator::generate_php_docstring_args(
   }
 }
 
+void t_hack_generator::generate_php_docstring_stream_exceptions(
+    std::ofstream& out, const t_throws* ex) {
+  // Exceptions.
+  if (t_throws::or_empty(ex)->has_fields()) {
+    out << ", throws (";
+    auto first = true;
+    for (const auto& param : ex->fields()) {
+      if (first) {
+        first = false;
+      } else {
+        out << ", ";
+      }
+      out << param.id() << ": " << thrift_type_name(param.get_type()) << " "
+          << param.name();
+    }
+    out << ")";
+  }
+}
 /**
  * Generate an appropriate string for a php typehint
  */

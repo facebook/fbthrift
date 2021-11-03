@@ -25,18 +25,54 @@ interface SinkServiceIf extends \IThriftSyncIf {
  * SinkService
  */
 interface SinkServiceAsyncClientIf extends SinkServiceAsyncIf {
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, FinalResponse>
+   *   method();
+   */
   public function method(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>>;
 
+  /**
+   * Original thrift definition:-
+   * InitialResponse, sink<SinkPayload, FinalResponse>
+   *   methodAndReponse();
+   */
   public function methodAndReponse(): Awaitable<\ResponseAndClientSink<InitialResponse, SinkPayload, FinalResponse>>;
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, FinalResponse>
+   *   methodThrow()
+   *   throws (1: InitialException ex);
+   */
   public function methodThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>>;
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, throws (1: SinkException1 ex), FinalResponse>
+   *   methodSinkThrow();
+   */
   public function methodSinkThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>>;
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, FinalResponse, throws (1: SinkException2 ex)>
+   *   methodFinalThrow();
+   */
   public function methodFinalThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>>;
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, throws (1: SinkException1 ex), FinalResponse, throws (1: SinkException2 ex)>
+   *   methodBothThrow();
+   */
   public function methodBothThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>>;
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, FinalResponse>
+   *   methodFast();
+   */
   public function methodFast(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>>;
 }
 
@@ -45,18 +81,54 @@ interface SinkServiceAsyncClientIf extends SinkServiceAsyncIf {
  * SinkService
  */
 interface SinkServiceClientIf extends \IThriftSyncIf {
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, FinalResponse>
+   *   method();
+   */
   public function method(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>>;
 
+  /**
+   * Original thrift definition:-
+   * InitialResponse, sink<SinkPayload, FinalResponse>
+   *   methodAndReponse();
+   */
   public function methodAndReponse(): Awaitable<\ResponseAndClientSink<InitialResponse, SinkPayload, FinalResponse>>;
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, FinalResponse>
+   *   methodThrow()
+   *   throws (1: InitialException ex);
+   */
   public function methodThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>>;
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, throws (1: SinkException1 ex), FinalResponse>
+   *   methodSinkThrow();
+   */
   public function methodSinkThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>>;
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, FinalResponse, throws (1: SinkException2 ex)>
+   *   methodFinalThrow();
+   */
   public function methodFinalThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>>;
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, throws (1: SinkException1 ex), FinalResponse, throws (1: SinkException2 ex)>
+   *   methodBothThrow();
+   */
   public function methodBothThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>>;
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, FinalResponse>
+   *   methodFast();
+   */
   public function methodFast(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>>;
 }
 
@@ -1245,6 +1317,11 @@ trait SinkServiceClientBase {
 class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsyncClientIf {
   use SinkServiceClientBase;
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, FinalResponse>
+   *   method();
+   */
   public async function method(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
@@ -1283,6 +1360,11 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
+  /**
+   * Original thrift definition:-
+   * InitialResponse, sink<SinkPayload, FinalResponse>
+   *   methodAndReponse();
+   */
   public async function methodAndReponse(): Awaitable<\ResponseAndClientSink<InitialResponse, SinkPayload, FinalResponse>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
@@ -1321,6 +1403,12 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
     return new \ResponseAndClientSink<InitialResponse, SinkPayload, FinalResponse>($first_response, $client_sink_func);
   }
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, FinalResponse>
+   *   methodThrow()
+   *   throws (1: InitialException ex);
+   */
   public async function methodThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
@@ -1359,6 +1447,11 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, throws (1: SinkException1 ex), FinalResponse>
+   *   methodSinkThrow();
+   */
   public async function methodSinkThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
@@ -1397,6 +1490,11 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, FinalResponse, throws (1: SinkException2 ex)>
+   *   methodFinalThrow();
+   */
   public async function methodFinalThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
@@ -1435,6 +1533,11 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, throws (1: SinkException1 ex), FinalResponse, throws (1: SinkException2 ex)>
+   *   methodBothThrow();
+   */
   public async function methodBothThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
@@ -1473,6 +1576,11 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, FinalResponse>
+   *   methodFast();
+   */
   public async function methodFast(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
@@ -1516,6 +1624,11 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
 class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf {
   use SinkServiceClientBase;
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, FinalResponse>
+   *   method();
+   */
   public async function method(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
@@ -1554,6 +1667,11 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
+  /**
+   * Original thrift definition:-
+   * InitialResponse, sink<SinkPayload, FinalResponse>
+   *   methodAndReponse();
+   */
   public async function methodAndReponse(): Awaitable<\ResponseAndClientSink<InitialResponse, SinkPayload, FinalResponse>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
@@ -1592,6 +1710,12 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
     return new \ResponseAndClientSink<InitialResponse, SinkPayload, FinalResponse>($first_response, $client_sink_func);
   }
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, FinalResponse>
+   *   methodThrow()
+   *   throws (1: InitialException ex);
+   */
   public async function methodThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
@@ -1630,6 +1754,11 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, throws (1: SinkException1 ex), FinalResponse>
+   *   methodSinkThrow();
+   */
   public async function methodSinkThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
@@ -1668,6 +1797,11 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, FinalResponse, throws (1: SinkException2 ex)>
+   *   methodFinalThrow();
+   */
   public async function methodFinalThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
@@ -1706,6 +1840,11 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, throws (1: SinkException1 ex), FinalResponse, throws (1: SinkException2 ex)>
+   *   methodBothThrow();
+   */
   public async function methodBothThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
@@ -1744,6 +1883,11 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, FinalResponse>
+   *   methodFast();
+   */
   public async function methodFast(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
@@ -1788,6 +1932,11 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
 class SinkServiceAsyncRpcOptionsClient extends \ThriftClientBase implements SinkServiceAsyncRpcOptionsIf {
   use SinkServiceClientBase;
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, FinalResponse>
+   *   method();
+   */
   public async function method(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
@@ -1826,6 +1975,11 @@ class SinkServiceAsyncRpcOptionsClient extends \ThriftClientBase implements Sink
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
+  /**
+   * Original thrift definition:-
+   * InitialResponse, sink<SinkPayload, FinalResponse>
+   *   methodAndReponse();
+   */
   public async function methodAndReponse(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<InitialResponse, SinkPayload, FinalResponse>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
@@ -1864,6 +2018,12 @@ class SinkServiceAsyncRpcOptionsClient extends \ThriftClientBase implements Sink
     return new \ResponseAndClientSink<InitialResponse, SinkPayload, FinalResponse>($first_response, $client_sink_func);
   }
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, FinalResponse>
+   *   methodThrow()
+   *   throws (1: InitialException ex);
+   */
   public async function methodThrow(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
@@ -1902,6 +2062,11 @@ class SinkServiceAsyncRpcOptionsClient extends \ThriftClientBase implements Sink
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, throws (1: SinkException1 ex), FinalResponse>
+   *   methodSinkThrow();
+   */
   public async function methodSinkThrow(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
@@ -1940,6 +2105,11 @@ class SinkServiceAsyncRpcOptionsClient extends \ThriftClientBase implements Sink
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, FinalResponse, throws (1: SinkException2 ex)>
+   *   methodFinalThrow();
+   */
   public async function methodFinalThrow(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
@@ -1978,6 +2148,11 @@ class SinkServiceAsyncRpcOptionsClient extends \ThriftClientBase implements Sink
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, throws (1: SinkException1 ex), FinalResponse, throws (1: SinkException2 ex)>
+   *   methodBothThrow();
+   */
   public async function methodBothThrow(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
@@ -2016,6 +2191,11 @@ class SinkServiceAsyncRpcOptionsClient extends \ThriftClientBase implements Sink
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
+  /**
+   * Original thrift definition:-
+   * void, sink<SinkPayload, FinalResponse>
+   *   methodFast();
+   */
   public async function methodFast(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
