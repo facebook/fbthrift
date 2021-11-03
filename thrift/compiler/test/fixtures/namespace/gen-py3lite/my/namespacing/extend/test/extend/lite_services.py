@@ -30,6 +30,7 @@ class ExtendTestServiceInterface(
         return {**super().getFunctionTable(), **functionTable}
 
 
+
     async def check(
             self,
             struct1: _my_namespacing_test_hsmodule_lite_types.HsFoo

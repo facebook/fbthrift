@@ -59,6 +59,7 @@ class {{service:name}}Interface(
         }
         return {**super().getFunctionTable(), **functionTable}
 
+
 {{#service:supported_functions}}
 
     async def {{function:name}}(

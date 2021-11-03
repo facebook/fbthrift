@@ -31,6 +31,7 @@ class RaiserInterface(
         return {**super().getFunctionTable(), **functionTable}
 
 
+
     async def doBland(
             self
         ) -> None:

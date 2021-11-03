@@ -26,3 +26,4 @@ class NullServiceInterface(
         }
         return {**super().getFunctionTable(), **functionTable}
 
+

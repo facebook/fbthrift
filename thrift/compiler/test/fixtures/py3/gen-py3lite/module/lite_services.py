@@ -68,6 +68,7 @@ class SimpleServiceInterface(
         return {**super().getFunctionTable(), **functionTable}
 
 
+
     async def get_five(
             self
         ) -> int:
@@ -659,6 +660,7 @@ SimpleServiceInterface,
         return {**super().getFunctionTable(), **functionTable}
 
 
+
     async def get_six(
             self
         ) -> int:
@@ -685,6 +687,7 @@ DerivedServiceInterface,
             b"get_seven": self._fbthrift__handler_get_seven,
         }
         return {**super().getFunctionTable(), **functionTable}
+
 
 
     async def get_seven(

@@ -35,6 +35,7 @@ class MyServiceInterface(
         return {**super().getFunctionTable(), **functionTable}
 
 
+
     async def ping(
             self
         ) -> None:
@@ -160,6 +161,7 @@ class DbMixedStackArgumentsInterface(
             b"getDataByKey1": self._fbthrift__handler_getDataByKey1,
         }
         return {**super().getFunctionTable(), **functionTable}
+
 
 
     async def getDataByKey0(

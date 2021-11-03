@@ -28,6 +28,7 @@ class HsTestServiceInterface(
         return {**super().getFunctionTable(), **functionTable}
 
 
+
     async def init(
             self,
             int1: int
