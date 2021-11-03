@@ -450,18 +450,18 @@ TEST_F(StandardValidatorTest, CustomDefaultValue) {
   EXPECT_THAT(
       validate(),
       UnorderedElementsAre(
-          warning(
+          failure(
               -1,
-              "value error: const `const_byte` has an invalid custom default value. This will become an error in future versions of thrift."),
-          warning(
+              "value error: const `const_byte` has an invalid custom default value."),
+          failure(
               -1,
-              "value error: const `const_short` has an invalid custom default value. This will become an error in future versions of thrift."),
-          warning(
+              "value error: const `const_short` has an invalid custom default value."),
+          failure(
               -1,
-              "value error: const `const_integer` has an invalid custom default value. This will become an error in future versions of thrift."),
-          warning(
+              "value error: const `const_integer` has an invalid custom default value."),
+          failure(
               -1,
-              "value error: const `const_float` has an invalid custom default value. This will become an error in future versions of thrift."),
+              "value error: const `const_float` has an invalid custom default value."),
           warning(
               -1,
               "value error: const `const_float_precision_loss` cannot be represented precisely as `float` or `double`. This will become an error in future versions of thrift.")));
