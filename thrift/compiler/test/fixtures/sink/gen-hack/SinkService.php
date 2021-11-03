@@ -87,6 +87,44 @@ trait SinkServiceClientBase {
     return $currentseqid;
   }
 
+  protected function sendImpl_method_SinkEncode(): (function(?SinkPayload, ?\Exception) : (string, bool)) {
+    $protocol = $this->output_;
+    return function(
+      ?SinkPayload $sink_payload, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+
+      $transport = $protocol->getTransport();
+      invariant(
+        $transport is \TMemoryBuffer,
+        "Sink methods require TMemoryBuffer transport"
+      );
+
+      $is_application_ex = false;
+
+      if ($ex !== null) {
+        if ($ex is \TApplicationException) {
+          $is_application_ex = true;
+          $result = $ex;
+        } else {
+          $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+        }
+      } else {
+        $result = SinkService_method_SinkPayload::fromShape(shape(
+          'success' => $sink_payload,
+        ));
+      }
+
+      $result->write($protocol);
+      $protocol->writeMessageEnd();
+      $transport->flush();
+      $msg = $transport->getBuffer();
+      $transport->resetBuffer();
+      return tuple($msg, $is_application_ex);
+    };
+  }
+
   protected function recvImpl_method_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
       $this->eventHandler_->preRecv('method', $expectedsequenceid);
@@ -178,6 +216,44 @@ trait SinkServiceClientBase {
     }
     $this->eventHandler_->postSend('methodAndReponse', $args, $currentseqid);
     return $currentseqid;
+  }
+
+  protected function sendImpl_methodAndReponse_SinkEncode(): (function(?SinkPayload, ?\Exception) : (string, bool)) {
+    $protocol = $this->output_;
+    return function(
+      ?SinkPayload $sink_payload, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+
+      $transport = $protocol->getTransport();
+      invariant(
+        $transport is \TMemoryBuffer,
+        "Sink methods require TMemoryBuffer transport"
+      );
+
+      $is_application_ex = false;
+
+      if ($ex !== null) {
+        if ($ex is \TApplicationException) {
+          $is_application_ex = true;
+          $result = $ex;
+        } else {
+          $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+        }
+      } else {
+        $result = SinkService_methodAndReponse_SinkPayload::fromShape(shape(
+          'success' => $sink_payload,
+        ));
+      }
+
+      $result->write($protocol);
+      $protocol->writeMessageEnd();
+      $transport->flush();
+      $msg = $transport->getBuffer();
+      $transport->resetBuffer();
+      return tuple($msg, $is_application_ex);
+    };
   }
 
   protected function recvImpl_methodAndReponse_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): InitialResponse {
@@ -279,6 +355,44 @@ trait SinkServiceClientBase {
     return $currentseqid;
   }
 
+  protected function sendImpl_methodThrow_SinkEncode(): (function(?SinkPayload, ?\Exception) : (string, bool)) {
+    $protocol = $this->output_;
+    return function(
+      ?SinkPayload $sink_payload, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+
+      $transport = $protocol->getTransport();
+      invariant(
+        $transport is \TMemoryBuffer,
+        "Sink methods require TMemoryBuffer transport"
+      );
+
+      $is_application_ex = false;
+
+      if ($ex !== null) {
+        if ($ex is \TApplicationException) {
+          $is_application_ex = true;
+          $result = $ex;
+        } else {
+          $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+        }
+      } else {
+        $result = SinkService_methodThrow_SinkPayload::fromShape(shape(
+          'success' => $sink_payload,
+        ));
+      }
+
+      $result->write($protocol);
+      $protocol->writeMessageEnd();
+      $transport->flush();
+      $msg = $transport->getBuffer();
+      $transport->resetBuffer();
+      return tuple($msg, $is_application_ex);
+    };
+  }
+
   protected function recvImpl_methodThrow_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
       $this->eventHandler_->preRecv('methodThrow', $expectedsequenceid);
@@ -377,6 +491,48 @@ trait SinkServiceClientBase {
     return $currentseqid;
   }
 
+  protected function sendImpl_methodSinkThrow_SinkEncode(): (function(?SinkPayload, ?\Exception) : (string, bool)) {
+    $protocol = $this->output_;
+    return function(
+      ?SinkPayload $sink_payload, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+
+      $transport = $protocol->getTransport();
+      invariant(
+        $transport is \TMemoryBuffer,
+        "Sink methods require TMemoryBuffer transport"
+      );
+
+      $is_application_ex = false;
+
+      if ($ex !== null) {
+        if ($ex is SinkException1) {
+          $result = SinkService_methodSinkThrow_SinkPayload::fromShape(shape(
+            'ex' => $ex,
+          ));
+        } else if ($ex is \TApplicationException) {
+          $is_application_ex = true;
+          $result = $ex;
+        } else {
+          $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+        }
+      } else {
+        $result = SinkService_methodSinkThrow_SinkPayload::fromShape(shape(
+          'success' => $sink_payload,
+        ));
+      }
+
+      $result->write($protocol);
+      $protocol->writeMessageEnd();
+      $transport->flush();
+      $msg = $transport->getBuffer();
+      $transport->resetBuffer();
+      return tuple($msg, $is_application_ex);
+    };
+  }
+
   protected function recvImpl_methodSinkThrow_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
       $this->eventHandler_->preRecv('methodSinkThrow', $expectedsequenceid);
@@ -468,6 +624,44 @@ trait SinkServiceClientBase {
     }
     $this->eventHandler_->postSend('methodFinalThrow', $args, $currentseqid);
     return $currentseqid;
+  }
+
+  protected function sendImpl_methodFinalThrow_SinkEncode(): (function(?SinkPayload, ?\Exception) : (string, bool)) {
+    $protocol = $this->output_;
+    return function(
+      ?SinkPayload $sink_payload, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+
+      $transport = $protocol->getTransport();
+      invariant(
+        $transport is \TMemoryBuffer,
+        "Sink methods require TMemoryBuffer transport"
+      );
+
+      $is_application_ex = false;
+
+      if ($ex !== null) {
+        if ($ex is \TApplicationException) {
+          $is_application_ex = true;
+          $result = $ex;
+        } else {
+          $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+        }
+      } else {
+        $result = SinkService_methodFinalThrow_SinkPayload::fromShape(shape(
+          'success' => $sink_payload,
+        ));
+      }
+
+      $result->write($protocol);
+      $protocol->writeMessageEnd();
+      $transport->flush();
+      $msg = $transport->getBuffer();
+      $transport->resetBuffer();
+      return tuple($msg, $is_application_ex);
+    };
   }
 
   protected function recvImpl_methodFinalThrow_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
@@ -563,6 +757,48 @@ trait SinkServiceClientBase {
     return $currentseqid;
   }
 
+  protected function sendImpl_methodBothThrow_SinkEncode(): (function(?SinkPayload, ?\Exception) : (string, bool)) {
+    $protocol = $this->output_;
+    return function(
+      ?SinkPayload $sink_payload, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+
+      $transport = $protocol->getTransport();
+      invariant(
+        $transport is \TMemoryBuffer,
+        "Sink methods require TMemoryBuffer transport"
+      );
+
+      $is_application_ex = false;
+
+      if ($ex !== null) {
+        if ($ex is SinkException1) {
+          $result = SinkService_methodBothThrow_SinkPayload::fromShape(shape(
+            'ex' => $ex,
+          ));
+        } else if ($ex is \TApplicationException) {
+          $is_application_ex = true;
+          $result = $ex;
+        } else {
+          $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+        }
+      } else {
+        $result = SinkService_methodBothThrow_SinkPayload::fromShape(shape(
+          'success' => $sink_payload,
+        ));
+      }
+
+      $result->write($protocol);
+      $protocol->writeMessageEnd();
+      $transport->flush();
+      $msg = $transport->getBuffer();
+      $transport->resetBuffer();
+      return tuple($msg, $is_application_ex);
+    };
+  }
+
   protected function recvImpl_methodBothThrow_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
       $this->eventHandler_->preRecv('methodBothThrow', $expectedsequenceid);
@@ -654,6 +890,44 @@ trait SinkServiceClientBase {
     }
     $this->eventHandler_->postSend('methodFast', $args, $currentseqid);
     return $currentseqid;
+  }
+
+  protected function sendImpl_methodFast_SinkEncode(): (function(?SinkPayload, ?\Exception) : (string, bool)) {
+    $protocol = $this->output_;
+    return function(
+      ?SinkPayload $sink_payload, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+
+      $transport = $protocol->getTransport();
+      invariant(
+        $transport is \TMemoryBuffer,
+        "Sink methods require TMemoryBuffer transport"
+      );
+
+      $is_application_ex = false;
+
+      if ($ex !== null) {
+        if ($ex is \TApplicationException) {
+          $is_application_ex = true;
+          $result = $ex;
+        } else {
+          $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+        }
+      } else {
+        $result = SinkService_methodFast_SinkPayload::fromShape(shape(
+          'success' => $sink_payload,
+        ));
+      }
+
+      $result->write($protocol);
+      $protocol->writeMessageEnd();
+      $transport->flush();
+      $msg = $transport->getBuffer();
+      $transport->resetBuffer();
+      return tuple($msg, $is_application_ex);
+    };
   }
 
   protected function recvImpl_methodFast_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {

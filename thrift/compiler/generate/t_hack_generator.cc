@@ -276,6 +276,10 @@ class t_hack_generator : public t_oop_generator {
       std::ofstream& out,
       const t_service* tservice,
       const t_function* tfunction);
+  void _generate_sink_encode_sendImpl(
+      std::ofstream& out,
+      const t_service* tservice,
+      const t_function* tfunction);
   void _generate_sendImpl(
       std::ofstream& out,
       const t_service* tservice,
@@ -380,6 +384,7 @@ class t_hack_generator : public t_oop_generator {
     RESULT = 1,
     STREAM_RESPONSE = 2,
     FIRST_RESPONSE = 3,
+    SINK_PAYLOAD = 4,
   };
 
   std::string declare_field(
@@ -5066,6 +5071,114 @@ void t_hack_generator::_generate_stream_decode_recvImpl(
   scope_down(out);
 }
 
+void t_hack_generator::_generate_sink_encode_sendImpl(
+    std::ofstream& out,
+    const t_service* tservice,
+    const t_function* tfunction) {
+  const std::string& resultname = generate_function_helper_name(
+      tservice, tfunction, PhpFunctionNameSuffix::SINK_PAYLOAD);
+
+  t_function recv_function(
+      tfunction->get_returntype(),
+      std::string("sendImpl_") + tfunction->name() + std::string("_SinkEncode"),
+      std::make_unique<t_paramlist>(program_));
+  const auto* tsink = dynamic_cast<const t_sink*>(tfunction->get_returntype());
+  auto ttype = tsink->get_sink_type();
+  auto typehint = type_to_typehint(ttype);
+  std::string return_typehint =
+      "(function(?" + typehint + ", ?\\Exception) : (string, bool))";
+  // Open function
+  out << "\n";
+  if (arrprov_skip_frames_) {
+    indent(f_service_) << "<<__ProvenanceSkipFrame>>\n";
+  }
+  out << indent() << "protected function "
+      << function_signature(&recv_function, "", "", return_typehint) << " {\n";
+  indent_up();
+  out << indent() << "$protocol = $this->output_;\n";
+  out << indent() << "return function(\n";
+  indent_up();
+  out << indent() << "?" << typehint << " $sink_payload, ?\\Exception $ex\n";
+  indent_down();
+  out << indent() << ") use (\n";
+  indent_up();
+  out << indent() << "$protocol,\n";
+  indent_down();
+  out << indent() << ") {\n\n";
+  indent_up();
+
+  out << indent() << "$transport = $protocol->getTransport();\n";
+  out << indent() << "invariant(\n";
+  indent_up();
+  out << indent() << "$transport is \\TMemoryBuffer,\n"
+      << indent() << "\"Sink methods require TMemoryBuffer transport\"\n";
+  indent_down();
+  out << indent() << ");\n\n";
+
+  out << indent() << "$is_application_ex = false;\n\n";
+  out << indent() << "if ($ex !== null) {\n";
+  indent_up();
+  auto exceptions = tfunction->get_sink_xceptions();
+  indent(out);
+  if (exceptions != nullptr) {
+    for (const auto& ex : exceptions->fields()) {
+      out << "if ($ex is " << hack_name(ex.get_type()->get_true_type())
+          << ") {\n";
+      indent_up();
+      out << indent() << "$result = " << resultname;
+      out << "::fromShape(shape(\n";
+      indent_up();
+      out << indent() << "'" << ex.name() << "' => $ex,\n";
+      indent_down();
+      out << indent() << "));\n";
+      indent_down();
+      out << indent() << "} else ";
+    }
+  }
+
+  out << "if ($ex is \\TApplicationException) {\n";
+  indent_up();
+  out << indent() << "$is_application_ex = true;\n"
+      << indent() << "$result = $ex;\n";
+  indent_down();
+  out << indent() << "} else {\n";
+  indent_up();
+  out << indent()
+      << "$result = new \\TApplicationException($ex->getMessage().\"\\n\".$ex->getTraceAsString());\n";
+  indent_down();
+  out << indent() << "}\n";
+
+  // close exception if
+  indent_down();
+  out << indent() << "} else {\n";
+  indent_up();
+
+  out << indent() << "$result = " << resultname << "::fromShape(shape(\n";
+  indent_up();
+  out << indent() << "'success'"
+      << " => $sink_payload,\n";
+  indent_down();
+  out << indent() << "));\n";
+
+  // close result if-else
+  indent_down();
+  out << indent() << "}\n\n";
+
+  out << indent() << "$result->write($protocol);\n"
+      << indent() << "$protocol->writeMessageEnd();\n"
+      << indent() << "$transport->flush();\n"
+      << indent() << "$msg = $transport->getBuffer();\n"
+      << indent() << "$transport->resetBuffer();\n"
+      << indent() << "return tuple($msg, $is_application_ex);\n";
+
+  // close encode function
+  indent_down();
+  out << indent() << "};\n";
+
+  // Close function
+  scope_down(out);
+}
+
 void t_hack_generator::_generate_sendImpl(
     std::ofstream& out,
     const t_service* tservice,
@@ -5190,6 +5303,10 @@ void t_hack_generator::_generate_sendImpl(
   indent(out) << "return $currentseqid;\n";
 
   scope_down(out);
+
+  if (tfunction->returns_sink()) {
+    _generate_sink_encode_sendImpl(out, tservice, tfunction);
+  }
 }
 
 // If !strict_types, containers are typehinted as KeyedContainer<Key, Value>
@@ -5767,6 +5884,8 @@ std::string t_hack_generator::generate_function_helper_name(
       return prefix + "_" + tfunction->name() + "_StreamResponse";
     case PhpFunctionNameSuffix::FIRST_RESPONSE:
       return prefix + "_" + tfunction->name() + "_FirstResponse";
+    case PhpFunctionNameSuffix::SINK_PAYLOAD:
+      return prefix + "_" + tfunction->name() + "_SinkPayload";
     default:
       throw std::runtime_error("Invalid php function name suffix");
   }

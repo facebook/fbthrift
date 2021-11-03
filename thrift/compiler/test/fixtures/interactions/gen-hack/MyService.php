@@ -690,6 +690,44 @@ class MyService_MyInteraction extends \ThriftClientBase {
     return $currentseqid;
   }
 
+  protected function sendImpl_encode_SinkEncode(): (function(?string, ?\Exception) : (string, bool)) {
+    $protocol = $this->output_;
+    return function(
+      ?string $sink_payload, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+
+      $transport = $protocol->getTransport();
+      invariant(
+        $transport is \TMemoryBuffer,
+        "Sink methods require TMemoryBuffer transport"
+      );
+
+      $is_application_ex = false;
+
+      if ($ex !== null) {
+        if ($ex is \TApplicationException) {
+          $is_application_ex = true;
+          $result = $ex;
+        } else {
+          $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+        }
+      } else {
+        $result = MyService_MyInteraction_encode_SinkPayload::fromShape(shape(
+          'success' => $sink_payload,
+        ));
+      }
+
+      $result->write($protocol);
+      $protocol->writeMessageEnd();
+      $transport->flush();
+      $msg = $transport->getBuffer();
+      $transport->resetBuffer();
+      return tuple($msg, $is_application_ex);
+    };
+  }
+
   protected function recvImpl_encode_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): Set<arraykey> {
     try {
       $this->eventHandler_->preRecv('MyInteraction.encode', $expectedsequenceid);
@@ -1142,6 +1180,44 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     }
     $this->eventHandler_->postSend('MyInteractionFast.encode', $args, $currentseqid);
     return $currentseqid;
+  }
+
+  protected function sendImpl_encode_SinkEncode(): (function(?string, ?\Exception) : (string, bool)) {
+    $protocol = $this->output_;
+    return function(
+      ?string $sink_payload, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+
+      $transport = $protocol->getTransport();
+      invariant(
+        $transport is \TMemoryBuffer,
+        "Sink methods require TMemoryBuffer transport"
+      );
+
+      $is_application_ex = false;
+
+      if ($ex !== null) {
+        if ($ex is \TApplicationException) {
+          $is_application_ex = true;
+          $result = $ex;
+        } else {
+          $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+        }
+      } else {
+        $result = MyService_MyInteractionFast_encode_SinkPayload::fromShape(shape(
+          'success' => $sink_payload,
+        ));
+      }
+
+      $result->write($protocol);
+      $protocol->writeMessageEnd();
+      $transport->flush();
+      $msg = $transport->getBuffer();
+      $transport->resetBuffer();
+      return tuple($msg, $is_application_ex);
+    };
   }
 
   protected function recvImpl_encode_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): Set<arraykey> {
