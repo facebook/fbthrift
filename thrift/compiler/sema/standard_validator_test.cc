@@ -462,9 +462,9 @@ TEST_F(StandardValidatorTest, CustomDefaultValue) {
           failure(
               -1,
               "value error: const `const_float` has an invalid custom default value."),
-          warning(
+          failure(
               -1,
-              "value error: const `const_float_precision_loss` cannot be represented precisely as `float` or `double`. This will become an error in future versions of thrift.")));
+              "value error: const `const_float_precision_loss` cannot be represented precisely as `float` or `double`.")));
 }
 
 } // namespace

@@ -103,10 +103,10 @@ class const_checker {
     ctx_.warning(node_, std::forward<Args>(args)...);
   }
 
-  void report_value_precision_warning() {
-    warning([&](auto& o) {
+  void report_value_precision() {
+    failure([&](auto& o) {
       o << "value error: const `" << name_
-        << "` cannot be represented precisely as `float` or `double`. This will become an error in future versions of thrift.";
+        << "` cannot be represented precisely as `float` or `double`.";
     });
   }
 
@@ -161,14 +161,14 @@ class const_checker {
         if (value->get_type() == t_const_value::CV_INTEGER &&
             !detail::is_valid_custom_default_float_with_integer_value<float>(
                 value)) {
-          report_value_precision_warning();
+          report_value_precision();
         }
         break;
       case t_base_type::type::t_double:
         if (value->get_type() == t_const_value::CV_INTEGER &&
             !detail::is_valid_custom_default_float_with_integer_value<double>(
                 value)) {
-          report_value_precision_warning();
+          report_value_precision();
         }
         break;
       default:
