@@ -46,13 +46,13 @@ Team testValue() {
   for (int i = 1; i <= 10; ++i) {
     auto id = hasher(i);
     Person p;
-    p.id = id;
+    *p.id_ref() = id;
     p.nums_ref()->insert(i);
     p.nums_ref()->insert(-i);
     p.dob_ref() = randomDouble(1e9);
-    folly::toAppend("Person ", i, &p.name);
-    (*team.peopleById_ref())[p.id] = p;
-    auto& peopleByNameEntry = (*team.peopleByName_ref())[p.name];
+    folly::toAppend("Person ", i, &(*p.name_ref()));
+    (*team.peopleById_ref())[*p.id_ref()] = p;
+    auto& peopleByNameEntry = (*team.peopleByName_ref())[*p.name_ref()];
     peopleByNameEntry = std::move(p);
   }
   team.projects_ref() = {};
@@ -64,10 +64,10 @@ Team testValue() {
 
 TEST(Frozen, Basic) {
   Team team = testValue();
-  EXPECT_EQ(team.peopleById_ref()->at(hasher(3)).name, "Person 3");
-  EXPECT_EQ(team.peopleById_ref()->at(hasher(4)).name, "Person 4");
-  EXPECT_EQ(team.peopleById_ref()->at(hasher(5)).name, "Person 5");
-  EXPECT_EQ(team.peopleByName_ref()->at("Person 3").id, 3);
+  EXPECT_EQ(*team.peopleById_ref()->at(hasher(3)).name_ref(), "Person 3");
+  EXPECT_EQ(*team.peopleById_ref()->at(hasher(4)).name_ref(), "Person 4");
+  EXPECT_EQ(*team.peopleById_ref()->at(hasher(5)).name_ref(), "Person 5");
+  EXPECT_EQ(*team.peopleByName_ref()->at("Person 3").id_ref(), 3);
   EXPECT_EQ(team.peopleByName_ref()->begin()->second.nums_ref()->count(-1), 1);
   EXPECT_EQ(team.projects_ref()->count("alpha"), 1);
   EXPECT_EQ(team.projects_ref()->count("beta"), 1);

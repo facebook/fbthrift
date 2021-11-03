@@ -113,7 +113,7 @@ TEST(FrozenUnion, union_contains_cpp_shared_ref) {
 TEST(FrozenUnion, union_contains_cpp_unique_ref) {
   TestUnion u;
   Tiny tiny;
-  tiny.a = "aaa";
+  *tiny.a_ref() = "aaa";
   *tiny.b_ref() = "bbb";
   *tiny.c_ref() = "ccc";
   *tiny.d_ref() = "ddd";

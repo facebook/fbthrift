@@ -38,7 +38,7 @@ class ExceptionThrowingHandler : public ExceptionThrowingServiceSvIf {
 
   void throwException(std::unique_ptr<std::string> msg) override {
     SimpleException e;
-    e.message = *msg;
+    *e.message_ref() = *msg;
     throw e;
   }
 };
@@ -101,7 +101,7 @@ TEST(ExceptionThrowingTest, Thrift2Client) {
         try {
           ExceptionThrowingServiceAsyncClient::recv_throwException(state);
         } catch (const SimpleException& e) {
-          EXPECT_EQ(e.message, "Hello World");
+          EXPECT_EQ(*e.message_ref(), "Hello World");
           exceptionThrown = true;
         }
       },
@@ -118,7 +118,7 @@ TEST(ExceptionThrowingTest, Thrift2Client) {
             ExceptionThrowingServiceAsyncClient::recv_wrapped_throwException(
                 state);
         if (ew && ew.with_exception([](const SimpleException& e) {
-              EXPECT_EQ(e.message, "Hello World");
+              EXPECT_EQ(*e.message_ref(), "Hello World");
             })) {
           exceptionThrown = true;
         }

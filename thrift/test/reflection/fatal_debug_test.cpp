@@ -69,10 +69,10 @@ struct3 test_data() {
   *pod.fieldD_ref() = enum2::field1_2;
   pod.fieldE_ref()->set_ud(5.6);
   pod.fieldF_ref()->set_us_2("this is a variant");
-  pod.fieldG_ref()->field0 = 98;
+  *pod.fieldG_ref()->field0_ref() = 98;
   pod.fieldG_ref()->field1_ref() = "hello, world";
   *pod.fieldG_ref()->field2_ref() = enum1::field2;
-  pod.fieldG_ref()->field3 = enum2::field0_2;
+  *pod.fieldG_ref()->field3_ref() = enum2::field0_2;
   pod.fieldG_ref()->field4_ref() = {};
   pod.fieldG_ref()->field4_ref()->set_ui(19937);
   pod.fieldG_ref()->field5_ref()->set_ue_2(enum1::field1);
@@ -275,9 +275,9 @@ TEST(fatal_debug, fieldQ) {
 
 TEST(fatal_debug, fieldG_field0) {
   auto pod = test_data();
-  pod.fieldG_ref()->field0 = 12;
+  *pod.fieldG_ref()->field0_ref() = 12;
   TEST_IMPL(pod, test_data(), "$.fieldG.field0");
-  pod.fieldG_ref()->field0 = 98;
+  *pod.fieldG_ref()->field0_ref() = 98;
   TEST_IMPL(pod, test_data());
 }
 
