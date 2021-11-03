@@ -33,12 +33,12 @@ DeterministicAccumulator<HasherGenerator>::operator Hasher&&() && {
 }
 
 template <typename HasherGenerator>
-void DeterministicAccumulator<HasherGenerator>::combine(char value) {
+void DeterministicAccumulator<HasherGenerator>::combine(bool value) {
   lastHasher().combine(value);
 }
 
 template <typename HasherGenerator>
-void DeterministicAccumulator<HasherGenerator>::combine(bool value) {
+void DeterministicAccumulator<HasherGenerator>::combine(std::int8_t value) {
   lastHasher().combine(value);
 }
 

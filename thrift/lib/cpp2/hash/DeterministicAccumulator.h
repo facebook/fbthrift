@@ -96,8 +96,8 @@ class DeterministicAccumulator {
 
   inline operator Hasher&&() &&;
 
-  inline void combine(char value);
   inline void combine(bool value);
+  inline void combine(std::int8_t value);
   inline void combine(std::int16_t value);
   inline void combine(std::int32_t value);
   inline void combine(std::int64_t value);
