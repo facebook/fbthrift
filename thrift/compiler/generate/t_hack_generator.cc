@@ -311,6 +311,12 @@ class t_hack_generator : public t_oop_generator {
       const t_function* tfunction,
       bool rpc_options,
       bool legacy_arrays = false);
+  void _generate_service_client_sink_child_fn(
+      std::ofstream& out,
+      const t_service* tservice,
+      const t_function* tfunction,
+      bool rpc_options,
+      bool legacy_arrays = false);
   void generate_service_processor(
       const t_service* tservice, bool mangle, bool async);
   void generate_process_function(
@@ -430,6 +436,7 @@ class t_hack_generator : public t_oop_generator {
 
   std::string get_stream_function_return_typehint(
       const t_stream_response* tstream);
+  std::string get_sink_function_return_typehint(const t_sink* tsink);
 
   std::string type_to_typehint(
       const t_type* ttype,
@@ -595,7 +602,7 @@ class t_hack_generator : public t_oop_generator {
       const t_service* tservice) {
     std::vector<const t_function*> funcs;
     for (auto func : tservice->get_functions()) {
-      if (!func->returns_stream() && !func->returns_sink() &&
+      if (!is_client_only_function(func) &&
           !func->get_returntype()->is_service()) {
         funcs.push_back(func);
       }
@@ -4022,14 +4029,13 @@ void t_hack_generator::generate_service_interactions(
 
     // Generate interaction method implementations
     for (const auto& function : get_supported_client_functions(interaction)) {
-      if (!function->returns_sink()) {
-        _generate_service_client_child_fn(
-            f_service_, interaction, function, /*rpc_options*/ true);
-      }
+      _generate_service_client_child_fn(
+          f_service_, interaction, function, /*rpc_options*/ true);
       _generate_sendImpl(f_service_, interaction, function);
       if (function->qualifier() != t_function_qualifier::one_way) {
         _generate_recvImpl(f_service_, interaction, function);
       }
+      f_service_ << "\n";
     }
 
     indent_down();
@@ -4593,6 +4599,21 @@ std::string t_hack_generator::get_stream_function_return_typehint(
   return return_typehint;
 }
 
+std::string t_hack_generator::get_sink_function_return_typehint(
+    const t_sink* tsink) {
+  // Finally, the function declaration.
+  std::string return_typehint = type_to_typehint(tsink->get_sink_type()) +
+      ", " + type_to_typehint(tsink->get_final_response_type()) + ">";
+
+  if (tsink->sink_has_first_response()) {
+    auto first_response_type_hint =
+        type_to_typehint(tsink->get_first_response_type());
+    return "\\ResponseAndClientSink<" + first_response_type_hint + ", " +
+        return_typehint;
+  } else {
+    return "\\ResponseAndClientSink<void, " + return_typehint;
+  }
+}
 /**
  * Generate an appropriate string for a parameter typehint.
  * The difference from type_to_typehint() is for parameters we should accept an
@@ -4668,9 +4689,6 @@ void t_hack_generator::generate_service_interface(
   auto functions = client ? get_supported_client_functions(tservice)
                           : get_supported_server_functions(tservice);
   for (const auto* function : functions) {
-    if (function->returns_sink()) {
-      continue;
-    }
     if (async && client && !is_client_only_function(function)) {
       continue;
     }
@@ -4687,6 +4705,10 @@ void t_hack_generator::generate_service_interface(
     if (const auto* tstream = dynamic_cast<const t_stream_response*>(
             function->get_returntype())) {
       return_typehint = get_stream_function_return_typehint(tstream);
+    } else if (
+        const auto* tsink =
+            dynamic_cast<const t_sink*>(function->get_returntype())) {
+      return_typehint = get_sink_function_return_typehint(tsink);
     } else {
       return_typehint = type_to_typehint(function->get_returntype());
     }
@@ -5531,9 +5553,6 @@ void t_hack_generator::_generate_service_client_children(
 
   // Generate functions as necessary.
   for (const auto* function : get_supported_client_functions(tservice)) {
-    if (function->returns_sink()) {
-      continue;
-    }
     _generate_service_client_child_fn(out, tservice, function, rpc_options);
     if (no_use_hack_collections_) {
       _generate_service_client_child_fn(
@@ -5597,6 +5616,13 @@ void t_hack_generator::_generate_service_client_child_fn(
         out, tservice, tfunction, rpc_options, legacy_arrays);
     return;
   }
+
+  if (tfunction->returns_sink()) {
+    _generate_service_client_sink_child_fn(
+        out, tservice, tfunction, rpc_options, legacy_arrays);
+    return;
+  }
+
   std::string funname =
       tfunction->name() + (legacy_arrays ? "__LEGACY_ARRAYS" : "");
   const std::string& tservice_name =
@@ -5803,6 +5829,138 @@ void t_hack_generator::_generate_service_client_stream_child_fn(
   } else {
     out << indent() << "return new " << return_typehint
         << "(null, $stream_gen);\n";
+  }
+  scope_down(out);
+  out << "\n";
+}
+
+void t_hack_generator::_generate_service_client_sink_child_fn(
+    std::ofstream& out,
+    const t_service* tservice,
+    const t_function* tfunction,
+    bool rpc_options,
+    bool legacy_arrays) {
+  std::string funname =
+      tfunction->name() + (legacy_arrays ? "__LEGACY_ARRAYS" : "");
+  const std::string& tservice_name =
+      (tservice->is_interaction() ? service_name_ : tservice->name());
+
+  const auto* tsink = dynamic_cast<const t_sink*>(tfunction->get_returntype());
+  std::string return_typehint = get_sink_function_return_typehint(tsink);
+  std::string head_parameters = rpc_options ? "\\RpcOptions $rpc_options" : "";
+  std::string rpc_options_param =
+      rpc_options ? "$rpc_options" : "new \\RpcOptions()";
+
+  generate_php_docstring(out, tfunction);
+  if (arrprov_skip_frames_) {
+    indent(out) << "<<__ProvenanceSkipFrame>>\n";
+  }
+  indent(out) << "public async function " << funname << "("
+              << argument_list(
+                     tfunction->get_paramlist(),
+                     head_parameters,
+                     "",
+                     true,
+                     nullable_everything_)
+              << "): Awaitable<" + return_typehint + "> {\n";
+
+  indent_up();
+
+  indent(out) << "$hh_frame_metadata = $this->getHHFrameMetadata();\n";
+  indent(out) << "if ($hh_frame_metadata !== null) {\n";
+  indent_up();
+  indent(out) << "\\HH\\set_frame_metadata($hh_frame_metadata);\n";
+  indent_down();
+  indent(out) << "}\n";
+
+  if (tservice->is_interaction()) {
+    if (!rpc_options) {
+      throw std::runtime_error("Interaction methods require rpc_options");
+    }
+    indent(out) << rpc_options_param << " = " << rpc_options_param
+                << "->setInteractionId($this->interactionId);\n";
+  }
+
+  indent(out) << "$channel = $this->channel_;\n";
+  indent(out) << "$out_transport = $this->output_->getTransport();\n";
+  indent(out) << "$in_transport = $this->input_->getTransport();\n";
+
+  indent(out) << "invariant(\n";
+  indent_up();
+  indent(out)
+      << "$channel !== null && $out_transport is \\TMemoryBuffer && $in_transport is \\TMemoryBuffer,\n";
+  indent(out)
+      << "\"Sink methods require nonnull channel and TMemoryBuffer transport\"\n";
+  indent_down();
+  indent(out) << ");\n\n";
+
+  indent(out) << "await $this->asyncHandler_->genBefore(\"" << tservice_name
+              << "\", \"" << generate_rpc_function_name(tservice, tfunction)
+              << "\");\n";
+  indent(out) << "$currentseqid = $this->sendImpl_" << tfunction->name() << "(";
+
+  auto delim = "";
+  for (const auto& param : tfunction->get_paramlist()->fields()) {
+    out << delim << "$" << param.name();
+    delim = ", ";
+  }
+  out << ");\n";
+
+  out << indent() << "$msg = $out_transport->getBuffer();\n"
+      << indent() << "$out_transport->resetBuffer();\n"
+      << indent()
+      << "list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink("
+      << rpc_options_param << ", $msg);\n\n";
+
+  out << indent() << "$payload_serializer = $this->sendImpl_"
+      << tfunction->name() << "_SinkEncode();\n";
+
+  out << indent() << "$final_response_deserializer = $this->recvImpl_"
+      << tfunction->name() << "_FinalResponse();\n";
+
+  auto sink_type_hint = type_to_typehint(tsink->get_sink_type());
+  auto final_fesponse_type_hint =
+      type_to_typehint(tsink->get_final_response_type());
+
+  out << indent() << "$client_sink_func = async function(\n"
+      << indent() << "  AsyncGenerator<null, " << sink_type_hint
+      << ", void> $pld_generator\n"
+      << indent()
+      << ") use ($sink, $payload_serializer, $final_response_deserializer) {\n";
+  indent_up();
+  out << indent() << "return await $sink->genSink<" << sink_type_hint << ", "
+      << final_fesponse_type_hint << ">(\n";
+  indent_up();
+  out << indent() << "$pld_generator, \n"
+      << indent() << "$payload_serializer, \n"
+      << indent() << "$final_response_deserializer, \n";
+  indent_down();
+  out << indent() << ");\n";
+  indent_down();
+  out << indent() << "};\n\n";
+
+  out << indent() << "$in_transport->resetBuffer();\n"
+      << indent() << "$in_transport->write($result_msg);\n"
+      << indent();
+  if (tsink->sink_has_first_response()) {
+    out << "$first_response = ";
+  }
+  out << "$this->recvImpl_" << tfunction->name() << "_FirstResponse"
+      << "("
+      << "$currentseqid";
+  if (legacy_arrays) {
+    out << ", shape('read_options' => THRIFT_MARK_LEGACY_ARRAYS)";
+  }
+  out << ");\n\n";
+
+  if (tsink->sink_has_first_response()) {
+    auto first_response_typehint =
+        type_to_typehint(tsink->get_first_response_type());
+    out << indent() << "return new " << return_typehint
+        << "($first_response, $client_sink_func);\n";
+  } else {
+    out << indent() << "return new " << return_typehint
+        << "(null, $client_sink_func);\n";
   }
   scope_down(out);
   out << "\n";

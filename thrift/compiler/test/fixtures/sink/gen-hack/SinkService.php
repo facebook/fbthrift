@@ -25,6 +25,19 @@ interface SinkServiceIf extends \IThriftSyncIf {
  * SinkService
  */
 interface SinkServiceAsyncClientIf extends SinkServiceAsyncIf {
+  public function method(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>>;
+
+  public function methodAndReponse(): Awaitable<\ResponseAndClientSink<InitialResponse, SinkPayload, FinalResponse>>;
+
+  public function methodThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>>;
+
+  public function methodSinkThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>>;
+
+  public function methodFinalThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>>;
+
+  public function methodBothThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>>;
+
+  public function methodFast(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>>;
 }
 
 /**
@@ -32,6 +45,19 @@ interface SinkServiceAsyncClientIf extends SinkServiceAsyncIf {
  * SinkService
  */
 interface SinkServiceClientIf extends \IThriftSyncIf {
+  public function method(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>>;
+
+  public function methodAndReponse(): Awaitable<\ResponseAndClientSink<InitialResponse, SinkPayload, FinalResponse>>;
+
+  public function methodThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>>;
+
+  public function methodSinkThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>>;
+
+  public function methodFinalThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>>;
+
+  public function methodBothThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>>;
+
+  public function methodFast(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>>;
 }
 
 /**
@@ -1219,16 +1245,814 @@ trait SinkServiceClientBase {
 class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsyncClientIf {
   use SinkServiceClientBase;
 
+  public async function method(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Sink methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("SinkService", "method");
+    $currentseqid = $this->sendImpl_method();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink(new \RpcOptions(), $msg);
+
+    $payload_serializer = $this->sendImpl_method_SinkEncode();
+    $final_response_deserializer = $this->recvImpl_method_FinalResponse();
+    $client_sink_func = async function(
+      AsyncGenerator<null, SinkPayload, void> $pld_generator
+    ) use ($sink, $payload_serializer, $final_response_deserializer) {
+      return await $sink->genSink<SinkPayload, FinalResponse>(
+        $pld_generator, 
+        $payload_serializer, 
+        $final_response_deserializer, 
+      );
+    };
+
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $this->recvImpl_method_FirstResponse($currentseqid);
+
+    return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
+  }
+
+  public async function methodAndReponse(): Awaitable<\ResponseAndClientSink<InitialResponse, SinkPayload, FinalResponse>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Sink methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("SinkService", "methodAndReponse");
+    $currentseqid = $this->sendImpl_methodAndReponse();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink(new \RpcOptions(), $msg);
+
+    $payload_serializer = $this->sendImpl_methodAndReponse_SinkEncode();
+    $final_response_deserializer = $this->recvImpl_methodAndReponse_FinalResponse();
+    $client_sink_func = async function(
+      AsyncGenerator<null, SinkPayload, void> $pld_generator
+    ) use ($sink, $payload_serializer, $final_response_deserializer) {
+      return await $sink->genSink<SinkPayload, FinalResponse>(
+        $pld_generator, 
+        $payload_serializer, 
+        $final_response_deserializer, 
+      );
+    };
+
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $first_response = $this->recvImpl_methodAndReponse_FirstResponse($currentseqid);
+
+    return new \ResponseAndClientSink<InitialResponse, SinkPayload, FinalResponse>($first_response, $client_sink_func);
+  }
+
+  public async function methodThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Sink methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("SinkService", "methodThrow");
+    $currentseqid = $this->sendImpl_methodThrow();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink(new \RpcOptions(), $msg);
+
+    $payload_serializer = $this->sendImpl_methodThrow_SinkEncode();
+    $final_response_deserializer = $this->recvImpl_methodThrow_FinalResponse();
+    $client_sink_func = async function(
+      AsyncGenerator<null, SinkPayload, void> $pld_generator
+    ) use ($sink, $payload_serializer, $final_response_deserializer) {
+      return await $sink->genSink<SinkPayload, FinalResponse>(
+        $pld_generator, 
+        $payload_serializer, 
+        $final_response_deserializer, 
+      );
+    };
+
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $this->recvImpl_methodThrow_FirstResponse($currentseqid);
+
+    return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
+  }
+
+  public async function methodSinkThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Sink methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("SinkService", "methodSinkThrow");
+    $currentseqid = $this->sendImpl_methodSinkThrow();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink(new \RpcOptions(), $msg);
+
+    $payload_serializer = $this->sendImpl_methodSinkThrow_SinkEncode();
+    $final_response_deserializer = $this->recvImpl_methodSinkThrow_FinalResponse();
+    $client_sink_func = async function(
+      AsyncGenerator<null, SinkPayload, void> $pld_generator
+    ) use ($sink, $payload_serializer, $final_response_deserializer) {
+      return await $sink->genSink<SinkPayload, FinalResponse>(
+        $pld_generator, 
+        $payload_serializer, 
+        $final_response_deserializer, 
+      );
+    };
+
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $this->recvImpl_methodSinkThrow_FirstResponse($currentseqid);
+
+    return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
+  }
+
+  public async function methodFinalThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Sink methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("SinkService", "methodFinalThrow");
+    $currentseqid = $this->sendImpl_methodFinalThrow();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink(new \RpcOptions(), $msg);
+
+    $payload_serializer = $this->sendImpl_methodFinalThrow_SinkEncode();
+    $final_response_deserializer = $this->recvImpl_methodFinalThrow_FinalResponse();
+    $client_sink_func = async function(
+      AsyncGenerator<null, SinkPayload, void> $pld_generator
+    ) use ($sink, $payload_serializer, $final_response_deserializer) {
+      return await $sink->genSink<SinkPayload, FinalResponse>(
+        $pld_generator, 
+        $payload_serializer, 
+        $final_response_deserializer, 
+      );
+    };
+
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $this->recvImpl_methodFinalThrow_FirstResponse($currentseqid);
+
+    return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
+  }
+
+  public async function methodBothThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Sink methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("SinkService", "methodBothThrow");
+    $currentseqid = $this->sendImpl_methodBothThrow();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink(new \RpcOptions(), $msg);
+
+    $payload_serializer = $this->sendImpl_methodBothThrow_SinkEncode();
+    $final_response_deserializer = $this->recvImpl_methodBothThrow_FinalResponse();
+    $client_sink_func = async function(
+      AsyncGenerator<null, SinkPayload, void> $pld_generator
+    ) use ($sink, $payload_serializer, $final_response_deserializer) {
+      return await $sink->genSink<SinkPayload, FinalResponse>(
+        $pld_generator, 
+        $payload_serializer, 
+        $final_response_deserializer, 
+      );
+    };
+
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $this->recvImpl_methodBothThrow_FirstResponse($currentseqid);
+
+    return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
+  }
+
+  public async function methodFast(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Sink methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("SinkService", "methodFast");
+    $currentseqid = $this->sendImpl_methodFast();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink(new \RpcOptions(), $msg);
+
+    $payload_serializer = $this->sendImpl_methodFast_SinkEncode();
+    $final_response_deserializer = $this->recvImpl_methodFast_FinalResponse();
+    $client_sink_func = async function(
+      AsyncGenerator<null, SinkPayload, void> $pld_generator
+    ) use ($sink, $payload_serializer, $final_response_deserializer) {
+      return await $sink->genSink<SinkPayload, FinalResponse>(
+        $pld_generator, 
+        $payload_serializer, 
+        $final_response_deserializer, 
+      );
+    };
+
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $this->recvImpl_methodFast_FirstResponse($currentseqid);
+
+    return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
+  }
+
 }
 
 class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf {
   use SinkServiceClientBase;
+
+  public async function method(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Sink methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("SinkService", "method");
+    $currentseqid = $this->sendImpl_method();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink(new \RpcOptions(), $msg);
+
+    $payload_serializer = $this->sendImpl_method_SinkEncode();
+    $final_response_deserializer = $this->recvImpl_method_FinalResponse();
+    $client_sink_func = async function(
+      AsyncGenerator<null, SinkPayload, void> $pld_generator
+    ) use ($sink, $payload_serializer, $final_response_deserializer) {
+      return await $sink->genSink<SinkPayload, FinalResponse>(
+        $pld_generator, 
+        $payload_serializer, 
+        $final_response_deserializer, 
+      );
+    };
+
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $this->recvImpl_method_FirstResponse($currentseqid);
+
+    return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
+  }
+
+  public async function methodAndReponse(): Awaitable<\ResponseAndClientSink<InitialResponse, SinkPayload, FinalResponse>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Sink methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("SinkService", "methodAndReponse");
+    $currentseqid = $this->sendImpl_methodAndReponse();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink(new \RpcOptions(), $msg);
+
+    $payload_serializer = $this->sendImpl_methodAndReponse_SinkEncode();
+    $final_response_deserializer = $this->recvImpl_methodAndReponse_FinalResponse();
+    $client_sink_func = async function(
+      AsyncGenerator<null, SinkPayload, void> $pld_generator
+    ) use ($sink, $payload_serializer, $final_response_deserializer) {
+      return await $sink->genSink<SinkPayload, FinalResponse>(
+        $pld_generator, 
+        $payload_serializer, 
+        $final_response_deserializer, 
+      );
+    };
+
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $first_response = $this->recvImpl_methodAndReponse_FirstResponse($currentseqid);
+
+    return new \ResponseAndClientSink<InitialResponse, SinkPayload, FinalResponse>($first_response, $client_sink_func);
+  }
+
+  public async function methodThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Sink methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("SinkService", "methodThrow");
+    $currentseqid = $this->sendImpl_methodThrow();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink(new \RpcOptions(), $msg);
+
+    $payload_serializer = $this->sendImpl_methodThrow_SinkEncode();
+    $final_response_deserializer = $this->recvImpl_methodThrow_FinalResponse();
+    $client_sink_func = async function(
+      AsyncGenerator<null, SinkPayload, void> $pld_generator
+    ) use ($sink, $payload_serializer, $final_response_deserializer) {
+      return await $sink->genSink<SinkPayload, FinalResponse>(
+        $pld_generator, 
+        $payload_serializer, 
+        $final_response_deserializer, 
+      );
+    };
+
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $this->recvImpl_methodThrow_FirstResponse($currentseqid);
+
+    return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
+  }
+
+  public async function methodSinkThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Sink methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("SinkService", "methodSinkThrow");
+    $currentseqid = $this->sendImpl_methodSinkThrow();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink(new \RpcOptions(), $msg);
+
+    $payload_serializer = $this->sendImpl_methodSinkThrow_SinkEncode();
+    $final_response_deserializer = $this->recvImpl_methodSinkThrow_FinalResponse();
+    $client_sink_func = async function(
+      AsyncGenerator<null, SinkPayload, void> $pld_generator
+    ) use ($sink, $payload_serializer, $final_response_deserializer) {
+      return await $sink->genSink<SinkPayload, FinalResponse>(
+        $pld_generator, 
+        $payload_serializer, 
+        $final_response_deserializer, 
+      );
+    };
+
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $this->recvImpl_methodSinkThrow_FirstResponse($currentseqid);
+
+    return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
+  }
+
+  public async function methodFinalThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Sink methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("SinkService", "methodFinalThrow");
+    $currentseqid = $this->sendImpl_methodFinalThrow();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink(new \RpcOptions(), $msg);
+
+    $payload_serializer = $this->sendImpl_methodFinalThrow_SinkEncode();
+    $final_response_deserializer = $this->recvImpl_methodFinalThrow_FinalResponse();
+    $client_sink_func = async function(
+      AsyncGenerator<null, SinkPayload, void> $pld_generator
+    ) use ($sink, $payload_serializer, $final_response_deserializer) {
+      return await $sink->genSink<SinkPayload, FinalResponse>(
+        $pld_generator, 
+        $payload_serializer, 
+        $final_response_deserializer, 
+      );
+    };
+
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $this->recvImpl_methodFinalThrow_FirstResponse($currentseqid);
+
+    return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
+  }
+
+  public async function methodBothThrow(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Sink methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("SinkService", "methodBothThrow");
+    $currentseqid = $this->sendImpl_methodBothThrow();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink(new \RpcOptions(), $msg);
+
+    $payload_serializer = $this->sendImpl_methodBothThrow_SinkEncode();
+    $final_response_deserializer = $this->recvImpl_methodBothThrow_FinalResponse();
+    $client_sink_func = async function(
+      AsyncGenerator<null, SinkPayload, void> $pld_generator
+    ) use ($sink, $payload_serializer, $final_response_deserializer) {
+      return await $sink->genSink<SinkPayload, FinalResponse>(
+        $pld_generator, 
+        $payload_serializer, 
+        $final_response_deserializer, 
+      );
+    };
+
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $this->recvImpl_methodBothThrow_FirstResponse($currentseqid);
+
+    return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
+  }
+
+  public async function methodFast(): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Sink methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("SinkService", "methodFast");
+    $currentseqid = $this->sendImpl_methodFast();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink(new \RpcOptions(), $msg);
+
+    $payload_serializer = $this->sendImpl_methodFast_SinkEncode();
+    $final_response_deserializer = $this->recvImpl_methodFast_FinalResponse();
+    $client_sink_func = async function(
+      AsyncGenerator<null, SinkPayload, void> $pld_generator
+    ) use ($sink, $payload_serializer, $final_response_deserializer) {
+      return await $sink->genSink<SinkPayload, FinalResponse>(
+        $pld_generator, 
+        $payload_serializer, 
+        $final_response_deserializer, 
+      );
+    };
+
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $this->recvImpl_methodFast_FirstResponse($currentseqid);
+
+    return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
+  }
 
   /* send and recv functions */
 }
 
 class SinkServiceAsyncRpcOptionsClient extends \ThriftClientBase implements SinkServiceAsyncRpcOptionsIf {
   use SinkServiceClientBase;
+
+  public async function method(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Sink methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("SinkService", "method");
+    $currentseqid = $this->sendImpl_method();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink($rpc_options, $msg);
+
+    $payload_serializer = $this->sendImpl_method_SinkEncode();
+    $final_response_deserializer = $this->recvImpl_method_FinalResponse();
+    $client_sink_func = async function(
+      AsyncGenerator<null, SinkPayload, void> $pld_generator
+    ) use ($sink, $payload_serializer, $final_response_deserializer) {
+      return await $sink->genSink<SinkPayload, FinalResponse>(
+        $pld_generator, 
+        $payload_serializer, 
+        $final_response_deserializer, 
+      );
+    };
+
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $this->recvImpl_method_FirstResponse($currentseqid);
+
+    return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
+  }
+
+  public async function methodAndReponse(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<InitialResponse, SinkPayload, FinalResponse>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Sink methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("SinkService", "methodAndReponse");
+    $currentseqid = $this->sendImpl_methodAndReponse();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink($rpc_options, $msg);
+
+    $payload_serializer = $this->sendImpl_methodAndReponse_SinkEncode();
+    $final_response_deserializer = $this->recvImpl_methodAndReponse_FinalResponse();
+    $client_sink_func = async function(
+      AsyncGenerator<null, SinkPayload, void> $pld_generator
+    ) use ($sink, $payload_serializer, $final_response_deserializer) {
+      return await $sink->genSink<SinkPayload, FinalResponse>(
+        $pld_generator, 
+        $payload_serializer, 
+        $final_response_deserializer, 
+      );
+    };
+
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $first_response = $this->recvImpl_methodAndReponse_FirstResponse($currentseqid);
+
+    return new \ResponseAndClientSink<InitialResponse, SinkPayload, FinalResponse>($first_response, $client_sink_func);
+  }
+
+  public async function methodThrow(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Sink methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("SinkService", "methodThrow");
+    $currentseqid = $this->sendImpl_methodThrow();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink($rpc_options, $msg);
+
+    $payload_serializer = $this->sendImpl_methodThrow_SinkEncode();
+    $final_response_deserializer = $this->recvImpl_methodThrow_FinalResponse();
+    $client_sink_func = async function(
+      AsyncGenerator<null, SinkPayload, void> $pld_generator
+    ) use ($sink, $payload_serializer, $final_response_deserializer) {
+      return await $sink->genSink<SinkPayload, FinalResponse>(
+        $pld_generator, 
+        $payload_serializer, 
+        $final_response_deserializer, 
+      );
+    };
+
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $this->recvImpl_methodThrow_FirstResponse($currentseqid);
+
+    return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
+  }
+
+  public async function methodSinkThrow(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Sink methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("SinkService", "methodSinkThrow");
+    $currentseqid = $this->sendImpl_methodSinkThrow();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink($rpc_options, $msg);
+
+    $payload_serializer = $this->sendImpl_methodSinkThrow_SinkEncode();
+    $final_response_deserializer = $this->recvImpl_methodSinkThrow_FinalResponse();
+    $client_sink_func = async function(
+      AsyncGenerator<null, SinkPayload, void> $pld_generator
+    ) use ($sink, $payload_serializer, $final_response_deserializer) {
+      return await $sink->genSink<SinkPayload, FinalResponse>(
+        $pld_generator, 
+        $payload_serializer, 
+        $final_response_deserializer, 
+      );
+    };
+
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $this->recvImpl_methodSinkThrow_FirstResponse($currentseqid);
+
+    return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
+  }
+
+  public async function methodFinalThrow(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Sink methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("SinkService", "methodFinalThrow");
+    $currentseqid = $this->sendImpl_methodFinalThrow();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink($rpc_options, $msg);
+
+    $payload_serializer = $this->sendImpl_methodFinalThrow_SinkEncode();
+    $final_response_deserializer = $this->recvImpl_methodFinalThrow_FinalResponse();
+    $client_sink_func = async function(
+      AsyncGenerator<null, SinkPayload, void> $pld_generator
+    ) use ($sink, $payload_serializer, $final_response_deserializer) {
+      return await $sink->genSink<SinkPayload, FinalResponse>(
+        $pld_generator, 
+        $payload_serializer, 
+        $final_response_deserializer, 
+      );
+    };
+
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $this->recvImpl_methodFinalThrow_FirstResponse($currentseqid);
+
+    return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
+  }
+
+  public async function methodBothThrow(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Sink methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("SinkService", "methodBothThrow");
+    $currentseqid = $this->sendImpl_methodBothThrow();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink($rpc_options, $msg);
+
+    $payload_serializer = $this->sendImpl_methodBothThrow_SinkEncode();
+    $final_response_deserializer = $this->recvImpl_methodBothThrow_FinalResponse();
+    $client_sink_func = async function(
+      AsyncGenerator<null, SinkPayload, void> $pld_generator
+    ) use ($sink, $payload_serializer, $final_response_deserializer) {
+      return await $sink->genSink<SinkPayload, FinalResponse>(
+        $pld_generator, 
+        $payload_serializer, 
+        $final_response_deserializer, 
+      );
+    };
+
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $this->recvImpl_methodBothThrow_FirstResponse($currentseqid);
+
+    return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
+  }
+
+  public async function methodFast(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<void, SinkPayload, FinalResponse>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Sink methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("SinkService", "methodFast");
+    $currentseqid = $this->sendImpl_methodFast();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink($rpc_options, $msg);
+
+    $payload_serializer = $this->sendImpl_methodFast_SinkEncode();
+    $final_response_deserializer = $this->recvImpl_methodFast_FinalResponse();
+    $client_sink_func = async function(
+      AsyncGenerator<null, SinkPayload, void> $pld_generator
+    ) use ($sink, $payload_serializer, $final_response_deserializer) {
+      return await $sink->genSink<SinkPayload, FinalResponse>(
+        $pld_generator, 
+        $payload_serializer, 
+        $final_response_deserializer, 
+      );
+    };
+
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $this->recvImpl_methodFast_FirstResponse($currentseqid);
+
+    return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
+  }
 
 }
 

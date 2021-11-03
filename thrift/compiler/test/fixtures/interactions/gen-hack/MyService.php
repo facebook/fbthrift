@@ -435,6 +435,7 @@ class MyService_MyInteraction extends \ThriftClientBase {
     $this->eventHandler_->recvError('MyInteraction.frobnicate', $expectedsequenceid, $x);
     throw $x;
   }
+
   /**
    * Original thrift definition:-
    * oneway void
@@ -495,6 +496,7 @@ class MyService_MyInteraction extends \ThriftClientBase {
     $this->eventHandler_->postSend('MyInteraction.ping', $args, $currentseqid);
     return $currentseqid;
   }
+
   /**
    * Original thrift definition:-
    * void, stream<bool>
@@ -651,6 +653,46 @@ class MyService_MyInteraction extends \ThriftClientBase {
     $this->eventHandler_->postRecv('MyInteraction.truthify', $expectedsequenceid, null);
     return;
   }
+
+  public async function encode(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<Set<arraykey>, string, string>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $rpc_options = $rpc_options->setInteractionId($this->interactionId);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Sink methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("MyService", "MyInteraction.encode");
+    $currentseqid = $this->sendImpl_encode();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink($rpc_options, $msg);
+
+    $payload_serializer = $this->sendImpl_encode_SinkEncode();
+    $final_response_deserializer = $this->recvImpl_encode_FinalResponse();
+    $client_sink_func = async function(
+      AsyncGenerator<null, string, void> $pld_generator
+    ) use ($sink, $payload_serializer, $final_response_deserializer) {
+      return await $sink->genSink<string, string>(
+        $pld_generator, 
+        $payload_serializer, 
+        $final_response_deserializer, 
+      );
+    };
+
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $first_response = $this->recvImpl_encode_FirstResponse($currentseqid);
+
+    return new \ResponseAndClientSink<Set<arraykey>, string, string>($first_response, $client_sink_func);
+  }
+
   protected function sendImpl_encode(): int {
     $currentseqid = $this->getNextSequenceID();
     $args = MyService_MyInteraction_encode_args::withDefaultValues();
@@ -819,6 +861,7 @@ class MyService_MyInteraction extends \ThriftClientBase {
     $this->eventHandler_->recvError('MyInteraction.encode', $expectedsequenceid, $x);
     throw $x;
   }
+
 }
 
 class MyService_MyInteractionFast extends \ThriftClientBase {
@@ -959,6 +1002,7 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     $this->eventHandler_->recvError('MyInteractionFast.frobnicate', $expectedsequenceid, $x);
     throw $x;
   }
+
   /**
    * Original thrift definition:-
    * oneway void
@@ -1019,6 +1063,7 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     $this->eventHandler_->postSend('MyInteractionFast.ping', $args, $currentseqid);
     return $currentseqid;
   }
+
   /**
    * Original thrift definition:-
    * void, stream<bool>
@@ -1175,6 +1220,46 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     $this->eventHandler_->postRecv('MyInteractionFast.truthify', $expectedsequenceid, null);
     return;
   }
+
+  public async function encode(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<Set<arraykey>, string, string>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $rpc_options = $rpc_options->setInteractionId($this->interactionId);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Sink methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("MyService", "MyInteractionFast.encode");
+    $currentseqid = $this->sendImpl_encode();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink($rpc_options, $msg);
+
+    $payload_serializer = $this->sendImpl_encode_SinkEncode();
+    $final_response_deserializer = $this->recvImpl_encode_FinalResponse();
+    $client_sink_func = async function(
+      AsyncGenerator<null, string, void> $pld_generator
+    ) use ($sink, $payload_serializer, $final_response_deserializer) {
+      return await $sink->genSink<string, string>(
+        $pld_generator, 
+        $payload_serializer, 
+        $final_response_deserializer, 
+      );
+    };
+
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $first_response = $this->recvImpl_encode_FirstResponse($currentseqid);
+
+    return new \ResponseAndClientSink<Set<arraykey>, string, string>($first_response, $client_sink_func);
+  }
+
   protected function sendImpl_encode(): int {
     $currentseqid = $this->getNextSequenceID();
     $args = MyService_MyInteractionFast_encode_args::withDefaultValues();
@@ -1343,6 +1428,7 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     $this->eventHandler_->recvError('MyInteractionFast.encode', $expectedsequenceid, $x);
     throw $x;
   }
+
 }
 
 class MyService_SerialInteraction extends \ThriftClientBase {
@@ -1477,6 +1563,7 @@ class MyService_SerialInteraction extends \ThriftClientBase {
     $this->eventHandler_->postRecv('SerialInteraction.frobnicate', $expectedsequenceid, null);
     return;
   }
+
 }
 
 // HELPER FUNCTIONS AND STRUCTURES
