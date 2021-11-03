@@ -127,6 +127,7 @@ FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field4, LazyFooNoChecksum, field4);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field1, LazyCppRef, field1);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field2, LazyCppRef, field2);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field3, LazyCppRef, field3);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field4, LazyCppRef, field4);
 
 TYPED_TEST(LazyDeserialization, CheckDataMember) {
   using LazyStruct = typename TypeParam::LazyStruct;
@@ -157,11 +158,13 @@ TYPED_TEST(Serialization, CppRef) {
     foo.field1_ref() = std::make_unique<std::vector<int32_t>>(10, 10);
     foo.field2_ref() = std::make_shared<std::vector<int32_t>>(20, 20);
     foo.field3_ref() = std::make_shared<std::vector<int32_t>>(30, 30);
+    foo.field4_ref() = std::make_unique<std::vector<int32_t>>(40, 40);
     auto s = TypeParam::template serialize<std::string>(foo);
     auto bar = TypeParam::template deserialize<LazyCppRef>(s);
     EXPECT_EQ(*bar.field1_ref(), std::vector<int32_t>(10, 10));
     EXPECT_EQ(*bar.field2_ref(), std::vector<int32_t>(20, 20));
     EXPECT_EQ(*bar.field3_ref(), std::vector<int32_t>(30, 30));
+    EXPECT_EQ(*bar.field4_ref(), std::vector<int32_t>(40, 40));
   }
   {
     LazyCppRef foo;
@@ -170,6 +173,7 @@ TYPED_TEST(Serialization, CppRef) {
     EXPECT_FALSE(bar.field1_ref());
     EXPECT_FALSE(bar.field2_ref());
     EXPECT_FALSE(bar.field3_ref());
+    EXPECT_TRUE(bar.field4_ref()); // non-optional field always has value
   }
 }
 
@@ -178,6 +182,7 @@ TYPED_TEST(Serialization, LazyDeserializeCppRef) {
   foo.field1_ref() = std::make_unique<std::vector<int32_t>>(10, 10);
   foo.field2_ref() = std::make_shared<std::vector<int32_t>>(20, 20);
   foo.field3_ref() = std::make_shared<std::vector<int32_t>>(30, 30);
+  foo.field4_ref() = std::make_unique<std::vector<int32_t>>(40, 40);
   auto bar = TypeParam::template deserialize<LazyCppRef>(
       TypeParam::template serialize<std::string>(foo));
   auto baz = TypeParam::template deserialize<LazyCppRef>(
@@ -187,25 +192,31 @@ TYPED_TEST(Serialization, LazyDeserializeCppRef) {
   EXPECT_FALSE(get_field1(bar));
   EXPECT_FALSE(get_field2(bar));
   EXPECT_FALSE(get_field3(bar));
+  EXPECT_TRUE(get_field4(bar)->empty()); // non-optional field always has value
   EXPECT_FALSE(get_field1(baz));
   EXPECT_FALSE(get_field2(baz));
   EXPECT_FALSE(get_field3(baz));
+  EXPECT_TRUE(get_field4(baz)->empty());
 
   // access all fields
   EXPECT_EQ(*bar.field1_ref(), std::vector<int32_t>(10, 10));
   EXPECT_EQ(*bar.field2_ref(), std::vector<int32_t>(20, 20));
   EXPECT_EQ(*bar.field3_ref(), std::vector<int32_t>(30, 30));
+  EXPECT_EQ(*bar.field4_ref(), std::vector<int32_t>(40, 40));
   EXPECT_EQ(*baz.field1_ref(), std::vector<int32_t>(10, 10));
   EXPECT_EQ(*baz.field2_ref(), std::vector<int32_t>(20, 20));
   EXPECT_EQ(*baz.field3_ref(), std::vector<int32_t>(30, 30));
+  EXPECT_EQ(*baz.field4_ref(), std::vector<int32_t>(40, 40));
 
   // now all fields are deserialized
   EXPECT_TRUE(get_field1(bar));
   EXPECT_TRUE(get_field2(bar));
   EXPECT_TRUE(get_field3(bar));
+  EXPECT_EQ(*get_field4(bar), std::vector<int32_t>(40, 40));
   EXPECT_TRUE(get_field1(baz));
   EXPECT_TRUE(get_field2(baz));
   EXPECT_TRUE(get_field3(baz));
+  EXPECT_EQ(*get_field4(baz), std::vector<int32_t>(40, 40));
 }
 
 TYPED_TEST(LazyDeserialization, Comparison) {

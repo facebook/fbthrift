@@ -25,7 +25,6 @@
 <%#field:lazy?%>
 <%#struct:union?%>  <%/struct:union?%>    indexWriter.recordFieldStart();
 <%/field:lazy?%>
-<%^field:non_opt_cpp_ref?%>
 <%#field:lazy?%>
 <%#struct:union?%>  <%/struct:union?%>    if constexpr (Protocol_::kHasIndexSupport()) {
 <%#struct:union?%>  <%/struct:union?%>      if (prot_->protocolType() == __fbthrift_protocol_) {
@@ -39,6 +38,7 @@
 <%#struct:union?%>  <%/struct:union?%>
 <%#struct:union?%>  <%/struct:union?%>    std::as_const(*this).__fbthrift_read_field_<%field:cpp_name%>();
 <%/field:lazy?%>
+<%^field:non_opt_cpp_ref?%>
 <%#struct:union?%>  <%/struct:union?%>    xfer += <% > module_types_tcc/pm%>::write(*prot_, <% > module_types_tcc/pm_value%>);
 <%/field:non_opt_cpp_ref?%>
 <%#field:non_opt_cpp_ref?%>

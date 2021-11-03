@@ -32,6 +32,7 @@ struct field4;
 struct field1;
 struct field2;
 struct field3;
+struct field4;
 struct serialized_data_size;
 struct field1;
 struct field2;
@@ -121,6 +122,10 @@ APACHE_THRIFT_DEFINE_ACCESSOR(field2);
 #ifndef APACHE_THRIFT_ACCESSOR_field3
 #define APACHE_THRIFT_ACCESSOR_field3
 APACHE_THRIFT_DEFINE_ACCESSOR(field3);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_field4
+#define APACHE_THRIFT_ACCESSOR_field4
+APACHE_THRIFT_DEFINE_ACCESSOR(field4);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_serialized_data_size
 #define APACHE_THRIFT_ACCESSOR_serialized_data_size
@@ -1310,11 +1315,12 @@ class LazyCppRef final  {
 
  public:
 
-  LazyCppRef() {
+  LazyCppRef() :
+      __fbthrift_field_field4(std::make_unique<::std::vector<::std::int32_t>>()) {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  LazyCppRef(apache::thrift::FragileConstructor, ::std::unique_ptr<::std::vector<::std::int32_t>> field1__arg, ::std::shared_ptr<::std::vector<::std::int32_t>> field2__arg, ::std::shared_ptr<const ::std::vector<::std::int32_t>> field3__arg);
+  LazyCppRef(apache::thrift::FragileConstructor, ::std::unique_ptr<::std::vector<::std::int32_t>> field1__arg, ::std::shared_ptr<::std::vector<::std::int32_t>> field2__arg, ::std::shared_ptr<const ::std::vector<::std::int32_t>> field3__arg, ::std::unique_ptr<::std::vector<::std::int32_t>> field4__arg);
 
   LazyCppRef(LazyCppRef&&) noexcept;
   LazyCppRef(const LazyCppRef& src);
@@ -1329,6 +1335,8 @@ class LazyCppRef final  {
   mutable ::std::shared_ptr<::std::vector<::std::int32_t>> __fbthrift_field_field2;
  private:
   mutable ::std::shared_ptr<const ::std::vector<::std::int32_t>> __fbthrift_field_field3;
+ private:
+  mutable ::std::unique_ptr<::std::vector<::std::int32_t>> __fbthrift_field_field4;
 
  public:
 
@@ -1367,6 +1375,17 @@ class LazyCppRef final  {
 
   template <typename ..., typename T = ::std::shared_ptr<const ::std::vector<::std::int32_t>>>
   FOLLY_ERASE const T&& field3_ref() const&& { return std::move(__fbthrift_read_field_field3()); }
+  template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::int32_t>>>
+  FOLLY_ERASE T& field4_ref() & { return __fbthrift_read_field_field4(); }
+
+  template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::int32_t>>>
+  FOLLY_ERASE const T& field4_ref() const& { return __fbthrift_read_field_field4(); }
+
+  template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::int32_t>>>
+  FOLLY_ERASE T&& field4_ref() && { return std::move(__fbthrift_read_field_field4()); }
+
+  template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::int32_t>>>
+  FOLLY_ERASE const T&& field4_ref() const&& { return std::move(__fbthrift_read_field_field4()); }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -1385,12 +1404,14 @@ class LazyCppRef final  {
     folly::IOBuf field1;
     folly::IOBuf field2;
     folly::IOBuf field3;
+    folly::IOBuf field4;
   } __fbthrift_serializedData_;
 
   mutable struct __fbthrift_IsDeserialized {
     std::atomic<uint8_t> field1{::apache::thrift::detail::LazyDeserializationState::UNTAINTED | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED};
     std::atomic<uint8_t> field2{::apache::thrift::detail::LazyDeserializationState::UNTAINTED | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED};
     std::atomic<uint8_t> field3{::apache::thrift::detail::LazyDeserializationState::UNTAINTED | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED};
+    std::atomic<uint8_t> field4{::apache::thrift::detail::LazyDeserializationState::UNTAINTED | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED};
   } __fbthrift_isDeserialized_;
 
   mutable std::mutex __fbthrift_deserializationMutex_;
@@ -1407,6 +1428,10 @@ class LazyCppRef final  {
   ::std::shared_ptr<const ::std::vector<::std::int32_t>>& __fbthrift_read_field_field3();
   void __fbthrift_read_field_field3_slow() const;
   template<class ProtocolReader> void __fbthrift_read_field_field3_impl() const;
+  const ::std::unique_ptr<::std::vector<::std::int32_t>>& __fbthrift_read_field_field4() const;
+  ::std::unique_ptr<::std::vector<::std::int32_t>>& __fbthrift_read_field_field4();
+  void __fbthrift_read_field_field4_slow() const;
+  template<class ProtocolReader> void __fbthrift_read_field_field4_impl() const;
 
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);

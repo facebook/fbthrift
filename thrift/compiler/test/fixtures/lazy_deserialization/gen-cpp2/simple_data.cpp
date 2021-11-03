@@ -88,17 +88,20 @@ const std::array<protocol::TType, 4> TStructDataStorage<::apache::thrift::test::
   TType::T_LIST,
 }};
 
-const std::array<folly::StringPiece, 3> TStructDataStorage<::apache::thrift::test::LazyCppRef>::fields_names = {{
+const std::array<folly::StringPiece, 4> TStructDataStorage<::apache::thrift::test::LazyCppRef>::fields_names = {{
   "field1",
   "field2",
   "field3",
+  "field4",
 }};
-const std::array<int16_t, 3> TStructDataStorage<::apache::thrift::test::LazyCppRef>::fields_ids = {{
+const std::array<int16_t, 4> TStructDataStorage<::apache::thrift::test::LazyCppRef>::fields_ids = {{
   1,
   2,
   3,
+  4,
 }};
-const std::array<protocol::TType, 3> TStructDataStorage<::apache::thrift::test::LazyCppRef>::fields_types = {{
+const std::array<protocol::TType, 4> TStructDataStorage<::apache::thrift::test::LazyCppRef>::fields_types = {{
+  TType::T_LIST,
   TType::T_LIST,
   TType::T_LIST,
   TType::T_LIST,

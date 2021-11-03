@@ -53,6 +53,7 @@ struct LazyCppRef {
     cpp.ref_type = "shared_const",
     cpp.experimental.lazy,
   );
+  4: list<i32> field4 (cpp.ref_type = "unique", cpp.experimental.lazy);
 }
 
 // Same as Foo, except adding index field explicitly

@@ -100,6 +100,8 @@ struct VisitByFieldId<::apache::thrift::test::LazyCppRef> {
       return f(1, static_cast<T&&>(t).field2_ref());
     case 3:
       return f(2, static_cast<T&&>(t).field3_ref());
+    case 4:
+      return f(3, static_cast<T&&>(t).field4_ref());
     default:
       throwInvalidThriftId(fieldId, "::apache::thrift::test::LazyCppRef");
     }
