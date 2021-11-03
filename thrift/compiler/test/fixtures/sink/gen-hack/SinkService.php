@@ -125,6 +125,38 @@ trait SinkServiceClientBase {
     };
   }
 
+  protected function recvImpl_method_FinalResponse(): (function(?string, ?\Exception) : FinalResponse) {
+    $protocol = $this->input_;
+    return function(
+      ?string $sink_final_response, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+      try {
+        if ($ex !== null) {
+          throw $ex;
+        }
+        $transport = $protocol->getTransport();
+        invariant(
+          $transport is \TMemoryBuffer,
+          "Stream methods require TMemoryBuffer transport"
+        );
+
+        $transport->resetBuffer();
+        $transport->write($sink_final_response as nonnull);
+        $result = SinkService_method_FinalResponse::withDefaultValues();
+        $result->read($protocol);
+        $protocol->readMessageEnd();
+      } catch (\THandlerShortCircuitException $ex) {
+        throw $ex->result;
+      }
+      if ($result->success !== null) {
+       return $result->success;
+      }
+      throw new \TApplicationException("method failed: unknown result", \TApplicationException::MISSING_RESULT);
+    };
+  }
+
   protected function recvImpl_method_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
       $this->eventHandler_->preRecv('method', $expectedsequenceid);
@@ -253,6 +285,38 @@ trait SinkServiceClientBase {
       $msg = $transport->getBuffer();
       $transport->resetBuffer();
       return tuple($msg, $is_application_ex);
+    };
+  }
+
+  protected function recvImpl_methodAndReponse_FinalResponse(): (function(?string, ?\Exception) : FinalResponse) {
+    $protocol = $this->input_;
+    return function(
+      ?string $sink_final_response, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+      try {
+        if ($ex !== null) {
+          throw $ex;
+        }
+        $transport = $protocol->getTransport();
+        invariant(
+          $transport is \TMemoryBuffer,
+          "Stream methods require TMemoryBuffer transport"
+        );
+
+        $transport->resetBuffer();
+        $transport->write($sink_final_response as nonnull);
+        $result = SinkService_methodAndReponse_FinalResponse::withDefaultValues();
+        $result->read($protocol);
+        $protocol->readMessageEnd();
+      } catch (\THandlerShortCircuitException $ex) {
+        throw $ex->result;
+      }
+      if ($result->success !== null) {
+       return $result->success;
+      }
+      throw new \TApplicationException("methodAndReponse failed: unknown result", \TApplicationException::MISSING_RESULT);
     };
   }
 
@@ -390,6 +454,38 @@ trait SinkServiceClientBase {
       $msg = $transport->getBuffer();
       $transport->resetBuffer();
       return tuple($msg, $is_application_ex);
+    };
+  }
+
+  protected function recvImpl_methodThrow_FinalResponse(): (function(?string, ?\Exception) : FinalResponse) {
+    $protocol = $this->input_;
+    return function(
+      ?string $sink_final_response, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+      try {
+        if ($ex !== null) {
+          throw $ex;
+        }
+        $transport = $protocol->getTransport();
+        invariant(
+          $transport is \TMemoryBuffer,
+          "Stream methods require TMemoryBuffer transport"
+        );
+
+        $transport->resetBuffer();
+        $transport->write($sink_final_response as nonnull);
+        $result = SinkService_methodThrow_FinalResponse::withDefaultValues();
+        $result->read($protocol);
+        $protocol->readMessageEnd();
+      } catch (\THandlerShortCircuitException $ex) {
+        throw $ex->result;
+      }
+      if ($result->success !== null) {
+       return $result->success;
+      }
+      throw new \TApplicationException("methodThrow failed: unknown result", \TApplicationException::MISSING_RESULT);
     };
   }
 
@@ -533,6 +629,38 @@ trait SinkServiceClientBase {
     };
   }
 
+  protected function recvImpl_methodSinkThrow_FinalResponse(): (function(?string, ?\Exception) : FinalResponse) {
+    $protocol = $this->input_;
+    return function(
+      ?string $sink_final_response, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+      try {
+        if ($ex !== null) {
+          throw $ex;
+        }
+        $transport = $protocol->getTransport();
+        invariant(
+          $transport is \TMemoryBuffer,
+          "Stream methods require TMemoryBuffer transport"
+        );
+
+        $transport->resetBuffer();
+        $transport->write($sink_final_response as nonnull);
+        $result = SinkService_methodSinkThrow_FinalResponse::withDefaultValues();
+        $result->read($protocol);
+        $protocol->readMessageEnd();
+      } catch (\THandlerShortCircuitException $ex) {
+        throw $ex->result;
+      }
+      if ($result->success !== null) {
+       return $result->success;
+      }
+      throw new \TApplicationException("methodSinkThrow failed: unknown result", \TApplicationException::MISSING_RESULT);
+    };
+  }
+
   protected function recvImpl_methodSinkThrow_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
       $this->eventHandler_->preRecv('methodSinkThrow', $expectedsequenceid);
@@ -661,6 +789,41 @@ trait SinkServiceClientBase {
       $msg = $transport->getBuffer();
       $transport->resetBuffer();
       return tuple($msg, $is_application_ex);
+    };
+  }
+
+  protected function recvImpl_methodFinalThrow_FinalResponse(): (function(?string, ?\Exception) : FinalResponse) {
+    $protocol = $this->input_;
+    return function(
+      ?string $sink_final_response, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+      try {
+        if ($ex !== null) {
+          throw $ex;
+        }
+        $transport = $protocol->getTransport();
+        invariant(
+          $transport is \TMemoryBuffer,
+          "Stream methods require TMemoryBuffer transport"
+        );
+
+        $transport->resetBuffer();
+        $transport->write($sink_final_response as nonnull);
+        $result = SinkService_methodFinalThrow_FinalResponse::withDefaultValues();
+        $result->read($protocol);
+        $protocol->readMessageEnd();
+      } catch (\THandlerShortCircuitException $ex) {
+        throw $ex->result;
+      }
+      if ($result->success !== null) {
+       return $result->success;
+      }
+      if ($result->ex !== null) {
+        throw $result->ex;
+      }
+      throw new \TApplicationException("methodFinalThrow failed: unknown result", \TApplicationException::MISSING_RESULT);
     };
   }
 
@@ -799,6 +962,41 @@ trait SinkServiceClientBase {
     };
   }
 
+  protected function recvImpl_methodBothThrow_FinalResponse(): (function(?string, ?\Exception) : FinalResponse) {
+    $protocol = $this->input_;
+    return function(
+      ?string $sink_final_response, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+      try {
+        if ($ex !== null) {
+          throw $ex;
+        }
+        $transport = $protocol->getTransport();
+        invariant(
+          $transport is \TMemoryBuffer,
+          "Stream methods require TMemoryBuffer transport"
+        );
+
+        $transport->resetBuffer();
+        $transport->write($sink_final_response as nonnull);
+        $result = SinkService_methodBothThrow_FinalResponse::withDefaultValues();
+        $result->read($protocol);
+        $protocol->readMessageEnd();
+      } catch (\THandlerShortCircuitException $ex) {
+        throw $ex->result;
+      }
+      if ($result->success !== null) {
+       return $result->success;
+      }
+      if ($result->ex !== null) {
+        throw $result->ex;
+      }
+      throw new \TApplicationException("methodBothThrow failed: unknown result", \TApplicationException::MISSING_RESULT);
+    };
+  }
+
   protected function recvImpl_methodBothThrow_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
       $this->eventHandler_->preRecv('methodBothThrow', $expectedsequenceid);
@@ -927,6 +1125,38 @@ trait SinkServiceClientBase {
       $msg = $transport->getBuffer();
       $transport->resetBuffer();
       return tuple($msg, $is_application_ex);
+    };
+  }
+
+  protected function recvImpl_methodFast_FinalResponse(): (function(?string, ?\Exception) : FinalResponse) {
+    $protocol = $this->input_;
+    return function(
+      ?string $sink_final_response, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+      try {
+        if ($ex !== null) {
+          throw $ex;
+        }
+        $transport = $protocol->getTransport();
+        invariant(
+          $transport is \TMemoryBuffer,
+          "Stream methods require TMemoryBuffer transport"
+        );
+
+        $transport->resetBuffer();
+        $transport->write($sink_final_response as nonnull);
+        $result = SinkService_methodFast_FinalResponse::withDefaultValues();
+        $result->read($protocol);
+        $protocol->readMessageEnd();
+      } catch (\THandlerShortCircuitException $ex) {
+        throw $ex->result;
+      }
+      if ($result->success !== null) {
+       return $result->success;
+      }
+      throw new \TApplicationException("methodFast failed: unknown result", \TApplicationException::MISSING_RESULT);
     };
   }
 

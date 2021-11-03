@@ -728,6 +728,38 @@ class MyService_MyInteraction extends \ThriftClientBase {
     };
   }
 
+  protected function recvImpl_encode_FinalResponse(): (function(?string, ?\Exception) : string) {
+    $protocol = $this->input_;
+    return function(
+      ?string $sink_final_response, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+      try {
+        if ($ex !== null) {
+          throw $ex;
+        }
+        $transport = $protocol->getTransport();
+        invariant(
+          $transport is \TMemoryBuffer,
+          "Stream methods require TMemoryBuffer transport"
+        );
+
+        $transport->resetBuffer();
+        $transport->write($sink_final_response as nonnull);
+        $result = MyService_MyInteraction_encode_FinalResponse::withDefaultValues();
+        $result->read($protocol);
+        $protocol->readMessageEnd();
+      } catch (\THandlerShortCircuitException $ex) {
+        throw $ex->result;
+      }
+      if ($result->success !== null) {
+       return $result->success;
+      }
+      throw new \TApplicationException("encode failed: unknown result", \TApplicationException::MISSING_RESULT);
+    };
+  }
+
   protected function recvImpl_encode_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): Set<arraykey> {
     try {
       $this->eventHandler_->preRecv('MyInteraction.encode', $expectedsequenceid);
@@ -1217,6 +1249,38 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
       $msg = $transport->getBuffer();
       $transport->resetBuffer();
       return tuple($msg, $is_application_ex);
+    };
+  }
+
+  protected function recvImpl_encode_FinalResponse(): (function(?string, ?\Exception) : string) {
+    $protocol = $this->input_;
+    return function(
+      ?string $sink_final_response, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+      try {
+        if ($ex !== null) {
+          throw $ex;
+        }
+        $transport = $protocol->getTransport();
+        invariant(
+          $transport is \TMemoryBuffer,
+          "Stream methods require TMemoryBuffer transport"
+        );
+
+        $transport->resetBuffer();
+        $transport->write($sink_final_response as nonnull);
+        $result = MyService_MyInteractionFast_encode_FinalResponse::withDefaultValues();
+        $result->read($protocol);
+        $protocol->readMessageEnd();
+      } catch (\THandlerShortCircuitException $ex) {
+        throw $ex->result;
+      }
+      if ($result->success !== null) {
+       return $result->success;
+      }
+      throw new \TApplicationException("encode failed: unknown result", \TApplicationException::MISSING_RESULT);
     };
   }
 
