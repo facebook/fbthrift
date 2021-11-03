@@ -43,8 +43,6 @@ class BuilderTest(unittest.TestCase):
         numerical_builder = numerical_Builder()
         self.assertIsNone(numerical_builder.int_val)
         self.assertIsNone(numerical_builder.float_val)
-        self.assertIsNone(numerical_builder.req_int_val)
-        self.assertIsNone(numerical_builder.req_float_val)
         self.assertIsNone(numerical_builder.int_list)
         self.assertIsNone(numerical_builder.float_list)
         self.assertIsNone(numerical_builder.i64_val)

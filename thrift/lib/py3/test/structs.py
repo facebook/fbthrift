@@ -305,34 +305,33 @@ class StructTests(unittest.TestCase):
 class NumericalConversionsTests(unittest.TestCase):
     def test_overflow(self) -> None:
         with self.assertRaises(OverflowError):
-            numerical(req_float_val=5, req_int_val=2 ** 63 - 1)
+            numerical(float_val=5, int_val=2 ** 63 - 1)
 
         with self.assertRaises(OverflowError):
-            numerical(req_float_val=5, req_int_val=2, int_list=[5, 2 ** 32])
+            numerical(float_val=5, int_val=2, int_list=[5, 2 ** 32])
 
     def test_int_to_float(self) -> None:
-        x = numerical(req_int_val=5, req_float_val=5, float_val=5, float_list=[1, 5, 6])
-        x(req_float_val=10)
+        x = numerical(int_val=5, float_val=5, float_list=[1, 5, 6])
+        x(float_val=10)
         x(float_val=10)
         x(float_list=[6, 7, 8])
 
     def test_int_to_i64(self) -> None:
         large = 2 ** 63 - 1
-        numerical(req_int_val=5, req_float_val=5, i64_val=int(large))
+        numerical(int_val=5, float_val=5, i64_val=int(large))
         too_large = 2 ** 65 - 1
         with self.assertRaises(OverflowError):
-            numerical(req_int_val=5, req_float_val=5, i64_val=int(too_large))
+            numerical(int_val=5, float_val=5, i64_val=int(too_large))
 
     def test_float_to_int_required_field(self) -> None:
         with self.assertRaises(TypeError):
             # pyre-fixme[6]: Expected `Optional[int]` for 1st param but got `float`.
-            numerical(req_int_val=math.pi, req_float_val=math.pi)
+            numerical(int_val=math.pi, float_val=math.pi)
 
     def test_float_to_int_unqualified_field(self) -> None:
         with self.assertRaises(TypeError):
             numerical(
-                req_int_val=5,
-                req_float_val=math.pi,
+                float_val=math.pi,
                 # pyre-fixme[6]: Expected `Optional[int]` for 3rd param but got `float`.
                 int_val=math.pi,
             )
@@ -340,8 +339,8 @@ class NumericalConversionsTests(unittest.TestCase):
     def test_float_to_int_list(self) -> None:
         with self.assertRaises(TypeError):
             numerical(
-                req_int_val=5,
-                req_float_val=math.pi,
+                int_val=5,
+                float_val=math.pi,
                 # pyre-fixme[6]: Expected `Optional[typing.Sequence[int]]` for 3rd
                 #  param but got `List[float]`.
                 int_list=[math.pi, math.e],
