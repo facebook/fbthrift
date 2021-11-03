@@ -68,6 +68,7 @@ DECLARE_string(service_identity);
 
 THRIFT_FLAG_DECLARE_bool(dump_snapshot_on_long_shutdown);
 THRIFT_FLAG_DECLARE_bool(alpn_allow_mismatch);
+THRIFT_FLAG_DECLARE_bool(server_check_unimplemented_extra_interfaces);
 
 namespace apache {
 namespace thrift {
