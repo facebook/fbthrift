@@ -518,7 +518,7 @@ class ThriftRequest final : public ThriftRequestCore {
 
   bool includeEnvelope() const override { return true; }
 
-  ~ThriftRequest() { serverConfigs_.decActiveRequests(); }
+  ~ThriftRequest() override { serverConfigs_.decActiveRequests(); }
 
  private:
   void sendThriftResponse(
