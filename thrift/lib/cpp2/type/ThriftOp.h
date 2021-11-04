@@ -62,7 +62,21 @@ struct identical_to<type::double_t> {
   }
 };
 
-// TODO(afuller): Implement overrides for lists, sets, maps and structured
-// types, so that identical_to works correctly for floating point types.
+template <typename VTT>
+struct identical_to<type::list<VTT>> {
+  template <typename T = type::standard_type<type::list<VTT>>>
+  bool operator()(const T& lhs, const T& rhs) const {
+    if (&lhs == &rhs) {
+      return true;
+    }
+    if (lhs.size() != rhs.size()) {
+      return false;
+    }
+    return std::equal(lhs.begin(), lhs.end(), rhs.begin(), identical<VTT>);
+  }
+};
+
+// TODO(afuller): Implement overrides for sets, maps and structured types,
+// so that identical_to works correctly for floating point types.
 
 } // namespace apache::thrift::op

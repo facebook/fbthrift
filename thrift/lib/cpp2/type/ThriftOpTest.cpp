@@ -84,5 +84,50 @@ TEST(ThriftOpTest, StructWithFloat) {
   EXPECT_TRUE(identical(lhs, rhs)); // Should be false!
 }
 
+TEST(ThriftOpTest, ListWithDouble) {
+  op::equal_to<type::list<type::double_t>> equal;
+  op::identical_to<type::list<type::double_t>> identical;
+
+  EXPECT_FALSE(equal(
+      {1, std::numeric_limits<float>::quiet_NaN()},
+      {1, std::numeric_limits<float>::quiet_NaN()}));
+  EXPECT_TRUE(identical(
+      {1, std::numeric_limits<float>::quiet_NaN()},
+      {1, std::numeric_limits<float>::quiet_NaN()}));
+
+  EXPECT_TRUE(equal({-0.0, 2.0}, {+0.0, 2.0}));
+  EXPECT_FALSE(identical({-0.0, 2.0}, {+0.0, 2.0}));
+}
+
+TEST(ThriftOpTest, SetWithDouble) {
+  op::equal_to<type::set<type::double_t>> equal;
+  op::identical_to<type::set<type::double_t>> identical;
+
+  // Note: NaN in a set is undefined behavior.
+
+  EXPECT_TRUE(equal({-0.0, 2.0}, {+0.0, 2.0}));
+  EXPECT_TRUE(identical({-0.0, 2.0}, {+0.0, 2.0})); // Should be false!
+}
+
+TEST(ThriftOpTest, MapWithDouble) {
+  op::equal_to<type::map<type::double_t, type::float_t>> equal;
+  op::identical_to<type::map<type::double_t, type::float_t>> identical;
+
+  // Note: NaN in a map keys is undefined behavior.
+  EXPECT_FALSE(equal(
+      {{1, std::numeric_limits<float>::quiet_NaN()}},
+      {{1, std::numeric_limits<float>::quiet_NaN()}}));
+  EXPECT_FALSE(identical(
+      {{1, std::numeric_limits<float>::quiet_NaN()}},
+      {{1, std::numeric_limits<float>::quiet_NaN()}})); // Should be true!
+
+  EXPECT_TRUE(equal({{-0.0, 2.0}}, {{+0.0, 2.0}}));
+  EXPECT_TRUE(identical({{-0.0, 2.0}}, {{+0.0, 2.0}})); // Should be false!
+  EXPECT_TRUE(equal({{2.0, +0.0}}, {{2.0, -0.0}}));
+  EXPECT_TRUE(identical({{2.0, +0.0}}, {{2.0, -0.0}})); // Should be false!
+  EXPECT_TRUE(equal({{-0.0, +0.0}}, {{+0.0, -0.0}}));
+  EXPECT_TRUE(identical({{-0.0, +0.0}}, {{+0.0, -0.0}})); // Should be false!
+}
+
 } // namespace
 } // namespace apache::thrift
