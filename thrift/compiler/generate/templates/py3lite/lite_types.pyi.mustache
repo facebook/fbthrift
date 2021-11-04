@@ -33,7 +33,7 @@ import {{program:base_library_package}}.exceptions as _fbthrift_py3lite_exceptio
 {{#program:include_namespaces}}
 {{#has_types?}}
 
-import {{#include_namespace}}{{value}}.{{/include_namespace}}lite_types
+import {{included_module_path}}.lite_types
 {{/has_types?}}
 {{/program:include_namespaces}}
 {{#program:enums}}

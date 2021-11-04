@@ -27,7 +27,7 @@ import {{program:base_library_package}}.exceptions as _fbthrift_py3lite_exceptio
 {{#program:include_namespaces}}
 {{#has_types?}}
 
-import {{#include_namespace}}{{value}}.{{/include_namespace}}lite_types
+import {{included_module_path}}.lite_types
 {{/has_types?}}
 {{/program:include_namespaces}}
 {{#program:enums}}
@@ -106,7 +106,7 @@ _fbthrift_py3lite_types.fill_specs(
 {{#service:supported_functions}}
 
 
-class {{> types/function_args_struct_name}}(metaclass=_fbthrift_py3lite_types.StructMeta):
+class {{> types/function_args_type}}(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         {{#function:args}}
         (
@@ -120,7 +120,7 @@ class {{> types/function_args_struct_name}}(metaclass=_fbthrift_py3lite_types.St
     )
 
 {{^function:oneway?}}
-class {{> types/function_return_struct_name}}(metaclass=_fbthrift_py3lite_types.StructMeta):
+class {{> types/function_return_type}}(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         {{#function:return_type}}
         {{^type:void?}}
@@ -152,9 +152,9 @@ class {{> types/function_return_struct_name}}(metaclass=_fbthrift_py3lite_types.
 _fbthrift_py3lite_types.fill_specs(
     {{#program:services}}
     {{#service:supported_functions}}
-    {{> types/function_args_struct_name}},
+    {{> types/function_args_type}},
     {{^function:oneway?}}
-    {{> types/function_return_struct_name}},
+    {{> types/function_return_type}},
     {{/function:oneway?}}
     {{/service:supported_functions}}
     {{/program:services}}

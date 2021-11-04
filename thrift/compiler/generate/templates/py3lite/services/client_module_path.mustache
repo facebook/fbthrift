@@ -15,5 +15,5 @@
   limitations under the License.
 
 }}{{!
-Struct name for function args
-}}_fbthrift_{{service:name}}_{{function:name}}_args
+This generates module path to the client given a service
+}}{{#service:external_program?}}{{service:module_path}}.lite_clients.{{/service:external_program?}}{{service:name}}

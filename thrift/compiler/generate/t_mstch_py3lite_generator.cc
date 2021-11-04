@@ -34,18 +34,6 @@ namespace compiler {
 
 namespace {
 
-mstch::array create_string_array(const std::vector<std::string>& values) {
-  mstch::array a;
-  for (auto it = values.begin(); it != values.end(); ++it) {
-    a.push_back(mstch::map{
-        {"value", *it},
-        {"first?", it == values.begin()},
-        {"last?", std::next(it) == values.end()},
-    });
-  }
-  return a;
-}
-
 std::vector<std::string> get_py3_namespace(const t_program* prog) {
   return split_namespace(prog->get_namespace("py3"));
 }
@@ -313,7 +301,8 @@ class mstch_py3lite_program : public mstch_program {
     register_methods(
         this,
         {
-            {"program:py3_namespaces", &mstch_py3lite_program::py3_namespaces},
+            {"program:module_path", &mstch_py3lite_program::module_path},
+            {"program:is_types_file?", &mstch_py3lite_program::is_types_file},
             {"program:include_namespaces",
              &mstch_py3lite_program::include_namespaces},
             {"program:base_library_package",
@@ -327,19 +316,21 @@ class mstch_py3lite_program : public mstch_program {
     visit_types_for_mixin_fields();
   }
 
+  mstch::node is_types_file() { return has_option("is_types_file"); }
+
   mstch::node include_namespaces() {
     mstch::array a;
     for (auto& it : include_namespaces_) {
       a.push_back(mstch::map{
-          {"include_namespace", create_string_array(it.second.ns)},
+          {"included_module_path", boost::algorithm::join(it.second.ns, ".")},
           {"has_services?", it.second.has_services},
           {"has_types?", it.second.has_types}});
     }
     return a;
   }
 
-  mstch::node py3_namespaces() {
-    return create_string_array(get_py3_namespace(program_));
+  mstch::node module_path() {
+    return boost::algorithm::join(get_py3_namespace_with_name(program_), ".");
   }
 
   mstch::node base_library_package() {
@@ -662,7 +653,7 @@ class mstch_py3lite_service : public mstch_service {
     register_methods(
         this,
         {
-            {"service:py3_namespaces", &mstch_py3lite_service::py3_namespaces},
+            {"service:module_path", &mstch_py3lite_service::module_path},
             {"service:program_name", &mstch_py3lite_service::program_name},
             {"service:parent_service_name",
              &mstch_py3lite_service::parent_service_name},
@@ -673,8 +664,9 @@ class mstch_py3lite_service : public mstch_service {
         });
   }
 
-  mstch::node py3_namespaces() {
-    return create_string_array(get_py3_namespace(service_->program()));
+  mstch::node module_path() {
+    return boost::algorithm::join(
+        get_py3_namespace_with_name(service_->program()), ".");
   }
 
   mstch::node program_name() { return service_->program()->name(); }
