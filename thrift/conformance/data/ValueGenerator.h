@@ -24,6 +24,7 @@
 #include <fmt/core.h>
 #include <folly/CPortability.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
+#include <thrift/lib/cpp2/type/Traits.h>
 
 namespace apache::thrift::conformance::data {
 
@@ -45,7 +46,7 @@ struct NamedValue {
 
 // A list of named values for the given thrift type.
 template <typename TT>
-using NamedValues = std::vector<NamedValue<typename TT::standard_type>>;
+using NamedValues = std::vector<NamedValue<type::standard_type<TT>>>;
 
 // Adds all the values using the given inserter.
 template <typename C, typename I>
@@ -60,7 +61,7 @@ struct BaseValueGenerator {
   static_assert(type::is_concrete_type_v<TT>, "not a concrete type");
 
   using thrift_type = TT;
-  using standard_type = typename TT::standard_type;
+  using standard_type = type::standard_type<TT>;
   using Values = NamedValues<TT>;
 };
 

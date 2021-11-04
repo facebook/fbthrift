@@ -32,14 +32,14 @@ void addStringValues(NamedValues<TT>& values) {
   values.emplace_back(" a", "leading_space");
   values.emplace_back("a ", "trailing_space");
   values.emplace_back("Hello", "utf8");
-  if constexpr (TT::kBaseType == type::BaseType::Binary) {
+  if constexpr (type::base_type_v<TT> == type::BaseType::Binary) {
     values.emplace_back("\x72\x01\xff", "bad_utf8");
   }
 }
 
 template <typename TT, bool key>
 void addNumericValues(NamedValues<TT>& values) {
-  using T = typename TT::standard_type;
+  using T = type::standard_type<TT>;
   using numeric_limits = std::numeric_limits<T>;
 
   values.emplace_back(0, "zero");
@@ -90,10 +90,10 @@ void addNumericValues(NamedValues<TT>& values) {
 template <typename TT, bool key>
 NamedValues<TT> generateValues() {
   static_assert(type::primitive_types::contains<TT>, "");
-  using T = typename TT::standard_type;
+  using T = type::standard_type<TT>;
   NamedValues<TT> values;
 
-  if constexpr (TT::kBaseType == type::BaseType::Bool) {
+  if constexpr (type::base_type_v<TT> == type::BaseType::Bool) {
     values.emplace_back(true, "true");
     values.emplace_back(false, "false");
   } else if constexpr (type::string_types::contains<TT>) {

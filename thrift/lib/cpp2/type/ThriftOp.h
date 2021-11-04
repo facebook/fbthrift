@@ -21,6 +21,7 @@
 
 #include <folly/lang/Bits.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
+#include <thrift/lib/cpp2/type/Traits.h>
 
 namespace apache::thrift::op {
 
@@ -29,7 +30,7 @@ template <typename TT>
 struct equal_to {
   static_assert(type::is_concrete_type_v<TT>);
 
-  template <typename T = typename TT::standard_type>
+  template <typename T = type::standard_type<TT>>
   constexpr bool operator()(const T& lhs, const T& rhs) const {
     static_assert(type::is_standard_type<TT, T>::value);
     return lhs == rhs;
