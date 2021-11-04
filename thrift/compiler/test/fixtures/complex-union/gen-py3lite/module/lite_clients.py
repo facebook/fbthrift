@@ -8,6 +8,6 @@
 from thrift.py3lite.sync_client import SyncClient as _fbthrift_py3lite_SyncClient
 from thrift.py3lite.async_client import AsyncClient as _fbthrift_py3lite_AsyncClient
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
-import module.lite_types as _module_lite_types
+import module.lite_types
 
 

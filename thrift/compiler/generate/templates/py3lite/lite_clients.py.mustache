@@ -22,13 +22,13 @@ Generated Python classes for Thrift clients
 from {{program:base_library_package}}.sync_client import SyncClient as _fbthrift_py3lite_SyncClient
 from {{program:base_library_package}}.async_client import AsyncClient as _fbthrift_py3lite_AsyncClient
 import {{program:base_library_package}}.exceptions as _fbthrift_py3lite_exceptions
-import {{#program:py3_namespaces}}{{value}}.{{/program:py3_namespaces}}{{program:name}}.lite_types as _{{#program:py3_namespaces}}{{value}}_{{/program:py3_namespaces}}{{program:name}}_lite_types
+import {{#program:py3_namespaces}}{{value}}.{{/program:py3_namespaces}}{{program:name}}.lite_types
 {{#program:include_namespaces}}
 {{#has_types?}}
-import {{#include_namespace}}{{value}}.{{/include_namespace}}lite_types as _{{#include_namespace}}{{value}}_{{/include_namespace}}lite_types
+import {{#include_namespace}}{{value}}.{{/include_namespace}}lite_types
 {{/has_types?}}
 {{#has_services?}}
-import {{#include_namespace}}{{value}}.{{/include_namespace}}lite_clients as _{{#include_namespace}}{{value}}_{{/include_namespace}}lite_clients
+import {{#include_namespace}}{{value}}.{{/include_namespace}}lite_clients
 {{/has_services?}}
 {{/program:include_namespaces}}
 
@@ -38,7 +38,7 @@ import {{#include_namespace}}{{value}}.{{/include_namespace}}lite_clients as _{{
 class {{service:name}}:
     class Sync({{#service:extends}}{{!
         }}{{#service:external_program?}}{{!
-            }}{{#service:py3_namespaces}}_{{value}}{{/service:py3_namespaces}}_{{service:program_name}}_lite_clients.{{!
+            }}{{#service:py3_namespaces}}{{value}}.{{/service:py3_namespaces}}{{service:program_name}}.lite_clients.{{!
         }}{{/service:external_program?}}{{!
         }}{{service:name}}.Sync{{!
     }}{{/service:extends}}{{^service:extends?}}{{!
@@ -55,11 +55,11 @@ class {{service:name}}:
             resp = self._send_request(
                 "{{service:name}}",
                 "{{function:name}}",
-                _{{#program:py3_namespaces}}{{value}}_{{/program:py3_namespaces}}{{program:name}}_lite_types.{{> types/function_args_struct_name}}({{#function:args}}
+                {{#program:py3_namespaces}}{{value}}.{{/program:py3_namespaces}}{{program:name}}.lite_types.{{> types/function_args_struct_name}}({{#function:args}}
                     {{field:py_name}}={{field:py_name}},{{/function:args}}),
                 {{#function:oneway?}}None{{/function:oneway?}}{{!!
                 }}{{^function:oneway?}}{{!!
-                }}_{{#program:py3_namespaces}}{{value}}_{{/program:py3_namespaces}}{{program:name}}_lite_types.{{> types/function_return_struct_name}}{{!!
+                }}{{#program:py3_namespaces}}{{value}}.{{/program:py3_namespaces}}{{program:name}}.lite_types.{{> types/function_return_struct_name}}{{!!
                 }}{{/function:oneway?}},
             )
             {{#function:return_type}}{{^type:void?}}
@@ -81,7 +81,7 @@ class {{service:name}}:
 
     class Async({{#service:extends}}{{!
         }}{{#service:external_program?}}{{!
-            }}{{#service:py3_namespaces}}_{{value}}{{/service:py3_namespaces}}_{{service:program_name}}_lite_clients.{{!
+            }}{{#service:py3_namespaces}}{{value}}.{{/service:py3_namespaces}}{{service:program_name}}.lite_clients.{{!
         }}{{/service:external_program?}}{{!
         }}{{service:name}}.Async{{!
     }}{{/service:extends}}{{^service:extends?}}{{!
@@ -98,11 +98,11 @@ class {{service:name}}:
             resp = await self._send_request(
                 "{{service:name}}",
                 "{{function:name}}",
-                _{{#program:py3_namespaces}}{{value}}_{{/program:py3_namespaces}}{{program:name}}_lite_types.{{> types/function_args_struct_name}}({{#function:args}}
+                {{#program:py3_namespaces}}{{value}}.{{/program:py3_namespaces}}{{program:name}}.lite_types.{{> types/function_args_struct_name}}({{#function:args}}
                     {{field:py_name}}={{field:py_name}},{{/function:args}}),
                 {{#function:oneway?}}None{{/function:oneway?}}{{!!
                 }}{{^function:oneway?}}{{!!
-                }}_{{#program:py3_namespaces}}{{value}}_{{/program:py3_namespaces}}{{program:name}}_lite_types.{{> types/function_return_struct_name}}{{!!
+                }}{{#program:py3_namespaces}}{{value}}.{{/program:py3_namespaces}}{{program:name}}.lite_types.{{> types/function_return_struct_name}}{{!!
                 }}{{/function:oneway?}},
             )
             {{#function:return_type}}{{^type:void?}}

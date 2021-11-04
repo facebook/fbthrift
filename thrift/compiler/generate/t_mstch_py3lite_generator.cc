@@ -85,9 +85,9 @@ class mstch_py3lite_type : public mstch_type {
   mstch::node module_path() {
     std::ostringstream ss;
     for (const auto& path : get_py3_namespace_with_name(get_type_program())) {
-      ss << "_" << path;
+      ss << path << ".";
     }
-    ss << "_lite_types";
+    ss << "lite_types";
     return ss.str();
   }
 

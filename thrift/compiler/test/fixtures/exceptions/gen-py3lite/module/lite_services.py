@@ -55,11 +55,11 @@ class RaiserInterface(
         try:
             value = await self.doRaise()
             return_struct = _module_lite_types._fbthrift_Raiser_doRaise_result()
-        except _module_lite_types.Banal as e:
+        except module.lite_types.Banal as e:
             return_struct = _module_lite_types._fbthrift_Raiser_doRaise_result(b=e)
-        except _module_lite_types.Fiery as e:
+        except module.lite_types.Fiery as e:
             return_struct = _module_lite_types._fbthrift_Raiser_doRaise_result(f=e)
-        except _module_lite_types.Serious as e:
+        except module.lite_types.Serious as e:
             return_struct = _module_lite_types._fbthrift_Raiser_doRaise_result(s=e)
 
         return serialize_iobuf(return_struct, protocol)
@@ -88,11 +88,11 @@ class RaiserInterface(
         try:
             value = await self.get500()
             return_struct = _module_lite_types._fbthrift_Raiser_get500_result(success=value)
-        except _module_lite_types.Fiery as e:
+        except module.lite_types.Fiery as e:
             return_struct = _module_lite_types._fbthrift_Raiser_get500_result(f=e)
-        except _module_lite_types.Banal as e:
+        except module.lite_types.Banal as e:
             return_struct = _module_lite_types._fbthrift_Raiser_get500_result(b=e)
-        except _module_lite_types.Serious as e:
+        except module.lite_types.Serious as e:
             return_struct = _module_lite_types._fbthrift_Raiser_get500_result(s=e)
 
         return serialize_iobuf(return_struct, protocol)

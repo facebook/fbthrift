@@ -8,7 +8,7 @@
 from thrift.py3lite.sync_client import SyncClient as _fbthrift_py3lite_SyncClient
 from thrift.py3lite.async_client import AsyncClient as _fbthrift_py3lite_AsyncClient
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
-import module.lite_types as _module_lite_types
+import module.lite_types
 
 
 class MyService:
@@ -22,8 +22,8 @@ class MyService:
             resp = self._send_request(
                 "MyService",
                 "ping",
-                _module_lite_types._fbthrift_MyService_ping_args(),
-                _module_lite_types._fbthrift_MyService_ping_result,
+                module.lite_types._fbthrift_MyService_ping_args(),
+                module.lite_types._fbthrift_MyService_ping_result,
             )
 
         def getRandomData(
@@ -32,8 +32,8 @@ class MyService:
             resp = self._send_request(
                 "MyService",
                 "getRandomData",
-                _module_lite_types._fbthrift_MyService_getRandomData_args(),
-                _module_lite_types._fbthrift_MyService_getRandomData_result,
+                module.lite_types._fbthrift_MyService_getRandomData_args(),
+                module.lite_types._fbthrift_MyService_getRandomData_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -50,9 +50,9 @@ class MyService:
             resp = self._send_request(
                 "MyService",
                 "sink",
-                _module_lite_types._fbthrift_MyService_sink_args(
+                module.lite_types._fbthrift_MyService_sink_args(
                     sink=sink,),
-                _module_lite_types._fbthrift_MyService_sink_result,
+                module.lite_types._fbthrift_MyService_sink_result,
             )
 
         def putDataById(
@@ -63,10 +63,10 @@ class MyService:
             resp = self._send_request(
                 "MyService",
                 "putDataById",
-                _module_lite_types._fbthrift_MyService_putDataById_args(
+                module.lite_types._fbthrift_MyService_putDataById_args(
                     id=id,
                     data=data,),
-                _module_lite_types._fbthrift_MyService_putDataById_result,
+                module.lite_types._fbthrift_MyService_putDataById_result,
             )
 
         def hasDataById(
@@ -76,9 +76,9 @@ class MyService:
             resp = self._send_request(
                 "MyService",
                 "hasDataById",
-                _module_lite_types._fbthrift_MyService_hasDataById_args(
+                module.lite_types._fbthrift_MyService_hasDataById_args(
                     id=id,),
-                _module_lite_types._fbthrift_MyService_hasDataById_result,
+                module.lite_types._fbthrift_MyService_hasDataById_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -95,9 +95,9 @@ class MyService:
             resp = self._send_request(
                 "MyService",
                 "getDataById",
-                _module_lite_types._fbthrift_MyService_getDataById_args(
+                module.lite_types._fbthrift_MyService_getDataById_args(
                     id=id,),
-                _module_lite_types._fbthrift_MyService_getDataById_result,
+                module.lite_types._fbthrift_MyService_getDataById_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -114,9 +114,9 @@ class MyService:
             resp = self._send_request(
                 "MyService",
                 "deleteDataById",
-                _module_lite_types._fbthrift_MyService_deleteDataById_args(
+                module.lite_types._fbthrift_MyService_deleteDataById_args(
                     id=id,),
-                _module_lite_types._fbthrift_MyService_deleteDataById_result,
+                module.lite_types._fbthrift_MyService_deleteDataById_result,
             )
 
         def lobDataById(
@@ -127,7 +127,7 @@ class MyService:
             resp = self._send_request(
                 "MyService",
                 "lobDataById",
-                _module_lite_types._fbthrift_MyService_lobDataById_args(
+                module.lite_types._fbthrift_MyService_lobDataById_args(
                     id=id,
                     data=data,),
                 None,
@@ -143,8 +143,8 @@ class MyService:
             resp = await self._send_request(
                 "MyService",
                 "ping",
-                _module_lite_types._fbthrift_MyService_ping_args(),
-                _module_lite_types._fbthrift_MyService_ping_result,
+                module.lite_types._fbthrift_MyService_ping_args(),
+                module.lite_types._fbthrift_MyService_ping_result,
             )
 
         async def getRandomData(
@@ -153,8 +153,8 @@ class MyService:
             resp = await self._send_request(
                 "MyService",
                 "getRandomData",
-                _module_lite_types._fbthrift_MyService_getRandomData_args(),
-                _module_lite_types._fbthrift_MyService_getRandomData_result,
+                module.lite_types._fbthrift_MyService_getRandomData_args(),
+                module.lite_types._fbthrift_MyService_getRandomData_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -171,9 +171,9 @@ class MyService:
             resp = await self._send_request(
                 "MyService",
                 "sink",
-                _module_lite_types._fbthrift_MyService_sink_args(
+                module.lite_types._fbthrift_MyService_sink_args(
                     sink=sink,),
-                _module_lite_types._fbthrift_MyService_sink_result,
+                module.lite_types._fbthrift_MyService_sink_result,
             )
 
         async def putDataById(
@@ -184,10 +184,10 @@ class MyService:
             resp = await self._send_request(
                 "MyService",
                 "putDataById",
-                _module_lite_types._fbthrift_MyService_putDataById_args(
+                module.lite_types._fbthrift_MyService_putDataById_args(
                     id=id,
                     data=data,),
-                _module_lite_types._fbthrift_MyService_putDataById_result,
+                module.lite_types._fbthrift_MyService_putDataById_result,
             )
 
         async def hasDataById(
@@ -197,9 +197,9 @@ class MyService:
             resp = await self._send_request(
                 "MyService",
                 "hasDataById",
-                _module_lite_types._fbthrift_MyService_hasDataById_args(
+                module.lite_types._fbthrift_MyService_hasDataById_args(
                     id=id,),
-                _module_lite_types._fbthrift_MyService_hasDataById_result,
+                module.lite_types._fbthrift_MyService_hasDataById_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -216,9 +216,9 @@ class MyService:
             resp = await self._send_request(
                 "MyService",
                 "getDataById",
-                _module_lite_types._fbthrift_MyService_getDataById_args(
+                module.lite_types._fbthrift_MyService_getDataById_args(
                     id=id,),
-                _module_lite_types._fbthrift_MyService_getDataById_result,
+                module.lite_types._fbthrift_MyService_getDataById_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -235,9 +235,9 @@ class MyService:
             resp = await self._send_request(
                 "MyService",
                 "deleteDataById",
-                _module_lite_types._fbthrift_MyService_deleteDataById_args(
+                module.lite_types._fbthrift_MyService_deleteDataById_args(
                     id=id,),
-                _module_lite_types._fbthrift_MyService_deleteDataById_result,
+                module.lite_types._fbthrift_MyService_deleteDataById_result,
             )
 
         async def lobDataById(
@@ -248,7 +248,7 @@ class MyService:
             resp = await self._send_request(
                 "MyService",
                 "lobDataById",
-                _module_lite_types._fbthrift_MyService_lobDataById_args(
+                module.lite_types._fbthrift_MyService_lobDataById_args(
                     id=id,
                     data=data,),
                 None,
@@ -267,9 +267,9 @@ class DbMixedStackArguments:
             resp = self._send_request(
                 "DbMixedStackArguments",
                 "getDataByKey0",
-                _module_lite_types._fbthrift_DbMixedStackArguments_getDataByKey0_args(
+                module.lite_types._fbthrift_DbMixedStackArguments_getDataByKey0_args(
                     key=key,),
-                _module_lite_types._fbthrift_DbMixedStackArguments_getDataByKey0_result,
+                module.lite_types._fbthrift_DbMixedStackArguments_getDataByKey0_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -286,9 +286,9 @@ class DbMixedStackArguments:
             resp = self._send_request(
                 "DbMixedStackArguments",
                 "getDataByKey1",
-                _module_lite_types._fbthrift_DbMixedStackArguments_getDataByKey1_args(
+                module.lite_types._fbthrift_DbMixedStackArguments_getDataByKey1_args(
                     key=key,),
-                _module_lite_types._fbthrift_DbMixedStackArguments_getDataByKey1_result,
+                module.lite_types._fbthrift_DbMixedStackArguments_getDataByKey1_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -309,9 +309,9 @@ class DbMixedStackArguments:
             resp = await self._send_request(
                 "DbMixedStackArguments",
                 "getDataByKey0",
-                _module_lite_types._fbthrift_DbMixedStackArguments_getDataByKey0_args(
+                module.lite_types._fbthrift_DbMixedStackArguments_getDataByKey0_args(
                     key=key,),
-                _module_lite_types._fbthrift_DbMixedStackArguments_getDataByKey0_result,
+                module.lite_types._fbthrift_DbMixedStackArguments_getDataByKey0_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -328,9 +328,9 @@ class DbMixedStackArguments:
             resp = await self._send_request(
                 "DbMixedStackArguments",
                 "getDataByKey1",
-                _module_lite_types._fbthrift_DbMixedStackArguments_getDataByKey1_args(
+                module.lite_types._fbthrift_DbMixedStackArguments_getDataByKey1_args(
                     key=key,),
-                _module_lite_types._fbthrift_DbMixedStackArguments_getDataByKey1_result,
+                module.lite_types._fbthrift_DbMixedStackArguments_getDataByKey1_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:

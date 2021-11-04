@@ -10,4 +10,4 @@ import typing as _typing
 import thrift.py3lite.types as _fbthrift_py3lite_types
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 
-import my.namespacing.test.hsmodule.lite_types as _my_namespacing_test_hsmodule_lite_types
+import my.namespacing.test.hsmodule.lite_types

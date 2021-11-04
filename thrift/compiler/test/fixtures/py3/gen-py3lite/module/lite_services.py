@@ -126,7 +126,7 @@ class SimpleServiceInterface(
 
     async def get_value(
             self,
-            simple_struct: _module_lite_types.SimpleStruct
+            simple_struct: module.lite_types.SimpleStruct
         ) -> int:
         raise NotImplementedError("async def get_value is not implemented")
 
@@ -218,7 +218,7 @@ class SimpleServiceInterface(
         try:
             value = await self.expected_exception()
             return_struct = _module_lite_types._fbthrift_SimpleService_expected_exception_result()
-        except _module_lite_types.SimpleException as e:
+        except module.lite_types.SimpleException as e:
             return_struct = _module_lite_types._fbthrift_SimpleService_expected_exception_result(se=e)
 
         return serialize_iobuf(return_struct, protocol)
@@ -295,7 +295,7 @@ class SimpleServiceInterface(
 
     async def count_structs(
             self,
-            items: _typing.Sequence[_module_lite_types.SimpleStruct]
+            items: _typing.Sequence[module.lite_types.SimpleStruct]
         ) -> int:
         raise NotImplementedError("async def count_structs is not implemented")
 
@@ -353,7 +353,7 @@ class SimpleServiceInterface(
 
     async def map_length(
             self,
-            items: _typing.Mapping[str, _module_lite_types.SimpleStruct]
+            items: _typing.Mapping[str, module.lite_types.SimpleStruct]
         ) -> int:
         raise NotImplementedError("async def map_length is not implemented")
 
@@ -381,7 +381,7 @@ class SimpleServiceInterface(
 
     async def complex_sum_i32(
             self,
-            counter: _module_lite_types.ComplexStruct
+            counter: module.lite_types.ComplexStruct
         ) -> int:
         raise NotImplementedError("async def complex_sum_i32 is not implemented")
 
@@ -395,7 +395,7 @@ class SimpleServiceInterface(
 
     async def repeat_name(
             self,
-            counter: _module_lite_types.ComplexStruct
+            counter: module.lite_types.ComplexStruct
         ) -> str:
         raise NotImplementedError("async def repeat_name is not implemented")
 
@@ -409,7 +409,7 @@ class SimpleServiceInterface(
 
     async def get_struct(
             self
-        ) -> _module_lite_types.SimpleStruct:
+        ) -> module.lite_types.SimpleStruct:
         raise NotImplementedError("async def get_struct is not implemented")
 
     async def _fbthrift__handler_get_struct(self, args, protocol):
@@ -464,8 +464,8 @@ class SimpleServiceInterface(
 
     async def set_enum(
             self,
-            in_enum: _module_lite_types.AnEnum
-        ) -> _module_lite_types.AnEnum:
+            in_enum: module.lite_types.AnEnum
+        ) -> module.lite_types.AnEnum:
         raise NotImplementedError("async def set_enum is not implemented")
 
     async def _fbthrift__handler_set_enum(self, args, protocol):
@@ -521,7 +521,7 @@ class SimpleServiceInterface(
 
     async def nested_map_argument(
             self,
-            struct_map: _typing.Mapping[str, _typing.Sequence[_module_lite_types.SimpleStruct]]
+            struct_map: _typing.Mapping[str, _typing.Sequence[module.lite_types.SimpleStruct]]
         ) -> int:
         raise NotImplementedError("async def nested_map_argument is not implemented")
 
@@ -619,8 +619,8 @@ class SimpleServiceInterface(
 
     async def contain_enum(
             self,
-            the_enum: _typing.Sequence[_module_lite_types.AnEnum]
-        ) -> _typing.Sequence[_module_lite_types.AnEnum]:
+            the_enum: _typing.Sequence[module.lite_types.AnEnum]
+        ) -> _typing.Sequence[module.lite_types.AnEnum]:
         raise NotImplementedError("async def contain_enum is not implemented")
 
     async def _fbthrift__handler_contain_enum(self, args, protocol):
@@ -633,8 +633,8 @@ class SimpleServiceInterface(
 
     async def get_binary_union_struct(
             self,
-            u: _module_lite_types.BinaryUnion
-        ) -> _module_lite_types.BinaryUnionStruct:
+            u: module.lite_types.BinaryUnion
+        ) -> module.lite_types.BinaryUnionStruct:
         raise NotImplementedError("async def get_binary_union_struct is not implemented")
 
     async def _fbthrift__handler_get_binary_union_struct(self, args, protocol):

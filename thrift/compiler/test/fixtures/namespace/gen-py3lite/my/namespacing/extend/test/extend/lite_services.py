@@ -33,7 +33,7 @@ class ExtendTestServiceInterface(
 
     async def check(
             self,
-            struct1: _my_namespacing_test_hsmodule_lite_types.HsFoo
+            struct1: my.namespacing.test.hsmodule.lite_types.HsFoo
         ) -> bool:
         raise NotImplementedError("async def check is not implemented")
 

@@ -8,7 +8,7 @@
 from thrift.py3lite.sync_client import SyncClient as _fbthrift_py3lite_SyncClient
 from thrift.py3lite.async_client import AsyncClient as _fbthrift_py3lite_AsyncClient
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
-import module.lite_types as _module_lite_types
+import module.lite_types
 
 
 class Raiser:
@@ -22,8 +22,8 @@ class Raiser:
             resp = self._send_request(
                 "Raiser",
                 "doBland",
-                _module_lite_types._fbthrift_Raiser_doBland_args(),
-                _module_lite_types._fbthrift_Raiser_doBland_result,
+                module.lite_types._fbthrift_Raiser_doBland_args(),
+                module.lite_types._fbthrift_Raiser_doBland_result,
             )
 
         def doRaise(
@@ -32,8 +32,8 @@ class Raiser:
             resp = self._send_request(
                 "Raiser",
                 "doRaise",
-                _module_lite_types._fbthrift_Raiser_doRaise_args(),
-                _module_lite_types._fbthrift_Raiser_doRaise_result,
+                module.lite_types._fbthrift_Raiser_doRaise_args(),
+                module.lite_types._fbthrift_Raiser_doRaise_result,
             )
             if resp.b is not None:
                 raise resp.b
@@ -48,8 +48,8 @@ class Raiser:
             resp = self._send_request(
                 "Raiser",
                 "get200",
-                _module_lite_types._fbthrift_Raiser_get200_args(),
-                _module_lite_types._fbthrift_Raiser_get200_result,
+                module.lite_types._fbthrift_Raiser_get200_args(),
+                module.lite_types._fbthrift_Raiser_get200_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -65,8 +65,8 @@ class Raiser:
             resp = self._send_request(
                 "Raiser",
                 "get500",
-                _module_lite_types._fbthrift_Raiser_get500_args(),
-                _module_lite_types._fbthrift_Raiser_get500_result,
+                module.lite_types._fbthrift_Raiser_get500_args(),
+                module.lite_types._fbthrift_Raiser_get500_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -92,8 +92,8 @@ class Raiser:
             resp = await self._send_request(
                 "Raiser",
                 "doBland",
-                _module_lite_types._fbthrift_Raiser_doBland_args(),
-                _module_lite_types._fbthrift_Raiser_doBland_result,
+                module.lite_types._fbthrift_Raiser_doBland_args(),
+                module.lite_types._fbthrift_Raiser_doBland_result,
             )
 
         async def doRaise(
@@ -102,8 +102,8 @@ class Raiser:
             resp = await self._send_request(
                 "Raiser",
                 "doRaise",
-                _module_lite_types._fbthrift_Raiser_doRaise_args(),
-                _module_lite_types._fbthrift_Raiser_doRaise_result,
+                module.lite_types._fbthrift_Raiser_doRaise_args(),
+                module.lite_types._fbthrift_Raiser_doRaise_result,
             )
             if resp.b is not None:
                 raise resp.b
@@ -118,8 +118,8 @@ class Raiser:
             resp = await self._send_request(
                 "Raiser",
                 "get200",
-                _module_lite_types._fbthrift_Raiser_get200_args(),
-                _module_lite_types._fbthrift_Raiser_get200_result,
+                module.lite_types._fbthrift_Raiser_get200_args(),
+                module.lite_types._fbthrift_Raiser_get200_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -135,8 +135,8 @@ class Raiser:
             resp = await self._send_request(
                 "Raiser",
                 "get500",
-                _module_lite_types._fbthrift_Raiser_get500_args(),
-                _module_lite_types._fbthrift_Raiser_get500_result,
+                module.lite_types._fbthrift_Raiser_get500_args(),
+                module.lite_types._fbthrift_Raiser_get500_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:

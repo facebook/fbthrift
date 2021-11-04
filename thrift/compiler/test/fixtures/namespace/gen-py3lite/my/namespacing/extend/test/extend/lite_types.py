@@ -7,7 +7,7 @@
 import thrift.py3lite.types as _fbthrift_py3lite_types
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 
-import my.namespacing.test.hsmodule.lite_types as _my_namespacing_test_hsmodule_lite_types
+import my.namespacing.test.hsmodule.lite_types
 
 
 class _fbthrift_ExtendTestService_check_args(metaclass=_fbthrift_py3lite_types.StructMeta):
@@ -16,7 +16,7 @@ class _fbthrift_ExtendTestService_check_args(metaclass=_fbthrift_py3lite_types.S
             1,  # id
             True,  # isUnqualified
             "struct1",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(_my_namespacing_test_hsmodule_lite_types.HsFoo),  # typeinfo
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(my.namespacing.test.hsmodule.lite_types.HsFoo),  # typeinfo
             None,  # default value
         ),
     )

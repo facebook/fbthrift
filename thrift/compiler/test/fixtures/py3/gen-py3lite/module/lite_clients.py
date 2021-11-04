@@ -8,7 +8,7 @@
 from fbcode.thrift.py3lite.sync_client import SyncClient as _fbthrift_py3lite_SyncClient
 from fbcode.thrift.py3lite.async_client import AsyncClient as _fbthrift_py3lite_AsyncClient
 import fbcode.thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
-import module.lite_types as _module_lite_types
+import module.lite_types
 
 
 class SimpleService:
@@ -22,8 +22,8 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "get_five",
-                _module_lite_types._fbthrift_SimpleService_get_five_args(),
-                _module_lite_types._fbthrift_SimpleService_get_five_result,
+                module.lite_types._fbthrift_SimpleService_get_five_args(),
+                module.lite_types._fbthrift_SimpleService_get_five_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -40,9 +40,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "add_five",
-                _module_lite_types._fbthrift_SimpleService_add_five_args(
+                module.lite_types._fbthrift_SimpleService_add_five_args(
                     num=num,),
-                _module_lite_types._fbthrift_SimpleService_add_five_result,
+                module.lite_types._fbthrift_SimpleService_add_five_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -58,8 +58,8 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "do_nothing",
-                _module_lite_types._fbthrift_SimpleService_do_nothing_args(),
-                _module_lite_types._fbthrift_SimpleService_do_nothing_result,
+                module.lite_types._fbthrift_SimpleService_do_nothing_args(),
+                module.lite_types._fbthrift_SimpleService_do_nothing_result,
             )
 
         def concat(
@@ -70,10 +70,10 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "concat",
-                _module_lite_types._fbthrift_SimpleService_concat_args(
+                module.lite_types._fbthrift_SimpleService_concat_args(
                     first=first,
                     second=second,),
-                _module_lite_types._fbthrift_SimpleService_concat_result,
+                module.lite_types._fbthrift_SimpleService_concat_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -90,9 +90,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "get_value",
-                _module_lite_types._fbthrift_SimpleService_get_value_args(
+                module.lite_types._fbthrift_SimpleService_get_value_args(
                     simple_struct=simple_struct,),
-                _module_lite_types._fbthrift_SimpleService_get_value_result,
+                module.lite_types._fbthrift_SimpleService_get_value_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -109,9 +109,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "negate",
-                _module_lite_types._fbthrift_SimpleService_negate_args(
+                module.lite_types._fbthrift_SimpleService_negate_args(
                     input=input,),
-                _module_lite_types._fbthrift_SimpleService_negate_result,
+                module.lite_types._fbthrift_SimpleService_negate_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -128,9 +128,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "tiny",
-                _module_lite_types._fbthrift_SimpleService_tiny_args(
+                module.lite_types._fbthrift_SimpleService_tiny_args(
                     input=input,),
-                _module_lite_types._fbthrift_SimpleService_tiny_result,
+                module.lite_types._fbthrift_SimpleService_tiny_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -147,9 +147,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "small",
-                _module_lite_types._fbthrift_SimpleService_small_args(
+                module.lite_types._fbthrift_SimpleService_small_args(
                     input=input,),
-                _module_lite_types._fbthrift_SimpleService_small_result,
+                module.lite_types._fbthrift_SimpleService_small_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -166,9 +166,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "big",
-                _module_lite_types._fbthrift_SimpleService_big_args(
+                module.lite_types._fbthrift_SimpleService_big_args(
                     input=input,),
-                _module_lite_types._fbthrift_SimpleService_big_result,
+                module.lite_types._fbthrift_SimpleService_big_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -185,9 +185,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "two",
-                _module_lite_types._fbthrift_SimpleService_two_args(
+                module.lite_types._fbthrift_SimpleService_two_args(
                     input=input,),
-                _module_lite_types._fbthrift_SimpleService_two_result,
+                module.lite_types._fbthrift_SimpleService_two_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -203,8 +203,8 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "expected_exception",
-                _module_lite_types._fbthrift_SimpleService_expected_exception_args(),
-                _module_lite_types._fbthrift_SimpleService_expected_exception_result,
+                module.lite_types._fbthrift_SimpleService_expected_exception_args(),
+                module.lite_types._fbthrift_SimpleService_expected_exception_result,
             )
             if resp.se is not None:
                 raise resp.se
@@ -215,8 +215,8 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "unexpected_exception",
-                _module_lite_types._fbthrift_SimpleService_unexpected_exception_args(),
-                _module_lite_types._fbthrift_SimpleService_unexpected_exception_result,
+                module.lite_types._fbthrift_SimpleService_unexpected_exception_args(),
+                module.lite_types._fbthrift_SimpleService_unexpected_exception_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -233,9 +233,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "sum_i16_list",
-                _module_lite_types._fbthrift_SimpleService_sum_i16_list_args(
+                module.lite_types._fbthrift_SimpleService_sum_i16_list_args(
                     numbers=numbers,),
-                _module_lite_types._fbthrift_SimpleService_sum_i16_list_result,
+                module.lite_types._fbthrift_SimpleService_sum_i16_list_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -252,9 +252,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "sum_i32_list",
-                _module_lite_types._fbthrift_SimpleService_sum_i32_list_args(
+                module.lite_types._fbthrift_SimpleService_sum_i32_list_args(
                     numbers=numbers,),
-                _module_lite_types._fbthrift_SimpleService_sum_i32_list_result,
+                module.lite_types._fbthrift_SimpleService_sum_i32_list_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -271,9 +271,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "sum_i64_list",
-                _module_lite_types._fbthrift_SimpleService_sum_i64_list_args(
+                module.lite_types._fbthrift_SimpleService_sum_i64_list_args(
                     numbers=numbers,),
-                _module_lite_types._fbthrift_SimpleService_sum_i64_list_result,
+                module.lite_types._fbthrift_SimpleService_sum_i64_list_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -290,9 +290,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "concat_many",
-                _module_lite_types._fbthrift_SimpleService_concat_many_args(
+                module.lite_types._fbthrift_SimpleService_concat_many_args(
                     words=words,),
-                _module_lite_types._fbthrift_SimpleService_concat_many_result,
+                module.lite_types._fbthrift_SimpleService_concat_many_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -309,9 +309,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "count_structs",
-                _module_lite_types._fbthrift_SimpleService_count_structs_args(
+                module.lite_types._fbthrift_SimpleService_count_structs_args(
                     items=items,),
-                _module_lite_types._fbthrift_SimpleService_count_structs_result,
+                module.lite_types._fbthrift_SimpleService_count_structs_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -328,9 +328,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "sum_set",
-                _module_lite_types._fbthrift_SimpleService_sum_set_args(
+                module.lite_types._fbthrift_SimpleService_sum_set_args(
                     numbers=numbers,),
-                _module_lite_types._fbthrift_SimpleService_sum_set_result,
+                module.lite_types._fbthrift_SimpleService_sum_set_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -348,10 +348,10 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "contains_word",
-                _module_lite_types._fbthrift_SimpleService_contains_word_args(
+                module.lite_types._fbthrift_SimpleService_contains_word_args(
                     words=words,
                     word=word,),
-                _module_lite_types._fbthrift_SimpleService_contains_word_result,
+                module.lite_types._fbthrift_SimpleService_contains_word_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -369,10 +369,10 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "get_map_value",
-                _module_lite_types._fbthrift_SimpleService_get_map_value_args(
+                module.lite_types._fbthrift_SimpleService_get_map_value_args(
                     words=words,
                     key=key,),
-                _module_lite_types._fbthrift_SimpleService_get_map_value_result,
+                module.lite_types._fbthrift_SimpleService_get_map_value_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -389,9 +389,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "map_length",
-                _module_lite_types._fbthrift_SimpleService_map_length_args(
+                module.lite_types._fbthrift_SimpleService_map_length_args(
                     items=items,),
-                _module_lite_types._fbthrift_SimpleService_map_length_result,
+                module.lite_types._fbthrift_SimpleService_map_length_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -408,9 +408,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "sum_map_values",
-                _module_lite_types._fbthrift_SimpleService_sum_map_values_args(
+                module.lite_types._fbthrift_SimpleService_sum_map_values_args(
                     items=items,),
-                _module_lite_types._fbthrift_SimpleService_sum_map_values_result,
+                module.lite_types._fbthrift_SimpleService_sum_map_values_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -427,9 +427,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "complex_sum_i32",
-                _module_lite_types._fbthrift_SimpleService_complex_sum_i32_args(
+                module.lite_types._fbthrift_SimpleService_complex_sum_i32_args(
                     counter=counter,),
-                _module_lite_types._fbthrift_SimpleService_complex_sum_i32_result,
+                module.lite_types._fbthrift_SimpleService_complex_sum_i32_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -446,9 +446,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "repeat_name",
-                _module_lite_types._fbthrift_SimpleService_repeat_name_args(
+                module.lite_types._fbthrift_SimpleService_repeat_name_args(
                     counter=counter,),
-                _module_lite_types._fbthrift_SimpleService_repeat_name_result,
+                module.lite_types._fbthrift_SimpleService_repeat_name_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -464,8 +464,8 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "get_struct",
-                _module_lite_types._fbthrift_SimpleService_get_struct_args(),
-                _module_lite_types._fbthrift_SimpleService_get_struct_result,
+                module.lite_types._fbthrift_SimpleService_get_struct_args(),
+                module.lite_types._fbthrift_SimpleService_get_struct_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -482,9 +482,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "fib",
-                _module_lite_types._fbthrift_SimpleService_fib_args(
+                module.lite_types._fbthrift_SimpleService_fib_args(
                     n=n,),
-                _module_lite_types._fbthrift_SimpleService_fib_result,
+                module.lite_types._fbthrift_SimpleService_fib_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -501,9 +501,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "unique_words",
-                _module_lite_types._fbthrift_SimpleService_unique_words_args(
+                module.lite_types._fbthrift_SimpleService_unique_words_args(
                     words=words,),
-                _module_lite_types._fbthrift_SimpleService_unique_words_result,
+                module.lite_types._fbthrift_SimpleService_unique_words_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -520,9 +520,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "words_count",
-                _module_lite_types._fbthrift_SimpleService_words_count_args(
+                module.lite_types._fbthrift_SimpleService_words_count_args(
                     words=words,),
-                _module_lite_types._fbthrift_SimpleService_words_count_result,
+                module.lite_types._fbthrift_SimpleService_words_count_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -539,9 +539,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "set_enum",
-                _module_lite_types._fbthrift_SimpleService_set_enum_args(
+                module.lite_types._fbthrift_SimpleService_set_enum_args(
                     in_enum=in_enum,),
-                _module_lite_types._fbthrift_SimpleService_set_enum_result,
+                module.lite_types._fbthrift_SimpleService_set_enum_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -559,10 +559,10 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "list_of_lists",
-                _module_lite_types._fbthrift_SimpleService_list_of_lists_args(
+                module.lite_types._fbthrift_SimpleService_list_of_lists_args(
                     num_lists=num_lists,
                     num_items=num_items,),
-                _module_lite_types._fbthrift_SimpleService_list_of_lists_result,
+                module.lite_types._fbthrift_SimpleService_list_of_lists_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -579,9 +579,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "word_character_frequency",
-                _module_lite_types._fbthrift_SimpleService_word_character_frequency_args(
+                module.lite_types._fbthrift_SimpleService_word_character_frequency_args(
                     sentence=sentence,),
-                _module_lite_types._fbthrift_SimpleService_word_character_frequency_result,
+                module.lite_types._fbthrift_SimpleService_word_character_frequency_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -598,9 +598,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "list_of_sets",
-                _module_lite_types._fbthrift_SimpleService_list_of_sets_args(
+                module.lite_types._fbthrift_SimpleService_list_of_sets_args(
                     some_words=some_words,),
-                _module_lite_types._fbthrift_SimpleService_list_of_sets_result,
+                module.lite_types._fbthrift_SimpleService_list_of_sets_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -617,9 +617,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "nested_map_argument",
-                _module_lite_types._fbthrift_SimpleService_nested_map_argument_args(
+                module.lite_types._fbthrift_SimpleService_nested_map_argument_args(
                     struct_map=struct_map,),
-                _module_lite_types._fbthrift_SimpleService_nested_map_argument_result,
+                module.lite_types._fbthrift_SimpleService_nested_map_argument_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -636,9 +636,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "make_sentence",
-                _module_lite_types._fbthrift_SimpleService_make_sentence_args(
+                module.lite_types._fbthrift_SimpleService_make_sentence_args(
                     word_chars=word_chars,),
-                _module_lite_types._fbthrift_SimpleService_make_sentence_result,
+                module.lite_types._fbthrift_SimpleService_make_sentence_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -655,9 +655,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "get_union",
-                _module_lite_types._fbthrift_SimpleService_get_union_args(
+                module.lite_types._fbthrift_SimpleService_get_union_args(
                     sets=sets,),
-                _module_lite_types._fbthrift_SimpleService_get_union_result,
+                module.lite_types._fbthrift_SimpleService_get_union_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -674,9 +674,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "get_keys",
-                _module_lite_types._fbthrift_SimpleService_get_keys_args(
+                module.lite_types._fbthrift_SimpleService_get_keys_args(
                     string_map=string_map,),
-                _module_lite_types._fbthrift_SimpleService_get_keys_result,
+                module.lite_types._fbthrift_SimpleService_get_keys_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -693,9 +693,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "lookup_double",
-                _module_lite_types._fbthrift_SimpleService_lookup_double_args(
+                module.lite_types._fbthrift_SimpleService_lookup_double_args(
                     key=key,),
-                _module_lite_types._fbthrift_SimpleService_lookup_double_result,
+                module.lite_types._fbthrift_SimpleService_lookup_double_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -712,9 +712,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "retrieve_binary",
-                _module_lite_types._fbthrift_SimpleService_retrieve_binary_args(
+                module.lite_types._fbthrift_SimpleService_retrieve_binary_args(
                     something=something,),
-                _module_lite_types._fbthrift_SimpleService_retrieve_binary_result,
+                module.lite_types._fbthrift_SimpleService_retrieve_binary_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -731,9 +731,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "contain_binary",
-                _module_lite_types._fbthrift_SimpleService_contain_binary_args(
+                module.lite_types._fbthrift_SimpleService_contain_binary_args(
                     binaries=binaries,),
-                _module_lite_types._fbthrift_SimpleService_contain_binary_result,
+                module.lite_types._fbthrift_SimpleService_contain_binary_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -750,9 +750,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "contain_enum",
-                _module_lite_types._fbthrift_SimpleService_contain_enum_args(
+                module.lite_types._fbthrift_SimpleService_contain_enum_args(
                     the_enum=the_enum,),
-                _module_lite_types._fbthrift_SimpleService_contain_enum_result,
+                module.lite_types._fbthrift_SimpleService_contain_enum_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -769,9 +769,9 @@ class SimpleService:
             resp = self._send_request(
                 "SimpleService",
                 "get_binary_union_struct",
-                _module_lite_types._fbthrift_SimpleService_get_binary_union_struct_args(
+                module.lite_types._fbthrift_SimpleService_get_binary_union_struct_args(
                     u=u,),
-                _module_lite_types._fbthrift_SimpleService_get_binary_union_struct_result,
+                module.lite_types._fbthrift_SimpleService_get_binary_union_struct_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -791,8 +791,8 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "get_five",
-                _module_lite_types._fbthrift_SimpleService_get_five_args(),
-                _module_lite_types._fbthrift_SimpleService_get_five_result,
+                module.lite_types._fbthrift_SimpleService_get_five_args(),
+                module.lite_types._fbthrift_SimpleService_get_five_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -809,9 +809,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "add_five",
-                _module_lite_types._fbthrift_SimpleService_add_five_args(
+                module.lite_types._fbthrift_SimpleService_add_five_args(
                     num=num,),
-                _module_lite_types._fbthrift_SimpleService_add_five_result,
+                module.lite_types._fbthrift_SimpleService_add_five_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -827,8 +827,8 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "do_nothing",
-                _module_lite_types._fbthrift_SimpleService_do_nothing_args(),
-                _module_lite_types._fbthrift_SimpleService_do_nothing_result,
+                module.lite_types._fbthrift_SimpleService_do_nothing_args(),
+                module.lite_types._fbthrift_SimpleService_do_nothing_result,
             )
 
         async def concat(
@@ -839,10 +839,10 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "concat",
-                _module_lite_types._fbthrift_SimpleService_concat_args(
+                module.lite_types._fbthrift_SimpleService_concat_args(
                     first=first,
                     second=second,),
-                _module_lite_types._fbthrift_SimpleService_concat_result,
+                module.lite_types._fbthrift_SimpleService_concat_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -859,9 +859,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "get_value",
-                _module_lite_types._fbthrift_SimpleService_get_value_args(
+                module.lite_types._fbthrift_SimpleService_get_value_args(
                     simple_struct=simple_struct,),
-                _module_lite_types._fbthrift_SimpleService_get_value_result,
+                module.lite_types._fbthrift_SimpleService_get_value_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -878,9 +878,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "negate",
-                _module_lite_types._fbthrift_SimpleService_negate_args(
+                module.lite_types._fbthrift_SimpleService_negate_args(
                     input=input,),
-                _module_lite_types._fbthrift_SimpleService_negate_result,
+                module.lite_types._fbthrift_SimpleService_negate_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -897,9 +897,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "tiny",
-                _module_lite_types._fbthrift_SimpleService_tiny_args(
+                module.lite_types._fbthrift_SimpleService_tiny_args(
                     input=input,),
-                _module_lite_types._fbthrift_SimpleService_tiny_result,
+                module.lite_types._fbthrift_SimpleService_tiny_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -916,9 +916,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "small",
-                _module_lite_types._fbthrift_SimpleService_small_args(
+                module.lite_types._fbthrift_SimpleService_small_args(
                     input=input,),
-                _module_lite_types._fbthrift_SimpleService_small_result,
+                module.lite_types._fbthrift_SimpleService_small_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -935,9 +935,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "big",
-                _module_lite_types._fbthrift_SimpleService_big_args(
+                module.lite_types._fbthrift_SimpleService_big_args(
                     input=input,),
-                _module_lite_types._fbthrift_SimpleService_big_result,
+                module.lite_types._fbthrift_SimpleService_big_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -954,9 +954,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "two",
-                _module_lite_types._fbthrift_SimpleService_two_args(
+                module.lite_types._fbthrift_SimpleService_two_args(
                     input=input,),
-                _module_lite_types._fbthrift_SimpleService_two_result,
+                module.lite_types._fbthrift_SimpleService_two_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -972,8 +972,8 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "expected_exception",
-                _module_lite_types._fbthrift_SimpleService_expected_exception_args(),
-                _module_lite_types._fbthrift_SimpleService_expected_exception_result,
+                module.lite_types._fbthrift_SimpleService_expected_exception_args(),
+                module.lite_types._fbthrift_SimpleService_expected_exception_result,
             )
             if resp.se is not None:
                 raise resp.se
@@ -984,8 +984,8 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "unexpected_exception",
-                _module_lite_types._fbthrift_SimpleService_unexpected_exception_args(),
-                _module_lite_types._fbthrift_SimpleService_unexpected_exception_result,
+                module.lite_types._fbthrift_SimpleService_unexpected_exception_args(),
+                module.lite_types._fbthrift_SimpleService_unexpected_exception_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1002,9 +1002,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "sum_i16_list",
-                _module_lite_types._fbthrift_SimpleService_sum_i16_list_args(
+                module.lite_types._fbthrift_SimpleService_sum_i16_list_args(
                     numbers=numbers,),
-                _module_lite_types._fbthrift_SimpleService_sum_i16_list_result,
+                module.lite_types._fbthrift_SimpleService_sum_i16_list_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1021,9 +1021,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "sum_i32_list",
-                _module_lite_types._fbthrift_SimpleService_sum_i32_list_args(
+                module.lite_types._fbthrift_SimpleService_sum_i32_list_args(
                     numbers=numbers,),
-                _module_lite_types._fbthrift_SimpleService_sum_i32_list_result,
+                module.lite_types._fbthrift_SimpleService_sum_i32_list_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1040,9 +1040,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "sum_i64_list",
-                _module_lite_types._fbthrift_SimpleService_sum_i64_list_args(
+                module.lite_types._fbthrift_SimpleService_sum_i64_list_args(
                     numbers=numbers,),
-                _module_lite_types._fbthrift_SimpleService_sum_i64_list_result,
+                module.lite_types._fbthrift_SimpleService_sum_i64_list_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1059,9 +1059,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "concat_many",
-                _module_lite_types._fbthrift_SimpleService_concat_many_args(
+                module.lite_types._fbthrift_SimpleService_concat_many_args(
                     words=words,),
-                _module_lite_types._fbthrift_SimpleService_concat_many_result,
+                module.lite_types._fbthrift_SimpleService_concat_many_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1078,9 +1078,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "count_structs",
-                _module_lite_types._fbthrift_SimpleService_count_structs_args(
+                module.lite_types._fbthrift_SimpleService_count_structs_args(
                     items=items,),
-                _module_lite_types._fbthrift_SimpleService_count_structs_result,
+                module.lite_types._fbthrift_SimpleService_count_structs_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1097,9 +1097,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "sum_set",
-                _module_lite_types._fbthrift_SimpleService_sum_set_args(
+                module.lite_types._fbthrift_SimpleService_sum_set_args(
                     numbers=numbers,),
-                _module_lite_types._fbthrift_SimpleService_sum_set_result,
+                module.lite_types._fbthrift_SimpleService_sum_set_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1117,10 +1117,10 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "contains_word",
-                _module_lite_types._fbthrift_SimpleService_contains_word_args(
+                module.lite_types._fbthrift_SimpleService_contains_word_args(
                     words=words,
                     word=word,),
-                _module_lite_types._fbthrift_SimpleService_contains_word_result,
+                module.lite_types._fbthrift_SimpleService_contains_word_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1138,10 +1138,10 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "get_map_value",
-                _module_lite_types._fbthrift_SimpleService_get_map_value_args(
+                module.lite_types._fbthrift_SimpleService_get_map_value_args(
                     words=words,
                     key=key,),
-                _module_lite_types._fbthrift_SimpleService_get_map_value_result,
+                module.lite_types._fbthrift_SimpleService_get_map_value_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1158,9 +1158,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "map_length",
-                _module_lite_types._fbthrift_SimpleService_map_length_args(
+                module.lite_types._fbthrift_SimpleService_map_length_args(
                     items=items,),
-                _module_lite_types._fbthrift_SimpleService_map_length_result,
+                module.lite_types._fbthrift_SimpleService_map_length_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1177,9 +1177,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "sum_map_values",
-                _module_lite_types._fbthrift_SimpleService_sum_map_values_args(
+                module.lite_types._fbthrift_SimpleService_sum_map_values_args(
                     items=items,),
-                _module_lite_types._fbthrift_SimpleService_sum_map_values_result,
+                module.lite_types._fbthrift_SimpleService_sum_map_values_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1196,9 +1196,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "complex_sum_i32",
-                _module_lite_types._fbthrift_SimpleService_complex_sum_i32_args(
+                module.lite_types._fbthrift_SimpleService_complex_sum_i32_args(
                     counter=counter,),
-                _module_lite_types._fbthrift_SimpleService_complex_sum_i32_result,
+                module.lite_types._fbthrift_SimpleService_complex_sum_i32_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1215,9 +1215,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "repeat_name",
-                _module_lite_types._fbthrift_SimpleService_repeat_name_args(
+                module.lite_types._fbthrift_SimpleService_repeat_name_args(
                     counter=counter,),
-                _module_lite_types._fbthrift_SimpleService_repeat_name_result,
+                module.lite_types._fbthrift_SimpleService_repeat_name_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1233,8 +1233,8 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "get_struct",
-                _module_lite_types._fbthrift_SimpleService_get_struct_args(),
-                _module_lite_types._fbthrift_SimpleService_get_struct_result,
+                module.lite_types._fbthrift_SimpleService_get_struct_args(),
+                module.lite_types._fbthrift_SimpleService_get_struct_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1251,9 +1251,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "fib",
-                _module_lite_types._fbthrift_SimpleService_fib_args(
+                module.lite_types._fbthrift_SimpleService_fib_args(
                     n=n,),
-                _module_lite_types._fbthrift_SimpleService_fib_result,
+                module.lite_types._fbthrift_SimpleService_fib_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1270,9 +1270,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "unique_words",
-                _module_lite_types._fbthrift_SimpleService_unique_words_args(
+                module.lite_types._fbthrift_SimpleService_unique_words_args(
                     words=words,),
-                _module_lite_types._fbthrift_SimpleService_unique_words_result,
+                module.lite_types._fbthrift_SimpleService_unique_words_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1289,9 +1289,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "words_count",
-                _module_lite_types._fbthrift_SimpleService_words_count_args(
+                module.lite_types._fbthrift_SimpleService_words_count_args(
                     words=words,),
-                _module_lite_types._fbthrift_SimpleService_words_count_result,
+                module.lite_types._fbthrift_SimpleService_words_count_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1308,9 +1308,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "set_enum",
-                _module_lite_types._fbthrift_SimpleService_set_enum_args(
+                module.lite_types._fbthrift_SimpleService_set_enum_args(
                     in_enum=in_enum,),
-                _module_lite_types._fbthrift_SimpleService_set_enum_result,
+                module.lite_types._fbthrift_SimpleService_set_enum_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1328,10 +1328,10 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "list_of_lists",
-                _module_lite_types._fbthrift_SimpleService_list_of_lists_args(
+                module.lite_types._fbthrift_SimpleService_list_of_lists_args(
                     num_lists=num_lists,
                     num_items=num_items,),
-                _module_lite_types._fbthrift_SimpleService_list_of_lists_result,
+                module.lite_types._fbthrift_SimpleService_list_of_lists_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1348,9 +1348,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "word_character_frequency",
-                _module_lite_types._fbthrift_SimpleService_word_character_frequency_args(
+                module.lite_types._fbthrift_SimpleService_word_character_frequency_args(
                     sentence=sentence,),
-                _module_lite_types._fbthrift_SimpleService_word_character_frequency_result,
+                module.lite_types._fbthrift_SimpleService_word_character_frequency_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1367,9 +1367,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "list_of_sets",
-                _module_lite_types._fbthrift_SimpleService_list_of_sets_args(
+                module.lite_types._fbthrift_SimpleService_list_of_sets_args(
                     some_words=some_words,),
-                _module_lite_types._fbthrift_SimpleService_list_of_sets_result,
+                module.lite_types._fbthrift_SimpleService_list_of_sets_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1386,9 +1386,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "nested_map_argument",
-                _module_lite_types._fbthrift_SimpleService_nested_map_argument_args(
+                module.lite_types._fbthrift_SimpleService_nested_map_argument_args(
                     struct_map=struct_map,),
-                _module_lite_types._fbthrift_SimpleService_nested_map_argument_result,
+                module.lite_types._fbthrift_SimpleService_nested_map_argument_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1405,9 +1405,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "make_sentence",
-                _module_lite_types._fbthrift_SimpleService_make_sentence_args(
+                module.lite_types._fbthrift_SimpleService_make_sentence_args(
                     word_chars=word_chars,),
-                _module_lite_types._fbthrift_SimpleService_make_sentence_result,
+                module.lite_types._fbthrift_SimpleService_make_sentence_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1424,9 +1424,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "get_union",
-                _module_lite_types._fbthrift_SimpleService_get_union_args(
+                module.lite_types._fbthrift_SimpleService_get_union_args(
                     sets=sets,),
-                _module_lite_types._fbthrift_SimpleService_get_union_result,
+                module.lite_types._fbthrift_SimpleService_get_union_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1443,9 +1443,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "get_keys",
-                _module_lite_types._fbthrift_SimpleService_get_keys_args(
+                module.lite_types._fbthrift_SimpleService_get_keys_args(
                     string_map=string_map,),
-                _module_lite_types._fbthrift_SimpleService_get_keys_result,
+                module.lite_types._fbthrift_SimpleService_get_keys_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1462,9 +1462,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "lookup_double",
-                _module_lite_types._fbthrift_SimpleService_lookup_double_args(
+                module.lite_types._fbthrift_SimpleService_lookup_double_args(
                     key=key,),
-                _module_lite_types._fbthrift_SimpleService_lookup_double_result,
+                module.lite_types._fbthrift_SimpleService_lookup_double_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1481,9 +1481,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "retrieve_binary",
-                _module_lite_types._fbthrift_SimpleService_retrieve_binary_args(
+                module.lite_types._fbthrift_SimpleService_retrieve_binary_args(
                     something=something,),
-                _module_lite_types._fbthrift_SimpleService_retrieve_binary_result,
+                module.lite_types._fbthrift_SimpleService_retrieve_binary_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1500,9 +1500,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "contain_binary",
-                _module_lite_types._fbthrift_SimpleService_contain_binary_args(
+                module.lite_types._fbthrift_SimpleService_contain_binary_args(
                     binaries=binaries,),
-                _module_lite_types._fbthrift_SimpleService_contain_binary_result,
+                module.lite_types._fbthrift_SimpleService_contain_binary_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1519,9 +1519,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "contain_enum",
-                _module_lite_types._fbthrift_SimpleService_contain_enum_args(
+                module.lite_types._fbthrift_SimpleService_contain_enum_args(
                     the_enum=the_enum,),
-                _module_lite_types._fbthrift_SimpleService_contain_enum_result,
+                module.lite_types._fbthrift_SimpleService_contain_enum_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1538,9 +1538,9 @@ class SimpleService:
             resp = await self._send_request(
                 "SimpleService",
                 "get_binary_union_struct",
-                _module_lite_types._fbthrift_SimpleService_get_binary_union_struct_args(
+                module.lite_types._fbthrift_SimpleService_get_binary_union_struct_args(
                     u=u,),
-                _module_lite_types._fbthrift_SimpleService_get_binary_union_struct_result,
+                module.lite_types._fbthrift_SimpleService_get_binary_union_struct_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1562,8 +1562,8 @@ class DerivedService:
             resp = self._send_request(
                 "DerivedService",
                 "get_six",
-                _module_lite_types._fbthrift_DerivedService_get_six_args(),
-                _module_lite_types._fbthrift_DerivedService_get_six_result,
+                module.lite_types._fbthrift_DerivedService_get_six_args(),
+                module.lite_types._fbthrift_DerivedService_get_six_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1583,8 +1583,8 @@ class DerivedService:
             resp = await self._send_request(
                 "DerivedService",
                 "get_six",
-                _module_lite_types._fbthrift_DerivedService_get_six_args(),
-                _module_lite_types._fbthrift_DerivedService_get_six_result,
+                module.lite_types._fbthrift_DerivedService_get_six_args(),
+                module.lite_types._fbthrift_DerivedService_get_six_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1606,8 +1606,8 @@ class RederivedService:
             resp = self._send_request(
                 "RederivedService",
                 "get_seven",
-                _module_lite_types._fbthrift_RederivedService_get_seven_args(),
-                _module_lite_types._fbthrift_RederivedService_get_seven_result,
+                module.lite_types._fbthrift_RederivedService_get_seven_args(),
+                module.lite_types._fbthrift_RederivedService_get_seven_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -1627,8 +1627,8 @@ class RederivedService:
             resp = await self._send_request(
                 "RederivedService",
                 "get_seven",
-                _module_lite_types._fbthrift_RederivedService_get_seven_args(),
-                _module_lite_types._fbthrift_RederivedService_get_seven_result,
+                module.lite_types._fbthrift_RederivedService_get_seven_args(),
+                module.lite_types._fbthrift_RederivedService_get_seven_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:

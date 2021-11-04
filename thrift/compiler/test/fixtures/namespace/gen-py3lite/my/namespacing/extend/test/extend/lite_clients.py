@@ -8,13 +8,13 @@
 from thrift.py3lite.sync_client import SyncClient as _fbthrift_py3lite_SyncClient
 from thrift.py3lite.async_client import AsyncClient as _fbthrift_py3lite_AsyncClient
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
-import my.namespacing.extend.test.extend.lite_types as _my_namespacing_extend_test_extend_lite_types
-import my.namespacing.test.hsmodule.lite_types as _my_namespacing_test_hsmodule_lite_types
-import my.namespacing.test.hsmodule.lite_clients as _my_namespacing_test_hsmodule_lite_clients
+import my.namespacing.extend.test.extend.lite_types
+import my.namespacing.test.hsmodule.lite_types
+import my.namespacing.test.hsmodule.lite_clients
 
 
 class ExtendTestService:
-    class Sync(_my_namespacing_test_hsmodule_lite_clients.HsTestService.Sync):
+    class Sync(my.namespacing.test.hsmodule.lite_clients.HsTestService.Sync):
         def __init__(self, channel):
             super().__init__(channel)
 
@@ -25,9 +25,9 @@ class ExtendTestService:
             resp = self._send_request(
                 "ExtendTestService",
                 "check",
-                _my_namespacing_extend_test_extend_lite_types._fbthrift_ExtendTestService_check_args(
+                my.namespacing.extend.test.extend.lite_types._fbthrift_ExtendTestService_check_args(
                     struct1=struct1,),
-                _my_namespacing_extend_test_extend_lite_types._fbthrift_ExtendTestService_check_result,
+                my.namespacing.extend.test.extend.lite_types._fbthrift_ExtendTestService_check_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -37,7 +37,7 @@ class ExtendTestService:
                 "Empty Response",
             )
 
-    class Async(_my_namespacing_test_hsmodule_lite_clients.HsTestService.Async):
+    class Async(my.namespacing.test.hsmodule.lite_clients.HsTestService.Async):
         def __init__(self):
             super().__init__()
 
@@ -48,9 +48,9 @@ class ExtendTestService:
             resp = await self._send_request(
                 "ExtendTestService",
                 "check",
-                _my_namespacing_extend_test_extend_lite_types._fbthrift_ExtendTestService_check_args(
+                my.namespacing.extend.test.extend.lite_types._fbthrift_ExtendTestService_check_args(
                     struct1=struct1,),
-                _my_namespacing_extend_test_extend_lite_types._fbthrift_ExtendTestService_check_result,
+                my.namespacing.extend.test.extend.lite_types._fbthrift_ExtendTestService_check_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:

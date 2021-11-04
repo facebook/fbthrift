@@ -8,7 +8,7 @@
 from thrift.py3lite.sync_client import SyncClient as _fbthrift_py3lite_SyncClient
 from thrift.py3lite.async_client import AsyncClient as _fbthrift_py3lite_AsyncClient
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
-import my.namespacing.test.module.module.lite_types as _my_namespacing_test_module_module_lite_types
+import my.namespacing.test.module.module.lite_types
 
 
 class TestService:
@@ -23,9 +23,9 @@ class TestService:
             resp = self._send_request(
                 "TestService",
                 "init",
-                _my_namespacing_test_module_module_lite_types._fbthrift_TestService_init_args(
+                my.namespacing.test.module.module.lite_types._fbthrift_TestService_init_args(
                     int1=int1,),
-                _my_namespacing_test_module_module_lite_types._fbthrift_TestService_init_result,
+                my.namespacing.test.module.module.lite_types._fbthrift_TestService_init_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -46,9 +46,9 @@ class TestService:
             resp = await self._send_request(
                 "TestService",
                 "init",
-                _my_namespacing_test_module_module_lite_types._fbthrift_TestService_init_args(
+                my.namespacing.test.module.module.lite_types._fbthrift_TestService_init_args(
                     int1=int1,),
-                _my_namespacing_test_module_module_lite_types._fbthrift_TestService_init_result,
+                my.namespacing.test.module.module.lite_types._fbthrift_TestService_init_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
