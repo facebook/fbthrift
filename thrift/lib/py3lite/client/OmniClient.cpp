@@ -180,30 +180,38 @@ folly::SemiFuture<OmniClientResponseWithHeaders> OmniClient::semifuture_send(
       serviceAndFunction->first.c_str(),
       serviceAndFunction->second.c_str(),
       std::make_unique<SemiFutureCallback>(std::move(promise), channel_));
-  return std::move(future).deferValue([serviceAndFunction =
-                                           std::move(serviceAndFunction)](
-                                          ClientReceiveState&& state) {
-    if (state.isException()) {
-      state.exception().throw_exception();
-    }
-    OmniClientResponseWithHeaders resp;
-    if (state.messageType() == MessageType::T_REPLY) {
-      resp.buf = std::move(state.serializedResponse().buffer);
-    } else if (state.messageType() == MessageType::T_EXCEPTION) {
-      resp.buf = folly::makeUnexpected(deserializeApplicationException(
-          state.protocolId(), std::move(state.serializedResponse().buffer)));
-    } else {
-      resp.buf = folly::makeUnexpected(
-          folly::make_exception_wrapper<TApplicationException>(
-              TApplicationException::TApplicationExceptionType::
-                  INVALID_MESSAGE_TYPE,
-              fmt::format("Invalid message type: {}", state.messageType())));
-    }
-    resp.headers = state.header()->releaseHeaders();
-    state.resetCtx(nullptr);
+  return std::move(future)
+      .deferValue([serviceAndFunction = std::move(serviceAndFunction)](
+                      ClientReceiveState&& state) {
+        if (state.isException()) {
+          state.exception().throw_exception();
+        }
+        OmniClientResponseWithHeaders resp;
+        if (state.messageType() == MessageType::T_REPLY) {
+          resp.buf = std::move(state.serializedResponse().buffer);
+        } else if (state.messageType() == MessageType::T_EXCEPTION) {
+          resp.buf = folly::makeUnexpected(deserializeApplicationException(
+              state.protocolId(),
+              std::move(state.serializedResponse().buffer)));
+        } else {
+          resp.buf = folly::makeUnexpected(
+              folly::make_exception_wrapper<TApplicationException>(
+                  TApplicationException::TApplicationExceptionType::
+                      INVALID_MESSAGE_TYPE,
+                  fmt::format(
+                      "Invalid message type: {}", state.messageType())));
+        }
+        resp.headers = state.header()->releaseHeaders();
+        state.resetCtx(nullptr);
 
-    return resp;
-  });
+        return resp;
+      })
+      .deferError([=](folly::exception_wrapper&& e) {
+        OmniClientResponseWithHeaders resp;
+        resp.buf = folly::makeUnexpected(e);
+
+        return resp;
+      });
 }
 
 folly::SemiFuture<OmniClientResponseWithHeaders> OmniClient::semifuture_send(

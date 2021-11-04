@@ -15,7 +15,12 @@
 import time
 import unittest
 
-from thrift.py3lite.exceptions import ApplicationError
+from thrift.py3lite.exceptions import (
+    ApplicationError,
+    ApplicationErrorType,
+    TransportError,
+    TransportErrorType,
+)
 from thrift.py3lite.leaf.lite_clients import LeafService
 from thrift.py3lite.serializer import Protocol
 from thrift.py3lite.sync_client import ClientType, get_client
@@ -68,8 +73,9 @@ class SyncClientTests(unittest.TestCase):
     def test_unexpected_exception(self) -> None:
         with server_in_another_process() as path:
             with get_client(TestService, path=path) as client:
-                with self.assertRaisesRegex(ApplicationError, "Surprise!"):
+                with self.assertRaisesRegex(ApplicationError, "Surprise!") as ex:
                     client.surprise()
+                self.assertEqual(ApplicationErrorType.UNKNOWN, ex.exception.type)
 
     def test_derived_service(self) -> None:
         with server_in_another_process() as path:
@@ -80,7 +86,12 @@ class SyncClientTests(unittest.TestCase):
     def test_deriving_from_external_service(self) -> None:
         with server_in_another_process() as path:
             with get_client(LeafService, path=path) as client:
-                # TODO: shouldn't need the explicit list conversion
                 self.assertEqual([3, 2, 1], list(client.reverse([1, 2, 3])))
                 self.assertEqual("hello", client.echo("hello"))
                 self.assertEqual(3, client.add(1, 2))
+
+    def test_transport_error(self) -> None:
+        with get_client(TestService, path="/no/where") as client:
+            with self.assertRaises(TransportError) as ex:
+                client.add(1, 2)
+            self.assertEqual(TransportErrorType.UNKNOWN, ex.exception.type)

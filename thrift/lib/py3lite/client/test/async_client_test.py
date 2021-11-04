@@ -16,7 +16,12 @@ import asyncio
 
 from later.unittest import TestCase
 from thrift.py3lite.async_client import ClientType, get_client
-from thrift.py3lite.exceptions import ApplicationError
+from thrift.py3lite.exceptions import (
+    ApplicationError,
+    ApplicationErrorType,
+    TransportError,
+    TransportErrorType,
+)
 from thrift.py3lite.leaf.lite_clients import LeafService
 from thrift.py3lite.serializer import Protocol
 from thrift.py3lite.test.lite_clients import EchoService, TestService
@@ -76,7 +81,7 @@ class AsyncClientTests(TestCase):
                 with self.assertRaises(ApplicationError) as ex:
                     await client.surprise()
                 self.assertEqual(ex.exception.message, "ValueError('Surprise!')")
-                self.assertEqual(ex.exception.type, 0)
+                self.assertEqual(ex.exception.type, ApplicationErrorType.UNKNOWN)
 
     async def test_derived_service(self) -> None:
         async with server_in_event_loop() as addr:
@@ -90,9 +95,14 @@ class AsyncClientTests(TestCase):
         async with server_in_event_loop() as addr:
             async with get_client(LeafService, host=addr.ip, port=addr.port) as client:
                 rev = await client.reverse([1, 2, 3])
-                # TODO: shouldn't need the explicit list conversion
                 self.assertEqual([3, 2, 1], list(rev))
                 out = await client.echo("hello")
                 self.assertEqual("hello", out)
                 sum = await client.add(1, 2)
                 self.assertEqual(3, sum)
+
+    async def test_transport_error(self) -> None:
+        async with get_client(TestService, path="/no/where") as client:
+            with self.assertRaises(TransportError) as ex:
+                await client.add(1, 2)
+            self.assertEqual(TransportErrorType.UNKNOWN, ex.exception.type)

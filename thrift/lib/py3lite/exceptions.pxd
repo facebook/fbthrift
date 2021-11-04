@@ -22,9 +22,11 @@ cdef extern from "thrift/lib/cpp/Thrift.h" namespace "apache::thrift":
     cdef cppclass cTException "apache::thrift::TException":
         const char* what() nogil
 
+    cdef cppclass cTLibraryException "apache::thrift::TLibraryException"(cTException):
+        pass
 
-cdef extern from "thrift/lib/cpp/TApplicationException.h" \
-        namespace "apache::thrift":
+
+cdef extern from "thrift/lib/cpp/TApplicationException.h" namespace "apache::thrift":
 
     cpdef enum ApplicationErrorType "apache::thrift::TApplicationException::TApplicationExceptionType":
         UNKNOWN "apache::thrift::TApplicationException::UNKNOWN"
@@ -47,6 +49,31 @@ cdef extern from "thrift/lib/cpp/TApplicationException.h" \
         ApplicationErrorType getType() nogil
 
 
+cdef extern from "thrift/lib/cpp/transport/TTransportException.h" namespace "apache::thrift::transport":
+
+    cpdef enum TransportErrorType "apache::thrift::transport::TTransportException::TTransportExceptionType":
+        UNKNOWN "apache::thrift::transport::TTransportException::UNKNOWN"
+        NOT_OPEN "apache::thrift::transport::TTransportException::NOT_OPEN"
+        ALREADY_OPEN "apache::thrift::transport::TTransportException::ALREADY_OPEN"
+        TIMED_OUT "apache::thrift::transport::TTransportException::TIMED_OUT"
+        END_OF_FILE "apache::thrift::transport::TTransportException::END_OF_FILE"
+        INTERRUPTED "apache::thrift::transport::TTransportException::INTERRUPTED"
+        BAD_ARGS "apache::thrift::transport::TTransportException::BAD_ARGS"
+        CORRUPTED_DATA "apache::thrift::transport::TTransportException::CORRUPTED_DATA"
+        INTERNAL_ERROR "apache::thrift::transport::TTransportException::INTERNAL_ERROR"
+        NOT_SUPPORTED "apache::thrift::transport::TTransportException::NOT_SUPPORTED"
+        INVALID_STATE "apache::thrift::transport::TTransportException::INVALID_STATE"
+        INVALID_FRAME_SIZE "apache::thrift::transport::TTransportException::INVALID_FRAME_SIZE"
+        SSL_ERROR "apache::thrift::transport::TTransportException::SSL_ERROR"
+        COULD_NOT_BIND "apache::thrift::transport::TTransportException::COULD_NOT_BIND"
+        NETWORK_ERROR "apache::thrift::transport::TTransportException::NETWORK_ERROR"
+
+    cdef cppclass cTTransportException "apache::thrift::transport::TTransportException"(cTLibraryException):
+        int getOptions()
+        TransportErrorType getType()
+        int getErrno()
+
+
 cdef extern from "thrift/lib/py3lite/exceptions.h" namespace "::thrift::py3lite::exception":
     cdef unique_ptr[T] try_make_unique_exception[T](const cFollyExceptionWrapper& ex)
 
@@ -55,11 +82,20 @@ cdef class Error(Exception):
     """base class for all Thrift exceptions"""
     pass
 
+cdef class LibraryError(Error):
+    pass
+
 
 cdef class ApplicationError(Error):
     pass
 
 cdef ApplicationError create_ApplicationError(unique_ptr[cTApplicationException] ex)
+
+
+cdef class TransportError(LibraryError):
+    pass
+
+cdef TransportError create_TransportError(unique_ptr[cTTransportException] ex)
 
 
 cdef object create_py_exception(const cFollyExceptionWrapper& ex)
