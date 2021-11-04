@@ -10,7 +10,7 @@ import typing as _typing
 from thrift.py3lite.serializer import serialize_iobuf, deserialize
 from thrift.py3lite.server import ServiceInterface, oneway
 
-import empty.lite_types as _empty_lite_types
+import empty.lite_types
 
 class NullServiceInterface(
     ServiceInterface,

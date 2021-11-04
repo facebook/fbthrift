@@ -10,7 +10,7 @@ import typing as _typing
 from thrift.py3lite.serializer import serialize_iobuf, deserialize
 from thrift.py3lite.server import ServiceInterface, oneway
 
-import module.lite_types as _module_lite_types
+import module.lite_types
 
 class MyServiceInterface(
     ServiceInterface,
@@ -42,9 +42,9 @@ class MyServiceInterface(
         raise NotImplementedError("async def ping is not implemented")
 
     async def _fbthrift__handler_ping(self, args, protocol):
-        args_struct = deserialize(_module_lite_types._fbthrift_MyService_ping_args, args, protocol)
+        args_struct = deserialize(module.lite_types._fbthrift_MyService_ping_args, args, protocol)
         value = await self.ping()
-        return_struct = _module_lite_types._fbthrift_MyService_ping_result()
+        return_struct = module.lite_types._fbthrift_MyService_ping_result()
 
         return serialize_iobuf(return_struct, protocol)
 
@@ -55,9 +55,9 @@ class MyServiceInterface(
         raise NotImplementedError("async def getRandomData is not implemented")
 
     async def _fbthrift__handler_getRandomData(self, args, protocol):
-        args_struct = deserialize(_module_lite_types._fbthrift_MyService_getRandomData_args, args, protocol)
+        args_struct = deserialize(module.lite_types._fbthrift_MyService_getRandomData_args, args, protocol)
         value = await self.getRandomData()
-        return_struct = _module_lite_types._fbthrift_MyService_getRandomData_result(success=value)
+        return_struct = module.lite_types._fbthrift_MyService_getRandomData_result(success=value)
 
         return serialize_iobuf(return_struct, protocol)
 
@@ -69,9 +69,9 @@ class MyServiceInterface(
         raise NotImplementedError("async def sink is not implemented")
 
     async def _fbthrift__handler_sink(self, args, protocol):
-        args_struct = deserialize(_module_lite_types._fbthrift_MyService_sink_args, args, protocol)
+        args_struct = deserialize(module.lite_types._fbthrift_MyService_sink_args, args, protocol)
         value = await self.sink(args_struct.sink,)
-        return_struct = _module_lite_types._fbthrift_MyService_sink_result()
+        return_struct = module.lite_types._fbthrift_MyService_sink_result()
 
         return serialize_iobuf(return_struct, protocol)
 
@@ -84,9 +84,9 @@ class MyServiceInterface(
         raise NotImplementedError("async def putDataById is not implemented")
 
     async def _fbthrift__handler_putDataById(self, args, protocol):
-        args_struct = deserialize(_module_lite_types._fbthrift_MyService_putDataById_args, args, protocol)
+        args_struct = deserialize(module.lite_types._fbthrift_MyService_putDataById_args, args, protocol)
         value = await self.putDataById(args_struct.id,args_struct.data,)
-        return_struct = _module_lite_types._fbthrift_MyService_putDataById_result()
+        return_struct = module.lite_types._fbthrift_MyService_putDataById_result()
 
         return serialize_iobuf(return_struct, protocol)
 
@@ -98,9 +98,9 @@ class MyServiceInterface(
         raise NotImplementedError("async def hasDataById is not implemented")
 
     async def _fbthrift__handler_hasDataById(self, args, protocol):
-        args_struct = deserialize(_module_lite_types._fbthrift_MyService_hasDataById_args, args, protocol)
+        args_struct = deserialize(module.lite_types._fbthrift_MyService_hasDataById_args, args, protocol)
         value = await self.hasDataById(args_struct.id,)
-        return_struct = _module_lite_types._fbthrift_MyService_hasDataById_result(success=value)
+        return_struct = module.lite_types._fbthrift_MyService_hasDataById_result(success=value)
 
         return serialize_iobuf(return_struct, protocol)
 
@@ -112,9 +112,9 @@ class MyServiceInterface(
         raise NotImplementedError("async def getDataById is not implemented")
 
     async def _fbthrift__handler_getDataById(self, args, protocol):
-        args_struct = deserialize(_module_lite_types._fbthrift_MyService_getDataById_args, args, protocol)
+        args_struct = deserialize(module.lite_types._fbthrift_MyService_getDataById_args, args, protocol)
         value = await self.getDataById(args_struct.id,)
-        return_struct = _module_lite_types._fbthrift_MyService_getDataById_result(success=value)
+        return_struct = module.lite_types._fbthrift_MyService_getDataById_result(success=value)
 
         return serialize_iobuf(return_struct, protocol)
 
@@ -126,9 +126,9 @@ class MyServiceInterface(
         raise NotImplementedError("async def deleteDataById is not implemented")
 
     async def _fbthrift__handler_deleteDataById(self, args, protocol):
-        args_struct = deserialize(_module_lite_types._fbthrift_MyService_deleteDataById_args, args, protocol)
+        args_struct = deserialize(module.lite_types._fbthrift_MyService_deleteDataById_args, args, protocol)
         value = await self.deleteDataById(args_struct.id,)
-        return_struct = _module_lite_types._fbthrift_MyService_deleteDataById_result()
+        return_struct = module.lite_types._fbthrift_MyService_deleteDataById_result()
 
         return serialize_iobuf(return_struct, protocol)
 
@@ -142,7 +142,7 @@ class MyServiceInterface(
 
     @oneway
     async def _fbthrift__handler_lobDataById(self, args, protocol):
-        args_struct = deserialize(_module_lite_types._fbthrift_MyService_lobDataById_args, args, protocol)
+        args_struct = deserialize(module.lite_types._fbthrift_MyService_lobDataById_args, args, protocol)
         value = await self.lobDataById(args_struct.id,args_struct.data,)
 
 
@@ -171,9 +171,9 @@ class DbMixedStackArgumentsInterface(
         raise NotImplementedError("async def getDataByKey0 is not implemented")
 
     async def _fbthrift__handler_getDataByKey0(self, args, protocol):
-        args_struct = deserialize(_module_lite_types._fbthrift_DbMixedStackArguments_getDataByKey0_args, args, protocol)
+        args_struct = deserialize(module.lite_types._fbthrift_DbMixedStackArguments_getDataByKey0_args, args, protocol)
         value = await self.getDataByKey0(args_struct.key,)
-        return_struct = _module_lite_types._fbthrift_DbMixedStackArguments_getDataByKey0_result(success=value)
+        return_struct = module.lite_types._fbthrift_DbMixedStackArguments_getDataByKey0_result(success=value)
 
         return serialize_iobuf(return_struct, protocol)
 
@@ -185,9 +185,9 @@ class DbMixedStackArgumentsInterface(
         raise NotImplementedError("async def getDataByKey1 is not implemented")
 
     async def _fbthrift__handler_getDataByKey1(self, args, protocol):
-        args_struct = deserialize(_module_lite_types._fbthrift_DbMixedStackArguments_getDataByKey1_args, args, protocol)
+        args_struct = deserialize(module.lite_types._fbthrift_DbMixedStackArguments_getDataByKey1_args, args, protocol)
         value = await self.getDataByKey1(args_struct.key,)
-        return_struct = _module_lite_types._fbthrift_DbMixedStackArguments_getDataByKey1_result(success=value)
+        return_struct = module.lite_types._fbthrift_DbMixedStackArguments_getDataByKey1_result(success=value)
 
         return serialize_iobuf(return_struct, protocol)
 

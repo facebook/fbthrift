@@ -25,21 +25,21 @@ import typing as _typing
 from thrift.py3lite.serializer import serialize_iobuf, deserialize
 from thrift.py3lite.server import ServiceInterface, oneway
 
-import {{#program:py3_namespaces}}{{value}}.{{/program:py3_namespaces}}{{program:name}}.lite_types as _{{#program:py3_namespaces}}{{value}}_{{/program:py3_namespaces}}{{program:name}}_lite_types
+import {{#program:py3_namespaces}}{{value}}.{{/program:py3_namespaces}}{{program:name}}.lite_types
 {{#program:include_namespaces}}
 {{#has_services?}}
-import {{#include_namespace}}{{value}}.{{/include_namespace}}lite_services as _{{#include_namespace}}{{value}}_{{/include_namespace}}lite_services
+import {{#include_namespace}}{{value}}.{{/include_namespace}}lite_services
 {{/has_services?}}
 {{#has_types?}}
-import {{#include_namespace}}{{value}}.{{/include_namespace}}lite_types as _{{#include_namespace}}{{value}}_{{/include_namespace}}lite_types
+import {{#include_namespace}}{{value}}.{{/include_namespace}}lite_types
 {{/has_types?}}
 {{/program:include_namespaces}}
 
 {{#program:services}}
 class {{service:name}}Interface(
   {{#service:extends}}{{#service:external_program?}}
-    _{{#service:py3_namespaces}}{{value}}_{{/service:py3_namespaces}}{{!
-        }}{{service:program_name}}_lite_services.{{/service:external_program?}}{{service:name}}Interface,
+    {{#service:py3_namespaces}}{{value}}.{{/service:py3_namespaces}}{{!
+        }}{{service:program_name}}.lite_services.{{/service:external_program?}}{{service:name}}Interface,
     {{/service:extends}}
     {{^service:extends?}}
     ServiceInterface,
@@ -72,24 +72,24 @@ class {{service:name}}Interface(
     @oneway
     {{/function:oneway?}}
     async def _fbthrift__handler_{{function:name}}(self, args, protocol):
-        args_struct = deserialize(_{{#program:py3_namespaces}}{{value}}_{{/program:py3_namespaces}}{{program:name}}_lite_types.{{> types/function_args_struct_name}}, args, protocol)
+        args_struct = deserialize({{#program:py3_namespaces}}{{value}}.{{/program:py3_namespaces}}{{program:name}}.lite_types.{{> types/function_args_struct_name}}, args, protocol)
         {{#function:exceptions?}}
         try:
             value = await self.{{function:name}}({{#function:args}}args_struct.{{field:py_name}},{{/function:args}})
             {{^function:oneway?}}
-            return_struct = _{{#program:py3_namespaces}}{{value}}_{{/program:py3_namespaces}}{{program:name}}_lite_types.{{> types/function_return_struct_name}}({{!
+            return_struct = {{#program:py3_namespaces}}{{value}}.{{/program:py3_namespaces}}{{program:name}}.lite_types.{{> types/function_return_struct_name}}({{!
             }}{{#function:return_type}}{{^type:void?}}success=value{{/type:void?}}{{/function:return_type}})
             {{/function:oneway?}}
         {{#function:exceptions}}{{#field:type}}
         except {{type:module_path}}.{{#type:struct}}{{struct:name}}{{/type:struct}} as e:
-            return_struct = _{{#program:py3_namespaces}}{{value}}_{{/program:py3_namespaces}}{{program:name}}_lite_types.{{> types/function_return_struct_name}}({{field:py_name}}=e)
+            return_struct = {{#program:py3_namespaces}}{{value}}.{{/program:py3_namespaces}}{{program:name}}.lite_types.{{> types/function_return_struct_name}}({{field:py_name}}=e)
         {{/field:type}}
         {{/function:exceptions}}
         {{/function:exceptions?}}
         {{^function:exceptions?}}
         value = await self.{{function:name}}({{#function:args}}args_struct.{{field:py_name}},{{/function:args}})
         {{^function:oneway?}}
-        return_struct = _{{#program:py3_namespaces}}{{value}}_{{/program:py3_namespaces}}{{program:name}}_lite_types.{{> types/function_return_struct_name}}({{!
+        return_struct = {{#program:py3_namespaces}}{{value}}.{{/program:py3_namespaces}}{{program:name}}.lite_types.{{> types/function_return_struct_name}}({{!
         }}{{#function:return_type}}{{^type:void?}}success=value{{/type:void?}}{{/function:return_type}})
         {{/function:oneway?}}
         {{/function:exceptions?}}

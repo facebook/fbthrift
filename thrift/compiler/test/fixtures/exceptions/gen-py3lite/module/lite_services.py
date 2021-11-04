@@ -10,7 +10,7 @@ import typing as _typing
 from thrift.py3lite.serializer import serialize_iobuf, deserialize
 from thrift.py3lite.server import ServiceInterface, oneway
 
-import module.lite_types as _module_lite_types
+import module.lite_types
 
 class RaiserInterface(
     ServiceInterface,
@@ -38,9 +38,9 @@ class RaiserInterface(
         raise NotImplementedError("async def doBland is not implemented")
 
     async def _fbthrift__handler_doBland(self, args, protocol):
-        args_struct = deserialize(_module_lite_types._fbthrift_Raiser_doBland_args, args, protocol)
+        args_struct = deserialize(module.lite_types._fbthrift_Raiser_doBland_args, args, protocol)
         value = await self.doBland()
-        return_struct = _module_lite_types._fbthrift_Raiser_doBland_result()
+        return_struct = module.lite_types._fbthrift_Raiser_doBland_result()
 
         return serialize_iobuf(return_struct, protocol)
 
@@ -51,16 +51,16 @@ class RaiserInterface(
         raise NotImplementedError("async def doRaise is not implemented")
 
     async def _fbthrift__handler_doRaise(self, args, protocol):
-        args_struct = deserialize(_module_lite_types._fbthrift_Raiser_doRaise_args, args, protocol)
+        args_struct = deserialize(module.lite_types._fbthrift_Raiser_doRaise_args, args, protocol)
         try:
             value = await self.doRaise()
-            return_struct = _module_lite_types._fbthrift_Raiser_doRaise_result()
+            return_struct = module.lite_types._fbthrift_Raiser_doRaise_result()
         except module.lite_types.Banal as e:
-            return_struct = _module_lite_types._fbthrift_Raiser_doRaise_result(b=e)
+            return_struct = module.lite_types._fbthrift_Raiser_doRaise_result(b=e)
         except module.lite_types.Fiery as e:
-            return_struct = _module_lite_types._fbthrift_Raiser_doRaise_result(f=e)
+            return_struct = module.lite_types._fbthrift_Raiser_doRaise_result(f=e)
         except module.lite_types.Serious as e:
-            return_struct = _module_lite_types._fbthrift_Raiser_doRaise_result(s=e)
+            return_struct = module.lite_types._fbthrift_Raiser_doRaise_result(s=e)
 
         return serialize_iobuf(return_struct, protocol)
 
@@ -71,9 +71,9 @@ class RaiserInterface(
         raise NotImplementedError("async def get200 is not implemented")
 
     async def _fbthrift__handler_get200(self, args, protocol):
-        args_struct = deserialize(_module_lite_types._fbthrift_Raiser_get200_args, args, protocol)
+        args_struct = deserialize(module.lite_types._fbthrift_Raiser_get200_args, args, protocol)
         value = await self.get200()
-        return_struct = _module_lite_types._fbthrift_Raiser_get200_result(success=value)
+        return_struct = module.lite_types._fbthrift_Raiser_get200_result(success=value)
 
         return serialize_iobuf(return_struct, protocol)
 
@@ -84,16 +84,16 @@ class RaiserInterface(
         raise NotImplementedError("async def get500 is not implemented")
 
     async def _fbthrift__handler_get500(self, args, protocol):
-        args_struct = deserialize(_module_lite_types._fbthrift_Raiser_get500_args, args, protocol)
+        args_struct = deserialize(module.lite_types._fbthrift_Raiser_get500_args, args, protocol)
         try:
             value = await self.get500()
-            return_struct = _module_lite_types._fbthrift_Raiser_get500_result(success=value)
+            return_struct = module.lite_types._fbthrift_Raiser_get500_result(success=value)
         except module.lite_types.Fiery as e:
-            return_struct = _module_lite_types._fbthrift_Raiser_get500_result(f=e)
+            return_struct = module.lite_types._fbthrift_Raiser_get500_result(f=e)
         except module.lite_types.Banal as e:
-            return_struct = _module_lite_types._fbthrift_Raiser_get500_result(b=e)
+            return_struct = module.lite_types._fbthrift_Raiser_get500_result(b=e)
         except module.lite_types.Serious as e:
-            return_struct = _module_lite_types._fbthrift_Raiser_get500_result(s=e)
+            return_struct = module.lite_types._fbthrift_Raiser_get500_result(s=e)
 
         return serialize_iobuf(return_struct, protocol)
 
