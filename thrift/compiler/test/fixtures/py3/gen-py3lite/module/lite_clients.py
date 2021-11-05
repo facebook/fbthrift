@@ -9,6 +9,7 @@ from fbcode.thrift.py3lite.client.client_wrapper import ClientWrapper as _fbthri
 from fbcode.thrift.py3lite.sync_client import SyncClient as _fbthrift_py3lite_SyncClient
 from fbcode.thrift.py3lite.async_client import AsyncClient as _fbthrift_py3lite_AsyncClient
 import fbcode.thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
+import fbcode.thrift.py3lite.types as _fbthrift_py3lite_types
 import module.lite_types
 
 
@@ -19,7 +20,7 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def get_five(
             self
-        ):
+        ) -> int:
             resp = self._send_request(
                 "SimpleService",
                 "get_five",
@@ -36,8 +37,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def add_five(
             self,
-            num
-        ):
+            num: int
+        ) -> int:
             resp = self._send_request(
                 "SimpleService",
                 "add_five",
@@ -55,7 +56,7 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def do_nothing(
             self
-        ):
+        ) -> None:
             resp = self._send_request(
                 "SimpleService",
                 "do_nothing",
@@ -65,9 +66,9 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def concat(
             self,
-            first,
-            second
-        ):
+            first: str,
+            second: str
+        ) -> str:
             resp = self._send_request(
                 "SimpleService",
                 "concat",
@@ -86,8 +87,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def get_value(
             self,
-            simple_struct
-        ):
+            simple_struct: module.lite_types.SimpleStruct
+        ) -> int:
             resp = self._send_request(
                 "SimpleService",
                 "get_value",
@@ -105,8 +106,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def negate(
             self,
-            input
-        ):
+            input: bool
+        ) -> bool:
             resp = self._send_request(
                 "SimpleService",
                 "negate",
@@ -124,8 +125,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def tiny(
             self,
-            input
-        ):
+            input: int
+        ) -> int:
             resp = self._send_request(
                 "SimpleService",
                 "tiny",
@@ -143,8 +144,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def small(
             self,
-            input
-        ):
+            input: int
+        ) -> int:
             resp = self._send_request(
                 "SimpleService",
                 "small",
@@ -162,8 +163,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def big(
             self,
-            input
-        ):
+            input: int
+        ) -> int:
             resp = self._send_request(
                 "SimpleService",
                 "big",
@@ -181,8 +182,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def two(
             self,
-            input
-        ):
+            input: float
+        ) -> float:
             resp = self._send_request(
                 "SimpleService",
                 "two",
@@ -200,7 +201,7 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def expected_exception(
             self
-        ):
+        ) -> None:
             resp = self._send_request(
                 "SimpleService",
                 "expected_exception",
@@ -212,7 +213,7 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def unexpected_exception(
             self
-        ):
+        ) -> int:
             resp = self._send_request(
                 "SimpleService",
                 "unexpected_exception",
@@ -229,8 +230,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def sum_i16_list(
             self,
-            numbers
-        ):
+            numbers: _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.typeinfo_i16)
+        ) -> int:
             resp = self._send_request(
                 "SimpleService",
                 "sum_i16_list",
@@ -248,8 +249,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def sum_i32_list(
             self,
-            numbers
-        ):
+            numbers: _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.typeinfo_i32)
+        ) -> int:
             resp = self._send_request(
                 "SimpleService",
                 "sum_i32_list",
@@ -267,8 +268,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def sum_i64_list(
             self,
-            numbers
-        ):
+            numbers: _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.typeinfo_i64)
+        ) -> int:
             resp = self._send_request(
                 "SimpleService",
                 "sum_i64_list",
@@ -286,8 +287,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def concat_many(
             self,
-            words
-        ):
+            words: _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.typeinfo_string)
+        ) -> str:
             resp = self._send_request(
                 "SimpleService",
                 "concat_many",
@@ -305,8 +306,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def count_structs(
             self,
-            items
-        ):
+            items: _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.StructTypeInfo(module.lite_types.SimpleStruct))
+        ) -> int:
             resp = self._send_request(
                 "SimpleService",
                 "count_structs",
@@ -324,8 +325,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def sum_set(
             self,
-            numbers
-        ):
+            numbers: _fbthrift_py3lite_types.SetTypeFactory(_fbthrift_py3lite_types.typeinfo_i32)
+        ) -> int:
             resp = self._send_request(
                 "SimpleService",
                 "sum_set",
@@ -343,9 +344,9 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def contains_word(
             self,
-            words,
-            word
-        ):
+            words: _fbthrift_py3lite_types.SetTypeFactory(_fbthrift_py3lite_types.typeinfo_string),
+            word: str
+        ) -> bool:
             resp = self._send_request(
                 "SimpleService",
                 "contains_word",
@@ -364,9 +365,9 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def get_map_value(
             self,
-            words,
-            key
-        ):
+            words: _fbthrift_py3lite_types.MapTypeFactory(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_string),
+            key: str
+        ) -> str:
             resp = self._send_request(
                 "SimpleService",
                 "get_map_value",
@@ -385,8 +386,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def map_length(
             self,
-            items
-        ):
+            items: _fbthrift_py3lite_types.MapTypeFactory(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.StructTypeInfo(module.lite_types.SimpleStruct))
+        ) -> int:
             resp = self._send_request(
                 "SimpleService",
                 "map_length",
@@ -404,8 +405,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def sum_map_values(
             self,
-            items
-        ):
+            items: _fbthrift_py3lite_types.MapTypeFactory(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_i16)
+        ) -> int:
             resp = self._send_request(
                 "SimpleService",
                 "sum_map_values",
@@ -423,8 +424,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def complex_sum_i32(
             self,
-            counter
-        ):
+            counter: module.lite_types.ComplexStruct
+        ) -> int:
             resp = self._send_request(
                 "SimpleService",
                 "complex_sum_i32",
@@ -442,8 +443,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def repeat_name(
             self,
-            counter
-        ):
+            counter: module.lite_types.ComplexStruct
+        ) -> str:
             resp = self._send_request(
                 "SimpleService",
                 "repeat_name",
@@ -461,7 +462,7 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def get_struct(
             self
-        ):
+        ) -> module.lite_types.SimpleStruct:
             resp = self._send_request(
                 "SimpleService",
                 "get_struct",
@@ -478,8 +479,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def fib(
             self,
-            n
-        ):
+            n: int
+        ) -> _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.typeinfo_i32):
             resp = self._send_request(
                 "SimpleService",
                 "fib",
@@ -497,8 +498,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def unique_words(
             self,
-            words
-        ):
+            words: _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.typeinfo_string)
+        ) -> _fbthrift_py3lite_types.SetTypeFactory(_fbthrift_py3lite_types.typeinfo_string):
             resp = self._send_request(
                 "SimpleService",
                 "unique_words",
@@ -516,8 +517,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def words_count(
             self,
-            words
-        ):
+            words: _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.typeinfo_string)
+        ) -> _fbthrift_py3lite_types.MapTypeFactory(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_i16):
             resp = self._send_request(
                 "SimpleService",
                 "words_count",
@@ -535,8 +536,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def set_enum(
             self,
-            in_enum
-        ):
+            in_enum: module.lite_types.AnEnum
+        ) -> module.lite_types.AnEnum:
             resp = self._send_request(
                 "SimpleService",
                 "set_enum",
@@ -554,9 +555,9 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def list_of_lists(
             self,
-            num_lists,
-            num_items
-        ):
+            num_lists: int,
+            num_items: int
+        ) -> _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i32)):
             resp = self._send_request(
                 "SimpleService",
                 "list_of_lists",
@@ -575,8 +576,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def word_character_frequency(
             self,
-            sentence
-        ):
+            sentence: str
+        ) -> _fbthrift_py3lite_types.MapTypeFactory(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_i32)):
             resp = self._send_request(
                 "SimpleService",
                 "word_character_frequency",
@@ -594,8 +595,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def list_of_sets(
             self,
-            some_words
-        ):
+            some_words: str
+        ) -> _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_string)):
             resp = self._send_request(
                 "SimpleService",
                 "list_of_sets",
@@ -613,8 +614,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def nested_map_argument(
             self,
-            struct_map
-        ):
+            struct_map: _fbthrift_py3lite_types.MapTypeFactory(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(module.lite_types.SimpleStruct)))
+        ) -> int:
             resp = self._send_request(
                 "SimpleService",
                 "nested_map_argument",
@@ -632,8 +633,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def make_sentence(
             self,
-            word_chars
-        ):
+            word_chars: _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_string))
+        ) -> str:
             resp = self._send_request(
                 "SimpleService",
                 "make_sentence",
@@ -651,8 +652,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def get_union(
             self,
-            sets
-        ):
+            sets: _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_i32))
+        ) -> _fbthrift_py3lite_types.SetTypeFactory(_fbthrift_py3lite_types.typeinfo_i32):
             resp = self._send_request(
                 "SimpleService",
                 "get_union",
@@ -670,8 +671,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def get_keys(
             self,
-            string_map
-        ):
+            string_map: _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_string))
+        ) -> _fbthrift_py3lite_types.SetTypeFactory(_fbthrift_py3lite_types.typeinfo_string):
             resp = self._send_request(
                 "SimpleService",
                 "get_keys",
@@ -689,8 +690,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def lookup_double(
             self,
-            key
-        ):
+            key: int
+        ) -> float:
             resp = self._send_request(
                 "SimpleService",
                 "lookup_double",
@@ -708,8 +709,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def retrieve_binary(
             self,
-            something
-        ):
+            something: bytes
+        ) -> bytes:
             resp = self._send_request(
                 "SimpleService",
                 "retrieve_binary",
@@ -727,8 +728,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def contain_binary(
             self,
-            binaries
-        ):
+            binaries: _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.typeinfo_binary)
+        ) -> _fbthrift_py3lite_types.SetTypeFactory(_fbthrift_py3lite_types.typeinfo_binary):
             resp = self._send_request(
                 "SimpleService",
                 "contain_binary",
@@ -746,8 +747,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def contain_enum(
             self,
-            the_enum
-        ):
+            the_enum: _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.EnumTypeInfo(module.lite_types.AnEnum))
+        ) -> _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.EnumTypeInfo(module.lite_types.AnEnum)):
             resp = self._send_request(
                 "SimpleService",
                 "contain_enum",
@@ -765,8 +766,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         def get_binary_union_struct(
             self,
-            u
-        ):
+            u: module.lite_types.BinaryUnion
+        ) -> module.lite_types.BinaryUnionStruct:
             resp = self._send_request(
                 "SimpleService",
                 "get_binary_union_struct",
@@ -788,7 +789,7 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def get_five(
             self
-        ):
+        ) -> int:
             resp = await self._send_request(
                 "SimpleService",
                 "get_five",
@@ -805,8 +806,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def add_five(
             self,
-            num
-        ):
+            num: int
+        ) -> int:
             resp = await self._send_request(
                 "SimpleService",
                 "add_five",
@@ -824,7 +825,7 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def do_nothing(
             self
-        ):
+        ) -> None:
             resp = await self._send_request(
                 "SimpleService",
                 "do_nothing",
@@ -834,9 +835,9 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def concat(
             self,
-            first,
-            second
-        ):
+            first: str,
+            second: str
+        ) -> str:
             resp = await self._send_request(
                 "SimpleService",
                 "concat",
@@ -855,8 +856,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def get_value(
             self,
-            simple_struct
-        ):
+            simple_struct: module.lite_types.SimpleStruct
+        ) -> int:
             resp = await self._send_request(
                 "SimpleService",
                 "get_value",
@@ -874,8 +875,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def negate(
             self,
-            input
-        ):
+            input: bool
+        ) -> bool:
             resp = await self._send_request(
                 "SimpleService",
                 "negate",
@@ -893,8 +894,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def tiny(
             self,
-            input
-        ):
+            input: int
+        ) -> int:
             resp = await self._send_request(
                 "SimpleService",
                 "tiny",
@@ -912,8 +913,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def small(
             self,
-            input
-        ):
+            input: int
+        ) -> int:
             resp = await self._send_request(
                 "SimpleService",
                 "small",
@@ -931,8 +932,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def big(
             self,
-            input
-        ):
+            input: int
+        ) -> int:
             resp = await self._send_request(
                 "SimpleService",
                 "big",
@@ -950,8 +951,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def two(
             self,
-            input
-        ):
+            input: float
+        ) -> float:
             resp = await self._send_request(
                 "SimpleService",
                 "two",
@@ -969,7 +970,7 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def expected_exception(
             self
-        ):
+        ) -> None:
             resp = await self._send_request(
                 "SimpleService",
                 "expected_exception",
@@ -981,7 +982,7 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def unexpected_exception(
             self
-        ):
+        ) -> int:
             resp = await self._send_request(
                 "SimpleService",
                 "unexpected_exception",
@@ -998,8 +999,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def sum_i16_list(
             self,
-            numbers
-        ):
+            numbers: _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.typeinfo_i16)
+        ) -> int:
             resp = await self._send_request(
                 "SimpleService",
                 "sum_i16_list",
@@ -1017,8 +1018,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def sum_i32_list(
             self,
-            numbers
-        ):
+            numbers: _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.typeinfo_i32)
+        ) -> int:
             resp = await self._send_request(
                 "SimpleService",
                 "sum_i32_list",
@@ -1036,8 +1037,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def sum_i64_list(
             self,
-            numbers
-        ):
+            numbers: _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.typeinfo_i64)
+        ) -> int:
             resp = await self._send_request(
                 "SimpleService",
                 "sum_i64_list",
@@ -1055,8 +1056,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def concat_many(
             self,
-            words
-        ):
+            words: _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.typeinfo_string)
+        ) -> str:
             resp = await self._send_request(
                 "SimpleService",
                 "concat_many",
@@ -1074,8 +1075,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def count_structs(
             self,
-            items
-        ):
+            items: _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.StructTypeInfo(module.lite_types.SimpleStruct))
+        ) -> int:
             resp = await self._send_request(
                 "SimpleService",
                 "count_structs",
@@ -1093,8 +1094,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def sum_set(
             self,
-            numbers
-        ):
+            numbers: _fbthrift_py3lite_types.SetTypeFactory(_fbthrift_py3lite_types.typeinfo_i32)
+        ) -> int:
             resp = await self._send_request(
                 "SimpleService",
                 "sum_set",
@@ -1112,9 +1113,9 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def contains_word(
             self,
-            words,
-            word
-        ):
+            words: _fbthrift_py3lite_types.SetTypeFactory(_fbthrift_py3lite_types.typeinfo_string),
+            word: str
+        ) -> bool:
             resp = await self._send_request(
                 "SimpleService",
                 "contains_word",
@@ -1133,9 +1134,9 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def get_map_value(
             self,
-            words,
-            key
-        ):
+            words: _fbthrift_py3lite_types.MapTypeFactory(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_string),
+            key: str
+        ) -> str:
             resp = await self._send_request(
                 "SimpleService",
                 "get_map_value",
@@ -1154,8 +1155,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def map_length(
             self,
-            items
-        ):
+            items: _fbthrift_py3lite_types.MapTypeFactory(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.StructTypeInfo(module.lite_types.SimpleStruct))
+        ) -> int:
             resp = await self._send_request(
                 "SimpleService",
                 "map_length",
@@ -1173,8 +1174,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def sum_map_values(
             self,
-            items
-        ):
+            items: _fbthrift_py3lite_types.MapTypeFactory(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_i16)
+        ) -> int:
             resp = await self._send_request(
                 "SimpleService",
                 "sum_map_values",
@@ -1192,8 +1193,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def complex_sum_i32(
             self,
-            counter
-        ):
+            counter: module.lite_types.ComplexStruct
+        ) -> int:
             resp = await self._send_request(
                 "SimpleService",
                 "complex_sum_i32",
@@ -1211,8 +1212,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def repeat_name(
             self,
-            counter
-        ):
+            counter: module.lite_types.ComplexStruct
+        ) -> str:
             resp = await self._send_request(
                 "SimpleService",
                 "repeat_name",
@@ -1230,7 +1231,7 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def get_struct(
             self
-        ):
+        ) -> module.lite_types.SimpleStruct:
             resp = await self._send_request(
                 "SimpleService",
                 "get_struct",
@@ -1247,8 +1248,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def fib(
             self,
-            n
-        ):
+            n: int
+        ) -> _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.typeinfo_i32):
             resp = await self._send_request(
                 "SimpleService",
                 "fib",
@@ -1266,8 +1267,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def unique_words(
             self,
-            words
-        ):
+            words: _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.typeinfo_string)
+        ) -> _fbthrift_py3lite_types.SetTypeFactory(_fbthrift_py3lite_types.typeinfo_string):
             resp = await self._send_request(
                 "SimpleService",
                 "unique_words",
@@ -1285,8 +1286,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def words_count(
             self,
-            words
-        ):
+            words: _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.typeinfo_string)
+        ) -> _fbthrift_py3lite_types.MapTypeFactory(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_i16):
             resp = await self._send_request(
                 "SimpleService",
                 "words_count",
@@ -1304,8 +1305,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def set_enum(
             self,
-            in_enum
-        ):
+            in_enum: module.lite_types.AnEnum
+        ) -> module.lite_types.AnEnum:
             resp = await self._send_request(
                 "SimpleService",
                 "set_enum",
@@ -1323,9 +1324,9 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def list_of_lists(
             self,
-            num_lists,
-            num_items
-        ):
+            num_lists: int,
+            num_items: int
+        ) -> _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i32)):
             resp = await self._send_request(
                 "SimpleService",
                 "list_of_lists",
@@ -1344,8 +1345,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def word_character_frequency(
             self,
-            sentence
-        ):
+            sentence: str
+        ) -> _fbthrift_py3lite_types.MapTypeFactory(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_i32)):
             resp = await self._send_request(
                 "SimpleService",
                 "word_character_frequency",
@@ -1363,8 +1364,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def list_of_sets(
             self,
-            some_words
-        ):
+            some_words: str
+        ) -> _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_string)):
             resp = await self._send_request(
                 "SimpleService",
                 "list_of_sets",
@@ -1382,8 +1383,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def nested_map_argument(
             self,
-            struct_map
-        ):
+            struct_map: _fbthrift_py3lite_types.MapTypeFactory(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(module.lite_types.SimpleStruct)))
+        ) -> int:
             resp = await self._send_request(
                 "SimpleService",
                 "nested_map_argument",
@@ -1401,8 +1402,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def make_sentence(
             self,
-            word_chars
-        ):
+            word_chars: _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_string))
+        ) -> str:
             resp = await self._send_request(
                 "SimpleService",
                 "make_sentence",
@@ -1420,8 +1421,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def get_union(
             self,
-            sets
-        ):
+            sets: _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_i32))
+        ) -> _fbthrift_py3lite_types.SetTypeFactory(_fbthrift_py3lite_types.typeinfo_i32):
             resp = await self._send_request(
                 "SimpleService",
                 "get_union",
@@ -1439,8 +1440,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def get_keys(
             self,
-            string_map
-        ):
+            string_map: _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_string))
+        ) -> _fbthrift_py3lite_types.SetTypeFactory(_fbthrift_py3lite_types.typeinfo_string):
             resp = await self._send_request(
                 "SimpleService",
                 "get_keys",
@@ -1458,8 +1459,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def lookup_double(
             self,
-            key
-        ):
+            key: int
+        ) -> float:
             resp = await self._send_request(
                 "SimpleService",
                 "lookup_double",
@@ -1477,8 +1478,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def retrieve_binary(
             self,
-            something
-        ):
+            something: bytes
+        ) -> bytes:
             resp = await self._send_request(
                 "SimpleService",
                 "retrieve_binary",
@@ -1496,8 +1497,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def contain_binary(
             self,
-            binaries
-        ):
+            binaries: _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.typeinfo_binary)
+        ) -> _fbthrift_py3lite_types.SetTypeFactory(_fbthrift_py3lite_types.typeinfo_binary):
             resp = await self._send_request(
                 "SimpleService",
                 "contain_binary",
@@ -1515,8 +1516,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def contain_enum(
             self,
-            the_enum
-        ):
+            the_enum: _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.EnumTypeInfo(module.lite_types.AnEnum))
+        ) -> _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.EnumTypeInfo(module.lite_types.AnEnum)):
             resp = await self._send_request(
                 "SimpleService",
                 "contain_enum",
@@ -1534,8 +1535,8 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
 
         async def get_binary_union_struct(
             self,
-            u
-        ):
+            u: module.lite_types.BinaryUnion
+        ) -> module.lite_types.BinaryUnionStruct:
             resp = await self._send_request(
                 "SimpleService",
                 "get_binary_union_struct",
@@ -1559,7 +1560,7 @@ class DerivedService(_fbthrift_py3lite_ClientWrapper["DerivedService.Async", "De
 
         def get_six(
             self
-        ):
+        ) -> int:
             resp = self._send_request(
                 "DerivedService",
                 "get_six",
@@ -1580,7 +1581,7 @@ class DerivedService(_fbthrift_py3lite_ClientWrapper["DerivedService.Async", "De
 
         async def get_six(
             self
-        ):
+        ) -> int:
             resp = await self._send_request(
                 "DerivedService",
                 "get_six",
@@ -1603,7 +1604,7 @@ class RederivedService(_fbthrift_py3lite_ClientWrapper["RederivedService.Async",
 
         def get_seven(
             self
-        ):
+        ) -> int:
             resp = self._send_request(
                 "RederivedService",
                 "get_seven",
@@ -1624,7 +1625,7 @@ class RederivedService(_fbthrift_py3lite_ClientWrapper["RederivedService.Async",
 
         async def get_seven(
             self
-        ):
+        ) -> int:
             resp = await self._send_request(
                 "RederivedService",
                 "get_seven",

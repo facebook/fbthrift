@@ -9,6 +9,7 @@ from thrift.py3lite.client.client_wrapper import ClientWrapper as _fbthrift_py3l
 from thrift.py3lite.sync_client import SyncClient as _fbthrift_py3lite_SyncClient
 from thrift.py3lite.async_client import AsyncClient as _fbthrift_py3lite_AsyncClient
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
+import thrift.py3lite.types as _fbthrift_py3lite_types
 import module.lite_types
 
 
@@ -19,7 +20,7 @@ class MyService(_fbthrift_py3lite_ClientWrapper["MyService.Async", "MyService.Sy
 
         def ping(
             self
-        ):
+        ) -> None:
             resp = self._send_request(
                 "MyService",
                 "ping",
@@ -29,7 +30,7 @@ class MyService(_fbthrift_py3lite_ClientWrapper["MyService.Async", "MyService.Sy
 
         def getRandomData(
             self
-        ):
+        ) -> str:
             resp = self._send_request(
                 "MyService",
                 "getRandomData",
@@ -46,8 +47,8 @@ class MyService(_fbthrift_py3lite_ClientWrapper["MyService.Async", "MyService.Sy
 
         def sink(
             self,
-            sink
-        ):
+            sink: int
+        ) -> None:
             resp = self._send_request(
                 "MyService",
                 "sink",
@@ -58,9 +59,9 @@ class MyService(_fbthrift_py3lite_ClientWrapper["MyService.Async", "MyService.Sy
 
         def putDataById(
             self,
-            id,
-            data
-        ):
+            id: int,
+            data: str
+        ) -> None:
             resp = self._send_request(
                 "MyService",
                 "putDataById",
@@ -72,8 +73,8 @@ class MyService(_fbthrift_py3lite_ClientWrapper["MyService.Async", "MyService.Sy
 
         def hasDataById(
             self,
-            id
-        ):
+            id: int
+        ) -> bool:
             resp = self._send_request(
                 "MyService",
                 "hasDataById",
@@ -91,8 +92,8 @@ class MyService(_fbthrift_py3lite_ClientWrapper["MyService.Async", "MyService.Sy
 
         def getDataById(
             self,
-            id
-        ):
+            id: int
+        ) -> str:
             resp = self._send_request(
                 "MyService",
                 "getDataById",
@@ -110,8 +111,8 @@ class MyService(_fbthrift_py3lite_ClientWrapper["MyService.Async", "MyService.Sy
 
         def deleteDataById(
             self,
-            id
-        ):
+            id: int
+        ) -> None:
             resp = self._send_request(
                 "MyService",
                 "deleteDataById",
@@ -122,9 +123,9 @@ class MyService(_fbthrift_py3lite_ClientWrapper["MyService.Async", "MyService.Sy
 
         def lobDataById(
             self,
-            id,
-            data
-        ):
+            id: int,
+            data: str
+        ) -> None:
             resp = self._send_request(
                 "MyService",
                 "lobDataById",
@@ -140,7 +141,7 @@ class MyService(_fbthrift_py3lite_ClientWrapper["MyService.Async", "MyService.Sy
 
         async def ping(
             self
-        ):
+        ) -> None:
             resp = await self._send_request(
                 "MyService",
                 "ping",
@@ -150,7 +151,7 @@ class MyService(_fbthrift_py3lite_ClientWrapper["MyService.Async", "MyService.Sy
 
         async def getRandomData(
             self
-        ):
+        ) -> str:
             resp = await self._send_request(
                 "MyService",
                 "getRandomData",
@@ -167,8 +168,8 @@ class MyService(_fbthrift_py3lite_ClientWrapper["MyService.Async", "MyService.Sy
 
         async def sink(
             self,
-            sink
-        ):
+            sink: int
+        ) -> None:
             resp = await self._send_request(
                 "MyService",
                 "sink",
@@ -179,9 +180,9 @@ class MyService(_fbthrift_py3lite_ClientWrapper["MyService.Async", "MyService.Sy
 
         async def putDataById(
             self,
-            id,
-            data
-        ):
+            id: int,
+            data: str
+        ) -> None:
             resp = await self._send_request(
                 "MyService",
                 "putDataById",
@@ -193,8 +194,8 @@ class MyService(_fbthrift_py3lite_ClientWrapper["MyService.Async", "MyService.Sy
 
         async def hasDataById(
             self,
-            id
-        ):
+            id: int
+        ) -> bool:
             resp = await self._send_request(
                 "MyService",
                 "hasDataById",
@@ -212,8 +213,8 @@ class MyService(_fbthrift_py3lite_ClientWrapper["MyService.Async", "MyService.Sy
 
         async def getDataById(
             self,
-            id
-        ):
+            id: int
+        ) -> str:
             resp = await self._send_request(
                 "MyService",
                 "getDataById",
@@ -231,8 +232,8 @@ class MyService(_fbthrift_py3lite_ClientWrapper["MyService.Async", "MyService.Sy
 
         async def deleteDataById(
             self,
-            id
-        ):
+            id: int
+        ) -> None:
             resp = await self._send_request(
                 "MyService",
                 "deleteDataById",
@@ -243,9 +244,9 @@ class MyService(_fbthrift_py3lite_ClientWrapper["MyService.Async", "MyService.Sy
 
         async def lobDataById(
             self,
-            id,
-            data
-        ):
+            id: int,
+            data: str
+        ) -> None:
             resp = await self._send_request(
                 "MyService",
                 "lobDataById",
@@ -263,8 +264,8 @@ class DbMixedStackArguments(_fbthrift_py3lite_ClientWrapper["DbMixedStackArgumen
 
         def getDataByKey0(
             self,
-            key
-        ):
+            key: str
+        ) -> bytes:
             resp = self._send_request(
                 "DbMixedStackArguments",
                 "getDataByKey0",
@@ -282,8 +283,8 @@ class DbMixedStackArguments(_fbthrift_py3lite_ClientWrapper["DbMixedStackArgumen
 
         def getDataByKey1(
             self,
-            key
-        ):
+            key: str
+        ) -> bytes:
             resp = self._send_request(
                 "DbMixedStackArguments",
                 "getDataByKey1",
@@ -305,8 +306,8 @@ class DbMixedStackArguments(_fbthrift_py3lite_ClientWrapper["DbMixedStackArgumen
 
         async def getDataByKey0(
             self,
-            key
-        ):
+            key: str
+        ) -> bytes:
             resp = await self._send_request(
                 "DbMixedStackArguments",
                 "getDataByKey0",
@@ -324,8 +325,8 @@ class DbMixedStackArguments(_fbthrift_py3lite_ClientWrapper["DbMixedStackArgumen
 
         async def getDataByKey1(
             self,
-            key
-        ):
+            key: str
+        ) -> bytes:
             resp = await self._send_request(
                 "DbMixedStackArguments",
                 "getDataByKey1",

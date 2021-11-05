@@ -9,6 +9,7 @@ from thrift.py3lite.client.client_wrapper import ClientWrapper as _fbthrift_py3l
 from thrift.py3lite.sync_client import SyncClient as _fbthrift_py3lite_SyncClient
 from thrift.py3lite.async_client import AsyncClient as _fbthrift_py3lite_AsyncClient
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
+import thrift.py3lite.types as _fbthrift_py3lite_types
 import my.namespacing.extend.test.extend.lite_types
 import my.namespacing.test.hsmodule.lite_types
 import my.namespacing.test.hsmodule.lite_clients
@@ -21,8 +22,8 @@ class ExtendTestService(_fbthrift_py3lite_ClientWrapper["ExtendTestService.Async
 
         def check(
             self,
-            struct1
-        ):
+            struct1: my.namespacing.test.hsmodule.lite_types.HsFoo
+        ) -> bool:
             resp = self._send_request(
                 "ExtendTestService",
                 "check",
@@ -44,8 +45,8 @@ class ExtendTestService(_fbthrift_py3lite_ClientWrapper["ExtendTestService.Async
 
         async def check(
             self,
-            struct1
-        ):
+            struct1: my.namespacing.test.hsmodule.lite_types.HsFoo
+        ) -> bool:
             resp = await self._send_request(
                 "ExtendTestService",
                 "check",

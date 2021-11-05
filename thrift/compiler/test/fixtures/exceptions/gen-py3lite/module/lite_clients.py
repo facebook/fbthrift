@@ -9,6 +9,7 @@ from thrift.py3lite.client.client_wrapper import ClientWrapper as _fbthrift_py3l
 from thrift.py3lite.sync_client import SyncClient as _fbthrift_py3lite_SyncClient
 from thrift.py3lite.async_client import AsyncClient as _fbthrift_py3lite_AsyncClient
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
+import thrift.py3lite.types as _fbthrift_py3lite_types
 import module.lite_types
 
 
@@ -19,7 +20,7 @@ class Raiser(_fbthrift_py3lite_ClientWrapper["Raiser.Async", "Raiser.Sync"]):
 
         def doBland(
             self
-        ):
+        ) -> None:
             resp = self._send_request(
                 "Raiser",
                 "doBland",
@@ -29,7 +30,7 @@ class Raiser(_fbthrift_py3lite_ClientWrapper["Raiser.Async", "Raiser.Sync"]):
 
         def doRaise(
             self
-        ):
+        ) -> None:
             resp = self._send_request(
                 "Raiser",
                 "doRaise",
@@ -45,7 +46,7 @@ class Raiser(_fbthrift_py3lite_ClientWrapper["Raiser.Async", "Raiser.Sync"]):
 
         def get200(
             self
-        ):
+        ) -> str:
             resp = self._send_request(
                 "Raiser",
                 "get200",
@@ -62,7 +63,7 @@ class Raiser(_fbthrift_py3lite_ClientWrapper["Raiser.Async", "Raiser.Sync"]):
 
         def get500(
             self
-        ):
+        ) -> str:
             resp = self._send_request(
                 "Raiser",
                 "get500",
@@ -89,7 +90,7 @@ class Raiser(_fbthrift_py3lite_ClientWrapper["Raiser.Async", "Raiser.Sync"]):
 
         async def doBland(
             self
-        ):
+        ) -> None:
             resp = await self._send_request(
                 "Raiser",
                 "doBland",
@@ -99,7 +100,7 @@ class Raiser(_fbthrift_py3lite_ClientWrapper["Raiser.Async", "Raiser.Sync"]):
 
         async def doRaise(
             self
-        ):
+        ) -> None:
             resp = await self._send_request(
                 "Raiser",
                 "doRaise",
@@ -115,7 +116,7 @@ class Raiser(_fbthrift_py3lite_ClientWrapper["Raiser.Async", "Raiser.Sync"]):
 
         async def get200(
             self
-        ):
+        ) -> str:
             resp = await self._send_request(
                 "Raiser",
                 "get200",
@@ -132,7 +133,7 @@ class Raiser(_fbthrift_py3lite_ClientWrapper["Raiser.Async", "Raiser.Sync"]):
 
         async def get500(
             self
-        ):
+        ) -> str:
             resp = await self._send_request(
                 "Raiser",
                 "get500",

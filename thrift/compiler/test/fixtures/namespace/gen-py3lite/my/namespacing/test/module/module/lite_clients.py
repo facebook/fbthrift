@@ -9,6 +9,7 @@ from thrift.py3lite.client.client_wrapper import ClientWrapper as _fbthrift_py3l
 from thrift.py3lite.sync_client import SyncClient as _fbthrift_py3lite_SyncClient
 from thrift.py3lite.async_client import AsyncClient as _fbthrift_py3lite_AsyncClient
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
+import thrift.py3lite.types as _fbthrift_py3lite_types
 import my.namespacing.test.module.module.lite_types
 
 
@@ -19,8 +20,8 @@ class TestService(_fbthrift_py3lite_ClientWrapper["TestService.Async", "TestServ
 
         def init(
             self,
-            int1
-        ):
+            int1: int
+        ) -> int:
             resp = self._send_request(
                 "TestService",
                 "init",
@@ -42,8 +43,8 @@ class TestService(_fbthrift_py3lite_ClientWrapper["TestService.Async", "TestServ
 
         async def init(
             self,
-            int1
-        ):
+            int1: int
+        ) -> int:
             resp = await self._send_request(
                 "TestService",
                 "init",
