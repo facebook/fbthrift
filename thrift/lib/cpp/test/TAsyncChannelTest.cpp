@@ -844,8 +844,8 @@ class RecvChunksTest : public SocketPairTest<ChannelT> {
     for (ChunkSchedule::const_iterator it = sender_.getSchedule()->begin();
          it != sender_.getSchedule()->end();
          ++it) {
-      // Allow 2ms of processing overhead for every scheduled event.
-      tolerance += milliseconds(2);
+      // Allow 3ms of processing overhead for every scheduled event.
+      tolerance += milliseconds(3);
 
       if (milliseconds(0) < timeout_ && timeout_ < it->delayMS) {
         // We expect to time out waiting for this chunk of data
