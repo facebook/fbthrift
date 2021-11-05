@@ -471,13 +471,6 @@ class mstch_py3lite_program : public mstch_program {
 
 class mstch_py3lite_field : public mstch_field {
  public:
-  enum class RefType : uint8_t {
-    NotRef,
-    Unique,
-    Shared,
-    SharedConst,
-    IOBuf,
-  };
   mstch_py3lite_field(
       const t_field* field,
       std::shared_ptr<const mstch_generators> generators,
