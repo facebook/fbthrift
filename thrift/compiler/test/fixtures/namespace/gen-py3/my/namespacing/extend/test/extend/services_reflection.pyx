@@ -19,16 +19,16 @@ cimport my.namespacing.extend.test.extend.types as _my_namespacing_extend_test_e
 
 
 cdef __InterfaceSpec get_reflection__ExtendTestService(bint for_clients):
-    cdef __InterfaceSpec spec = __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec._fbthrift_create(
         name="ExtendTestService",
         annotations={
         },
     )
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="check",
             arguments=(
-                __ArgumentSpec.create(
+                __ArgumentSpec._fbthrift_create(
                     name="struct1",
                     type=_my_namespacing_test_hsmodule_types.HsFoo,
                     kind=__NumberType.NOT_A_NUMBER,

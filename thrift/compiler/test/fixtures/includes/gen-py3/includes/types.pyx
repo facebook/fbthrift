@@ -64,7 +64,7 @@ cimport includes.types_reflection as _types_reflection
 cdef class Included(thrift.py3.types.Struct):
     def __init__(Included self, **kwargs):
         self._cpp_obj = make_shared[cIncluded]()
-        self._fields_setter = _fbthrift_types_fields.__Included_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__Included_FieldsSetter._fbthrift_create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(Included self, **kwargs):
@@ -72,7 +72,7 @@ cdef class Included(thrift.py3.types.Struct):
             return self
         cdef Included __fbthrift_inst = Included.__new__(Included)
         __fbthrift_inst._cpp_obj = make_shared[cIncluded](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__Included_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__Included_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
         for __fbthrift_name, _fbthrift_value in kwargs.items():
             __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
@@ -87,7 +87,7 @@ cdef class Included(thrift.py3.types.Struct):
         })
 
     @staticmethod
-    cdef create(shared_ptr[cIncluded] cpp_obj):
+    cdef _fbthrift_create(shared_ptr[cIncluded] cpp_obj):
         __fbthrift_inst = <Included>Included.__new__(Included)
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
@@ -101,7 +101,7 @@ cdef class Included(thrift.py3.types.Struct):
     def MyTransitiveField(self):
 
         if self.__fbthrift_cached_MyTransitiveField is None:
-            self.__fbthrift_cached_MyTransitiveField = _transitive_types.Foo.create(__reference_shared_ptr(deref(self._cpp_obj).MyTransitiveField_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_MyTransitiveField = _transitive_types.Foo._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).MyTransitiveField_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_MyTransitiveField
 
 
@@ -119,7 +119,7 @@ cdef class Included(thrift.py3.types.Struct):
         cdef shared_ptr[cIncluded] cpp_obj = make_shared[cIncluded](
             deref(self._cpp_obj)
         )
-        return Included.create(cmove(cpp_obj))
+        return Included._fbthrift_create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
         r = self._fbthrift_cmp_sametype(other, op)
@@ -163,7 +163,7 @@ cdef class Included(thrift.py3.types.Struct):
         return needed
 
 
-ExampleIncluded = Included.create(constant_shared_ptr(cExampleIncluded()))
+ExampleIncluded = Included._fbthrift_create(constant_shared_ptr(cExampleIncluded()))
 IncludedConstant = 42
 IncludedInt64 = int
 TransitiveFoo = _transitive_types.Foo

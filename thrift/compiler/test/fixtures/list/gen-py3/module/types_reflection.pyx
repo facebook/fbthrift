@@ -24,13 +24,13 @@ from thrift.py3.types cimport (
 
 
 cdef __ListSpec get_reflection__List__string():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=str,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __MapSpec get_reflection__Map__i64_List__string():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=int,
         key_kind=__NumberType.I64,
         value=_module_types.List__string,

@@ -24,19 +24,19 @@ from thrift.py3.types cimport (
 
 
 cdef __StructSpec get_reflection__C():
-    cdef _c_types.C defaults = _c_types.C.create(
+    cdef _c_types.C defaults = _c_types.C._fbthrift_create(
         constant_shared_ptr[_c_types.cC](
             default_inst[_c_types.cC]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="C",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="i",
             type=int,

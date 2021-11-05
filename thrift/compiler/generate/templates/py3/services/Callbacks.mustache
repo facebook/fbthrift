@@ -45,7 +45,7 @@ cdef api void call_cy_{{service:name}}_{{function:name}}(
         }}{{/field:type}} {{field:py_name}}{{/function:args}}
 ):{{! Gets called from a python Executor }}
     {{#function:return_type}}
-    cdef {{> services/PromiseName}} __promise = {{> services/PromiseName}}.create(cmove(cPromise))
+    cdef {{> services/PromiseName}} __promise = {{> services/PromiseName}}._fbthrift_create(cmove(cPromise))
     {{/function:return_type}}
     {{#function:args}}
     arg_{{field:py_name}} = {{#field:type}}{{!
@@ -53,7 +53,7 @@ cdef api void call_cy_{{service:name}}_{{function:name}}(
             }}{{#function:stack_arguments?}}{{> types/CythonCppValueToPython}}{{/function:stack_arguments?}}{{!
         }}{{/field:type}}
     {{/function:args}}
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         {{service:name}}_{{function:name}}_coro(
@@ -86,7 +86,7 @@ async def {{service:name}}_{{function:name}}_coro(
             result = await result
         if isinstance(result, AsyncIterator):
             {{#type:stream_elem_type}}
-            result = ServerStream_{{> types/CythonCppTypeIdent}}.create(cmove(createAsyncIteratorFromPyIterator[{{ >types/CythonCppType}}](result, get_executor(), &getNextGenerator_{{service:name}}_{{function:name}})))
+            result = ServerStream_{{> types/CythonCppTypeIdent}}._fbthrift_create(cmove(createAsyncIteratorFromPyIterator[{{ >types/CythonCppType}}](result, get_executor(), &getNextGenerator_{{service:name}}_{{function:name}})))
             {{/type:stream_elem_type}}
         {{/type:streamresponse?}}
         {{/function:return_type}}

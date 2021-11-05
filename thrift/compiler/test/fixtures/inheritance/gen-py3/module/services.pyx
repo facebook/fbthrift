@@ -79,7 +79,7 @@ cdef class Promise_cFollyUnit:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cFollyUnit] cPromise):
+    cdef _fbthrift_create(cFollyPromise[cFollyUnit] cPromise):
         cdef Promise_cFollyUnit inst = Promise_cFollyUnit.__new__(Promise_cFollyUnit)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -193,8 +193,8 @@ cdef api void call_cy_MyRoot_do_root(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyRoot_do_root_coro(
@@ -237,8 +237,8 @@ cdef api void call_cy_MyNode_do_mid(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyNode_do_mid_coro(
@@ -281,8 +281,8 @@ cdef api void call_cy_MyLeaf_do_leaf(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyLeaf_do_leaf_coro(

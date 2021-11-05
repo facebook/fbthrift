@@ -19,30 +19,30 @@ cimport module.types as _module_types
 
 
 cdef __InterfaceSpec get_reflection__Service(bint for_clients):
-    cdef __InterfaceSpec spec = __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec._fbthrift_create(
         name="Service",
         annotations={
         },
     )
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="func",
             arguments=(
-                __ArgumentSpec.create(
+                __ArgumentSpec._fbthrift_create(
                     name="arg1",
                     type=str,
                     kind=__NumberType.NOT_A_NUMBER,
                     annotations={
                     },
                 ),
-                __ArgumentSpec.create(
+                __ArgumentSpec._fbthrift_create(
                     name="arg2",
                     type=str,
                     kind=__NumberType.NOT_A_NUMBER,
                     annotations={
                     },
                 ),
-                __ArgumentSpec.create(
+                __ArgumentSpec._fbthrift_create(
                     name="arg3",
                     type=_module_types.Foo,
                     kind=__NumberType.NOT_A_NUMBER,

@@ -38,7 +38,7 @@ from thrift.py3.types cimport const_pointer_cast
 cdef class __{{struct:name}}_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __{{struct:name}}_FieldsSetter create({{> types/CurrentModuleTypes}}.c{{struct:name}}* struct_cpp_obj):
+    cdef __{{struct:name}}_FieldsSetter _fbthrift_create({{> types/CurrentModuleTypes}}.c{{struct:name}}* struct_cpp_obj):
         cdef __{{struct:name}}_FieldsSetter __fbthrift_inst = __{{struct:name}}_FieldsSetter.__new__(__{{struct:name}}_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         {{#struct:py3_fields}}

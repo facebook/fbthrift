@@ -58,7 +58,7 @@ cimport module.types_reflection as _types_reflection
 
 
 
-cdef __UnionTypeEnumData __Nada_union_type_enum_data  = __UnionTypeEnumData.create(
+cdef __UnionTypeEnumData __Nada_union_type_enum_data  = __UnionTypeEnumData._fbthrift_create(
     __createEnumDataForUnionType[cNada](),
     __NadaType,
 )
@@ -96,7 +96,7 @@ __SetMetaClass(<PyTypeObject*> __NadaType, <PyTypeObject*> __Nada_Union_TypeMeta
 cdef class Empty(thrift.py3.types.Struct):
     def __init__(Empty self, **kwargs):
         self._cpp_obj = make_shared[cEmpty]()
-        self._fields_setter = _fbthrift_types_fields.__Empty_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__Empty_FieldsSetter._fbthrift_create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(Empty self, **kwargs):
@@ -110,7 +110,7 @@ cdef class Empty(thrift.py3.types.Struct):
         })
 
     @staticmethod
-    cdef create(shared_ptr[cEmpty] cpp_obj):
+    cdef _fbthrift_create(shared_ptr[cEmpty] cpp_obj):
         __fbthrift_inst = <Empty>Empty.__new__(Empty)
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
@@ -130,7 +130,7 @@ cdef class Empty(thrift.py3.types.Struct):
         cdef shared_ptr[cEmpty] cpp_obj = make_shared[cEmpty](
             deref(self._cpp_obj)
         )
-        return Empty.create(cmove(cpp_obj))
+        return Empty._fbthrift_create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
         r = self._fbthrift_cmp_sametype(other, op)
@@ -205,7 +205,7 @@ cdef class Nada(thrift.py3.types.Union):
         return cmove(c_inst)
 
     @staticmethod
-    cdef create(shared_ptr[cNada] cpp_obj):
+    cdef _fbthrift_create(shared_ptr[cNada] cpp_obj):
         __fbthrift_inst = <Nada>Nada.__new__(Nada)
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         __fbthrift_inst._load_cache()
@@ -225,7 +225,7 @@ cdef class Nada(thrift.py3.types.Union):
         cdef shared_ptr[cNada] cpp_obj = make_shared[cNada](
             deref(self._cpp_obj)
         )
-        return Nada.create(cmove(cpp_obj))
+        return Nada._fbthrift_create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
         r = self._fbthrift_cmp_sametype(other, op)

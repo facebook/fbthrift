@@ -25,19 +25,19 @@ from thrift.py3.types cimport (
 
 
 cdef __StructSpec get_reflection__Included():
-    cdef _includes_types.Included defaults = _includes_types.Included.create(
+    cdef _includes_types.Included defaults = _includes_types.Included._fbthrift_create(
         constant_shared_ptr[_includes_types.cIncluded](
             default_inst[_includes_types.cIncluded]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="Included",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="MyIntField",
             type=int,
@@ -49,7 +49,7 @@ cdef __StructSpec get_reflection__Included():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="MyTransitiveField",
             type=_transitive_types.Foo,

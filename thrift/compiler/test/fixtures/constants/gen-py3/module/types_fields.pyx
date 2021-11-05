@@ -22,7 +22,7 @@ from thrift.py3.types cimport const_pointer_cast
 cdef class __Internship_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __Internship_FieldsSetter create(_module_types.cInternship* struct_cpp_obj):
+    cdef __Internship_FieldsSetter _fbthrift_create(_module_types.cInternship* struct_cpp_obj):
         cdef __Internship_FieldsSetter __fbthrift_inst = __Internship_FieldsSetter.__new__(__Internship_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"weeks")] = __Internship_FieldsSetter._set_field_0
@@ -90,7 +90,7 @@ cdef class __Internship_FieldsSetter(__StructFieldsSetter):
 cdef class __Range_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __Range_FieldsSetter create(_module_types.cRange* struct_cpp_obj):
+    cdef __Range_FieldsSetter _fbthrift_create(_module_types.cRange* struct_cpp_obj):
         cdef __Range_FieldsSetter __fbthrift_inst = __Range_FieldsSetter.__new__(__Range_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"min")] = __Range_FieldsSetter._set_field_0
@@ -129,7 +129,7 @@ cdef class __Range_FieldsSetter(__StructFieldsSetter):
 cdef class __struct1_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __struct1_FieldsSetter create(_module_types.cstruct1* struct_cpp_obj):
+    cdef __struct1_FieldsSetter _fbthrift_create(_module_types.cstruct1* struct_cpp_obj):
         cdef __struct1_FieldsSetter __fbthrift_inst = __struct1_FieldsSetter.__new__(__struct1_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"a")] = __struct1_FieldsSetter._set_field_0
@@ -167,7 +167,7 @@ cdef class __struct1_FieldsSetter(__StructFieldsSetter):
 cdef class __struct2_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __struct2_FieldsSetter create(_module_types.cstruct2* struct_cpp_obj):
+    cdef __struct2_FieldsSetter _fbthrift_create(_module_types.cstruct2* struct_cpp_obj):
         cdef __struct2_FieldsSetter __fbthrift_inst = __struct2_FieldsSetter.__new__(__struct2_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"a")] = __struct2_FieldsSetter._set_field_0
@@ -223,7 +223,7 @@ cdef class __struct2_FieldsSetter(__StructFieldsSetter):
 cdef class __struct3_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __struct3_FieldsSetter create(_module_types.cstruct3* struct_cpp_obj):
+    cdef __struct3_FieldsSetter _fbthrift_create(_module_types.cstruct3* struct_cpp_obj):
         cdef __struct3_FieldsSetter __fbthrift_inst = __struct3_FieldsSetter.__new__(__struct3_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"a")] = __struct3_FieldsSetter._set_field_0
@@ -271,7 +271,7 @@ cdef class __struct3_FieldsSetter(__StructFieldsSetter):
 cdef class __struct4_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __struct4_FieldsSetter create(_module_types.cstruct4* struct_cpp_obj):
+    cdef __struct4_FieldsSetter _fbthrift_create(_module_types.cstruct4* struct_cpp_obj):
         cdef __struct4_FieldsSetter __fbthrift_inst = __struct4_FieldsSetter.__new__(__struct4_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"a")] = __struct4_FieldsSetter._set_field_0

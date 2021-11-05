@@ -149,7 +149,7 @@ cdef class InitialResponse(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__InitialResponse_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cInitialResponse])
+    cdef _fbthrift_create(shared_ptr[cInitialResponse])
 
 
 
@@ -158,7 +158,7 @@ cdef class FinalResponse(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__FinalResponse_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cFinalResponse])
+    cdef _fbthrift_create(shared_ptr[cFinalResponse])
 
 
 
@@ -167,7 +167,7 @@ cdef class SinkPayload(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__SinkPayload_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cSinkPayload])
+    cdef _fbthrift_create(shared_ptr[cSinkPayload])
 
 
 
@@ -176,7 +176,7 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__CompatibleWithKeywordSink_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cCompatibleWithKeywordSink])
+    cdef _fbthrift_create(shared_ptr[cCompatibleWithKeywordSink])
 
 
 
@@ -185,7 +185,7 @@ cdef class InitialException(thrift.py3.exceptions.GeneratedError):
     cdef _fbthrift_types_fields.__InitialException_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cInitialException])
+    cdef _fbthrift_create(shared_ptr[cInitialException])
 
 
 
@@ -194,7 +194,7 @@ cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
     cdef _fbthrift_types_fields.__SinkException1_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cSinkException1])
+    cdef _fbthrift_create(shared_ptr[cSinkException1])
 
 
 
@@ -203,7 +203,7 @@ cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
     cdef _fbthrift_types_fields.__SinkException2_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cSinkException2])
+    cdef _fbthrift_create(shared_ptr[cSinkException2])
 
 
 

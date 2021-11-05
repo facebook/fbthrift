@@ -84,7 +84,7 @@ cdef class CustomException(thrift.py3.exceptions.GeneratedError):
     cdef _fbthrift_types_fields.__CustomException_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cCustomException])
+    cdef _fbthrift_create(shared_ptr[cCustomException])
 
 
 
@@ -93,7 +93,7 @@ cdef class ClientBufferedStream__bool(ClientBufferedStream):
     cdef unique_ptr[cClientBufferedStreamWrapper[cbool]] _gen
 
     @staticmethod
-    cdef create(cClientBufferedStream[cbool]& c_obj, __RpcOptions rpc_options)
+    cdef _fbthrift_create(cClientBufferedStream[cbool]& c_obj, __RpcOptions rpc_options)
 
     @staticmethod
     cdef void callback(

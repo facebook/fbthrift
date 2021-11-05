@@ -44,7 +44,7 @@ citem.
 }}{{#type:string?}}bytes(citem).decode('UTF-8'){{/type:string?}}{{!
 }}{{#type:binary?}}bytes(citem){{/type:binary?}}{{!
 }}{{^type:base?}}{{^type:enum?}}{{!
-    }}{{> types/CythonPythonType}}.create(citem){{!
+    }}{{> types/CythonPythonType}}._fbthrift_create(citem){{!
 }}{{/type:enum?}}{{/type:base?}}{{!
 }}{{#type:enum}}translate_cpp_enum_to_python({{!
     }}{{> types/CythonPythonType}}, <int> citem){{/type:enum}}{{!

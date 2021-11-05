@@ -24,19 +24,19 @@ from thrift.py3.types cimport (
 
 
 cdef __StructSpec get_reflection__HsFoo():
-    cdef _my_namespacing_test_hsmodule_types.HsFoo defaults = _my_namespacing_test_hsmodule_types.HsFoo.create(
+    cdef _my_namespacing_test_hsmodule_types.HsFoo defaults = _my_namespacing_test_hsmodule_types.HsFoo._fbthrift_create(
         constant_shared_ptr[_my_namespacing_test_hsmodule_types.cHsFoo](
             default_inst[_my_namespacing_test_hsmodule_types.cHsFoo]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="HsFoo",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="MyInt",
             type=int,

@@ -83,7 +83,7 @@ cdef class FooEx(thrift.py3.exceptions.GeneratedError):
     cdef _fbthrift_types_fields.__FooEx_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cFooEx])
+    cdef _fbthrift_create(shared_ptr[cFooEx])
 
 
 
@@ -92,7 +92,7 @@ cdef class ClientBufferedStream__i32(ClientBufferedStream):
     cdef unique_ptr[cClientBufferedStreamWrapper[cint32_t]] _gen
 
     @staticmethod
-    cdef create(cClientBufferedStream[cint32_t]& c_obj, __RpcOptions rpc_options)
+    cdef _fbthrift_create(cClientBufferedStream[cint32_t]& c_obj, __RpcOptions rpc_options)
 
     @staticmethod
     cdef void callback(
@@ -109,7 +109,7 @@ cdef class ResponseAndClientBufferedStream__i32_i32(ResponseAndClientBufferedStr
     cdef cint32_t _response
 
     @staticmethod
-    cdef create(cResponseAndClientBufferedStream[cint32_t, cint32_t]& c_obj, __RpcOptions rpc_options)
+    cdef _fbthrift_create(cResponseAndClientBufferedStream[cint32_t, cint32_t]& c_obj, __RpcOptions rpc_options)
 
 
 cdef class ResponseAndServerStream__i32_i32(ResponseAndServerStream):

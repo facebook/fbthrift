@@ -57,7 +57,7 @@ import builtins as _builtins
 cimport module.types_reflection as _types_reflection
 
 
-cdef __EnumData __Animal_enum_data  = __EnumData.create(thrift.py3.types.createEnumData[cAnimal](), Animal)
+cdef __EnumData __Animal_enum_data  = __EnumData._fbthrift_create(thrift.py3.types.createEnumData[cAnimal](), Animal)
 
 
 @__cython.internal
@@ -104,7 +104,7 @@ __SetMetaClass(<PyTypeObject*> Animal, <PyTypeObject*> __AnimalMeta)
 cdef class Color(thrift.py3.types.Struct):
     def __init__(Color self, **kwargs):
         self._cpp_obj = make_shared[cColor]()
-        self._fields_setter = _fbthrift_types_fields.__Color_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__Color_FieldsSetter._fbthrift_create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(Color self, **kwargs):
@@ -112,7 +112,7 @@ cdef class Color(thrift.py3.types.Struct):
             return self
         cdef Color __fbthrift_inst = Color.__new__(Color)
         __fbthrift_inst._cpp_obj = make_shared[cColor](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__Color_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__Color_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
         for __fbthrift_name, _fbthrift_value in kwargs.items():
             __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
@@ -129,7 +129,7 @@ cdef class Color(thrift.py3.types.Struct):
         })
 
     @staticmethod
-    cdef create(shared_ptr[cColor] cpp_obj):
+    cdef _fbthrift_create(shared_ptr[cColor] cpp_obj):
         __fbthrift_inst = <Color>Color.__new__(Color)
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
@@ -169,7 +169,7 @@ cdef class Color(thrift.py3.types.Struct):
         cdef shared_ptr[cColor] cpp_obj = make_shared[cColor](
             deref(self._cpp_obj)
         )
-        return Color.create(cmove(cpp_obj))
+        return Color._fbthrift_create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
         r = self._fbthrift_cmp_sametype(other, op)
@@ -217,7 +217,7 @@ cdef class Color(thrift.py3.types.Struct):
 cdef class Vehicle(thrift.py3.types.Struct):
     def __init__(Vehicle self, **kwargs):
         self._cpp_obj = make_shared[cVehicle]()
-        self._fields_setter = _fbthrift_types_fields.__Vehicle_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__Vehicle_FieldsSetter._fbthrift_create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(Vehicle self, **kwargs):
@@ -225,7 +225,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
             return self
         cdef Vehicle __fbthrift_inst = Vehicle.__new__(Vehicle)
         __fbthrift_inst._cpp_obj = make_shared[cVehicle](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__Vehicle_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__Vehicle_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
         for __fbthrift_name, _fbthrift_value in kwargs.items():
             __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
@@ -243,7 +243,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
         })
 
     @staticmethod
-    cdef create(shared_ptr[cVehicle] cpp_obj):
+    cdef _fbthrift_create(shared_ptr[cVehicle] cpp_obj):
         __fbthrift_inst = <Vehicle>Vehicle.__new__(Vehicle)
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
@@ -252,7 +252,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
     def color(self):
 
         if self.__fbthrift_cached_color is None:
-            self.__fbthrift_cached_color = Color.create(__reference_shared_ptr(deref(self._cpp_obj).color_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_color = Color._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).color_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_color
 
     @property
@@ -296,7 +296,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
         cdef shared_ptr[cVehicle] cpp_obj = make_shared[cVehicle](
             deref(self._cpp_obj)
         )
-        return Vehicle.create(cmove(cpp_obj))
+        return Vehicle._fbthrift_create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
         r = self._fbthrift_cmp_sametype(other, op)
@@ -344,7 +344,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
 cdef class Person(thrift.py3.types.Struct):
     def __init__(Person self, **kwargs):
         self._cpp_obj = make_shared[cPerson]()
-        self._fields_setter = _fbthrift_types_fields.__Person_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__Person_FieldsSetter._fbthrift_create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(Person self, **kwargs):
@@ -352,7 +352,7 @@ cdef class Person(thrift.py3.types.Struct):
             return self
         cdef Person __fbthrift_inst = Person.__new__(Person)
         __fbthrift_inst._cpp_obj = make_shared[cPerson](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__Person_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__Person_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
         for __fbthrift_name, _fbthrift_value in kwargs.items():
             __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
@@ -375,7 +375,7 @@ cdef class Person(thrift.py3.types.Struct):
         })
 
     @staticmethod
-    cdef create(shared_ptr[cPerson] cpp_obj):
+    cdef _fbthrift_create(shared_ptr[cPerson] cpp_obj):
         __fbthrift_inst = <Person>Person.__new__(Person)
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
@@ -410,7 +410,7 @@ cdef class Person(thrift.py3.types.Struct):
             return None
 
         if self.__fbthrift_cached_favoriteColor is None:
-            self.__fbthrift_cached_favoriteColor = Color.create(__reference_shared_ptr(deref(self._cpp_obj).favoriteColor_ref().ref_unchecked(), self._cpp_obj))
+            self.__fbthrift_cached_favoriteColor = Color._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).favoriteColor_ref().ref_unchecked(), self._cpp_obj))
         return self.__fbthrift_cached_favoriteColor
 
     @property
@@ -419,7 +419,7 @@ cdef class Person(thrift.py3.types.Struct):
             return None
 
         if self.__fbthrift_cached_friends is None:
-            self.__fbthrift_cached_friends = Set__i64.create(__reference_shared_ptr(deref(self._cpp_obj).friends_ref().ref_unchecked(), self._cpp_obj))
+            self.__fbthrift_cached_friends = Set__i64._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).friends_ref().ref_unchecked(), self._cpp_obj))
         return self.__fbthrift_cached_friends
 
     @property
@@ -435,7 +435,7 @@ cdef class Person(thrift.py3.types.Struct):
             return None
 
         if self.__fbthrift_cached_petNames is None:
-            self.__fbthrift_cached_petNames = Map__Animal_string.create(__reference_shared_ptr(deref(self._cpp_obj).petNames_ref().ref_unchecked(), self._cpp_obj))
+            self.__fbthrift_cached_petNames = Map__Animal_string._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).petNames_ref().ref_unchecked(), self._cpp_obj))
         return self.__fbthrift_cached_petNames
 
     @property
@@ -453,7 +453,7 @@ cdef class Person(thrift.py3.types.Struct):
             return None
 
         if self.__fbthrift_cached_vehicles is None:
-            self.__fbthrift_cached_vehicles = List__Vehicle.create(__reference_shared_ptr(deref(self._cpp_obj).vehicles_ref().ref_unchecked(), self._cpp_obj))
+            self.__fbthrift_cached_vehicles = List__Vehicle._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).vehicles_ref().ref_unchecked(), self._cpp_obj))
         return self.__fbthrift_cached_vehicles
 
 
@@ -471,7 +471,7 @@ cdef class Person(thrift.py3.types.Struct):
         cdef shared_ptr[cPerson] cpp_obj = make_shared[cPerson](
             deref(self._cpp_obj)
         )
-        return Person.create(cmove(cpp_obj))
+        return Person._fbthrift_create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
         r = self._fbthrift_cmp_sametype(other, op)
@@ -524,7 +524,7 @@ cdef class Set__i64(thrift.py3.types.Set):
             self._cpp_obj = Set__i64._make_instance(items)
 
     @staticmethod
-    cdef create(shared_ptr[cset[cint64_t]] c_items):
+    cdef _fbthrift_create(shared_ptr[cset[cint64_t]] c_items):
         __fbthrift_inst = <Set__i64>Set__i64.__new__(Set__i64)
         __fbthrift_inst._cpp_obj = cmove(c_items)
         return __fbthrift_inst
@@ -533,7 +533,7 @@ cdef class Set__i64(thrift.py3.types.Set):
         cdef shared_ptr[cset[cint64_t]] cpp_obj = make_shared[cset[cint64_t]](
             deref(self._cpp_obj)
         )
-        return Set__i64.create(cmove(cpp_obj))
+        return Set__i64._fbthrift_create(cmove(cpp_obj))
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -583,7 +583,7 @@ cdef class Set__i64(thrift.py3.types.Set):
         if not isinstance(other, Set__i64):
             other = Set__i64(other)
         cdef shared_ptr[cset[cint64_t]] result
-        return Set__i64.create(__set_op[cset[cint64_t]](
+        return Set__i64._fbthrift_create(__set_op[cset[cint64_t]](
             self._cpp_obj,
             (<Set__i64>other)._cpp_obj,
             op,
@@ -605,7 +605,7 @@ cdef class Map__Animal_string(thrift.py3.types.Map):
             self._cpp_obj = Map__Animal_string._make_instance(items)
 
     @staticmethod
-    cdef create(shared_ptr[cmap[cAnimal,string]] c_items):
+    cdef _fbthrift_create(shared_ptr[cmap[cAnimal,string]] c_items):
         __fbthrift_inst = <Map__Animal_string>Map__Animal_string.__new__(Map__Animal_string)
         __fbthrift_inst._cpp_obj = cmove(c_items)
         return __fbthrift_inst
@@ -614,7 +614,7 @@ cdef class Map__Animal_string(thrift.py3.types.Map):
         cdef shared_ptr[cmap[cAnimal,string]] cpp_obj = make_shared[cmap[cAnimal,string]](
             deref(self._cpp_obj)
         )
-        return Map__Animal_string.create(cmove(cpp_obj))
+        return Map__Animal_string._fbthrift_create(cmove(cpp_obj))
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -700,7 +700,7 @@ cdef class List__Vehicle(thrift.py3.types.List):
             self._cpp_obj = List__Vehicle._make_instance(items)
 
     @staticmethod
-    cdef create(shared_ptr[vector[cVehicle]] c_items):
+    cdef _fbthrift_create(shared_ptr[vector[cVehicle]] c_items):
         __fbthrift_inst = <List__Vehicle>List__Vehicle.__new__(List__Vehicle)
         __fbthrift_inst._cpp_obj = cmove(c_items)
         return __fbthrift_inst
@@ -709,7 +709,7 @@ cdef class List__Vehicle(thrift.py3.types.List):
         cdef shared_ptr[vector[cVehicle]] cpp_obj = make_shared[vector[cVehicle]](
             deref(self._cpp_obj)
         )
-        return List__Vehicle.create(cmove(cpp_obj))
+        return List__Vehicle._fbthrift_create(cmove(cpp_obj))
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -727,14 +727,14 @@ cdef class List__Vehicle(thrift.py3.types.List):
     cdef _get_slice(self, slice index_obj):
         cdef int start, stop, step
         start, stop, step = index_obj.indices(deref(self._cpp_obj).size())
-        return List__Vehicle.create(
+        return List__Vehicle._fbthrift_create(
             __list_slice[vector[cVehicle]](self._cpp_obj, start, stop, step)
         )
 
     cdef _get_single_item(self, size_t index):
         cdef shared_ptr[cVehicle] citem
         __list_getitem(self._cpp_obj, index, citem)
-        return Vehicle.create(citem)
+        return Vehicle._fbthrift_create(citem)
 
     cdef _check_item_type(self, item):
         if not self or item is None:

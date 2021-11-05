@@ -79,7 +79,7 @@ cdef class Promise_cmap__binary_cint64_t:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[cmap[string,cint64_t]]] cPromise):
+    cdef _fbthrift_create(cFollyPromise[unique_ptr[cmap[string,cint64_t]]] cPromise):
         cdef Promise_cmap__binary_cint64_t inst = Promise_cmap__binary_cint64_t.__new__(Promise_cmap__binary_cint64_t)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -95,7 +95,7 @@ cdef class Promise__module_types_std_unordered_map__cint32_t_string:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[_module_types.std_unordered_map[cint32_t,string]]] cPromise):
+    cdef _fbthrift_create(cFollyPromise[unique_ptr[_module_types.std_unordered_map[cint32_t,string]]] cPromise):
         cdef Promise__module_types_std_unordered_map__cint32_t_string inst = Promise__module_types_std_unordered_map__cint32_t_string.__new__(Promise__module_types_std_unordered_map__cint32_t_string)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -148,9 +148,9 @@ cdef api void call_cy_SomeService_bounce_map(
     cFollyPromise[unique_ptr[_module_types.std_unordered_map[cint32_t,string]]] cPromise,
     unique_ptr[_module_types.std_unordered_map[cint32_t,string]] m
 ):
-    cdef Promise__module_types_std_unordered_map__cint32_t_string __promise = Promise__module_types_std_unordered_map__cint32_t_string.create(cmove(cPromise))
-    arg_m = _module_types.std_unordered_map__Map__i32_string.create(__to_shared_ptr(cmove(m)))
-    __context = RequestContext.create(ctx)
+    cdef Promise__module_types_std_unordered_map__cint32_t_string __promise = Promise__module_types_std_unordered_map__cint32_t_string._fbthrift_create(cmove(cPromise))
+    arg_m = _module_types.std_unordered_map__Map__i32_string._fbthrift_create(__to_shared_ptr(cmove(m)))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SomeService_bounce_map_coro(
@@ -198,9 +198,9 @@ cdef api void call_cy_SomeService_binary_keyed_map(
     cFollyPromise[unique_ptr[cmap[string,cint64_t]]] cPromise,
     unique_ptr[vector[cint64_t]] r
 ):
-    cdef Promise_cmap__binary_cint64_t __promise = Promise_cmap__binary_cint64_t.create(cmove(cPromise))
-    arg_r = _module_types.List__i64.create(__to_shared_ptr(cmove(r)))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cmap__binary_cint64_t __promise = Promise_cmap__binary_cint64_t._fbthrift_create(cmove(cPromise))
+    arg_r = _module_types.List__i64._fbthrift_create(__to_shared_ptr(cmove(r)))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SomeService_binary_keyed_map_coro(

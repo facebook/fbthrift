@@ -24,19 +24,19 @@ from thrift.py3.types cimport (
 
 
 cdef __StructSpec get_reflection__Color():
-    cdef _module_types.Color defaults = _module_types.Color.create(
+    cdef _module_types.Color defaults = _module_types.Color._fbthrift_create(
         constant_shared_ptr[_module_types.cColor](
             default_inst[_module_types.cColor]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="Color",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="red",
             type=float,
@@ -48,7 +48,7 @@ cdef __StructSpec get_reflection__Color():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="green",
             type=float,
@@ -60,7 +60,7 @@ cdef __StructSpec get_reflection__Color():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=3,
             name="blue",
             type=float,
@@ -72,7 +72,7 @@ cdef __StructSpec get_reflection__Color():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=4,
             name="alpha",
             type=float,
@@ -85,19 +85,19 @@ cdef __StructSpec get_reflection__Color():
     )
     return spec
 cdef __StructSpec get_reflection__Vehicle():
-    cdef _module_types.Vehicle defaults = _module_types.Vehicle.create(
+    cdef _module_types.Vehicle defaults = _module_types.Vehicle._fbthrift_create(
         constant_shared_ptr[_module_types.cVehicle](
             default_inst[_module_types.cVehicle]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="Vehicle",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="color",
             type=_module_types.Color,
@@ -109,7 +109,7 @@ cdef __StructSpec get_reflection__Vehicle():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="licensePlate",
             type=str,
@@ -121,7 +121,7 @@ cdef __StructSpec get_reflection__Vehicle():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=3,
             name="description",
             type=str,
@@ -133,7 +133,7 @@ cdef __StructSpec get_reflection__Vehicle():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=4,
             name="name",
             type=str,
@@ -145,7 +145,7 @@ cdef __StructSpec get_reflection__Vehicle():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=5,
             name="hasAC",
             type=bool,
@@ -158,19 +158,19 @@ cdef __StructSpec get_reflection__Vehicle():
     )
     return spec
 cdef __StructSpec get_reflection__Person():
-    cdef _module_types.Person defaults = _module_types.Person.create(
+    cdef _module_types.Person defaults = _module_types.Person._fbthrift_create(
         constant_shared_ptr[_module_types.cPerson](
             default_inst[_module_types.cPerson]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="Person",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="id",
             type=int,
@@ -182,7 +182,7 @@ cdef __StructSpec get_reflection__Person():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="name",
             type=str,
@@ -194,7 +194,7 @@ cdef __StructSpec get_reflection__Person():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=3,
             name="age",
             type=int,
@@ -206,7 +206,7 @@ cdef __StructSpec get_reflection__Person():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=4,
             name="address",
             type=str,
@@ -218,7 +218,7 @@ cdef __StructSpec get_reflection__Person():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=5,
             name="favoriteColor",
             type=_module_types.Color,
@@ -230,7 +230,7 @@ cdef __StructSpec get_reflection__Person():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=6,
             name="friends",
             type=_module_types.Set__i64,
@@ -242,7 +242,7 @@ cdef __StructSpec get_reflection__Person():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=7,
             name="bestFriend",
             type=int,
@@ -254,7 +254,7 @@ cdef __StructSpec get_reflection__Person():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=8,
             name="petNames",
             type=_module_types.Map__Animal_string,
@@ -266,7 +266,7 @@ cdef __StructSpec get_reflection__Person():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=9,
             name="afraidOfAnimal",
             type=_module_types.Animal,
@@ -278,7 +278,7 @@ cdef __StructSpec get_reflection__Person():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=10,
             name="vehicles",
             type=_module_types.List__Vehicle,
@@ -291,13 +291,13 @@ cdef __StructSpec get_reflection__Person():
     )
     return spec
 cdef __SetSpec get_reflection__Set__i64():
-    return __SetSpec.create(
+    return __SetSpec._fbthrift_create(
         value=int,
         kind=__NumberType.I64,
      )
 
 cdef __MapSpec get_reflection__Map__Animal_string():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=_module_types.Animal,
         key_kind=__NumberType.NOT_A_NUMBER,
         value=str,
@@ -305,7 +305,7 @@ cdef __MapSpec get_reflection__Map__Animal_string():
     )
 
 cdef __ListSpec get_reflection__List__Vehicle():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.Vehicle,
         kind=__NumberType.NOT_A_NUMBER,
     )

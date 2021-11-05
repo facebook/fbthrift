@@ -144,7 +144,7 @@ cdef class Foo(thrift.py3.types.Struct):
     cdef Map__string_List__string __fbthrift_cached_optionalMapField
 
     @staticmethod
-    cdef create(shared_ptr[cFoo])
+    cdef _fbthrift_create(shared_ptr[cFoo])
 
 cdef class __BazType(thrift.py3.types.CompiledEnum):
     pass
@@ -168,7 +168,7 @@ cdef class Baz(thrift.py3.types.Union):
     ) except *
 
     @staticmethod
-    cdef create(shared_ptr[cBaz])
+    cdef _fbthrift_create(shared_ptr[cBaz])
 
 
 
@@ -183,7 +183,7 @@ cdef class Bar(thrift.py3.types.Struct):
     cdef Baz __fbthrift_cached_optionalUnionField
 
     @staticmethod
-    cdef create(shared_ptr[cBar])
+    cdef _fbthrift_create(shared_ptr[cBar])
 
 
 
@@ -192,34 +192,34 @@ cdef class StructWithFieldAdapter(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__StructWithFieldAdapter_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cStructWithFieldAdapter])
+    cdef _fbthrift_create(shared_ptr[cStructWithFieldAdapter])
 
 
 cdef class Set__string(thrift.py3.types.Set):
     cdef shared_ptr[cset[string]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cset[string]])
+    cdef _fbthrift_create(shared_ptr[cset[string]])
     @staticmethod
     cdef shared_ptr[cset[string]] _make_instance(object items) except *
 
 cdef class List__string(thrift.py3.types.List):
     cdef shared_ptr[vector[string]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[string]])
+    cdef _fbthrift_create(shared_ptr[vector[string]])
     @staticmethod
     cdef shared_ptr[vector[string]] _make_instance(object items) except *
 
 cdef class Map__string_List__string(thrift.py3.types.Map):
     cdef shared_ptr[cmap[string,vector[string]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[string,vector[string]]])
+    cdef _fbthrift_create(shared_ptr[cmap[string,vector[string]]])
     @staticmethod
     cdef shared_ptr[cmap[string,vector[string]]] _make_instance(object items) except *
 
 cdef class List__Foo(thrift.py3.types.List):
     cdef shared_ptr[vector[cFoo]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cFoo]])
+    cdef _fbthrift_create(shared_ptr[vector[cFoo]])
     @staticmethod
     cdef shared_ptr[vector[cFoo]] _make_instance(object items) except *
 

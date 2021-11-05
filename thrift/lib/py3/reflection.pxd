@@ -47,7 +47,7 @@ cdef class StructSpec:
     cdef readonly object annotations
 
     @staticmethod
-    cdef create(str name, StructType kind, dict annotations)
+    cdef _fbthrift_create(str name, StructType kind, dict annotations)
     cdef void add_field(self, FieldSpec field)
 
 
@@ -61,7 +61,7 @@ cdef class FieldSpec:
     cdef readonly object annotations
 
     @staticmethod
-    cdef create(
+    cdef _fbthrift_create(
         int id,
         str name,
         object type,
@@ -77,7 +77,7 @@ cdef class ListSpec:
     cdef readonly object kind
 
     @staticmethod
-    cdef create(object value, NumberType kind)
+    cdef _fbthrift_create(object value, NumberType kind)
 
 
 cdef class SetSpec:
@@ -85,7 +85,7 @@ cdef class SetSpec:
     cdef readonly object kind
 
     @staticmethod
-    cdef create(object value, NumberType kind)
+    cdef _fbthrift_create(object value, NumberType kind)
 
 
 cdef class MapSpec:
@@ -95,7 +95,7 @@ cdef class MapSpec:
     cdef readonly object value_kind
 
     @staticmethod
-    cdef create(
+    cdef _fbthrift_create(
         object key,
         NumberType key_kind,
         object value,
@@ -109,7 +109,7 @@ cdef class InterfaceSpec:
     cdef readonly object annotations
 
     @staticmethod
-    cdef create(str name, dict annotations)
+    cdef _fbthrift_create(str name, dict annotations)
     cdef void add_method(self, MethodSpec method)
 
 
@@ -122,7 +122,7 @@ cdef class MethodSpec:
     cdef readonly object annotations
 
     @staticmethod
-    cdef create(
+    cdef _fbthrift_create(
         str name,
         tuple arguments,
         NumberType result_kind,
@@ -139,4 +139,4 @@ cdef class ArgumentSpec:
     cdef readonly object annotations
 
     @staticmethod
-    cdef create(str name, NumberType kind, object type, dict annotations)
+    cdef _fbthrift_create(str name, NumberType kind, object type, dict annotations)

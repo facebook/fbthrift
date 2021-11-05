@@ -64,7 +64,7 @@ cimport test.fixtures.interactions.module.types_reflection as _types_reflection
 cdef class CustomException(thrift.py3.exceptions.GeneratedError):
     def __init__(CustomException self, *args, **kwargs):
         self._cpp_obj = make_shared[cCustomException]()
-        self._fields_setter = _fbthrift_types_fields.__CustomException_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__CustomException_FieldsSetter._fbthrift_create(self._cpp_obj.get())
         super().__init__( *args, **kwargs)
 
     cdef void _fbthrift_set_field(self, str name, object value) except *:
@@ -76,7 +76,7 @@ cdef class CustomException(thrift.py3.exceptions.GeneratedError):
         })
 
     @staticmethod
-    cdef create(shared_ptr[cCustomException] cpp_obj):
+    cdef _fbthrift_create(shared_ptr[cCustomException] cpp_obj):
         __fbthrift_inst = <CustomException>CustomException.__new__(CustomException, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
@@ -102,7 +102,7 @@ cdef class CustomException(thrift.py3.exceptions.GeneratedError):
         cdef shared_ptr[cCustomException] cpp_obj = make_shared[cCustomException](
             deref(self._cpp_obj)
         )
-        return CustomException.create(cmove(cpp_obj))
+        return CustomException._fbthrift_create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
         r = self._fbthrift_cmp_sametype(other, op)
@@ -150,7 +150,7 @@ cdef class CustomException(thrift.py3.exceptions.GeneratedError):
 cdef class ClientBufferedStream__bool(ClientBufferedStream):
 
     @staticmethod
-    cdef create(cClientBufferedStream[cbool]& c_obj, __RpcOptions rpc_options):
+    cdef _fbthrift_create(cClientBufferedStream[cbool]& c_obj, __RpcOptions rpc_options):
         __fbthrift_inst = ClientBufferedStream__bool(rpc_options)
         __fbthrift_inst._gen = make_unique[cClientBufferedStreamWrapper[cbool]](c_obj)
         return __fbthrift_inst

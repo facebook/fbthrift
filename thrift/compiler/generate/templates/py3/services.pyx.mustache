@@ -114,7 +114,7 @@ cdef class ServerPublisher_{{> types/CythonCppTypeIdent}}(ServerPublisher):
         deref(self.cPublisher).next(<{{> types/CythonCppType}}?>{{> CythonPythonToCppItem}})
 
     @staticmethod
-    cdef create(cServerStreamPublisher[{{!
+    cdef _fbthrift_create(cServerStreamPublisher[{{!
             }}{{> types/CythonCppType}}{{!
         }}] cPublisher):
         cdef ServerPublisher_{{> types/CythonCppTypeIdent}} inst = ServerPublisher_{{> types/CythonCppTypeIdent}}.__new__(ServerPublisher_{{> types/CythonCppTypeIdent}})
@@ -129,7 +129,7 @@ cdef class ServerStream_{{> types/CythonCppTypeIdent}}(ServerStream):
         }}]] cStream
 
     @staticmethod
-    cdef create(cServerStream[{{!
+    cdef _fbthrift_create(cServerStream[{{!
             }}{{> types/CythonCppType}}{{!
         }}] cStream):
         cdef ServerStream_{{> types/CythonCppTypeIdent}} inst = ServerStream_{{> types/CythonCppTypeIdent}}.__new__(ServerStream_{{> types/CythonCppTypeIdent}})
@@ -178,7 +178,7 @@ async def runGenerator_{{service:name}}_{{function:name}}(object generator, Prom
         promise.cPromise.setValue(optional[{{> types/CythonCppType}}](<{{> types/CythonCppType}}?>{{> CythonPythonToCppItem}}))
 
 cdef void getNextGenerator_{{service:name}}_{{function:name}}(object generator, cFollyPromise[optional[{{> types/CythonCppType}}]] cPromise):
-    cdef Promise_{{> types/CythonCppTypeIdent}}_Stream __promise = Promise_{{> types/CythonCppTypeIdent}}_Stream.create(cmove(cPromise))
+    cdef Promise_{{> types/CythonCppTypeIdent}}_Stream __promise = Promise_{{> types/CythonCppTypeIdent}}_Stream._fbthrift_create(cmove(cPromise))
     asyncio.get_event_loop().create_task(
         runGenerator_{{service:name}}_{{function:name}}(
             generator,
@@ -239,8 +239,8 @@ cdef class {{service:name}}Interface(
         }}cServerStreamPublisher[{{> types/CythonCppType}}]]]({{!
         }}cServerStream[{{> types/CythonCppType}}].createPublisher(pythonFuncToCppFunc(callback)))
 
-        return (ServerStream_{{> types/CythonCppTypeIdent}}.create(cmove(deref(streams).first)), {{!
-        }}ServerPublisher_{{> types/CythonCppTypeIdent}}.create(cmove(deref(streams).second)))
+        return (ServerStream_{{> types/CythonCppTypeIdent}}._fbthrift_create(cmove(deref(streams).first)), {{!
+        }}ServerPublisher_{{> types/CythonCppTypeIdent}}._fbthrift_create(cmove(deref(streams).second)))
         {{/type:stream_elem_type}}
     {{/type:streamresponse?}}
     {{/function:return_type}}

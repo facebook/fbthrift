@@ -50,7 +50,7 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __MyStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __MyStruct_FieldsSetter create(_module_types.cMyStruct* struct_cpp_obj)
+    cdef __MyStruct_FieldsSetter _fbthrift_create(_module_types.cMyStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *
@@ -67,5 +67,5 @@ cdef class __MyDataItem_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __MyDataItem_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __MyDataItem_FieldsSetter create(_module_types.cMyDataItem* struct_cpp_obj)
+    cdef __MyDataItem_FieldsSetter _fbthrift_create(_module_types.cMyDataItem* struct_cpp_obj)
 

@@ -81,7 +81,7 @@ cdef class Promise_cbool:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cbool] cPromise):
+    cdef _fbthrift_create(cFollyPromise[cbool] cPromise):
         cdef Promise_cbool inst = Promise_cbool.__new__(Promise_cbool)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -129,9 +129,9 @@ cdef api void call_cy_ExtendTestService_check(
     cFollyPromise[cbool] cPromise,
     unique_ptr[_my_namespacing_test_hsmodule_types.cHsFoo] struct1
 ):
-    cdef Promise_cbool __promise = Promise_cbool.create(cmove(cPromise))
-    arg_struct1 = _my_namespacing_test_hsmodule_types.HsFoo.create(shared_ptr[_my_namespacing_test_hsmodule_types.cHsFoo](struct1.release()))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cbool __promise = Promise_cbool._fbthrift_create(cmove(cPromise))
+    arg_struct1 = _my_namespacing_test_hsmodule_types.HsFoo._fbthrift_create(shared_ptr[_my_namespacing_test_hsmodule_types.cHsFoo](struct1.release()))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ExtendTestService_check_coro(

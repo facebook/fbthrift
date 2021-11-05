@@ -25,7 +25,7 @@ it in the self.value variable.
 else:
     {{! Use an aliasing constructor since the object we're returning is still
         managed by the top-level object, possible via a unique_ptr }}
-    self.value = {{> types/CythonPythonType}}.create(__reference_shared_ptr({{!
+    self.value = {{> types/CythonPythonType}}._fbthrift_create(__reference_shared_ptr({{!
       }}deref(deref(self._cpp_obj).get_{{field:py_name}}()), self._cpp_obj)){{!
 }}{{/field:reference?}}{{!
 }}{{^field:reference?}}{{!
@@ -68,12 +68,12 @@ else:
     }}<int>deref(self._cpp_obj).get_{{field:py_name}}()){{!
 }}{{/type:enum}}{{!
 }}{{#type:struct?}}{{!
-}}self.value = {{> types/CythonPythonType}}.create({{!
+}}self.value = {{> types/CythonPythonType}}._fbthrift_create({{!
   }}make_shared[{{> types/CythonCppType}}]({{!
   }}deref(self._cpp_obj).get_{{field:py_name}}())){{!
 }}{{/type:struct?}}{{!
 }}{{#type:container?}}{{!
-}}self.value = {{> types/CythonPythonType}}.create({{!
+}}self.value = {{> types/CythonPythonType}}._fbthrift_create({{!
   }}make_shared[{{> types/CythonCppType}}]({{!
   }}deref(self._cpp_obj).get_{{field:py_name}}())){{!
 }}{{/type:container?}}{{!

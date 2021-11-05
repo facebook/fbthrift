@@ -139,7 +139,7 @@ cdef class Fiery(thrift.py3.exceptions.GeneratedError):
     cdef _fbthrift_types_fields.__Fiery_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cFiery])
+    cdef _fbthrift_create(shared_ptr[cFiery])
 
 
 
@@ -148,7 +148,7 @@ cdef class Serious(thrift.py3.exceptions.GeneratedError):
     cdef _fbthrift_types_fields.__Serious_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cSerious])
+    cdef _fbthrift_create(shared_ptr[cSerious])
 
 
 
@@ -157,7 +157,7 @@ cdef class ComplexFieldNames(thrift.py3.exceptions.GeneratedError):
     cdef _fbthrift_types_fields.__ComplexFieldNames_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cComplexFieldNames])
+    cdef _fbthrift_create(shared_ptr[cComplexFieldNames])
 
 
 
@@ -166,7 +166,7 @@ cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
     cdef _fbthrift_types_fields.__CustomFieldNames_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cCustomFieldNames])
+    cdef _fbthrift_create(shared_ptr[cCustomFieldNames])
 
 
 
@@ -175,7 +175,7 @@ cdef class ExceptionWithPrimitiveField(thrift.py3.exceptions.GeneratedError):
     cdef _fbthrift_types_fields.__ExceptionWithPrimitiveField_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cExceptionWithPrimitiveField])
+    cdef _fbthrift_create(shared_ptr[cExceptionWithPrimitiveField])
 
 
 
@@ -184,7 +184,7 @@ cdef class Banal(thrift.py3.exceptions.GeneratedError):
     cdef _fbthrift_types_fields.__Banal_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cBanal])
+    cdef _fbthrift_create(shared_ptr[cBanal])
 
 
 

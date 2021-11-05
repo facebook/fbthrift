@@ -57,7 +57,7 @@ import builtins as _builtins
 cimport includes.types_reflection as _types_reflection
 
 
-cdef __EnumData __AnEnum_enum_data  = __EnumData.create(thrift.py3.types.createEnumData[cAnEnum](), AnEnum)
+cdef __EnumData __AnEnum_enum_data  = __EnumData._fbthrift_create(thrift.py3.types.createEnumData[cAnEnum](), AnEnum)
 
 
 @__cython.internal
@@ -104,7 +104,7 @@ __SetMetaClass(<PyTypeObject*> AnEnum, <PyTypeObject*> __AnEnumMeta)
 cdef class AStruct(thrift.py3.types.Struct):
     def __init__(AStruct self, **kwargs):
         self._cpp_obj = make_shared[cAStruct]()
-        self._fields_setter = _fbthrift_types_fields.__AStruct_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__AStruct_FieldsSetter._fbthrift_create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(AStruct self, **kwargs):
@@ -112,7 +112,7 @@ cdef class AStruct(thrift.py3.types.Struct):
             return self
         cdef AStruct __fbthrift_inst = AStruct.__new__(AStruct)
         __fbthrift_inst._cpp_obj = make_shared[cAStruct](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__AStruct_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__AStruct_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
         for __fbthrift_name, _fbthrift_value in kwargs.items():
             __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
@@ -126,7 +126,7 @@ cdef class AStruct(thrift.py3.types.Struct):
         })
 
     @staticmethod
-    cdef create(shared_ptr[cAStruct] cpp_obj):
+    cdef _fbthrift_create(shared_ptr[cAStruct] cpp_obj):
         __fbthrift_inst = <AStruct>AStruct.__new__(AStruct)
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
@@ -151,7 +151,7 @@ cdef class AStruct(thrift.py3.types.Struct):
         cdef shared_ptr[cAStruct] cpp_obj = make_shared[cAStruct](
             deref(self._cpp_obj)
         )
-        return AStruct.create(cmove(cpp_obj))
+        return AStruct._fbthrift_create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
         r = self._fbthrift_cmp_sametype(other, op)
@@ -199,7 +199,7 @@ cdef class AStruct(thrift.py3.types.Struct):
 cdef class AStructB(thrift.py3.types.Struct):
     def __init__(AStructB self, **kwargs):
         self._cpp_obj = make_shared[cAStructB]()
-        self._fields_setter = _fbthrift_types_fields.__AStructB_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__AStructB_FieldsSetter._fbthrift_create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(AStructB self, **kwargs):
@@ -207,7 +207,7 @@ cdef class AStructB(thrift.py3.types.Struct):
             return self
         cdef AStructB __fbthrift_inst = AStructB.__new__(AStructB)
         __fbthrift_inst._cpp_obj = make_shared[cAStructB](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__AStructB_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__AStructB_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
         for __fbthrift_name, _fbthrift_value in kwargs.items():
             __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
@@ -220,7 +220,7 @@ cdef class AStructB(thrift.py3.types.Struct):
         })
 
     @staticmethod
-    cdef create(shared_ptr[cAStructB] cpp_obj):
+    cdef _fbthrift_create(shared_ptr[cAStructB] cpp_obj):
         __fbthrift_inst = <AStructB>AStructB.__new__(AStructB)
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
@@ -231,7 +231,7 @@ cdef class AStructB(thrift.py3.types.Struct):
         if self.__fbthrift_cached_FieldA is None:
             if not deref(self._cpp_obj).FieldA_ref():
                 return None
-            self.__fbthrift_cached_FieldA = AStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).FieldA_ref()), self._cpp_obj))
+            self.__fbthrift_cached_FieldA = AStruct._fbthrift_create(__reference_shared_ptr(deref(deref(self._cpp_obj).FieldA_ref()), self._cpp_obj))
         return self.__fbthrift_cached_FieldA
 
 
@@ -249,7 +249,7 @@ cdef class AStructB(thrift.py3.types.Struct):
         cdef shared_ptr[cAStructB] cpp_obj = make_shared[cAStructB](
             deref(self._cpp_obj)
         )
-        return AStructB.create(cmove(cpp_obj))
+        return AStructB._fbthrift_create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
         r = self._fbthrift_cmp_sametype(other, op)

@@ -66,7 +66,7 @@ cimport a.types_reflection as _types_reflection
 cdef class A(thrift.py3.types.Struct):
     def __init__(A self, **kwargs):
         self._cpp_obj = make_shared[cA]()
-        self._fields_setter = _fbthrift_types_fields.__A_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__A_FieldsSetter._fbthrift_create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(A self, **kwargs):
@@ -74,7 +74,7 @@ cdef class A(thrift.py3.types.Struct):
             return self
         cdef A __fbthrift_inst = A.__new__(A)
         __fbthrift_inst._cpp_obj = make_shared[cA](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__A_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__A_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
         for __fbthrift_name, _fbthrift_value in kwargs.items():
             __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
@@ -89,7 +89,7 @@ cdef class A(thrift.py3.types.Struct):
         })
 
     @staticmethod
-    cdef create(shared_ptr[cA] cpp_obj):
+    cdef _fbthrift_create(shared_ptr[cA] cpp_obj):
         __fbthrift_inst = <A>A.__new__(A)
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
@@ -98,14 +98,14 @@ cdef class A(thrift.py3.types.Struct):
     def b(self):
 
         if self.__fbthrift_cached_b is None:
-            self.__fbthrift_cached_b = List__List__c_C.create(__reference_shared_ptr(deref(self._cpp_obj).b_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_b = List__List__c_C._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).b_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_b
 
     @property
     def other(self):
 
         if self.__fbthrift_cached_other is None:
-            self.__fbthrift_cached_other = List__c_C.create(__reference_shared_ptr(deref(self._cpp_obj).other_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_other = List__c_C._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).other_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_other
 
 
@@ -123,7 +123,7 @@ cdef class A(thrift.py3.types.Struct):
         cdef shared_ptr[cA] cpp_obj = make_shared[cA](
             deref(self._cpp_obj)
         )
-        return A.create(cmove(cpp_obj))
+        return A._fbthrift_create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
         r = self._fbthrift_cmp_sametype(other, op)
@@ -176,7 +176,7 @@ cdef class List__c_C(thrift.py3.types.List):
             self._cpp_obj = List__c_C._make_instance(items)
 
     @staticmethod
-    cdef create(shared_ptr[vector[_c_types.cC]] c_items):
+    cdef _fbthrift_create(shared_ptr[vector[_c_types.cC]] c_items):
         __fbthrift_inst = <List__c_C>List__c_C.__new__(List__c_C)
         __fbthrift_inst._cpp_obj = cmove(c_items)
         return __fbthrift_inst
@@ -185,7 +185,7 @@ cdef class List__c_C(thrift.py3.types.List):
         cdef shared_ptr[vector[_c_types.cC]] cpp_obj = make_shared[vector[_c_types.cC]](
             deref(self._cpp_obj)
         )
-        return List__c_C.create(cmove(cpp_obj))
+        return List__c_C._fbthrift_create(cmove(cpp_obj))
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -203,14 +203,14 @@ cdef class List__c_C(thrift.py3.types.List):
     cdef _get_slice(self, slice index_obj):
         cdef int start, stop, step
         start, stop, step = index_obj.indices(deref(self._cpp_obj).size())
-        return List__c_C.create(
+        return List__c_C._fbthrift_create(
             __list_slice[vector[_c_types.cC]](self._cpp_obj, start, stop, step)
         )
 
     cdef _get_single_item(self, size_t index):
         cdef shared_ptr[_c_types.cC] citem
         __list_getitem(self._cpp_obj, index, citem)
-        return _c_types.C.create(citem)
+        return _c_types.C._fbthrift_create(citem)
 
     cdef _check_item_type(self, item):
         if not self or item is None:
@@ -253,7 +253,7 @@ cdef class List__List__c_C(thrift.py3.types.List):
             self._cpp_obj = List__List__c_C._make_instance(items)
 
     @staticmethod
-    cdef create(shared_ptr[vector[vector[_c_types.cC]]] c_items):
+    cdef _fbthrift_create(shared_ptr[vector[vector[_c_types.cC]]] c_items):
         __fbthrift_inst = <List__List__c_C>List__List__c_C.__new__(List__List__c_C)
         __fbthrift_inst._cpp_obj = cmove(c_items)
         return __fbthrift_inst
@@ -262,7 +262,7 @@ cdef class List__List__c_C(thrift.py3.types.List):
         cdef shared_ptr[vector[vector[_c_types.cC]]] cpp_obj = make_shared[vector[vector[_c_types.cC]]](
             deref(self._cpp_obj)
         )
-        return List__List__c_C.create(cmove(cpp_obj))
+        return List__List__c_C._fbthrift_create(cmove(cpp_obj))
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -282,14 +282,14 @@ cdef class List__List__c_C(thrift.py3.types.List):
     cdef _get_slice(self, slice index_obj):
         cdef int start, stop, step
         start, stop, step = index_obj.indices(deref(self._cpp_obj).size())
-        return List__List__c_C.create(
+        return List__List__c_C._fbthrift_create(
             __list_slice[vector[vector[_c_types.cC]]](self._cpp_obj, start, stop, step)
         )
 
     cdef _get_single_item(self, size_t index):
         cdef shared_ptr[vector[_c_types.cC]] citem
         __list_getitem(self._cpp_obj, index, citem)
-        return List__c_C.create(citem)
+        return List__c_C._fbthrift_create(citem)
 
     cdef _check_item_type(self, item):
         if not self or item is None:

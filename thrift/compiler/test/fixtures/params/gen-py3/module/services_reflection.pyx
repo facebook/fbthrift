@@ -18,16 +18,16 @@ cimport module.types as _module_types
 
 
 cdef __InterfaceSpec get_reflection__NestedContainers(bint for_clients):
-    cdef __InterfaceSpec spec = __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec._fbthrift_create(
         name="NestedContainers",
         annotations={
         },
     )
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="mapList",
             arguments=(
-                __ArgumentSpec.create(
+                __ArgumentSpec._fbthrift_create(
                     name="foo",
                     type=_module_types.Map__i32_List__i32,
                     kind=__NumberType.NOT_A_NUMBER,
@@ -44,10 +44,10 @@ cdef __InterfaceSpec get_reflection__NestedContainers(bint for_clients):
         )
     )
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="mapSet",
             arguments=(
-                __ArgumentSpec.create(
+                __ArgumentSpec._fbthrift_create(
                     name="foo",
                     type=_module_types.Map__i32_Set__i32,
                     kind=__NumberType.NOT_A_NUMBER,
@@ -64,10 +64,10 @@ cdef __InterfaceSpec get_reflection__NestedContainers(bint for_clients):
         )
     )
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="listMap",
             arguments=(
-                __ArgumentSpec.create(
+                __ArgumentSpec._fbthrift_create(
                     name="foo",
                     type=_module_types.List__Map__i32_i32,
                     kind=__NumberType.NOT_A_NUMBER,
@@ -84,10 +84,10 @@ cdef __InterfaceSpec get_reflection__NestedContainers(bint for_clients):
         )
     )
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="listSet",
             arguments=(
-                __ArgumentSpec.create(
+                __ArgumentSpec._fbthrift_create(
                     name="foo",
                     type=_module_types.List__Set__i32,
                     kind=__NumberType.NOT_A_NUMBER,
@@ -104,10 +104,10 @@ cdef __InterfaceSpec get_reflection__NestedContainers(bint for_clients):
         )
     )
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="turtles",
             arguments=(
-                __ArgumentSpec.create(
+                __ArgumentSpec._fbthrift_create(
                     name="foo",
                     type=_module_types.List__List__Map__i32_Map__i32_Set__i32,
                     kind=__NumberType.NOT_A_NUMBER,

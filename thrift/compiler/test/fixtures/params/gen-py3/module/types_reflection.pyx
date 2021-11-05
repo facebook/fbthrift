@@ -24,13 +24,13 @@ from thrift.py3.types cimport (
 
 
 cdef __ListSpec get_reflection__List__i32():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=int,
         kind=__NumberType.I32,
     )
 
 cdef __MapSpec get_reflection__Map__i32_List__i32():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=int,
         key_kind=__NumberType.I32,
         value=_module_types.List__i32,
@@ -38,13 +38,13 @@ cdef __MapSpec get_reflection__Map__i32_List__i32():
     )
 
 cdef __SetSpec get_reflection__Set__i32():
-    return __SetSpec.create(
+    return __SetSpec._fbthrift_create(
         value=int,
         kind=__NumberType.I32,
      )
 
 cdef __MapSpec get_reflection__Map__i32_Set__i32():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=int,
         key_kind=__NumberType.I32,
         value=_module_types.Set__i32,
@@ -52,7 +52,7 @@ cdef __MapSpec get_reflection__Map__i32_Set__i32():
     )
 
 cdef __MapSpec get_reflection__Map__i32_i32():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=int,
         key_kind=__NumberType.I32,
         value=int,
@@ -60,19 +60,19 @@ cdef __MapSpec get_reflection__Map__i32_i32():
     )
 
 cdef __ListSpec get_reflection__List__Map__i32_i32():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.Map__i32_i32,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __ListSpec get_reflection__List__Set__i32():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.Set__i32,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __MapSpec get_reflection__Map__i32_Map__i32_Set__i32():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=int,
         key_kind=__NumberType.I32,
         value=_module_types.Map__i32_Set__i32,
@@ -80,13 +80,13 @@ cdef __MapSpec get_reflection__Map__i32_Map__i32_Set__i32():
     )
 
 cdef __ListSpec get_reflection__List__Map__i32_Map__i32_Set__i32():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.Map__i32_Map__i32_Set__i32,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __ListSpec get_reflection__List__List__Map__i32_Map__i32_Set__i32():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.List__Map__i32_Map__i32_Set__i32,
         kind=__NumberType.NOT_A_NUMBER,
     )

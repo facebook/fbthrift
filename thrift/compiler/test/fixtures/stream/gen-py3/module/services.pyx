@@ -77,7 +77,7 @@ cdef class ServerPublisher_cint32_t(ServerPublisher):
         deref(self.cPublisher).next(<cint32_t?>item)
 
     @staticmethod
-    cdef create(cServerStreamPublisher[cint32_t] cPublisher):
+    cdef _fbthrift_create(cServerStreamPublisher[cint32_t] cPublisher):
         cdef ServerPublisher_cint32_t inst = ServerPublisher_cint32_t.__new__(ServerPublisher_cint32_t)
         inst.cPublisher = make_unique[cServerStreamPublisher[cint32_t]](cmove(cPublisher))
         return inst
@@ -86,7 +86,7 @@ cdef class ServerStream_cint32_t(ServerStream):
     cdef unique_ptr[cServerStream[cint32_t]] cStream
 
     @staticmethod
-    cdef create(cServerStream[cint32_t] cStream):
+    cdef _fbthrift_create(cServerStream[cint32_t] cStream):
         cdef ServerStream_cint32_t inst = ServerStream_cint32_t.__new__(ServerStream_cint32_t)
         inst.cStream = make_unique[cServerStream[cint32_t]](cmove(cStream))
         return inst
@@ -119,7 +119,7 @@ async def runGenerator_PubSubStreamingService_returnstream(object generator, Pro
         promise.cPromise.setValue(optional[cint32_t](<cint32_t?>item))
 
 cdef void getNextGenerator_PubSubStreamingService_returnstream(object generator, cFollyPromise[optional[cint32_t]] cPromise):
-    cdef Promise_cint32_t_Stream __promise = Promise_cint32_t_Stream.create(cmove(cPromise))
+    cdef Promise_cint32_t_Stream __promise = Promise_cint32_t_Stream._fbthrift_create(cmove(cPromise))
     asyncio.get_event_loop().create_task(
         runGenerator_PubSubStreamingService_returnstream(
             generator,
@@ -156,7 +156,7 @@ async def runGenerator_PubSubStreamingService_streamthrows(object generator, Pro
         promise.cPromise.setValue(optional[cint32_t](<cint32_t?>item))
 
 cdef void getNextGenerator_PubSubStreamingService_streamthrows(object generator, cFollyPromise[optional[cint32_t]] cPromise):
-    cdef Promise_cint32_t_Stream __promise = Promise_cint32_t_Stream.create(cmove(cPromise))
+    cdef Promise_cint32_t_Stream __promise = Promise_cint32_t_Stream._fbthrift_create(cmove(cPromise))
     asyncio.get_event_loop().create_task(
         runGenerator_PubSubStreamingService_streamthrows(
             generator,
@@ -193,7 +193,7 @@ async def runGenerator_PubSubStreamingService_boththrows(object generator, Promi
         promise.cPromise.setValue(optional[cint32_t](<cint32_t?>item))
 
 cdef void getNextGenerator_PubSubStreamingService_boththrows(object generator, cFollyPromise[optional[cint32_t]] cPromise):
-    cdef Promise_cint32_t_Stream __promise = Promise_cint32_t_Stream.create(cmove(cPromise))
+    cdef Promise_cint32_t_Stream __promise = Promise_cint32_t_Stream._fbthrift_create(cmove(cPromise))
     asyncio.get_event_loop().create_task(
         runGenerator_PubSubStreamingService_boththrows(
             generator,
@@ -230,7 +230,7 @@ async def runGenerator_PubSubStreamingService_responseandstreamthrows(object gen
         promise.cPromise.setValue(optional[cint32_t](<cint32_t?>item))
 
 cdef void getNextGenerator_PubSubStreamingService_responseandstreamthrows(object generator, cFollyPromise[optional[cint32_t]] cPromise):
-    cdef Promise_cint32_t_Stream __promise = Promise_cint32_t_Stream.create(cmove(cPromise))
+    cdef Promise_cint32_t_Stream __promise = Promise_cint32_t_Stream._fbthrift_create(cmove(cPromise))
     asyncio.get_event_loop().create_task(
         runGenerator_PubSubStreamingService_responseandstreamthrows(
             generator,
@@ -265,7 +265,7 @@ async def runGenerator_PubSubStreamingService_returnstreamFast(object generator,
         promise.cPromise.setValue(optional[cint32_t](<cint32_t?>item))
 
 cdef void getNextGenerator_PubSubStreamingService_returnstreamFast(object generator, cFollyPromise[optional[cint32_t]] cPromise):
-    cdef Promise_cint32_t_Stream __promise = Promise_cint32_t_Stream.create(cmove(cPromise))
+    cdef Promise_cint32_t_Stream __promise = Promise_cint32_t_Stream._fbthrift_create(cmove(cPromise))
     asyncio.get_event_loop().create_task(
         runGenerator_PubSubStreamingService_returnstreamFast(
             generator,
@@ -285,7 +285,7 @@ cdef class Promise_cResponseAndServerStream__cint32_t_cint32_t:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cResponseAndServerStream[cint32_t,cint32_t]] cPromise):
+    cdef _fbthrift_create(cFollyPromise[cResponseAndServerStream[cint32_t,cint32_t]] cPromise):
         cdef Promise_cResponseAndServerStream__cint32_t_cint32_t inst = Promise_cResponseAndServerStream__cint32_t_cint32_t.__new__(Promise_cResponseAndServerStream__cint32_t_cint32_t)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -301,7 +301,7 @@ cdef class Promise_cServerStream__cint32_t:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cServerStream[cint32_t]] cPromise):
+    cdef _fbthrift_create(cFollyPromise[cServerStream[cint32_t]] cPromise):
         cdef Promise_cServerStream__cint32_t inst = Promise_cServerStream__cint32_t.__new__(Promise_cServerStream__cint32_t)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -311,7 +311,7 @@ cdef class Promise_cint32_t_Stream:
     cdef cFollyPromise[optional[cint32_t]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[optional[cint32_t]] cPromise):
+    cdef _fbthrift_create(cFollyPromise[optional[cint32_t]] cPromise):
         cdef Promise_cint32_t_Stream inst = Promise_cint32_t_Stream.__new__(Promise_cint32_t_Stream)
         inst.cPromise = cmove(cPromise)
         return inst
@@ -342,7 +342,7 @@ cdef class PubSubStreamingServiceInterface(
     def createPublisher_returnstream(callback=None):
         cdef unique_ptr[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]] streams = make_unique[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]](cServerStream[cint32_t].createPublisher(pythonFuncToCppFunc(callback)))
 
-        return (ServerStream_cint32_t.create(cmove(deref(streams).first)), ServerPublisher_cint32_t.create(cmove(deref(streams).second)))
+        return (ServerStream_cint32_t._fbthrift_create(cmove(deref(streams).first)), ServerPublisher_cint32_t._fbthrift_create(cmove(deref(streams).second)))
 
     async def streamthrows(
             self,
@@ -353,7 +353,7 @@ cdef class PubSubStreamingServiceInterface(
     def createPublisher_streamthrows(callback=None):
         cdef unique_ptr[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]] streams = make_unique[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]](cServerStream[cint32_t].createPublisher(pythonFuncToCppFunc(callback)))
 
-        return (ServerStream_cint32_t.create(cmove(deref(streams).first)), ServerPublisher_cint32_t.create(cmove(deref(streams).second)))
+        return (ServerStream_cint32_t._fbthrift_create(cmove(deref(streams).first)), ServerPublisher_cint32_t._fbthrift_create(cmove(deref(streams).second)))
 
     async def boththrows(
             self,
@@ -364,7 +364,7 @@ cdef class PubSubStreamingServiceInterface(
     def createPublisher_boththrows(callback=None):
         cdef unique_ptr[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]] streams = make_unique[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]](cServerStream[cint32_t].createPublisher(pythonFuncToCppFunc(callback)))
 
-        return (ServerStream_cint32_t.create(cmove(deref(streams).first)), ServerPublisher_cint32_t.create(cmove(deref(streams).second)))
+        return (ServerStream_cint32_t._fbthrift_create(cmove(deref(streams).first)), ServerPublisher_cint32_t._fbthrift_create(cmove(deref(streams).second)))
 
     async def responseandstreamthrows(
             self,
@@ -375,7 +375,7 @@ cdef class PubSubStreamingServiceInterface(
     def createPublisher_responseandstreamthrows(callback=None):
         cdef unique_ptr[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]] streams = make_unique[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]](cServerStream[cint32_t].createPublisher(pythonFuncToCppFunc(callback)))
 
-        return (ServerStream_cint32_t.create(cmove(deref(streams).first)), ServerPublisher_cint32_t.create(cmove(deref(streams).second)))
+        return (ServerStream_cint32_t._fbthrift_create(cmove(deref(streams).first)), ServerPublisher_cint32_t._fbthrift_create(cmove(deref(streams).second)))
 
     async def returnstreamFast(
             self,
@@ -387,7 +387,7 @@ cdef class PubSubStreamingServiceInterface(
     def createPublisher_returnstreamFast(callback=None):
         cdef unique_ptr[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]] streams = make_unique[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]](cServerStream[cint32_t].createPublisher(pythonFuncToCppFunc(callback)))
 
-        return (ServerStream_cint32_t.create(cmove(deref(streams).first)), ServerPublisher_cint32_t.create(cmove(deref(streams).second)))
+        return (ServerStream_cint32_t._fbthrift_create(cmove(deref(streams).first)), ServerPublisher_cint32_t._fbthrift_create(cmove(deref(streams).second)))
 
     @classmethod
     def __get_reflection__(cls):
@@ -412,10 +412,10 @@ cdef api void call_cy_PubSubStreamingService_returnstream(
     cint32_t i32_from,
     cint32_t i32_to
 ):
-    cdef Promise_cServerStream__cint32_t __promise = Promise_cServerStream__cint32_t.create(cmove(cPromise))
+    cdef Promise_cServerStream__cint32_t __promise = Promise_cServerStream__cint32_t._fbthrift_create(cmove(cPromise))
     arg_i32_from = i32_from
     arg_i32_to = i32_to
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         PubSubStreamingService_returnstream_coro(
@@ -440,7 +440,7 @@ async def PubSubStreamingService_returnstream_coro(
         if not isinstance(result, (ServerStream, AsyncIterator)):
             result = await result
         if isinstance(result, AsyncIterator):
-            result = ServerStream_cint32_t.create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_returnstream)))
+            result = ServerStream_cint32_t._fbthrift_create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_returnstream)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -469,9 +469,9 @@ cdef api void call_cy_PubSubStreamingService_streamthrows(
     cFollyPromise[cServerStream[cint32_t]] cPromise,
     cint32_t foo
 ):
-    cdef Promise_cServerStream__cint32_t __promise = Promise_cServerStream__cint32_t.create(cmove(cPromise))
+    cdef Promise_cServerStream__cint32_t __promise = Promise_cServerStream__cint32_t._fbthrift_create(cmove(cPromise))
     arg_foo = foo
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         PubSubStreamingService_streamthrows_coro(
@@ -493,7 +493,7 @@ async def PubSubStreamingService_streamthrows_coro(
         if not isinstance(result, (ServerStream, AsyncIterator)):
             result = await result
         if isinstance(result, AsyncIterator):
-            result = ServerStream_cint32_t.create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_streamthrows)))
+            result = ServerStream_cint32_t._fbthrift_create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_streamthrows)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -522,9 +522,9 @@ cdef api void call_cy_PubSubStreamingService_boththrows(
     cFollyPromise[cServerStream[cint32_t]] cPromise,
     cint32_t foo
 ):
-    cdef Promise_cServerStream__cint32_t __promise = Promise_cServerStream__cint32_t.create(cmove(cPromise))
+    cdef Promise_cServerStream__cint32_t __promise = Promise_cServerStream__cint32_t._fbthrift_create(cmove(cPromise))
     arg_foo = foo
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         PubSubStreamingService_boththrows_coro(
@@ -546,7 +546,7 @@ async def PubSubStreamingService_boththrows_coro(
         if not isinstance(result, (ServerStream, AsyncIterator)):
             result = await result
         if isinstance(result, AsyncIterator):
-            result = ServerStream_cint32_t.create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_boththrows)))
+            result = ServerStream_cint32_t._fbthrift_create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_boththrows)))
     except _module_types.FooEx as ex:
         promise.cPromise.setException(deref((<_module_types.FooEx> ex)._cpp_obj))
     except __ApplicationError as ex:
@@ -577,9 +577,9 @@ cdef api void call_cy_PubSubStreamingService_responseandstreamthrows(
     cFollyPromise[cResponseAndServerStream[cint32_t,cint32_t]] cPromise,
     cint32_t foo
 ):
-    cdef Promise_cResponseAndServerStream__cint32_t_cint32_t __promise = Promise_cResponseAndServerStream__cint32_t_cint32_t.create(cmove(cPromise))
+    cdef Promise_cResponseAndServerStream__cint32_t_cint32_t __promise = Promise_cResponseAndServerStream__cint32_t_cint32_t._fbthrift_create(cmove(cPromise))
     arg_foo = foo
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         PubSubStreamingService_responseandstreamthrows_coro(
@@ -603,7 +603,7 @@ async def PubSubStreamingService_responseandstreamthrows_coro(
         if not isinstance(result, (ServerStream, AsyncIterator)):
             result = await result
         if isinstance(result, AsyncIterator):
-            result = ServerStream_cint32_t.create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_responseandstreamthrows)))
+            result = ServerStream_cint32_t._fbthrift_create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_responseandstreamthrows)))
     except _module_types.FooEx as ex:
         promise.cPromise.setException(deref((<_module_types.FooEx> ex)._cpp_obj))
     except __ApplicationError as ex:
@@ -635,10 +635,10 @@ cdef api void call_cy_PubSubStreamingService_returnstreamFast(
     cint32_t i32_from,
     cint32_t i32_to
 ):
-    cdef Promise_cServerStream__cint32_t __promise = Promise_cServerStream__cint32_t.create(cmove(cPromise))
+    cdef Promise_cServerStream__cint32_t __promise = Promise_cServerStream__cint32_t._fbthrift_create(cmove(cPromise))
     arg_i32_from = i32_from
     arg_i32_to = i32_to
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         PubSubStreamingService_returnstreamFast_coro(
@@ -663,7 +663,7 @@ async def PubSubStreamingService_returnstreamFast_coro(
         if not isinstance(result, (ServerStream, AsyncIterator)):
             result = await result
         if isinstance(result, AsyncIterator):
-            result = ServerStream_cint32_t.create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_returnstreamFast)))
+            result = ServerStream_cint32_t._fbthrift_create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_returnstreamFast)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(

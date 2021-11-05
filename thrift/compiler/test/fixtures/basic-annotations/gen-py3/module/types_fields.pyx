@@ -22,7 +22,7 @@ from thrift.py3.types cimport const_pointer_cast
 cdef class __MyStructNestedAnnotation_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __MyStructNestedAnnotation_FieldsSetter create(_module_types.cMyStructNestedAnnotation* struct_cpp_obj):
+    cdef __MyStructNestedAnnotation_FieldsSetter _fbthrift_create(_module_types.cMyStructNestedAnnotation* struct_cpp_obj):
         cdef __MyStructNestedAnnotation_FieldsSetter __fbthrift_inst = __MyStructNestedAnnotation_FieldsSetter.__new__(__MyStructNestedAnnotation_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"name")] = __MyStructNestedAnnotation_FieldsSetter._set_field_0
@@ -49,7 +49,7 @@ cdef class __MyStructNestedAnnotation_FieldsSetter(__StructFieldsSetter):
 cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __MyStruct_FieldsSetter create(_module_types.cMyStruct* struct_cpp_obj):
+    cdef __MyStruct_FieldsSetter _fbthrift_create(_module_types.cMyStruct* struct_cpp_obj):
         cdef __MyStruct_FieldsSetter __fbthrift_inst = __MyStruct_FieldsSetter.__new__(__MyStruct_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"major")] = __MyStruct_FieldsSetter._set_field_0
@@ -127,7 +127,7 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
 cdef class __SecretStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __SecretStruct_FieldsSetter create(_module_types.cSecretStruct* struct_cpp_obj):
+    cdef __SecretStruct_FieldsSetter _fbthrift_create(_module_types.cSecretStruct* struct_cpp_obj):
         cdef __SecretStruct_FieldsSetter __fbthrift_inst = __SecretStruct_FieldsSetter.__new__(__SecretStruct_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"id")] = __SecretStruct_FieldsSetter._set_field_0

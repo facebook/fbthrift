@@ -50,5 +50,5 @@ cdef class __FooEx_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __FooEx_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __FooEx_FieldsSetter create(_module_types.cFooEx* struct_cpp_obj)
+    cdef __FooEx_FieldsSetter _fbthrift_create(_module_types.cFooEx* struct_cpp_obj)
 

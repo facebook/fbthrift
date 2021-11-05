@@ -24,19 +24,19 @@ from thrift.py3.types cimport (
 
 
 cdef __StructSpec get_reflection__CustomException():
-    cdef _test_fixtures_interactions_module_types.CustomException defaults = _test_fixtures_interactions_module_types.CustomException.create(
+    cdef _test_fixtures_interactions_module_types.CustomException defaults = _test_fixtures_interactions_module_types.CustomException._fbthrift_create(
         constant_shared_ptr[_test_fixtures_interactions_module_types.cCustomException](
             default_inst[_test_fixtures_interactions_module_types.cCustomException]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="CustomException",
         kind=__StructType.EXCEPTION,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="message",
             type=str,

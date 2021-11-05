@@ -62,7 +62,7 @@ cimport module.types_reflection as _types_reflection
 cdef class Mixin1(thrift.py3.types.Struct):
     def __init__(Mixin1 self, **kwargs):
         self._cpp_obj = make_shared[cMixin1]()
-        self._fields_setter = _fbthrift_types_fields.__Mixin1_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__Mixin1_FieldsSetter._fbthrift_create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(Mixin1 self, **kwargs):
@@ -70,7 +70,7 @@ cdef class Mixin1(thrift.py3.types.Struct):
             return self
         cdef Mixin1 __fbthrift_inst = Mixin1.__new__(Mixin1)
         __fbthrift_inst._cpp_obj = make_shared[cMixin1](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__Mixin1_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__Mixin1_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
         for __fbthrift_name, _fbthrift_value in kwargs.items():
             __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
@@ -84,7 +84,7 @@ cdef class Mixin1(thrift.py3.types.Struct):
         })
 
     @staticmethod
-    cdef create(shared_ptr[cMixin1] cpp_obj):
+    cdef _fbthrift_create(shared_ptr[cMixin1] cpp_obj):
         __fbthrift_inst = <Mixin1>Mixin1.__new__(Mixin1)
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
@@ -109,7 +109,7 @@ cdef class Mixin1(thrift.py3.types.Struct):
         cdef shared_ptr[cMixin1] cpp_obj = make_shared[cMixin1](
             deref(self._cpp_obj)
         )
-        return Mixin1.create(cmove(cpp_obj))
+        return Mixin1._fbthrift_create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
         r = self._fbthrift_cmp_sametype(other, op)
@@ -157,7 +157,7 @@ cdef class Mixin1(thrift.py3.types.Struct):
 cdef class Mixin2(thrift.py3.types.Struct):
     def __init__(Mixin2 self, **kwargs):
         self._cpp_obj = make_shared[cMixin2]()
-        self._fields_setter = _fbthrift_types_fields.__Mixin2_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__Mixin2_FieldsSetter._fbthrift_create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(Mixin2 self, **kwargs):
@@ -165,7 +165,7 @@ cdef class Mixin2(thrift.py3.types.Struct):
             return self
         cdef Mixin2 __fbthrift_inst = Mixin2.__new__(Mixin2)
         __fbthrift_inst._cpp_obj = make_shared[cMixin2](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__Mixin2_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__Mixin2_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
         for __fbthrift_name, _fbthrift_value in kwargs.items():
             __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
@@ -180,7 +180,7 @@ cdef class Mixin2(thrift.py3.types.Struct):
         })
 
     @staticmethod
-    cdef create(shared_ptr[cMixin2] cpp_obj):
+    cdef _fbthrift_create(shared_ptr[cMixin2] cpp_obj):
         __fbthrift_inst = <Mixin2>Mixin2.__new__(Mixin2)
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
@@ -189,7 +189,7 @@ cdef class Mixin2(thrift.py3.types.Struct):
     def m1(self):
 
         if self.__fbthrift_cached_m1 is None:
-            self.__fbthrift_cached_m1 = Mixin1.create(__reference_shared_ptr(deref(self._cpp_obj).m1_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_m1 = Mixin1._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).m1_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_m1
 
     @property
@@ -219,7 +219,7 @@ cdef class Mixin2(thrift.py3.types.Struct):
         cdef shared_ptr[cMixin2] cpp_obj = make_shared[cMixin2](
             deref(self._cpp_obj)
         )
-        return Mixin2.create(cmove(cpp_obj))
+        return Mixin2._fbthrift_create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
         r = self._fbthrift_cmp_sametype(other, op)
@@ -267,7 +267,7 @@ cdef class Mixin2(thrift.py3.types.Struct):
 cdef class Mixin3Base(thrift.py3.types.Struct):
     def __init__(Mixin3Base self, **kwargs):
         self._cpp_obj = make_shared[cMixin3Base]()
-        self._fields_setter = _fbthrift_types_fields.__Mixin3Base_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__Mixin3Base_FieldsSetter._fbthrift_create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(Mixin3Base self, **kwargs):
@@ -275,7 +275,7 @@ cdef class Mixin3Base(thrift.py3.types.Struct):
             return self
         cdef Mixin3Base __fbthrift_inst = Mixin3Base.__new__(Mixin3Base)
         __fbthrift_inst._cpp_obj = make_shared[cMixin3Base](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__Mixin3Base_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__Mixin3Base_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
         for __fbthrift_name, _fbthrift_value in kwargs.items():
             __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
@@ -289,7 +289,7 @@ cdef class Mixin3Base(thrift.py3.types.Struct):
         })
 
     @staticmethod
-    cdef create(shared_ptr[cMixin3Base] cpp_obj):
+    cdef _fbthrift_create(shared_ptr[cMixin3Base] cpp_obj):
         __fbthrift_inst = <Mixin3Base>Mixin3Base.__new__(Mixin3Base)
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
@@ -314,7 +314,7 @@ cdef class Mixin3Base(thrift.py3.types.Struct):
         cdef shared_ptr[cMixin3Base] cpp_obj = make_shared[cMixin3Base](
             deref(self._cpp_obj)
         )
-        return Mixin3Base.create(cmove(cpp_obj))
+        return Mixin3Base._fbthrift_create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
         r = self._fbthrift_cmp_sametype(other, op)
@@ -362,7 +362,7 @@ cdef class Mixin3Base(thrift.py3.types.Struct):
 cdef class Foo(thrift.py3.types.Struct):
     def __init__(Foo self, **kwargs):
         self._cpp_obj = make_shared[cFoo]()
-        self._fields_setter = _fbthrift_types_fields.__Foo_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__Foo_FieldsSetter._fbthrift_create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(Foo self, **kwargs):
@@ -370,7 +370,7 @@ cdef class Foo(thrift.py3.types.Struct):
             return self
         cdef Foo __fbthrift_inst = Foo.__new__(Foo)
         __fbthrift_inst._cpp_obj = make_shared[cFoo](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__Foo_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__Foo_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
         for __fbthrift_name, _fbthrift_value in kwargs.items():
             __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
@@ -386,7 +386,7 @@ cdef class Foo(thrift.py3.types.Struct):
         })
 
     @staticmethod
-    cdef create(shared_ptr[cFoo] cpp_obj):
+    cdef _fbthrift_create(shared_ptr[cFoo] cpp_obj):
         __fbthrift_inst = <Foo>Foo.__new__(Foo)
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
@@ -400,21 +400,21 @@ cdef class Foo(thrift.py3.types.Struct):
     def m2(self):
 
         if self.__fbthrift_cached_m2 is None:
-            self.__fbthrift_cached_m2 = Mixin2.create(__reference_shared_ptr(deref(self._cpp_obj).m2_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_m2 = Mixin2._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).m2_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_m2
 
     @property
     def m3(self):
 
         if self.__fbthrift_cached_m3 is None:
-            self.__fbthrift_cached_m3 = Mixin3Base.create(__reference_shared_ptr(deref(self._cpp_obj).m3_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_m3 = Mixin3Base._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).m3_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_m3
 
     @property
     def m1(self):
 
         if self.__fbthrift_cached_m1 is None:
-            self.__fbthrift_cached_m1 = Mixin1.create(__reference_shared_ptr(deref(self._cpp_obj).m1_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_m1 = Mixin1._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).m1_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_m1
 
     @property
@@ -449,7 +449,7 @@ cdef class Foo(thrift.py3.types.Struct):
         cdef shared_ptr[cFoo] cpp_obj = make_shared[cFoo](
             deref(self._cpp_obj)
         )
-        return Foo.create(cmove(cpp_obj))
+        return Foo._fbthrift_create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
         r = self._fbthrift_cmp_sametype(other, op)

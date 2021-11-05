@@ -18,13 +18,13 @@ cimport test.fixtures.interactions.module.types as _test_fixtures_interactions_m
 
 
 cdef __InterfaceSpec get_reflection__MyService(bint for_clients):
-    cdef __InterfaceSpec spec = __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec._fbthrift_create(
         name="MyService",
         annotations={
         },
     )
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="foo",
             arguments=(
             ),

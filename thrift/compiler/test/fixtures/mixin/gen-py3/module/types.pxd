@@ -121,7 +121,7 @@ cdef class Mixin1(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__Mixin1_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cMixin1])
+    cdef _fbthrift_create(shared_ptr[cMixin1])
 
 
 
@@ -131,7 +131,7 @@ cdef class Mixin2(thrift.py3.types.Struct):
     cdef Mixin1 __fbthrift_cached_m1
 
     @staticmethod
-    cdef create(shared_ptr[cMixin2])
+    cdef _fbthrift_create(shared_ptr[cMixin2])
 
 
 
@@ -140,7 +140,7 @@ cdef class Mixin3Base(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__Mixin3Base_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cMixin3Base])
+    cdef _fbthrift_create(shared_ptr[cMixin3Base])
 
 
 
@@ -151,7 +151,7 @@ cdef class Foo(thrift.py3.types.Struct):
     cdef Mixin3Base __fbthrift_cached_m3
 
     @staticmethod
-    cdef create(shared_ptr[cFoo])
+    cdef _fbthrift_create(shared_ptr[cFoo])
 
 
 

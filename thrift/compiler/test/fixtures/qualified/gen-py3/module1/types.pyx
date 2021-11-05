@@ -57,7 +57,7 @@ import builtins as _builtins
 cimport module1.types_reflection as _types_reflection
 
 
-cdef __EnumData __Enum_enum_data  = __EnumData.create(thrift.py3.types.createEnumData[cEnum](), Enum)
+cdef __EnumData __Enum_enum_data  = __EnumData._fbthrift_create(thrift.py3.types.createEnumData[cEnum](), Enum)
 
 
 @__cython.internal
@@ -104,7 +104,7 @@ __SetMetaClass(<PyTypeObject*> Enum, <PyTypeObject*> __EnumMeta)
 cdef class Struct(thrift.py3.types.Struct):
     def __init__(Struct self, **kwargs):
         self._cpp_obj = make_shared[cStruct]()
-        self._fields_setter = _fbthrift_types_fields.__Struct_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__Struct_FieldsSetter._fbthrift_create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(Struct self, **kwargs):
@@ -112,7 +112,7 @@ cdef class Struct(thrift.py3.types.Struct):
             return self
         cdef Struct __fbthrift_inst = Struct.__new__(Struct)
         __fbthrift_inst._cpp_obj = make_shared[cStruct](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__Struct_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__Struct_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
         for __fbthrift_name, _fbthrift_value in kwargs.items():
             __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
@@ -127,7 +127,7 @@ cdef class Struct(thrift.py3.types.Struct):
         })
 
     @staticmethod
-    cdef create(shared_ptr[cStruct] cpp_obj):
+    cdef _fbthrift_create(shared_ptr[cStruct] cpp_obj):
         __fbthrift_inst = <Struct>Struct.__new__(Struct)
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
@@ -157,7 +157,7 @@ cdef class Struct(thrift.py3.types.Struct):
         cdef shared_ptr[cStruct] cpp_obj = make_shared[cStruct](
             deref(self._cpp_obj)
         )
-        return Struct.create(cmove(cpp_obj))
+        return Struct._fbthrift_create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
         r = self._fbthrift_cmp_sametype(other, op)
@@ -210,7 +210,7 @@ cdef class List__Enum(thrift.py3.types.List):
             self._cpp_obj = List__Enum._make_instance(items)
 
     @staticmethod
-    cdef create(shared_ptr[vector[cEnum]] c_items):
+    cdef _fbthrift_create(shared_ptr[vector[cEnum]] c_items):
         __fbthrift_inst = <List__Enum>List__Enum.__new__(List__Enum)
         __fbthrift_inst._cpp_obj = cmove(c_items)
         return __fbthrift_inst
@@ -219,7 +219,7 @@ cdef class List__Enum(thrift.py3.types.List):
         cdef shared_ptr[vector[cEnum]] cpp_obj = make_shared[vector[cEnum]](
             deref(self._cpp_obj)
         )
-        return List__Enum.create(cmove(cpp_obj))
+        return List__Enum._fbthrift_create(cmove(cpp_obj))
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -237,7 +237,7 @@ cdef class List__Enum(thrift.py3.types.List):
     cdef _get_slice(self, slice index_obj):
         cdef int start, stop, step
         start, stop, step = index_obj.indices(deref(self._cpp_obj).size())
-        return List__Enum.create(
+        return List__Enum._fbthrift_create(
             __list_slice[vector[cEnum]](self._cpp_obj, start, stop, step)
         )
 
@@ -278,5 +278,5 @@ cdef class List__Enum(thrift.py3.types.List):
 
 Sequence.register(List__Enum)
 
-c1 = Struct.create(constant_shared_ptr(cc1()))
-e1s = List__Enum.create(constant_shared_ptr(ce1s()))
+c1 = Struct._fbthrift_create(constant_shared_ptr(cc1()))
+e1s = List__Enum._fbthrift_create(constant_shared_ptr(ce1s()))

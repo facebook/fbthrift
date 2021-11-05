@@ -119,7 +119,7 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__MyStructNestedAnnotation_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cMyStructNestedAnnotation])
+    cdef _fbthrift_create(shared_ptr[cMyStructNestedAnnotation])
 
 
 
@@ -128,7 +128,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cMyStruct])
+    cdef _fbthrift_create(shared_ptr[cMyStruct])
 
 
 
@@ -137,7 +137,7 @@ cdef class SecretStruct(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__SecretStruct_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cSecretStruct])
+    cdef _fbthrift_create(shared_ptr[cSecretStruct])
 
 
 

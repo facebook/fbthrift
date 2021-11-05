@@ -135,7 +135,7 @@ Mapping.register(Headers)
 
 cdef class ReadHeaders(Headers):
     @staticmethod
-    cdef create(RpcOptions rpc_options):
+    cdef _fbthrift_create(RpcOptions rpc_options):
         inst = <ReadHeaders>ReadHeaders.__new__(ReadHeaders)
         inst._parent = rpc_options
         return inst
@@ -146,7 +146,7 @@ cdef class ReadHeaders(Headers):
 
 cdef class WriteHeaders(Headers):
     @staticmethod
-    cdef create(RpcOptions rpc_options):
+    cdef _fbthrift_create(RpcOptions rpc_options):
         inst = <WriteHeaders>WriteHeaders.__new__(WriteHeaders)
         inst._parent = rpc_options
         return inst
@@ -213,14 +213,14 @@ cdef class RpcOptions:
     def read_headers(self):
         # So we don't create a cycle
         if not self._readheaders:
-            self._readheaders = ReadHeaders.create(self)
+            self._readheaders = ReadHeaders._fbthrift_create(self)
         return self._readheaders
 
     @property
     def write_headers(self):
         # So we don't create a cycle
         if not self._writeheaders:
-            self._writeheaders = WriteHeaders.create(self)
+            self._writeheaders = WriteHeaders._fbthrift_create(self)
         return self._writeheaders
 
 

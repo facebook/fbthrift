@@ -24,12 +24,12 @@ from thrift.py3.types cimport (
 
 
 cdef __StructSpec get_reflection__FooEx():
-    cdef _module_types.FooEx defaults = _module_types.FooEx.create(
+    cdef _module_types.FooEx defaults = _module_types.FooEx._fbthrift_create(
         constant_shared_ptr[_module_types.cFooEx](
             default_inst[_module_types.cFooEx]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="FooEx",
         kind=__StructType.EXCEPTION,
         annotations={

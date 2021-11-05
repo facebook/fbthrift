@@ -57,7 +57,7 @@ import builtins as _builtins
 cimport test.fixtures.enumstrict.module.types_reflection as _types_reflection
 
 
-cdef __EnumData __EmptyEnum_enum_data  = __EnumData.create(thrift.py3.types.createEnumData[cEmptyEnum](), EmptyEnum)
+cdef __EnumData __EmptyEnum_enum_data  = __EnumData._fbthrift_create(thrift.py3.types.createEnumData[cEmptyEnum](), EmptyEnum)
 
 
 @__cython.internal
@@ -99,7 +99,7 @@ cdef class EmptyEnum(thrift.py3.types.CompiledEnum):
 __SetMetaClass(<PyTypeObject*> EmptyEnum, <PyTypeObject*> __EmptyEnumMeta)
 
 
-cdef __EnumData __MyEnum_enum_data  = __EnumData.create(thrift.py3.types.createEnumData[cMyEnum](), MyEnum)
+cdef __EnumData __MyEnum_enum_data  = __EnumData._fbthrift_create(thrift.py3.types.createEnumData[cMyEnum](), MyEnum)
 
 
 @__cython.internal
@@ -141,7 +141,7 @@ cdef class MyEnum(thrift.py3.types.CompiledEnum):
 __SetMetaClass(<PyTypeObject*> MyEnum, <PyTypeObject*> __MyEnumMeta)
 
 
-cdef __EnumData __MyBigEnum_enum_data  = __EnumData.create(thrift.py3.types.createEnumData[cMyBigEnum](), MyBigEnum)
+cdef __EnumData __MyBigEnum_enum_data  = __EnumData._fbthrift_create(thrift.py3.types.createEnumData[cMyBigEnum](), MyBigEnum)
 
 
 @__cython.internal
@@ -188,7 +188,7 @@ __SetMetaClass(<PyTypeObject*> MyBigEnum, <PyTypeObject*> __MyBigEnumMeta)
 cdef class MyStruct(thrift.py3.types.Struct):
     def __init__(MyStruct self, **kwargs):
         self._cpp_obj = make_shared[cMyStruct]()
-        self._fields_setter = _fbthrift_types_fields.__MyStruct_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__MyStruct_FieldsSetter._fbthrift_create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(MyStruct self, **kwargs):
@@ -196,7 +196,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
             return self
         cdef MyStruct __fbthrift_inst = MyStruct.__new__(MyStruct)
         __fbthrift_inst._cpp_obj = make_shared[cMyStruct](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__MyStruct_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__MyStruct_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
         for __fbthrift_name, _fbthrift_value in kwargs.items():
             __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
@@ -211,7 +211,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         })
 
     @staticmethod
-    cdef create(shared_ptr[cMyStruct] cpp_obj):
+    cdef _fbthrift_create(shared_ptr[cMyStruct] cpp_obj):
         __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
@@ -245,7 +245,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
             deref(self._cpp_obj)
         )
-        return MyStruct.create(cmove(cpp_obj))
+        return MyStruct._fbthrift_create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
         r = self._fbthrift_cmp_sametype(other, op)
@@ -298,7 +298,7 @@ cdef class Map__MyEnum_string(thrift.py3.types.Map):
             self._cpp_obj = Map__MyEnum_string._make_instance(items)
 
     @staticmethod
-    cdef create(shared_ptr[cmap[cMyEnum,string]] c_items):
+    cdef _fbthrift_create(shared_ptr[cmap[cMyEnum,string]] c_items):
         __fbthrift_inst = <Map__MyEnum_string>Map__MyEnum_string.__new__(Map__MyEnum_string)
         __fbthrift_inst._cpp_obj = cmove(c_items)
         return __fbthrift_inst
@@ -307,7 +307,7 @@ cdef class Map__MyEnum_string(thrift.py3.types.Map):
         cdef shared_ptr[cmap[cMyEnum,string]] cpp_obj = make_shared[cmap[cMyEnum,string]](
             deref(self._cpp_obj)
         )
-        return Map__MyEnum_string.create(cmove(cpp_obj))
+        return Map__MyEnum_string._fbthrift_create(cmove(cpp_obj))
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -385,4 +385,4 @@ cdef class Map__MyEnum_string(thrift.py3.types.Map):
 Mapping.register(Map__MyEnum_string)
 
 kOne = MyEnum(<int> (ckOne()))
-enumNames = Map__MyEnum_string.create(constant_shared_ptr(cenumNames()))
+enumNames = Map__MyEnum_string._fbthrift_create(constant_shared_ptr(cenumNames()))

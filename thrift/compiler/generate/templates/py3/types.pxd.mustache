@@ -224,7 +224,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
     {{/struct:union?}}
 
     @staticmethod
-    cdef create(shared_ptr[c{{struct:name}}])
+    cdef _fbthrift_create(shared_ptr[c{{struct:name}}])
 
 {{/program:structs}}
 
@@ -236,7 +236,7 @@ cdef class {{> types/CythonPythonType}}(thrift.py3.types.{{!
         }}):
     cdef shared_ptr[{{> types/CythonCppType}}] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[{{> types/CythonCppType}}])
+    cdef _fbthrift_create(shared_ptr[{{> types/CythonCppType}}])
     @staticmethod
     cdef shared_ptr[{{> types/CythonCppType}}] _make_instance(object items) except *
 
@@ -259,7 +259,7 @@ cdef class ClientBufferedStream__{{type:flat_name}}(ClientBufferedStream):
     cdef unique_ptr[cClientBufferedStreamWrapper[{{ > types/CythonCppType}}]] _gen
 
     @staticmethod
-    cdef create(cClientBufferedStream[{{ > types/CythonCppType}}]& c_obj, __RpcOptions rpc_options)
+    cdef _fbthrift_create(cClientBufferedStream[{{ > types/CythonCppType}}]& c_obj, __RpcOptions rpc_options)
 
     @staticmethod
     cdef void callback(
@@ -278,7 +278,7 @@ cdef class ResponseAndClientBufferedStream__{{> stream/ResponseClassNameSuffix}}
     cdef {{#type:stream_first_response_type}}{{ > types/CythonPythonType}}{{/type:stream_first_response_type}} _response
 
     @staticmethod
-    cdef create(cResponseAndClientBufferedStream[{{!
+    cdef _fbthrift_create(cResponseAndClientBufferedStream[{{!
         }}{{#type:stream_first_response_type}}{{ > types/CythonCppType}}{{/type:stream_first_response_type}}, {{!
         }}{{#type:stream_elem_type}}{{ > types/CythonCppType}}{{/type:stream_elem_type}}]& c_obj, __RpcOptions rpc_options)
 

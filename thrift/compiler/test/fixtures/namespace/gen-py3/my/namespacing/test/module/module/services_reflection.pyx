@@ -18,16 +18,16 @@ cimport my.namespacing.test.module.module.types as _my_namespacing_test_module_m
 
 
 cdef __InterfaceSpec get_reflection__TestService(bint for_clients):
-    cdef __InterfaceSpec spec = __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec._fbthrift_create(
         name="TestService",
         annotations={
         },
     )
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="init",
             arguments=(
-                __ArgumentSpec.create(
+                __ArgumentSpec._fbthrift_create(
                     name="int1",
                     type=int,
                     kind=__NumberType.I64,

@@ -38,13 +38,13 @@ to a python type.
 }}{{#type:float?}}result.value(){{/type:float?}}{{!
 }}{{#type:string?}}result.value().data().decode('UTF-8'){{/type:string?}}{{!
 }}{{#type:binary?}}result.value(){{/type:binary?}}{{!
-}}{{#type:struct}}{{> types/CythonPythonType}}.create({{!
+}}{{#type:struct}}{{> types/CythonPythonType}}._fbthrift_create({{!
   }}make_shared[{{> types/CythonCppType}}]({{!
   }}result.value())){{/type:struct}}{{!
 }}{{#type:streamresponse?}}{{!
-  }}{{> clients/StreamResponseClassName}}.create(result.value(), options){{!
+  }}{{> clients/StreamResponseClassName}}._fbthrift_create(result.value(), options){{!
 }}{{/type:streamresponse?}}{{!
-}}{{#type:container?}}{{> types/CythonPythonType}}.create({{!
+}}{{#type:container?}}{{> types/CythonPythonType}}._fbthrift_create({{!
   }}make_shared[{{> types/CythonCppType}}]({{!
   }}result.value())){{/type:container?}}{{!
 }}{{#type:void?}}None{{/type:void?}}{{!

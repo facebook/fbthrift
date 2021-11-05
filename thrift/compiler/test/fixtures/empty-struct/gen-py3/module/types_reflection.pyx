@@ -24,12 +24,12 @@ from thrift.py3.types cimport (
 
 
 cdef __StructSpec get_reflection__Empty():
-    cdef _module_types.Empty defaults = _module_types.Empty.create(
+    cdef _module_types.Empty defaults = _module_types.Empty._fbthrift_create(
         constant_shared_ptr[_module_types.cEmpty](
             default_inst[_module_types.cEmpty]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="Empty",
         kind=__StructType.STRUCT,
         annotations={
@@ -37,7 +37,7 @@ cdef __StructSpec get_reflection__Empty():
     )
     return spec
 cdef __StructSpec get_reflection__Nada():
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="Nada",
         kind=__StructType.UNION,
         annotations={

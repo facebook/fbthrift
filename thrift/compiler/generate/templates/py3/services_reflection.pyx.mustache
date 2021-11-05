@@ -38,7 +38,7 @@ cimport {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:
 
 
 cdef __InterfaceSpec get_reflection__{{service:name}}(bint for_clients):
-    cdef __InterfaceSpec spec = __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec._fbthrift_create(
         name="{{service:name}}",
         annotations={
             {{#service:annotations}}
@@ -48,11 +48,11 @@ cdef __InterfaceSpec get_reflection__{{service:name}}(bint for_clients):
     )
 {{#service:supportedFunctions}}
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="{{function:name}}",
             arguments=(
                 {{#function:args}}
-                __ArgumentSpec.create(
+                __ArgumentSpec._fbthrift_create(
                     name="{{field:name}}",
                     type={{#field:type}}{{> types/PythonType}}{{/field:type}},
                     kind={{#field:type}}{{> types/ThriftNumberType}}{{/field:type}},

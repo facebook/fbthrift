@@ -50,7 +50,7 @@ cdef class __Val_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __Val_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __Val_FieldsSetter create(_module_types.cVal* struct_cpp_obj)
+    cdef __Val_FieldsSetter _fbthrift_create(_module_types.cVal* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *
@@ -63,6 +63,6 @@ cdef class __NonCopyableStruct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __NonCopyableStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __NonCopyableStruct_FieldsSetter create(_module_types.cNonCopyableStruct* struct_cpp_obj)
+    cdef __NonCopyableStruct_FieldsSetter _fbthrift_create(_module_types.cNonCopyableStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
 

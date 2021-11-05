@@ -77,7 +77,7 @@ cdef class Foo(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__Foo_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cFoo])
+    cdef _fbthrift_create(shared_ptr[cFoo])
 
 
 

@@ -24,19 +24,19 @@ from thrift.py3.types cimport (
 
 
 cdef __StructSpec get_reflection__Mixin1():
-    cdef _module_types.Mixin1 defaults = _module_types.Mixin1.create(
+    cdef _module_types.Mixin1 defaults = _module_types.Mixin1._fbthrift_create(
         constant_shared_ptr[_module_types.cMixin1](
             default_inst[_module_types.cMixin1]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="Mixin1",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="field1",
             type=str,
@@ -49,19 +49,19 @@ cdef __StructSpec get_reflection__Mixin1():
     )
     return spec
 cdef __StructSpec get_reflection__Mixin2():
-    cdef _module_types.Mixin2 defaults = _module_types.Mixin2.create(
+    cdef _module_types.Mixin2 defaults = _module_types.Mixin2._fbthrift_create(
         constant_shared_ptr[_module_types.cMixin2](
             default_inst[_module_types.cMixin2]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="Mixin2",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="m1",
             type=_module_types.Mixin1,
@@ -73,7 +73,7 @@ cdef __StructSpec get_reflection__Mixin2():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="field2",
             type=str,
@@ -86,19 +86,19 @@ cdef __StructSpec get_reflection__Mixin2():
     )
     return spec
 cdef __StructSpec get_reflection__Mixin3Base():
-    cdef _module_types.Mixin3Base defaults = _module_types.Mixin3Base.create(
+    cdef _module_types.Mixin3Base defaults = _module_types.Mixin3Base._fbthrift_create(
         constant_shared_ptr[_module_types.cMixin3Base](
             default_inst[_module_types.cMixin3Base]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="Mixin3Base",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="field3",
             type=str,
@@ -111,19 +111,19 @@ cdef __StructSpec get_reflection__Mixin3Base():
     )
     return spec
 cdef __StructSpec get_reflection__Foo():
-    cdef _module_types.Foo defaults = _module_types.Foo.create(
+    cdef _module_types.Foo defaults = _module_types.Foo._fbthrift_create(
         constant_shared_ptr[_module_types.cFoo](
             default_inst[_module_types.cFoo]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="Foo",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="field4",
             type=str,
@@ -135,7 +135,7 @@ cdef __StructSpec get_reflection__Foo():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="m2",
             type=_module_types.Mixin2,
@@ -147,7 +147,7 @@ cdef __StructSpec get_reflection__Foo():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=3,
             name="m3",
             type=_module_types.Mixin3Base,

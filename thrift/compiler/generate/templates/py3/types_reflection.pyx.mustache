@@ -62,13 +62,13 @@ cdef __StructSpec get_reflection__{{struct:name}}():
     {{^struct:union?}}
     {{! Wrap the defaults object so we can query its getters for the fields;
         we can only do this for regular structs though }}
-    cdef _{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_types.{{struct:name}} defaults = _{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_types.{{struct:name}}.create(
+    cdef _{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_types.{{struct:name}} defaults = _{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_types.{{struct:name}}._fbthrift_create(
         constant_shared_ptr[_{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_types.c{{struct:name}}](
             default_inst[_{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_types.c{{struct:name}}]()
         )
     )
     {{/struct:union?}}
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="{{struct:name}}",
         kind=__StructType.{{!
             }}{{#struct:exception?}}EXCEPTION{{/struct:exception?}}{{!
@@ -82,7 +82,7 @@ cdef __StructSpec get_reflection__{{struct:name}}():
     )
 {{#struct:py3_fields}}
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id={{field:key}},
             name="{{field:name}}",
             type={{#field:type}}{{> types/PythonType}}{{/field:type}},
@@ -113,7 +113,7 @@ cdef __StructSpec get_reflection__{{struct:name}}():
 {{#type:list?}}
 cdef __ListSpec get_reflection__{{type:flat_name}}():
     {{#type:list_elem_type}}
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value={{> types/PythonType}},
         kind={{> types/ThriftNumberType}},
     )
@@ -122,7 +122,7 @@ cdef __ListSpec get_reflection__{{type:flat_name}}():
 {{#type:set?}}
 cdef __SetSpec get_reflection__{{type:flat_name}}():
     {{#type:set_elem_type}}
-    return __SetSpec.create(
+    return __SetSpec._fbthrift_create(
         value={{> types/PythonType}},
         kind={{> types/ThriftNumberType}},
      )
@@ -130,7 +130,7 @@ cdef __SetSpec get_reflection__{{type:flat_name}}():
 {{/type:set?}}
 {{#type:map?}}
 cdef __MapSpec get_reflection__{{type:flat_name}}():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key={{#type:key_type}}{{> types/PythonType}}{{/type:key_type}},
         key_kind={{#type:key_type}}{{> types/ThriftNumberType}}{{/type:key_type}},
         value={{#type:value_type}}{{> types/PythonType}}{{/type:value_type}},

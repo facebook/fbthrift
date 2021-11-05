@@ -77,7 +77,7 @@ cdef class Promise_cint64_t:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cint64_t] cPromise):
+    cdef _fbthrift_create(cFollyPromise[cint64_t] cPromise):
         cdef Promise_cint64_t inst = Promise_cint64_t.__new__(Promise_cint64_t)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -125,9 +125,9 @@ cdef api void call_cy_HsTestService_init(
     cFollyPromise[cint64_t] cPromise,
     cint64_t int1
 ):
-    cdef Promise_cint64_t __promise = Promise_cint64_t.create(cmove(cPromise))
+    cdef Promise_cint64_t __promise = Promise_cint64_t._fbthrift_create(cmove(cPromise))
     arg_int1 = int1
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         HsTestService_init_coro(

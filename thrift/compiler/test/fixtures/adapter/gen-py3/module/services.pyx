@@ -79,7 +79,7 @@ cdef class Promise_cint32_t:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cint32_t] cPromise):
+    cdef _fbthrift_create(cFollyPromise[cint32_t] cPromise):
         cdef Promise_cint32_t inst = Promise_cint32_t.__new__(Promise_cint32_t)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -131,11 +131,11 @@ cdef api void call_cy_Service_func(
     unique_ptr[string] arg2,
     unique_ptr[_module_types.cFoo] arg3
 ):
-    cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
+    cdef Promise_cint32_t __promise = Promise_cint32_t._fbthrift_create(cmove(cPromise))
     arg_arg1 = (deref(arg1)).data().decode('UTF-8')
     arg_arg2 = (deref(arg2)).data().decode('UTF-8')
-    arg_arg3 = _module_types.Foo.create(shared_ptr[_module_types.cFoo](arg3.release()))
-    __context = RequestContext.create(ctx)
+    arg_arg3 = _module_types.Foo._fbthrift_create(shared_ptr[_module_types.cFoo](arg3.release()))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         Service_func_coro(

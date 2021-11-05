@@ -46,7 +46,7 @@ cdef class {{> services/PromiseName}}:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[{{!
+    cdef _fbthrift_create(cFollyPromise[{{!
             }}{{> services/CythonReturnTypeCppType}}{{!
         }}] cPromise):
         cdef {{> services/PromiseName}} inst = {{> services/PromiseName}}.__new__({{!

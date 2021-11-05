@@ -79,7 +79,7 @@ cdef class Promise_binary:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[string]] cPromise):
+    cdef _fbthrift_create(cFollyPromise[unique_ptr[string]] cPromise):
         cdef Promise_binary inst = Promise_binary.__new__(Promise_binary)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -95,7 +95,7 @@ cdef class Promise__sa_binary:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[string] cPromise):
+    cdef _fbthrift_create(cFollyPromise[string] cPromise):
         cdef Promise__sa_binary inst = Promise__sa_binary.__new__(Promise__sa_binary)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -111,7 +111,7 @@ cdef class Promise__sa_cbool:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cbool] cPromise):
+    cdef _fbthrift_create(cFollyPromise[cbool] cPromise):
         cdef Promise__sa_cbool inst = Promise__sa_cbool.__new__(Promise__sa_cbool)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -127,7 +127,7 @@ cdef class Promise__sa_string:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[string] cPromise):
+    cdef _fbthrift_create(cFollyPromise[string] cPromise):
         cdef Promise__sa_string inst = Promise__sa_string.__new__(Promise__sa_string)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -143,7 +143,7 @@ cdef class Promise__sa_cFollyUnit:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cFollyUnit] cPromise):
+    cdef _fbthrift_create(cFollyPromise[cFollyUnit] cPromise):
         cdef Promise__sa_cFollyUnit inst = Promise__sa_cFollyUnit.__new__(Promise__sa_cFollyUnit)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -300,9 +300,9 @@ cdef api void call_cy_MyService_hasDataById(
     cFollyPromise[cbool] cPromise,
     cint64_t id
 ):
-    cdef Promise__sa_cbool __promise = Promise__sa_cbool.create(cmove(cPromise))
+    cdef Promise__sa_cbool __promise = Promise__sa_cbool._fbthrift_create(cmove(cPromise))
     arg_id = id
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyService_hasDataById_coro(
@@ -349,9 +349,9 @@ cdef api void call_cy_MyService_getDataById(
     cFollyPromise[string] cPromise,
     cint64_t id
 ):
-    cdef Promise__sa_string __promise = Promise__sa_string.create(cmove(cPromise))
+    cdef Promise__sa_string __promise = Promise__sa_string._fbthrift_create(cmove(cPromise))
     arg_id = id
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyService_getDataById_coro(
@@ -399,10 +399,10 @@ cdef api void call_cy_MyService_putDataById(
     cint64_t id,
     string data
 ):
-    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit.create(cmove(cPromise))
+    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit._fbthrift_create(cmove(cPromise))
     arg_id = id
     arg_data = data.data().decode('UTF-8')
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyService_putDataById_coro(
@@ -453,10 +453,10 @@ cdef api void call_cy_MyService_lobDataById(
     cint64_t id,
     string data
 ):
-    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit.create(cmove(cPromise))
+    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit._fbthrift_create(cmove(cPromise))
     arg_id = id
     arg_data = data.data().decode('UTF-8')
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyService_lobDataById_coro(
@@ -506,9 +506,9 @@ cdef api void call_cy_MyServiceFast_hasDataById(
     cFollyPromise[cbool] cPromise,
     cint64_t id
 ):
-    cdef Promise__sa_cbool __promise = Promise__sa_cbool.create(cmove(cPromise))
+    cdef Promise__sa_cbool __promise = Promise__sa_cbool._fbthrift_create(cmove(cPromise))
     arg_id = id
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyServiceFast_hasDataById_coro(
@@ -555,9 +555,9 @@ cdef api void call_cy_MyServiceFast_getDataById(
     cFollyPromise[string] cPromise,
     cint64_t id
 ):
-    cdef Promise__sa_string __promise = Promise__sa_string.create(cmove(cPromise))
+    cdef Promise__sa_string __promise = Promise__sa_string._fbthrift_create(cmove(cPromise))
     arg_id = id
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyServiceFast_getDataById_coro(
@@ -605,10 +605,10 @@ cdef api void call_cy_MyServiceFast_putDataById(
     cint64_t id,
     string data
 ):
-    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit.create(cmove(cPromise))
+    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit._fbthrift_create(cmove(cPromise))
     arg_id = id
     arg_data = data.data().decode('UTF-8')
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyServiceFast_putDataById_coro(
@@ -659,10 +659,10 @@ cdef api void call_cy_MyServiceFast_lobDataById(
     cint64_t id,
     string data
 ):
-    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit.create(cmove(cPromise))
+    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit._fbthrift_create(cmove(cPromise))
     arg_id = id
     arg_data = data.data().decode('UTF-8')
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyServiceFast_lobDataById_coro(
@@ -712,9 +712,9 @@ cdef api void call_cy_DbMixedStackArguments_getDataByKey0(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[string] key
 ):
-    cdef Promise_binary __promise = Promise_binary.create(cmove(cPromise))
+    cdef Promise_binary __promise = Promise_binary._fbthrift_create(cmove(cPromise))
     arg_key = (deref(key)).data().decode('UTF-8')
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         DbMixedStackArguments_getDataByKey0_coro(
@@ -761,9 +761,9 @@ cdef api void call_cy_DbMixedStackArguments_getDataByKey1(
     cFollyPromise[string] cPromise,
     string key
 ):
-    cdef Promise__sa_binary __promise = Promise__sa_binary.create(cmove(cPromise))
+    cdef Promise__sa_binary __promise = Promise__sa_binary._fbthrift_create(cmove(cPromise))
     arg_key = key.data().decode('UTF-8')
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         DbMixedStackArguments_getDataByKey1_coro(

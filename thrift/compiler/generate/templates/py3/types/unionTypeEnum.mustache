@@ -23,7 +23,7 @@ This is a template for creating compiled Enum and Flag pyx information
 {{#program:structs}}
 {{#struct:union?}}
 
-cdef __UnionTypeEnumData __{{struct:name}}_union_type_enum_data  = __UnionTypeEnumData.create(
+cdef __UnionTypeEnumData __{{struct:name}}_union_type_enum_data  = __UnionTypeEnumData._fbthrift_create(
     __createEnumDataForUnionType[c{{struct:name}}](),
     __{{struct:name}}Type,
 )

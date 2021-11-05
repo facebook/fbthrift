@@ -722,7 +722,7 @@ cdef class decorated_struct(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__decorated_struct_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cdecorated_struct])
+    cdef _fbthrift_create(shared_ptr[cdecorated_struct])
 
 
 
@@ -739,7 +739,7 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
     cdef std_unordered_map__Map__i32_string __fbthrift_cached_fieldH
 
     @staticmethod
-    cdef create(shared_ptr[cContainerStruct])
+    cdef _fbthrift_create(shared_ptr[cContainerStruct])
 
 
 
@@ -749,7 +749,7 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
     cdef std_list_int32_t__List__i32 __fbthrift_cached_fieldA
 
     @staticmethod
-    cdef create(shared_ptr[cCppTypeStruct])
+    cdef _fbthrift_create(shared_ptr[cCppTypeStruct])
 
 
 
@@ -758,7 +758,7 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__VirtualStruct_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cVirtualStruct])
+    cdef _fbthrift_create(shared_ptr[cVirtualStruct])
 
 
 
@@ -769,7 +769,7 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
     cdef object __fbthrift_cached_b
 
     @staticmethod
-    cdef create(shared_ptr[cMyStructWithForwardRefEnum])
+    cdef _fbthrift_create(shared_ptr[cMyStructWithForwardRefEnum])
 
 
 
@@ -778,7 +778,7 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__TrivialNumeric_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cTrivialNumeric])
+    cdef _fbthrift_create(shared_ptr[cTrivialNumeric])
 
 
 
@@ -788,7 +788,7 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
     cdef TrivialNumeric __fbthrift_cached_n
 
     @staticmethod
-    cdef create(shared_ptr[cTrivialNestedWithDefault])
+    cdef _fbthrift_create(shared_ptr[cTrivialNestedWithDefault])
 
 
 
@@ -798,7 +798,7 @@ cdef class ComplexString(thrift.py3.types.Struct):
     cdef Map__string_i32 __fbthrift_cached_b
 
     @staticmethod
-    cdef create(shared_ptr[cComplexString])
+    cdef _fbthrift_create(shared_ptr[cComplexString])
 
 
 
@@ -808,7 +808,7 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
     cdef ComplexString __fbthrift_cached_n
 
     @staticmethod
-    cdef create(shared_ptr[cComplexNestedWithDefault])
+    cdef _fbthrift_create(shared_ptr[cComplexNestedWithDefault])
 
 
 
@@ -817,7 +817,7 @@ cdef class MinPadding(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__MinPadding_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cMinPadding])
+    cdef _fbthrift_create(shared_ptr[cMinPadding])
 
 
 
@@ -827,7 +827,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef MyDataItem __fbthrift_cached_data
 
     @staticmethod
-    cdef create(shared_ptr[cMyStruct])
+    cdef _fbthrift_create(shared_ptr[cMyStruct])
 
 
 
@@ -836,7 +836,7 @@ cdef class MyDataItem(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__MyDataItem_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cMyDataItem])
+    cdef _fbthrift_create(shared_ptr[cMyDataItem])
 
 
 
@@ -845,7 +845,7 @@ cdef class Renaming(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__Renaming_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cRenaming])
+    cdef _fbthrift_create(shared_ptr[cRenaming])
 
 
 
@@ -855,7 +855,7 @@ cdef class AnnotatedTypes(thrift.py3.types.Struct):
     cdef List__std_unordered_map__Map__i32_string __fbthrift_cached_list_field
 
     @staticmethod
-    cdef create(shared_ptr[cAnnotatedTypes])
+    cdef _fbthrift_create(shared_ptr[cAnnotatedTypes])
 
 
 
@@ -866,7 +866,7 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
     cdef ForwardUsageByRef __fbthrift_cached_ForwardUsageByRef
 
     @staticmethod
-    cdef create(shared_ptr[cForwardUsageRoot])
+    cdef _fbthrift_create(shared_ptr[cForwardUsageRoot])
 
 
 
@@ -876,7 +876,7 @@ cdef class ForwardUsageStruct(thrift.py3.types.Struct):
     cdef ForwardUsageRoot __fbthrift_cached_foo
 
     @staticmethod
-    cdef create(shared_ptr[cForwardUsageStruct])
+    cdef _fbthrift_create(shared_ptr[cForwardUsageStruct])
 
 
 
@@ -886,7 +886,7 @@ cdef class ForwardUsageByRef(thrift.py3.types.Struct):
     cdef ForwardUsageRoot __fbthrift_cached_foo
 
     @staticmethod
-    cdef create(shared_ptr[cForwardUsageByRef])
+    cdef _fbthrift_create(shared_ptr[cForwardUsageByRef])
 
 
 
@@ -895,7 +895,7 @@ cdef class NoexceptMoveEmpty(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__NoexceptMoveEmpty_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cNoexceptMoveEmpty])
+    cdef _fbthrift_create(shared_ptr[cNoexceptMoveEmpty])
 
 
 
@@ -904,7 +904,7 @@ cdef class NoexceptMoveSimpleStruct(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__NoexceptMoveSimpleStruct_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cNoexceptMoveSimpleStruct])
+    cdef _fbthrift_create(shared_ptr[cNoexceptMoveSimpleStruct])
 
 
 
@@ -915,7 +915,7 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
     cdef Map__MyEnumA_string __fbthrift_cached_MyMapEnumAndInt
 
     @staticmethod
-    cdef create(shared_ptr[cNoexceptMoveComplexStruct])
+    cdef _fbthrift_create(shared_ptr[cNoexceptMoveComplexStruct])
 
 cdef class __NoExceptMoveUnionType(thrift.py3.types.CompiledEnum):
     pass
@@ -937,7 +937,7 @@ cdef class NoExceptMoveUnion(thrift.py3.types.Union):
     ) except *
 
     @staticmethod
-    cdef create(shared_ptr[cNoExceptMoveUnion])
+    cdef _fbthrift_create(shared_ptr[cNoExceptMoveUnion])
 
 
 
@@ -949,7 +949,7 @@ cdef class AllocatorAware(thrift.py3.types.Struct):
     cdef Map__i32_i32 __fbthrift_cached_aa_map
 
     @staticmethod
-    cdef create(shared_ptr[cAllocatorAware])
+    cdef _fbthrift_create(shared_ptr[cAllocatorAware])
 
 
 
@@ -958,7 +958,7 @@ cdef class AllocatorAware2(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__AllocatorAware2_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cAllocatorAware2])
+    cdef _fbthrift_create(shared_ptr[cAllocatorAware2])
 
 
 
@@ -967,7 +967,7 @@ cdef class TypedefStruct(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__TypedefStruct_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cTypedefStruct])
+    cdef _fbthrift_create(shared_ptr[cTypedefStruct])
 
 
 
@@ -976,125 +976,125 @@ cdef class StructWithDoubleUnderscores(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__StructWithDoubleUnderscores_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cStructWithDoubleUnderscores])
+    cdef _fbthrift_create(shared_ptr[cStructWithDoubleUnderscores])
 
 
 cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Map):
     cdef shared_ptr[std_unordered_map[cint32_t,string]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[std_unordered_map[cint32_t,string]])
+    cdef _fbthrift_create(shared_ptr[std_unordered_map[cint32_t,string]])
     @staticmethod
     cdef shared_ptr[std_unordered_map[cint32_t,string]] _make_instance(object items) except *
 
 cdef class List__i64(thrift.py3.types.List):
     cdef shared_ptr[vector[cint64_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cint64_t]])
+    cdef _fbthrift_create(shared_ptr[vector[cint64_t]])
     @staticmethod
     cdef shared_ptr[vector[cint64_t]] _make_instance(object items) except *
 
 cdef class Map__binary_i64(thrift.py3.types.Map):
     cdef shared_ptr[cmap[string,cint64_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[string,cint64_t]])
+    cdef _fbthrift_create(shared_ptr[cmap[string,cint64_t]])
     @staticmethod
     cdef shared_ptr[cmap[string,cint64_t]] _make_instance(object items) except *
 
 cdef class List__i32(thrift.py3.types.List):
     cdef shared_ptr[vector[cint32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cint32_t]])
+    cdef _fbthrift_create(shared_ptr[vector[cint32_t]])
     @staticmethod
     cdef shared_ptr[vector[cint32_t]] _make_instance(object items) except *
 
 cdef class std_list__List__i32(thrift.py3.types.List):
     cdef shared_ptr[std_list[cint32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[std_list[cint32_t]])
+    cdef _fbthrift_create(shared_ptr[std_list[cint32_t]])
     @staticmethod
     cdef shared_ptr[std_list[cint32_t]] _make_instance(object items) except *
 
 cdef class std_deque__List__i32(thrift.py3.types.List):
     cdef shared_ptr[std_deque[cint32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[std_deque[cint32_t]])
+    cdef _fbthrift_create(shared_ptr[std_deque[cint32_t]])
     @staticmethod
     cdef shared_ptr[std_deque[cint32_t]] _make_instance(object items) except *
 
 cdef class folly_fbvector__List__i32(thrift.py3.types.List):
     cdef shared_ptr[folly_fbvector[cint32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[folly_fbvector[cint32_t]])
+    cdef _fbthrift_create(shared_ptr[folly_fbvector[cint32_t]])
     @staticmethod
     cdef shared_ptr[folly_fbvector[cint32_t]] _make_instance(object items) except *
 
 cdef class folly_small_vector__List__i32(thrift.py3.types.List):
     cdef shared_ptr[folly_small_vector[cint32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[folly_small_vector[cint32_t]])
+    cdef _fbthrift_create(shared_ptr[folly_small_vector[cint32_t]])
     @staticmethod
     cdef shared_ptr[folly_small_vector[cint32_t]] _make_instance(object items) except *
 
 cdef class folly_sorted_vector_set__Set__i32(thrift.py3.types.Set):
     cdef shared_ptr[folly_sorted_vector_set[cint32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[folly_sorted_vector_set[cint32_t]])
+    cdef _fbthrift_create(shared_ptr[folly_sorted_vector_set[cint32_t]])
     @staticmethod
     cdef shared_ptr[folly_sorted_vector_set[cint32_t]] _make_instance(object items) except *
 
 cdef class folly_sorted_vector_map__Map__i32_string(thrift.py3.types.Map):
     cdef shared_ptr[folly_sorted_vector_map[cint32_t,string]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[folly_sorted_vector_map[cint32_t,string]])
+    cdef _fbthrift_create(shared_ptr[folly_sorted_vector_map[cint32_t,string]])
     @staticmethod
     cdef shared_ptr[folly_sorted_vector_map[cint32_t,string]] _make_instance(object items) except *
 
 cdef class std_list_int32_t__List__i32(thrift.py3.types.List):
     cdef shared_ptr[std_list_int32_t] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[std_list_int32_t])
+    cdef _fbthrift_create(shared_ptr[std_list_int32_t])
     @staticmethod
     cdef shared_ptr[std_list_int32_t] _make_instance(object items) except *
 
 cdef class Map__string_i32(thrift.py3.types.Map):
     cdef shared_ptr[cmap[string,cint32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[string,cint32_t]])
+    cdef _fbthrift_create(shared_ptr[cmap[string,cint32_t]])
     @staticmethod
     cdef shared_ptr[cmap[string,cint32_t]] _make_instance(object items) except *
 
 cdef class List__std_unordered_map__Map__i32_string(thrift.py3.types.List):
     cdef shared_ptr[vector[std_unordered_map[cint32_t,string]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[std_unordered_map[cint32_t,string]]])
+    cdef _fbthrift_create(shared_ptr[vector[std_unordered_map[cint32_t,string]]])
     @staticmethod
     cdef shared_ptr[vector[std_unordered_map[cint32_t,string]]] _make_instance(object items) except *
 
 cdef class List__binary(thrift.py3.types.List):
     cdef shared_ptr[vector[string]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[string]])
+    cdef _fbthrift_create(shared_ptr[vector[string]])
     @staticmethod
     cdef shared_ptr[vector[string]] _make_instance(object items) except *
 
 cdef class Map__MyEnumA_string(thrift.py3.types.Map):
     cdef shared_ptr[cmap[cMyEnumA,string]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[cMyEnumA,string]])
+    cdef _fbthrift_create(shared_ptr[cmap[cMyEnumA,string]])
     @staticmethod
     cdef shared_ptr[cmap[cMyEnumA,string]] _make_instance(object items) except *
 
 cdef class Set__i32(thrift.py3.types.Set):
     cdef shared_ptr[cset[cint32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cset[cint32_t]])
+    cdef _fbthrift_create(shared_ptr[cset[cint32_t]])
     @staticmethod
     cdef shared_ptr[cset[cint32_t]] _make_instance(object items) except *
 
 cdef class Map__i32_i32(thrift.py3.types.Map):
     cdef shared_ptr[cmap[cint32_t,cint32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[cint32_t,cint32_t]])
+    cdef _fbthrift_create(shared_ptr[cmap[cint32_t,cint32_t]])
     @staticmethod
     cdef shared_ptr[cmap[cint32_t,cint32_t]] _make_instance(object items) except *
 

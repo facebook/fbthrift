@@ -79,7 +79,7 @@ cdef void MyService_MyInteraction_frobnicate_callback(
     client, pyfuture, options = <object> userdata  
     if result.hasException[_test_fixtures_interactions_module_types.cCustomException]():
         try:
-            exc = _test_fixtures_interactions_module_types.CustomException.create(try_make_shared_exception[_test_fixtures_interactions_module_types.cCustomException](result.exception()))
+            exc = _test_fixtures_interactions_module_types.CustomException._fbthrift_create(try_make_shared_exception[_test_fixtures_interactions_module_types.cCustomException](result.exception()))
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
         else:
@@ -114,7 +114,7 @@ cdef void MyService_MyInteraction_truthify_callback(
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
-            pyfuture.set_result(_test_fixtures_interactions_module_types.ClientBufferedStream__bool.create(result.value(), options))
+            pyfuture.set_result(_test_fixtures_interactions_module_types.ClientBufferedStream__bool._fbthrift_create(result.value(), options))
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
@@ -153,7 +153,7 @@ cdef void MyService_MyInteractionFast_truthify_callback(
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
-            pyfuture.set_result(_test_fixtures_interactions_module_types.ClientBufferedStream__bool.create(result.value(), options))
+            pyfuture.set_result(_test_fixtures_interactions_module_types.ClientBufferedStream__bool._fbthrift_create(result.value(), options))
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 

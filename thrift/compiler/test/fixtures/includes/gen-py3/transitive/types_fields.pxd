@@ -50,6 +50,6 @@ cdef class __Foo_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __Foo_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __Foo_FieldsSetter create(_transitive_types.cFoo* struct_cpp_obj)
+    cdef __Foo_FieldsSetter _fbthrift_create(_transitive_types.cFoo* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
 

@@ -90,7 +90,7 @@ cdef class Empty(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__Empty_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cEmpty])
+    cdef _fbthrift_create(shared_ptr[cEmpty])
 
 cdef class __NadaType(thrift.py3.types.CompiledEnum):
     pass
@@ -110,7 +110,7 @@ cdef class Nada(thrift.py3.types.Union):
     ) except *
 
     @staticmethod
-    cdef create(shared_ptr[cNada])
+    cdef _fbthrift_create(shared_ptr[cNada])
 
 
 

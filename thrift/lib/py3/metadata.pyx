@@ -95,7 +95,7 @@ cdef class ThriftTypeProxy:
         self.thriftMeta = thriftMeta
 
     @staticmethod
-    cdef create(ThriftType thriftType, ThriftMetadata thriftMeta):
+    cdef _fbthrift_create(ThriftType thriftType, ThriftMetadata thriftMeta):
         # Determine value and kind
         if thriftType.type is ThriftType.Type.t_list:
             return ThriftListProxy(thriftType.value, thriftMeta)
@@ -178,7 +178,7 @@ cdef class ThriftSetProxy(ThriftTypeProxy):
     def __init__(self, ThriftSetType thriftType not None, ThriftMetadata thriftMeta not None):
         super().__init__(thriftType, thriftMeta)
         self.kind = ThriftKind.SET
-        self.valueType = ThriftTypeProxy.create(self.thriftType.valueType, self.thriftMeta)
+        self.valueType = ThriftTypeProxy._fbthrift_create(self.thriftType.valueType, self.thriftMeta)
 
 
 cdef class ThriftListProxy(ThriftTypeProxy):
@@ -187,7 +187,7 @@ cdef class ThriftListProxy(ThriftTypeProxy):
     def __init__(self, ThriftListType thriftType not None, ThriftMetadata thriftMeta not None):
         super().__init__(thriftType, thriftMeta)
         self.kind = ThriftKind.LIST
-        self.valueType = ThriftTypeProxy.create(self.thriftType.valueType, self.thriftMeta)
+        self.valueType = ThriftTypeProxy._fbthrift_create(self.thriftType.valueType, self.thriftMeta)
 
 
 cdef class ThriftMapProxy(ThriftTypeProxy):
@@ -197,8 +197,8 @@ cdef class ThriftMapProxy(ThriftTypeProxy):
     def __init__(self, ThriftMapType thriftType not None, ThriftMetadata thriftMeta not None):
         super().__init__(thriftType, thriftMeta)
         self.kind = ThriftKind.MAP
-        self.valueType = ThriftTypeProxy.create(self.thriftType.valueType, self.thriftMeta)
-        self.keyType = ThriftTypeProxy.create(self.thriftType.keyType, self.thriftMeta)
+        self.valueType = ThriftTypeProxy._fbthrift_create(self.thriftType.valueType, self.thriftMeta)
+        self.keyType = ThriftTypeProxy._fbthrift_create(self.thriftType.keyType, self.thriftMeta)
 
 
 cdef class ThriftTypedefProxy(ThriftTypeProxy):
@@ -209,7 +209,7 @@ cdef class ThriftTypedefProxy(ThriftTypeProxy):
         super().__init__(thriftType, thriftMeta)
         self.kind = ThriftKind.TYPEDEF
         self.name = self.thriftType.name
-        self.underlyingType = ThriftTypeProxy.create(self.thriftType.underlyingType, self.thriftMeta)
+        self.underlyingType = ThriftTypeProxy._fbthrift_create(self.thriftType.underlyingType, self.thriftMeta)
 
 
 cdef class ThriftSinkProxy(ThriftTypeProxy):
@@ -220,11 +220,11 @@ cdef class ThriftSinkProxy(ThriftTypeProxy):
     def __init__(self, ThriftSinkType thriftType not None, ThriftMetadata thriftMeta not None):
         super().__init__(thriftType, thriftMeta)
         self.kind = ThriftKind.SINK
-        self.elemType = ThriftTypeProxy.create(self.thriftType.elemType, self.thriftMeta)
+        self.elemType = ThriftTypeProxy._fbthrift_create(self.thriftType.elemType, self.thriftMeta)
         if self.thriftType.initialResponseType is not None:
-            self.initialResponseType = ThriftTypeProxy.create(self.thriftType.initialResponseType, self.thriftMeta)
+            self.initialResponseType = ThriftTypeProxy._fbthrift_create(self.thriftType.initialResponseType, self.thriftMeta)
         if self.thriftType.finalResponseType is not None:
-            self.finalResponseType = ThriftTypeProxy.create(self.thriftType.finalResponseType, self.thriftMeta)
+            self.finalResponseType = ThriftTypeProxy._fbthrift_create(self.thriftType.finalResponseType, self.thriftMeta)
 
 
 cdef class ThriftStreamProxy(ThriftTypeProxy):
@@ -234,9 +234,9 @@ cdef class ThriftStreamProxy(ThriftTypeProxy):
     def __init__(self, ThriftStreamType thriftType not None, ThriftMetadata thriftMeta not None):
         super().__init__(thriftType, thriftMeta)
         self.kind = ThriftKind.STREAM
-        self.elemType = ThriftTypeProxy.create(self.thriftType.elemType, self.thriftMeta)
+        self.elemType = ThriftTypeProxy._fbthrift_create(self.thriftType.elemType, self.thriftMeta)
         if self.thriftType.initialResponseType is not None:
-            self.initialResponseType = ThriftTypeProxy.create(self.thriftType.initialResponseType, self.thriftMeta)
+            self.initialResponseType = ThriftTypeProxy._fbthrift_create(self.thriftType.initialResponseType, self.thriftMeta)
 
 
 cdef class ThriftFieldProxy:
@@ -249,7 +249,7 @@ cdef class ThriftFieldProxy:
     cdef readonly tuple structuredAnnotations
 
     def __init__(self, ThriftField thriftType not None, ThriftMetadata thriftMeta not None):
-        self.type = ThriftTypeProxy.create(thriftType.type, thriftMeta)
+        self.type = ThriftTypeProxy._fbthrift_create(thriftType.type, thriftMeta)
         self.thriftType = thriftType
         self.thriftMeta = thriftMeta
         self.id = self.thriftType.id
@@ -391,7 +391,7 @@ cdef class ThriftFunctionProxy:
         self.name = thriftType.name
         self.thriftType = thriftType
         self.thriftMeta = thriftMeta
-        self.return_type = ThriftTypeProxy.create(self.thriftType.return_type, self.thriftMeta)
+        self.return_type = ThriftTypeProxy._fbthrift_create(self.thriftType.return_type, self.thriftMeta)
         self.is_oneway = self.thriftType.is_oneway
         self.structuredAnnotations = tuple(ThriftConstStructProxy(annotation) for annotation in self.thriftType.structured_annotations)
 
@@ -441,7 +441,7 @@ def gen_metadata(obj_or_cls):
     # get the box
     cdef MetadataBox box = cls.__get_metadata__()
     # unbox the box
-    cdef ThriftMetadata meta = ThriftMetadata.create(move(box._cpp_obj))
+    cdef ThriftMetadata meta = ThriftMetadata._fbthrift_create(move(box._cpp_obj))
     cdef str name = cls.__get_thrift_name__()
 
     if issubclass(cls, Struct):

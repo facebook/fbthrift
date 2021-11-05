@@ -38,10 +38,10 @@ to a python type.
 }}{{#type:float?}}_value{{/type:float?}}{{!
 }}{{#type:string?}}_value.data().decode('UTF-8'){{/type:string?}}{{!
 }}{{#type:binary?}}_value{{/type:binary?}}{{!
-}}{{#type:struct}}{{> types/CythonPythonType}}.create({{!
+}}{{#type:struct}}{{> types/CythonPythonType}}._fbthrift_create({{!
   }}make_shared[{{> types/CythonCppType}}]({{!
   }}_value)){{/type:struct}}{{!
-}}{{#type:container?}}{{> types/CythonPythonType}}.create({{!
+}}{{#type:container?}}{{> types/CythonPythonType}}._fbthrift_create({{!
   }}make_shared[{{> types/CythonCppType}}]({{!
   }}_value)){{/type:container?}}{{!
 }}{{#type:void?}}None{{/type:void?}}{{!

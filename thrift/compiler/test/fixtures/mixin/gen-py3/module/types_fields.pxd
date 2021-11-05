@@ -50,7 +50,7 @@ cdef class __Mixin1_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __Mixin1_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __Mixin1_FieldsSetter create(_module_types.cMixin1* struct_cpp_obj)
+    cdef __Mixin1_FieldsSetter _fbthrift_create(_module_types.cMixin1* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
 
 
@@ -61,7 +61,7 @@ cdef class __Mixin2_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __Mixin2_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __Mixin2_FieldsSetter create(_module_types.cMixin2* struct_cpp_obj)
+    cdef __Mixin2_FieldsSetter _fbthrift_create(_module_types.cMixin2* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
 
@@ -73,7 +73,7 @@ cdef class __Mixin3Base_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __Mixin3Base_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __Mixin3Base_FieldsSetter create(_module_types.cMixin3Base* struct_cpp_obj)
+    cdef __Mixin3Base_FieldsSetter _fbthrift_create(_module_types.cMixin3Base* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
 
 
@@ -84,7 +84,7 @@ cdef class __Foo_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __Foo_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __Foo_FieldsSetter create(_module_types.cFoo* struct_cpp_obj)
+    cdef __Foo_FieldsSetter _fbthrift_create(_module_types.cFoo* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *

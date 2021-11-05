@@ -131,7 +131,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef object __fbthrift_cached_myEnum
 
     @staticmethod
-    cdef create(shared_ptr[cMyStruct])
+    cdef _fbthrift_create(shared_ptr[cMyStruct])
 
 
 
@@ -140,7 +140,7 @@ cdef class MyDataItem(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__MyDataItem_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cMyDataItem])
+    cdef _fbthrift_create(shared_ptr[cMyDataItem])
 
 cdef class __MyUnionType(thrift.py3.types.CompiledEnum):
     pass
@@ -163,7 +163,7 @@ cdef class MyUnion(thrift.py3.types.Union):
     ) except *
 
     @staticmethod
-    cdef create(shared_ptr[cMyUnion])
+    cdef _fbthrift_create(shared_ptr[cMyUnion])
 
 
 

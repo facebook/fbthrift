@@ -34,7 +34,7 @@ cdef class Promise_{{> types/CythonCppTypeIdent}}_Stream:
         }}]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[optional[{{{!
+    cdef _fbthrift_create(cFollyPromise[optional[{{{!
             }}{{> types/CythonCppType}}{{!
         }}]] cPromise):
         cdef Promise_{{> types/CythonCppTypeIdent}}_Stream inst = Promise_{{> types/CythonCppTypeIdent}}_Stream.__new__({{!

@@ -50,5 +50,5 @@ cdef class __Empty_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __Empty_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __Empty_FieldsSetter create(_module_types.cEmpty* struct_cpp_obj)
+    cdef __Empty_FieldsSetter _fbthrift_create(_module_types.cEmpty* struct_cpp_obj)
 

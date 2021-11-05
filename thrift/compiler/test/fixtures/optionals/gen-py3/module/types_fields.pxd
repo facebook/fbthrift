@@ -50,7 +50,7 @@ cdef class __Color_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __Color_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __Color_FieldsSetter create(_module_types.cColor* struct_cpp_obj)
+    cdef __Color_FieldsSetter _fbthrift_create(_module_types.cColor* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *
@@ -64,7 +64,7 @@ cdef class __Vehicle_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __Vehicle_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __Vehicle_FieldsSetter create(_module_types.cVehicle* struct_cpp_obj)
+    cdef __Vehicle_FieldsSetter _fbthrift_create(_module_types.cVehicle* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *
@@ -79,7 +79,7 @@ cdef class __Person_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __Person_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __Person_FieldsSetter create(_module_types.cPerson* struct_cpp_obj)
+    cdef __Person_FieldsSetter _fbthrift_create(_module_types.cPerson* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *

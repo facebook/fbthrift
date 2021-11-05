@@ -22,7 +22,7 @@ from thrift.py3.types cimport const_pointer_cast
 cdef class __Val_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __Val_FieldsSetter create(_module_types.cVal* struct_cpp_obj):
+    cdef __Val_FieldsSetter _fbthrift_create(_module_types.cVal* struct_cpp_obj):
         cdef __Val_FieldsSetter __fbthrift_inst = __Val_FieldsSetter.__new__(__Val_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"strVal")] = __Val_FieldsSetter._set_field_0
@@ -68,7 +68,7 @@ cdef class __Val_FieldsSetter(__StructFieldsSetter):
 cdef class __NonCopyableStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __NonCopyableStruct_FieldsSetter create(_module_types.cNonCopyableStruct* struct_cpp_obj):
+    cdef __NonCopyableStruct_FieldsSetter _fbthrift_create(_module_types.cNonCopyableStruct* struct_cpp_obj):
         cdef __NonCopyableStruct_FieldsSetter __fbthrift_inst = __NonCopyableStruct_FieldsSetter.__new__(__NonCopyableStruct_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"num")] = __NonCopyableStruct_FieldsSetter._set_field_0

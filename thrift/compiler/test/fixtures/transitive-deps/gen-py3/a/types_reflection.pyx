@@ -26,19 +26,19 @@ from thrift.py3.types cimport (
 
 
 cdef __StructSpec get_reflection__A():
-    cdef _a_types.A defaults = _a_types.A.create(
+    cdef _a_types.A defaults = _a_types.A._fbthrift_create(
         constant_shared_ptr[_a_types.cA](
             default_inst[_a_types.cA]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="A",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="b",
             type=_a_types.List__List__c_C,
@@ -50,7 +50,7 @@ cdef __StructSpec get_reflection__A():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="other",
             type=_a_types.List__c_C,
@@ -63,13 +63,13 @@ cdef __StructSpec get_reflection__A():
     )
     return spec
 cdef __ListSpec get_reflection__List__c_C():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_c_types.C,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __ListSpec get_reflection__List__List__c_C():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_a_types.List__c_C,
         kind=__NumberType.NOT_A_NUMBER,
     )

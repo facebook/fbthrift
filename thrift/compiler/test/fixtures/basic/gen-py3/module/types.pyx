@@ -57,7 +57,7 @@ import builtins as _builtins
 cimport module.types_reflection as _types_reflection
 
 
-cdef __EnumData __MyEnum_enum_data  = __EnumData.create(thrift.py3.types.createEnumData[cMyEnum](), MyEnum)
+cdef __EnumData __MyEnum_enum_data  = __EnumData._fbthrift_create(thrift.py3.types.createEnumData[cMyEnum](), MyEnum)
 
 
 @__cython.internal
@@ -100,7 +100,7 @@ __SetMetaClass(<PyTypeObject*> MyEnum, <PyTypeObject*> __MyEnumMeta)
 
 
 
-cdef __UnionTypeEnumData __MyUnion_union_type_enum_data  = __UnionTypeEnumData.create(
+cdef __UnionTypeEnumData __MyUnion_union_type_enum_data  = __UnionTypeEnumData._fbthrift_create(
     __createEnumDataForUnionType[cMyUnion](),
     __MyUnionType,
 )
@@ -138,7 +138,7 @@ __SetMetaClass(<PyTypeObject*> __MyUnionType, <PyTypeObject*> __MyUnion_Union_Ty
 cdef class MyStruct(thrift.py3.types.Struct):
     def __init__(MyStruct self, **kwargs):
         self._cpp_obj = make_shared[cMyStruct]()
-        self._fields_setter = _fbthrift_types_fields.__MyStruct_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__MyStruct_FieldsSetter._fbthrift_create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(MyStruct self, **kwargs):
@@ -146,7 +146,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
             return self
         cdef MyStruct __fbthrift_inst = MyStruct.__new__(MyStruct)
         __fbthrift_inst._cpp_obj = make_shared[cMyStruct](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__MyStruct_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__MyStruct_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
         for __fbthrift_name, _fbthrift_value in kwargs.items():
             __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
@@ -166,7 +166,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         })
 
     @staticmethod
-    cdef create(shared_ptr[cMyStruct] cpp_obj):
+    cdef _fbthrift_create(shared_ptr[cMyStruct] cpp_obj):
         __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
@@ -185,7 +185,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def MyDataField(self):
 
         if self.__fbthrift_cached_MyDataField is None:
-            self.__fbthrift_cached_MyDataField = MyDataItem.create(__reference_shared_ptr(deref(self._cpp_obj).MyDataField_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_MyDataField = MyDataItem._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).MyDataField_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_MyDataField
 
     @property
@@ -225,7 +225,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
             deref(self._cpp_obj)
         )
-        return MyStruct.create(cmove(cpp_obj))
+        return MyStruct._fbthrift_create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
         r = self._fbthrift_cmp_sametype(other, op)
@@ -273,7 +273,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
 cdef class MyDataItem(thrift.py3.types.Struct):
     def __init__(MyDataItem self, **kwargs):
         self._cpp_obj = make_shared[cMyDataItem]()
-        self._fields_setter = _fbthrift_types_fields.__MyDataItem_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__MyDataItem_FieldsSetter._fbthrift_create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(MyDataItem self, **kwargs):
@@ -287,7 +287,7 @@ cdef class MyDataItem(thrift.py3.types.Struct):
         })
 
     @staticmethod
-    cdef create(shared_ptr[cMyDataItem] cpp_obj):
+    cdef _fbthrift_create(shared_ptr[cMyDataItem] cpp_obj):
         __fbthrift_inst = <MyDataItem>MyDataItem.__new__(MyDataItem)
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
@@ -307,7 +307,7 @@ cdef class MyDataItem(thrift.py3.types.Struct):
         cdef shared_ptr[cMyDataItem] cpp_obj = make_shared[cMyDataItem](
             deref(self._cpp_obj)
         )
-        return MyDataItem.create(cmove(cpp_obj))
+        return MyDataItem._fbthrift_create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
         r = self._fbthrift_cmp_sametype(other, op)
@@ -412,7 +412,7 @@ cdef class MyUnion(thrift.py3.types.Union):
         return cmove(c_inst)
 
     @staticmethod
-    cdef create(shared_ptr[cMyUnion] cpp_obj):
+    cdef _fbthrift_create(shared_ptr[cMyUnion] cpp_obj):
         __fbthrift_inst = <MyUnion>MyUnion.__new__(MyUnion)
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         __fbthrift_inst._load_cache()
@@ -448,15 +448,15 @@ cdef class MyUnion(thrift.py3.types.Union):
         elif type == 1:
             self.value = translate_cpp_enum_to_python(MyEnum, <int>deref(self._cpp_obj).get_myEnum())
         elif type == 2:
-            self.value = MyStruct.create(make_shared[cMyStruct](deref(self._cpp_obj).get_myStruct()))
+            self.value = MyStruct._fbthrift_create(make_shared[cMyStruct](deref(self._cpp_obj).get_myStruct()))
         elif type == 3:
-            self.value = MyDataItem.create(make_shared[cMyDataItem](deref(self._cpp_obj).get_myDataItem()))
+            self.value = MyDataItem._fbthrift_create(make_shared[cMyDataItem](deref(self._cpp_obj).get_myDataItem()))
 
     def __copy__(MyUnion self):
         cdef shared_ptr[cMyUnion] cpp_obj = make_shared[cMyUnion](
             deref(self._cpp_obj)
         )
-        return MyUnion.create(cmove(cpp_obj))
+        return MyUnion._fbthrift_create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
         r = self._fbthrift_cmp_sametype(other, op)

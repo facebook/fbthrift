@@ -23,11 +23,11 @@ def simulate_HardError(str errortext, int32_t code):
     cdef shared_ptr[testing.types.cHardError] c_inst
     c_inst = make_shared[testing.types.cHardError]()
     deref(c_inst).errortext_ref().assign(<bytes>errortext.encode('utf-8'))
-    deref(c_inst).code_ref().assign(code)
-    return testing.types.HardError.create(c_inst)
+    deref(c_inst).code = code
+    return testing.types.HardError._fbthrift_create(c_inst)
 
 def simulate_UnusedError(str message):
     cdef shared_ptr[testing.types.cUnusedError] c_inst
     c_inst = make_shared[testing.types.cUnusedError]()
     deref(c_inst).message_ref().assign(<bytes>message.encode('utf-8'))
-    return testing.types.UnusedError.create(c_inst)
+    return testing.types.UnusedError._fbthrift_create(c_inst)

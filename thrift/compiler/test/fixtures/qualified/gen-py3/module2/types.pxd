@@ -95,7 +95,7 @@ cdef class Struct(thrift.py3.types.Struct):
     cdef _module1_types.Struct __fbthrift_cached_second
 
     @staticmethod
-    cdef create(shared_ptr[cStruct])
+    cdef _fbthrift_create(shared_ptr[cStruct])
 
 
 
@@ -105,7 +105,7 @@ cdef class BigStruct(thrift.py3.types.Struct):
     cdef Struct __fbthrift_cached_s
 
     @staticmethod
-    cdef create(shared_ptr[cBigStruct])
+    cdef _fbthrift_create(shared_ptr[cBigStruct])
 
 
 

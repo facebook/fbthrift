@@ -26,19 +26,19 @@ from thrift.py3.types cimport (
 
 
 cdef __StructSpec get_reflection__Struct():
-    cdef _module2_types.Struct defaults = _module2_types.Struct.create(
+    cdef _module2_types.Struct defaults = _module2_types.Struct._fbthrift_create(
         constant_shared_ptr[_module2_types.cStruct](
             default_inst[_module2_types.cStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="Struct",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="first",
             type=_module0_types.Struct,
@@ -50,7 +50,7 @@ cdef __StructSpec get_reflection__Struct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="second",
             type=_module1_types.Struct,
@@ -63,19 +63,19 @@ cdef __StructSpec get_reflection__Struct():
     )
     return spec
 cdef __StructSpec get_reflection__BigStruct():
-    cdef _module2_types.BigStruct defaults = _module2_types.BigStruct.create(
+    cdef _module2_types.BigStruct defaults = _module2_types.BigStruct._fbthrift_create(
         constant_shared_ptr[_module2_types.cBigStruct](
             default_inst[_module2_types.cBigStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="BigStruct",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="s",
             type=_module2_types.Struct,
@@ -87,7 +87,7 @@ cdef __StructSpec get_reflection__BigStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="id",
             type=int,

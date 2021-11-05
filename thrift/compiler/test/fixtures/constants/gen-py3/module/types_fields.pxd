@@ -50,7 +50,7 @@ cdef class __Internship_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __Internship_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __Internship_FieldsSetter create(_module_types.cInternship* struct_cpp_obj)
+    cdef __Internship_FieldsSetter _fbthrift_create(_module_types.cInternship* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *
@@ -65,7 +65,7 @@ cdef class __Range_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __Range_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __Range_FieldsSetter create(_module_types.cRange* struct_cpp_obj)
+    cdef __Range_FieldsSetter _fbthrift_create(_module_types.cRange* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
 
@@ -77,7 +77,7 @@ cdef class __struct1_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __struct1_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __struct1_FieldsSetter create(_module_types.cstruct1* struct_cpp_obj)
+    cdef __struct1_FieldsSetter _fbthrift_create(_module_types.cstruct1* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
 
@@ -89,7 +89,7 @@ cdef class __struct2_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __struct2_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __struct2_FieldsSetter create(_module_types.cstruct2* struct_cpp_obj)
+    cdef __struct2_FieldsSetter _fbthrift_create(_module_types.cstruct2* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *
@@ -103,7 +103,7 @@ cdef class __struct3_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __struct3_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __struct3_FieldsSetter create(_module_types.cstruct3* struct_cpp_obj)
+    cdef __struct3_FieldsSetter _fbthrift_create(_module_types.cstruct3* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *
@@ -116,7 +116,7 @@ cdef class __struct4_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __struct4_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __struct4_FieldsSetter create(_module_types.cstruct4* struct_cpp_obj)
+    cdef __struct4_FieldsSetter _fbthrift_create(_module_types.cstruct4* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *

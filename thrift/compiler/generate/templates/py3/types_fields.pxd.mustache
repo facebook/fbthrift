@@ -69,7 +69,7 @@ cdef class __{{struct:name}}_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __{{struct:name}}_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __{{struct:name}}_FieldsSetter create({{> types/CurrentModuleTypes}}.c{{struct:name}}* struct_cpp_obj)
+    cdef __{{struct:name}}_FieldsSetter _fbthrift_create({{> types/CurrentModuleTypes}}.c{{struct:name}}* struct_cpp_obj)
     {{#struct:py3_fields}}
     {{#field:type}}
     cdef void _set_field_{{field:index}}(self, _fbthrift_value) except *

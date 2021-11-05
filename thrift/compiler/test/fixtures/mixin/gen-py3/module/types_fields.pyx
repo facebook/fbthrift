@@ -22,7 +22,7 @@ from thrift.py3.types cimport const_pointer_cast
 cdef class __Mixin1_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __Mixin1_FieldsSetter create(_module_types.cMixin1* struct_cpp_obj):
+    cdef __Mixin1_FieldsSetter _fbthrift_create(_module_types.cMixin1* struct_cpp_obj):
         cdef __Mixin1_FieldsSetter __fbthrift_inst = __Mixin1_FieldsSetter.__new__(__Mixin1_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"field1")] = __Mixin1_FieldsSetter._set_field_0
@@ -49,7 +49,7 @@ cdef class __Mixin1_FieldsSetter(__StructFieldsSetter):
 cdef class __Mixin2_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __Mixin2_FieldsSetter create(_module_types.cMixin2* struct_cpp_obj):
+    cdef __Mixin2_FieldsSetter _fbthrift_create(_module_types.cMixin2* struct_cpp_obj):
         cdef __Mixin2_FieldsSetter __fbthrift_inst = __Mixin2_FieldsSetter.__new__(__Mixin2_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"m1")] = __Mixin2_FieldsSetter._set_field_0
@@ -86,7 +86,7 @@ cdef class __Mixin2_FieldsSetter(__StructFieldsSetter):
 cdef class __Mixin3Base_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __Mixin3Base_FieldsSetter create(_module_types.cMixin3Base* struct_cpp_obj):
+    cdef __Mixin3Base_FieldsSetter _fbthrift_create(_module_types.cMixin3Base* struct_cpp_obj):
         cdef __Mixin3Base_FieldsSetter __fbthrift_inst = __Mixin3Base_FieldsSetter.__new__(__Mixin3Base_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"field3")] = __Mixin3Base_FieldsSetter._set_field_0
@@ -113,7 +113,7 @@ cdef class __Mixin3Base_FieldsSetter(__StructFieldsSetter):
 cdef class __Foo_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __Foo_FieldsSetter create(_module_types.cFoo* struct_cpp_obj):
+    cdef __Foo_FieldsSetter _fbthrift_create(_module_types.cFoo* struct_cpp_obj):
         cdef __Foo_FieldsSetter __fbthrift_inst = __Foo_FieldsSetter.__new__(__Foo_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"field4")] = __Foo_FieldsSetter._set_field_0

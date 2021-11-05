@@ -79,7 +79,7 @@ cdef class Promise_cbool:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cbool] cPromise):
+    cdef _fbthrift_create(cFollyPromise[cbool] cPromise):
         cdef Promise_cbool inst = Promise_cbool.__new__(Promise_cbool)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -95,7 +95,7 @@ cdef class Promise_string:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[string]] cPromise):
+    cdef _fbthrift_create(cFollyPromise[unique_ptr[string]] cPromise):
         cdef Promise_string inst = Promise_string.__new__(Promise_string)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -111,7 +111,7 @@ cdef class Promise_cFollyUnit:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cFollyUnit] cPromise):
+    cdef _fbthrift_create(cFollyPromise[cFollyUnit] cPromise):
         cdef Promise_cFollyUnit inst = Promise_cFollyUnit.__new__(Promise_cFollyUnit)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -260,8 +260,8 @@ cdef api void call_cy_MyService_ping(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyService_ping_coro(
@@ -304,8 +304,8 @@ cdef api void call_cy_MyService_getRandomData(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
 ):
-    cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_string __promise = Promise_string._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyService_getRandomData_coro(
@@ -349,9 +349,9 @@ cdef api void call_cy_MyService_hasDataById(
     cFollyPromise[cbool] cPromise,
     cint64_t id
 ):
-    cdef Promise_cbool __promise = Promise_cbool.create(cmove(cPromise))
+    cdef Promise_cbool __promise = Promise_cbool._fbthrift_create(cmove(cPromise))
     arg_id = id
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyService_hasDataById_coro(
@@ -398,9 +398,9 @@ cdef api void call_cy_MyService_getDataById(
     cFollyPromise[unique_ptr[string]] cPromise,
     cint64_t id
 ):
-    cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
+    cdef Promise_string __promise = Promise_string._fbthrift_create(cmove(cPromise))
     arg_id = id
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyService_getDataById_coro(
@@ -448,10 +448,10 @@ cdef api void call_cy_MyService_putDataById(
     cint64_t id,
     unique_ptr[string] data
 ):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
     arg_id = id
     arg_data = (deref(data)).data().decode('UTF-8')
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyService_putDataById_coro(
@@ -502,10 +502,10 @@ cdef api void call_cy_MyService_lobDataById(
     cint64_t id,
     unique_ptr[string] data
 ):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
     arg_id = id
     arg_data = (deref(data)).data().decode('UTF-8')
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyService_lobDataById_coro(
@@ -554,8 +554,8 @@ cdef api void call_cy_MyService_doNothing(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyService_doNothing_coro(
@@ -598,8 +598,8 @@ cdef api void call_cy_MyServicePrioParent_ping(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyServicePrioParent_ping_coro(
@@ -642,8 +642,8 @@ cdef api void call_cy_MyServicePrioParent_pong(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyServicePrioParent_pong_coro(
@@ -686,8 +686,8 @@ cdef api void call_cy_MyServicePrioChild_pang(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyServicePrioChild_pang_coro(

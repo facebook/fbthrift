@@ -50,6 +50,6 @@ cdef class __CustomException_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __CustomException_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __CustomException_FieldsSetter create(_test_fixtures_interactions_module_types.cCustomException* struct_cpp_obj)
+    cdef __CustomException_FieldsSetter _fbthrift_create(_test_fixtures_interactions_module_types.cCustomException* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
 

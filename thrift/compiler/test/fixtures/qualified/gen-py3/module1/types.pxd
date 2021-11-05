@@ -90,13 +90,13 @@ cdef class Struct(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__Struct_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cStruct])
+    cdef _fbthrift_create(shared_ptr[cStruct])
 
 
 cdef class List__Enum(thrift.py3.types.List):
     cdef shared_ptr[vector[cEnum]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cEnum]])
+    cdef _fbthrift_create(shared_ptr[vector[cEnum]])
     @staticmethod
     cdef shared_ptr[vector[cEnum]] _make_instance(object items) except *
 

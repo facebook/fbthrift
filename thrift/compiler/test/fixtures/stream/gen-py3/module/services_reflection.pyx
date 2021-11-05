@@ -18,23 +18,23 @@ cimport module.types as _module_types
 
 
 cdef __InterfaceSpec get_reflection__PubSubStreamingService(bint for_clients):
-    cdef __InterfaceSpec spec = __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec._fbthrift_create(
         name="PubSubStreamingService",
         annotations={
         },
     )
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="returnstream",
             arguments=(
-                __ArgumentSpec.create(
+                __ArgumentSpec._fbthrift_create(
                     name="i32_from",
                     type=int,
                     kind=__NumberType.I32,
                     annotations={
                     },
                 ),
-                __ArgumentSpec.create(
+                __ArgumentSpec._fbthrift_create(
                     name="i32_to",
                     type=int,
                     kind=__NumberType.I32,
@@ -51,10 +51,10 @@ cdef __InterfaceSpec get_reflection__PubSubStreamingService(bint for_clients):
         )
     )
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="streamthrows",
             arguments=(
-                __ArgumentSpec.create(
+                __ArgumentSpec._fbthrift_create(
                     name="foo",
                     type=int,
                     kind=__NumberType.I32,
@@ -71,10 +71,10 @@ cdef __InterfaceSpec get_reflection__PubSubStreamingService(bint for_clients):
         )
     )
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="boththrows",
             arguments=(
-                __ArgumentSpec.create(
+                __ArgumentSpec._fbthrift_create(
                     name="foo",
                     type=int,
                     kind=__NumberType.I32,
@@ -92,10 +92,10 @@ cdef __InterfaceSpec get_reflection__PubSubStreamingService(bint for_clients):
         )
     )
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="responseandstreamthrows",
             arguments=(
-                __ArgumentSpec.create(
+                __ArgumentSpec._fbthrift_create(
                     name="foo",
                     type=int,
                     kind=__NumberType.I32,
@@ -113,17 +113,17 @@ cdef __InterfaceSpec get_reflection__PubSubStreamingService(bint for_clients):
         )
     )
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="returnstreamFast",
             arguments=(
-                __ArgumentSpec.create(
+                __ArgumentSpec._fbthrift_create(
                     name="i32_from",
                     type=int,
                     kind=__NumberType.I32,
                     annotations={
                     },
                 ),
-                __ArgumentSpec.create(
+                __ArgumentSpec._fbthrift_create(
                     name="i32_to",
                     type=int,
                     kind=__NumberType.I32,

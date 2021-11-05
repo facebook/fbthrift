@@ -21,23 +21,23 @@ cimport service.types as _service_types
 
 
 cdef __InterfaceSpec get_reflection__MyService(bint for_clients):
-    cdef __InterfaceSpec spec = __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec._fbthrift_create(
         name="MyService",
         annotations={
         },
     )
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="query",
             arguments=(
-                __ArgumentSpec.create(
+                __ArgumentSpec._fbthrift_create(
                     name="s",
                     type=_module_types.MyStruct,
                     kind=__NumberType.NOT_A_NUMBER,
                     annotations={
                     },
                 ),
-                __ArgumentSpec.create(
+                __ArgumentSpec._fbthrift_create(
                     name="i",
                     type=_includes_types.Included,
                     kind=__NumberType.NOT_A_NUMBER,
@@ -54,17 +54,17 @@ cdef __InterfaceSpec get_reflection__MyService(bint for_clients):
         )
     )
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="has_arg_docs",
             arguments=(
-                __ArgumentSpec.create(
+                __ArgumentSpec._fbthrift_create(
                     name="s",
                     type=_module_types.MyStruct,
                     kind=__NumberType.NOT_A_NUMBER,
                     annotations={
                     },
                 ),
-                __ArgumentSpec.create(
+                __ArgumentSpec._fbthrift_create(
                     name="i",
                     type=_includes_types.Included,
                     kind=__NumberType.NOT_A_NUMBER,

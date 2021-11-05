@@ -25,19 +25,19 @@ from thrift.py3.types cimport (
 
 
 cdef __StructSpec get_reflection__MyStruct():
-    cdef _matching_struct_names_types.MyStruct defaults = _matching_struct_names_types.MyStruct.create(
+    cdef _matching_struct_names_types.MyStruct defaults = _matching_struct_names_types.MyStruct._fbthrift_create(
         constant_shared_ptr[_matching_struct_names_types.cMyStruct](
             default_inst[_matching_struct_names_types.cMyStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="MyStruct",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="field",
             type=str,
@@ -50,19 +50,19 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     return spec
 cdef __StructSpec get_reflection__Combo():
-    cdef _matching_struct_names_types.Combo defaults = _matching_struct_names_types.Combo.create(
+    cdef _matching_struct_names_types.Combo defaults = _matching_struct_names_types.Combo._fbthrift_create(
         constant_shared_ptr[_matching_struct_names_types.cCombo](
             default_inst[_matching_struct_names_types.cCombo]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="Combo",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="listOfOurMyStructLists",
             type=_matching_struct_names_types.List__List__MyStruct,
@@ -74,7 +74,7 @@ cdef __StructSpec get_reflection__Combo():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="theirMyStructList",
             type=_matching_struct_names_types.List__module_MyStruct,
@@ -86,7 +86,7 @@ cdef __StructSpec get_reflection__Combo():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=3,
             name="ourMyStructList",
             type=_matching_struct_names_types.List__MyStruct,
@@ -98,7 +98,7 @@ cdef __StructSpec get_reflection__Combo():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=4,
             name="listOfTheirMyStructList",
             type=_matching_struct_names_types.List__List__module_MyStruct,
@@ -111,25 +111,25 @@ cdef __StructSpec get_reflection__Combo():
     )
     return spec
 cdef __ListSpec get_reflection__List__MyStruct():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_matching_struct_names_types.MyStruct,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __ListSpec get_reflection__List__List__MyStruct():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_matching_struct_names_types.List__MyStruct,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __ListSpec get_reflection__List__module_MyStruct():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.MyStruct,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __ListSpec get_reflection__List__List__module_MyStruct():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_matching_struct_names_types.List__module_MyStruct,
         kind=__NumberType.NOT_A_NUMBER,
     )
