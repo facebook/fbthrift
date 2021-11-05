@@ -5,13 +5,14 @@
 #  @generated
 #
 
+from thrift.py3lite.client.client_wrapper import ClientWrapper as _fbthrift_py3lite_ClientWrapper
 from thrift.py3lite.sync_client import SyncClient as _fbthrift_py3lite_SyncClient
 from thrift.py3lite.async_client import AsyncClient as _fbthrift_py3lite_AsyncClient
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 import module.lite_types
 
 
-class MyService:
+class MyService(_fbthrift_py3lite_ClientWrapper["MyService.Async", "MyService.Sync"]):
     class Sync(_fbthrift_py3lite_SyncClient):
         def __init__(self, channel):
             super().__init__(channel)
@@ -255,7 +256,7 @@ class MyService:
             )
 
 
-class DbMixedStackArguments:
+class DbMixedStackArguments(_fbthrift_py3lite_ClientWrapper["DbMixedStackArguments.Async", "DbMixedStackArguments.Sync"]):
     class Sync(_fbthrift_py3lite_SyncClient):
         def __init__(self, channel):
             super().__init__(channel)

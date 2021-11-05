@@ -16,10 +16,10 @@ import asyncio
 import contextlib
 import tempfile
 import time
+import typing
 from multiprocessing import Process
-from typing import List
 
-from thrift.py3.server import ThriftServer
+from thrift.py3.server import ThriftServer, SocketAddress
 from thrift.py3lite.leaf.services import LeafServiceInterface
 from thrift.py3lite.test.services import EchoServiceInterface, TestServiceInterface
 from thrift.py3lite.test.types import ArithmeticException, EmptyException
@@ -33,7 +33,7 @@ class TestServiceHandler(TestServiceInterface):
         try:
             return dividend / divisor
         except ZeroDivisionError as e:
-            raise ArithmeticException(str(e))
+            raise ArithmeticException(msg=str(e))
 
     async def noop(self) -> None:
         pass
@@ -54,17 +54,17 @@ class EchoServiceHandler(TestServiceHandler, EchoServiceInterface):
 
 
 class LeafServiceHandler(EchoServiceHandler, LeafServiceInterface):
-    async def reverse(self, input: List[int]) -> List[int]:
-        return reversed(input)
+    async def reverse(self, input: typing.Sequence[int]) -> typing.Sequence[int]:
+        return list(reversed(input))
 
 
 @contextlib.contextmanager
-def server_in_another_process():
-    async def start_server_async(path):
+def server_in_another_process() -> typing.Generator[str, None, None]:
+    async def start_server_async(path: str) -> None:
         server = ThriftServer(LeafServiceHandler(), path=path)
         await server.serve()
 
-    def start_server(path):
+    def start_server(path: str) -> None:
         asyncio.run(start_server_async(path))
 
     with tempfile.NamedTemporaryFile() as socket:
@@ -80,7 +80,7 @@ def server_in_another_process():
 
 
 @contextlib.asynccontextmanager
-async def server_in_event_loop():
+async def server_in_event_loop() -> typing.AsyncGenerator[SocketAddress, None]:
     server = ThriftServer(LeafServiceHandler(), ip="::1")
     serve_task = asyncio.get_event_loop().create_task(server.serve())
     addr = await server.get_address()

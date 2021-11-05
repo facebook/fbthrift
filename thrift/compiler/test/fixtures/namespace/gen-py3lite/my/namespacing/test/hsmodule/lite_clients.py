@@ -5,13 +5,14 @@
 #  @generated
 #
 
+from thrift.py3lite.client.client_wrapper import ClientWrapper as _fbthrift_py3lite_ClientWrapper
 from thrift.py3lite.sync_client import SyncClient as _fbthrift_py3lite_SyncClient
 from thrift.py3lite.async_client import AsyncClient as _fbthrift_py3lite_AsyncClient
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 import my.namespacing.test.hsmodule.lite_types
 
 
-class HsTestService:
+class HsTestService(_fbthrift_py3lite_ClientWrapper["HsTestService.Async", "HsTestService.Sync"]):
     class Sync(_fbthrift_py3lite_SyncClient):
         def __init__(self, channel):
             super().__init__(channel)

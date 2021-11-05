@@ -12,18 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import enum
+import ipaddress
 import types
 import typing
 
+from thrift.py3lite.client.client_wrapper import ClientWrapper
 from thrift.py3lite.client.request_channel import RequestChannel
 from thrift.py3lite.serializer import Protocol
 from thrift.py3lite.types import Struct, Union
 
+TSyncClient = typing.TypeVar("TSyncClient")
 StructOrUnion = typing.TypeVar("StructOrUnion", bound=typing.Union[Struct, Union])
 
 class SyncClient:
     def __init__(self, channel: RequestChannel, service_name: str) -> None: ...
-    def __enter__() -> SyncClient: ...
+    def __enter__(self: TSyncClient) -> TSyncClient: ...
     def __exit__(
         self,
         type: typing.Type[Exception],
@@ -37,19 +41,21 @@ class SyncClient:
         response_cls: typing.Type[StructOrUnion],
     ) -> StructOrUnion: ...
 
-TClient = TypeVar("TClient", bound="SyncClient")
-
-class ClientType(Enum):
+class ClientType(enum.Enum):
     THRIFT_HEADER_CLIENT_TYPE: ClientType = ...
     THRIFT_ROCKET_CLIENT_TYPE: ClientType = ...
 
 def get_client(
-    clientKlass: Type[TClient],
+    clientKlass: typing.Type[
+        ClientWrapper[typing.TypeVar("TAsyncClient"), TSyncClient]
+    ],
     *,
-    host: Optional[str] = ...,
-    port: Optional[int] = ...,
-    path: Optional[str] = ...,
+    host: typing.Optional[
+        typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]
+    ] = ...,
+    port: typing.Optional[int] = ...,
+    path: typing.Optional[str] = ...,
     timeout: float = ...,
     client_type: ClientType = ...,
     protocol: Protocol = ...,
-) -> TClient: ...
+) -> TSyncClient: ...

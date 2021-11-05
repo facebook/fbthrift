@@ -5,13 +5,14 @@
 #  @generated
 #
 
+from thrift.py3lite.client.client_wrapper import ClientWrapper as _fbthrift_py3lite_ClientWrapper
 from thrift.py3lite.sync_client import SyncClient as _fbthrift_py3lite_SyncClient
 from thrift.py3lite.async_client import AsyncClient as _fbthrift_py3lite_AsyncClient
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 import empty.lite_types
 
 
-class NullService:
+class NullService(_fbthrift_py3lite_ClientWrapper["NullService.Async", "NullService.Sync"]):
     class Sync(_fbthrift_py3lite_SyncClient):
         def __init__(self, channel):
             super().__init__(channel)

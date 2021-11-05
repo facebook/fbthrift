@@ -5,6 +5,7 @@
 #  @generated
 #
 
+from thrift.py3lite.client.client_wrapper import ClientWrapper as _fbthrift_py3lite_ClientWrapper
 from thrift.py3lite.sync_client import SyncClient as _fbthrift_py3lite_SyncClient
 from thrift.py3lite.async_client import AsyncClient as _fbthrift_py3lite_AsyncClient
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
@@ -13,7 +14,7 @@ import my.namespacing.test.hsmodule.lite_types
 import my.namespacing.test.hsmodule.lite_clients
 
 
-class ExtendTestService:
+class ExtendTestService(_fbthrift_py3lite_ClientWrapper["ExtendTestService.Async", "ExtendTestService.Sync"]):
     class Sync(my.namespacing.test.hsmodule.lite_clients.HsTestService.Sync):
         def __init__(self, channel):
             super().__init__(channel)
