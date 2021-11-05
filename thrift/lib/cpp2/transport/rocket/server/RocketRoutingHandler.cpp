@@ -116,7 +116,7 @@ void RocketRoutingHandler::handleConnection(
     wangle::ConnectionManager* connectionManager,
     folly::AsyncTransport::UniquePtr sock,
     folly::SocketAddress const* address,
-    wangle::TransportInfo const&,
+    wangle::TransportInfo const& tinfo,
     std::shared_ptr<Cpp2Worker> worker) {
   if (!listening_) {
     return;
@@ -148,7 +148,7 @@ void RocketRoutingHandler::handleConnection(
   connectionManager->addConnection(connection);
 
   if (auto* observer = server->getObserver()) {
-    observer->connAccepted();
+    observer->connAccepted(tinfo);
     observer->activeConnections(
         connectionManager->getNumConnections() *
         server->getNumIOWorkerThreads());

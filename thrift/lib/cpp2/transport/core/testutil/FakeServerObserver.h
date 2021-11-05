@@ -47,7 +47,9 @@ class FakeServerObserver : public apache::thrift::server::TServerObserver {
 
   FakeServerObserver() : TServerObserver(1) {}
 
-  void connAccepted() override { ++connAccepted_; }
+  void connAccepted(const wangle::TransportInfo& /* info */) override {
+    ++connAccepted_;
+  }
 
   void connClosed() override {
     ++connClosed_;

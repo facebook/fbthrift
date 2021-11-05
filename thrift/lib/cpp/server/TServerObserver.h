@@ -24,6 +24,7 @@
 #include <string>
 
 #include <folly/Optional.h>
+#include <wangle/acceptor/TransportInfo.h>
 
 namespace apache {
 namespace thrift {
@@ -114,7 +115,7 @@ class TServerObserver {
     }
   };
 
-  virtual void connAccepted() {}
+  virtual void connAccepted(const wangle::TransportInfo&) {}
 
   virtual void connDropped() {}
 

@@ -124,7 +124,7 @@ void Cpp2Worker::onNewConnection(
         new TransportPeekingManager(
             shared_from_this(), *addr, tinfo, server_, std::move(sock));
       } else {
-        handleHeader(std::move(sock), addr);
+        handleHeader(std::move(sock), addr, tinfo);
       }
       break;
     default:
@@ -134,7 +134,9 @@ void Cpp2Worker::onNewConnection(
 }
 
 void Cpp2Worker::handleHeader(
-    folly::AsyncTransport::UniquePtr sock, const folly::SocketAddress* addr) {
+    folly::AsyncTransport::UniquePtr sock,
+    const folly::SocketAddress* addr,
+    const wangle::TransportInfo& tinfo) {
   auto fd = sock->getUnderlyingTransport<folly::AsyncSocket>()
                 ->getNetworkSocket()
                 .toFd();
@@ -151,7 +153,7 @@ void Cpp2Worker::handleHeader(
 
   auto observer = server_->getObserver();
   if (observer) {
-    observer->connAccepted();
+    observer->connAccepted(tinfo);
     observer->activeConnections(
         getConnectionManager()->getNumConnections() *
         server_->getNumIOWorkerThreads());

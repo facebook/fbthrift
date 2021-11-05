@@ -198,7 +198,7 @@ void HTTP2RoutingHandler::handleConnection(
 
   auto observer = serverConfigs_.getObserver();
   if (observer) {
-    observer->connAccepted();
+    observer->connAccepted(tinfo);
     observer->activeConnections(
         connectionManager->getNumConnections() *
         serverConfigs_.getNumIOWorkerThreads());

@@ -256,7 +256,7 @@ class TransportPeekingManager : public PeekingManagerBase,
 
       // Default to Header Transport
       if (!acceptedHandler) {
-        acceptor_->handleHeader(std::move(transport), &clientAddr_);
+        acceptor_->handleHeader(std::move(transport), &clientAddr_, tinfo_);
       }
     } catch (...) {
       LOG(ERROR) << __func__ << " failed, dropping connection: "
