@@ -24,6 +24,9 @@ struct LegacyRequestExpiryGuard {
   apache::thrift::ResponseChannelRequest::UniquePtr req;
   folly::EventBase* eb;
 
+  LegacyRequestExpiryGuard(
+      apache::thrift::ResponseChannelRequest::UniquePtr r, folly::EventBase* e)
+      : req{std::move(r)}, eb{e} {}
   LegacyRequestExpiryGuard(LegacyRequestExpiryGuard&&) = default;
   LegacyRequestExpiryGuard& operator=(LegacyRequestExpiryGuard&& other) {
     if (this != &other) {
