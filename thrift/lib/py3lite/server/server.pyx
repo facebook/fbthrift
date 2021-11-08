@@ -108,7 +108,7 @@ async def serverCallback_coro(object callFunc, str funcName, Promise_Py promise,
         promise.complete(val)
 
 cdef void combinedHandler(object func, string funcName, Cpp2RequestContext* ctx, Promise_Py promise, SerializedRequest serializedRequest, Protocol prot):
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = THRIFT_REQUEST_CONTEXT.set(__context)
 
     asyncio.get_event_loop().create_task(
