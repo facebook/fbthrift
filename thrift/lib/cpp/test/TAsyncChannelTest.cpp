@@ -880,12 +880,12 @@ class RecvChunksTest : public SocketPairTest<ChannelT> {
       // We should time out after expectedMS
       LOG(INFO) << "RecvChunksTest: testing for timeout in " << file_ << ":"
                 << line_;
-      CHECK_EQ(sender_.error(), true);
-      CHECK_EQ(recvCallback_.getRecvError(), 1);
-      CHECK_EQ(recvCallback_.getRecvDone(), 0);
-      CHECK_EQ(this->channel1_->timedOut(), true);
-      CHECK_EQ(this->channel1_->error(), true);
-      CHECK_EQ(this->channel1_->good(), false);
+      EXPECT_EQ(sender_.error(), true);
+      EXPECT_EQ(recvCallback_.getRecvError(), 1);
+      EXPECT_EQ(recvCallback_.getRecvDone(), 0);
+      EXPECT_EQ(this->channel1_->timedOut(), true);
+      EXPECT_EQ(this->channel1_->error(), true);
+      EXPECT_EQ(this->channel1_->good(), false);
 
       T_CHECK_TIMEOUT(
           start_, recvCallback_.getTimestamp(), expectedMS, tolerance);
@@ -897,13 +897,13 @@ class RecvChunksTest : public SocketPairTest<ChannelT> {
       // should consider changing this TAsyncChannel behavior?
       LOG(INFO) << "RecvChunksTest: testing for EOF with no data in " << file_
                 << ":" << line_;
-      CHECK_EQ(sender_.error(), false);
-      CHECK_EQ(recvCallback_.getRecvError(), 0);
-      CHECK_EQ(recvCallback_.getRecvDone(), 1);
-      CHECK_EQ(this->channel1_->timedOut(), false);
-      CHECK_EQ(this->channel1_->error(), false);
-      CHECK_EQ(this->channel1_->good(), false);
-      CHECK_EQ(recvBuf_.available_read(), 0);
+      EXPECT_EQ(sender_.error(), false);
+      EXPECT_EQ(recvCallback_.getRecvError(), 0);
+      EXPECT_EQ(recvCallback_.getRecvDone(), 1);
+      EXPECT_EQ(this->channel1_->timedOut(), false);
+      EXPECT_EQ(this->channel1_->error(), false);
+      EXPECT_EQ(this->channel1_->good(), false);
+      EXPECT_EQ(recvBuf_.available_read(), 0);
 
       T_CHECK_TIMEOUT(
           start_, recvCallback_.getTimestamp(), expectedMS, tolerance);
@@ -911,12 +911,12 @@ class RecvChunksTest : public SocketPairTest<ChannelT> {
       // We should get EOF after expectedMS
       LOG(INFO) << "RecvChunksTest: testing for EOF in " << file_ << ":"
                 << line_;
-      CHECK_EQ(sender_.error(), false);
-      CHECK_EQ(recvCallback_.getRecvError(), 1);
-      CHECK_EQ(recvCallback_.getRecvDone(), 0);
-      CHECK_EQ(this->channel1_->timedOut(), false);
-      CHECK_EQ(this->channel1_->error(), false);
-      CHECK_EQ(this->channel1_->good(), false);
+      EXPECT_EQ(sender_.error(), false);
+      EXPECT_EQ(recvCallback_.getRecvError(), 1);
+      EXPECT_EQ(recvCallback_.getRecvDone(), 0);
+      EXPECT_EQ(this->channel1_->timedOut(), false);
+      EXPECT_EQ(this->channel1_->error(), false);
+      EXPECT_EQ(this->channel1_->good(), false);
 
       T_CHECK_TIMEOUT(
           start_, recvCallback_.getTimestamp(), expectedMS, tolerance);
@@ -924,12 +924,12 @@ class RecvChunksTest : public SocketPairTest<ChannelT> {
       // We expect success after expectedMS
       LOG(INFO) << "RecvChunksTest: testing for success in " << file_ << ":"
                 << line_;
-      CHECK_EQ(sender_.error(), false);
-      CHECK_EQ(recvCallback_.getRecvError(), 0);
-      CHECK_EQ(recvCallback_.getRecvDone(), 1);
-      CHECK_EQ(this->channel1_->timedOut(), false);
-      CHECK_EQ(this->channel1_->error(), false);
-      CHECK_EQ(this->channel1_->good(), true);
+      EXPECT_EQ(sender_.error(), false);
+      EXPECT_EQ(recvCallback_.getRecvError(), 0);
+      EXPECT_EQ(recvCallback_.getRecvDone(), 1);
+      EXPECT_EQ(this->channel1_->timedOut(), false);
+      EXPECT_EQ(this->channel1_->error(), false);
+      EXPECT_EQ(this->channel1_->good(), true);
       msg_.checkEqual(&recvBuf_);
 
       T_CHECK_TIMEOUT(
