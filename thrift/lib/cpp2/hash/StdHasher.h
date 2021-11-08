@@ -33,16 +33,24 @@ class StdHasher {
 
   void finalize() {}
 
-  template <
-      typename Value,
-      std::enable_if_t<std::is_arithmetic_v<Value>, int> = 0>
-  void combine(Value value) {
-    result_ = folly::hash::hash_combine(value, result_);
-  }
+  void combine(bool value) { combinePrimitive(value); }
+
+  void combine(std::int8_t value) { combinePrimitive(value); }
+
+  void combine(std::int16_t value) { combinePrimitive(value); }
+
+  void combine(std::int32_t value) { combinePrimitive(value); }
+
+  void combine(std::int64_t value) { combinePrimitive(value); }
+
+  void combine(float value) { combinePrimitive(value); }
+
+  void combine(double value) { combinePrimitive(value); }
 
   void combine(const folly::IOBuf& value) {
-    folly::IOBufHash hash;
-    combine(hash(value));
+    for (const auto buf : value) {
+      combine(buf);
+    }
   }
 
   void combine(folly::ByteRange value) {
@@ -50,14 +58,21 @@ class StdHasher {
         folly::hash::hash_range(value.begin(), value.end()), result_);
   }
 
-  void combine(const StdHasher& other) { combine(other.result_); }
+  void combine(const StdHasher& other) { combinePrimitive(other.result_); }
 
   bool operator<(const StdHasher& other) const {
     return result_ < other.result_;
   }
 
  private:
-  std::size_t result_;
+  template <typename Value>
+  void combinePrimitive(Value value) {
+    static_assert(
+        std::is_arithmetic_v<Value>, "Only for primitive arithmetic types");
+    result_ = folly::hash::hash_combine(value, result_);
+  }
+
+  std::size_t result_ = 0;
 };
 
 } // namespace hash

@@ -40,8 +40,7 @@ namespace hash {
  */
 template <typename Hasher, typename Struct>
 auto deterministic_hash(const Struct& data) {
-  auto generator = [] { return Hasher{}; };
-  return deterministic_hash(data, generator);
+  return deterministic_hash(data, [] { return Hasher{}; });
 }
 
 /**
