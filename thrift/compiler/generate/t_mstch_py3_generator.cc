@@ -1312,13 +1312,15 @@ class t_mstch_py3_generator : public t_mstch_generator {
     vl.add<enum_member_union_field_names_validator>();
   }
 
+  enum TypesFile { IsTypesFile, NotTypesFile };
+
  protected:
   bool should_resolve_typedefs() const override { return true; }
   void set_mstch_generators();
   void generate_init_files();
   void generate_file(
       const std::string& file,
-      bool is_types_file,
+      TypesFile is_types_file,
       const boost::filesystem::path& base);
   void generate_types();
   void generate_services();
@@ -1387,11 +1389,11 @@ boost::filesystem::path t_mstch_py3_generator::package_to_path() {
 
 void t_mstch_py3_generator::generate_file(
     const std::string& file,
-    bool is_types_file,
+    TypesFile is_types_file,
     const boost::filesystem::path& base = {}) {
   auto program = get_program();
   const auto& name = program->name();
-  if (is_types_file) {
+  if (is_types_file == IsTypesFile) {
     cache_->parsed_options_["is_types_file"] = "";
   } else {
     cache_->parsed_options_.erase("is_types_file");
@@ -1431,16 +1433,16 @@ void t_mstch_py3_generator::generate_types() {
   };
 
   for (const auto& file : cythonFilesWithTypeContext) {
-    generate_file(file, true, generateRootPath_);
+    generate_file(file, IsTypesFile, generateRootPath_);
   }
   for (const auto& file : cppFilesWithTypeContext) {
-    generate_file(file, true);
+    generate_file(file, IsTypesFile);
   }
   for (const auto& file : cythonFilesNoTypeContext) {
-    generate_file(file, false, generateRootPath_);
+    generate_file(file, NotTypesFile, generateRootPath_);
   }
   for (const auto& file : cppFilesWithNoTypeContext) {
-    generate_file(file, false);
+    generate_file(file, NotTypesFile);
   }
 }
 
@@ -1472,10 +1474,10 @@ void t_mstch_py3_generator::generate_services() {
   };
 
   for (const auto& file : cythonFiles) {
-    generate_file(file, false, generateRootPath_);
+    generate_file(file, NotTypesFile, generateRootPath_);
   }
   for (const auto& file : cppFiles) {
-    generate_file(file, false);
+    generate_file(file, NotTypesFile);
   }
 }
 
