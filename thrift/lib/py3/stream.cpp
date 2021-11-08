@@ -26,11 +26,15 @@
 namespace thrift {
 namespace py3 {
 
+namespace {
+
 void do_import() {
   if (0 != import_thrift__py3__stream()) {
     throw std::runtime_error("import_thrift__py3__stream__cancel failed");
   }
 }
+
+} // namespace
 
 void cancelPythonIterator(PyObject* iter) {
   FOLLY_MAYBE_UNUSED static bool done = (do_import(), false);

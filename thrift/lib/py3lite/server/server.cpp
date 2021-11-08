@@ -20,11 +20,15 @@
 namespace thrift {
 namespace py3 {
 
+namespace {
+
 void do_import() {
   if (0 != import_thrift__py3lite__server()) {
     throw std::runtime_error("import_thrift__py3lite__server failed");
   }
 }
+
+} // namespace
 
 void Py3LiteAsyncProcessor::handlePythonServerCallback(
     apache::thrift::ProtocolType protocol,
