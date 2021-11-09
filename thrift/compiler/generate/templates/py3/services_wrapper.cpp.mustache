@@ -64,8 +64,8 @@ defined in ServicesCallbacks, along with appropriate arguments.
 void {{service:name}}Wrapper::async_{{#function:eb}}eb{{/function:eb}}{{^function:eb}}tm{{/function:eb}}_{{function:cppName}}(
   {{> services/cpp_handler_callback_type}} callback{{#function:args}}
     , {{#field:type}}{{!
-            }}{{^function:stack_arguments?}}{{> types/CppArgType}}{{/function:stack_arguments?}}{{!
-            }}{{#function:stack_arguments?}}{{> types/CppStackArgType}}{{/function:stack_arguments?}}{{!
+            }}{{^function:stack_arguments?}}{{> types/cpp_arg_type}}{{/function:stack_arguments?}}{{!
+            }}{{#function:stack_arguments?}}{{> types/cpp_stack_arg_type}}{{/function:stack_arguments?}}{{!
         }}{{/field:type}} {{field:py_name}}{{#last?}}
 {{/last?}}{{/function:args}}) {
   auto ctx = callback->getRequestContext();

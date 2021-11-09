@@ -16,15 +16,15 @@
 
 }}{{!
 
-Used when a cpp type is passed as an argument - basic types are passed by value,
-and complex types are boxed in `std::unique_ptr`s.
+Produce the pep484 container type for a given thrift-py3 container
 
-}}{{#type:string?}}std::unique_ptr<{{/type:string?}}{{!
-}}{{#type:binary?}}std::unique_ptr<{{/type:binary?}}{{!
-}}{{#type:struct}}std::unique_ptr<{{/type:struct}}{{!
-}}{{#type:container?}}std::unique_ptr<{{/type:container?}}{{!
-}}{{> types/CppValueType}}{{!
-}}{{#type:string?}}>{{/type:string?}}{{!
-}}{{#type:binary?}}>{{/type:binary?}}{{!
-}}{{#type:struct}}>{{/type:struct}}{{!
-}}{{#type:container?}}>{{/type:container?}}
+}}{{#type:list?}}_typing.Sequence[{{!
+    }}{{#type:list_elem_type}}{{> types/pep484_type}}{{/type:list_elem_type}}{{!
+}}]{{/type:list?}}{{!
+}}{{#type:set?}}_typing.AbstractSet[{{!
+    }}{{#type:set_elem_type}}{{> types/pep484_type}}{{/type:set_elem_type}}{{!
+}}]{{/type:set?}}{{!
+}}{{#type:map?}}_typing.Mapping[{{!
+    }}{{#type:key_type}}{{> types/pep484_type}}{{/type:key_type}}, {{!
+    }}{{#type:value_type}}{{> types/pep484_type}}{{/type:value_type}}{{!
+}}]{{/type:map?}}

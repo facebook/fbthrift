@@ -15,11 +15,16 @@
   limitations under the License.
 
 }}{{!
-cast a field to its Cython Python Type if not a container,
-otherwise create a container type with constructor
 
-}}{{^type:container?}}{{!
-}}(<{{> types/CythonPythonType}}?>_fbthrift_value){{!
-}}{{/type:container?}}{{#type:container?}}{{!
-}}{{> types/CythonPythonType }}(_fbthrift_value){{!
-}}{{/type:container?}}
+Used when a cpp type is passed as an argument with stack_arguments on
+complex types are passed in as const refs.
+
+}}{{#type:string?}}const {{/type:string?}}{{!
+}}{{#type:binary?}}const {{/type:binary?}}{{!
+}}{{#type:struct}}const {{/type:struct}}{{!
+}}{{#type:container?}}const {{/type:container?}}{{!
+}}{{> types/cpp_value_type}}{{!
+}}{{#type:string?}}&{{/type:string?}}{{!
+}}{{#type:binary?}}&{{/type:binary?}}{{!
+}}{{#type:struct}}&{{/type:struct}}{{!
+}}{{#type:container?}}&{{/type:container?}}

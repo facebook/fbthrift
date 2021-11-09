@@ -46,14 +46,14 @@ annotation).
   }}{{#type:need_module_path?}}{{type:modulePath}}.{{/type:need_module_path?}}{{!
 }}{{/type:defaultTemplate?}}{{/type:container?}}{{!
 }}{{#type:list?}}{{type:cythonTemplate}}[{{!
-  }}{{#type:list_elem_type}}{{> types/CythonCppType}}{{/type:list_elem_type}}{{!
+  }}{{#type:list_elem_type}}{{> types/cython_cpp_type}}{{/type:list_elem_type}}{{!
 }}]{{/type:list?}}{{!
 }}{{#type:set?}}{{type:cythonTemplate}}[{{!
-  }}{{#type:set_elem_type}}{{> types/CythonCppType}}{{/type:set_elem_type}}{{!
+  }}{{#type:set_elem_type}}{{> types/cython_cpp_type}}{{/type:set_elem_type}}{{!
 }}]{{/type:set?}}{{!
 }}{{#type:map?}}{{type:cythonTemplate}}[{{!
-  }}{{#type:key_type}}{{> types/CythonCppType}}{{/type:key_type}},{{!
-  }}{{#type:value_type}}{{> types/CythonCppType}}{{/type:value_type}}{{!
+  }}{{#type:key_type}}{{> types/cython_cpp_type}}{{/type:key_type}},{{!
+  }}{{#type:value_type}}{{> types/cython_cpp_type}}{{/type:value_type}}{{!
 }}]{{/type:map?}}{{!
 }}{{#type:enum}}{{!
   }}{{#type:need_module_path?}}{{type:modulePath}}.{{/type:need_module_path?}}{{!

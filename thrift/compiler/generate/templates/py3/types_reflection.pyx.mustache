@@ -85,8 +85,8 @@ cdef __StructSpec get_reflection__{{struct:name}}():
         __FieldSpec._fbthrift_create(
             id={{field:key}},
             name="{{field:name}}",
-            type={{#field:type}}{{> types/PythonType}}{{/field:type}},
-            kind={{#field:type}}{{> types/ThriftNumberType}}{{/field:type}},
+            type={{#field:type}}{{> types/python_type}}{{/field:type}},
+            kind={{#field:type}}{{> types/thrift_number_type}}{{/field:type}},
             qualifier=__Qualifier.{{!
                 }}{{#field:required?}}REQUIRED{{/field:required?}}{{!
                 }}{{^field:required?}}{{!
@@ -114,8 +114,8 @@ cdef __StructSpec get_reflection__{{struct:name}}():
 cdef __ListSpec get_reflection__{{type:flat_name}}():
     {{#type:list_elem_type}}
     return __ListSpec._fbthrift_create(
-        value={{> types/PythonType}},
-        kind={{> types/ThriftNumberType}},
+        value={{> types/python_type}},
+        kind={{> types/thrift_number_type}},
     )
     {{/type:list_elem_type}}
 {{/type:list?}}
@@ -123,18 +123,18 @@ cdef __ListSpec get_reflection__{{type:flat_name}}():
 cdef __SetSpec get_reflection__{{type:flat_name}}():
     {{#type:set_elem_type}}
     return __SetSpec._fbthrift_create(
-        value={{> types/PythonType}},
-        kind={{> types/ThriftNumberType}},
+        value={{> types/python_type}},
+        kind={{> types/thrift_number_type}},
      )
     {{/type:set_elem_type}}
 {{/type:set?}}
 {{#type:map?}}
 cdef __MapSpec get_reflection__{{type:flat_name}}():
     return __MapSpec._fbthrift_create(
-        key={{#type:key_type}}{{> types/PythonType}}{{/type:key_type}},
-        key_kind={{#type:key_type}}{{> types/ThriftNumberType}}{{/type:key_type}},
-        value={{#type:value_type}}{{> types/PythonType}}{{/type:value_type}},
-        value_kind={{#type:value_type}}{{> types/ThriftNumberType}}{{/type:value_type}},
+        key={{#type:key_type}}{{> types/python_type}}{{/type:key_type}},
+        key_kind={{#type:key_type}}{{> types/thrift_number_type}}{{/type:key_type}},
+        value={{#type:value_type}}{{> types/python_type}}{{/type:value_type}},
+        value_kind={{#type:value_type}}{{> types/thrift_number_type}}{{/type:value_type}},
     )
 {{/type:map?}}
 

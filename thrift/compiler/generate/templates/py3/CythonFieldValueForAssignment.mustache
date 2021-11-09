@@ -26,20 +26,20 @@ on a struct.
   }}(<_fbthrift_iobuf.IOBuf?>_fbthrift_value).c_clone(){{!
 }}{{/type:iobufRef?}}{{!
 }}{{#type:flexibleBinary?}}{{!
-  }}{{> types/CythonCppType}}(cmove(<string>_fbthrift_value)){{!
+  }}{{> types/cython_cpp_type}}(cmove(<string>_fbthrift_value)){{!
 }}{{/type:flexibleBinary?}}{{!
 }}{{^type:hasCustomTypeBehavior?}}{{!
 }}{{#field:reference?}}{{!
   }}{{#field:unique_ref?}}{{!
     For unique references, we just make a copy of the target object - it's not
     especially efficient but there isn't much else we can do from a shared ptr
-    }}make_unique[{{> types/CythonCppType}}](deref({{> types/CythonCastOrCreatePythonType}}._cpp_obj)){{!
+    }}make_unique[{{> types/cython_cpp_type}}](deref({{> types/cython_cast_or_create_python_type}}._cpp_obj)){{!
   }}{{/field:unique_ref?}}{{!
   }}{{#field:shared_ref?}}{{!
-    }}{{> types/CythonCastOrCreatePythonType}}._cpp_obj{{!
+    }}{{> types/cython_cast_or_create_python_type}}._cpp_obj{{!
   }}{{/field:shared_ref?}}{{!
   }}{{#field:shared_const_ref?}}{{!
-    }}const_pointer_cast({{> types/CythonCastOrCreatePythonType}}._cpp_obj){{!
+    }}const_pointer_cast({{> types/cython_cast_or_create_python_type}}._cpp_obj){{!
   }}{{/field:shared_const_ref?}}{{!
 }}{{/field:reference?}}{{^field:reference?}}{{!
 }}{{#type:base?}}{{!
@@ -49,11 +49,11 @@ on a struct.
   }}{{#type:string?}}.encode('utf-8'))){{/type:string?}}{{!
   }}{{#type:binary?}})){{/type:binary?}}{{!
 }}{{/type:base?}}{{!
-}}{{#type:enum?}}<{{> types/CythonCppType}}><int>_fbthrift_value{{/type:enum?}}{{!
+}}{{#type:enum?}}<{{> types/cython_cpp_type}}><int>_fbthrift_value{{/type:enum?}}{{!
 }}{{#type:struct?}}{{!
-    }}deref((<{{> types/CythonPythonType }}?> _fbthrift_value)._cpp_obj){{!
+    }}deref((<{{> types/cython_python_type }}?> _fbthrift_value)._cpp_obj){{!
 }}{{/type:struct?}}{{!
 }}{{#type:container?}}{{!
-    }}deref({{> types/CythonPythonType }}(_fbthrift_value)._cpp_obj){{!
+    }}deref({{> types/cython_python_type }}(_fbthrift_value)._cpp_obj){{!
 }}{{/type:container?}}{{/field:reference?}}{{!
 }}{{/type:hasCustomTypeBehavior?}}

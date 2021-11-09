@@ -30,8 +30,8 @@ to the client.
   }}{{^function:stack_arguments?}}){{/function:stack_arguments?}}{{!
 }}{{/type:iobufRef?}}{{!
 }}{{#type:flexibleBinary?}}{{!
-  }}{{#function:stack_arguments?}}{{> types/CythonCppType}}({{/function:stack_arguments?}}{{!
-  }}{{^function:stack_arguments?}}make_unique[{{> types/CythonCppType}}]({{/function:stack_arguments?}}{{!
+  }}{{#function:stack_arguments?}}{{> types/cython_cpp_type}}({{/function:stack_arguments?}}{{!
+  }}{{^function:stack_arguments?}}make_unique[{{> types/cython_cpp_type}}]({{/function:stack_arguments?}}{{!
   }}cmove(<string>result)){{!
 }}{{/type:flexibleBinary?}}{{!
 }}{{^type:hasCustomTypeBehavior?}}{{!
@@ -43,34 +43,34 @@ to the client.
 }}{{#type:double?}}<double> result{{/type:double?}}{{!
 }}{{#type:float?}}<float> result{{/type:float?}}{{!
 }}{{#type:string?}}{{!
-  }}{{^function:stack_arguments?}}make_unique[{{> types/CythonCppType}}]({{/function:stack_arguments?}}{{!
+  }}{{^function:stack_arguments?}}make_unique[{{> types/cython_cpp_type}}]({{/function:stack_arguments?}}{{!
     }}<string?> result.encode('UTF-8'){{!
   }}{{^function:stack_arguments?}}){{/function:stack_arguments?}}{{!
 }}{{/type:string?}}{{!
 }}{{#type:binary?}}{{!
-  }}{{^function:stack_arguments?}}make_unique[{{> types/CythonCppType}}]({{/function:stack_arguments?}}{{!
+  }}{{^function:stack_arguments?}}make_unique[{{> types/cython_cpp_type}}]({{/function:stack_arguments?}}{{!
     }}<string?> result{{!
   }}{{^function:stack_arguments?}}){{/function:stack_arguments?}}{{!
 }}{{/type:binary?}}{{!
 }}{{#type:struct}}{{!
-  }}{{^function:stack_arguments?}}make_unique[{{> types/CythonCppType}}]({{/function:stack_arguments?}}{{!
-    }}deref((<{{> types/CythonPythonType}}?> result)._cpp_obj){{!
+  }}{{^function:stack_arguments?}}make_unique[{{> types/cython_cpp_type}}]({{/function:stack_arguments?}}{{!
+    }}deref((<{{> types/cython_python_type}}?> result)._cpp_obj){{!
   }}{{^function:stack_arguments?}}){{/function:stack_arguments?}}{{!
 }}{{/type:struct}}{{!
 }}{{#type:streamresponse?}}{{!
   }}{{#type:stream_has_first_response?}}createResponseAndServerStream[{{!
-  }}{{#type:stream_first_response_type}}{{ >types/CythonCppType}}{{/type:stream_first_response_type}},{{!
-  }}{{#type:stream_elem_type}}{{ >types/CythonCppType}}{{/type:stream_elem_type}}]({{!
-  }}{{#type:stream_first_response_type}}(<{{> types/CythonCppType}}?> {{> CythonPythonToCppItem}}){{/type:stream_first_response_type}}, {{!
+  }}{{#type:stream_first_response_type}}{{ >types/cython_cpp_type}}{{/type:stream_first_response_type}},{{!
+  }}{{#type:stream_elem_type}}{{ >types/cython_cpp_type}}{{/type:stream_elem_type}}]({{!
+  }}{{#type:stream_first_response_type}}(<{{> types/cython_cpp_type}}?> {{> CythonPythonToCppItem}}){{/type:stream_first_response_type}}, {{!
   }}{{/type:stream_has_first_response?}}{{!
-  }}cmove(deref((<ServerStream_{{#type:stream_elem_type}}{{ >types/CythonCppTypeIdent}}{{/type:stream_elem_type}}?>result).cStream)){{!
+  }}cmove(deref((<ServerStream_{{#type:stream_elem_type}}{{ >types/cython_cpp_type_ident}}{{/type:stream_elem_type}}?>result).cStream)){{!
   }}{{#type:stream_has_first_response?}}){{/type:stream_has_first_response?}}{{!
 }}{{/type:streamresponse?}}{{!
 }}{{#type:container?}}{{!
-  }}{{^function:stack_arguments?}}make_unique[{{> types/CythonCppType}}]({{/function:stack_arguments?}}{{!
-    }}deref((<{{> types/CythonPythonType}}?> result)._cpp_obj){{!
+  }}{{^function:stack_arguments?}}make_unique[{{> types/cython_cpp_type}}]({{/function:stack_arguments?}}{{!
+    }}deref((<{{> types/cython_python_type}}?> result)._cpp_obj){{!
   }}{{^function:stack_arguments?}}){{/function:stack_arguments?}}{{!
 }}{{/type:container?}}{{!
 }}{{#type:void?}}c_unit{{/type:void?}}{{!
-}}{{#type:enum?}}<{{> types/CythonCppType}}><int>result{{/type:enum?}}{{!
+}}{{#type:enum?}}<{{> types/cython_cpp_type}}><int>result{{/type:enum?}}{{!
 }}{{/type:hasCustomTypeBehavior?}}

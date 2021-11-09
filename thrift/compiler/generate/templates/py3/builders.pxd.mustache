@@ -49,7 +49,7 @@ cdef class {{struct:name}}_Builder(thrift.py3.builder.StructBuilder):
         }}{{#type:floating_point?}}pfloat {{/type:floating_point?}}{{!
         }}{{#type:struct?}}object {{/type:struct?}}{{!
         }}{{#type:cythonTypeNoneable?}}{{^type:struct?}}{{!
-        }}{{> types/CythonPythonType}} {{!
+        }}{{> types/cython_python_type}} {{!
         }}{{/type:struct?}}{{/type:cythonTypeNoneable?}}{{!
         }}{{/field:type}}{{field:py_name}}{{#field:hasModifiedName?}} "{{field:cppName}}"{{/field:hasModifiedName?}}
     {{/struct:py3_fields}}

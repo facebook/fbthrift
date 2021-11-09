@@ -38,7 +38,7 @@ from thrift.py3.types cimport const_pointer_cast
 cdef class __{{struct:name}}_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __{{struct:name}}_FieldsSetter _fbthrift_create({{> types/CurrentModuleTypes}}.c{{struct:name}}* struct_cpp_obj):
+    cdef __{{struct:name}}_FieldsSetter _fbthrift_create({{> types/current_module_types}}.c{{struct:name}}* struct_cpp_obj):
         cdef __{{struct:name}}_FieldsSetter __fbthrift_inst = __{{struct:name}}_FieldsSetter.__new__(__{{struct:name}}_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         {{#struct:py3_fields}}
@@ -58,19 +58,19 @@ cdef class __{{struct:name}}_FieldsSetter(__StructFieldsSetter):
     cdef void _set_field_{{field:index}}(self, _fbthrift_value) except *:
         # for field {{field:py_name}}
         if _fbthrift_value is None:
-            __reset_field[{{> types/CurrentModuleTypes}}.c{{struct:name}}](deref(self._struct_cpp_obj), {{field:index}})
+            __reset_field[{{> types/current_module_types}}.c{{struct:name}}](deref(self._struct_cpp_obj), {{field:index}})
             return
         {{^type:container?}}
         {{#type:enum?}}
-        if not isinstance(_fbthrift_value, {{> types/PythonType}}):
-            raise TypeError(f'field {{field:py_name}} value: {repr(_fbthrift_value)} is not of the enum type { {{> types/PythonType}} }.')
+        if not isinstance(_fbthrift_value, {{> types/python_type}}):
+            raise TypeError(f'field {{field:py_name}} value: {repr(_fbthrift_value)} is not of the enum type { {{> types/python_type}} }.')
         {{/type:enum?}}
         {{^type:enum?}}
-        if not isinstance(_fbthrift_value, {{> types/PythonIsInstanceType}}):
-            raise TypeError(f'{{field:py_name}} is not a { {{> types/PythonType}} !r}.')
+        if not isinstance(_fbthrift_value, {{> types/python_is_instance_type}}):
+            raise TypeError(f'{{field:py_name}} is not a { {{> types/python_type}} !r}.')
         {{#type:integer?}}
         {{! inject cython int overflow checks }}
-        _fbthrift_value = <{{> types/CythonPythonType}}> _fbthrift_value
+        _fbthrift_value = <{{> types/cython_python_type}}> _fbthrift_value
         {{/type:integer?}}
         {{/type:enum?}}
         {{/type:container?}}
@@ -81,7 +81,7 @@ cdef class __{{struct:name}}_FieldsSetter(__StructFieldsSetter):
         assign_{{#field:unique_ref?}}unique{{/field:unique_ref?}}{{!
            }}{{#field:shared_ref?}}shared{{/field:shared_ref?}}{{!
            }}{{#field:shared_const_ref?}}shared_const{{/field:shared_const_ref?}}{{!
-           }}_ptr[{{> types/CythonCppType}}](deref(self._struct_cpp_obj).{{field:py_name}}_ref(), {{> CythonFieldValueForAssignment}})
+           }}_ptr[{{> types/cython_cpp_type}}](deref(self._struct_cpp_obj).{{field:py_name}}_ref(), {{> CythonFieldValueForAssignment}})
         {{/field:has_ref_accessor?}}
     {{/field:type}}
     {{/struct:py3_fields}}

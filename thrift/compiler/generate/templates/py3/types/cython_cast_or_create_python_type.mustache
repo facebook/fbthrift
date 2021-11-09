@@ -15,16 +15,11 @@
   limitations under the License.
 
 }}{{!
+cast a field to its Cython Python Type if not a container,
+otherwise create a container type with constructor
 
-Produce the pep484 container type for a given thrift-py3 container
-
-}}{{#type:list?}}_typing.Sequence[{{!
-    }}{{#type:list_elem_type}}{{> types/PEP484Type}}{{/type:list_elem_type}}{{!
-}}]{{/type:list?}}{{!
-}}{{#type:set?}}_typing.AbstractSet[{{!
-    }}{{#type:set_elem_type}}{{> types/PEP484Type}}{{/type:set_elem_type}}{{!
-}}]{{/type:set?}}{{!
-}}{{#type:map?}}_typing.Mapping[{{!
-    }}{{#type:key_type}}{{> types/PEP484Type}}{{/type:key_type}}, {{!
-    }}{{#type:value_type}}{{> types/PEP484Type}}{{/type:value_type}}{{!
-}}]{{/type:map?}}
+}}{{^type:container?}}{{!
+}}(<{{> types/cython_python_type}}?>_fbthrift_value){{!
+}}{{/type:container?}}{{#type:container?}}{{!
+}}{{> types/cython_python_type }}(_fbthrift_value){{!
+}}{{/type:container?}}

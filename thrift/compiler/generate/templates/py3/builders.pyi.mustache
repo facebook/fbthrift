@@ -46,7 +46,7 @@ class {{struct:name}}_Builder(thrift.py3.builder.StructBuilder):
         }}{{#type:integer?}}_typing.Optional[int]{{/type:integer?}}{{!
         }}{{#type:floating_point?}}_typing.Optional[float]{{/type:floating_point?}}{{!
         }}{{#type:cythonTypeNoneable?}}{{^type:struct?}}{{!
-            }}_typing.Optional[{{> types/PEP484Type}}]{{!
+            }}_typing.Optional[{{> types/pep484_type}}]{{!
         }}{{/type:struct?}}{{/type:cythonTypeNoneable?}}{{!
         }}{{#type:struct?}}_typing.Any{{/type:struct?}}{{!
         }}{{/field:type}}

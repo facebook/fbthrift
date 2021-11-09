@@ -101,7 +101,7 @@ cdef extern from "{{program:includePrefix}}{{program:cpp_gen_path}}/{{program:na
 {{/program:enums}}
 
 
-{{> types/enumDefs }}
+{{> types/enum_defs }}
 
 {{#program:structs}}
 {{#first?}}
@@ -143,21 +143,21 @@ cdef extern from "{{program:includePrefix}}{{program:cpp_gen_path}}/{{program:na
     {{#struct:fields_and_mixin_fields}}
         {{#field:has_ref_accessor?}}
         {{#field:optional?}}
-        __optional_field_ref[{{#field:type}}{{> types/CythonCppStructFieldType}}{{/field:type}}] {{!
+        __optional_field_ref[{{#field:type}}{{> types/cython_cpp_struct_field_type}}{{/field:type}}] {{!
             }}{{field:py_name}}_ref{{#field:hasModifiedName?}} "{{field:cppName}}_ref"{{/field:hasModifiedName?}}()
         {{/field:optional?}}
         {{#field:required?}}
-        __required_field_ref[{{#field:type}}{{> types/CythonCppStructFieldType}}{{/field:type}}] {{!
+        __required_field_ref[{{#field:type}}{{> types/cython_cpp_struct_field_type}}{{/field:type}}] {{!
             }}{{field:py_name}}_ref{{#field:hasModifiedName?}} "{{field:cppName}}_ref"{{/field:hasModifiedName?}}()
         {{/field:required?}}
         {{#field:opt_in_req_out?}}
-        __field_ref[{{#field:type}}{{> types/CythonCppStructFieldType}}{{/field:type}}] {{!
+        __field_ref[{{#field:type}}{{> types/cython_cpp_struct_field_type}}{{/field:type}}] {{!
             }}{{field:py_name}}_ref{{#field:hasModifiedName?}} "{{field:cppName}}_ref"{{/field:hasModifiedName?}}()
         {{/field:opt_in_req_out?}}
         {{/field:has_ref_accessor?}}
         {{^field:has_ref_accessor?}}
         {{#field:reference?}}
-        {{#field:type}}{{> types/CythonCppStructFieldType}}{{/field:type}} {{field:py_name}}_ref{{#field:hasModifiedName?}} "{{field:cppName}}_ref"{{/field:hasModifiedName?}}()
+        {{#field:type}}{{> types/cython_cpp_struct_field_type}}{{/field:type}} {{field:py_name}}_ref{{#field:hasModifiedName?}} "{{field:cppName}}_ref"{{/field:hasModifiedName?}}()
         {{/field:reference?}}
         {{/field:has_ref_accessor?}}
     {{/struct:fields_and_mixin_fields}}
@@ -165,10 +165,10 @@ cdef extern from "{{program:includePrefix}}{{program:cpp_gen_path}}/{{program:na
     {{#struct:union?}}
         c{{struct:name}}__type getType() const
     {{#struct:py3_fields}}
-        {{#field:type}}const {{> types/CythonCppStructFieldType}}& get_{{field:py_name}}{{#field:hasModifiedName?}} "get_{{field:cppName}}"{{/field:hasModifiedName?}}() const{{/field:type}}
+        {{#field:type}}const {{> types/cython_cpp_struct_field_type}}& get_{{field:py_name}}{{#field:hasModifiedName?}} "get_{{field:cppName}}"{{/field:hasModifiedName?}}() const{{/field:type}}
         {{! Note that the set methods don't take in a shared/unique_ptr, they just take in an object ref,
             but they return the appropriate ptr }}
-        {{#field:type}}{{> types/CythonCppStructFieldType}}& set_{{field:py_name}}{{#field:hasModifiedName?}} "set_{{field:cppName}}"{{/field:hasModifiedName?}}(const {{> types/CythonCppType}}&){{/field:type}}
+        {{#field:type}}{{> types/cython_cpp_struct_field_type}}& set_{{field:py_name}}{{#field:hasModifiedName?}} "set_{{field:cppName}}"{{/field:hasModifiedName?}}(const {{> types/cython_cpp_type}}&){{/field:type}}
     {{/struct:py3_fields}}{{/struct:union?}}
 
 {{/program:structs}}
@@ -182,16 +182,16 @@ cdef class __{{struct:name}}Type(thrift.py3.types.CompiledEnum):
 {{/struct:union?}}
 
 
-cdef class {{struct:name}}({{> types/PythonStructClass}}):
+cdef class {{struct:name}}({{> types/python_struct_class}}):
     cdef shared_ptr[c{{struct:name}}] _cpp_obj
     {{^struct:union?}}
     cdef _fbthrift_types_fields.__{{struct:name}}_FieldsSetter _fields_setter
     {{!Memoized Python wrappers of struct fields, created lazily}}
     {{#struct:py3_fields}}
     {{#field:type}}{{#type:struct}}
-    cdef {{> types/CythonPythonType}} __fbthrift_cached_{{field:py_name}}
+    cdef {{> types/cython_python_type}} __fbthrift_cached_{{field:py_name}}
     {{/type:struct}}{{#type:container?}}
-    cdef {{> types/CythonPythonType}} __fbthrift_cached_{{field:py_name}}
+    cdef {{> types/cython_python_type}} __fbthrift_cached_{{field:py_name}}
     {{/type:container?}}{{#type:enum?}}
     cdef object __fbthrift_cached_{{field:py_name}}
     {{/type:enum?}}{{#type:iobuf?}}
@@ -213,7 +213,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         bint* __isNOTSET{{/struct:union?}}{{#struct:py3_fields}},
         {{#field:type}}{{!
             }}{{#type:cythonTypeNoneable?}}{{!
-                }}{{> types/CythonPythonType}} {{!
+                }}{{> types/cython_python_type}} {{!
             }}{{/type:cythonTypeNoneable?}}{{!
             }}{{^type:cythonTypeNoneable?}}{{!
                 }}object {{!
@@ -229,16 +229,16 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
 {{/program:structs}}
 
 {{#program:containerTypes}}
-cdef class {{> types/CythonPythonType}}(thrift.py3.types.{{!
+cdef class {{> types/cython_python_type}}(thrift.py3.types.{{!
         }}{{#type:list?}}List{{/type:list?}}{{!
         }}{{#type:set?}}Set{{/type:set?}}{{!
         }}{{#type:map?}}Map{{/type:map?}}{{!
         }}):
-    cdef shared_ptr[{{> types/CythonCppType}}] _cpp_obj
+    cdef shared_ptr[{{> types/cython_cpp_type}}] _cpp_obj
     @staticmethod
-    cdef _fbthrift_create(shared_ptr[{{> types/CythonCppType}}])
+    cdef _fbthrift_create(shared_ptr[{{> types/cython_cpp_type}}])
     @staticmethod
-    cdef shared_ptr[{{> types/CythonCppType}}] _make_instance(object items) except *
+    cdef shared_ptr[{{> types/cython_cpp_type}}] _make_instance(object items) except *
 
 {{/program:containerTypes}}
 
@@ -248,7 +248,7 @@ cdef extern from "{{program:includePrefix}}{{program:cpp_gen_path}}/{{program:na
 }} namespace "{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}":
 {{/first?}}
     {{#constant:type}}
-    cdef {{^type:string?}}{{> types/CythonCppType}}{{/type:string?}}{{#type:string?}}const char*{{/type:string?}} {{!
+    cdef {{^type:string?}}{{> types/cython_cpp_type}}{{/type:string?}}{{#type:string?}}const char*{{/type:string?}} {{!
     }}c{{constant:name}} "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{program:name}}_constants::{{constant:name}}"{{!
     }}{{#type:struct?}}(){{/type:struct?}}{{#type:string?}}(){{/type:string?}}{{#type:binary?}}(){{/type:binary?}}{{#type:container?}}(){{/type:container?}}{{#type:enum?}}(){{/type:enum?}}
 {{/constant:type}}{{/program:constants}}
@@ -256,14 +256,14 @@ cdef extern from "{{program:includePrefix}}{{program:cpp_gen_path}}/{{program:na
 
 {{#program:stream_types}}
 cdef class ClientBufferedStream__{{type:flat_name}}(ClientBufferedStream):
-    cdef unique_ptr[cClientBufferedStreamWrapper[{{ > types/CythonCppType}}]] _gen
+    cdef unique_ptr[cClientBufferedStreamWrapper[{{ > types/cython_cpp_type}}]] _gen
 
     @staticmethod
-    cdef _fbthrift_create(cClientBufferedStream[{{ > types/CythonCppType}}]& c_obj, __RpcOptions rpc_options)
+    cdef _fbthrift_create(cClientBufferedStream[{{ > types/cython_cpp_type}}]& c_obj, __RpcOptions rpc_options)
 
     @staticmethod
     cdef void callback(
-        cFollyTry[__cOptional[{{ > types/CythonCppType}}]]&& res,
+        cFollyTry[__cOptional[{{ > types/cython_cpp_type}}]]&& res,
         PyObject* userdata,
     )
 
@@ -275,12 +275,12 @@ cdef class ServerStream__{{type:flat_name}}(ServerStream):
 
 cdef class ResponseAndClientBufferedStream__{{> stream/response_class_name_suffix}}(ResponseAndClientBufferedStream):
     cdef ClientBufferedStream__{{#type:stream_elem_type}}{{type:flat_name}}{{/type:stream_elem_type}} _stream
-    cdef {{#type:stream_first_response_type}}{{ > types/CythonPythonType}}{{/type:stream_first_response_type}} _response
+    cdef {{#type:stream_first_response_type}}{{ > types/cython_python_type}}{{/type:stream_first_response_type}} _response
 
     @staticmethod
     cdef _fbthrift_create(cResponseAndClientBufferedStream[{{!
-        }}{{#type:stream_first_response_type}}{{ > types/CythonCppType}}{{/type:stream_first_response_type}}, {{!
-        }}{{#type:stream_elem_type}}{{ > types/CythonCppType}}{{/type:stream_elem_type}}]& c_obj, __RpcOptions rpc_options)
+        }}{{#type:stream_first_response_type}}{{ > types/cython_cpp_type}}{{/type:stream_first_response_type}}, {{!
+        }}{{#type:stream_elem_type}}{{ > types/cython_cpp_type}}{{/type:stream_elem_type}}]& c_obj, __RpcOptions rpc_options)
 
 
 cdef class ResponseAndServerStream__{{> stream/response_class_name_suffix}}(ResponseAndServerStream):

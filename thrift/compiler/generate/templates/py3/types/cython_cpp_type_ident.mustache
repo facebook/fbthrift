@@ -45,14 +45,14 @@ This is the equivalent of CythonCpp[Basic]Type, for use as part of an identifier
   }}{{#type:need_module_path?}}{{type:modulePath}}_{{/type:need_module_path?}}{{!
 }}{{/type:defaultTemplate?}}{{/type:container?}}{{!
 }}{{#type:list?}}{{type:cythonTemplate}}__{{!
-  }}{{#type:list_elem_type}}{{> types/CythonCppTypeIdent}}{{/type:list_elem_type}}{{!
+  }}{{#type:list_elem_type}}{{> types/cython_cpp_type_ident}}{{/type:list_elem_type}}{{!
 }}{{/type:list?}}{{!
 }}{{#type:set?}}{{type:cythonTemplate}}__{{!
-  }}{{#type:set_elem_type}}{{> types/CythonCppTypeIdent}}{{/type:set_elem_type}}{{!
+  }}{{#type:set_elem_type}}{{> types/cython_cpp_type_ident}}{{/type:set_elem_type}}{{!
 }}{{/type:set?}}{{!
 }}{{#type:map?}}{{type:cythonTemplate}}__{{!
-  }}{{#type:key_type}}{{> types/CythonCppTypeIdent}}{{/type:key_type}}_{{!
-  }}{{#type:value_type}}{{> types/CythonCppTypeIdent}}{{/type:value_type}}{{!
+  }}{{#type:key_type}}{{> types/cython_cpp_type_ident}}{{/type:key_type}}_{{!
+  }}{{#type:value_type}}{{> types/cython_cpp_type_ident}}{{/type:value_type}}{{!
 }}{{/type:map?}}{{!
 }}{{#type:enum}}{{!
   }}{{#type:need_module_path?}}{{type:modulePath}}_{{/type:need_module_path?}}{{!
@@ -60,11 +60,11 @@ This is the equivalent of CythonCpp[Basic]Type, for use as part of an identifier
 }}{{/type:enum}}{{!
 }}{{#type:streamresponse?}}{{!
   }}{{#type:stream_has_first_response?}}cResponseAndServerStream__{{!
-  }}{{#type:stream_first_response_type}}{{ >types/CythonCppTypeIdent}}{{/type:stream_first_response_type}}_{{!
+  }}{{#type:stream_first_response_type}}{{ >types/cython_cpp_type_ident}}{{/type:stream_first_response_type}}_{{!
   }}{{/type:stream_has_first_response?}}{{!
   }}{{^type:stream_has_first_response?}}cServerStream__{{!
   }}{{/type:stream_has_first_response?}}{{!
-  }}{{#type:stream_elem_type}}{{ >types/CythonCppTypeIdent}}{{/type:stream_elem_type}}{{!
+  }}{{#type:stream_elem_type}}{{ >types/cython_cpp_type_ident}}{{/type:stream_elem_type}}{{!
 }}{{/type:streamresponse?}}{{!
 }}{{#type:void?}}cFollyUnit{{/type:void?}}{{!
 }}{{/type:hasCustomType?}}

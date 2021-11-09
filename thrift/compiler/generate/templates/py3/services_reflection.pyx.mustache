@@ -54,8 +54,8 @@ cdef __InterfaceSpec get_reflection__{{service:name}}(bint for_clients):
                 {{#function:args}}
                 __ArgumentSpec._fbthrift_create(
                     name="{{field:name}}",
-                    type={{#field:type}}{{> types/PythonType}}{{/field:type}},
-                    kind={{#field:type}}{{> types/ThriftNumberType}}{{/field:type}},
+                    type={{#field:type}}{{> types/python_type}}{{/field:type}},
+                    kind={{#field:type}}{{> types/thrift_number_type}}{{/field:type}},
                     annotations={
                         {{#field:annotations}}
                         {{> Annotation }}
@@ -70,12 +70,12 @@ cdef __InterfaceSpec get_reflection__{{service:name}}(bint for_clients):
                     }}{{> clients/stream_response_class_name}} if for_clients else {{!
                     }}{{> services/stream_response_class_name}}{{!
                 }}{{/type:streamresponse?}}{{!
-                }}{{^type:void?}}{{> types/PythonType}}{{/type:void?}}{{!
+                }}{{^type:void?}}{{> types/python_type}}{{/type:void?}}{{!
                 }}{{/function:return_type}},
-            result_kind={{#function:return_type}}{{> types/ThriftNumberType}}{{/function:return_type}},
+            result_kind={{#function:return_type}}{{> types/thrift_number_type}}{{/function:return_type}},
             exceptions=(
                 {{#function:exceptions}}
-                {{#field:type}}{{> types/PythonType}}{{/field:type}},
+                {{#field:type}}{{> types/python_type}}{{/field:type}},
                 {{/function:exceptions}}
             ),
             annotations={

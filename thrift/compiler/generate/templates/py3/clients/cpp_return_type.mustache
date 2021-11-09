@@ -18,9 +18,9 @@
 Cpp type of return_type for stream types.
 }}{{#type:streamresponse?}}{{!
   }}{{#type:stream_has_first_response?}}apache::thrift::ResponseAndClientBufferedStream<{{!
-    }}{{#type:stream_first_response_type}}{{ >types/CppValueType}}{{/type:stream_first_response_type}},{{!
+    }}{{#type:stream_first_response_type}}{{ >types/cpp_value_type}}{{/type:stream_first_response_type}},{{!
   }}{{/type:stream_has_first_response?}}{{!
   }}{{^type:stream_has_first_response?}}apache::thrift::ClientBufferedStream<{{/type:stream_has_first_response?}}{{!
-  }}{{#type:stream_elem_type}}{{ >types/CppValueType}}{{/type:stream_elem_type}}>{{!
+  }}{{#type:stream_elem_type}}{{ >types/cpp_value_type}}{{/type:stream_elem_type}}>{{!
 }}{{/type:streamresponse?}}{{!
-}}{{^type:streamresponse?}}{{ >types/CppValueType}}{{/type:streamresponse?}}
+}}{{^type:streamresponse?}}{{ >types/cpp_value_type}}{{/type:streamresponse?}}

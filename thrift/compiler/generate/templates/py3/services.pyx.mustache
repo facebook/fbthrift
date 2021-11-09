@@ -100,9 +100,9 @@ import types as _py_types
 from {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.services_wrapper cimport c{{service:name}}Interface
 {{/program:services}}
 {{#program:stream_types}}
-cdef class ServerPublisher_{{> types/CythonCppTypeIdent}}(ServerPublisher):
+cdef class ServerPublisher_{{> types/cython_cpp_type_ident}}(ServerPublisher):
     cdef unique_ptr[cServerStreamPublisher[{{!
-            }}{{> types/CythonCppType}}{{!
+            }}{{> types/cython_cpp_type}}{{!
         }}]] cPublisher
 
     def complete(ServerPublisher self):
@@ -110,31 +110,31 @@ cdef class ServerPublisher_{{> types/CythonCppTypeIdent}}(ServerPublisher):
 
     # Calling this send instead of the wrapped method name of next because next is
     # a python keyword and makes the linter complain
-    def send(ServerPublisher self, {{> types/CythonPythonType}} item):
-        deref(self.cPublisher).next(<{{> types/CythonCppType}}?>{{> CythonPythonToCppItem}})
+    def send(ServerPublisher self, {{> types/cython_python_type}} item):
+        deref(self.cPublisher).next(<{{> types/cython_cpp_type}}?>{{> CythonPythonToCppItem}})
 
     @staticmethod
     cdef _fbthrift_create(cServerStreamPublisher[{{!
-            }}{{> types/CythonCppType}}{{!
+            }}{{> types/cython_cpp_type}}{{!
         }}] cPublisher):
-        cdef ServerPublisher_{{> types/CythonCppTypeIdent}} inst = ServerPublisher_{{> types/CythonCppTypeIdent}}.__new__(ServerPublisher_{{> types/CythonCppTypeIdent}})
+        cdef ServerPublisher_{{> types/cython_cpp_type_ident}} inst = ServerPublisher_{{> types/cython_cpp_type_ident}}.__new__(ServerPublisher_{{> types/cython_cpp_type_ident}})
         inst.cPublisher = make_unique[cServerStreamPublisher[{{!
-            }}{{> types/CythonCppType}}{{!
+            }}{{> types/cython_cpp_type}}{{!
         }}]](cmove(cPublisher))
         return inst
 
-cdef class ServerStream_{{> types/CythonCppTypeIdent}}(ServerStream):
+cdef class ServerStream_{{> types/cython_cpp_type_ident}}(ServerStream):
     cdef unique_ptr[cServerStream[{{!
-            }}{{> types/CythonCppType}}{{!
+            }}{{> types/cython_cpp_type}}{{!
         }}]] cStream
 
     @staticmethod
     cdef _fbthrift_create(cServerStream[{{!
-            }}{{> types/CythonCppType}}{{!
+            }}{{> types/cython_cpp_type}}{{!
         }}] cStream):
-        cdef ServerStream_{{> types/CythonCppTypeIdent}} inst = ServerStream_{{> types/CythonCppTypeIdent}}.__new__(ServerStream_{{> types/CythonCppTypeIdent}})
+        cdef ServerStream_{{> types/cython_cpp_type_ident}} inst = ServerStream_{{> types/cython_cpp_type_ident}}.__new__(ServerStream_{{> types/cython_cpp_type_ident}})
         inst.cStream = make_unique[cServerStream[{{!
-            }}{{> types/CythonCppType}}{{!
+            }}{{> types/cython_cpp_type}}{{!
         }}]](cmove(cStream))
         return inst
 {{/program:stream_types}}
@@ -144,15 +144,15 @@ cdef class ServerStream_{{> types/CythonCppTypeIdent}}(ServerStream):
 {{#function:return_type}}
 {{#type:streamresponse?}}
 {{#type:stream_elem_type}}
-async def runGenerator_{{service:name}}_{{function:name}}(object generator, Promise_{{> types/CythonCppTypeIdent}}_Stream promise):
+async def runGenerator_{{service:name}}_{{function:name}}(object generator, Promise_{{> types/cython_cpp_type_ident}}_Stream promise):
     try:
         item = await generator.asend(None)
     except StopAsyncIteration:
-        promise.cPromise.setValue(optional[{{> types/CythonCppType}}]())
+        promise.cPromise.setValue(optional[{{> types/cython_cpp_type}}]())
     {{#function:stream_exceptions}}
     {{#field:type}}
-    except {{> types/CythonPythonType}} as ex:
-        promise.cPromise.setException(deref((<{{> types/CythonPythonType}}> ex)._cpp_obj))
+    except {{> types/cython_python_type}} as ex:
+        promise.cPromise.setException(deref((<{{> types/cython_python_type}}> ex)._cpp_obj))
     {{/field:type}}
     {{/function:stream_exceptions}}
     except __ApplicationError as ex:
@@ -175,10 +175,10 @@ async def runGenerator_{{service:name}}_{{function:name}}(object generator, Prom
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(optional[{{> types/CythonCppType}}](<{{> types/CythonCppType}}?>{{> CythonPythonToCppItem}}))
+        promise.cPromise.setValue(optional[{{> types/cython_cpp_type}}](<{{> types/cython_cpp_type}}?>{{> CythonPythonToCppItem}}))
 
-cdef void getNextGenerator_{{service:name}}_{{function:name}}(object generator, cFollyPromise[optional[{{> types/CythonCppType}}]] cPromise):
-    cdef Promise_{{> types/CythonCppTypeIdent}}_Stream __promise = Promise_{{> types/CythonCppTypeIdent}}_Stream._fbthrift_create(cmove(cPromise))
+cdef void getNextGenerator_{{service:name}}_{{function:name}}(object generator, cFollyPromise[optional[{{> types/cython_cpp_type}}]] cPromise):
+    cdef Promise_{{> types/cython_cpp_type_ident}}_Stream __promise = Promise_{{> types/cython_cpp_type_ident}}_Stream._fbthrift_create(cmove(cPromise))
     asyncio.get_event_loop().create_task(
         runGenerator_{{service:name}}_{{function:name}}(
             generator,
@@ -233,14 +233,14 @@ cdef class {{service:name}}Interface(
     @staticmethod
     def createPublisher_{{function:name}}(callback=None):
         {{#type:stream_elem_type}}
-        cdef unique_ptr[pair[cServerStream[{{> types/CythonCppType}}], {{!
-        }}cServerStreamPublisher[{{> types/CythonCppType}}]]] streams = {{!
-        }}make_unique[pair[cServerStream[{{> types/CythonCppType}}], {{!
-        }}cServerStreamPublisher[{{> types/CythonCppType}}]]]({{!
-        }}cServerStream[{{> types/CythonCppType}}].createPublisher(pythonFuncToCppFunc(callback)))
+        cdef unique_ptr[pair[cServerStream[{{> types/cython_cpp_type}}], {{!
+        }}cServerStreamPublisher[{{> types/cython_cpp_type}}]]] streams = {{!
+        }}make_unique[pair[cServerStream[{{> types/cython_cpp_type}}], {{!
+        }}cServerStreamPublisher[{{> types/cython_cpp_type}}]]]({{!
+        }}cServerStream[{{> types/cython_cpp_type}}].createPublisher(pythonFuncToCppFunc(callback)))
 
-        return (ServerStream_{{> types/CythonCppTypeIdent}}._fbthrift_create(cmove(deref(streams).first)), {{!
-        }}ServerPublisher_{{> types/CythonCppTypeIdent}}._fbthrift_create(cmove(deref(streams).second)))
+        return (ServerStream_{{> types/cython_cpp_type_ident}}._fbthrift_create(cmove(deref(streams).first)), {{!
+        }}ServerPublisher_{{> types/cython_cpp_type_ident}}._fbthrift_create(cmove(deref(streams).second)))
         {{/type:stream_elem_type}}
     {{/type:streamresponse?}}
     {{/function:return_type}}

@@ -35,12 +35,12 @@ in the client or server source rather than the type definition source.
   }}{{^type:iobufWrapper?}}bytes{{/type:iobufWrapper?}}{{!
 }}{{/type:binary?}}{{!
 }}{{#type:struct}}{{!
-  }}{{> types/CythonPythonType}}{{!
+  }}{{> types/cython_python_type}}{{!
 }}{{/type:struct}}{{!
 }}{{#type:container?}}{{!
-  }}{{> types/CythonPythonType}}{{!
+  }}{{> types/cython_python_type}}{{!
 }}{{/type:container?}}{{!
 }}{{#type:enum}}{{!
-  }}{{> types/CythonPythonType}}{{!
+  }}{{> types/cython_python_type}}{{!
 }}{{/type:enum}}{{!
 }}{{#type:void?}}object{{/type:void?}}

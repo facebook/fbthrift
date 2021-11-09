@@ -38,18 +38,18 @@ anywhere else the type is used as a value directly.
   }}{{/type:struct}}{{!
 }}{{#type:list?}}{{!
   }}{{type:cppTemplate}}<{{!
-  }}{{#type:list_elem_type}}{{> types/CppValueType}}{{/type:list_elem_type}}{{!
+  }}{{#type:list_elem_type}}{{> types/cpp_value_type}}{{/type:list_elem_type}}{{!
   }}>{{!
 }}{{/type:list?}}{{!
 }}{{#type:set?}}{{!
   }}{{type:cppTemplate}}<{{!
-  }}{{#type:set_elem_type}}{{> types/CppValueType}}{{/type:set_elem_type}}{{!
+  }}{{#type:set_elem_type}}{{> types/cpp_value_type}}{{/type:set_elem_type}}{{!
   }}>{{!
 }}{{/type:set?}}{{!
 }}{{#type:map?}}{{!
   }}{{type:cppTemplate}}<{{!
-  }}{{#type:key_type}}{{> types/CppValueType}}{{/type:key_type}},{{!
-  }}{{#type:value_type}}{{> types/CppValueType}}{{/type:value_type}}{{!
+  }}{{#type:key_type}}{{> types/cpp_value_type}}{{/type:key_type}},{{!
+  }}{{#type:value_type}}{{> types/cpp_value_type}}{{/type:value_type}}{{!
   }}>{{!
 }}{{/type:map?}}{{!
 }}{{#type:void?}}folly::Unit{{/type:void?}}{{!

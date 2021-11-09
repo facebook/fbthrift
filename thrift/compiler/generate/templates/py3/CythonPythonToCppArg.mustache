@@ -26,7 +26,7 @@ This template assumes that the Python object is in a variable named <field>.
 }}{{#type:iobuf?}}deref((<_fbthrift_iobuf.IOBuf>{{field:py_name}}).c_clone()){{/type:iobuf?}}{{!
 }}{{#type:iobufRef?}}((<_fbthrift_iobuf.IOBuf>{{field:py_name}}).c_clone()){{/type:iobufRef?}}{{!
 }}{{#type:flexibleBinary?}}{{!
-  }}{{> types/CythonCppType}}(cmove(<string>{{field:py_name}})){{!
+  }}{{> types/cython_cpp_type}}(cmove(<string>{{field:py_name}})){{!
 }}{{/type:flexibleBinary?}}{{!
 }}{{^type:hasCustomTypeBehavior?}}{{!
 }}{{#type:bool?}}{{field:py_name}}{{/type:bool?}}{{!
@@ -39,10 +39,10 @@ This template assumes that the Python object is in a variable named <field>.
 }}{{#type:string?}}{{field:py_name}}.encode('UTF-8'){{/type:string?}}{{!
 }}{{#type:binary?}}{{field:py_name}}{{/type:binary?}}{{!
 }}{{#type:struct}}{{!
-  }}deref((<{{> types/CythonPythonType}}>{{field:py_name}})._cpp_obj){{!
+  }}deref((<{{> types/cython_python_type}}>{{field:py_name}})._cpp_obj){{!
 }}{{/type:struct}}{{!
 }}{{#type:container?}}{{!
-  }}deref((<{{> types/CythonPythonType}}>{{field:py_name}})._cpp_obj){{!
+  }}deref((<{{> types/cython_python_type}}>{{field:py_name}})._cpp_obj){{!
 }}{{/type:container?}}{{!
-}}{{#type:enum?}}<{{> types/CythonCppType}}><int>{{field:py_name}}{{/type:enum?}}{{!
+}}{{#type:enum?}}<{{> types/cython_cpp_type}}><int>{{field:py_name}}{{/type:enum?}}{{!
 }}{{/type:hasCustomTypeBehavior?}}

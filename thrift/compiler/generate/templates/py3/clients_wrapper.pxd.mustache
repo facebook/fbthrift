@@ -98,7 +98,7 @@ cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}/clients_wrap
 
     {{#service:supportedFunctions}}
     cFollyFuture[{{#function:return_type}}{{> clients/cython_return_type_cpp_type}}{{/function:return_type}}] {{function:cppName}}(cRpcOptions, {{#function:args}}
-      {{#field:type}}{{> types/CythonCppType}}{{/field:type}} arg_{{field:py_name}},{{/function:args}})
+      {{#field:type}}{{> types/cython_cpp_type}}{{/field:type}} arg_{{field:py_name}},{{/function:args}})
     {{/service:supportedFunctions}}
     {{!
       If this is an empty service definition that extends another service with no interactions
@@ -125,7 +125,7 @@ cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}/clients_wrap
 
     {{#service:supportedFunctions}}
     cFollyFuture[{{#function:return_type}}{{> clients/cython_return_type_cpp_type}}{{/function:return_type}}] {{function:cppName}}(cRpcOptions, {{#function:args}}
-      {{#field:type}}{{> types/CythonCppType}}{{/field:type}} arg_{{field:py_name}},{{/function:args}})
+      {{#field:type}}{{> types/cython_cpp_type}}{{/field:type}} arg_{{field:py_name}},{{/function:args}})
     {{/service:supportedFunctions}}
     {{!
       If this is an empty service definition that extends another service

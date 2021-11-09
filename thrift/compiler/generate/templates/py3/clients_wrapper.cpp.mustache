@@ -34,7 +34,7 @@ thread that will pass data to the cython callback.
 folly::Future<{{#function:return_type}}{{> clients/cpp_return_type}}{{/function:return_type}}>
 {{service:name}}ClientWrapper::{{function:cppName}}(
     apache::thrift::RpcOptions& rpcOptions{{#function:args}},
-    {{#field:type}}{{> types/CppValueType}}{{/field:type}} arg_{{field:py_name}}{{/function:args}}) {
+    {{#field:type}}{{> types/cpp_value_type}}{{/field:type}} arg_{{field:py_name}}{{/function:args}}) {
   auto* client = static_cast<::{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}AsyncClient*>(async_client_.get());
   {{> clients/clients_wrapper.cpp_func_body}}
 
@@ -60,7 +60,7 @@ folly::Future<std::unique_ptr<::thrift::py3::ClientWrapper>>
 folly::Future<{{#function:return_type}}{{> clients/cpp_return_type}}{{/function:return_type}}>
 {{service:parent_service_name}}ClientWrapper::{{service:name}}InteractionWrapper::{{function:cppName}}(
     apache::thrift::RpcOptions& rpcOptions{{#function:args}},
-    {{#field:type}}{{> types/CppValueType}}{{/field:type}} arg_{{field:py_name}}{{/function:args}}) {
+    {{#field:type}}{{> types/cpp_value_type}}{{/field:type}} arg_{{field:py_name}}{{/function:args}}) {
   auto* client = static_cast<::{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:parent_service_name}}AsyncClient::{{service:name}}*>(async_client_.get());
   {{> clients/clients_wrapper.cpp_func_body}}
 
