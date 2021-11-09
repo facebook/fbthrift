@@ -27,6 +27,7 @@ from folly.iobuf cimport IOBuf
 from libc.stdint cimport uint32_t
 from libcpp.memory cimport make_unique
 from libcpp.utility cimport move as cmove
+from thrift.py3lite.client.client_wrapper import ClientWrapper
 from thrift.py3lite.client.omni_client cimport cOmniClientResponseWithHeaders
 from thrift.py3lite.client.request_channel cimport (
     createThriftChannelTCP,
@@ -137,15 +138,12 @@ def get_client(
     cClientType client_type = ClientType.THRIFT_HEADER_CLIENT_TYPE,
     cProtocol protocol = cProtocol.COMPACT,
 ):
-    if not issubclass(clientKlass, AsyncClient):
-        if hasattr(clientKlass, "Async"):
-            clientKlass = clientKlass.Async
-    assert issubclass(clientKlass, AsyncClient), "Must be a py3lite async client"
+    if not issubclass(clientKlass, ClientWrapper):
+        raise TypeError(f"{clientKlass} is not a py3lite client class")
 
     cdef uint32_t _timeout_ms = int(timeout * 1000)
-
     host = str(host)  # Accept ipaddress objects
-    client = clientKlass()
+    client = clientKlass.Async()
 
     if host is not None and port is not None:
         if path is not None:

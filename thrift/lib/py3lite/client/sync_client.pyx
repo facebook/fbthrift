@@ -23,6 +23,7 @@ from libc.stdint cimport uint32_t
 from libcpp.memory cimport make_unique
 from libcpp.string cimport string
 from libcpp.utility cimport move as cmove
+from thrift.py3lite.client.client_wrapper import ClientWrapper
 from thrift.py3lite.client.request_channel cimport (
     sync_createThriftChannelTCP,
     sync_createThriftChannelUnix,
@@ -90,10 +91,8 @@ def get_client(
     cClientType client_type = ClientType.THRIFT_HEADER_CLIENT_TYPE,
     cProtocol protocol = cProtocol.COMPACT,
 ):
-    if not issubclass(clientKlass, SyncClient):
-        if hasattr(clientKlass, "Sync"):
-            clientKlass = clientKlass.Sync
-    assert issubclass(clientKlass, SyncClient), "Must be a py3lite sync client"
+    if not issubclass(clientKlass, ClientWrapper):
+        raise TypeError(f"{clientKlass} is not a py3lite client class")
 
     cdef uint32_t _timeout_ms = int(timeout * 1000)
 
@@ -109,4 +108,4 @@ def get_client(
         ))
     else:
         raise ValueError("Must set path or host/port")
-    return clientKlass(channel)
+    return clientKlass.Sync(channel)
