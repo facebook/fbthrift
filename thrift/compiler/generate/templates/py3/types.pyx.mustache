@@ -811,7 +811,7 @@ cdef class ClientBufferedStream__{{type:flat_name}}(ClientBufferedStream):
             if opt_val.has_value():
                 try:
                     _value = opt_val.value()
-                    pyfuture.set_result({{> stream/CythonCppValueToPythonValue}})
+                    pyfuture.set_result({{> stream/cython_cpp_value_to_python_value}})
                 except Exception as ex:
                     pyfuture.set_exception(ex.with_trackback(None))
             else:
@@ -836,19 +836,19 @@ cdef class ServerStream__{{type:flat_name}}(ServerStream):
 
 {{/program:stream_types}}
 {{#program:response_and_stream_types}}
-cdef class ResponseAndClientBufferedStream__{{> stream/ResponseClassNameSuffix}}(ResponseAndClientBufferedStream):
+cdef class ResponseAndClientBufferedStream__{{> stream/response_class_name_suffix}}(ResponseAndClientBufferedStream):
 
     @staticmethod
     cdef _fbthrift_create(cResponseAndClientBufferedStream[{{!
             }}{{#type:stream_first_response_type}}{{ > types/CythonCppType}}{{/type:stream_first_response_type}}, {{!
             }}{{#type:stream_elem_type}}{{ > types/CythonCppType}}{{/type:stream_elem_type}}]& c_obj, __RpcOptions rpc_options):
-        __fbthrift_inst = ResponseAndClientBufferedStream__{{> stream/ResponseClassNameSuffix}}()
+        __fbthrift_inst = ResponseAndClientBufferedStream__{{> stream/response_class_name_suffix}}()
         __fbthrift_inst._stream = ClientBufferedStream__{{#type:stream_elem_type}}{{type:flat_name}}{{/type:stream_elem_type}}._fbthrift_create(
             c_obj.stream, rpc_options,
         )
 {{#type:stream_first_response_type}}
         cdef {{> types/CythonCppType}} _value = c_obj.response
-        __fbthrift_inst._response = {{> stream/CythonCppValueToPythonValue}}
+        __fbthrift_inst._response = {{> stream/cython_cpp_value_to_python_value}}
 {{/type:stream_first_response_type}}
         return __fbthrift_inst
 
@@ -856,7 +856,7 @@ cdef class ResponseAndClientBufferedStream__{{> stream/ResponseClassNameSuffix}}
         yield self._response
         yield self._stream
 
-cdef class ResponseAndServerStream__{{> stream/ResponseClassNameSuffix}}(ResponseAndServerStream):
+cdef class ResponseAndServerStream__{{> stream/response_class_name_suffix}}(ResponseAndServerStream):
     pass
 
 {{/program:response_and_stream_types}}

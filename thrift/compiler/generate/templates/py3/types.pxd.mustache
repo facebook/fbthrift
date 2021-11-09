@@ -273,7 +273,7 @@ cdef class ServerStream__{{type:flat_name}}(ServerStream):
 {{/program:stream_types}}
 {{#program:response_and_stream_types}}
 
-cdef class ResponseAndClientBufferedStream__{{> stream/ResponseClassNameSuffix}}(ResponseAndClientBufferedStream):
+cdef class ResponseAndClientBufferedStream__{{> stream/response_class_name_suffix}}(ResponseAndClientBufferedStream):
     cdef ClientBufferedStream__{{#type:stream_elem_type}}{{type:flat_name}}{{/type:stream_elem_type}} _stream
     cdef {{#type:stream_first_response_type}}{{ > types/CythonPythonType}}{{/type:stream_first_response_type}} _response
 
@@ -283,7 +283,7 @@ cdef class ResponseAndClientBufferedStream__{{> stream/ResponseClassNameSuffix}}
         }}{{#type:stream_elem_type}}{{ > types/CythonCppType}}{{/type:stream_elem_type}}]& c_obj, __RpcOptions rpc_options)
 
 
-cdef class ResponseAndServerStream__{{> stream/ResponseClassNameSuffix}}(ResponseAndServerStream):
+cdef class ResponseAndServerStream__{{> stream/response_class_name_suffix}}(ResponseAndServerStream):
     pass
 
 {{/program:response_and_stream_types}}

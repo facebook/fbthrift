@@ -191,7 +191,7 @@ cdef void getNextGenerator_{{service:name}}_{{function:name}}(object generator, 
 {{/service:supportedFunctions}}
 {{/program:services}}
 {{> services/promise}}
-{{> stream/StreamPromises}}
+{{> stream/stream_promises}}
 
 {{#program:services}}
 cdef object _{{service:name}}_annotations = _py_types.MappingProxyType({
