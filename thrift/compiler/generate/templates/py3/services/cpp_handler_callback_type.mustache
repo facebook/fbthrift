@@ -22,5 +22,5 @@ Used for overriding methods with (thread="eb") annotation
 }}{{#function:oneway?}}apache::thrift::HandlerCallbackBase{{/function:oneway?}}{{!
 }}{{^function:oneway?}}apache::thrift::HandlerCallback<{{#function:return_type}}{{!
 }}{{#type:void?}}void{{/type:void?}}{{!
-}}{{^type:void?}}{{> services/CppReturnType}}{{/type:void?}}{{!
+}}{{^type:void?}}{{> services/cpp_return_type}}{{/type:void?}}{{!
 }}{{/function:return_type}}>{{/function:oneway?}}>

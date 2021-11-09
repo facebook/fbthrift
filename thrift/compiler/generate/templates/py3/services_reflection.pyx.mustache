@@ -68,7 +68,7 @@ cdef __InterfaceSpec get_reflection__{{service:name}}(bint for_clients):
                 }}{{#type:void?}}None{{/type:void?}}{{!
                 }}{{#type:streamresponse?}}{{!
                     }}{{> clients/stream_response_class_name}} if for_clients else {{!
-                    }}{{> services/StreamResponseClassName}}{{!
+                    }}{{> services/stream_response_class_name}}{{!
                 }}{{/type:streamresponse?}}{{!
                 }}{{^type:void?}}{{> types/PythonType}}{{/type:void?}}{{!
                 }}{{/function:return_type}},

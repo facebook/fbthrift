@@ -67,7 +67,7 @@ class {{service:name}}Interface(
     {{#function:return_type}}{{^type:streamresponse?}}async {{/type:streamresponse?}}{{#type:stream_has_first_response?}}async {{/type:stream_has_first_response?}}{{/function:return_type}}def {{function:name}}(
         self{{#function:args}},
         {{field:py_name}}: {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}}
-    ) -> {{#function:return_type}}{{> services/ReturnTypePEP484Type}}{{/function:return_type}}: ...
+    ) -> {{#function:return_type}}{{> services/return_type_pep484_type}}{{/function:return_type}}: ...
     {{/service:supportedFunctions}}
     pass
 

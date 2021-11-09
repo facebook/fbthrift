@@ -30,16 +30,16 @@ executing.
 {{#function:return_type}}
 
 @cython.auto_pickle(False)
-cdef class {{> services/PromiseName}}:
+cdef class {{> services/promise_name}}:
     cdef cFollyPromise[{{!
-            }}{{> services/CythonReturnTypeCppType}}{{!
+            }}{{> services/cython_return_type_cpp_type}}{{!
         }}]* cPromise
 
     def __cinit__(self):
         self.cPromise = new cFollyPromise[{{!
-            }}{{> services/CythonReturnTypeCppType}}{{!
+            }}{{> services/cython_return_type_cpp_type}}{{!
         }}](cFollyPromise[{{!
-            }}{{> services/CythonReturnTypeCppType}}{{!
+            }}{{> services/cython_return_type_cpp_type}}{{!
         }}].makeEmpty())
 
     def __dealloc__(self):
@@ -47,10 +47,10 @@ cdef class {{> services/PromiseName}}:
 
     @staticmethod
     cdef _fbthrift_create(cFollyPromise[{{!
-            }}{{> services/CythonReturnTypeCppType}}{{!
+            }}{{> services/cython_return_type_cpp_type}}{{!
         }}] cPromise):
-        cdef {{> services/PromiseName}} inst = {{> services/PromiseName}}.__new__({{!
-        }}{{> services/PromiseName}})
+        cdef {{> services/promise_name}} inst = {{> services/promise_name}}.__new__({{!
+        }}{{> services/promise_name}})
         inst.cPromise[0] = cmove(cPromise)
         return inst
 {{/function:return_type}}

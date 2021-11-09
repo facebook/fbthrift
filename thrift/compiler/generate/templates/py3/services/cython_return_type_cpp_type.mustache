@@ -25,6 +25,6 @@ Cython type for return_type in services
   }}{{#type:stream_elem_type}}{{ >types/CythonCppType}}{{/type:stream_elem_type}}]{{!
 }}{{/type:streamresponse?}}{{!
 }}{{^type:streamresponse?}}{{!
-}}{{^function:stack_arguments?}}{{> services/CythonFieldType}}{{/function:stack_arguments?}}{{!
+}}{{^function:stack_arguments?}}{{> services/cython_field_type}}{{/function:stack_arguments?}}{{!
 }}{{#function:stack_arguments?}}{{> types/CythonCppType}}{{/function:stack_arguments?}}{{!
 }}{{/type:streamresponse?}}

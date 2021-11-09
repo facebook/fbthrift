@@ -36,16 +36,16 @@ cdef api void call_cy_{{service:name}}_{{function:name}}(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[{{#function:return_type}}{{!
-            }}{{> services/CythonReturnTypeCppType}}{{!
+            }}{{> services/cython_return_type_cpp_type}}{{!
         }}{{/function:return_type}}]{{!
     }} cPromise{{#function:args}},
     {{#field:type}}{{!
-            }}{{^function:stack_arguments?}}{{> services/CythonFieldType}}{{/function:stack_arguments?}}{{!
+            }}{{^function:stack_arguments?}}{{> services/cython_field_type}}{{/function:stack_arguments?}}{{!
             }}{{#function:stack_arguments?}}{{> types/CythonCppType}}{{/function:stack_arguments?}}{{!
         }}{{/field:type}} {{field:py_name}}{{/function:args}}
 ):{{! Gets called from a python Executor }}
     {{#function:return_type}}
-    cdef {{> services/PromiseName}} __promise = {{> services/PromiseName}}._fbthrift_create(cmove(cPromise))
+    cdef {{> services/promise_name}} __promise = {{> services/promise_name}}._fbthrift_create(cmove(cPromise))
     {{/function:return_type}}
     {{#function:args}}
     arg_{{field:py_name}} = {{#field:type}}{{!
@@ -66,7 +66,7 @@ cdef api void call_cy_{{service:name}}_{{function:name}}(
 
 async def {{service:name}}_{{function:name}}_coro(
     object self,
-    {{#function:return_type}}{{> services/PromiseName}}{{/function:return_type}}{{!
+    {{#function:return_type}}{{> services/promise_name}}{{/function:return_type}}{{!
     }} promise{{#function:args}},
     {{field:py_name}}{{/function:args}}
 ):
@@ -116,7 +116,7 @@ async def {{service:name}}_{{function:name}}_coro(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue({{#function:return_type}}{{> services/CythonReturnValue}}{{/function:return_type}})
+        promise.cPromise.setValue({{#function:return_type}}{{> services/cython_return_value}}{{/function:return_type}})
 
 {{/service:supportedFunctions}}
 {{/program:services}}
