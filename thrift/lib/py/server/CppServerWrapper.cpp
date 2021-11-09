@@ -508,6 +508,8 @@ class CppServerWrapper : public ThriftServer {
     PyThreadState* save_state = PyEval_SaveThread();
     SCOPE_EXIT { PyEval_RestoreThread(save_state); };
 
+    // This check is only useful for C++-based Thrift servers.
+    ThriftServer::setAllowCheckUnimplementedExtraInterfaces(false);
     ThriftServer::setup();
   }
 
