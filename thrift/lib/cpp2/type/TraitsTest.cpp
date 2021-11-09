@@ -233,7 +233,11 @@ TEST(TraitsTest, String) {
   IsSameType<standard_type<tag>, std::string>();
   IsSameType<
       standard_types<tag>,
-      detail::types<std::string, std::string_view, folly::StringPiece>>();
+      detail::types<
+          std::string,
+          folly::fbstring,
+          folly::IOBuf,
+          std::unique_ptr<folly::IOBuf>>>();
   EXPECT_EQ(toTType(BaseType::String), TType::T_UTF8);
   EXPECT_EQ(toThriftBaseType(TType::T_UTF8), BaseType::String);
 }
@@ -257,7 +261,11 @@ TEST(TraitsTest, Binary) {
   IsSameType<standard_type<tag>, std::string>();
   IsSameType<
       standard_types<tag>,
-      detail::types<std::string, folly::IOBuf, folly::ByteRange>>();
+      detail::types<
+          std::string,
+          folly::fbstring,
+          folly::IOBuf,
+          std::unique_ptr<folly::IOBuf>>>();
   EXPECT_EQ(toTType(BaseType::Binary), TType::T_STRING);
   EXPECT_EQ(toThriftBaseType(TType::T_STRING), BaseType::Binary);
 }
@@ -371,8 +379,9 @@ TEST(TraitsTest, List) {
       standard_types<tag_t>,
       detail::types<
           std::vector<std::string>,
-          std::vector<std::string_view>,
-          std::vector<folly::StringPiece>>>();
+          std::vector<folly::fbstring>,
+          std::vector<folly::IOBuf>,
+          std::vector<std::unique_ptr<folly::IOBuf>>>>();
   EXPECT_TRUE(all_types::contains<tag_t>);
   EXPECT_EQ(toTType(BaseType::List), TType::T_LIST);
   EXPECT_EQ(toThriftBaseType(TType::T_LIST), BaseType::List);
@@ -410,8 +419,9 @@ TEST(TraitsTest, Set) {
       standard_types<tag_t>,
       detail::types<
           std::set<std::string>,
-          std::set<std::string_view>,
-          std::set<folly::StringPiece>>>();
+          std::set<folly::fbstring>,
+          std::set<folly::IOBuf>,
+          std::set<std::unique_ptr<folly::IOBuf>>>>();
   EXPECT_TRUE(all_types::contains<tag_t>);
   EXPECT_EQ(toTType(BaseType::Set), TType::T_SET);
   EXPECT_EQ(toThriftBaseType(TType::T_SET), BaseType::Set);

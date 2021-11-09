@@ -172,14 +172,16 @@ template <>
 struct traits<string_t> : primitive_type<
                               BaseType::String,
                               std::string,
-                              std::string_view,
-                              folly::StringPiece> {};
+                              folly::fbstring,
+                              folly::IOBuf,
+                              std::unique_ptr<folly::IOBuf>> {};
 template <>
 struct traits<binary_t> : primitive_type<
                               BaseType::Binary,
                               std::string,
+                              folly::fbstring,
                               folly::IOBuf,
-                              folly::ByteRange> {};
+                              std::unique_ptr<folly::IOBuf>> {};
 
 // The enum class of types.
 template <>
