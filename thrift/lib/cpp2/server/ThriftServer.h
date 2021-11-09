@@ -137,6 +137,12 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   // whether we allow plaintext connections from loopback in REQUIRED mode
   bool allowPlaintextOnLoopback_ = false;
 
+  // If true, then falls back to the corresponding THRIFT_FLAG.
+  // If false, then the check is bypassed even if the THRIFT_FLAG is set.
+  // This allows a hard-coded opt-out of the check for services where it would
+  // not be useful, e.g. non-C++ languages.
+  bool allowCheckUnimplementedExtraInterfaces_ = true;
+
   std::weak_ptr<folly::ShutdownSocketSet> wShutdownSocketSet_;
 
   //! Listen socket
@@ -685,6 +691,14 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   bool isPlaintextAllowedOnLoopback() const {
     return allowPlaintextOnLoopback_;
+  }
+
+  void setAllowCheckUnimplementedExtraInterfaces(bool allow) {
+    allowCheckUnimplementedExtraInterfaces_ = allow;
+  }
+
+  bool isCheckUnimplementedExtraInterfacesAllowed() const {
+    return allowCheckUnimplementedExtraInterfaces_;
   }
 
   static folly::observer::Observer<bool> enableStopTLS();
