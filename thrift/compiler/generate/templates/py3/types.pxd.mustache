@@ -80,10 +80,10 @@ cdef extern from "{{.}}":
   pass
 {{/program:cppIncludes}}{{!
 }}{{#program:customTemplates}}
-{{> CustomTemplate}}
+{{> types/custom_template}}
 {{/program:customTemplates}}{{!
 }}{{#program:customTypes}}
-{{> CustomType}}
+{{> types/custom_type}}
 {{/program:customTypes}}
 
 {{#program:enums}}

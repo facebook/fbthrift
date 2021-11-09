@@ -42,7 +42,7 @@ cdef __InterfaceSpec get_reflection__{{service:name}}(bint for_clients):
         name="{{service:name}}",
         annotations={
             {{#service:annotations}}
-            {{> Annotation }}
+            {{> common/annotation }}
             {{/service:annotations}}
         },
     )
@@ -58,7 +58,7 @@ cdef __InterfaceSpec get_reflection__{{service:name}}(bint for_clients):
                     kind={{#field:type}}{{> types/thrift_number_type}}{{/field:type}},
                     annotations={
                         {{#field:annotations}}
-                        {{> Annotation }}
+                        {{> common/annotation }}
                         {{/field:annotations}}
                     },
                 ),
@@ -80,7 +80,7 @@ cdef __InterfaceSpec get_reflection__{{service:name}}(bint for_clients):
             ),
             annotations={
                 {{#function:annotations}}
-                {{> Annotation }}
+                {{> common/annotation }}
                 {{/function:annotations}}
             },
         )

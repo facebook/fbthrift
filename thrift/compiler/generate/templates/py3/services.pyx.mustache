@@ -111,7 +111,7 @@ cdef class ServerPublisher_{{> types/cython_cpp_type_ident}}(ServerPublisher):
     # Calling this send instead of the wrapped method name of next because next is
     # a python keyword and makes the linter complain
     def send(ServerPublisher self, {{> types/cython_python_type}} item):
-        deref(self.cPublisher).next(<{{> types/cython_cpp_type}}?>{{> CythonPythonToCppItem}})
+        deref(self.cPublisher).next(<{{> types/cython_cpp_type}}?>{{> types/cython_python_to_cpp_item}})
 
     @staticmethod
     cdef _fbthrift_create(cServerStreamPublisher[{{!
@@ -175,7 +175,7 @@ async def runGenerator_{{service:name}}_{{function:name}}(object generator, Prom
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(optional[{{> types/cython_cpp_type}}](<{{> types/cython_cpp_type}}?>{{> CythonPythonToCppItem}}))
+        promise.cPromise.setValue(optional[{{> types/cython_cpp_type}}](<{{> types/cython_cpp_type}}?>{{> types/cython_python_to_cpp_item}}))
 
 cdef void getNextGenerator_{{service:name}}_{{function:name}}(object generator, cFollyPromise[optional[{{> types/cython_cpp_type}}]] cPromise):
     cdef Promise_{{> types/cython_cpp_type_ident}}_Stream __promise = Promise_{{> types/cython_cpp_type_ident}}_Stream._fbthrift_create(cmove(cPromise))
@@ -196,7 +196,7 @@ cdef void getNextGenerator_{{service:name}}_{{function:name}}(object generator, 
 {{#program:services}}
 cdef object _{{service:name}}_annotations = _py_types.MappingProxyType({
 {{#service:annotations}}
-    {{> Annotation}}
+    {{> common/annotation}}
     {{#last?}}
 
     {{/last?}}

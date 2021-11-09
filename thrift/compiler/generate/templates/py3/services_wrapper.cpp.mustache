@@ -73,7 +73,7 @@ void {{service:name}}Wrapper::async_{{#function:eb}}eb{{/function:eb}}{{^functio
     this->executor,
     [this, ctx,
      callback = std::move(callback){{#function:args}},
-     {{#field:type}}{{> CppFieldCapture}}{{/field:type}}{{/function:args}}
+     {{#field:type}}{{> services/cpp_field_capture}}{{/field:type}}{{/function:args}}
     ]() mutable {
         auto [promise, future] = folly::makePromiseContract<{{!
             }}{{#function:return_type}}{{> services/cpp_return_type}}{{/function:return_type}}>();
@@ -81,7 +81,7 @@ void {{service:name}}Wrapper::async_{{#function:eb}}eb{{/function:eb}}{{^functio
             this->if_object,
             ctx,
             std::move(promise){{#function:args}}{{#field:type}},
-            {{> CppPassField}}
+            {{> services/cpp_pass_field}}
 {{/field:type}}{{/function:args}}
         );
         std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<{{!

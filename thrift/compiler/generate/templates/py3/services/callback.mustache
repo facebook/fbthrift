@@ -49,7 +49,7 @@ cdef api void call_cy_{{service:name}}_{{function:name}}(
     {{/function:return_type}}
     {{#function:args}}
     arg_{{field:py_name}} = {{#field:type}}{{!
-            }}{{^function:stack_arguments?}}{{> CythonCppToPython}}{{/function:stack_arguments?}}{{!
+            }}{{^function:stack_arguments?}}{{> services/cython_cpp_to_python}}{{/function:stack_arguments?}}{{!
             }}{{#function:stack_arguments?}}{{> types/cython_cpp_value_to_python}}{{/function:stack_arguments?}}{{!
         }}{{/field:type}}
     {{/function:args}}
