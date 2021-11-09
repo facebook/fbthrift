@@ -14,6 +14,7 @@
 # limitations under the License.
 
 import ipaddress
+import os
 from types import TracebackType
 from typing import (
     Any,
@@ -32,7 +33,6 @@ from thrift.py3.server import ThriftServer
 
 IPAddress = Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
 # pyre-fixme[24]: Generic type `os.PathLike` expects 1 type parameter.
-# pyre-fixme[10]: Name `os` is used but not defined.
 Path = Union[str, bytes, os.PathLike]
 
 class ServiceInterface:
