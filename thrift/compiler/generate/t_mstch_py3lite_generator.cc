@@ -941,6 +941,12 @@ void t_mstch_py3lite_generator::generate_types() {
 }
 
 void t_mstch_py3lite_generator::generate_clients() {
+  if (get_program()->services().empty()) {
+    // There is no need to generate empty / broken code for non existent
+    // services.
+    return;
+  }
+
   generate_file("lite_clients.py", NotTypesFile, generate_root_path_);
 }
 
