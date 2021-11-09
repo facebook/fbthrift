@@ -18,8 +18,8 @@ from libcpp.string cimport string
 from folly.iobuf cimport cIOBuf, IOBuf, from_unique_ptr
 from thrift.py3.server cimport cAsyncProcessorFactory, Cpp2RequestContext, ThriftServer, AsyncProcessorFactory, RequestContext, THRIFT_REQUEST_CONTEXT
 
-cdef extern from "thrift/lib/py3lite/server/server.h" namespace "::thrift::py3":
-    cdef cppclass cPy3LiteAsyncProcessorFactory "::thrift::py3::Py3LiteAsyncProcessorFactory"(cAsyncProcessorFactory):
+cdef extern from "thrift/lib/py3lite/server/server.h" namespace "::thrift::py3lite":
+    cdef cppclass cPy3LiteAsyncProcessorFactory "::thrift::py3lite::Py3LiteAsyncProcessorFactory"(cAsyncProcessorFactory):
         cPy3LiteAsyncProcessorFactory()
 
 cdef extern from "thrift/lib/cpp2/async/RpcTypes.h" namespace "::apache::thrift":

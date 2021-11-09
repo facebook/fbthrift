@@ -18,7 +18,7 @@
 #include <thrift/lib/py3lite/server/server_api.h> // @manual
 
 namespace thrift {
-namespace py3 {
+namespace py3lite {
 
 namespace {
 
@@ -60,5 +60,5 @@ void Py3LiteAsyncProcessor::handlePythonServerCallbackOneway(
       protocol);
 }
 
-} // namespace py3
+} // namespace py3lite
 } // namespace thrift
