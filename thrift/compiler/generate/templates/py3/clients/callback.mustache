@@ -28,20 +28,20 @@ executed in the asyncio loop.
 {{#program:services}}
 {{#service:supportedFunctions}}
 cdef void {{service:name}}_{{function:name}}_callback(
-    cFollyTry[{{#function:return_type}}{{> clients/CythonReturnTypeCppType}}{{/function:return_type}}]&& result,
+    cFollyTry[{{#function:return_type}}{{> clients/cython_return_type_cpp_type}}{{/function:return_type}}]&& result,
     PyObject* userdata
 ):
-    {{> clients/CallbackBody}}
+    {{> clients/callback_body}}
 
 
 {{/service:supportedFunctions}}
 {{#service:interactions}}
 {{#service:supportedFunctions}}
 cdef void {{service:parent_service_name}}_{{service:name}}_{{function:name}}_callback(
-    cFollyTry[{{#function:return_type}}{{> clients/CythonReturnTypeCppType}}{{/function:return_type}}]&& result,
+    cFollyTry[{{#function:return_type}}{{> clients/cython_return_type_cpp_type}}{{/function:return_type}}]&& result,
     PyObject* userdata
 ):
-    {{> clients/CallbackBody}}
+    {{> clients/callback_body}}
 
 
 {{/service:supportedFunctions}}

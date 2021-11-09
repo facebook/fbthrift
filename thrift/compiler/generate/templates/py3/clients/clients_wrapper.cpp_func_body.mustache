@@ -1,7 +1,7 @@
-folly::Promise<{{#function:return_type}}{{> clients/CppReturnType}}{{/function:return_type}}> _promise;
+folly::Promise<{{#function:return_type}}{{> clients/cpp_return_type}}{{/function:return_type}}> _promise;
 auto _future = _promise.getFuture();
 {{^function:oneway?}}
-auto callback = std::make_unique<::thrift::py3::FutureCallback<{{#function:return_type}}{{> clients/CppReturnType}}{{/function:return_type}}>>(
+auto callback = std::make_unique<::thrift::py3::FutureCallback<{{#function:return_type}}{{> clients/cpp_return_type}}{{/function:return_type}}>>(
   std::move(_promise), rpcOptions, client->recv_wrapped_{{function:cppName}}, channel_);
 {{/function:oneway?}}
 {{#function:oneway?}}

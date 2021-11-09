@@ -15,7 +15,7 @@ elif {{/function:exceptions}}{{!
     pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
 else:
     try:
-        pyfuture.set_result({{#function:return_type}}{{> clients/CythonCppValueToReturnValue}}{{/function:return_type}})
+        pyfuture.set_result({{#function:return_type}}{{> clients/cython_cpp_value_to_return_value}}{{/function:return_type}})
     except Exception as ex:
         {{! Most likely this is only ever unicode decode errors }}
         pyfuture.set_exception(ex.with_traceback(None))

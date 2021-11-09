@@ -42,7 +42,7 @@ to a python type.
   }}make_shared[{{> types/CythonCppType}}]({{!
   }}result.value())){{/type:struct}}{{!
 }}{{#type:streamresponse?}}{{!
-  }}{{> clients/StreamResponseClassName}}._fbthrift_create(result.value(), options){{!
+  }}{{> clients/stream_response_class_name}}._fbthrift_create(result.value(), options){{!
 }}{{/type:streamresponse?}}{{!
 }}{{#type:container?}}{{> types/CythonPythonType}}._fbthrift_create({{!
   }}make_shared[{{> types/CythonCppType}}]({{!
