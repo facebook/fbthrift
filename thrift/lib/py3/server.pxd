@@ -122,6 +122,7 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         void setThreadManagerFromExecutor(cFollyExecutor*, string)
         void setStopWorkersOnStopListening(cbool stopWorkers)
         cbool getStopWorkersOnStopListening()
+        void setAllowCheckUnimplementedExtraInterfaces(cbool allow)
 
 cdef extern from "folly/ssl/OpenSSLCertUtils.h" \
         namespace "folly::ssl":

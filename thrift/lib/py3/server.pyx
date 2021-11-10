@@ -132,6 +132,9 @@ cdef class ThriftServer:
         self.server.get().metadata().wrapper = b"ThriftServer-py3"
 
     async def serve(self):
+        # This check is only useful for C++-based Thrift servers.
+        # TODO(praihan): remove this after migration of C++ services onto extra interfaces
+        self.server.get().setAllowCheckUnimplementedExtraInterfaces(False)
         def _serve():
             with nogil:
                 self.server.get().serve()
