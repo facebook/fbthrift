@@ -35,22 +35,18 @@ class PooledRequestChannel : public RequestChannel {
   using ImplPtr = std::shared_ptr<Impl>;
   using ImplCreator = folly::Function<ImplPtr(folly::EventBase&)>;
 
-  static std::
-      unique_ptr<PooledRequestChannel, folly::DelayedDestruction::Destructor>
-      newSyncChannel(
-          std::weak_ptr<folly::IOExecutor> executor, ImplCreator implCreator) {
+  static RequestChannel::Ptr newSyncChannel(
+      std::weak_ptr<folly::IOExecutor> executor, ImplCreator implCreator) {
     return {
         new PooledRequestChannel(
             nullptr, std::move(executor), std::move(implCreator)),
         {}};
   }
 
-  static std::
-      unique_ptr<PooledRequestChannel, folly::DelayedDestruction::Destructor>
-      newChannel(
-          folly::Executor* callbackExecutor,
-          std::weak_ptr<folly::IOExecutor> executor,
-          ImplCreator implCreator) {
+  static RequestChannel::Ptr newChannel(
+      folly::Executor* callbackExecutor,
+      std::weak_ptr<folly::IOExecutor> executor,
+      ImplCreator implCreator) {
     return {
         new PooledRequestChannel(
             callbackExecutor, std::move(executor), std::move(implCreator)),

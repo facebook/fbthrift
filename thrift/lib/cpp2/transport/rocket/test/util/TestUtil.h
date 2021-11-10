@@ -73,8 +73,7 @@ class TestSetup : public testing::Test {
       int maxRequests = 0,
       std::string transport = "rocket");
 
-  std::unique_ptr<PooledRequestChannel, folly::DelayedDestruction::Destructor>
-  connectToServer(
+  RequestChannel::Ptr connectToServer(
       uint16_t port,
       folly::Function<void()> onDetachable = nullptr,
       folly::Function<void(TAsyncSocketIntercepted&)> socketSetup = nullptr);
