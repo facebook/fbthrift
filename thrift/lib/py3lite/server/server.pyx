@@ -132,16 +132,16 @@ cdef public api void handleServerCallbackOneway(object func, string funcName, Cp
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     combinedHandler(func, funcName, ctx, __promise, cmove(serializedRequest), prot)
 
-cdef class Py3LiteAsyncProcessor(AsyncProcessorFactory):
+cdef class Py3LiteAsyncProcessorFactory(AsyncProcessorFactory):
     @staticmethod
-    cdef Py3LiteAsyncProcessor create(dict funcMap, bytes serviceName):
+    cdef Py3LiteAsyncProcessorFactory create(dict funcMap, bytes serviceName):
         cdef map[string, PyObject*] funcs
         cdef unordered_set[string] oneways
         for name, func in funcMap.items():
             funcs[<string>name] = <PyObject*>func
             if getattr(func, "is_one_way", False):
                 oneways.insert(name)
-        cdef Py3LiteAsyncProcessor inst = Py3LiteAsyncProcessor.__new__(Py3LiteAsyncProcessor)
+        cdef Py3LiteAsyncProcessorFactory inst = Py3LiteAsyncProcessorFactory.__new__(Py3LiteAsyncProcessorFactory)
         inst._cpp_obj = static_pointer_cast[cAsyncProcessorFactory, cPy3LiteAsyncProcessorFactory](
             make_shared[cPy3LiteAsyncProcessorFactory](cmove(funcs), cmove(oneways), get_executor(), serviceName))
         return inst
@@ -170,4 +170,4 @@ cdef class Py3LiteServer(ThriftServer):
     def __init__(self, ServiceInterface server, int port=0, ip=None, path=None):
         self.funcMap = server.getFunctionTable()
         self.handler = server
-        super().__init__(Py3LiteAsyncProcessor.create(self.funcMap, self.handler.service_name()), port, ip, path)
+        super().__init__(Py3LiteAsyncProcessorFactory.create(self.funcMap, self.handler.service_name()), port, ip, path)

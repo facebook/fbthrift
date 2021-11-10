@@ -28,3 +28,7 @@ cdef extern from "thrift/lib/cpp2/async/RpcTypes.h" namespace "::apache::thrift"
 
 cdef class ServiceInterface:
     pass
+
+cdef class Py3LiteAsyncProcessorFactory(AsyncProcessorFactory):
+    @staticmethod
+    cdef Py3LiteAsyncProcessorFactory create(dict funcMap, bytes serviceName)
