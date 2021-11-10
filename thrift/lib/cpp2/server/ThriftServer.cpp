@@ -1145,7 +1145,10 @@ ThriftServer::defaultNextProtocols() {
               // "http" is not a legit specifier but need to include it for
               // legacy.  Thrift's HTTP2RoutingHandler uses this, and clients
               // may be sending it.
-              "http"};
+              "http",
+              // Many clients still send http/1.1 which is handled by the
+              // default handler.
+              "http/1.1"};
         }
         return std::list<std::string>{
             "thrift",
@@ -1154,6 +1157,9 @@ ThriftServer::defaultNextProtocols() {
             // legacy.  Thrift's HTTP2RoutingHandler uses this, and clients
             // may be sending it.
             "http",
+            // Many clients still send http/1.1 which is handled by the default
+            // handler.
+            "http/1.1",
             "rs"};
       });
 }
