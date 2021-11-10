@@ -33,7 +33,8 @@ folly::Future<RequestChannel_ptr> createThriftChannelTCP(
     uint16_t port,
     uint32_t connect_timeout,
     CLIENT_TYPE client_t,
-    apache::thrift::protocol::PROTOCOL_TYPES proto) {
+    apache::thrift::protocol::PROTOCOL_TYPES proto,
+    const std::string& endpoint) {
   auto eb = folly::getGlobalIOExecutor()->getEventBase();
   auto future = folly::via(eb, [=]() -> RequestChannel_ptr {
     auto socket =
@@ -48,6 +49,12 @@ folly::Future<RequestChannel_ptr> createThriftChannelTCP(
       auto chan = RocketClientChannel::newChannel(std::move(socket));
       chan->setProtocolId(proto);
       return chan;
+    } else if (client_t == THRIFT_HTTP_CLIENT_TYPE) {
+      return HeaderClientChannel::newChannel(
+          std::move(socket),
+          HeaderClientChannel::Options()
+              .useAsHttpClient(host, endpoint)
+              .setProtocolId(proto));
     } else {
       throw std::runtime_error("Unsupported client type");
     }
@@ -60,9 +67,10 @@ RequestChannel_ptr sync_createThriftChannelTCP(
     uint16_t port,
     uint32_t connect_timeout,
     CLIENT_TYPE client_t,
-    apache::thrift::protocol::PROTOCOL_TYPES proto) {
-  auto future =
-      createThriftChannelTCP(host, port, connect_timeout, client_t, proto);
+    apache::thrift::protocol::PROTOCOL_TYPES proto,
+    const std::string& endpoint) {
+  auto future = createThriftChannelTCP(
+      host, port, connect_timeout, client_t, proto, endpoint);
   return std::move(future.wait().value());
 }
 

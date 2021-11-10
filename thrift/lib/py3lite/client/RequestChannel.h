@@ -36,14 +36,16 @@ folly::Future<RequestChannel_ptr> createThriftChannelTCP(
     uint16_t port,
     uint32_t connect_timeout,
     CLIENT_TYPE client_t,
-    apache::thrift::protocol::PROTOCOL_TYPES proto);
+    apache::thrift::protocol::PROTOCOL_TYPES proto,
+    const std::string& endpoint);
 
 RequestChannel_ptr sync_createThriftChannelTCP(
     const std::string& host,
     uint16_t port,
     uint32_t connect_timeout,
     CLIENT_TYPE client_t,
-    apache::thrift::protocol::PROTOCOL_TYPES proto);
+    apache::thrift::protocol::PROTOCOL_TYPES proto,
+    const std::string& endpoint);
 
 /**
  * Create a thrift channel by connecting to a Unix domain socket.

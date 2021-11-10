@@ -22,6 +22,7 @@ cdef extern from "thrift/lib/cpp/transport/THeader.h":
     cpdef enum ClientType "CLIENT_TYPE":
         THRIFT_HEADER_CLIENT_TYPE,
         THRIFT_ROCKET_CLIENT_TYPE,
+        THRIFT_HTTP_CLIENT_TYPE,
 
 
 cdef extern from "thrift/lib/py3lite/client/RequestChannel.h" namespace "::thrift::py3lite::client":
@@ -34,6 +35,7 @@ cdef extern from "thrift/lib/py3lite/client/RequestChannel.h" namespace "::thrif
         const uint32_t connect_timeout,
         ClientType,
         cProtocol,
+        const string& endpoint,
     )
 
     cdef cRequestChannel_ptr sync_createThriftChannelTCP(
@@ -42,6 +44,7 @@ cdef extern from "thrift/lib/py3lite/client/RequestChannel.h" namespace "::thrif
         const uint32_t connect_timeout,
         ClientType,
         cProtocol,
+        const string& endpoint,
     )
 
     cdef cFollyFuture[cRequestChannel_ptr] createThriftChannelUnix(

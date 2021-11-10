@@ -106,3 +106,17 @@ class AsyncClientTests(TestCase):
             with self.assertRaises(TransportError) as ex:
                 await client.add(1, 2)
             self.assertEqual(TransportErrorType.UNKNOWN, ex.exception.type)
+
+    async def test_http_endpoint(self) -> None:
+        async with server_in_event_loop() as addr:
+            async with get_client(
+                TestService,
+                host=addr.ip,
+                port=addr.port,
+                path="/some/endpoint",
+                client_type=ClientType.THRIFT_HTTP_CLIENT_TYPE,
+            ) as client:
+                with self.assertRaises(TransportError) as ex:
+                    await client.add(1, 2)
+                # The test server gets an invalid request because its a HTTP request
+                self.assertEqual(TransportErrorType.END_OF_FILE, ex.exception.type)

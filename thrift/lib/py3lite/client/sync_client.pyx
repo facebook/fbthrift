@@ -14,7 +14,8 @@
 
 # cython: c_string_type=unicode, c_string_encoding=utf8
 
-import time
+import os
+
 cimport folly.iobuf
 
 from cython.operator cimport dereference as deref
@@ -94,13 +95,22 @@ def get_client(
     if not issubclass(clientKlass, ClientWrapper):
         raise TypeError(f"{clientKlass} is not a py3lite client class")
 
+    endpoint = b''
+    if client_type == ClientType.THRIFT_HTTP_CLIENT_TYPE:
+        if host is None or port is None:
+            raise ValueError("Must set host and port when using ClientType.THRIFT_HTTP_CLIENT_TYPE")
+        if path is None:
+            raise ValueError("use path='/endpoint' when using ClientType.THRIFT_HTTP_CLIENT_TYPE")
+        endpoint = os.fsencode(path)
+        path = None
+
     cdef uint32_t _timeout_ms = int(timeout * 1000)
 
     if host is not None and port is not None:
         if path is not None:
             raise ValueError("Can not set path and host/port at same time")
         channel = RequestChannel.create(sync_createThriftChannelTCP(
-            host, port, _timeout_ms, client_type, protocol
+            host, port, _timeout_ms, client_type, protocol, endpoint
         ))
     elif path is not None:
         channel = RequestChannel.create(sync_createThriftChannelUnix(

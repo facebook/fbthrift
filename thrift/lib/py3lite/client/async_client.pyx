@@ -15,6 +15,7 @@
 # cython: c_string_type=unicode, c_string_encoding=utf8
 
 import asyncio
+import os
 
 cimport cython
 cimport folly.iobuf
@@ -141,6 +142,15 @@ def get_client(
     if not issubclass(clientKlass, ClientWrapper):
         raise TypeError(f"{clientKlass} is not a py3lite client class")
 
+    endpoint = b''
+    if client_type == ClientType.THRIFT_HTTP_CLIENT_TYPE:
+        if host is None or port is None:
+            raise ValueError("Must set host and port when using ClientType.THRIFT_HTTP_CLIENT_TYPE")
+        if path is None:
+            raise ValueError("use path='/endpoint' when using ClientType.THRIFT_HTTP_CLIENT_TYPE")
+        endpoint = os.fsencode(path)
+        path = None
+
     cdef uint32_t _timeout_ms = int(timeout * 1000)
     host = str(host)  # Accept ipaddress objects
     client = clientKlass.Async()
@@ -151,7 +161,7 @@ def get_client(
         bridgeFutureWith[cRequestChannel_ptr](
             (<AsyncClient>client)._executor,
             createThriftChannelTCP(
-                host, port, _timeout_ms, client_type, protocol
+                host, port, _timeout_ms, client_type, protocol, endpoint
             ),
             requestchannel_callback,
             <PyObject *>client,

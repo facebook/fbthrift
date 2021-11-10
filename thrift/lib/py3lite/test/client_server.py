@@ -14,9 +14,6 @@
 # limitations under the License.
 
 import asyncio
-import socket
-import sys
-import tempfile
 import time
 import unittest
 from pathlib import Path
@@ -24,20 +21,18 @@ from typing import Optional, Sequence
 
 from derived.lite_clients import DerivedTestingService
 from derived.lite_services import DerivedTestingServiceInterface
-from folly.iobuf import IOBuf
 from stack_args.lite_clients import StackService
 from stack_args.lite_services import StackServiceInterface
 from stack_args.lite_types import simple
 from testing.lite_clients import TestingService
 from testing.lite_services import TestingServiceInterface
-from testing.lite_types import Color, HardError, easy
-from thrift.py3.common import Protocol, RpcOptions
+from testing.lite_types import Color, easy
 from thrift.py3.server import (
     SocketAddress,
     get_context,
 )
 from thrift.py3lite.async_client import ClientType, get_client
-from thrift.py3lite.exceptions import ApplicationError
+from thrift.py3lite.exceptions import ApplicationError, TransportError
 from thrift.py3lite.server import (
     Py3LiteServer,
     ServiceInterface,
@@ -130,6 +125,28 @@ class ClientServerTests(unittest.TestCase):
     """
     These are tests where a client and server talk to each other
     """
+
+    def test_http_endpoint(self) -> None:
+        loop = asyncio.get_event_loop()
+
+        async def inner_test() -> None:
+            async with TestServer(ip="::1") as sa:
+                ip, port = sa.ip, sa.port
+                assert ip and port
+                async with get_client(
+                    TestingService,
+                    host=ip,
+                    port=port,
+                    path="/some/endpoint",
+                    client_type=ClientType.THRIFT_HTTP_CLIENT_TYPE,
+                ) as client:
+                    try:
+                        self.assertTrue(await client.invert(False))
+                    except TransportError as err:
+                        # The test server gets an invalid request because its a HTTP request
+                        self.assertEqual(err.type.value, 4)  # END OF FILE
+
+        loop.run_until_complete(inner_test())
 
     def test_server_localhost(self) -> None:
         loop = asyncio.get_event_loop()
