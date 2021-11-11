@@ -31,7 +31,7 @@ from thrift.py3.server import (
     SocketAddress,
     get_context,
 )
-from thrift.py3lite.async_client import ClientType, get_client
+from thrift.py3lite.client import ClientType, get_client
 from thrift.py3lite.exceptions import ApplicationError, TransportError
 from thrift.py3lite.server import (
     Py3LiteServer,

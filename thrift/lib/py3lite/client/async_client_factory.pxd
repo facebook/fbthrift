@@ -13,16 +13,11 @@
 # limitations under the License.
 
 from cpython.ref cimport PyObject
-from folly cimport cFollyExecutor, cFollyTry
-from libcpp.memory cimport unique_ptr
-from libcpp.string cimport string
-from thrift.py3lite.client.omni_client cimport cOmniClient
+from folly cimport cFollyTry
 from thrift.py3lite.client.request_channel cimport cRequestChannel_ptr
 
 
-cdef class AsyncClient:
-    cdef string _service_name
-    cdef cFollyExecutor* _executor
-    cdef object _connect_future
-    cdef unique_ptr[cOmniClient] _omni_client
-    cdef bind_client(self, cRequestChannel_ptr&& channel)
+cdef void requestchannel_callback(
+    cFollyTry[cRequestChannel_ptr]&& result,
+    PyObject* userData,
+)

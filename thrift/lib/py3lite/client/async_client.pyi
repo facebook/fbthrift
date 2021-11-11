@@ -13,13 +13,9 @@
 # limitations under the License.
 
 import enum
-import ipaddress
 import types
 import typing
 
-from thrift.py3lite.client.client_wrapper import ClientWrapper
-from thrift.py3lite.client.request_channel import RequestChannel
-from thrift.py3lite.serializer import Protocol
 from thrift.py3lite.types import Struct, Union
 
 TAsyncClient = typing.TypeVar("TAsyncClient", bound="AsyncClient")
@@ -45,18 +41,3 @@ class ClientType(enum.Enum):
     THRIFT_HEADER_CLIENT_TYPE: ClientType = ...
     THRIFT_ROCKET_CLIENT_TYPE: ClientType = ...
     THRIFT_HTTP_CLIENT_TYPE: ClientType = ...
-
-def get_client(
-    clientKlass: typing.Type[
-        ClientWrapper[TAsyncClient, typing.TypeVar("TSyncClient")]
-    ],
-    *,
-    host: typing.Optional[
-        typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]
-    ] = ...,
-    port: typing.Optional[int] = ...,
-    path: typing.Optional[str] = ...,
-    timeout: float = ...,
-    client_type: ClientType = ...,
-    protocol: Protocol = ...,
-) -> TAsyncClient: ...

@@ -15,7 +15,7 @@
 import asyncio
 
 from later.unittest import TestCase
-from thrift.py3lite.async_client import ClientType, get_client
+from thrift.py3lite.client import ClientType, get_client
 from thrift.py3lite.exceptions import (
     ApplicationError,
     ApplicationErrorType,
