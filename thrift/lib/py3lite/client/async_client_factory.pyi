@@ -16,16 +16,12 @@ import ipaddress
 import typing
 
 from thrift.py3lite.client.async_client import AsyncClient
-from thrift.py3lite.client.client_wrapper import ClientWrapper
+from thrift.py3lite.client.client_wrapper import Client, TAsyncClient, TSyncClient
 from thrift.py3lite.client.request_channel import ClientType
 from thrift.py3lite.serializer import Protocol
 
-TAsyncClient = typing.TypeVar("TAsyncClient", bound=AsyncClient)
-
 def get_client(
-    clientKlass: typing.Type[
-        ClientWrapper[TAsyncClient, typing.TypeVar("TSyncClient")]
-    ],
+    clientKlass: typing.Type[Client[TAsyncClient, TSyncClient]],
     *,
     host: typing.Optional[
         typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]

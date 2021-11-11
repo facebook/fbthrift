@@ -22,7 +22,7 @@ from folly.futures cimport bridgeFutureWith
 from libc.stdint cimport uint32_t
 from libcpp.utility cimport move as cmove
 from thrift.py3lite.client.async_client cimport AsyncClient
-from thrift.py3lite.client.client_wrapper import ClientWrapper
+from thrift.py3lite.client.client_wrapper import Client
 from thrift.py3lite.client.request_channel cimport (
     createThriftChannelTCP,
     createThriftChannelUnix,
@@ -42,7 +42,7 @@ def get_client(
     cClientType client_type = ClientType.THRIFT_HEADER_CLIENT_TYPE,
     cProtocol protocol = cProtocol.COMPACT,
 ):
-    if not issubclass(clientKlass, ClientWrapper):
+    if not issubclass(clientKlass, Client):
         raise TypeError(f"{clientKlass} is not a py3lite client class")
 
     endpoint = b''

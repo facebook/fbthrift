@@ -22,8 +22,8 @@ Generated Python classes for Thrift clients
 from {{program:base_library_package}}.client import (
     AsyncClient as _fbthrift_py3lite_AsyncClient,
     SyncClient as _fbthrift_py3lite_SyncClient,
+    Client as _fbthrift_py3lite_Client,
 )
-from {{program:base_library_package}}.client.client_wrapper import ClientWrapper as _fbthrift_py3lite_ClientWrapper
 import {{program:base_library_package}}.exceptions as _fbthrift_py3lite_exceptions
 import {{program:base_library_package}}.types as _fbthrift_py3lite_types
 import {{program:module_path}}.lite_types
@@ -39,7 +39,7 @@ import {{included_module_path}}.lite_clients
 
 {{#program:services?}}
 {{#program:services}}
-class {{service:name}}(_fbthrift_py3lite_ClientWrapper["{{service:name}}.Async", "{{service:name}}.Sync"]):
+class {{service:name}}(_fbthrift_py3lite_Client["{{service:name}}.Async", "{{service:name}}.Sync"]):
     class Sync({{#service:extends}}{{!
         }}{{> services/client_module_path}}.Sync{{!
     }}{{/service:extends}}{{^service:extends?}}{{!

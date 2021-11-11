@@ -15,11 +15,14 @@
 from abc import ABC
 from typing import Generic, Type, TypeVar
 
-TAsyncClient = TypeVar("TAsyncClient")
-TSyncClient = TypeVar("TSyncClient")
+from thrift.py3lite.client.async_client import AsyncClient
+from thrift.py3lite.client.sync_client import SyncClient
+
+TAsyncClient = TypeVar("TAsyncClient", bound=AsyncClient)
+TSyncClient = TypeVar("TSyncClient", bound=SyncClient)
 
 
-class ClientWrapper(Generic[TAsyncClient, TSyncClient], ABC):
+class Client(Generic[TAsyncClient, TSyncClient], ABC):
     """
     Base class of all thrift-py3lite clients.
     """

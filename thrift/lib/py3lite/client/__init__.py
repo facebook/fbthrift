@@ -14,6 +14,7 @@
 
 from thrift.py3lite.client.async_client import AsyncClient  # noqa: F401
 from thrift.py3lite.client.async_client_factory import get_client  # noqa: F401
+from thrift.py3lite.client.client_wrapper import Client  # noqa: F401
 from thrift.py3lite.client.request_channel import ClientType  # noqa: F401
 from thrift.py3lite.client.sync_client import SyncClient  # noqa: F401
 from thrift.py3lite.client.sync_client_factory import (  # noqa: F401

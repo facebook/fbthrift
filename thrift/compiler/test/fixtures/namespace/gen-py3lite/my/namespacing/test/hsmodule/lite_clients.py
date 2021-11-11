@@ -8,14 +8,14 @@
 from thrift.py3lite.client import (
     AsyncClient as _fbthrift_py3lite_AsyncClient,
     SyncClient as _fbthrift_py3lite_SyncClient,
+    Client as _fbthrift_py3lite_Client,
 )
-from thrift.py3lite.client.client_wrapper import ClientWrapper as _fbthrift_py3lite_ClientWrapper
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 import thrift.py3lite.types as _fbthrift_py3lite_types
 import my.namespacing.test.hsmodule.lite_types
 
 
-class HsTestService(_fbthrift_py3lite_ClientWrapper["HsTestService.Async", "HsTestService.Sync"]):
+class HsTestService(_fbthrift_py3lite_Client["HsTestService.Async", "HsTestService.Sync"]):
     class Sync(_fbthrift_py3lite_SyncClient):
         def __init__(self, channel):
             super().__init__(channel)

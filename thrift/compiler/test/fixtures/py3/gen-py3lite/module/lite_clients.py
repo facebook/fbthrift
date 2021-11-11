@@ -8,14 +8,14 @@
 from fbcode.thrift.py3lite.client import (
     AsyncClient as _fbthrift_py3lite_AsyncClient,
     SyncClient as _fbthrift_py3lite_SyncClient,
+    Client as _fbthrift_py3lite_Client,
 )
-from fbcode.thrift.py3lite.client.client_wrapper import ClientWrapper as _fbthrift_py3lite_ClientWrapper
 import fbcode.thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 import fbcode.thrift.py3lite.types as _fbthrift_py3lite_types
 import module.lite_types
 
 
-class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "SimpleService.Sync"]):
+class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleService.Sync"]):
     class Sync(_fbthrift_py3lite_SyncClient):
         def __init__(self, channel):
             super().__init__(channel)
@@ -1555,7 +1555,7 @@ class SimpleService(_fbthrift_py3lite_ClientWrapper["SimpleService.Async", "Simp
             )
 
 
-class DerivedService(_fbthrift_py3lite_ClientWrapper["DerivedService.Async", "DerivedService.Sync"]):
+class DerivedService(_fbthrift_py3lite_Client["DerivedService.Async", "DerivedService.Sync"]):
     class Sync(SimpleService.Sync):
         def __init__(self, channel):
             super().__init__(channel)
@@ -1599,7 +1599,7 @@ class DerivedService(_fbthrift_py3lite_ClientWrapper["DerivedService.Async", "De
             )
 
 
-class RederivedService(_fbthrift_py3lite_ClientWrapper["RederivedService.Async", "RederivedService.Sync"]):
+class RederivedService(_fbthrift_py3lite_Client["RederivedService.Async", "RederivedService.Sync"]):
     class Sync(DerivedService.Sync):
         def __init__(self, channel):
             super().__init__(channel)
