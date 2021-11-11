@@ -5,9 +5,11 @@
 #  @generated
 #
 
-from fbcode.thrift.py3lite.client import AsyncClient as _fbthrift_py3lite_AsyncClient
+from fbcode.thrift.py3lite.client import (
+    AsyncClient as _fbthrift_py3lite_AsyncClient,
+    SyncClient as _fbthrift_py3lite_SyncClient,
+)
 from fbcode.thrift.py3lite.client.client_wrapper import ClientWrapper as _fbthrift_py3lite_ClientWrapper
-from fbcode.thrift.py3lite.sync_client import SyncClient as _fbthrift_py3lite_SyncClient
 import fbcode.thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 import fbcode.thrift.py3lite.types as _fbthrift_py3lite_types
 import module.lite_types

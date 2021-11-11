@@ -12,17 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import enum
-import ipaddress
 import types
 import typing
 
-from thrift.py3lite.client.client_wrapper import ClientWrapper
 from thrift.py3lite.client.request_channel import RequestChannel
-from thrift.py3lite.serializer import Protocol
 from thrift.py3lite.types import Struct, Union
 
-TSyncClient = typing.TypeVar("TSyncClient")
+TSyncClient = typing.TypeVar("TSyncClient", bound="SyncClient")
 StructOrUnion = typing.TypeVar("StructOrUnion", bound=typing.Union[Struct, Union])
 
 class SyncClient:
@@ -40,23 +36,3 @@ class SyncClient:
         args: Struct,
         response_cls: typing.Type[StructOrUnion],
     ) -> StructOrUnion: ...
-
-class ClientType(enum.Enum):
-    THRIFT_HEADER_CLIENT_TYPE: ClientType = ...
-    THRIFT_ROCKET_CLIENT_TYPE: ClientType = ...
-    THRIFT_HTTP_CLIENT_TYPE: ClientType = ...
-
-def get_client(
-    clientKlass: typing.Type[
-        ClientWrapper[typing.TypeVar("TAsyncClient"), TSyncClient]
-    ],
-    *,
-    host: typing.Optional[
-        typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]
-    ] = ...,
-    port: typing.Optional[int] = ...,
-    path: typing.Optional[str] = ...,
-    timeout: float = ...,
-    client_type: ClientType = ...,
-    protocol: Protocol = ...,
-) -> TSyncClient: ...

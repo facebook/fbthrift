@@ -19,9 +19,11 @@ Generated Python classes for Thrift clients
 }}
 {{> common/auto_generated_py}}
 
-from {{program:base_library_package}}.client import AsyncClient as _fbthrift_py3lite_AsyncClient
+from {{program:base_library_package}}.client import (
+    AsyncClient as _fbthrift_py3lite_AsyncClient,
+    SyncClient as _fbthrift_py3lite_SyncClient,
+)
 from {{program:base_library_package}}.client.client_wrapper import ClientWrapper as _fbthrift_py3lite_ClientWrapper
-from {{program:base_library_package}}.sync_client import SyncClient as _fbthrift_py3lite_SyncClient
 import {{program:base_library_package}}.exceptions as _fbthrift_py3lite_exceptions
 import {{program:base_library_package}}.types as _fbthrift_py3lite_types
 import {{program:module_path}}.lite_types

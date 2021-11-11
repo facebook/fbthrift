@@ -14,27 +14,16 @@
 
 # cython: c_string_type=unicode, c_string_encoding=utf8
 
-import os
-
 cimport folly.iobuf
 
 from cython.operator cimport dereference as deref
 from folly.iobuf cimport IOBuf
-from libc.stdint cimport uint32_t
 from libcpp.memory cimport make_unique
 from libcpp.string cimport string
 from libcpp.utility cimport move as cmove
-from thrift.py3lite.client.client_wrapper import ClientWrapper
-from thrift.py3lite.client.request_channel cimport (
-    sync_createThriftChannelTCP,
-    sync_createThriftChannelUnix,
-    ClientType as cClientType,
-    RequestChannel,
-)
-from thrift.py3lite.client.request_channel import ClientType
+from thrift.py3lite.client.request_channel cimport RequestChannel
 from thrift.py3lite.exceptions cimport create_py_exception
 from thrift.py3lite.exceptions import ApplicationError, ApplicationErrorType
-from thrift.py3lite.serializer cimport Protocol as cProtocol
 from thrift.py3lite.serializer import serialize_iobuf, deserialize
 
 
@@ -80,42 +69,3 @@ cdef class SyncClient:
                     ApplicationErrorType.MISSING_RESULT,
                     "Received no result nor error",
                 )
-
-
-def get_client(
-    clientKlass,
-    *,
-    host=None,
-    port=None,
-    path=None,
-    double timeout=1,
-    cClientType client_type = ClientType.THRIFT_HEADER_CLIENT_TYPE,
-    cProtocol protocol = cProtocol.COMPACT,
-):
-    if not issubclass(clientKlass, ClientWrapper):
-        raise TypeError(f"{clientKlass} is not a py3lite client class")
-
-    endpoint = b''
-    if client_type == ClientType.THRIFT_HTTP_CLIENT_TYPE:
-        if host is None or port is None:
-            raise ValueError("Must set host and port when using ClientType.THRIFT_HTTP_CLIENT_TYPE")
-        if path is None:
-            raise ValueError("use path='/endpoint' when using ClientType.THRIFT_HTTP_CLIENT_TYPE")
-        endpoint = os.fsencode(path)
-        path = None
-
-    cdef uint32_t _timeout_ms = int(timeout * 1000)
-
-    if host is not None and port is not None:
-        if path is not None:
-            raise ValueError("Can not set path and host/port at same time")
-        channel = RequestChannel.create(sync_createThriftChannelTCP(
-            host, port, _timeout_ms, client_type, protocol, endpoint
-        ))
-    elif path is not None:
-        channel = RequestChannel.create(sync_createThriftChannelUnix(
-            path, _timeout_ms, client_type, protocol
-        ))
-    else:
-        raise ValueError("Must set path or host/port")
-    return clientKlass.Sync(channel)
