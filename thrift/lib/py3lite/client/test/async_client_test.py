@@ -120,3 +120,11 @@ class AsyncClientTests(TestCase):
                     await client.add(1, 2)
                 # The test server gets an invalid request because its a HTTP request
                 self.assertEqual(TransportErrorType.END_OF_FILE, ex.exception.type)
+
+    async def test_hostname(self) -> None:
+        async with server_in_event_loop() as addr:
+            async with get_client(
+                TestService, host="localhost", port=addr.port
+            ) as client:
+                sum = await client.add(1, 2)
+                self.assertEqual(3, sum)

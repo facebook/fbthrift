@@ -14,7 +14,9 @@
 
 # cython: c_string_type=unicode, c_string_encoding=utf8
 
+import ipaddress
 import os
+import socket
 
 from libc.stdint cimport uint32_t
 from thrift.py3lite.client.client_wrapper import Client
@@ -55,6 +57,15 @@ def get_client(
     if host is not None and port is not None:
         if path is not None:
             raise ValueError("Can not set path and host/port at same time")
+
+        if isinstance(host, str):
+            try:
+                ipaddress.ip_address(host)
+            except ValueError:
+                host = socket.getaddrinfo(host, port, type=socket.SOCK_STREAM)[0][4][0]
+        else:
+            host = str(host)
+
         channel = RequestChannel.create(sync_createThriftChannelTCP(
             host, port, _timeout_ms, client_type, protocol, endpoint
         ))

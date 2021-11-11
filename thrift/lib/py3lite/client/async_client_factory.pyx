@@ -14,8 +14,12 @@
 
 # cython: c_string_type=unicode, c_string_encoding=utf8
 
+import asyncio
+import ipaddress
 import os
+import socket
 
+import cython
 import folly.executor
 
 from folly.futures cimport bridgeFutureWith
@@ -45,7 +49,7 @@ def get_client(
     if not issubclass(clientKlass, Client):
         raise TypeError(f"{clientKlass} is not a py3lite client class")
 
-    endpoint = b''
+    endpoint = None
     if client_type == ClientType.THRIFT_HTTP_CLIENT_TYPE:
         if host is None or port is None:
             raise ValueError("Must set host and port when using ClientType.THRIFT_HTTP_CLIENT_TYPE")
@@ -61,6 +65,25 @@ def get_client(
     if host is not None and port is not None:
         if path is not None:
             raise ValueError("Can not set path and host/port at same time")
+
+        if isinstance(host, str):
+            try:
+                ipaddress.ip_address(host)
+            except ValueError:
+                return _AsyncResolveCtxManager(
+                    clientKlass,
+                    host=host,
+                    port=port,
+                    path=endpoint,
+                    timeout=timeout,
+                    client_type=client_type,
+                    protocol=protocol,
+                )
+        else:
+            host = str(host)
+
+        if endpoint is None:
+            endpoint = b""
         bridgeFutureWith[cRequestChannel_ptr](
             (<AsyncClient>client)._executor,
             createThriftChannelTCP(
@@ -82,6 +105,41 @@ def get_client(
         raise ValueError("Must set path or host/port")
 
     return client
+
+
+async def _no_op():
+    pass
+
+
+@cython.auto_pickle(False)
+cdef class _AsyncResolveCtxManager:
+    """This class just handles resolving of hostnames passed to get_client
+       by creating a wrapping async context manager"""
+    cdef object clientKlass
+    cdef object kws
+    cdef object ctx
+
+    def __init__(self, clientKlass, *, **kws):
+        self.clientKlass = clientKlass
+        self.kws = kws
+
+    async def __aenter__(self):
+        loop = asyncio.get_event_loop()
+        result = await loop.getaddrinfo(
+            self.kws['host'],
+            self.kws['port'],
+            type=socket.SOCK_STREAM
+        )
+        self.kws['host'] = result[0][4][0]
+        self.ctx = get_client(self.clientKlass, **self.kws)
+        return await self.ctx.__aenter__()
+
+    def __aexit__(self, *exc_info):
+        if self.ctx:
+            awaitable = self.ctx.__aexit__(*exc_info)
+            self.ctx = None
+            return awaitable
+        return _no_op()
 
 
 cdef void requestchannel_callback(
