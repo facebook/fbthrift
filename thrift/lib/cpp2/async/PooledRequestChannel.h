@@ -18,6 +18,7 @@
 
 #include <atomic>
 
+#include <folly/Function.h>
 #include <folly/executors/IOExecutor.h>
 #include <folly/io/async/EventBaseLocal.h>
 
@@ -35,11 +36,38 @@ class PooledRequestChannel : public RequestChannel {
   using ImplPtr = std::shared_ptr<Impl>;
   using ImplCreator = folly::Function<ImplPtr(folly::EventBase&)>;
 
+  // Recommended. Uses the global IO executor and does not support future_ /
+  // unprefixed (callback) methods.
+  static RequestChannel::Ptr newChannel(
+      ImplCreator implCreator, size_t numThreads = 1) {
+    return {
+        new PooledRequestChannel(
+            nullptr,
+            globalExecutorProvider(numThreads),
+            std::move(implCreator)),
+        {}};
+  }
+
+  // Uses the global IO executor + supports future_ / callback methods
+  static RequestChannel::Ptr newChannel(
+      folly::Executor* callbackExecutor,
+      ImplCreator implCreator,
+      size_t numThreads = 1) {
+    return {
+        new PooledRequestChannel(
+            callbackExecutor,
+            globalExecutorProvider(numThreads),
+            std::move(implCreator)),
+        {}};
+  }
+
+  // Does not support future_ / unprefixed (callback) methods
+  // (but does support semifuture_ / co_).
   static RequestChannel::Ptr newSyncChannel(
       std::weak_ptr<folly::IOExecutor> executor, ImplCreator implCreator) {
     return {
         new PooledRequestChannel(
-            nullptr, std::move(executor), std::move(implCreator)),
+            nullptr, wrapWeakPtr(std::move(executor)), std::move(implCreator)),
         {}};
   }
 
@@ -49,7 +77,9 @@ class PooledRequestChannel : public RequestChannel {
       ImplCreator implCreator) {
     return {
         new PooledRequestChannel(
-            callbackExecutor, std::move(executor), std::move(implCreator)),
+            callbackExecutor,
+            wrapWeakPtr(std::move(executor)),
+            std::move(implCreator)),
         {}};
   }
 
@@ -106,13 +136,16 @@ class PooledRequestChannel : public RequestChannel {
       SendFunc&& sendFunc, folly::Executor::KeepAlive<folly::EventBase>&& evb);
 
  private:
+  using EventBaseProvider = folly::Function<folly::Executor::KeepAlive<
+      folly::EventBase>()>; // may return invalid keepalive
+
   PooledRequestChannel(
       folly::Executor* callbackExecutor,
-      std::weak_ptr<folly::IOExecutor> executor,
+      EventBaseProvider getEventBase,
       ImplCreator implCreator)
       : implCreator_(std::move(implCreator)),
         callbackExecutor_(callbackExecutor),
-        executor_(std::move(executor)),
+        getEventBase_(std::move(getEventBase)),
         impl_(std::make_shared<folly::EventBaseLocal<ImplPtr>>()) {}
 
   Impl& impl(folly::EventBase& evb);
@@ -120,10 +153,14 @@ class PooledRequestChannel : public RequestChannel {
   folly::Executor::KeepAlive<folly::EventBase> getEvb(
       const RpcOptions& options);
 
+  static EventBaseProvider wrapWeakPtr(
+      std::weak_ptr<folly::IOExecutor> executor);
+  static EventBaseProvider globalExecutorProvider(size_t numThreads);
+
   ImplCreator implCreator_;
 
   folly::Executor* callbackExecutor_{nullptr};
-  std::weak_ptr<folly::IOExecutor> executor_;
+  EventBaseProvider getEventBase_;
 
   std::shared_ptr<folly::EventBaseLocal<ImplPtr>> impl_;
 

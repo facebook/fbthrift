@@ -21,6 +21,7 @@
 #include <folly/Function.h>
 #include <folly/SocketAddress.h>
 #include <folly/io/async/AsyncSocket.h>
+#include <folly/system/HardwareConcurrency.h>
 
 #include <thrift/lib/cpp2/async/ClientChannel.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
@@ -105,10 +106,9 @@ class ScopedServerInterfaceThread {
   util::ScopedServerThread sst_;
 
   RequestChannel::Ptr newChannel(
-      folly::Executor* callbackExecutor = nullptr,
-      MakeChannelFunc channelFunc = RocketClientChannel::newChannel,
-      std::weak_ptr<folly::IOExecutor> executor =
-          folly::getUnsafeMutableGlobalIOExecutor()) const;
+      folly::Executor* callbackExecutor,
+      MakeChannelFunc channelFunc,
+      size_t numThreads = folly::hardware_concurrency()) const;
 };
 
 /**

@@ -2773,10 +2773,6 @@ TEST(ThriftServerTest, QueueTimeHeaderTest) {
 }
 
 TEST(ThriftServer, QueueTimeoutStressTest) {
-  // Make sure we only open one connection to the server.
-  auto ioExecutor = std::make_shared<folly::IOThreadPoolExecutor>(1);
-  folly::setIOExecutor(ioExecutor);
-
   static std::atomic<int> server_reply = 0;
   static std::atomic<int> received_reply = 0;
 
@@ -2806,7 +2802,7 @@ TEST(ThriftServer, QueueTimeoutStressTest) {
         std::make_shared<SendResponseInterface>());
     THRIFT_FLAG_SET_MOCK(server_default_queue_timeout_ms, 10);
 
-    auto client = runner.newClient<TestServiceAsyncClient>(
+    auto client = runner.newStickyClient<TestServiceAsyncClient>(
         nullptr /* executor */, [](auto socket) mutable {
           return RocketClientChannel::newChannel(std::move(socket));
         });

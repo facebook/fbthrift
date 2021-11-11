@@ -127,10 +127,8 @@ template <class AsyncClientT>
 std::unique_ptr<AsyncClientT> ScopedServerInterfaceThread::newStickyClient(
     folly::Executor* callbackExecutor,
     ScopedServerInterfaceThread::MakeChannelFunc makeChannel) const {
-  auto io = folly::getUnsafeMutableGlobalIOExecutor();
-  auto sp = std::shared_ptr<folly::EventBase>(io, io->getEventBase());
   return std::make_unique<AsyncClientT>(
-      newChannel(callbackExecutor, std::move(makeChannel), std::move(sp)));
+      newChannel(callbackExecutor, std::move(makeChannel), 1));
 }
 
 template <class AsyncClientT>
