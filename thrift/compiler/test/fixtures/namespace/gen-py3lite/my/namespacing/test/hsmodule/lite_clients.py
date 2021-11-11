@@ -16,15 +16,15 @@ import my.namespacing.test.hsmodule.lite_types
 
 
 class HsTestService(_fbthrift_py3lite_Client["HsTestService.Async", "HsTestService.Sync"]):
-    class Sync(_fbthrift_py3lite_SyncClient):
-        def __init__(self, channel):
-            super().__init__(channel)
+    class Async(_fbthrift_py3lite_AsyncClient):
+        def __init__(self):
+            super().__init__()
 
-        def init(
+        async def init(
             self,
             int1: int
         ) -> int:
-            resp = self._send_request(
+            resp = await self._send_request(
                 "HsTestService",
                 "init",
                 my.namespacing.test.hsmodule.lite_types._fbthrift_HsTestService_init_args(
@@ -39,15 +39,15 @@ class HsTestService(_fbthrift_py3lite_Client["HsTestService.Async", "HsTestServi
                 "Empty Response",
             )
 
-    class Async(_fbthrift_py3lite_AsyncClient):
-        def __init__(self):
-            super().__init__()
+    class Sync(_fbthrift_py3lite_SyncClient):
+        def __init__(self, channel):
+            super().__init__(channel)
 
-        async def init(
+        def init(
             self,
             int1: int
         ) -> int:
-            resp = await self._send_request(
+            resp = self._send_request(
                 "HsTestService",
                 "init",
                 my.namespacing.test.hsmodule.lite_types._fbthrift_HsTestService_init_args(

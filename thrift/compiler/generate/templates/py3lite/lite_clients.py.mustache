@@ -40,20 +40,20 @@ import {{included_module_path}}.lite_clients
 {{#program:services?}}
 {{#program:services}}
 class {{service:name}}(_fbthrift_py3lite_Client["{{service:name}}.Async", "{{service:name}}.Sync"]):
-    class Sync({{#service:extends}}{{!
-        }}{{> services/client_module_path}}.Sync{{!
+    class Async({{#service:extends}}{{!
+        }}{{> services/client_module_path}}.Async{{!
     }}{{/service:extends}}{{^service:extends?}}{{!
-        }}_fbthrift_py3lite_SyncClient{{!
+        }}_fbthrift_py3lite_AsyncClient{{!
     }}{{/service:extends?}}):
-        def __init__(self, channel):
-            super().__init__(channel)
+        def __init__(self):
+            super().__init__()
         {{#service:supported_functions}}
 
-        def {{function:name}}(
+        async def {{function:name}}(
             self{{#function:args}},
             {{field:py_name}}: {{#field:type}}{{> types/python_type}}{{/field:type}}{{/function:args}}
         ) -> {{#function:return_type}}{{> types/python_type}}{{/function:return_type}}:
-            resp = self._send_request(
+            resp = await self._send_request(
                 "{{service:name}}",
                 "{{function:name}}",
                 {{> types/function_args_type}}({{#function:args}}
@@ -78,20 +78,20 @@ class {{service:name}}(_fbthrift_py3lite_Client["{{service:name}}.Async", "{{ser
             {{/type:void?}}{{/function:return_type}}
         {{/service:supported_functions}}
 
-    class Async({{#service:extends}}{{!
-        }}{{> services/client_module_path}}.Async{{!
+    class Sync({{#service:extends}}{{!
+        }}{{> services/client_module_path}}.Sync{{!
     }}{{/service:extends}}{{^service:extends?}}{{!
-        }}_fbthrift_py3lite_AsyncClient{{!
+        }}_fbthrift_py3lite_SyncClient{{!
     }}{{/service:extends?}}):
-        def __init__(self):
-            super().__init__()
+        def __init__(self, channel):
+            super().__init__(channel)
         {{#service:supported_functions}}
 
-        async def {{function:name}}(
+        def {{function:name}}(
             self{{#function:args}},
             {{field:py_name}}: {{#field:type}}{{> types/python_type}}{{/field:type}}{{/function:args}}
         ) -> {{#function:return_type}}{{> types/python_type}}{{/function:return_type}}:
-            resp = await self._send_request(
+            resp = self._send_request(
                 "{{service:name}}",
                 "{{function:name}}",
                 {{> types/function_args_type}}({{#function:args}}

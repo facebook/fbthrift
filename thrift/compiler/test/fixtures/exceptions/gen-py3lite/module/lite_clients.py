@@ -16,76 +16,6 @@ import module.lite_types
 
 
 class Raiser(_fbthrift_py3lite_Client["Raiser.Async", "Raiser.Sync"]):
-    class Sync(_fbthrift_py3lite_SyncClient):
-        def __init__(self, channel):
-            super().__init__(channel)
-
-        def doBland(
-            self
-        ) -> None:
-            resp = self._send_request(
-                "Raiser",
-                "doBland",
-                module.lite_types._fbthrift_Raiser_doBland_args(),
-                module.lite_types._fbthrift_Raiser_doBland_result,
-            )
-
-        def doRaise(
-            self
-        ) -> None:
-            resp = self._send_request(
-                "Raiser",
-                "doRaise",
-                module.lite_types._fbthrift_Raiser_doRaise_args(),
-                module.lite_types._fbthrift_Raiser_doRaise_result,
-            )
-            if resp.b is not None:
-                raise resp.b
-            if resp.f is not None:
-                raise resp.f
-            if resp.s is not None:
-                raise resp.s
-
-        def get200(
-            self
-        ) -> str:
-            resp = self._send_request(
-                "Raiser",
-                "get200",
-                module.lite_types._fbthrift_Raiser_get200_args(),
-                module.lite_types._fbthrift_Raiser_get200_result,
-            )
-            # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
-            raise _fbthrift_py3lite_exceptions.ApplicationError(
-                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
-                "Empty Response",
-            )
-
-        def get500(
-            self
-        ) -> str:
-            resp = self._send_request(
-                "Raiser",
-                "get500",
-                module.lite_types._fbthrift_Raiser_get500_args(),
-                module.lite_types._fbthrift_Raiser_get500_result,
-            )
-            # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
-            if resp.f is not None:
-                raise resp.f
-            if resp.b is not None:
-                raise resp.b
-            if resp.s is not None:
-                raise resp.s
-            raise _fbthrift_py3lite_exceptions.ApplicationError(
-                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
-                "Empty Response",
-            )
-
     class Async(_fbthrift_py3lite_AsyncClient):
         def __init__(self):
             super().__init__()
@@ -137,6 +67,76 @@ class Raiser(_fbthrift_py3lite_Client["Raiser.Async", "Raiser.Sync"]):
             self
         ) -> str:
             resp = await self._send_request(
+                "Raiser",
+                "get500",
+                module.lite_types._fbthrift_Raiser_get500_args(),
+                module.lite_types._fbthrift_Raiser_get500_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            if resp.f is not None:
+                raise resp.f
+            if resp.b is not None:
+                raise resp.b
+            if resp.s is not None:
+                raise resp.s
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+    class Sync(_fbthrift_py3lite_SyncClient):
+        def __init__(self, channel):
+            super().__init__(channel)
+
+        def doBland(
+            self
+        ) -> None:
+            resp = self._send_request(
+                "Raiser",
+                "doBland",
+                module.lite_types._fbthrift_Raiser_doBland_args(),
+                module.lite_types._fbthrift_Raiser_doBland_result,
+            )
+
+        def doRaise(
+            self
+        ) -> None:
+            resp = self._send_request(
+                "Raiser",
+                "doRaise",
+                module.lite_types._fbthrift_Raiser_doRaise_args(),
+                module.lite_types._fbthrift_Raiser_doRaise_result,
+            )
+            if resp.b is not None:
+                raise resp.b
+            if resp.f is not None:
+                raise resp.f
+            if resp.s is not None:
+                raise resp.s
+
+        def get200(
+            self
+        ) -> str:
+            resp = self._send_request(
+                "Raiser",
+                "get200",
+                module.lite_types._fbthrift_Raiser_get200_args(),
+                module.lite_types._fbthrift_Raiser_get200_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        def get500(
+            self
+        ) -> str:
+            resp = self._send_request(
                 "Raiser",
                 "get500",
                 module.lite_types._fbthrift_Raiser_get500_args(),
