@@ -18,9 +18,6 @@
 #define THRIFT_CPP2_H_
 
 #include <thrift/lib/cpp/Thrift.h>
-#include <thrift/lib/cpp/protocol/TType.h>
-#include <thrift/lib/cpp2/BoxedValuePtr.h>
-#include <thrift/lib/cpp2/FieldRef.h>
 #include <thrift/lib/cpp2/TypeClass.h>
 
 #include <initializer_list>
