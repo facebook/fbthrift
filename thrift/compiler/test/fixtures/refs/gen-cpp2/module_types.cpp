@@ -542,7 +542,7 @@ StructWithUnion::StructWithUnion(const StructWithUnion& srcObj) {
   aDouble = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::floating_point>(srcObj.aDouble);
   __fbthrift_field_f = srcObj.__fbthrift_field_f;
-  __isset.set(folly::index_constant<0>(),srcObj.__isset.get(folly::index_constant<0>()));
+  __isset.set(0,srcObj.__isset.get(0));
 }
 
 StructWithUnion& StructWithUnion::operator=(const StructWithUnion& src) {

@@ -204,43 +204,40 @@ constexpr bool operator>=(const T& lhs, const T& rhs) {
 template <size_t NumBits, bool packed = false>
 class isset_bitset {
  public:
-  template <size_t field_index>
-  bool get(folly::index_constant<field_index>) const {
-    check<field_index>();
+  bool get(size_t field_index) const {
+    check(field_index);
     return array_isset[field_index / kBits][field_index % kBits];
   }
-  template <size_t field_index>
-  void set(folly::index_constant<field_index>, bool isset_flag) {
-    check<field_index>();
+
+  void set(size_t field_index, bool isset_flag) {
+    check(field_index);
     array_isset[field_index / kBits][field_index % kBits] = isset_flag;
   }
-  template <size_t field_index>
-  const uint8_t& at(folly::index_constant<field_index>) const {
-    check<field_index>();
+
+  const uint8_t& at(size_t field_index) const {
+    check(field_index);
     return array_isset[field_index / kBits].value();
   }
-  template <size_t field_index>
-  uint8_t& at(folly::index_constant<field_index>) {
-    check<field_index>();
+
+  uint8_t& at(size_t field_index) {
+    check(field_index);
     return array_isset[field_index / kBits].value();
   }
-  template <size_t field_index>
-  uint8_t bit(folly::index_constant<field_index>) const {
-    check<field_index>();
+
+  uint8_t bit(size_t field_index) const {
+    check(field_index);
     return field_index % kBits;
   }
+
   static constexpr ptrdiff_t get_offset() {
     return offsetof(isset_bitset, array_isset);
   }
 
  private:
-  template <size_t field_index>
-  static void check() {
-    static_assert(
-        field_index / kBits < NumBits, "Isset index is out of boundary");
+  static void check(size_t field_index) {
+    DCHECK(field_index / kBits < NumBits);
   }
 
- private:
   static constexpr size_t kBits = packed ? 8 : 1;
   std::array<
       apache::thrift::detail::BitSet<uint8_t>,

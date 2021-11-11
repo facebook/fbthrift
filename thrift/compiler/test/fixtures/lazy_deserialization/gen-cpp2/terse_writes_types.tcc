@@ -74,7 +74,7 @@ _readField_field1:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(folly::index_constant<0>(), true);
+ this->__isset.set(0, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -91,7 +91,7 @@ _readField_field2:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(folly::index_constant<1>(), true);
+ this->__isset.set(1, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -108,7 +108,7 @@ _readField_field3:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(folly::index_constant<2>(), true);
+ this->__isset.set(2, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -125,7 +125,7 @@ _readField_field4:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(folly::index_constant<3>(), true);
+ this->__isset.set(3, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -328,7 +328,7 @@ _readField_field1:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(folly::index_constant<0>(), true);
+ this->__isset.set(0, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -345,7 +345,7 @@ _readField_field2:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(folly::index_constant<1>(), true);
+ this->__isset.set(1, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -373,7 +373,7 @@ _readField_field3:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(folly::index_constant<2>(), true);
+ this->__isset.set(2, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -401,7 +401,7 @@ _readField_field4:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(folly::index_constant<3>(), true);
+ this->__isset.set(3, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -655,7 +655,7 @@ _readField_field1:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(folly::index_constant<0>(), true);
+ this->__isset.set(0, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -672,7 +672,7 @@ _readField_field2:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(folly::index_constant<1>(), true);
+ this->__isset.set(1, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -689,7 +689,7 @@ _readField_field3:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(folly::index_constant<2>(), true);
+ this->__isset.set(2, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -706,7 +706,7 @@ _readField_field4:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(folly::index_constant<3>(), true);
+ this->__isset.set(3, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -778,19 +778,19 @@ template <class Protocol_>
 uint32_t TerseOptionalFoo::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("TerseOptionalFoo");
-  if (this->__isset.get(folly::index_constant<0>())) {
+  if (this->__isset.get(0)) {
     xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_LIST, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>, ::std::vector<double>>::serializedSize<false>(*prot_, this->__fbthrift_field_field1);
   }
-  if (this->__isset.get(folly::index_constant<1>())) {
+  if (this->__isset.get(1)) {
     xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_LIST, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::serializedSize<false>(*prot_, this->__fbthrift_field_field2);
   }
-  if (this->__isset.get(folly::index_constant<2>())) {
+  if (this->__isset.get(2)) {
     xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_LIST, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>, ::std::vector<double>>::serializedSize<false>(*prot_, this->__fbthrift_field_field3);
   }
-  if (this->__isset.get(folly::index_constant<3>())) {
+  if (this->__isset.get(3)) {
     xfer += prot_->serializedFieldSize("field4", apache::thrift::protocol::T_LIST, 4);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::serializedSize<false>(*prot_, this->__fbthrift_field_field4);
   }
@@ -802,19 +802,19 @@ template <class Protocol_>
 uint32_t TerseOptionalFoo::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("TerseOptionalFoo");
-  if (this->__isset.get(folly::index_constant<0>())) {
+  if (this->__isset.get(0)) {
     xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_LIST, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>, ::std::vector<double>>::serializedSize<false>(*prot_, this->__fbthrift_field_field1);
   }
-  if (this->__isset.get(folly::index_constant<1>())) {
+  if (this->__isset.get(1)) {
     xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_LIST, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::serializedSize<false>(*prot_, this->__fbthrift_field_field2);
   }
-  if (this->__isset.get(folly::index_constant<2>())) {
+  if (this->__isset.get(2)) {
     xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_LIST, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>, ::std::vector<double>>::serializedSize<false>(*prot_, this->__fbthrift_field_field3);
   }
-  if (this->__isset.get(folly::index_constant<3>())) {
+  if (this->__isset.get(3)) {
     xfer += prot_->serializedFieldSize("field4", apache::thrift::protocol::T_LIST, 4);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::serializedSize<false>(*prot_, this->__fbthrift_field_field4);
   }
@@ -827,7 +827,7 @@ uint32_t TerseOptionalFoo::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("TerseOptionalFoo");
   bool previousFieldHasValue = true;
-  if (this->__isset.get(folly::index_constant<0>())) {
+  if (this->__isset.get(0)) {
     constexpr int16_t kPrevFieldId = 0;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 1, kPrevFieldId>(*prot_, "field1", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -836,7 +836,7 @@ uint32_t TerseOptionalFoo::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (this->__isset.get(folly::index_constant<1>())) {
+  if (this->__isset.get(1)) {
     constexpr int16_t kPrevFieldId = 1;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 2, kPrevFieldId>(*prot_, "field2", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -845,7 +845,7 @@ uint32_t TerseOptionalFoo::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (this->__isset.get(folly::index_constant<2>())) {
+  if (this->__isset.get(2)) {
     constexpr int16_t kPrevFieldId = 2;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 3, kPrevFieldId>(*prot_, "field3", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -854,7 +854,7 @@ uint32_t TerseOptionalFoo::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (this->__isset.get(folly::index_constant<3>())) {
+  if (this->__isset.get(3)) {
     constexpr int16_t kPrevFieldId = 3;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 4, kPrevFieldId>(*prot_, "field4", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -909,7 +909,7 @@ _readField_field1:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(folly::index_constant<0>(), true);
+ this->__isset.set(0, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -926,7 +926,7 @@ _readField_field2:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(folly::index_constant<1>(), true);
+ this->__isset.set(1, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -954,7 +954,7 @@ _readField_field3:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(folly::index_constant<2>(), true);
+ this->__isset.set(2, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -982,7 +982,7 @@ _readField_field4:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(folly::index_constant<3>(), true);
+ this->__isset.set(3, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -1076,19 +1076,19 @@ template <class Protocol_>
 uint32_t TerseOptionalLazyFoo::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("TerseOptionalLazyFoo");
-  if (this->__isset.get(folly::index_constant<0>())) {
+  if (this->__isset.get(0)) {
     xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_LIST, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>, ::std::vector<double>>::serializedSize<false>(*prot_, this->__fbthrift_field_field1);
   }
-  if (this->__isset.get(folly::index_constant<1>())) {
+  if (this->__isset.get(1)) {
     xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_LIST, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::serializedSize<false>(*prot_, this->__fbthrift_field_field2);
   }
-  if (this->__isset.get(folly::index_constant<2>())) {
+  if (this->__isset.get(2)) {
     xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_LIST, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>, ::std::vector<double>>::serializedSize<false>(*prot_, this->__fbthrift_field_field3);
   }
-  if (this->__isset.get(folly::index_constant<3>())) {
+  if (this->__isset.get(3)) {
     xfer += prot_->serializedFieldSize("field4", apache::thrift::protocol::T_LIST, 4);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::serializedSize<false>(*prot_, this->__fbthrift_field_field4);
   }
@@ -1100,19 +1100,19 @@ template <class Protocol_>
 uint32_t TerseOptionalLazyFoo::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("TerseOptionalLazyFoo");
-  if (this->__isset.get(folly::index_constant<0>())) {
+  if (this->__isset.get(0)) {
     xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_LIST, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>, ::std::vector<double>>::serializedSize<false>(*prot_, this->__fbthrift_field_field1);
   }
-  if (this->__isset.get(folly::index_constant<1>())) {
+  if (this->__isset.get(1)) {
     xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_LIST, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::serializedSize<false>(*prot_, this->__fbthrift_field_field2);
   }
-  if (this->__isset.get(folly::index_constant<2>())) {
+  if (this->__isset.get(2)) {
     xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_LIST, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>, ::std::vector<double>>::serializedSize<false>(*prot_, this->__fbthrift_field_field3);
   }
-  if (this->__isset.get(folly::index_constant<3>())) {
+  if (this->__isset.get(3)) {
     xfer += prot_->serializedFieldSize("field4", apache::thrift::protocol::T_LIST, 4);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::serializedSize<false>(*prot_, this->__fbthrift_field_field4);
   }
@@ -1126,7 +1126,7 @@ uint32_t TerseOptionalLazyFoo::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("TerseOptionalLazyFoo");
   ::apache::thrift::detail::IndexWriter<Protocol_> indexWriter(prot_, xfer, true);
   bool previousFieldHasValue = true;
-  if (this->__isset.get(folly::index_constant<0>())) {
+  if (this->__isset.get(0)) {
     constexpr int16_t kPrevFieldId = ::apache::thrift::detail::kSizeField.id;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 1, kPrevFieldId>(*prot_, "field1", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -1135,7 +1135,7 @@ uint32_t TerseOptionalLazyFoo::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (this->__isset.get(folly::index_constant<1>())) {
+  if (this->__isset.get(1)) {
     constexpr int16_t kPrevFieldId = 1;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 2, kPrevFieldId>(*prot_, "field2", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -1144,7 +1144,7 @@ uint32_t TerseOptionalLazyFoo::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (this->__isset.get(folly::index_constant<2>())) {
+  if (this->__isset.get(2)) {
     constexpr int16_t kPrevFieldId = 2;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 3, kPrevFieldId>(*prot_, "field3", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -1166,7 +1166,7 @@ uint32_t TerseOptionalLazyFoo::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (this->__isset.get(folly::index_constant<3>())) {
+  if (this->__isset.get(3)) {
     constexpr int16_t kPrevFieldId = 3;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 4, kPrevFieldId>(*prot_, "field4", previousFieldHasValue);
     previousFieldHasValue = true;

@@ -156,39 +156,39 @@ namespace cpp2 {
 
 containerStruct::containerStruct(const containerStruct& srcObj) {
   __fbthrift_field_fieldA = srcObj.__fbthrift_field_fieldA;
-  __isset.set(folly::index_constant<0>(),srcObj.__isset.get(folly::index_constant<0>()));
+  __isset.set(0,srcObj.__isset.get(0));
   __fbthrift_field_fieldB = srcObj.__fbthrift_field_fieldB;
-  __isset.set(folly::index_constant<1>(),srcObj.__isset.get(folly::index_constant<1>()));
+  __isset.set(1,srcObj.__isset.get(1));
   __fbthrift_field_fieldC = srcObj.__fbthrift_field_fieldC;
-  __isset.set(folly::index_constant<2>(),srcObj.__isset.get(folly::index_constant<2>()));
+  __isset.set(2,srcObj.__isset.get(2));
   __fbthrift_field_fieldD = srcObj.__fbthrift_field_fieldD;
-  __isset.set(folly::index_constant<3>(),srcObj.__isset.get(folly::index_constant<3>()));
+  __isset.set(3,srcObj.__isset.get(3));
   __fbthrift_field_fieldE = srcObj.__fbthrift_field_fieldE;
-  __isset.set(folly::index_constant<4>(),srcObj.__isset.get(folly::index_constant<4>()));
+  __isset.set(4,srcObj.__isset.get(4));
   __fbthrift_field_fieldF = srcObj.__fbthrift_field_fieldF;
-  __isset.set(folly::index_constant<5>(),srcObj.__isset.get(folly::index_constant<5>()));
+  __isset.set(5,srcObj.__isset.get(5));
   __fbthrift_field_fieldG = srcObj.__fbthrift_field_fieldG;
-  __isset.set(folly::index_constant<6>(),srcObj.__isset.get(folly::index_constant<6>()));
+  __isset.set(6,srcObj.__isset.get(6));
   __fbthrift_field_fieldH = srcObj.__fbthrift_field_fieldH;
-  __isset.set(folly::index_constant<7>(),srcObj.__isset.get(folly::index_constant<7>()));
+  __isset.set(7,srcObj.__isset.get(7));
   __fbthrift_field_fieldI = srcObj.__fbthrift_field_fieldI;
-  __isset.set(folly::index_constant<8>(),srcObj.__isset.get(folly::index_constant<8>()));
+  __isset.set(8,srcObj.__isset.get(8));
   __fbthrift_field_fieldJ = srcObj.__fbthrift_field_fieldJ;
-  __isset.set(folly::index_constant<9>(),srcObj.__isset.get(folly::index_constant<9>()));
+  __isset.set(9,srcObj.__isset.get(9));
   __fbthrift_field_fieldK = srcObj.__fbthrift_field_fieldK;
-  __isset.set(folly::index_constant<10>(),srcObj.__isset.get(folly::index_constant<10>()));
+  __isset.set(10,srcObj.__isset.get(10));
   __fbthrift_field_fieldL = srcObj.__fbthrift_field_fieldL;
-  __isset.set(folly::index_constant<11>(),srcObj.__isset.get(folly::index_constant<11>()));
+  __isset.set(11,srcObj.__isset.get(11));
   __fbthrift_field_fieldM = srcObj.__fbthrift_field_fieldM;
-  __isset.set(folly::index_constant<12>(),srcObj.__isset.get(folly::index_constant<12>()));
+  __isset.set(12,srcObj.__isset.get(12));
   __fbthrift_field_fieldN = srcObj.__fbthrift_field_fieldN;
-  __isset.set(folly::index_constant<13>(),srcObj.__isset.get(folly::index_constant<13>()));
+  __isset.set(13,srcObj.__isset.get(13));
   __fbthrift_field_fieldO = srcObj.__fbthrift_field_fieldO;
-  __isset.set(folly::index_constant<14>(),srcObj.__isset.get(folly::index_constant<14>()));
+  __isset.set(14,srcObj.__isset.get(14));
   __fbthrift_field_fieldP = srcObj.__fbthrift_field_fieldP;
-  __isset.set(folly::index_constant<15>(),srcObj.__isset.get(folly::index_constant<15>()));
+  __isset.set(15,srcObj.__isset.get(15));
   __fbthrift_field_fieldQ = srcObj.__fbthrift_field_fieldQ;
-  __isset.set(folly::index_constant<16>(),srcObj.__isset.get(folly::index_constant<16>()));
+  __isset.set(16,srcObj.__isset.get(16));
   fieldR = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>>(srcObj.fieldR);
   fieldS = ::apache::thrift::detail::st::copy_field<

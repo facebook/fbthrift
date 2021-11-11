@@ -24,7 +24,7 @@
 %><%^field:cpp_ref?%><%!
 // For other values, check __isset status. We don't use field access API
 // since if field is lazy field, we don't want to deserialize it
-%>this->__isset.get(folly::index_constant<<%field:isset_index%>>())<%!
+%>this->__isset.get(<%field:isset_index%>)<%!
 %><%/field:cpp_ref?%><%!
 %><%/field:optional?%><%!
 %>

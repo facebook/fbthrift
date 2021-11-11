@@ -36,7 +36,7 @@
         <%type:type_class%>>(srcObj.<%field:cpp_storage_name%>);
 <%/field:transitively_refers_to_unique?%>
 <%^field:cpp_ref?%><%^field:required?%>
-  __isset.set(folly::index_constant<<%field:isset_index%>>(),srcObj.__isset.get(folly::index_constant<<%field:isset_index%>>()));
+  __isset.set(<%field:isset_index%>,srcObj.__isset.get(<%field:isset_index%>));
 <%/field:required?%><%/field:cpp_ref?%>
 <%/field:type%><%/struct:fields%>
 <%#struct:fields%>

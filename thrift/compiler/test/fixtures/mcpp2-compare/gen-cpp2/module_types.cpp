@@ -388,26 +388,26 @@ namespace some { namespace valid { namespace ns {
 
 MyStruct::MyStruct(const MyStruct& srcObj) {
   __fbthrift_field_MyBoolField = srcObj.__fbthrift_field_MyBoolField;
-  __isset.set(folly::index_constant<0>(),srcObj.__isset.get(folly::index_constant<0>()));
+  __isset.set(0,srcObj.__isset.get(0));
   __fbthrift_field_MyIntField = srcObj.__fbthrift_field_MyIntField;
-  __isset.set(folly::index_constant<1>(),srcObj.__isset.get(folly::index_constant<1>()));
+  __isset.set(1,srcObj.__isset.get(1));
   __fbthrift_field_MyStringField = srcObj.__fbthrift_field_MyStringField;
-  __isset.set(folly::index_constant<2>(),srcObj.__isset.get(folly::index_constant<2>()));
+  __isset.set(2,srcObj.__isset.get(2));
   __fbthrift_field_MyStringField2 = srcObj.__fbthrift_field_MyStringField2;
-  __isset.set(folly::index_constant<3>(),srcObj.__isset.get(folly::index_constant<3>()));
+  __isset.set(3,srcObj.__isset.get(3));
   __fbthrift_field_MyBinaryField = srcObj.__fbthrift_field_MyBinaryField;
-  __isset.set(folly::index_constant<4>(),srcObj.__isset.get(folly::index_constant<4>()));
+  __isset.set(4,srcObj.__isset.get(4));
   __fbthrift_field_MyBinaryField2 = srcObj.__fbthrift_field_MyBinaryField2;
-  __isset.set(folly::index_constant<5>(),srcObj.__isset.get(folly::index_constant<5>()));
+  __isset.set(5,srcObj.__isset.get(5));
   MyBinaryField3 = srcObj.MyBinaryField3;
   __fbthrift_field_MyBinaryListField4 = srcObj.__fbthrift_field_MyBinaryListField4;
-  __isset.set(folly::index_constant<6>(),srcObj.__isset.get(folly::index_constant<6>()));
+  __isset.set(6,srcObj.__isset.get(6));
   __fbthrift_field_MyMapEnumAndInt = srcObj.__fbthrift_field_MyMapEnumAndInt;
-  __isset.set(folly::index_constant<7>(),srcObj.__isset.get(folly::index_constant<7>()));
+  __isset.set(7,srcObj.__isset.get(7));
   __fbthrift_field_MyCustomField = srcObj.__fbthrift_field_MyCustomField;
-  __isset.set(folly::index_constant<8>(),srcObj.__isset.get(folly::index_constant<8>()));
+  __isset.set(8,srcObj.__isset.get(8));
   __fbthrift_field_MyOptCustomField = srcObj.__fbthrift_field_MyOptCustomField;
-  __isset.set(folly::index_constant<9>(),srcObj.__isset.get(folly::index_constant<9>()));
+  __isset.set(9,srcObj.__isset.get(9));
   ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 10>(__fbthrift_field_MyCustomField, *this);
   ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 11>(__fbthrift_field_MyOptCustomField, *this);
 }
@@ -1202,36 +1202,36 @@ namespace some { namespace valid { namespace ns {
 
 AnException::AnException(const AnException& srcObj) {
   code = srcObj.code;
-  __isset.set(folly::index_constant<0>(),srcObj.__isset.get(folly::index_constant<0>()));
+  __isset.set(0,srcObj.__isset.get(0));
   req_code = srcObj.req_code;
   message2 = srcObj.message2;
-  __isset.set(folly::index_constant<1>(),srcObj.__isset.get(folly::index_constant<1>()));
+  __isset.set(1,srcObj.__isset.get(1));
   req_message = srcObj.req_message;
   exception_list = srcObj.exception_list;
-  __isset.set(folly::index_constant<2>(),srcObj.__isset.get(folly::index_constant<2>()));
+  __isset.set(2,srcObj.__isset.get(2));
   exception_set = srcObj.exception_set;
-  __isset.set(folly::index_constant<3>(),srcObj.__isset.get(folly::index_constant<3>()));
+  __isset.set(3,srcObj.__isset.get(3));
   exception_map = srcObj.exception_map;
-  __isset.set(folly::index_constant<4>(),srcObj.__isset.get(folly::index_constant<4>()));
+  __isset.set(4,srcObj.__isset.get(4));
   req_exception_map = srcObj.req_exception_map;
   enum_field = srcObj.enum_field;
-  __isset.set(folly::index_constant<5>(),srcObj.__isset.get(folly::index_constant<5>()));
+  __isset.set(5,srcObj.__isset.get(5));
   enum_container = srcObj.enum_container;
-  __isset.set(folly::index_constant<6>(),srcObj.__isset.get(folly::index_constant<6>()));
+  __isset.set(6,srcObj.__isset.get(6));
   a_struct = srcObj.a_struct;
-  __isset.set(folly::index_constant<7>(),srcObj.__isset.get(folly::index_constant<7>()));
+  __isset.set(7,srcObj.__isset.get(7));
   a_set_struct = srcObj.a_set_struct;
-  __isset.set(folly::index_constant<8>(),srcObj.__isset.get(folly::index_constant<8>()));
+  __isset.set(8,srcObj.__isset.get(8));
   a_union_list = srcObj.a_union_list;
-  __isset.set(folly::index_constant<9>(),srcObj.__isset.get(folly::index_constant<9>()));
+  __isset.set(9,srcObj.__isset.get(9));
   union_typedef = srcObj.union_typedef;
-  __isset.set(folly::index_constant<10>(),srcObj.__isset.get(folly::index_constant<10>()));
+  __isset.set(10,srcObj.__isset.get(10));
   a_union_typedef_list = srcObj.a_union_typedef_list;
-  __isset.set(folly::index_constant<11>(),srcObj.__isset.get(folly::index_constant<11>()));
+  __isset.set(11,srcObj.__isset.get(11));
   MyCustomField = srcObj.MyCustomField;
-  __isset.set(folly::index_constant<12>(),srcObj.__isset.get(folly::index_constant<12>()));
+  __isset.set(12,srcObj.__isset.get(12));
   MyOptCustomField = srcObj.MyOptCustomField;
-  __isset.set(folly::index_constant<13>(),srcObj.__isset.get(folly::index_constant<13>()));
+  __isset.set(13,srcObj.__isset.get(13));
   ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 20>(MyCustomField, *this);
   ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 21>(MyOptCustomField, *this);
 }
@@ -2725,9 +2725,9 @@ namespace some { namespace valid { namespace ns {
 
 MyIncludedStruct::MyIncludedStruct(const MyIncludedStruct& srcObj) {
   __fbthrift_field_MyIncludedInt = srcObj.__fbthrift_field_MyIncludedInt;
-  __isset.set(folly::index_constant<0>(),srcObj.__isset.get(folly::index_constant<0>()));
+  __isset.set(0,srcObj.__isset.get(0));
   __fbthrift_field_MyIncludedStruct = srcObj.__fbthrift_field_MyIncludedStruct;
-  __isset.set(folly::index_constant<1>(),srcObj.__isset.get(folly::index_constant<1>()));
+  __isset.set(1,srcObj.__isset.get(1));
   ARefField = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::structure>(srcObj.ARefField);
   ARequiredField = srcObj.ARequiredField;
@@ -3574,10 +3574,10 @@ namespace some { namespace valid { namespace ns {
 
 ComplexContainerStruct::ComplexContainerStruct(const ComplexContainerStruct& srcObj) {
   __fbthrift_field_map_of_iobufs = srcObj.__fbthrift_field_map_of_iobufs;
-  __isset.set(folly::index_constant<0>(),srcObj.__isset.get(folly::index_constant<0>()));
+  __isset.set(0,srcObj.__isset.get(0));
   __fbthrift_field_map_of_iobuf_ptrs = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::binary>>(srcObj.__fbthrift_field_map_of_iobuf_ptrs);
-  __isset.set(folly::index_constant<1>(),srcObj.__isset.get(folly::index_constant<1>()));
+  __isset.set(1,srcObj.__isset.get(1));
 }
 
 ComplexContainerStruct& ComplexContainerStruct::operator=(const ComplexContainerStruct& src) {

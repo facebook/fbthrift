@@ -947,42 +947,42 @@ class StructWithUnion final  {
 
   template <typename..., typename T = ::cpp2::MyField>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> f_ref() const& {
-    return {this->__fbthrift_field_f, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {this->__fbthrift_field_f, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::cpp2::MyField>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> f_ref() const&& {
-    return {std::move(this->__fbthrift_field_f), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_f), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::cpp2::MyField>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> f_ref() & {
-    return {this->__fbthrift_field_f, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {this->__fbthrift_field_f, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::cpp2::MyField>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> f_ref() && {
-    return {std::move(this->__fbthrift_field_f), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_f), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::cpp2::MyField>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> f() const& {
-    return {this->__fbthrift_field_f, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {this->__fbthrift_field_f, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::cpp2::MyField>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> f() const&& {
-    return {std::move(this->__fbthrift_field_f), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_f), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::cpp2::MyField>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> f() & {
-    return {this->__fbthrift_field_f, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {this->__fbthrift_field_f, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::cpp2::MyField>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> f() && {
-    return {std::move(this->__fbthrift_field_f), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_f), __isset.at(0), __isset.bit(0)};
   }
   const ::cpp2::MyField& get_f() const&;
   ::cpp2::MyField get_f() &&;
@@ -1063,42 +1063,42 @@ class RecursiveStruct final  {
 
   template <typename..., typename T = ::std::vector<::cpp2::RecursiveStruct>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> mes_ref() const& {
-    return {this->__fbthrift_field_mes, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {this->__fbthrift_field_mes, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::vector<::cpp2::RecursiveStruct>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> mes_ref() const&& {
-    return {std::move(this->__fbthrift_field_mes), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_mes), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::vector<::cpp2::RecursiveStruct>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> mes_ref() & {
-    return {this->__fbthrift_field_mes, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {this->__fbthrift_field_mes, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::vector<::cpp2::RecursiveStruct>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> mes_ref() && {
-    return {std::move(this->__fbthrift_field_mes), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_mes), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::vector<::cpp2::RecursiveStruct>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> mes() const& {
-    return {this->__fbthrift_field_mes, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {this->__fbthrift_field_mes, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::vector<::cpp2::RecursiveStruct>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> mes() const&& {
-    return {std::move(this->__fbthrift_field_mes), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_mes), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::vector<::cpp2::RecursiveStruct>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> mes() & {
-    return {this->__fbthrift_field_mes, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {this->__fbthrift_field_mes, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::vector<::cpp2::RecursiveStruct>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> mes() && {
-    return {std::move(this->__fbthrift_field_mes), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {std::move(this->__fbthrift_field_mes), __isset.at(0), __isset.bit(0)};
   }
   const ::std::vector<::cpp2::RecursiveStruct>* get_mes() const&;
   ::std::vector<::cpp2::RecursiveStruct>* get_mes() &;

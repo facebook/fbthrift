@@ -73,7 +73,7 @@ _readField_<%field:cpp_name%>:
   isset_<%field:cpp_name%> = true;
 <%/field:required?%><%/program:enforce_required?%>
 <%#field:has_isset?%>
- this->__isset.set(folly::index_constant<<%field:isset_index%>>(), true);
+ this->__isset.set(<%field:isset_index%>, true);
 <%/field:has_isset?%>
 
 <%^last?%>

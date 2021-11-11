@@ -251,22 +251,22 @@ class FOLLY_EXPORT Serious : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> sonnet_ref() const& {
-    return {this->sonnet, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {this->sonnet, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> sonnet_ref() const&& {
-    return {std::move(this->sonnet), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {std::move(this->sonnet), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> sonnet_ref() & {
-    return {this->sonnet, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {this->sonnet, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> sonnet_ref() && {
-    return {std::move(this->sonnet), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {std::move(this->sonnet), __isset.at(0), __isset.bit(0)};
   }
 
   const ::std::string* get_sonnet() const& {
@@ -370,42 +370,42 @@ class FOLLY_EXPORT ComplexFieldNames : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> error_message_ref() const& {
-    return {this->error_message, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {this->error_message, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> error_message_ref() const&& {
-    return {std::move(this->error_message), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {std::move(this->error_message), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> error_message_ref() & {
-    return {this->error_message, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {this->error_message, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> error_message_ref() && {
-    return {std::move(this->error_message), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {std::move(this->error_message), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> internal_error_message_ref() const& {
-    return {this->internal_error_message, __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+    return {this->internal_error_message, __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> internal_error_message_ref() const&& {
-    return {std::move(this->internal_error_message), __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+    return {std::move(this->internal_error_message), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> internal_error_message_ref() & {
-    return {this->internal_error_message, __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+    return {this->internal_error_message, __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> internal_error_message_ref() && {
-    return {std::move(this->internal_error_message), __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+    return {std::move(this->internal_error_message), __isset.at(1), __isset.bit(1)};
   }
 
   const ::std::string& get_error_message() const& {
@@ -523,42 +523,42 @@ class FOLLY_EXPORT CustomFieldNames : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> error_message_ref() const& {
-    return {this->error_message, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {this->error_message, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> error_message_ref() const&& {
-    return {std::move(this->error_message), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {std::move(this->error_message), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> error_message_ref() & {
-    return {this->error_message, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {this->error_message, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> error_message_ref() && {
-    return {std::move(this->error_message), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {std::move(this->error_message), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> internal_error_message_ref() const& {
-    return {this->internal_error_message, __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+    return {this->internal_error_message, __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> internal_error_message_ref() const&& {
-    return {std::move(this->internal_error_message), __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+    return {std::move(this->internal_error_message), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> internal_error_message_ref() & {
-    return {this->internal_error_message, __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+    return {this->internal_error_message, __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> internal_error_message_ref() && {
-    return {std::move(this->internal_error_message), __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+    return {std::move(this->internal_error_message), __isset.at(1), __isset.bit(1)};
   }
 
   const ::std::string& get_error_message() const& {
@@ -676,42 +676,42 @@ class FOLLY_EXPORT ExceptionWithPrimitiveField : public apache::thrift::TExcepti
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> message_ref() const& {
-    return {this->message, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {this->message, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> message_ref() const&& {
-    return {std::move(this->message), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {std::move(this->message), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> message_ref() & {
-    return {this->message, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {this->message, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> message_ref() && {
-    return {std::move(this->message), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {std::move(this->message), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> error_code_ref() const& {
-    return {this->error_code, __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+    return {this->error_code, __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> error_code_ref() const&& {
-    return {std::move(this->error_code), __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+    return {std::move(this->error_code), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> error_code_ref() & {
-    return {this->error_code, __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+    return {this->error_code, __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> error_code_ref() && {
-    return {std::move(this->error_code), __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+    return {std::move(this->error_code), __isset.at(1), __isset.bit(1)};
   }
 
   const ::std::string& get_message() const& {

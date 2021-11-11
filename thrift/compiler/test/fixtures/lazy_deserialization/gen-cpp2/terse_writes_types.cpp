@@ -198,21 +198,21 @@ TerseLazyFoo::TerseLazyFoo(const TerseLazyFoo& srcObj) {
   __fbthrift_protocol_ = srcObj.__fbthrift_protocol_;
   __fbthrift_serializedData_ = srcObj.__fbthrift_serializedData_;
   __fbthrift_field_field1 = srcObj.__fbthrift_field_field1;
-  __isset.set(folly::index_constant<0>(),srcObj.__isset.get(folly::index_constant<0>()));
+  __isset.set(0,srcObj.__isset.get(0));
   __fbthrift_field_field2 = srcObj.__fbthrift_field_field2;
-  __isset.set(folly::index_constant<1>(),srcObj.__isset.get(folly::index_constant<1>()));
+  __isset.set(1,srcObj.__isset.get(1));
   {
     const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field3.load(relaxed);
     __fbthrift_isDeserialized_.field3.store(isDeserialized, relaxed);
   }
   __fbthrift_field_field3 = srcObj.__fbthrift_field_field3;
-  __isset.set(folly::index_constant<2>(),srcObj.__isset.get(folly::index_constant<2>()));
+  __isset.set(2,srcObj.__isset.get(2));
   {
     const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field4.load(relaxed);
     __fbthrift_isDeserialized_.field4.store(isDeserialized, relaxed);
   }
   __fbthrift_field_field4 = srcObj.__fbthrift_field_field4;
-  __isset.set(folly::index_constant<3>(),srcObj.__isset.get(folly::index_constant<3>()));
+  __isset.set(3,srcObj.__isset.get(3));
 }
 
 TerseLazyFoo& TerseLazyFoo::operator=(const TerseLazyFoo& src) {
@@ -634,21 +634,21 @@ TerseOptionalLazyFoo::TerseOptionalLazyFoo(const TerseOptionalLazyFoo& srcObj) {
   __fbthrift_protocol_ = srcObj.__fbthrift_protocol_;
   __fbthrift_serializedData_ = srcObj.__fbthrift_serializedData_;
   __fbthrift_field_field1 = srcObj.__fbthrift_field_field1;
-  __isset.set(folly::index_constant<0>(),srcObj.__isset.get(folly::index_constant<0>()));
+  __isset.set(0,srcObj.__isset.get(0));
   __fbthrift_field_field2 = srcObj.__fbthrift_field_field2;
-  __isset.set(folly::index_constant<1>(),srcObj.__isset.get(folly::index_constant<1>()));
+  __isset.set(1,srcObj.__isset.get(1));
   {
     const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field3.load(relaxed);
     __fbthrift_isDeserialized_.field3.store(isDeserialized, relaxed);
   }
   __fbthrift_field_field3 = srcObj.__fbthrift_field_field3;
-  __isset.set(folly::index_constant<2>(),srcObj.__isset.get(folly::index_constant<2>()));
+  __isset.set(2,srcObj.__isset.get(2));
   {
     const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field4.load(relaxed);
     __fbthrift_isDeserialized_.field4.store(isDeserialized, relaxed);
   }
   __fbthrift_field_field4 = srcObj.__fbthrift_field_field4;
-  __isset.set(folly::index_constant<3>(),srcObj.__isset.get(folly::index_constant<3>()));
+  __isset.set(3,srcObj.__isset.get(3));
 }
 
 TerseOptionalLazyFoo& TerseOptionalLazyFoo::operator=(const TerseOptionalLazyFoo& src) {
