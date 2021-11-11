@@ -274,23 +274,23 @@ class Foo final  {
   }
 
   template <typename..., typename T = ::std::vector<double>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> field1() & {
-    return field1_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field1() const& {
-    return field1_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<double>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field1() && {
-    return std::move(*this).field1_ref();
+    return {this->__fbthrift_field_field1, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field1() const&& {
-    return std::move(*this).field1_ref();
+    return {std::move(this->__fbthrift_field_field1), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::vector<double>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> field1() & {
+    return {this->__fbthrift_field_field1, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::vector<double>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field1() && {
+    return {std::move(this->__fbthrift_field_field1), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -314,23 +314,23 @@ class Foo final  {
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> field2() & {
-    return field2_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field2() const& {
-    return field2_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<::std::int32_t>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field2() && {
-    return std::move(*this).field2_ref();
+    return {this->__fbthrift_field_field2, __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field2() const&& {
-    return std::move(*this).field2_ref();
+    return {std::move(this->__fbthrift_field_field2), __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> field2() & {
+    return {this->__fbthrift_field_field2, __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field2() && {
+    return {std::move(this->__fbthrift_field_field2), __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -354,23 +354,23 @@ class Foo final  {
   }
 
   template <typename..., typename T = ::std::vector<double>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> field3() & {
-    return field3_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field3() const& {
-    return field3_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<double>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field3() && {
-    return std::move(*this).field3_ref();
+    return {this->__fbthrift_field_field3, __isset.at(folly::index_constant<2>()), __isset.bit(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field3() const&& {
-    return std::move(*this).field3_ref();
+    return {std::move(this->__fbthrift_field_field3), __isset.at(folly::index_constant<2>()), __isset.bit(folly::index_constant<2>())};
+  }
+
+  template <typename..., typename T = ::std::vector<double>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> field3() & {
+    return {this->__fbthrift_field_field3, __isset.at(folly::index_constant<2>()), __isset.bit(folly::index_constant<2>())};
+  }
+
+  template <typename..., typename T = ::std::vector<double>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field3() && {
+    return {std::move(this->__fbthrift_field_field3), __isset.at(folly::index_constant<2>()), __isset.bit(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -394,23 +394,23 @@ class Foo final  {
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> field4() & {
-    return field4_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field4() const& {
-    return field4_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<::std::int32_t>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field4() && {
-    return std::move(*this).field4_ref();
+    return {this->__fbthrift_field_field4, __isset.at(folly::index_constant<3>()), __isset.bit(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field4() const&& {
-    return std::move(*this).field4_ref();
+    return {std::move(this->__fbthrift_field_field4), __isset.at(folly::index_constant<3>()), __isset.bit(folly::index_constant<3>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> field4() & {
+    return {this->__fbthrift_field_field4, __isset.at(folly::index_constant<3>()), __isset.bit(folly::index_constant<3>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field4() && {
+    return {std::move(this->__fbthrift_field_field4), __isset.at(folly::index_constant<3>()), __isset.bit(folly::index_constant<3>())};
   }
   const ::std::vector<double>& get_field1() const&;
   ::std::vector<double> get_field1() &&;
@@ -542,23 +542,23 @@ class LazyFoo final  {
   }
 
   template <typename..., typename T = ::std::vector<double>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> field1() & {
-    return field1_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field1() const& {
-    return field1_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<double>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field1() && {
-    return std::move(*this).field1_ref();
+    return {this->__fbthrift_field_field1, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field1() const&& {
-    return std::move(*this).field1_ref();
+    return {std::move(this->__fbthrift_field_field1), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::vector<double>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> field1() & {
+    return {this->__fbthrift_field_field1, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::vector<double>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field1() && {
+    return {std::move(this->__fbthrift_field_field1), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -582,23 +582,23 @@ class LazyFoo final  {
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> field2() & {
-    return field2_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field2() const& {
-    return field2_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<::std::int32_t>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field2() && {
-    return std::move(*this).field2_ref();
+    return {this->__fbthrift_field_field2, __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field2() const&& {
-    return std::move(*this).field2_ref();
+    return {std::move(this->__fbthrift_field_field2), __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> field2() & {
+    return {this->__fbthrift_field_field2, __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field2() && {
+    return {std::move(this->__fbthrift_field_field2), __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -622,23 +622,23 @@ class LazyFoo final  {
   }
 
   template <typename..., typename T = ::std::vector<double>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> field3() & {
-    return field3_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field3() const& {
-    return field3_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<double>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field3() && {
-    return std::move(*this).field3_ref();
+    return {this->__fbthrift_read_field_field3(), __isset.at(folly::index_constant<2>()), __isset.bit(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field3() const&& {
-    return std::move(*this).field3_ref();
+    return {std::move(this->__fbthrift_read_field_field3()), __isset.at(folly::index_constant<2>()), __isset.bit(folly::index_constant<2>())};
+  }
+
+  template <typename..., typename T = ::std::vector<double>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> field3() & {
+    return {this->__fbthrift_read_field_field3(), __isset.at(folly::index_constant<2>()), __isset.bit(folly::index_constant<2>())};
+  }
+
+  template <typename..., typename T = ::std::vector<double>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field3() && {
+    return {std::move(this->__fbthrift_read_field_field3()), __isset.at(folly::index_constant<2>()), __isset.bit(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -662,23 +662,23 @@ class LazyFoo final  {
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> field4() & {
-    return field4_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field4() const& {
-    return field4_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<::std::int32_t>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field4() && {
-    return std::move(*this).field4_ref();
+    return {this->__fbthrift_read_field_field4(), __isset.at(folly::index_constant<3>()), __isset.bit(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field4() const&& {
-    return std::move(*this).field4_ref();
+    return {std::move(this->__fbthrift_read_field_field4()), __isset.at(folly::index_constant<3>()), __isset.bit(folly::index_constant<3>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> field4() & {
+    return {this->__fbthrift_read_field_field4(), __isset.at(folly::index_constant<3>()), __isset.bit(folly::index_constant<3>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field4() && {
+    return {std::move(this->__fbthrift_read_field_field4()), __isset.at(folly::index_constant<3>()), __isset.bit(folly::index_constant<3>())};
   }
   const ::std::vector<double>& get_field1() const&;
   ::std::vector<double> get_field1() &&;
@@ -817,23 +817,23 @@ class OptionalFoo final  {
   }
 
   template <typename..., typename T = ::std::vector<double>>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> field1() & {
-    return field1_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> field1() const& {
-    return field1_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<double>>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field1() && {
-    return std::move(*this).field1_ref();
+    return {this->__fbthrift_field_field1, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field1() const&& {
-    return std::move(*this).field1_ref();
+    return {std::move(this->__fbthrift_field_field1), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::vector<double>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> field1() & {
+    return {this->__fbthrift_field_field1, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::vector<double>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field1() && {
+    return {std::move(this->__fbthrift_field_field1), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -857,23 +857,23 @@ class OptionalFoo final  {
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> field2() & {
-    return field2_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> field2() const& {
-    return field2_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<::std::int32_t>>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field2() && {
-    return std::move(*this).field2_ref();
+    return {this->__fbthrift_field_field2, __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field2() const&& {
-    return std::move(*this).field2_ref();
+    return {std::move(this->__fbthrift_field_field2), __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> field2() & {
+    return {this->__fbthrift_field_field2, __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field2() && {
+    return {std::move(this->__fbthrift_field_field2), __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -897,23 +897,23 @@ class OptionalFoo final  {
   }
 
   template <typename..., typename T = ::std::vector<double>>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> field3() & {
-    return field3_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> field3() const& {
-    return field3_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<double>>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field3() && {
-    return std::move(*this).field3_ref();
+    return {this->__fbthrift_field_field3, __isset.at(folly::index_constant<2>()), __isset.bit(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field3() const&& {
-    return std::move(*this).field3_ref();
+    return {std::move(this->__fbthrift_field_field3), __isset.at(folly::index_constant<2>()), __isset.bit(folly::index_constant<2>())};
+  }
+
+  template <typename..., typename T = ::std::vector<double>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> field3() & {
+    return {this->__fbthrift_field_field3, __isset.at(folly::index_constant<2>()), __isset.bit(folly::index_constant<2>())};
+  }
+
+  template <typename..., typename T = ::std::vector<double>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field3() && {
+    return {std::move(this->__fbthrift_field_field3), __isset.at(folly::index_constant<2>()), __isset.bit(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -937,23 +937,23 @@ class OptionalFoo final  {
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> field4() & {
-    return field4_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> field4() const& {
-    return field4_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<::std::int32_t>>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field4() && {
-    return std::move(*this).field4_ref();
+    return {this->__fbthrift_field_field4, __isset.at(folly::index_constant<3>()), __isset.bit(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field4() const&& {
-    return std::move(*this).field4_ref();
+    return {std::move(this->__fbthrift_field_field4), __isset.at(folly::index_constant<3>()), __isset.bit(folly::index_constant<3>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> field4() & {
+    return {this->__fbthrift_field_field4, __isset.at(folly::index_constant<3>()), __isset.bit(folly::index_constant<3>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field4() && {
+    return {std::move(this->__fbthrift_field_field4), __isset.at(folly::index_constant<3>()), __isset.bit(folly::index_constant<3>())};
   }
   const ::std::vector<double>* get_field1() const&;
   ::std::vector<double>* get_field1() &;
@@ -1089,23 +1089,23 @@ class OptionalLazyFoo final  {
   }
 
   template <typename..., typename T = ::std::vector<double>>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> field1() & {
-    return field1_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> field1() const& {
-    return field1_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<double>>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field1() && {
-    return std::move(*this).field1_ref();
+    return {this->__fbthrift_field_field1, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field1() const&& {
-    return std::move(*this).field1_ref();
+    return {std::move(this->__fbthrift_field_field1), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::vector<double>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> field1() & {
+    return {this->__fbthrift_field_field1, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::vector<double>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field1() && {
+    return {std::move(this->__fbthrift_field_field1), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -1129,23 +1129,23 @@ class OptionalLazyFoo final  {
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> field2() & {
-    return field2_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> field2() const& {
-    return field2_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<::std::int32_t>>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field2() && {
-    return std::move(*this).field2_ref();
+    return {this->__fbthrift_field_field2, __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field2() const&& {
-    return std::move(*this).field2_ref();
+    return {std::move(this->__fbthrift_field_field2), __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> field2() & {
+    return {this->__fbthrift_field_field2, __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field2() && {
+    return {std::move(this->__fbthrift_field_field2), __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -1169,23 +1169,23 @@ class OptionalLazyFoo final  {
   }
 
   template <typename..., typename T = ::std::vector<double>>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> field3() & {
-    return field3_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> field3() const& {
-    return field3_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<double>>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field3() && {
-    return std::move(*this).field3_ref();
+    return {this->__fbthrift_read_field_field3(), __isset.at(folly::index_constant<2>()), __isset.bit(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field3() const&& {
-    return std::move(*this).field3_ref();
+    return {std::move(this->__fbthrift_read_field_field3()), __isset.at(folly::index_constant<2>()), __isset.bit(folly::index_constant<2>())};
+  }
+
+  template <typename..., typename T = ::std::vector<double>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> field3() & {
+    return {this->__fbthrift_read_field_field3(), __isset.at(folly::index_constant<2>()), __isset.bit(folly::index_constant<2>())};
+  }
+
+  template <typename..., typename T = ::std::vector<double>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field3() && {
+    return {std::move(this->__fbthrift_read_field_field3()), __isset.at(folly::index_constant<2>()), __isset.bit(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -1209,23 +1209,23 @@ class OptionalLazyFoo final  {
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> field4() & {
-    return field4_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> field4() const& {
-    return field4_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<::std::int32_t>>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field4() && {
-    return std::move(*this).field4_ref();
+    return {this->__fbthrift_read_field_field4(), __isset.at(folly::index_constant<3>()), __isset.bit(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field4() const&& {
-    return std::move(*this).field4_ref();
+    return {std::move(this->__fbthrift_read_field_field4()), __isset.at(folly::index_constant<3>()), __isset.bit(folly::index_constant<3>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> field4() & {
+    return {this->__fbthrift_read_field_field4(), __isset.at(folly::index_constant<3>()), __isset.bit(folly::index_constant<3>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field4() && {
+    return {std::move(this->__fbthrift_read_field_field4()), __isset.at(folly::index_constant<3>()), __isset.bit(folly::index_constant<3>())};
   }
   const ::std::vector<double>* get_field1() const&;
   ::std::vector<double>* get_field1() &;
@@ -1524,23 +1524,23 @@ class IndexedFoo final  {
   }
 
   template <typename..., typename T = double>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> serialized_data_size() & {
-    return serialized_data_size_ref();
-  }
-
-  template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> serialized_data_size() const& {
-    return serialized_data_size_ref();
-  }
-
-  template <typename..., typename T = double>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> serialized_data_size() && {
-    return std::move(*this).serialized_data_size_ref();
+    return {this->__fbthrift_field_serialized_data_size, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> serialized_data_size() const&& {
-    return std::move(*this).serialized_data_size_ref();
+    return {std::move(this->__fbthrift_field_serialized_data_size), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = double>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> serialized_data_size() & {
+    return {this->__fbthrift_field_serialized_data_size, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = double>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> serialized_data_size() && {
+    return {std::move(this->__fbthrift_field_serialized_data_size), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -1564,23 +1564,23 @@ class IndexedFoo final  {
   }
 
   template <typename..., typename T = ::std::vector<double>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> field1() & {
-    return field1_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field1() const& {
-    return field1_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<double>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field1() && {
-    return std::move(*this).field1_ref();
+    return {this->__fbthrift_field_field1, __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field1() const&& {
-    return std::move(*this).field1_ref();
+    return {std::move(this->__fbthrift_field_field1), __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::std::vector<double>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> field1() & {
+    return {this->__fbthrift_field_field1, __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::std::vector<double>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field1() && {
+    return {std::move(this->__fbthrift_field_field1), __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -1604,23 +1604,23 @@ class IndexedFoo final  {
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> field2() & {
-    return field2_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field2() const& {
-    return field2_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<::std::int32_t>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field2() && {
-    return std::move(*this).field2_ref();
+    return {this->__fbthrift_field_field2, __isset.at(folly::index_constant<2>()), __isset.bit(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field2() const&& {
-    return std::move(*this).field2_ref();
+    return {std::move(this->__fbthrift_field_field2), __isset.at(folly::index_constant<2>()), __isset.bit(folly::index_constant<2>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> field2() & {
+    return {this->__fbthrift_field_field2, __isset.at(folly::index_constant<2>()), __isset.bit(folly::index_constant<2>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field2() && {
+    return {std::move(this->__fbthrift_field_field2), __isset.at(folly::index_constant<2>()), __isset.bit(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -1644,23 +1644,23 @@ class IndexedFoo final  {
   }
 
   template <typename..., typename T = ::std::vector<double>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> field3() & {
-    return field3_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field3() const& {
-    return field3_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<double>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field3() && {
-    return std::move(*this).field3_ref();
+    return {this->__fbthrift_field_field3, __isset.at(folly::index_constant<3>()), __isset.bit(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field3() const&& {
-    return std::move(*this).field3_ref();
+    return {std::move(this->__fbthrift_field_field3), __isset.at(folly::index_constant<3>()), __isset.bit(folly::index_constant<3>())};
+  }
+
+  template <typename..., typename T = ::std::vector<double>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> field3() & {
+    return {this->__fbthrift_field_field3, __isset.at(folly::index_constant<3>()), __isset.bit(folly::index_constant<3>())};
+  }
+
+  template <typename..., typename T = ::std::vector<double>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field3() && {
+    return {std::move(this->__fbthrift_field_field3), __isset.at(folly::index_constant<3>()), __isset.bit(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -1684,23 +1684,23 @@ class IndexedFoo final  {
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> field4() & {
-    return field4_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field4() const& {
-    return field4_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<::std::int32_t>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field4() && {
-    return std::move(*this).field4_ref();
+    return {this->__fbthrift_field_field4, __isset.at(folly::index_constant<4>()), __isset.bit(folly::index_constant<4>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field4() const&& {
-    return std::move(*this).field4_ref();
+    return {std::move(this->__fbthrift_field_field4), __isset.at(folly::index_constant<4>()), __isset.bit(folly::index_constant<4>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> field4() & {
+    return {this->__fbthrift_field_field4, __isset.at(folly::index_constant<4>()), __isset.bit(folly::index_constant<4>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field4() && {
+    return {std::move(this->__fbthrift_field_field4), __isset.at(folly::index_constant<4>()), __isset.bit(folly::index_constant<4>())};
   }
 
   template <typename..., typename T = ::std::map<::std::int16_t, ::std::int64_t>>
@@ -1724,23 +1724,23 @@ class IndexedFoo final  {
   }
 
   template <typename..., typename T = ::std::map<::std::int16_t, ::std::int64_t>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> field_id_to_size() & {
-    return field_id_to_size_ref();
-  }
-
-  template <typename..., typename T = ::std::map<::std::int16_t, ::std::int64_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field_id_to_size() const& {
-    return field_id_to_size_ref();
-  }
-
-  template <typename..., typename T = ::std::map<::std::int16_t, ::std::int64_t>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field_id_to_size() && {
-    return std::move(*this).field_id_to_size_ref();
+    return {this->__fbthrift_field_field_id_to_size, __isset.at(folly::index_constant<5>()), __isset.bit(folly::index_constant<5>())};
   }
 
   template <typename..., typename T = ::std::map<::std::int16_t, ::std::int64_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field_id_to_size() const&& {
-    return std::move(*this).field_id_to_size_ref();
+    return {std::move(this->__fbthrift_field_field_id_to_size), __isset.at(folly::index_constant<5>()), __isset.bit(folly::index_constant<5>())};
+  }
+
+  template <typename..., typename T = ::std::map<::std::int16_t, ::std::int64_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> field_id_to_size() & {
+    return {this->__fbthrift_field_field_id_to_size, __isset.at(folly::index_constant<5>()), __isset.bit(folly::index_constant<5>())};
+  }
+
+  template <typename..., typename T = ::std::map<::std::int16_t, ::std::int64_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field_id_to_size() && {
+    return {std::move(this->__fbthrift_field_field_id_to_size), __isset.at(folly::index_constant<5>()), __isset.bit(folly::index_constant<5>())};
   }
 
   double get_serialized_data_size() const {
@@ -1899,23 +1899,23 @@ class OptionalIndexedFoo final  {
   }
 
   template <typename..., typename T = double>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> serialized_data_size() & {
-    return serialized_data_size_ref();
-  }
-
-  template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> serialized_data_size() const& {
-    return serialized_data_size_ref();
-  }
-
-  template <typename..., typename T = double>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> serialized_data_size() && {
-    return std::move(*this).serialized_data_size_ref();
+    return {this->__fbthrift_field_serialized_data_size, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> serialized_data_size() const&& {
-    return std::move(*this).serialized_data_size_ref();
+    return {std::move(this->__fbthrift_field_serialized_data_size), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = double>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> serialized_data_size() & {
+    return {this->__fbthrift_field_serialized_data_size, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = double>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> serialized_data_size() && {
+    return {std::move(this->__fbthrift_field_serialized_data_size), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -1939,23 +1939,23 @@ class OptionalIndexedFoo final  {
   }
 
   template <typename..., typename T = ::std::vector<double>>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> field1() & {
-    return field1_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> field1() const& {
-    return field1_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<double>>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field1() && {
-    return std::move(*this).field1_ref();
+    return {this->__fbthrift_field_field1, __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field1() const&& {
-    return std::move(*this).field1_ref();
+    return {std::move(this->__fbthrift_field_field1), __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::std::vector<double>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> field1() & {
+    return {this->__fbthrift_field_field1, __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::std::vector<double>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field1() && {
+    return {std::move(this->__fbthrift_field_field1), __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -1979,23 +1979,23 @@ class OptionalIndexedFoo final  {
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> field2() & {
-    return field2_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> field2() const& {
-    return field2_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<::std::int32_t>>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field2() && {
-    return std::move(*this).field2_ref();
+    return {this->__fbthrift_field_field2, __isset.at(folly::index_constant<2>()), __isset.bit(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field2() const&& {
-    return std::move(*this).field2_ref();
+    return {std::move(this->__fbthrift_field_field2), __isset.at(folly::index_constant<2>()), __isset.bit(folly::index_constant<2>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> field2() & {
+    return {this->__fbthrift_field_field2, __isset.at(folly::index_constant<2>()), __isset.bit(folly::index_constant<2>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field2() && {
+    return {std::move(this->__fbthrift_field_field2), __isset.at(folly::index_constant<2>()), __isset.bit(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -2019,23 +2019,23 @@ class OptionalIndexedFoo final  {
   }
 
   template <typename..., typename T = ::std::vector<double>>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> field3() & {
-    return field3_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> field3() const& {
-    return field3_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<double>>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field3() && {
-    return std::move(*this).field3_ref();
+    return {this->__fbthrift_field_field3, __isset.at(folly::index_constant<3>()), __isset.bit(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field3() const&& {
-    return std::move(*this).field3_ref();
+    return {std::move(this->__fbthrift_field_field3), __isset.at(folly::index_constant<3>()), __isset.bit(folly::index_constant<3>())};
+  }
+
+  template <typename..., typename T = ::std::vector<double>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> field3() & {
+    return {this->__fbthrift_field_field3, __isset.at(folly::index_constant<3>()), __isset.bit(folly::index_constant<3>())};
+  }
+
+  template <typename..., typename T = ::std::vector<double>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field3() && {
+    return {std::move(this->__fbthrift_field_field3), __isset.at(folly::index_constant<3>()), __isset.bit(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -2059,23 +2059,23 @@ class OptionalIndexedFoo final  {
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> field4() & {
-    return field4_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> field4() const& {
-    return field4_ref();
-  }
-
-  template <typename..., typename T = ::std::vector<::std::int32_t>>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field4() && {
-    return std::move(*this).field4_ref();
+    return {this->__fbthrift_field_field4, __isset.at(folly::index_constant<4>()), __isset.bit(folly::index_constant<4>())};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field4() const&& {
-    return std::move(*this).field4_ref();
+    return {std::move(this->__fbthrift_field_field4), __isset.at(folly::index_constant<4>()), __isset.bit(folly::index_constant<4>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> field4() & {
+    return {this->__fbthrift_field_field4, __isset.at(folly::index_constant<4>()), __isset.bit(folly::index_constant<4>())};
+  }
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field4() && {
+    return {std::move(this->__fbthrift_field_field4), __isset.at(folly::index_constant<4>()), __isset.bit(folly::index_constant<4>())};
   }
 
   template <typename..., typename T = ::std::map<::std::int16_t, ::std::int64_t>>
@@ -2099,23 +2099,23 @@ class OptionalIndexedFoo final  {
   }
 
   template <typename..., typename T = ::std::map<::std::int16_t, ::std::int64_t>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> field_id_to_size() & {
-    return field_id_to_size_ref();
-  }
-
-  template <typename..., typename T = ::std::map<::std::int16_t, ::std::int64_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field_id_to_size() const& {
-    return field_id_to_size_ref();
-  }
-
-  template <typename..., typename T = ::std::map<::std::int16_t, ::std::int64_t>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field_id_to_size() && {
-    return std::move(*this).field_id_to_size_ref();
+    return {this->__fbthrift_field_field_id_to_size, __isset.at(folly::index_constant<5>()), __isset.bit(folly::index_constant<5>())};
   }
 
   template <typename..., typename T = ::std::map<::std::int16_t, ::std::int64_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field_id_to_size() const&& {
-    return std::move(*this).field_id_to_size_ref();
+    return {std::move(this->__fbthrift_field_field_id_to_size), __isset.at(folly::index_constant<5>()), __isset.bit(folly::index_constant<5>())};
+  }
+
+  template <typename..., typename T = ::std::map<::std::int16_t, ::std::int64_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> field_id_to_size() & {
+    return {this->__fbthrift_field_field_id_to_size, __isset.at(folly::index_constant<5>()), __isset.bit(folly::index_constant<5>())};
+  }
+
+  template <typename..., typename T = ::std::map<::std::int16_t, ::std::int64_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field_id_to_size() && {
+    return {std::move(this->__fbthrift_field_field_id_to_size), __isset.at(folly::index_constant<5>()), __isset.bit(folly::index_constant<5>())};
   }
 
   double get_serialized_data_size() const {

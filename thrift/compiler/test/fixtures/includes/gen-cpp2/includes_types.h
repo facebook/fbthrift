@@ -121,23 +121,23 @@ class Included final  {
   }
 
   template <typename..., typename T = ::std::int64_t>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIntField() & {
-    return MyIntField_ref();
-  }
-
-  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField() const& {
-    return MyIntField_ref();
-  }
-
-  template <typename..., typename T = ::std::int64_t>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField() && {
-    return std::move(*this).MyIntField_ref();
+    return {this->__fbthrift_field_MyIntField, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIntField() const&& {
-    return std::move(*this).MyIntField_ref();
+    return {std::move(this->__fbthrift_field_MyIntField), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIntField() & {
+    return {this->__fbthrift_field_MyIntField, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField() && {
+    return {std::move(this->__fbthrift_field_MyIntField), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::cpp2::Foo>
@@ -161,23 +161,23 @@ class Included final  {
   }
 
   template <typename..., typename T = ::cpp2::Foo>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyTransitiveField() & {
-    return MyTransitiveField_ref();
-  }
-
-  template <typename..., typename T = ::cpp2::Foo>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyTransitiveField() const& {
-    return MyTransitiveField_ref();
-  }
-
-  template <typename..., typename T = ::cpp2::Foo>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyTransitiveField() && {
-    return std::move(*this).MyTransitiveField_ref();
+    return {this->__fbthrift_field_MyTransitiveField, __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::Foo>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyTransitiveField() const&& {
-    return std::move(*this).MyTransitiveField_ref();
+    return {std::move(this->__fbthrift_field_MyTransitiveField), __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::cpp2::Foo>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyTransitiveField() & {
+    return {this->__fbthrift_field_MyTransitiveField, __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
+  }
+
+  template <typename..., typename T = ::cpp2::Foo>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyTransitiveField() && {
+    return {std::move(this->__fbthrift_field_MyTransitiveField), __isset.at(folly::index_constant<1>()), __isset.bit(folly::index_constant<1>())};
   }
 
   ::std::int64_t get_MyIntField() const {

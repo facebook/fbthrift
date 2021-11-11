@@ -116,23 +116,23 @@ class Foo final  {
   }
 
   template <typename..., typename T = ::std::int32_t>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> foo() & {
-    return foo_ref();
-  }
-
-  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> foo() const& {
-    return foo_ref();
-  }
-
-  template <typename..., typename T = ::std::int32_t>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> foo() && {
-    return std::move(*this).foo_ref();
+    return {this->__fbthrift_field_foo, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> foo() const&& {
-    return std::move(*this).foo_ref();
+    return {std::move(this->__fbthrift_field_foo), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> foo() & {
+    return {this->__fbthrift_field_foo, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> foo() && {
+    return {std::move(this->__fbthrift_field_foo), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int32_t>
