@@ -219,7 +219,7 @@ class U implements \IThriftStruct, \IThriftUnion<UEnum> {
         break;
     }
     $this->_type = UEnum::_EMPTY_;
-}
+  }
 
   public function set_i(int $i)[write_props]: this {
     $this->reset();

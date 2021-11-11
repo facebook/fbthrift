@@ -725,7 +725,7 @@ class Baz implements \IThriftStruct, \IThriftUnion<BazEnum>, \IThriftShapishStru
         break;
     }
     $this->_type = BazEnum::_EMPTY_;
-}
+  }
 
   public function set_intField(\Adapter1::THackType $intField)[write_props]: this {
     $this->reset();

@@ -1005,7 +1005,7 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
         break;
     }
     $this->_type = union1Enum::_EMPTY_;
-}
+  }
 
   public function set_i(int $i)[write_props]: this {
     $this->reset();
@@ -1225,7 +1225,7 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
         break;
     }
     $this->_type = union2Enum::_EMPTY_;
-}
+  }
 
   public function set_i(int $i)[write_props]: this {
     $this->reset();

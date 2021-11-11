@@ -133,7 +133,7 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
         break;
     }
     $this->_type = \test\fixtures\UnionEnum::_EMPTY_;
-}
+  }
 
   public function set_intValue(int $intValue)[write_props]: this {
     $this->reset();
