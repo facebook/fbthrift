@@ -39,3 +39,7 @@ service DummyMonitor {
 service DummyStatus {
   i64 getStatus() (thread = 'eb');
 }
+
+service DummyControl {
+  i64 getOption();
+}

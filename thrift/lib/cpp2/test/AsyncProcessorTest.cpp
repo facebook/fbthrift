@@ -40,6 +40,7 @@
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 #include <thrift/lib/cpp2/test/gen-cpp2/Child.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/DummyControl.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/DummyMonitor.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/DummyStatus.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/Parent.h>
@@ -329,6 +330,9 @@ TEST_P(
       callback->result(360);
     }
   };
+  class Control : public DummyControlSvIf, public ControlServerInterface {
+    std::int64_t getOption() override { return 42; }
+  };
   auto service = std::make_shared<ChildWithMetadata>([](auto defaultResult) {
     MethodMetadataMap result;
     auto& defaultMap = expectMethodMetadataMap(defaultResult);
@@ -338,11 +342,13 @@ TEST_P(
   auto runner = makeServer(service, [&](ThriftServer& server) {
     server.setStatusInterface(std::make_shared<Status>());
     server.setMonitoringInterface(std::make_shared<Monitor>());
+    server.setControlInterface(std::make_shared<Control>());
   });
 
   auto client = makeClientFor<ChildAsyncClient>(*runner);
   auto monitoringClient = makeClientFor<DummyMonitorAsyncClient>(*runner);
   auto statusClient = makeClientFor<DummyStatusAsyncClient>(*runner);
+  auto controlClient = makeClientFor<DummyControlAsyncClient>(*runner);
 
   EXPECT_EQ(client->semifuture_parentMethod1().get(), 42);
   // The monitoring interface should be invoked if the user interface doesn't
@@ -351,6 +357,9 @@ TEST_P(
   // The status interface should be invoked if the user interface doesn't
   // have the method.
   EXPECT_EQ(statusClient->semifuture_getStatus().get(), 360);
+  // The control interface should be invoked if no handler with higher
+  // precedence has the method.
+  EXPECT_EQ(controlClient->semifuture_getOption().get(), 42);
   // If the method is in neither user, status, or monitoring interfaces, we
   // expect an error.
   EXPECT_THROW(client->semifuture_parentMethod3().get(), TApplicationException);
@@ -386,6 +395,9 @@ TEST_P(
         std::unique_ptr<HandlerCallback<std::int64_t>> callback) override {
       callback->result(360);
     }
+  };
+  class Control : public DummyControlSvIf, public ControlServerInterface {
+    std::int64_t getOption() override { return 42; }
   };
   class ChildWithWildcard : public ChildWithMetadata {
    public:
@@ -446,11 +458,13 @@ TEST_P(
   auto runner = makeServer(service, [&](ThriftServer& server) {
     server.setStatusInterface(std::make_shared<Status>());
     server.setMonitoringInterface(std::make_shared<Monitor>());
+    server.setControlInterface(std::make_shared<Control>());
   });
 
   auto client = makeClientFor<ChildAsyncClient>(*runner);
   auto monitoringClient = makeClientFor<DummyMonitorAsyncClient>(*runner);
   auto statusClient = makeClientFor<DummyStatusAsyncClient>(*runner);
+  auto controlClient = makeClientFor<DummyControlAsyncClient>(*runner);
 
   EXPECT_EQ(client->semifuture_parentMethod1().get(), 42);
   // The monitoring interface should not be available
@@ -459,6 +473,9 @@ TEST_P(
   // The status interface should not be available
   EXPECT_THROW(
       statusClient->semifuture_getStatus().get(), TApplicationException);
+  // The control interface should not be available
+  EXPECT_THROW(
+      controlClient->semifuture_getOption().get(), TApplicationException);
 }
 
 INSTANTIATE_TEST_SUITE_P(

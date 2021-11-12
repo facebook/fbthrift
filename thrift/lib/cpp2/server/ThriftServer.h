@@ -921,13 +921,18 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    *    └────────────────────────┘  │
    *                                │
    *    ┌────────────────────────┐  │
-   *    │    Status Interface    │  │   Method
-   *    │  (setStatusInterface)  │  │ precedence
+   *    │    Status Interface    │  │
+   *    │  (setStatusInterface)  │  │
+   *    └────────────────────────┘  │
+   *                                │   Method
+   *    ┌────────────────────────┐  │ precedence
+   *    │  Monitoring Interface  │  │
+   *    │(setMonitoringInterface)│  │
    *    └────────────────────────┘  │
    *                                │
    *    ┌────────────────────────┐  │
-   *    │  Monitoring Interface  │  ▼
-   *    │(setMonitoringInterface)│
+   *    │   Control Interface    │  ▼
+   *    │ (setControlInterface)  │
    *    └────────────────────────┘
    */
   AsyncProcessorFactory& getDecoratedProcessorFactory() const {

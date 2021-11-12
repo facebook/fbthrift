@@ -133,7 +133,8 @@ namespace {
 std::unique_ptr<AsyncProcessorFactory> createDecoratedProcessorFactory(
     std::shared_ptr<AsyncProcessorFactory> processorFactory,
     std::shared_ptr<StatusServerInterface> statusProcessorFactory,
-    std::shared_ptr<MonitoringServerInterface> monitoringProcessorFactory) {
+    std::shared_ptr<MonitoringServerInterface> monitoringProcessorFactory,
+    std::shared_ptr<ControlServerInterface> controlProcessorFactory) {
   std::vector<std::shared_ptr<AsyncProcessorFactory>> servicesToMultiplex;
   CHECK(processorFactory != nullptr);
   servicesToMultiplex.emplace_back(std::move(processorFactory));
@@ -142,6 +143,9 @@ std::unique_ptr<AsyncProcessorFactory> createDecoratedProcessorFactory(
   }
   if (monitoringProcessorFactory != nullptr) {
     servicesToMultiplex.emplace_back(std::move(monitoringProcessorFactory));
+  }
+  if (controlProcessorFactory != nullptr) {
+    servicesToMultiplex.emplace_back(std::move(controlProcessorFactory));
   }
   return std::make_unique<MultiplexAsyncProcessorFactory>(
       std::move(servicesToMultiplex));
@@ -830,7 +834,10 @@ void ThriftServer::ensureDecoratedProcessorFactoryInitialized() {
   DCHECK(getProcessorFactory().get());
   if (decoratedProcessorFactory_ == nullptr) {
     decoratedProcessorFactory_ = createDecoratedProcessorFactory(
-        getProcessorFactory(), getStatusInterface(), getMonitoringInterface());
+        getProcessorFactory(),
+        getStatusInterface(),
+        getMonitoringInterface(),
+        getControlInterface());
   }
 }
 
