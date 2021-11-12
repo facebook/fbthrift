@@ -84,7 +84,8 @@ THRIFT_PLUGGABLE_FUNC_REGISTER(
 THRIFT_PLUGGABLE_FUNC_REGISTER(
     apache::thrift::ThriftServer::ExtraInterfaces,
     createDefaultExtraInterfaces) {
-  return {nullptr /* monitoring */, nullptr /* status */};
+  return {
+      nullptr /* monitoring */, nullptr /* status */, nullptr /* control */};
 }
 
 THRIFT_PLUGGABLE_FUNC_REGISTER(
@@ -182,6 +183,7 @@ ThriftServer::ThriftServer()
   auto extraInterfaces = apache::thrift::detail::createDefaultExtraInterfaces();
   setMonitoringInterface(std::move(extraInterfaces.monitoring));
   setStatusInterface(std::move(extraInterfaces.status));
+  setControlInterface(std::move(extraInterfaces.control));
 }
 
 ThriftServer::ThriftServer(
