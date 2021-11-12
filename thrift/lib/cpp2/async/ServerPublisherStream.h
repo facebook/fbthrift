@@ -224,13 +224,13 @@ class ServerPublisherStream : private StreamServerCallback {
         if constexpr (WithHeader) {
           if (!payload->payload) {
             StreamPayloadMetadata md;
-            md.otherMetadata_ref() = std::move(payload->metadata);
+            md.otherMetadata() = std::move(payload->metadata);
             queue_.push(folly::Try<StreamPayload>(
                 folly::in_place, nullptr, std::move(md)));
           } else {
             folly::Try<StreamPayload> sp =
                 (*encode)(std::move(*payload->payload));
-            sp->metadata.otherMetadata_ref() = std::move(payload->metadata);
+            sp->metadata.otherMetadata() = std::move(payload->metadata);
             queue_.push(std::move(sp));
           }
         } else {
@@ -291,13 +291,13 @@ class ServerPublisherStream : private StreamServerCallback {
           if constexpr (WithHeader) {
             if (!message->payload) {
               StreamPayloadMetadata md;
-              md.otherMetadata_ref() = std::move(message->metadata);
+              md.otherMetadata() = std::move(message->metadata);
               stream->queue_.push(folly::Try<StreamPayload>(
                   folly::in_place, nullptr, std::move(md)));
             } else {
               folly::Try<StreamPayload> sp =
                   (*encode)(std::move(*message->payload));
-              sp->metadata.otherMetadata_ref() = std::move(message->metadata);
+              sp->metadata.otherMetadata() = std::move(message->metadata);
               stream->queue_.push(std::move(sp));
             }
           } else {

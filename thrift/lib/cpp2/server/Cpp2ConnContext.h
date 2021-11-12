@@ -306,10 +306,10 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   void setClientType(CLIENT_TYPE clientType) { clientType_ = clientType; }
 
   void readSetupMetadata(const RequestSetupMetadata& meta) {
-    if (const auto& md = meta.clientMetadata_ref()) {
+    if (const auto& md = meta.clientMetadata()) {
       setClientMetadata(*md);
     }
-    if (auto interfaceKind = meta.interfaceKind_ref()) {
+    if (auto interfaceKind = meta.interfaceKind()) {
       interfaceKind_ = *interfaceKind;
     }
   }
