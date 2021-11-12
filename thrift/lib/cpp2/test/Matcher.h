@@ -16,10 +16,27 @@
 
 #pragma once
 
+#include <ostream>
 #include <folly/portability/GMock.h>
 #include <thrift/lib/cpp2/FieldRef.h>
 
-namespace apache::thrift::test {
+namespace apache::thrift {
+
+template <typename T>
+void PrintTo(field_ref<T> obj, std::ostream* os) {
+  *os << "field_ref holding " << testing::PrintToString(*obj);
+}
+
+template <typename T>
+void PrintTo(optional_field_ref<T> obj, std::ostream* os) {
+  if (!obj) {
+    *os << "empty optional_field_ref";
+    return;
+  }
+  *os << "optional_field_ref holding " << testing::PrintToString(*obj);
+}
+
+namespace test {
 
 namespace detail {
 
@@ -77,6 +94,7 @@ detail::ThriftFieldMatcher<FieldTag, Matcher> ThriftField(Matcher matcher) {
   return detail::ThriftFieldMatcher<FieldTag, Matcher>(matcher);
 }
 
-} // namespace apache::thrift::test
+} // namespace test
+} // namespace apache::thrift
 
 #include <thrift/lib/cpp2/test/Matcher-inl.h>

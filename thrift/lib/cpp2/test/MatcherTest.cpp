@@ -28,6 +28,8 @@ using apache::thrift::test::ThriftField;
 using testing::_;
 using testing::A;
 using testing::Eq;
+using testing::HasSubstr;
+using testing::IsNull;
 using testing::Optional;
 
 TEST(MatcherTest, ThriftField) {
@@ -68,4 +70,15 @@ TEST(MatcherTest_ThriftMacher, OptionalRef) {
       EXPECT_THAT(p, ThriftField<field::name>(Eq(wrong))), "");
   EXPECT_NONFATAL_FAILURE(
       EXPECT_THAT(p, ThriftField<field::name>(Optional(Eq(wrong)))), "");
+}
+
+TEST(MatcherTest, FiledRefPrintsCorrectly) {
+  auto p = Person();
+  EXPECT_EQ(testing::PrintToString(p.name_ref()), "empty optional_field_ref");
+  p.name_ref() = "Zaphod";
+  EXPECT_EQ(
+      testing::PrintToString(p.name_ref()),
+      "optional_field_ref holding \"Zaphod\"");
+  p.id_ref() = 42;
+  EXPECT_EQ(testing::PrintToString(p.id_ref()), "field_ref holding 42");
 }
