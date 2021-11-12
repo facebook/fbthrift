@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package com.facebook.thrift.annotation;
+package com.facebook.thrift.annotation_deprecated;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -24,8 +24,8 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class Interaction implements TBase, java.io.Serializable, Cloneable, Comparable<Interaction> {
-  private static final TStruct STRUCT_DESC = new TStruct("Interaction");
+public class Union implements TBase, java.io.Serializable, Cloneable, Comparable<Union> {
+  private static final TStruct STRUCT_DESC = new TStruct("Union");
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -35,10 +35,10 @@ public class Interaction implements TBase, java.io.Serializable, Cloneable, Comp
   }
 
   static {
-    FieldMetaData.addStructMetaDataMap(Interaction.class, metaDataMap);
+    FieldMetaData.addStructMetaDataMap(Union.class, metaDataMap);
   }
 
-  public Interaction() {
+  public Union() {
   }
 
   public static class Builder {
@@ -46,8 +46,8 @@ public class Interaction implements TBase, java.io.Serializable, Cloneable, Comp
     public Builder() {
     }
 
-    public Interaction build() {
-      Interaction result = new Interaction();
+    public Union build() {
+      Union result = new Union();
       return result;
     }
   }
@@ -59,11 +59,11 @@ public class Interaction implements TBase, java.io.Serializable, Cloneable, Comp
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Interaction(Interaction other) {
+  public Union(Union other) {
   }
 
-  public Interaction deepCopy() {
-    return new Interaction(this);
+  public Union deepCopy() {
+    return new Union(this);
   }
 
   public void setFieldValue(int fieldID, Object __value) {
@@ -86,9 +86,9 @@ public class Interaction implements TBase, java.io.Serializable, Cloneable, Comp
       return false;
     if (this == _that)
       return true;
-    if (!(_that instanceof Interaction))
+    if (!(_that instanceof Union))
       return false;
-    Interaction that = (Interaction)_that;
+    Union that = (Union)_that;
 
     return true;
   }
@@ -99,7 +99,7 @@ public class Interaction implements TBase, java.io.Serializable, Cloneable, Comp
   }
 
   @Override
-  public int compareTo(Interaction other) {
+  public int compareTo(Union other) {
     if (other == null) {
       // See java.lang.Comparable docs
       throw new NullPointerException();
@@ -155,7 +155,7 @@ public class Interaction implements TBase, java.io.Serializable, Cloneable, Comp
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
     String space = prettyPrint ? " " : "";
-    StringBuilder sb = new StringBuilder("Interaction");
+    StringBuilder sb = new StringBuilder("Union");
     sb.append(space);
     sb.append("(");
     sb.append(newLine);

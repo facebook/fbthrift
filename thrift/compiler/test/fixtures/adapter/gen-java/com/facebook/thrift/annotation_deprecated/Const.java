@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package com.facebook.thrift.annotation;
+package com.facebook.thrift.annotation_deprecated;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -24,8 +24,8 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class Typedef implements TBase, java.io.Serializable, Cloneable, Comparable<Typedef> {
-  private static final TStruct STRUCT_DESC = new TStruct("Typedef");
+public class Const implements TBase, java.io.Serializable, Cloneable, Comparable<Const> {
+  private static final TStruct STRUCT_DESC = new TStruct("Const");
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -35,10 +35,10 @@ public class Typedef implements TBase, java.io.Serializable, Cloneable, Comparab
   }
 
   static {
-    FieldMetaData.addStructMetaDataMap(Typedef.class, metaDataMap);
+    FieldMetaData.addStructMetaDataMap(Const.class, metaDataMap);
   }
 
-  public Typedef() {
+  public Const() {
   }
 
   public static class Builder {
@@ -46,8 +46,8 @@ public class Typedef implements TBase, java.io.Serializable, Cloneable, Comparab
     public Builder() {
     }
 
-    public Typedef build() {
-      Typedef result = new Typedef();
+    public Const build() {
+      Const result = new Const();
       return result;
     }
   }
@@ -59,11 +59,11 @@ public class Typedef implements TBase, java.io.Serializable, Cloneable, Comparab
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Typedef(Typedef other) {
+  public Const(Const other) {
   }
 
-  public Typedef deepCopy() {
-    return new Typedef(this);
+  public Const deepCopy() {
+    return new Const(this);
   }
 
   public void setFieldValue(int fieldID, Object __value) {
@@ -86,9 +86,9 @@ public class Typedef implements TBase, java.io.Serializable, Cloneable, Comparab
       return false;
     if (this == _that)
       return true;
-    if (!(_that instanceof Typedef))
+    if (!(_that instanceof Const))
       return false;
-    Typedef that = (Typedef)_that;
+    Const that = (Const)_that;
 
     return true;
   }
@@ -99,7 +99,7 @@ public class Typedef implements TBase, java.io.Serializable, Cloneable, Comparab
   }
 
   @Override
-  public int compareTo(Typedef other) {
+  public int compareTo(Const other) {
     if (other == null) {
       // See java.lang.Comparable docs
       throw new NullPointerException();
@@ -155,7 +155,7 @@ public class Typedef implements TBase, java.io.Serializable, Cloneable, Comparab
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
     String space = prettyPrint ? " " : "";
-    StringBuilder sb = new StringBuilder("Typedef");
+    StringBuilder sb = new StringBuilder("Const");
     sb.append(space);
     sb.append("(");
     sb.append(newLine);

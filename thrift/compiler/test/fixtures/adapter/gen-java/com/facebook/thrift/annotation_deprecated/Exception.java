@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package com.facebook.thrift.annotation;
+package com.facebook.thrift.annotation_deprecated;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -24,8 +24,8 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class Union implements TBase, java.io.Serializable, Cloneable, Comparable<Union> {
-  private static final TStruct STRUCT_DESC = new TStruct("Union");
+public class Exception implements TBase, java.io.Serializable, Cloneable, Comparable<Exception> {
+  private static final TStruct STRUCT_DESC = new TStruct("Exception");
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -35,10 +35,10 @@ public class Union implements TBase, java.io.Serializable, Cloneable, Comparable
   }
 
   static {
-    FieldMetaData.addStructMetaDataMap(Union.class, metaDataMap);
+    FieldMetaData.addStructMetaDataMap(Exception.class, metaDataMap);
   }
 
-  public Union() {
+  public Exception() {
   }
 
   public static class Builder {
@@ -46,8 +46,8 @@ public class Union implements TBase, java.io.Serializable, Cloneable, Comparable
     public Builder() {
     }
 
-    public Union build() {
-      Union result = new Union();
+    public Exception build() {
+      Exception result = new Exception();
       return result;
     }
   }
@@ -59,11 +59,11 @@ public class Union implements TBase, java.io.Serializable, Cloneable, Comparable
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Union(Union other) {
+  public Exception(Exception other) {
   }
 
-  public Union deepCopy() {
-    return new Union(this);
+  public Exception deepCopy() {
+    return new Exception(this);
   }
 
   public void setFieldValue(int fieldID, Object __value) {
@@ -86,9 +86,9 @@ public class Union implements TBase, java.io.Serializable, Cloneable, Comparable
       return false;
     if (this == _that)
       return true;
-    if (!(_that instanceof Union))
+    if (!(_that instanceof Exception))
       return false;
-    Union that = (Union)_that;
+    Exception that = (Exception)_that;
 
     return true;
   }
@@ -99,7 +99,7 @@ public class Union implements TBase, java.io.Serializable, Cloneable, Comparable
   }
 
   @Override
-  public int compareTo(Union other) {
+  public int compareTo(Exception other) {
     if (other == null) {
       // See java.lang.Comparable docs
       throw new NullPointerException();
@@ -155,7 +155,7 @@ public class Union implements TBase, java.io.Serializable, Cloneable, Comparable
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
     String space = prettyPrint ? " " : "";
-    StringBuilder sb = new StringBuilder("Union");
+    StringBuilder sb = new StringBuilder("Exception");
     sb.append(space);
     sb.append("(");
     sb.append(newLine);

@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package com.facebook.thrift.annotation;
+package com.facebook.thrift.annotation_deprecated;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -24,8 +24,8 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class Function implements TBase, java.io.Serializable, Cloneable, Comparable<Function> {
-  private static final TStruct STRUCT_DESC = new TStruct("Function");
+public class EnumValue implements TBase, java.io.Serializable, Cloneable, Comparable<EnumValue> {
+  private static final TStruct STRUCT_DESC = new TStruct("EnumValue");
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -35,10 +35,10 @@ public class Function implements TBase, java.io.Serializable, Cloneable, Compara
   }
 
   static {
-    FieldMetaData.addStructMetaDataMap(Function.class, metaDataMap);
+    FieldMetaData.addStructMetaDataMap(EnumValue.class, metaDataMap);
   }
 
-  public Function() {
+  public EnumValue() {
   }
 
   public static class Builder {
@@ -46,8 +46,8 @@ public class Function implements TBase, java.io.Serializable, Cloneable, Compara
     public Builder() {
     }
 
-    public Function build() {
-      Function result = new Function();
+    public EnumValue build() {
+      EnumValue result = new EnumValue();
       return result;
     }
   }
@@ -59,11 +59,11 @@ public class Function implements TBase, java.io.Serializable, Cloneable, Compara
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Function(Function other) {
+  public EnumValue(EnumValue other) {
   }
 
-  public Function deepCopy() {
-    return new Function(this);
+  public EnumValue deepCopy() {
+    return new EnumValue(this);
   }
 
   public void setFieldValue(int fieldID, Object __value) {
@@ -86,9 +86,9 @@ public class Function implements TBase, java.io.Serializable, Cloneable, Compara
       return false;
     if (this == _that)
       return true;
-    if (!(_that instanceof Function))
+    if (!(_that instanceof EnumValue))
       return false;
-    Function that = (Function)_that;
+    EnumValue that = (EnumValue)_that;
 
     return true;
   }
@@ -99,7 +99,7 @@ public class Function implements TBase, java.io.Serializable, Cloneable, Compara
   }
 
   @Override
-  public int compareTo(Function other) {
+  public int compareTo(EnumValue other) {
     if (other == null) {
       // See java.lang.Comparable docs
       throw new NullPointerException();
@@ -155,7 +155,7 @@ public class Function implements TBase, java.io.Serializable, Cloneable, Compara
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
     String space = prettyPrint ? " " : "";
-    StringBuilder sb = new StringBuilder("Function");
+    StringBuilder sb = new StringBuilder("EnumValue");
     sb.append(space);
     sb.append("(");
     sb.append(newLine);

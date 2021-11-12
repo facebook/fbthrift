@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package com.facebook.thrift.annotation;
+package com.facebook.thrift.annotation_deprecated;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -24,8 +24,8 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class Exception implements TBase, java.io.Serializable, Cloneable, Comparable<Exception> {
-  private static final TStruct STRUCT_DESC = new TStruct("Exception");
+public class Typedef implements TBase, java.io.Serializable, Cloneable, Comparable<Typedef> {
+  private static final TStruct STRUCT_DESC = new TStruct("Typedef");
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -35,10 +35,10 @@ public class Exception implements TBase, java.io.Serializable, Cloneable, Compar
   }
 
   static {
-    FieldMetaData.addStructMetaDataMap(Exception.class, metaDataMap);
+    FieldMetaData.addStructMetaDataMap(Typedef.class, metaDataMap);
   }
 
-  public Exception() {
+  public Typedef() {
   }
 
   public static class Builder {
@@ -46,8 +46,8 @@ public class Exception implements TBase, java.io.Serializable, Cloneable, Compar
     public Builder() {
     }
 
-    public Exception build() {
-      Exception result = new Exception();
+    public Typedef build() {
+      Typedef result = new Typedef();
       return result;
     }
   }
@@ -59,11 +59,11 @@ public class Exception implements TBase, java.io.Serializable, Cloneable, Compar
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Exception(Exception other) {
+  public Typedef(Typedef other) {
   }
 
-  public Exception deepCopy() {
-    return new Exception(this);
+  public Typedef deepCopy() {
+    return new Typedef(this);
   }
 
   public void setFieldValue(int fieldID, Object __value) {
@@ -86,9 +86,9 @@ public class Exception implements TBase, java.io.Serializable, Cloneable, Compar
       return false;
     if (this == _that)
       return true;
-    if (!(_that instanceof Exception))
+    if (!(_that instanceof Typedef))
       return false;
-    Exception that = (Exception)_that;
+    Typedef that = (Typedef)_that;
 
     return true;
   }
@@ -99,7 +99,7 @@ public class Exception implements TBase, java.io.Serializable, Cloneable, Compar
   }
 
   @Override
-  public int compareTo(Exception other) {
+  public int compareTo(Typedef other) {
     if (other == null) {
       // See java.lang.Comparable docs
       throw new NullPointerException();
@@ -155,7 +155,7 @@ public class Exception implements TBase, java.io.Serializable, Cloneable, Compar
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
     String space = prettyPrint ? " " : "";
-    StringBuilder sb = new StringBuilder("Exception");
+    StringBuilder sb = new StringBuilder("Typedef");
     sb.append(space);
     sb.append("(");
     sb.append(newLine);

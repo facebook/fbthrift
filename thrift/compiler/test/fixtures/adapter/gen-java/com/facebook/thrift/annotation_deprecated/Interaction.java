@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package com.facebook.thrift.annotation;
+package com.facebook.thrift.annotation_deprecated;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -24,8 +24,8 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class Struct implements TBase, java.io.Serializable, Cloneable, Comparable<Struct> {
-  private static final TStruct STRUCT_DESC = new TStruct("Struct");
+public class Interaction implements TBase, java.io.Serializable, Cloneable, Comparable<Interaction> {
+  private static final TStruct STRUCT_DESC = new TStruct("Interaction");
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -35,10 +35,10 @@ public class Struct implements TBase, java.io.Serializable, Cloneable, Comparabl
   }
 
   static {
-    FieldMetaData.addStructMetaDataMap(Struct.class, metaDataMap);
+    FieldMetaData.addStructMetaDataMap(Interaction.class, metaDataMap);
   }
 
-  public Struct() {
+  public Interaction() {
   }
 
   public static class Builder {
@@ -46,8 +46,8 @@ public class Struct implements TBase, java.io.Serializable, Cloneable, Comparabl
     public Builder() {
     }
 
-    public Struct build() {
-      Struct result = new Struct();
+    public Interaction build() {
+      Interaction result = new Interaction();
       return result;
     }
   }
@@ -59,11 +59,11 @@ public class Struct implements TBase, java.io.Serializable, Cloneable, Comparabl
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Struct(Struct other) {
+  public Interaction(Interaction other) {
   }
 
-  public Struct deepCopy() {
-    return new Struct(this);
+  public Interaction deepCopy() {
+    return new Interaction(this);
   }
 
   public void setFieldValue(int fieldID, Object __value) {
@@ -86,9 +86,9 @@ public class Struct implements TBase, java.io.Serializable, Cloneable, Comparabl
       return false;
     if (this == _that)
       return true;
-    if (!(_that instanceof Struct))
+    if (!(_that instanceof Interaction))
       return false;
-    Struct that = (Struct)_that;
+    Interaction that = (Interaction)_that;
 
     return true;
   }
@@ -99,7 +99,7 @@ public class Struct implements TBase, java.io.Serializable, Cloneable, Comparabl
   }
 
   @Override
-  public int compareTo(Struct other) {
+  public int compareTo(Interaction other) {
     if (other == null) {
       // See java.lang.Comparable docs
       throw new NullPointerException();
@@ -155,7 +155,7 @@ public class Struct implements TBase, java.io.Serializable, Cloneable, Comparabl
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
     String space = prettyPrint ? " " : "";
-    StringBuilder sb = new StringBuilder("Struct");
+    StringBuilder sb = new StringBuilder("Interaction");
     sb.append(space);
     sb.append("(");
     sb.append(newLine);

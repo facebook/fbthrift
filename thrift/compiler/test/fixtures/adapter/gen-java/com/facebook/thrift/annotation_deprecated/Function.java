@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package com.facebook.thrift.annotation.cpp;
+package com.facebook.thrift.annotation_deprecated;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -24,8 +24,8 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class DisableLazyChecksum implements TBase, java.io.Serializable, Cloneable, Comparable<DisableLazyChecksum> {
-  private static final TStruct STRUCT_DESC = new TStruct("DisableLazyChecksum");
+public class Function implements TBase, java.io.Serializable, Cloneable, Comparable<Function> {
+  private static final TStruct STRUCT_DESC = new TStruct("Function");
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -35,10 +35,10 @@ public class DisableLazyChecksum implements TBase, java.io.Serializable, Cloneab
   }
 
   static {
-    FieldMetaData.addStructMetaDataMap(DisableLazyChecksum.class, metaDataMap);
+    FieldMetaData.addStructMetaDataMap(Function.class, metaDataMap);
   }
 
-  public DisableLazyChecksum() {
+  public Function() {
   }
 
   public static class Builder {
@@ -46,8 +46,8 @@ public class DisableLazyChecksum implements TBase, java.io.Serializable, Cloneab
     public Builder() {
     }
 
-    public DisableLazyChecksum build() {
-      DisableLazyChecksum result = new DisableLazyChecksum();
+    public Function build() {
+      Function result = new Function();
       return result;
     }
   }
@@ -59,11 +59,11 @@ public class DisableLazyChecksum implements TBase, java.io.Serializable, Cloneab
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public DisableLazyChecksum(DisableLazyChecksum other) {
+  public Function(Function other) {
   }
 
-  public DisableLazyChecksum deepCopy() {
-    return new DisableLazyChecksum(this);
+  public Function deepCopy() {
+    return new Function(this);
   }
 
   public void setFieldValue(int fieldID, Object __value) {
@@ -86,9 +86,9 @@ public class DisableLazyChecksum implements TBase, java.io.Serializable, Cloneab
       return false;
     if (this == _that)
       return true;
-    if (!(_that instanceof DisableLazyChecksum))
+    if (!(_that instanceof Function))
       return false;
-    DisableLazyChecksum that = (DisableLazyChecksum)_that;
+    Function that = (Function)_that;
 
     return true;
   }
@@ -99,7 +99,7 @@ public class DisableLazyChecksum implements TBase, java.io.Serializable, Cloneab
   }
 
   @Override
-  public int compareTo(DisableLazyChecksum other) {
+  public int compareTo(Function other) {
     if (other == null) {
       // See java.lang.Comparable docs
       throw new NullPointerException();
@@ -155,7 +155,7 @@ public class DisableLazyChecksum implements TBase, java.io.Serializable, Cloneab
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
     String space = prettyPrint ? " " : "";
-    StringBuilder sb = new StringBuilder("DisableLazyChecksum");
+    StringBuilder sb = new StringBuilder("Function");
     sb.append(space);
     sb.append("(");
     sb.append(newLine);

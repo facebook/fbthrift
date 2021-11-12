@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package com.facebook.thrift.annotation;
+package com.facebook.thrift.annotation_deprecated;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -24,8 +24,8 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class EnumValue implements TBase, java.io.Serializable, Cloneable, Comparable<EnumValue> {
-  private static final TStruct STRUCT_DESC = new TStruct("EnumValue");
+public class Field implements TBase, java.io.Serializable, Cloneable, Comparable<Field> {
+  private static final TStruct STRUCT_DESC = new TStruct("Field");
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -35,10 +35,10 @@ public class EnumValue implements TBase, java.io.Serializable, Cloneable, Compar
   }
 
   static {
-    FieldMetaData.addStructMetaDataMap(EnumValue.class, metaDataMap);
+    FieldMetaData.addStructMetaDataMap(Field.class, metaDataMap);
   }
 
-  public EnumValue() {
+  public Field() {
   }
 
   public static class Builder {
@@ -46,8 +46,8 @@ public class EnumValue implements TBase, java.io.Serializable, Cloneable, Compar
     public Builder() {
     }
 
-    public EnumValue build() {
-      EnumValue result = new EnumValue();
+    public Field build() {
+      Field result = new Field();
       return result;
     }
   }
@@ -59,11 +59,11 @@ public class EnumValue implements TBase, java.io.Serializable, Cloneable, Compar
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public EnumValue(EnumValue other) {
+  public Field(Field other) {
   }
 
-  public EnumValue deepCopy() {
-    return new EnumValue(this);
+  public Field deepCopy() {
+    return new Field(this);
   }
 
   public void setFieldValue(int fieldID, Object __value) {
@@ -86,9 +86,9 @@ public class EnumValue implements TBase, java.io.Serializable, Cloneable, Compar
       return false;
     if (this == _that)
       return true;
-    if (!(_that instanceof EnumValue))
+    if (!(_that instanceof Field))
       return false;
-    EnumValue that = (EnumValue)_that;
+    Field that = (Field)_that;
 
     return true;
   }
@@ -99,7 +99,7 @@ public class EnumValue implements TBase, java.io.Serializable, Cloneable, Compar
   }
 
   @Override
-  public int compareTo(EnumValue other) {
+  public int compareTo(Field other) {
     if (other == null) {
       // See java.lang.Comparable docs
       throw new NullPointerException();
@@ -155,7 +155,7 @@ public class EnumValue implements TBase, java.io.Serializable, Cloneable, Compar
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
     String space = prettyPrint ? " " : "";
-    StringBuilder sb = new StringBuilder("EnumValue");
+    StringBuilder sb = new StringBuilder("Field");
     sb.append(space);
     sb.append("(");
     sb.append(newLine);

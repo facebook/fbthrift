@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package com.facebook.thrift.annotation;
+package com.facebook.thrift.annotation_deprecated;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -24,8 +24,8 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class Field implements TBase, java.io.Serializable, Cloneable, Comparable<Field> {
-  private static final TStruct STRUCT_DESC = new TStruct("Field");
+public class Struct implements TBase, java.io.Serializable, Cloneable, Comparable<Struct> {
+  private static final TStruct STRUCT_DESC = new TStruct("Struct");
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -35,10 +35,10 @@ public class Field implements TBase, java.io.Serializable, Cloneable, Comparable
   }
 
   static {
-    FieldMetaData.addStructMetaDataMap(Field.class, metaDataMap);
+    FieldMetaData.addStructMetaDataMap(Struct.class, metaDataMap);
   }
 
-  public Field() {
+  public Struct() {
   }
 
   public static class Builder {
@@ -46,8 +46,8 @@ public class Field implements TBase, java.io.Serializable, Cloneable, Comparable
     public Builder() {
     }
 
-    public Field build() {
-      Field result = new Field();
+    public Struct build() {
+      Struct result = new Struct();
       return result;
     }
   }
@@ -59,11 +59,11 @@ public class Field implements TBase, java.io.Serializable, Cloneable, Comparable
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Field(Field other) {
+  public Struct(Struct other) {
   }
 
-  public Field deepCopy() {
-    return new Field(this);
+  public Struct deepCopy() {
+    return new Struct(this);
   }
 
   public void setFieldValue(int fieldID, Object __value) {
@@ -86,9 +86,9 @@ public class Field implements TBase, java.io.Serializable, Cloneable, Comparable
       return false;
     if (this == _that)
       return true;
-    if (!(_that instanceof Field))
+    if (!(_that instanceof Struct))
       return false;
-    Field that = (Field)_that;
+    Struct that = (Struct)_that;
 
     return true;
   }
@@ -99,7 +99,7 @@ public class Field implements TBase, java.io.Serializable, Cloneable, Comparable
   }
 
   @Override
-  public int compareTo(Field other) {
+  public int compareTo(Struct other) {
     if (other == null) {
       // See java.lang.Comparable docs
       throw new NullPointerException();
@@ -155,7 +155,7 @@ public class Field implements TBase, java.io.Serializable, Cloneable, Comparable
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
     String space = prettyPrint ? " " : "";
-    StringBuilder sb = new StringBuilder("Field");
+    StringBuilder sb = new StringBuilder("Struct");
     sb.append(space);
     sb.append("(");
     sb.append(newLine);

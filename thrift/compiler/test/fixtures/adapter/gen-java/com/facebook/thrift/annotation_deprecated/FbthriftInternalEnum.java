@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package com.facebook.thrift.annotation.cpp;
+package com.facebook.thrift.annotation_deprecated;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -24,8 +24,8 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class Lazy implements TBase, java.io.Serializable, Cloneable, Comparable<Lazy> {
-  private static final TStruct STRUCT_DESC = new TStruct("Lazy");
+public class FbthriftInternalEnum implements TBase, java.io.Serializable, Cloneable, Comparable<FbthriftInternalEnum> {
+  private static final TStruct STRUCT_DESC = new TStruct("FbthriftInternalEnum");
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -35,10 +35,10 @@ public class Lazy implements TBase, java.io.Serializable, Cloneable, Comparable<
   }
 
   static {
-    FieldMetaData.addStructMetaDataMap(Lazy.class, metaDataMap);
+    FieldMetaData.addStructMetaDataMap(FbthriftInternalEnum.class, metaDataMap);
   }
 
-  public Lazy() {
+  public FbthriftInternalEnum() {
   }
 
   public static class Builder {
@@ -46,8 +46,8 @@ public class Lazy implements TBase, java.io.Serializable, Cloneable, Comparable<
     public Builder() {
     }
 
-    public Lazy build() {
-      Lazy result = new Lazy();
+    public FbthriftInternalEnum build() {
+      FbthriftInternalEnum result = new FbthriftInternalEnum();
       return result;
     }
   }
@@ -59,11 +59,11 @@ public class Lazy implements TBase, java.io.Serializable, Cloneable, Comparable<
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Lazy(Lazy other) {
+  public FbthriftInternalEnum(FbthriftInternalEnum other) {
   }
 
-  public Lazy deepCopy() {
-    return new Lazy(this);
+  public FbthriftInternalEnum deepCopy() {
+    return new FbthriftInternalEnum(this);
   }
 
   public void setFieldValue(int fieldID, Object __value) {
@@ -86,9 +86,9 @@ public class Lazy implements TBase, java.io.Serializable, Cloneable, Comparable<
       return false;
     if (this == _that)
       return true;
-    if (!(_that instanceof Lazy))
+    if (!(_that instanceof FbthriftInternalEnum))
       return false;
-    Lazy that = (Lazy)_that;
+    FbthriftInternalEnum that = (FbthriftInternalEnum)_that;
 
     return true;
   }
@@ -99,7 +99,7 @@ public class Lazy implements TBase, java.io.Serializable, Cloneable, Comparable<
   }
 
   @Override
-  public int compareTo(Lazy other) {
+  public int compareTo(FbthriftInternalEnum other) {
     if (other == null) {
       // See java.lang.Comparable docs
       throw new NullPointerException();
@@ -155,7 +155,7 @@ public class Lazy implements TBase, java.io.Serializable, Cloneable, Comparable<
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
     String space = prettyPrint ? " " : "";
-    StringBuilder sb = new StringBuilder("Lazy");
+    StringBuilder sb = new StringBuilder("FbthriftInternalEnum");
     sb.append(space);
     sb.append("(");
     sb.append(newLine);

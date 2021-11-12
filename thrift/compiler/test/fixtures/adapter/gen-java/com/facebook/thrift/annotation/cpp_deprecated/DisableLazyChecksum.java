@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package com.facebook.thrift.annotation;
+package com.facebook.thrift.annotation.cpp_deprecated;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -24,8 +24,8 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class Service implements TBase, java.io.Serializable, Cloneable, Comparable<Service> {
-  private static final TStruct STRUCT_DESC = new TStruct("Service");
+public class DisableLazyChecksum implements TBase, java.io.Serializable, Cloneable, Comparable<DisableLazyChecksum> {
+  private static final TStruct STRUCT_DESC = new TStruct("DisableLazyChecksum");
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -35,10 +35,10 @@ public class Service implements TBase, java.io.Serializable, Cloneable, Comparab
   }
 
   static {
-    FieldMetaData.addStructMetaDataMap(Service.class, metaDataMap);
+    FieldMetaData.addStructMetaDataMap(DisableLazyChecksum.class, metaDataMap);
   }
 
-  public Service() {
+  public DisableLazyChecksum() {
   }
 
   public static class Builder {
@@ -46,8 +46,8 @@ public class Service implements TBase, java.io.Serializable, Cloneable, Comparab
     public Builder() {
     }
 
-    public Service build() {
-      Service result = new Service();
+    public DisableLazyChecksum build() {
+      DisableLazyChecksum result = new DisableLazyChecksum();
       return result;
     }
   }
@@ -59,11 +59,11 @@ public class Service implements TBase, java.io.Serializable, Cloneable, Comparab
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Service(Service other) {
+  public DisableLazyChecksum(DisableLazyChecksum other) {
   }
 
-  public Service deepCopy() {
-    return new Service(this);
+  public DisableLazyChecksum deepCopy() {
+    return new DisableLazyChecksum(this);
   }
 
   public void setFieldValue(int fieldID, Object __value) {
@@ -86,9 +86,9 @@ public class Service implements TBase, java.io.Serializable, Cloneable, Comparab
       return false;
     if (this == _that)
       return true;
-    if (!(_that instanceof Service))
+    if (!(_that instanceof DisableLazyChecksum))
       return false;
-    Service that = (Service)_that;
+    DisableLazyChecksum that = (DisableLazyChecksum)_that;
 
     return true;
   }
@@ -99,7 +99,7 @@ public class Service implements TBase, java.io.Serializable, Cloneable, Comparab
   }
 
   @Override
-  public int compareTo(Service other) {
+  public int compareTo(DisableLazyChecksum other) {
     if (other == null) {
       // See java.lang.Comparable docs
       throw new NullPointerException();
@@ -155,7 +155,7 @@ public class Service implements TBase, java.io.Serializable, Cloneable, Comparab
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
     String space = prettyPrint ? " " : "";
-    StringBuilder sb = new StringBuilder("Service");
+    StringBuilder sb = new StringBuilder("DisableLazyChecksum");
     sb.append(space);
     sb.append("(");
     sb.append(newLine);

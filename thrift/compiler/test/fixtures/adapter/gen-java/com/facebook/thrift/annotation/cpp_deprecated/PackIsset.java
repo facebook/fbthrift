@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package com.facebook.thrift.annotation;
+package com.facebook.thrift.annotation.cpp_deprecated;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -24,8 +24,8 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class Const implements TBase, java.io.Serializable, Cloneable, Comparable<Const> {
-  private static final TStruct STRUCT_DESC = new TStruct("Const");
+public class PackIsset implements TBase, java.io.Serializable, Cloneable, Comparable<PackIsset> {
+  private static final TStruct STRUCT_DESC = new TStruct("PackIsset");
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -35,10 +35,10 @@ public class Const implements TBase, java.io.Serializable, Cloneable, Comparable
   }
 
   static {
-    FieldMetaData.addStructMetaDataMap(Const.class, metaDataMap);
+    FieldMetaData.addStructMetaDataMap(PackIsset.class, metaDataMap);
   }
 
-  public Const() {
+  public PackIsset() {
   }
 
   public static class Builder {
@@ -46,8 +46,8 @@ public class Const implements TBase, java.io.Serializable, Cloneable, Comparable
     public Builder() {
     }
 
-    public Const build() {
-      Const result = new Const();
+    public PackIsset build() {
+      PackIsset result = new PackIsset();
       return result;
     }
   }
@@ -59,11 +59,11 @@ public class Const implements TBase, java.io.Serializable, Cloneable, Comparable
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Const(Const other) {
+  public PackIsset(PackIsset other) {
   }
 
-  public Const deepCopy() {
-    return new Const(this);
+  public PackIsset deepCopy() {
+    return new PackIsset(this);
   }
 
   public void setFieldValue(int fieldID, Object __value) {
@@ -86,9 +86,9 @@ public class Const implements TBase, java.io.Serializable, Cloneable, Comparable
       return false;
     if (this == _that)
       return true;
-    if (!(_that instanceof Const))
+    if (!(_that instanceof PackIsset))
       return false;
-    Const that = (Const)_that;
+    PackIsset that = (PackIsset)_that;
 
     return true;
   }
@@ -99,7 +99,7 @@ public class Const implements TBase, java.io.Serializable, Cloneable, Comparable
   }
 
   @Override
-  public int compareTo(Const other) {
+  public int compareTo(PackIsset other) {
     if (other == null) {
       // See java.lang.Comparable docs
       throw new NullPointerException();
@@ -155,7 +155,7 @@ public class Const implements TBase, java.io.Serializable, Cloneable, Comparable
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
     String space = prettyPrint ? " " : "";
-    StringBuilder sb = new StringBuilder("Const");
+    StringBuilder sb = new StringBuilder("PackIsset");
     sb.append(space);
     sb.append("(");
     sb.append(newLine);
