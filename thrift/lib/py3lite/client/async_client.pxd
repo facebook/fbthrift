@@ -16,6 +16,7 @@ from cpython.ref cimport PyObject
 from folly cimport cFollyExecutor, cFollyTry
 from libcpp.memory cimport unique_ptr
 from libcpp.string cimport string
+from libcpp.unordered_map cimport unordered_map
 from thrift.py3lite.client.omni_client cimport cOmniClient
 from thrift.py3lite.client.request_channel cimport cRequestChannel_ptr
 
@@ -25,4 +26,5 @@ cdef class AsyncClient:
     cdef cFollyExecutor* _executor
     cdef object _connect_future
     cdef unique_ptr[cOmniClient] _omni_client
+    cdef unordered_map[string, string] _persistent_headers
     cdef bind_client(self, cRequestChannel_ptr&& channel)

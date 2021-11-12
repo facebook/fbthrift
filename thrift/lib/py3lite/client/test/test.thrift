@@ -32,6 +32,7 @@ service TestService {
   void oops() throws (1: EmptyException ee);
   oneway void oneway();
   void surprise();
+  string readHeader(1: string key);
 }
 
 service EchoService extends TestService {
@@ -49,3 +50,7 @@ struct AddRequest {
 }
 
 struct EmptyRequest {}
+
+struct ReadHeaderRequest {
+  1: string key;
+}

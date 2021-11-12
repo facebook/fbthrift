@@ -29,6 +29,10 @@ from thrift.py3lite.test.lite_types import ArithmeticException, EmptyException
 from thrift.py3lite.test.test_server import server_in_another_process
 
 
+TEST_HEADER_KEY = "headerKey"
+TEST_HEADER_VALUE = "headerValue"
+
+
 class SyncClientTests(unittest.TestCase):
     def test_basic(self) -> None:
         with server_in_another_process() as path:
@@ -95,3 +99,9 @@ class SyncClientTests(unittest.TestCase):
             with self.assertRaises(TransportError) as ex:
                 client.add(1, 2)
             self.assertEqual(TransportErrorType.UNKNOWN, ex.exception.type)
+
+    def test_persistent_header(self) -> None:
+        with server_in_another_process() as path:
+            with get_sync_client(TestService, path=path) as client:
+                client.set_persistent_header(TEST_HEADER_KEY, TEST_HEADER_VALUE)
+                self.assertEqual(TEST_HEADER_VALUE, client.readHeader(TEST_HEADER_KEY))

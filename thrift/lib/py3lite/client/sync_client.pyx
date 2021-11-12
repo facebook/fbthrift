@@ -28,18 +28,18 @@ from thrift.py3lite.serializer import serialize_iobuf, deserialize
 
 
 cdef class SyncClient:
-    def __init__(self, RequestChannel channel):
+    def __init__(SyncClient self, RequestChannel channel):
         self._omni_client = make_unique[cOmniClient](cmove(channel._cpp_obj))
 
-    def __enter__(self):
+    def __enter__(SyncClient self):
         return self
 
-    def __exit__(self, exec_type, exc_value, traceback):
+    def __exit__(SyncClient self, exec_type, exc_value, traceback):
         # TODO: close channel
         pass
 
     def _send_request(
-        self,
+        SyncClient self,
         string service_name,
         string function_name,
         args,
@@ -52,12 +52,14 @@ cdef class SyncClient:
                 service_name,
                 function_name,
                 args_iobuf.c_clone(),
+                self._persistent_headers,
             )
         else:
             resp = deref(self._omni_client).sync_send(
                 service_name,
                 function_name,
                 args_iobuf.c_clone(),
+                self._persistent_headers,
             )
             if resp.buf.hasValue():
                 response_iobuf = folly.iobuf.from_unique_ptr(cmove(resp.buf.value()))
@@ -69,3 +71,6 @@ cdef class SyncClient:
                     ApplicationErrorType.MISSING_RESULT,
                     "Received no result nor error",
                 )
+
+    def set_persistent_header(SyncClient self, string key, string value):
+        self._persistent_headers[key] = value

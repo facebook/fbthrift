@@ -19,7 +19,7 @@ import time
 import typing
 from multiprocessing import Process
 
-from thrift.py3.server import ThriftServer, SocketAddress
+from thrift.py3.server import ThriftServer, SocketAddress, get_context
 from thrift.py3lite.leaf.services import LeafServiceInterface
 from thrift.py3lite.test.services import EchoServiceInterface, TestServiceInterface
 from thrift.py3lite.test.types import ArithmeticException, EmptyException
@@ -46,6 +46,9 @@ class TestServiceHandler(TestServiceInterface):
 
     async def surprise(self) -> None:
         raise ValueError("Surprise!")
+
+    async def readHeader(self, key: str) -> str:
+        return get_context().read_headers[key]
 
 
 class EchoServiceHandler(TestServiceHandler, EchoServiceInterface):

@@ -18,6 +18,7 @@ from folly.iobuf cimport cIOBuf
 from libc.stdint cimport uint16_t
 from libcpp.memory cimport unique_ptr
 from libcpp.string cimport string
+from libcpp.unordered_map cimport unordered_map
 from thrift.py3lite.client.request_channel cimport cRequestChannel_ptr
 
 cdef extern from "thrift/lib/py3lite/client/OmniClient.h" namespace "::thrift::py3lite::client":
@@ -30,15 +31,18 @@ cdef extern from "thrift/lib/py3lite/client/OmniClient.h" namespace "::thrift::p
             const string& serviceName,
             const string& methodName,
             unique_ptr[cIOBuf] args,
+            const unordered_map[string, string] headers,
         )
         void oneway_send(
             const string& serviceName,
             const string& methodName,
             unique_ptr[cIOBuf] args,
+            const unordered_map[string, string] headers,
         )
         cFollySemiFuture[cOmniClientResponseWithHeaders] semifuture_send(
             const string& serviceName,
             const string& methodName,
             unique_ptr[cIOBuf] args,
+            const unordered_map[string, string] headers,
         )
         uint16_t getChannelProtocolId()

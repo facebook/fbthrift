@@ -80,6 +80,7 @@ cdef class AsyncClient:
                 service_name,
                 function_name,
                 args_iobuf.c_clone(),
+                self._persistent_headers,
             )
             future.set_result(None)
             return future
@@ -91,11 +92,15 @@ cdef class AsyncClient:
                     service_name,
                     function_name,
                     args_iobuf.c_clone(),
+                    self._persistent_headers,
                 ),
                 _async_client_send_request_callback,
                 <PyObject *> userdata,
             )
             return asyncio.shield(future)
+
+    def set_persistent_header(AsyncClient self, string key, string value):
+        self._persistent_headers[key] = value
 
 
 cdef void _async_client_send_request_callback(

@@ -29,6 +29,10 @@ from thrift.py3lite.test.lite_types import ArithmeticException, EmptyException
 from thrift.py3lite.test.test_server import server_in_event_loop
 
 
+TEST_HEADER_KEY = "headerKey"
+TEST_HEADER_VALUE = "headerValue"
+
+
 class AsyncClientTests(TestCase):
     async def test_basic(self) -> None:
         async with server_in_event_loop() as addr:
@@ -128,3 +132,12 @@ class AsyncClientTests(TestCase):
             ) as client:
                 sum = await client.add(1, 2)
                 self.assertEqual(3, sum)
+
+    async def test_persistent_header(self) -> None:
+        async with server_in_event_loop() as addr:
+            async with get_client(
+                TestService, host="localhost", port=addr.port
+            ) as client:
+                client.set_persistent_header(TEST_HEADER_KEY, TEST_HEADER_VALUE)
+                value = await client.readHeader(TEST_HEADER_KEY)
+                self.assertEqual(TEST_HEADER_VALUE, value)
