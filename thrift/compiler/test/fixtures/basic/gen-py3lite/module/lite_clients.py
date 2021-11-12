@@ -17,9 +17,6 @@ import module.lite_types
 
 class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
     class Async(_fbthrift_py3lite_AsyncClient):
-        def __init__(self):
-            super().__init__()
-
         async def ping(
             self
         ) -> None:
@@ -137,10 +134,8 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
                 None,
             )
 
-    class Sync(_fbthrift_py3lite_SyncClient):
-        def __init__(self, channel):
-            super().__init__(channel)
 
+    class Sync(_fbthrift_py3lite_SyncClient):
         def ping(
             self
         ) -> None:
@@ -261,9 +256,6 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
 
 class DbMixedStackArguments(_fbthrift_py3lite_Client["DbMixedStackArguments.Async", "DbMixedStackArguments.Sync"]):
     class Async(_fbthrift_py3lite_AsyncClient):
-        def __init__(self):
-            super().__init__()
-
         async def getDataByKey0(
             self,
             key: str
@@ -302,10 +294,8 @@ class DbMixedStackArguments(_fbthrift_py3lite_Client["DbMixedStackArguments.Asyn
                 "Empty Response",
             )
 
-    class Sync(_fbthrift_py3lite_SyncClient):
-        def __init__(self, channel):
-            super().__init__(channel)
 
+    class Sync(_fbthrift_py3lite_SyncClient):
         def getDataByKey0(
             self,
             key: str

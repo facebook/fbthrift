@@ -19,9 +19,6 @@ import my.namespacing.test.hsmodule.lite_clients
 
 class ExtendTestService(_fbthrift_py3lite_Client["ExtendTestService.Async", "ExtendTestService.Sync"]):
     class Async(my.namespacing.test.hsmodule.lite_clients.HsTestService.Async):
-        def __init__(self):
-            super().__init__()
-
         async def check(
             self,
             struct1: my.namespacing.test.hsmodule.lite_types.HsFoo
@@ -41,10 +38,8 @@ class ExtendTestService(_fbthrift_py3lite_Client["ExtendTestService.Async", "Ext
                 "Empty Response",
             )
 
-    class Sync(my.namespacing.test.hsmodule.lite_clients.HsTestService.Sync):
-        def __init__(self, channel):
-            super().__init__(channel)
 
+    class Sync(my.namespacing.test.hsmodule.lite_clients.HsTestService.Sync):
         def check(
             self,
             struct1: my.namespacing.test.hsmodule.lite_types.HsFoo

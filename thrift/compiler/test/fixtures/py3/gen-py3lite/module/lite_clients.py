@@ -17,9 +17,6 @@ import module.lite_types
 
 class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleService.Sync"]):
     class Async(_fbthrift_py3lite_AsyncClient):
-        def __init__(self):
-            super().__init__()
-
         async def get_five(
             self
         ) -> int:
@@ -785,10 +782,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 "Empty Response",
             )
 
-    class Sync(_fbthrift_py3lite_SyncClient):
-        def __init__(self, channel):
-            super().__init__(channel)
 
+    class Sync(_fbthrift_py3lite_SyncClient):
         def get_five(
             self
         ) -> int:
@@ -1557,9 +1552,6 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
 
 class DerivedService(_fbthrift_py3lite_Client["DerivedService.Async", "DerivedService.Sync"]):
     class Async(SimpleService.Async):
-        def __init__(self):
-            super().__init__()
-
         async def get_six(
             self
         ) -> int:
@@ -1577,10 +1569,8 @@ class DerivedService(_fbthrift_py3lite_Client["DerivedService.Async", "DerivedSe
                 "Empty Response",
             )
 
-    class Sync(SimpleService.Sync):
-        def __init__(self, channel):
-            super().__init__(channel)
 
+    class Sync(SimpleService.Sync):
         def get_six(
             self
         ) -> int:
@@ -1601,9 +1591,6 @@ class DerivedService(_fbthrift_py3lite_Client["DerivedService.Async", "DerivedSe
 
 class RederivedService(_fbthrift_py3lite_Client["RederivedService.Async", "RederivedService.Sync"]):
     class Async(DerivedService.Async):
-        def __init__(self):
-            super().__init__()
-
         async def get_seven(
             self
         ) -> int:
@@ -1621,10 +1608,8 @@ class RederivedService(_fbthrift_py3lite_Client["RederivedService.Async", "Reder
                 "Empty Response",
             )
 
-    class Sync(DerivedService.Sync):
-        def __init__(self, channel):
-            super().__init__(channel)
 
+    class Sync(DerivedService.Sync):
         def get_seven(
             self
         ) -> int:

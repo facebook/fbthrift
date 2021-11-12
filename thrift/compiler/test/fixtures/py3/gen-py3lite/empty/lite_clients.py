@@ -17,11 +17,8 @@ import empty.lite_types
 
 class NullService(_fbthrift_py3lite_Client["NullService.Async", "NullService.Sync"]):
     class Async(_fbthrift_py3lite_AsyncClient):
-        def __init__(self):
-            super().__init__()
+        pass
 
     class Sync(_fbthrift_py3lite_SyncClient):
-        def __init__(self, channel):
-            super().__init__(channel)
-
+        pass
 

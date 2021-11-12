@@ -651,7 +651,9 @@ class mstch_py3lite_service : public mstch_service {
             {"service:parent_service_name",
              &mstch_py3lite_service::parent_service_name},
             {"service:supported_functions",
-             &mstch_py3lite_service::get_supported_functions},
+             &mstch_py3lite_service::supported_functions},
+            {"service:supported_functions?",
+             &mstch_py3lite_service::has_supported_functions},
             {"service:external_program?",
              &mstch_py3lite_service::is_external_program},
         });
@@ -668,14 +670,22 @@ class mstch_py3lite_service : public mstch_service {
     return cache_->parsed_options_.at("parent_service_name");
   }
 
-  mstch::node get_supported_functions() {
+  std::vector<t_function*> get_supported_functions() {
     std::vector<t_function*> funcs;
     for (auto func : service_->get_functions()) {
       if (is_func_supported(func)) {
         funcs.push_back(func);
       }
     }
-    return generate_functions(funcs);
+    return funcs;
+  }
+
+  mstch::node supported_functions() {
+    return generate_functions(get_supported_functions());
+  }
+
+  mstch::node has_supported_functions() {
+    return !get_supported_functions().empty();
   }
 
   mstch::node is_external_program() { return prog_ != service_->program(); }

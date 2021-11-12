@@ -17,9 +17,6 @@ import module.lite_types
 
 class Raiser(_fbthrift_py3lite_Client["Raiser.Async", "Raiser.Sync"]):
     class Async(_fbthrift_py3lite_AsyncClient):
-        def __init__(self):
-            super().__init__()
-
         async def doBland(
             self
         ) -> None:
@@ -86,10 +83,8 @@ class Raiser(_fbthrift_py3lite_Client["Raiser.Async", "Raiser.Sync"]):
                 "Empty Response",
             )
 
-    class Sync(_fbthrift_py3lite_SyncClient):
-        def __init__(self, channel):
-            super().__init__(channel)
 
+    class Sync(_fbthrift_py3lite_SyncClient):
         def doBland(
             self
         ) -> None:
