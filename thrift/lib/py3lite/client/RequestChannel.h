@@ -62,6 +62,13 @@ RequestChannel_ptr sync_createThriftChannelUnix(
     CLIENT_TYPE client_t,
     apache::thrift::protocol::PROTOCOL_TYPES proto);
 
+RequestChannel_ptr createHeaderChannel(
+    folly::AsyncTransport::UniquePtr sock,
+    CLIENT_TYPE client,
+    apache::thrift::protocol::PROTOCOL_TYPES proto,
+    folly::Optional<std::string> host = folly::none,
+    folly::Optional<std::string> endpoint = folly::none);
+
 } // namespace client
 } // namespace py3lite
 } // namespace thrift

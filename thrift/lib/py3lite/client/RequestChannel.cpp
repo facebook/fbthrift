@@ -28,6 +28,23 @@ namespace client {
 
 using namespace apache::thrift;
 
+RequestChannel_ptr createHeaderChannel(
+    folly::AsyncTransport::UniquePtr sock,
+    CLIENT_TYPE client,
+    apache::thrift::protocol::PROTOCOL_TYPES proto,
+    folly::Optional<std::string> host,
+    folly::Optional<std::string> endpoint) {
+  apache::thrift::HeaderClientChannel::Options options;
+  if (client == THRIFT_HTTP_CLIENT_TYPE) {
+    options.useAsHttpClient(*host, *endpoint);
+  } else {
+    options.setClientType(client);
+  }
+  options.setProtocolId(proto);
+  return apache::thrift::HeaderClientChannel::newChannel(
+      std::move(sock), std::move(options));
+}
+
 folly::Future<RequestChannel_ptr> createThriftChannelTCP(
     const std::string& host,
     uint16_t port,
@@ -39,22 +56,14 @@ folly::Future<RequestChannel_ptr> createThriftChannelTCP(
   auto future = folly::via(eb, [=]() -> RequestChannel_ptr {
     auto socket =
         folly::AsyncSocket::newSocket(eb, host, port, connect_timeout);
-    if (client_t == THRIFT_HEADER_CLIENT_TYPE) {
-      return HeaderClientChannel::newChannel(
-          std::move(socket),
-          HeaderClientChannel::Options()
-              .setClientType(THRIFT_HEADER_CLIENT_TYPE)
-              .setProtocolId(proto));
+    if (client_t == THRIFT_HEADER_CLIENT_TYPE ||
+        client_t == THRIFT_HTTP_CLIENT_TYPE) {
+      return createHeaderChannel(
+          std::move(socket), client_t, proto, host, endpoint);
     } else if (client_t == THRIFT_ROCKET_CLIENT_TYPE) {
       auto chan = RocketClientChannel::newChannel(std::move(socket));
       chan->setProtocolId(proto);
       return chan;
-    } else if (client_t == THRIFT_HTTP_CLIENT_TYPE) {
-      return HeaderClientChannel::newChannel(
-          std::move(socket),
-          HeaderClientChannel::Options()
-              .useAsHttpClient(host, endpoint)
-              .setProtocolId(proto));
     } else {
       throw std::runtime_error("Unsupported client type");
     }
@@ -84,11 +93,7 @@ folly::Future<RequestChannel_ptr> createThriftChannelUnix(
     auto socket = folly::AsyncSocket::newSocket(
         eb, folly::SocketAddress::makeFromPath(path), connect_timeout);
     if (client_t == THRIFT_HEADER_CLIENT_TYPE) {
-      return HeaderClientChannel::newChannel(
-          std::move(socket),
-          HeaderClientChannel::Options()
-              .setClientType(THRIFT_HEADER_CLIENT_TYPE)
-              .setProtocolId(proto));
+      return createHeaderChannel(std::move(socket), client_t, proto);
     } else if (client_t == THRIFT_ROCKET_CLIENT_TYPE) {
       auto chan = RocketClientChannel::newChannel(std::move(socket));
       chan->setProtocolId(proto);
