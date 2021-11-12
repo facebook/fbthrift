@@ -230,6 +230,12 @@ class t_hack_generator : public t_oop_generator {
 
   void generate_php_struct_field_methods(
       std::ofstream& out, const t_field* field, bool is_exception);
+  void generate_php_field_adapter_methods(
+      std::ofstream& out,
+      const t_field& field,
+      const t_const* adapter_annotation_with_generic_type,
+      bool is_union,
+      bool nullable);
   void generate_php_struct_methods(
       std::ofstream& out,
       const t_struct* tstruct,
@@ -271,6 +277,8 @@ class t_hack_generator : public t_oop_generator {
 
   void generate_adapter_type_checks(
       std::ofstream& out, const t_struct* tstruct);
+  void generate_structured_adapter_type_checks(
+      std::ofstream& out, const t_struct* tstruct, bool is_result);
 
   void generate_php_type_spec(std::ofstream& out, const t_type* t);
   void generate_php_struct_spec(std::ofstream& out, const t_struct* tstruct);
@@ -463,6 +471,13 @@ class t_hack_generator : public t_oop_generator {
       std::ofstream& out, const t_throws* ex);
   std::string render_string(std::string value);
 
+  std::string field_to_typehint(
+      const t_field& tfield,
+      bool is_field_nullable = false,
+      bool is_type_nullable = false,
+      bool shape = false,
+      bool immutable_collections = false,
+      bool ignore_adapter = false);
   std::string get_stream_function_return_typehint(
       const t_stream_response* tstream);
   std::string get_sink_function_return_typehint(const t_sink* tsink);
@@ -504,6 +519,42 @@ class t_hack_generator : public t_oop_generator {
 
   const std::string* find_hack_adapter(const t_type* type) {
     return t_typedef::get_first_annotation_or_null(type, {"hack.adapter"});
+  }
+
+  const t_const* find_structured_adapter_annotation(const t_field& node) {
+    return node.find_structured_annotation_or_null(
+        "facebook.com/thrift/annotation/hack/ExperimentalAdapter");
+  }
+
+  const std::string* get_structured_adapter_annotation_name(
+      const t_const* annotation) {
+    for (const auto& item : annotation->value()->get_map()) {
+      if (item.first->get_string() == "name") {
+        return &item.second->get_string();
+      }
+    }
+    return nullptr;
+  }
+
+  const std::string* get_structured_adapter_annotation_generic_type(
+      const t_const* annotation) {
+    for (const auto& item : annotation->value()->get_map()) {
+      if (item.first->get_string() == "adapted_generic_type") {
+        return &item.second->get_string();
+      }
+    }
+    return nullptr;
+  }
+
+  const t_const* find_structured_adapter_annotation_with_generic_type(
+      const t_field& node) {
+    if (auto annotation = find_structured_adapter_annotation(node)) {
+      if (auto generic_type =
+              get_structured_adapter_annotation_generic_type(annotation)) {
+        return annotation;
+      }
+    }
+    return nullptr;
   }
 
   std::string hack_namespace(const t_program* p) {
@@ -2202,6 +2253,17 @@ void t_hack_generator::generate_php_struct_spec(
       // key on all fields.
       out << indent() << "'union' => true,\n";
     }
+    if (const auto* field_adapter_annotation =
+            find_structured_adapter_annotation(field)) {
+      if (get_structured_adapter_annotation_generic_type(
+              field_adapter_annotation)) {
+        indent(out) << "'field_adapter' => ";
+      } else {
+        indent(out) << "'adapter' => ";
+      }
+      out << *(get_structured_adapter_annotation_name(field_adapter_annotation))
+          << "::class,\n";
+    }
     generate_php_type_spec(out, &t);
     indent_down();
     indent(out) << "),\n";
@@ -2246,7 +2308,14 @@ void t_hack_generator::generate_php_struct_shape_spec(
     const t_type* t = field.get_type();
     // Compute typehint before resolving typedefs to avoid missing any adapter
     // annotations.
-    std::string typehint = type_to_typehint(t, false, !is_constructor_shape);
+    std::string typehint = "";
+    const auto* field_adapter = find_structured_adapter_annotation(field);
+    if (field_adapter &&
+        !get_structured_adapter_annotation_generic_type(field_adapter)) {
+      typehint = field_to_typehint(field);
+    } else {
+      typehint = type_to_typehint(t, false, !is_constructor_shape);
+    }
 
     t = t->get_true_type();
     std::string dval = "";
@@ -2682,8 +2751,26 @@ void t_hack_generator::generate_php_struct_shape_methods(
   }
   indent(out) << "public function __toShape()[]: self::TShape {\n";
   indent_up();
+  for (const auto& field : tstruct->fields()) {
+    if (const auto* adapter_annotation_with_generic_type =
+            find_structured_adapter_annotation_with_generic_type(field)) {
+      const auto& fieldName = field.name();
+      const t_type* t = field.type()->get_true_type();
+      auto typehint = type_to_typehint(t);
+      const auto* adapter_name = get_structured_adapter_annotation_name(
+          adapter_annotation_with_generic_type);
+      bool nullable =
+          field_is_nullable(tstruct, &field, render_default_value(t)) ||
+          nullable_everything_;
+      indent(out) << "$" << fieldName << " = " << *adapter_name << "::toThrift<"
+                  << (nullable ? "?" : "") << typehint << ">($this->"
+                  << fieldName << " as nonnull);\n";
+    }
+  }
+
   indent(out) << "return shape(\n";
   indent_up();
+
   for (const auto& field : tstruct->fields()) {
     const t_type* t = field.type()->get_true_type();
     t_name_generator ngen;
@@ -2695,11 +2782,15 @@ void t_hack_generator::generate_php_struct_shape_methods(
     bool nullable =
         field_is_nullable(tstruct, &field, render_default_value(t)) ||
         nullable_everything_;
+    auto fieldRef = "$this->" + field.name();
+    if (find_structured_adapter_annotation_with_generic_type(field)) {
+      fieldRef = "$" + field.name();
+    }
 
     if (t->is_container()) {
       if (t->is_map() || t->is_list()) {
         if (arrays_ || no_use_hack_collections_) {
-          val << "$this->" << field.name();
+          val << fieldRef;
           if (type_has_nested_struct(t)) {
             val << "\n";
             indent_up();
@@ -2728,7 +2819,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
           val_type = val_type->get_true_type();
 
           if (val_type->is_container() || val_type->is_struct() || nullable) {
-            val << "$this->" << field.name();
+            val << fieldRef;
             if (val_type->is_container() || val_type->is_struct()) {
               val << (nullable ? "?" : "") << "->map(\n";
               indent_up();
@@ -2743,15 +2834,14 @@ void t_hack_generator::generate_php_struct_shape_methods(
                         << generate_to_array_method(t, "$$") << ",\n";
             indent_down();
           } else {
-            val << generate_to_array_method(t, "$this->" + field.name())
-                << ",\n";
+            val << generate_to_array_method(t, fieldRef) << ",\n";
           }
         }
       } else if (arraysets_ || arrays_ || no_use_hack_collections_) {
-        val << "$this->" << field.name() << ",\n";
+        val << fieldRef << ",\n";
       } else {
         if (nullable) {
-          val << "$this->" << field.name() << "\n";
+          val << fieldRef << "\n";
           indent_up();
           indent(val) << "|> $$ === null ? null : ";
         }
@@ -2759,7 +2849,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
         if (nullable) {
           val << "$$";
         } else {
-          val << "$this->" << field.name();
+          val << fieldRef;
         }
         val << "->toValuesArray(), true), static::class),\n";
         if (nullable) {
@@ -2767,10 +2857,10 @@ void t_hack_generator::generate_php_struct_shape_methods(
         }
       }
     } else if (t->is_struct()) {
-      val << "$this->" << field.name();
+      val << fieldRef;
       val << (nullable ? "?" : "") << "->__toShape(),\n";
     } else {
-      val << "$this->" << field.name() << ",\n";
+      val << fieldRef << ",\n";
     }
 
     out << val.str();
@@ -2826,8 +2916,19 @@ void t_hack_generator::generate_php_union_methods(
   indent_up();
   for (const auto& field : tstruct->fields()) {
     const auto& fieldName = field.name();
+
+    const auto* adapter_annotation_with_generic_type =
+        find_structured_adapter_annotation_with_generic_type(field);
     out << indent() << "case " << enumName << "::" << fieldName << ":\n";
-    out << indent(get_indent() + 1) << "$this->" << fieldName << " = null;\n";
+    if (adapter_annotation_with_generic_type) {
+      const auto* adapter_name = get_structured_adapter_annotation_name(
+          adapter_annotation_with_generic_type);
+      out << indent(get_indent() + 1) << *adapter_name << "::assign<?"
+          << type_to_typehint(field.get_type()) << ">($this->" << fieldName
+          << " as nonnull, null);\n";
+    } else {
+      out << indent(get_indent() + 1) << "$this->" << fieldName << " = null;\n";
+    }
     out << indent(get_indent() + 1) << "break;\n";
   }
   out << indent() << "case " << enumName << "::_EMPTY_:\n";
@@ -2839,16 +2940,55 @@ void t_hack_generator::generate_php_union_methods(
   out << indent() << "}\n\n";
 
   for (const auto& field : tstruct->fields()) {
+    const auto* adapter_annotation_with_generic_type =
+        find_structured_adapter_annotation_with_generic_type(field);
     const auto& fieldName = field.name();
     auto typehint = type_to_typehint(field.get_type());
+    if (adapter_annotation_with_generic_type) {
+      const auto* adapter_name = get_structured_adapter_annotation_name(
+          adapter_annotation_with_generic_type);
+
+      auto field_typehint =
+          field_to_typehint(field, /* is_field_nullable*/ true);
+      // getWrapped_<fieldName>()
+      indent(out) << "public function getWrapped_" << fieldName
+                  << "()[]: " << field_typehint << " {\n";
+      indent_up();
+      indent(out) << "return $this->" << fieldName << " as nonnull;\n";
+      indent_down();
+      indent(out) << "}\n\n";
+
+      // setWrapped_<fieldName>()
+      indent(out) << "public function setWrapped_" << fieldName << "("
+                  << field_typehint << " $" << fieldName
+                  << ")[write_props]: this {\n";
+      indent_up();
+      indent(out) << "$this->reset();\n";
+      indent(out) << "$this->_type = " << enumName << "::" << fieldName
+                  << ";\n";
+      indent(out) << *adapter_name << "::assignWrapped<?" << typehint
+                  << ">($this->" << fieldName << " as nonnull, $" << fieldName
+                  << ");\n";
+      indent(out) << "return $this;\n";
+      indent_down();
+      indent(out) << "}\n\n";
+    }
+
     // set_<fieldName>()
     indent(out) << "public function set_" << fieldName << "(" << typehint
                 << " $" << fieldName << ")[write_props]: this {\n";
     indent_up();
     indent(out) << "$this->reset();\n";
     indent(out) << "$this->_type = " << enumName << "::" << fieldName << ";\n";
-    indent(out) << "$this->" << fieldName << " = "
-                << "$" << fieldName << ";\n";
+    if (adapter_annotation_with_generic_type) {
+      const auto* adapter_name = get_structured_adapter_annotation_name(
+          adapter_annotation_with_generic_type);
+      indent(out) << *adapter_name << "::assign<?" << typehint << ">($this->"
+                  << fieldName << " as nonnull, $" << fieldName << ");\n";
+    } else {
+      indent(out) << "$this->" << fieldName << " = "
+                  << "$" << fieldName << ";\n";
+    }
     indent(out) << "return $this;\n";
     indent_down();
     indent(out) << "}\n\n";
@@ -2872,7 +3012,14 @@ void t_hack_generator::generate_php_union_methods(
     indent(out) << "(string)$this->_type,\n";
     indent_down();
     indent(out) << ");\n";
-    indent(out) << "return $this->" << fieldName << " as nonnull;\n";
+    if (adapter_annotation_with_generic_type) {
+      const auto* adapter_name = get_structured_adapter_annotation_name(
+          adapter_annotation_with_generic_type);
+      indent(out) << "return " << *adapter_name << "::toThrift<?" << typehint
+                  << ">($this->" << fieldName << " as nonnull) as nonnull;\n";
+    } else {
+      indent(out) << "return $this->" << fieldName << " as nonnull;\n";
+    }
     indent_down();
     indent(out) << "}\n\n";
   }
@@ -2881,10 +3028,19 @@ void t_hack_generator::generate_php_union_methods(
 void t_hack_generator::generate_php_struct_fields(
     std::ofstream& out, const t_struct* tstruct, ThriftStructType type) {
   for (const auto& field : tstruct->fields()) {
+    bool is_base_exception_field = type == ThriftStructType::EXCEPTION &&
+        is_base_exception_property(&field);
+
+    const auto* adapter_annotation_with_generic_type =
+        find_structured_adapter_annotation_with_generic_type(field);
+
+    if (is_base_exception_field && adapter_annotation_with_generic_type) {
+      throw std::runtime_error(
+          tstruct->name() + "::" + field.name() +
+          " has an adapted type. Adapter annotation is not allowed for base exception properties.");
+    }
+
     const t_type* t = field.get_type();
-    // Compute typehint before resolving typedefs to avoid missing any adapter
-    // annotations.
-    std::string typehint = type_to_typehint(t);
 
     t = t->get_true_type();
 
@@ -2908,9 +3064,14 @@ void t_hack_generator::generate_php_struct_fields(
     bool nullable =
         (type == ThriftStructType::RESULT ||
          field_is_nullable(tstruct, &field, dval) || nullable_everything_) &&
-        !(type == ThriftStructType::EXCEPTION &&
-          is_base_exception_property(&field));
-    if (nullable) {
+        !is_base_exception_field;
+
+    // Compute typehint before resolving typedefs to avoid missing any adapter
+    // annotations.
+    std::string typehint =
+        field_to_typehint(field, /* is_field_nullable */ nullable);
+
+    if (nullable || adapter_annotation_with_generic_type) {
       typehint = "?" + typehint;
     }
 
@@ -2940,14 +3101,84 @@ void t_hack_generator::generate_php_struct_fields(
       }
     }
 
-    std::string visibility =
-        (protected_unions_ && tstruct->is_union()) ? "protected" : "public";
+    std::string visibility = adapter_annotation_with_generic_type
+        ? "private"
+        : ((protected_unions_ && tstruct->is_union()) ? "protected" : "public");
 
     indent(out) << visibility << " " << typehint << " $" << field.name()
                 << ";\n";
     generate_php_struct_field_methods(
         out, &field, type == ThriftStructType::EXCEPTION);
+
+    if (adapter_annotation_with_generic_type) {
+      generate_php_field_adapter_methods(
+          out,
+          field,
+          adapter_annotation_with_generic_type,
+          tstruct->is_union(),
+          nullable);
+    }
   }
+}
+
+void t_hack_generator::generate_php_field_adapter_methods(
+    std::ofstream& out,
+    const t_field& field,
+    const t_const* adapter_annotation_with_generic_type,
+    bool is_union,
+    bool nullable) {
+  if (is_union) {
+    return;
+  }
+  const t_type* t = field.type()->get_true_type();
+  const auto& fieldName = field.name();
+  const auto* adapter_name = get_structured_adapter_annotation_name(
+      adapter_annotation_with_generic_type);
+
+  auto field_typehint =
+      field_to_typehint(field, /*is_field_nullable*/ nullable);
+  auto typehint = (nullable ? "?" : "") + type_to_typehint(t);
+
+  out << "\n";
+
+  // getWrapped_<fieldName>()
+  indent(out) << "public function getWrapped_" << fieldName
+              << "()[]: " << field_typehint << " {\n";
+  indent_up();
+  indent(out) << "return $this->" << fieldName << " as nonnull;\n";
+  indent_down();
+  indent(out) << "}\n\n";
+
+  // setWrapped_<fieldName>()
+  indent(out) << "public function setWrapped_" << fieldName << "("
+              << field_typehint << " $" << fieldName << ")[write_props]: void"
+              << " {\n";
+  indent_up();
+
+  indent(out) << *adapter_name << "::assignWrapped<" << typehint << ">($this->"
+              << fieldName << " as nonnull, $" << fieldName << ");\n ";
+  indent_down();
+  indent(out) << "}\n\n";
+
+  // get_<fieldName>()
+  indent(out) << "public function get_" << fieldName << "()[]: " << typehint
+              << " {\n";
+  indent_up();
+  indent(out) << "return " << *adapter_name << "::toThrift<" << typehint
+              << ">($this->" << fieldName << " as nonnull);\n";
+  indent_down();
+  indent(out) << "}\n\n";
+
+  // set_<fieldName>()
+  indent(out) << "public function set_" << fieldName << "(" << typehint << " $"
+              << fieldName << ")[write_props]: void"
+              << " {\n";
+  indent_up();
+
+  indent(out) << *adapter_name << "::assign<" << typehint << ">($this->"
+              << fieldName << " as nonnull, $" << fieldName << ");\n";
+  indent_down();
+  indent(out) << "}\n\n";
 }
 
 void t_hack_generator::generate_php_struct_field_methods(
@@ -2998,9 +3229,17 @@ void t_hack_generator::generate_php_struct_methods(
     const auto& value = tstruct->get_annotation("message");
     if (tstruct->has_annotation("message") && value != "message") {
       const auto* message_field = tstruct->get_field_by_name(value);
+      if (const auto adapter_annotation =
+              find_structured_adapter_annotation_with_generic_type(
+                  *message_field)) {
+        throw std::runtime_error(
+            tstruct->name() + "::" + value +
+            " has an adapter annotation which is not allowed for base exception properties.");
+      }
+
       out << indent() << "<<__Override>>\n"
-          << indent() << "public function getMessage()[]: string {\n"
-          << indent() << "  return $this->" << message_field->name();
+          << indent() << "public function getMessage()[]: string {\n";
+      out << indent() << "  return $this->" << message_field->name();
       if (message_field->get_req() != t_field::e_req::required) {
         out << " ?? ''";
       }
@@ -3016,6 +3255,8 @@ void t_hack_generator::generate_php_struct_methods(
   }
   generate_json_reader(out, tstruct);
   generate_adapter_type_checks(out, tstruct);
+  generate_structured_adapter_type_checks(
+      out, tstruct, type == ThriftStructType::RESULT);
 }
 
 void t_hack_generator::generate_php_struct_constructor_field_assignment(
@@ -3024,6 +3265,17 @@ void t_hack_generator::generate_php_struct_constructor_field_assignment(
     const t_struct* tstruct,
     const std::string& name) {
   const t_type* t = field.type()->get_true_type();
+  const auto true_type = type_to_typehint(t, false, false, false, true);
+  const auto* field_adapter_annotation =
+      find_structured_adapter_annotation(field);
+  const std::string* adapted_generic_type;
+  const std::string* adapter_name;
+  if (field_adapter_annotation) {
+    adapted_generic_type = get_structured_adapter_annotation_generic_type(
+        field_adapter_annotation);
+    adapter_name =
+        get_structured_adapter_annotation_name(field_adapter_annotation);
+  }
   std::string dval = "";
   bool is_exception = tstruct->is_exception();
   if (field.default_value() != nullptr &&
@@ -3051,6 +3303,8 @@ void t_hack_generator::generate_php_struct_constructor_field_assignment(
   if (dval != "null") {
     if (const auto* adapter = find_hack_adapter(field.get_type())) {
       dval = *adapter + "::fromThrift(" + dval + ")";
+    } else if (field_adapter_annotation && !adapted_generic_type) {
+      dval = *adapter_name + "::fromThrift(" + dval + ")";
     }
   }
 
@@ -3069,12 +3323,27 @@ void t_hack_generator::generate_php_struct_constructor_field_assignment(
     // Capture value from constructor and update _type field
     out << indent() << "if ($" << field_name << " !== null) {\n";
   }
-  if (need_enum_code_fixme) {
-    out << indent() << "  /* HH_FIXME[4110] nontransparent Enum */\n";
+  if (field_adapter_annotation && adapted_generic_type) {
+    if (!nullable) {
+      out << indent() << "$" << field_name << " = $" << field_name << " ?? "
+          << dval << ";\n";
+    }
+    if (need_enum_code_fixme) {
+      out << indent() << "  /* HH_FIXME[4110] nontransparent Enum */\n";
+    }
+    out << indent() << (tstruct->is_union() ? "  " : "") << "$this->"
+        << field_name << " = " << *adapter_name << "::fromThrift<"
+        << (nullable ? "?" : "") << true_type << ">($" << field_name << ", "
+        << field.get_key() << ", $this);\n";
+
+  } else {
+    if (need_enum_code_fixme) {
+      out << indent() << "  /* HH_FIXME[4110] nontransparent Enum */\n";
+    }
+    out << indent() << (tstruct->is_union() ? "  " : "") << "$this->"
+        << field_name << " = $" << field_name
+        << (!nullable ? " ?? " + dval : "") << ";\n";
   }
-  out << indent() << (tstruct->is_union() ? "  " : "") << "$this->"
-      << field_name << " = $" << field_name << (!nullable ? " ?? " + dval : "")
-      << ";\n";
   if (tstruct->is_union()) {
     out << indent()
         << "  $this->_type = " << union_field_to_enum(tstruct, &field, name)
@@ -3093,9 +3362,17 @@ void t_hack_generator::generate_php_struct_constructor(
   }
   out << indent() << "public function __construct(";
   auto delim = "";
+
   for (const auto& field : tstruct->fields()) {
-    out << delim << "?" << type_to_typehint(field.get_type()) << " $"
-        << field.name() << " = null";
+    const auto* field_adapter = find_structured_adapter_annotation(field);
+    if (field_adapter &&
+        !get_structured_adapter_annotation_generic_type(field_adapter)) {
+      out << delim << "?" << field_to_typehint(field) << " $" << field.name()
+          << " = null";
+    } else {
+      out << delim << "?" << type_to_typehint(field.get_type()) << " $"
+          << field.name() << " = null";
+    }
     delim = ", ";
   }
   out << indent() << ")[] {\n";
@@ -3110,9 +3387,20 @@ void t_hack_generator::generate_php_struct_constructor(
         << ";\n";
   }
   if (type != ThriftStructType::RESULT) {
+    std::vector<const t_field*> adapter_fields;
     for (const auto& field : tstruct->fields()) {
+      // Fields with adapted generic type are nullable and need to be set
+      // at the end after all non-nullable fields are set.
+      if (find_structured_adapter_annotation_with_generic_type(field)) {
+        adapter_fields.push_back(&field);
+      } else {
+        generate_php_struct_constructor_field_assignment(
+            out, field, tstruct, name);
+      }
+    }
+    for (const auto& field : adapter_fields) {
       generate_php_struct_constructor_field_assignment(
-          out, field, tstruct, name);
+          out, *field, tstruct, name);
     }
   }
 
@@ -3443,6 +3731,75 @@ void t_hack_generator::generate_adapter_type_checks(
   indent_down();
   indent(out) << "}\n\n";
 }
+
+void t_hack_generator::generate_structured_adapter_type_checks(
+    std::ofstream& out, const t_struct* tstruct, bool is_result) {
+  std::set<std::tuple<std::string, std::string, std::string>>
+      adapter_fields_with_generic_type_;
+  std::set<std::tuple<std::string, std::string>> adapter_fields_;
+  for (const auto& field : tstruct->fields()) {
+    if (const auto* field_adapter = find_structured_adapter_annotation(field)) {
+      auto adapter_name =
+          *get_structured_adapter_annotation_name(field_adapter);
+      auto t = field.get_type();
+      auto typehint = type_to_typehint(
+          t,
+          false,
+          false,
+          false,
+          /* ignore_adapter */
+          true);
+
+      if (const auto* generic_type =
+              get_structured_adapter_annotation_generic_type(field_adapter)) {
+        std::string dval = "";
+        if (field.default_value() != nullptr &&
+            !(t->is_struct() || t->is_xception())) {
+          dval = render_const_value(t, field.default_value());
+        } else {
+          dval = render_default_value(t);
+        }
+
+        // result structs only contain fields: success and e.
+        // success is whatever type the method returns, but must be nullable
+        // regardless, since if there is an exception we expect it to be null
+        bool nullable =
+            (is_result || field_is_nullable(tstruct, &field, dval) ||
+             nullable_everything_);
+        typehint = (nullable ? "?" : "") + typehint;
+        adapter_fields_with_generic_type_.emplace(
+            adapter_name, *generic_type, typehint);
+      } else {
+        adapter_fields_.emplace(adapter_name, typehint);
+      }
+    }
+  }
+
+  if (adapter_fields_.empty() && adapter_fields_with_generic_type_.empty()) {
+    return;
+  }
+
+  indent(out)
+      << "private static function __hackExperimentalAdapterTypeChecks()[]: void{\n ";
+  indent_up();
+  for (const auto& [adapter_name, typehint] : adapter_fields_) {
+    indent(out) << "\\ThriftUtil::requireSameType<" << adapter_name
+                << "::TThriftType, " << typehint << ">();\n";
+  }
+  out << "\n";
+
+  for (const auto& [adapter_name, adapter_generic_type, typehint] :
+       adapter_fields_with_generic_type_) {
+    indent(out) << "(new \\ThriftAdapterVerifier<" << typehint << ", "
+                << adapter_generic_type << "<" << typehint
+                << ">>())->requireSameReturnType(" << adapter_name
+                << "::fromThrift<" << typehint << ">," << adapter_name
+                << "::toThrift<" << typehint << ">);\n";
+  }
+  indent_down();
+  indent(out) << "}\n\n";
+}
+
 /**
  * Generates a struct definition for a thrift data type. This is nothing in
  * PHP where the objects are all just associative arrays (unless of course we
@@ -4666,6 +5023,37 @@ std::string t_hack_generator::type_to_typehint(
   } else {
     return "mixed";
   }
+}
+
+std::string t_hack_generator::field_to_typehint(
+    const t_field& tfield,
+    bool is_field_nullable,
+    bool is_type_nullable,
+    bool shape,
+    bool immutable_collections,
+    bool ignore_adapter) {
+  std::string typehint = type_to_typehint(
+      tfield.get_type(),
+      is_type_nullable,
+      shape,
+      immutable_collections,
+      ignore_adapter);
+  if (!ignore_adapter) {
+    if (const auto* field_adapter_annotation =
+            find_structured_adapter_annotation(tfield)) {
+      if (const auto* adapter_generic_type =
+              get_structured_adapter_annotation_generic_type(
+                  field_adapter_annotation)) {
+        typehint = *adapter_generic_type + "<" +
+            (is_field_nullable ? "?" : "") + typehint + ">";
+      } else {
+        const auto* adapter =
+            get_structured_adapter_annotation_name(field_adapter_annotation);
+        typehint = *adapter + "::THackType";
+      }
+    }
+  }
+  return typehint;
 }
 
 std::string t_hack_generator::get_stream_function_return_typehint(
