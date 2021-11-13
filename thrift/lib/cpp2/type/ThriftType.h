@@ -27,7 +27,7 @@
 // `type::list<type::enum_t<MyEnum>>` represents a list of MyEnums.
 namespace apache::thrift::type {
 
-// Type tags for all t types.
+// Type tags for types that are always concrete (_t suffix).
 struct bool_t {};
 struct byte_t {};
 struct i16_t {};

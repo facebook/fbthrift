@@ -36,13 +36,13 @@
 
 namespace apache::thrift::type::detail {
 
-template <typename TT>
+template <typename Tag>
 struct traits;
 
 template <BaseType B>
 struct has_base_type {
-  template <typename TT>
-  using apply = std::bool_constant<traits<TT>::kBaseType == B>;
+  template <typename Tag>
+  using apply = std::bool_constant<traits<Tag>::kBaseType == B>;
 };
 
 struct vector_of {
@@ -61,17 +61,17 @@ struct map_to {
   using apply = std::map<K, V>;
 };
 
-template <typename TT, typename = void>
+template <typename Tag, typename = void>
 struct is_concrete_type : std::false_type {};
-template <typename TT>
-struct is_concrete_type<TT, folly::void_t<typename traits<TT>::standard_type>>
+template <typename Tag>
+struct is_concrete_type<Tag, folly::void_t<typename traits<Tag>::standard_type>>
     : std::true_type {};
-template <typename TT>
-inline constexpr bool is_concrete_type_v = is_concrete_type<TT>::value;
-template <typename... TTs>
-using if_all_concrete = std::enable_if_t<(is_concrete_type_v<TTs> && ...)>;
+template <typename Tag>
+inline constexpr bool is_concrete_type_v = is_concrete_type<Tag>::value;
+template <typename... Tags>
+using if_all_concrete = std::enable_if_t<(is_concrete_type_v<Tags> && ...)>;
 
-template <typename... TTs>
+template <typename... Tags>
 struct types {
   template <BaseType B>
   static constexpr bool contains_bt =
@@ -79,8 +79,8 @@ struct types {
 
   // TODO(afuller): Make work for list of arbitrary thrift types, instead
   // of just the base thrift types.
-  template <typename TT>
-  static constexpr bool contains = contains_bt<traits<TT>::kBaseType>;
+  template <typename Tag>
+  static constexpr bool contains = contains_bt<traits<Tag>::kBaseType>;
 
   // The Ith type.
   template <size_t I>
@@ -88,11 +88,11 @@ struct types {
 
   // Converts the type list to a type list of the given types.
   template <template <typename...> typename T>
-  using as = T<TTs...>;
+  using as = T<Tags...>;
 };
 
-template <typename Ts, typename TT, typename R = void>
-using if_contains = std::enable_if_t<Ts::template contains<TT>, R>;
+template <typename Ts, typename Tag, typename R = void>
+using if_contains = std::enable_if_t<Ts::template contains<Tag>, R>;
 
 template <BaseType B>
 struct base_type {
@@ -108,50 +108,52 @@ struct concrete_type : Base {
 template <BaseType B, typename T>
 struct cpp_type : concrete_type<base_type<B>, types<T>> {};
 
-template <typename TT, typename A>
-using expand_types = fatal::transform<typename traits<TT>::standard_types, A>;
+template <typename Tag, typename A>
+using expand_types = fatal::transform<typename traits<Tag>::standard_types, A>;
 
 template <BaseType B, typename... StandardTs>
 using primitive_type = concrete_type<base_type<B>, types<StandardTs...>>;
 
-template <typename VTT>
+template <typename ValTag>
 struct base_list_type : base_type<BaseType::List> {
-  using value_type = VTT;
+  using value_type = ValTag;
 };
 
-template <typename VTT, typename = void>
-struct list_type : base_list_type<VTT> {};
+template <typename ValTag, typename = void>
+struct list_type : base_list_type<ValTag> {};
 
-template <typename VTT>
-struct list_type<VTT, if_all_concrete<VTT>>
-    : concrete_type<base_list_type<VTT>, expand_types<VTT, vector_of>> {};
+template <typename ValTag>
+struct list_type<ValTag, if_all_concrete<ValTag>>
+    : concrete_type<base_list_type<ValTag>, expand_types<ValTag, vector_of>> {};
 
-template <typename VTT>
+template <typename ValTag>
 struct base_set_type : base_type<BaseType::Set> {
-  using value_type = VTT;
+  using value_type = ValTag;
 };
 
-template <typename VTT, typename = void>
-struct set_type : base_set_type<VTT> {};
+template <typename ValTag, typename = void>
+struct set_type : base_set_type<ValTag> {};
 
-template <typename VTT>
-struct set_type<VTT, if_all_concrete<VTT>>
-    : concrete_type<base_set_type<VTT>, expand_types<VTT, set_of>> {};
+template <typename ValTag>
+struct set_type<ValTag, if_all_concrete<ValTag>>
+    : concrete_type<base_set_type<ValTag>, expand_types<ValTag, set_of>> {};
 
-template <typename KTT, typename VTT>
+template <typename KeyTag, typename ValTag>
 struct base_map_type : base_type<BaseType::Map> {
-  using key_type = KTT;
-  using mapped_type = VTT;
+  using key_type = KeyTag;
+  using mapped_type = ValTag;
 };
 
-template <typename KTT, typename VTT, typename = void>
-struct map_type : base_map_type<KTT, VTT> {};
+template <typename KeyTag, typename ValTag, typename = void>
+struct map_type : base_map_type<KeyTag, ValTag> {};
 
-template <typename KTT, typename VTT>
-struct map_type<KTT, VTT, if_all_concrete<KTT, VTT>>
+template <typename KeyTag, typename ValTag>
+struct map_type<KeyTag, ValTag, if_all_concrete<KeyTag, ValTag>>
     : concrete_type<
-          base_map_type<KTT, VTT>,
-          expand_types<VTT, map_to<typename traits<KTT>::standard_type>>> {};
+          base_map_type<KeyTag, ValTag>,
+          expand_types<
+              ValTag,
+              map_to<typename traits<KeyTag>::standard_type>>> {};
 
 // Type traits for all primitive types.
 template <>
@@ -210,30 +212,30 @@ struct traits<exception_t<T>> : cpp_type<BaseType::Exception, T> {};
 // The list class of types.
 template <>
 struct traits<list_c> : base_type<BaseType::List> {};
-template <typename VTT>
-struct traits<type::list<VTT>> : list_type<VTT> {};
+template <typename ValTag>
+struct traits<type::list<ValTag>> : list_type<ValTag> {};
 
 // The set class of types.
 template <>
 struct traits<set_c> : base_type<BaseType::Set> {};
-template <typename VTT>
-struct traits<set<VTT>> : set_type<VTT> {};
+template <typename ValTag>
+struct traits<set<ValTag>> : set_type<ValTag> {};
 
 // The map class of types.
 template <>
 struct traits<map_c> : base_type<BaseType::Map> {};
-template <typename KTT, typename VTT>
-struct traits<map<KTT, VTT>> : map_type<KTT, VTT> {};
+template <typename KeyTag, typename ValTag>
+struct traits<map<KeyTag, ValTag>> : map_type<KeyTag, ValTag> {};
 
 // Helper to get human readable name for the type tag.
-template <typename TT>
+template <typename Tag>
 struct get_name_fn {
   // Return the name of the base type by default.
   FOLLY_EXPORT const std::string& operator()() const noexcept {
     static const auto* kName = new std::string([]() {
       std::string name;
       if (const char* cname =
-              TEnumTraits<BaseType>::findName(traits<TT>::kBaseType)) {
+              TEnumTraits<BaseType>::findName(traits<Tag>::kBaseType)) {
         name = cname;
         folly::toLowerAscii(name);
       }
@@ -282,29 +284,29 @@ struct get_name_fn<exception_t<T>> : get_name_named_fn<
                                          typename reflect_struct<T>::module,
                                          typename reflect_struct<T>::name> {};
 
-template <typename VTT>
-struct get_name_fn<list<VTT>> {
+template <typename ValTag>
+struct get_name_fn<list<ValTag>> {
   FOLLY_EXPORT const std::string& operator()() const noexcept {
     static const auto* kName =
-        new std::string(fmt::format("list<{}>", get_name_fn<VTT>()()));
+        new std::string(fmt::format("list<{}>", get_name_fn<ValTag>()()));
     return *kName;
   }
 };
 
-template <typename VTT>
-struct get_name_fn<set<VTT>> {
+template <typename ValTag>
+struct get_name_fn<set<ValTag>> {
   FOLLY_EXPORT const std::string& operator()() const noexcept {
     static const auto* kName =
-        new std::string(fmt::format("set<{}>", get_name_fn<VTT>()()));
+        new std::string(fmt::format("set<{}>", get_name_fn<ValTag>()()));
     return *kName;
   }
 };
 
-template <typename KTT, typename VTT>
-struct get_name_fn<map<KTT, VTT>> {
+template <typename KeyTag, typename ValTag>
+struct get_name_fn<map<KeyTag, ValTag>> {
   FOLLY_EXPORT const std::string& operator()() const noexcept {
-    static const auto* kName = new std::string(
-        fmt::format("map<{}, {}>", get_name_fn<KTT>()(), get_name_fn<VTT>()()));
+    static const auto* kName = new std::string(fmt::format(
+        "map<{}, {}>", get_name_fn<KeyTag>()(), get_name_fn<ValTag>()()));
     return *kName;
   }
 };

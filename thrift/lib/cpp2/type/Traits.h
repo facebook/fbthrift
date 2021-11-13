@@ -34,18 +34,18 @@
 namespace apache::thrift::type {
 
 // The BaseType for the given ThriftType.
-template <typename TT>
-constexpr BaseType base_type_v = detail::traits<TT>::kBaseType;
+template <typename Tag>
+constexpr BaseType base_type_v = detail::traits<Tag>::kBaseType;
 
 // The standard types associated with the given concrete ThriftType.
-template <typename TT>
-using standard_type = typename detail::traits<TT>::standard_type;
-template <typename TT>
-using standard_types = typename detail::traits<TT>::standard_types;
+template <typename Tag>
+using standard_type = typename detail::traits<Tag>::standard_type;
+template <typename Tag>
+using standard_types = typename detail::traits<Tag>::standard_types;
 
 // If T is a standard type for the given ThriftType.
-template <typename TT, typename T>
-struct is_standard_type : fatal::contains<standard_types<TT>, T> {};
+template <typename Tag, typename T>
+struct is_standard_type : fatal::contains<standard_types<Tag>, T> {};
 
 // If a given type tag refers to concrete type and not a class of types.
 // For example:
