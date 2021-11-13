@@ -22,61 +22,71 @@
 #include <folly/lang/Bits.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
 #include <thrift/lib/cpp2/type/Traits.h>
+#include <thrift/lib/cpp2/type/detail/ThriftOp.h>
 
 namespace apache::thrift::op {
 
-// Default to the native c++ notion of equal.
-template <typename TT>
-struct equal_to {
-  static_assert(type::is_concrete_type_v<TT>);
+// A binary operator that returns true iff the given Thrift values are equal to
+// each other.
+//
+// For example:
+//   equal<i32_t>(1, 2) -> false
+//   equal<double_t>(0.0, -0.0) -> true
+//   equal<float_t>(NaN, NaN) -> false
+//   equal<list<double_t>>([NaN, 0.0], [NaN, -0.0]) -> false
+template <typename Tag>
+struct EqualTo : detail::EqualTo<Tag> {};
+template <typename Tag>
+constexpr EqualTo<Tag> equal;
 
-  template <typename T = type::standard_type<TT>>
-  constexpr bool operator()(const T& lhs, const T& rhs) const {
-    static_assert(type::is_standard_type<TT, T>::value);
-    return lhs == rhs;
-  }
-};
+// A binary operator that returns true iff the given Thrift values are identical
+// to each other (i.e. they are same representations).
+//
+// For example:
+//   identical<i32_t>(1, 2) -> false
+//   identical<double_t>(0.0, -0.0) -> false
+//   identical<float_t>(NaN, NaN) -> true
+//   identical<list<double_t>>([NaN, 0.0], [NaN, -0.0]) -> false
+template <typename Tag>
+struct IdenticalTo : detail::IdenticalTo<Tag> {};
+template <typename Tag>
+constexpr IdenticalTo<Tag> identical;
 
-template <typename TT>
-constexpr equal_to<TT> equal;
+// Returns the 'intrinsic' default for the given type.
+//
+// Ignores all 'custom' defaults set on fields within structured types.
+//
+// For example:
+//   getDefault<type::i32_t>() -> 0
+//   getDefault<type::set<type::i32_t>>() -> {}
+//   getDefault<type::string_t>() -> ""
+template <typename Tag, typename T = type::standard_type<Tag>>
+constexpr decltype(auto) getIntrinsicDefault() {
+  return detail::DefaultOf<Tag, T>::get();
+}
 
-// identical and equal are the same for most types.
-template <typename TT>
-struct identical_to : equal_to<TT> {};
+// Returns true iff the given value is 'empty', and is not serialized in a
+// 'terse' context.
+//
+// Some types cannot represent an 'empty' value. For example,
+// a non-terse, non-optional field always serializes to a non-empty buffer,
+// thus any struct with such a field, can never be 'empty'.
+// In such cases, it is possible to deserialize from an empty buffer, but it is
+// impossible to serialize to an empty buffer.
+//
+// For example:
+//   isEmpty<i32_t>(0) -> true
+//   isEmpty<i64_t>(1) -> false
+//   isEmpty<set<i32_t>>({}) -> true
+//   isEmpty<set<i32_t>>({0}) -> false
+template <typename Tag>
+constexpr detail::Empty<Tag> isEmpty;
 
-template <typename TT>
-constexpr identical_to<TT> identical;
-
-// Floating point overrides.
-// NOTE: Technically Thrift considers all NaN variations identical.
-template <>
-struct identical_to<type::float_t> {
-  bool operator()(float lhs, float rhs) const {
-    return folly::bit_cast<int32_t>(lhs) == folly::bit_cast<int32_t>(rhs);
-  }
-};
-template <>
-struct identical_to<type::double_t> {
-  bool operator()(double lhs, double rhs) const {
-    return folly::bit_cast<int64_t>(lhs) == folly::bit_cast<int64_t>(rhs);
-  }
-};
-
-template <typename VTT>
-struct identical_to<type::list<VTT>> {
-  template <typename T = type::standard_type<type::list<VTT>>>
-  bool operator()(const T& lhs, const T& rhs) const {
-    if (&lhs == &rhs) {
-      return true;
-    }
-    if (lhs.size() != rhs.size()) {
-      return false;
-    }
-    return std::equal(lhs.begin(), lhs.end(), rhs.begin(), identical<VTT>);
-  }
-};
-
-// TODO(afuller): Implement overrides for sets, maps and structured types,
-// so that identical_to works correctly for floating point types.
+// Clears the given value, leaving it equal to its intrinsic default.
+// For example:
+//   clear<i32_t>(myInt) // sets myInt = 0.
+//   clear<set<i32_t>>(myIntSet) // calls myIntSet.clear()
+template <typename Tag>
+constexpr detail::Clear<Tag> clear;
 
 } // namespace apache::thrift::op

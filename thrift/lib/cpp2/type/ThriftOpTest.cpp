@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include <array>
+
 #include <thrift/lib/cpp2/type/ThriftOp.h>
 
 #include <folly/portability/GTest.h>
@@ -70,8 +72,8 @@ TEST(ThriftOpTest, Float) {
 TEST(ThriftOpTest, StructWithFloat) {
   Value lhs;
   Value rhs;
-  op::equal_to<type::struct_t<Value>> equal;
-  op::identical_to<type::struct_t<Value>> identical;
+  op::EqualTo<type::struct_t<Value>> equal;
+  op::IdenticalTo<type::struct_t<Value>> identical;
 
   lhs.floatValue_ref().ensure() = std::numeric_limits<float>::quiet_NaN();
   rhs.floatValue_ref().ensure() = std::numeric_limits<float>::quiet_NaN();
@@ -85,8 +87,8 @@ TEST(ThriftOpTest, StructWithFloat) {
 }
 
 TEST(ThriftOpTest, ListWithDouble) {
-  op::equal_to<type::list<type::double_t>> equal;
-  op::identical_to<type::list<type::double_t>> identical;
+  op::EqualTo<type::list<type::double_t>> equal;
+  op::IdenticalTo<type::list<type::double_t>> identical;
 
   EXPECT_FALSE(equal(
       {1, std::numeric_limits<float>::quiet_NaN()},
@@ -100,8 +102,8 @@ TEST(ThriftOpTest, ListWithDouble) {
 }
 
 TEST(ThriftOpTest, SetWithDouble) {
-  op::equal_to<type::set<type::double_t>> equal;
-  op::identical_to<type::set<type::double_t>> identical;
+  op::EqualTo<type::set<type::double_t>> equal;
+  op::IdenticalTo<type::set<type::double_t>> identical;
 
   // Note: NaN in a set is undefined behavior.
 
@@ -110,8 +112,8 @@ TEST(ThriftOpTest, SetWithDouble) {
 }
 
 TEST(ThriftOpTest, MapWithDouble) {
-  op::equal_to<type::map<type::double_t, type::float_t>> equal;
-  op::identical_to<type::map<type::double_t, type::float_t>> identical;
+  op::EqualTo<type::map<type::double_t, type::float_t>> equal;
+  op::IdenticalTo<type::map<type::double_t, type::float_t>> identical;
 
   // Note: NaN in a map keys is undefined behavior.
   EXPECT_FALSE(equal(
@@ -127,6 +129,151 @@ TEST(ThriftOpTest, MapWithDouble) {
   EXPECT_TRUE(identical({{2.0, +0.0}}, {{2.0, -0.0}})); // Should be false!
   EXPECT_TRUE(equal({{-0.0, +0.0}}, {{+0.0, -0.0}}));
   EXPECT_TRUE(identical({{-0.0, +0.0}}, {{+0.0, -0.0}})); // Should be false!
+}
+
+// A test suite that check ops work correctly for a given test case.
+template <typename OpTestCase>
+class TypedOpTest : public testing::Test {};
+
+// Helpers for defining test cases.
+template <typename Tag, typename T = type::standard_type<Tag>>
+struct BaseTestCase {
+  using type_tag = Tag;
+  using type = T;
+};
+template <typename Tag, typename T = type::standard_type<Tag>>
+struct BaseDefaultTestCase : BaseTestCase<Tag, T> {
+  const static inline T default_ = {};
+};
+template <typename Tag, typename T = type::standard_type<Tag>>
+struct NumericTestCase : BaseDefaultTestCase<Tag, T> {
+  constexpr static T one = 1;
+  constexpr static T otherOne = 1;
+  constexpr static std::array<T, 2> many = {2, static_cast<T>(-4)};
+};
+
+template <typename Tag, typename T = type::standard_type<Tag>>
+struct StringTestCase : BaseTestCase<Tag, T> {
+  const static inline T default_ = StringTraits<T>::fromStringLiteral("");
+  const static inline T one = StringTraits<T>::fromStringLiteral("one");
+  const static inline T otherOne = StringTraits<T>::fromStringLiteral("one");
+  const static inline std::array<T, 2> many = {
+      StringTraits<T>::fromStringLiteral("two"),
+      StringTraits<T>::fromStringLiteral("three")};
+};
+
+template <
+    typename VTagCase,
+    typename T = type::standard_type<type::list<typename VTagCase::type_tag>>>
+struct ListTestCase
+    : BaseDefaultTestCase<type::list<typename VTagCase::type_tag>, T> {
+  const static inline T one = {VTagCase::many.begin(), VTagCase::many.end()};
+  const static inline T otherOne = {
+      VTagCase::many.begin(), VTagCase::many.end()};
+  const static inline std::array<T, 3> many = {
+      T{VTagCase::many.rbegin(), VTagCase::many.rend()},
+      T{VTagCase::one},
+      T{VTagCase::default_},
+  };
+};
+
+template <
+    typename KTagCase,
+    typename T = type::standard_type<type::set<typename KTagCase::type_tag>>>
+struct SetTestCase
+    : BaseDefaultTestCase<type::set<typename KTagCase::type_tag>, T> {
+  const static inline T one = {KTagCase::many.begin(), KTagCase::many.end()};
+  const static inline T otherOne = {
+      KTagCase::many.rbegin(), KTagCase::many.rend()};
+  const static inline std::array<T, 3> many = {
+      T{KTagCase::default_},
+      T{KTagCase::default_, KTagCase::one},
+      T{KTagCase::one},
+  };
+};
+
+template <typename KTagCase, typename VTagCase>
+using map_type_tag =
+    type::map<typename KTagCase::type_tag, typename VTagCase::type_tag>;
+
+template <
+    typename KTagCase,
+    typename VTagCase,
+    typename T = type::standard_type<map_type_tag<KTagCase, VTagCase>>>
+struct MapTestCase : BaseDefaultTestCase<map_type_tag<KTagCase, VTagCase>, T> {
+  const static inline T one = {
+      {KTagCase::one, VTagCase::one}, {KTagCase::default_, VTagCase::one}};
+  const static inline T otherOne = {
+      {KTagCase::default_, VTagCase::one}, {KTagCase::one, VTagCase::one}};
+  const static inline std::array<T, 3> many = {
+      T{{KTagCase::one, VTagCase::one}},
+      T{{KTagCase::default_, VTagCase::one}},
+      T{{KTagCase::one, VTagCase::default_}},
+  };
+};
+
+// The tests cases to run.
+using OpTestCases = ::testing::Types<
+    NumericTestCase<type::byte_t>,
+    NumericTestCase<type::i16_t>,
+    NumericTestCase<type::i16_t, uint16_t>,
+    NumericTestCase<type::i32_t>,
+    NumericTestCase<type::i32_t, uint32_t>,
+    NumericTestCase<type::i64_t>,
+    NumericTestCase<type::i64_t, uint64_t>,
+    NumericTestCase<type::float_t>,
+    NumericTestCase<type::double_t>,
+    StringTestCase<type::string_t>,
+    StringTestCase<type::binary_t, folly::IOBuf>,
+    // TODO(afuller): Fix 'copyability' for this type, so we can test this case.
+    // StringTestCase<type::binary_t, std::unique_ptr<folly::IOBuf>>,
+    ListTestCase<NumericTestCase<type::byte_t>>,
+    ListTestCase<StringTestCase<type::binary_t>>,
+    // TODO(afuller): Consider supporting non-default standard types in
+    // the paramaterized types, for these tests.
+    // ListTestCase<StringTestCase<type::binary_t, folly::IOBuf>>,
+    SetTestCase<NumericTestCase<type::i32_t, uint32_t>>,
+    MapTestCase<StringTestCase<type::string_t>, NumericTestCase<type::i32_t>>>;
+
+TYPED_TEST_SUITE(TypedOpTest, OpTestCases);
+
+TYPED_TEST(TypedOpTest, Equal) {
+  using Tag = typename TypeParam::type_tag;
+
+  EXPECT_TRUE(op::equal<Tag>(TypeParam::default_, TypeParam::default_));
+  EXPECT_TRUE(op::equal<Tag>(TypeParam::one, TypeParam::one));
+  EXPECT_TRUE(op::equal<Tag>(TypeParam::one, TypeParam::otherOne));
+
+  EXPECT_FALSE(op::equal<Tag>(TypeParam::default_, TypeParam::one));
+  EXPECT_FALSE(op::equal<Tag>(TypeParam::one, TypeParam::default_));
+  for (const auto& other : TypeParam::many) {
+    EXPECT_FALSE(op::equal<Tag>(TypeParam::one, other));
+    EXPECT_FALSE(op::equal<Tag>(other, TypeParam::one));
+  }
+}
+
+TYPED_TEST(TypedOpTest, Empty) {
+  using Tag = typename TypeParam::type_tag;
+
+  EXPECT_TRUE(op::isEmpty<Tag>(TypeParam::default_));
+  EXPECT_FALSE(op::isEmpty<Tag>(TypeParam::one));
+  for (const auto& other : TypeParam::many) {
+    EXPECT_FALSE(op::isEmpty<Tag>(other));
+  }
+}
+
+TYPED_TEST(TypedOpTest, Clear) {
+  using T = typename TypeParam::type;
+  using Tag = typename TypeParam::type_tag;
+
+  T value = TypeParam::one;
+  EXPECT_FALSE(op::isEmpty<Tag>(value));
+  EXPECT_FALSE(op::equal<Tag>(value, TypeParam::default_));
+  EXPECT_TRUE(op::equal<Tag>(value, TypeParam::one));
+  op::clear<Tag>(value);
+  EXPECT_TRUE(op::isEmpty<Tag>(value));
+  EXPECT_TRUE(op::equal<Tag>(value, TypeParam::default_));
+  EXPECT_FALSE(op::equal<Tag>(value, TypeParam::one));
 }
 
 } // namespace
