@@ -27,7 +27,7 @@ from thrift.py3.server import (
     getServiceName,
 )
 from thrift.py3lite.server import (
-    Py3LiteServer,
+    ThriftServer,
 )
 
 
@@ -96,7 +96,7 @@ class ServicesTests(unittest.TestCase):
         self.assertIsInstance(loop.run_until_complete(coro), SocketAddress)
 
     async def get_address(self, loop: asyncio.AbstractEventLoop) -> SocketAddress:
-        server = Py3LiteServer(Handler(), port=0)
+        server = ThriftServer(Handler(), port=0)
         serve_task = loop.create_task(server.serve())
         addy = await server.get_address()
         server.stop()
@@ -124,7 +124,7 @@ class ServicesTests(unittest.TestCase):
         IDLE_TIMEOUT = 19.84
         QUEUE_TIMEOUT = 20.19
 
-        server = Py3LiteServer(Handler(), port=0)
+        server = ThriftServer(Handler(), port=0)
         server.set_max_requests(MAX_REQUESTS)
         server.set_max_connections(MAX_CONNECTIONS)
         server.set_listen_backlog(LISTEN_BACKLOG)
@@ -143,7 +143,7 @@ class ServicesTests(unittest.TestCase):
         self.assertTrue(server.is_plaintext_allowed_on_loopback())
 
     def test_server_get_stats(self) -> None:
-        server = Py3LiteServer(Handler(), port=0)
+        server = ThriftServer(Handler(), port=0)
 
         active_requests = server.get_active_requests()
         self.assertGreaterEqual(active_requests, 0)

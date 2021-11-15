@@ -29,7 +29,7 @@ from typing import (
     overload,
 )
 
-from thrift.py3.server import ThriftServer
+from thrift.py3.server import ThriftServer as ThriftServer_py3
 
 IPAddress = Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
 # pyre-fixme[24]: Generic type `os.PathLike` expects 1 type parameter.
@@ -47,7 +47,7 @@ class ServiceInterface:
         traceback: Optional[TracebackType],
     ) -> Optional[bool]: ...
 
-class Py3LiteServer(ThriftServer):
+class ThriftServer(ThriftServer_py3):
     def __init__(
         self,
         handler: ServiceInterface,

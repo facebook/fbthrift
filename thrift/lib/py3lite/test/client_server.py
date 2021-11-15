@@ -34,7 +34,7 @@ from thrift.py3.server import (
 from thrift.py3lite.client import ClientType, get_client
 from thrift.py3lite.exceptions import ApplicationError, TransportError
 from thrift.py3lite.server import (
-    Py3LiteServer,
+    ThriftServer,
     ServiceInterface,
 )
 
@@ -100,7 +100,7 @@ class DerivedHandler(Handler, DerivedTestingServiceInterface):
 
 # pyre-fixme[13]: Attribute `serve_task` is never initialized.
 class TestServer:
-    server: Py3LiteServer
+    server: ThriftServer
     serve_task: asyncio.Task
 
     def __init__(
@@ -109,7 +109,7 @@ class TestServer:
         path: Optional["Path"] = None,
         handler: ServiceInterface = Handler(),  # noqa: B008
     ) -> None:
-        self.server = Py3LiteServer(handler, ip=ip, path=path)
+        self.server = ThriftServer(handler, ip=ip, path=path)
 
     async def __aenter__(self) -> SocketAddress:
         self.serve_task = asyncio.get_event_loop().create_task(self.server.serve())

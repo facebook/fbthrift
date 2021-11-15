@@ -17,11 +17,15 @@ import sys
 import traceback
 
 from cpython.ref cimport PyObject
-from libcpp.map cimport map
+from libcpp.map cimport map as cmap
+from libcpp.memory cimport make_shared, static_pointer_cast
+from libcpp.string cimport string
 from libcpp.unordered_set cimport unordered_set
 from libcpp.utility cimport move as cmove
 from folly.executor cimport get_executor
+from folly.iobuf cimport IOBuf, from_unique_ptr
 from thrift.py3.exceptions cimport cTApplicationException, cTApplicationExceptionType__UNKNOWN, ApplicationError
+from thrift.py3.server cimport Cpp2RequestContext, ThriftServer as ThriftServer_py3, RequestContext, THRIFT_REQUEST_CONTEXT
 from thrift.py3lite.serializer cimport Protocol
 from folly cimport (
   cFollyPromise,
@@ -135,7 +139,7 @@ cdef public api void handleServerCallbackOneway(object func, string funcName, Cp
 cdef class Py3LiteAsyncProcessorFactory(AsyncProcessorFactory):
     @staticmethod
     cdef Py3LiteAsyncProcessorFactory create(dict funcMap, bytes serviceName):
-        cdef map[string, PyObject*] funcs
+        cdef cmap[string, PyObject*] funcs
         cdef unordered_set[string] oneways
         for name, func in funcMap.items():
             funcs[<string>name] = <PyObject*>func
@@ -163,7 +167,7 @@ cdef class ServiceInterface:
         # Same as above, but allow end users to define things to be cleaned up
         pass
 
-cdef class Py3LiteServer(ThriftServer):
+cdef class ThriftServer(ThriftServer_py3):
     cdef readonly dict funcMap
     cdef readonly ServiceInterface handler
 
