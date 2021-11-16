@@ -24,7 +24,7 @@
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&&> <%field:cpp_name%>_ref() const&& {
-    return {std::move(this-><% > common/field_value%>)};
+    return {static_cast<const T&&>(this-><% > common/field_value%>)};
   }
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
@@ -34,7 +34,7 @@
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&&> <%field:cpp_name%>_ref() && {
-    return {std::move(this-><% > common/field_value%>)};
+    return {static_cast<T&&>(this-><% > common/field_value%>)};
   }
 <%#field:eligible_for_storage_name_mangling?%>
 
@@ -45,7 +45,7 @@
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&&> <%field:cpp_name%>() const&& {
-    return {std::move(this-><% > common/field_value%>)};
+    return {static_cast<const T&&>(this-><% > common/field_value%>)};
   }
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
@@ -55,7 +55,7 @@
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&&> <%field:cpp_name%>() && {
-    return {std::move(this-><% > common/field_value%>)};
+    return {static_cast<T&&>(this-><% > common/field_value%>)};
   }
 <%/field:eligible_for_storage_name_mangling?%>
 <%/field:boxed_ref?%>
@@ -67,10 +67,10 @@
   FOLLY_ERASE const T& <%field:cpp_name%>_ref() const& { return <% > common/field_value%>; }
 
   template <typename ..., typename T = <%field:cpp_storage_type%>>
-  FOLLY_ERASE T&& <%field:cpp_name%>_ref() && { return std::move(<% > common/field_value%>); }
+  FOLLY_ERASE T&& <%field:cpp_name%>_ref() && { return static_cast<T&&>(<% > common/field_value%>); }
 
   template <typename ..., typename T = <%field:cpp_storage_type%>>
-  FOLLY_ERASE const T&& <%field:cpp_name%>_ref() const&& { return std::move(<% > common/field_value%>); }
+  FOLLY_ERASE const T&& <%field:cpp_name%>_ref() const&& { return static_cast<const T&&>(<% > common/field_value%>); }
 <%/field:boxed_ref?%>
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
@@ -83,7 +83,7 @@
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> <%field:cpp_name%>_ref() const&& {
-    return {std::move(this-><% > common/field_value%>), __isset.at(<%field:isset_index%>), __isset.bit(<%field:isset_index%>)};
+    return {static_cast<const T&&>(this-><% > common/field_value%>), __isset.at(<%field:isset_index%>), __isset.bit(<%field:isset_index%>)};
   }
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
@@ -93,7 +93,7 @@
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> <%field:cpp_name%>_ref() && {
-    return {std::move(this-><% > common/field_value%>), __isset.at(<%field:isset_index%>), __isset.bit(<%field:isset_index%>)};
+    return {static_cast<T&&>(this-><% > common/field_value%>), __isset.at(<%field:isset_index%>), __isset.bit(<%field:isset_index%>)};
   }
 <%#field:eligible_for_storage_name_mangling?%>
 
@@ -104,7 +104,7 @@
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> <%field:cpp_name%>() const&& {
-    return {std::move(this-><% > common/field_value%>), __isset.at(<%field:isset_index%>), __isset.bit(<%field:isset_index%>)};
+    return {static_cast<const T&&>(this-><% > common/field_value%>), __isset.at(<%field:isset_index%>), __isset.bit(<%field:isset_index%>)};
   }
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
@@ -114,7 +114,7 @@
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> <%field:cpp_name%>() && {
-    return {std::move(this-><% > common/field_value%>), __isset.at(<%field:isset_index%>), __isset.bit(<%field:isset_index%>)};
+    return {static_cast<T&&>(this-><% > common/field_value%>), __isset.at(<%field:isset_index%>), __isset.bit(<%field:isset_index%>)};
   }
 <%/field:eligible_for_storage_name_mangling?%>
 <%/field:optional?%>
@@ -128,7 +128,7 @@
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> <%field:cpp_name%>_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{std::move(this-><% > common/field_value%>)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this-><% > common/field_value%>)};
   }
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
@@ -138,7 +138,7 @@
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> <%field:cpp_name%>_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{std::move(this-><% > common/field_value%>)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this-><% > common/field_value%>)};
   }
 <%#field:eligible_for_storage_name_mangling?%>
 
@@ -149,7 +149,7 @@
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> <%field:cpp_name%>() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{std::move(this-><% > common/field_value%>)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this-><% > common/field_value%>)};
   }
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
@@ -159,7 +159,7 @@
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> <%field:cpp_name%>() && {
-    return ::apache::thrift::required_field_ref<T&&>{std::move(this-><% > common/field_value%>)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this-><% > common/field_value%>)};
   }
 <%/field:eligible_for_storage_name_mangling?%>
 <%/field:required?%>
@@ -172,7 +172,7 @@
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> <%field:cpp_name%>_ref() const&& {
-    return {std::move(this-><% > common/field_value%>), __isset.at(<%field:isset_index%>), __isset.bit(<%field:isset_index%>)};
+    return {static_cast<const T&&>(this-><% > common/field_value%>), __isset.at(<%field:isset_index%>), __isset.bit(<%field:isset_index%>)};
   }
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
@@ -182,7 +182,7 @@
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> <%field:cpp_name%>_ref() && {
-    return {std::move(this-><% > common/field_value%>), __isset.at(<%field:isset_index%>), __isset.bit(<%field:isset_index%>)};
+    return {static_cast<T&&>(this-><% > common/field_value%>), __isset.at(<%field:isset_index%>), __isset.bit(<%field:isset_index%>)};
   }
 <%#field:eligible_for_storage_name_mangling?%>
 
@@ -193,7 +193,7 @@
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> <%field:cpp_name%>() const&& {
-    return {std::move(this-><% > common/field_value%>), __isset.at(<%field:isset_index%>), __isset.bit(<%field:isset_index%>)};
+    return {static_cast<const T&&>(this-><% > common/field_value%>), __isset.at(<%field:isset_index%>), __isset.bit(<%field:isset_index%>)};
   }
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
@@ -203,7 +203,7 @@
 
   template <typename..., typename T = <%field:cpp_storage_type%>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> <%field:cpp_name%>() && {
-    return {std::move(this-><% > common/field_value%>), __isset.at(<%field:isset_index%>), __isset.bit(<%field:isset_index%>)};
+    return {static_cast<T&&>(this-><% > common/field_value%>), __isset.at(<%field:isset_index%>), __isset.bit(<%field:isset_index%>)};
   }
 <%/field:eligible_for_storage_name_mangling?%>
 <%/field:required?%><%/field:optional?%>

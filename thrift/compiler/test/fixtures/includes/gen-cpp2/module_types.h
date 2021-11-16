@@ -109,7 +109,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::cpp2::Included>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIncludedField_ref() const&& {
-    return {std::move(this->__fbthrift_field_MyIncludedField), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyIncludedField), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::cpp2::Included>
@@ -119,7 +119,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::cpp2::Included>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIncludedField_ref() && {
-    return {std::move(this->__fbthrift_field_MyIncludedField), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyIncludedField), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::cpp2::Included>
@@ -129,7 +129,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::cpp2::Included>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIncludedField() const&& {
-    return {std::move(this->__fbthrift_field_MyIncludedField), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyIncludedField), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::cpp2::Included>
@@ -139,7 +139,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::cpp2::Included>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIncludedField() && {
-    return {std::move(this->__fbthrift_field_MyIncludedField), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyIncludedField), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::cpp2::Included>
@@ -149,7 +149,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::cpp2::Included>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyOtherIncludedField_ref() const&& {
-    return {std::move(this->__fbthrift_field_MyOtherIncludedField), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyOtherIncludedField), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::cpp2::Included>
@@ -159,7 +159,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::cpp2::Included>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyOtherIncludedField_ref() && {
-    return {std::move(this->__fbthrift_field_MyOtherIncludedField), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyOtherIncludedField), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::cpp2::Included>
@@ -169,7 +169,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::cpp2::Included>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyOtherIncludedField() const&& {
-    return {std::move(this->__fbthrift_field_MyOtherIncludedField), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyOtherIncludedField), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::cpp2::Included>
@@ -179,7 +179,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::cpp2::Included>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyOtherIncludedField() && {
-    return {std::move(this->__fbthrift_field_MyOtherIncludedField), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyOtherIncludedField), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::cpp2::IncludedInt64>
@@ -189,7 +189,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::cpp2::IncludedInt64>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIncludedInt_ref() const&& {
-    return {std::move(this->__fbthrift_field_MyIncludedInt), __isset.at(2), __isset.bit(2)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyIncludedInt), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::cpp2::IncludedInt64>
@@ -199,7 +199,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::cpp2::IncludedInt64>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIncludedInt_ref() && {
-    return {std::move(this->__fbthrift_field_MyIncludedInt), __isset.at(2), __isset.bit(2)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyIncludedInt), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::cpp2::IncludedInt64>
@@ -209,7 +209,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::cpp2::IncludedInt64>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIncludedInt() const&& {
-    return {std::move(this->__fbthrift_field_MyIncludedInt), __isset.at(2), __isset.bit(2)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyIncludedInt), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::cpp2::IncludedInt64>
@@ -219,7 +219,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::cpp2::IncludedInt64>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIncludedInt() && {
-    return {std::move(this->__fbthrift_field_MyIncludedInt), __isset.at(2), __isset.bit(2)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyIncludedInt), __isset.at(2), __isset.bit(2)};
   }
   const ::cpp2::Included& get_MyIncludedField() const&;
   ::cpp2::Included get_MyIncludedField() &&;

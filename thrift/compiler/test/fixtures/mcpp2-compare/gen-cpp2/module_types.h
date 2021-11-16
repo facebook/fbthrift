@@ -1223,7 +1223,7 @@ class ASimpleStruct final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> boolField_ref() const&& {
-    return {std::move(this->__fbthrift_field_boolField), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_boolField), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int64_t>
@@ -1233,7 +1233,7 @@ class ASimpleStruct final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> boolField_ref() && {
-    return {std::move(this->__fbthrift_field_boolField), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_boolField), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int64_t>
@@ -1243,7 +1243,7 @@ class ASimpleStruct final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> boolField() const&& {
-    return {std::move(this->__fbthrift_field_boolField), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_boolField), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int64_t>
@@ -1253,7 +1253,7 @@ class ASimpleStruct final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> boolField() && {
-    return {std::move(this->__fbthrift_field_boolField), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_boolField), __isset.at(0), __isset.bit(0)};
   }
 
   ::std::int64_t get_boolField() const {
@@ -1342,7 +1342,7 @@ class ASimpleStructNoexcept final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> boolField_ref() const&& {
-    return {std::move(this->__fbthrift_field_boolField), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_boolField), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int64_t>
@@ -1352,7 +1352,7 @@ class ASimpleStructNoexcept final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> boolField_ref() && {
-    return {std::move(this->__fbthrift_field_boolField), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_boolField), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int64_t>
@@ -1362,7 +1362,7 @@ class ASimpleStructNoexcept final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> boolField() const&& {
-    return {std::move(this->__fbthrift_field_boolField), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_boolField), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int64_t>
@@ -1372,7 +1372,7 @@ class ASimpleStructNoexcept final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> boolField() && {
-    return {std::move(this->__fbthrift_field_boolField), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_boolField), __isset.at(0), __isset.bit(0)};
   }
 
   ::std::int64_t get_boolField() const {
@@ -1481,7 +1481,7 @@ class MyStruct final  {
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyBoolField_ref() const&& {
-    return {std::move(this->__fbthrift_field_MyBoolField), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyBoolField), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = bool>
@@ -1491,7 +1491,7 @@ class MyStruct final  {
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyBoolField_ref() && {
-    return {std::move(this->__fbthrift_field_MyBoolField), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyBoolField), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = bool>
@@ -1501,7 +1501,7 @@ class MyStruct final  {
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyBoolField() const&& {
-    return {std::move(this->__fbthrift_field_MyBoolField), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyBoolField), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = bool>
@@ -1511,7 +1511,7 @@ class MyStruct final  {
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyBoolField() && {
-    return {std::move(this->__fbthrift_field_MyBoolField), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyBoolField), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int64_t>
@@ -1521,7 +1521,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIntField_ref() const&& {
-    return {std::move(this->__fbthrift_field_MyIntField), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyIntField), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::int64_t>
@@ -1531,7 +1531,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField_ref() && {
-    return {std::move(this->__fbthrift_field_MyIntField), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyIntField), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::int64_t>
@@ -1541,7 +1541,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIntField() const&& {
-    return {std::move(this->__fbthrift_field_MyIntField), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyIntField), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::int64_t>
@@ -1551,7 +1551,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField() && {
-    return {std::move(this->__fbthrift_field_MyIntField), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyIntField), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -1561,7 +1561,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyStringField_ref() const&& {
-    return {std::move(this->__fbthrift_field_MyStringField), __isset.at(2), __isset.bit(2)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyStringField), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -1571,7 +1571,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyStringField_ref() && {
-    return {std::move(this->__fbthrift_field_MyStringField), __isset.at(2), __isset.bit(2)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyStringField), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -1581,7 +1581,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyStringField() const&& {
-    return {std::move(this->__fbthrift_field_MyStringField), __isset.at(2), __isset.bit(2)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyStringField), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -1591,7 +1591,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyStringField() && {
-    return {std::move(this->__fbthrift_field_MyStringField), __isset.at(2), __isset.bit(2)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyStringField), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -1601,7 +1601,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyStringField2_ref() const&& {
-    return {std::move(this->__fbthrift_field_MyStringField2), __isset.at(3), __isset.bit(3)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyStringField2), __isset.at(3), __isset.bit(3)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -1611,7 +1611,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyStringField2_ref() && {
-    return {std::move(this->__fbthrift_field_MyStringField2), __isset.at(3), __isset.bit(3)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyStringField2), __isset.at(3), __isset.bit(3)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -1621,7 +1621,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyStringField2() const&& {
-    return {std::move(this->__fbthrift_field_MyStringField2), __isset.at(3), __isset.bit(3)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyStringField2), __isset.at(3), __isset.bit(3)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -1631,7 +1631,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyStringField2() && {
-    return {std::move(this->__fbthrift_field_MyStringField2), __isset.at(3), __isset.bit(3)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyStringField2), __isset.at(3), __isset.bit(3)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -1641,7 +1641,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyBinaryField_ref() const&& {
-    return {std::move(this->__fbthrift_field_MyBinaryField), __isset.at(4), __isset.bit(4)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyBinaryField), __isset.at(4), __isset.bit(4)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -1651,7 +1651,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyBinaryField_ref() && {
-    return {std::move(this->__fbthrift_field_MyBinaryField), __isset.at(4), __isset.bit(4)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyBinaryField), __isset.at(4), __isset.bit(4)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -1661,7 +1661,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyBinaryField() const&& {
-    return {std::move(this->__fbthrift_field_MyBinaryField), __isset.at(4), __isset.bit(4)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyBinaryField), __isset.at(4), __isset.bit(4)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -1671,7 +1671,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyBinaryField() && {
-    return {std::move(this->__fbthrift_field_MyBinaryField), __isset.at(4), __isset.bit(4)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyBinaryField), __isset.at(4), __isset.bit(4)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -1681,7 +1681,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> MyBinaryField2_ref() const&& {
-    return {std::move(this->__fbthrift_field_MyBinaryField2), __isset.at(5), __isset.bit(5)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyBinaryField2), __isset.at(5), __isset.bit(5)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -1691,7 +1691,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> MyBinaryField2_ref() && {
-    return {std::move(this->__fbthrift_field_MyBinaryField2), __isset.at(5), __isset.bit(5)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyBinaryField2), __isset.at(5), __isset.bit(5)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -1701,7 +1701,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> MyBinaryField2() const&& {
-    return {std::move(this->__fbthrift_field_MyBinaryField2), __isset.at(5), __isset.bit(5)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyBinaryField2), __isset.at(5), __isset.bit(5)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -1711,7 +1711,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> MyBinaryField2() && {
-    return {std::move(this->__fbthrift_field_MyBinaryField2), __isset.at(5), __isset.bit(5)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyBinaryField2), __isset.at(5), __isset.bit(5)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -1721,7 +1721,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> MyBinaryField3_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->MyBinaryField3)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->MyBinaryField3)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -1731,7 +1731,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> MyBinaryField3_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{std::move(this->MyBinaryField3)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->MyBinaryField3)};
   }
 
   template <typename..., typename T = ::std::vector<::std::string>>
@@ -1741,7 +1741,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyBinaryListField4_ref() const&& {
-    return {std::move(this->__fbthrift_field_MyBinaryListField4), __isset.at(6), __isset.bit(6)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyBinaryListField4), __isset.at(6), __isset.bit(6)};
   }
 
   template <typename..., typename T = ::std::vector<::std::string>>
@@ -1751,7 +1751,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyBinaryListField4_ref() && {
-    return {std::move(this->__fbthrift_field_MyBinaryListField4), __isset.at(6), __isset.bit(6)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyBinaryListField4), __isset.at(6), __isset.bit(6)};
   }
 
   template <typename..., typename T = ::std::vector<::std::string>>
@@ -1761,7 +1761,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyBinaryListField4() const&& {
-    return {std::move(this->__fbthrift_field_MyBinaryListField4), __isset.at(6), __isset.bit(6)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyBinaryListField4), __isset.at(6), __isset.bit(6)};
   }
 
   template <typename..., typename T = ::std::vector<::std::string>>
@@ -1771,7 +1771,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyBinaryListField4() && {
-    return {std::move(this->__fbthrift_field_MyBinaryListField4), __isset.at(6), __isset.bit(6)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyBinaryListField4), __isset.at(6), __isset.bit(6)};
   }
 
   template <typename..., typename T = ::std::map<::some::valid::ns::MyEnumA, ::std::string>>
@@ -1781,7 +1781,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::map<::some::valid::ns::MyEnumA, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyMapEnumAndInt_ref() const&& {
-    return {std::move(this->__fbthrift_field_MyMapEnumAndInt), __isset.at(7), __isset.bit(7)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyMapEnumAndInt), __isset.at(7), __isset.bit(7)};
   }
 
   template <typename..., typename T = ::std::map<::some::valid::ns::MyEnumA, ::std::string>>
@@ -1791,7 +1791,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::map<::some::valid::ns::MyEnumA, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyMapEnumAndInt_ref() && {
-    return {std::move(this->__fbthrift_field_MyMapEnumAndInt), __isset.at(7), __isset.bit(7)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyMapEnumAndInt), __isset.at(7), __isset.bit(7)};
   }
 
   template <typename..., typename T = ::std::map<::some::valid::ns::MyEnumA, ::std::string>>
@@ -1801,7 +1801,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::map<::some::valid::ns::MyEnumA, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyMapEnumAndInt() const&& {
-    return {std::move(this->__fbthrift_field_MyMapEnumAndInt), __isset.at(7), __isset.bit(7)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyMapEnumAndInt), __isset.at(7), __isset.bit(7)};
   }
 
   template <typename..., typename T = ::std::map<::some::valid::ns::MyEnumA, ::std::string>>
@@ -1811,7 +1811,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::map<::some::valid::ns::MyEnumA, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyMapEnumAndInt() && {
-    return {std::move(this->__fbthrift_field_MyMapEnumAndInt), __isset.at(7), __isset.bit(7)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyMapEnumAndInt), __isset.at(7), __isset.bit(7)};
   }
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
@@ -1821,7 +1821,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyCustomField_ref() const&& {
-    return {std::move(this->__fbthrift_field_MyCustomField), __isset.at(8), __isset.bit(8)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyCustomField), __isset.at(8), __isset.bit(8)};
   }
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
@@ -1831,7 +1831,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyCustomField_ref() && {
-    return {std::move(this->__fbthrift_field_MyCustomField), __isset.at(8), __isset.bit(8)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyCustomField), __isset.at(8), __isset.bit(8)};
   }
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
@@ -1841,7 +1841,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyCustomField() const&& {
-    return {std::move(this->__fbthrift_field_MyCustomField), __isset.at(8), __isset.bit(8)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyCustomField), __isset.at(8), __isset.bit(8)};
   }
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
@@ -1851,7 +1851,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyCustomField() && {
-    return {std::move(this->__fbthrift_field_MyCustomField), __isset.at(8), __isset.bit(8)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyCustomField), __isset.at(8), __isset.bit(8)};
   }
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
@@ -1861,7 +1861,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> MyOptCustomField_ref() const&& {
-    return {std::move(this->__fbthrift_field_MyOptCustomField), __isset.at(9), __isset.bit(9)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyOptCustomField), __isset.at(9), __isset.bit(9)};
   }
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
@@ -1871,7 +1871,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> MyOptCustomField_ref() && {
-    return {std::move(this->__fbthrift_field_MyOptCustomField), __isset.at(9), __isset.bit(9)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyOptCustomField), __isset.at(9), __isset.bit(9)};
   }
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
@@ -1881,7 +1881,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> MyOptCustomField() const&& {
-    return {std::move(this->__fbthrift_field_MyOptCustomField), __isset.at(9), __isset.bit(9)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyOptCustomField), __isset.at(9), __isset.bit(9)};
   }
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
@@ -1891,7 +1891,7 @@ class MyStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> MyOptCustomField() && {
-    return {std::move(this->__fbthrift_field_MyOptCustomField), __isset.at(9), __isset.bit(9)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyOptCustomField), __isset.at(9), __isset.bit(9)};
   }
 
   bool get_MyBoolField() const {
@@ -4618,7 +4618,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> code_ref() const&& {
-    return {std::move(this->code), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->code), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -4628,7 +4628,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> code_ref() && {
-    return {std::move(this->code), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->code), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -4638,7 +4638,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_code_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_code)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->req_code)};
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -4648,7 +4648,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_code_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_code)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->req_code)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -4658,7 +4658,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> message2_ref() const&& {
-    return {std::move(this->message2), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->message2), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -4668,7 +4668,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> message2_ref() && {
-    return {std::move(this->message2), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->message2), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -4678,7 +4678,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_message_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_message)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->req_message)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -4688,7 +4688,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_message_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_message)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->req_message)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -4698,7 +4698,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> exception_list_ref() const&& {
-    return {std::move(this->exception_list), __isset.at(2), __isset.bit(2)};
+    return {static_cast<const T&&>(this->exception_list), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -4708,7 +4708,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> exception_list_ref() && {
-    return {std::move(this->exception_list), __isset.at(2), __isset.bit(2)};
+    return {static_cast<T&&>(this->exception_list), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::std::set<::std::int64_t>>
@@ -4718,7 +4718,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::set<::std::int64_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> exception_set_ref() const&& {
-    return {std::move(this->exception_set), __isset.at(3), __isset.bit(3)};
+    return {static_cast<const T&&>(this->exception_set), __isset.at(3), __isset.bit(3)};
   }
 
   template <typename..., typename T = ::std::set<::std::int64_t>>
@@ -4728,7 +4728,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::set<::std::int64_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> exception_set_ref() && {
-    return {std::move(this->exception_set), __isset.at(3), __isset.bit(3)};
+    return {static_cast<T&&>(this->exception_set), __isset.at(3), __isset.bit(3)};
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
@@ -4738,7 +4738,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> exception_map_ref() const&& {
-    return {std::move(this->exception_map), __isset.at(4), __isset.bit(4)};
+    return {static_cast<const T&&>(this->exception_map), __isset.at(4), __isset.bit(4)};
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
@@ -4748,7 +4748,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> exception_map_ref() && {
-    return {std::move(this->exception_map), __isset.at(4), __isset.bit(4)};
+    return {static_cast<T&&>(this->exception_map), __isset.at(4), __isset.bit(4)};
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
@@ -4758,7 +4758,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_exception_map_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_exception_map)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->req_exception_map)};
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
@@ -4768,7 +4768,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_exception_map_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_exception_map)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->req_exception_map)};
   }
 
   template <typename..., typename T = ::some::valid::ns::MyEnumA>
@@ -4778,7 +4778,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> enum_field_ref() const&& {
-    return {std::move(this->enum_field), __isset.at(5), __isset.bit(5)};
+    return {static_cast<const T&&>(this->enum_field), __isset.at(5), __isset.bit(5)};
   }
 
   template <typename..., typename T = ::some::valid::ns::MyEnumA>
@@ -4788,7 +4788,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> enum_field_ref() && {
-    return {std::move(this->enum_field), __isset.at(5), __isset.bit(5)};
+    return {static_cast<T&&>(this->enum_field), __isset.at(5), __isset.bit(5)};
   }
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
@@ -4798,7 +4798,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> enum_container_ref() const&& {
-    return {std::move(this->enum_container), __isset.at(6), __isset.bit(6)};
+    return {static_cast<const T&&>(this->enum_container), __isset.at(6), __isset.bit(6)};
   }
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
@@ -4808,7 +4808,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> enum_container_ref() && {
-    return {std::move(this->enum_container), __isset.at(6), __isset.bit(6)};
+    return {static_cast<T&&>(this->enum_container), __isset.at(6), __isset.bit(6)};
   }
 
   template <typename..., typename T = ::some::valid::ns::MyStruct>
@@ -4818,7 +4818,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> a_struct_ref() const&& {
-    return {std::move(this->a_struct), __isset.at(7), __isset.bit(7)};
+    return {static_cast<const T&&>(this->a_struct), __isset.at(7), __isset.bit(7)};
   }
 
   template <typename..., typename T = ::some::valid::ns::MyStruct>
@@ -4828,7 +4828,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> a_struct_ref() && {
-    return {std::move(this->a_struct), __isset.at(7), __isset.bit(7)};
+    return {static_cast<T&&>(this->a_struct), __isset.at(7), __isset.bit(7)};
   }
 
   template <typename..., typename T = ::std::set<::some::valid::ns::MyStruct>>
@@ -4838,7 +4838,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::set<::some::valid::ns::MyStruct>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> a_set_struct_ref() const&& {
-    return {std::move(this->a_set_struct), __isset.at(8), __isset.bit(8)};
+    return {static_cast<const T&&>(this->a_set_struct), __isset.at(8), __isset.bit(8)};
   }
 
   template <typename..., typename T = ::std::set<::some::valid::ns::MyStruct>>
@@ -4848,7 +4848,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::set<::some::valid::ns::MyStruct>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> a_set_struct_ref() && {
-    return {std::move(this->a_set_struct), __isset.at(8), __isset.bit(8)};
+    return {static_cast<T&&>(this->a_set_struct), __isset.at(8), __isset.bit(8)};
   }
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::SimpleUnion>>
@@ -4858,7 +4858,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::SimpleUnion>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> a_union_list_ref() const&& {
-    return {std::move(this->a_union_list), __isset.at(9), __isset.bit(9)};
+    return {static_cast<const T&&>(this->a_union_list), __isset.at(9), __isset.bit(9)};
   }
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::SimpleUnion>>
@@ -4868,7 +4868,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::SimpleUnion>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> a_union_list_ref() && {
-    return {std::move(this->a_union_list), __isset.at(9), __isset.bit(9)};
+    return {static_cast<T&&>(this->a_union_list), __isset.at(9), __isset.bit(9)};
   }
 
   template <typename..., typename T = ::some::valid::ns::unionTypeDef>
@@ -4878,7 +4878,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::some::valid::ns::unionTypeDef>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> union_typedef_ref() const&& {
-    return {std::move(this->union_typedef), __isset.at(10), __isset.bit(10)};
+    return {static_cast<const T&&>(this->union_typedef), __isset.at(10), __isset.bit(10)};
   }
 
   template <typename..., typename T = ::some::valid::ns::unionTypeDef>
@@ -4888,7 +4888,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::some::valid::ns::unionTypeDef>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> union_typedef_ref() && {
-    return {std::move(this->union_typedef), __isset.at(10), __isset.bit(10)};
+    return {static_cast<T&&>(this->union_typedef), __isset.at(10), __isset.bit(10)};
   }
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::unionTypeDef>>
@@ -4898,7 +4898,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::unionTypeDef>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> a_union_typedef_list_ref() const&& {
-    return {std::move(this->a_union_typedef_list), __isset.at(11), __isset.bit(11)};
+    return {static_cast<const T&&>(this->a_union_typedef_list), __isset.at(11), __isset.bit(11)};
   }
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::unionTypeDef>>
@@ -4908,7 +4908,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::unionTypeDef>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> a_union_typedef_list_ref() && {
-    return {std::move(this->a_union_typedef_list), __isset.at(11), __isset.bit(11)};
+    return {static_cast<T&&>(this->a_union_typedef_list), __isset.at(11), __isset.bit(11)};
   }
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
@@ -4918,7 +4918,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyCustomField_ref() const&& {
-    return {std::move(this->MyCustomField), __isset.at(12), __isset.bit(12)};
+    return {static_cast<const T&&>(this->MyCustomField), __isset.at(12), __isset.bit(12)};
   }
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
@@ -4928,7 +4928,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyCustomField_ref() && {
-    return {std::move(this->MyCustomField), __isset.at(12), __isset.bit(12)};
+    return {static_cast<T&&>(this->MyCustomField), __isset.at(12), __isset.bit(12)};
   }
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
@@ -4938,7 +4938,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> MyOptCustomField_ref() const&& {
-    return {std::move(this->MyOptCustomField), __isset.at(13), __isset.bit(13)};
+    return {static_cast<const T&&>(this->MyOptCustomField), __isset.at(13), __isset.bit(13)};
   }
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
@@ -4948,7 +4948,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> MyOptCustomField_ref() && {
-    return {std::move(this->MyOptCustomField), __isset.at(13), __isset.bit(13)};
+    return {static_cast<T&&>(this->MyOptCustomField), __isset.at(13), __isset.bit(13)};
   }
 
   ::std::int32_t get_code() const {
@@ -5192,7 +5192,7 @@ class FOLLY_EXPORT AnotherException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> code_ref() const&& {
-    return {std::move(this->code), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->code), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -5202,7 +5202,7 @@ class FOLLY_EXPORT AnotherException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> code_ref() && {
-    return {std::move(this->code), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->code), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -5212,7 +5212,7 @@ class FOLLY_EXPORT AnotherException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_code_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_code)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->req_code)};
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -5222,7 +5222,7 @@ class FOLLY_EXPORT AnotherException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_code_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_code)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->req_code)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -5232,7 +5232,7 @@ class FOLLY_EXPORT AnotherException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> message_ref() const&& {
-    return {std::move(this->message), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->message), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -5242,7 +5242,7 @@ class FOLLY_EXPORT AnotherException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> message_ref() && {
-    return {std::move(this->message), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->message), __isset.at(1), __isset.bit(1)};
   }
 
   ::std::int32_t get_code() const {
@@ -5448,7 +5448,7 @@ class containerStruct final  {
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldA_ref() const&& {
-    return {std::move(this->fieldA), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->fieldA), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = bool>
@@ -5458,7 +5458,7 @@ class containerStruct final  {
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldA_ref() && {
-    return {std::move(this->fieldA), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->fieldA), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = bool>
@@ -5468,7 +5468,7 @@ class containerStruct final  {
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_fieldA_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_fieldA)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->req_fieldA)};
   }
 
   template <typename..., typename T = bool>
@@ -5478,7 +5478,7 @@ class containerStruct final  {
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_fieldA_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_fieldA)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->req_fieldA)};
   }
 
   template <typename..., typename T = bool>
@@ -5488,7 +5488,7 @@ class containerStruct final  {
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> opt_fieldA_ref() const&& {
-    return {std::move(this->opt_fieldA), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->opt_fieldA), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = bool>
@@ -5498,7 +5498,7 @@ class containerStruct final  {
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_fieldA_ref() && {
-    return {std::move(this->opt_fieldA), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->opt_fieldA), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::map<::std::string, bool>>
@@ -5508,7 +5508,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::string, bool>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldB_ref() const&& {
-    return {std::move(this->fieldB), __isset.at(2), __isset.bit(2)};
+    return {static_cast<const T&&>(this->fieldB), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::std::map<::std::string, bool>>
@@ -5518,7 +5518,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::string, bool>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldB_ref() && {
-    return {std::move(this->fieldB), __isset.at(2), __isset.bit(2)};
+    return {static_cast<T&&>(this->fieldB), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::std::map<::std::string, bool>>
@@ -5528,7 +5528,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::string, bool>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_fieldB_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_fieldB)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->req_fieldB)};
   }
 
   template <typename..., typename T = ::std::map<::std::string, bool>>
@@ -5538,7 +5538,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::string, bool>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_fieldB_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_fieldB)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->req_fieldB)};
   }
 
   template <typename..., typename T = ::std::map<::std::string, bool>>
@@ -5548,7 +5548,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::string, bool>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> opt_fieldB_ref() const&& {
-    return {std::move(this->opt_fieldB), __isset.at(3), __isset.bit(3)};
+    return {static_cast<const T&&>(this->opt_fieldB), __isset.at(3), __isset.bit(3)};
   }
 
   template <typename..., typename T = ::std::map<::std::string, bool>>
@@ -5558,7 +5558,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::string, bool>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_fieldB_ref() && {
-    return {std::move(this->opt_fieldB), __isset.at(3), __isset.bit(3)};
+    return {static_cast<T&&>(this->opt_fieldB), __isset.at(3), __isset.bit(3)};
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
@@ -5568,7 +5568,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldC_ref() const&& {
-    return {std::move(this->fieldC), __isset.at(4), __isset.bit(4)};
+    return {static_cast<const T&&>(this->fieldC), __isset.at(4), __isset.bit(4)};
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
@@ -5578,7 +5578,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldC_ref() && {
-    return {std::move(this->fieldC), __isset.at(4), __isset.bit(4)};
+    return {static_cast<T&&>(this->fieldC), __isset.at(4), __isset.bit(4)};
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
@@ -5588,7 +5588,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_fieldC_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_fieldC)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->req_fieldC)};
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
@@ -5598,7 +5598,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_fieldC_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_fieldC)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->req_fieldC)};
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
@@ -5608,7 +5608,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> opt_fieldC_ref() const&& {
-    return {std::move(this->opt_fieldC), __isset.at(5), __isset.bit(5)};
+    return {static_cast<const T&&>(this->opt_fieldC), __isset.at(5), __isset.bit(5)};
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
@@ -5618,7 +5618,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_fieldC_ref() && {
-    return {std::move(this->opt_fieldC), __isset.at(5), __isset.bit(5)};
+    return {static_cast<T&&>(this->opt_fieldC), __isset.at(5), __isset.bit(5)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -5628,7 +5628,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldD_ref() const&& {
-    return {std::move(this->fieldD), __isset.at(6), __isset.bit(6)};
+    return {static_cast<const T&&>(this->fieldD), __isset.at(6), __isset.bit(6)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -5638,7 +5638,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldD_ref() && {
-    return {std::move(this->fieldD), __isset.at(6), __isset.bit(6)};
+    return {static_cast<T&&>(this->fieldD), __isset.at(6), __isset.bit(6)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -5648,7 +5648,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldE_ref() const&& {
-    return {std::move(this->fieldE), __isset.at(7), __isset.bit(7)};
+    return {static_cast<const T&&>(this->fieldE), __isset.at(7), __isset.bit(7)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -5658,7 +5658,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldE_ref() && {
-    return {std::move(this->fieldE), __isset.at(7), __isset.bit(7)};
+    return {static_cast<T&&>(this->fieldE), __isset.at(7), __isset.bit(7)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -5668,7 +5668,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_fieldE_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_fieldE)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->req_fieldE)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -5678,7 +5678,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_fieldE_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_fieldE)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->req_fieldE)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -5688,7 +5688,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> opt_fieldE_ref() const&& {
-    return {std::move(this->opt_fieldE), __isset.at(8), __isset.bit(8)};
+    return {static_cast<const T&&>(this->opt_fieldE), __isset.at(8), __isset.bit(8)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -5698,7 +5698,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_fieldE_ref() && {
-    return {std::move(this->opt_fieldE), __isset.at(8), __isset.bit(8)};
+    return {static_cast<T&&>(this->opt_fieldE), __isset.at(8), __isset.bit(8)};
   }
 
   template <typename..., typename T = ::std::vector<::std::vector<::std::int32_t>>>
@@ -5708,7 +5708,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::vector<::std::vector<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldF_ref() const&& {
-    return {std::move(this->fieldF), __isset.at(9), __isset.bit(9)};
+    return {static_cast<const T&&>(this->fieldF), __isset.at(9), __isset.bit(9)};
   }
 
   template <typename..., typename T = ::std::vector<::std::vector<::std::int32_t>>>
@@ -5718,7 +5718,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::vector<::std::vector<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldF_ref() && {
-    return {std::move(this->fieldF), __isset.at(9), __isset.bit(9)};
+    return {static_cast<T&&>(this->fieldF), __isset.at(9), __isset.bit(9)};
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>>
@@ -5728,7 +5728,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldG_ref() const&& {
-    return {std::move(this->fieldG), __isset.at(10), __isset.bit(10)};
+    return {static_cast<const T&&>(this->fieldG), __isset.at(10), __isset.bit(10)};
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>>
@@ -5738,7 +5738,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldG_ref() && {
-    return {std::move(this->fieldG), __isset.at(10), __isset.bit(10)};
+    return {static_cast<T&&>(this->fieldG), __isset.at(10), __isset.bit(10)};
   }
 
   template <typename..., typename T = ::std::vector<::std::set<::std::int32_t>>>
@@ -5748,7 +5748,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::vector<::std::set<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldH_ref() const&& {
-    return {std::move(this->fieldH), __isset.at(11), __isset.bit(11)};
+    return {static_cast<const T&&>(this->fieldH), __isset.at(11), __isset.bit(11)};
   }
 
   template <typename..., typename T = ::std::vector<::std::set<::std::int32_t>>>
@@ -5758,7 +5758,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::vector<::std::set<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldH_ref() && {
-    return {std::move(this->fieldH), __isset.at(11), __isset.bit(11)};
+    return {static_cast<T&&>(this->fieldH), __isset.at(11), __isset.bit(11)};
   }
 
   template <typename..., typename T = bool>
@@ -5768,7 +5768,7 @@ class containerStruct final  {
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldI_ref() const&& {
-    return {std::move(this->fieldI), __isset.at(12), __isset.bit(12)};
+    return {static_cast<const T&&>(this->fieldI), __isset.at(12), __isset.bit(12)};
   }
 
   template <typename..., typename T = bool>
@@ -5778,7 +5778,7 @@ class containerStruct final  {
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldI_ref() && {
-    return {std::move(this->fieldI), __isset.at(12), __isset.bit(12)};
+    return {static_cast<T&&>(this->fieldI), __isset.at(12), __isset.bit(12)};
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::std::vector<::std::int32_t>>>
@@ -5788,7 +5788,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::string, ::std::vector<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldJ_ref() const&& {
-    return {std::move(this->fieldJ), __isset.at(13), __isset.bit(13)};
+    return {static_cast<const T&&>(this->fieldJ), __isset.at(13), __isset.bit(13)};
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::std::vector<::std::int32_t>>>
@@ -5798,7 +5798,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::string, ::std::vector<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldJ_ref() && {
-    return {std::move(this->fieldJ), __isset.at(13), __isset.bit(13)};
+    return {static_cast<T&&>(this->fieldJ), __isset.at(13), __isset.bit(13)};
   }
 
   template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>>
@@ -5808,7 +5808,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldK_ref() const&& {
-    return {std::move(this->fieldK), __isset.at(14), __isset.bit(14)};
+    return {static_cast<const T&&>(this->fieldK), __isset.at(14), __isset.bit(14)};
   }
 
   template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>>
@@ -5818,7 +5818,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldK_ref() && {
-    return {std::move(this->fieldK), __isset.at(14), __isset.bit(14)};
+    return {static_cast<T&&>(this->fieldK), __isset.at(14), __isset.bit(14)};
   }
 
   template <typename..., typename T = ::std::set<::std::set<::std::set<bool>>>>
@@ -5828,7 +5828,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::set<::std::set<::std::set<bool>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldL_ref() const&& {
-    return {std::move(this->fieldL), __isset.at(15), __isset.bit(15)};
+    return {static_cast<const T&&>(this->fieldL), __isset.at(15), __isset.bit(15)};
   }
 
   template <typename..., typename T = ::std::set<::std::set<::std::set<bool>>>>
@@ -5838,7 +5838,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::set<::std::set<::std::set<bool>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldL_ref() && {
-    return {std::move(this->fieldL), __isset.at(15), __isset.bit(15)};
+    return {static_cast<T&&>(this->fieldL), __isset.at(15), __isset.bit(15)};
   }
 
   template <typename..., typename T = ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
@@ -5848,7 +5848,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldM_ref() const&& {
-    return {std::move(this->fieldM), __isset.at(16), __isset.bit(16)};
+    return {static_cast<const T&&>(this->fieldM), __isset.at(16), __isset.bit(16)};
   }
 
   template <typename..., typename T = ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
@@ -5858,7 +5858,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldM_ref() && {
-    return {std::move(this->fieldM), __isset.at(16), __isset.bit(16)};
+    return {static_cast<T&&>(this->fieldM), __isset.at(16), __isset.bit(16)};
   }
 
   template <typename..., typename T = ::some::valid::ns::simpleTypeDef>
@@ -5868,7 +5868,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::simpleTypeDef>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldN_ref() const&& {
-    return {std::move(this->fieldN), __isset.at(17), __isset.bit(17)};
+    return {static_cast<const T&&>(this->fieldN), __isset.at(17), __isset.bit(17)};
   }
 
   template <typename..., typename T = ::some::valid::ns::simpleTypeDef>
@@ -5878,7 +5878,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::simpleTypeDef>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldN_ref() && {
-    return {std::move(this->fieldN), __isset.at(17), __isset.bit(17)};
+    return {static_cast<T&&>(this->fieldN), __isset.at(17), __isset.bit(17)};
   }
 
   template <typename..., typename T = ::some::valid::ns::complexStructTypeDef>
@@ -5888,7 +5888,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::complexStructTypeDef>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldO_ref() const&& {
-    return {std::move(this->fieldO), __isset.at(18), __isset.bit(18)};
+    return {static_cast<const T&&>(this->fieldO), __isset.at(18), __isset.bit(18)};
   }
 
   template <typename..., typename T = ::some::valid::ns::complexStructTypeDef>
@@ -5898,7 +5898,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::complexStructTypeDef>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldO_ref() && {
-    return {std::move(this->fieldO), __isset.at(18), __isset.bit(18)};
+    return {static_cast<T&&>(this->fieldO), __isset.at(18), __isset.bit(18)};
   }
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::mostComplexTypeDef>>
@@ -5908,7 +5908,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::mostComplexTypeDef>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldP_ref() const&& {
-    return {std::move(this->fieldP), __isset.at(19), __isset.bit(19)};
+    return {static_cast<const T&&>(this->fieldP), __isset.at(19), __isset.bit(19)};
   }
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::mostComplexTypeDef>>
@@ -5918,7 +5918,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::mostComplexTypeDef>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldP_ref() && {
-    return {std::move(this->fieldP), __isset.at(19), __isset.bit(19)};
+    return {static_cast<T&&>(this->fieldP), __isset.at(19), __isset.bit(19)};
   }
 
   template <typename..., typename T = ::some::valid::ns::MyEnumA>
@@ -5928,7 +5928,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldQ_ref() const&& {
-    return {std::move(this->fieldQ), __isset.at(20), __isset.bit(20)};
+    return {static_cast<const T&&>(this->fieldQ), __isset.at(20), __isset.bit(20)};
   }
 
   template <typename..., typename T = ::some::valid::ns::MyEnumA>
@@ -5938,7 +5938,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldQ_ref() && {
-    return {std::move(this->fieldQ), __isset.at(20), __isset.bit(20)};
+    return {static_cast<T&&>(this->fieldQ), __isset.at(20), __isset.bit(20)};
   }
 
   template <typename..., typename T = ::some::valid::ns::MyEnumA>
@@ -5948,7 +5948,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldR_ref() const&& {
-    return {std::move(this->fieldR), __isset.at(21), __isset.bit(21)};
+    return {static_cast<const T&&>(this->fieldR), __isset.at(21), __isset.bit(21)};
   }
 
   template <typename..., typename T = ::some::valid::ns::MyEnumA>
@@ -5958,7 +5958,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldR_ref() && {
-    return {std::move(this->fieldR), __isset.at(21), __isset.bit(21)};
+    return {static_cast<T&&>(this->fieldR), __isset.at(21), __isset.bit(21)};
   }
 
   template <typename..., typename T = ::some::valid::ns::MyEnumA>
@@ -5968,7 +5968,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_fieldR_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_fieldR)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->req_fieldR)};
   }
 
   template <typename..., typename T = ::some::valid::ns::MyEnumA>
@@ -5978,7 +5978,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_fieldR_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_fieldR)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->req_fieldR)};
   }
 
   template <typename..., typename T = ::some::valid::ns::MyEnumA>
@@ -5988,7 +5988,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> opt_fieldR_ref() const&& {
-    return {std::move(this->opt_fieldR), __isset.at(22), __isset.bit(22)};
+    return {static_cast<const T&&>(this->opt_fieldR), __isset.at(22), __isset.bit(22)};
   }
 
   template <typename..., typename T = ::some::valid::ns::MyEnumA>
@@ -5998,7 +5998,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_fieldR_ref() && {
-    return {std::move(this->opt_fieldR), __isset.at(22), __isset.bit(22)};
+    return {static_cast<T&&>(this->opt_fieldR), __isset.at(22), __isset.bit(22)};
   }
 
   template <typename..., typename T = ::some::valid::ns::MyEnumA>
@@ -6008,7 +6008,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldS_ref() const&& {
-    return {std::move(this->fieldS), __isset.at(23), __isset.bit(23)};
+    return {static_cast<const T&&>(this->fieldS), __isset.at(23), __isset.bit(23)};
   }
 
   template <typename..., typename T = ::some::valid::ns::MyEnumA>
@@ -6018,7 +6018,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldS_ref() && {
-    return {std::move(this->fieldS), __isset.at(23), __isset.bit(23)};
+    return {static_cast<T&&>(this->fieldS), __isset.at(23), __isset.bit(23)};
   }
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
@@ -6028,7 +6028,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldT_ref() const&& {
-    return {std::move(this->fieldT), __isset.at(24), __isset.bit(24)};
+    return {static_cast<const T&&>(this->fieldT), __isset.at(24), __isset.bit(24)};
   }
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
@@ -6038,7 +6038,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldT_ref() && {
-    return {std::move(this->fieldT), __isset.at(24), __isset.bit(24)};
+    return {static_cast<T&&>(this->fieldT), __isset.at(24), __isset.bit(24)};
   }
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
@@ -6048,7 +6048,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldU_ref() const&& {
-    return {std::move(this->fieldU), __isset.at(25), __isset.bit(25)};
+    return {static_cast<const T&&>(this->fieldU), __isset.at(25), __isset.bit(25)};
   }
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
@@ -6058,7 +6058,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldU_ref() && {
-    return {std::move(this->fieldU), __isset.at(25), __isset.bit(25)};
+    return {static_cast<T&&>(this->fieldU), __isset.at(25), __isset.bit(25)};
   }
 
   template <typename..., typename T = ::some::valid::ns::MyStruct>
@@ -6068,7 +6068,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldV_ref() const&& {
-    return {std::move(this->fieldV), __isset.at(26), __isset.bit(26)};
+    return {static_cast<const T&&>(this->fieldV), __isset.at(26), __isset.bit(26)};
   }
 
   template <typename..., typename T = ::some::valid::ns::MyStruct>
@@ -6078,7 +6078,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldV_ref() && {
-    return {std::move(this->fieldV), __isset.at(26), __isset.bit(26)};
+    return {static_cast<T&&>(this->fieldV), __isset.at(26), __isset.bit(26)};
   }
 
   template <typename..., typename T = ::some::valid::ns::MyStruct>
@@ -6088,7 +6088,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_fieldV_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_fieldV)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->req_fieldV)};
   }
 
   template <typename..., typename T = ::some::valid::ns::MyStruct>
@@ -6098,7 +6098,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_fieldV_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_fieldV)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->req_fieldV)};
   }
 
   template <typename..., typename T = ::some::valid::ns::MyStruct>
@@ -6108,7 +6108,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> opt_fieldV_ref() const&& {
-    return {std::move(this->opt_fieldV), __isset.at(27), __isset.bit(27)};
+    return {static_cast<const T&&>(this->opt_fieldV), __isset.at(27), __isset.bit(27)};
   }
 
   template <typename..., typename T = ::some::valid::ns::MyStruct>
@@ -6118,7 +6118,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_fieldV_ref() && {
-    return {std::move(this->opt_fieldV), __isset.at(27), __isset.bit(27)};
+    return {static_cast<T&&>(this->opt_fieldV), __isset.at(27), __isset.bit(27)};
   }
 
   template <typename..., typename T = ::std::set<::some::valid::ns::MyStruct>>
@@ -6128,7 +6128,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::set<::some::valid::ns::MyStruct>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldW_ref() const&& {
-    return {std::move(this->fieldW), __isset.at(28), __isset.bit(28)};
+    return {static_cast<const T&&>(this->fieldW), __isset.at(28), __isset.bit(28)};
   }
 
   template <typename..., typename T = ::std::set<::some::valid::ns::MyStruct>>
@@ -6138,7 +6138,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::set<::some::valid::ns::MyStruct>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldW_ref() && {
-    return {std::move(this->fieldW), __isset.at(28), __isset.bit(28)};
+    return {static_cast<T&&>(this->fieldW), __isset.at(28), __isset.bit(28)};
   }
 
   template <typename..., typename T = ::some::valid::ns::ComplexUnion>
@@ -6148,7 +6148,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::ComplexUnion>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldX_ref() const&& {
-    return {std::move(this->fieldX), __isset.at(29), __isset.bit(29)};
+    return {static_cast<const T&&>(this->fieldX), __isset.at(29), __isset.bit(29)};
   }
 
   template <typename..., typename T = ::some::valid::ns::ComplexUnion>
@@ -6158,7 +6158,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::ComplexUnion>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldX_ref() && {
-    return {std::move(this->fieldX), __isset.at(29), __isset.bit(29)};
+    return {static_cast<T&&>(this->fieldX), __isset.at(29), __isset.bit(29)};
   }
 
   template <typename..., typename T = ::some::valid::ns::ComplexUnion>
@@ -6168,7 +6168,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::ComplexUnion>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_fieldX_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_fieldX)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->req_fieldX)};
   }
 
   template <typename..., typename T = ::some::valid::ns::ComplexUnion>
@@ -6178,7 +6178,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::ComplexUnion>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_fieldX_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_fieldX)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->req_fieldX)};
   }
 
   template <typename..., typename T = ::some::valid::ns::ComplexUnion>
@@ -6188,7 +6188,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::ComplexUnion>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> opt_fieldX_ref() const&& {
-    return {std::move(this->opt_fieldX), __isset.at(30), __isset.bit(30)};
+    return {static_cast<const T&&>(this->opt_fieldX), __isset.at(30), __isset.bit(30)};
   }
 
   template <typename..., typename T = ::some::valid::ns::ComplexUnion>
@@ -6198,7 +6198,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::ComplexUnion>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_fieldX_ref() && {
-    return {std::move(this->opt_fieldX), __isset.at(30), __isset.bit(30)};
+    return {static_cast<T&&>(this->opt_fieldX), __isset.at(30), __isset.bit(30)};
   }
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::ComplexUnion>>
@@ -6208,7 +6208,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::ComplexUnion>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldY_ref() const&& {
-    return {std::move(this->fieldY), __isset.at(31), __isset.bit(31)};
+    return {static_cast<const T&&>(this->fieldY), __isset.at(31), __isset.bit(31)};
   }
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::ComplexUnion>>
@@ -6218,7 +6218,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::ComplexUnion>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldY_ref() && {
-    return {std::move(this->fieldY), __isset.at(31), __isset.bit(31)};
+    return {static_cast<T&&>(this->fieldY), __isset.at(31), __isset.bit(31)};
   }
 
   template <typename..., typename T = ::some::valid::ns::unionTypeDef>
@@ -6228,7 +6228,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::unionTypeDef>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldZ_ref() const&& {
-    return {std::move(this->fieldZ), __isset.at(32), __isset.bit(32)};
+    return {static_cast<const T&&>(this->fieldZ), __isset.at(32), __isset.bit(32)};
   }
 
   template <typename..., typename T = ::some::valid::ns::unionTypeDef>
@@ -6238,7 +6238,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::unionTypeDef>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldZ_ref() && {
-    return {std::move(this->fieldZ), __isset.at(32), __isset.bit(32)};
+    return {static_cast<T&&>(this->fieldZ), __isset.at(32), __isset.bit(32)};
   }
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::unionTypeDef>>
@@ -6248,7 +6248,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::unionTypeDef>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldAA_ref() const&& {
-    return {std::move(this->fieldAA), __isset.at(33), __isset.bit(33)};
+    return {static_cast<const T&&>(this->fieldAA), __isset.at(33), __isset.bit(33)};
   }
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::unionTypeDef>>
@@ -6258,7 +6258,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::unionTypeDef>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldAA_ref() && {
-    return {std::move(this->fieldAA), __isset.at(33), __isset.bit(33)};
+    return {static_cast<T&&>(this->fieldAA), __isset.at(33), __isset.bit(33)};
   }
 
   template <typename..., typename T = ::std::map<::some::valid::ns::IndirectionB, ::some::valid::ns::IndirectionC>>
@@ -6268,7 +6268,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::map<::some::valid::ns::IndirectionB, ::some::valid::ns::IndirectionC>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldAB_ref() const&& {
-    return {std::move(this->fieldAB), __isset.at(34), __isset.bit(34)};
+    return {static_cast<const T&&>(this->fieldAB), __isset.at(34), __isset.bit(34)};
   }
 
   template <typename..., typename T = ::std::map<::some::valid::ns::IndirectionB, ::some::valid::ns::IndirectionC>>
@@ -6278,7 +6278,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::map<::some::valid::ns::IndirectionB, ::some::valid::ns::IndirectionC>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldAB_ref() && {
-    return {std::move(this->fieldAB), __isset.at(34), __isset.bit(34)};
+    return {static_cast<T&&>(this->fieldAB), __isset.at(34), __isset.bit(34)};
   }
 
   template <typename..., typename T = ::some::valid::ns::MyEnumB>
@@ -6288,7 +6288,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::MyEnumB>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldAC_ref() const&& {
-    return {std::move(this->fieldAC), __isset.at(35), __isset.bit(35)};
+    return {static_cast<const T&&>(this->fieldAC), __isset.at(35), __isset.bit(35)};
   }
 
   template <typename..., typename T = ::some::valid::ns::MyEnumB>
@@ -6298,7 +6298,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::MyEnumB>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldAC_ref() && {
-    return {std::move(this->fieldAC), __isset.at(35), __isset.bit(35)};
+    return {static_cast<T&&>(this->fieldAC), __isset.at(35), __isset.bit(35)};
   }
 
   template <typename..., typename T = ::a::different::ns::AnEnum>
@@ -6308,7 +6308,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::a::different::ns::AnEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldAD_ref() const&& {
-    return {std::move(this->fieldAD), __isset.at(36), __isset.bit(36)};
+    return {static_cast<const T&&>(this->fieldAD), __isset.at(36), __isset.bit(36)};
   }
 
   template <typename..., typename T = ::a::different::ns::AnEnum>
@@ -6318,7 +6318,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::a::different::ns::AnEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldAD_ref() && {
-    return {std::move(this->fieldAD), __isset.at(36), __isset.bit(36)};
+    return {static_cast<T&&>(this->fieldAD), __isset.at(36), __isset.bit(36)};
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
@@ -6328,7 +6328,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldAE_ref() const&& {
-    return {std::move(this->fieldAE), __isset.at(37), __isset.bit(37)};
+    return {static_cast<const T&&>(this->fieldAE), __isset.at(37), __isset.bit(37)};
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
@@ -6338,7 +6338,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldAE_ref() && {
-    return {std::move(this->fieldAE), __isset.at(37), __isset.bit(37)};
+    return {static_cast<T&&>(this->fieldAE), __isset.at(37), __isset.bit(37)};
   }
 
   template <typename..., typename T = ::some::valid::ns::IndirectionD>
@@ -6348,7 +6348,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::IndirectionD>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldSD_ref() const&& {
-    return {std::move(this->fieldSD), __isset.at(38), __isset.bit(38)};
+    return {static_cast<const T&&>(this->fieldSD), __isset.at(38), __isset.bit(38)};
   }
 
   template <typename..., typename T = ::some::valid::ns::IndirectionD>
@@ -6358,7 +6358,7 @@ class containerStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::IndirectionD>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldSD_ref() && {
-    return {std::move(this->fieldSD), __isset.at(38), __isset.bit(38)};
+    return {static_cast<T&&>(this->fieldSD), __isset.at(38), __isset.bit(38)};
   }
 
   bool get_fieldA() const {
@@ -6915,7 +6915,7 @@ class MyIncludedStruct final  {
 
   template <typename..., typename T = ::a::different::ns::IncludedInt64>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIncludedInt_ref() const&& {
-    return {std::move(this->__fbthrift_field_MyIncludedInt), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyIncludedInt), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::a::different::ns::IncludedInt64>
@@ -6925,7 +6925,7 @@ class MyIncludedStruct final  {
 
   template <typename..., typename T = ::a::different::ns::IncludedInt64>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIncludedInt_ref() && {
-    return {std::move(this->__fbthrift_field_MyIncludedInt), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyIncludedInt), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::a::different::ns::IncludedInt64>
@@ -6935,7 +6935,7 @@ class MyIncludedStruct final  {
 
   template <typename..., typename T = ::a::different::ns::IncludedInt64>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIncludedInt() const&& {
-    return {std::move(this->__fbthrift_field_MyIncludedInt), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyIncludedInt), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::a::different::ns::IncludedInt64>
@@ -6945,7 +6945,7 @@ class MyIncludedStruct final  {
 
   template <typename..., typename T = ::a::different::ns::IncludedInt64>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIncludedInt() && {
-    return {std::move(this->__fbthrift_field_MyIncludedInt), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyIncludedInt), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::some::valid::ns::AStruct>
@@ -6955,7 +6955,7 @@ class MyIncludedStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::AStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIncludedStruct_ref() const&& {
-    return {std::move(this->__fbthrift_field_MyIncludedStruct), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyIncludedStruct), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::some::valid::ns::AStruct>
@@ -6965,7 +6965,7 @@ class MyIncludedStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::AStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIncludedStruct_ref() && {
-    return {std::move(this->__fbthrift_field_MyIncludedStruct), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyIncludedStruct), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::some::valid::ns::AStruct>
@@ -6975,7 +6975,7 @@ class MyIncludedStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::AStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIncludedStruct() const&& {
-    return {std::move(this->__fbthrift_field_MyIncludedStruct), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->__fbthrift_field_MyIncludedStruct), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::some::valid::ns::AStruct>
@@ -6985,7 +6985,7 @@ class MyIncludedStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::AStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIncludedStruct() && {
-    return {std::move(this->__fbthrift_field_MyIncludedStruct), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->__fbthrift_field_MyIncludedStruct), __isset.at(1), __isset.bit(1)};
   }
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::AStruct>>
   FOLLY_ERASE T& ARefField_ref() & { return ARefField; }
@@ -6994,10 +6994,10 @@ class MyIncludedStruct final  {
   FOLLY_ERASE const T& ARefField_ref() const& { return ARefField; }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::AStruct>>
-  FOLLY_ERASE T&& ARefField_ref() && { return std::move(ARefField); }
+  FOLLY_ERASE T&& ARefField_ref() && { return static_cast<T&&>(ARefField); }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::AStruct>>
-  FOLLY_ERASE const T&& ARefField_ref() const&& { return std::move(ARefField); }
+  FOLLY_ERASE const T&& ARefField_ref() const&& { return static_cast<const T&&>(ARefField); }
 
   template <typename..., typename T = ::some::valid::ns::AStruct>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> ARequiredField_ref() const& {
@@ -7006,7 +7006,7 @@ class MyIncludedStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::AStruct>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> ARequiredField_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->ARequiredField)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->ARequiredField)};
   }
 
   template <typename..., typename T = ::some::valid::ns::AStruct>
@@ -7016,7 +7016,7 @@ class MyIncludedStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::AStruct>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> ARequiredField_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{std::move(this->ARequiredField)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->ARequiredField)};
   }
 
   ::a::different::ns::IncludedInt64 get_MyIncludedInt() const {
@@ -7199,7 +7199,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::containerStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> no_annotation_ref() const&& {
-    return {std::move(this->no_annotation), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->no_annotation), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::some::valid::ns::containerStruct>
@@ -7209,7 +7209,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::containerStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> no_annotation_ref() && {
-    return {std::move(this->no_annotation), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->no_annotation), __isset.at(0), __isset.bit(0)};
   }
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& cpp_unique_ref_ref() & { return cpp_unique_ref; }
@@ -7218,10 +7218,10 @@ class AnnotatedStruct  {
   FOLLY_ERASE const T& cpp_unique_ref_ref() const& { return cpp_unique_ref; }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T&& cpp_unique_ref_ref() && { return std::move(cpp_unique_ref); }
+  FOLLY_ERASE T&& cpp_unique_ref_ref() && { return static_cast<T&&>(cpp_unique_ref); }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T&& cpp_unique_ref_ref() const&& { return std::move(cpp_unique_ref); }
+  FOLLY_ERASE const T&& cpp_unique_ref_ref() const&& { return static_cast<const T&&>(cpp_unique_ref); }
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& cpp2_unique_ref_ref() & { return cpp2_unique_ref; }
 
@@ -7229,10 +7229,10 @@ class AnnotatedStruct  {
   FOLLY_ERASE const T& cpp2_unique_ref_ref() const& { return cpp2_unique_ref; }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T&& cpp2_unique_ref_ref() && { return std::move(cpp2_unique_ref); }
+  FOLLY_ERASE T&& cpp2_unique_ref_ref() && { return static_cast<T&&>(cpp2_unique_ref); }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T&& cpp2_unique_ref_ref() const&& { return std::move(cpp2_unique_ref); }
+  FOLLY_ERASE const T&& cpp2_unique_ref_ref() const&& { return static_cast<const T&&>(cpp2_unique_ref); }
   template <typename ..., typename T = ::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>>>
   FOLLY_ERASE T& container_with_ref_ref() & { return container_with_ref; }
 
@@ -7240,10 +7240,10 @@ class AnnotatedStruct  {
   FOLLY_ERASE const T& container_with_ref_ref() const& { return container_with_ref; }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>>>
-  FOLLY_ERASE T&& container_with_ref_ref() && { return std::move(container_with_ref); }
+  FOLLY_ERASE T&& container_with_ref_ref() && { return static_cast<T&&>(container_with_ref); }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>>>
-  FOLLY_ERASE const T&& container_with_ref_ref() const&& { return std::move(container_with_ref); }
+  FOLLY_ERASE const T&& container_with_ref_ref() const&& { return static_cast<const T&&>(container_with_ref); }
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& req_cpp_unique_ref_ref() & { return req_cpp_unique_ref; }
 
@@ -7251,10 +7251,10 @@ class AnnotatedStruct  {
   FOLLY_ERASE const T& req_cpp_unique_ref_ref() const& { return req_cpp_unique_ref; }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T&& req_cpp_unique_ref_ref() && { return std::move(req_cpp_unique_ref); }
+  FOLLY_ERASE T&& req_cpp_unique_ref_ref() && { return static_cast<T&&>(req_cpp_unique_ref); }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T&& req_cpp_unique_ref_ref() const&& { return std::move(req_cpp_unique_ref); }
+  FOLLY_ERASE const T&& req_cpp_unique_ref_ref() const&& { return static_cast<const T&&>(req_cpp_unique_ref); }
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& req_cpp2_unique_ref_ref() & { return req_cpp2_unique_ref; }
 
@@ -7262,10 +7262,10 @@ class AnnotatedStruct  {
   FOLLY_ERASE const T& req_cpp2_unique_ref_ref() const& { return req_cpp2_unique_ref; }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T&& req_cpp2_unique_ref_ref() && { return std::move(req_cpp2_unique_ref); }
+  FOLLY_ERASE T&& req_cpp2_unique_ref_ref() && { return static_cast<T&&>(req_cpp2_unique_ref); }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T&& req_cpp2_unique_ref_ref() const&& { return std::move(req_cpp2_unique_ref); }
+  FOLLY_ERASE const T&& req_cpp2_unique_ref_ref() const&& { return static_cast<const T&&>(req_cpp2_unique_ref); }
   template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
   FOLLY_ERASE T& req_container_with_ref_ref() & { return req_container_with_ref; }
 
@@ -7273,10 +7273,10 @@ class AnnotatedStruct  {
   FOLLY_ERASE const T& req_container_with_ref_ref() const& { return req_container_with_ref; }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
-  FOLLY_ERASE T&& req_container_with_ref_ref() && { return std::move(req_container_with_ref); }
+  FOLLY_ERASE T&& req_container_with_ref_ref() && { return static_cast<T&&>(req_container_with_ref); }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
-  FOLLY_ERASE const T&& req_container_with_ref_ref() const&& { return std::move(req_container_with_ref); }
+  FOLLY_ERASE const T&& req_container_with_ref_ref() const&& { return static_cast<const T&&>(req_container_with_ref); }
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& opt_cpp_unique_ref_ref() & { return opt_cpp_unique_ref; }
 
@@ -7284,10 +7284,10 @@ class AnnotatedStruct  {
   FOLLY_ERASE const T& opt_cpp_unique_ref_ref() const& { return opt_cpp_unique_ref; }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T&& opt_cpp_unique_ref_ref() && { return std::move(opt_cpp_unique_ref); }
+  FOLLY_ERASE T&& opt_cpp_unique_ref_ref() && { return static_cast<T&&>(opt_cpp_unique_ref); }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T&& opt_cpp_unique_ref_ref() const&& { return std::move(opt_cpp_unique_ref); }
+  FOLLY_ERASE const T&& opt_cpp_unique_ref_ref() const&& { return static_cast<const T&&>(opt_cpp_unique_ref); }
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& opt_cpp2_unique_ref_ref() & { return opt_cpp2_unique_ref; }
 
@@ -7295,10 +7295,10 @@ class AnnotatedStruct  {
   FOLLY_ERASE const T& opt_cpp2_unique_ref_ref() const& { return opt_cpp2_unique_ref; }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T&& opt_cpp2_unique_ref_ref() && { return std::move(opt_cpp2_unique_ref); }
+  FOLLY_ERASE T&& opt_cpp2_unique_ref_ref() && { return static_cast<T&&>(opt_cpp2_unique_ref); }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T&& opt_cpp2_unique_ref_ref() const&& { return std::move(opt_cpp2_unique_ref); }
+  FOLLY_ERASE const T&& opt_cpp2_unique_ref_ref() const&& { return static_cast<const T&&>(opt_cpp2_unique_ref); }
   template <typename ..., typename T = ::std::unique_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE T& opt_container_with_ref_ref() & { return opt_container_with_ref; }
 
@@ -7306,10 +7306,10 @@ class AnnotatedStruct  {
   FOLLY_ERASE const T& opt_container_with_ref_ref() const& { return opt_container_with_ref; }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::set<::std::int32_t>>>
-  FOLLY_ERASE T&& opt_container_with_ref_ref() && { return std::move(opt_container_with_ref); }
+  FOLLY_ERASE T&& opt_container_with_ref_ref() && { return static_cast<T&&>(opt_container_with_ref); }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::set<::std::int32_t>>>
-  FOLLY_ERASE const T&& opt_container_with_ref_ref() const&& { return std::move(opt_container_with_ref); }
+  FOLLY_ERASE const T&& opt_container_with_ref_ref() const&& { return static_cast<const T&&>(opt_container_with_ref); }
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& ref_type_unique_ref() & { return ref_type_unique; }
 
@@ -7317,10 +7317,10 @@ class AnnotatedStruct  {
   FOLLY_ERASE const T& ref_type_unique_ref() const& { return ref_type_unique; }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T&& ref_type_unique_ref() && { return std::move(ref_type_unique); }
+  FOLLY_ERASE T&& ref_type_unique_ref() && { return static_cast<T&&>(ref_type_unique); }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T&& ref_type_unique_ref() const&& { return std::move(ref_type_unique); }
+  FOLLY_ERASE const T&& ref_type_unique_ref() const&& { return static_cast<const T&&>(ref_type_unique); }
   template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& ref_type_shared_ref() & { return ref_type_shared; }
 
@@ -7328,10 +7328,10 @@ class AnnotatedStruct  {
   FOLLY_ERASE const T& ref_type_shared_ref() const& { return ref_type_shared; }
 
   template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T&& ref_type_shared_ref() && { return std::move(ref_type_shared); }
+  FOLLY_ERASE T&& ref_type_shared_ref() && { return static_cast<T&&>(ref_type_shared); }
 
   template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T&& ref_type_shared_ref() const&& { return std::move(ref_type_shared); }
+  FOLLY_ERASE const T&& ref_type_shared_ref() const&& { return static_cast<const T&&>(ref_type_shared); }
   template <typename ..., typename T = ::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>
   FOLLY_ERASE T& ref_type_const_ref() & { return ref_type_const; }
 
@@ -7339,10 +7339,10 @@ class AnnotatedStruct  {
   FOLLY_ERASE const T& ref_type_const_ref() const& { return ref_type_const; }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>
-  FOLLY_ERASE T&& ref_type_const_ref() && { return std::move(ref_type_const); }
+  FOLLY_ERASE T&& ref_type_const_ref() && { return static_cast<T&&>(ref_type_const); }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>
-  FOLLY_ERASE const T&& ref_type_const_ref() const&& { return std::move(ref_type_const); }
+  FOLLY_ERASE const T&& ref_type_const_ref() const&& { return static_cast<const T&&>(ref_type_const); }
   template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& req_ref_type_shared_ref() & { return req_ref_type_shared; }
 
@@ -7350,10 +7350,10 @@ class AnnotatedStruct  {
   FOLLY_ERASE const T& req_ref_type_shared_ref() const& { return req_ref_type_shared; }
 
   template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T&& req_ref_type_shared_ref() && { return std::move(req_ref_type_shared); }
+  FOLLY_ERASE T&& req_ref_type_shared_ref() && { return static_cast<T&&>(req_ref_type_shared); }
 
   template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T&& req_ref_type_shared_ref() const&& { return std::move(req_ref_type_shared); }
+  FOLLY_ERASE const T&& req_ref_type_shared_ref() const&& { return static_cast<const T&&>(req_ref_type_shared); }
   template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& req_ref_type_const_ref() & { return req_ref_type_const; }
 
@@ -7361,10 +7361,10 @@ class AnnotatedStruct  {
   FOLLY_ERASE const T& req_ref_type_const_ref() const& { return req_ref_type_const; }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T&& req_ref_type_const_ref() && { return std::move(req_ref_type_const); }
+  FOLLY_ERASE T&& req_ref_type_const_ref() && { return static_cast<T&&>(req_ref_type_const); }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T&& req_ref_type_const_ref() const&& { return std::move(req_ref_type_const); }
+  FOLLY_ERASE const T&& req_ref_type_const_ref() const&& { return static_cast<const T&&>(req_ref_type_const); }
   template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
   FOLLY_ERASE T& req_ref_type_unique_ref() & { return req_ref_type_unique; }
 
@@ -7372,10 +7372,10 @@ class AnnotatedStruct  {
   FOLLY_ERASE const T& req_ref_type_unique_ref() const& { return req_ref_type_unique; }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
-  FOLLY_ERASE T&& req_ref_type_unique_ref() && { return std::move(req_ref_type_unique); }
+  FOLLY_ERASE T&& req_ref_type_unique_ref() && { return static_cast<T&&>(req_ref_type_unique); }
 
   template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
-  FOLLY_ERASE const T&& req_ref_type_unique_ref() const&& { return std::move(req_ref_type_unique); }
+  FOLLY_ERASE const T&& req_ref_type_unique_ref() const&& { return static_cast<const T&&>(req_ref_type_unique); }
   template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& opt_ref_type_const_ref() & { return opt_ref_type_const; }
 
@@ -7383,10 +7383,10 @@ class AnnotatedStruct  {
   FOLLY_ERASE const T& opt_ref_type_const_ref() const& { return opt_ref_type_const; }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T&& opt_ref_type_const_ref() && { return std::move(opt_ref_type_const); }
+  FOLLY_ERASE T&& opt_ref_type_const_ref() && { return static_cast<T&&>(opt_ref_type_const); }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T&& opt_ref_type_const_ref() const&& { return std::move(opt_ref_type_const); }
+  FOLLY_ERASE const T&& opt_ref_type_const_ref() const&& { return static_cast<const T&&>(opt_ref_type_const); }
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& opt_ref_type_unique_ref() & { return opt_ref_type_unique; }
 
@@ -7394,10 +7394,10 @@ class AnnotatedStruct  {
   FOLLY_ERASE const T& opt_ref_type_unique_ref() const& { return opt_ref_type_unique; }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE T&& opt_ref_type_unique_ref() && { return std::move(opt_ref_type_unique); }
+  FOLLY_ERASE T&& opt_ref_type_unique_ref() && { return static_cast<T&&>(opt_ref_type_unique); }
 
   template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
-  FOLLY_ERASE const T&& opt_ref_type_unique_ref() const&& { return std::move(opt_ref_type_unique); }
+  FOLLY_ERASE const T&& opt_ref_type_unique_ref() const&& { return static_cast<const T&&>(opt_ref_type_unique); }
   template <typename ..., typename T = ::std::shared_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE T& opt_ref_type_shared_ref() & { return opt_ref_type_shared; }
 
@@ -7405,10 +7405,10 @@ class AnnotatedStruct  {
   FOLLY_ERASE const T& opt_ref_type_shared_ref() const& { return opt_ref_type_shared; }
 
   template <typename ..., typename T = ::std::shared_ptr<::std::set<::std::int32_t>>>
-  FOLLY_ERASE T&& opt_ref_type_shared_ref() && { return std::move(opt_ref_type_shared); }
+  FOLLY_ERASE T&& opt_ref_type_shared_ref() && { return static_cast<T&&>(opt_ref_type_shared); }
 
   template <typename ..., typename T = ::std::shared_ptr<::std::set<::std::int32_t>>>
-  FOLLY_ERASE const T&& opt_ref_type_shared_ref() const&& { return std::move(opt_ref_type_shared); }
+  FOLLY_ERASE const T&& opt_ref_type_shared_ref() const&& { return static_cast<const T&&>(opt_ref_type_shared); }
 
   template <typename..., typename T = ::some::valid::ns::CppFakeI32>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> base_type_ref() const& {
@@ -7417,7 +7417,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::CppFakeI32>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> base_type_ref() const&& {
-    return {std::move(this->base_type), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->base_type), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::some::valid::ns::CppFakeI32>
@@ -7427,7 +7427,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::CppFakeI32>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> base_type_ref() && {
-    return {std::move(this->base_type), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->base_type), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::some::valid::ns::FollySmallVectorI64>
@@ -7437,7 +7437,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::FollySmallVectorI64>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> list_type_ref() const&& {
-    return {std::move(this->list_type), __isset.at(2), __isset.bit(2)};
+    return {static_cast<const T&&>(this->list_type), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::some::valid::ns::FollySmallVectorI64>
@@ -7447,7 +7447,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::FollySmallVectorI64>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> list_type_ref() && {
-    return {std::move(this->list_type), __isset.at(2), __isset.bit(2)};
+    return {static_cast<T&&>(this->list_type), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::some::valid::ns::SortedVectorSetString>
@@ -7457,7 +7457,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::SortedVectorSetString>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> set_type_ref() const&& {
-    return {std::move(this->set_type), __isset.at(3), __isset.bit(3)};
+    return {static_cast<const T&&>(this->set_type), __isset.at(3), __isset.bit(3)};
   }
 
   template <typename..., typename T = ::some::valid::ns::SortedVectorSetString>
@@ -7467,7 +7467,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::SortedVectorSetString>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> set_type_ref() && {
-    return {std::move(this->set_type), __isset.at(3), __isset.bit(3)};
+    return {static_cast<T&&>(this->set_type), __isset.at(3), __isset.bit(3)};
   }
 
   template <typename..., typename T = ::some::valid::ns::FakeMap>
@@ -7477,7 +7477,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::FakeMap>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> map_type_ref() const&& {
-    return {std::move(this->map_type), __isset.at(4), __isset.bit(4)};
+    return {static_cast<const T&&>(this->map_type), __isset.at(4), __isset.bit(4)};
   }
 
   template <typename..., typename T = ::some::valid::ns::FakeMap>
@@ -7487,7 +7487,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::FakeMap>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> map_type_ref() && {
-    return {std::move(this->map_type), __isset.at(4), __isset.bit(4)};
+    return {static_cast<T&&>(this->map_type), __isset.at(4), __isset.bit(4)};
   }
 
   template <typename..., typename T = ::some::valid::ns::UnorderedMapStruct>
@@ -7497,7 +7497,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::UnorderedMapStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> map_struct_type_ref() const&& {
-    return {std::move(this->map_struct_type), __isset.at(5), __isset.bit(5)};
+    return {static_cast<const T&&>(this->map_struct_type), __isset.at(5), __isset.bit(5)};
   }
 
   template <typename..., typename T = ::some::valid::ns::UnorderedMapStruct>
@@ -7507,7 +7507,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::UnorderedMapStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> map_struct_type_ref() && {
-    return {std::move(this->map_struct_type), __isset.at(5), __isset.bit(5)};
+    return {static_cast<T&&>(this->map_struct_type), __isset.at(5), __isset.bit(5)};
   }
 
   template <typename..., typename T = ::some::valid::ns::IOBuf>
@@ -7517,7 +7517,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::IOBuf>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> iobuf_type_ref() const&& {
-    return {std::move(this->iobuf_type), __isset.at(6), __isset.bit(6)};
+    return {static_cast<const T&&>(this->iobuf_type), __isset.at(6), __isset.bit(6)};
   }
 
   template <typename..., typename T = ::some::valid::ns::IOBuf>
@@ -7527,7 +7527,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::IOBuf>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> iobuf_type_ref() && {
-    return {std::move(this->iobuf_type), __isset.at(6), __isset.bit(6)};
+    return {static_cast<T&&>(this->iobuf_type), __isset.at(6), __isset.bit(6)};
   }
 
   template <typename..., typename T = ::some::valid::ns::IOBufPtr>
@@ -7537,7 +7537,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::IOBufPtr>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> iobuf_ptr_ref() const&& {
-    return {std::move(this->iobuf_ptr), __isset.at(7), __isset.bit(7)};
+    return {static_cast<const T&&>(this->iobuf_ptr), __isset.at(7), __isset.bit(7)};
   }
 
   template <typename..., typename T = ::some::valid::ns::IOBufPtr>
@@ -7547,7 +7547,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::IOBufPtr>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> iobuf_ptr_ref() && {
-    return {std::move(this->iobuf_ptr), __isset.at(7), __isset.bit(7)};
+    return {static_cast<T&&>(this->iobuf_ptr), __isset.at(7), __isset.bit(7)};
   }
 
   template <typename..., typename T = std::list<::std::int32_t>>
@@ -7557,7 +7557,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = std::list<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> list_i32_template_ref() const&& {
-    return {std::move(this->list_i32_template), __isset.at(8), __isset.bit(8)};
+    return {static_cast<const T&&>(this->list_i32_template), __isset.at(8), __isset.bit(8)};
   }
 
   template <typename..., typename T = std::list<::std::int32_t>>
@@ -7567,7 +7567,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = std::list<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> list_i32_template_ref() && {
-    return {std::move(this->list_i32_template), __isset.at(8), __isset.bit(8)};
+    return {static_cast<T&&>(this->list_i32_template), __isset.at(8), __isset.bit(8)};
   }
 
   template <typename..., typename T = std::deque<::std::string>>
@@ -7577,7 +7577,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = std::deque<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> list_string_template_ref() const&& {
-    return {std::move(this->list_string_template), __isset.at(9), __isset.bit(9)};
+    return {static_cast<const T&&>(this->list_string_template), __isset.at(9), __isset.bit(9)};
   }
 
   template <typename..., typename T = std::deque<::std::string>>
@@ -7587,7 +7587,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = std::deque<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> list_string_template_ref() && {
-    return {std::move(this->list_string_template), __isset.at(9), __isset.bit(9)};
+    return {static_cast<T&&>(this->list_string_template), __isset.at(9), __isset.bit(9)};
   }
 
   template <typename..., typename T = folly::sorted_vector_set<::std::string>>
@@ -7597,7 +7597,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = folly::sorted_vector_set<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> set_template_ref() const&& {
-    return {std::move(this->set_template), __isset.at(10), __isset.bit(10)};
+    return {static_cast<const T&&>(this->set_template), __isset.at(10), __isset.bit(10)};
   }
 
   template <typename..., typename T = folly::sorted_vector_set<::std::string>>
@@ -7607,7 +7607,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = folly::sorted_vector_set<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> set_template_ref() && {
-    return {std::move(this->set_template), __isset.at(10), __isset.bit(10)};
+    return {static_cast<T&&>(this->set_template), __isset.at(10), __isset.bit(10)};
   }
 
   template <typename..., typename T = folly::sorted_vector_map<::std::int64_t, ::std::string>>
@@ -7617,7 +7617,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = folly::sorted_vector_map<::std::int64_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> map_template_ref() const&& {
-    return {std::move(this->map_template), __isset.at(11), __isset.bit(11)};
+    return {static_cast<const T&&>(this->map_template), __isset.at(11), __isset.bit(11)};
   }
 
   template <typename..., typename T = folly::sorted_vector_map<::std::int64_t, ::std::string>>
@@ -7627,7 +7627,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = folly::sorted_vector_map<::std::int64_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> map_template_ref() && {
-    return {std::move(this->map_template), __isset.at(11), __isset.bit(11)};
+    return {static_cast<T&&>(this->map_template), __isset.at(11), __isset.bit(11)};
   }
 
   template <typename..., typename T = ::some::valid::ns::std_list>
@@ -7637,7 +7637,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::std_list>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> typedef_list_template_ref() const&& {
-    return {std::move(this->typedef_list_template), __isset.at(12), __isset.bit(12)};
+    return {static_cast<const T&&>(this->typedef_list_template), __isset.at(12), __isset.bit(12)};
   }
 
   template <typename..., typename T = ::some::valid::ns::std_list>
@@ -7647,7 +7647,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::std_list>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> typedef_list_template_ref() && {
-    return {std::move(this->typedef_list_template), __isset.at(12), __isset.bit(12)};
+    return {static_cast<T&&>(this->typedef_list_template), __isset.at(12), __isset.bit(12)};
   }
 
   template <typename..., typename T = ::some::valid::ns::std_deque>
@@ -7657,7 +7657,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::std_deque>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> typedef_deque_template_ref() const&& {
-    return {std::move(this->typedef_deque_template), __isset.at(13), __isset.bit(13)};
+    return {static_cast<const T&&>(this->typedef_deque_template), __isset.at(13), __isset.bit(13)};
   }
 
   template <typename..., typename T = ::some::valid::ns::std_deque>
@@ -7667,7 +7667,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::std_deque>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> typedef_deque_template_ref() && {
-    return {std::move(this->typedef_deque_template), __isset.at(13), __isset.bit(13)};
+    return {static_cast<T&&>(this->typedef_deque_template), __isset.at(13), __isset.bit(13)};
   }
 
   template <typename..., typename T = ::some::valid::ns::folly_set>
@@ -7677,7 +7677,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::folly_set>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> typedef_set_template_ref() const&& {
-    return {std::move(this->typedef_set_template), __isset.at(14), __isset.bit(14)};
+    return {static_cast<const T&&>(this->typedef_set_template), __isset.at(14), __isset.bit(14)};
   }
 
   template <typename..., typename T = ::some::valid::ns::folly_set>
@@ -7687,7 +7687,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::folly_set>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> typedef_set_template_ref() && {
-    return {std::move(this->typedef_set_template), __isset.at(14), __isset.bit(14)};
+    return {static_cast<T&&>(this->typedef_set_template), __isset.at(14), __isset.bit(14)};
   }
 
   template <typename..., typename T = ::some::valid::ns::folly_map>
@@ -7697,7 +7697,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::folly_map>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> typedef_map_template_ref() const&& {
-    return {std::move(this->typedef_map_template), __isset.at(15), __isset.bit(15)};
+    return {static_cast<const T&&>(this->typedef_map_template), __isset.at(15), __isset.bit(15)};
   }
 
   template <typename..., typename T = ::some::valid::ns::folly_map>
@@ -7707,7 +7707,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::folly_map>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> typedef_map_template_ref() && {
-    return {std::move(this->typedef_map_template), __isset.at(15), __isset.bit(15)};
+    return {static_cast<T&&>(this->typedef_map_template), __isset.at(15), __isset.bit(15)};
   }
 
   template <typename..., typename T = ::some::valid::ns::IndirectionA>
@@ -7717,7 +7717,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::IndirectionA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> indirection_a_ref() const&& {
-    return {std::move(this->indirection_a), __isset.at(16), __isset.bit(16)};
+    return {static_cast<const T&&>(this->indirection_a), __isset.at(16), __isset.bit(16)};
   }
 
   template <typename..., typename T = ::some::valid::ns::IndirectionA>
@@ -7727,7 +7727,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::IndirectionA>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> indirection_a_ref() && {
-    return {std::move(this->indirection_a), __isset.at(16), __isset.bit(16)};
+    return {static_cast<T&&>(this->indirection_a), __isset.at(16), __isset.bit(16)};
   }
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::IndirectionB>>
@@ -7737,7 +7737,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::IndirectionB>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> indirection_b_ref() const&& {
-    return {std::move(this->indirection_b), __isset.at(17), __isset.bit(17)};
+    return {static_cast<const T&&>(this->indirection_b), __isset.at(17), __isset.bit(17)};
   }
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::IndirectionB>>
@@ -7747,7 +7747,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::std::vector<::some::valid::ns::IndirectionB>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> indirection_b_ref() && {
-    return {std::move(this->indirection_b), __isset.at(17), __isset.bit(17)};
+    return {static_cast<T&&>(this->indirection_b), __isset.at(17), __isset.bit(17)};
   }
 
   template <typename..., typename T = ::std::set<::some::valid::ns::IndirectionC>>
@@ -7757,7 +7757,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::std::set<::some::valid::ns::IndirectionC>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> indirection_c_ref() const&& {
-    return {std::move(this->indirection_c), __isset.at(18), __isset.bit(18)};
+    return {static_cast<const T&&>(this->indirection_c), __isset.at(18), __isset.bit(18)};
   }
 
   template <typename..., typename T = ::std::set<::some::valid::ns::IndirectionC>>
@@ -7767,7 +7767,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::std::set<::some::valid::ns::IndirectionC>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> indirection_c_ref() && {
-    return {std::move(this->indirection_c), __isset.at(18), __isset.bit(18)};
+    return {static_cast<T&&>(this->indirection_c), __isset.at(18), __isset.bit(18)};
   }
 
   template <typename..., typename T = ::some::valid::ns::IOBuf>
@@ -7777,7 +7777,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::IOBuf>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> iobuf_type_val_ref() const&& {
-    return {std::move(this->iobuf_type_val), __isset.at(19), __isset.bit(19)};
+    return {static_cast<const T&&>(this->iobuf_type_val), __isset.at(19), __isset.bit(19)};
   }
 
   template <typename..., typename T = ::some::valid::ns::IOBuf>
@@ -7787,7 +7787,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::IOBuf>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> iobuf_type_val_ref() && {
-    return {std::move(this->iobuf_type_val), __isset.at(19), __isset.bit(19)};
+    return {static_cast<T&&>(this->iobuf_type_val), __isset.at(19), __isset.bit(19)};
   }
 
   template <typename..., typename T = ::some::valid::ns::IOBufPtr>
@@ -7797,7 +7797,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::IOBufPtr>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> iobuf_ptr_val_ref() const&& {
-    return {std::move(this->iobuf_ptr_val), __isset.at(20), __isset.bit(20)};
+    return {static_cast<const T&&>(this->iobuf_ptr_val), __isset.at(20), __isset.bit(20)};
   }
 
   template <typename..., typename T = ::some::valid::ns::IOBufPtr>
@@ -7807,7 +7807,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::IOBufPtr>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> iobuf_ptr_val_ref() && {
-    return {std::move(this->iobuf_ptr_val), __isset.at(20), __isset.bit(20)};
+    return {static_cast<T&&>(this->iobuf_ptr_val), __isset.at(20), __isset.bit(20)};
   }
 
   template <typename..., typename T = ::some::valid::ns::containerStruct>
@@ -7817,7 +7817,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::containerStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> struct_struct_ref() const&& {
-    return {std::move(this->struct_struct), __isset.at(21), __isset.bit(21)};
+    return {static_cast<const T&&>(this->struct_struct), __isset.at(21), __isset.bit(21)};
   }
 
   template <typename..., typename T = ::some::valid::ns::containerStruct>
@@ -7827,7 +7827,7 @@ class AnnotatedStruct  {
 
   template <typename..., typename T = ::some::valid::ns::containerStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> struct_struct_ref() && {
-    return {std::move(this->struct_struct), __isset.at(21), __isset.bit(21)};
+    return {static_cast<T&&>(this->struct_struct), __isset.at(21), __isset.bit(21)};
   }
   const ::some::valid::ns::containerStruct& get_no_annotation() const&;
   ::some::valid::ns::containerStruct get_no_annotation() &&;
@@ -8131,7 +8131,7 @@ class ComplexContainerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::string, ::some::valid::ns::IOBuf>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> map_of_iobufs_ref() const&& {
-    return {std::move(this->__fbthrift_field_map_of_iobufs), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_map_of_iobufs), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::some::valid::ns::IOBuf>>
@@ -8141,7 +8141,7 @@ class ComplexContainerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::string, ::some::valid::ns::IOBuf>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> map_of_iobufs_ref() && {
-    return {std::move(this->__fbthrift_field_map_of_iobufs), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_map_of_iobufs), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::some::valid::ns::IOBuf>>
@@ -8151,7 +8151,7 @@ class ComplexContainerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::string, ::some::valid::ns::IOBuf>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> map_of_iobufs() const&& {
-    return {std::move(this->__fbthrift_field_map_of_iobufs), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_map_of_iobufs), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::some::valid::ns::IOBuf>>
@@ -8161,7 +8161,7 @@ class ComplexContainerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::string, ::some::valid::ns::IOBuf>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> map_of_iobufs() && {
-    return {std::move(this->__fbthrift_field_map_of_iobufs), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_map_of_iobufs), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::some::valid::ns::IOBufPtr>>
@@ -8171,7 +8171,7 @@ class ComplexContainerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::string, ::some::valid::ns::IOBufPtr>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> map_of_iobuf_ptrs_ref() const&& {
-    return {std::move(this->__fbthrift_field_map_of_iobuf_ptrs), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->__fbthrift_field_map_of_iobuf_ptrs), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::some::valid::ns::IOBufPtr>>
@@ -8181,7 +8181,7 @@ class ComplexContainerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::string, ::some::valid::ns::IOBufPtr>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> map_of_iobuf_ptrs_ref() && {
-    return {std::move(this->__fbthrift_field_map_of_iobuf_ptrs), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->__fbthrift_field_map_of_iobuf_ptrs), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::some::valid::ns::IOBufPtr>>
@@ -8191,7 +8191,7 @@ class ComplexContainerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::string, ::some::valid::ns::IOBufPtr>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> map_of_iobuf_ptrs() const&& {
-    return {std::move(this->__fbthrift_field_map_of_iobuf_ptrs), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->__fbthrift_field_map_of_iobuf_ptrs), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::map<::std::string, ::some::valid::ns::IOBufPtr>>
@@ -8201,7 +8201,7 @@ class ComplexContainerStruct final  {
 
   template <typename..., typename T = ::std::map<::std::string, ::some::valid::ns::IOBufPtr>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> map_of_iobuf_ptrs() && {
-    return {std::move(this->__fbthrift_field_map_of_iobuf_ptrs), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->__fbthrift_field_map_of_iobuf_ptrs), __isset.at(1), __isset.bit(1)};
   }
   const ::std::map<::std::string, ::some::valid::ns::IOBuf>& get_map_of_iobufs() const&;
   ::std::map<::std::string, ::some::valid::ns::IOBuf> get_map_of_iobufs() &&;
@@ -8301,7 +8301,7 @@ class FloatStruct final  {
 
   template <typename..., typename T = float>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> floatField_ref() const&& {
-    return {std::move(this->__fbthrift_field_floatField), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_floatField), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = float>
@@ -8311,7 +8311,7 @@ class FloatStruct final  {
 
   template <typename..., typename T = float>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> floatField_ref() && {
-    return {std::move(this->__fbthrift_field_floatField), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_floatField), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = float>
@@ -8321,7 +8321,7 @@ class FloatStruct final  {
 
   template <typename..., typename T = float>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> floatField() const&& {
-    return {std::move(this->__fbthrift_field_floatField), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_floatField), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = float>
@@ -8331,7 +8331,7 @@ class FloatStruct final  {
 
   template <typename..., typename T = float>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> floatField() && {
-    return {std::move(this->__fbthrift_field_floatField), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_floatField), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = double>
@@ -8341,7 +8341,7 @@ class FloatStruct final  {
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> doubleField_ref() const&& {
-    return {std::move(this->__fbthrift_field_doubleField), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->__fbthrift_field_doubleField), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = double>
@@ -8351,7 +8351,7 @@ class FloatStruct final  {
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> doubleField_ref() && {
-    return {std::move(this->__fbthrift_field_doubleField), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->__fbthrift_field_doubleField), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = double>
@@ -8361,7 +8361,7 @@ class FloatStruct final  {
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> doubleField() const&& {
-    return {std::move(this->__fbthrift_field_doubleField), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->__fbthrift_field_doubleField), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = double>
@@ -8371,7 +8371,7 @@ class FloatStruct final  {
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> doubleField() && {
-    return {std::move(this->__fbthrift_field_doubleField), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->__fbthrift_field_doubleField), __isset.at(1), __isset.bit(1)};
   }
 
   float get_floatField() const {
@@ -8726,7 +8726,7 @@ class AllRequiredNoExceptMoveCtrStruct final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> intField_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->intField)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->intField)};
   }
 
   template <typename..., typename T = ::std::int64_t>
@@ -8736,7 +8736,7 @@ class AllRequiredNoExceptMoveCtrStruct final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> intField_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{std::move(this->intField)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->intField)};
   }
 
   ::std::int64_t get_intField() const {

@@ -140,7 +140,7 @@ class FOLLY_EXPORT Fiery : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> message_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->message)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->message)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -150,7 +150,7 @@ class FOLLY_EXPORT Fiery : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> message_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{std::move(this->message)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->message)};
   }
 
   const ::std::string& get_message() const& {
@@ -256,7 +256,7 @@ class FOLLY_EXPORT Serious : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> sonnet_ref() const&& {
-    return {std::move(this->sonnet), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->sonnet), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -266,7 +266,7 @@ class FOLLY_EXPORT Serious : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> sonnet_ref() && {
-    return {std::move(this->sonnet), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->sonnet), __isset.at(0), __isset.bit(0)};
   }
 
   const ::std::string* get_sonnet() const& {
@@ -375,7 +375,7 @@ class FOLLY_EXPORT ComplexFieldNames : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> error_message_ref() const&& {
-    return {std::move(this->error_message), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->error_message), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -385,7 +385,7 @@ class FOLLY_EXPORT ComplexFieldNames : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> error_message_ref() && {
-    return {std::move(this->error_message), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->error_message), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -395,7 +395,7 @@ class FOLLY_EXPORT ComplexFieldNames : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> internal_error_message_ref() const&& {
-    return {std::move(this->internal_error_message), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->internal_error_message), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -405,7 +405,7 @@ class FOLLY_EXPORT ComplexFieldNames : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> internal_error_message_ref() && {
-    return {std::move(this->internal_error_message), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->internal_error_message), __isset.at(1), __isset.bit(1)};
   }
 
   const ::std::string& get_error_message() const& {
@@ -528,7 +528,7 @@ class FOLLY_EXPORT CustomFieldNames : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> error_message_ref() const&& {
-    return {std::move(this->error_message), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->error_message), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -538,7 +538,7 @@ class FOLLY_EXPORT CustomFieldNames : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> error_message_ref() && {
-    return {std::move(this->error_message), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->error_message), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -548,7 +548,7 @@ class FOLLY_EXPORT CustomFieldNames : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> internal_error_message_ref() const&& {
-    return {std::move(this->internal_error_message), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->internal_error_message), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -558,7 +558,7 @@ class FOLLY_EXPORT CustomFieldNames : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> internal_error_message_ref() && {
-    return {std::move(this->internal_error_message), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->internal_error_message), __isset.at(1), __isset.bit(1)};
   }
 
   const ::std::string& get_error_message() const& {
@@ -681,7 +681,7 @@ class FOLLY_EXPORT ExceptionWithPrimitiveField : public apache::thrift::TExcepti
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> message_ref() const&& {
-    return {std::move(this->message), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->message), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -691,7 +691,7 @@ class FOLLY_EXPORT ExceptionWithPrimitiveField : public apache::thrift::TExcepti
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> message_ref() && {
-    return {std::move(this->message), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->message), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -701,7 +701,7 @@ class FOLLY_EXPORT ExceptionWithPrimitiveField : public apache::thrift::TExcepti
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> error_code_ref() const&& {
-    return {std::move(this->error_code), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->error_code), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -711,7 +711,7 @@ class FOLLY_EXPORT ExceptionWithPrimitiveField : public apache::thrift::TExcepti
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> error_code_ref() && {
-    return {std::move(this->error_code), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->error_code), __isset.at(1), __isset.bit(1)};
   }
 
   const ::std::string& get_message() const& {

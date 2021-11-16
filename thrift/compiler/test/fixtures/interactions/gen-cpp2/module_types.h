@@ -101,7 +101,7 @@ class FOLLY_EXPORT CustomException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> message_ref() const&& {
-    return {std::move(this->message), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->message), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -111,7 +111,7 @@ class FOLLY_EXPORT CustomException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> message_ref() && {
-    return {std::move(this->message), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->message), __isset.at(0), __isset.bit(0)};
   }
 
   const ::std::string& get_message() const& {

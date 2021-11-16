@@ -176,7 +176,7 @@ class TerseFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field1_ref() const&& {
-    return {std::move(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -186,7 +186,7 @@ class TerseFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field1_ref() && {
-    return {std::move(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -196,7 +196,7 @@ class TerseFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field1() const&& {
-    return {std::move(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -206,7 +206,7 @@ class TerseFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field1() && {
-    return {std::move(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -216,7 +216,7 @@ class TerseFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field2_ref() const&& {
-    return {std::move(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -226,7 +226,7 @@ class TerseFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field2_ref() && {
-    return {std::move(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -236,7 +236,7 @@ class TerseFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field2() const&& {
-    return {std::move(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -246,7 +246,7 @@ class TerseFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field2() && {
-    return {std::move(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -256,7 +256,7 @@ class TerseFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field3_ref() const&& {
-    return {std::move(this->__fbthrift_field_field3), __isset.at(2), __isset.bit(2)};
+    return {static_cast<const T&&>(this->__fbthrift_field_field3), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -266,7 +266,7 @@ class TerseFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field3_ref() && {
-    return {std::move(this->__fbthrift_field_field3), __isset.at(2), __isset.bit(2)};
+    return {static_cast<T&&>(this->__fbthrift_field_field3), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -276,7 +276,7 @@ class TerseFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field3() const&& {
-    return {std::move(this->__fbthrift_field_field3), __isset.at(2), __isset.bit(2)};
+    return {static_cast<const T&&>(this->__fbthrift_field_field3), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -286,7 +286,7 @@ class TerseFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field3() && {
-    return {std::move(this->__fbthrift_field_field3), __isset.at(2), __isset.bit(2)};
+    return {static_cast<T&&>(this->__fbthrift_field_field3), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -296,7 +296,7 @@ class TerseFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field4_ref() const&& {
-    return {std::move(this->__fbthrift_field_field4), __isset.at(3), __isset.bit(3)};
+    return {static_cast<const T&&>(this->__fbthrift_field_field4), __isset.at(3), __isset.bit(3)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -306,7 +306,7 @@ class TerseFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field4_ref() && {
-    return {std::move(this->__fbthrift_field_field4), __isset.at(3), __isset.bit(3)};
+    return {static_cast<T&&>(this->__fbthrift_field_field4), __isset.at(3), __isset.bit(3)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -316,7 +316,7 @@ class TerseFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field4() const&& {
-    return {std::move(this->__fbthrift_field_field4), __isset.at(3), __isset.bit(3)};
+    return {static_cast<const T&&>(this->__fbthrift_field_field4), __isset.at(3), __isset.bit(3)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -326,7 +326,7 @@ class TerseFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field4() && {
-    return {std::move(this->__fbthrift_field_field4), __isset.at(3), __isset.bit(3)};
+    return {static_cast<T&&>(this->__fbthrift_field_field4), __isset.at(3), __isset.bit(3)};
   }
   const ::std::vector<double>& get_field1() const&;
   ::std::vector<double> get_field1() &&;
@@ -444,7 +444,7 @@ class TerseLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field1_ref() const&& {
-    return {std::move(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -454,7 +454,7 @@ class TerseLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field1_ref() && {
-    return {std::move(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -464,7 +464,7 @@ class TerseLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field1() const&& {
-    return {std::move(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -474,7 +474,7 @@ class TerseLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field1() && {
-    return {std::move(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -484,7 +484,7 @@ class TerseLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field2_ref() const&& {
-    return {std::move(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -494,7 +494,7 @@ class TerseLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field2_ref() && {
-    return {std::move(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -504,7 +504,7 @@ class TerseLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field2() const&& {
-    return {std::move(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -514,7 +514,7 @@ class TerseLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field2() && {
-    return {std::move(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -524,7 +524,7 @@ class TerseLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field3_ref() const&& {
-    return {std::move(this->__fbthrift_read_field_field3()), __isset.at(2), __isset.bit(2)};
+    return {static_cast<const T&&>(this->__fbthrift_read_field_field3()), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -534,7 +534,7 @@ class TerseLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field3_ref() && {
-    return {std::move(this->__fbthrift_read_field_field3()), __isset.at(2), __isset.bit(2)};
+    return {static_cast<T&&>(this->__fbthrift_read_field_field3()), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -544,7 +544,7 @@ class TerseLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field3() const&& {
-    return {std::move(this->__fbthrift_read_field_field3()), __isset.at(2), __isset.bit(2)};
+    return {static_cast<const T&&>(this->__fbthrift_read_field_field3()), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -554,7 +554,7 @@ class TerseLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field3() && {
-    return {std::move(this->__fbthrift_read_field_field3()), __isset.at(2), __isset.bit(2)};
+    return {static_cast<T&&>(this->__fbthrift_read_field_field3()), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -564,7 +564,7 @@ class TerseLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field4_ref() const&& {
-    return {std::move(this->__fbthrift_read_field_field4()), __isset.at(3), __isset.bit(3)};
+    return {static_cast<const T&&>(this->__fbthrift_read_field_field4()), __isset.at(3), __isset.bit(3)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -574,7 +574,7 @@ class TerseLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field4_ref() && {
-    return {std::move(this->__fbthrift_read_field_field4()), __isset.at(3), __isset.bit(3)};
+    return {static_cast<T&&>(this->__fbthrift_read_field_field4()), __isset.at(3), __isset.bit(3)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -584,7 +584,7 @@ class TerseLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field4() const&& {
-    return {std::move(this->__fbthrift_read_field_field4()), __isset.at(3), __isset.bit(3)};
+    return {static_cast<const T&&>(this->__fbthrift_read_field_field4()), __isset.at(3), __isset.bit(3)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -594,7 +594,7 @@ class TerseLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field4() && {
-    return {std::move(this->__fbthrift_read_field_field4()), __isset.at(3), __isset.bit(3)};
+    return {static_cast<T&&>(this->__fbthrift_read_field_field4()), __isset.at(3), __isset.bit(3)};
   }
   const ::std::vector<double>& get_field1() const&;
   ::std::vector<double> get_field1() &&;
@@ -719,7 +719,7 @@ class TerseOptionalFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field1_ref() const&& {
-    return {std::move(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -729,7 +729,7 @@ class TerseOptionalFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field1_ref() && {
-    return {std::move(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -739,7 +739,7 @@ class TerseOptionalFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field1() const&& {
-    return {std::move(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -749,7 +749,7 @@ class TerseOptionalFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field1() && {
-    return {std::move(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -759,7 +759,7 @@ class TerseOptionalFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field2_ref() const&& {
-    return {std::move(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -769,7 +769,7 @@ class TerseOptionalFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field2_ref() && {
-    return {std::move(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -779,7 +779,7 @@ class TerseOptionalFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field2() const&& {
-    return {std::move(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -789,7 +789,7 @@ class TerseOptionalFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field2() && {
-    return {std::move(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -799,7 +799,7 @@ class TerseOptionalFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field3_ref() const&& {
-    return {std::move(this->__fbthrift_field_field3), __isset.at(2), __isset.bit(2)};
+    return {static_cast<const T&&>(this->__fbthrift_field_field3), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -809,7 +809,7 @@ class TerseOptionalFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field3_ref() && {
-    return {std::move(this->__fbthrift_field_field3), __isset.at(2), __isset.bit(2)};
+    return {static_cast<T&&>(this->__fbthrift_field_field3), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -819,7 +819,7 @@ class TerseOptionalFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field3() const&& {
-    return {std::move(this->__fbthrift_field_field3), __isset.at(2), __isset.bit(2)};
+    return {static_cast<const T&&>(this->__fbthrift_field_field3), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -829,7 +829,7 @@ class TerseOptionalFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field3() && {
-    return {std::move(this->__fbthrift_field_field3), __isset.at(2), __isset.bit(2)};
+    return {static_cast<T&&>(this->__fbthrift_field_field3), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -839,7 +839,7 @@ class TerseOptionalFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field4_ref() const&& {
-    return {std::move(this->__fbthrift_field_field4), __isset.at(3), __isset.bit(3)};
+    return {static_cast<const T&&>(this->__fbthrift_field_field4), __isset.at(3), __isset.bit(3)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -849,7 +849,7 @@ class TerseOptionalFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field4_ref() && {
-    return {std::move(this->__fbthrift_field_field4), __isset.at(3), __isset.bit(3)};
+    return {static_cast<T&&>(this->__fbthrift_field_field4), __isset.at(3), __isset.bit(3)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -859,7 +859,7 @@ class TerseOptionalFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field4() const&& {
-    return {std::move(this->__fbthrift_field_field4), __isset.at(3), __isset.bit(3)};
+    return {static_cast<const T&&>(this->__fbthrift_field_field4), __isset.at(3), __isset.bit(3)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -869,7 +869,7 @@ class TerseOptionalFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field4() && {
-    return {std::move(this->__fbthrift_field_field4), __isset.at(3), __isset.bit(3)};
+    return {static_cast<T&&>(this->__fbthrift_field_field4), __isset.at(3), __isset.bit(3)};
   }
   const ::std::vector<double>* get_field1() const&;
   ::std::vector<double>* get_field1() &;
@@ -991,7 +991,7 @@ class TerseOptionalLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field1_ref() const&& {
-    return {std::move(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -1001,7 +1001,7 @@ class TerseOptionalLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field1_ref() && {
-    return {std::move(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -1011,7 +1011,7 @@ class TerseOptionalLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field1() const&& {
-    return {std::move(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -1021,7 +1021,7 @@ class TerseOptionalLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field1() && {
-    return {std::move(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_field1), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -1031,7 +1031,7 @@ class TerseOptionalLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field2_ref() const&& {
-    return {std::move(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -1041,7 +1041,7 @@ class TerseOptionalLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field2_ref() && {
-    return {std::move(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -1051,7 +1051,7 @@ class TerseOptionalLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field2() const&& {
-    return {std::move(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -1061,7 +1061,7 @@ class TerseOptionalLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field2() && {
-    return {std::move(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->__fbthrift_field_field2), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -1071,7 +1071,7 @@ class TerseOptionalLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field3_ref() const&& {
-    return {std::move(this->__fbthrift_read_field_field3()), __isset.at(2), __isset.bit(2)};
+    return {static_cast<const T&&>(this->__fbthrift_read_field_field3()), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -1081,7 +1081,7 @@ class TerseOptionalLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field3_ref() && {
-    return {std::move(this->__fbthrift_read_field_field3()), __isset.at(2), __isset.bit(2)};
+    return {static_cast<T&&>(this->__fbthrift_read_field_field3()), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -1091,7 +1091,7 @@ class TerseOptionalLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field3() const&& {
-    return {std::move(this->__fbthrift_read_field_field3()), __isset.at(2), __isset.bit(2)};
+    return {static_cast<const T&&>(this->__fbthrift_read_field_field3()), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::std::vector<double>>
@@ -1101,7 +1101,7 @@ class TerseOptionalLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<double>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field3() && {
-    return {std::move(this->__fbthrift_read_field_field3()), __isset.at(2), __isset.bit(2)};
+    return {static_cast<T&&>(this->__fbthrift_read_field_field3()), __isset.at(2), __isset.bit(2)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -1111,7 +1111,7 @@ class TerseOptionalLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field4_ref() const&& {
-    return {std::move(this->__fbthrift_read_field_field4()), __isset.at(3), __isset.bit(3)};
+    return {static_cast<const T&&>(this->__fbthrift_read_field_field4()), __isset.at(3), __isset.bit(3)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -1121,7 +1121,7 @@ class TerseOptionalLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field4_ref() && {
-    return {std::move(this->__fbthrift_read_field_field4()), __isset.at(3), __isset.bit(3)};
+    return {static_cast<T&&>(this->__fbthrift_read_field_field4()), __isset.at(3), __isset.bit(3)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -1131,7 +1131,7 @@ class TerseOptionalLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> field4() const&& {
-    return {std::move(this->__fbthrift_read_field_field4()), __isset.at(3), __isset.bit(3)};
+    return {static_cast<const T&&>(this->__fbthrift_read_field_field4()), __isset.at(3), __isset.bit(3)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
@@ -1141,7 +1141,7 @@ class TerseOptionalLazyFoo final  {
 
   template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field4() && {
-    return {std::move(this->__fbthrift_read_field_field4()), __isset.at(3), __isset.bit(3)};
+    return {static_cast<T&&>(this->__fbthrift_read_field_field4()), __isset.at(3), __isset.bit(3)};
   }
   const ::std::vector<double>* get_field1() const&;
   ::std::vector<double>* get_field1() &;

@@ -112,7 +112,7 @@ class Struct final  {
 
   template <typename..., typename T = ::module0::Struct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> first_ref() const&& {
-    return {std::move(this->__fbthrift_field_first), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_first), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::module0::Struct>
@@ -122,7 +122,7 @@ class Struct final  {
 
   template <typename..., typename T = ::module0::Struct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> first_ref() && {
-    return {std::move(this->__fbthrift_field_first), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_first), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::module0::Struct>
@@ -132,7 +132,7 @@ class Struct final  {
 
   template <typename..., typename T = ::module0::Struct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> first() const&& {
-    return {std::move(this->__fbthrift_field_first), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_first), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::module0::Struct>
@@ -142,7 +142,7 @@ class Struct final  {
 
   template <typename..., typename T = ::module0::Struct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> first() && {
-    return {std::move(this->__fbthrift_field_first), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_first), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::module1::Struct>
@@ -152,7 +152,7 @@ class Struct final  {
 
   template <typename..., typename T = ::module1::Struct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> second_ref() const&& {
-    return {std::move(this->__fbthrift_field_second), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->__fbthrift_field_second), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::module1::Struct>
@@ -162,7 +162,7 @@ class Struct final  {
 
   template <typename..., typename T = ::module1::Struct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> second_ref() && {
-    return {std::move(this->__fbthrift_field_second), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->__fbthrift_field_second), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::module1::Struct>
@@ -172,7 +172,7 @@ class Struct final  {
 
   template <typename..., typename T = ::module1::Struct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> second() const&& {
-    return {std::move(this->__fbthrift_field_second), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->__fbthrift_field_second), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::module1::Struct>
@@ -182,7 +182,7 @@ class Struct final  {
 
   template <typename..., typename T = ::module1::Struct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> second() && {
-    return {std::move(this->__fbthrift_field_second), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->__fbthrift_field_second), __isset.at(1), __isset.bit(1)};
   }
   const ::module0::Struct& get_first() const&;
   ::module0::Struct get_first() &&;
@@ -280,7 +280,7 @@ class BigStruct final  {
 
   template <typename..., typename T = ::module2::Struct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> s_ref() const&& {
-    return {std::move(this->__fbthrift_field_s), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_s), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::module2::Struct>
@@ -290,7 +290,7 @@ class BigStruct final  {
 
   template <typename..., typename T = ::module2::Struct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> s_ref() && {
-    return {std::move(this->__fbthrift_field_s), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_s), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::module2::Struct>
@@ -300,7 +300,7 @@ class BigStruct final  {
 
   template <typename..., typename T = ::module2::Struct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> s() const&& {
-    return {std::move(this->__fbthrift_field_s), __isset.at(0), __isset.bit(0)};
+    return {static_cast<const T&&>(this->__fbthrift_field_s), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::module2::Struct>
@@ -310,7 +310,7 @@ class BigStruct final  {
 
   template <typename..., typename T = ::module2::Struct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> s() && {
-    return {std::move(this->__fbthrift_field_s), __isset.at(0), __isset.bit(0)};
+    return {static_cast<T&&>(this->__fbthrift_field_s), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -320,7 +320,7 @@ class BigStruct final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> id_ref() const&& {
-    return {std::move(this->__fbthrift_field_id), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->__fbthrift_field_id), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -330,7 +330,7 @@ class BigStruct final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> id_ref() && {
-    return {std::move(this->__fbthrift_field_id), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->__fbthrift_field_id), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -340,7 +340,7 @@ class BigStruct final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> id() const&& {
-    return {std::move(this->__fbthrift_field_id), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->__fbthrift_field_id), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -350,7 +350,7 @@ class BigStruct final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> id() && {
-    return {std::move(this->__fbthrift_field_id), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->__fbthrift_field_id), __isset.at(1), __isset.bit(1)};
   }
   const ::module2::Struct& get_s() const&;
   ::module2::Struct get_s() &&;
