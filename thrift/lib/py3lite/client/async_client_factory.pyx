@@ -25,6 +25,7 @@ import folly.executor
 from folly.futures cimport bridgeFutureWith
 from libc.stdint cimport uint32_t
 from libcpp.utility cimport move as cmove
+from thrift.py3lite.client cimport ssl as thrift_ssl
 from thrift.py3lite.client.async_client cimport AsyncClient
 from thrift.py3lite.client.client_wrapper import Client
 from thrift.py3lite.client.request_channel cimport (
@@ -45,6 +46,8 @@ def get_client(
     double timeout=1,
     cClientType client_type = ClientType.THRIFT_HEADER_CLIENT_TYPE,
     cProtocol protocol = cProtocol.COMPACT,
+    thrift_ssl.SSLContext ssl_context=None,
+    double ssl_timeout=1,
 ):
     if not issubclass(clientKlass, Client):
         raise TypeError(f"{clientKlass} is not a py3lite client class")
@@ -59,6 +62,7 @@ def get_client(
         path = None
 
     cdef uint32_t _timeout_ms = int(timeout * 1000)
+    cdef uint32_t _ssl_timeout_ms = int(ssl_timeout * 1000)
     host = str(host)  # Accept ipaddress objects
     client = clientKlass.Async()
 
@@ -78,20 +82,39 @@ def get_client(
                     timeout=timeout,
                     client_type=client_type,
                     protocol=protocol,
+                    ssl_context=ssl_context,
+                    ssl_timeout=ssl_timeout,
                 )
         else:
             host = str(host)
 
         if endpoint is None:
             endpoint = b""
-        bridgeFutureWith[cRequestChannel_ptr](
-            (<AsyncClient>client)._executor,
-            createThriftChannelTCP(
-                host, port, _timeout_ms, client_type, protocol, endpoint
-            ),
-            requestchannel_callback,
-            <PyObject *>client,
-        )
+        if ssl_context:
+            bridgeFutureWith[cRequestChannel_ptr](
+                (<AsyncClient>client)._executor,
+                thrift_ssl.createThriftChannelTCP(
+                    ssl_context._cpp_obj,
+                    host,
+                    port,
+                    _timeout_ms,
+                    _ssl_timeout_ms,
+                    client_type,
+                    protocol,
+                    endpoint,
+                ),
+                requestchannel_callback,
+                <PyObject *>client,
+            )
+        else:
+            bridgeFutureWith[cRequestChannel_ptr](
+                (<AsyncClient>client)._executor,
+                createThriftChannelTCP(
+                    host, port, _timeout_ms, client_type, protocol, endpoint
+                ),
+                requestchannel_callback,
+                <PyObject *>client,
+            )
     elif path is not None:
         bridgeFutureWith[cRequestChannel_ptr](
             (<AsyncClient>client)._executor,

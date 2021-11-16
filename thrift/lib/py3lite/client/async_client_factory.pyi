@@ -18,6 +18,7 @@ import typing
 from thrift.py3lite.client.async_client import AsyncClient
 from thrift.py3lite.client.client_wrapper import Client, TAsyncClient, TSyncClient
 from thrift.py3lite.client.request_channel import ClientType
+from thrift.py3lite.client.ssl import SSLContext
 from thrift.py3lite.serializer import Protocol
 
 def get_client(
@@ -31,4 +32,6 @@ def get_client(
     timeout: float = ...,
     client_type: ClientType = ...,
     protocol: Protocol = ...,
+    ssl_context: typing.Optional[SSLContext] = ...,
+    ssl_timeout: float = ...,
 ) -> TAsyncClient: ...

@@ -19,6 +19,7 @@ import os
 import socket
 
 from libc.stdint cimport uint32_t
+from thrift.py3lite.client cimport ssl as thrift_ssl
 from thrift.py3lite.client.client_wrapper import Client
 from thrift.py3lite.client.request_channel cimport (
     sync_createThriftChannelTCP,
@@ -39,6 +40,8 @@ def get_client(
     double timeout=1,
     cClientType client_type = ClientType.THRIFT_HEADER_CLIENT_TYPE,
     cProtocol protocol = cProtocol.COMPACT,
+    thrift_ssl.SSLContext ssl_context=None,
+    double ssl_timeout=1,
 ):
     if not issubclass(clientKlass, Client):
         raise TypeError(f"{clientKlass} is not a py3lite client class")
@@ -53,6 +56,7 @@ def get_client(
         path = None
 
     cdef uint32_t _timeout_ms = int(timeout * 1000)
+    cdef uint32_t _ssl_timeout_ms = int(ssl_timeout * 1000)
 
     if host is not None and port is not None:
         if path is not None:
@@ -66,9 +70,21 @@ def get_client(
         else:
             host = str(host)
 
-        channel = RequestChannel.create(sync_createThriftChannelTCP(
-            host, port, _timeout_ms, client_type, protocol, endpoint
-        ))
+        if ssl_context:
+            channel = RequestChannel.create(thrift_ssl.sync_createThriftChannelTCP(
+                ssl_context._cpp_obj,
+                host,
+                port,
+                _timeout_ms,
+                _ssl_timeout_ms,
+                client_type,
+                protocol,
+                endpoint,
+            ))
+        else:
+            channel = RequestChannel.create(sync_createThriftChannelTCP(
+                host, port, _timeout_ms, client_type, protocol, endpoint
+            ))
     elif path is not None:
         channel = RequestChannel.create(sync_createThriftChannelUnix(
             path, _timeout_ms, client_type, protocol
