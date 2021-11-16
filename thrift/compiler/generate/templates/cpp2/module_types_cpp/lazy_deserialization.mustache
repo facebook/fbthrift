@@ -51,7 +51,7 @@ void <%struct:name%>::__fbthrift_read_field_<%field:cpp_name%>_slow() const {
     default:
       CHECK(false) << int(__fbthrift_protocol_);
   }
-  __fbthrift_serializedData_.<%field:cpp_name%>.clear();
+  __fbthrift_serializedData_.<%field:cpp_name%> = {};
   __fbthrift_isDeserialized_.<%field:cpp_name%> = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
 }
 

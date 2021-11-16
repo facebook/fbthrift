@@ -309,7 +309,7 @@ void LazyFoo::__fbthrift_read_field_field3_slow() const {
     default:
       CHECK(false) << int(__fbthrift_protocol_);
   }
-  __fbthrift_serializedData_.field3.clear();
+  __fbthrift_serializedData_.field3 = {};
   __fbthrift_isDeserialized_.field3 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
 }
 
@@ -346,7 +346,7 @@ void LazyFoo::__fbthrift_read_field_field4_slow() const {
     default:
       CHECK(false) << int(__fbthrift_protocol_);
   }
-  __fbthrift_serializedData_.field4.clear();
+  __fbthrift_serializedData_.field4 = {};
   __fbthrift_isDeserialized_.field4 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
 }
 
@@ -745,7 +745,7 @@ void OptionalLazyFoo::__fbthrift_read_field_field3_slow() const {
     default:
       CHECK(false) << int(__fbthrift_protocol_);
   }
-  __fbthrift_serializedData_.field3.clear();
+  __fbthrift_serializedData_.field3 = {};
   __fbthrift_isDeserialized_.field3 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
 }
 
@@ -782,7 +782,7 @@ void OptionalLazyFoo::__fbthrift_read_field_field4_slow() const {
     default:
       CHECK(false) << int(__fbthrift_protocol_);
   }
-  __fbthrift_serializedData_.field4.clear();
+  __fbthrift_serializedData_.field4 = {};
   __fbthrift_isDeserialized_.field4 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
 }
 
@@ -1044,7 +1044,7 @@ void LazyCppRef::__fbthrift_read_field_field1_slow() const {
     default:
       CHECK(false) << int(__fbthrift_protocol_);
   }
-  __fbthrift_serializedData_.field1.clear();
+  __fbthrift_serializedData_.field1 = {};
   __fbthrift_isDeserialized_.field1 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
 }
 
@@ -1081,7 +1081,7 @@ void LazyCppRef::__fbthrift_read_field_field2_slow() const {
     default:
       CHECK(false) << int(__fbthrift_protocol_);
   }
-  __fbthrift_serializedData_.field2.clear();
+  __fbthrift_serializedData_.field2 = {};
   __fbthrift_isDeserialized_.field2 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
 }
 
@@ -1118,7 +1118,7 @@ void LazyCppRef::__fbthrift_read_field_field3_slow() const {
     default:
       CHECK(false) << int(__fbthrift_protocol_);
   }
-  __fbthrift_serializedData_.field3.clear();
+  __fbthrift_serializedData_.field3 = {};
   __fbthrift_isDeserialized_.field3 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
 }
 
@@ -1155,7 +1155,7 @@ void LazyCppRef::__fbthrift_read_field_field4_slow() const {
     default:
       CHECK(false) << int(__fbthrift_protocol_);
   }
-  __fbthrift_serializedData_.field4.clear();
+  __fbthrift_serializedData_.field4 = {};
   __fbthrift_isDeserialized_.field4 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
 }
 
