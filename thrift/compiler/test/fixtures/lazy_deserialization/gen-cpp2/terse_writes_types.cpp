@@ -194,7 +194,7 @@ namespace apache { namespace thrift { namespace test {
 
 TerseLazyFoo::TerseLazyFoo(const TerseLazyFoo& srcObj) {
   const auto relaxed = std::memory_order_relaxed;
-  std::lock_guard<std::mutex> lock(srcObj.__fbthrift_deserializationMutex_);
+  ::apache::thrift::detail::DeserializationMutex::ReadHolder lock(srcObj.__fbthrift_deserializationMutex_);
   __fbthrift_protocol_ = srcObj.__fbthrift_protocol_;
   __fbthrift_serializedData_ = srcObj.__fbthrift_serializedData_;
   __fbthrift_field_field1 = srcObj.__fbthrift_field_field1;
@@ -227,8 +227,8 @@ TerseLazyFoo::TerseLazyFoo(TerseLazyFoo&& other) noexcept  :
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
     __fbthrift_field_field4(std::move(other.__fbthrift_field_field4)),
     __isset(other.__isset),
-    __fbthrift_protocol_(other.__fbthrift_protocol_),
-    __fbthrift_serializedData_(std::move(other.__fbthrift_serializedData_)) {
+    __fbthrift_serializedData_(std::move(other.__fbthrift_serializedData_)),
+    __fbthrift_protocol_(other.__fbthrift_protocol_) {
   const auto relaxed = std::memory_order_relaxed;
   {
     const auto isDeserialized = other.__fbthrift_isDeserialized_.field3.load(relaxed);
@@ -295,7 +295,7 @@ const ::std::vector<double>& TerseLazyFoo::__fbthrift_read_field_field3() const 
 }
 
 void TerseLazyFoo::__fbthrift_read_field_field3_slow() const {
-  std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_);
+  ::apache::thrift::detail::DeserializationMutex::WriteHolder lock(__fbthrift_deserializationMutex_);
   if (__fbthrift_isDeserialized_.field3 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) {
     return;
   }
@@ -332,7 +332,7 @@ const ::std::vector<::std::int32_t>& TerseLazyFoo::__fbthrift_read_field_field4(
 }
 
 void TerseLazyFoo::__fbthrift_read_field_field4_slow() const {
-  std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_);
+  ::apache::thrift::detail::DeserializationMutex::WriteHolder lock(__fbthrift_deserializationMutex_);
   if (__fbthrift_isDeserialized_.field4 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) {
     return;
   }
@@ -630,7 +630,7 @@ namespace apache { namespace thrift { namespace test {
 
 TerseOptionalLazyFoo::TerseOptionalLazyFoo(const TerseOptionalLazyFoo& srcObj) {
   const auto relaxed = std::memory_order_relaxed;
-  std::lock_guard<std::mutex> lock(srcObj.__fbthrift_deserializationMutex_);
+  ::apache::thrift::detail::DeserializationMutex::ReadHolder lock(srcObj.__fbthrift_deserializationMutex_);
   __fbthrift_protocol_ = srcObj.__fbthrift_protocol_;
   __fbthrift_serializedData_ = srcObj.__fbthrift_serializedData_;
   __fbthrift_field_field1 = srcObj.__fbthrift_field_field1;
@@ -663,8 +663,8 @@ TerseOptionalLazyFoo::TerseOptionalLazyFoo(TerseOptionalLazyFoo&& other) noexcep
     __fbthrift_field_field3(std::move(other.__fbthrift_field_field3)),
     __fbthrift_field_field4(std::move(other.__fbthrift_field_field4)),
     __isset(other.__isset),
-    __fbthrift_protocol_(other.__fbthrift_protocol_),
-    __fbthrift_serializedData_(std::move(other.__fbthrift_serializedData_)) {
+    __fbthrift_serializedData_(std::move(other.__fbthrift_serializedData_)),
+    __fbthrift_protocol_(other.__fbthrift_protocol_) {
   const auto relaxed = std::memory_order_relaxed;
   {
     const auto isDeserialized = other.__fbthrift_isDeserialized_.field3.load(relaxed);
@@ -731,7 +731,7 @@ const ::std::vector<double>& TerseOptionalLazyFoo::__fbthrift_read_field_field3(
 }
 
 void TerseOptionalLazyFoo::__fbthrift_read_field_field3_slow() const {
-  std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_);
+  ::apache::thrift::detail::DeserializationMutex::WriteHolder lock(__fbthrift_deserializationMutex_);
   if (__fbthrift_isDeserialized_.field3 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) {
     return;
   }
@@ -768,7 +768,7 @@ const ::std::vector<::std::int32_t>& TerseOptionalLazyFoo::__fbthrift_read_field
 }
 
 void TerseOptionalLazyFoo::__fbthrift_read_field_field4_slow() const {
-  std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_);
+  ::apache::thrift::detail::DeserializationMutex::WriteHolder lock(__fbthrift_deserializationMutex_);
   if (__fbthrift_isDeserialized_.field4 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) {
     return;
   }

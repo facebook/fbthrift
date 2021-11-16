@@ -17,7 +17,7 @@
 %><%struct:name%>::<%struct:name%>(const <%struct:name%>& srcObj) {
 <%#struct:lazy_fields?%>
   const auto relaxed = std::memory_order_relaxed;
-  std::lock_guard<std::mutex> lock(srcObj.__fbthrift_deserializationMutex_);
+  ::apache::thrift::detail::DeserializationMutex::ReadHolder lock(srcObj.__fbthrift_deserializationMutex_);
   __fbthrift_protocol_ = srcObj.__fbthrift_protocol_;
   __fbthrift_serializedData_ = srcObj.__fbthrift_serializedData_;
 <%/struct:lazy_fields?%>

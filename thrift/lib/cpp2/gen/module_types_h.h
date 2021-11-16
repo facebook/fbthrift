@@ -22,6 +22,7 @@
 #include <type_traits>
 
 #include <folly/CPortability.h>
+#include <folly/SharedMutex.h>
 #include <folly/Traits.h>
 #include <thrift/lib/cpp2/Adapt.h>
 #include <thrift/lib/cpp2/FieldRef.h>
@@ -244,6 +245,8 @@ class isset_bitset {
       (NumBits + kBits - 1) / kBits>
       array_isset;
 };
+
+using DeserializationMutex = folly::SharedMutex;
 
 } // namespace detail
 } // namespace thrift
