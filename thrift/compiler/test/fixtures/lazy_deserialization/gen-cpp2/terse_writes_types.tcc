@@ -356,13 +356,12 @@ _readField_field2:
   }
 _readField_field3:
   std::as_const(*this).__fbthrift_read_field_field3();
-  if (auto iobuf = _readState.tryFastSkip(
-          iprot,
-          3,
-          apache::thrift::protocol::T_LIST,
-          apache::thrift::fixed_cost_skip_v<Protocol_,
-                                            ::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>,
-                                            ::std::vector<double>>)) {
+  if (auto iobuf = _readState.template tryFastSkip<
+          ::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>,
+          ::std::vector<double>
+      >(iprot,
+        3,
+        apache::thrift::protocol::T_LIST)) {
     const auto isDeserialized = __fbthrift_isDeserialized_.field3.load();
     __fbthrift_serializedData_.field3 = std::move(*iobuf);
     __fbthrift_isDeserialized_.field3 = isDeserialized & ~::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
@@ -384,13 +383,12 @@ _readField_field3:
   }
 _readField_field4:
   std::as_const(*this).__fbthrift_read_field_field4();
-  if (auto iobuf = _readState.tryFastSkip(
-          iprot,
-          4,
-          apache::thrift::protocol::T_LIST,
-          apache::thrift::fixed_cost_skip_v<Protocol_,
-                                            ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>,
-                                            ::std::vector<::std::int32_t>>)) {
+  if (auto iobuf = _readState.template tryFastSkip<
+          ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>,
+          ::std::vector<::std::int32_t>
+      >(iprot,
+        4,
+        apache::thrift::protocol::T_LIST)) {
     const auto isDeserialized = __fbthrift_isDeserialized_.field4.load();
     __fbthrift_serializedData_.field4 = std::move(*iobuf);
     __fbthrift_isDeserialized_.field4 = isDeserialized & ~::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
@@ -937,13 +935,12 @@ _readField_field2:
   }
 _readField_field3:
   std::as_const(*this).__fbthrift_read_field_field3();
-  if (auto iobuf = _readState.tryFastSkip(
-          iprot,
-          3,
-          apache::thrift::protocol::T_LIST,
-          apache::thrift::fixed_cost_skip_v<Protocol_,
-                                            ::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>,
-                                            ::std::vector<double>>)) {
+  if (auto iobuf = _readState.template tryFastSkip<
+          ::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>,
+          ::std::vector<double>
+      >(iprot,
+        3,
+        apache::thrift::protocol::T_LIST)) {
     const auto isDeserialized = __fbthrift_isDeserialized_.field3.load();
     __fbthrift_serializedData_.field3 = std::move(*iobuf);
     __fbthrift_isDeserialized_.field3 = isDeserialized & ~::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
@@ -965,13 +962,12 @@ _readField_field3:
   }
 _readField_field4:
   std::as_const(*this).__fbthrift_read_field_field4();
-  if (auto iobuf = _readState.tryFastSkip(
-          iprot,
-          4,
-          apache::thrift::protocol::T_LIST,
-          apache::thrift::fixed_cost_skip_v<Protocol_,
-                                            ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>,
-                                            ::std::vector<::std::int32_t>>)) {
+  if (auto iobuf = _readState.template tryFastSkip<
+          ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>,
+          ::std::vector<::std::int32_t>
+      >(iprot,
+        4,
+        apache::thrift::protocol::T_LIST)) {
     const auto isDeserialized = __fbthrift_isDeserialized_.field4.load();
     __fbthrift_serializedData_.field4 = std::move(*iobuf);
     __fbthrift_isDeserialized_.field4 = isDeserialized & ~::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;

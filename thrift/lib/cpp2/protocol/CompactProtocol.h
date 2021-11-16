@@ -424,14 +424,6 @@ struct CompactProtocolReader::StructReadState {
   void fillFieldTraitsFromName() {
     throw std::logic_error("CompactProtocol doesn't support field names");
   }
-
-  FOLLY_ALWAYS_INLINE folly::Optional<folly::IOBuf> tryFastSkip(
-      CompactProtocolReader* /*iprot*/,
-      int16_t /*id*/,
-      TType /*type*/,
-      bool /*fixedCostSkip*/) {
-    return {};
-  }
 };
 
 namespace detail {
