@@ -538,8 +538,6 @@ void Cpp2Connection::requestReceived(
       std::move(debugPayload),
       std::move(methodName));
 
-  logSetupConnectionEventsOnce(setupLoggingFlag_, context_);
-
   server->incActiveRequests();
   if (samplingStatus.isEnabled()) {
     // Expensive operations; happens only when sampling is enabled
@@ -599,6 +597,8 @@ void Cpp2Connection::requestReceived(
     folly::variant_match(
         methodMetadataResult,
         [&](PerServiceMetadata::MetadataNotImplemented) {
+          logSetupConnectionEventsOnce(setupLoggingFlag_, context_);
+
           // The AsyncProcessorFactory does not implement createMethodMetadata
           // so we need to fallback to processSerializedCompressedRequest.
           processor_->processSerializedCompressedRequest(
@@ -614,6 +614,8 @@ void Cpp2Connection::requestReceived(
               std::move(req), reqContext->getMethodName());
         },
         [&](const PerServiceMetadata::MetadataFound& found) {
+          logSetupConnectionEventsOnce(setupLoggingFlag_, context_);
+
           processor_->processSerializedCompressedRequestWithMetadata(
               std::move(req),
               SerializedCompressedRequest(std::move(serializedRequest)),
