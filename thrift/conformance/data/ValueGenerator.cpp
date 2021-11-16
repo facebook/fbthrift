@@ -23,8 +23,8 @@ namespace apache::thrift::conformance::data {
 
 namespace {
 
-template <typename TT>
-void addStringValues(NamedValues<TT>& values) {
+template <typename Tag>
+void addStringValues(NamedValues<Tag>& values) {
   values.emplace_back("", "empty");
   values.emplace_back("a", "lower");
   values.emplace_back("A", "upper");
@@ -32,14 +32,14 @@ void addStringValues(NamedValues<TT>& values) {
   values.emplace_back(" a", "leading_space");
   values.emplace_back("a ", "trailing_space");
   values.emplace_back("Hello", "utf8");
-  if constexpr (type::base_type_v<TT> == type::BaseType::Binary) {
+  if constexpr (type::base_type_v<Tag> == type::BaseType::Binary) {
     values.emplace_back("\x72\x01\xff", "bad_utf8");
   }
 }
 
-template <typename TT, bool key>
-void addNumericValues(NamedValues<TT>& values) {
-  using T = type::standard_type<TT>;
+template <typename Tag, bool key>
+void addNumericValues(NamedValues<Tag>& values) {
+  using T = type::standard_type<Tag>;
   using numeric_limits = std::numeric_limits<T>;
 
   values.emplace_back(0, "zero");
@@ -87,19 +87,19 @@ void addNumericValues(NamedValues<TT>& values) {
   }
 }
 
-template <typename TT, bool key>
-NamedValues<TT> generateValues() {
-  static_assert(type::primitive_types::contains<TT>, "");
-  using T = type::standard_type<TT>;
-  NamedValues<TT> values;
+template <typename Tag, bool key>
+NamedValues<Tag> generateValues() {
+  static_assert(type::primitive_types::contains<Tag>, "");
+  using T = type::standard_type<Tag>;
+  NamedValues<Tag> values;
 
-  if constexpr (type::base_type_v<TT> == type::BaseType::Bool) {
+  if constexpr (type::base_type_v<Tag> == type::BaseType::Bool) {
     values.emplace_back(true, "true");
     values.emplace_back(false, "false");
-  } else if constexpr (type::string_types::contains<TT>) {
-    addStringValues<TT>(values);
-  } else if constexpr (type::numeric_types::contains<TT>) {
-    addNumericValues<TT, key>(values);
+  } else if constexpr (type::string_types::contains<Tag>) {
+    addStringValues<Tag>(values);
+  } else if constexpr (type::numeric_types::contains<Tag>) {
+    addNumericValues<Tag, key>(values);
   } else {
     values.emplace_back(T(), "default");
   }
@@ -109,15 +109,15 @@ NamedValues<TT> generateValues() {
 
 } // namespace
 
-template <typename TT>
-auto ValueGenerator<TT>::getInterestingValues() -> const Values& {
-  static auto kValues = generateValues<TT, false>();
+template <typename Tag>
+auto ValueGenerator<Tag>::getInterestingValues() -> const Values& {
+  static auto kValues = generateValues<Tag, false>();
   return kValues;
 }
 
-template <typename TT>
-auto ValueGenerator<TT>::getKeyValues() -> const Values& {
-  static auto kValues = generateValues<TT, true>();
+template <typename Tag>
+auto ValueGenerator<Tag>::getKeyValues() -> const Values& {
+  static auto kValues = generateValues<Tag, true>();
   return kValues;
 }
 

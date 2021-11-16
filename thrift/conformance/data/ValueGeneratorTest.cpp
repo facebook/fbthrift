@@ -66,12 +66,12 @@ template <typename C>
   return ::testing::AssertionSuccess();
 }
 
-template <typename TT>
+template <typename Tag>
 class ValueGeneratorTest : public ::testing::Test {
  public:
-  using standard_type = type::standard_type<TT>;
-  static inline const auto values = ValueGenerator<TT>::getInterestingValues();
-  static inline const auto keyValues = ValueGenerator<TT>::getKeyValues();
+  using standard_type = type::standard_type<Tag>;
+  static inline const auto values = ValueGenerator<Tag>::getInterestingValues();
+  static inline const auto keyValues = ValueGenerator<Tag>::getKeyValues();
 };
 
 template <typename T>

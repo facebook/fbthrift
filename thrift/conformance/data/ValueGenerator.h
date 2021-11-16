@@ -45,8 +45,8 @@ struct NamedValue {
 };
 
 // A list of named values for the given thrift type.
-template <typename TT>
-using NamedValues = std::vector<NamedValue<type::standard_type<TT>>>;
+template <typename Tag>
+using NamedValues = std::vector<NamedValue<type::standard_type<Tag>>>;
 
 // Adds all the values using the given inserter.
 template <typename C, typename I>
@@ -56,20 +56,20 @@ void addValues(const C& values, I inserter) {
   }
 }
 
-template <typename TT>
+template <typename Tag>
 struct BaseValueGenerator {
-  static_assert(type::is_concrete_type_v<TT>, "not a concrete type");
+  static_assert(type::is_concrete_type_v<Tag>, "not a concrete type");
 
-  using thrift_type = TT;
-  using standard_type = type::standard_type<TT>;
-  using Values = NamedValues<TT>;
+  using thrift_type = Tag;
+  using standard_type = type::standard_type<Tag>;
+  using Values = NamedValues<Tag>;
 };
 
 // The interface for a value generator for a given type and implementation
 // for base types.
-template <typename TT>
-struct ValueGenerator : BaseValueGenerator<TT> {
-  using Values = typename BaseValueGenerator<TT>::Values;
+template <typename Tag>
+struct ValueGenerator : BaseValueGenerator<Tag> {
+  using Values = typename BaseValueGenerator<Tag>::Values;
 
   // Intersting values for the given type.
   FOLLY_EXPORT static const Values& getInterestingValues();
@@ -79,38 +79,41 @@ struct ValueGenerator : BaseValueGenerator<TT> {
 };
 
 // The generator for a list of values.
-template <typename VT>
-struct ValueGenerator<type::list<VT>> : BaseValueGenerator<type::list<VT>> {
-  using Base = BaseValueGenerator<type::list<VT>>;
+template <typename ValTag>
+struct ValueGenerator<type::list<ValTag>>
+    : BaseValueGenerator<type::list<ValTag>> {
+  using Base = BaseValueGenerator<type::list<ValTag>>;
   using Values = typename Base::Values;
   using standard_type = typename Base::standard_type;
 
   FOLLY_EXPORT static const Values& getKeyValues() {
     static auto* kValues =
-        new Values(getValues(ValueGenerator<VT>::getKeyValues()));
+        new Values(getValues(ValueGenerator<ValTag>::getKeyValues()));
     return *kValues;
   }
 
   FOLLY_EXPORT static const Values& getInterestingValues() {
     static auto* kValues =
-        new Values(getValues(ValueGenerator<VT>::getInterestingValues()));
+        new Values(getValues(ValueGenerator<ValTag>::getInterestingValues()));
     return *kValues;
   }
 
  private:
-  static Values getValues(const typename ValueGenerator<VT>::Values& values);
+  static Values getValues(
+      const typename ValueGenerator<ValTag>::Values& values);
 };
 
 // The generator for a set of values.
-template <typename VT>
-struct ValueGenerator<type::set<VT>> : BaseValueGenerator<type::set<VT>> {
-  using Base = BaseValueGenerator<type::set<VT>>;
+template <typename ValTag>
+struct ValueGenerator<type::set<ValTag>>
+    : BaseValueGenerator<type::set<ValTag>> {
+  using Base = BaseValueGenerator<type::set<ValTag>>;
   using Values = typename Base::Values;
   using standard_type = typename Base::standard_type;
 
   FOLLY_EXPORT static const Values& getKeyValues() {
     static auto* kValues =
-        new Values(getValues(ValueGenerator<VT>::getKeyValues()));
+        new Values(getValues(ValueGenerator<ValTag>::getKeyValues()));
     return *kValues;
   }
   static const Values& getInterestingValues() {
@@ -119,33 +122,34 @@ struct ValueGenerator<type::set<VT>> : BaseValueGenerator<type::set<VT>> {
   }
 
  private:
-  static Values getValues(const typename ValueGenerator<VT>::Values& values);
+  static Values getValues(
+      const typename ValueGenerator<ValTag>::Values& values);
 };
 
 // The generator for a map of values.
-template <typename KT, typename VT>
-struct ValueGenerator<type::map<KT, VT>>
-    : BaseValueGenerator<type::map<KT, VT>> {
-  using Base = BaseValueGenerator<type::map<KT, VT>>;
+template <typename KeyTag, typename ValTag>
+struct ValueGenerator<type::map<KeyTag, ValTag>>
+    : BaseValueGenerator<type::map<KeyTag, ValTag>> {
+  using Base = BaseValueGenerator<type::map<KeyTag, ValTag>>;
   using Values = typename Base::Values;
-  using KeyValues = typename ValueGenerator<KT>::Values;
-  using MappedValues = typename ValueGenerator<VT>::Values;
+  using KeyValues = typename ValueGenerator<KeyTag>::Values;
+  using MappedValues = typename ValueGenerator<ValTag>::Values;
   using standard_type = typename Base::standard_type;
 
   FOLLY_EXPORT static const Values& getKeyValues() {
     // To be used as a 'key' all keys and values must also be usable
     // as a 'key'
     static auto* kValues = new Values(getValues(
-        ValueGenerator<KT>::getKeyValues(),
-        ValueGenerator<VT>::getKeyValues()));
+        ValueGenerator<KeyTag>::getKeyValues(),
+        ValueGenerator<ValTag>::getKeyValues()));
     return *kValues;
   }
 
   FOLLY_EXPORT static const Values& getInterestingValues() {
     // Map keys must be 'key' values, but the values can be any values.
     static auto* kValues = new Values(getValues(
-        ValueGenerator<KT>::getKeyValues(),
-        ValueGenerator<VT>::getInterestingValues()));
+        ValueGenerator<KeyTag>::getKeyValues(),
+        ValueGenerator<ValTag>::getInterestingValues()));
     return *kValues;
   }
 
@@ -155,9 +159,9 @@ struct ValueGenerator<type::map<KT, VT>>
 
 // Implementation
 
-template <typename VT>
-auto ValueGenerator<type::list<VT>>::getValues(
-    const typename ValueGenerator<VT>::Values& values) -> Values {
+template <typename ValTag>
+auto ValueGenerator<type::list<ValTag>>::getValues(
+    const typename ValueGenerator<ValTag>::Values& values) -> Values {
   Values result;
   result.emplace_back(standard_type{}, "empty");
 
@@ -190,9 +194,9 @@ auto ValueGenerator<type::list<VT>>::getValues(
   return result;
 }
 
-template <typename VT>
-auto ValueGenerator<type::set<VT>>::getValues(
-    const typename ValueGenerator<VT>::Values& values) -> Values {
+template <typename ValTag>
+auto ValueGenerator<type::set<ValTag>>::getValues(
+    const typename ValueGenerator<ValTag>::Values& values) -> Values {
   Values result;
   result.emplace_back(standard_type(), "empty");
 
@@ -208,8 +212,8 @@ auto ValueGenerator<type::set<VT>>::getValues(
   return result;
 }
 
-template <typename KT, typename VT>
-auto ValueGenerator<type::map<KT, VT>>::getValues(
+template <typename KeyTag, typename ValTag>
+auto ValueGenerator<type::map<KeyTag, ValTag>>::getValues(
     const KeyValues& keys, const MappedValues& values) -> Values {
   Values result;
   result.emplace_back(standard_type(), "empty");
