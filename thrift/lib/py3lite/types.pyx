@@ -478,7 +478,8 @@ cdef class Union:
 
     cdef _fbthrift_get_field_value(self, int16_t index):
         if self.type.value != index:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not {self.Type(index).name}')
+            # TODO in python 3.10 update this to use name and obj fields
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not {self.Type(index).name}')
         return self.value
 
     def get_type(self):
