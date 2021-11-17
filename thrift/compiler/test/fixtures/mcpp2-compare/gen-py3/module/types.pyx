@@ -837,13 +837,13 @@ cdef class SimpleUnion(thrift.py3.types.Union):
     @property
     def intValue(self):
         if self.type.value != 7:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not intValue')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not intValue')
         return self.value
 
     @property
     def stringValue(self):
         if self.type.value != 2:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not stringValue')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not stringValue')
         return self.value
 
 
@@ -1284,169 +1284,169 @@ cdef class ComplexUnion(thrift.py3.types.Union):
     @property
     def intValue(self):
         if self.type.value != 1:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not intValue')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not intValue')
         return self.value
 
     @property
     def opt_intValue(self):
         if self.type.value != 201:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not opt_intValue')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not opt_intValue')
         return self.value
 
     @property
     def stringValue(self):
         if self.type.value != 3:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not stringValue')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not stringValue')
         return self.value
 
     @property
     def opt_stringValue(self):
         if self.type.value != 203:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not opt_stringValue')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not opt_stringValue')
         return self.value
 
     @property
     def intValue2(self):
         if self.type.value != 4:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not intValue2')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not intValue2')
         return self.value
 
     @property
     def intValue3(self):
         if self.type.value != 6:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not intValue3')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not intValue3')
         return self.value
 
     @property
     def doubelValue(self):
         if self.type.value != 7:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not doubelValue')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not doubelValue')
         return self.value
 
     @property
     def boolValue(self):
         if self.type.value != 8:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not boolValue')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not boolValue')
         return self.value
 
     @property
     def union_list(self):
         if self.type.value != 9:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not union_list')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not union_list')
         return self.value
 
     @property
     def union_set(self):
         if self.type.value != 10:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not union_set')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not union_set')
         return self.value
 
     @property
     def union_map(self):
         if self.type.value != 11:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not union_map')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not union_map')
         return self.value
 
     @property
     def opt_union_map(self):
         if self.type.value != 211:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not opt_union_map')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not opt_union_map')
         return self.value
 
     @property
     def enum_field(self):
         if self.type.value != 12:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not enum_field')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not enum_field')
         return self.value
 
     @property
     def enum_container(self):
         if self.type.value != 13:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not enum_container')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not enum_container')
         return self.value
 
     @property
     def a_struct(self):
         if self.type.value != 14:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not a_struct')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not a_struct')
         return self.value
 
     @property
     def a_set_struct(self):
         if self.type.value != 15:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not a_set_struct')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not a_set_struct')
         return self.value
 
     @property
     def a_union(self):
         if self.type.value != 16:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not a_union')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not a_union')
         return self.value
 
     @property
     def opt_a_union(self):
         if self.type.value != 216:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not opt_a_union')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not opt_a_union')
         return self.value
 
     @property
     def a_union_list(self):
         if self.type.value != 17:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not a_union_list')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not a_union_list')
         return self.value
 
     @property
     def a_union_typedef(self):
         if self.type.value != 18:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not a_union_typedef')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not a_union_typedef')
         return self.value
 
     @property
     def a_union_typedef_list(self):
         if self.type.value != 19:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not a_union_typedef_list')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not a_union_typedef_list')
         return self.value
 
     @property
     def MyBinaryField(self):
         if self.type.value != 20:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not MyBinaryField')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not MyBinaryField')
         return self.value
 
     @property
     def MyBinaryField2(self):
         if self.type.value != 21:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not MyBinaryField2')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not MyBinaryField2')
         return self.value
 
     @property
     def MyBinaryListField4(self):
         if self.type.value != 23:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not MyBinaryListField4')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not MyBinaryListField4')
         return self.value
 
     @property
     def ref_field(self):
         if self.type.value != 24:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not ref_field')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not ref_field')
         return self.value
 
     @property
     def ref_field2(self):
         if self.type.value != 25:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not ref_field2')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not ref_field2')
         return self.value
 
     @property
     def excp_field(self):
         if self.type.value != 26:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not excp_field')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not excp_field')
         return self.value
 
     @property
     def MyCustomField(self):
         if self.type.value != 27:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not MyCustomField')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not MyCustomField')
         return self.value
 
 
@@ -3142,13 +3142,13 @@ cdef class FloatUnion(thrift.py3.types.Union):
     @property
     def floatSide(self):
         if self.type.value != 1:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not floatSide')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not floatSide')
         return self.value
 
     @property
     def doubleSide(self):
         if self.type.value != 2:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not doubleSide')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not doubleSide')
         return self.value
 
 

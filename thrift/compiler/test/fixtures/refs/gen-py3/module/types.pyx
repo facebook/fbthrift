@@ -246,13 +246,13 @@ cdef class MyUnion(thrift.py3.types.Union):
     @property
     def anInteger(self):
         if self.type.value != 1:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not anInteger')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not anInteger')
         return self.value
 
     @property
     def aString(self):
         if self.type.value != 2:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not aString')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not aString')
         return self.value
 
 

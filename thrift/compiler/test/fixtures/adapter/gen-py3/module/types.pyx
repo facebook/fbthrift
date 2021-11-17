@@ -335,25 +335,25 @@ cdef class Baz(thrift.py3.types.Union):
     @property
     def intField(self):
         if self.type.value != 1:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not intField')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not intField')
         return self.value
 
     @property
     def setField(self):
         if self.type.value != 4:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not setField')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not setField')
         return self.value
 
     @property
     def mapField(self):
         if self.type.value != 6:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not mapField')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not mapField')
         return self.value
 
     @property
     def binaryField(self):
         if self.type.value != 8:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not binaryField')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not binaryField')
         return self.value
 
 

@@ -421,19 +421,19 @@ cdef class MyUnion(thrift.py3.types.Union):
     @property
     def myEnum(self):
         if self.type.value != 1:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not myEnum')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not myEnum')
         return self.value
 
     @property
     def myStruct(self):
         if self.type.value != 2:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not myStruct')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not myStruct')
         return self.value
 
     @property
     def myDataItem(self):
         if self.type.value != 3:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not myDataItem')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not myDataItem')
         return self.value
 
 

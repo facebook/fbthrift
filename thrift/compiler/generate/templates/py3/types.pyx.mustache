@@ -314,7 +314,8 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
     @property
     def {{field:py_name}}(self):
         if self.type.value != {{field:key}}:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not {{field:py_name}}')
+            {{! TODO: python 3.10 adds some more fields to AttributeError, those should be added here at some point }}
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not {{field:py_name}}')
         return self.value
 
     {{/struct:py3_fields}}

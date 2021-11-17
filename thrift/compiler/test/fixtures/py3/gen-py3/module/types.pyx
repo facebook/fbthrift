@@ -696,7 +696,7 @@ cdef class BinaryUnion(thrift.py3.types.Union):
     @property
     def iobuf_val(self):
         if self.type.value != 1:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not iobuf_val')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not iobuf_val')
         return self.value
 
 

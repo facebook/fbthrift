@@ -2427,13 +2427,13 @@ cdef class NoExceptMoveUnion(thrift.py3.types.Union):
     @property
     def string_field(self):
         if self.type.value != 1:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not string_field')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not string_field')
         return self.value
 
     @property
     def i32_field(self):
         if self.type.value != 2:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not i32_field')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not i32_field')
         return self.value
 
 

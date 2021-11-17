@@ -1002,13 +1002,13 @@ cdef class union1(thrift.py3.types.Union):
     @property
     def i(self):
         if self.type.value != 1:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not i')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not i')
         return self.value
 
     @property
     def d(self):
         if self.type.value != 2:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not d')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not d')
         return self.value
 
 
@@ -1179,25 +1179,25 @@ cdef class union2(thrift.py3.types.Union):
     @property
     def i(self):
         if self.type.value != 1:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not i')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not i')
         return self.value
 
     @property
     def d(self):
         if self.type.value != 2:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not d')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not d')
         return self.value
 
     @property
     def s(self):
         if self.type.value != 3:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not s')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not s')
         return self.value
 
     @property
     def u(self):
         if self.type.value != 4:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not u')
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not u')
         return self.value
 
 
