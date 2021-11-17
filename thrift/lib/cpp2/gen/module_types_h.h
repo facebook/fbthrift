@@ -31,6 +31,12 @@
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/TableBasedForwardTypes.h>
 
+#if !FOLLY_MOBILE
+#include <folly/SharedMutex.h>
+#else
+#include <mutex>
+#endif
+
 #ifdef SWIG
 #error SWIG
 #endif
@@ -244,6 +250,16 @@ class isset_bitset {
       (NumBits + kBits - 1) / kBits>
       array_isset;
 };
+
+#if !FOLLY_MOBILE
+using DeserializationMutex = folly::SharedMutex;
+using DeserializationMutexReadLock = folly::SharedMutex::ReadHolder;
+using DeserializationMutexWriteLock = folly::SharedMutex::WriteHolder;
+#else
+using DeserializationMutex = std::mutex;
+using DeserializationMutexReadLock = std::unique_lock<std::mutex>;
+using DeserializationMutexWriteLock = std::unique_lock<std::mutex>;
+#endif
 
 } // namespace detail
 } // namespace thrift
