@@ -27,7 +27,7 @@ struct Clear; // Forward declare.
 
 template <typename Tag>
 struct EqualTo {
-  template <typename T = type::standard_type<Tag>>
+  template <typename T = type::native_type<Tag>>
   constexpr bool operator()(const T& lhs, const T& rhs) const {
     // All standard types implement this via the native c++ operator.
     static_assert(type::is_standard_type<Tag, T>::value);
@@ -76,7 +76,7 @@ struct IdenticalTo<type::double_t> : FloatIdenticalTo<double, int64_t> {};
 
 template <typename ValTag>
 struct IdenticalTo<type::list<ValTag>> {
-  template <typename T = type::standard_type<type::list<ValTag>>>
+  template <typename T = type::native_type<type::list<ValTag>>>
   bool operator()(const T& lhs, const T& rhs) const {
     if (&lhs == &rhs) {
       return true;
@@ -89,7 +89,7 @@ struct IdenticalTo<type::list<ValTag>> {
   }
 };
 
-template <typename Tag, typename T = type::standard_type<Tag>>
+template <typename Tag, typename T = type::native_type<Tag>>
 struct DefaultOf {
   static_assert(type::is_standard_type<Tag, T>::value);
   // C++'s intrinsic default for the underlying native type, is the intrisitic
@@ -133,7 +133,7 @@ struct DefaultOf<type::exception_t<T>>
 
 template <typename Tag>
 struct Empty {
-  template <typename T = type::standard_type<Tag>>
+  template <typename T = type::native_type<Tag>>
   constexpr bool operator()(const T& value) const {
     static_assert(type::is_standard_type<Tag, T>::value);
     // All unstructured values are 'empty' if they are equal to their intrinsic
@@ -159,7 +159,7 @@ struct Empty<type::binary_t> : StringEmpty {};
 
 template <typename Tag>
 struct ContainerEmpty {
-  template <typename T = type::standard_type<Tag>>
+  template <typename T = type::native_type<Tag>>
   constexpr bool operator()(const T& value) const {
     return value.empty();
   }
@@ -174,7 +174,7 @@ struct Empty<type::map<KeyTag, ValTag>>
 
 template <typename Tag>
 struct Clear {
-  template <typename T = type::standard_type<Tag>>
+  template <typename T = type::native_type<Tag>>
   constexpr void operator()(T& value) const {
     // All unstructured types can be cleared by assigning to the intrinsic
     // default.
@@ -187,7 +187,7 @@ struct Clear {
 
 template <typename Tag>
 struct ContainerClear {
-  template <typename T = type::standard_type<Tag>>
+  template <typename T = type::native_type<Tag>>
   constexpr void operator()(T& value) const {
     value.clear();
   }

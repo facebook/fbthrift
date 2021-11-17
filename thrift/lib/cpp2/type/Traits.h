@@ -38,10 +38,29 @@ template <typename Tag>
 constexpr BaseType base_type_v = detail::traits<Tag>::kBaseType;
 
 // The standard types associated with the given concrete ThriftType.
-template <typename Tag>
-using standard_type = typename detail::traits<Tag>::standard_type;
+//
+// These are the types that can be used directly with the Thrift
+// runtime libraries.
+//
+// TODO(afuller): Consider removing this, as it is difficult/impossible to
+// represent this as a list of types (something like c++20 concepts would be
+// needed).
 template <typename Tag>
 using standard_types = typename detail::traits<Tag>::standard_types;
+
+// The default standard type associated with the given concrete ThriftType.
+//
+// This is the type that is used by default, to represent the given ThriftType.
+template <typename Tag>
+using standard_type = typename detail::traits<Tag>::standard_type;
+
+// The native type associated with the given concrete ThriftType.
+//
+// This is actual used by thrift to represent a value, taking
+// into account any IDL annotations that modify the c++ type.
+// TODO(afuller): Update to support adapted types.
+template <typename Tag>
+using native_type = standard_type<Tag>;
 
 // If T is a standard type for the given ThriftType.
 template <typename Tag, typename T>
