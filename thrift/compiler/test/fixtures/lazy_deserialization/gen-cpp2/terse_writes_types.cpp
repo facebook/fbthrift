@@ -309,7 +309,7 @@ void TerseLazyFoo::__fbthrift_read_field_field3_slow() const {
     default:
       CHECK(false) << int(__fbthrift_protocol_);
   }
-  __fbthrift_serializedData_.field3 = {};
+  __fbthrift_serializedData_.field3.clear();
   __fbthrift_isDeserialized_.field3 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
 }
 
@@ -346,7 +346,7 @@ void TerseLazyFoo::__fbthrift_read_field_field4_slow() const {
     default:
       CHECK(false) << int(__fbthrift_protocol_);
   }
-  __fbthrift_serializedData_.field4 = {};
+  __fbthrift_serializedData_.field4.clear();
   __fbthrift_isDeserialized_.field4 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
 }
 
@@ -745,7 +745,7 @@ void TerseOptionalLazyFoo::__fbthrift_read_field_field3_slow() const {
     default:
       CHECK(false) << int(__fbthrift_protocol_);
   }
-  __fbthrift_serializedData_.field3 = {};
+  __fbthrift_serializedData_.field3.clear();
   __fbthrift_isDeserialized_.field3 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
 }
 
@@ -782,7 +782,7 @@ void TerseOptionalLazyFoo::__fbthrift_read_field_field4_slow() const {
     default:
       CHECK(false) << int(__fbthrift_protocol_);
   }
-  __fbthrift_serializedData_.field4 = {};
+  __fbthrift_serializedData_.field4.clear();
   __fbthrift_isDeserialized_.field4 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
 }
 
