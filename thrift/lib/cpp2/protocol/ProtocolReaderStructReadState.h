@@ -90,11 +90,9 @@ struct ProtocolReaderStructReadState {
   }
 
   void skip(Protocol* iprot) { iprot->skip(fieldType); }
+  template <class TypeClass, class Type>
   folly::Optional<folly::IOBuf> tryFastSkip(
-      Protocol* /*iprot*/,
-      int16_t /*fieldId*/,
-      TType /*fieldType*/,
-      bool /*fixedCostSkip*/) {
+      Protocol* /*iprot*/, int16_t /*fieldId*/, TType /*fieldType*/) {
     return {};
   }
 

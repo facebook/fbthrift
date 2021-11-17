@@ -33,6 +33,9 @@
 
 namespace apache {
 namespace thrift {
+
+class VirtualReaderBase;
+
 namespace detail {
 /*
  * When index is enabled, we will inject following fields to thrift struct
@@ -234,13 +237,14 @@ class ProtocolReaderStructReadStateWithIndexImpl
     Base::readStructBegin(iprot);
   }
 
+  template <class TypeClass, class Type>
   FOLLY_ALWAYS_INLINE folly::Optional<folly::IOBuf> tryFastSkip(
-      Protocol* iprot, int16_t id, TType type, bool fixedCostSkip) {
+      Protocol* iprot, int16_t id, TType type) {
     if (isLazyDeserializationDisabled()) {
       return {};
     }
 
-    if (fixedCostSkip) {
+    if (fixed_cost_skip_v<Protocol, TypeClass, Type>) {
       return tryFastSkipImpl(iprot, [&] { iprot->skip(type); });
     }
 
@@ -376,8 +380,20 @@ class ProtocolReaderStructReadStateWithIndexImpl
 };
 
 template <class Protocol>
+constexpr auto hasIndexSupport(long) {
+  return false;
+}
+
+template <class Protocol>
+constexpr auto hasIndexSupport(int)
+    -> decltype(Protocol::ProtocolWriter::kHasIndexSupport()) {
+  return !std::is_base_of<VirtualReaderBase, Protocol>::value &&
+      Protocol::ProtocolWriter::kHasIndexSupport();
+}
+
+template <class Protocol>
 using ProtocolReaderStructReadStateWithIndex = std::conditional_t<
-    Protocol::ProtocolWriter::kHasIndexSupport(),
+    hasIndexSupport<Protocol>(0),
     ProtocolReaderStructReadStateWithIndexImpl<Protocol>,
     ProtocolReaderStructReadState<Protocol>>;
 
