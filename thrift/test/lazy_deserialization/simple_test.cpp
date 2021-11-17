@@ -520,7 +520,7 @@ TYPED_TEST(LazyDeserialization, SerializationWithDifferentProtocol) {
 }
 
 constexpr int kThreadCount = 100;
-TYPED_TEST(LazyDeserialization, MulthtreadAccess) {
+TYPED_TEST(LazyDeserialization, MultithreadAccess) {
   using LazyStruct = typename TypeParam::LazyStruct;
 
   auto bar = this->genLazyStruct();

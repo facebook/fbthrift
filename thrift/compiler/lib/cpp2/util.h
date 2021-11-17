@@ -94,6 +94,18 @@ inline bool is_lazy(const t_field* field) {
           "facebook.com/thrift/annotation/cpp/Lazy") != nullptr;
 }
 
+inline bool is_lazy_ref(const t_field* field) {
+  if (const t_const* anno = field->find_structured_annotation_or_null(
+          "facebook.com/thrift/annotation/cpp/Lazy")) {
+    for (const auto& kv : anno->value()->get_map()) {
+      if (kv.first->get_string() == "ref") {
+        return kv.second->get_bool();
+      }
+    }
+  }
+  return false;
+}
+
 bool field_transitively_refers_to_unique(const t_field* field);
 
 /**

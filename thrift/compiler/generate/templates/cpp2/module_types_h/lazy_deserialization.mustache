@@ -19,7 +19,9 @@
   <%! Stores serialized data of each lazy field %>
   mutable struct __fbthrift_SerializedData {
 <%#struct:fields%><%#field:lazy?%>
-    folly::IOBuf <%field:cpp_name%>;
+    <%^field:lazy_ref?%>folly::IOBuf<%/field:lazy_ref?%><%!
+    %><%#field:lazy_ref?%>std::unique_ptr<folly::IOBuf><%/field:lazy_ref?%><%!
+    %> <%field:cpp_name%>;
 <%/field:lazy?%><%/struct:fields%>
   } __fbthrift_serializedData_;
 

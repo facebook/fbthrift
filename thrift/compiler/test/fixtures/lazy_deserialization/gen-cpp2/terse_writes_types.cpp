@@ -196,7 +196,6 @@ TerseLazyFoo::TerseLazyFoo(const TerseLazyFoo& srcObj) {
   const auto relaxed = std::memory_order_relaxed;
   ::apache::thrift::detail::DeserializationMutexReadLock lock(srcObj.__fbthrift_deserializationMutex_);
   __fbthrift_protocol_ = srcObj.__fbthrift_protocol_;
-  __fbthrift_serializedData_ = srcObj.__fbthrift_serializedData_;
   __fbthrift_field_field1 = srcObj.__fbthrift_field_field1;
   __isset.set(0,srcObj.__isset.get(0));
   __fbthrift_field_field2 = srcObj.__fbthrift_field_field2;
@@ -204,12 +203,14 @@ TerseLazyFoo::TerseLazyFoo(const TerseLazyFoo& srcObj) {
   {
     const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field3.load(relaxed);
     __fbthrift_isDeserialized_.field3.store(isDeserialized, relaxed);
+    __fbthrift_serializedData_.field3 = srcObj.__fbthrift_serializedData_.field3;
   }
   __fbthrift_field_field3 = srcObj.__fbthrift_field_field3;
   __isset.set(2,srcObj.__isset.get(2));
   {
     const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field4.load(relaxed);
     __fbthrift_isDeserialized_.field4.store(isDeserialized, relaxed);
+    __fbthrift_serializedData_.field4 = srcObj.__fbthrift_serializedData_.field4;
   }
   __fbthrift_field_field4 = srcObj.__fbthrift_field_field4;
   __isset.set(3,srcObj.__isset.get(3));
@@ -632,7 +633,6 @@ TerseOptionalLazyFoo::TerseOptionalLazyFoo(const TerseOptionalLazyFoo& srcObj) {
   const auto relaxed = std::memory_order_relaxed;
   ::apache::thrift::detail::DeserializationMutexReadLock lock(srcObj.__fbthrift_deserializationMutex_);
   __fbthrift_protocol_ = srcObj.__fbthrift_protocol_;
-  __fbthrift_serializedData_ = srcObj.__fbthrift_serializedData_;
   __fbthrift_field_field1 = srcObj.__fbthrift_field_field1;
   __isset.set(0,srcObj.__isset.get(0));
   __fbthrift_field_field2 = srcObj.__fbthrift_field_field2;
@@ -640,12 +640,14 @@ TerseOptionalLazyFoo::TerseOptionalLazyFoo(const TerseOptionalLazyFoo& srcObj) {
   {
     const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field3.load(relaxed);
     __fbthrift_isDeserialized_.field3.store(isDeserialized, relaxed);
+    __fbthrift_serializedData_.field3 = srcObj.__fbthrift_serializedData_.field3;
   }
   __fbthrift_field_field3 = srcObj.__fbthrift_field_field3;
   __isset.set(2,srcObj.__isset.get(2));
   {
     const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field4.load(relaxed);
     __fbthrift_isDeserialized_.field4.store(isDeserialized, relaxed);
+    __fbthrift_serializedData_.field4 = srcObj.__fbthrift_serializedData_.field4;
   }
   __fbthrift_field_field4 = srcObj.__fbthrift_field_field4;
   __isset.set(3,srcObj.__isset.get(3));

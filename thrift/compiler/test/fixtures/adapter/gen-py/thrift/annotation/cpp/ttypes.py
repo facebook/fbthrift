@@ -147,10 +147,15 @@ class Ref:
   __hash__ = object.__hash__
 
 class Lazy:
+  """
+  Attributes:
+   - ref
+  """
 
   thrift_spec = None
   thrift_field_annotations = None
   thrift_struct_annotations = None
+  __init__ = None
   @staticmethod
   def isUnion():
     return False
@@ -167,6 +172,11 @@ class Lazy:
       (fname, ftype, fid) = iprot.readFieldBegin()
       if ftype == TType.STOP:
         break
+      if fid == 1:
+        if ftype == TType.BOOL:
+          self.ref = iprot.readBool()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -180,6 +190,10 @@ class Lazy:
       oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
       return
     oprot.writeStructBegin('Lazy')
+    if self.ref != None:
+      oprot.writeFieldBegin('ref', TType.BOOL, 1)
+      oprot.writeBool(self.ref)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -195,10 +209,16 @@ class Lazy:
     json_obj = json
     if is_text:
       json_obj = loads(json)
+    if 'ref' in json_obj and json_obj['ref'] is not None:
+      self.ref = json_obj['ref']
 
   def __repr__(self):
     L = []
     padding = ' ' * 4
+    if self.ref is not None:
+      value = pprint.pformat(self.ref, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    ref=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -460,6 +480,8 @@ Ref.__setstate__ = Ref__setstate__
 
 all_structs.append(Lazy)
 Lazy.thrift_spec = (
+  None, # 0
+  (1, TType.BOOL, 'ref', None, False, 2, ), # 1
 )
 
 Lazy.thrift_struct_annotations = {
@@ -467,6 +489,18 @@ Lazy.thrift_struct_annotations = {
 }
 Lazy.thrift_field_annotations = {
 }
+
+def Lazy__init__(self, ref=Lazy.thrift_spec[1][4],):
+  self.ref = ref
+
+Lazy.__init__ = Lazy__init__
+
+def Lazy__setstate__(self, state):
+  state.setdefault('ref', False)
+  self.__dict__ = state
+
+Lazy.__getstate__ = lambda self: self.__dict__.copy()
+Lazy.__setstate__ = Lazy__setstate__
 
 all_structs.append(DisableLazyChecksum)
 DisableLazyChecksum.thrift_spec = (

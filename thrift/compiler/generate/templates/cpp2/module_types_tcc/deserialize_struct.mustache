@@ -59,7 +59,9 @@ _readField_<%field:cpp_name%>:
         <%field:key%>,
         apache::thrift::protocol::<% > module_types_tcc/struct_type%>)) {
     const auto isDeserialized = __fbthrift_isDeserialized_.<%field:cpp_name%>.load();
-    __fbthrift_serializedData_.<%field:cpp_name%> = std::move(*iobuf);
+    __fbthrift_serializedData_.<%field:cpp_name%> = <%!
+    %><%^field:lazy_ref?%>std::move(*iobuf);<%/field:lazy_ref?%><%!
+    %><%#field:lazy_ref?%>std::make_unique<folly::IOBuf>(std::move(*iobuf));<%/field:lazy_ref?%>
     __fbthrift_isDeserialized_.<%field:cpp_name%> = isDeserialized & ~::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
   } else {
 <%/field:lazy?%>
@@ -157,7 +159,7 @@ _skip:
 template<class ProtocolReader>
 void <%struct:name%>::__fbthrift_read_field_<%field:cpp_name%>_impl() const {
   ProtocolReader reader;
-  reader.setInput(&__fbthrift_serializedData_.<%field:cpp_name%>);
+  reader.setInput(&<%#field:lazy_ref?%>*<%/field:lazy_ref?%>__fbthrift_serializedData_.<%field:cpp_name%>);
   ProtocolReader *iprot = &reader;
   apache::thrift::detail::ProtocolReaderStructReadState<ProtocolReader> _readState;
   <% > module_types_tcc/deserialize_field%>

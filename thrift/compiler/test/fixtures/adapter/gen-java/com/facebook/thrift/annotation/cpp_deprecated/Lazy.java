@@ -26,11 +26,21 @@ import com.facebook.thrift.protocol.*;
 @SuppressWarnings({ "unused", "serial" })
 public class Lazy implements TBase, java.io.Serializable, Cloneable, Comparable<Lazy> {
   private static final TStruct STRUCT_DESC = new TStruct("Lazy");
+  private static final TField REF_FIELD_DESC = new TField("ref", TType.BOOL, (short)1);
+
+  public boolean ref;
+  public static final int REF = 1;
+
+  // isset id assignments
+  private static final int __REF_ISSET_ID = 0;
+  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
+    tmpMetaDataMap.put(REF, new FieldMetaData("ref", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.BOOL)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -39,15 +49,36 @@ public class Lazy implements TBase, java.io.Serializable, Cloneable, Comparable<
   }
 
   public Lazy() {
+    this.ref = false;
+
+  }
+
+  public Lazy(
+      boolean ref) {
+    this();
+    this.ref = ref;
+    setRefIsSet(true);
   }
 
   public static class Builder {
+    private boolean ref;
+
+    BitSet __optional_isset = new BitSet(1);
 
     public Builder() {
     }
 
+    public Builder setRef(final boolean ref) {
+      this.ref = ref;
+      __optional_isset.set(__REF_ISSET_ID, true);
+      return this;
+    }
+
     public Lazy build() {
       Lazy result = new Lazy();
+      if (__optional_isset.get(__REF_ISSET_ID)) {
+        result.setRef(this.ref);
+      }
       return result;
     }
   }
@@ -60,14 +91,48 @@ public class Lazy implements TBase, java.io.Serializable, Cloneable, Comparable<
    * Performs a deep copy on <i>other</i>.
    */
   public Lazy(Lazy other) {
+    __isset_bit_vector.clear();
+    __isset_bit_vector.or(other.__isset_bit_vector);
+    this.ref = TBaseHelper.deepCopy(other.ref);
   }
 
   public Lazy deepCopy() {
     return new Lazy(this);
   }
 
+  public boolean isRef() {
+    return this.ref;
+  }
+
+  public Lazy setRef(boolean ref) {
+    this.ref = ref;
+    setRefIsSet(true);
+    return this;
+  }
+
+  public void unsetRef() {
+    __isset_bit_vector.clear(__REF_ISSET_ID);
+  }
+
+  // Returns true if field ref is set (has been assigned a value) and false otherwise
+  public boolean isSetRef() {
+    return __isset_bit_vector.get(__REF_ISSET_ID);
+  }
+
+  public void setRefIsSet(boolean __value) {
+    __isset_bit_vector.set(__REF_ISSET_ID, __value);
+  }
+
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
+    case REF:
+      if (__value == null) {
+        unsetRef();
+      } else {
+        setRef((Boolean)__value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -75,6 +140,9 @@ public class Lazy implements TBase, java.io.Serializable, Cloneable, Comparable<
 
   public Object getFieldValue(int fieldID) {
     switch (fieldID) {
+    case REF:
+      return new Boolean(isRef());
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -90,12 +158,14 @@ public class Lazy implements TBase, java.io.Serializable, Cloneable, Comparable<
       return false;
     Lazy that = (Lazy)_that;
 
+    if (!TBaseHelper.equalsNobinary(this.ref, that.ref)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {});
+    return Arrays.deepHashCode(new Object[] {ref});
   }
 
   @Override
@@ -110,6 +180,14 @@ public class Lazy implements TBase, java.io.Serializable, Cloneable, Comparable<
     }
     int lastComparison = 0;
 
+    lastComparison = Boolean.valueOf(isSetRef()).compareTo(other.isSetRef());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(ref, other.ref);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
     return 0;
   }
 
@@ -124,6 +202,14 @@ public class Lazy implements TBase, java.io.Serializable, Cloneable, Comparable<
       }
       switch (__field.id)
       {
+        case REF:
+          if (__field.type == TType.BOOL) {
+            this.ref = iprot.readBool();
+            setRefIsSet(true);
+          } else { 
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -141,6 +227,9 @@ public class Lazy implements TBase, java.io.Serializable, Cloneable, Comparable<
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
+    oprot.writeFieldBegin(REF_FIELD_DESC);
+    oprot.writeBool(this.ref);
+    oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -161,6 +250,12 @@ public class Lazy implements TBase, java.io.Serializable, Cloneable, Comparable<
     sb.append(newLine);
     boolean first = true;
 
+    sb.append(indentStr);
+    sb.append("ref");
+    sb.append(space);
+    sb.append(":").append(space);
+    sb.append(TBaseHelper.toString(this.isRef(), indent + 1, prettyPrint));
+    first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
     sb.append(")");
     return sb.toString();

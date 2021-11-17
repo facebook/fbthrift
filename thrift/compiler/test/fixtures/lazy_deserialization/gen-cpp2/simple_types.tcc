@@ -410,7 +410,7 @@ _readField_field4:
         4,
         apache::thrift::protocol::T_LIST)) {
     const auto isDeserialized = __fbthrift_isDeserialized_.field4.load();
-    __fbthrift_serializedData_.field4 = std::move(*iobuf);
+    __fbthrift_serializedData_.field4 = std::make_unique<folly::IOBuf>(std::move(*iobuf));
     __fbthrift_isDeserialized_.field4 = isDeserialized & ~::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
   } else {
     _readState.beforeSubobject(iprot);
@@ -500,7 +500,7 @@ void LazyFoo::__fbthrift_read_field_field3_impl() const {
 template<class ProtocolReader>
 void LazyFoo::__fbthrift_read_field_field4_impl() const {
   ProtocolReader reader;
-  reader.setInput(&__fbthrift_serializedData_.field4);
+  reader.setInput(&*__fbthrift_serializedData_.field4);
   ProtocolReader *iprot = &reader;
   apache::thrift::detail::ProtocolReaderStructReadState<ProtocolReader> _readState;
   _readState.beforeSubobject(iprot);
@@ -606,7 +606,7 @@ uint32_t LazyFoo::write(Protocol_* prot_) const {
       if (prot_->protocolType() == __fbthrift_protocol_) {
         ::apache::thrift::detail::DeserializationMutexReadLock lock(__fbthrift_deserializationMutex_);
         if (__fbthrift_isDeserialized_.field4.load() == ::apache::thrift::detail::LazyDeserializationState::UNTAINTED) {
-          xfer += prot_->writeRaw(__fbthrift_serializedData_.field4);
+          xfer += prot_->writeRaw(*__fbthrift_serializedData_.field4);
           goto written_lazy_field_field4;
         }
       }

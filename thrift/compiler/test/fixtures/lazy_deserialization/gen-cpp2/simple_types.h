@@ -9,6 +9,7 @@
 #include <thrift/lib/cpp2/gen/module_types_h.h>
 
 
+#include "thrift/annotation/gen-cpp2/cpp_types.h"
 
 namespace apache {
 namespace thrift {
@@ -712,7 +713,7 @@ class LazyFoo final  {
  private:
   mutable struct __fbthrift_SerializedData {
     folly::IOBuf field3;
-    folly::IOBuf field4;
+    std::unique_ptr<folly::IOBuf> field4;
   } __fbthrift_serializedData_;
 
   mutable ::apache::thrift::detail::DeserializationMutex __fbthrift_deserializationMutex_;

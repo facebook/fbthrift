@@ -37,7 +37,10 @@ struct Ref {
 } (thrift.uri = "facebook.com/thrift/annotation/cpp/Ref")
 
 @scope.Field
-struct Lazy {} (thrift.uri = "facebook.com/thrift/annotation/cpp/Lazy")
+struct Lazy {
+  // Use std::unique_ptr<folly::IOBuf> instead of folly::IOBuf to store serialized data.
+  1: bool ref = false;
+} (thrift.uri = "facebook.com/thrift/annotation/cpp/Lazy")
 
 @scope.Struct
 struct DisableLazyChecksum {} (
