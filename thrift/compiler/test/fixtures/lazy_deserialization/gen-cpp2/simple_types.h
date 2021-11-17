@@ -710,18 +710,19 @@ class LazyFoo final  {
 
  private:
  private:
+  ::apache::thrift::ProtocolType __fbthrift_protocol_{};
+
   mutable struct __fbthrift_SerializedData {
     folly::IOBuf field3;
     folly::IOBuf field4;
   } __fbthrift_serializedData_;
 
-  mutable ::apache::thrift::detail::DeserializationMutex __fbthrift_deserializationMutex_;
-  ::apache::thrift::ProtocolType __fbthrift_protocol_{};
-
   mutable struct __fbthrift_IsDeserialized {
     std::atomic<uint8_t> field3{::apache::thrift::detail::LazyDeserializationState::UNTAINTED | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED};
     std::atomic<uint8_t> field4{::apache::thrift::detail::LazyDeserializationState::UNTAINTED | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED};
   } __fbthrift_isDeserialized_;
+
+  mutable std::mutex __fbthrift_deserializationMutex_;
 
   const ::std::vector<double>& __fbthrift_read_field_field3() const;
   ::std::vector<double>& __fbthrift_read_field_field3();
@@ -1258,18 +1259,19 @@ class OptionalLazyFoo final  {
 
  private:
  private:
+  ::apache::thrift::ProtocolType __fbthrift_protocol_{};
+
   mutable struct __fbthrift_SerializedData {
     folly::IOBuf field3;
     folly::IOBuf field4;
   } __fbthrift_serializedData_;
 
-  mutable ::apache::thrift::detail::DeserializationMutex __fbthrift_deserializationMutex_;
-  ::apache::thrift::ProtocolType __fbthrift_protocol_{};
-
   mutable struct __fbthrift_IsDeserialized {
     std::atomic<uint8_t> field3{::apache::thrift::detail::LazyDeserializationState::UNTAINTED | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED};
     std::atomic<uint8_t> field4{::apache::thrift::detail::LazyDeserializationState::UNTAINTED | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED};
   } __fbthrift_isDeserialized_;
+
+  mutable std::mutex __fbthrift_deserializationMutex_;
 
   const ::std::vector<double>& __fbthrift_read_field_field3() const;
   ::std::vector<double>& __fbthrift_read_field_field3();
@@ -1396,6 +1398,8 @@ class LazyCppRef final  {
 
  private:
  private:
+  ::apache::thrift::ProtocolType __fbthrift_protocol_{};
+
   mutable struct __fbthrift_SerializedData {
     folly::IOBuf field1;
     folly::IOBuf field2;
@@ -1403,15 +1407,14 @@ class LazyCppRef final  {
     folly::IOBuf field4;
   } __fbthrift_serializedData_;
 
-  mutable ::apache::thrift::detail::DeserializationMutex __fbthrift_deserializationMutex_;
-  ::apache::thrift::ProtocolType __fbthrift_protocol_{};
-
   mutable struct __fbthrift_IsDeserialized {
     std::atomic<uint8_t> field1{::apache::thrift::detail::LazyDeserializationState::UNTAINTED | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED};
     std::atomic<uint8_t> field2{::apache::thrift::detail::LazyDeserializationState::UNTAINTED | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED};
     std::atomic<uint8_t> field3{::apache::thrift::detail::LazyDeserializationState::UNTAINTED | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED};
     std::atomic<uint8_t> field4{::apache::thrift::detail::LazyDeserializationState::UNTAINTED | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED};
   } __fbthrift_isDeserialized_;
+
+  mutable std::mutex __fbthrift_deserializationMutex_;
 
   const ::std::unique_ptr<::std::vector<::std::int32_t>>& __fbthrift_read_field_field1() const;
   ::std::unique_ptr<::std::vector<::std::int32_t>>& __fbthrift_read_field_field1();
