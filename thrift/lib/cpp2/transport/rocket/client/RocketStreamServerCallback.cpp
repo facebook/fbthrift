@@ -59,10 +59,6 @@ void RocketStreamServerCallback::onInitialError(folly::exception_wrapper ew) {
   clientCallback_->onFirstResponseError(std::move(ew));
   client_.cancelStream(streamId_);
 }
-void RocketStreamServerCallback::onStreamTransportError(
-    folly::exception_wrapper ew) {
-  clientCallback_->onStreamError(std::move(ew));
-}
 StreamChannelStatusResponse RocketStreamServerCallback::onStreamPayload(
     StreamPayload&& payload) {
   std::ignore = clientCallback_->onStreamNext(std::move(payload));
@@ -105,25 +101,6 @@ StreamChannelStatusResponse RocketStreamServerCallback::onStreamError(
 void RocketStreamServerCallback::onStreamHeaders(HeadersPayload&& payload) {
   std::ignore = clientCallback_->onStreamHeaders(std::move(payload));
 }
-StreamChannelStatusResponse RocketStreamServerCallback::onSinkRequestN(
-    uint64_t) {
-  constexpr auto kErrorMsg = "onSinkRequestN called for a stream";
-  clientCallback_->onStreamError(
-      folly::make_exception_wrapper<transport::TTransportException>(
-          transport::TTransportException::TTransportExceptionType::
-              STREAMING_CONTRACT_VIOLATION,
-          kErrorMsg));
-  return {StreamChannelStatus::ContractViolation, kErrorMsg};
-}
-StreamChannelStatusResponse RocketStreamServerCallback::onSinkCancel() {
-  constexpr auto kErrorMsg = "onSinkCancel called for a stream";
-  clientCallback_->onStreamError(
-      folly::make_exception_wrapper<transport::TTransportException>(
-          transport::TTransportException::TTransportExceptionType::
-              STREAMING_CONTRACT_VIOLATION,
-          kErrorMsg));
-  return {StreamChannelStatus::ContractViolation, kErrorMsg};
-}
 
 // RocketStreamServerCallbackWithChunkTimeout
 bool RocketStreamServerCallbackWithChunkTimeout::onStreamRequestN(
@@ -156,10 +133,9 @@ RocketStreamServerCallbackWithChunkTimeout::onStreamPayload(
   return RocketStreamServerCallback::onStreamPayload(std::move(payload));
 }
 void RocketStreamServerCallbackWithChunkTimeout::timeoutExpired() noexcept {
-  onStreamTransportError(
-      folly::make_exception_wrapper<transport::TTransportException>(
-          transport::TTransportException::TTransportExceptionType::TIMED_OUT,
-          "stream chunk timeout"));
+  onStreamError(folly::make_exception_wrapper<transport::TTransportException>(
+      transport::TTransportException::TTransportExceptionType::TIMED_OUT,
+      "stream chunk timeout"));
   onStreamCancel();
 }
 void RocketStreamServerCallbackWithChunkTimeout::scheduleTimeout() {
@@ -242,35 +218,12 @@ void RocketSinkServerCallback::onInitialError(folly::exception_wrapper ew) {
   client_.sendError(
       streamId_, rocket::RocketException(rocket::ErrorCode::CANCELED));
 }
-void RocketSinkServerCallback::onStreamTransportError(
-    folly::exception_wrapper ew) {
-  clientCallback_->onFinalResponseError(std::move(ew));
-}
-StreamChannelStatusResponse RocketSinkServerCallback::onStreamPayload(
-    StreamPayload&&) {
-  constexpr auto kErrorMsg = "onStreamPayload called for sink";
-  clientCallback_->onFinalResponseError(
-      folly::make_exception_wrapper<transport::TTransportException>(
-          transport::TTransportException::TTransportExceptionType::
-              STREAMING_CONTRACT_VIOLATION,
-          kErrorMsg));
-  return {StreamChannelStatus::ContractViolation, kErrorMsg};
-}
-StreamChannelStatusResponse RocketSinkServerCallback::onStreamFinalPayload(
+StreamChannelStatusResponse RocketSinkServerCallback::onFinalResponse(
     StreamPayload&& payload) {
   clientCallback_->onFinalResponse(std::move(payload));
   return StreamChannelStatus::Complete;
 }
-StreamChannelStatusResponse RocketSinkServerCallback::onStreamComplete() {
-  constexpr auto kErrorMsg = "onStreamComplete called for sink";
-  clientCallback_->onFinalResponseError(
-      folly::make_exception_wrapper<transport::TTransportException>(
-          transport::TTransportException::TTransportExceptionType::
-              STREAMING_CONTRACT_VIOLATION,
-          kErrorMsg));
-  return {StreamChannelStatus::ContractViolation, kErrorMsg};
-}
-StreamChannelStatusResponse RocketSinkServerCallback::onStreamError(
+StreamChannelStatusResponse RocketSinkServerCallback::onFinalResponseError(
     folly::exception_wrapper ew) {
   ew.handle(
       [&](RocketException& ex) {
@@ -285,7 +238,6 @@ StreamChannelStatusResponse RocketSinkServerCallback::onStreamError(
       [&](...) { clientCallback_->onFinalResponseError(std::move(ew)); });
   return StreamChannelStatus::Complete;
 }
-void RocketSinkServerCallback::onStreamHeaders(HeadersPayload&&) {}
 StreamChannelStatusResponse RocketSinkServerCallback::onSinkRequestN(
     uint64_t tokens) {
   switch (state_) {
@@ -297,14 +249,6 @@ StreamChannelStatusResponse RocketSinkServerCallback::onSinkRequestN(
     default:
       folly::assume_unreachable();
   }
-}
-StreamChannelStatusResponse RocketSinkServerCallback::onSinkCancel() {
-  constexpr auto kErrorMsg = "sink closed via onSinkCancel";
-  clientCallback_->onFinalResponseError(
-      folly::make_exception_wrapper<transport::TTransportException>(
-          transport::TTransportException::TTransportExceptionType::INTERRUPTED,
-          kErrorMsg));
-  return {StreamChannelStatus::ContractViolation, kErrorMsg};
 }
 } // namespace rocket
 } // namespace thrift

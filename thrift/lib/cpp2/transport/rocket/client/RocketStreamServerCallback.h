@@ -75,18 +75,12 @@ class RocketStreamServerCallback : public StreamServerCallback {
   StreamChannelStatusResponse onInitialPayload(
       FirstResponsePayload&&, folly::EventBase*);
   void onInitialError(folly::exception_wrapper ew);
-  void onStreamTransportError(folly::exception_wrapper);
 
   StreamChannelStatusResponse onStreamPayload(StreamPayload&&);
   StreamChannelStatusResponse onStreamFinalPayload(StreamPayload&&);
   StreamChannelStatusResponse onStreamComplete();
   StreamChannelStatusResponse onStreamError(folly::exception_wrapper);
   void onStreamHeaders(HeadersPayload&&);
-
-  StreamChannelStatusResponse onSinkRequestN(uint64_t tokens);
-  StreamChannelStatusResponse onSinkCancel();
-
-  void timeoutExpired() noexcept;
 
   rocket::StreamId streamId() const noexcept { return streamId_; }
 
@@ -154,16 +148,11 @@ class RocketSinkServerCallback : public SinkServerCallback {
   StreamChannelStatusResponse onInitialPayload(
       FirstResponsePayload&&, folly::EventBase*);
   void onInitialError(folly::exception_wrapper);
-  void onStreamTransportError(folly::exception_wrapper);
 
-  StreamChannelStatusResponse onStreamPayload(StreamPayload&&);
-  StreamChannelStatusResponse onStreamFinalPayload(StreamPayload&&);
-  StreamChannelStatusResponse onStreamComplete();
-  StreamChannelStatusResponse onStreamError(folly::exception_wrapper);
-  void onStreamHeaders(HeadersPayload&&);
+  StreamChannelStatusResponse onFinalResponse(StreamPayload&&);
+  StreamChannelStatusResponse onFinalResponseError(folly::exception_wrapper);
 
   StreamChannelStatusResponse onSinkRequestN(uint64_t tokens);
-  StreamChannelStatusResponse onSinkCancel();
 
   rocket::StreamId streamId() const noexcept { return streamId_; }
 
