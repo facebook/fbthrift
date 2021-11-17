@@ -19,6 +19,8 @@ Generated Python classes for Thrift clients
 }}
 {{> common/auto_generated_py}}
 
+import typing as _typing
+
 from {{program:base_library_package}}.client import (
     AsyncClient as _fbthrift_py3lite_AsyncClient,
     SyncClient as _fbthrift_py3lite_SyncClient,
@@ -51,8 +53,8 @@ class {{service:name}}(_fbthrift_py3lite_Client["{{service:name}}.Async", "{{ser
         {{#service:supported_functions}}
         async def {{function:name}}(
             self{{#function:args}},
-            {{field:py_name}}: {{#field:type}}{{> types/python_type}}{{/field:type}}{{/function:args}}
-        ) -> {{#function:return_type}}{{> types/python_type}}{{/function:return_type}}:
+            {{field:py_name}}: {{#field:type}}{{> types/pep484_type}}{{/field:type}}{{/function:args}}
+        ) -> {{#function:return_type}}{{> types/pep484_type}}{{/function:return_type}}:
             resp = await self._send_request(
                 "{{service:name}}",
                 "{{function:name}}",
@@ -90,8 +92,8 @@ class {{service:name}}(_fbthrift_py3lite_Client["{{service:name}}.Async", "{{ser
         {{#service:supported_functions}}
         def {{function:name}}(
             self{{#function:args}},
-            {{field:py_name}}: {{#field:type}}{{> types/python_type}}{{/field:type}}{{/function:args}}
-        ) -> {{#function:return_type}}{{> types/python_type}}{{/function:return_type}}:
+            {{field:py_name}}: {{#field:type}}{{> types/pep484_type}}{{/field:type}}{{/function:args}}
+        ) -> {{#function:return_type}}{{> types/pep484_type}}{{/function:return_type}}:
             resp = self._send_request(
                 "{{service:name}}",
                 "{{function:name}}",

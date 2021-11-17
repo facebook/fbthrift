@@ -47,7 +47,7 @@ class MyStruct(_fbthrift_py3lite_types.Struct):
         readonly: _typing.Optional[bool]=...,
         idempotent: _typing.Optional[bool]=...
     ) -> MyStruct: ...
-    def __iter__(self) -> typing.Iterator[typing.Tuple[str, _typing.Union[None, int, str, MyDataItem, MyEnum, bool, bool, bool]]]: ...
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[None, int, str, MyDataItem, MyEnum, bool, bool, bool]]]: ...
 
 
 class MyDataItem(_fbthrift_py3lite_types.Struct):
@@ -58,7 +58,7 @@ class MyDataItem(_fbthrift_py3lite_types.Struct):
     def __call__(
         self,
     ) -> MyDataItem: ...
-    def __iter__(self) -> typing.Iterator[typing.Tuple[str, _typing.Union[None]]]: ...
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[None]]]: ...
 
 
 class MyUnion(_fbthrift_py3lite_types.Union):
@@ -84,3 +84,269 @@ class MyUnion(_fbthrift_py3lite_types.Union):
     value: _typing.Final[_typing.Union[None, MyEnum, MyStruct, MyDataItem]]
     type: Type
     def get_type(self) -> Type:...
+
+
+class _fbthrift_MyService_ping_args(_fbthrift_py3lite_types.Struct):
+
+    def __init__(
+        self,
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[None]]]: ...
+
+class _fbthrift_MyService_ping_result(_fbthrift_py3lite_types.Struct):
+    success: _typing.Final[None]
+
+    def __init__(
+        self, *, success: _typing.Optional[None] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[
+            None,
+        ]]]: ...
+
+
+
+
+class _fbthrift_MyService_getRandomData_args(_fbthrift_py3lite_types.Struct):
+
+    def __init__(
+        self,
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[None]]]: ...
+
+class _fbthrift_MyService_getRandomData_result(_fbthrift_py3lite_types.Struct):
+    success: _typing.Final[str]
+
+    def __init__(
+        self, *, success: _typing.Optional[str] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[
+            str,
+        ]]]: ...
+
+
+
+
+class _fbthrift_MyService_sink_args(_fbthrift_py3lite_types.Struct):
+    sink: _typing.Final[int] = ...
+
+    def __init__(
+        self, *,
+        sink: _typing.Optional[int]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[None, int]]]: ...
+
+class _fbthrift_MyService_sink_result(_fbthrift_py3lite_types.Struct):
+    success: _typing.Final[None]
+
+    def __init__(
+        self, *, success: _typing.Optional[None] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[
+            None,
+        ]]]: ...
+
+
+
+
+class _fbthrift_MyService_putDataById_args(_fbthrift_py3lite_types.Struct):
+    id: _typing.Final[int] = ...
+    data: _typing.Final[str] = ...
+
+    def __init__(
+        self, *,
+        id: _typing.Optional[int]=...,
+        data: _typing.Optional[str]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[None, int, str]]]: ...
+
+class _fbthrift_MyService_putDataById_result(_fbthrift_py3lite_types.Struct):
+    success: _typing.Final[None]
+
+    def __init__(
+        self, *, success: _typing.Optional[None] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[
+            None,
+        ]]]: ...
+
+
+
+
+class _fbthrift_MyService_hasDataById_args(_fbthrift_py3lite_types.Struct):
+    id: _typing.Final[int] = ...
+
+    def __init__(
+        self, *,
+        id: _typing.Optional[int]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[None, int]]]: ...
+
+class _fbthrift_MyService_hasDataById_result(_fbthrift_py3lite_types.Struct):
+    success: _typing.Final[bool]
+
+    def __init__(
+        self, *, success: _typing.Optional[bool] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[
+            bool,
+        ]]]: ...
+
+
+
+
+class _fbthrift_MyService_getDataById_args(_fbthrift_py3lite_types.Struct):
+    id: _typing.Final[int] = ...
+
+    def __init__(
+        self, *,
+        id: _typing.Optional[int]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[None, int]]]: ...
+
+class _fbthrift_MyService_getDataById_result(_fbthrift_py3lite_types.Struct):
+    success: _typing.Final[str]
+
+    def __init__(
+        self, *, success: _typing.Optional[str] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[
+            str,
+        ]]]: ...
+
+
+
+
+class _fbthrift_MyService_deleteDataById_args(_fbthrift_py3lite_types.Struct):
+    id: _typing.Final[int] = ...
+
+    def __init__(
+        self, *,
+        id: _typing.Optional[int]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[None, int]]]: ...
+
+class _fbthrift_MyService_deleteDataById_result(_fbthrift_py3lite_types.Struct):
+    success: _typing.Final[None]
+
+    def __init__(
+        self, *, success: _typing.Optional[None] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[
+            None,
+        ]]]: ...
+
+
+
+
+class _fbthrift_MyService_lobDataById_args(_fbthrift_py3lite_types.Struct):
+    id: _typing.Final[int] = ...
+    data: _typing.Final[str] = ...
+
+    def __init__(
+        self, *,
+        id: _typing.Optional[int]=...,
+        data: _typing.Optional[str]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[None, int, str]]]: ...
+
+
+
+class _fbthrift_DbMixedStackArguments_getDataByKey0_args(_fbthrift_py3lite_types.Struct):
+    key: _typing.Final[str] = ...
+
+    def __init__(
+        self, *,
+        key: _typing.Optional[str]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[None, str]]]: ...
+
+class _fbthrift_DbMixedStackArguments_getDataByKey0_result(_fbthrift_py3lite_types.Struct):
+    success: _typing.Final[bytes]
+
+    def __init__(
+        self, *, success: _typing.Optional[bytes] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[
+            bytes,
+        ]]]: ...
+
+
+
+
+class _fbthrift_DbMixedStackArguments_getDataByKey1_args(_fbthrift_py3lite_types.Struct):
+    key: _typing.Final[str] = ...
+
+    def __init__(
+        self, *,
+        key: _typing.Optional[str]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[None, str]]]: ...
+
+class _fbthrift_DbMixedStackArguments_getDataByKey1_result(_fbthrift_py3lite_types.Struct):
+    success: _typing.Final[bytes]
+
+    def __init__(
+        self, *, success: _typing.Optional[bytes] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[
+            bytes,
+        ]]]: ...
+
+

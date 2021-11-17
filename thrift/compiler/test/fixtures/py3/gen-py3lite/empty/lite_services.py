@@ -7,7 +7,9 @@
 from abc import ABCMeta
 import typing as _typing
 
-from thrift.py3lite.serializer import serialize_iobuf, deserialize
+import folly.iobuf
+
+from thrift.py3lite.serializer import serialize_iobuf, deserialize, Protocol
 from thrift.py3lite.server import ServiceInterface, oneway
 
 import empty.lite_types
@@ -18,10 +20,11 @@ class NullServiceInterface(
 ):
 
     @staticmethod
-    def service_name():
+    def service_name() -> bytes:
         return b"NullService"
 
-    def getFunctionTable(self):
+    # pyre-ignore[3]: it can return anything
+    def getFunctionTable(self) -> _typing.Mapping[bytes, _typing.Callable[..., _typing.Any]]:
         functionTable = {
         }
         return {**super().getFunctionTable(), **functionTable}

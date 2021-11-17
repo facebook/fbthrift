@@ -22,7 +22,9 @@ wrappers for each of the service handlers that the user is then able to extend.
 from abc import ABCMeta
 import typing as _typing
 
-from thrift.py3lite.serializer import serialize_iobuf, deserialize
+import folly.iobuf
+
+from thrift.py3lite.serializer import serialize_iobuf, deserialize, Protocol
 from thrift.py3lite.server import ServiceInterface, oneway
 
 import {{program:module_path}}.lite_types
@@ -47,10 +49,11 @@ class {{service:name}}Interface(
 ):
 
     @staticmethod
-    def service_name():
+    def service_name() -> bytes:
         return b"{{service:name}}"
 
-    def getFunctionTable(self):
+    # pyre-ignore[3]: it can return anything
+    def getFunctionTable(self) -> _typing.Mapping[bytes, _typing.Callable[..., _typing.Any]]:
         functionTable = {
         {{#service:supported_functions}}
             b"{{function:name}}": self._fbthrift__handler_{{function:name}},
@@ -70,7 +73,8 @@ class {{service:name}}Interface(
     {{#function:oneway?}}
     @oneway
     {{/function:oneway?}}
-    async def _fbthrift__handler_{{function:name}}(self, args, protocol):
+    async def _fbthrift__handler_{{function:name}}(self, args: folly.iobuf.IOBuf, protocol: Protocol) {{!
+            }}-> {{#function:oneway?}}None{{/function:oneway?}}{{^function:oneway?}}folly.iobuf.IOBuf{{/function:oneway?}}:
         args_struct = deserialize({{> types/function_args_type}}, args, protocol)
         {{#function:exceptions?}}
         try:

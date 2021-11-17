@@ -32,8 +32,9 @@ class SyncClient:
     ) -> None: ...
     def _send_request(
         self,
+        service_name: str,
         function_name: str,
         args: Struct,
-        response_cls: typing.Type[StructOrUnion],
+        response_cls: typing.Optional[typing.Type[StructOrUnion]],
     ) -> StructOrUnion: ...
     def set_persistent_header(self, key: str, value: str) -> None: ...

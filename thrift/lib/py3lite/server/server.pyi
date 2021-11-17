@@ -18,15 +18,13 @@ import os
 from types import TracebackType
 from typing import (
     Any,
+    Awaitable,
     Callable,
-    ClassVar,
     Mapping,
-    NamedTuple,
     Optional,
     Type,
     TypeVar,
     Union,
-    overload,
 )
 
 from thrift.py3.server import ThriftServer as ThriftServer_py3
@@ -35,9 +33,14 @@ IPAddress = Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
 # pyre-fixme[24]: Generic type `os.PathLike` expects 1 type parameter.
 Path = Union[str, bytes, os.PathLike]
 
+_T = TypeVar("_T", bound=Callable[..., Awaitable[None]])
+
+def oneway(func: _T) -> _T: ...
+
 class ServiceInterface:
     @staticmethod
     def service_name() -> bytes: ...
+    def getFunctionTable(self) -> Mapping[bytes, Callable[..., ...]]: ...
     # pyre-ignore[3]: it can return anything
     async def __aenter__(self) -> Any: ...
     async def __aexit__(
@@ -52,6 +55,6 @@ class ThriftServer(ThriftServer_py3):
         self,
         handler: ServiceInterface,
         port: int = 0,
-        ip: Optional[Union[IPAddress, str]] = None,
+        ip: Optional[IPAddress | str] = None,
         path: Optional[Path] = None,
     ) -> None: ...

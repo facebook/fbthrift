@@ -7,7 +7,9 @@
 from abc import ABCMeta
 import typing as _typing
 
-from thrift.py3lite.serializer import serialize_iobuf, deserialize
+import folly.iobuf
+
+from thrift.py3lite.serializer import serialize_iobuf, deserialize, Protocol
 from thrift.py3lite.server import ServiceInterface, oneway
 
 import my.namespacing.test.hsmodule.lite_types
@@ -18,10 +20,11 @@ class HsTestServiceInterface(
 ):
 
     @staticmethod
-    def service_name():
+    def service_name() -> bytes:
         return b"HsTestService"
 
-    def getFunctionTable(self):
+    # pyre-ignore[3]: it can return anything
+    def getFunctionTable(self) -> _typing.Mapping[bytes, _typing.Callable[..., _typing.Any]]:
         functionTable = {
             b"init": self._fbthrift__handler_init,
         }
@@ -35,7 +38,7 @@ class HsTestServiceInterface(
         ) -> int:
         raise NotImplementedError("async def init is not implemented")
 
-    async def _fbthrift__handler_init(self, args, protocol):
+    async def _fbthrift__handler_init(self, args: folly.iobuf.IOBuf, protocol: Protocol) -> folly.iobuf.IOBuf:
         args_struct = deserialize(my.namespacing.test.hsmodule.lite_types._fbthrift_HsTestService_init_args, args, protocol)
         value = await self.init(args_struct.int1,)
         return_struct = my.namespacing.test.hsmodule.lite_types._fbthrift_HsTestService_init_result(success=value)

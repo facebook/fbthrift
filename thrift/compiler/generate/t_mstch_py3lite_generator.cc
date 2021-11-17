@@ -612,7 +612,15 @@ class mstch_py3lite_function : public mstch_function {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_function(function, generators, cache, pos) {
-    register_methods(this, {});
+    register_methods(
+        this,
+        {
+            {"function:args?", &mstch_py3lite_function::has_args},
+        });
+  }
+
+  mstch::node has_args() {
+    return !function_->get_paramlist()->get_members().empty();
   }
 
  protected:

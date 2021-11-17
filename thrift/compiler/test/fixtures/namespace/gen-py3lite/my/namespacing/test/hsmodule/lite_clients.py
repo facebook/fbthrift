@@ -5,6 +5,8 @@
 #  @generated
 #
 
+import typing as _typing
+
 from thrift.py3lite.client import (
     AsyncClient as _fbthrift_py3lite_AsyncClient,
     SyncClient as _fbthrift_py3lite_SyncClient,
