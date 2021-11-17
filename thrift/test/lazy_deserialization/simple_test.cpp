@@ -17,14 +17,10 @@
 #include <folly/container/Foreach.h>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
-#include <thrift/lib/cpp2/protocol/VirtualProtocol.h>
 #include <thrift/lib/cpp2/protocol/detail/index.h>
 #include <thrift/test/lazy_deserialization/MemberAccessor.h>
 #include <thrift/test/lazy_deserialization/common.h>
 #include <thrift/test/lazy_deserialization/gen-cpp2/simple_types.h>
-#include <thrift/test/lazy_deserialization/gen-cpp2/simple_types_custom_protocol.h>
-#include <thrift/test/lazy_deserialization/gen-cpp2/terse_writes_types.h>
-#include <thrift/test/lazy_deserialization/gen-cpp2/terse_writes_types_custom_protocol.h>
 
 namespace apache::thrift::test {
 
@@ -154,30 +150,6 @@ TYPED_TEST(LazyDeserialization, CheckDataMember) {
   EXPECT_EQ(get_field2(lazyFoo), foo.field2_ref());
   EXPECT_EQ(get_field3(lazyFoo), foo.field3_ref());
   EXPECT_EQ(get_field4(lazyFoo), foo.field4_ref());
-}
-
-// Lazy deserialization does not support virtual protocol, but deserialization
-// of a struct with lazy fields should still be possible.
-TYPED_TEST(LazyDeserialization, VirtualProtocol) {
-  using LazyStruct = typename TypeParam::LazyStruct;
-  using Serializer = typename TypeParam::Serializer;
-  using VirtualProtocolReader =
-      VirtualReader<typename Serializer::ProtocolReader>;
-
-  auto foo = this->genLazyStruct();
-  auto s = this->serialize(foo);
-  auto buf = folly::IOBuf::wrapBuffer(folly::StringPiece(s));
-
-  // Test both concrete and abstract readers.
-  const auto test = [&](auto&& reader) {
-    LazyStruct lazyFoo;
-    reader.setInput(buf.get());
-    lazyFoo.read(&reader);
-    EXPECT_EQ(foo, lazyFoo);
-  };
-
-  test(VirtualProtocolReader{});
-  test(static_cast<VirtualReaderBase&&>(VirtualProtocolReader{}));
 }
 
 TYPED_TEST(Serialization, CppRef) {

@@ -51,13 +51,13 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
 _readField_<%field:cpp_name%>:
 <%#field:lazy?%>
   std::as_const(*this).__fbthrift_read_field_<%field:cpp_name%>();
-  if (auto iobuf = _readState.template tryFastSkip<
-          <% > common/type_class%>,
-          <% > types/type%>
-
-      >(iprot,
-        <%field:key%>,
-        apache::thrift::protocol::<% > module_types_tcc/struct_type%>)) {
+  if (auto iobuf = _readState.tryFastSkip(
+          iprot,
+          <%field:key%>,
+          apache::thrift::protocol::<% > module_types_tcc/struct_type%>,
+          apache::thrift::fixed_cost_skip_v<Protocol_,
+                                            <% > common/type_class%>,
+                                            <% > types/type%>>)) {
     const auto isDeserialized = __fbthrift_isDeserialized_.<%field:cpp_name%>.load();
     __fbthrift_serializedData_.<%field:cpp_name%> = std::move(*iobuf);
     __fbthrift_isDeserialized_.<%field:cpp_name%> = isDeserialized & ~::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;

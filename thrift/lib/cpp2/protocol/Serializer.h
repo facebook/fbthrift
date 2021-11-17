@@ -49,9 +49,6 @@ struct Serializer {
   static void warn_unless(folly::tag_t<T>, const char*, std::true_type) {}
 
  public:
-  using ProtocolReader = Reader;
-  using ProtocolWriter = Writer;
-
   template <class T>
   static folly::io::Cursor deserialize(
       const folly::io::Cursor& cursor,

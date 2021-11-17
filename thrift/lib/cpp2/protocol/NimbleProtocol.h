@@ -316,6 +316,14 @@ class NimbleProtocolReader {
     void fillFieldTraitsFromName() {
       throw std::logic_error("NimbleProtocol doesn't support field names");
     }
+
+    folly::Optional<folly::IOBuf> tryFastSkip(
+        NimbleProtocolReader* /*iprot*/,
+        int16_t /*fieldId*/,
+        TType /*fieldType*/,
+        bool /*fixedCostSkip*/) {
+      return {};
+    }
   };
 
  protected:
