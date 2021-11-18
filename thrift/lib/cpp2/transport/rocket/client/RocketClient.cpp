@@ -334,10 +334,9 @@ StreamChannelStatusResponse RocketClient::handleFirstResponse(
     serverCallback.onInitialError(std::move(firstResponse.exception()));
     return StreamChannelStatus::Complete;
   }
-  auto status =
-      serverCallback.onInitialPayload(std::move(*firstResponse), evb_);
-  if (status.getStatus() != StreamChannelStatus::Alive) {
-    return status;
+  if (!serverCallback.onInitialPayload(std::move(*firstResponse), evb_)) {
+    // we return Alive so RocketClient doesn't call freeStream() twice
+    return StreamChannelStatus::Alive;
   }
   if (complete) {
     if constexpr (std::is_same_v<CallbackType, RocketSinkServerCallback>) {
