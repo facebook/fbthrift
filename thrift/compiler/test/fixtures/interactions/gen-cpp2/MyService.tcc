@@ -78,7 +78,7 @@ typedef apache::thrift::ThriftPResultStream<
     > MyService_MyInteraction_truthify_presult;
 typedef apache::thrift::ThriftPresult<false> MyService_MyInteraction_encode_pargs;
 typedef apache::thrift::ThriftPResultSink<
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::set<::apache::thrift::type_class::floating_point>, ::std::set<float>*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>*>>,
     apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::string, ::std::string*>>,
     apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::binary, ::std::string*>>
     > MyService_MyInteraction_encode_presult;
@@ -281,12 +281,12 @@ void MyServiceAsyncProcessor::process_MyInteraction_encode(apache::thrift::Respo
         ew, std::move(req), ctx, eb, "MyInteraction.encode");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>>>(std::move(req), std::move(ctxStack), return_MyInteraction_encode<ProtocolIn_,ProtocolOut_>, throw_wrapped_MyInteraction_encode<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, apache::thrift::ServerInterface::getBlockingThreadManager(tm), std::move(tile));
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string>>>(std::move(req), std::move(ctxStack), return_MyInteraction_encode<ProtocolIn_,ProtocolOut_>, throw_wrapped_MyInteraction_encode<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, apache::thrift::ServerInterface::getBlockingThreadManager(tm), std::move(tile));
   iface.async_tm_encode(std::move(callback));
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-std::pair<apache::thrift::SerializedResponse, apache::thrift::detail::SinkConsumerImpl> MyServiceAsyncProcessor::return_MyInteraction_encode(apache::thrift::ContextStack* ctx, ::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>&& _return, folly::Executor::KeepAlive<> executor) {
+std::pair<apache::thrift::SerializedResponse, apache::thrift::detail::SinkConsumerImpl> MyServiceAsyncProcessor::return_MyInteraction_encode(apache::thrift::ContextStack* ctx, ::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string>&& _return, folly::Executor::KeepAlive<> executor) {
   ProtocolOut_ prot;
   MyService_MyInteraction_encode_presult::FieldsType result;
   using SinkPResultType = MyService_MyInteraction_encode_presult::SinkPResultType;
@@ -331,7 +331,7 @@ typedef apache::thrift::ThriftPResultStream<
     > MyService_MyInteractionFast_truthify_presult;
 typedef apache::thrift::ThriftPresult<false> MyService_MyInteractionFast_encode_pargs;
 typedef apache::thrift::ThriftPResultSink<
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::set<::apache::thrift::type_class::floating_point>, ::std::set<float>*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>*>>,
     apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::string, ::std::string*>>,
     apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::binary, ::std::string*>>
     > MyService_MyInteractionFast_encode_presult;
@@ -509,12 +509,12 @@ void MyServiceAsyncProcessor::process_MyInteractionFast_encode(apache::thrift::R
         ew, std::move(req), ctx, eb, "MyInteractionFast.encode");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>>>(std::move(req), std::move(ctxStack), return_MyInteractionFast_encode<ProtocolIn_,ProtocolOut_>, throw_wrapped_MyInteractionFast_encode<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, eb, std::move(tile));
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string>>>(std::move(req), std::move(ctxStack), return_MyInteractionFast_encode<ProtocolIn_,ProtocolOut_>, throw_wrapped_MyInteractionFast_encode<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, eb, std::move(tile));
   iface.async_eb_encode(std::move(callback));
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-std::pair<apache::thrift::SerializedResponse, apache::thrift::detail::SinkConsumerImpl> MyServiceAsyncProcessor::return_MyInteractionFast_encode(apache::thrift::ContextStack* ctx, ::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>&& _return, folly::Executor::KeepAlive<> executor) {
+std::pair<apache::thrift::SerializedResponse, apache::thrift::detail::SinkConsumerImpl> MyServiceAsyncProcessor::return_MyInteractionFast_encode(apache::thrift::ContextStack* ctx, ::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string>&& _return, folly::Executor::KeepAlive<> executor) {
   ProtocolOut_ prot;
   MyService_MyInteractionFast_encode_presult::FieldsType result;
   using SinkPResultType = MyService_MyInteractionFast_encode_presult::SinkPResultType;

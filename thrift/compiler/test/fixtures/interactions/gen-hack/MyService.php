@@ -656,10 +656,10 @@ class MyService_MyInteraction extends \ThriftClientBase {
 
   /**
    * Original thrift definition:-
-   * set<float>, sink<string, binary>
+   * set<i32>, sink<string, binary>
    *   encode();
    */
-  public async function encode(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<Set<arraykey>, string, string>> {
+  public async function encode(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<Set<int>, string, string>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
@@ -695,7 +695,7 @@ class MyService_MyInteraction extends \ThriftClientBase {
     $in_transport->write($result_msg);
     $first_response = $this->recvImpl_encode_FirstResponse($currentseqid);
 
-    return new \ResponseAndClientSink<Set<arraykey>, string, string>($first_response, $client_sink_func);
+    return new \ResponseAndClientSink<Set<int>, string, string>($first_response, $client_sink_func);
   }
 
   protected function sendImpl_encode(): int {
@@ -807,7 +807,7 @@ class MyService_MyInteraction extends \ThriftClientBase {
     };
   }
 
-  protected function recvImpl_encode_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): Set<arraykey> {
+  protected function recvImpl_encode_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): Set<int> {
     try {
       $this->eventHandler_->preRecv('MyInteraction.encode', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
@@ -1228,10 +1228,10 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
 
   /**
    * Original thrift definition:-
-   * set<float>, sink<string, binary>
+   * set<i32>, sink<string, binary>
    *   encode();
    */
-  public async function encode(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<Set<arraykey>, string, string>> {
+  public async function encode(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<Set<int>, string, string>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
@@ -1267,7 +1267,7 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     $in_transport->write($result_msg);
     $first_response = $this->recvImpl_encode_FirstResponse($currentseqid);
 
-    return new \ResponseAndClientSink<Set<arraykey>, string, string>($first_response, $client_sink_func);
+    return new \ResponseAndClientSink<Set<int>, string, string>($first_response, $client_sink_func);
   }
 
   protected function sendImpl_encode(): int {
@@ -1379,7 +1379,7 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     };
   }
 
-  protected function recvImpl_encode_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): Set<arraykey> {
+  protected function recvImpl_encode_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): Set<int> {
     try {
       $this->eventHandler_->preRecv('MyInteractionFast.encode', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
@@ -2083,9 +2083,9 @@ class MyService_MyInteraction_encode_FirstResponse implements \IThriftStruct {
     0 => shape(
       'var' => 'success',
       'type' => \TType::SET,
-      'etype' => \TType::FLOAT,
+      'etype' => \TType::I32,
       'elem' => shape(
-        'type' => \TType::FLOAT,
+        'type' => \TType::I32,
       ),
       'format' => 'collection',
     ),
@@ -2095,13 +2095,13 @@ class MyService_MyInteraction_encode_FirstResponse implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => ?Set<arraykey>,
+    ?'success' => ?Set<int>,
   );
 
   const int STRUCTURAL_ID = 5594803499509360192;
-  public ?Set<arraykey> $success;
+  public ?Set<int> $success;
 
-  public function __construct(?Set<arraykey> $success = null  )[] {
+  public function __construct(?Set<int> $success = null  )[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2132,7 +2132,7 @@ class MyService_MyInteraction_encode_FirstResponse implements \IThriftStruct {
                     shape(
                       "valueType" => tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_FLOAT_TYPE,
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
                         )
                       ),
                     )
@@ -2681,9 +2681,9 @@ class MyService_MyInteractionFast_encode_FirstResponse implements \IThriftStruct
     0 => shape(
       'var' => 'success',
       'type' => \TType::SET,
-      'etype' => \TType::FLOAT,
+      'etype' => \TType::I32,
       'elem' => shape(
-        'type' => \TType::FLOAT,
+        'type' => \TType::I32,
       ),
       'format' => 'collection',
     ),
@@ -2693,13 +2693,13 @@ class MyService_MyInteractionFast_encode_FirstResponse implements \IThriftStruct
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => ?Set<arraykey>,
+    ?'success' => ?Set<int>,
   );
 
   const int STRUCTURAL_ID = 5594803499509360192;
-  public ?Set<arraykey> $success;
+  public ?Set<int> $success;
 
-  public function __construct(?Set<arraykey> $success = null  )[] {
+  public function __construct(?Set<int> $success = null  )[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2730,7 +2730,7 @@ class MyService_MyInteractionFast_encode_FirstResponse implements \IThriftStruct
                     shape(
                       "valueType" => tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_FLOAT_TYPE,
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
                         )
                       ),
                     )
