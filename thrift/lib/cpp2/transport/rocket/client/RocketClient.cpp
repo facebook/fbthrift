@@ -341,12 +341,7 @@ StreamChannelStatusResponse RocketClient::handleFirstResponse(
   }
   if (complete) {
     if constexpr (std::is_same_v<CallbackType, RocketSinkServerCallback>) {
-      // TODO(akramam) This is expected if first response is an exception,
-      // we should change behavior so it is no longer a contract violation.
-      constexpr auto kErrorMsg =
-          "Received sink first response payload frame with both next and complete flags set";
-      serverCallback.onFinalResponseError(makeContractViolation(kErrorMsg));
-      return {StreamChannelStatus::ContractViolation, kErrorMsg};
+      return serverCallback.onFinalResponse(StreamPayload({}, {}));
     } else {
       return serverCallback.onStreamComplete();
     }
