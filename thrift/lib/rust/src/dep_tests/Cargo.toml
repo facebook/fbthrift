@@ -11,7 +11,7 @@ name = "fbthrift_test"
 path = "lib.rs"
 
 [dev-dependencies]
-anyhow = "1.0"
+anyhow = "1.0.47"
 fbthrift = { path = "../.." }
 fbthrift_test_if = { path = "cargo_thrift" }
 serde_json = { version = "1.0.64", features = ["float_roundtrip", "unbounded_depth"] }
