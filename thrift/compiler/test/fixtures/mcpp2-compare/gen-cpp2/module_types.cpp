@@ -1018,9 +1018,9 @@ bool ComplexUnion::operator<(const ComplexUnion& rhs) const {
     case Type::MyBinaryListField4:
       return lhs.value_.MyBinaryListField4 < rhs.value_.MyBinaryListField4;
     case Type::ref_field:
-      return lhs.value_.ref_field < rhs.value_.ref_field;
+      return *lhs.value_.ref_field < *rhs.value_.ref_field;
     case Type::ref_field2:
-      return lhs.value_.ref_field2 < rhs.value_.ref_field2;
+      return *lhs.value_.ref_field2 < *rhs.value_.ref_field2;
     case Type::excp_field:
       return lhs.value_.excp_field < rhs.value_.excp_field;
     case Type::MyCustomField:

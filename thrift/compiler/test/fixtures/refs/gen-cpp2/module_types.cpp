@@ -161,9 +161,9 @@ bool MyUnion::operator<(const MyUnion& rhs) const {
   }
   switch (lhs.type_) {
     case Type::anInteger:
-      return lhs.value_.anInteger < rhs.value_.anInteger;
+      return *lhs.value_.anInteger < *rhs.value_.anInteger;
     case Type::aString:
-      return lhs.value_.aString < rhs.value_.aString;
+      return *lhs.value_.aString < *rhs.value_.aString;
     default:
       return false;
   }

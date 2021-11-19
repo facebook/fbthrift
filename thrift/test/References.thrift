@@ -131,3 +131,9 @@ struct StructWithString {
   2: string def_shared_string_ref = "..." (cpp.ref_type = "shared");
   3: string def_shared_string_const_ref = "..." (cpp.ref_type = "shared_const");
 }
+
+union ReferringUnionWithCppRef {
+  1: string box_string (cpp.ref);
+  2: PlainStruct box_plain (cpp.ref);
+  3: ReferringUnionWithCppRef box_self (cpp.ref);
+}

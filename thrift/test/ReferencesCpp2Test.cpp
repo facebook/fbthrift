@@ -16,6 +16,7 @@
 
 #include <folly/portability/GTest.h>
 
+#include <thrift/lib/cpp2/BadFieldAccess.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/test/gen-cpp2/References_types.h>
 #include <thrift/test/gen-cpp2/References_types.tcc>
@@ -442,4 +443,54 @@ TEST(References, string_ref) {
   EXPECT_EQ(a, b);
 }
 
+TEST(References, CppRefUnionLessThan) {
+  auto check = [](ReferringUnionWithCppRef& smallerAddress,
+                  ReferringUnionWithCppRef& largerAddress) {
+    *smallerAddress.get_box_string() = "2";
+    *largerAddress.get_box_string() = "1";
+
+    EXPECT_LT(smallerAddress.get_box_string(), largerAddress.get_box_string());
+    EXPECT_GT(
+        *smallerAddress.get_box_string(), *largerAddress.get_box_string());
+    EXPECT_GT(smallerAddress, largerAddress);
+  };
+
+  ReferringUnionWithCppRef a;
+  ReferringUnionWithCppRef b;
+  a.set_box_string("");
+  b.set_box_string("");
+  if (a.get_box_string() < b.get_box_string()) {
+    check(a, b);
+  } else {
+    check(b, a);
+  }
+}
+
+TEST(References, CppRefUnionSetterGetter) {
+  ReferringUnionWithCppRef a;
+  PlainStruct p;
+  p.field() = 42;
+
+  a.set_box_plain(p);
+
+  EXPECT_THROW(a.get_box_string(), bad_field_access);
+  EXPECT_THROW(a.get_box_self(), bad_field_access);
+  EXPECT_EQ(a.get_box_plain()->field(), 42);
+
+  a.set_box_string("foo");
+
+  EXPECT_THROW(a.get_box_plain(), bad_field_access);
+  EXPECT_THROW(a.get_box_self(), bad_field_access);
+  EXPECT_EQ(*a.get_box_string(), "foo");
+
+  ReferringUnionWithCppRef b;
+
+  b.set_box_self(a);
+
+  EXPECT_THROW(b.get_box_string(), bad_field_access);
+  EXPECT_THROW(b.get_box_plain(), bad_field_access);
+  EXPECT_THROW(*b.get_box_self()->get_box_plain(), bad_field_access);
+  EXPECT_THROW(*b.get_box_self()->get_box_self(), bad_field_access);
+  EXPECT_EQ(*b.get_box_self()->get_box_string(), "foo");
+}
 } // namespace cpp2
