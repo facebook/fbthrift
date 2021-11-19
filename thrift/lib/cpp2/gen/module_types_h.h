@@ -97,6 +97,7 @@ struct invoke_setter;
 
 template <typename Tag>
 struct invoke_reffer_thru {
+  // optional field
   template <typename... A>
   FOLLY_ERASE constexpr auto operator()(A&&... a) noexcept(
       noexcept(invoke_reffer<Tag>{}(static_cast<A&&>(a)...).value_unchecked()))
@@ -105,6 +106,7 @@ struct invoke_reffer_thru {
     return invoke_reffer<Tag>{}(static_cast<A&&>(a)...).value_unchecked();
   }
 
+  // unqualified field
   template <typename... A>
   FOLLY_ERASE constexpr auto operator()(A&&... a) noexcept(
       noexcept(*invoke_reffer<Tag>{}(static_cast<A&&>(a)...)))
@@ -112,6 +114,16 @@ struct invoke_reffer_thru {
           invoke_reffer<Tag>{}(static_cast<A&&>(a)...).is_set(),
           *invoke_reffer<Tag>{}(static_cast<A&&>(a)...)) {
     return *invoke_reffer<Tag>{}(static_cast<A&&>(a)...);
+  }
+
+  // cpp.ref field
+  template <typename... A>
+  FOLLY_ERASE constexpr auto operator()(A&&... a) noexcept(
+      noexcept(invoke_reffer<Tag>{}(static_cast<A&&>(a)...)))
+      -> decltype(
+          invoke_reffer<Tag>{}(static_cast<A&&>(a)...).get(),
+          invoke_reffer<Tag>{}(static_cast<A&&>(a)...)) {
+    return invoke_reffer<Tag>{}(static_cast<A&&>(a)...);
   }
 };
 
