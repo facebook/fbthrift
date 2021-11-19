@@ -41,7 +41,7 @@ enum class RefType {
 } // namespace
 
 reference_type find_ref_type(const t_field& node) {
-  if (node.has_annotation("cpp.box")) {
+  if (node.has_annotation({"cpp.box", "thrift.box"})) {
     return reference_type::boxed;
   }
 

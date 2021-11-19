@@ -58,3 +58,7 @@ struct StructUsingOtherNamespace {
 struct StructUsingAnnotation {
   1: optional MyField field (cpp.box);
 }
+
+struct StructUsingThriftBox {
+  1: optional MyField field (thrift.box);
+}

@@ -143,3 +143,28 @@ TEST(Recursive, StructUsingAnnotation) {
   EXPECT_TRUE(result.field_ref().has_value());
   EXPECT_EQ(result.field_ref()->some_val_ref().value(), 5);
 }
+
+TEST(Recursive, StructUsingThriftBox) {
+  StructUsingThriftBox s;
+
+  s.field_ref() = MyField();
+  s.field_ref()->some_val_ref() = 5;
+  MyField m;
+  m.some_val_ref() = 5;
+  EXPECT_EQ(s.field_ref().value(), m);
+
+  StructUsingThriftBox t = s;
+  EXPECT_EQ(t.field_ref()->some_val_ref().value(), 5);
+
+  StructUsingThriftBox x = std::move(t);
+  EXPECT_EQ(x.field_ref()->some_val_ref().value(), 5);
+
+  auto serializer = apache::thrift::CompactSerializer();
+  folly::IOBufQueue bufq;
+  serializer.serialize(x, &bufq);
+
+  StructUsingThriftBox result;
+  serializer.deserialize(bufq.front(), result);
+  EXPECT_TRUE(result.field_ref().has_value());
+  EXPECT_EQ(result.field_ref()->some_val_ref().value(), 5);
+}
