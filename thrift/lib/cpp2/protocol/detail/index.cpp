@@ -56,8 +56,7 @@ int64_t random_64bits_integer() {
 }
 
 void throwChecksumMismatch(int64_t expected, int64_t actual) {
-  gLazyDeserializationIsDisabledDueToChecksumMismatch.store(
-      true, std::memory_order_relaxed);
+  gLazyDeserializationIsDisabledDueToChecksumMismatch = true;
   throw TProtocolException(
       TProtocolException::CHECKSUM_MISMATCH,
       fmt::format("expected ({}) != actual ({})", expected, actual));

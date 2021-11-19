@@ -24,7 +24,8 @@ DEFINE_bool(
 namespace apache {
 namespace thrift {
 namespace detail {
-std::atomic<bool> gLazyDeserializationIsDisabledDueToChecksumMismatch{false};
+folly::relaxed_atomic<bool> gLazyDeserializationIsDisabledDueToChecksumMismatch{
+    false};
 }
 } // namespace thrift
 } // namespace apache
