@@ -143,4 +143,6 @@ install(CODE "
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/cybld)"
 )
 
-add_subdirectory(test)
+if (enable_tests)
+  add_subdirectory(test)
+endif ()
