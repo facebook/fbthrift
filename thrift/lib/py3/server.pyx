@@ -304,6 +304,18 @@ cdef class ConnectionContext:
         return None
 
     @property
+    def peer_certificate_identity(ConnectionContext self):
+        cdef const AsyncTransport* transport
+        cdef const AsyncTransportCertificate* osslCert
+        transport = self._ctx.getTransport()
+        if not transport:
+            return None
+        osslCert = transport.getPeerCertificate()
+        if not osslCert:
+            return None
+        return deref(osslCert).getIdentity().decode('utf-8')
+
+    @property
     def local_address(ConnectionContext self):
         return self._local_address
 
