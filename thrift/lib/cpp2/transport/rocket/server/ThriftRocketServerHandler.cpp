@@ -398,8 +398,14 @@ void ThriftRocketServerHandler::handleRequestCommon(
         keys.push_back(k);
       }
     }
+    int fmd_sz = 0;
+    if (auto fmd = metadata.frameworkMetadata_ref()) {
+      DCHECK(*fmd) << "initialized IOBuf is null";
+      fmd_sz = (**fmd).computeChainDataLength();
+    }
     return folly::dynamic::object("size", size) //
-        ("keys", folly::dynamic::array(std::move(keys)));
+        ("keys", folly::dynamic::array(std::move(keys))) //
+        ("frameworkMetadataSize", fmd_sz);
   });
 
   if (metadata.crc32c_ref()) {
