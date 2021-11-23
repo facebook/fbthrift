@@ -379,15 +379,13 @@ std::string get_include_path(
     }
 
     auto const lang_args = target.substr(colon_pos + 1);
-    std::vector<std::string> parts;
-    boost::algorithm::split(parts, lang_args, isComma);
-    for (auto const& part : parts) {
-      auto const equal_pos = part.find('=');
-      auto const arg_name = part.substr(0, equal_pos);
-      if (arg_name.find("include_prefix") != std::string::npos) {
-        include_prefix = part.substr(equal_pos + 1);
+    parse_generator_options(lang_args, [&](std::string k, std::string v) {
+      if (k.find("include_prefix") != std::string::npos) {
+        include_prefix = std::move(v);
+        return CallbackLoopControl::Break;
       }
-    }
+      return CallbackLoopControl::Continue;
+    });
   }
 
   // infer cpp include prefix from the filename passed in if none specified.

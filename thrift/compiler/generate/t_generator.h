@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <functional>
 #include <map>
 #include <string>
 #include <unordered_set>
@@ -169,6 +170,14 @@ class t_generator_registry {
 #define THRIFT_REGISTER_GENERATOR(language, long_name, doc)             \
   static t_generator_factory_impl<t_##language##_generator> registerer( \
       #language, long_name, doc)
+
+enum class CallbackLoopControl : bool { Break, Continue };
+
+// `callback(key, value)` will be called for each key=value generator's option.
+// If there is no value, `value` will be empty string.
+void parse_generator_options(
+    const std::string& options,
+    std::function<CallbackLoopControl(std::string, std::string)> callback);
 
 } // namespace compiler
 } // namespace thrift

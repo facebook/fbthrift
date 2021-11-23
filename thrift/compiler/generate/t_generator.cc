@@ -18,6 +18,7 @@
 
 #include <utility>
 
+#include <boost/algorithm/string/split.hpp>
 #include <thrift/compiler/common.h>
 
 namespace apache {
@@ -58,26 +59,11 @@ t_generator* t_generator_registry::get_generator(
   std::string language = options.substr(0, colon);
 
   std::map<std::string, std::string> parsed_options;
-  if (colon != std::string::npos) {
-    std::string::size_type pos = colon + 1;
-    while (pos != std::string::npos && pos < options.size()) {
-      std::string::size_type next_pos = options.find(',', pos);
-      std::string option = options.substr(pos, next_pos - pos);
-      pos = ((next_pos == std::string::npos) ? next_pos : next_pos + 1);
-
-      std::string::size_type separator = option.find('=');
-      std::string key, value;
-      if (separator == std::string::npos) {
-        key = option;
-        value = "";
-      } else {
-        key = option.substr(0, separator);
-        value = option.substr(separator + 1);
-      }
-
-      parsed_options[key] = value;
-    }
-  }
+  parse_generator_options(
+      options.substr(colon + 1), [&](std::string k, std::string v) {
+        parsed_options[std::move(k)] = std::move(v);
+        return CallbackLoopControl::Continue;
+      });
 
   gen_map_t& the_map = get_generator_map();
   gen_map_t::iterator iter = the_map.find(language);
@@ -101,6 +87,21 @@ t_generator_factory::t_generator_factory(
       long_name_(std::move(long_name)),
       documentation_(std::move(documentation)) {
   t_generator_registry::register_generator(this);
+}
+
+void parse_generator_options(
+    const std::string& options,
+    std::function<CallbackLoopControl(std::string, std::string)> callback) {
+  std::vector<std::string> parts;
+  boost::algorithm::split(parts, options, [](char c) { return c == ','; });
+  for (const auto& part : parts) {
+    auto key = part.substr(0, part.find('='));
+    auto value = part.substr(std::min(key.size() + 1, part.size()));
+    if (callback(std::move(key), std::move(value)) ==
+        CallbackLoopControl::Break) {
+      break;
+    }
+  }
 }
 
 } // namespace compiler
