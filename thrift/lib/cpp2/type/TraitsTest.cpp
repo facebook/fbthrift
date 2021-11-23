@@ -23,6 +23,7 @@
 #include <folly/portability/GTest.h>
 #include <thrift/conformance/if/gen-cpp2/object_fatal_all.h>
 #include <thrift/conformance/if/gen-cpp2/object_types.h>
+#include <thrift/lib/cpp2/type/Name.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
 
 namespace apache::thrift::type {

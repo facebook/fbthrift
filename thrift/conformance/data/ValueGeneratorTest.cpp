@@ -22,6 +22,7 @@
 #include <type_traits>
 
 #include <folly/portability/GTest.h>
+#include <thrift/lib/cpp2/type/Name.h>
 
 namespace apache::thrift::conformance::data {
 

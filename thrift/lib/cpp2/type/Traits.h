@@ -217,9 +217,4 @@ constexpr inline BaseType toThriftBaseType(TType type) {
   }
 }
 
-// When called, returns a std::string representing the given
-// type tag's name.
-template <typename T>
-inline static constexpr detail::get_name_fn<T> getName;
-
 } // namespace apache::thrift::type
