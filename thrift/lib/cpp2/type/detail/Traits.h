@@ -20,18 +20,13 @@
 #include <set>
 #include <vector>
 
-#include <fmt/core.h>
-#include <fatal/type/array.h>
 #include <fatal/type/find.h>
-#include <fatal/type/sequence.h>
 #include <fatal/type/sort.h>
 #include <fatal/type/transform.h>
-#include <folly/CPortability.h>
 #include <folly/String.h>
 #include <folly/Traits.h>
-#include <thrift/lib/cpp2/reflection/reflection.h>
+#include <folly/io/IOBuf.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
-#include <thrift/lib/thrift/gen-cpp2/type_fatal.h>
 #include <thrift/lib/thrift/gen-cpp2/type_types.h>
 
 namespace apache::thrift::type::detail {

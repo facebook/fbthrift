@@ -16,12 +16,8 @@
 
 #pragma once
 
-#include <map>
-#include <set>
-#include <vector>
-
 #include <fmt/core.h>
-#include <fatal/type/sequence.h>
+#include <fatal/type/array.h>
 #include <thrift/lib/cpp2/reflection/reflection.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
 #include <thrift/lib/cpp2/type/detail/Traits.h>
