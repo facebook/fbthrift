@@ -57,6 +57,10 @@ struct template_of {
 // with the native types of the give Tags.
 template <template <typename...> typename TemplateT, typename... Tags>
 using native_template_t = TemplateT<typename traits<Tags>::native_type...>;
+template <template <typename...> typename TemplateT, typename... Tags>
+struct native_template {
+  using type = native_template_t<TemplateT, Tags...>;
+};
 
 template <typename Tag, typename = void>
 struct is_concrete_type : std::false_type {};
@@ -214,6 +218,47 @@ struct traits<type::list<ValTag, DefaultT>>
 template <typename ValTag, template <typename...> typename ListT>
 struct traits<type::list<ValTag, ListT>> : list_type<ValTag, ListT> {};
 
+// Helpers replace less, hash, equal_to functions
+// for a set, with the appropriate adapted versions.
+template <
+    typename Adapter,
+    template <typename, typename, typename>
+    typename SetT,
+    typename Key,
+    typename Less,
+    typename Allocator>
+SetT<Key, adapt_detail::adapted_less<Adapter, Key>, Allocator>
+resolveSetForAdapated(const SetT<Key, Less, Allocator>&);
+template <
+    typename Adapter,
+    template <typename, typename, typename, typename>
+    typename SetT,
+    typename Key,
+    typename Hash,
+    typename KeyEqual,
+    typename Allocator>
+SetT<
+    Key,
+    adapt_detail::adapted_hash<Adapter, Key>,
+    adapt_detail::adapted_equal<Adapter, Key>,
+    Allocator>
+resolveSetForAdapated(const SetT<Key, Hash, KeyEqual, Allocator>&);
+
+// Normal element types just use the default template parameters.
+template <template <typename...> typename SetT, typename KeyTag>
+struct native_set : native_template<SetT, KeyTag> {};
+
+// Adapted elements use adapted template arguments.
+template <
+    template <typename...>
+    typename SetT,
+    typename Adapter,
+    typename KeyTag>
+struct native_set<SetT, adapted<Adapter, KeyTag>> {
+  using type = decltype(resolveSetForAdapated<Adapter>(
+      std::declval<native_template_t<SetT, adapted<Adapter, KeyTag>>>()));
+};
+
 // The traits all sets define.
 template <typename KeyTag>
 struct base_set_type : base_type<BaseType::Set> {
@@ -234,7 +279,7 @@ struct set_type<KeyTag, SetT, if_all_concrete<KeyTag>>
     : concrete_type<
           base_set_type<KeyTag>,
           expand_types<KeyTag, template_of<SetT>>,
-          native_template_t<SetT, KeyTag>> {};
+          typename native_set<SetT, KeyTag>::type> {};
 
 // Traits for sets.
 template <>

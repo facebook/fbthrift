@@ -598,9 +598,19 @@ TEST(TraitsTest, AdaptedSetEntries) {
   EXPECT_EQ(
       getName<tag_t>(),
       fmt::format("set<{}>", folly::pretty_name<TestValue<long>>()));
-  // TODO(afuller): This should use the adapater specific less, equal, hash
-  // definitions.
-  IsSameType<native_type<tag_t>, std::set<TestValue<int64_t>>>();
+  IsSameType<
+      native_type<tag_t>,
+      std::set<
+          TestValue<int64_t>,
+          adapt_detail::adapted_less<TestAdapter, TestValue<int64_t>>>>();
+  IsSameType<
+      native_type<type::set<
+          type::adapted<TestAdapter, type::i64_t>,
+          std::unordered_set>>,
+      std::unordered_set<
+          TestValue<int64_t>,
+          adapt_detail::adapted_hash<TestAdapter, TestValue<int64_t>>,
+          adapt_detail::adapted_equal<TestAdapter, TestValue<int64_t>>>>();
 }
 
 TEST(TraitsTest, AdaptedMapEntries) {
