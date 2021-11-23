@@ -22,7 +22,6 @@
 #include <utility>
 #include <folly/Traits.h>
 #include <folly/lang/Pretty.h>
-#include "thrift/lib/cpp2/FieldRef.h"
 
 namespace apache::thrift {
 
