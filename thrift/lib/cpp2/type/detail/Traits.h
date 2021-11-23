@@ -46,21 +46,17 @@ struct has_base_type {
   using apply = std::bool_constant<traits<Tag>::kBaseType == B>;
 };
 
-struct vector_of {
+// A 'bound' helper for resolving concrete template types.
+template <template <typename...> typename TemplateT, typename... Front>
+struct template_of {
   template <typename T>
-  using apply = std::vector<T>;
+  using apply = TemplateT<Front..., T>;
 };
 
-struct set_of {
-  template <typename T>
-  using apply = std::set<T>;
-};
-
-template <typename K>
-struct map_to {
-  template <typename V>
-  using apply = std::map<K, V>;
-};
+// Resolves the concrete template type when paramaterizing the given template,
+// with the native types of the give Tags.
+template <template <typename...> typename TemplateT, typename... Tags>
+using native_template_t = TemplateT<typename traits<Tags>::native_type...>;
 
 template <typename Tag, typename = void>
 struct is_concrete_type : std::false_type {};
@@ -120,8 +116,8 @@ template <
     typename NativeType = fatal::first<StandardTs>>
 struct concrete_type : Base {
   using standard_types = StandardTs;
-  using standard_type = fatal::first<StandardTs>;
   using native_type = NativeType;
+  using standard_type = fatal::first<standard_types>;
 };
 
 // The traits all primitive types (bool, i64, string, etc) define.
@@ -194,22 +190,29 @@ struct base_list_type : base_type<BaseType::List> {
 };
 
 // The non-concrete list traits.
-template <typename ValTag, typename = void>
+template <
+    typename ValTag,
+    template <typename...>
+    typename ListT,
+    typename = void>
 struct list_type : base_list_type<ValTag> {};
 
 // The concrete list traits.
-template <typename ValTag>
-struct list_type<ValTag, if_all_concrete<ValTag>>
+template <typename ValTag, template <typename...> typename ListT>
+struct list_type<ValTag, ListT, if_all_concrete<ValTag>>
     : concrete_type<
           base_list_type<ValTag>,
-          expand_types<ValTag, vector_of>,
-          apply_to_native_types<vector_of, ValTag>> {};
+          expand_types<ValTag, template_of<ListT>>,
+          native_template_t<ListT, ValTag>> {};
 
 // Traits for lists.
 template <>
 struct traits<list_c> : base_type<BaseType::List> {};
 template <typename ValTag>
-struct traits<type::list<ValTag>> : list_type<ValTag> {};
+struct traits<type::list<ValTag, DefaultT>>
+    : traits<type::list<ValTag, std::vector>> {};
+template <typename ValTag, template <typename...> typename ListT>
+struct traits<type::list<ValTag, ListT>> : list_type<ValTag, ListT> {};
 
 // The traits all sets define.
 template <typename KeyTag>
@@ -218,22 +221,28 @@ struct base_set_type : base_type<BaseType::Set> {
 };
 
 // The non-concrete set traits.
-template <typename KeyTag, typename = void>
+template <
+    typename KeyTag,
+    template <typename...>
+    typename SetT,
+    typename = void>
 struct set_type : base_set_type<KeyTag> {};
 
 // The concrete set traits.
-template <typename KeyTag>
-struct set_type<KeyTag, if_all_concrete<KeyTag>>
+template <typename KeyTag, template <typename...> typename SetT>
+struct set_type<KeyTag, SetT, if_all_concrete<KeyTag>>
     : concrete_type<
           base_set_type<KeyTag>,
-          expand_types<KeyTag, set_of>,
-          apply_to_native_types<set_of, KeyTag>> {};
+          expand_types<KeyTag, template_of<SetT>>,
+          native_template_t<SetT, KeyTag>> {};
 
 // Traits for sets.
 template <>
 struct traits<set_c> : base_type<BaseType::Set> {};
 template <typename KeyTag>
-struct traits<set<KeyTag>> : set_type<KeyTag> {};
+struct traits<set<KeyTag, DefaultT>> : set_type<KeyTag, std::set> {};
+template <typename KeyTag, template <typename...> typename SetT>
+struct traits<set<KeyTag, SetT>> : set_type<KeyTag, SetT> {};
 
 // The traits all maps define.
 template <typename KeyTag, typename ValTag>
@@ -243,24 +252,40 @@ struct base_map_type : base_type<BaseType::Map> {
 };
 
 // The non-concrete map traits.
-template <typename KeyTag, typename ValTag, typename = void>
+template <
+    typename KeyTag,
+    typename ValTag,
+    template <typename...>
+    typename MapT,
+    typename = void>
 struct map_type : base_map_type<KeyTag, ValTag> {};
 
 // The concrete map traits.
-template <typename KeyTag, typename ValTag>
-struct map_type<KeyTag, ValTag, if_all_concrete<KeyTag, ValTag>>
+template <
+    typename KeyTag,
+    typename ValTag,
+    template <typename...>
+    typename MapT>
+struct map_type<KeyTag, ValTag, MapT, if_all_concrete<KeyTag, ValTag>>
     : concrete_type<
           base_map_type<KeyTag, ValTag>,
-          expand_types<ValTag, map_to<typename traits<KeyTag>::standard_type>>,
-          apply_to_native_types<
-              map_to<typename traits<KeyTag>::native_type>,
-              ValTag>> {};
+          expand_types<
+              ValTag,
+              template_of<MapT, typename traits<KeyTag>::standard_type>>,
+          native_template_t<MapT, KeyTag, ValTag>> {};
 
 // Traits for maps.
 template <>
 struct traits<map_c> : base_type<BaseType::Map> {};
 template <typename KeyTag, typename ValTag>
-struct traits<map<KeyTag, ValTag>> : map_type<KeyTag, ValTag> {};
+struct traits<map<KeyTag, ValTag, DefaultT>>
+    : traits<map<KeyTag, ValTag, std::map>> {};
+template <
+    typename KeyTag,
+    typename ValTag,
+    template <typename...>
+    typename MapT>
+struct traits<map<KeyTag, ValTag, MapT>> : map_type<KeyTag, ValTag, MapT> {};
 
 // Traits for adapted types.
 //
@@ -332,8 +357,8 @@ struct get_name_fn<exception_t<T>> : get_name_named_fn<
                                          typename reflect_struct<T>::module,
                                          typename reflect_struct<T>::name> {};
 
-template <typename ValTag>
-struct get_name_fn<list<ValTag>> {
+template <typename ValTag, template <typename...> typename ListT>
+struct get_name_fn<list<ValTag, ListT>> {
   FOLLY_EXPORT const std::string& operator()() const {
     static const auto* kName =
         new std::string(fmt::format("list<{}>", get_name_fn<ValTag>()()));
@@ -341,17 +366,21 @@ struct get_name_fn<list<ValTag>> {
   }
 };
 
-template <typename ValTag>
-struct get_name_fn<set<ValTag>> {
+template <typename KeyTag, template <typename...> typename SetT>
+struct get_name_fn<set<KeyTag, SetT>> {
   FOLLY_EXPORT const std::string& operator()() const {
     static const auto* kName =
-        new std::string(fmt::format("set<{}>", get_name_fn<ValTag>()()));
+        new std::string(fmt::format("set<{}>", get_name_fn<KeyTag>()()));
     return *kName;
   }
 };
 
-template <typename KeyTag, typename ValTag>
-struct get_name_fn<map<KeyTag, ValTag>> {
+template <
+    typename KeyTag,
+    typename ValTag,
+    template <typename...>
+    typename MapT>
+struct get_name_fn<map<KeyTag, ValTag, MapT>> {
   FOLLY_EXPORT const std::string& operator()() const {
     static const auto* kName = new std::string(fmt::format(
         "map<{}, {}>", get_name_fn<KeyTag>()(), get_name_fn<ValTag>()()));

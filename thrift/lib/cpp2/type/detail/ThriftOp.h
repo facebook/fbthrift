@@ -74,9 +74,9 @@ struct IdenticalTo<type::float_t> : FloatIdenticalTo<float, int32_t> {};
 template <>
 struct IdenticalTo<type::double_t> : FloatIdenticalTo<double, int64_t> {};
 
-template <typename ValTag>
-struct IdenticalTo<type::list<ValTag>> {
-  template <typename T = type::native_type<type::list<ValTag>>>
+template <typename ValTag, template <typename...> typename ListT>
+struct IdenticalTo<type::list<ValTag, ListT>> {
+  template <typename T = type::native_type<type::list<ValTag, ListT>>>
   bool operator()(const T& lhs, const T& rhs) const {
     if (&lhs == &rhs) {
       return true;
@@ -157,20 +157,22 @@ struct Empty<type::string_t> : StringEmpty {};
 template <>
 struct Empty<type::binary_t> : StringEmpty {};
 
-template <typename Tag>
 struct ContainerEmpty {
-  template <typename T = type::native_type<Tag>>
+  template <typename T>
   constexpr bool operator()(const T& value) const {
     return value.empty();
   }
 };
-template <typename ValTag>
-struct Empty<type::list<ValTag>> : ContainerEmpty<type::list<ValTag>> {};
-template <typename ValTag>
-struct Empty<type::set<ValTag>> : ContainerEmpty<type::set<ValTag>> {};
-template <typename KeyTag, typename ValTag>
-struct Empty<type::map<KeyTag, ValTag>>
-    : ContainerEmpty<type::map<KeyTag, ValTag>> {};
+template <typename ValTag, template <typename...> typename ListT>
+struct Empty<type::list<ValTag, ListT>> : ContainerEmpty {};
+template <typename KeyTag, template <typename...> typename SetT>
+struct Empty<type::set<KeyTag, SetT>> : ContainerEmpty {};
+template <
+    typename KeyTag,
+    typename ValTag,
+    template <typename...>
+    typename MapT>
+struct Empty<type::map<KeyTag, ValTag, MapT>> : ContainerEmpty {};
 
 template <typename Tag>
 struct Clear {
@@ -185,19 +187,22 @@ struct Clear {
   }
 };
 
-template <typename Tag>
 struct ContainerClear {
-  template <typename T = type::native_type<Tag>>
+  template <typename T>
   constexpr void operator()(T& value) const {
     value.clear();
   }
 };
-template <typename ValTag>
-struct Clear<type::list<ValTag>> : ContainerClear<type::list<ValTag>> {};
-template <typename ValTag>
-struct Clear<type::set<ValTag>> : ContainerClear<type::set<ValTag>> {};
-template <typename KeyTag, typename ValTag>
-struct Clear<type::map<KeyTag, ValTag>>
-    : ContainerClear<type::map<KeyTag, ValTag>> {};
+
+template <typename ValTag, template <typename...> typename ListT>
+struct Clear<type::list<ValTag, ListT>> : ContainerClear {};
+template <typename KeyTag, template <typename...> typename SetT>
+struct Clear<type::set<KeyTag, SetT>> : ContainerClear {};
+template <
+    typename KeyTag,
+    typename ValTag,
+    template <typename...>
+    typename MapT>
+struct Clear<type::map<KeyTag, ValTag, MapT>> : ContainerClear {};
 
 } // namespace apache::thrift::op::detail

@@ -26,6 +26,11 @@
 // `type::list<type::enum_c>` represents a list of any enum type, and
 // `type::list<type::enum_t<MyEnum>>` represents a list of MyEnums.
 namespace apache::thrift::type {
+namespace detail {
+// A place holder for the default template for a container.
+template <typename...>
+struct DefaultT;
+} // namespace detail
 
 // Type tags for types that are always concrete (_t suffix).
 struct bool_t {};
@@ -41,38 +46,45 @@ struct binary_t {};
 // The enum class of types.
 struct enum_c {};
 // A concrete enum type.
-template <typename T>
+template <typename Tag>
 struct enum_t {};
 
 // The struct class of types.
 struct struct_c {};
 // A concrete struct type.
-template <typename T>
+template <typename Tag>
 struct struct_t {};
 
 // The union class of types.
 struct union_c {};
-template <typename T>
+template <typename Tag>
 struct union_t {};
 
 // The exception class of types.
 struct exception_c {};
-template <typename T>
+template <typename Tag>
 struct exception_t {};
 
 // The list class of types.
 struct list_c {};
-template <typename VT>
+template <
+    typename ValTag,
+    template <typename...> typename ListT = detail::DefaultT>
 struct list {};
 
 // The set class of types.
 struct set_c {};
-template <typename VT>
+template <
+    typename KeyTag,
+    template <typename...> typename SetT = detail::DefaultT>
 struct set {};
 
 // The map class of types.
 struct map_c {};
-template <typename KT, typename VT>
+template <
+    typename KeyTag,
+    typename ValTag,
+    template <typename...> typename MapT = detail::DefaultT>
 struct map {};
 
 // An adapted type.

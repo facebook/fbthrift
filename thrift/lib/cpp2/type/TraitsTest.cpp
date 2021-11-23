@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+#include <list>
+#include <unordered_map>
+#include <unordered_set>
+
 #include <thrift/lib/cpp2/type/Traits.h>
 
 #include <folly/portability/GTest.h>
@@ -396,6 +400,22 @@ TEST(TraitsTest, List) {
           std::vector<folly::IOBuf>,
           std::vector<std::unique_ptr<folly::IOBuf>>>>();
   EXPECT_TRUE(all_types::contains<tag_t>);
+
+  using tag_s = type::list<type::string_t, std::list>;
+  EXPECT_EQ(base_type_v<tag_s>, BaseType::List);
+  EXPECT_TRUE(is_concrete_type_v<tag_s>);
+  EXPECT_EQ(getName<tag_s>(), "list<string>");
+  IsSameType<standard_type<tag_s>, std::list<std::string>>();
+  IsSameType<native_type<tag_s>, std::list<std::string>>();
+  IsSameType<
+      standard_types<tag_s>,
+      detail::types<
+          std::list<std::string>,
+          std::list<folly::fbstring>,
+          std::list<folly::IOBuf>,
+          std::list<std::unique_ptr<folly::IOBuf>>>>();
+  EXPECT_TRUE(all_types::contains<tag_s>);
+
   EXPECT_EQ(toTType(BaseType::List), TType::T_LIST);
   EXPECT_EQ(toThriftBaseType(TType::T_LIST), BaseType::List);
 }
@@ -437,6 +457,22 @@ TEST(TraitsTest, Set) {
           std::set<folly::IOBuf>,
           std::set<std::unique_ptr<folly::IOBuf>>>>();
   EXPECT_TRUE(all_types::contains<tag_t>);
+
+  using tag_s = type::set<type::string_t, std::unordered_set>;
+  EXPECT_EQ(base_type_v<tag_s>, BaseType::Set);
+  EXPECT_TRUE(is_concrete_type_v<tag_s>);
+  EXPECT_EQ(getName<tag_s>(), "set<string>");
+  IsSameType<standard_type<tag_s>, std::unordered_set<std::string>>();
+  IsSameType<native_type<tag_s>, std::unordered_set<std::string>>();
+  IsSameType<
+      standard_types<tag_s>,
+      detail::types<
+          std::unordered_set<std::string>,
+          std::unordered_set<folly::fbstring>,
+          std::unordered_set<folly::IOBuf>,
+          std::unordered_set<std::unique_ptr<folly::IOBuf>>>>();
+  EXPECT_TRUE(all_types::contains<tag_s>);
+
   EXPECT_EQ(toTType(BaseType::Set), TType::T_SET);
   EXPECT_EQ(toThriftBaseType(TType::T_SET), BaseType::Set);
 }
@@ -486,6 +522,19 @@ TEST(TraitsTest, Map) {
       standard_types<tag_t>,
       detail::types<std::map<int16_t, int32_t>, std::map<int16_t, uint32_t>>>();
   EXPECT_TRUE(all_types::contains<tag_t>);
+
+  using tag_s = type::map<type::i16_t, type::i32_t, std::unordered_map>;
+  EXPECT_EQ(base_type_v<tag_s>, BaseType::Map);
+  EXPECT_EQ(getName<tag_s>(), "map<i16, i32>");
+  EXPECT_TRUE(is_concrete_type_v<tag_s>);
+  IsSameType<standard_type<tag_s>, std::unordered_map<int16_t, int32_t>>();
+  IsSameType<native_type<tag_s>, std::unordered_map<int16_t, int32_t>>();
+  IsSameType<
+      standard_types<tag_s>,
+      detail::types<
+          std::unordered_map<int16_t, int32_t>,
+          std::unordered_map<int16_t, uint32_t>>>();
+  EXPECT_TRUE(all_types::contains<tag_s>);
 
   EXPECT_EQ(toTType(BaseType::Map), TType::T_MAP);
   EXPECT_EQ(toThriftBaseType(TType::T_MAP), BaseType::Map);
