@@ -57,15 +57,8 @@ struct native_template {
   using type = native_template_t<TemplateT, Tags...>;
 };
 
-template <typename Tag, typename = void>
-struct is_concrete_type : std::false_type {};
-template <typename Tag>
-struct is_concrete_type<Tag, folly::void_t<typename traits<Tag>::native_type>>
-    : std::true_type {};
-template <typename Tag>
-inline constexpr bool is_concrete_type_v = is_concrete_type<Tag>::value;
 template <typename... Tags>
-using if_all_concrete = std::enable_if_t<(is_concrete_type_v<Tags> && ...)>;
+using if_all_concrete = std::enable_if_t<(is_concrete_v<Tags> && ...)>;
 
 template <typename... Tags>
 struct types {

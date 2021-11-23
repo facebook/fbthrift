@@ -58,7 +58,7 @@ void addValues(const C& values, I inserter) {
 
 template <typename Tag>
 struct BaseValueGenerator {
-  static_assert(type::is_concrete_type_v<Tag>, "not a concrete type");
+  static_assert(type::is_concrete_v<Tag>, "not a concrete type");
 
   using thrift_type = Tag;
   using standard_type = type::standard_type<Tag>;

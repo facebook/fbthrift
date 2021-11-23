@@ -65,49 +65,33 @@ using native_type = typename detail::traits<Tag>::native_type;
 template <typename Tag, typename T>
 struct is_standard_type : fatal::contains<standard_types<Tag>, T> {};
 
-// If a given type tag refers to concrete type and not a class of types.
-// For example:
-//     is_concrete_type_v<type::byte_t> -> true
-//     is_concrete_type_v<type::list_c> -> false
-//     is_concrete_type_v<type::list<type::byte_t>> -> true
-//     is_concrete_type_v<type::list<type::struct_c>> -> false
-template <typename T>
-using is_concrete_type = detail::is_concrete_type<T>;
-template <typename T>
-inline constexpr bool is_concrete_type_v = is_concrete_type<T>::value;
-template <typename T, typename R = void>
-using if_concrete = std::enable_if<is_concrete_type_v<T>, R>;
+template <typename Tag, typename R = void>
+using if_concrete = std::enable_if<is_concrete_v<Tag>, R>;
 
 namespace bound {
-struct is_concrete_type {
-  template <typename T>
-  using apply = detail::is_concrete_type<T>;
+struct is_concrete {
+  template <typename Tag>
+  using apply = type::is_concrete<Tag>;
 };
 } // namespace bound
 
 // Useful groupings of primitive types.
-using integral_types = detail::types<
-    type::bool_t,
-    type::byte_t,
-    type::i16_t,
-    type::i32_t,
-    type::i64_t,
-    type::enum_c>;
-using floating_point_types = detail::types<type::float_t, type::double_t>;
+using integral_types =
+    detail::types<bool_t, byte_t, i16_t, i32_t, i64_t, enum_c>;
+using floating_point_types = detail::types<float_t, double_t>;
 using numeric_types = fatal::cat<integral_types, floating_point_types>;
-using string_types = detail::types<type::string_t, type::binary_t>;
+using string_types = detail::types<string_t, binary_t>;
 
 // All primitive types.
 using primitive_types = fatal::cat<numeric_types, string_types>;
 
 // All structured types.
-using structured_types =
-    detail::types<type::struct_c, type::union_c, type::exception_c>;
+using structured_types = detail::types<struct_c, union_c, exception_c>;
 
 // Types that are a single value.
 using singular_types = fatal::cat<primitive_types, structured_types>;
 // Types that are containers of other types.
-using container_types = detail::types<type::list_c, type::set_c, type::map_c>;
+using container_types = detail::types<list_c, set_c, map_c>;
 // Types that are composites of other types.
 using composite_types = fatal::cat<structured_types, container_types>;
 // All types.

@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <type_traits>
+
 // Type tags for describing the 'shape' of thrift types at compile-time.
 //
 // _t indicates a concrete type.
@@ -26,6 +28,7 @@
 // `type::list<type::enum_c>` represents a list of any enum type, and
 // `type::list<type::enum_t<MyEnum>>` represents a list of MyEnums.
 namespace apache::thrift::type {
+
 namespace detail {
 // A place holder for the default template for a container.
 template <typename...>
@@ -33,6 +36,7 @@ struct DefaultT;
 } // namespace detail
 
 // Type tags for types that are always concrete (_t suffix).
+struct void_t {};
 struct bool_t {};
 struct byte_t {};
 struct i16_t {};
@@ -46,23 +50,23 @@ struct binary_t {};
 // The enum class of types.
 struct enum_c {};
 // A concrete enum type.
-template <typename Tag>
+template <typename T>
 struct enum_t {};
 
 // The struct class of types.
 struct struct_c {};
 // A concrete struct type.
-template <typename Tag>
+template <typename T>
 struct struct_t {};
 
 // The union class of types.
 struct union_c {};
-template <typename Tag>
+template <typename T>
 struct union_t {};
 
 // The exception class of types.
 struct exception_c {};
-template <typename Tag>
+template <typename T>
 struct exception_t {};
 
 // The list class of types.
@@ -90,5 +94,111 @@ struct map {};
 // An adapted type.
 template <typename Adapter, typename Tag>
 struct adapted {};
+
+// If a given type tag refers to concrete type and not a class of types.
+//
+// For example:
+//     is_concrete_v<byte_t> -> true
+//     is_concrete_v<list_c> -> false
+//     is_concrete_v<list<byte_t>> -> true
+//     is_concrete_v<list<struct_c>> -> false
+template <typename Tag>
+struct is_concrete : std::false_type {};
+template <typename Tag>
+constexpr bool is_concrete_v = is_concrete<Tag>::value;
+
+// If a given Thrift type tag is wellformed.
+//
+// For example:
+//     is_thrift_type_tag_v<int> -> false
+//     is_thrift_type_tag_v<byte_t> -> true
+//     is_thrift_type_tag_v<list_c> -> true
+//     is_thrift_type_tag_v<list<Foo>> -> false
+//     is_thrift_type_tag_v<list<byte_t>> -> true
+//     is_thrift_type_tag_v<list<struct_c>> -> true
+template <typename Tag>
+struct is_thrift_type_tag : is_concrete<Tag> {};
+template <typename Tag>
+constexpr bool is_thrift_type_tag_v = is_thrift_type_tag<Tag>::value;
+
+////
+// Implemnation details
+
+template <>
+struct is_concrete<void_t> : std::true_type {};
+template <>
+struct is_concrete<bool_t> : std::true_type {};
+template <>
+struct is_concrete<byte_t> : std::true_type {};
+template <>
+struct is_concrete<i16_t> : std::true_type {};
+template <>
+struct is_concrete<i32_t> : std::true_type {};
+template <>
+struct is_concrete<i64_t> : std::true_type {};
+template <>
+struct is_concrete<float_t> : std::true_type {};
+template <>
+struct is_concrete<double_t> : std::true_type {};
+template <>
+struct is_concrete<string_t> : std::true_type {};
+template <>
+struct is_concrete<binary_t> : std::true_type {};
+
+template <typename T>
+struct is_concrete<enum_t<T>> : std::true_type {};
+template <typename T>
+struct is_concrete<struct_t<T>> : std::true_type {};
+template <typename T>
+struct is_concrete<union_t<T>> : std::true_type {};
+template <typename T>
+struct is_concrete<exception_t<T>> : std::true_type {};
+
+template <typename ValTag, template <typename...> typename ListT>
+struct is_concrete<list<ValTag, ListT>> : is_concrete<ValTag> {};
+
+template <typename KeyTag, template <typename...> typename SetT>
+struct is_concrete<set<KeyTag, SetT>> : is_concrete<KeyTag> {};
+template <
+    typename KeyTag,
+    typename ValTag,
+    template <typename...>
+    typename MapT>
+struct is_concrete<map<KeyTag, ValTag, MapT>>
+    : std::bool_constant<is_concrete_v<KeyTag> && is_concrete_v<ValTag>> {};
+
+template <typename Adapter, typename Tag>
+struct is_concrete<adapted<Adapter, Tag>> : is_concrete<Tag> {};
+
+template <>
+struct is_thrift_type_tag<enum_c> : std::true_type {};
+template <>
+struct is_thrift_type_tag<struct_c> : std::true_type {};
+template <>
+struct is_thrift_type_tag<union_c> : std::true_type {};
+template <>
+struct is_thrift_type_tag<exception_c> : std::true_type {};
+template <>
+struct is_thrift_type_tag<list_c> : std::true_type {};
+template <>
+struct is_thrift_type_tag<set_c> : std::true_type {};
+template <>
+struct is_thrift_type_tag<map_c> : std::true_type {};
+
+template <typename ValTag, template <typename...> typename ListT>
+struct is_thrift_type_tag<list<ValTag, ListT>> : is_thrift_type_tag<ValTag> {};
+template <typename KeyTag, template <typename...> typename SetT>
+struct is_thrift_type_tag<set<KeyTag, SetT>> : is_thrift_type_tag<KeyTag> {};
+template <
+    typename KeyTag,
+    typename ValTag,
+    template <typename...>
+    typename MapT>
+struct is_thrift_type_tag<map<KeyTag, ValTag, MapT>>
+    : std::bool_constant<
+          is_thrift_type_tag_v<KeyTag> && is_thrift_type_tag_v<ValTag>> {};
+
+template <typename Adapter, typename Tag>
+struct is_thrift_type_tag<adapted<Adapter, Tag>> : is_thrift_type_tag<Tag> {};
 
 } // namespace apache::thrift::type
