@@ -289,6 +289,52 @@ struct traits<set<KeyTag, DefaultT>> : set_type<KeyTag, std::set> {};
 template <typename KeyTag, template <typename...> typename SetT>
 struct traits<set<KeyTag, SetT>> : set_type<KeyTag, SetT> {};
 
+// Helpers to set the appropriate less, hash, equal_to functions
+// for a map with an adapted key type.
+template <
+    typename Adapter,
+    template <typename, typename, typename, typename>
+    typename MapT,
+    typename Key,
+    typename Value,
+    typename Less,
+    typename Allocator>
+MapT<Key, Value, adapt_detail::adapted_less<Adapter, Key>, Allocator>
+resolveMapForAdapated(const MapT<Key, Value, Less, Allocator>&);
+template <
+    typename Adapter,
+    template <typename, typename, typename, typename, typename>
+    typename MapT,
+    typename Key,
+    typename Value,
+    typename Hash,
+    typename KeyEqual,
+    typename Allocator>
+MapT<
+    Key,
+    Value,
+    adapt_detail::adapted_hash<Adapter, Key>,
+    adapt_detail::adapted_equal<Adapter, Key>,
+    Allocator>
+resolveMapForAdapated(const MapT<Key, Value, Hash, KeyEqual, Allocator>&);
+template <
+    template <typename...>
+    typename MapT,
+    typename KeyTag,
+    typename ValTag>
+struct native_map : native_template<MapT, KeyTag, ValTag> {};
+template <
+    typename Adapter,
+    typename KeyTag,
+    typename ValTag,
+    template <typename...>
+    typename MapT>
+struct native_map<MapT, adapted<Adapter, KeyTag>, ValTag> {
+  using type = decltype(resolveMapForAdapated<Adapter>(
+      std::declval<
+          native_template_t<MapT, adapted<Adapter, KeyTag>, ValTag>>()));
+};
+
 // The traits all maps define.
 template <typename KeyTag, typename ValTag>
 struct base_map_type : base_type<BaseType::Map> {
@@ -317,7 +363,7 @@ struct map_type<KeyTag, ValTag, MapT, if_all_concrete<KeyTag, ValTag>>
           expand_types<
               ValTag,
               template_of<MapT, typename traits<KeyTag>::standard_type>>,
-          native_template_t<MapT, KeyTag, ValTag>> {};
+          typename native_map<MapT, KeyTag, ValTag>::type> {};
 
 // Traits for maps.
 template <>

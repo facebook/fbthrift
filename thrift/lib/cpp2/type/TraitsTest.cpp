@@ -630,10 +630,22 @@ TEST(TraitsTest, AdaptedMapEntries) {
           "map<{}, {}>",
           folly::pretty_name<TestValue<long>>(),
           folly::pretty_name<TestValue<bool>>()));
-
-  // TODO(afuller): This should use the adapater specific less, equal, hash
-  // definitions.
-  IsSameType<native_type<tag_t>, std::map<TestValue<long>, TestValue<bool>>>();
+  IsSameType<
+      native_type<tag_t>,
+      std::map<
+          TestValue<long>,
+          TestValue<bool>,
+          adapt_detail::adapted_less<TestAdapter, TestValue<long>>>>();
+  IsSameType<
+      native_type<type::map<
+          type::adapted<TestAdapter, type::i64_t>,
+          type::adapted<TestAdapter, type::bool_t>,
+          std::unordered_map>>,
+      std::unordered_map<
+          TestValue<long>,
+          TestValue<bool>,
+          adapt_detail::adapted_hash<TestAdapter, TestValue<long>>,
+          adapt_detail::adapted_equal<TestAdapter, TestValue<long>>>>();
 }
 
 TEST(TraitsTest, ConcreteType_Bound) {
