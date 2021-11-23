@@ -25,7 +25,7 @@
 <%/field:lazy?%><%/struct:fields%>
   } __fbthrift_serializedData_;
 
-  mutable ::apache::thrift::detail::DeserializationMutex __fbthrift_deserializationMutex_;
+  mutable ::apache::thrift::detail::st::DeserializationMutex __fbthrift_deserializationMutex_;
   ::apache::thrift::ProtocolType __fbthrift_protocol_{};
 
   <%! Use double checked locking pattern to deserialize %>

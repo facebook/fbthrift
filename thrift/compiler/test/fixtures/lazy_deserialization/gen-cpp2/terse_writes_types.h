@@ -631,7 +631,7 @@ class TerseLazyFoo final  {
     folly::IOBuf field4;
   } __fbthrift_serializedData_;
 
-  mutable ::apache::thrift::detail::DeserializationMutex __fbthrift_deserializationMutex_;
+  mutable ::apache::thrift::detail::st::DeserializationMutex __fbthrift_deserializationMutex_;
   ::apache::thrift::ProtocolType __fbthrift_protocol_{};
 
   mutable struct __fbthrift_IsDeserialized {
@@ -1179,7 +1179,7 @@ class TerseOptionalLazyFoo final  {
     folly::IOBuf field4;
   } __fbthrift_serializedData_;
 
-  mutable ::apache::thrift::detail::DeserializationMutex __fbthrift_deserializationMutex_;
+  mutable ::apache::thrift::detail::st::DeserializationMutex __fbthrift_deserializationMutex_;
   ::apache::thrift::ProtocolType __fbthrift_protocol_{};
 
   mutable struct __fbthrift_IsDeserialized {

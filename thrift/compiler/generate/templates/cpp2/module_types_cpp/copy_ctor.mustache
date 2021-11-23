@@ -17,7 +17,7 @@
 %><%struct:name%>::<%struct:name%>(const <%struct:name%>& srcObj) {
 <%#struct:lazy_fields?%>
   const auto relaxed = std::memory_order_relaxed;
-  ::apache::thrift::detail::DeserializationMutexReadLock lock(srcObj.__fbthrift_deserializationMutex_);
+  auto lock = folly::make_shared_lock(srcObj.__fbthrift_deserializationMutex_);
   __fbthrift_protocol_ = srcObj.__fbthrift_protocol_;
 <%/struct:lazy_fields?%>
 <%#struct:fields%><%#field:type%>

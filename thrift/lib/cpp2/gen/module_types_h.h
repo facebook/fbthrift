@@ -19,10 +19,12 @@
 #include <cstdint>
 #include <initializer_list>
 #include <memory>
+#include <shared_mutex>
 #include <type_traits>
 
 #include <folly/CPortability.h>
 #include <folly/Traits.h>
+#include <folly/synchronization/Lock.h>
 #include <thrift/lib/cpp2/Adapt.h>
 #include <thrift/lib/cpp2/FieldRef.h>
 #include <thrift/lib/cpp2/Thrift.h>
@@ -34,7 +36,6 @@
 #if !FOLLY_MOBILE
 #include <folly/SharedMutex.h>
 #else
-#include <mutex>
 #endif
 
 #ifdef SWIG
@@ -263,15 +264,15 @@ class isset_bitset {
       array_isset;
 };
 
+namespace st {
+
 #if !FOLLY_MOBILE
 using DeserializationMutex = folly::SharedMutex;
-using DeserializationMutexReadLock = folly::SharedMutex::ReadHolder;
-using DeserializationMutexWriteLock = folly::SharedMutex::WriteHolder;
 #else
-using DeserializationMutex = std::mutex;
-using DeserializationMutexReadLock = std::unique_lock<std::mutex>;
-using DeserializationMutexWriteLock = std::unique_lock<std::mutex>;
+using DeserializationMutex = std::shared_timed_mutex; // C++14
 #endif
+
+} // namespace st
 
 } // namespace detail
 } // namespace thrift

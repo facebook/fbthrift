@@ -716,7 +716,7 @@ class LazyFoo final  {
     std::unique_ptr<folly::IOBuf> field4;
   } __fbthrift_serializedData_;
 
-  mutable ::apache::thrift::detail::DeserializationMutex __fbthrift_deserializationMutex_;
+  mutable ::apache::thrift::detail::st::DeserializationMutex __fbthrift_deserializationMutex_;
   ::apache::thrift::ProtocolType __fbthrift_protocol_{};
 
   mutable struct __fbthrift_IsDeserialized {
@@ -1264,7 +1264,7 @@ class OptionalLazyFoo final  {
     folly::IOBuf field4;
   } __fbthrift_serializedData_;
 
-  mutable ::apache::thrift::detail::DeserializationMutex __fbthrift_deserializationMutex_;
+  mutable ::apache::thrift::detail::st::DeserializationMutex __fbthrift_deserializationMutex_;
   ::apache::thrift::ProtocolType __fbthrift_protocol_{};
 
   mutable struct __fbthrift_IsDeserialized {
@@ -1404,7 +1404,7 @@ class LazyCppRef final  {
     folly::IOBuf field4;
   } __fbthrift_serializedData_;
 
-  mutable ::apache::thrift::detail::DeserializationMutex __fbthrift_deserializationMutex_;
+  mutable ::apache::thrift::detail::st::DeserializationMutex __fbthrift_deserializationMutex_;
   ::apache::thrift::ProtocolType __fbthrift_protocol_{};
 
   mutable struct __fbthrift_IsDeserialized {
