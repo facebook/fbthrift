@@ -75,4 +75,8 @@ struct map_c {};
 template <typename KT, typename VT>
 struct map {};
 
+// An adapted type.
+template <typename Adapter, typename Tag>
+struct adapted {};
+
 } // namespace apache::thrift::type

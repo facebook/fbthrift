@@ -58,9 +58,8 @@ using standard_type = typename detail::traits<Tag>::standard_type;
 //
 // This is actual used by thrift to represent a value, taking
 // into account any IDL annotations that modify the c++ type.
-// TODO(afuller): Update to support adapted types.
 template <typename Tag>
-using native_type = standard_type<Tag>;
+using native_type = typename detail::traits<Tag>::native_type;
 
 // If T is a standard type for the given ThriftType.
 template <typename Tag, typename T>

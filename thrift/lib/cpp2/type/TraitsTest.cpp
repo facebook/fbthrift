@@ -491,6 +491,92 @@ TEST(TraitsTest, Map) {
   EXPECT_EQ(toThriftBaseType(TType::T_MAP), BaseType::Map);
 }
 
+template <typename T>
+struct TestValue {
+  T value;
+};
+
+struct TestAdapter {
+  template <typename T>
+  static TestValue<T> fromThrift(T&& value) {
+    return {std::forward<T>(value)};
+  }
+};
+
+TEST(TraitsTest, Adapted) {
+  using tag = type::adapted<TestAdapter, type::i64_t>;
+  // All traits that operate on the standard type, match the given tag.
+  EXPECT_TRUE(integral_types::contains<tag>);
+  EXPECT_FALSE(floating_point_types::contains<tag>);
+  EXPECT_TRUE(numeric_types::contains<tag>);
+  EXPECT_FALSE(string_types::contains<tag>);
+  EXPECT_TRUE(primitive_types::contains<tag>);
+  EXPECT_FALSE(structured_types::contains<tag>);
+  EXPECT_TRUE(singular_types::contains<tag>);
+  EXPECT_FALSE(container_types::contains<tag>);
+  EXPECT_FALSE(composite_types::contains<tag>);
+  EXPECT_TRUE(all_types::contains<tag>);
+  EXPECT_EQ(base_type_v<tag>, BaseType::I64);
+  IsSameType<standard_type<tag>, int64_t>();
+  IsSameType<standard_types<tag>, detail::types<int64_t, uint64_t>>();
+  EXPECT_TRUE(is_concrete_type_v<tag>);
+
+  // The name and native_type have changed.
+  EXPECT_EQ(getName<tag>(), folly::pretty_name<TestValue<long>>());
+  IsSameType<native_type<tag>, TestValue<int64_t>>();
+}
+
+TEST(TraitsTest, AdaptedListElems) {
+  using tag_t = type::list<type::adapted<TestAdapter, type::i64_t>>;
+  EXPECT_EQ(base_type_v<tag_t>, BaseType::List);
+  EXPECT_TRUE(is_concrete_type_v<tag_t>);
+  IsSameType<standard_type<tag_t>, std::vector<int64_t>>();
+  EXPECT_TRUE(all_types::contains<tag_t>);
+
+  EXPECT_EQ(
+      getName<tag_t>(),
+      fmt::format("list<{}>", folly::pretty_name<TestValue<long>>()));
+  IsSameType<native_type<tag_t>, std::vector<TestValue<int64_t>>>();
+}
+
+TEST(TraitsTest, AdaptedSetEntries) {
+  using tag_t = type::set<type::adapted<TestAdapter, type::i64_t>>;
+  EXPECT_EQ(base_type_v<tag_t>, BaseType::Set);
+  EXPECT_TRUE(is_concrete_type_v<tag_t>);
+  IsSameType<standard_type<tag_t>, std::set<int64_t>>();
+  EXPECT_TRUE(all_types::contains<tag_t>);
+
+  EXPECT_EQ(
+      getName<tag_t>(),
+      fmt::format("set<{}>", folly::pretty_name<TestValue<long>>()));
+  // TODO(afuller): This should use the adapater specific less, equal, hash
+  // definitions.
+  IsSameType<native_type<tag_t>, std::set<TestValue<int64_t>>>();
+}
+
+TEST(TraitsTest, AdaptedMapEntries) {
+  using tag_t = type::map<
+      type::adapted<TestAdapter, type::i64_t>,
+      type::adapted<TestAdapter, type::bool_t>>;
+  EXPECT_EQ(base_type_v<tag_t>, BaseType::Map);
+  IsSameType<standard_type<tag_t>, std::map<int64_t, bool>>();
+  EXPECT_TRUE(is_concrete_type_v<tag_t>);
+  EXPECT_TRUE(all_types::contains<tag_t>);
+  EXPECT_EQ(toTType(BaseType::Set), TType::T_SET);
+  EXPECT_EQ(toThriftBaseType(TType::T_SET), BaseType::Set);
+
+  EXPECT_EQ(
+      getName<tag_t>(),
+      fmt::format(
+          "map<{}, {}>",
+          folly::pretty_name<TestValue<long>>(),
+          folly::pretty_name<TestValue<bool>>()));
+
+  // TODO(afuller): This should use the adapater specific less, equal, hash
+  // definitions.
+  IsSameType<native_type<tag_t>, std::map<TestValue<long>, TestValue<bool>>>();
+}
+
 TEST(TraitsTest, ConcreteType_Bound) {
   IsSameType<
       fatal::filter<all_types, bound::is_concrete_type>,
