@@ -74,14 +74,6 @@ TEST(References, ref_struct_fields) {
   ReferringStruct a;
 
   // tests that we initialize non-optional ref struct fields
-  EXPECT_NE(nullptr, a.def_field);
-  EXPECT_NE(nullptr, a.req_field);
-  EXPECT_NE(nullptr, a.def_unique_field);
-  EXPECT_NE(nullptr, a.req_unique_field);
-  EXPECT_NE(nullptr, a.def_shared_field);
-  EXPECT_NE(nullptr, a.req_shared_field);
-  EXPECT_NE(nullptr, a.def_shared_const_field);
-  EXPECT_NE(nullptr, a.req_shared_const_field);
   EXPECT_NE(nullptr, a.def_field_ref());
   EXPECT_NE(nullptr, a.req_field_ref());
   EXPECT_NE(nullptr, a.def_unique_field_ref());
@@ -92,14 +84,11 @@ TEST(References, ref_struct_fields) {
   EXPECT_NE(nullptr, a.req_shared_const_field_ref());
 
   // Check that optional fields are absent from a default-constructed object
-  EXPECT_EQ(nullptr, a.opt_field);
-  EXPECT_EQ(nullptr, a.opt_unique_field);
-  EXPECT_EQ(nullptr, a.opt_shared_field);
-  EXPECT_EQ(nullptr, a.opt_shared_const_field);
   EXPECT_EQ(nullptr, a.opt_field_ref());
   EXPECT_EQ(nullptr, a.opt_unique_field_ref());
   EXPECT_EQ(nullptr, a.opt_shared_field_ref());
   EXPECT_EQ(nullptr, a.opt_shared_const_field_ref());
+  EXPECT_FALSE(a.opt_box_field_ref().has_value());
 }
 
 TEST(References, ref_struct_fields_clear) {
@@ -213,18 +202,6 @@ TEST(References, ref_container_fields) {
   StructWithContainers a;
 
   // tests that we initialize non-optional ref container fields
-  EXPECT_NE(nullptr, a.def_list_ref);
-  EXPECT_NE(nullptr, a.def_set_ref);
-  EXPECT_NE(nullptr, a.def_map_ref);
-  EXPECT_NE(nullptr, a.def_list_ref_unique);
-  EXPECT_NE(nullptr, a.def_set_ref_shared);
-  EXPECT_NE(nullptr, a.def_list_ref_shared_const);
-  EXPECT_NE(nullptr, a.req_list_ref);
-  EXPECT_NE(nullptr, a.req_set_ref);
-  EXPECT_NE(nullptr, a.req_map_ref);
-  EXPECT_NE(nullptr, a.req_list_ref_unique);
-  EXPECT_NE(nullptr, a.req_set_ref_shared);
-  EXPECT_NE(nullptr, a.req_list_ref_shared_const);
   EXPECT_NE(nullptr, a.def_list_ref_ref());
   EXPECT_NE(nullptr, a.def_set_ref_ref());
   EXPECT_NE(nullptr, a.def_map_ref_ref());
@@ -238,18 +215,15 @@ TEST(References, ref_container_fields) {
   EXPECT_NE(nullptr, a.req_set_ref_shared_ref());
   EXPECT_NE(nullptr, a.req_list_ref_shared_const_ref());
   // Check that optional fields are absent from a default-constructed object
-  EXPECT_EQ(nullptr, a.opt_list_ref);
-  EXPECT_EQ(nullptr, a.opt_set_ref);
-  EXPECT_EQ(nullptr, a.opt_map_ref);
-  EXPECT_EQ(nullptr, a.opt_list_ref_unique);
-  EXPECT_EQ(nullptr, a.opt_set_ref_shared);
-  EXPECT_EQ(nullptr, a.opt_list_ref_shared_const);
   EXPECT_EQ(nullptr, a.opt_list_ref_ref());
   EXPECT_EQ(nullptr, a.opt_set_ref_ref());
   EXPECT_EQ(nullptr, a.opt_map_ref_ref());
   EXPECT_EQ(nullptr, a.opt_list_ref_unique_ref());
   EXPECT_EQ(nullptr, a.opt_set_ref_shared_ref());
   EXPECT_EQ(nullptr, a.opt_list_ref_shared_const_ref());
+  EXPECT_FALSE(a.opt_box_list_ref_ref().has_value());
+  EXPECT_FALSE(a.opt_box_set_ref_ref().has_value());
+  EXPECT_FALSE(a.opt_box_map_ref_ref().has_value());
 }
 
 TEST(References, ref_container_fields_clear) {
