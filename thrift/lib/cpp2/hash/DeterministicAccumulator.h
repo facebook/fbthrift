@@ -95,6 +95,7 @@ class DeterministicAccumulator {
   inline explicit DeterministicAccumulator(HasherGenerator generator);
 
   inline operator Hasher&&() &&;
+  auto getResult() && { return std::move(result_)->getResult(); }
 
   inline void combine(bool value);
   inline void combine(std::int8_t value);

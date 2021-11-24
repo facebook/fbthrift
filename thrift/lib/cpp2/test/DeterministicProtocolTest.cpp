@@ -70,14 +70,14 @@ class DeterministicProtocolTest : public ::testing::Test {
 struct HasherMode {
   template <typename Struct>
   static auto hash(const Struct& input) {
-    return deterministic_hash<DebugHasher>(input).getResult();
+    return deterministic_hash<DebugHasher>(input);
   }
 };
 
 struct GeneratorMode {
   template <typename Struct>
   static auto hash(const Struct& input) {
-    return deterministic_hash(input, [] { return DebugHasher{}; }).getResult();
+    return deterministic_hash(input, [] { return DebugHasher{}; });
   }
 };
 
@@ -118,73 +118,73 @@ TYPED_TEST(DeterministicProtocolTest, checkOrderDeterminism) {
 
 TEST(DeterministicProtocolTest, checkStdHasherOneOfEach) {
   test::OneOfEach input;
-  auto result = deterministic_hash<StdHasher>(input).getResult();
+  auto result = deterministic_hash<StdHasher>(input);
   auto previousResult = result;
   // 1
   input.myBool_ref() = !input.myBool_ref().value();
-  result = deterministic_hash<StdHasher>(input).getResult();
+  result = deterministic_hash<StdHasher>(input);
   EXPECT_NE(previousResult, result);
   previousResult = result;
   // 2
   input.myByte_ref() = input.myByte_ref().value() + 1;
-  result = deterministic_hash<StdHasher>(input).getResult();
+  result = deterministic_hash<StdHasher>(input);
   EXPECT_NE(previousResult, result);
   previousResult = result;
   // 3
   input.myI16_ref() = input.myI16_ref().value() + 1;
-  result = deterministic_hash<StdHasher>(input).getResult();
+  result = deterministic_hash<StdHasher>(input);
   EXPECT_NE(previousResult, result);
   previousResult = result;
   // 4
   input.myI32_ref() = input.myI32_ref().value() + 1;
-  result = deterministic_hash<StdHasher>(input).getResult();
+  result = deterministic_hash<StdHasher>(input);
   EXPECT_NE(previousResult, result);
   previousResult = result;
   // 5
   input.myI64_ref() = input.myI64_ref().value() + 1;
-  result = deterministic_hash<StdHasher>(input).getResult();
+  result = deterministic_hash<StdHasher>(input);
   EXPECT_NE(previousResult, result);
   previousResult = result;
   // 6
   input.myDouble_ref() = input.myDouble_ref().value() + 1.23;
-  result = deterministic_hash<StdHasher>(input).getResult();
+  result = deterministic_hash<StdHasher>(input);
   EXPECT_NE(previousResult, result);
   previousResult = result;
   // 7
   input.myFloat_ref() = input.myFloat_ref().value() + 1.23;
-  result = deterministic_hash<StdHasher>(input).getResult();
+  result = deterministic_hash<StdHasher>(input);
   EXPECT_NE(previousResult, result);
   previousResult = result;
   // 8
   input.myMap_ref() = {{"abc", 1}};
-  result = deterministic_hash<StdHasher>(input).getResult();
+  result = deterministic_hash<StdHasher>(input);
   EXPECT_NE(previousResult, result);
   previousResult = result;
   // 9
   input.myList_ref() = {"abc"};
-  result = deterministic_hash<StdHasher>(input).getResult();
+  result = deterministic_hash<StdHasher>(input);
   EXPECT_NE(previousResult, result);
   previousResult = result;
   // 10
   input.mySet_ref() = {"abc"};
-  result = deterministic_hash<StdHasher>(input).getResult();
+  result = deterministic_hash<StdHasher>(input);
   EXPECT_NE(previousResult, result);
   previousResult = result;
   // 11
   input.myStruct_ref().emplace();
   input.myStruct_ref()->mySubI64_ref() =
       input.myStruct_ref()->mySubI64_ref().value() + 1;
-  result = deterministic_hash<StdHasher>(input).getResult();
+  result = deterministic_hash<StdHasher>(input);
   EXPECT_NE(previousResult, result);
   previousResult = result;
   input.myStruct_ref()->mySubString_ref() =
       input.myStruct_ref()->mySubString_ref().value() + "a";
-  result = deterministic_hash<StdHasher>(input).getResult();
+  result = deterministic_hash<StdHasher>(input);
   EXPECT_NE(previousResult, result);
   previousResult = result;
   // 12
   input.myUnion_ref()->text_ref() = "abc";
-  result = deterministic_hash<StdHasher>(input).getResult();
+  result = deterministic_hash<StdHasher>(input);
   EXPECT_NE(previousResult, result);
 }
 

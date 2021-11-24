@@ -62,6 +62,7 @@ class DeterministicProtocol {
   static constexpr bool kSortKeys();
 
   inline operator Accumulator&&() &&;
+  auto getResult() && { return std::move(accumulator_).getResult(); }
 
   inline std::uint32_t writeStructBegin(const char* name);
   inline std::uint32_t writeStructEnd();

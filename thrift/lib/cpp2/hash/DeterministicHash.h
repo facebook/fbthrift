@@ -58,12 +58,11 @@ auto deterministic_hash(const Struct& data) {
  */
 template <typename Struct, typename HasherGenerator>
 auto deterministic_hash(const Struct& data, HasherGenerator generator) {
-  using Hasher = decltype(std::declval<HasherGenerator>()());
   using Accumulator = DeterministicAccumulator<HasherGenerator>;
   using Protocol = DeterministicProtocol<Accumulator>;
   Protocol protocol{Accumulator{std::move(generator)}};
   data.write(&protocol);
-  return Hasher{Accumulator{std::move(protocol)}};
+  return std::move(protocol).getResult();
 }
 
 } // namespace hash
