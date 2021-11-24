@@ -191,7 +191,6 @@ class ClientServerTests(unittest.TestCase):
                 await client.__aenter__()
                 self.assertTrue(await client.invert(False))
                 self.assertFalse(await client.invert(True))
-                # pyre-fixme[6] Expected `Exception`
                 _ = client.__aexit__(None, None, None)
                 del client  # If we do not abort here then good
 
