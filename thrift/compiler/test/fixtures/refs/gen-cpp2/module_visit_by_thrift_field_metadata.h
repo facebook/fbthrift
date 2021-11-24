@@ -45,6 +45,12 @@ struct VisitByFieldId<::cpp2::MyField> {
       return f(4, static_cast<T&&>(t).enum_value_ref());
     case 6:
       return f(5, static_cast<T&&>(t).req_enum_value_ref());
+    case 7:
+      return f(6, static_cast<T&&>(t).opt_str_value_ref());
+    case 8:
+      return f(7, static_cast<T&&>(t).str_value_ref());
+    case 9:
+      return f(8, static_cast<T&&>(t).req_str_value_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::MyField");
     }

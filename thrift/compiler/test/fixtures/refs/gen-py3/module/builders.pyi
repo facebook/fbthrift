@@ -28,6 +28,9 @@ class MyField_Builder(thrift.py3.builder.StructBuilder):
     opt_enum_value: _typing.Optional[_module_types.MyEnum]
     enum_value: _typing.Optional[_module_types.MyEnum]
     req_enum_value: _typing.Optional[_module_types.MyEnum]
+    opt_str_value: _typing.Optional[str]
+    str_value: _typing.Optional[str]
+    req_str_value: _typing.Optional[str]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

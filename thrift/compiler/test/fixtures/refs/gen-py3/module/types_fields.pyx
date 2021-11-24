@@ -31,6 +31,9 @@ cdef class __MyField_FieldsSetter(__StructFieldsSetter):
         __fbthrift_inst._setters[__cstring_view(<const char*>"opt_enum_value")] = __MyField_FieldsSetter._set_field_3
         __fbthrift_inst._setters[__cstring_view(<const char*>"enum_value")] = __MyField_FieldsSetter._set_field_4
         __fbthrift_inst._setters[__cstring_view(<const char*>"req_enum_value")] = __MyField_FieldsSetter._set_field_5
+        __fbthrift_inst._setters[__cstring_view(<const char*>"opt_str_value")] = __MyField_FieldsSetter._set_field_6
+        __fbthrift_inst._setters[__cstring_view(<const char*>"str_value")] = __MyField_FieldsSetter._set_field_7
+        __fbthrift_inst._setters[__cstring_view(<const char*>"req_str_value")] = __MyField_FieldsSetter._set_field_8
         return __fbthrift_inst
 
     cdef void set_field(__MyField_FieldsSetter self, const char* name, object value) except *:
@@ -96,6 +99,33 @@ cdef class __MyField_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, _module_types.MyEnum):
             raise TypeError(f'field req_enum_value value: {repr(_fbthrift_value)} is not of the enum type { _module_types.MyEnum }.')
         assign_unique_ptr[_module_types.cMyEnum](deref(self._struct_cpp_obj).req_enum_value_ref(), make_unique[_module_types.cMyEnum](deref((<_module_types.MyEnum?>_fbthrift_value)._cpp_obj)))
+
+    cdef void _set_field_6(self, _fbthrift_value) except *:
+        # for field opt_str_value
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyField](deref(self._struct_cpp_obj), 6)
+            return
+        if not isinstance(_fbthrift_value, str):
+            raise TypeError(f'opt_str_value is not a { str !r}.')
+        assign_unique_ptr[string](deref(self._struct_cpp_obj).opt_str_value_ref(), make_unique[string](deref((<str?>_fbthrift_value)._cpp_obj)))
+
+    cdef void _set_field_7(self, _fbthrift_value) except *:
+        # for field str_value
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyField](deref(self._struct_cpp_obj), 7)
+            return
+        if not isinstance(_fbthrift_value, str):
+            raise TypeError(f'str_value is not a { str !r}.')
+        assign_unique_ptr[string](deref(self._struct_cpp_obj).str_value_ref(), make_unique[string](deref((<str?>_fbthrift_value)._cpp_obj)))
+
+    cdef void _set_field_8(self, _fbthrift_value) except *:
+        # for field req_str_value
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyField](deref(self._struct_cpp_obj), 8)
+            return
+        if not isinstance(_fbthrift_value, str):
+            raise TypeError(f'req_str_value is not a { str !r}.')
+        assign_unique_ptr[string](deref(self._struct_cpp_obj).req_str_value_ref(), make_unique[string](deref((<str?>_fbthrift_value)._cpp_obj)))
 
 
 @__cython.auto_pickle(False)

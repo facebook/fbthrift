@@ -21,6 +21,9 @@ struct req_value;
 struct opt_enum_value;
 struct enum_value;
 struct req_enum_value;
+struct opt_str_value;
+struct str_value;
+struct req_str_value;
 struct opt_ref;
 struct ref;
 struct req_ref;
@@ -91,6 +94,18 @@ APACHE_THRIFT_DEFINE_ACCESSOR(enum_value);
 #ifndef APACHE_THRIFT_ACCESSOR_req_enum_value
 #define APACHE_THRIFT_ACCESSOR_req_enum_value
 APACHE_THRIFT_DEFINE_ACCESSOR(req_enum_value);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_str_value
+#define APACHE_THRIFT_ACCESSOR_opt_str_value
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_str_value);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_str_value
+#define APACHE_THRIFT_ACCESSOR_str_value
+APACHE_THRIFT_DEFINE_ACCESSOR(str_value);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_str_value
+#define APACHE_THRIFT_ACCESSOR_req_str_value
+APACHE_THRIFT_DEFINE_ACCESSOR(req_str_value);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_opt_ref
 #define APACHE_THRIFT_ACCESSOR_opt_ref
@@ -652,7 +667,7 @@ class MyField final  {
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyField(apache::thrift::FragileConstructor, ::std::unique_ptr<::std::int64_t> opt_value__arg, ::std::unique_ptr<::std::int64_t> value__arg, ::std::unique_ptr<::std::int64_t> req_value__arg, ::std::unique_ptr<::cpp2::MyEnum> opt_enum_value__arg, ::std::unique_ptr<::cpp2::MyEnum> enum_value__arg, ::std::unique_ptr<::cpp2::MyEnum> req_enum_value__arg);
+  MyField(apache::thrift::FragileConstructor, ::std::unique_ptr<::std::int64_t> opt_value__arg, ::std::unique_ptr<::std::int64_t> value__arg, ::std::unique_ptr<::std::int64_t> req_value__arg, ::std::unique_ptr<::cpp2::MyEnum> opt_enum_value__arg, ::std::unique_ptr<::cpp2::MyEnum> enum_value__arg, ::std::unique_ptr<::cpp2::MyEnum> req_enum_value__arg, ::std::unique_ptr<::std::string> opt_str_value__arg, ::std::unique_ptr<::std::string> str_value__arg, ::std::unique_ptr<::std::string> req_str_value__arg);
 
   MyField(MyField&&) noexcept;
   MyField(const MyField& src);
@@ -676,6 +691,12 @@ class MyField final  {
   ::std::unique_ptr<::cpp2::MyEnum> enum_value;
  public:
   ::std::unique_ptr<::cpp2::MyEnum> req_enum_value;
+ public:
+  ::std::unique_ptr<::std::string> opt_str_value;
+ public:
+  ::std::unique_ptr<::std::string> str_value;
+ public:
+  ::std::unique_ptr<::std::string> req_str_value;
 
  public:
 
@@ -747,6 +768,39 @@ class MyField final  {
 
   template <typename ..., typename T = ::std::unique_ptr<::cpp2::MyEnum>>
   FOLLY_ERASE const T&& req_enum_value_ref() const&& { return static_cast<const T&&>(req_enum_value); }
+  template <typename ..., typename T = ::std::unique_ptr<::std::string>>
+  FOLLY_ERASE T& opt_str_value_ref() & { return opt_str_value; }
+
+  template <typename ..., typename T = ::std::unique_ptr<::std::string>>
+  FOLLY_ERASE const T& opt_str_value_ref() const& { return opt_str_value; }
+
+  template <typename ..., typename T = ::std::unique_ptr<::std::string>>
+  FOLLY_ERASE T&& opt_str_value_ref() && { return static_cast<T&&>(opt_str_value); }
+
+  template <typename ..., typename T = ::std::unique_ptr<::std::string>>
+  FOLLY_ERASE const T&& opt_str_value_ref() const&& { return static_cast<const T&&>(opt_str_value); }
+  template <typename ..., typename T = ::std::unique_ptr<::std::string>>
+  FOLLY_ERASE T& str_value_ref() & { return str_value; }
+
+  template <typename ..., typename T = ::std::unique_ptr<::std::string>>
+  FOLLY_ERASE const T& str_value_ref() const& { return str_value; }
+
+  template <typename ..., typename T = ::std::unique_ptr<::std::string>>
+  FOLLY_ERASE T&& str_value_ref() && { return static_cast<T&&>(str_value); }
+
+  template <typename ..., typename T = ::std::unique_ptr<::std::string>>
+  FOLLY_ERASE const T&& str_value_ref() const&& { return static_cast<const T&&>(str_value); }
+  template <typename ..., typename T = ::std::unique_ptr<::std::string>>
+  FOLLY_ERASE T& req_str_value_ref() & { return req_str_value; }
+
+  template <typename ..., typename T = ::std::unique_ptr<::std::string>>
+  FOLLY_ERASE const T& req_str_value_ref() const& { return req_str_value; }
+
+  template <typename ..., typename T = ::std::unique_ptr<::std::string>>
+  FOLLY_ERASE T&& req_str_value_ref() && { return static_cast<T&&>(req_str_value); }
+
+  template <typename ..., typename T = ::std::unique_ptr<::std::string>>
+  FOLLY_ERASE const T&& req_str_value_ref() const&& { return static_cast<const T&&>(req_str_value); }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

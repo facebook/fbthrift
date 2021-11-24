@@ -224,6 +224,12 @@ MyField::MyField(const MyField& srcObj) {
         ::apache::thrift::type_class::enumeration>(srcObj.enum_value);
   req_enum_value = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::enumeration>(srcObj.req_enum_value);
+  opt_str_value = ::apache::thrift::detail::st::copy_field<
+        ::apache::thrift::type_class::string>(srcObj.opt_str_value);
+  str_value = ::apache::thrift::detail::st::copy_field<
+        ::apache::thrift::type_class::string>(srcObj.str_value);
+  req_str_value = ::apache::thrift::detail::st::copy_field<
+        ::apache::thrift::type_class::string>(srcObj.req_str_value);
 }
 
 MyField& MyField::operator=(const MyField& src) {
@@ -233,12 +239,12 @@ MyField& MyField::operator=(const MyField& src) {
 }
 
 MyField::MyField() :
-      opt_value(std::make_unique<::std::int64_t>()),
       value(std::make_unique<::std::int64_t>()),
       req_value(std::make_unique<::std::int64_t>()),
-      opt_enum_value(std::make_unique<::cpp2::MyEnum>()),
       enum_value(std::make_unique<::cpp2::MyEnum>()),
-      req_enum_value(std::make_unique<::cpp2::MyEnum>()) {
+      req_enum_value(std::make_unique<::cpp2::MyEnum>()),
+      str_value(std::make_unique<::std::string>()),
+      req_str_value(std::make_unique<::std::string>()) {
 }
 
 
@@ -250,7 +256,10 @@ MyField::MyField(MyField&& other) noexcept  :
     req_value(std::move(other.req_value)),
     opt_enum_value(std::move(other.opt_enum_value)),
     enum_value(std::move(other.enum_value)),
-    req_enum_value(std::move(other.req_enum_value)) {
+    req_enum_value(std::move(other.req_enum_value)),
+    opt_str_value(std::move(other.opt_str_value)),
+    str_value(std::move(other.str_value)),
+    req_str_value(std::move(other.req_str_value)) {
 }
 
 MyField& MyField::operator=(FOLLY_MAYBE_UNUSED MyField&& other) noexcept {
@@ -260,17 +269,23 @@ MyField& MyField::operator=(FOLLY_MAYBE_UNUSED MyField&& other) noexcept {
     this->opt_enum_value = std::move(other.opt_enum_value);
     this->enum_value = std::move(other.enum_value);
     this->req_enum_value = std::move(other.req_enum_value);
+    this->opt_str_value = std::move(other.opt_str_value);
+    this->str_value = std::move(other.str_value);
+    this->req_str_value = std::move(other.req_str_value);
     return *this;
 }
 
 
-MyField::MyField(apache::thrift::FragileConstructor, ::std::unique_ptr<::std::int64_t> opt_value__arg, ::std::unique_ptr<::std::int64_t> value__arg, ::std::unique_ptr<::std::int64_t> req_value__arg, ::std::unique_ptr<::cpp2::MyEnum> opt_enum_value__arg, ::std::unique_ptr<::cpp2::MyEnum> enum_value__arg, ::std::unique_ptr<::cpp2::MyEnum> req_enum_value__arg) :
+MyField::MyField(apache::thrift::FragileConstructor, ::std::unique_ptr<::std::int64_t> opt_value__arg, ::std::unique_ptr<::std::int64_t> value__arg, ::std::unique_ptr<::std::int64_t> req_value__arg, ::std::unique_ptr<::cpp2::MyEnum> opt_enum_value__arg, ::std::unique_ptr<::cpp2::MyEnum> enum_value__arg, ::std::unique_ptr<::cpp2::MyEnum> req_enum_value__arg, ::std::unique_ptr<::std::string> opt_str_value__arg, ::std::unique_ptr<::std::string> str_value__arg, ::std::unique_ptr<::std::string> req_str_value__arg) :
     opt_value(std::move(opt_value__arg)),
     value(std::move(value__arg)),
     req_value(std::move(req_value__arg)),
     opt_enum_value(std::move(opt_enum_value__arg)),
     enum_value(std::move(enum_value__arg)),
-    req_enum_value(std::move(req_enum_value__arg)) {
+    req_enum_value(std::move(req_enum_value__arg)),
+    opt_str_value(std::move(opt_str_value__arg)),
+    str_value(std::move(str_value__arg)),
+    req_str_value(std::move(req_str_value__arg)) {
 }
 
 
@@ -282,6 +297,9 @@ void MyField::__clear() {
   this->opt_enum_value.reset();
   this->enum_value = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::cpp2::MyEnum>>();
   this->req_enum_value = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::cpp2::MyEnum>>();
+  this->opt_str_value.reset();
+  this->str_value = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::string>>();
+  this->req_str_value = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::string>>();
 }
 
 bool MyField::operator==(const MyField& rhs) const {
@@ -304,6 +322,15 @@ bool MyField::operator==(const MyField& rhs) const {
     return false;
   }
   if ((!::apache::thrift::detail::pointer_equal(lhs.req_enum_value_ref(), rhs.req_enum_value_ref()))) {
+    return false;
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.opt_str_value_ref(), rhs.opt_str_value_ref()))) {
+    return false;
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.str_value_ref(), rhs.str_value_ref()))) {
+    return false;
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.req_str_value_ref(), rhs.req_str_value_ref()))) {
     return false;
   }
   return true;
@@ -331,6 +358,15 @@ bool MyField::operator<(const MyField& rhs) const {
   if ((!::apache::thrift::detail::pointer_equal(lhs.req_enum_value_ref(), rhs.req_enum_value_ref()))) {
     return ::apache::thrift::detail::pointer_less(lhs.req_enum_value_ref(), rhs.req_enum_value_ref());
   }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.opt_str_value_ref(), rhs.opt_str_value_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.opt_str_value_ref(), rhs.opt_str_value_ref());
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.str_value_ref(), rhs.str_value_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.str_value_ref(), rhs.str_value_ref());
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.req_str_value_ref(), rhs.req_str_value_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.req_str_value_ref(), rhs.req_str_value_ref());
+  }
   return false;
 }
 
@@ -343,6 +379,9 @@ void swap(MyField& a, MyField& b) {
   swap(a.opt_enum_value, b.opt_enum_value);
   swap(a.enum_value, b.enum_value);
   swap(a.req_enum_value, b.req_enum_value);
+  swap(a.opt_str_value, b.opt_str_value);
+  swap(a.str_value, b.str_value);
+  swap(a.req_str_value, b.req_str_value);
 }
 
 template void MyField::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -1987,7 +2026,9 @@ StructWithString& StructWithString::operator=(const StructWithString& src) {
 StructWithString::StructWithString() :
       def_unique_string_ref(std::make_unique<::std::string>(apache::thrift::StringTraits<std::string>::fromStringLiteral("..."))),
       def_shared_string_ref(std::make_shared<::std::string>(apache::thrift::StringTraits<std::string>::fromStringLiteral("..."))),
-      def_shared_string_const_ref(std::make_shared<::std::string>(apache::thrift::StringTraits<std::string>::fromStringLiteral("..."))) {
+      def_shared_string_const_ref(std::make_shared<::std::string>(apache::thrift::StringTraits<std::string>::fromStringLiteral("..."))),
+      unique_string_ref(std::make_unique<::std::string>()),
+      shared_string_ref(std::make_shared<::std::string>()) {
 }
 
 

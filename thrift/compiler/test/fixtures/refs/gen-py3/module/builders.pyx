@@ -21,6 +21,9 @@ cdef class MyField_Builder(thrift.py3.builder.StructBuilder):
         yield "opt_enum_value", self.opt_enum_value
         yield "enum_value", self.enum_value
         yield "req_enum_value", self.req_enum_value
+        yield "opt_str_value", self.opt_str_value
+        yield "str_value", self.str_value
+        yield "req_str_value", self.req_str_value
 
 cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.MyStruct

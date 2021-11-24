@@ -52,29 +52,38 @@ const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::MyUnion>::fields
   TType::T_STRING,
 }};
 
-const std::array<folly::StringPiece, 6> TStructDataStorage<::cpp2::MyField>::fields_names = {{
+const std::array<folly::StringPiece, 9> TStructDataStorage<::cpp2::MyField>::fields_names = {{
   "opt_value",
   "value",
   "req_value",
   "opt_enum_value",
   "enum_value",
   "req_enum_value",
+  "opt_str_value",
+  "str_value",
+  "req_str_value",
 }};
-const std::array<int16_t, 6> TStructDataStorage<::cpp2::MyField>::fields_ids = {{
+const std::array<int16_t, 9> TStructDataStorage<::cpp2::MyField>::fields_ids = {{
   1,
   2,
   3,
   4,
   5,
   6,
+  7,
+  8,
+  9,
 }};
-const std::array<protocol::TType, 6> TStructDataStorage<::cpp2::MyField>::fields_types = {{
+const std::array<protocol::TType, 9> TStructDataStorage<::cpp2::MyField>::fields_types = {{
   TType::T_I64,
   TType::T_I64,
   TType::T_I64,
   TType::T_I32,
   TType::T_I32,
   TType::T_I32,
+  TType::T_STRING,
+  TType::T_STRING,
+  TType::T_STRING,
 }};
 
 const std::array<folly::StringPiece, 3> TStructDataStorage<::cpp2::MyStruct>::fields_names = {{

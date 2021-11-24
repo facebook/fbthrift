@@ -139,6 +139,42 @@ cdef __StructSpec get_reflection__MyField():
                 """cpp.ref""": """true""",                """cpp2.ref""": """true""",            },
         ),
     )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=7,
+            name="opt_str_value",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+                """cpp.ref""": """true""",                """cpp2.ref""": """true""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=8,
+            name="str_value",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+                """cpp.ref""": """true""",                """cpp2.ref""": """true""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=9,
+            name="req_str_value",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.REQUIRED,
+            default=None,
+            annotations={
+                """cpp.ref""": """true""",                """cpp2.ref""": """true""",            },
+        ),
+    )
     return spec
 cdef __StructSpec get_reflection__MyStruct():
     cdef _module_types.MyStruct defaults = _module_types.MyStruct._fbthrift_create(

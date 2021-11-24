@@ -811,7 +811,8 @@ class mstch_cpp2_struct : public mstch_struct {
         this,
         {
             {"struct:fields_size", &mstch_cpp2_struct::fields_size},
-            {"struct:filtered_fields", &mstch_cpp2_struct::filtered_fields},
+            {"struct:explicitly_constructed_fields",
+             &mstch_cpp2_struct::explicitly_constructed_fields},
             {"struct:fields_in_key_order",
              &mstch_cpp2_struct::fields_in_key_order},
             {"struct:fields_in_layout_order",
@@ -855,16 +856,21 @@ class mstch_cpp2_struct : public mstch_struct {
         });
   }
   mstch::node fields_size() { return std::to_string(strct_->fields().size()); }
-  mstch::node filtered_fields() {
+  mstch::node explicitly_constructed_fields() {
     // Filter fields according to the following criteria:
     // Get all enums
-    // Get all base_types but strings (empty and non-empty)
-    // Get all non empty strings
-    // Get all non empty containers
-    // Get all containers with references
+    // Get all base_types but empty strings
+    // Get all non-empty structs and containers
+    // Get all non-optional references with basetypes, enums,
+    // non-empty structs, and containers
     std::vector<t_field const*> filtered_fields;
     for (auto const* field : get_members_in_layout_order()) {
       const t_type* type = field->get_type()->get_true_type();
+      // Filter out all optional references.
+      if (cpp2::is_explicit_ref(field) &&
+          field->get_req() == t_field::e_req::optional) {
+        continue;
+      }
       if (type->is_enum() ||
           (type->is_base_type() && !type->is_string_or_binary()) ||
           (type->is_string_or_binary() && field->get_value() != nullptr) ||
@@ -876,6 +882,8 @@ class mstch_cpp2_struct : public mstch_struct {
             (cpp2::is_explicit_ref(field) &&
              field->get_req() != t_field::e_req::optional))) ||
           (type->is_container() && cpp2::is_explicit_ref(field) &&
+           field->get_req() != t_field::e_req::optional) ||
+          (type->is_base_type() && cpp2::is_explicit_ref(field) &&
            field->get_req() != t_field::e_req::optional)) {
         filtered_fields.push_back(field);
       }

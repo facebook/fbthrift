@@ -80,6 +80,12 @@ class MyField(thrift.py3.types.Struct, _typing.Hashable):
 
     req_enum_value: Final[_typing.Optional[MyEnum]] = ...
 
+    opt_str_value: Final[_typing.Optional[str]] = ...
+
+    str_value: Final[_typing.Optional[str]] = ...
+
+    req_str_value: Final[_typing.Optional[str]] = ...
+
     def __init__(
         self, *,
         opt_value: _typing.Optional[int]=None,
@@ -87,7 +93,10 @@ class MyField(thrift.py3.types.Struct, _typing.Hashable):
         req_value: _typing.Optional[int]=None,
         opt_enum_value: _typing.Optional[MyEnum]=None,
         enum_value: _typing.Optional[MyEnum]=None,
-        req_enum_value: _typing.Optional[MyEnum]=None
+        req_enum_value: _typing.Optional[MyEnum]=None,
+        opt_str_value: _typing.Optional[str]=None,
+        str_value: _typing.Optional[str]=None,
+        req_str_value: _typing.Optional[str]=None
     ) -> None: ...
 
     def __call__(
@@ -97,7 +106,10 @@ class MyField(thrift.py3.types.Struct, _typing.Hashable):
         req_value: _typing.Union[int, __NotSet, None]=NOTSET,
         opt_enum_value: _typing.Union[MyEnum, __NotSet, None]=NOTSET,
         enum_value: _typing.Union[MyEnum, __NotSet, None]=NOTSET,
-        req_enum_value: _typing.Union[MyEnum, __NotSet, None]=NOTSET
+        req_enum_value: _typing.Union[MyEnum, __NotSet, None]=NOTSET,
+        opt_str_value: _typing.Union[str, __NotSet, None]=NOTSET,
+        str_value: _typing.Union[str, __NotSet, None]=NOTSET,
+        req_str_value: _typing.Union[str, __NotSet, None]=NOTSET
     ) -> MyField: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyField'], bytes]]: ...

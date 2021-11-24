@@ -30,6 +30,9 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
   private static final TField OPT_ENUM_VALUE_FIELD_DESC = new TField("opt_enum_value", TType.I32, (short)4);
   private static final TField ENUM_VALUE_FIELD_DESC = new TField("enum_value", TType.I32, (short)5);
   private static final TField REQ_ENUM_VALUE_FIELD_DESC = new TField("req_enum_value", TType.I32, (short)6);
+  private static final TField OPT_STR_VALUE_FIELD_DESC = new TField("opt_str_value", TType.STRING, (short)7);
+  private static final TField STR_VALUE_FIELD_DESC = new TField("str_value", TType.STRING, (short)8);
+  private static final TField REQ_STR_VALUE_FIELD_DESC = new TField("req_str_value", TType.STRING, (short)9);
 
   public long opt_value;
   public long value;
@@ -49,12 +52,18 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
    * @see MyEnum
    */
   public MyEnum req_enum_value;
+  public String opt_str_value;
+  public String str_value;
+  public String req_str_value;
   public static final int OPT_VALUE = 1;
   public static final int VALUE = 2;
   public static final int REQ_VALUE = 3;
   public static final int OPT_ENUM_VALUE = 4;
   public static final int ENUM_VALUE = 5;
   public static final int REQ_ENUM_VALUE = 6;
+  public static final int OPT_STR_VALUE = 7;
+  public static final int STR_VALUE = 8;
+  public static final int REQ_STR_VALUE = 9;
 
   // isset id assignments
   private static final int __OPT_VALUE_ISSET_ID = 0;
@@ -78,6 +87,12 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
         new FieldValueMetaData(TType.I32)));
     tmpMetaDataMap.put(REQ_ENUM_VALUE, new FieldMetaData("req_enum_value", TFieldRequirementType.REQUIRED, 
         new FieldValueMetaData(TType.I32)));
+    tmpMetaDataMap.put(OPT_STR_VALUE, new FieldMetaData("opt_str_value", TFieldRequirementType.OPTIONAL, 
+        new FieldValueMetaData(TType.STRING)));
+    tmpMetaDataMap.put(STR_VALUE, new FieldMetaData("str_value", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.STRING)));
+    tmpMetaDataMap.put(REQ_STR_VALUE, new FieldMetaData("req_str_value", TFieldRequirementType.REQUIRED, 
+        new FieldValueMetaData(TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -90,18 +105,22 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
 
   public MyField(
       long req_value,
-      MyEnum req_enum_value) {
+      MyEnum req_enum_value,
+      String req_str_value) {
     this();
     this.req_value = req_value;
     setReq_valueIsSet(true);
     this.req_enum_value = req_enum_value;
+    this.req_str_value = req_str_value;
   }
 
   public MyField(
       long value,
       long req_value,
       MyEnum enum_value,
-      MyEnum req_enum_value) {
+      MyEnum req_enum_value,
+      String str_value,
+      String req_str_value) {
     this();
     this.value = value;
     setValueIsSet(true);
@@ -109,6 +128,8 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
     setReq_valueIsSet(true);
     this.enum_value = enum_value;
     this.req_enum_value = req_enum_value;
+    this.str_value = str_value;
+    this.req_str_value = req_str_value;
   }
 
   public MyField(
@@ -117,7 +138,10 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
       long req_value,
       MyEnum opt_enum_value,
       MyEnum enum_value,
-      MyEnum req_enum_value) {
+      MyEnum req_enum_value,
+      String opt_str_value,
+      String str_value,
+      String req_str_value) {
     this();
     this.opt_value = opt_value;
     setOpt_valueIsSet(true);
@@ -128,6 +152,9 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
     this.opt_enum_value = opt_enum_value;
     this.enum_value = enum_value;
     this.req_enum_value = req_enum_value;
+    this.opt_str_value = opt_str_value;
+    this.str_value = str_value;
+    this.req_str_value = req_str_value;
   }
 
   public static class Builder {
@@ -137,6 +164,9 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
     private MyEnum opt_enum_value;
     private MyEnum enum_value;
     private MyEnum req_enum_value;
+    private String opt_str_value;
+    private String str_value;
+    private String req_str_value;
 
     BitSet __optional_isset = new BitSet(3);
 
@@ -176,6 +206,21 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
       return this;
     }
 
+    public Builder setOpt_str_value(final String opt_str_value) {
+      this.opt_str_value = opt_str_value;
+      return this;
+    }
+
+    public Builder setStr_value(final String str_value) {
+      this.str_value = str_value;
+      return this;
+    }
+
+    public Builder setReq_str_value(final String req_str_value) {
+      this.req_str_value = req_str_value;
+      return this;
+    }
+
     public MyField build() {
       MyField result = new MyField();
       if (__optional_isset.get(__OPT_VALUE_ISSET_ID)) {
@@ -190,6 +235,9 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
       result.setOpt_enum_value(this.opt_enum_value);
       result.setEnum_value(this.enum_value);
       result.setReq_enum_value(this.req_enum_value);
+      result.setOpt_str_value(this.opt_str_value);
+      result.setStr_value(this.str_value);
+      result.setReq_str_value(this.req_str_value);
       return result;
     }
   }
@@ -215,6 +263,15 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
     }
     if (other.isSetReq_enum_value()) {
       this.req_enum_value = TBaseHelper.deepCopy(other.req_enum_value);
+    }
+    if (other.isSetOpt_str_value()) {
+      this.opt_str_value = TBaseHelper.deepCopy(other.opt_str_value);
+    }
+    if (other.isSetStr_value()) {
+      this.str_value = TBaseHelper.deepCopy(other.str_value);
+    }
+    if (other.isSetReq_str_value()) {
+      this.req_str_value = TBaseHelper.deepCopy(other.req_str_value);
     }
   }
 
@@ -387,6 +444,78 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
     }
   }
 
+  public String getOpt_str_value() {
+    return this.opt_str_value;
+  }
+
+  public MyField setOpt_str_value(String opt_str_value) {
+    this.opt_str_value = opt_str_value;
+    return this;
+  }
+
+  public void unsetOpt_str_value() {
+    this.opt_str_value = null;
+  }
+
+  // Returns true if field opt_str_value is set (has been assigned a value) and false otherwise
+  public boolean isSetOpt_str_value() {
+    return this.opt_str_value != null;
+  }
+
+  public void setOpt_str_valueIsSet(boolean __value) {
+    if (!__value) {
+      this.opt_str_value = null;
+    }
+  }
+
+  public String getStr_value() {
+    return this.str_value;
+  }
+
+  public MyField setStr_value(String str_value) {
+    this.str_value = str_value;
+    return this;
+  }
+
+  public void unsetStr_value() {
+    this.str_value = null;
+  }
+
+  // Returns true if field str_value is set (has been assigned a value) and false otherwise
+  public boolean isSetStr_value() {
+    return this.str_value != null;
+  }
+
+  public void setStr_valueIsSet(boolean __value) {
+    if (!__value) {
+      this.str_value = null;
+    }
+  }
+
+  public String getReq_str_value() {
+    return this.req_str_value;
+  }
+
+  public MyField setReq_str_value(String req_str_value) {
+    this.req_str_value = req_str_value;
+    return this;
+  }
+
+  public void unsetReq_str_value() {
+    this.req_str_value = null;
+  }
+
+  // Returns true if field req_str_value is set (has been assigned a value) and false otherwise
+  public boolean isSetReq_str_value() {
+    return this.req_str_value != null;
+  }
+
+  public void setReq_str_valueIsSet(boolean __value) {
+    if (!__value) {
+      this.req_str_value = null;
+    }
+  }
+
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case OPT_VALUE:
@@ -437,6 +566,30 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
       }
       break;
 
+    case OPT_STR_VALUE:
+      if (__value == null) {
+        unsetOpt_str_value();
+      } else {
+        setOpt_str_value((String)__value);
+      }
+      break;
+
+    case STR_VALUE:
+      if (__value == null) {
+        unsetStr_value();
+      } else {
+        setStr_value((String)__value);
+      }
+      break;
+
+    case REQ_STR_VALUE:
+      if (__value == null) {
+        unsetReq_str_value();
+      } else {
+        setReq_str_value((String)__value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -461,6 +614,15 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
 
     case REQ_ENUM_VALUE:
       return getReq_enum_value();
+
+    case OPT_STR_VALUE:
+      return getOpt_str_value();
+
+    case STR_VALUE:
+      return getStr_value();
+
+    case REQ_STR_VALUE:
+      return getReq_str_value();
 
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -489,12 +651,18 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
 
     if (!TBaseHelper.equalsNobinary(this.isSetReq_enum_value(), that.isSetReq_enum_value(), this.req_enum_value, that.req_enum_value)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetOpt_str_value(), that.isSetOpt_str_value(), this.opt_str_value, that.opt_str_value)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetStr_value(), that.isSetStr_value(), this.str_value, that.str_value)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetReq_str_value(), that.isSetReq_str_value(), this.req_str_value, that.req_str_value)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {opt_value, value, req_value, opt_enum_value, enum_value, req_enum_value});
+    return Arrays.deepHashCode(new Object[] {opt_value, value, req_value, opt_enum_value, enum_value, req_enum_value, opt_str_value, str_value, req_str_value});
   }
 
   @Override
@@ -557,6 +725,30 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
     if (lastComparison != 0) { 
       return lastComparison;
     }
+    lastComparison = Boolean.valueOf(isSetOpt_str_value()).compareTo(other.isSetOpt_str_value());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(opt_str_value, other.opt_str_value);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetStr_value()).compareTo(other.isSetStr_value());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(str_value, other.str_value);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetReq_str_value()).compareTo(other.isSetReq_str_value());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(req_str_value, other.req_str_value);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
     return 0;
   }
 
@@ -616,6 +808,27 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case OPT_STR_VALUE:
+          if (__field.type == TType.STRING) {
+            this.opt_str_value = iprot.readString();
+          } else { 
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case STR_VALUE:
+          if (__field.type == TType.STRING) {
+            this.str_value = iprot.readString();
+          } else { 
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case REQ_STR_VALUE:
+          if (__field.type == TType.STRING) {
+            this.req_str_value = iprot.readString();
+          } else { 
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -662,6 +875,23 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
     if (this.req_enum_value != null) {
       oprot.writeFieldBegin(REQ_ENUM_VALUE_FIELD_DESC);
       oprot.writeI32(this.req_enum_value == null ? 0 : this.req_enum_value.getValue());
+      oprot.writeFieldEnd();
+    }
+    if (this.opt_str_value != null) {
+      if (isSetOpt_str_value()) {
+        oprot.writeFieldBegin(OPT_STR_VALUE_FIELD_DESC);
+        oprot.writeString(this.opt_str_value);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.str_value != null) {
+      oprot.writeFieldBegin(STR_VALUE_FIELD_DESC);
+      oprot.writeString(this.str_value);
+      oprot.writeFieldEnd();
+    }
+    if (this.req_str_value != null) {
+      oprot.writeFieldBegin(REQ_STR_VALUE_FIELD_DESC);
+      oprot.writeString(this.req_str_value);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -767,6 +997,42 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
       }
     }
     first = false;
+    if (isSetOpt_str_value())
+    {
+      if (!first) sb.append("," + newLine);
+      sb.append(indentStr);
+      sb.append("opt_str_value");
+      sb.append(space);
+      sb.append(":").append(space);
+      if (this.getOpt_str_value() == null) {
+        sb.append("null");
+      } else {
+        sb.append(TBaseHelper.toString(this.getOpt_str_value(), indent + 1, prettyPrint));
+      }
+      first = false;
+    }
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("str_value");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getStr_value() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getStr_value(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("req_str_value");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getReq_str_value() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getReq_str_value(), indent + 1, prettyPrint));
+    }
+    first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
     sb.append(")");
     return sb.toString();
@@ -777,6 +1043,9 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
     // alas, we cannot check 'req_value' because it's a primitive and you chose the non-beans generator.
     if (req_enum_value == null) {
       throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Required field 'req_enum_value' was not present! Struct: " + toString());
+    }
+    if (req_str_value == null) {
+      throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Required field 'req_str_value' was not present! Struct: " + toString());
     }
   }
 

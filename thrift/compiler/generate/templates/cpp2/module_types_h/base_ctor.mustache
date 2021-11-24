@@ -15,7 +15,7 @@
   limitations under the License.
 
 %><%struct:name%>()<%!
-  %><%#struct:filtered_fields%><% > common/colon_newline%><%!
+  %><%#struct:explicitly_constructed_fields%><% > common/colon_newline%><%!
     %><%#field:type%><%!
       %>      <%field:cpp_storage_name%>(<%!
       %><%#field:cpp_ref?%><% > module_types_h/smart_ptr_constructor%><%/field:cpp_ref?%><%!
@@ -25,9 +25,9 @@
       %><%/field:cpp_ref?%><%!
       %>)<% > common/comma_newline%><%!
     %><%/field:type%><%!
-  %><%/struct:filtered_fields%><%!
+  %><%/struct:explicitly_constructed_fields%><%!
 %> {
-  <%#struct:filtered_fields%><%#field:cpp_adapter%>
+  <%#struct:explicitly_constructed_fields%><%#field:cpp_adapter%>
   ::apache::thrift::adapt_detail::construct<<%field:cpp_adapter%>, <%field:key%>>(<%field:cpp_storage_name%>, *this);
-  <%/field:cpp_adapter%><%/struct:filtered_fields%>
+  <%/field:cpp_adapter%><%/struct:explicitly_constructed_fields%>
 }

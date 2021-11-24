@@ -61,6 +61,22 @@ struct ReferringStructWithBaseTypeFields {
   10: i64 def_shared_const_field (cpp2.ref_type = "shared_const");
   11: optional i64 opt_shared_const_field (cpp2.ref_type = "shared_const");
   12: required i64 req_shared_const_field (cpp2.ref_type = "shared_const");
+  13: optional string opt_box_field (cpp.box); // TODO(dokwon): Fix boxed_ptr for basetypes.
+}
+
+struct ReferringStructWithStringFields {
+  1: string def_field (cpp2.ref = "true");
+  2: optional string opt_field (cpp2.ref = "true");
+  3: required string req_field (cpp2.ref = "true");
+  4: string def_unique_field (cpp2.ref_type = "unique");
+  5: optional string opt_unique_field (cpp2.ref_type = "unique");
+  6: required string req_unique_field (cpp2.ref_type = "unique");
+  7: string def_shared_field (cpp2.ref_type = "shared");
+  8: optional string opt_shared_field (cpp2.ref_type = "shared");
+  9: required string req_shared_field (cpp2.ref_type = "shared");
+  10: string def_shared_const_field (cpp2.ref_type = "shared_const");
+  11: optional string opt_shared_const_field (cpp2.ref_type = "shared_const");
+  12: required string req_shared_const_field (cpp2.ref_type = "shared_const");
   13: optional string opt_box_field (cpp.box);
 }
 

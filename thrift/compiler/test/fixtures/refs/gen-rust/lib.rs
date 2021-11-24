@@ -83,6 +83,9 @@ pub mod types {
         pub opt_enum_value: ::std::option::Option<crate::types::MyEnum>,
         pub enum_value: crate::types::MyEnum,
         pub req_enum_value: crate::types::MyEnum,
+        pub opt_str_value: ::std::option::Option<::std::string::String>,
+        pub str_value: ::std::string::String,
+        pub req_str_value: ::std::string::String,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
         // the definition in Thrift. If you don't want this, add the annotation
@@ -564,6 +567,9 @@ pub mod types {
                 opt_enum_value: ::std::option::Option::None,
                 enum_value: ::std::default::Default::default(),
                 req_enum_value: ::std::default::Default::default(),
+                opt_str_value: ::std::option::Option::None,
+                str_value: ::std::default::Default::default(),
+                req_str_value: ::std::default::Default::default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
         }
@@ -579,6 +585,9 @@ pub mod types {
                 .field("opt_enum_value", &self.opt_enum_value)
                 .field("enum_value", &self.enum_value)
                 .field("req_enum_value", &self.req_enum_value)
+                .field("opt_str_value", &self.opt_str_value)
+                .field("str_value", &self.str_value)
+                .field("req_str_value", &self.req_str_value)
                 .finish()
         }
     }
@@ -618,6 +627,17 @@ pub mod types {
             p.write_field_begin("req_enum_value", ::fbthrift::TType::I32, 6);
             ::fbthrift::Serialize::write(&self.req_enum_value, p);
             p.write_field_end();
+            if let ::std::option::Option::Some(some) = &self.opt_str_value {
+                p.write_field_begin("opt_str_value", ::fbthrift::TType::String, 7);
+                ::fbthrift::Serialize::write(some, p);
+                p.write_field_end();
+            }
+            p.write_field_begin("str_value", ::fbthrift::TType::String, 8);
+            ::fbthrift::Serialize::write(&self.str_value, p);
+            p.write_field_end();
+            p.write_field_begin("req_str_value", ::fbthrift::TType::String, 9);
+            ::fbthrift::Serialize::write(&self.req_str_value, p);
+            p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -631,9 +651,12 @@ pub mod types {
             static FIELDS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("enum_value", ::fbthrift::TType::I32, 5),
                 ::fbthrift::Field::new("opt_enum_value", ::fbthrift::TType::I32, 4),
+                ::fbthrift::Field::new("opt_str_value", ::fbthrift::TType::String, 7),
                 ::fbthrift::Field::new("opt_value", ::fbthrift::TType::I64, 1),
                 ::fbthrift::Field::new("req_enum_value", ::fbthrift::TType::I32, 6),
+                ::fbthrift::Field::new("req_str_value", ::fbthrift::TType::String, 9),
                 ::fbthrift::Field::new("req_value", ::fbthrift::TType::I64, 3),
+                ::fbthrift::Field::new("str_value", ::fbthrift::TType::String, 8),
                 ::fbthrift::Field::new("value", ::fbthrift::TType::I64, 2),
             ];
             let mut field_opt_value = ::std::option::Option::None;
@@ -642,6 +665,9 @@ pub mod types {
             let mut field_opt_enum_value = ::std::option::Option::None;
             let mut field_enum_value = ::std::option::Option::None;
             let mut field_req_enum_value = ::std::option::Option::None;
+            let mut field_opt_str_value = ::std::option::Option::None;
+            let mut field_str_value = ::std::option::Option::None;
+            let mut field_req_str_value = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -653,6 +679,9 @@ pub mod types {
                     (::fbthrift::TType::I32, 4) => field_opt_enum_value = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::I32, 5) => field_enum_value = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::I32, 6) => field_req_enum_value = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 7) => field_opt_str_value = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 8) => field_str_value = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 9) => field_req_str_value = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -665,6 +694,9 @@ pub mod types {
                 opt_enum_value: field_opt_enum_value,
                 enum_value: field_enum_value.unwrap_or_default(),
                 req_enum_value: field_req_enum_value.unwrap_or_default(),
+                opt_str_value: field_opt_str_value,
+                str_value: field_str_value.unwrap_or_default(),
+                req_str_value: field_req_str_value.unwrap_or_default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }

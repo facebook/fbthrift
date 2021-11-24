@@ -34,6 +34,10 @@ struct MyField {
   4: optional MyEnum opt_enum_value (cpp.ref = "true", cpp2.ref = "true");
   5: MyEnum enum_value (cpp.ref = "true", cpp2.ref = "true");
   6: required MyEnum req_enum_value (cpp.ref = "true", cpp2.ref = "true");
+
+  7: optional string opt_str_value (cpp.ref = "true", cpp2.ref = "true");
+  8: string str_value (cpp.ref = "true", cpp2.ref = "true");
+  9: required string req_str_value (cpp.ref = "true", cpp2.ref = "true");
 }
 
 struct MyStruct {

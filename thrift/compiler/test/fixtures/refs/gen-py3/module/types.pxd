@@ -112,6 +112,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         unique_ptr[cMyEnum] opt_enum_value_ref()
         unique_ptr[cMyEnum] enum_value_ref()
         unique_ptr[cMyEnum] req_enum_value_ref()
+        unique_ptr[string] opt_str_value_ref()
+        unique_ptr[string] str_value_ref()
+        unique_ptr[string] req_str_value_ref()
 
 
     cdef cppclass cMyStruct "::cpp2::MyStruct":

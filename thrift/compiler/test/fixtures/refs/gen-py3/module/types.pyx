@@ -409,6 +409,33 @@ cdef class MyField(thrift.py3.types.Struct):
             self.__fbthrift_cached_req_enum_value = MyEnum._fbthrift_create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_enum_value_ref()), self._cpp_obj))
         return self.__fbthrift_cached_req_enum_value
 
+    @property
+    def opt_str_value(self):
+
+        if self.__fbthrift_cached_opt_str_value is None:
+            if not deref(self._cpp_obj).opt_str_value_ref():
+                return None
+            self.__fbthrift_cached_opt_str_value = str._fbthrift_create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_str_value_ref()), self._cpp_obj))
+        return self.__fbthrift_cached_opt_str_value
+
+    @property
+    def str_value(self):
+
+        if self.__fbthrift_cached_str_value is None:
+            if not deref(self._cpp_obj).str_value_ref():
+                return None
+            self.__fbthrift_cached_str_value = str._fbthrift_create(__reference_shared_ptr(deref(deref(self._cpp_obj).str_value_ref()), self._cpp_obj))
+        return self.__fbthrift_cached_str_value
+
+    @property
+    def req_str_value(self):
+
+        if self.__fbthrift_cached_req_str_value is None:
+            if not deref(self._cpp_obj).req_str_value_ref():
+                return None
+            self.__fbthrift_cached_req_str_value = str._fbthrift_create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_str_value_ref()), self._cpp_obj))
+        return self.__fbthrift_cached_req_str_value
+
 
     def __hash__(MyField self):
         return super().__hash__()
@@ -452,7 +479,7 @@ cdef class MyField(thrift.py3.types.Struct):
         return __get_field_name_by_index[cMyField](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 6
+        self._fbthrift_struct_size = 9
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyField self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
