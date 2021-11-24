@@ -18,13 +18,13 @@
 #define THRIFT_CPP2_H_
 
 #include <thrift/lib/cpp/Thrift.h>
+#include <thrift/lib/cpp2/ThriftOp.h>
 #include <thrift/lib/cpp2/TypeClass.h>
 
 #include <initializer_list>
 #include <utility>
 #include <folly/Traits.h>
 #include <folly/Utility.h>
-#include <folly/functional/Invoke.h>
 
 #include <cstdint>
 
@@ -199,11 +199,6 @@ template <typename Class, typename... Args>
 using safe_overload_t = typename std::enable_if<
     apache::thrift::detail::is_safe_overload<Class, Args...>::type::value>::
     type;
-
-namespace detail {
-FOLLY_CREATE_MEMBER_INVOKER(clear_fn, __clear);
-}
-FOLLY_INLINE_VARIABLE constexpr apache::thrift::detail::clear_fn clear;
 
 } // namespace thrift
 } // namespace apache
