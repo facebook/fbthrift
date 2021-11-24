@@ -67,7 +67,7 @@ void check_simple(
   // this allows us to use the EXPECT_EQ, so the values are printed
   // when they don't match.
   EXPECT_EQ(*s1.im_default_ref(), *s2.im_default_ref());
-  EXPECT_EQ(s1.im_required, s2.im_required);
+  EXPECT_EQ(*s1.im_required_ref(), *s2.im_required_ref());
   EXPECT_EQ(s1.im_optional_ref(), s2.im_optional_ref());
   EXPECT_EQ(s1.im_default_ref().has_value(), s2.im_default_ref().has_value());
 }
@@ -81,65 +81,65 @@ TEST(SwapTest, test_swap_optional) {
 
   Simple simple1;
   *simple1.im_default_ref() = 1;
-  simple1.im_required = 1;
+  *simple1.im_required_ref() = 1;
   simple1.im_optional_ref() = 1;
   simple1.im_default_ref().ensure();
 
   Simple simple2;
   *simple2.im_default_ref() = 2;
-  simple2.im_required = 2;
+  *simple2.im_required_ref() = 2;
   simple2.im_optional_ref() = 2;
   apache::thrift::unset_unsafe(simple2.im_default_ref());
 
   Simple simple3;
   *simple3.im_default_ref() = 3;
-  simple3.im_required = 3;
+  *simple3.im_required_ref() = 3;
   simple3.im_optional_ref() = 3;
   simple3.im_default_ref().ensure();
 
   Simple simple4;
   *simple4.im_default_ref() = 4;
-  simple4.im_required = 4;
+  *simple4.im_required_ref() = 4;
   simple4.im_optional_ref() = 4;
   apache::thrift::unset_unsafe(simple4.im_default_ref());
 
   *comp1.cp_default_ref() = 5;
   comp1.cp_default_ref().ensure();
-  comp1.cp_required = 0x7fff;
+  *comp1.cp_required_ref() = 0x7fff;
   comp1.cp_optional_ref() = 50;
   comp1.the_map_ref()->insert(make_pair(1, simple1));
   comp1.the_map_ref()->insert(make_pair(99, simple2));
   comp1.the_map_ref()->insert(make_pair(-7, simple3));
-  comp1.req_simp = simple4;
+  *comp1.req_simp_ref() = simple4;
   comp1.opt_simp_ref().reset();
 
   *comp2.cp_default_ref() = -7;
   apache::thrift::unset_unsafe(comp2.cp_default_ref());
-  comp2.cp_required = 0;
+  *comp2.cp_required_ref() = 0;
   comp2.cp_optional_ref().reset();
   comp2.the_map_ref()->insert(make_pair(6, simple2));
-  comp2.req_simp = simple1;
+  *comp2.req_simp_ref() = simple1;
   comp2.opt_simp_ref() = simple3;
 
   swap(comp1, comp2);
 
   EXPECT_EQ(*comp1.cp_default_ref(), -7);
   EXPECT_EQ(comp1.cp_default_ref().has_value(), false);
-  EXPECT_EQ(comp1.cp_required, 0);
+  EXPECT_EQ(*comp1.cp_required_ref(), 0);
   EXPECT_FALSE(comp1.cp_optional_ref().has_value());
   EXPECT_EQ(comp1.the_map_ref()->size(), 1);
   check_simple(comp1.the_map_ref()[6], simple2);
-  check_simple(comp1.req_simp, simple1);
+  check_simple(*comp1.req_simp_ref(), simple1);
   check_simple(*comp1.opt_simp_ref(), simple3);
 
   EXPECT_EQ(*comp2.cp_default_ref(), 5);
   EXPECT_EQ(comp2.cp_default_ref().has_value(), true);
-  EXPECT_EQ(comp2.cp_required, 0x7fff);
+  EXPECT_EQ(*comp2.cp_required_ref(), 0x7fff);
   EXPECT_EQ(*comp2.cp_optional_ref(), 50);
   EXPECT_EQ(comp2.the_map_ref()->size(), 3);
   check_simple(comp2.the_map_ref()[1], simple1);
   check_simple(comp2.the_map_ref()[99], simple2);
   check_simple(comp2.the_map_ref()[-7], simple3);
-  check_simple(comp2.req_simp, simple4);
+  check_simple(*comp2.req_simp_ref(), simple4);
   EXPECT_EQ(comp2.opt_simp_ref().has_value(), false);
 }

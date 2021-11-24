@@ -64,7 +64,7 @@ cimport module.types_reflection as _types_reflection
 cdef class FooEx(thrift.py3.exceptions.GeneratedError):
     def __init__(FooEx self, *args, **kwargs):
         self._cpp_obj = make_shared[cFooEx]()
-        self._fields_setter = _fbthrift_types_fields.__FooEx_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__FooEx_FieldsSetter._fbthrift_create(self._cpp_obj.get())
         super().__init__( *args, **kwargs)
 
     cdef void _fbthrift_set_field(self, str name, object value) except *:
@@ -75,7 +75,7 @@ cdef class FooEx(thrift.py3.exceptions.GeneratedError):
         })
 
     @staticmethod
-    cdef create(shared_ptr[cFooEx] cpp_obj):
+    cdef _fbthrift_create(shared_ptr[cFooEx] cpp_obj):
         __fbthrift_inst = <FooEx>FooEx.__new__(FooEx, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
@@ -96,7 +96,7 @@ cdef class FooEx(thrift.py3.exceptions.GeneratedError):
         cdef shared_ptr[cFooEx] cpp_obj = make_shared[cFooEx](
             deref(self._cpp_obj)
         )
-        return FooEx.create(cmove(cpp_obj))
+        return FooEx._fbthrift_create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
         r = self._fbthrift_cmp_sametype(other, op)
@@ -144,7 +144,7 @@ cdef class FooEx(thrift.py3.exceptions.GeneratedError):
 cdef class ClientBufferedStream__i32(ClientBufferedStream):
 
     @staticmethod
-    cdef create(cClientBufferedStream[cint32_t]& c_obj, __RpcOptions rpc_options):
+    cdef _fbthrift_create(cClientBufferedStream[cint32_t]& c_obj, __RpcOptions rpc_options):
         __fbthrift_inst = ClientBufferedStream__i32(rpc_options)
         __fbthrift_inst._gen = make_unique[cClientBufferedStreamWrapper[cint32_t]](c_obj)
         return __fbthrift_inst
@@ -158,7 +158,7 @@ cdef class ClientBufferedStream__i32(ClientBufferedStream):
         cdef cint32_t _value
         stream, pyfuture, rpc_options = <object> userdata
         if result.hasException[cFooEx]():
-            pyfuture.set_exception(FooEx.create(thrift.py3.exceptions.try_make_shared_exception[cFooEx](result.exception())))
+            pyfuture.set_exception(FooEx._fbthrift_create(thrift.py3.exceptions.try_make_shared_exception[cFooEx](result.exception())))
         elif result.hasException():
             pyfuture.set_exception(
                 thrift.py3.exceptions.create_py_exception(result.exception(), <__RpcOptions>rpc_options)
@@ -194,9 +194,9 @@ cdef class ServerStream__i32(ServerStream):
 cdef class ResponseAndClientBufferedStream__i32_i32(ResponseAndClientBufferedStream):
 
     @staticmethod
-    cdef create(cResponseAndClientBufferedStream[cint32_t, cint32_t]& c_obj, __RpcOptions rpc_options):
+    cdef _fbthrift_create(cResponseAndClientBufferedStream[cint32_t, cint32_t]& c_obj, __RpcOptions rpc_options):
         __fbthrift_inst = ResponseAndClientBufferedStream__i32_i32()
-        __fbthrift_inst._stream = ClientBufferedStream__i32.create(
+        __fbthrift_inst._stream = ClientBufferedStream__i32._fbthrift_create(
             c_obj.stream, rpc_options,
         )
         cdef cint32_t _value = c_obj.response

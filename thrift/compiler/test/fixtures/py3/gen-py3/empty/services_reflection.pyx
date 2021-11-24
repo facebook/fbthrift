@@ -18,7 +18,7 @@ cimport empty.types as _empty_types
 
 
 cdef __InterfaceSpec get_reflection__NullService(bint for_clients):
-    cdef __InterfaceSpec spec = __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec._fbthrift_create(
         name="NullService",
         annotations={
         },

@@ -81,8 +81,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cMyStruct&)
         __field_ref[cint64_t] MyIntField_ref()
         __field_ref[string] MyStringField_ref()
-        cint64_t MyIntField
-        string MyStringField
 
 
 
@@ -92,7 +90,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cMyStruct])
+    cdef _fbthrift_create(shared_ptr[cMyStruct])
 
 
 

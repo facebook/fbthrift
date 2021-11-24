@@ -24,19 +24,19 @@ from thrift.py3.types cimport (
 
 
 cdef __StructSpec get_reflection__MyStruct():
-    cdef _module_types.MyStruct defaults = _module_types.MyStruct.create(
+    cdef _module_types.MyStruct defaults = _module_types.MyStruct._fbthrift_create(
         constant_shared_ptr[_module_types.cMyStruct](
             default_inst[_module_types.cMyStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="MyStruct",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="MyIntField",
             type=int,
@@ -48,7 +48,7 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="MyStringField",
             type=str,
@@ -60,7 +60,7 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=3,
             name="MyDataField",
             type=_module_types.MyDataItem,
@@ -72,7 +72,7 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=4,
             name="myEnum",
             type=_module_types.MyEnum,
@@ -84,7 +84,7 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=5,
             name="oneway",
             type=bool,
@@ -96,7 +96,7 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=6,
             name="readonly",
             type=bool,
@@ -108,7 +108,7 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=7,
             name="idempotent",
             type=bool,
@@ -121,12 +121,12 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     return spec
 cdef __StructSpec get_reflection__MyDataItem():
-    cdef _module_types.MyDataItem defaults = _module_types.MyDataItem.create(
+    cdef _module_types.MyDataItem defaults = _module_types.MyDataItem._fbthrift_create(
         constant_shared_ptr[_module_types.cMyDataItem](
             default_inst[_module_types.cMyDataItem]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="MyDataItem",
         kind=__StructType.STRUCT,
         annotations={
@@ -134,14 +134,14 @@ cdef __StructSpec get_reflection__MyDataItem():
     )
     return spec
 cdef __StructSpec get_reflection__MyUnion():
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="MyUnion",
         kind=__StructType.UNION,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="myEnum",
             type=_module_types.MyEnum,
@@ -153,7 +153,7 @@ cdef __StructSpec get_reflection__MyUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="myStruct",
             type=_module_types.MyStruct,
@@ -165,7 +165,7 @@ cdef __StructSpec get_reflection__MyUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=3,
             name="myDataItem",
             type=_module_types.MyDataItem,

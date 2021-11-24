@@ -47,11 +47,11 @@ folly::Executor::KeepAlive<folly::EventBase> PooledRequestChannel::getEvb(
         ->keepAlive;
   }
 
-  auto executor = executor_.lock();
-  if (!executor) {
+  auto evb = getEventBase_();
+  if (!evb) {
     throw std::logic_error("IO executor already destroyed.");
   }
-  return executor->getEventBase();
+  return evb;
 }
 
 uint16_t PooledRequestChannel::getProtocolId() {
@@ -263,6 +263,40 @@ PooledRequestChannel::Impl& PooledRequestChannel::impl(folly::EventBase& evb) {
     DCHECK(!!ptr);
     return ptr;
   });
+}
+
+PooledRequestChannel::EventBaseProvider PooledRequestChannel::wrapWeakPtr(
+    std::weak_ptr<folly::IOExecutor> executor) {
+  return [executor = std::move(
+              executor)]() -> folly::Executor::KeepAlive<folly::EventBase> {
+    if (auto ka = executor.lock()) {
+      return {ka->getEventBase()};
+    }
+    return {};
+  };
+}
+
+PooledRequestChannel::EventBaseProvider
+PooledRequestChannel::globalExecutorProvider(size_t numThreads) {
+  auto executor = folly::getGlobalIOExecutor();
+  if (!executor) {
+    throw std::logic_error("IO executor already destroyed.");
+  }
+  std::vector<folly::EventBase*> ebs;
+  ebs.reserve(numThreads);
+  for (size_t i = 0; i < numThreads; i++) {
+    ebs.push_back(executor->getEventBase());
+  }
+  return
+      [ebs = std::move(ebs),
+       idx = std::make_unique<std::atomic<uint64_t>>(0),
+       numThreads]() mutable -> folly::Executor::KeepAlive<folly::EventBase> {
+        if (auto ka = folly::getGlobalIOExecutor()) {
+          return {ebs.at(
+              idx->fetch_add(1, std::memory_order_relaxed) % numThreads)};
+        }
+        return {};
+      };
 }
 } // namespace thrift
 } // namespace apache

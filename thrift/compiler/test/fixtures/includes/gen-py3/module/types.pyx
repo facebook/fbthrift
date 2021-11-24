@@ -64,7 +64,7 @@ cimport module.types_reflection as _types_reflection
 cdef class MyStruct(thrift.py3.types.Struct):
     def __init__(MyStruct self, **kwargs):
         self._cpp_obj = make_shared[cMyStruct]()
-        self._fields_setter = _fbthrift_types_fields.__MyStruct_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__MyStruct_FieldsSetter._fbthrift_create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(MyStruct self, **kwargs):
@@ -72,7 +72,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
             return self
         cdef MyStruct __fbthrift_inst = MyStruct.__new__(MyStruct)
         __fbthrift_inst._cpp_obj = make_shared[cMyStruct](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__MyStruct_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__MyStruct_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
         for __fbthrift_name, _fbthrift_value in kwargs.items():
             __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
@@ -88,7 +88,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         })
 
     @staticmethod
-    cdef create(shared_ptr[cMyStruct] cpp_obj):
+    cdef _fbthrift_create(shared_ptr[cMyStruct] cpp_obj):
         __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
@@ -97,14 +97,14 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def MyIncludedField(self):
 
         if self.__fbthrift_cached_MyIncludedField is None:
-            self.__fbthrift_cached_MyIncludedField = _includes_types.Included.create(__reference_shared_ptr(deref(self._cpp_obj).MyIncludedField_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_MyIncludedField = _includes_types.Included._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).MyIncludedField_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_MyIncludedField
 
     @property
     def MyOtherIncludedField(self):
 
         if self.__fbthrift_cached_MyOtherIncludedField is None:
-            self.__fbthrift_cached_MyOtherIncludedField = _includes_types.Included.create(__reference_shared_ptr(deref(self._cpp_obj).MyOtherIncludedField_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_MyOtherIncludedField = _includes_types.Included._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).MyOtherIncludedField_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_MyOtherIncludedField
 
     @property
@@ -127,7 +127,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
             deref(self._cpp_obj)
         )
-        return MyStruct.create(cmove(cpp_obj))
+        return MyStruct._fbthrift_create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
         r = self._fbthrift_cmp_sametype(other, op)

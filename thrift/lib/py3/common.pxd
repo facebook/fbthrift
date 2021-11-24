@@ -96,13 +96,13 @@ cdef class RpcOptions:
 cdef class ReadHeaders(Headers):
     cdef RpcOptions _parent
     @staticmethod
-    cdef create(RpcOptions rpc_options)
+    cdef _fbthrift_create(RpcOptions rpc_options)
 
 
 cdef class WriteHeaders(Headers):
     cdef RpcOptions _parent
     @staticmethod
-    cdef create(RpcOptions rpc_options)
+    cdef _fbthrift_create(RpcOptions rpc_options)
 
 
 cdef class MetadataBox:

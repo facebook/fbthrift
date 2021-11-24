@@ -81,7 +81,7 @@ cdef class Promise__module_types_cComplexUnion:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[_module_types.cComplexUnion]] cPromise):
+    cdef _fbthrift_create(cFollyPromise[unique_ptr[_module_types.cComplexUnion]] cPromise):
         cdef Promise__module_types_cComplexUnion inst = Promise__module_types_cComplexUnion.__new__(Promise__module_types_cComplexUnion)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -97,7 +97,7 @@ cdef class Promise_vector___module_types_cComplexUnion:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[vector[_module_types.cComplexUnion]]] cPromise):
+    cdef _fbthrift_create(cFollyPromise[unique_ptr[vector[_module_types.cComplexUnion]]] cPromise):
         cdef Promise_vector___module_types_cComplexUnion inst = Promise_vector___module_types_cComplexUnion.__new__(Promise_vector___module_types_cComplexUnion)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -113,7 +113,7 @@ cdef class Promise_vector__vector__vector__cmap___module_types_cEmpty__module_ty
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]]] cPromise):
+    cdef _fbthrift_create(cFollyPromise[unique_ptr[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]]] cPromise):
         cdef Promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct inst = Promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct.__new__(Promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -129,7 +129,7 @@ cdef class Promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]] cPromise):
+    cdef _fbthrift_create(cFollyPromise[unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]] cPromise):
         cdef Promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct inst = Promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct.__new__(Promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -145,7 +145,7 @@ cdef class Promise_vector___module_types_cMyEnumA:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]] cPromise):
+    cdef _fbthrift_create(cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]] cPromise):
         cdef Promise_vector___module_types_cMyEnumA inst = Promise_vector___module_types_cMyEnumA.__new__(Promise_vector___module_types_cMyEnumA)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -161,7 +161,7 @@ cdef class Promise_vector__cbool:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[vector[cbool]]] cPromise):
+    cdef _fbthrift_create(cFollyPromise[unique_ptr[vector[cbool]]] cPromise):
         cdef Promise_vector__cbool inst = Promise_vector__cbool.__new__(Promise_vector__cbool)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -177,7 +177,7 @@ cdef class Promise_vector__cint32_t:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[vector[cint32_t]]] cPromise):
+    cdef _fbthrift_create(cFollyPromise[unique_ptr[vector[cint32_t]]] cPromise):
         cdef Promise_vector__cint32_t inst = Promise_vector__cint32_t.__new__(Promise_vector__cint32_t)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -193,7 +193,7 @@ cdef class Promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_strin
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]]] cPromise):
+    cdef _fbthrift_create(cFollyPromise[unique_ptr[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]]] cPromise):
         cdef Promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string inst = Promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string.__new__(Promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -209,7 +209,7 @@ cdef class Promise_cmap__string_cint64_t:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[cmap[string,cint64_t]]] cPromise):
+    cdef _fbthrift_create(cFollyPromise[unique_ptr[cmap[string,cint64_t]]] cPromise):
         cdef Promise_cmap__string_cint64_t inst = Promise_cmap__string_cint64_t.__new__(Promise_cmap__string_cint64_t)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -225,7 +225,7 @@ cdef class Promise__module_types_cMyEnumA:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[_module_types.cMyEnumA] cPromise):
+    cdef _fbthrift_create(cFollyPromise[_module_types.cMyEnumA] cPromise):
         cdef Promise__module_types_cMyEnumA inst = Promise__module_types_cMyEnumA.__new__(Promise__module_types_cMyEnumA)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -241,7 +241,7 @@ cdef class Promise__module_types_cMyStruct:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[_module_types.cMyStruct]] cPromise):
+    cdef _fbthrift_create(cFollyPromise[unique_ptr[_module_types.cMyStruct]] cPromise):
         cdef Promise__module_types_cMyStruct inst = Promise__module_types_cMyStruct.__new__(Promise__module_types_cMyStruct)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -257,7 +257,7 @@ cdef class Promise_cset___module_types_cMyStruct:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[cset[_module_types.cMyStruct]]] cPromise):
+    cdef _fbthrift_create(cFollyPromise[unique_ptr[cset[_module_types.cMyStruct]]] cPromise):
         cdef Promise_cset___module_types_cMyStruct inst = Promise_cset___module_types_cMyStruct.__new__(Promise_cset___module_types_cMyStruct)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -273,7 +273,7 @@ cdef class Promise_binary:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[string]] cPromise):
+    cdef _fbthrift_create(cFollyPromise[unique_ptr[string]] cPromise):
         cdef Promise_binary inst = Promise_binary.__new__(Promise_binary)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -289,7 +289,7 @@ cdef class Promise_cbool:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cbool] cPromise):
+    cdef _fbthrift_create(cFollyPromise[cbool] cPromise):
         cdef Promise_cbool inst = Promise_cbool.__new__(Promise_cbool)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -305,7 +305,7 @@ cdef class Promise_double:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[double] cPromise):
+    cdef _fbthrift_create(cFollyPromise[double] cPromise):
         cdef Promise_double inst = Promise_double.__new__(Promise_double)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -321,7 +321,7 @@ cdef class Promise_float:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[float] cPromise):
+    cdef _fbthrift_create(cFollyPromise[float] cPromise):
         cdef Promise_float inst = Promise_float.__new__(Promise_float)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -337,7 +337,7 @@ cdef class Promise___iobuf_cIOBuf:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[_fbthrift_iobuf.cIOBuf]] cPromise):
+    cdef _fbthrift_create(cFollyPromise[unique_ptr[_fbthrift_iobuf.cIOBuf]] cPromise):
         cdef Promise___iobuf_cIOBuf inst = Promise___iobuf_cIOBuf.__new__(Promise___iobuf_cIOBuf)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -353,7 +353,7 @@ cdef class Promise_cint16_t:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cint16_t] cPromise):
+    cdef _fbthrift_create(cFollyPromise[cint16_t] cPromise):
         cdef Promise_cint16_t inst = Promise_cint16_t.__new__(Promise_cint16_t)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -369,7 +369,7 @@ cdef class Promise_cint32_t:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cint32_t] cPromise):
+    cdef _fbthrift_create(cFollyPromise[cint32_t] cPromise):
         cdef Promise_cint32_t inst = Promise_cint32_t.__new__(Promise_cint32_t)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -385,7 +385,7 @@ cdef class Promise_cint64_t:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cint64_t] cPromise):
+    cdef _fbthrift_create(cFollyPromise[cint64_t] cPromise):
         cdef Promise_cint64_t inst = Promise_cint64_t.__new__(Promise_cint64_t)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -401,7 +401,7 @@ cdef class Promise_unique_ptr__iobuf_cIOBuf:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[unique_ptr[_fbthrift_iobuf.cIOBuf]]] cPromise):
+    cdef _fbthrift_create(cFollyPromise[unique_ptr[unique_ptr[_fbthrift_iobuf.cIOBuf]]] cPromise):
         cdef Promise_unique_ptr__iobuf_cIOBuf inst = Promise_unique_ptr__iobuf_cIOBuf.__new__(Promise_unique_ptr__iobuf_cIOBuf)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -417,7 +417,7 @@ cdef class Promise_string:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[string]] cPromise):
+    cdef _fbthrift_create(cFollyPromise[unique_ptr[string]] cPromise):
         cdef Promise_string inst = Promise_string.__new__(Promise_string)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -433,7 +433,7 @@ cdef class Promise_cFollyUnit:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cFollyUnit] cPromise):
+    cdef _fbthrift_create(cFollyPromise[cFollyUnit] cPromise):
         cdef Promise_cFollyUnit inst = Promise_cFollyUnit.__new__(Promise_cFollyUnit)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -778,8 +778,8 @@ cdef api void call_cy_ReturnService_noReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_noReturn_coro(
@@ -822,8 +822,8 @@ cdef api void call_cy_ReturnService_boolReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[cbool] cPromise
 ):
-    cdef Promise_cbool __promise = Promise_cbool.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cbool __promise = Promise_cbool._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_boolReturn_coro(
@@ -866,8 +866,8 @@ cdef api void call_cy_ReturnService_i16Return(
     Cpp2RequestContext* ctx,
     cFollyPromise[cint16_t] cPromise
 ):
-    cdef Promise_cint16_t __promise = Promise_cint16_t.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cint16_t __promise = Promise_cint16_t._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_i16Return_coro(
@@ -910,8 +910,8 @@ cdef api void call_cy_ReturnService_i32Return(
     Cpp2RequestContext* ctx,
     cFollyPromise[cint32_t] cPromise
 ):
-    cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cint32_t __promise = Promise_cint32_t._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_i32Return_coro(
@@ -954,8 +954,8 @@ cdef api void call_cy_ReturnService_i64Return(
     Cpp2RequestContext* ctx,
     cFollyPromise[cint64_t] cPromise
 ):
-    cdef Promise_cint64_t __promise = Promise_cint64_t.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cint64_t __promise = Promise_cint64_t._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_i64Return_coro(
@@ -998,8 +998,8 @@ cdef api void call_cy_ReturnService_floatReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[float] cPromise
 ):
-    cdef Promise_float __promise = Promise_float.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_float __promise = Promise_float._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_floatReturn_coro(
@@ -1042,8 +1042,8 @@ cdef api void call_cy_ReturnService_doubleReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[double] cPromise
 ):
-    cdef Promise_double __promise = Promise_double.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_double __promise = Promise_double._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_doubleReturn_coro(
@@ -1086,8 +1086,8 @@ cdef api void call_cy_ReturnService_stringReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
 ):
-    cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_string __promise = Promise_string._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_stringReturn_coro(
@@ -1130,8 +1130,8 @@ cdef api void call_cy_ReturnService_binaryReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
 ):
-    cdef Promise_binary __promise = Promise_binary.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_binary __promise = Promise_binary._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_binaryReturn_coro(
@@ -1174,8 +1174,8 @@ cdef api void call_cy_ReturnService_mapReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[cmap[string,cint64_t]]] cPromise
 ):
-    cdef Promise_cmap__string_cint64_t __promise = Promise_cmap__string_cint64_t.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cmap__string_cint64_t __promise = Promise_cmap__string_cint64_t._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_mapReturn_coro(
@@ -1219,8 +1219,8 @@ cdef api void call_cy_ReturnService_simpleTypedefReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[cint32_t] cPromise
 ):
-    cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cint32_t __promise = Promise_cint32_t._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_simpleTypedefReturn_coro(
@@ -1263,8 +1263,8 @@ cdef api void call_cy_ReturnService_complexTypedefReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]] cPromise
 ):
-    cdef Promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct __promise = Promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct __promise = Promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_complexTypedefReturn_coro(
@@ -1308,8 +1308,8 @@ cdef api void call_cy_ReturnService_list_mostComplexTypedefReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]]] cPromise
 ):
-    cdef Promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct __promise = Promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct __promise = Promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_list_mostComplexTypedefReturn_coro(
@@ -1353,8 +1353,8 @@ cdef api void call_cy_ReturnService_enumReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[_module_types.cMyEnumA] cPromise
 ):
-    cdef Promise__module_types_cMyEnumA __promise = Promise__module_types_cMyEnumA.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise__module_types_cMyEnumA __promise = Promise__module_types_cMyEnumA._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_enumReturn_coro(
@@ -1397,8 +1397,8 @@ cdef api void call_cy_ReturnService_list_EnumReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]] cPromise
 ):
-    cdef Promise_vector___module_types_cMyEnumA __promise = Promise_vector___module_types_cMyEnumA.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_vector___module_types_cMyEnumA __promise = Promise_vector___module_types_cMyEnumA._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_list_EnumReturn_coro(
@@ -1442,8 +1442,8 @@ cdef api void call_cy_ReturnService_structReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[_module_types.cMyStruct]] cPromise
 ):
-    cdef Promise__module_types_cMyStruct __promise = Promise__module_types_cMyStruct.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise__module_types_cMyStruct __promise = Promise__module_types_cMyStruct._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_structReturn_coro(
@@ -1486,8 +1486,8 @@ cdef api void call_cy_ReturnService_set_StructReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[cset[_module_types.cMyStruct]]] cPromise
 ):
-    cdef Promise_cset___module_types_cMyStruct __promise = Promise_cset___module_types_cMyStruct.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cset___module_types_cMyStruct __promise = Promise_cset___module_types_cMyStruct._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_set_StructReturn_coro(
@@ -1531,8 +1531,8 @@ cdef api void call_cy_ReturnService_unionReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[_module_types.cComplexUnion]] cPromise
 ):
-    cdef Promise__module_types_cComplexUnion __promise = Promise__module_types_cComplexUnion.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise__module_types_cComplexUnion __promise = Promise__module_types_cComplexUnion._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_unionReturn_coro(
@@ -1575,8 +1575,8 @@ cdef api void call_cy_ReturnService_list_UnionReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[vector[_module_types.cComplexUnion]]] cPromise
 ):
-    cdef Promise_vector___module_types_cComplexUnion __promise = Promise_vector___module_types_cComplexUnion.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_vector___module_types_cComplexUnion __promise = Promise_vector___module_types_cComplexUnion._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_list_UnionReturn_coro(
@@ -1621,9 +1621,9 @@ cdef api void call_cy_ReturnService_readDataEb(
     cFollyPromise[unique_ptr[_fbthrift_iobuf.cIOBuf]] cPromise,
     cint64_t size
 ):
-    cdef Promise___iobuf_cIOBuf __promise = Promise___iobuf_cIOBuf.create(cmove(cPromise))
+    cdef Promise___iobuf_cIOBuf __promise = Promise___iobuf_cIOBuf._fbthrift_create(cmove(cPromise))
     arg_size = size
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_readDataEb_coro(
@@ -1670,9 +1670,9 @@ cdef api void call_cy_ReturnService_readData(
     cFollyPromise[unique_ptr[unique_ptr[_fbthrift_iobuf.cIOBuf]]] cPromise,
     cint64_t size
 ):
-    cdef Promise_unique_ptr__iobuf_cIOBuf __promise = Promise_unique_ptr__iobuf_cIOBuf.create(cmove(cPromise))
+    cdef Promise_unique_ptr__iobuf_cIOBuf __promise = Promise_unique_ptr__iobuf_cIOBuf._fbthrift_create(cmove(cPromise))
     arg_size = size
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_readData_coro(
@@ -1719,9 +1719,9 @@ cdef api void call_cy_ParamService_void_ret_i16_param(
     cFollyPromise[cFollyUnit] cPromise,
     cint16_t param1
 ):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
     arg_param1 = param1
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_i16_param_coro(
@@ -1769,10 +1769,10 @@ cdef api void call_cy_ParamService_void_ret_byte_i16_param(
     cint8_t param1,
     cint16_t param2
 ):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
     arg_param1 = param1
     arg_param2 = param2
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_byte_i16_param_coro(
@@ -1822,9 +1822,9 @@ cdef api void call_cy_ParamService_void_ret_map_param(
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[cmap[string,cint64_t]] param1
 ):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
-    arg_param1 = _module_types.Map__string_i64.create(__to_shared_ptr(cmove(param1)))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    arg_param1 = _module_types.Map__string_i64._fbthrift_create(__to_shared_ptr(cmove(param1)))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_map_param_coro(
@@ -1872,10 +1872,10 @@ cdef api void call_cy_ParamService_void_ret_map_setlist_param(
     unique_ptr[cmap[string,cint64_t]] param1,
     unique_ptr[cset[vector[string]]] param2
 ):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
-    arg_param1 = _module_types.Map__string_i64.create(__to_shared_ptr(cmove(param1)))
-    arg_param2 = _module_types.Set__List__string.create(__to_shared_ptr(cmove(param2)))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    arg_param1 = _module_types.Map__string_i64._fbthrift_create(__to_shared_ptr(cmove(param1)))
+    arg_param2 = _module_types.Set__List__string._fbthrift_create(__to_shared_ptr(cmove(param2)))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_map_setlist_param_coro(
@@ -1925,9 +1925,9 @@ cdef api void call_cy_ParamService_void_ret_map_typedef_param(
     cFollyPromise[cFollyUnit] cPromise,
     cint32_t param1
 ):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
     arg_param1 = param1
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_map_typedef_param_coro(
@@ -1974,9 +1974,9 @@ cdef api void call_cy_ParamService_void_ret_enum_param(
     cFollyPromise[cFollyUnit] cPromise,
     _module_types.cMyEnumA param1
 ):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
     arg_param1 = _module_types.MyEnumA(<int> param1)
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_enum_param_coro(
@@ -2023,9 +2023,9 @@ cdef api void call_cy_ParamService_void_ret_struct_param(
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[_module_types.cMyStruct] param1
 ):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
-    arg_param1 = _module_types.MyStruct.create(shared_ptr[_module_types.cMyStruct](param1.release()))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    arg_param1 = _module_types.MyStruct._fbthrift_create(shared_ptr[_module_types.cMyStruct](param1.release()))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_struct_param_coro(
@@ -2072,9 +2072,9 @@ cdef api void call_cy_ParamService_void_ret_listunion_param(
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[vector[_module_types.cComplexUnion]] param1
 ):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
-    arg_param1 = _module_types.List__ComplexUnion.create(__to_shared_ptr(cmove(param1)))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    arg_param1 = _module_types.List__ComplexUnion._fbthrift_create(__to_shared_ptr(cmove(param1)))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_listunion_param_coro(
@@ -2122,10 +2122,10 @@ cdef api void call_cy_ParamService_bool_ret_i32_i64_param(
     cint32_t param1,
     cint64_t param2
 ):
-    cdef Promise_cbool __promise = Promise_cbool.create(cmove(cPromise))
+    cdef Promise_cbool __promise = Promise_cbool._fbthrift_create(cmove(cPromise))
     arg_param1 = param1
     arg_param2 = param2
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_bool_ret_i32_i64_param_coro(
@@ -2175,9 +2175,9 @@ cdef api void call_cy_ParamService_bool_ret_map_param(
     cFollyPromise[cbool] cPromise,
     unique_ptr[cmap[string,cint64_t]] param1
 ):
-    cdef Promise_cbool __promise = Promise_cbool.create(cmove(cPromise))
-    arg_param1 = _module_types.Map__string_i64.create(__to_shared_ptr(cmove(param1)))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cbool __promise = Promise_cbool._fbthrift_create(cmove(cPromise))
+    arg_param1 = _module_types.Map__string_i64._fbthrift_create(__to_shared_ptr(cmove(param1)))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_bool_ret_map_param_coro(
@@ -2224,9 +2224,9 @@ cdef api void call_cy_ParamService_bool_ret_union_param(
     cFollyPromise[cbool] cPromise,
     unique_ptr[_module_types.cComplexUnion] param1
 ):
-    cdef Promise_cbool __promise = Promise_cbool.create(cmove(cPromise))
-    arg_param1 = _module_types.ComplexUnion.create(shared_ptr[_module_types.cComplexUnion](param1.release()))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cbool __promise = Promise_cbool._fbthrift_create(cmove(cPromise))
+    arg_param1 = _module_types.ComplexUnion._fbthrift_create(shared_ptr[_module_types.cComplexUnion](param1.release()))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_bool_ret_union_param_coro(
@@ -2274,10 +2274,10 @@ cdef api void call_cy_ParamService_i64_ret_float_double_param(
     float param1,
     double param2
 ):
-    cdef Promise_cint64_t __promise = Promise_cint64_t.create(cmove(cPromise))
+    cdef Promise_cint64_t __promise = Promise_cint64_t._fbthrift_create(cmove(cPromise))
     arg_param1 = param1
     arg_param2 = param2
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_i64_ret_float_double_param_coro(
@@ -2328,10 +2328,10 @@ cdef api void call_cy_ParamService_i64_ret_string_typedef_param(
     unique_ptr[string] param1,
     unique_ptr[cset[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]] param2
 ):
-    cdef Promise_cint64_t __promise = Promise_cint64_t.create(cmove(cPromise))
+    cdef Promise_cint64_t __promise = Promise_cint64_t._fbthrift_create(cmove(cPromise))
     arg_param1 = (deref(param1)).data().decode('UTF-8')
-    arg_param2 = _module_types.Set__List__List__Map__Empty_MyStruct.create(__to_shared_ptr(cmove(param2)))
-    __context = RequestContext.create(ctx)
+    arg_param2 = _module_types.Set__List__List__Map__Empty_MyStruct._fbthrift_create(__to_shared_ptr(cmove(param2)))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_i64_ret_string_typedef_param_coro(
@@ -2385,13 +2385,13 @@ cdef api void call_cy_ParamService_i64_ret_i32_i32_i32_i32_i32_param(
     cint32_t param4,
     cint32_t param5
 ):
-    cdef Promise_cint64_t __promise = Promise_cint64_t.create(cmove(cPromise))
+    cdef Promise_cint64_t __promise = Promise_cint64_t._fbthrift_create(cmove(cPromise))
     arg_param1 = param1
     arg_param2 = param2
     arg_param3 = param3
     arg_param4 = param4
     arg_param5 = param5
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_i64_ret_i32_i32_i32_i32_i32_param_coro(
@@ -2450,9 +2450,9 @@ cdef api void call_cy_ParamService_double_ret_setstruct_param(
     cFollyPromise[double] cPromise,
     unique_ptr[cset[_module_types.cMyStruct]] param1
 ):
-    cdef Promise_double __promise = Promise_double.create(cmove(cPromise))
-    arg_param1 = _module_types.Set__MyStruct.create(__to_shared_ptr(cmove(param1)))
-    __context = RequestContext.create(ctx)
+    cdef Promise_double __promise = Promise_double._fbthrift_create(cmove(cPromise))
+    arg_param1 = _module_types.Set__MyStruct._fbthrift_create(__to_shared_ptr(cmove(param1)))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_double_ret_setstruct_param_coro(
@@ -2499,9 +2499,9 @@ cdef api void call_cy_ParamService_string_ret_string_param(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[string] param1
 ):
-    cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
+    cdef Promise_string __promise = Promise_string._fbthrift_create(cmove(cPromise))
     arg_param1 = (deref(param1)).data().decode('UTF-8')
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_string_ret_string_param_coro(
@@ -2548,9 +2548,9 @@ cdef api void call_cy_ParamService_binary_ret_binary_param(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[string] param1
 ):
-    cdef Promise_binary __promise = Promise_binary.create(cmove(cPromise))
+    cdef Promise_binary __promise = Promise_binary._fbthrift_create(cmove(cPromise))
     arg_param1 = (deref(param1))
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_binary_ret_binary_param_coro(
@@ -2597,9 +2597,9 @@ cdef api void call_cy_ParamService_map_ret_bool_param(
     cFollyPromise[unique_ptr[cmap[string,cint64_t]]] cPromise,
     cbool param1
 ):
-    cdef Promise_cmap__string_cint64_t __promise = Promise_cmap__string_cint64_t.create(cmove(cPromise))
+    cdef Promise_cmap__string_cint64_t __promise = Promise_cmap__string_cint64_t._fbthrift_create(cmove(cPromise))
     arg_param1 = param1
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_map_ret_bool_param_coro(
@@ -2648,10 +2648,10 @@ cdef api void call_cy_ParamService_list_ret_map_setlist_param(
     unique_ptr[cmap[cint32_t,vector[string]]] param1,
     unique_ptr[vector[string]] param2
 ):
-    cdef Promise_vector__cbool __promise = Promise_vector__cbool.create(cmove(cPromise))
-    arg_param1 = _module_types.Map__i32_List__string.create(__to_shared_ptr(cmove(param1)))
-    arg_param2 = _module_types.List__string.create(__to_shared_ptr(cmove(param2)))
-    __context = RequestContext.create(ctx)
+    cdef Promise_vector__cbool __promise = Promise_vector__cbool._fbthrift_create(cmove(cPromise))
+    arg_param1 = _module_types.Map__i32_List__string._fbthrift_create(__to_shared_ptr(cmove(param1)))
+    arg_param2 = _module_types.List__string._fbthrift_create(__to_shared_ptr(cmove(param2)))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_list_ret_map_setlist_param_coro(
@@ -2702,9 +2702,9 @@ cdef api void call_cy_ParamService_mapsetlistmapliststring_ret_listlistlist_para
     cFollyPromise[unique_ptr[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]]] cPromise,
     unique_ptr[vector[vector[vector[vector[cint32_t]]]]] param1
 ):
-    cdef Promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string __promise = Promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string.create(cmove(cPromise))
-    arg_param1 = _module_types.List__List__List__List__i32.create(__to_shared_ptr(cmove(param1)))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string __promise = Promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string._fbthrift_create(cmove(cPromise))
+    arg_param1 = _module_types.List__List__List__List__i32._fbthrift_create(__to_shared_ptr(cmove(param1)))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_mapsetlistmapliststring_ret_listlistlist_param_coro(
@@ -2752,9 +2752,9 @@ cdef api void call_cy_ParamService_typedef_ret_i32_param(
     cFollyPromise[cint32_t] cPromise,
     cint32_t param1
 ):
-    cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
+    cdef Promise_cint32_t __promise = Promise_cint32_t._fbthrift_create(cmove(cPromise))
     arg_param1 = param1
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_typedef_ret_i32_param_coro(
@@ -2801,9 +2801,9 @@ cdef api void call_cy_ParamService_listtypedef_ret_typedef_param(
     cFollyPromise[unique_ptr[vector[cint32_t]]] cPromise,
     unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]] param1
 ):
-    cdef Promise_vector__cint32_t __promise = Promise_vector__cint32_t.create(cmove(cPromise))
-    arg_param1 = _module_types.List__Map__Empty_MyStruct.create(__to_shared_ptr(cmove(param1)))
-    __context = RequestContext.create(ctx)
+    cdef Promise_vector__cint32_t __promise = Promise_vector__cint32_t._fbthrift_create(cmove(cPromise))
+    arg_param1 = _module_types.List__Map__Empty_MyStruct._fbthrift_create(__to_shared_ptr(cmove(param1)))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_listtypedef_ret_typedef_param_coro(
@@ -2851,9 +2851,9 @@ cdef api void call_cy_ParamService_enum_ret_double_param(
     cFollyPromise[_module_types.cMyEnumA] cPromise,
     double param1
 ):
-    cdef Promise__module_types_cMyEnumA __promise = Promise__module_types_cMyEnumA.create(cmove(cPromise))
+    cdef Promise__module_types_cMyEnumA __promise = Promise__module_types_cMyEnumA._fbthrift_create(cmove(cPromise))
     arg_param1 = param1
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_enum_ret_double_param_coro(
@@ -2901,10 +2901,10 @@ cdef api void call_cy_ParamService_enum_ret_double_enum_param(
     double param1,
     _module_types.cMyEnumA param2
 ):
-    cdef Promise__module_types_cMyEnumA __promise = Promise__module_types_cMyEnumA.create(cmove(cPromise))
+    cdef Promise__module_types_cMyEnumA __promise = Promise__module_types_cMyEnumA._fbthrift_create(cmove(cPromise))
     arg_param1 = param1
     arg_param2 = _module_types.MyEnumA(<int> param2)
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_enum_ret_double_enum_param_coro(
@@ -2954,9 +2954,9 @@ cdef api void call_cy_ParamService_listenum_ret_map_param(
     cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]] cPromise,
     unique_ptr[cmap[string,cint64_t]] param1
 ):
-    cdef Promise_vector___module_types_cMyEnumA __promise = Promise_vector___module_types_cMyEnumA.create(cmove(cPromise))
-    arg_param1 = _module_types.Map__string_i64.create(__to_shared_ptr(cmove(param1)))
-    __context = RequestContext.create(ctx)
+    cdef Promise_vector___module_types_cMyEnumA __promise = Promise_vector___module_types_cMyEnumA._fbthrift_create(cmove(cPromise))
+    arg_param1 = _module_types.Map__string_i64._fbthrift_create(__to_shared_ptr(cmove(param1)))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_listenum_ret_map_param_coro(
@@ -3004,9 +3004,9 @@ cdef api void call_cy_ParamService_struct_ret_i16_param(
     cFollyPromise[unique_ptr[_module_types.cMyStruct]] cPromise,
     cint16_t param1
 ):
-    cdef Promise__module_types_cMyStruct __promise = Promise__module_types_cMyStruct.create(cmove(cPromise))
+    cdef Promise__module_types_cMyStruct __promise = Promise__module_types_cMyStruct._fbthrift_create(cmove(cPromise))
     arg_param1 = param1
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_struct_ret_i16_param_coro(
@@ -3053,9 +3053,9 @@ cdef api void call_cy_ParamService_setstruct_ret_set_param(
     cFollyPromise[unique_ptr[cset[_module_types.cMyStruct]]] cPromise,
     unique_ptr[cset[string]] param1
 ):
-    cdef Promise_cset___module_types_cMyStruct __promise = Promise_cset___module_types_cMyStruct.create(cmove(cPromise))
-    arg_param1 = _module_types.Set__string.create(__to_shared_ptr(cmove(param1)))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cset___module_types_cMyStruct __promise = Promise_cset___module_types_cMyStruct._fbthrift_create(cmove(cPromise))
+    arg_param1 = _module_types.Set__string._fbthrift_create(__to_shared_ptr(cmove(param1)))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_setstruct_ret_set_param_coro(
@@ -3104,10 +3104,10 @@ cdef api void call_cy_ParamService_union_ret_i32_i32_param(
     cint32_t param1,
     cint32_t param2
 ):
-    cdef Promise__module_types_cComplexUnion __promise = Promise__module_types_cComplexUnion.create(cmove(cPromise))
+    cdef Promise__module_types_cComplexUnion __promise = Promise__module_types_cComplexUnion._fbthrift_create(cmove(cPromise))
     arg_param1 = param1
     arg_param2 = param2
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_union_ret_i32_i32_param_coro(
@@ -3157,9 +3157,9 @@ cdef api void call_cy_ParamService_listunion_string_param(
     cFollyPromise[unique_ptr[vector[_module_types.cComplexUnion]]] cPromise,
     unique_ptr[string] param1
 ):
-    cdef Promise_vector___module_types_cComplexUnion __promise = Promise_vector___module_types_cComplexUnion.create(cmove(cPromise))
+    cdef Promise_vector___module_types_cComplexUnion __promise = Promise_vector___module_types_cComplexUnion._fbthrift_create(cmove(cPromise))
     arg_param1 = (deref(param1)).data().decode('UTF-8')
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_listunion_string_param_coro(

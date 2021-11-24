@@ -22,7 +22,7 @@ from thrift.py3.types cimport const_pointer_cast
 cdef class __CustomException_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __CustomException_FieldsSetter create(_test_fixtures_interactions_module_types.cCustomException* struct_cpp_obj):
+    cdef __CustomException_FieldsSetter _fbthrift_create(_test_fixtures_interactions_module_types.cCustomException* struct_cpp_obj):
         cdef __CustomException_FieldsSetter __fbthrift_inst = __CustomException_FieldsSetter.__new__(__CustomException_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"message")] = __CustomException_FieldsSetter._set_field_0

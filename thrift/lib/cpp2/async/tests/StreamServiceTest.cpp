@@ -18,6 +18,7 @@
 
 #include <folly/experimental/coro/Collect.h>
 #include <folly/experimental/coro/Sleep.h>
+#include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/async/tests/util/Util.h>
 
 using namespace testutil::testservice;
@@ -117,6 +118,75 @@ TYPED_TEST(StreamServiceTest, WithSizeTarget) {
           EXPECT_LE(++i, 101);
         }
         EXPECT_EQ(i, 101);
+      });
+}
+
+class InitialThrowHandler : public TestStreamServiceSvIf {
+ public:
+  ServerStream<int32_t> range(int32_t, int32_t) override {
+    throw std::runtime_error("oops");
+  }
+};
+class InitialThrowTest
+    : public AsyncTestSetup<InitialThrowHandler, TestStreamServiceAsyncClient> {
+};
+TEST_F(InitialThrowTest, InitialThrow) {
+  class Callback : public StreamClientCallback {
+   public:
+    Callback(
+        bool onFirstResponseBool,
+        folly::coro::Baton& responseReceived,
+        folly::coro::Baton& onStreamCompleteCalled)
+        : onFirstResponseBool_(onFirstResponseBool),
+          responseReceived_(responseReceived),
+          onStreamCompleteCalled_(onStreamCompleteCalled) {}
+    bool onFirstResponse(
+        FirstResponsePayload&&,
+        folly::EventBase*,
+        StreamServerCallback* serverCallback) override {
+      SCOPE_EXIT { responseReceived_.post(); };
+      if (!onFirstResponseBool_) {
+        serverCallback->onStreamCancel();
+        return false;
+      }
+      return true;
+    }
+    void onStreamComplete() override {
+      if (onFirstResponseBool_) {
+        onStreamCompleteCalled_.post();
+      } else {
+        FAIL() << "onStreamComplete called when onFirstResponse returned false";
+      }
+    }
+    bool onFirstResponseBool_;
+    folly::coro::Baton& responseReceived_;
+    folly::coro::Baton& onStreamCompleteCalled_;
+
+    // unused
+    void onFirstResponseError(folly::exception_wrapper) override {}
+    bool onStreamNext(StreamPayload&&) override { return true; }
+    void onStreamError(folly::exception_wrapper) override {}
+    void resetServerCallback(StreamServerCallback&) override {}
+  };
+  this->connectToServer(
+      [](TestStreamServiceAsyncClient& client) -> folly::coro::Task<void> {
+        ThriftPresult<false> pargs;
+        auto req = CompactSerializer::serialize<std::string>(pargs);
+        for (auto onFirstResponseBool : {true, false}) {
+          folly::coro::Baton responseReceived, onStreamCompleteCalled;
+          Callback callback(
+              onFirstResponseBool, responseReceived, onStreamCompleteCalled);
+          client.getChannelShared()->sendRequestStream(
+              RpcOptions(),
+              "range",
+              SerializedRequest(folly::IOBuf::copyBuffer(req)),
+              std::make_shared<transport::THeader>(),
+              &callback);
+          co_await responseReceived;
+          if (onFirstResponseBool) {
+            co_await onStreamCompleteCalled;
+          }
+        }
       });
 }
 

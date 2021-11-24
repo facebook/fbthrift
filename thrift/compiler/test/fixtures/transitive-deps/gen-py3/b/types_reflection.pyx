@@ -25,7 +25,7 @@ from thrift.py3.types cimport (
 
 
 cdef __ListSpec get_reflection__List__c_C():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_c_types.C,
         kind=__NumberType.NOT_A_NUMBER,
     )

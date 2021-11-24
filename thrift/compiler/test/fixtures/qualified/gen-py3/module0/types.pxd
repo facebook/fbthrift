@@ -81,8 +81,6 @@ cdef extern from "gen-cpp2/module0_types_custom_protocol.h" namespace "::module0
         bint operator>=(cStruct&)
         __field_ref[cint32_t] first_ref()
         __field_ref[string] second_ref()
-        cint32_t first
-        string second
 
 
 
@@ -92,13 +90,13 @@ cdef class Struct(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__Struct_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cStruct])
+    cdef _fbthrift_create(shared_ptr[cStruct])
 
 
 cdef class List__Enum(thrift.py3.types.List):
     cdef shared_ptr[vector[cEnum]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cEnum]])
+    cdef _fbthrift_create(shared_ptr[vector[cEnum]])
     @staticmethod
     cdef shared_ptr[vector[cEnum]] _make_instance(object items) except *
 

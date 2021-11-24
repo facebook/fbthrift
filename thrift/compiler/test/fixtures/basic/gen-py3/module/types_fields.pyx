@@ -22,7 +22,7 @@ from thrift.py3.types cimport const_pointer_cast
 cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __MyStruct_FieldsSetter create(_module_types.cMyStruct* struct_cpp_obj):
+    cdef __MyStruct_FieldsSetter _fbthrift_create(_module_types.cMyStruct* struct_cpp_obj):
         cdef __MyStruct_FieldsSetter __fbthrift_inst = __MyStruct_FieldsSetter.__new__(__MyStruct_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"MyIntField")] = __MyStruct_FieldsSetter._set_field_0
@@ -110,7 +110,7 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
 cdef class __MyDataItem_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __MyDataItem_FieldsSetter create(_module_types.cMyDataItem* struct_cpp_obj):
+    cdef __MyDataItem_FieldsSetter _fbthrift_create(_module_types.cMyDataItem* struct_cpp_obj):
         cdef __MyDataItem_FieldsSetter __fbthrift_inst = __MyDataItem_FieldsSetter.__new__(__MyDataItem_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         return __fbthrift_inst

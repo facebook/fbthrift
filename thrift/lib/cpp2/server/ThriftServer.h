@@ -68,6 +68,7 @@ DECLARE_string(service_identity);
 
 THRIFT_FLAG_DECLARE_bool(dump_snapshot_on_long_shutdown);
 THRIFT_FLAG_DECLARE_bool(alpn_allow_mismatch);
+THRIFT_FLAG_DECLARE_bool(server_check_unimplemented_extra_interfaces);
 
 namespace apache {
 namespace thrift {
@@ -135,6 +136,12 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   bool strictSSL_ = false;
   // whether we allow plaintext connections from loopback in REQUIRED mode
   bool allowPlaintextOnLoopback_ = false;
+
+  // If true, then falls back to the corresponding THRIFT_FLAG.
+  // If false, then the check is bypassed even if the THRIFT_FLAG is set.
+  // This allows a hard-coded opt-out of the check for services where it would
+  // not be useful, e.g. non-C++ languages.
+  bool allowCheckUnimplementedExtraInterfaces_ = true;
 
   std::weak_ptr<folly::ShutdownSocketSet> wShutdownSocketSet_;
 
@@ -686,6 +693,14 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     return allowPlaintextOnLoopback_;
   }
 
+  void setAllowCheckUnimplementedExtraInterfaces(bool allow) {
+    allowCheckUnimplementedExtraInterfaces_ = allow;
+  }
+
+  bool isCheckUnimplementedExtraInterfacesAllowed() const {
+    return allowCheckUnimplementedExtraInterfaces_;
+  }
+
   static folly::observer::Observer<bool> enableStopTLS();
 
 #if FOLLY_HAS_COROUTINES
@@ -906,13 +921,18 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    *    └────────────────────────┘  │
    *                                │
    *    ┌────────────────────────┐  │
-   *    │    Status Interface    │  │   Method
-   *    │  (setStatusInterface)  │  │ precedence
+   *    │    Status Interface    │  │
+   *    │  (setStatusInterface)  │  │
+   *    └────────────────────────┘  │
+   *                                │   Method
+   *    ┌────────────────────────┐  │ precedence
+   *    │  Monitoring Interface  │  │
+   *    │(setMonitoringInterface)│  │
    *    └────────────────────────┘  │
    *                                │
    *    ┌────────────────────────┐  │
-   *    │  Monitoring Interface  │  ▼
-   *    │(setMonitoringInterface)│
+   *    │   Control Interface    │  ▼
+   *    │ (setControlInterface)  │
    *    └────────────────────────┘
    */
   AsyncProcessorFactory& getDecoratedProcessorFactory() const {
@@ -941,6 +961,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     std::shared_ptr<MonitoringServerInterface> monitoring;
     // See ThriftServer::setStatusInterface.
     std::shared_ptr<StatusServerInterface> status;
+    // See ThriftServer::setControlInterface
+    std::shared_ptr<ControlServerInterface> control;
   };
 
   // ThriftServer by defaults uses a global ShutdownSocketSet, so all socket's

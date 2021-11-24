@@ -51,7 +51,7 @@ cdef class __Empty_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __Empty_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __Empty_FieldsSetter create(_module_types.cEmpty* struct_cpp_obj)
+    cdef __Empty_FieldsSetter _fbthrift_create(_module_types.cEmpty* struct_cpp_obj)
 
 
 ctypedef void (*__ASimpleStruct_FieldsSetterFunc)(__ASimpleStruct_FieldsSetter, object) except *
@@ -61,7 +61,7 @@ cdef class __ASimpleStruct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __ASimpleStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __ASimpleStruct_FieldsSetter create(_module_types.cASimpleStruct* struct_cpp_obj)
+    cdef __ASimpleStruct_FieldsSetter _fbthrift_create(_module_types.cASimpleStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
 
 
@@ -72,7 +72,7 @@ cdef class __ASimpleStructNoexcept_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __ASimpleStructNoexcept_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __ASimpleStructNoexcept_FieldsSetter create(_module_types.cASimpleStructNoexcept* struct_cpp_obj)
+    cdef __ASimpleStructNoexcept_FieldsSetter _fbthrift_create(_module_types.cASimpleStructNoexcept* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
 
 
@@ -83,7 +83,7 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __MyStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __MyStruct_FieldsSetter create(_module_types.cMyStruct* struct_cpp_obj)
+    cdef __MyStruct_FieldsSetter _fbthrift_create(_module_types.cMyStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *
@@ -104,7 +104,7 @@ cdef class __AnException_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __AnException_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __AnException_FieldsSetter create(_module_types.cAnException* struct_cpp_obj)
+    cdef __AnException_FieldsSetter _fbthrift_create(_module_types.cAnException* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *
@@ -131,7 +131,7 @@ cdef class __AnotherException_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __AnotherException_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __AnotherException_FieldsSetter create(_module_types.cAnotherException* struct_cpp_obj)
+    cdef __AnotherException_FieldsSetter _fbthrift_create(_module_types.cAnotherException* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *
@@ -144,7 +144,7 @@ cdef class __containerStruct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __containerStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __containerStruct_FieldsSetter create(_module_types.ccontainerStruct* struct_cpp_obj)
+    cdef __containerStruct_FieldsSetter _fbthrift_create(_module_types.ccontainerStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *
@@ -200,7 +200,7 @@ cdef class __MyIncludedStruct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __MyIncludedStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __MyIncludedStruct_FieldsSetter create(_module_types.cMyIncludedStruct* struct_cpp_obj)
+    cdef __MyIncludedStruct_FieldsSetter _fbthrift_create(_module_types.cMyIncludedStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *
@@ -214,7 +214,7 @@ cdef class __AnnotatedStruct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __AnnotatedStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __AnnotatedStruct_FieldsSetter create(_module_types.cAnnotatedStruct* struct_cpp_obj)
+    cdef __AnnotatedStruct_FieldsSetter _fbthrift_create(_module_types.cAnnotatedStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *
@@ -264,7 +264,7 @@ cdef class __ComplexContainerStruct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __ComplexContainerStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __ComplexContainerStruct_FieldsSetter create(_module_types.cComplexContainerStruct* struct_cpp_obj)
+    cdef __ComplexContainerStruct_FieldsSetter _fbthrift_create(_module_types.cComplexContainerStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
 
@@ -276,7 +276,7 @@ cdef class __FloatStruct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __FloatStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __FloatStruct_FieldsSetter create(_module_types.cFloatStruct* struct_cpp_obj)
+    cdef __FloatStruct_FieldsSetter _fbthrift_create(_module_types.cFloatStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
 
@@ -288,6 +288,6 @@ cdef class __AllRequiredNoExceptMoveCtrStruct_FieldsSetter(__StructFieldsSetter)
     cdef cumap[__cstring_view, __AllRequiredNoExceptMoveCtrStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __AllRequiredNoExceptMoveCtrStruct_FieldsSetter create(_module_types.cAllRequiredNoExceptMoveCtrStruct* struct_cpp_obj)
+    cdef __AllRequiredNoExceptMoveCtrStruct_FieldsSetter _fbthrift_create(_module_types.cAllRequiredNoExceptMoveCtrStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
 

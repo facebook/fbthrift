@@ -119,6 +119,7 @@ class ConnectionContext:
     peer_common_name: str
     security_protocol: str
     peer_certificate: bytes
+    peer_certificate_identity: str
 
 class RequestContext:
     connection_context: ConnectionContext

@@ -200,7 +200,7 @@ namespace py3 { namespace simple {
 OptionalRefStruct::OptionalRefStruct(const OptionalRefStruct& srcObj) {
   optional_blob = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::binary>(srcObj.optional_blob);
-  __isset.set(folly::index_constant<0>(),srcObj.__isset.get(folly::index_constant<0>()));
+  __isset.set(0,srcObj.__isset.get(0));
 }
 
 OptionalRefStruct& OptionalRefStruct::operator=(const OptionalRefStruct& src) {

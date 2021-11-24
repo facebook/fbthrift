@@ -22,10 +22,10 @@ typedef binary (cpp.type = "folly::IOBuf") IOBuf
 struct OneOfEach {
   1: bool im_true;
   2: bool im_false;
-  3: byte a_bite = 200;
-  4: i16 integer16 = 33000;
+  3: byte a_bite = 127;
+  4: i16 integer16 = 32767;
   5: i32 integer32;
-  6: i64 integer64 = 10000000000;
+  6: i64 integer64 = 1000000000;
   7: double double_precision;
   8: string some_characters;
   9: string zomg_unicode;

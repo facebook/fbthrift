@@ -24,19 +24,19 @@ from thrift.py3.types cimport (
 
 
 cdef __StructSpec get_reflection__Foo():
-    cdef _my_namespacing_test_module_module_types.Foo defaults = _my_namespacing_test_module_module_types.Foo.create(
+    cdef _my_namespacing_test_module_module_types.Foo defaults = _my_namespacing_test_module_module_types.Foo._fbthrift_create(
         constant_shared_ptr[_my_namespacing_test_module_module_types.cFoo](
             default_inst[_my_namespacing_test_module_module_types.cFoo]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="Foo",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="MyInt",
             type=int,

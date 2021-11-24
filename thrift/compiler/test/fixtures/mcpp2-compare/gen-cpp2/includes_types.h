@@ -147,42 +147,42 @@ class AStruct final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> FieldA_ref() const& {
-    return {this->__fbthrift_field_FieldA, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {this->__fbthrift_field_FieldA, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> FieldA_ref() const&& {
-    return {std::move(this->__fbthrift_field_FieldA), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {static_cast<const T&&>(this->__fbthrift_field_FieldA), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> FieldA_ref() & {
-    return {this->__fbthrift_field_FieldA, __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
+    return {this->__fbthrift_field_FieldA, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> FieldA_ref() && {
-    return {std::move(this->__fbthrift_field_FieldA), __isset.at(folly::index_constant<0>()), __isset.bit(folly::index_constant<0>())};
-  }
-
-  template <typename..., typename T = ::std::int32_t>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> FieldA() & {
-    return FieldA_ref();
+    return {static_cast<T&&>(this->__fbthrift_field_FieldA), __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> FieldA() const& {
-    return FieldA_ref();
-  }
-
-  template <typename..., typename T = ::std::int32_t>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> FieldA() && {
-    return FieldA_ref();
+    return {this->__fbthrift_field_FieldA, __isset.at(0), __isset.bit(0)};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> FieldA() const&& {
-    return FieldA_ref();
+    return {static_cast<const T&&>(this->__fbthrift_field_FieldA), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> FieldA() & {
+    return {this->__fbthrift_field_FieldA, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> FieldA() && {
+    return {static_cast<T&&>(this->__fbthrift_field_FieldA), __isset.at(0), __isset.bit(0)};
   }
 
   ::std::int32_t get_FieldA() const {
@@ -267,10 +267,10 @@ class AStructB final  {
   FOLLY_ERASE const T& FieldA_ref() const& { return FieldA; }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::a::different::ns::AStruct>>
-  FOLLY_ERASE T&& FieldA_ref() && { return std::move(FieldA); }
+  FOLLY_ERASE T&& FieldA_ref() && { return static_cast<T&&>(FieldA); }
 
   template <typename ..., typename T = ::std::shared_ptr<const ::a::different::ns::AStruct>>
-  FOLLY_ERASE const T&& FieldA_ref() const&& { return std::move(FieldA); }
+  FOLLY_ERASE const T&& FieldA_ref() const&& { return static_cast<const T&&>(FieldA); }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

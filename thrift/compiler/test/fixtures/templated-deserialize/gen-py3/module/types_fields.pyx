@@ -22,7 +22,7 @@ from thrift.py3.types cimport const_pointer_cast
 cdef class __SmallStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __SmallStruct_FieldsSetter create(_module_types.cSmallStruct* struct_cpp_obj):
+    cdef __SmallStruct_FieldsSetter _fbthrift_create(_module_types.cSmallStruct* struct_cpp_obj):
         cdef __SmallStruct_FieldsSetter __fbthrift_inst = __SmallStruct_FieldsSetter.__new__(__SmallStruct_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"small_A")] = __SmallStruct_FieldsSetter._set_field_0
@@ -60,7 +60,7 @@ cdef class __SmallStruct_FieldsSetter(__StructFieldsSetter):
 cdef class __containerStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __containerStruct_FieldsSetter create(_module_types.ccontainerStruct* struct_cpp_obj):
+    cdef __containerStruct_FieldsSetter _fbthrift_create(_module_types.ccontainerStruct* struct_cpp_obj):
         cdef __containerStruct_FieldsSetter __fbthrift_inst = __containerStruct_FieldsSetter.__new__(__containerStruct_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"fieldA")] = __containerStruct_FieldsSetter._set_field_0

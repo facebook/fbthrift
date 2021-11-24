@@ -2580,9 +2580,9 @@ namespace test_cpp2 { namespace cpp_reflection {
 struct4::struct4(const struct4& srcObj) {
   field0 = srcObj.field0;
   __fbthrift_field_field1 = srcObj.__fbthrift_field_field1;
-  __isset.set(folly::index_constant<0>(),srcObj.__isset.get(folly::index_constant<0>()));
+  __isset.set(0,srcObj.__isset.get(0));
   __fbthrift_field_field2 = srcObj.__fbthrift_field_field2;
-  __isset.set(folly::index_constant<1>(),srcObj.__isset.get(folly::index_constant<1>()));
+  __isset.set(1,srcObj.__isset.get(1));
   field3 = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::structure>(srcObj.field3);
 }

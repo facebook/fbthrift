@@ -15,13 +15,22 @@
 import asyncio
 
 from later.unittest import TestCase
-from thrift.py3lite.async_client import ClientType, get_client
-from thrift.py3lite.exceptions import ApplicationError
+from thrift.py3lite.client import ClientType, get_client
+from thrift.py3lite.exceptions import (
+    ApplicationError,
+    ApplicationErrorType,
+    TransportError,
+    TransportErrorType,
+)
 from thrift.py3lite.leaf.lite_clients import LeafService
 from thrift.py3lite.serializer import Protocol
 from thrift.py3lite.test.lite_clients import EchoService, TestService
 from thrift.py3lite.test.lite_types import ArithmeticException, EmptyException
 from thrift.py3lite.test.test_server import server_in_event_loop
+
+
+TEST_HEADER_KEY = "headerKey"
+TEST_HEADER_VALUE = "headerValue"
 
 
 class AsyncClientTests(TestCase):
@@ -76,7 +85,7 @@ class AsyncClientTests(TestCase):
                 with self.assertRaises(ApplicationError) as ex:
                     await client.surprise()
                 self.assertEqual(ex.exception.message, "ValueError('Surprise!')")
-                self.assertEqual(ex.exception.type, 0)
+                self.assertEqual(ex.exception.type, ApplicationErrorType.UNKNOWN)
 
     async def test_derived_service(self) -> None:
         async with server_in_event_loop() as addr:
@@ -90,9 +99,45 @@ class AsyncClientTests(TestCase):
         async with server_in_event_loop() as addr:
             async with get_client(LeafService, host=addr.ip, port=addr.port) as client:
                 rev = await client.reverse([1, 2, 3])
-                # TODO: shouldn't need the explicit list conversion
                 self.assertEqual([3, 2, 1], list(rev))
                 out = await client.echo("hello")
                 self.assertEqual("hello", out)
                 sum = await client.add(1, 2)
                 self.assertEqual(3, sum)
+
+    async def test_transport_error(self) -> None:
+        async with get_client(TestService, path="/no/where") as client:
+            with self.assertRaises(TransportError) as ex:
+                await client.add(1, 2)
+            self.assertEqual(TransportErrorType.UNKNOWN, ex.exception.type)
+
+    async def test_http_endpoint(self) -> None:
+        async with server_in_event_loop() as addr:
+            async with get_client(
+                TestService,
+                host=addr.ip,
+                port=addr.port,
+                path="/some/endpoint",
+                client_type=ClientType.THRIFT_HTTP_CLIENT_TYPE,
+            ) as client:
+                with self.assertRaises(TransportError) as ex:
+                    await client.add(1, 2)
+                # The test server gets an invalid request because its a HTTP request
+                self.assertEqual(TransportErrorType.END_OF_FILE, ex.exception.type)
+
+    async def test_hostname(self) -> None:
+        async with server_in_event_loop() as addr:
+            async with get_client(
+                TestService, host="localhost", port=addr.port
+            ) as client:
+                sum = await client.add(1, 2)
+                self.assertEqual(3, sum)
+
+    async def test_persistent_header(self) -> None:
+        async with server_in_event_loop() as addr:
+            async with get_client(
+                TestService, host="localhost", port=addr.port
+            ) as client:
+                client.set_persistent_header(TEST_HEADER_KEY, TEST_HEADER_VALUE)
+                value = await client.readHeader(TEST_HEADER_KEY)
+                self.assertEqual(TEST_HEADER_VALUE, value)

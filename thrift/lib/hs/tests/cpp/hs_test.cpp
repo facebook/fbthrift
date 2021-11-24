@@ -77,7 +77,7 @@ void fillFoo(Foo* foo, int bar, int baz) {
 
 // Fill a TestStruct with values from Haskell
 void fillStruct(TestStruct* dest, CTestStruct* source) {
-  dest->f_bool = source->f_bool != 0;
+  *dest->f_bool_ref() = source->f_bool != 0;
   *dest->f_byte_ref() = source->f_byte;
   *dest->f_float_ref() = source->f_float;
   *dest->f_i16_ref() = source->f_i16;
@@ -102,7 +102,7 @@ void fillStruct(TestStruct* dest, CTestStruct* source) {
 
 // Read fields of a TestStruct in to Haskell
 void readStruct(CTestStruct* dest, TestStruct* source) {
-  dest->f_bool = source->f_bool ? 1 : 0;
+  dest->f_bool = *source->f_bool_ref() ? 1 : 0;
   dest->f_byte = *source->f_byte_ref();
   dest->f_float = *source->f_float_ref();
   dest->f_i16 = *source->f_i16_ref();

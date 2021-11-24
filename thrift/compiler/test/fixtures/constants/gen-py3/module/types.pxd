@@ -98,11 +98,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[cCompany] employer_ref()
         __optional_field_ref[double] compensation_ref()
         __optional_field_ref[string] school_ref()
-        cint32_t weeks
-        string title
-        cCompany employer
-        double compensation
-        string school
 
 
     cdef cppclass cRange "::cpp2::Range":
@@ -116,8 +111,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cRange&)
         __required_field_ref[cint32_t] min_ref()
         __required_field_ref[cint32_t] max_ref()
-        cint32_t min
-        cint32_t max
 
 
     cdef cppclass cstruct1 "::cpp2::struct1":
@@ -131,8 +124,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cstruct1&)
         __field_ref[cint32_t] a_ref()
         __field_ref[string] b_ref()
-        cint32_t a
-        string b
 
 
     cdef cppclass cstruct2 "::cpp2::struct2":
@@ -148,10 +139,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[string] b_ref()
         __field_ref[cstruct1] c_ref()
         __field_ref[vector[cint32_t]] d_ref()
-        cint32_t a
-        string b
-        cstruct1 c
-        vector[cint32_t] d
 
 
     cdef cppclass cstruct3 "::cpp2::struct3":
@@ -166,9 +153,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[string] a_ref()
         __field_ref[cint32_t] b_ref()
         __field_ref[cstruct2] c_ref()
-        string a
-        cint32_t b
-        cstruct2 c
 
 
     cdef cppclass cstruct4 "::cpp2::struct4":
@@ -183,9 +167,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[cint32_t] a_ref()
         __optional_field_ref[double] b_ref()
         __optional_field_ref[cint8_t] c_ref()
-        cint32_t a
-        double b
-        cint8_t c
 
     cdef enum cunion1__type "::cpp2::union1::Type":
         cunion1__type___EMPTY__ "::cpp2::union1::Type::__EMPTY__",
@@ -242,7 +223,7 @@ cdef class Internship(thrift.py3.types.Struct):
     cdef object __fbthrift_cached_employer
 
     @staticmethod
-    cdef create(shared_ptr[cInternship])
+    cdef _fbthrift_create(shared_ptr[cInternship])
 
 
 
@@ -251,7 +232,7 @@ cdef class Range(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__Range_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cRange])
+    cdef _fbthrift_create(shared_ptr[cRange])
 
 
 
@@ -260,7 +241,7 @@ cdef class struct1(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__struct1_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cstruct1])
+    cdef _fbthrift_create(shared_ptr[cstruct1])
 
 
 
@@ -271,7 +252,7 @@ cdef class struct2(thrift.py3.types.Struct):
     cdef List__i32 __fbthrift_cached_d
 
     @staticmethod
-    cdef create(shared_ptr[cstruct2])
+    cdef _fbthrift_create(shared_ptr[cstruct2])
 
 
 
@@ -281,7 +262,7 @@ cdef class struct3(thrift.py3.types.Struct):
     cdef struct2 __fbthrift_cached_c
 
     @staticmethod
-    cdef create(shared_ptr[cstruct3])
+    cdef _fbthrift_create(shared_ptr[cstruct3])
 
 
 
@@ -290,7 +271,7 @@ cdef class struct4(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__struct4_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cstruct4])
+    cdef _fbthrift_create(shared_ptr[cstruct4])
 
 cdef class __union1Type(thrift.py3.types.CompiledEnum):
     pass
@@ -312,7 +293,7 @@ cdef class union1(thrift.py3.types.Union):
     ) except *
 
     @staticmethod
-    cdef create(shared_ptr[cunion1])
+    cdef _fbthrift_create(shared_ptr[cunion1])
 
 cdef class __union2Type(thrift.py3.types.CompiledEnum):
     pass
@@ -336,83 +317,83 @@ cdef class union2(thrift.py3.types.Union):
     ) except *
 
     @staticmethod
-    cdef create(shared_ptr[cunion2])
+    cdef _fbthrift_create(shared_ptr[cunion2])
 
 
 cdef class List__i32(thrift.py3.types.List):
     cdef shared_ptr[vector[cint32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cint32_t]])
+    cdef _fbthrift_create(shared_ptr[vector[cint32_t]])
     @staticmethod
     cdef shared_ptr[vector[cint32_t]] _make_instance(object items) except *
 
 cdef class Map__string_i32(thrift.py3.types.Map):
     cdef shared_ptr[cmap[string,cint32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[string,cint32_t]])
+    cdef _fbthrift_create(shared_ptr[cmap[string,cint32_t]])
     @staticmethod
     cdef shared_ptr[cmap[string,cint32_t]] _make_instance(object items) except *
 
 cdef class List__Map__string_i32(thrift.py3.types.List):
     cdef shared_ptr[vector[cmap[string,cint32_t]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cmap[string,cint32_t]]])
+    cdef _fbthrift_create(shared_ptr[vector[cmap[string,cint32_t]]])
     @staticmethod
     cdef shared_ptr[vector[cmap[string,cint32_t]]] _make_instance(object items) except *
 
 cdef class Map__string_string(thrift.py3.types.Map):
     cdef shared_ptr[cmap[string,string]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[string,string]])
+    cdef _fbthrift_create(shared_ptr[cmap[string,string]])
     @staticmethod
     cdef shared_ptr[cmap[string,string]] _make_instance(object items) except *
 
 cdef class List__Range(thrift.py3.types.List):
     cdef shared_ptr[vector[cRange]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cRange]])
+    cdef _fbthrift_create(shared_ptr[vector[cRange]])
     @staticmethod
     cdef shared_ptr[vector[cRange]] _make_instance(object items) except *
 
 cdef class List__Internship(thrift.py3.types.List):
     cdef shared_ptr[vector[cInternship]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cInternship]])
+    cdef _fbthrift_create(shared_ptr[vector[cInternship]])
     @staticmethod
     cdef shared_ptr[vector[cInternship]] _make_instance(object items) except *
 
 cdef class List__string(thrift.py3.types.List):
     cdef shared_ptr[vector[string]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[string]])
+    cdef _fbthrift_create(shared_ptr[vector[string]])
     @staticmethod
     cdef shared_ptr[vector[string]] _make_instance(object items) except *
 
 cdef class Set__i32(thrift.py3.types.Set):
     cdef shared_ptr[cset[cint32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cset[cint32_t]])
+    cdef _fbthrift_create(shared_ptr[cset[cint32_t]])
     @staticmethod
     cdef shared_ptr[cset[cint32_t]] _make_instance(object items) except *
 
 cdef class Set__string(thrift.py3.types.Set):
     cdef shared_ptr[cset[string]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cset[string]])
+    cdef _fbthrift_create(shared_ptr[cset[string]])
     @staticmethod
     cdef shared_ptr[cset[string]] _make_instance(object items) except *
 
 cdef class Map__i32_i32(thrift.py3.types.Map):
     cdef shared_ptr[cmap[cint32_t,cint32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[cint32_t,cint32_t]])
+    cdef _fbthrift_create(shared_ptr[cmap[cint32_t,cint32_t]])
     @staticmethod
     cdef shared_ptr[cmap[cint32_t,cint32_t]] _make_instance(object items) except *
 
 cdef class Map__i32_string(thrift.py3.types.Map):
     cdef shared_ptr[cmap[cint32_t,string]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[cint32_t,string]])
+    cdef _fbthrift_create(shared_ptr[cmap[cint32_t,string]])
     @staticmethod
     cdef shared_ptr[cmap[cint32_t,string]] _make_instance(object items) except *
 

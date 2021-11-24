@@ -26,7 +26,7 @@
 #include <thrift/lib/cpp2/gen/service_tcc.h>
 
 namespace thrift {
-namespace py3 {
+namespace py3lite {
 
 class Py3LiteAsyncProcessor : public apache::thrift::AsyncProcessor {
  public:
@@ -316,5 +316,5 @@ class Py3LiteAsyncProcessorFactory
   std::string serviceName_;
 };
 
-} // namespace py3
+} // namespace py3lite
 } // namespace thrift

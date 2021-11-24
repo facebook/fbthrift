@@ -34,18 +34,6 @@ namespace compiler {
 
 namespace {
 
-mstch::array create_string_array(const std::vector<std::string>& values) {
-  mstch::array a;
-  for (auto it = values.begin(); it != values.end(); ++it) {
-    a.push_back(mstch::map{
-        {"value", *it},
-        {"first?", it == values.begin()},
-        {"last?", std::next(it) == values.end()},
-    });
-  }
-  return a;
-}
-
 std::vector<std::string> get_py3_namespace(const t_program* prog) {
   return split_namespace(prog->get_namespace("py3"));
 }
@@ -75,6 +63,7 @@ class mstch_py3lite_type : public mstch_type {
         this,
         {
             {"type:module_path", &mstch_py3lite_type::module_path},
+            {"type:need_module_path?", &mstch_py3lite_type::need_module_path},
             {"type:external_program?",
              &mstch_py3lite_type::is_external_program},
             {"type:integer?", &mstch_py3lite_type::is_integer},
@@ -84,10 +73,22 @@ class mstch_py3lite_type : public mstch_type {
   mstch::node module_path() {
     std::ostringstream ss;
     for (const auto& path : get_py3_namespace_with_name(get_type_program())) {
-      ss << "_" << path;
+      ss << path << ".";
     }
-    ss << "_lite_types";
+    ss << "lite_types";
     return ss.str();
+  }
+
+  mstch::node need_module_path() {
+    if (!has_option("is_types_file")) {
+      return true;
+    }
+    if (const t_program* prog = type_->program()) {
+      if (prog != prog_) {
+        return true;
+      }
+    }
+    return false;
   }
 
   mstch::node is_external_program() {
@@ -300,7 +301,8 @@ class mstch_py3lite_program : public mstch_program {
     register_methods(
         this,
         {
-            {"program:py3_namespaces", &mstch_py3lite_program::py3_namespaces},
+            {"program:module_path", &mstch_py3lite_program::module_path},
+            {"program:is_types_file?", &mstch_py3lite_program::is_types_file},
             {"program:include_namespaces",
              &mstch_py3lite_program::include_namespaces},
             {"program:base_library_package",
@@ -314,19 +316,21 @@ class mstch_py3lite_program : public mstch_program {
     visit_types_for_mixin_fields();
   }
 
+  mstch::node is_types_file() { return has_option("is_types_file"); }
+
   mstch::node include_namespaces() {
     mstch::array a;
     for (auto& it : include_namespaces_) {
       a.push_back(mstch::map{
-          {"include_namespace", create_string_array(it.second.ns)},
+          {"included_module_path", boost::algorithm::join(it.second.ns, ".")},
           {"has_services?", it.second.has_services},
           {"has_types?", it.second.has_types}});
     }
     return a;
   }
 
-  mstch::node py3_namespaces() {
-    return create_string_array(get_py3_namespace(program_));
+  mstch::node module_path() {
+    return boost::algorithm::join(get_py3_namespace_with_name(program_), ".");
   }
 
   mstch::node base_library_package() {
@@ -467,13 +471,6 @@ class mstch_py3lite_program : public mstch_program {
 
 class mstch_py3lite_field : public mstch_field {
  public:
-  enum class RefType : uint8_t {
-    NotRef,
-    Unique,
-    Shared,
-    SharedConst,
-    IOBuf,
-  };
   mstch_py3lite_field(
       const t_field* field,
       std::shared_ptr<const mstch_generators> generators,
@@ -615,7 +612,15 @@ class mstch_py3lite_function : public mstch_function {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_function(function, generators, cache, pos) {
-    register_methods(this, {});
+    register_methods(
+        this,
+        {
+            {"function:args?", &mstch_py3lite_function::has_args},
+        });
+  }
+
+  mstch::node has_args() {
+    return !function_->get_paramlist()->get_members().empty();
   }
 
  protected:
@@ -649,19 +654,22 @@ class mstch_py3lite_service : public mstch_service {
     register_methods(
         this,
         {
-            {"service:py3_namespaces", &mstch_py3lite_service::py3_namespaces},
+            {"service:module_path", &mstch_py3lite_service::module_path},
             {"service:program_name", &mstch_py3lite_service::program_name},
             {"service:parent_service_name",
              &mstch_py3lite_service::parent_service_name},
             {"service:supported_functions",
-             &mstch_py3lite_service::get_supported_functions},
+             &mstch_py3lite_service::supported_functions},
+            {"service:supported_functions?",
+             &mstch_py3lite_service::has_supported_functions},
             {"service:external_program?",
              &mstch_py3lite_service::is_external_program},
         });
   }
 
-  mstch::node py3_namespaces() {
-    return create_string_array(get_py3_namespace(service_->program()));
+  mstch::node module_path() {
+    return boost::algorithm::join(
+        get_py3_namespace_with_name(service_->program()), ".");
   }
 
   mstch::node program_name() { return service_->program()->name(); }
@@ -670,14 +678,22 @@ class mstch_py3lite_service : public mstch_service {
     return cache_->parsed_options_.at("parent_service_name");
   }
 
-  mstch::node get_supported_functions() {
+  std::vector<t_function*> get_supported_functions() {
     std::vector<t_function*> funcs;
     for (auto func : service_->get_functions()) {
       if (is_func_supported(func)) {
         funcs.push_back(func);
       }
     }
-    return generate_functions(funcs);
+    return funcs;
+  }
+
+  mstch::node supported_functions() {
+    return generate_functions(get_supported_functions());
+  }
+
+  mstch::node has_supported_functions() {
+    return !get_supported_functions().empty();
   }
 
   mstch::node is_external_program() { return prog_ != service_->program(); }
@@ -869,6 +885,7 @@ class t_mstch_py3lite_generator : public t_mstch_generator {
     set_mstch_generators();
     generate_types();
     generate_clients();
+    generate_services();
   }
 
   void fill_validator_list(validator_list& vl) const override {
@@ -876,13 +893,19 @@ class t_mstch_py3lite_generator : public t_mstch_generator {
     vl.add<enum_member_union_field_names_validator>();
   }
 
+  enum TypesFile { IsTypesFile, NotTypesFile };
+
  protected:
   bool should_resolve_typedefs() const override { return true; }
   void set_mstch_generators();
   void generate_file(
-      const std::string& file, const boost::filesystem::path& base);
+      const std::string& file,
+      TypesFile is_types_file,
+      const boost::filesystem::path& base);
+  void set_types_file(bool val);
   void generate_types();
   void generate_clients();
+  void generate_services();
   boost::filesystem::path package_to_path();
 
   const boost::filesystem::path generate_root_path_;
@@ -915,22 +938,43 @@ boost::filesystem::path t_mstch_py3lite_generator::package_to_path() {
 }
 
 void t_mstch_py3lite_generator::generate_file(
-    const std::string& file, const boost::filesystem::path& base = {}) {
+    const std::string& file,
+    TypesFile is_types_file,
+    const boost::filesystem::path& base = {}) {
   auto program = get_program();
   const auto& name = program->name();
+  if (is_types_file == IsTypesFile) {
+    cache_->parsed_options_["is_types_file"] = "";
+  } else {
+    cache_->parsed_options_.erase("is_types_file");
+  }
   auto node_ptr =
       generators_->program_generator_->generate(program, generators_, cache_);
   render_to_file(node_ptr, file, base / name / file);
 }
 
 void t_mstch_py3lite_generator::generate_types() {
-  generate_file("lite_types.py", generate_root_path_);
-  generate_file("lite_types.pyi", generate_root_path_);
+  generate_file("lite_types.py", IsTypesFile, generate_root_path_);
+  generate_file("lite_types.pyi", IsTypesFile, generate_root_path_);
 }
 
 void t_mstch_py3lite_generator::generate_clients() {
-  generate_file("lite_clients.py", generate_root_path_);
-  generate_file("lite_clients.pyi", generate_root_path_);
+  if (get_program()->services().empty()) {
+    // There is no need to generate empty / broken code for non existent
+    // services.
+    return;
+  }
+
+  generate_file("lite_clients.py", NotTypesFile, generate_root_path_);
+}
+
+void t_mstch_py3lite_generator::generate_services() {
+  if (get_program()->services().empty()) {
+    // There is no need to generate empty / broken code for non existent
+    // services.
+    return;
+  }
+  generate_file("lite_services.py", NotTypesFile, generate_root_path_);
 }
 
 THRIFT_REGISTER_GENERATOR(

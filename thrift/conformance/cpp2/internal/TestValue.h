@@ -23,6 +23,7 @@
 #include <folly/lang/Exception.h>
 #include <thrift/conformance/if/gen-cpp2/test_value_types.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
+#include <thrift/lib/cpp2/type/Traits.h>
 
 namespace apache::thrift::conformance::detail {
 

@@ -63,10 +63,15 @@ class Lazy:
     thrift_struct_annotations: __T.Dict[str, str]
 
     def __init__(
-        self
+        self,
+        ref: bool = ...
     ) -> None:
         ...
 
+    @__property__
+    def ref(self) -> bool: ...
+    @ref.setter
+    def ref(self, value: bool) -> None: ...
 
 
     def isUnion(self) -> bool: ...

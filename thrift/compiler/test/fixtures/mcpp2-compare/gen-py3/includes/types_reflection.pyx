@@ -24,19 +24,19 @@ from thrift.py3.types cimport (
 
 
 cdef __StructSpec get_reflection__AStruct():
-    cdef _includes_types.AStruct defaults = _includes_types.AStruct.create(
+    cdef _includes_types.AStruct defaults = _includes_types.AStruct._fbthrift_create(
         constant_shared_ptr[_includes_types.cAStruct](
             default_inst[_includes_types.cAStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="AStruct",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="FieldA",
             type=int,
@@ -49,19 +49,19 @@ cdef __StructSpec get_reflection__AStruct():
     )
     return spec
 cdef __StructSpec get_reflection__AStructB():
-    cdef _includes_types.AStructB defaults = _includes_types.AStructB.create(
+    cdef _includes_types.AStructB defaults = _includes_types.AStructB._fbthrift_create(
         constant_shared_ptr[_includes_types.cAStructB](
             default_inst[_includes_types.cAStructB]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="AStructB",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="FieldA",
             type=_includes_types.AStruct,

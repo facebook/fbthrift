@@ -22,7 +22,7 @@ from thrift.py3.types cimport const_pointer_cast
 cdef class __MyField_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __MyField_FieldsSetter create(_module_types.cMyField* struct_cpp_obj):
+    cdef __MyField_FieldsSetter _fbthrift_create(_module_types.cMyField* struct_cpp_obj):
         cdef __MyField_FieldsSetter __fbthrift_inst = __MyField_FieldsSetter.__new__(__MyField_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"opt_value")] = __MyField_FieldsSetter._set_field_0
@@ -31,6 +31,9 @@ cdef class __MyField_FieldsSetter(__StructFieldsSetter):
         __fbthrift_inst._setters[__cstring_view(<const char*>"opt_enum_value")] = __MyField_FieldsSetter._set_field_3
         __fbthrift_inst._setters[__cstring_view(<const char*>"enum_value")] = __MyField_FieldsSetter._set_field_4
         __fbthrift_inst._setters[__cstring_view(<const char*>"req_enum_value")] = __MyField_FieldsSetter._set_field_5
+        __fbthrift_inst._setters[__cstring_view(<const char*>"opt_str_value")] = __MyField_FieldsSetter._set_field_6
+        __fbthrift_inst._setters[__cstring_view(<const char*>"str_value")] = __MyField_FieldsSetter._set_field_7
+        __fbthrift_inst._setters[__cstring_view(<const char*>"req_str_value")] = __MyField_FieldsSetter._set_field_8
         return __fbthrift_inst
 
     cdef void set_field(__MyField_FieldsSetter self, const char* name, object value) except *:
@@ -97,12 +100,39 @@ cdef class __MyField_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'field req_enum_value value: {repr(_fbthrift_value)} is not of the enum type { _module_types.MyEnum }.')
         assign_unique_ptr[_module_types.cMyEnum](deref(self._struct_cpp_obj).req_enum_value_ref(), make_unique[_module_types.cMyEnum](deref((<_module_types.MyEnum?>_fbthrift_value)._cpp_obj)))
 
+    cdef void _set_field_6(self, _fbthrift_value) except *:
+        # for field opt_str_value
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyField](deref(self._struct_cpp_obj), 6)
+            return
+        if not isinstance(_fbthrift_value, str):
+            raise TypeError(f'opt_str_value is not a { str !r}.')
+        assign_unique_ptr[string](deref(self._struct_cpp_obj).opt_str_value_ref(), make_unique[string](deref((<str?>_fbthrift_value)._cpp_obj)))
+
+    cdef void _set_field_7(self, _fbthrift_value) except *:
+        # for field str_value
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyField](deref(self._struct_cpp_obj), 7)
+            return
+        if not isinstance(_fbthrift_value, str):
+            raise TypeError(f'str_value is not a { str !r}.')
+        assign_unique_ptr[string](deref(self._struct_cpp_obj).str_value_ref(), make_unique[string](deref((<str?>_fbthrift_value)._cpp_obj)))
+
+    cdef void _set_field_8(self, _fbthrift_value) except *:
+        # for field req_str_value
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyField](deref(self._struct_cpp_obj), 8)
+            return
+        if not isinstance(_fbthrift_value, str):
+            raise TypeError(f'req_str_value is not a { str !r}.')
+        assign_unique_ptr[string](deref(self._struct_cpp_obj).req_str_value_ref(), make_unique[string](deref((<str?>_fbthrift_value)._cpp_obj)))
+
 
 @__cython.auto_pickle(False)
 cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __MyStruct_FieldsSetter create(_module_types.cMyStruct* struct_cpp_obj):
+    cdef __MyStruct_FieldsSetter _fbthrift_create(_module_types.cMyStruct* struct_cpp_obj):
         cdef __MyStruct_FieldsSetter __fbthrift_inst = __MyStruct_FieldsSetter.__new__(__MyStruct_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"opt_ref")] = __MyStruct_FieldsSetter._set_field_0
@@ -149,7 +179,7 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
 cdef class __StructWithUnion_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __StructWithUnion_FieldsSetter create(_module_types.cStructWithUnion* struct_cpp_obj):
+    cdef __StructWithUnion_FieldsSetter _fbthrift_create(_module_types.cStructWithUnion* struct_cpp_obj):
         cdef __StructWithUnion_FieldsSetter __fbthrift_inst = __StructWithUnion_FieldsSetter.__new__(__StructWithUnion_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"u")] = __StructWithUnion_FieldsSetter._set_field_0
@@ -196,7 +226,7 @@ cdef class __StructWithUnion_FieldsSetter(__StructFieldsSetter):
 cdef class __RecursiveStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __RecursiveStruct_FieldsSetter create(_module_types.cRecursiveStruct* struct_cpp_obj):
+    cdef __RecursiveStruct_FieldsSetter _fbthrift_create(_module_types.cRecursiveStruct* struct_cpp_obj):
         cdef __RecursiveStruct_FieldsSetter __fbthrift_inst = __RecursiveStruct_FieldsSetter.__new__(__RecursiveStruct_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"mes")] = __RecursiveStruct_FieldsSetter._set_field_0
@@ -221,7 +251,7 @@ cdef class __RecursiveStruct_FieldsSetter(__StructFieldsSetter):
 cdef class __StructWithContainers_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __StructWithContainers_FieldsSetter create(_module_types.cStructWithContainers* struct_cpp_obj):
+    cdef __StructWithContainers_FieldsSetter _fbthrift_create(_module_types.cStructWithContainers* struct_cpp_obj):
         cdef __StructWithContainers_FieldsSetter __fbthrift_inst = __StructWithContainers_FieldsSetter.__new__(__StructWithContainers_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"list_ref")] = __StructWithContainers_FieldsSetter._set_field_0
@@ -286,7 +316,7 @@ cdef class __StructWithContainers_FieldsSetter(__StructFieldsSetter):
 cdef class __StructWithSharedConst_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __StructWithSharedConst_FieldsSetter create(_module_types.cStructWithSharedConst* struct_cpp_obj):
+    cdef __StructWithSharedConst_FieldsSetter _fbthrift_create(_module_types.cStructWithSharedConst* struct_cpp_obj):
         cdef __StructWithSharedConst_FieldsSetter __fbthrift_inst = __StructWithSharedConst_FieldsSetter.__new__(__StructWithSharedConst_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"opt_shared_const")] = __StructWithSharedConst_FieldsSetter._set_field_0
@@ -333,7 +363,7 @@ cdef class __StructWithSharedConst_FieldsSetter(__StructFieldsSetter):
 cdef class __Empty_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __Empty_FieldsSetter create(_module_types.cEmpty* struct_cpp_obj):
+    cdef __Empty_FieldsSetter _fbthrift_create(_module_types.cEmpty* struct_cpp_obj):
         cdef __Empty_FieldsSetter __fbthrift_inst = __Empty_FieldsSetter.__new__(__Empty_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         return __fbthrift_inst
@@ -350,7 +380,7 @@ cdef class __Empty_FieldsSetter(__StructFieldsSetter):
 cdef class __StructWithRef_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __StructWithRef_FieldsSetter create(_module_types.cStructWithRef* struct_cpp_obj):
+    cdef __StructWithRef_FieldsSetter _fbthrift_create(_module_types.cStructWithRef* struct_cpp_obj):
         cdef __StructWithRef_FieldsSetter __fbthrift_inst = __StructWithRef_FieldsSetter.__new__(__StructWithRef_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"def_field")] = __StructWithRef_FieldsSetter._set_field_0
@@ -397,7 +427,7 @@ cdef class __StructWithRef_FieldsSetter(__StructFieldsSetter):
 cdef class __StructWithBox_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __StructWithBox_FieldsSetter create(_module_types.cStructWithBox* struct_cpp_obj):
+    cdef __StructWithBox_FieldsSetter _fbthrift_create(_module_types.cStructWithBox* struct_cpp_obj):
         cdef __StructWithBox_FieldsSetter __fbthrift_inst = __StructWithBox_FieldsSetter.__new__(__StructWithBox_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"a")] = __StructWithBox_FieldsSetter._set_field_0
@@ -442,7 +472,7 @@ cdef class __StructWithBox_FieldsSetter(__StructFieldsSetter):
 cdef class __StructWithRefTypeUnique_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __StructWithRefTypeUnique_FieldsSetter create(_module_types.cStructWithRefTypeUnique* struct_cpp_obj):
+    cdef __StructWithRefTypeUnique_FieldsSetter _fbthrift_create(_module_types.cStructWithRefTypeUnique* struct_cpp_obj):
         cdef __StructWithRefTypeUnique_FieldsSetter __fbthrift_inst = __StructWithRefTypeUnique_FieldsSetter.__new__(__StructWithRefTypeUnique_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"def_field")] = __StructWithRefTypeUnique_FieldsSetter._set_field_0
@@ -489,7 +519,7 @@ cdef class __StructWithRefTypeUnique_FieldsSetter(__StructFieldsSetter):
 cdef class __StructWithRefTypeShared_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __StructWithRefTypeShared_FieldsSetter create(_module_types.cStructWithRefTypeShared* struct_cpp_obj):
+    cdef __StructWithRefTypeShared_FieldsSetter _fbthrift_create(_module_types.cStructWithRefTypeShared* struct_cpp_obj):
         cdef __StructWithRefTypeShared_FieldsSetter __fbthrift_inst = __StructWithRefTypeShared_FieldsSetter.__new__(__StructWithRefTypeShared_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"def_field")] = __StructWithRefTypeShared_FieldsSetter._set_field_0
@@ -536,7 +566,7 @@ cdef class __StructWithRefTypeShared_FieldsSetter(__StructFieldsSetter):
 cdef class __StructWithRefTypeSharedConst_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __StructWithRefTypeSharedConst_FieldsSetter create(_module_types.cStructWithRefTypeSharedConst* struct_cpp_obj):
+    cdef __StructWithRefTypeSharedConst_FieldsSetter _fbthrift_create(_module_types.cStructWithRefTypeSharedConst* struct_cpp_obj):
         cdef __StructWithRefTypeSharedConst_FieldsSetter __fbthrift_inst = __StructWithRefTypeSharedConst_FieldsSetter.__new__(__StructWithRefTypeSharedConst_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"def_field")] = __StructWithRefTypeSharedConst_FieldsSetter._set_field_0
@@ -583,7 +613,7 @@ cdef class __StructWithRefTypeSharedConst_FieldsSetter(__StructFieldsSetter):
 cdef class __StructWithRefAndAnnotCppNoexceptMoveCtor_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __StructWithRefAndAnnotCppNoexceptMoveCtor_FieldsSetter create(_module_types.cStructWithRefAndAnnotCppNoexceptMoveCtor* struct_cpp_obj):
+    cdef __StructWithRefAndAnnotCppNoexceptMoveCtor_FieldsSetter _fbthrift_create(_module_types.cStructWithRefAndAnnotCppNoexceptMoveCtor* struct_cpp_obj):
         cdef __StructWithRefAndAnnotCppNoexceptMoveCtor_FieldsSetter __fbthrift_inst = __StructWithRefAndAnnotCppNoexceptMoveCtor_FieldsSetter.__new__(__StructWithRefAndAnnotCppNoexceptMoveCtor_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"def_field")] = __StructWithRefAndAnnotCppNoexceptMoveCtor_FieldsSetter._set_field_0
@@ -610,7 +640,7 @@ cdef class __StructWithRefAndAnnotCppNoexceptMoveCtor_FieldsSetter(__StructField
 cdef class __StructWithString_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __StructWithString_FieldsSetter create(_module_types.cStructWithString* struct_cpp_obj):
+    cdef __StructWithString_FieldsSetter _fbthrift_create(_module_types.cStructWithString* struct_cpp_obj):
         cdef __StructWithString_FieldsSetter __fbthrift_inst = __StructWithString_FieldsSetter.__new__(__StructWithString_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"def_unique_string_ref")] = __StructWithString_FieldsSetter._set_field_0

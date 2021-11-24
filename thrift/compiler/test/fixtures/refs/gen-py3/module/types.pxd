@@ -112,12 +112,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         unique_ptr[cMyEnum] opt_enum_value_ref()
         unique_ptr[cMyEnum] enum_value_ref()
         unique_ptr[cMyEnum] req_enum_value_ref()
-        unique_ptr[cint64_t] opt_value
-        unique_ptr[cint64_t] value
-        unique_ptr[cint64_t] req_value
-        unique_ptr[cMyEnum] opt_enum_value
-        unique_ptr[cMyEnum] enum_value
-        unique_ptr[cMyEnum] req_enum_value
+        unique_ptr[string] opt_str_value_ref()
+        unique_ptr[string] str_value_ref()
+        unique_ptr[string] req_str_value_ref()
 
 
     cdef cppclass cMyStruct "::cpp2::MyStruct":
@@ -132,9 +129,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         unique_ptr[cMyField] opt_ref_ref()
         unique_ptr[cMyField] ref_ref()
         unique_ptr[cMyField] req_ref_ref()
-        unique_ptr[cMyField] opt_ref
-        unique_ptr[cMyField] ref
-        unique_ptr[cMyField] req_ref
 
 
     cdef cppclass cStructWithUnion "::cpp2::StructWithUnion":
@@ -149,9 +143,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         unique_ptr[cMyUnion] u_ref()
         unique_ptr[double] aDouble_ref()
         __field_ref[cMyField] f_ref()
-        unique_ptr[cMyUnion] u
-        unique_ptr[double] aDouble
-        cMyField f
 
 
     cdef cppclass cRecursiveStruct "::cpp2::RecursiveStruct":
@@ -164,7 +155,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cRecursiveStruct&)
         bint operator>=(cRecursiveStruct&)
         __optional_field_ref[vector[cRecursiveStruct]] mes_ref()
-        vector[cRecursiveStruct] mes
 
 
     cdef cppclass cStructWithContainers "::cpp2::StructWithContainers":
@@ -182,12 +172,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         unique_ptr[vector[cint32_t]] list_ref_unique_ref()
         shared_ptr[cset[cint32_t]] set_ref_shared_ref()
         shared_ptr[const vector[cint32_t]] list_ref_shared_const_ref()
-        unique_ptr[vector[cint32_t]] list_ref
-        unique_ptr[cset[cint32_t]] set_ref
-        unique_ptr[cmap[cint32_t,cint32_t]] map_ref
-        unique_ptr[vector[cint32_t]] list_ref_unique
-        shared_ptr[cset[cint32_t]] set_ref_shared
-        shared_ptr[const vector[cint32_t]] list_ref_shared_const
 
 
     cdef cppclass cStructWithSharedConst "::cpp2::StructWithSharedConst":
@@ -202,9 +186,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         shared_ptr[const cMyField] opt_shared_const_ref()
         shared_ptr[const cMyField] shared_const_ref()
         shared_ptr[const cMyField] req_shared_const_ref()
-        shared_ptr[const cMyField] opt_shared_const
-        shared_ptr[const cMyField] shared_const
-        shared_ptr[const cMyField] req_shared_const
 
 
     cdef cppclass cEmpty "::cpp2::Empty":
@@ -230,9 +211,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         unique_ptr[cEmpty] def_field_ref()
         unique_ptr[cEmpty] opt_field_ref()
         unique_ptr[cEmpty] req_field_ref()
-        unique_ptr[cEmpty] def_field
-        unique_ptr[cEmpty] opt_field
-        unique_ptr[cEmpty] req_field
 
 
     cdef cppclass cStructWithBox "::cpp2::StructWithBox":
@@ -247,9 +225,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[string] a_ref()
         __optional_field_ref[vector[cint64_t]] b_ref()
         __optional_field_ref[cStructWithRef] c_ref()
-        string a
-        vector[cint64_t] b
-        cStructWithRef c
 
 
     cdef cppclass cStructWithRefTypeUnique "::cpp2::StructWithRefTypeUnique":
@@ -264,9 +239,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         unique_ptr[cEmpty] def_field_ref()
         unique_ptr[cEmpty] opt_field_ref()
         unique_ptr[cEmpty] req_field_ref()
-        unique_ptr[cEmpty] def_field
-        unique_ptr[cEmpty] opt_field
-        unique_ptr[cEmpty] req_field
 
 
     cdef cppclass cStructWithRefTypeShared "::cpp2::StructWithRefTypeShared":
@@ -281,9 +253,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         shared_ptr[cEmpty] def_field_ref()
         shared_ptr[cEmpty] opt_field_ref()
         shared_ptr[cEmpty] req_field_ref()
-        shared_ptr[cEmpty] def_field
-        shared_ptr[cEmpty] opt_field
-        shared_ptr[cEmpty] req_field
 
 
     cdef cppclass cStructWithRefTypeSharedConst "::cpp2::StructWithRefTypeSharedConst":
@@ -298,9 +267,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         shared_ptr[const cEmpty] def_field_ref()
         shared_ptr[const cEmpty] opt_field_ref()
         shared_ptr[const cEmpty] req_field_ref()
-        shared_ptr[const cEmpty] def_field
-        shared_ptr[const cEmpty] opt_field
-        shared_ptr[const cEmpty] req_field
 
 
     cdef cppclass cStructWithRefAndAnnotCppNoexceptMoveCtor "::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor":
@@ -313,7 +279,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cStructWithRefAndAnnotCppNoexceptMoveCtor&)
         bint operator>=(cStructWithRefAndAnnotCppNoexceptMoveCtor&)
         unique_ptr[cEmpty] def_field_ref()
-        unique_ptr[cEmpty] def_field
 
 
     cdef cppclass cStructWithString "::cpp2::StructWithString":
@@ -330,11 +295,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         shared_ptr[const string] def_shared_string_const_ref_ref()
         unique_ptr[string] unique_string_ref_ref()
         shared_ptr[string] shared_string_ref_ref()
-        unique_ptr[string] def_unique_string_ref
-        shared_ptr[string] def_shared_string_ref
-        shared_ptr[const string] def_shared_string_const_ref
-        unique_ptr[string] unique_string_ref
-        shared_ptr[string] shared_string_ref
 
 
 cdef class __MyUnionType(thrift.py3.types.CompiledEnum):
@@ -357,7 +317,7 @@ cdef class MyUnion(thrift.py3.types.Union):
     ) except *
 
     @staticmethod
-    cdef create(shared_ptr[cMyUnion])
+    cdef _fbthrift_create(shared_ptr[cMyUnion])
 
 
 
@@ -369,7 +329,7 @@ cdef class MyField(thrift.py3.types.Struct):
     cdef object __fbthrift_cached_req_enum_value
 
     @staticmethod
-    cdef create(shared_ptr[cMyField])
+    cdef _fbthrift_create(shared_ptr[cMyField])
 
 
 
@@ -381,7 +341,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef MyField __fbthrift_cached_req_ref
 
     @staticmethod
-    cdef create(shared_ptr[cMyStruct])
+    cdef _fbthrift_create(shared_ptr[cMyStruct])
 
 
 
@@ -392,7 +352,7 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
     cdef MyField __fbthrift_cached_f
 
     @staticmethod
-    cdef create(shared_ptr[cStructWithUnion])
+    cdef _fbthrift_create(shared_ptr[cStructWithUnion])
 
 
 
@@ -402,7 +362,7 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
     cdef List__RecursiveStruct __fbthrift_cached_mes
 
     @staticmethod
-    cdef create(shared_ptr[cRecursiveStruct])
+    cdef _fbthrift_create(shared_ptr[cRecursiveStruct])
 
 
 
@@ -417,7 +377,7 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
     cdef List__i32 __fbthrift_cached_list_ref_shared_const
 
     @staticmethod
-    cdef create(shared_ptr[cStructWithContainers])
+    cdef _fbthrift_create(shared_ptr[cStructWithContainers])
 
 
 
@@ -429,7 +389,7 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
     cdef MyField __fbthrift_cached_req_shared_const
 
     @staticmethod
-    cdef create(shared_ptr[cStructWithSharedConst])
+    cdef _fbthrift_create(shared_ptr[cStructWithSharedConst])
 
 
 
@@ -438,7 +398,7 @@ cdef class Empty(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__Empty_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cEmpty])
+    cdef _fbthrift_create(shared_ptr[cEmpty])
 
 
 
@@ -450,7 +410,7 @@ cdef class StructWithRef(thrift.py3.types.Struct):
     cdef Empty __fbthrift_cached_req_field
 
     @staticmethod
-    cdef create(shared_ptr[cStructWithRef])
+    cdef _fbthrift_create(shared_ptr[cStructWithRef])
 
 
 
@@ -461,7 +421,7 @@ cdef class StructWithBox(thrift.py3.types.Struct):
     cdef StructWithRef __fbthrift_cached_c
 
     @staticmethod
-    cdef create(shared_ptr[cStructWithBox])
+    cdef _fbthrift_create(shared_ptr[cStructWithBox])
 
 
 
@@ -473,7 +433,7 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
     cdef Empty __fbthrift_cached_req_field
 
     @staticmethod
-    cdef create(shared_ptr[cStructWithRefTypeUnique])
+    cdef _fbthrift_create(shared_ptr[cStructWithRefTypeUnique])
 
 
 
@@ -485,7 +445,7 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
     cdef Empty __fbthrift_cached_req_field
 
     @staticmethod
-    cdef create(shared_ptr[cStructWithRefTypeShared])
+    cdef _fbthrift_create(shared_ptr[cStructWithRefTypeShared])
 
 
 
@@ -497,7 +457,7 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
     cdef Empty __fbthrift_cached_req_field
 
     @staticmethod
-    cdef create(shared_ptr[cStructWithRefTypeSharedConst])
+    cdef _fbthrift_create(shared_ptr[cStructWithRefTypeSharedConst])
 
 
 
@@ -507,7 +467,7 @@ cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
     cdef Empty __fbthrift_cached_def_field
 
     @staticmethod
-    cdef create(shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor])
+    cdef _fbthrift_create(shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor])
 
 
 
@@ -516,41 +476,41 @@ cdef class StructWithString(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__StructWithString_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cStructWithString])
+    cdef _fbthrift_create(shared_ptr[cStructWithString])
 
 
 cdef class List__RecursiveStruct(thrift.py3.types.List):
     cdef shared_ptr[vector[cRecursiveStruct]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cRecursiveStruct]])
+    cdef _fbthrift_create(shared_ptr[vector[cRecursiveStruct]])
     @staticmethod
     cdef shared_ptr[vector[cRecursiveStruct]] _make_instance(object items) except *
 
 cdef class List__i32(thrift.py3.types.List):
     cdef shared_ptr[vector[cint32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cint32_t]])
+    cdef _fbthrift_create(shared_ptr[vector[cint32_t]])
     @staticmethod
     cdef shared_ptr[vector[cint32_t]] _make_instance(object items) except *
 
 cdef class Set__i32(thrift.py3.types.Set):
     cdef shared_ptr[cset[cint32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cset[cint32_t]])
+    cdef _fbthrift_create(shared_ptr[cset[cint32_t]])
     @staticmethod
     cdef shared_ptr[cset[cint32_t]] _make_instance(object items) except *
 
 cdef class Map__i32_i32(thrift.py3.types.Map):
     cdef shared_ptr[cmap[cint32_t,cint32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[cint32_t,cint32_t]])
+    cdef _fbthrift_create(shared_ptr[cmap[cint32_t,cint32_t]])
     @staticmethod
     cdef shared_ptr[cmap[cint32_t,cint32_t]] _make_instance(object items) except *
 
 cdef class List__i64(thrift.py3.types.List):
     cdef shared_ptr[vector[cint64_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cint64_t]])
+    cdef _fbthrift_create(shared_ptr[vector[cint64_t]])
     @staticmethod
     cdef shared_ptr[vector[cint64_t]] _make_instance(object items) except *
 

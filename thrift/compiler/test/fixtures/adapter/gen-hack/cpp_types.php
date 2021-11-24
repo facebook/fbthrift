@@ -160,18 +160,31 @@ class facebook_thrift_annotation_cpp_Lazy implements \IThriftStruct, \IThriftSha
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'ref',
+      'type' => \TType::BOOL,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
+    'ref' => 1,
   ];
 
   const type TConstructorShape = shape(
+    ?'ref' => ?bool,
   );
 
   const type TShape = shape(
+    'ref' => bool,
   );
-  const int STRUCTURAL_ID = 957977401221134810;
+  const int STRUCTURAL_ID = 2641839514020242314;
+  /**
+   * Original thrift field:-
+   * 1: bool ref
+   */
+  public bool $ref;
 
-  public function __construct(  )[] {
+  public function __construct(?bool $ref = null  )[] {
+    $this->ref = $ref ?? false;
   }
 
   public static function withDefaultValues()[]: this {
@@ -180,6 +193,7 @@ class facebook_thrift_annotation_cpp_Lazy implements \IThriftStruct, \IThriftSha
 
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
+      Shapes::idx($shape, 'ref'),
     );
   }
 
@@ -191,6 +205,19 @@ class facebook_thrift_annotation_cpp_Lazy implements \IThriftStruct, \IThriftSha
     return tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "cpp.Lazy",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                )
+              ),
+              "name" => "ref",
+            )
+          ),
+        ],
         "is_union" => false,
       )
     );
@@ -211,11 +238,13 @@ class facebook_thrift_annotation_cpp_Lazy implements \IThriftStruct, \IThriftSha
 
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
+      $shape['ref'],
     );
   }
 
   public function __toShape()[]: self::TShape {
     return shape(
+      'ref' => $this->ref,
     );
   }
   public function readFromJson(string $jsonText): void {
@@ -225,6 +254,9 @@ class facebook_thrift_annotation_cpp_Lazy implements \IThriftStruct, \IThriftSha
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
+    if (idx($parsed, 'ref') !== null) {
+      $this->ref = /* HH_FIXME[4110] */ $parsed['ref'];
+    }    
   }
 
 }

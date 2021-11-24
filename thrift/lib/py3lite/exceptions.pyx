@@ -19,14 +19,17 @@ from cython.operator cimport dereference as deref
 from thrift.py3lite.types cimport StructInfo, createStructTuple, set_struct_field
 
 
+cdef class Error(Exception):
+    """base class for all thrift exceptions (TException)"""
+    pass
+
+
 cdef class ApplicationError(Error):
     """All Application Level Errors (TApplicationException)"""
 
     def __init__(ApplicationError self, ApplicationErrorType type, str message):
         assert message, "message is empty"
-        self.type = type
-        self.message = message
-        super().init(type, message)
+        super().__init__(type, message)
 
     @property
     def type(self):
@@ -44,16 +47,65 @@ cdef ApplicationError create_ApplicationError(unique_ptr[cTApplicationException]
     message = (<bytes>deref(ex).what()).decode('utf-8')
     # Strip out the message prefix its verbose for python
     message = message[message.startswith('TApplicationException: ')*23:]
-    inst = <ApplicationError>ApplicationError.__new__(
+    return <ApplicationError>ApplicationError.__new__(
         ApplicationError,
         type,
         message,
     )
-    return inst
+
+
+cdef class LibraryError(Error):
+    """Equivalent of a C++ TLibraryException"""
+    pass
+
+
+cdef class TransportError(LibraryError):
+    """All Transport Level Errors (TTransportException)"""
+
+    def __init__(self, type, str message, int errno, options):
+        super().__init__(type, message, errno, options)
+
+    @property
+    def type(self):
+        return self.args[0]
+
+    @property
+    def message(self):
+        return self.args[1]
+
+    @property
+    def errno(self):
+        return self.args[2]
+
+    @property
+    def options(self):
+        return self.args[3]
+
+
+cdef TransportError create_TransportError(unique_ptr[cTTransportException] ex):
+    if not ex:
+        return
+    type = TransportErrorType(deref(ex).getType())
+    message = (<bytes>deref(ex).what()).decode('utf-8')
+    # Strip off the c++ message prefix
+    message = message[message.startswith('TTransportException: ')*21:]
+    errno = deref(ex).getErrno()
+    options = deref(ex).getOptions()
+    return <TransportError>TransportError.__new__(
+        TransportError,
+        type,
+        message,
+        errno,
+        options,
+    )
 
 
 cdef object create_py_exception(const cFollyExceptionWrapper& ex):
     pyex = create_ApplicationError(try_make_unique_exception[cTApplicationException](ex))
+    if pyex:
+        return pyex
+
+    pyex = create_TransportError(try_make_unique_exception[cTTransportException](ex))
     if pyex:
         return pyex
 

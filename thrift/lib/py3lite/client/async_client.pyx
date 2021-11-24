@@ -22,22 +22,13 @@ import folly.executor
 
 from cython.operator cimport dereference as deref
 from folly.executor cimport get_executor
-from folly.futures cimport bridgeFutureWith, bridgeSemiFutureWith
+from folly.futures cimport bridgeSemiFutureWith
 from folly.iobuf cimport IOBuf
-from libc.stdint cimport uint32_t
 from libcpp.memory cimport make_unique
 from libcpp.utility cimport move as cmove
 from thrift.py3lite.client.omni_client cimport cOmniClientResponseWithHeaders
-from thrift.py3lite.client.request_channel cimport (
-    createThriftChannelTCP,
-    createThriftChannelUnix,
-    ClientType as cClientType,
-    RequestChannel,
-)
-from thrift.py3lite.client.request_channel import ClientType
 from thrift.py3lite.exceptions cimport create_py_exception
 from thrift.py3lite.exceptions import ApplicationError, ApplicationErrorType
-from thrift.py3lite.serializer cimport Protocol as cProtocol
 from thrift.py3lite.serializer import serialize_iobuf, deserialize
 
 
@@ -89,6 +80,7 @@ cdef class AsyncClient:
                 service_name,
                 function_name,
                 args_iobuf.c_clone(),
+                self._persistent_headers,
             )
             future.set_result(None)
             return future
@@ -100,11 +92,15 @@ cdef class AsyncClient:
                     service_name,
                     function_name,
                     args_iobuf.c_clone(),
+                    self._persistent_headers,
                 ),
                 _async_client_send_request_callback,
                 <PyObject *> userdata,
             )
             return asyncio.shield(future)
+
+    def set_persistent_header(AsyncClient self, string key, string value):
+        self._persistent_headers[key] = value
 
 
 cdef void _async_client_send_request_callback(
@@ -124,66 +120,3 @@ cdef void _async_client_send_request_callback(
             ApplicationErrorType.MISSING_RESULT,
             "Received no result nor error",
         ))
-
-
-
-def get_client(
-    clientKlass,
-    *,
-    host=None,
-    port=None,
-    path=None,
-    double timeout=1,
-    cClientType client_type = ClientType.THRIFT_HEADER_CLIENT_TYPE,
-    cProtocol protocol = cProtocol.COMPACT,
-):
-    if not issubclass(clientKlass, AsyncClient):
-        if hasattr(clientKlass, "Async"):
-            clientKlass = clientKlass.Async
-    assert issubclass(clientKlass, AsyncClient), "Must be a py3lite async client"
-
-    cdef uint32_t _timeout_ms = int(timeout * 1000)
-
-    host = str(host)  # Accept ipaddress objects
-    client = clientKlass()
-
-    if host is not None and port is not None:
-        if path is not None:
-            raise ValueError("Can not set path and host/port at same time")
-        bridgeFutureWith[cRequestChannel_ptr](
-            (<AsyncClient>client)._executor,
-            createThriftChannelTCP(
-                host, port, _timeout_ms, client_type, protocol
-            ),
-            requestchannel_callback,
-            <PyObject *>client,
-        )
-    elif path is not None:
-        bridgeFutureWith[cRequestChannel_ptr](
-            (<AsyncClient>client)._executor,
-            createThriftChannelUnix(
-                path, _timeout_ms, client_type, protocol
-            ),
-            requestchannel_callback,
-            <PyObject *>client,
-        )
-    else:
-        raise ValueError("Must set path or host/port")
-
-    return client
-
-
-cdef void requestchannel_callback(
-    cFollyTry[cRequestChannel_ptr]&& result,
-    PyObject* userData,
-):
-    cdef AsyncClient client = <object> userData
-    future = client._connect_future
-    if result.hasException():
-        try:
-            result.exception().throw_exception()
-        except Exception as pyex:
-            future.set_exception(pyex)
-    else:
-        client.bind_client(cmove(result.value()))
-        future.set_result(None)

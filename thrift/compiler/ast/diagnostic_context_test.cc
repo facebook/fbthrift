@@ -22,6 +22,7 @@
 #include <folly/portability/GTest.h>
 #include <thrift/compiler/ast/diagnostic.h>
 #include <thrift/compiler/ast/t_base_type.h>
+#include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_type.h>
 
 namespace apache::thrift::compiler {
@@ -89,6 +90,35 @@ TEST_F(DiagnosticContextTest, WarningLevel) {
       ::testing::ElementsAre(
           diagnostic{diagnostic_level::warning, "hi", "path/to/file.thrift"},
           diagnostic{diagnostic_level::warning, "bye", "path/to/file.thrift"}));
+}
+
+TEST_F(DiagnosticContextTest, NodeInfo) {
+  ctx_.info(program_, "hi");
+  // Not reported by default.
+  EXPECT_THAT(results_.diagnostics(), ::testing::IsEmpty());
+  ctx_.params().info = true;
+  ctx_.info(program_, "hi");
+  EXPECT_THAT(
+      results_.diagnostics(),
+      ::testing::ElementsAre(
+          diagnostic{diagnostic_level::info, "hi", "path/to/file.thrift", -1}));
+}
+
+TEST_F(DiagnosticContextTest, NodeInfoWithName) {
+  ctx_.info("DiagName", program_, "hi");
+  // Not reported by default.
+  EXPECT_THAT(results_.diagnostics(), ::testing::IsEmpty());
+  ctx_.params().info = true;
+  ctx_.info("DiagName", program_, "hi");
+  EXPECT_THAT(
+      results_.diagnostics(),
+      ::testing::ElementsAre(diagnostic{
+          diagnostic_level::info,
+          "hi",
+          "path/to/file.thrift",
+          -1,
+          "",
+          "DiagName"}));
 }
 
 class NodeMetadataCacheTest : public ::testing::Test {};

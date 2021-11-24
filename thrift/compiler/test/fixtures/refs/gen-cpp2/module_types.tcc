@@ -397,6 +397,51 @@ _readField_req_enum_value:
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           6,
+          7,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_opt_str_value:
+  {
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::string>>();
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, *ptr, _readState);
+    this->opt_str_value = std::move(ptr);
+    
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          7,
+          8,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_str_value:
+  {
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::string>>();
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, *ptr, _readState);
+    this->str_value = std::move(ptr);
+    
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          8,
+          9,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_req_str_value:
+  {
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::string>>();
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, *ptr, _readState);
+    this->req_str_value = std::move(ptr);
+    
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          9,
           0,
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
@@ -465,6 +510,30 @@ _loop:
         goto _skip;
       }
     }
+    case 7:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
+        goto _readField_opt_str_value;
+      } else {
+        goto _skip;
+      }
+    }
+    case 8:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
+        goto _readField_str_value;
+      } else {
+        goto _skip;
+      }
+    }
+    case 9:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
+        goto _readField_req_str_value;
+      } else {
+        goto _skip;
+      }
+    }
     default:
     {
 _skip:
@@ -518,6 +587,22 @@ uint32_t MyField::serializedSize(Protocol_ const* prot_) const {
       xfer += prot_->serializedSizeEnd();
     }
   }
+  if (this->opt_str_value) {
+    xfer += prot_->serializedFieldSize("opt_str_value", apache::thrift::protocol::T_STRING, 7);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, *this->opt_str_value);
+  }
+  {
+    xfer += prot_->serializedFieldSize("str_value", apache::thrift::protocol::T_STRING, 8);
+    if (this->str_value) {
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, *this->str_value);
+    }
+  }
+  {
+    xfer += prot_->serializedFieldSize("req_str_value", apache::thrift::protocol::T_STRING, 9);
+    if (this->req_str_value) {
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, *this->req_str_value);
+    }
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -562,6 +647,22 @@ uint32_t MyField::serializedSizeZC(Protocol_ const* prot_) const {
     } else {
       xfer += prot_->serializedSizeBegin(, 0);
       xfer += prot_->serializedSizeEnd();
+    }
+  }
+  if (this->opt_str_value) {
+    xfer += prot_->serializedFieldSize("opt_str_value", apache::thrift::protocol::T_STRING, 7);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, *this->opt_str_value);
+  }
+  {
+    xfer += prot_->serializedFieldSize("str_value", apache::thrift::protocol::T_STRING, 8);
+    if (this->str_value) {
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, *this->str_value);
+    }
+  }
+  {
+    xfer += prot_->serializedFieldSize("req_str_value", apache::thrift::protocol::T_STRING, 9);
+    if (this->req_str_value) {
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, *this->req_str_value);
     }
   }
   xfer += prot_->serializedSizeStop();
@@ -630,6 +731,33 @@ uint32_t MyField::write(Protocol_* prot_) const {
     } else {
       xfer += prot_->writeBegin(, 0);
       xfer += prot_->writeEnd();
+    }
+    xfer += prot_->writeFieldEnd();
+  }
+  if (this->opt_str_value) {
+    constexpr int16_t kPrevFieldId = 6;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 7, kPrevFieldId>(*prot_, "opt_str_value", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, *this->opt_str_value);
+    xfer += prot_->writeFieldEnd();
+  } else {
+    previousFieldHasValue = false;
+  }
+  {
+    constexpr int16_t kPrevFieldId = 7;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 8, kPrevFieldId>(*prot_, "str_value", previousFieldHasValue);
+    previousFieldHasValue = true;
+    if (this->str_value) {
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, *this->str_value);
+    }
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    constexpr int16_t kPrevFieldId = 8;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 9, kPrevFieldId>(*prot_, "req_str_value", previousFieldHasValue);
+    previousFieldHasValue = true;
+    if (this->req_str_value) {
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, *this->req_str_value);
     }
     xfer += prot_->writeFieldEnd();
   }
@@ -940,7 +1068,7 @@ _readField_f:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(folly::index_constant<0>(), true);
+ this->__isset.set(0, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -1129,7 +1257,7 @@ _readField_mes:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(folly::index_constant<0>(), true);
+ this->__isset.set(0, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -1177,7 +1305,7 @@ template <class Protocol_>
 uint32_t RecursiveStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("RecursiveStruct");
-  if (this->__isset.get(folly::index_constant<0>())) {
+  if (this->__isset.get(0)) {
     xfer += prot_->serializedFieldSize("mes", apache::thrift::protocol::T_LIST, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector<::cpp2::RecursiveStruct>>::serializedSize<false>(*prot_, this->__fbthrift_field_mes);
   }
@@ -1189,7 +1317,7 @@ template <class Protocol_>
 uint32_t RecursiveStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("RecursiveStruct");
-  if (this->__isset.get(folly::index_constant<0>())) {
+  if (this->__isset.get(0)) {
     xfer += prot_->serializedFieldSize("mes", apache::thrift::protocol::T_LIST, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector<::cpp2::RecursiveStruct>>::serializedSize<false>(*prot_, this->__fbthrift_field_mes);
   }
@@ -1202,7 +1330,7 @@ uint32_t RecursiveStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("RecursiveStruct");
   bool previousFieldHasValue = true;
-  if (this->__isset.get(folly::index_constant<0>())) {
+  if (this->__isset.get(0)) {
     constexpr int16_t kPrevFieldId = 0;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 1, kPrevFieldId>(*prot_, "mes", previousFieldHasValue);
     previousFieldHasValue = true;

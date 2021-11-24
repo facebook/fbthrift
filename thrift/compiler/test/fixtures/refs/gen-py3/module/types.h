@@ -73,6 +73,15 @@ void reset_field<::cpp2::MyField>(
     case 5:
       obj.req_enum_value_ref().reset();
       return;
+    case 6:
+      obj.opt_str_value_ref().reset();
+      return;
+    case 7:
+      obj.str_value_ref().reset();
+      return;
+    case 8:
+      obj.req_str_value_ref().reset();
+      return;
   }
 }
 

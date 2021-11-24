@@ -24,19 +24,19 @@ from thrift.py3.types cimport (
 
 
 cdef __StructSpec get_reflection__MyStruct():
-    cdef _test_fixtures_enumstrict_module_types.MyStruct defaults = _test_fixtures_enumstrict_module_types.MyStruct.create(
+    cdef _test_fixtures_enumstrict_module_types.MyStruct defaults = _test_fixtures_enumstrict_module_types.MyStruct._fbthrift_create(
         constant_shared_ptr[_test_fixtures_enumstrict_module_types.cMyStruct](
             default_inst[_test_fixtures_enumstrict_module_types.cMyStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="MyStruct",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="myEnum",
             type=_test_fixtures_enumstrict_module_types.MyEnum,
@@ -48,7 +48,7 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="myBigEnum",
             type=_test_fixtures_enumstrict_module_types.MyBigEnum,
@@ -61,7 +61,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     return spec
 cdef __MapSpec get_reflection__Map__MyEnum_string():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=_test_fixtures_enumstrict_module_types.MyEnum,
         key_kind=__NumberType.NOT_A_NUMBER,
         value=str,

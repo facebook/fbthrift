@@ -68,7 +68,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cFiery&)
         bint operator>=(cFiery&)
         __required_field_ref[string] message_ref()
-        string message
 
 
     cdef cppclass cSerious "::cpp2::Serious"(cTException):
@@ -81,7 +80,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cSerious&)
         bint operator>=(cSerious&)
         __optional_field_ref[string] sonnet_ref()
-        string sonnet
 
 
     cdef cppclass cComplexFieldNames "::cpp2::ComplexFieldNames"(cTException):
@@ -95,8 +93,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cComplexFieldNames&)
         __field_ref[string] error_message_ref()
         __field_ref[string] internal_error_message_ref()
-        string error_message
-        string internal_error_message
 
 
     cdef cppclass cCustomFieldNames "::cpp2::CustomFieldNames"(cTException):
@@ -110,8 +106,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cCustomFieldNames&)
         __field_ref[string] error_message_ref()
         __field_ref[string] internal_error_message_ref()
-        string error_message
-        string internal_error_message
 
 
     cdef cppclass cExceptionWithPrimitiveField "::cpp2::ExceptionWithPrimitiveField"(cTException):
@@ -125,8 +119,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cExceptionWithPrimitiveField&)
         __field_ref[string] message_ref()
         __field_ref[cint32_t] error_code_ref()
-        string message
-        cint32_t error_code
 
 
     cdef cppclass cBanal "::cpp2::Banal"(cTException):
@@ -147,7 +139,7 @@ cdef class Fiery(thrift.py3.exceptions.GeneratedError):
     cdef _fbthrift_types_fields.__Fiery_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cFiery])
+    cdef _fbthrift_create(shared_ptr[cFiery])
 
 
 
@@ -156,7 +148,7 @@ cdef class Serious(thrift.py3.exceptions.GeneratedError):
     cdef _fbthrift_types_fields.__Serious_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cSerious])
+    cdef _fbthrift_create(shared_ptr[cSerious])
 
 
 
@@ -165,7 +157,7 @@ cdef class ComplexFieldNames(thrift.py3.exceptions.GeneratedError):
     cdef _fbthrift_types_fields.__ComplexFieldNames_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cComplexFieldNames])
+    cdef _fbthrift_create(shared_ptr[cComplexFieldNames])
 
 
 
@@ -174,7 +166,7 @@ cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
     cdef _fbthrift_types_fields.__CustomFieldNames_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cCustomFieldNames])
+    cdef _fbthrift_create(shared_ptr[cCustomFieldNames])
 
 
 
@@ -183,7 +175,7 @@ cdef class ExceptionWithPrimitiveField(thrift.py3.exceptions.GeneratedError):
     cdef _fbthrift_types_fields.__ExceptionWithPrimitiveField_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cExceptionWithPrimitiveField])
+    cdef _fbthrift_create(shared_ptr[cExceptionWithPrimitiveField])
 
 
 
@@ -192,7 +184,7 @@ cdef class Banal(thrift.py3.exceptions.GeneratedError):
     cdef _fbthrift_types_fields.__Banal_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cBanal])
+    cdef _fbthrift_create(shared_ptr[cBanal])
 
 
 

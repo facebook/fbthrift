@@ -330,18 +330,18 @@ TEST(Frozen, BigMap) {
 }
 Tiny tiny1 = [] {
   Tiny obj;
-  obj.a = "just a";
+  *obj.a_ref() = "just a";
   return obj;
 }();
 Tiny tiny2 = [] {
   Tiny obj;
-  obj.a = "two";
+  *obj.a_ref() = "two";
   *obj.b_ref() = "set";
   return obj;
 }();
 Tiny tiny4 = [] {
   Tiny obj;
-  obj.a = "four";
+  *obj.a_ref() = "four";
   *obj.b_ref() = "itty";
   *obj.c_ref() = "bitty";
   *obj.d_ref() = "strings";

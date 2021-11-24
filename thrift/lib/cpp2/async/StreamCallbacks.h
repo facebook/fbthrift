@@ -70,8 +70,8 @@ struct HeadersPayload {
   explicit HeadersPayload(HeadersPayloadContent&& p) : payload(std::move(p)) {}
 
   explicit HeadersPayload(StreamPayloadMetadata&& sp) {
-    payload.otherMetadata_ref().copy_from(sp.otherMetadata_ref());
-    metadata.compression_ref().copy_from(sp.compression_ref());
+    payload.otherMetadata().copy_from(sp.otherMetadata());
+    metadata.compression().copy_from(sp.compression());
   }
 
   HeadersPayloadContent payload;
@@ -79,8 +79,8 @@ struct HeadersPayload {
 
   explicit operator StreamPayload() && {
     StreamPayloadMetadata md;
-    md.otherMetadata_ref().copy_from(payload.otherMetadata_ref());
-    md.compression_ref().copy_from(metadata.compression_ref());
+    md.otherMetadata().copy_from(payload.otherMetadata());
+    md.compression().copy_from(metadata.compression());
     return StreamPayload(nullptr, std::move(md));
   }
 };
@@ -180,12 +180,6 @@ struct FOLLY_EXPORT EncodedStreamRpcError : std::exception {
   EncodedStreamRpcError& operator=(EncodedStreamRpcError&&) = default;
   std::unique_ptr<folly::IOBuf> encoded;
 };
-
-inline bool hasException(const FirstResponsePayload& payload) {
-  auto payloadMetadataRef = payload.metadata.payloadMetadata_ref();
-  return payloadMetadataRef &&
-      payloadMetadataRef->getType() == PayloadMetadata::exceptionMetadata;
-}
 
 } // namespace detail
 

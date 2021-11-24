@@ -52,7 +52,7 @@ _readField_OtherStructField:
     _readState.afterSubobject(iprot);
     
   }
- this->__isset.set(folly::index_constant<0>(), true);
+ this->__isset.set(0, true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,

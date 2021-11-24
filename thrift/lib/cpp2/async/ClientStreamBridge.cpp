@@ -84,11 +84,7 @@ bool ClientStreamBridge::onFirstResponse(
   DCHECK(scheduledWait);
   firstResponseCallback->onFirstResponse(
       std::move(payload), ClientPtr(copy().release()));
-  auto hasEx = detail::hasException(payload);
-  if (hasEx) {
-    serverClose();
-  }
-  return !hasEx;
+  return true;
 }
 
 void ClientStreamBridge::onFirstResponseError(folly::exception_wrapper ew) {

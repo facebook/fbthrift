@@ -21,11 +21,17 @@
 #include <folly/container/Access.h>
 #include <thrift/conformance/if/gen-cpp2/type_types.h>
 #include <thrift/lib/cpp2/Thrift.h>
-#include <thrift/lib/cpp2/type/UniversalType.h>
+#include <thrift/lib/cpp2/type/UniversalName.h>
+#include <thrift/lib/thrift/gen-cpp2/type_constants.h>
+#include <thrift/lib/thrift/gen-cpp2/type_types.h>
 
 namespace apache::thrift::conformance {
 
-inline constexpr type::type_hash_size_t kTypeHashBytesNotSpecified = -1;
+inline constexpr type::hash_size_t kTypeHashBytesNotSpecified = -1;
+inline constexpr type::hash_size_t kMinTypeHashBytes =
+    type::type_constants::minTypeHashBytes();
+inline constexpr type::hash_size_t kDefaultTypeHashBytes =
+    type::type_constants::defaultTypeHashBytes();
 
 // Creates an ThriftTypeInfo struct with the given names and configuration.
 //
@@ -33,8 +39,7 @@ inline constexpr type::type_hash_size_t kTypeHashBytesNotSpecified = -1;
 // as aliases.
 template <typename C = std::initializer_list<const char*>>
 ThriftTypeInfo createThriftTypeInfo(
-    C&& names,
-    type::type_hash_size_t typeHashBytes = kTypeHashBytesNotSpecified);
+    C&& names, type::hash_size_t typeHashBytes = kTypeHashBytesNotSpecified);
 
 // Raises std::invalid_argument if invalid.
 void validateThriftTypeInfo(const ThriftTypeInfo& type);
@@ -42,8 +47,7 @@ void validateThriftTypeInfo(const ThriftTypeInfo& type);
 // Implementation
 
 template <typename R>
-ThriftTypeInfo createThriftTypeInfo(
-    R&& uris, type::type_hash_size_t typeHashBytes) {
+ThriftTypeInfo createThriftTypeInfo(R&& uris, type::hash_size_t typeHashBytes) {
   ThriftTypeInfo type;
   if (typeHashBytes != kTypeHashBytesNotSpecified) {
     type.typeHashBytes_ref() = typeHashBytes;

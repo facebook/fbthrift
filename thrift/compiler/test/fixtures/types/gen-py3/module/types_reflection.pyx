@@ -25,19 +25,19 @@ from thrift.py3.types cimport (
 
 
 cdef __StructSpec get_reflection__decorated_struct():
-    cdef _module_types.decorated_struct defaults = _module_types.decorated_struct.create(
+    cdef _module_types.decorated_struct defaults = _module_types.decorated_struct._fbthrift_create(
         constant_shared_ptr[_module_types.cdecorated_struct](
             default_inst[_module_types.cdecorated_struct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="decorated_struct",
         kind=__StructType.STRUCT,
         annotations={
             """cpp.declare_equal_to""": """1""",            """cpp.declare_hash""": """1""",        },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="field",
             type=str,
@@ -50,19 +50,19 @@ cdef __StructSpec get_reflection__decorated_struct():
     )
     return spec
 cdef __StructSpec get_reflection__ContainerStruct():
-    cdef _module_types.ContainerStruct defaults = _module_types.ContainerStruct.create(
+    cdef _module_types.ContainerStruct defaults = _module_types.ContainerStruct._fbthrift_create(
         constant_shared_ptr[_module_types.cContainerStruct](
             default_inst[_module_types.cContainerStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="ContainerStruct",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=12,
             name="fieldA",
             type=_module_types.List__i32,
@@ -74,7 +74,7 @@ cdef __StructSpec get_reflection__ContainerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="fieldB",
             type=_module_types.std_list__List__i32,
@@ -86,7 +86,7 @@ cdef __StructSpec get_reflection__ContainerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=3,
             name="fieldC",
             type=_module_types.std_deque__List__i32,
@@ -98,7 +98,7 @@ cdef __StructSpec get_reflection__ContainerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=4,
             name="fieldD",
             type=_module_types.folly_fbvector__List__i32,
@@ -110,7 +110,7 @@ cdef __StructSpec get_reflection__ContainerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=5,
             name="fieldE",
             type=_module_types.folly_small_vector__List__i32,
@@ -122,7 +122,7 @@ cdef __StructSpec get_reflection__ContainerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=6,
             name="fieldF",
             type=_module_types.folly_sorted_vector_set__Set__i32,
@@ -134,7 +134,7 @@ cdef __StructSpec get_reflection__ContainerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=7,
             name="fieldG",
             type=_module_types.folly_sorted_vector_map__Map__i32_string,
@@ -146,7 +146,7 @@ cdef __StructSpec get_reflection__ContainerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=8,
             name="fieldH",
             type=_module_types.std_unordered_map__Map__i32_string,
@@ -159,19 +159,19 @@ cdef __StructSpec get_reflection__ContainerStruct():
     )
     return spec
 cdef __StructSpec get_reflection__CppTypeStruct():
-    cdef _module_types.CppTypeStruct defaults = _module_types.CppTypeStruct.create(
+    cdef _module_types.CppTypeStruct defaults = _module_types.CppTypeStruct._fbthrift_create(
         constant_shared_ptr[_module_types.cCppTypeStruct](
             default_inst[_module_types.cCppTypeStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="CppTypeStruct",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="fieldA",
             type=_module_types.std_list_int32_t__List__i32,
@@ -184,19 +184,19 @@ cdef __StructSpec get_reflection__CppTypeStruct():
     )
     return spec
 cdef __StructSpec get_reflection__VirtualStruct():
-    cdef _module_types.VirtualStruct defaults = _module_types.VirtualStruct.create(
+    cdef _module_types.VirtualStruct defaults = _module_types.VirtualStruct._fbthrift_create(
         constant_shared_ptr[_module_types.cVirtualStruct](
             default_inst[_module_types.cVirtualStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="VirtualStruct",
         kind=__StructType.STRUCT,
         annotations={
             """cpp.virtual""": """1""",        },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="MyIntField",
             type=int,
@@ -209,19 +209,19 @@ cdef __StructSpec get_reflection__VirtualStruct():
     )
     return spec
 cdef __StructSpec get_reflection__MyStructWithForwardRefEnum():
-    cdef _module_types.MyStructWithForwardRefEnum defaults = _module_types.MyStructWithForwardRefEnum.create(
+    cdef _module_types.MyStructWithForwardRefEnum defaults = _module_types.MyStructWithForwardRefEnum._fbthrift_create(
         constant_shared_ptr[_module_types.cMyStructWithForwardRefEnum](
             default_inst[_module_types.cMyStructWithForwardRefEnum]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="MyStructWithForwardRefEnum",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="a",
             type=_module_types.MyForwardRefEnum,
@@ -233,7 +233,7 @@ cdef __StructSpec get_reflection__MyStructWithForwardRefEnum():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="b",
             type=_module_types.MyForwardRefEnum,
@@ -246,19 +246,19 @@ cdef __StructSpec get_reflection__MyStructWithForwardRefEnum():
     )
     return spec
 cdef __StructSpec get_reflection__TrivialNumeric():
-    cdef _module_types.TrivialNumeric defaults = _module_types.TrivialNumeric.create(
+    cdef _module_types.TrivialNumeric defaults = _module_types.TrivialNumeric._fbthrift_create(
         constant_shared_ptr[_module_types.cTrivialNumeric](
             default_inst[_module_types.cTrivialNumeric]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="TrivialNumeric",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="a",
             type=int,
@@ -270,7 +270,7 @@ cdef __StructSpec get_reflection__TrivialNumeric():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="b",
             type=bool,
@@ -283,19 +283,19 @@ cdef __StructSpec get_reflection__TrivialNumeric():
     )
     return spec
 cdef __StructSpec get_reflection__TrivialNestedWithDefault():
-    cdef _module_types.TrivialNestedWithDefault defaults = _module_types.TrivialNestedWithDefault.create(
+    cdef _module_types.TrivialNestedWithDefault defaults = _module_types.TrivialNestedWithDefault._fbthrift_create(
         constant_shared_ptr[_module_types.cTrivialNestedWithDefault](
             default_inst[_module_types.cTrivialNestedWithDefault]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="TrivialNestedWithDefault",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="z",
             type=int,
@@ -307,7 +307,7 @@ cdef __StructSpec get_reflection__TrivialNestedWithDefault():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="n",
             type=_module_types.TrivialNumeric,
@@ -320,19 +320,19 @@ cdef __StructSpec get_reflection__TrivialNestedWithDefault():
     )
     return spec
 cdef __StructSpec get_reflection__ComplexString():
-    cdef _module_types.ComplexString defaults = _module_types.ComplexString.create(
+    cdef _module_types.ComplexString defaults = _module_types.ComplexString._fbthrift_create(
         constant_shared_ptr[_module_types.cComplexString](
             default_inst[_module_types.cComplexString]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="ComplexString",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="a",
             type=str,
@@ -344,7 +344,7 @@ cdef __StructSpec get_reflection__ComplexString():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="b",
             type=_module_types.Map__string_i32,
@@ -357,19 +357,19 @@ cdef __StructSpec get_reflection__ComplexString():
     )
     return spec
 cdef __StructSpec get_reflection__ComplexNestedWithDefault():
-    cdef _module_types.ComplexNestedWithDefault defaults = _module_types.ComplexNestedWithDefault.create(
+    cdef _module_types.ComplexNestedWithDefault defaults = _module_types.ComplexNestedWithDefault._fbthrift_create(
         constant_shared_ptr[_module_types.cComplexNestedWithDefault](
             default_inst[_module_types.cComplexNestedWithDefault]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="ComplexNestedWithDefault",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="z",
             type=str,
@@ -381,7 +381,7 @@ cdef __StructSpec get_reflection__ComplexNestedWithDefault():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="n",
             type=_module_types.ComplexString,
@@ -394,19 +394,19 @@ cdef __StructSpec get_reflection__ComplexNestedWithDefault():
     )
     return spec
 cdef __StructSpec get_reflection__MinPadding():
-    cdef _module_types.MinPadding defaults = _module_types.MinPadding.create(
+    cdef _module_types.MinPadding defaults = _module_types.MinPadding._fbthrift_create(
         constant_shared_ptr[_module_types.cMinPadding](
             default_inst[_module_types.cMinPadding]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="MinPadding",
         kind=__StructType.STRUCT,
         annotations={
             """cpp.minimize_padding""": """1""",        },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="small",
             type=int,
@@ -418,7 +418,7 @@ cdef __StructSpec get_reflection__MinPadding():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="big",
             type=int,
@@ -430,7 +430,7 @@ cdef __StructSpec get_reflection__MinPadding():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=3,
             name="medium",
             type=int,
@@ -442,7 +442,7 @@ cdef __StructSpec get_reflection__MinPadding():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=4,
             name="biggish",
             type=int,
@@ -454,7 +454,7 @@ cdef __StructSpec get_reflection__MinPadding():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=5,
             name="tiny",
             type=int,
@@ -467,19 +467,19 @@ cdef __StructSpec get_reflection__MinPadding():
     )
     return spec
 cdef __StructSpec get_reflection__MyStruct():
-    cdef _module_types.MyStruct defaults = _module_types.MyStruct.create(
+    cdef _module_types.MyStruct defaults = _module_types.MyStruct._fbthrift_create(
         constant_shared_ptr[_module_types.cMyStruct](
             default_inst[_module_types.cMyStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="MyStruct",
         kind=__StructType.STRUCT,
         annotations={
             """cpp.noncomparable""": """1""",        },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="MyIntField",
             type=int,
@@ -491,7 +491,7 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="MyStringField",
             type=str,
@@ -503,7 +503,7 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=3,
             name="majorVer",
             type=int,
@@ -515,7 +515,7 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=4,
             name="data",
             type=_module_types.MyDataItem,
@@ -528,12 +528,12 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     return spec
 cdef __StructSpec get_reflection__MyDataItem():
-    cdef _module_types.MyDataItem defaults = _module_types.MyDataItem.create(
+    cdef _module_types.MyDataItem defaults = _module_types.MyDataItem._fbthrift_create(
         constant_shared_ptr[_module_types.cMyDataItem](
             default_inst[_module_types.cMyDataItem]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="MyDataItem",
         kind=__StructType.STRUCT,
         annotations={
@@ -541,19 +541,19 @@ cdef __StructSpec get_reflection__MyDataItem():
     )
     return spec
 cdef __StructSpec get_reflection__Renaming():
-    cdef _module_types.Renaming defaults = _module_types.Renaming.create(
+    cdef _module_types.Renaming defaults = _module_types.Renaming._fbthrift_create(
         constant_shared_ptr[_module_types.cRenaming](
             default_inst[_module_types.cRenaming]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="Renaming",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="foo",
             type=int,
@@ -566,19 +566,19 @@ cdef __StructSpec get_reflection__Renaming():
     )
     return spec
 cdef __StructSpec get_reflection__AnnotatedTypes():
-    cdef _module_types.AnnotatedTypes defaults = _module_types.AnnotatedTypes.create(
+    cdef _module_types.AnnotatedTypes defaults = _module_types.AnnotatedTypes._fbthrift_create(
         constant_shared_ptr[_module_types.cAnnotatedTypes](
             default_inst[_module_types.cAnnotatedTypes]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="AnnotatedTypes",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="binary_field",
             type=bytes,
@@ -590,7 +590,7 @@ cdef __StructSpec get_reflection__AnnotatedTypes():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="list_field",
             type=_module_types.List__std_unordered_map__Map__i32_string,
@@ -603,19 +603,19 @@ cdef __StructSpec get_reflection__AnnotatedTypes():
     )
     return spec
 cdef __StructSpec get_reflection__ForwardUsageRoot():
-    cdef _module_types.ForwardUsageRoot defaults = _module_types.ForwardUsageRoot.create(
+    cdef _module_types.ForwardUsageRoot defaults = _module_types.ForwardUsageRoot._fbthrift_create(
         constant_shared_ptr[_module_types.cForwardUsageRoot](
             default_inst[_module_types.cForwardUsageRoot]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="ForwardUsageRoot",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="ForwardUsageStruct",
             type=_module_types.ForwardUsageStruct,
@@ -627,7 +627,7 @@ cdef __StructSpec get_reflection__ForwardUsageRoot():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="ForwardUsageByRef",
             type=_module_types.ForwardUsageByRef,
@@ -640,19 +640,19 @@ cdef __StructSpec get_reflection__ForwardUsageRoot():
     )
     return spec
 cdef __StructSpec get_reflection__ForwardUsageStruct():
-    cdef _module_types.ForwardUsageStruct defaults = _module_types.ForwardUsageStruct.create(
+    cdef _module_types.ForwardUsageStruct defaults = _module_types.ForwardUsageStruct._fbthrift_create(
         constant_shared_ptr[_module_types.cForwardUsageStruct](
             default_inst[_module_types.cForwardUsageStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="ForwardUsageStruct",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="foo",
             type=_module_types.ForwardUsageRoot,
@@ -665,19 +665,19 @@ cdef __StructSpec get_reflection__ForwardUsageStruct():
     )
     return spec
 cdef __StructSpec get_reflection__ForwardUsageByRef():
-    cdef _module_types.ForwardUsageByRef defaults = _module_types.ForwardUsageByRef.create(
+    cdef _module_types.ForwardUsageByRef defaults = _module_types.ForwardUsageByRef._fbthrift_create(
         constant_shared_ptr[_module_types.cForwardUsageByRef](
             default_inst[_module_types.cForwardUsageByRef]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="ForwardUsageByRef",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="foo",
             type=_module_types.ForwardUsageRoot,
@@ -690,12 +690,12 @@ cdef __StructSpec get_reflection__ForwardUsageByRef():
     )
     return spec
 cdef __StructSpec get_reflection__NoexceptMoveEmpty():
-    cdef _module_types.NoexceptMoveEmpty defaults = _module_types.NoexceptMoveEmpty.create(
+    cdef _module_types.NoexceptMoveEmpty defaults = _module_types.NoexceptMoveEmpty._fbthrift_create(
         constant_shared_ptr[_module_types.cNoexceptMoveEmpty](
             default_inst[_module_types.cNoexceptMoveEmpty]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="NoexceptMoveEmpty",
         kind=__StructType.STRUCT,
         annotations={
@@ -703,19 +703,19 @@ cdef __StructSpec get_reflection__NoexceptMoveEmpty():
     )
     return spec
 cdef __StructSpec get_reflection__NoexceptMoveSimpleStruct():
-    cdef _module_types.NoexceptMoveSimpleStruct defaults = _module_types.NoexceptMoveSimpleStruct.create(
+    cdef _module_types.NoexceptMoveSimpleStruct defaults = _module_types.NoexceptMoveSimpleStruct._fbthrift_create(
         constant_shared_ptr[_module_types.cNoexceptMoveSimpleStruct](
             default_inst[_module_types.cNoexceptMoveSimpleStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="NoexceptMoveSimpleStruct",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="boolField",
             type=int,
@@ -728,19 +728,19 @@ cdef __StructSpec get_reflection__NoexceptMoveSimpleStruct():
     )
     return spec
 cdef __StructSpec get_reflection__NoexceptMoveComplexStruct():
-    cdef _module_types.NoexceptMoveComplexStruct defaults = _module_types.NoexceptMoveComplexStruct.create(
+    cdef _module_types.NoexceptMoveComplexStruct defaults = _module_types.NoexceptMoveComplexStruct._fbthrift_create(
         constant_shared_ptr[_module_types.cNoexceptMoveComplexStruct](
             default_inst[_module_types.cNoexceptMoveComplexStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="NoexceptMoveComplexStruct",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="MyBoolField",
             type=bool,
@@ -752,7 +752,7 @@ cdef __StructSpec get_reflection__NoexceptMoveComplexStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="MyIntField",
             type=int,
@@ -764,7 +764,7 @@ cdef __StructSpec get_reflection__NoexceptMoveComplexStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=3,
             name="MyStringField",
             type=str,
@@ -776,7 +776,7 @@ cdef __StructSpec get_reflection__NoexceptMoveComplexStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=4,
             name="MyStringField2",
             type=str,
@@ -788,7 +788,7 @@ cdef __StructSpec get_reflection__NoexceptMoveComplexStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=5,
             name="MyBinaryField",
             type=bytes,
@@ -800,7 +800,7 @@ cdef __StructSpec get_reflection__NoexceptMoveComplexStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=6,
             name="MyBinaryField2",
             type=bytes,
@@ -812,7 +812,7 @@ cdef __StructSpec get_reflection__NoexceptMoveComplexStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=7,
             name="MyBinaryField3",
             type=bytes,
@@ -824,7 +824,7 @@ cdef __StructSpec get_reflection__NoexceptMoveComplexStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=8,
             name="MyBinaryListField4",
             type=_module_types.List__binary,
@@ -836,7 +836,7 @@ cdef __StructSpec get_reflection__NoexceptMoveComplexStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=9,
             name="MyMapEnumAndInt",
             type=_module_types.Map__MyEnumA_string,
@@ -849,14 +849,14 @@ cdef __StructSpec get_reflection__NoexceptMoveComplexStruct():
     )
     return spec
 cdef __StructSpec get_reflection__NoExceptMoveUnion():
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="NoExceptMoveUnion",
         kind=__StructType.UNION,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="string_field",
             type=str,
@@ -868,7 +868,7 @@ cdef __StructSpec get_reflection__NoExceptMoveUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="i32_field",
             type=int,
@@ -881,19 +881,19 @@ cdef __StructSpec get_reflection__NoExceptMoveUnion():
     )
     return spec
 cdef __StructSpec get_reflection__AllocatorAware():
-    cdef _module_types.AllocatorAware defaults = _module_types.AllocatorAware.create(
+    cdef _module_types.AllocatorAware defaults = _module_types.AllocatorAware._fbthrift_create(
         constant_shared_ptr[_module_types.cAllocatorAware](
             default_inst[_module_types.cAllocatorAware]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="AllocatorAware",
         kind=__StructType.STRUCT,
         annotations={
             """cpp.allocator""": """some_allocator""",        },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="aa_list",
             type=_module_types.List__i32,
@@ -905,7 +905,7 @@ cdef __StructSpec get_reflection__AllocatorAware():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="aa_set",
             type=_module_types.Set__i32,
@@ -917,7 +917,7 @@ cdef __StructSpec get_reflection__AllocatorAware():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=3,
             name="aa_map",
             type=_module_types.Map__i32_i32,
@@ -929,7 +929,7 @@ cdef __StructSpec get_reflection__AllocatorAware():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=4,
             name="aa_string",
             type=str,
@@ -941,7 +941,7 @@ cdef __StructSpec get_reflection__AllocatorAware():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=5,
             name="not_a_container",
             type=int,
@@ -954,19 +954,19 @@ cdef __StructSpec get_reflection__AllocatorAware():
     )
     return spec
 cdef __StructSpec get_reflection__AllocatorAware2():
-    cdef _module_types.AllocatorAware2 defaults = _module_types.AllocatorAware2.create(
+    cdef _module_types.AllocatorAware2 defaults = _module_types.AllocatorAware2._fbthrift_create(
         constant_shared_ptr[_module_types.cAllocatorAware2](
             default_inst[_module_types.cAllocatorAware2]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="AllocatorAware2",
         kind=__StructType.STRUCT,
         annotations={
             """cpp.allocator""": """some_allocator""",        },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="not_a_container",
             type=int,
@@ -979,19 +979,19 @@ cdef __StructSpec get_reflection__AllocatorAware2():
     )
     return spec
 cdef __StructSpec get_reflection__TypedefStruct():
-    cdef _module_types.TypedefStruct defaults = _module_types.TypedefStruct.create(
+    cdef _module_types.TypedefStruct defaults = _module_types.TypedefStruct._fbthrift_create(
         constant_shared_ptr[_module_types.cTypedefStruct](
             default_inst[_module_types.cTypedefStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="TypedefStruct",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="i32_field",
             type=int,
@@ -1003,7 +1003,7 @@ cdef __StructSpec get_reflection__TypedefStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="IntTypedef_field",
             type=int,
@@ -1015,7 +1015,7 @@ cdef __StructSpec get_reflection__TypedefStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=3,
             name="UintTypedef_field",
             type=int,
@@ -1028,19 +1028,19 @@ cdef __StructSpec get_reflection__TypedefStruct():
     )
     return spec
 cdef __StructSpec get_reflection__StructWithDoubleUnderscores():
-    cdef _module_types.StructWithDoubleUnderscores defaults = _module_types.StructWithDoubleUnderscores.create(
+    cdef _module_types.StructWithDoubleUnderscores defaults = _module_types.StructWithDoubleUnderscores._fbthrift_create(
         constant_shared_ptr[_module_types.cStructWithDoubleUnderscores](
             default_inst[_module_types.cStructWithDoubleUnderscores]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="StructWithDoubleUnderscores",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="__field",
             type=int,
@@ -1053,7 +1053,7 @@ cdef __StructSpec get_reflection__StructWithDoubleUnderscores():
     )
     return spec
 cdef __MapSpec get_reflection__std_unordered_map__Map__i32_string():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=int,
         key_kind=__NumberType.I32,
         value=str,
@@ -1061,13 +1061,13 @@ cdef __MapSpec get_reflection__std_unordered_map__Map__i32_string():
     )
 
 cdef __ListSpec get_reflection__List__i64():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=int,
         kind=__NumberType.I64,
     )
 
 cdef __MapSpec get_reflection__Map__binary_i64():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=bytes,
         key_kind=__NumberType.NOT_A_NUMBER,
         value=int,
@@ -1075,43 +1075,43 @@ cdef __MapSpec get_reflection__Map__binary_i64():
     )
 
 cdef __ListSpec get_reflection__List__i32():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=int,
         kind=__NumberType.I32,
     )
 
 cdef __ListSpec get_reflection__std_list__List__i32():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=int,
         kind=__NumberType.I32,
     )
 
 cdef __ListSpec get_reflection__std_deque__List__i32():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=int,
         kind=__NumberType.I32,
     )
 
 cdef __ListSpec get_reflection__folly_fbvector__List__i32():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=int,
         kind=__NumberType.I32,
     )
 
 cdef __ListSpec get_reflection__folly_small_vector__List__i32():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=int,
         kind=__NumberType.I32,
     )
 
 cdef __SetSpec get_reflection__folly_sorted_vector_set__Set__i32():
-    return __SetSpec.create(
+    return __SetSpec._fbthrift_create(
         value=int,
         kind=__NumberType.I32,
      )
 
 cdef __MapSpec get_reflection__folly_sorted_vector_map__Map__i32_string():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=int,
         key_kind=__NumberType.I32,
         value=str,
@@ -1119,13 +1119,13 @@ cdef __MapSpec get_reflection__folly_sorted_vector_map__Map__i32_string():
     )
 
 cdef __ListSpec get_reflection__std_list_int32_t__List__i32():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=int,
         kind=__NumberType.I32,
     )
 
 cdef __MapSpec get_reflection__Map__string_i32():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=str,
         key_kind=__NumberType.NOT_A_NUMBER,
         value=int,
@@ -1133,19 +1133,19 @@ cdef __MapSpec get_reflection__Map__string_i32():
     )
 
 cdef __ListSpec get_reflection__List__std_unordered_map__Map__i32_string():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.std_unordered_map__Map__i32_string,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __ListSpec get_reflection__List__binary():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=bytes,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __MapSpec get_reflection__Map__MyEnumA_string():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=_module_types.MyEnumA,
         key_kind=__NumberType.NOT_A_NUMBER,
         value=str,
@@ -1153,13 +1153,13 @@ cdef __MapSpec get_reflection__Map__MyEnumA_string():
     )
 
 cdef __SetSpec get_reflection__Set__i32():
-    return __SetSpec.create(
+    return __SetSpec._fbthrift_create(
         value=int,
         kind=__NumberType.I32,
      )
 
 cdef __MapSpec get_reflection__Map__i32_i32():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=int,
         key_kind=__NumberType.I32,
         value=int,

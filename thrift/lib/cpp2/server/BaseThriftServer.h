@@ -41,6 +41,7 @@
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/server/AdaptiveConcurrency.h>
+#include <thrift/lib/cpp2/server/ControlServerInterface.h>
 #include <thrift/lib/cpp2/server/MonitoringServerInterface.h>
 #include <thrift/lib/cpp2/server/ServerAttribute.h>
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
@@ -208,6 +209,9 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   // Explicitly set status service interface handler
   std::shared_ptr<StatusServerInterface> statusServiceHandler_;
+
+  // Explicitly set control service interface handler
+  std::shared_ptr<ControlServerInterface> controlServiceHandler_;
 
   //! Number of io worker threads (may be set) (should be # of CPU cores)
   ServerAttributeStatic<size_t> nWorkers_{T_ASYNC_DEFAULT_WORKER_THREADS};
@@ -917,6 +921,18 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   const std::shared_ptr<StatusServerInterface>& getStatusInterface() {
     return statusServiceHandler_;
+  }
+
+  /**
+   * Sets the interface that will be used for control RPCs only.
+   */
+  void setControlInterface(std::shared_ptr<ControlServerInterface> iface) {
+    CHECK(configMutable());
+    controlServiceHandler_ = std::move(iface);
+  }
+
+  const std::shared_ptr<ControlServerInterface>& getControlInterface() {
+    return controlServiceHandler_;
   }
 
   /**

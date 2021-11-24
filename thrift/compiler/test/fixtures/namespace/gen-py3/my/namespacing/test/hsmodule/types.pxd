@@ -68,7 +68,6 @@ cdef extern from "gen-cpp2/hsmodule_types_custom_protocol.h" namespace "::cpp2":
         bint operator<=(cHsFoo&)
         bint operator>=(cHsFoo&)
         __field_ref[cint64_t] MyInt_ref()
-        cint64_t MyInt
 
 
 
@@ -78,7 +77,7 @@ cdef class HsFoo(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__HsFoo_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cHsFoo])
+    cdef _fbthrift_create(shared_ptr[cHsFoo])
 
 
 

@@ -462,7 +462,7 @@ cdef class Map(Container):
 @cython.auto_pickle(False)
 cdef class EnumData:
     @staticmethod
-    cdef EnumData create(cEnumData* ptr, py_type):
+    cdef EnumData _fbthrift_create(cEnumData* ptr, py_type):
         cdef EnumData inst = EnumData.__new__(EnumData)
         inst._py_type = py_type
         inst._cpp_obj = unique_ptr[cEnumData](ptr)
@@ -517,7 +517,7 @@ cdef class EnumData:
 cdef class EnumFlagsData(EnumData):
 
     @staticmethod
-    cdef EnumFlagsData create(cEnumFlagsData* ptr, py_type):
+    cdef EnumFlagsData _fbthrift_create(cEnumFlagsData* ptr, py_type):
         cdef EnumFlagsData inst = EnumFlagsData.__new__(EnumFlagsData)
         inst._py_type = py_type
         inst._cpp_obj = unique_ptr[cEnumData](ptr)
@@ -556,7 +556,7 @@ cdef class EnumFlagsData(EnumData):
 cdef class UnionTypeEnumData(EnumData):
 
     @staticmethod
-    cdef UnionTypeEnumData create(cEnumData* ptr, py_type):
+    cdef UnionTypeEnumData _fbthrift_create(cEnumData* ptr, py_type):
         cdef UnionTypeEnumData inst = UnionTypeEnumData.__new__(UnionTypeEnumData)
         inst._py_type = py_type
         inst._cpp_obj = unique_ptr[cEnumData](ptr)

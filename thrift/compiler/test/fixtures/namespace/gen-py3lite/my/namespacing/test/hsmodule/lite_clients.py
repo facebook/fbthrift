@@ -5,27 +5,30 @@
 #  @generated
 #
 
-from thrift.py3lite.sync_client import SyncClient as _fbthrift_py3lite_SyncClient
-from thrift.py3lite.async_client import AsyncClient as _fbthrift_py3lite_AsyncClient
+import typing as _typing
+
+from thrift.py3lite.client import (
+    AsyncClient as _fbthrift_py3lite_AsyncClient,
+    SyncClient as _fbthrift_py3lite_SyncClient,
+    Client as _fbthrift_py3lite_Client,
+)
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
-import my.namespacing.test.hsmodule.lite_types as _my_namespacing_test_hsmodule_lite_types
+import thrift.py3lite.types as _fbthrift_py3lite_types
+import my.namespacing.test.hsmodule.lite_types
 
 
-class HsTestService:
-    class Sync(_fbthrift_py3lite_SyncClient):
-        def __init__(self, channel):
-            super().__init__(channel)
-
-        def init(
+class HsTestService(_fbthrift_py3lite_Client["HsTestService.Async", "HsTestService.Sync"]):
+    class Async(_fbthrift_py3lite_AsyncClient):
+        async def init(
             self,
-            int1
-        ):
-            resp = self._send_request(
+            int1: int
+        ) -> int:
+            resp = await self._send_request(
                 "HsTestService",
                 "init",
-                _my_namespacing_test_hsmodule_lite_types._fbthrift_HsTestService_init_args(
+                my.namespacing.test.hsmodule.lite_types._fbthrift_HsTestService_init_args(
                     int1=int1,),
-                _my_namespacing_test_hsmodule_lite_types._fbthrift_HsTestService_init_result,
+                my.namespacing.test.hsmodule.lite_types._fbthrift_HsTestService_init_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -35,20 +38,18 @@ class HsTestService:
                 "Empty Response",
             )
 
-    class Async(_fbthrift_py3lite_AsyncClient):
-        def __init__(self):
-            super().__init__()
 
-        async def init(
+    class Sync(_fbthrift_py3lite_SyncClient):
+        def init(
             self,
-            int1
-        ):
-            resp = await self._send_request(
+            int1: int
+        ) -> int:
+            resp = self._send_request(
                 "HsTestService",
                 "init",
-                _my_namespacing_test_hsmodule_lite_types._fbthrift_HsTestService_init_args(
+                my.namespacing.test.hsmodule.lite_types._fbthrift_HsTestService_init_args(
                     int1=int1,),
-                _my_namespacing_test_hsmodule_lite_types._fbthrift_HsTestService_init_result,
+                my.namespacing.test.hsmodule.lite_types._fbthrift_HsTestService_init_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:

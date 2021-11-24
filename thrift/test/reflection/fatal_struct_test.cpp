@@ -85,23 +85,23 @@ TEST(fatal_struct, struct1_sanity_check) {
   EXPECT_SAME<field5s, traits::member::field5::name>();
 
   struct1 pod;
-  pod.field0 = 19;
+  *pod.field0_ref() = 19;
   pod.field1_ref() = "hello";
   *pod.field2_ref() = enum1::field2;
-  pod.field3 = enum2::field1_2;
+  *pod.field3_ref() = enum2::field1_2;
   pod.field4_ref() = {};
   pod.field4_ref()->set_ud(5.6);
   pod.field5_ref()->set_us_2("world");
 
-  EXPECT_EQ(pod.field0, traits::member::field0::getter{}(pod));
+  EXPECT_EQ(*pod.field0_ref(), traits::member::field0::getter{}(pod));
   EXPECT_EQ(*pod.field1_ref(), traits::member::field1::getter{}(pod));
   EXPECT_EQ(*pod.field2_ref(), traits::member::field2::getter{}(pod));
-  EXPECT_EQ(pod.field3, traits::member::field3::getter{}(pod));
+  EXPECT_EQ(*pod.field3_ref(), traits::member::field3::getter{}(pod));
   EXPECT_EQ(*pod.field4_ref(), traits::member::field4::getter{}(pod));
   EXPECT_EQ(*pod.field5_ref(), traits::member::field5::getter{}(pod));
 
   traits::member::field0::getter{}(pod) = 98;
-  EXPECT_EQ(98, pod.field0);
+  EXPECT_EQ(98, *pod.field0_ref());
 
   traits::member::field1::getter{}(pod) = "test";
   EXPECT_EQ("test", *pod.field1_ref());
@@ -110,7 +110,7 @@ TEST(fatal_struct, struct1_sanity_check) {
   EXPECT_EQ(enum1::field0, *pod.field2_ref());
 
   traits::member::field3::getter{}(pod) = enum2::field2_2;
-  EXPECT_EQ(enum2::field2_2, pod.field3);
+  EXPECT_EQ(enum2::field2_2, *pod.field3_ref());
 
   traits::member::field4::getter{}(pod).set_ui(56);
   EXPECT_EQ(union1::Type::ui, pod.field4_ref()->getType());

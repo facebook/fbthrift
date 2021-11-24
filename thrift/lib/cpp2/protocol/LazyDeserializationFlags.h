@@ -15,8 +15,8 @@
  */
 
 #pragma once
-#include <atomic>
 #include <folly/portability/GFlags.h>
+#include <folly/synchronization/RelaxedAtomic.h>
 
 DECLARE_bool(thrift_enable_lazy_deserialization);
 
@@ -24,18 +24,17 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-extern std::atomic<bool> gLazyDeserializationIsDisabledDueToChecksumMismatch;
+extern folly::relaxed_atomic<bool>
+    gLazyDeserializationIsDisabledDueToChecksumMismatch;
 
 inline bool isLazyDeserializationDisabled() {
   return !FLAGS_thrift_enable_lazy_deserialization ||
-      gLazyDeserializationIsDisabledDueToChecksumMismatch.load(
-          std::memory_order_relaxed);
+      gLazyDeserializationIsDisabledDueToChecksumMismatch;
 }
 } // namespace detail
 
 inline bool lazyDeserializationIsDisabledDueToChecksumMismatch() {
-  return detail::gLazyDeserializationIsDisabledDueToChecksumMismatch.load(
-      std::memory_order_relaxed);
+  return detail::gLazyDeserializationIsDisabledDueToChecksumMismatch;
 }
 } // namespace thrift
 } // namespace apache

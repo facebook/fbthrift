@@ -44,6 +44,9 @@ template<>
 void reset_field<::facebook::thrift::annotation::cpp::Lazy>(
     ::facebook::thrift::annotation::cpp::Lazy& obj, uint16_t index) {
   switch (index) {
+    case 0:
+      obj.ref_ref().copy_from(default_inst<::facebook::thrift::annotation::cpp::Lazy>().ref_ref());
+      return;
   }
 }
 

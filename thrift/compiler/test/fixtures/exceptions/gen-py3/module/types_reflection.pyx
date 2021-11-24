@@ -24,19 +24,19 @@ from thrift.py3.types cimport (
 
 
 cdef __StructSpec get_reflection__Fiery():
-    cdef _module_types.Fiery defaults = _module_types.Fiery.create(
+    cdef _module_types.Fiery defaults = _module_types.Fiery._fbthrift_create(
         constant_shared_ptr[_module_types.cFiery](
             default_inst[_module_types.cFiery]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="Fiery",
         kind=__StructType.EXCEPTION,
         annotations={
             """message""": """message""",        },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="message",
             type=str,
@@ -49,19 +49,19 @@ cdef __StructSpec get_reflection__Fiery():
     )
     return spec
 cdef __StructSpec get_reflection__Serious():
-    cdef _module_types.Serious defaults = _module_types.Serious.create(
+    cdef _module_types.Serious defaults = _module_types.Serious._fbthrift_create(
         constant_shared_ptr[_module_types.cSerious](
             default_inst[_module_types.cSerious]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="Serious",
         kind=__StructType.EXCEPTION,
         annotations={
             """message""": """sonnet""",        },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="sonnet",
             type=str,
@@ -74,19 +74,19 @@ cdef __StructSpec get_reflection__Serious():
     )
     return spec
 cdef __StructSpec get_reflection__ComplexFieldNames():
-    cdef _module_types.ComplexFieldNames defaults = _module_types.ComplexFieldNames.create(
+    cdef _module_types.ComplexFieldNames defaults = _module_types.ComplexFieldNames._fbthrift_create(
         constant_shared_ptr[_module_types.cComplexFieldNames](
             default_inst[_module_types.cComplexFieldNames]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="ComplexFieldNames",
         kind=__StructType.EXCEPTION,
         annotations={
             """message""": """internal_error_message""",        },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="error_message",
             type=str,
@@ -98,7 +98,7 @@ cdef __StructSpec get_reflection__ComplexFieldNames():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="internal_error_message",
             type=str,
@@ -111,19 +111,19 @@ cdef __StructSpec get_reflection__ComplexFieldNames():
     )
     return spec
 cdef __StructSpec get_reflection__CustomFieldNames():
-    cdef _module_types.CustomFieldNames defaults = _module_types.CustomFieldNames.create(
+    cdef _module_types.CustomFieldNames defaults = _module_types.CustomFieldNames._fbthrift_create(
         constant_shared_ptr[_module_types.cCustomFieldNames](
             default_inst[_module_types.cCustomFieldNames]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="CustomFieldNames",
         kind=__StructType.EXCEPTION,
         annotations={
             """message""": """internal_error_message""",        },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="error_message",
             type=str,
@@ -135,7 +135,7 @@ cdef __StructSpec get_reflection__CustomFieldNames():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="internal_error_message",
             type=str,
@@ -148,19 +148,19 @@ cdef __StructSpec get_reflection__CustomFieldNames():
     )
     return spec
 cdef __StructSpec get_reflection__ExceptionWithPrimitiveField():
-    cdef _module_types.ExceptionWithPrimitiveField defaults = _module_types.ExceptionWithPrimitiveField.create(
+    cdef _module_types.ExceptionWithPrimitiveField defaults = _module_types.ExceptionWithPrimitiveField._fbthrift_create(
         constant_shared_ptr[_module_types.cExceptionWithPrimitiveField](
             default_inst[_module_types.cExceptionWithPrimitiveField]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="ExceptionWithPrimitiveField",
         kind=__StructType.EXCEPTION,
         annotations={
             """message""": """message""",        },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="message",
             type=str,
@@ -172,7 +172,7 @@ cdef __StructSpec get_reflection__ExceptionWithPrimitiveField():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="error_code",
             type=int,
@@ -185,12 +185,12 @@ cdef __StructSpec get_reflection__ExceptionWithPrimitiveField():
     )
     return spec
 cdef __StructSpec get_reflection__Banal():
-    cdef _module_types.Banal defaults = _module_types.Banal.create(
+    cdef _module_types.Banal defaults = _module_types.Banal._fbthrift_create(
         constant_shared_ptr[_module_types.cBanal](
             default_inst[_module_types.cBanal]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="Banal",
         kind=__StructType.EXCEPTION,
         annotations={

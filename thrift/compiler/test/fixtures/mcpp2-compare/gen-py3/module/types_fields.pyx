@@ -22,7 +22,7 @@ from thrift.py3.types cimport const_pointer_cast
 cdef class __Empty_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __Empty_FieldsSetter create(_module_types.cEmpty* struct_cpp_obj):
+    cdef __Empty_FieldsSetter _fbthrift_create(_module_types.cEmpty* struct_cpp_obj):
         cdef __Empty_FieldsSetter __fbthrift_inst = __Empty_FieldsSetter.__new__(__Empty_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         return __fbthrift_inst
@@ -39,7 +39,7 @@ cdef class __Empty_FieldsSetter(__StructFieldsSetter):
 cdef class __ASimpleStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __ASimpleStruct_FieldsSetter create(_module_types.cASimpleStruct* struct_cpp_obj):
+    cdef __ASimpleStruct_FieldsSetter _fbthrift_create(_module_types.cASimpleStruct* struct_cpp_obj):
         cdef __ASimpleStruct_FieldsSetter __fbthrift_inst = __ASimpleStruct_FieldsSetter.__new__(__ASimpleStruct_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"boolField")] = __ASimpleStruct_FieldsSetter._set_field_0
@@ -67,7 +67,7 @@ cdef class __ASimpleStruct_FieldsSetter(__StructFieldsSetter):
 cdef class __ASimpleStructNoexcept_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __ASimpleStructNoexcept_FieldsSetter create(_module_types.cASimpleStructNoexcept* struct_cpp_obj):
+    cdef __ASimpleStructNoexcept_FieldsSetter _fbthrift_create(_module_types.cASimpleStructNoexcept* struct_cpp_obj):
         cdef __ASimpleStructNoexcept_FieldsSetter __fbthrift_inst = __ASimpleStructNoexcept_FieldsSetter.__new__(__ASimpleStructNoexcept_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"boolField")] = __ASimpleStructNoexcept_FieldsSetter._set_field_0
@@ -95,7 +95,7 @@ cdef class __ASimpleStructNoexcept_FieldsSetter(__StructFieldsSetter):
 cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __MyStruct_FieldsSetter create(_module_types.cMyStruct* struct_cpp_obj):
+    cdef __MyStruct_FieldsSetter _fbthrift_create(_module_types.cMyStruct* struct_cpp_obj):
         cdef __MyStruct_FieldsSetter __fbthrift_inst = __MyStruct_FieldsSetter.__new__(__MyStruct_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"MyBoolField")] = __MyStruct_FieldsSetter._set_field_0
@@ -219,7 +219,7 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
 cdef class __AnException_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __AnException_FieldsSetter create(_module_types.cAnException* struct_cpp_obj):
+    cdef __AnException_FieldsSetter _fbthrift_create(_module_types.cAnException* struct_cpp_obj):
         cdef __AnException_FieldsSetter __fbthrift_inst = __AnException_FieldsSetter.__new__(__AnException_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"code")] = __AnException_FieldsSetter._set_field_0
@@ -390,7 +390,7 @@ cdef class __AnException_FieldsSetter(__StructFieldsSetter):
 cdef class __AnotherException_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __AnotherException_FieldsSetter create(_module_types.cAnotherException* struct_cpp_obj):
+    cdef __AnotherException_FieldsSetter _fbthrift_create(_module_types.cAnotherException* struct_cpp_obj):
         cdef __AnotherException_FieldsSetter __fbthrift_inst = __AnotherException_FieldsSetter.__new__(__AnotherException_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"code")] = __AnotherException_FieldsSetter._set_field_0
@@ -439,7 +439,7 @@ cdef class __AnotherException_FieldsSetter(__StructFieldsSetter):
 cdef class __containerStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __containerStruct_FieldsSetter create(_module_types.ccontainerStruct* struct_cpp_obj):
+    cdef __containerStruct_FieldsSetter _fbthrift_create(_module_types.ccontainerStruct* struct_cpp_obj):
         cdef __containerStruct_FieldsSetter __fbthrift_inst = __containerStruct_FieldsSetter.__new__(__containerStruct_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"fieldA")] = __containerStruct_FieldsSetter._set_field_0
@@ -871,7 +871,7 @@ cdef class __containerStruct_FieldsSetter(__StructFieldsSetter):
 cdef class __MyIncludedStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __MyIncludedStruct_FieldsSetter create(_module_types.cMyIncludedStruct* struct_cpp_obj):
+    cdef __MyIncludedStruct_FieldsSetter _fbthrift_create(_module_types.cMyIncludedStruct* struct_cpp_obj):
         cdef __MyIncludedStruct_FieldsSetter __fbthrift_inst = __MyIncludedStruct_FieldsSetter.__new__(__MyIncludedStruct_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"MyIncludedInt")] = __MyIncludedStruct_FieldsSetter._set_field_0
@@ -929,7 +929,7 @@ cdef class __MyIncludedStruct_FieldsSetter(__StructFieldsSetter):
 cdef class __AnnotatedStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __AnnotatedStruct_FieldsSetter create(_module_types.cAnnotatedStruct* struct_cpp_obj):
+    cdef __AnnotatedStruct_FieldsSetter _fbthrift_create(_module_types.cAnnotatedStruct* struct_cpp_obj):
         cdef __AnnotatedStruct_FieldsSetter __fbthrift_inst = __AnnotatedStruct_FieldsSetter.__new__(__AnnotatedStruct_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"no_annotation")] = __AnnotatedStruct_FieldsSetter._set_field_0
@@ -1308,7 +1308,7 @@ cdef class __AnnotatedStruct_FieldsSetter(__StructFieldsSetter):
 cdef class __ComplexContainerStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __ComplexContainerStruct_FieldsSetter create(_module_types.cComplexContainerStruct* struct_cpp_obj):
+    cdef __ComplexContainerStruct_FieldsSetter _fbthrift_create(_module_types.cComplexContainerStruct* struct_cpp_obj):
         cdef __ComplexContainerStruct_FieldsSetter __fbthrift_inst = __ComplexContainerStruct_FieldsSetter.__new__(__ComplexContainerStruct_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"map_of_iobufs")] = __ComplexContainerStruct_FieldsSetter._set_field_0
@@ -1341,7 +1341,7 @@ cdef class __ComplexContainerStruct_FieldsSetter(__StructFieldsSetter):
 cdef class __FloatStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __FloatStruct_FieldsSetter create(_module_types.cFloatStruct* struct_cpp_obj):
+    cdef __FloatStruct_FieldsSetter _fbthrift_create(_module_types.cFloatStruct* struct_cpp_obj):
         cdef __FloatStruct_FieldsSetter __fbthrift_inst = __FloatStruct_FieldsSetter.__new__(__FloatStruct_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"floatField")] = __FloatStruct_FieldsSetter._set_field_0
@@ -1378,7 +1378,7 @@ cdef class __FloatStruct_FieldsSetter(__StructFieldsSetter):
 cdef class __AllRequiredNoExceptMoveCtrStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __AllRequiredNoExceptMoveCtrStruct_FieldsSetter create(_module_types.cAllRequiredNoExceptMoveCtrStruct* struct_cpp_obj):
+    cdef __AllRequiredNoExceptMoveCtrStruct_FieldsSetter _fbthrift_create(_module_types.cAllRequiredNoExceptMoveCtrStruct* struct_cpp_obj):
         cdef __AllRequiredNoExceptMoveCtrStruct_FieldsSetter __fbthrift_inst = __AllRequiredNoExceptMoveCtrStruct_FieldsSetter.__new__(__AllRequiredNoExceptMoveCtrStruct_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"intField")] = __AllRequiredNoExceptMoveCtrStruct_FieldsSetter._set_field_0

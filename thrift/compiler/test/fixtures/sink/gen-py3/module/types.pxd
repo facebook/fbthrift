@@ -68,7 +68,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cInitialResponse&)
         bint operator>=(cInitialResponse&)
         __field_ref[string] content_ref()
-        string content
 
 
     cdef cppclass cFinalResponse "::cpp2::FinalResponse":
@@ -81,7 +80,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cFinalResponse&)
         bint operator>=(cFinalResponse&)
         __field_ref[string] content_ref()
-        string content
 
 
     cdef cppclass cSinkPayload "::cpp2::SinkPayload":
@@ -94,7 +92,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cSinkPayload&)
         bint operator>=(cSinkPayload&)
         __field_ref[string] content_ref()
-        string content
 
 
     cdef cppclass cCompatibleWithKeywordSink "::cpp2::CompatibleWithKeywordSink":
@@ -107,7 +104,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cCompatibleWithKeywordSink&)
         bint operator>=(cCompatibleWithKeywordSink&)
         __field_ref[string] sink_ref()
-        string sink
 
 
     cdef cppclass cInitialException "::cpp2::InitialException"(cTException):
@@ -120,7 +116,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cInitialException&)
         bint operator>=(cInitialException&)
         __field_ref[string] reason_ref()
-        string reason
 
 
     cdef cppclass cSinkException1 "::cpp2::SinkException1"(cTException):
@@ -133,7 +128,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cSinkException1&)
         bint operator>=(cSinkException1&)
         __field_ref[string] reason_ref()
-        string reason
 
 
     cdef cppclass cSinkException2 "::cpp2::SinkException2"(cTException):
@@ -146,7 +140,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cSinkException2&)
         bint operator>=(cSinkException2&)
         __field_ref[cint64_t] reason_ref()
-        cint64_t reason
 
 
 
@@ -156,7 +149,7 @@ cdef class InitialResponse(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__InitialResponse_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cInitialResponse])
+    cdef _fbthrift_create(shared_ptr[cInitialResponse])
 
 
 
@@ -165,7 +158,7 @@ cdef class FinalResponse(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__FinalResponse_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cFinalResponse])
+    cdef _fbthrift_create(shared_ptr[cFinalResponse])
 
 
 
@@ -174,7 +167,7 @@ cdef class SinkPayload(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__SinkPayload_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cSinkPayload])
+    cdef _fbthrift_create(shared_ptr[cSinkPayload])
 
 
 
@@ -183,7 +176,7 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__CompatibleWithKeywordSink_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cCompatibleWithKeywordSink])
+    cdef _fbthrift_create(shared_ptr[cCompatibleWithKeywordSink])
 
 
 
@@ -192,7 +185,7 @@ cdef class InitialException(thrift.py3.exceptions.GeneratedError):
     cdef _fbthrift_types_fields.__InitialException_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cInitialException])
+    cdef _fbthrift_create(shared_ptr[cInitialException])
 
 
 
@@ -201,7 +194,7 @@ cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
     cdef _fbthrift_types_fields.__SinkException1_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cSinkException1])
+    cdef _fbthrift_create(shared_ptr[cSinkException1])
 
 
 
@@ -210,7 +203,7 @@ cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
     cdef _fbthrift_types_fields.__SinkException2_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cSinkException2])
+    cdef _fbthrift_create(shared_ptr[cSinkException2])
 
 
 

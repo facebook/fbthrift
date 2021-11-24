@@ -22,7 +22,7 @@ from thrift.py3.types cimport const_pointer_cast
 cdef class __AStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __AStruct_FieldsSetter create(_includes_types.cAStruct* struct_cpp_obj):
+    cdef __AStruct_FieldsSetter _fbthrift_create(_includes_types.cAStruct* struct_cpp_obj):
         cdef __AStruct_FieldsSetter __fbthrift_inst = __AStruct_FieldsSetter.__new__(__AStruct_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"FieldA")] = __AStruct_FieldsSetter._set_field_0
@@ -50,7 +50,7 @@ cdef class __AStruct_FieldsSetter(__StructFieldsSetter):
 cdef class __AStructB_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __AStructB_FieldsSetter create(_includes_types.cAStructB* struct_cpp_obj):
+    cdef __AStructB_FieldsSetter _fbthrift_create(_includes_types.cAStructB* struct_cpp_obj):
         cdef __AStructB_FieldsSetter __fbthrift_inst = __AStructB_FieldsSetter.__new__(__AStructB_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"FieldA")] = __AStructB_FieldsSetter._set_field_0

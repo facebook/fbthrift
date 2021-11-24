@@ -68,7 +68,7 @@ cdef class StructSpec:
         self.annotations = MappingProxyType(annotations)
 
     @staticmethod
-    cdef create(str name, StructType kind, dict annotations):
+    cdef _fbthrift_create(str name, StructType kind, dict annotations):
         return StructSpec.__new__(StructSpec, name, None, kind, annotations)
 
     def __iter__(self):
@@ -116,7 +116,7 @@ cdef class FieldSpec:
         self.annotations = MappingProxyType(annotations)
 
     @staticmethod
-    cdef create(
+    cdef _fbthrift_create(
         int id,
         str name,
         object type,
@@ -149,7 +149,7 @@ cdef class ListSpec:
         self.kind = NumberType(kind)
 
     @staticmethod
-    cdef create(object value, NumberType kind):
+    cdef _fbthrift_create(object value, NumberType kind):
         return ListSpec.__new__(ListSpec, value, kind)
 
     def __iter__(self):
@@ -169,7 +169,7 @@ cdef class SetSpec:
         self.kind = NumberType(kind)
 
     @staticmethod
-    cdef create(object value, NumberType kind):
+    cdef _fbthrift_create(object value, NumberType kind):
         return SetSpec.__new__(SetSpec, value, kind)
 
     def __iter__(self):
@@ -197,7 +197,7 @@ cdef class MapSpec:
         self.value_kind = NumberType(value_kind)
 
     @staticmethod
-    cdef create(
+    cdef _fbthrift_create(
         object key,
         NumberType key_kind,
         object value,
@@ -228,7 +228,7 @@ cdef class InterfaceSpec:
         self.annotations = MappingProxyType(annotations)
 
     @staticmethod
-    cdef create(str name, dict annotations):
+    cdef _fbthrift_create(str name, dict annotations):
         return InterfaceSpec.__new__(InterfaceSpec, name, None, annotations)
 
     cdef void add_method(self, MethodSpec method):
@@ -274,7 +274,7 @@ cdef class MethodSpec:
         self.annotations = MappingProxyType(annotations)
 
     @staticmethod
-    cdef create(
+    cdef _fbthrift_create(
         str name,
         tuple arguments,
         NumberType result_kind,
@@ -307,7 +307,7 @@ cdef class ArgumentSpec:
         self.annotations = MappingProxyType(annotations)
 
     @staticmethod
-    cdef create(str name, NumberType kind, type, dict annotations):
+    cdef _fbthrift_create(str name, NumberType kind, type, dict annotations):
         return ArgumentSpec.__new__(ArgumentSpec, name, kind, type, annotations)
 
     def __iter__(self):

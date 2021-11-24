@@ -64,6 +64,7 @@ struct ForEachField<::apache::thrift::test::LazyCppRef> {
     f(0, static_cast<T&&>(t).field1_ref()...);
     f(1, static_cast<T&&>(t).field2_ref()...);
     f(2, static_cast<T&&>(t).field3_ref()...);
+    f(3, static_cast<T&&>(t).field4_ref()...);
   }
 };
 

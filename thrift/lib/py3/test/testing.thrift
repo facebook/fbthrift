@@ -51,12 +51,12 @@ exception UnusedError {
 
 exception HardError {
   1: string errortext;
-  2: required i32 code;
+  2: i32 code;
 } (message = "errortext")
 
 exception UnfriendlyError {
   1: string errortext;
-  2: required i32 code;
+  2: i32 code;
 }
 
 enum Color {
@@ -110,7 +110,7 @@ struct StringBucket {
 }
 
 struct File {
-  1: required string name;
+  1: string name;
   2: Perm permissions;
   3: Kind type = Kind.REGULAR;
 }
@@ -190,11 +190,11 @@ union IOBufUnion {
 } (cpp.noncomparable)
 
 struct hard {
-  1: required i32 val;
-  2: required I32List val_list;
-  3: required string name;
-  4: required Integers an_int;
-  5: required string other = "some default";
+  1: i32 val;
+  2: I32List val_list;
+  3: string name;
+  4: Integers an_int;
+  5: string other = "some default";
 }
 
 struct Runtime {
@@ -205,10 +205,8 @@ struct Runtime {
 
 struct mixed {
   1: optional string opt_field = "optional";
-  2: required string req_field = "required";
   3: string unq_field = "unqualified";
   4: optional easy opt_easy_ref (cpp.ref = "True");
-  5: required easy req_easy_ref (cpp.ref = "True");
   6: list<string> const_container_ref (cpp.ref_type = "shared_const");
   7: optional string some_field (py3.name = "some_field_");
 }
@@ -216,8 +214,6 @@ struct mixed {
 struct numerical {
   1: i32 int_val;
   2: double float_val;
-  3: required i32 req_int_val;
-  4: required double req_float_val;
   5: I32List int_list;
   6: list<double> float_list;
   7: i64 i64_val;
@@ -288,7 +284,6 @@ struct NonCopyable {
 
 struct Messy {
   1: optional string opt_field (some = "annotation", a.b.c = "d.e.f");
-  2: required string req_field;
   3: string unq_field = "xyzzy";
   4: Runtime struct_field = {
     "bool_val": true,

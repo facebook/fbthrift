@@ -72,5 +72,10 @@ TEST_F(ReferenceTypeTest, CppRefType_Unknown) {
   EXPECT_EQ(find_ref_type(tfield), reference_type::unrecognized);
 }
 
+TEST_F(ReferenceTypeTest, CppRefType_box) {
+  t_field tfield(&t_base_type::t_string(), "my_string");
+  tfield.set_annotation("thrift.box", "");
+  EXPECT_EQ(find_ref_type(tfield), reference_type::boxed);
+}
 } // namespace
 } // namespace apache::thrift::compiler::gen::cpp

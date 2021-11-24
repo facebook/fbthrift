@@ -53,14 +53,14 @@ cdef extern from "src/gen-py3/module/types.h":
 cdef class List__string(thrift.py3.types.List):
     cdef shared_ptr[vector[string]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[string]])
+    cdef _fbthrift_create(shared_ptr[vector[string]])
     @staticmethod
     cdef shared_ptr[vector[string]] _make_instance(object items) except *
 
 cdef class Map__i64_List__string(thrift.py3.types.Map):
     cdef shared_ptr[cmap[cint64_t,vector[string]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[cint64_t,vector[string]]])
+    cdef _fbthrift_create(shared_ptr[cmap[cint64_t,vector[string]]])
     @staticmethod
     cdef shared_ptr[cmap[cint64_t,vector[string]]] _make_instance(object items) except *
 

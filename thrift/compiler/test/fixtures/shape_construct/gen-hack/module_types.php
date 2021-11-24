@@ -227,7 +227,7 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
         break;
     }
     $this->_type = TestUnionEnum::_EMPTY_;
-}
+  }
 
   public function set_int_value(int $int_value)[write_props]: this {
     $this->reset();

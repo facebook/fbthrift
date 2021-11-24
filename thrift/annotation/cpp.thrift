@@ -20,7 +20,7 @@ namespace cpp2 facebook.thrift.annotation.cpp
 namespace py3 facebook.thrift.annotation.cpp
 namespace php facebook_thrift_annotation_cpp
 namespace java.swift com.facebook.thrift.annotation.cpp
-namespace java com.facebook.thrift.annotation.cpp
+namespace java com.facebook.thrift.annotation.cpp_deprecated
 namespace py.asyncio facebook_thrift_asyncio.annotation.cpp
 namespace go thrift.annotation.cpp
 namespace py thrift.annotation.cpp
@@ -37,7 +37,10 @@ struct Ref {
 } (thrift.uri = "facebook.com/thrift/annotation/cpp/Ref")
 
 @scope.Field
-struct Lazy {} (thrift.uri = "facebook.com/thrift/annotation/cpp/Lazy")
+struct Lazy {
+  // Use std::unique_ptr<folly::IOBuf> instead of folly::IOBuf to store serialized data.
+  1: bool ref = false;
+} (thrift.uri = "facebook.com/thrift/annotation/cpp/Lazy")
 
 @scope.Struct
 struct DisableLazyChecksum {} (

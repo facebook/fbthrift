@@ -24,7 +24,7 @@ from thrift.py3.common cimport Protocol, RpcOptions, cThriftMetadata
 from thrift.py3.std_libcpp cimport string_view, sv_to_str
 
 cdef extern from * namespace "std":
-    cdef cppclass cException "std:Exception":
+    cdef cppclass cException "std::exception":
         const char* what() nogil
 
 cdef extern from "thrift/lib/cpp/Thrift.h" namespace "apache::thrift":

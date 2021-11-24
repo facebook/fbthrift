@@ -24,19 +24,19 @@ from thrift.py3.types cimport (
 
 
 cdef __StructSpec get_reflection__MyStructNestedAnnotation():
-    cdef _module_types.MyStructNestedAnnotation defaults = _module_types.MyStructNestedAnnotation.create(
+    cdef _module_types.MyStructNestedAnnotation defaults = _module_types.MyStructNestedAnnotation._fbthrift_create(
         constant_shared_ptr[_module_types.cMyStructNestedAnnotation](
             default_inst[_module_types.cMyStructNestedAnnotation]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="MyStructNestedAnnotation",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="name",
             type=str,
@@ -49,19 +49,19 @@ cdef __StructSpec get_reflection__MyStructNestedAnnotation():
     )
     return spec
 cdef __StructSpec get_reflection__MyStruct():
-    cdef _module_types.MyStruct defaults = _module_types.MyStruct.create(
+    cdef _module_types.MyStruct defaults = _module_types.MyStruct._fbthrift_create(
         constant_shared_ptr[_module_types.cMyStruct](
             default_inst[_module_types.cMyStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="MyStruct",
         kind=__StructType.STRUCT,
         annotations={
             """android.generate_builder""": """1""",            """cpp.internal.deprecated._data.method""": """1""",        },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="major",
             type=int,
@@ -73,7 +73,7 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="package",
             type=str,
@@ -85,7 +85,7 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=3,
             name="annotation_with_quote",
             type=str,
@@ -97,7 +97,7 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=4,
             name="class_",
             type=str,
@@ -109,7 +109,7 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=5,
             name="annotation_with_trailing_comma",
             type=str,
@@ -121,7 +121,7 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=6,
             name="empty_annotations",
             type=str,
@@ -134,19 +134,19 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     return spec
 cdef __StructSpec get_reflection__SecretStruct():
-    cdef _module_types.SecretStruct defaults = _module_types.SecretStruct.create(
+    cdef _module_types.SecretStruct defaults = _module_types.SecretStruct._fbthrift_create(
         constant_shared_ptr[_module_types.cSecretStruct](
             default_inst[_module_types.cSecretStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="SecretStruct",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="id",
             type=int,
@@ -158,7 +158,7 @@ cdef __StructSpec get_reflection__SecretStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="password",
             type=str,

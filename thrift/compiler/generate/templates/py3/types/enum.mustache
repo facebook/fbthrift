@@ -22,9 +22,9 @@ This is a template for creating compiled Enum and Flag pyx information
 {{#program:enums}}
 
 {{#enum:flags?}}
-cdef __EnumFlagsData __{{enum:name}}_enum_data  = __EnumFlagsData.create(thrift.py3.types.createEnumFlagsData[c{{enum:name}}](), {{enum:name}})
+cdef __EnumFlagsData __{{enum:name}}_enum_data  = __EnumFlagsData._fbthrift_create(thrift.py3.types.createEnumFlagsData[c{{enum:name}}](), {{enum:name}})
 {{/enum:flags?}}{{^enum:flags?}}
-cdef __EnumData __{{enum:name}}_enum_data  = __EnumData.create(thrift.py3.types.createEnumData[c{{enum:name}}](), {{enum:name}})
+cdef __EnumData __{{enum:name}}_enum_data  = __EnumData._fbthrift_create(thrift.py3.types.createEnumData[c{{enum:name}}](), {{enum:name}})
 {{/enum:flags?}}
 
 

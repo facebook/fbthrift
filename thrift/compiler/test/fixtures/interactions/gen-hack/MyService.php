@@ -435,6 +435,7 @@ class MyService_MyInteraction extends \ThriftClientBase {
     $this->eventHandler_->recvError('MyInteraction.frobnicate', $expectedsequenceid, $x);
     throw $x;
   }
+
   /**
    * Original thrift definition:-
    * oneway void
@@ -495,6 +496,7 @@ class MyService_MyInteraction extends \ThriftClientBase {
     $this->eventHandler_->postSend('MyInteraction.ping', $args, $currentseqid);
     return $currentseqid;
   }
+
   /**
    * Original thrift definition:-
    * void, stream<bool>
@@ -651,6 +653,51 @@ class MyService_MyInteraction extends \ThriftClientBase {
     $this->eventHandler_->postRecv('MyInteraction.truthify', $expectedsequenceid, null);
     return;
   }
+
+  /**
+   * Original thrift definition:-
+   * set<i32>, sink<string, binary>
+   *   encode();
+   */
+  public async function encode(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<Set<int>, string, string>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $rpc_options = $rpc_options->setInteractionId($this->interactionId);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Sink methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("MyService", "MyInteraction.encode");
+    $currentseqid = $this->sendImpl_encode();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink($rpc_options, $msg);
+
+    $payload_serializer = $this->sendImpl_encode_SinkEncode();
+    $final_response_deserializer = $this->recvImpl_encode_FinalResponse();
+    $client_sink_func = async function(
+      AsyncGenerator<null, string, void> $pld_generator
+    ) use ($sink, $payload_serializer, $final_response_deserializer) {
+      return await $sink->genSink<string, string>(
+        $pld_generator, 
+        $payload_serializer, 
+        $final_response_deserializer, 
+      );
+    };
+
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $first_response = $this->recvImpl_encode_FirstResponse($currentseqid);
+
+    return new \ResponseAndClientSink<Set<int>, string, string>($first_response, $client_sink_func);
+  }
+
   protected function sendImpl_encode(): int {
     $currentseqid = $this->getNextSequenceID();
     $args = MyService_MyInteraction_encode_args::withDefaultValues();
@@ -690,7 +737,77 @@ class MyService_MyInteraction extends \ThriftClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_encode_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): Set<arraykey> {
+  protected function sendImpl_encode_SinkEncode(): (function(?string, ?\Exception) : (string, bool)) {
+    $protocol = $this->output_;
+    return function(
+      ?string $sink_payload, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+
+      $transport = $protocol->getTransport();
+      invariant(
+        $transport is \TMemoryBuffer,
+        "Sink methods require TMemoryBuffer transport"
+      );
+
+      $is_application_ex = false;
+
+      if ($ex !== null) {
+        if ($ex is \TApplicationException) {
+          $is_application_ex = true;
+          $result = $ex;
+        } else {
+          $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+        }
+      } else {
+        $result = MyService_MyInteraction_encode_SinkPayload::fromShape(shape(
+          'success' => $sink_payload,
+        ));
+      }
+
+      $result->write($protocol);
+      $protocol->writeMessageEnd();
+      $transport->flush();
+      $msg = $transport->getBuffer();
+      $transport->resetBuffer();
+      return tuple($msg, $is_application_ex);
+    };
+  }
+
+  protected function recvImpl_encode_FinalResponse(): (function(?string, ?\Exception) : string) {
+    $protocol = $this->input_;
+    return function(
+      ?string $sink_final_response, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+      try {
+        if ($ex !== null) {
+          throw $ex;
+        }
+        $transport = $protocol->getTransport();
+        invariant(
+          $transport is \TMemoryBuffer,
+          "Stream methods require TMemoryBuffer transport"
+        );
+
+        $transport->resetBuffer();
+        $transport->write($sink_final_response as nonnull);
+        $result = MyService_MyInteraction_encode_FinalResponse::withDefaultValues();
+        $result->read($protocol);
+        $protocol->readMessageEnd();
+      } catch (\THandlerShortCircuitException $ex) {
+        throw $ex->result;
+      }
+      if ($result->success !== null) {
+       return $result->success;
+      }
+      throw new \TApplicationException("encode failed: unknown result", \TApplicationException::MISSING_RESULT);
+    };
+  }
+
+  protected function recvImpl_encode_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): Set<int> {
     try {
       $this->eventHandler_->preRecv('MyInteraction.encode', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
@@ -749,6 +866,7 @@ class MyService_MyInteraction extends \ThriftClientBase {
     $this->eventHandler_->recvError('MyInteraction.encode', $expectedsequenceid, $x);
     throw $x;
   }
+
 }
 
 class MyService_MyInteractionFast extends \ThriftClientBase {
@@ -889,6 +1007,7 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     $this->eventHandler_->recvError('MyInteractionFast.frobnicate', $expectedsequenceid, $x);
     throw $x;
   }
+
   /**
    * Original thrift definition:-
    * oneway void
@@ -949,6 +1068,7 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     $this->eventHandler_->postSend('MyInteractionFast.ping', $args, $currentseqid);
     return $currentseqid;
   }
+
   /**
    * Original thrift definition:-
    * void, stream<bool>
@@ -1105,6 +1225,51 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     $this->eventHandler_->postRecv('MyInteractionFast.truthify', $expectedsequenceid, null);
     return;
   }
+
+  /**
+   * Original thrift definition:-
+   * set<i32>, sink<string, binary>
+   *   encode();
+   */
+  public async function encode(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<Set<int>, string, string>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $rpc_options = $rpc_options->setInteractionId($this->interactionId);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Sink methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("MyService", "MyInteractionFast.encode");
+    $currentseqid = $this->sendImpl_encode();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink($rpc_options, $msg);
+
+    $payload_serializer = $this->sendImpl_encode_SinkEncode();
+    $final_response_deserializer = $this->recvImpl_encode_FinalResponse();
+    $client_sink_func = async function(
+      AsyncGenerator<null, string, void> $pld_generator
+    ) use ($sink, $payload_serializer, $final_response_deserializer) {
+      return await $sink->genSink<string, string>(
+        $pld_generator, 
+        $payload_serializer, 
+        $final_response_deserializer, 
+      );
+    };
+
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $first_response = $this->recvImpl_encode_FirstResponse($currentseqid);
+
+    return new \ResponseAndClientSink<Set<int>, string, string>($first_response, $client_sink_func);
+  }
+
   protected function sendImpl_encode(): int {
     $currentseqid = $this->getNextSequenceID();
     $args = MyService_MyInteractionFast_encode_args::withDefaultValues();
@@ -1144,7 +1309,77 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_encode_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): Set<arraykey> {
+  protected function sendImpl_encode_SinkEncode(): (function(?string, ?\Exception) : (string, bool)) {
+    $protocol = $this->output_;
+    return function(
+      ?string $sink_payload, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+
+      $transport = $protocol->getTransport();
+      invariant(
+        $transport is \TMemoryBuffer,
+        "Sink methods require TMemoryBuffer transport"
+      );
+
+      $is_application_ex = false;
+
+      if ($ex !== null) {
+        if ($ex is \TApplicationException) {
+          $is_application_ex = true;
+          $result = $ex;
+        } else {
+          $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+        }
+      } else {
+        $result = MyService_MyInteractionFast_encode_SinkPayload::fromShape(shape(
+          'success' => $sink_payload,
+        ));
+      }
+
+      $result->write($protocol);
+      $protocol->writeMessageEnd();
+      $transport->flush();
+      $msg = $transport->getBuffer();
+      $transport->resetBuffer();
+      return tuple($msg, $is_application_ex);
+    };
+  }
+
+  protected function recvImpl_encode_FinalResponse(): (function(?string, ?\Exception) : string) {
+    $protocol = $this->input_;
+    return function(
+      ?string $sink_final_response, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+      try {
+        if ($ex !== null) {
+          throw $ex;
+        }
+        $transport = $protocol->getTransport();
+        invariant(
+          $transport is \TMemoryBuffer,
+          "Stream methods require TMemoryBuffer transport"
+        );
+
+        $transport->resetBuffer();
+        $transport->write($sink_final_response as nonnull);
+        $result = MyService_MyInteractionFast_encode_FinalResponse::withDefaultValues();
+        $result->read($protocol);
+        $protocol->readMessageEnd();
+      } catch (\THandlerShortCircuitException $ex) {
+        throw $ex->result;
+      }
+      if ($result->success !== null) {
+       return $result->success;
+      }
+      throw new \TApplicationException("encode failed: unknown result", \TApplicationException::MISSING_RESULT);
+    };
+  }
+
+  protected function recvImpl_encode_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): Set<int> {
     try {
       $this->eventHandler_->preRecv('MyInteractionFast.encode', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
@@ -1203,6 +1438,7 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     $this->eventHandler_->recvError('MyInteractionFast.encode', $expectedsequenceid, $x);
     throw $x;
   }
+
 }
 
 class MyService_SerialInteraction extends \ThriftClientBase {
@@ -1337,6 +1573,7 @@ class MyService_SerialInteraction extends \ThriftClientBase {
     $this->eventHandler_->postRecv('SerialInteraction.frobnicate', $expectedsequenceid, null);
     return;
   }
+
 }
 
 // HELPER FUNCTIONS AND STRUCTURES
@@ -1846,9 +2083,9 @@ class MyService_MyInteraction_encode_FirstResponse implements \IThriftStruct {
     0 => shape(
       'var' => 'success',
       'type' => \TType::SET,
-      'etype' => \TType::FLOAT,
+      'etype' => \TType::I32,
       'elem' => shape(
-        'type' => \TType::FLOAT,
+        'type' => \TType::I32,
       ),
       'format' => 'collection',
     ),
@@ -1858,13 +2095,13 @@ class MyService_MyInteraction_encode_FirstResponse implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => ?Set<arraykey>,
+    ?'success' => ?Set<int>,
   );
 
   const int STRUCTURAL_ID = 5594803499509360192;
-  public ?Set<arraykey> $success;
+  public ?Set<int> $success;
 
-  public function __construct(?Set<arraykey> $success = null  )[] {
+  public function __construct(?Set<int> $success = null  )[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -1895,7 +2132,7 @@ class MyService_MyInteraction_encode_FirstResponse implements \IThriftStruct {
                     shape(
                       "valueType" => tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_FLOAT_TYPE,
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
                         )
                       ),
                     )
@@ -2444,9 +2681,9 @@ class MyService_MyInteractionFast_encode_FirstResponse implements \IThriftStruct
     0 => shape(
       'var' => 'success',
       'type' => \TType::SET,
-      'etype' => \TType::FLOAT,
+      'etype' => \TType::I32,
       'elem' => shape(
-        'type' => \TType::FLOAT,
+        'type' => \TType::I32,
       ),
       'format' => 'collection',
     ),
@@ -2456,13 +2693,13 @@ class MyService_MyInteractionFast_encode_FirstResponse implements \IThriftStruct
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => ?Set<arraykey>,
+    ?'success' => ?Set<int>,
   );
 
   const int STRUCTURAL_ID = 5594803499509360192;
-  public ?Set<arraykey> $success;
+  public ?Set<int> $success;
 
-  public function __construct(?Set<arraykey> $success = null  )[] {
+  public function __construct(?Set<int> $success = null  )[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2493,7 +2730,7 @@ class MyService_MyInteractionFast_encode_FirstResponse implements \IThriftStruct
                     shape(
                       "valueType" => tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_FLOAT_TYPE,
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
                         )
                       ),
                     )

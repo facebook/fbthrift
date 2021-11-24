@@ -170,7 +170,9 @@ class CppServerObserver : public TServerObserver {
   explicit CppServerObserver(object serverObserver)
       : observer_(serverObserver) {}
 
-  void connAccepted() override { this->call("connAccepted"); }
+  void connAccepted(const wangle::TransportInfo& /* info */) override {
+    this->call("connAccepted");
+  }
   void connDropped() override { this->call("connDropped"); }
   void connRejected() override { this->call("connRejected"); }
   void tlsError() override { this->call("tlsError"); }
@@ -506,6 +508,8 @@ class CppServerWrapper : public ThriftServer {
     PyThreadState* save_state = PyEval_SaveThread();
     SCOPE_EXIT { PyEval_RestoreThread(save_state); };
 
+    // This check is only useful for C++-based Thrift servers.
+    ThriftServer::setAllowCheckUnimplementedExtraInterfaces(false);
     ThriftServer::setup();
   }
 

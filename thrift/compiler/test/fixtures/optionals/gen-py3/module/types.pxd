@@ -83,10 +83,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[double] green_ref()
         __field_ref[double] blue_ref()
         __field_ref[double] alpha_ref()
-        double red
-        double green
-        double blue
-        double alpha
 
 
     cdef cppclass cVehicle "::cpp2::Vehicle":
@@ -103,11 +99,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[string] description_ref()
         __optional_field_ref[string] name_ref()
         __optional_field_ref[cbool] hasAC_ref()
-        cColor color
-        string licensePlate
-        string description
-        string name
-        cbool hasAC
 
 
     cdef cppclass cPerson "::cpp2::Person":
@@ -129,16 +120,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[cmap[cAnimal,string]] petNames_ref()
         __optional_field_ref[cAnimal] afraidOfAnimal_ref()
         __optional_field_ref[vector[cVehicle]] vehicles_ref()
-        cint64_t id
-        string name
-        cint16_t age
-        string address
-        cColor favoriteColor
-        cset[cint64_t] friends
-        cint64_t bestFriend
-        cmap[cAnimal,string] petNames
-        cAnimal afraidOfAnimal
-        vector[cVehicle] vehicles
 
 
 
@@ -148,7 +129,7 @@ cdef class Color(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__Color_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cColor])
+    cdef _fbthrift_create(shared_ptr[cColor])
 
 
 
@@ -158,7 +139,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
     cdef Color __fbthrift_cached_color
 
     @staticmethod
-    cdef create(shared_ptr[cVehicle])
+    cdef _fbthrift_create(shared_ptr[cVehicle])
 
 
 
@@ -172,27 +153,27 @@ cdef class Person(thrift.py3.types.Struct):
     cdef List__Vehicle __fbthrift_cached_vehicles
 
     @staticmethod
-    cdef create(shared_ptr[cPerson])
+    cdef _fbthrift_create(shared_ptr[cPerson])
 
 
 cdef class Set__i64(thrift.py3.types.Set):
     cdef shared_ptr[cset[cint64_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cset[cint64_t]])
+    cdef _fbthrift_create(shared_ptr[cset[cint64_t]])
     @staticmethod
     cdef shared_ptr[cset[cint64_t]] _make_instance(object items) except *
 
 cdef class Map__Animal_string(thrift.py3.types.Map):
     cdef shared_ptr[cmap[cAnimal,string]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[cAnimal,string]])
+    cdef _fbthrift_create(shared_ptr[cmap[cAnimal,string]])
     @staticmethod
     cdef shared_ptr[cmap[cAnimal,string]] _make_instance(object items) except *
 
 cdef class List__Vehicle(thrift.py3.types.List):
     cdef shared_ptr[vector[cVehicle]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cVehicle]])
+    cdef _fbthrift_create(shared_ptr[vector[cVehicle]])
     @staticmethod
     cdef shared_ptr[vector[cVehicle]] _make_instance(object items) except *
 

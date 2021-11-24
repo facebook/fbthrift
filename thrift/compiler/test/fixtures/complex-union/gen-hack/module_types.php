@@ -200,7 +200,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
         break;
     }
     $this->_type = ComplexUnionEnum::_EMPTY_;
-}
+  }
 
   public function set_intValue(int $intValue)[write_props]: this {
     $this->reset();
@@ -603,7 +603,7 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
         break;
     }
     $this->_type = ListUnionEnum::_EMPTY_;
-}
+  }
 
   public function set_intListValue(Vector<int> $intListValue)[write_props]: this {
     $this->reset();
@@ -827,7 +827,7 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
         break;
     }
     $this->_type = DataUnionEnum::_EMPTY_;
-}
+  }
 
   public function set_binaryData(string $binaryData)[write_props]: this {
     $this->reset();
@@ -1210,7 +1210,7 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
         break;
     }
     $this->_type = ValUnionEnum::_EMPTY_;
-}
+  }
 
   public function set_v1(Val $v1)[write_props]: this {
     $this->reset();
@@ -1418,7 +1418,7 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
         break;
     }
     $this->_type = VirtualComplexUnionEnum::_EMPTY_;
-}
+  }
 
   public function set_thingOne(string $thingOne)[write_props]: this {
     $this->reset();
@@ -1682,7 +1682,7 @@ class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnion
         break;
     }
     $this->_type = NonCopyableUnionEnum::_EMPTY_;
-}
+  }
 
   public function set_s(NonCopyableStruct $s)[write_props]: this {
     $this->reset();

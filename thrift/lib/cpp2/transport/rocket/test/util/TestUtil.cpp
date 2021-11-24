@@ -66,8 +66,7 @@ std::unique_ptr<ThriftServer> TestSetup::createServer(
   return server;
 }
 
-std::unique_ptr<PooledRequestChannel, folly::DelayedDestruction::Destructor>
-TestSetup::connectToServer(
+RequestChannel::Ptr TestSetup::connectToServer(
     uint16_t port,
     folly::Function<void()> onDetachable,
     folly::Function<void(TAsyncSocketIntercepted&)> socketSetup) {

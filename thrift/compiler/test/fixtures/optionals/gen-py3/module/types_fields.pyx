@@ -22,7 +22,7 @@ from thrift.py3.types cimport const_pointer_cast
 cdef class __Color_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __Color_FieldsSetter create(_module_types.cColor* struct_cpp_obj):
+    cdef __Color_FieldsSetter _fbthrift_create(_module_types.cColor* struct_cpp_obj):
         cdef __Color_FieldsSetter __fbthrift_inst = __Color_FieldsSetter.__new__(__Color_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"red")] = __Color_FieldsSetter._set_field_0
@@ -79,7 +79,7 @@ cdef class __Color_FieldsSetter(__StructFieldsSetter):
 cdef class __Vehicle_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __Vehicle_FieldsSetter create(_module_types.cVehicle* struct_cpp_obj):
+    cdef __Vehicle_FieldsSetter _fbthrift_create(_module_types.cVehicle* struct_cpp_obj):
         cdef __Vehicle_FieldsSetter __fbthrift_inst = __Vehicle_FieldsSetter.__new__(__Vehicle_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"color")] = __Vehicle_FieldsSetter._set_field_0
@@ -146,7 +146,7 @@ cdef class __Vehicle_FieldsSetter(__StructFieldsSetter):
 cdef class __Person_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __Person_FieldsSetter create(_module_types.cPerson* struct_cpp_obj):
+    cdef __Person_FieldsSetter _fbthrift_create(_module_types.cPerson* struct_cpp_obj):
         cdef __Person_FieldsSetter __fbthrift_inst = __Person_FieldsSetter.__new__(__Person_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"id")] = __Person_FieldsSetter._set_field_0

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+include "thrift/annotation/cpp.thrift"
+
 namespace cpp2 apache.thrift.test
 namespace py3 thrift.test.lazy_deserialization
 
@@ -29,7 +31,8 @@ struct LazyFoo {
   1: list<double> field1;
   2: list<i32> field2;
   3: list<double> field3 (cpp.experimental.lazy);
-  4: list<i32> field4 (cpp.experimental.lazy);
+  @cpp.Lazy{ref = true}
+  4: list<i32> field4;
 }
 
 struct OptionalFoo {
@@ -53,6 +56,7 @@ struct LazyCppRef {
     cpp.ref_type = "shared_const",
     cpp.experimental.lazy,
   );
+  4: list<i32> field4 (cpp.ref_type = "unique", cpp.experimental.lazy);
 }
 
 // Same as Foo, except adding index field explicitly

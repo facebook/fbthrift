@@ -16,6 +16,7 @@
 
 #include <folly/portability/GTest.h>
 
+#include <thrift/lib/cpp2/BadFieldAccess.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/test/gen-cpp2/References_types.h>
 #include <thrift/test/gen-cpp2/References_types.tcc>
@@ -72,15 +73,7 @@ TEST(References, recursive_ref_fields) {
 TEST(References, ref_struct_fields) {
   ReferringStruct a;
 
-  // tests that we initialize non-optional ref struct fields
-  EXPECT_NE(nullptr, a.def_field);
-  EXPECT_NE(nullptr, a.req_field);
-  EXPECT_NE(nullptr, a.def_unique_field);
-  EXPECT_NE(nullptr, a.req_unique_field);
-  EXPECT_NE(nullptr, a.def_shared_field);
-  EXPECT_NE(nullptr, a.req_shared_field);
-  EXPECT_NE(nullptr, a.def_shared_const_field);
-  EXPECT_NE(nullptr, a.req_shared_const_field);
+  // Test that non-optional ref struct fields are initialized.
   EXPECT_NE(nullptr, a.def_field_ref());
   EXPECT_NE(nullptr, a.req_field_ref());
   EXPECT_NE(nullptr, a.def_unique_field_ref());
@@ -90,15 +83,12 @@ TEST(References, ref_struct_fields) {
   EXPECT_NE(nullptr, a.def_shared_const_field_ref());
   EXPECT_NE(nullptr, a.req_shared_const_field_ref());
 
-  // Check that optional fields are absent from a default-constructed object
-  EXPECT_EQ(nullptr, a.opt_field);
-  EXPECT_EQ(nullptr, a.opt_unique_field);
-  EXPECT_EQ(nullptr, a.opt_shared_field);
-  EXPECT_EQ(nullptr, a.opt_shared_const_field);
+  // Check that optional fields are absent from a default-constructed object.
   EXPECT_EQ(nullptr, a.opt_field_ref());
   EXPECT_EQ(nullptr, a.opt_unique_field_ref());
   EXPECT_EQ(nullptr, a.opt_shared_field_ref());
   EXPECT_EQ(nullptr, a.opt_shared_const_field_ref());
+  EXPECT_FALSE(a.opt_box_field_ref().has_value());
 }
 
 TEST(References, ref_struct_fields_clear) {
@@ -143,7 +133,7 @@ TEST(References, ref_struct_fields_clear) {
   EXPECT_EQ(a.opt_shared_const_field_ref()->field_ref(), 12);
   EXPECT_EQ(a.opt_box_field_ref()->field_ref(), 13);
 
-  a.__clear();
+  a = {};
 
   EXPECT_EQ(a.def_field_ref()->field_ref(), 0);
   EXPECT_EQ(a.req_field_ref()->field_ref(), 0);
@@ -160,17 +150,38 @@ TEST(References, ref_struct_fields_clear) {
   EXPECT_FALSE(a.opt_box_field_ref().has_value());
 }
 
+TEST(References, ref_struct_base_fields) {
+  ReferringStructWithBaseTypeFields a;
+
+  // Test that non-optional ref basetype fields are initialized.
+  EXPECT_NE(nullptr, a.def_field_ref());
+  EXPECT_NE(nullptr, a.req_field_ref());
+  EXPECT_NE(nullptr, a.def_unique_field_ref());
+  EXPECT_NE(nullptr, a.req_unique_field_ref());
+  EXPECT_NE(nullptr, a.def_shared_field_ref());
+  EXPECT_NE(nullptr, a.req_shared_field_ref());
+  EXPECT_NE(nullptr, a.def_shared_const_field_ref());
+  EXPECT_NE(nullptr, a.req_shared_const_field_ref());
+
+  // Check that optional fields are absent from a default-constructed object.
+  EXPECT_EQ(nullptr, a.opt_field_ref());
+  EXPECT_EQ(nullptr, a.opt_unique_field_ref());
+  EXPECT_EQ(nullptr, a.opt_shared_field_ref());
+  EXPECT_EQ(nullptr, a.opt_shared_const_field_ref());
+  EXPECT_FALSE(a.opt_box_field_ref().has_value());
+}
+
 TEST(References, ref_struct_base_fields_clear) {
   ReferringStructWithBaseTypeFields a;
 
-  *a.def_field_ref() = 1;
-  *a.req_field_ref() = 2;
+  a.def_field_ref() = std::make_unique<int64_t>(1);
+  a.req_field_ref() = std::make_unique<int64_t>(2);
   a.opt_field_ref() = std::make_unique<int64_t>(3);
-  *a.def_unique_field_ref() = 4;
-  *a.req_unique_field_ref() = 5;
+  a.def_unique_field_ref() = std::make_unique<int64_t>(4);
+  a.req_unique_field_ref() = std::make_unique<int64_t>(5);
   a.opt_unique_field_ref() = std::make_unique<int64_t>(6);
-  *a.def_shared_field_ref() = 7;
-  *a.req_shared_field_ref() = 8;
+  a.def_shared_field_ref() = std::make_shared<int64_t>(7);
+  a.req_shared_field_ref() = std::make_shared<int64_t>(8);
   a.opt_shared_field_ref() = std::make_shared<int64_t>(9);
   a.def_shared_const_field_ref() = std::make_shared<int64_t>(10);
   a.req_shared_const_field_ref() = std::make_shared<int64_t>(11);
@@ -191,7 +202,7 @@ TEST(References, ref_struct_base_fields_clear) {
   EXPECT_EQ(*a.opt_shared_const_field_ref(), 12);
   EXPECT_EQ(*a.opt_box_field_ref(), "13");
 
-  a.__clear();
+  a = {};
 
   EXPECT_EQ(*a.def_field_ref(), 0);
   EXPECT_EQ(*a.req_field_ref(), 0);
@@ -208,22 +219,79 @@ TEST(References, ref_struct_base_fields_clear) {
   EXPECT_FALSE(a.opt_box_field_ref().has_value());
 }
 
+TEST(References, ref_struct_string_fields) {
+  ReferringStructWithStringFields a;
+
+  // Test that non-optional ref string fields are initialized.
+  EXPECT_NE(nullptr, a.def_field_ref());
+  EXPECT_NE(nullptr, a.req_field_ref());
+  EXPECT_NE(nullptr, a.def_unique_field_ref());
+  EXPECT_NE(nullptr, a.req_unique_field_ref());
+  EXPECT_NE(nullptr, a.def_shared_field_ref());
+  EXPECT_NE(nullptr, a.req_shared_field_ref());
+  EXPECT_NE(nullptr, a.def_shared_const_field_ref());
+  EXPECT_NE(nullptr, a.req_shared_const_field_ref());
+
+  // Check that optional fields are absent from a default-constructed object.
+  EXPECT_EQ(nullptr, a.opt_field_ref());
+  EXPECT_EQ(nullptr, a.opt_unique_field_ref());
+  EXPECT_EQ(nullptr, a.opt_shared_field_ref());
+  EXPECT_EQ(nullptr, a.opt_shared_const_field_ref());
+  EXPECT_FALSE(a.opt_box_field_ref().has_value());
+}
+
+TEST(References, ref_struct_string_fields_clear) {
+  ReferringStructWithStringFields a;
+
+  a.def_field_ref() = std::make_unique<std::string>("1");
+  a.req_field_ref() = std::make_unique<std::string>("2");
+  a.opt_field_ref() = std::make_unique<std::string>("3");
+  a.def_unique_field_ref() = std::make_unique<std::string>("4");
+  a.req_unique_field_ref() = std::make_unique<std::string>("5");
+  a.opt_unique_field_ref() = std::make_unique<std::string>("6");
+  a.def_shared_field_ref() = std::make_shared<std::string>("7");
+  a.req_shared_field_ref() = std::make_shared<std::string>("8");
+  a.opt_shared_field_ref() = std::make_shared<std::string>("9");
+  a.def_shared_const_field_ref() = std::make_shared<std::string>("10");
+  a.req_shared_const_field_ref() = std::make_shared<std::string>("11");
+  a.opt_shared_const_field_ref() = std::make_shared<std::string>("12");
+  a.opt_box_field_ref() = "13";
+
+  EXPECT_EQ(*a.def_field_ref(), "1");
+  EXPECT_EQ(*a.req_field_ref(), "2");
+  EXPECT_EQ(*a.opt_field_ref(), "3");
+  EXPECT_EQ(*a.def_unique_field_ref(), "4");
+  EXPECT_EQ(*a.req_unique_field_ref(), "5");
+  EXPECT_EQ(*a.opt_unique_field_ref(), "6");
+  EXPECT_EQ(*a.def_shared_field_ref(), "7");
+  EXPECT_EQ(*a.req_shared_field_ref(), "8");
+  EXPECT_EQ(*a.opt_shared_field_ref(), "9");
+  EXPECT_EQ(*a.def_shared_const_field_ref(), "10");
+  EXPECT_EQ(*a.req_shared_const_field_ref(), "11");
+  EXPECT_EQ(*a.opt_shared_const_field_ref(), "12");
+  EXPECT_EQ(*a.opt_box_field_ref(), "13");
+
+  a = {};
+
+  EXPECT_EQ(*a.def_field_ref(), "");
+  EXPECT_EQ(*a.req_field_ref(), "");
+  EXPECT_EQ(nullptr, a.opt_field_ref());
+  EXPECT_EQ(*a.def_unique_field_ref(), "");
+  EXPECT_EQ(*a.req_unique_field_ref(), "");
+  EXPECT_EQ(nullptr, a.opt_unique_field_ref());
+  EXPECT_EQ(*a.def_shared_field_ref(), "");
+  EXPECT_EQ(*a.req_shared_field_ref(), "");
+  EXPECT_EQ(nullptr, a.opt_shared_field_ref());
+  EXPECT_EQ(*a.def_shared_const_field_ref(), "");
+  EXPECT_EQ(*a.req_shared_const_field_ref(), "");
+  EXPECT_EQ(nullptr, a.opt_shared_const_field_ref());
+  EXPECT_FALSE(a.opt_box_field_ref().has_value());
+}
+
 TEST(References, ref_container_fields) {
   StructWithContainers a;
 
-  // tests that we initialize non-optional ref container fields
-  EXPECT_NE(nullptr, a.def_list_ref);
-  EXPECT_NE(nullptr, a.def_set_ref);
-  EXPECT_NE(nullptr, a.def_map_ref);
-  EXPECT_NE(nullptr, a.def_list_ref_unique);
-  EXPECT_NE(nullptr, a.def_set_ref_shared);
-  EXPECT_NE(nullptr, a.def_list_ref_shared_const);
-  EXPECT_NE(nullptr, a.req_list_ref);
-  EXPECT_NE(nullptr, a.req_set_ref);
-  EXPECT_NE(nullptr, a.req_map_ref);
-  EXPECT_NE(nullptr, a.req_list_ref_unique);
-  EXPECT_NE(nullptr, a.req_set_ref_shared);
-  EXPECT_NE(nullptr, a.req_list_ref_shared_const);
+  // Test that non-optional ref container fields are initialized.
   EXPECT_NE(nullptr, a.def_list_ref_ref());
   EXPECT_NE(nullptr, a.def_set_ref_ref());
   EXPECT_NE(nullptr, a.def_map_ref_ref());
@@ -236,19 +304,17 @@ TEST(References, ref_container_fields) {
   EXPECT_NE(nullptr, a.req_list_ref_unique_ref());
   EXPECT_NE(nullptr, a.req_set_ref_shared_ref());
   EXPECT_NE(nullptr, a.req_list_ref_shared_const_ref());
-  // Check that optional fields are absent from a default-constructed object
-  EXPECT_EQ(nullptr, a.opt_list_ref);
-  EXPECT_EQ(nullptr, a.opt_set_ref);
-  EXPECT_EQ(nullptr, a.opt_map_ref);
-  EXPECT_EQ(nullptr, a.opt_list_ref_unique);
-  EXPECT_EQ(nullptr, a.opt_set_ref_shared);
-  EXPECT_EQ(nullptr, a.opt_list_ref_shared_const);
+
+  // Check that optional fields are absent from a default-constructed object.
   EXPECT_EQ(nullptr, a.opt_list_ref_ref());
   EXPECT_EQ(nullptr, a.opt_set_ref_ref());
   EXPECT_EQ(nullptr, a.opt_map_ref_ref());
   EXPECT_EQ(nullptr, a.opt_list_ref_unique_ref());
   EXPECT_EQ(nullptr, a.opt_set_ref_shared_ref());
   EXPECT_EQ(nullptr, a.opt_list_ref_shared_const_ref());
+  EXPECT_FALSE(a.opt_box_list_ref_ref().has_value());
+  EXPECT_FALSE(a.opt_box_set_ref_ref().has_value());
+  EXPECT_FALSE(a.opt_box_map_ref_ref().has_value());
 }
 
 TEST(References, ref_container_fields_clear) {
@@ -311,7 +377,7 @@ TEST(References, ref_container_fields_clear) {
   EXPECT_EQ(a.opt_box_set_ref_ref()->count(20), 1);
   EXPECT_EQ(a.opt_box_map_ref_ref()->at(21), 21);
 
-  a.__clear();
+  a = {};
 
   EXPECT_EQ(a.def_list_ref_ref()->size(), 0);
   EXPECT_EQ(a.def_set_ref_ref()->size(), 0);
@@ -442,4 +508,54 @@ TEST(References, string_ref) {
   EXPECT_EQ(a, b);
 }
 
+TEST(References, CppRefUnionLessThan) {
+  auto check = [](ReferringUnionWithCppRef& smallerAddress,
+                  ReferringUnionWithCppRef& largerAddress) {
+    *smallerAddress.get_box_string() = "2";
+    *largerAddress.get_box_string() = "1";
+
+    EXPECT_LT(smallerAddress.get_box_string(), largerAddress.get_box_string());
+    EXPECT_GT(
+        *smallerAddress.get_box_string(), *largerAddress.get_box_string());
+    EXPECT_GT(smallerAddress, largerAddress);
+  };
+
+  ReferringUnionWithCppRef a;
+  ReferringUnionWithCppRef b;
+  a.set_box_string("");
+  b.set_box_string("");
+  if (a.get_box_string() < b.get_box_string()) {
+    check(a, b);
+  } else {
+    check(b, a);
+  }
+}
+
+TEST(References, CppRefUnionSetterGetter) {
+  ReferringUnionWithCppRef a;
+  PlainStruct p;
+  p.field() = 42;
+
+  a.set_box_plain(p);
+
+  EXPECT_THROW(a.get_box_string(), bad_field_access);
+  EXPECT_THROW(a.get_box_self(), bad_field_access);
+  EXPECT_EQ(a.get_box_plain()->field(), 42);
+
+  a.set_box_string("foo");
+
+  EXPECT_THROW(a.get_box_plain(), bad_field_access);
+  EXPECT_THROW(a.get_box_self(), bad_field_access);
+  EXPECT_EQ(*a.get_box_string(), "foo");
+
+  ReferringUnionWithCppRef b;
+
+  b.set_box_self(a);
+
+  EXPECT_THROW(b.get_box_string(), bad_field_access);
+  EXPECT_THROW(b.get_box_plain(), bad_field_access);
+  EXPECT_THROW(*b.get_box_self()->get_box_plain(), bad_field_access);
+  EXPECT_THROW(*b.get_box_self()->get_box_self(), bad_field_access);
+  EXPECT_EQ(*b.get_box_self()->get_box_string(), "foo");
+}
 } // namespace cpp2

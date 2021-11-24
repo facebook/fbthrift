@@ -56,7 +56,7 @@ class ReflectionTests(unittest.TestCase):
     def test_struct_fields(self) -> None:
         r = inspect(Messy)
 
-        self.assertEqual(len(r.fields), 4)
+        self.assertEqual(len(r.fields), 3)
 
         self.assertEqual(r.fields[0].id, 1)
         self.assertEqual(r.fields[0].name, "opt_field")
@@ -68,32 +68,24 @@ class ReflectionTests(unittest.TestCase):
             r.fields[0].annotations, {"some": "annotation", "a.b.c": "d.e.f"}
         )
 
-        self.assertEqual(r.fields[1].id, 2)
-        self.assertEqual(r.fields[1].name, "req_field")
+        self.assertEqual(r.fields[1].id, 3)
+        self.assertEqual(r.fields[1].name, "unq_field")
         self.assertEqual(r.fields[1].type, str)
-        self.assertEqual(r.fields[0].kind, NumberType.NOT_A_NUMBER)
-        self.assertEqual(r.fields[1].qualifier, Qualifier.REQUIRED)
-        self.assertEqual(r.fields[1].default, None)
+        self.assertEqual(r.fields[1].kind, NumberType.NOT_A_NUMBER)
+        self.assertEqual(r.fields[1].qualifier, Qualifier.UNQUALIFIED)
+        self.assertEqual(r.fields[1].default, "xyzzy")
         self.assertEqual(r.fields[1].annotations, {})
 
-        self.assertEqual(r.fields[2].id, 3)
-        self.assertEqual(r.fields[2].name, "unq_field")
-        self.assertEqual(r.fields[2].type, str)
-        self.assertEqual(r.fields[0].kind, NumberType.NOT_A_NUMBER)
+        self.assertEqual(r.fields[2].id, 4)
+        self.assertEqual(r.fields[2].name, "struct_field")
+        self.assertEqual(r.fields[2].type, Runtime)
+        self.assertEqual(r.fields[2].kind, NumberType.NOT_A_NUMBER)
         self.assertEqual(r.fields[2].qualifier, Qualifier.UNQUALIFIED)
-        self.assertEqual(r.fields[2].default, "xyzzy")
-        self.assertEqual(r.fields[2].annotations, {})
-
-        self.assertEqual(r.fields[3].id, 4)
-        self.assertEqual(r.fields[3].name, "struct_field")
-        self.assertEqual(r.fields[3].type, Runtime)
-        self.assertEqual(r.fields[0].kind, NumberType.NOT_A_NUMBER)
-        self.assertEqual(r.fields[3].qualifier, Qualifier.UNQUALIFIED)
         self.assertEqual(
-            r.fields[3].default,
+            r.fields[2].default,
             Runtime(bool_val=True, enum_val=Color.blue, int_list_val=[10, 20, 30]),
         )
-        self.assertEqual(r.fields[3].annotations, {})
+        self.assertEqual(r.fields[2].annotations, {})
 
     def test_union(self) -> None:
         x = Integers(large=100)

@@ -496,6 +496,26 @@ class RocketClient : public virtual folly::DelayedDestruction,
       CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame);
 
   template <typename CallbackType>
+  StreamChannelStatusResponse handleFirstResponse(
+      CallbackType& serverCallback,
+      Payload&& fullPayload,
+      bool next,
+      bool complete);
+
+  template <typename CallbackType>
+  StreamChannelStatusResponse handleStreamResponse(
+      CallbackType& serverCallback,
+      Payload&& fullPayload,
+      bool next,
+      bool complete);
+
+  StreamChannelStatusResponse handleSinkResponse(
+      RocketSinkServerCallback& serverCallback,
+      Payload&& fullPayload,
+      bool next,
+      bool complete);
+
+  template <typename CallbackType>
   StreamChannelStatusResponse handleErrorFrame(
       CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame);
 

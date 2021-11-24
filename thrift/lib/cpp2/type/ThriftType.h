@@ -14,235 +14,191 @@
  * limitations under the License.
  */
 
-// Utilities for describing the 'shape' of thrift types at compile-time.
+#pragma once
+
+#include <type_traits>
+
+// Type tags for describing the 'shape' of thrift types at compile-time.
 //
 // _t indicates a concrete type.
 // _c indicates a class of types.
-// no sufix means it is dependent on the parameters.
+// no suffix means it is dependent on the parameters.
 //
-// TODO(afuller): Lots more docs (for now see tests for usage).
-// TODO(afuller): Split the traits out of the tag classes, so
-// `type::bool_t::getName()` becomes `type::getName<type::bool_t>()`.
-#pragma once
-
-#include <thrift/lib/cpp2/type/detail/ThriftType.h>
-
-#include <cstddef>
-#include <stdexcept>
-#include <string>
-#include <string_view>
-
-#include <fatal/type/cat.h>
-#include <folly/Range.h>
-#include <folly/io/IOBuf.h>
-#include <thrift/lib/cpp/protocol/TType.h>
-
+// For example, `type::list_c` represents a list of any type,
+// `type::list<type::enum_c>` represents a list of any enum type, and
+// `type::list<type::enum_t<MyEnum>>` represents a list of MyEnums.
 namespace apache::thrift::type {
 
-// Type tags for all primitive types.
-using bool_t = detail::primitive_type<BaseType::Bool, bool>;
-using byte_t = detail::primitive_type<BaseType::Byte, int8_t, uint8_t>;
-using i16_t = detail::primitive_type<BaseType::I16, int16_t, uint16_t>;
-using i32_t = detail::primitive_type<BaseType::I32, int32_t, uint32_t>;
-using i64_t = detail::primitive_type<BaseType::I64, int64_t, uint64_t>;
-using float_t = detail::primitive_type<BaseType::Float, float>;
-using double_t = detail::primitive_type<BaseType::Double, double>;
-using string_t = detail::primitive_type<
-    BaseType::String,
-    std::string,
-    std::string_view,
-    folly::StringPiece>;
-using binary_t = detail::primitive_type<
-    BaseType::Binary,
-    std::string,
-    folly::IOBuf,
-    folly::ByteRange>;
+namespace detail {
+// A place holder for the default template for a container.
+template <typename...>
+struct DefaultT;
+} // namespace detail
+
+// Type tags for types that are always concrete (_t suffix).
+struct void_t {};
+struct bool_t {};
+struct byte_t {};
+struct i16_t {};
+struct i32_t {};
+struct i64_t {};
+struct float_t {};
+struct double_t {};
+struct string_t {};
+struct binary_t {};
 
 // The enum class of types.
-using enum_c = detail::base_type<BaseType::Enum>;
-template <typename E>
-using enum_t = detail::cpp_type<BaseType::Enum, E>;
+struct enum_c {};
+// A concrete enum type.
+template <typename T>
+struct enum_t {};
 
 // The struct class of types.
-using struct_c = detail::base_type<BaseType::Struct>;
+struct struct_c {};
+// A concrete struct type.
 template <typename T>
-using struct_t = detail::cpp_type<BaseType::Struct, T>;
+struct struct_t {};
 
 // The union class of types.
-using union_c = detail::base_type<BaseType::Union>;
+struct union_c {};
 template <typename T>
-using union_t = detail::cpp_type<BaseType::Union, T>;
+struct union_t {};
 
 // The exception class of types.
-using exception_c = detail::base_type<BaseType::Exception>;
+struct exception_c {};
 template <typename T>
-using exception_t = detail::cpp_type<BaseType::Exception, T>;
+struct exception_t {};
 
 // The list class of types.
-using list_c = detail::base_type<BaseType::List>;
-template <typename VT>
-using list = detail::list<VT>;
+struct list_c {};
+template <
+    typename ValTag,
+    template <typename...> typename ListT = detail::DefaultT>
+struct list {};
 
 // The set class of types.
-using set_c = detail::base_type<BaseType::Set>;
-template <typename VT>
-using set = detail::set<VT>;
+struct set_c {};
+template <
+    typename KeyTag,
+    template <typename...> typename SetT = detail::DefaultT>
+struct set {};
 
 // The map class of types.
-using map_c = detail::base_type<BaseType::Map>;
-template <typename KT, typename VT>
-using map = detail::map<KT, VT>;
+struct map_c {};
+template <
+    typename KeyTag,
+    typename ValTag,
+    template <typename...> typename MapT = detail::DefaultT>
+struct map {};
+
+// An adapted type.
+template <typename Adapter, typename Tag>
+struct adapted {};
 
 // If a given type tag refers to concrete type and not a class of types.
+//
 // For example:
-//     is_concrete_type_v<type::byte_t> -> true
-//     is_concrete_type_v<type::list_c> -> false
-//     is_concrete_type_v<type::list<type::byte_t>> -> true
-//     is_concrete_type_v<type::list<type::struct_c>> -> false
+//     is_concrete_v<byte_t> -> true
+//     is_concrete_v<list_c> -> false
+//     is_concrete_v<list<byte_t>> -> true
+//     is_concrete_v<list<struct_c>> -> false
+template <typename Tag>
+struct is_concrete : std::false_type {};
+template <typename Tag>
+constexpr bool is_concrete_v = is_concrete<Tag>::value;
+
+// If a given Thrift type tag is wellformed.
+//
+// For example:
+//     is_thrift_type_tag_v<int> -> false
+//     is_thrift_type_tag_v<byte_t> -> true
+//     is_thrift_type_tag_v<list_c> -> true
+//     is_thrift_type_tag_v<list<Foo>> -> false
+//     is_thrift_type_tag_v<list<byte_t>> -> true
+//     is_thrift_type_tag_v<list<struct_c>> -> true
+template <typename Tag>
+struct is_thrift_type_tag : is_concrete<Tag> {};
+template <typename Tag>
+constexpr bool is_thrift_type_tag_v = is_thrift_type_tag<Tag>::value;
+
+////
+// Implemnation details
+
+template <>
+struct is_concrete<void_t> : std::true_type {};
+template <>
+struct is_concrete<bool_t> : std::true_type {};
+template <>
+struct is_concrete<byte_t> : std::true_type {};
+template <>
+struct is_concrete<i16_t> : std::true_type {};
+template <>
+struct is_concrete<i32_t> : std::true_type {};
+template <>
+struct is_concrete<i64_t> : std::true_type {};
+template <>
+struct is_concrete<float_t> : std::true_type {};
+template <>
+struct is_concrete<double_t> : std::true_type {};
+template <>
+struct is_concrete<string_t> : std::true_type {};
+template <>
+struct is_concrete<binary_t> : std::true_type {};
+
 template <typename T>
-using is_concrete_type = detail::is_concrete_type<T>;
+struct is_concrete<enum_t<T>> : std::true_type {};
 template <typename T>
-inline constexpr bool is_concrete_type_v = is_concrete_type<T>::value;
-template <typename T, typename R = void>
-using if_concrete = std::enable_if<is_concrete_type_v<T>, R>;
+struct is_concrete<struct_t<T>> : std::true_type {};
+template <typename T>
+struct is_concrete<union_t<T>> : std::true_type {};
+template <typename T>
+struct is_concrete<exception_t<T>> : std::true_type {};
 
-namespace bound {
-struct is_concrete_type {
-  template <typename T>
-  using apply = detail::is_concrete_type<T>;
-};
-} // namespace bound
+template <typename ValTag, template <typename...> typename ListT>
+struct is_concrete<list<ValTag, ListT>> : is_concrete<ValTag> {};
 
-// Useful groupings of primitive types.
-using integral_types = detail::types<
-    type::bool_t,
-    type::byte_t,
-    type::i16_t,
-    type::i32_t,
-    type::i64_t,
-    type::enum_c>;
-using floating_point_types = detail::types<type::float_t, type::double_t>;
-using numeric_types = fatal::cat<integral_types, floating_point_types>;
-using string_types = detail::types<type::string_t, type::binary_t>;
+template <typename KeyTag, template <typename...> typename SetT>
+struct is_concrete<set<KeyTag, SetT>> : is_concrete<KeyTag> {};
+template <
+    typename KeyTag,
+    typename ValTag,
+    template <typename...>
+    typename MapT>
+struct is_concrete<map<KeyTag, ValTag, MapT>>
+    : std::bool_constant<is_concrete_v<KeyTag> && is_concrete_v<ValTag>> {};
 
-// All primitive types.
-using primitive_types = fatal::cat<numeric_types, string_types>;
+template <typename Adapter, typename Tag>
+struct is_concrete<adapted<Adapter, Tag>> : is_concrete<Tag> {};
 
-// All structured types.
-using structured_types =
-    detail::types<type::struct_c, type::union_c, type::exception_c>;
+template <>
+struct is_thrift_type_tag<enum_c> : std::true_type {};
+template <>
+struct is_thrift_type_tag<struct_c> : std::true_type {};
+template <>
+struct is_thrift_type_tag<union_c> : std::true_type {};
+template <>
+struct is_thrift_type_tag<exception_c> : std::true_type {};
+template <>
+struct is_thrift_type_tag<list_c> : std::true_type {};
+template <>
+struct is_thrift_type_tag<set_c> : std::true_type {};
+template <>
+struct is_thrift_type_tag<map_c> : std::true_type {};
 
-// Types that are a single value.
-using singular_types = fatal::cat<primitive_types, structured_types>;
-// Types that are containers of other types.
-using container_types = detail::types<type::list_c, type::set_c, type::map_c>;
-// Types that are composites of other types.
-using composite_types = fatal::cat<structured_types, container_types>;
-// All types.
-using all_types = fatal::cat<singular_types, container_types>;
+template <typename ValTag, template <typename...> typename ListT>
+struct is_thrift_type_tag<list<ValTag, ListT>> : is_thrift_type_tag<ValTag> {};
+template <typename KeyTag, template <typename...> typename SetT>
+struct is_thrift_type_tag<set<KeyTag, SetT>> : is_thrift_type_tag<KeyTag> {};
+template <
+    typename KeyTag,
+    typename ValTag,
+    template <typename...>
+    typename MapT>
+struct is_thrift_type_tag<map<KeyTag, ValTag, MapT>>
+    : std::bool_constant<
+          is_thrift_type_tag_v<KeyTag> && is_thrift_type_tag_v<ValTag>> {};
 
-// Types that are only defined if the given type belongs to the
-// given group.
-template <typename T, typename R = void>
-using if_integral = detail::if_contains<integral_types, T, R>;
-template <typename T, typename R = void>
-using if_floating_point = detail::if_contains<floating_point_types, T, R>;
-template <typename T, typename R = void>
-using if_numeric = detail::if_contains<numeric_types, T, R>;
-template <typename T, typename R = void>
-using if_string = detail::if_contains<string_types, T, R>;
-template <typename T, typename R = void>
-using if_primitive = detail::if_contains<primitive_types, T, R>;
-template <typename T, typename R = void>
-using if_structured = detail::if_contains<structured_types, T, R>;
-template <typename T, typename R = void>
-using if_singular = detail::if_contains<singular_types, T, R>;
-template <typename T, typename R = void>
-using if_container = detail::if_contains<container_types, T, R>;
-template <typename T, typename R = void>
-using if_composite = detail::if_contains<composite_types, T, R>;
-
-// Only defined if T has the BaseType B.
-template <typename T, BaseType B, typename R = void>
-using if_base_type = std::enable_if_t<B == T::kBaseType, R>;
-
-constexpr inline TType toTType(BaseType type) {
-  switch (type) {
-    case BaseType::Void:
-      return TType::T_VOID;
-    case BaseType::Bool:
-      return TType::T_BOOL;
-    case BaseType::Byte:
-      return TType::T_BYTE;
-    case BaseType::I16:
-      return TType::T_I16;
-    case BaseType::Enum:
-    case BaseType::I32:
-      return TType::T_I32;
-    case BaseType::I64:
-      return TType::T_I64;
-    case BaseType::Double:
-      return TType::T_DOUBLE;
-    case BaseType::Float:
-      return TType::T_FLOAT;
-    case BaseType::String:
-      return TType::T_UTF8;
-    case BaseType::Binary:
-      return TType::T_STRING;
-
-    case BaseType::List:
-      return TType::T_LIST;
-    case BaseType::Set:
-      return TType::T_SET;
-    case BaseType::Map:
-      return TType::T_MAP;
-
-    case BaseType::Struct:
-      return TType::T_STRUCT;
-    case BaseType::Union:
-      return TType::T_STRUCT;
-    case BaseType::Exception:
-      return TType::T_STRUCT;
-    default:
-      folly::throw_exception<std::invalid_argument>(
-          "Unsupported conversion from: " + std::to_string((int)type));
-  }
-}
-
-constexpr inline BaseType toThriftBaseType(TType type) {
-  switch (type) {
-    case TType::T_BOOL:
-      return BaseType::Bool;
-    case TType::T_BYTE:
-      return BaseType::Byte;
-    case TType::T_I16:
-      return BaseType::I16;
-    case TType::T_I32:
-      return BaseType::I32;
-    case TType::T_I64:
-      return BaseType::I64;
-    case TType::T_DOUBLE:
-      return BaseType::Double;
-    case TType::T_FLOAT:
-      return BaseType::Float;
-    case TType::T_LIST:
-      return BaseType::List;
-    case TType::T_MAP:
-      return BaseType::Map;
-    case TType::T_SET:
-      return BaseType::Set;
-    case TType::T_STRING:
-      return BaseType::Binary;
-    case TType::T_STRUCT:
-      return BaseType::Struct;
-    case TType::T_UTF8:
-      return BaseType::String;
-    case TType::T_VOID:
-      return BaseType::Void;
-    default:
-      folly::throw_exception<std::invalid_argument>(
-          "Unsupported conversion from: " + std::to_string(type));
-  }
-}
+template <typename Adapter, typename Tag>
+struct is_thrift_type_tag<adapted<Adapter, Tag>> : is_thrift_type_tag<Tag> {};
 
 } // namespace apache::thrift::type

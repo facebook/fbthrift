@@ -103,17 +103,17 @@ class const_checker {
     ctx_.warning(node_, std::forward<Args>(args)...);
   }
 
-  void report_value_precision_warning() {
-    warning([&](auto& o) {
+  void report_value_precision() {
+    failure([&](auto& o) {
       o << "value error: const `" << name_
-        << "` cannot be represented precisely as `float` or `double`. This will become an error in future versions of thrift.";
+        << "` cannot be represented precisely as `float` or `double`.";
     });
   }
 
-  void report_value_mistmatch_warning() {
-    warning([&](auto& o) {
+  void report_value_mistmatch() {
+    failure([&](auto& o) {
       o << "value error: const `" << name_
-        << "` has an invalid custom default value. This will become an error in future versions of thrift.";
+        << "` has an invalid custom default value.";
     });
   }
 
@@ -150,25 +150,25 @@ class const_checker {
       case t_base_type::type::t_i32:
         if (value->get_type() == t_const_value::CV_INTEGER &&
             !detail::is_valid_custom_default_integer(type, value)) {
-          report_value_mistmatch_warning();
+          report_value_mistmatch();
         }
         break;
       case t_base_type::type::t_float:
         if (value->get_type() == t_const_value::CV_DOUBLE &&
             !detail::is_valid_custom_default_float(value)) {
-          report_value_mistmatch_warning();
+          report_value_mistmatch();
         }
         if (value->get_type() == t_const_value::CV_INTEGER &&
             !detail::is_valid_custom_default_float_with_integer_value<float>(
                 value)) {
-          report_value_precision_warning();
+          report_value_precision();
         }
         break;
       case t_base_type::type::t_double:
         if (value->get_type() == t_const_value::CV_INTEGER &&
             !detail::is_valid_custom_default_float_with_integer_value<double>(
                 value)) {
-          report_value_precision_warning();
+          report_value_precision();
         }
         break;
       default:
@@ -288,7 +288,6 @@ class const_checker {
         continue;
       }
       const t_type* field_type = &field->type().deref();
-
       const_checker(ctx_, node_, name_ + "." + entry.first->get_string())
           .check(field_type, entry.second);
     }

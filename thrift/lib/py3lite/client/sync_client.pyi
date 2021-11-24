@@ -16,14 +16,14 @@ import types
 import typing
 
 from thrift.py3lite.client.request_channel import RequestChannel
-from thrift.py3lite.serializer import Protocol
 from thrift.py3lite.types import Struct, Union
 
+TSyncClient = typing.TypeVar("TSyncClient", bound="SyncClient")
 StructOrUnion = typing.TypeVar("StructOrUnion", bound=typing.Union[Struct, Union])
 
 class SyncClient:
     def __init__(self, channel: RequestChannel, service_name: str) -> None: ...
-    def __enter__() -> SyncClient: ...
+    def __enter__(self: TSyncClient) -> TSyncClient: ...
     def __exit__(
         self,
         type: typing.Type[Exception],
@@ -32,24 +32,9 @@ class SyncClient:
     ) -> None: ...
     def _send_request(
         self,
+        service_name: str,
         function_name: str,
         args: Struct,
-        response_cls: typing.Type[StructOrUnion],
+        response_cls: typing.Optional[typing.Type[StructOrUnion]],
     ) -> StructOrUnion: ...
-
-TClient = TypeVar("TClient", bound="SyncClient")
-
-class ClientType(Enum):
-    THRIFT_HEADER_CLIENT_TYPE: ClientType = ...
-    THRIFT_ROCKET_CLIENT_TYPE: ClientType = ...
-
-def get_client(
-    clientKlass: Type[TClient],
-    *,
-    host: Optional[str] = ...,
-    port: Optional[int] = ...,
-    path: Optional[str] = ...,
-    timeout: float = ...,
-    client_type: ClientType = ...,
-    protocol: Protocol = ...,
-) -> TClient: ...
+    def set_persistent_header(self, key: str, value: str) -> None: ...

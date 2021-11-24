@@ -22,7 +22,7 @@ from thrift.py3.types cimport const_pointer_cast
 cdef class __Foo_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __Foo_FieldsSetter create(_module_types.cFoo* struct_cpp_obj):
+    cdef __Foo_FieldsSetter _fbthrift_create(_module_types.cFoo* struct_cpp_obj):
         cdef __Foo_FieldsSetter __fbthrift_inst = __Foo_FieldsSetter.__new__(__Foo_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"intField")] = __Foo_FieldsSetter._set_field_0
@@ -114,7 +114,7 @@ cdef class __Foo_FieldsSetter(__StructFieldsSetter):
 cdef class __Bar_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __Bar_FieldsSetter create(_module_types.cBar* struct_cpp_obj):
+    cdef __Bar_FieldsSetter _fbthrift_create(_module_types.cBar* struct_cpp_obj):
         cdef __Bar_FieldsSetter __fbthrift_inst = __Bar_FieldsSetter.__new__(__Bar_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"structField")] = __Bar_FieldsSetter._set_field_0
@@ -187,7 +187,7 @@ cdef class __Bar_FieldsSetter(__StructFieldsSetter):
 cdef class __StructWithFieldAdapter_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __StructWithFieldAdapter_FieldsSetter create(_module_types.cStructWithFieldAdapter* struct_cpp_obj):
+    cdef __StructWithFieldAdapter_FieldsSetter _fbthrift_create(_module_types.cStructWithFieldAdapter* struct_cpp_obj):
         cdef __StructWithFieldAdapter_FieldsSetter __fbthrift_inst = __StructWithFieldAdapter_FieldsSetter.__new__(__StructWithFieldAdapter_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"field")] = __StructWithFieldAdapter_FieldsSetter._set_field_0

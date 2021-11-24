@@ -92,7 +92,7 @@ class Foo final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> bar_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{std::move(this->bar)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->bar)};
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -102,7 +102,7 @@ class Foo final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> bar_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{std::move(this->bar)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->bar)};
   }
 
   ::std::int32_t get_bar() const {

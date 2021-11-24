@@ -25,12 +25,12 @@ from thrift.py3.types cimport (
 
 
 cdef __StructSpec get_reflection__Empty():
-    cdef _module_types.Empty defaults = _module_types.Empty.create(
+    cdef _module_types.Empty defaults = _module_types.Empty._fbthrift_create(
         constant_shared_ptr[_module_types.cEmpty](
             default_inst[_module_types.cEmpty]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="Empty",
         kind=__StructType.STRUCT,
         annotations={
@@ -38,19 +38,19 @@ cdef __StructSpec get_reflection__Empty():
     )
     return spec
 cdef __StructSpec get_reflection__ASimpleStruct():
-    cdef _module_types.ASimpleStruct defaults = _module_types.ASimpleStruct.create(
+    cdef _module_types.ASimpleStruct defaults = _module_types.ASimpleStruct._fbthrift_create(
         constant_shared_ptr[_module_types.cASimpleStruct](
             default_inst[_module_types.cASimpleStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="ASimpleStruct",
         kind=__StructType.STRUCT,
         annotations={
             """no_default_comparators""": """1""",        },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="boolField",
             type=int,
@@ -63,19 +63,19 @@ cdef __StructSpec get_reflection__ASimpleStruct():
     )
     return spec
 cdef __StructSpec get_reflection__ASimpleStructNoexcept():
-    cdef _module_types.ASimpleStructNoexcept defaults = _module_types.ASimpleStructNoexcept.create(
+    cdef _module_types.ASimpleStructNoexcept defaults = _module_types.ASimpleStructNoexcept._fbthrift_create(
         constant_shared_ptr[_module_types.cASimpleStructNoexcept](
             default_inst[_module_types.cASimpleStructNoexcept]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="ASimpleStructNoexcept",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="boolField",
             type=int,
@@ -88,19 +88,19 @@ cdef __StructSpec get_reflection__ASimpleStructNoexcept():
     )
     return spec
 cdef __StructSpec get_reflection__MyStruct():
-    cdef _module_types.MyStruct defaults = _module_types.MyStruct.create(
+    cdef _module_types.MyStruct defaults = _module_types.MyStruct._fbthrift_create(
         constant_shared_ptr[_module_types.cMyStruct](
             default_inst[_module_types.cMyStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="MyStruct",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="MyBoolField",
             type=bool,
@@ -112,7 +112,7 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="MyIntField",
             type=int,
@@ -124,7 +124,7 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=3,
             name="MyStringField",
             type=str,
@@ -136,7 +136,7 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=4,
             name="MyStringField2",
             type=str,
@@ -148,7 +148,7 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=5,
             name="MyBinaryField",
             type=bytes,
@@ -160,7 +160,7 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=6,
             name="MyBinaryField2",
             type=bytes,
@@ -172,7 +172,7 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=7,
             name="MyBinaryField3",
             type=bytes,
@@ -184,7 +184,7 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=8,
             name="MyBinaryListField4",
             type=_module_types.List__binary,
@@ -196,7 +196,7 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=9,
             name="MyMapEnumAndInt",
             type=_module_types.Map__MyEnumA_string,
@@ -208,7 +208,7 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=10,
             name="MyCustomField",
             type=bytes,
@@ -220,7 +220,7 @@ cdef __StructSpec get_reflection__MyStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=11,
             name="MyOptCustomField",
             type=bytes,
@@ -233,14 +233,14 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     return spec
 cdef __StructSpec get_reflection__SimpleUnion():
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="SimpleUnion",
         kind=__StructType.UNION,
         annotations={
             """cpp.virtual""": """1""",        },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=7,
             name="intValue",
             type=int,
@@ -252,7 +252,7 @@ cdef __StructSpec get_reflection__SimpleUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="stringValue",
             type=str,
@@ -265,14 +265,14 @@ cdef __StructSpec get_reflection__SimpleUnion():
     )
     return spec
 cdef __StructSpec get_reflection__ComplexUnion():
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="ComplexUnion",
         kind=__StructType.UNION,
         annotations={
             """cpp.methods""": """void foo(const std::string& bar) {}""",        },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="intValue",
             type=int,
@@ -284,7 +284,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=201,
             name="opt_intValue",
             type=int,
@@ -296,7 +296,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=3,
             name="stringValue",
             type=str,
@@ -308,7 +308,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=203,
             name="opt_stringValue",
             type=str,
@@ -320,7 +320,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=4,
             name="intValue2",
             type=int,
@@ -332,7 +332,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=6,
             name="intValue3",
             type=int,
@@ -344,7 +344,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=7,
             name="doubelValue",
             type=float,
@@ -356,7 +356,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=8,
             name="boolValue",
             type=bool,
@@ -368,7 +368,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=9,
             name="union_list",
             type=_module_types.List__i32,
@@ -380,7 +380,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=10,
             name="union_set",
             type=_module_types.Set__i64,
@@ -392,7 +392,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=11,
             name="union_map",
             type=_module_types.Map__string_i32,
@@ -404,7 +404,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=211,
             name="opt_union_map",
             type=_module_types.Map__string_i32,
@@ -416,7 +416,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=12,
             name="enum_field",
             type=_module_types.MyEnumA,
@@ -428,7 +428,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=13,
             name="enum_container",
             type=_module_types.List__MyEnumA,
@@ -440,7 +440,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=14,
             name="a_struct",
             type=_module_types.MyStruct,
@@ -452,7 +452,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=15,
             name="a_set_struct",
             type=_module_types.Set__MyStruct,
@@ -464,7 +464,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=16,
             name="a_union",
             type=_module_types.SimpleUnion,
@@ -476,7 +476,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=216,
             name="opt_a_union",
             type=_module_types.SimpleUnion,
@@ -488,7 +488,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=17,
             name="a_union_list",
             type=_module_types.List__SimpleUnion,
@@ -500,7 +500,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=18,
             name="a_union_typedef",
             type=_module_types.Set__SimpleUnion,
@@ -512,7 +512,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=19,
             name="a_union_typedef_list",
             type=_module_types.List__Set__SimpleUnion,
@@ -524,7 +524,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=20,
             name="MyBinaryField",
             type=bytes,
@@ -536,7 +536,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=21,
             name="MyBinaryField2",
             type=bytes,
@@ -548,7 +548,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=23,
             name="MyBinaryListField4",
             type=_module_types.List__binary,
@@ -560,7 +560,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=24,
             name="ref_field",
             type=_module_types.MyStruct,
@@ -572,7 +572,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=25,
             name="ref_field2",
             type=_module_types.MyStruct,
@@ -584,7 +584,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=26,
             name="excp_field",
             type=_module_types.AnException,
@@ -596,7 +596,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=27,
             name="MyCustomField",
             type=bytes,
@@ -609,19 +609,19 @@ cdef __StructSpec get_reflection__ComplexUnion():
     )
     return spec
 cdef __StructSpec get_reflection__AnException():
-    cdef _module_types.AnException defaults = _module_types.AnException.create(
+    cdef _module_types.AnException defaults = _module_types.AnException._fbthrift_create(
         constant_shared_ptr[_module_types.cAnException](
             default_inst[_module_types.cAnException]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="AnException",
         kind=__StructType.EXCEPTION,
         annotations={
             """message""": """message2""",        },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="code",
             type=int,
@@ -633,7 +633,7 @@ cdef __StructSpec get_reflection__AnException():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=101,
             name="req_code",
             type=int,
@@ -645,7 +645,7 @@ cdef __StructSpec get_reflection__AnException():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="message2",
             type=str,
@@ -657,7 +657,7 @@ cdef __StructSpec get_reflection__AnException():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=102,
             name="req_message",
             type=str,
@@ -669,7 +669,7 @@ cdef __StructSpec get_reflection__AnException():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=3,
             name="exception_list",
             type=_module_types.List__i32,
@@ -681,7 +681,7 @@ cdef __StructSpec get_reflection__AnException():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=4,
             name="exception_set",
             type=_module_types.Set__i64,
@@ -693,7 +693,7 @@ cdef __StructSpec get_reflection__AnException():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=5,
             name="exception_map",
             type=_module_types.Map__string_i32,
@@ -705,7 +705,7 @@ cdef __StructSpec get_reflection__AnException():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=105,
             name="req_exception_map",
             type=_module_types.Map__string_i32,
@@ -717,7 +717,7 @@ cdef __StructSpec get_reflection__AnException():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=6,
             name="enum_field",
             type=_module_types.MyEnumA,
@@ -729,7 +729,7 @@ cdef __StructSpec get_reflection__AnException():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=7,
             name="enum_container",
             type=_module_types.List__MyEnumA,
@@ -741,7 +741,7 @@ cdef __StructSpec get_reflection__AnException():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=8,
             name="a_struct",
             type=_module_types.MyStruct,
@@ -753,7 +753,7 @@ cdef __StructSpec get_reflection__AnException():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=9,
             name="a_set_struct",
             type=_module_types.Set__MyStruct,
@@ -765,7 +765,7 @@ cdef __StructSpec get_reflection__AnException():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=10,
             name="a_union_list",
             type=_module_types.List__SimpleUnion,
@@ -777,7 +777,7 @@ cdef __StructSpec get_reflection__AnException():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=11,
             name="union_typedef",
             type=_module_types.Set__SimpleUnion,
@@ -789,7 +789,7 @@ cdef __StructSpec get_reflection__AnException():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=19,
             name="a_union_typedef_list",
             type=_module_types.List__Set__SimpleUnion,
@@ -801,7 +801,7 @@ cdef __StructSpec get_reflection__AnException():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=20,
             name="MyCustomField",
             type=bytes,
@@ -813,7 +813,7 @@ cdef __StructSpec get_reflection__AnException():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=21,
             name="MyOptCustomField",
             type=bytes,
@@ -826,19 +826,19 @@ cdef __StructSpec get_reflection__AnException():
     )
     return spec
 cdef __StructSpec get_reflection__AnotherException():
-    cdef _module_types.AnotherException defaults = _module_types.AnotherException.create(
+    cdef _module_types.AnotherException defaults = _module_types.AnotherException._fbthrift_create(
         constant_shared_ptr[_module_types.cAnotherException](
             default_inst[_module_types.cAnotherException]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="AnotherException",
         kind=__StructType.EXCEPTION,
         annotations={
             """cpp.virtual""": """1""",        },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="code",
             type=int,
@@ -850,7 +850,7 @@ cdef __StructSpec get_reflection__AnotherException():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=101,
             name="req_code",
             type=int,
@@ -862,7 +862,7 @@ cdef __StructSpec get_reflection__AnotherException():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="message",
             type=str,
@@ -875,19 +875,19 @@ cdef __StructSpec get_reflection__AnotherException():
     )
     return spec
 cdef __StructSpec get_reflection__containerStruct():
-    cdef _module_types.containerStruct defaults = _module_types.containerStruct.create(
+    cdef _module_types.containerStruct defaults = _module_types.containerStruct._fbthrift_create(
         constant_shared_ptr[_module_types.ccontainerStruct](
             default_inst[_module_types.ccontainerStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="containerStruct",
         kind=__StructType.STRUCT,
         annotations={
             """cpp.methods""": """void foo(const std::string& bar) {}""",            """cpp.noncopyable""": """1""",        },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="fieldA",
             type=bool,
@@ -899,7 +899,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=101,
             name="req_fieldA",
             type=bool,
@@ -911,7 +911,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=201,
             name="opt_fieldA",
             type=bool,
@@ -923,7 +923,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="fieldB",
             type=_module_types.Map__string_bool,
@@ -935,7 +935,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=102,
             name="req_fieldB",
             type=_module_types.Map__string_bool,
@@ -947,7 +947,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=202,
             name="opt_fieldB",
             type=_module_types.Map__string_bool,
@@ -959,7 +959,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=3,
             name="fieldC",
             type=_module_types.Set__i32,
@@ -971,7 +971,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=103,
             name="req_fieldC",
             type=_module_types.Set__i32,
@@ -983,7 +983,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=203,
             name="opt_fieldC",
             type=_module_types.Set__i32,
@@ -995,7 +995,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=4,
             name="fieldD",
             type=str,
@@ -1007,7 +1007,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=5,
             name="fieldE",
             type=str,
@@ -1019,7 +1019,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=105,
             name="req_fieldE",
             type=str,
@@ -1031,7 +1031,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=205,
             name="opt_fieldE",
             type=str,
@@ -1043,7 +1043,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=6,
             name="fieldF",
             type=_module_types.List__List__i32,
@@ -1055,7 +1055,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=7,
             name="fieldG",
             type=_module_types.Map__string_Map__string_Map__string_i32,
@@ -1067,7 +1067,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=8,
             name="fieldH",
             type=_module_types.List__Set__i32,
@@ -1079,7 +1079,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=9,
             name="fieldI",
             type=bool,
@@ -1091,7 +1091,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=10,
             name="fieldJ",
             type=_module_types.Map__string_List__i32,
@@ -1103,7 +1103,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=11,
             name="fieldK",
             type=_module_types.List__List__List__List__i32,
@@ -1115,7 +1115,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=12,
             name="fieldL",
             type=_module_types.Set__Set__Set__bool,
@@ -1127,7 +1127,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=13,
             name="fieldM",
             type=_module_types.Map__Set__List__i32_Map__List__Set__string_string,
@@ -1139,7 +1139,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=14,
             name="fieldN",
             type=int,
@@ -1151,7 +1151,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=15,
             name="fieldO",
             type=_module_types.List__Map__Empty_MyStruct,
@@ -1163,7 +1163,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=16,
             name="fieldP",
             type=_module_types.List__List__List__Map__Empty_MyStruct,
@@ -1175,7 +1175,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=17,
             name="fieldQ",
             type=_module_types.MyEnumA,
@@ -1187,7 +1187,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=18,
             name="fieldR",
             type=_module_types.MyEnumA,
@@ -1199,7 +1199,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=118,
             name="req_fieldR",
             type=_module_types.MyEnumA,
@@ -1211,7 +1211,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=218,
             name="opt_fieldR",
             type=_module_types.MyEnumA,
@@ -1223,7 +1223,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=19,
             name="fieldS",
             type=_module_types.MyEnumA,
@@ -1235,7 +1235,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=21,
             name="fieldT",
             type=_module_types.List__MyEnumA,
@@ -1247,7 +1247,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=22,
             name="fieldU",
             type=_module_types.List__MyEnumA,
@@ -1259,7 +1259,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=23,
             name="fieldV",
             type=_module_types.MyStruct,
@@ -1271,7 +1271,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=123,
             name="req_fieldV",
             type=_module_types.MyStruct,
@@ -1283,7 +1283,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=223,
             name="opt_fieldV",
             type=_module_types.MyStruct,
@@ -1295,7 +1295,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=24,
             name="fieldW",
             type=_module_types.Set__MyStruct,
@@ -1307,7 +1307,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=25,
             name="fieldX",
             type=_module_types.ComplexUnion,
@@ -1319,7 +1319,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=125,
             name="req_fieldX",
             type=_module_types.ComplexUnion,
@@ -1331,7 +1331,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=225,
             name="opt_fieldX",
             type=_module_types.ComplexUnion,
@@ -1343,7 +1343,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=26,
             name="fieldY",
             type=_module_types.List__ComplexUnion,
@@ -1355,7 +1355,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=27,
             name="fieldZ",
             type=_module_types.Set__SimpleUnion,
@@ -1367,7 +1367,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=28,
             name="fieldAA",
             type=_module_types.List__Set__SimpleUnion,
@@ -1379,7 +1379,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=29,
             name="fieldAB",
             type=_module_types.Map__Bar__double_Baz__i32,
@@ -1391,7 +1391,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=30,
             name="fieldAC",
             type=_module_types.MyEnumB,
@@ -1403,7 +1403,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=31,
             name="fieldAD",
             type=_includes_types.AnEnum,
@@ -1415,7 +1415,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=32,
             name="fieldAE",
             type=_module_types.Map__string_i32,
@@ -1427,7 +1427,7 @@ cdef __StructSpec get_reflection__containerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=33,
             name="fieldSD",
             type=str,
@@ -1440,19 +1440,19 @@ cdef __StructSpec get_reflection__containerStruct():
     )
     return spec
 cdef __StructSpec get_reflection__MyIncludedStruct():
-    cdef _module_types.MyIncludedStruct defaults = _module_types.MyIncludedStruct.create(
+    cdef _module_types.MyIncludedStruct defaults = _module_types.MyIncludedStruct._fbthrift_create(
         constant_shared_ptr[_module_types.cMyIncludedStruct](
             default_inst[_module_types.cMyIncludedStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="MyIncludedStruct",
         kind=__StructType.STRUCT,
         annotations={
             """cpp2.declare_equal_to""": """1""",            """cpp2.declare_hash""": """1""",        },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="MyIncludedInt",
             type=int,
@@ -1464,7 +1464,7 @@ cdef __StructSpec get_reflection__MyIncludedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="MyIncludedStruct",
             type=_includes_types.AStruct,
@@ -1476,7 +1476,7 @@ cdef __StructSpec get_reflection__MyIncludedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=3,
             name="ARefField",
             type=_includes_types.AStruct,
@@ -1488,7 +1488,7 @@ cdef __StructSpec get_reflection__MyIncludedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=4,
             name="ARequiredField",
             type=_includes_types.AStruct,
@@ -1501,19 +1501,19 @@ cdef __StructSpec get_reflection__MyIncludedStruct():
     )
     return spec
 cdef __StructSpec get_reflection__AnnotatedStruct():
-    cdef _module_types.AnnotatedStruct defaults = _module_types.AnnotatedStruct.create(
+    cdef _module_types.AnnotatedStruct defaults = _module_types.AnnotatedStruct._fbthrift_create(
         constant_shared_ptr[_module_types.cAnnotatedStruct](
             default_inst[_module_types.cAnnotatedStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="AnnotatedStruct",
         kind=__StructType.STRUCT,
         annotations={
             """cpp.declare_equal_to""": """1""",            """cpp.declare_hash""": """1""",            """cpp.noncopyable""": """1""",            """cpp.virtual""": """1""",            """cpp2.methods""": """void foo(const std::string& bar) {}""",        },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="no_annotation",
             type=_module_types.containerStruct,
@@ -1525,7 +1525,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="cpp_unique_ref",
             type=_module_types.containerStruct,
@@ -1537,7 +1537,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=3,
             name="cpp2_unique_ref",
             type=_module_types.containerStruct,
@@ -1549,7 +1549,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=4,
             name="container_with_ref",
             type=_module_types.Map__i32_List__string,
@@ -1561,7 +1561,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=5,
             name="req_cpp_unique_ref",
             type=_module_types.containerStruct,
@@ -1573,7 +1573,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=6,
             name="req_cpp2_unique_ref",
             type=_module_types.containerStruct,
@@ -1585,7 +1585,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=7,
             name="req_container_with_ref",
             type=_module_types.List__string,
@@ -1597,7 +1597,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=8,
             name="opt_cpp_unique_ref",
             type=_module_types.containerStruct,
@@ -1609,7 +1609,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=9,
             name="opt_cpp2_unique_ref",
             type=_module_types.containerStruct,
@@ -1621,7 +1621,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=10,
             name="opt_container_with_ref",
             type=_module_types.Set__i32,
@@ -1633,7 +1633,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=11,
             name="ref_type_unique",
             type=_module_types.containerStruct,
@@ -1645,7 +1645,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=12,
             name="ref_type_shared",
             type=_module_types.containerStruct,
@@ -1657,7 +1657,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=13,
             name="ref_type_const",
             type=_module_types.Map__i32_List__string,
@@ -1669,7 +1669,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=14,
             name="req_ref_type_shared",
             type=_module_types.containerStruct,
@@ -1681,7 +1681,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=15,
             name="req_ref_type_const",
             type=_module_types.containerStruct,
@@ -1693,7 +1693,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=16,
             name="req_ref_type_unique",
             type=_module_types.List__string,
@@ -1705,7 +1705,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=17,
             name="opt_ref_type_const",
             type=_module_types.containerStruct,
@@ -1717,7 +1717,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=18,
             name="opt_ref_type_unique",
             type=_module_types.containerStruct,
@@ -1729,7 +1729,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=19,
             name="opt_ref_type_shared",
             type=_module_types.Set__i32,
@@ -1741,7 +1741,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=20,
             name="base_type",
             type=int,
@@ -1753,7 +1753,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=21,
             name="list_type",
             type=_module_types.folly_small_vector_int64_t_8__List__i64,
@@ -1765,7 +1765,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=22,
             name="set_type",
             type=_module_types.folly_sorted_vector_set_std_string__Set__string,
@@ -1777,7 +1777,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=23,
             name="map_type",
             type=_module_types.FakeMap__Map__i64_double,
@@ -1789,7 +1789,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=24,
             name="map_struct_type",
             type=_module_types.std_unordered_map_std_string_containerStruct__Map__string_containerStruct,
@@ -1801,7 +1801,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=25,
             name="iobuf_type",
             type=_fbthrift_iobuf.IOBuf,
@@ -1813,7 +1813,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=26,
             name="iobuf_ptr",
             type=_fbthrift_iobuf.IOBuf,
@@ -1825,7 +1825,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=27,
             name="list_i32_template",
             type=_module_types.std_list__List__i32,
@@ -1837,7 +1837,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=28,
             name="list_string_template",
             type=_module_types.std_deque__List__string,
@@ -1849,7 +1849,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=29,
             name="set_template",
             type=_module_types.folly_sorted_vector_set__Set__string,
@@ -1861,7 +1861,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=30,
             name="map_template",
             type=_module_types.folly_sorted_vector_map__Map__i64_string,
@@ -1873,7 +1873,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=31,
             name="typedef_list_template",
             type=_module_types.std_list__List__i32,
@@ -1885,7 +1885,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=32,
             name="typedef_deque_template",
             type=_module_types.std_deque__List__string,
@@ -1897,7 +1897,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=33,
             name="typedef_set_template",
             type=_module_types.folly_sorted_vector_set__Set__string,
@@ -1909,7 +1909,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=34,
             name="typedef_map_template",
             type=_module_types.folly_sorted_vector_map__Map__i64_string,
@@ -1921,7 +1921,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=35,
             name="indirection_a",
             type=int,
@@ -1933,7 +1933,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=36,
             name="indirection_b",
             type=_module_types.List__Bar__double,
@@ -1945,7 +1945,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=37,
             name="indirection_c",
             type=_module_types.Set__Baz__i32,
@@ -1957,7 +1957,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=38,
             name="iobuf_type_val",
             type=_fbthrift_iobuf.IOBuf,
@@ -1969,7 +1969,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=39,
             name="iobuf_ptr_val",
             type=_fbthrift_iobuf.IOBuf,
@@ -1981,7 +1981,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=40,
             name="struct_struct",
             type=_module_types.containerStruct,
@@ -1994,19 +1994,19 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
     )
     return spec
 cdef __StructSpec get_reflection__ComplexContainerStruct():
-    cdef _module_types.ComplexContainerStruct defaults = _module_types.ComplexContainerStruct.create(
+    cdef _module_types.ComplexContainerStruct defaults = _module_types.ComplexContainerStruct._fbthrift_create(
         constant_shared_ptr[_module_types.cComplexContainerStruct](
             default_inst[_module_types.cComplexContainerStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="ComplexContainerStruct",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="map_of_iobufs",
             type=_module_types.Map__string_folly_IOBuf__binary,
@@ -2018,7 +2018,7 @@ cdef __StructSpec get_reflection__ComplexContainerStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="map_of_iobuf_ptrs",
             type=_module_types.Map__string_std_unique_ptr_folly_IOBuf__binary,
@@ -2031,19 +2031,19 @@ cdef __StructSpec get_reflection__ComplexContainerStruct():
     )
     return spec
 cdef __StructSpec get_reflection__FloatStruct():
-    cdef _module_types.FloatStruct defaults = _module_types.FloatStruct.create(
+    cdef _module_types.FloatStruct defaults = _module_types.FloatStruct._fbthrift_create(
         constant_shared_ptr[_module_types.cFloatStruct](
             default_inst[_module_types.cFloatStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="FloatStruct",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="floatField",
             type=float,
@@ -2055,7 +2055,7 @@ cdef __StructSpec get_reflection__FloatStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="doubleField",
             type=float,
@@ -2068,14 +2068,14 @@ cdef __StructSpec get_reflection__FloatStruct():
     )
     return spec
 cdef __StructSpec get_reflection__FloatUnion():
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="FloatUnion",
         kind=__StructType.UNION,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="floatSide",
             type=float,
@@ -2087,7 +2087,7 @@ cdef __StructSpec get_reflection__FloatUnion():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="doubleSide",
             type=float,
@@ -2100,19 +2100,19 @@ cdef __StructSpec get_reflection__FloatUnion():
     )
     return spec
 cdef __StructSpec get_reflection__AllRequiredNoExceptMoveCtrStruct():
-    cdef _module_types.AllRequiredNoExceptMoveCtrStruct defaults = _module_types.AllRequiredNoExceptMoveCtrStruct.create(
+    cdef _module_types.AllRequiredNoExceptMoveCtrStruct defaults = _module_types.AllRequiredNoExceptMoveCtrStruct._fbthrift_create(
         constant_shared_ptr[_module_types.cAllRequiredNoExceptMoveCtrStruct](
             default_inst[_module_types.cAllRequiredNoExceptMoveCtrStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="AllRequiredNoExceptMoveCtrStruct",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="intField",
             type=int,
@@ -2125,7 +2125,7 @@ cdef __StructSpec get_reflection__AllRequiredNoExceptMoveCtrStruct():
     )
     return spec
 cdef __MapSpec get_reflection__Map__string_i64():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=str,
         key_kind=__NumberType.NOT_A_NUMBER,
         value=int,
@@ -2133,7 +2133,7 @@ cdef __MapSpec get_reflection__Map__string_i64():
     )
 
 cdef __MapSpec get_reflection__Map__Empty_MyStruct():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=_module_types.Empty,
         key_kind=__NumberType.NOT_A_NUMBER,
         value=_module_types.MyStruct,
@@ -2141,61 +2141,61 @@ cdef __MapSpec get_reflection__Map__Empty_MyStruct():
     )
 
 cdef __ListSpec get_reflection__List__Map__Empty_MyStruct():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.Map__Empty_MyStruct,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __ListSpec get_reflection__List__List__Map__Empty_MyStruct():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.List__Map__Empty_MyStruct,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __ListSpec get_reflection__List__List__List__Map__Empty_MyStruct():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.List__List__Map__Empty_MyStruct,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __ListSpec get_reflection__List__MyEnumA():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.MyEnumA,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __SetSpec get_reflection__Set__MyStruct():
-    return __SetSpec.create(
+    return __SetSpec._fbthrift_create(
         value=_module_types.MyStruct,
         kind=__NumberType.NOT_A_NUMBER,
      )
 
 cdef __ListSpec get_reflection__List__ComplexUnion():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.ComplexUnion,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __ListSpec get_reflection__List__string():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=str,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __SetSpec get_reflection__Set__List__string():
-    return __SetSpec.create(
+    return __SetSpec._fbthrift_create(
         value=_module_types.List__string,
         kind=__NumberType.NOT_A_NUMBER,
      )
 
 cdef __SetSpec get_reflection__Set__List__List__Map__Empty_MyStruct():
-    return __SetSpec.create(
+    return __SetSpec._fbthrift_create(
         value=_module_types.List__List__Map__Empty_MyStruct,
         kind=__NumberType.NOT_A_NUMBER,
      )
 
 cdef __MapSpec get_reflection__Map__i32_List__string():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=int,
         key_kind=__NumberType.I32,
         value=_module_types.List__string,
@@ -2203,55 +2203,55 @@ cdef __MapSpec get_reflection__Map__i32_List__string():
     )
 
 cdef __ListSpec get_reflection__List__bool():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=bool,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __ListSpec get_reflection__List__i32():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=int,
         kind=__NumberType.I32,
     )
 
 cdef __ListSpec get_reflection__List__List__i32():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.List__i32,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __ListSpec get_reflection__List__List__List__i32():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.List__List__i32,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __ListSpec get_reflection__List__List__List__List__i32():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.List__List__List__i32,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __SetSpec get_reflection__Set__List__i32():
-    return __SetSpec.create(
+    return __SetSpec._fbthrift_create(
         value=_module_types.List__i32,
         kind=__NumberType.NOT_A_NUMBER,
      )
 
 cdef __SetSpec get_reflection__Set__string():
-    return __SetSpec.create(
+    return __SetSpec._fbthrift_create(
         value=str,
         kind=__NumberType.NOT_A_NUMBER,
      )
 
 cdef __ListSpec get_reflection__List__Set__string():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.Set__string,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __MapSpec get_reflection__Map__List__Set__string_string():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=_module_types.List__Set__string,
         key_kind=__NumberType.NOT_A_NUMBER,
         value=str,
@@ -2259,7 +2259,7 @@ cdef __MapSpec get_reflection__Map__List__Set__string_string():
     )
 
 cdef __MapSpec get_reflection__Map__Set__List__i32_Map__List__Set__string_string():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=_module_types.Set__List__i32,
         key_kind=__NumberType.NOT_A_NUMBER,
         value=_module_types.Map__List__Set__string_string,
@@ -2267,13 +2267,13 @@ cdef __MapSpec get_reflection__Map__Set__List__i32_Map__List__Set__string_string
     )
 
 cdef __ListSpec get_reflection__List__binary():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=bytes,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __MapSpec get_reflection__Map__MyEnumA_string():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=_module_types.MyEnumA,
         key_kind=__NumberType.NOT_A_NUMBER,
         value=str,
@@ -2281,13 +2281,13 @@ cdef __MapSpec get_reflection__Map__MyEnumA_string():
     )
 
 cdef __SetSpec get_reflection__Set__i64():
-    return __SetSpec.create(
+    return __SetSpec._fbthrift_create(
         value=int,
         kind=__NumberType.I64,
      )
 
 cdef __MapSpec get_reflection__Map__string_i32():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=str,
         key_kind=__NumberType.NOT_A_NUMBER,
         value=int,
@@ -2295,25 +2295,25 @@ cdef __MapSpec get_reflection__Map__string_i32():
     )
 
 cdef __ListSpec get_reflection__List__SimpleUnion():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.SimpleUnion,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __SetSpec get_reflection__Set__SimpleUnion():
-    return __SetSpec.create(
+    return __SetSpec._fbthrift_create(
         value=_module_types.SimpleUnion,
         kind=__NumberType.NOT_A_NUMBER,
      )
 
 cdef __ListSpec get_reflection__List__Set__SimpleUnion():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.Set__SimpleUnion,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __MapSpec get_reflection__Map__string_bool():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=str,
         key_kind=__NumberType.NOT_A_NUMBER,
         value=bool,
@@ -2321,13 +2321,13 @@ cdef __MapSpec get_reflection__Map__string_bool():
     )
 
 cdef __SetSpec get_reflection__Set__i32():
-    return __SetSpec.create(
+    return __SetSpec._fbthrift_create(
         value=int,
         kind=__NumberType.I32,
      )
 
 cdef __MapSpec get_reflection__Map__string_Map__string_i32():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=str,
         key_kind=__NumberType.NOT_A_NUMBER,
         value=_module_types.Map__string_i32,
@@ -2335,7 +2335,7 @@ cdef __MapSpec get_reflection__Map__string_Map__string_i32():
     )
 
 cdef __MapSpec get_reflection__Map__string_Map__string_Map__string_i32():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=str,
         key_kind=__NumberType.NOT_A_NUMBER,
         value=_module_types.Map__string_Map__string_i32,
@@ -2343,13 +2343,13 @@ cdef __MapSpec get_reflection__Map__string_Map__string_Map__string_i32():
     )
 
 cdef __ListSpec get_reflection__List__Set__i32():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.Set__i32,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __MapSpec get_reflection__Map__string_List__i32():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=str,
         key_kind=__NumberType.NOT_A_NUMBER,
         value=_module_types.List__i32,
@@ -2357,25 +2357,25 @@ cdef __MapSpec get_reflection__Map__string_List__i32():
     )
 
 cdef __SetSpec get_reflection__Set__bool():
-    return __SetSpec.create(
+    return __SetSpec._fbthrift_create(
         value=bool,
         kind=__NumberType.NOT_A_NUMBER,
      )
 
 cdef __SetSpec get_reflection__Set__Set__bool():
-    return __SetSpec.create(
+    return __SetSpec._fbthrift_create(
         value=_module_types.Set__bool,
         kind=__NumberType.NOT_A_NUMBER,
      )
 
 cdef __SetSpec get_reflection__Set__Set__Set__bool():
-    return __SetSpec.create(
+    return __SetSpec._fbthrift_create(
         value=_module_types.Set__Set__bool,
         kind=__NumberType.NOT_A_NUMBER,
      )
 
 cdef __MapSpec get_reflection__Map__Bar__double_Baz__i32():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=float,
         key_kind=__NumberType.DOUBLE,
         value=int,
@@ -2383,19 +2383,19 @@ cdef __MapSpec get_reflection__Map__Bar__double_Baz__i32():
     )
 
 cdef __ListSpec get_reflection__folly_small_vector_int64_t_8__List__i64():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=int,
         kind=__NumberType.I64,
     )
 
 cdef __SetSpec get_reflection__folly_sorted_vector_set_std_string__Set__string():
-    return __SetSpec.create(
+    return __SetSpec._fbthrift_create(
         value=str,
         kind=__NumberType.NOT_A_NUMBER,
      )
 
 cdef __MapSpec get_reflection__FakeMap__Map__i64_double():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=int,
         key_kind=__NumberType.I64,
         value=float,
@@ -2403,7 +2403,7 @@ cdef __MapSpec get_reflection__FakeMap__Map__i64_double():
     )
 
 cdef __MapSpec get_reflection__std_unordered_map_std_string_containerStruct__Map__string_containerStruct():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=str,
         key_kind=__NumberType.NOT_A_NUMBER,
         value=_module_types.containerStruct,
@@ -2411,25 +2411,25 @@ cdef __MapSpec get_reflection__std_unordered_map_std_string_containerStruct__Map
     )
 
 cdef __ListSpec get_reflection__std_list__List__i32():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=int,
         kind=__NumberType.I32,
     )
 
 cdef __ListSpec get_reflection__std_deque__List__string():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=str,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __SetSpec get_reflection__folly_sorted_vector_set__Set__string():
-    return __SetSpec.create(
+    return __SetSpec._fbthrift_create(
         value=str,
         kind=__NumberType.NOT_A_NUMBER,
      )
 
 cdef __MapSpec get_reflection__folly_sorted_vector_map__Map__i64_string():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=int,
         key_kind=__NumberType.I64,
         value=str,
@@ -2437,19 +2437,19 @@ cdef __MapSpec get_reflection__folly_sorted_vector_map__Map__i64_string():
     )
 
 cdef __ListSpec get_reflection__List__Bar__double():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=float,
         kind=__NumberType.DOUBLE,
     )
 
 cdef __SetSpec get_reflection__Set__Baz__i32():
-    return __SetSpec.create(
+    return __SetSpec._fbthrift_create(
         value=int,
         kind=__NumberType.I32,
      )
 
 cdef __MapSpec get_reflection__Map__string_folly_IOBuf__binary():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=str,
         key_kind=__NumberType.NOT_A_NUMBER,
         value=_fbthrift_iobuf.IOBuf,
@@ -2457,7 +2457,7 @@ cdef __MapSpec get_reflection__Map__string_folly_IOBuf__binary():
     )
 
 cdef __MapSpec get_reflection__Map__string_std_unique_ptr_folly_IOBuf__binary():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=str,
         key_kind=__NumberType.NOT_A_NUMBER,
         value=_fbthrift_iobuf.IOBuf,
@@ -2465,7 +2465,7 @@ cdef __MapSpec get_reflection__Map__string_std_unique_ptr_folly_IOBuf__binary():
     )
 
 cdef __MapSpec get_reflection__Map__i32_string():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=int,
         key_kind=__NumberType.I32,
         value=str,
@@ -2473,13 +2473,13 @@ cdef __MapSpec get_reflection__Map__i32_string():
     )
 
 cdef __ListSpec get_reflection__List__Map__string_i32():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.Map__string_i32,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __MapSpec get_reflection__Map__i16_string():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=int,
         key_kind=__NumberType.I16,
         value=str,
@@ -2487,13 +2487,13 @@ cdef __MapSpec get_reflection__Map__i16_string():
     )
 
 cdef __ListSpec get_reflection__List__Map__i16_string():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.Map__i16_string,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __ListSpec get_reflection__List__MyStruct():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.MyStruct,
         kind=__NumberType.NOT_A_NUMBER,
     )

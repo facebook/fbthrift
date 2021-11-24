@@ -132,6 +132,9 @@ cdef class ThriftServer:
         self.server.get().metadata().wrapper = b"ThriftServer-py3"
 
     async def serve(self):
+        # This check is only useful for C++-based Thrift servers.
+        # TODO(praihan): remove this after migration of C++ services onto extra interfaces
+        self.server.get().setAllowCheckUnimplementedExtraInterfaces(False)
         def _serve():
             with nogil:
                 self.server.get().serve()
@@ -253,7 +256,7 @@ cdef class ThriftServer:
 
 cdef class ConnectionContext:
     @staticmethod
-    cdef ConnectionContext create(Cpp2ConnContext* ctx):
+    cdef ConnectionContext _fbthrift_create(Cpp2ConnContext* ctx):
         cdef const cfollySocketAddress* peer_address
         cdef const cfollySocketAddress* local_address
         inst = <ConnectionContext>ConnectionContext.__new__(ConnectionContext)
@@ -301,13 +304,25 @@ cdef class ConnectionContext:
         return None
 
     @property
+    def peer_certificate_identity(ConnectionContext self):
+        cdef const AsyncTransport* transport
+        cdef const AsyncTransportCertificate* osslCert
+        transport = self._ctx.getTransport()
+        if not transport:
+            return None
+        osslCert = transport.getPeerCertificate()
+        if not osslCert:
+            return None
+        return deref(osslCert).getIdentity().decode('utf-8')
+
+    @property
     def local_address(ConnectionContext self):
         return self._local_address
 
 
 cdef class ReadHeaders(Headers):
     @staticmethod
-    cdef create(RequestContext ctx):
+    cdef _fbthrift_create(RequestContext ctx):
         inst = <ReadHeaders>ReadHeaders.__new__(ReadHeaders)
         inst._parent = ctx
         return inst
@@ -318,7 +333,7 @@ cdef class ReadHeaders(Headers):
 
 cdef class WriteHeaders(Headers):
     @staticmethod
-    cdef create(RequestContext ctx):
+    cdef _fbthrift_create(RequestContext ctx):
         inst = <WriteHeaders>WriteHeaders.__new__(WriteHeaders)
         inst._parent = ctx
         return inst
@@ -329,10 +344,10 @@ cdef class WriteHeaders(Headers):
 
 cdef class RequestContext:
     @staticmethod
-    cdef RequestContext create(Cpp2RequestContext* ctx):
+    cdef RequestContext _fbthrift_create(Cpp2RequestContext* ctx):
         inst = <RequestContext>RequestContext.__new__(RequestContext)
         inst._ctx = ctx
-        inst._c_ctx = ConnectionContext.create(ctx.getConnectionContext())
+        inst._c_ctx = ConnectionContext._fbthrift_create(ctx.getConnectionContext())
         inst._requestId = getRequestId()
         return inst
 
@@ -343,14 +358,14 @@ cdef class RequestContext:
     @property
     def read_headers(self):
         if not self._readheaders:
-            self._readheaders = ReadHeaders.create(self)
+            self._readheaders = ReadHeaders._fbthrift_create(self)
         return self._readheaders
 
     @property
     def write_headers(self):
         # So we don't create a cycle
         if not self._writeheaders:
-            self._writeheaders = WriteHeaders.create(self)
+            self._writeheaders = WriteHeaders._fbthrift_create(self)
         return self._writeheaders
 
     @property

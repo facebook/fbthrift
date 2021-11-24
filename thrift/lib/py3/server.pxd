@@ -122,6 +122,7 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         void setThreadManagerFromExecutor(cFollyExecutor*, string)
         void setStopWorkersOnStopListening(cbool stopWorkers)
         cbool getStopWorkersOnStopListening()
+        void setAllowCheckUnimplementedExtraInterfaces(cbool allow)
 
 cdef extern from "folly/ssl/OpenSSLCertUtils.h" \
         namespace "folly::ssl":
@@ -138,6 +139,7 @@ cdef extern from "folly/ssl/OpenSSLCertUtils.h" \
 cdef extern from "folly/io/async/AsyncTransportCertificate.h" \
         namespace "folly":
     cdef cppclass AsyncTransportCertificate:
+        string getIdentity()
         X509UniquePtr getX509()
 
 cdef extern from "folly/io/async/AsyncTransport.h" namespace "folly":
@@ -190,7 +192,7 @@ cdef class ConnectionContext:
     cdef object _local_address
 
     @staticmethod
-    cdef ConnectionContext create(Cpp2ConnContext* ctx)
+    cdef ConnectionContext _fbthrift_create(Cpp2ConnContext* ctx)
 
 
 cdef class RequestContext:
@@ -201,19 +203,19 @@ cdef class RequestContext:
     cdef string _requestId
 
     @staticmethod
-    cdef RequestContext create(Cpp2RequestContext* ctx)
+    cdef RequestContext _fbthrift_create(Cpp2RequestContext* ctx)
 
 
 cdef class ReadHeaders(Headers):
     cdef RequestContext _parent
     @staticmethod
-    cdef create(RequestContext ctx)
+    cdef _fbthrift_create(RequestContext ctx)
 
 
 cdef class WriteHeaders(Headers):
     cdef RequestContext _parent
     @staticmethod
-    cdef create(RequestContext ctx)
+    cdef _fbthrift_create(RequestContext ctx)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[cTransportRoutingHandler] move(unique_ptr[cTransportRoutingHandler])

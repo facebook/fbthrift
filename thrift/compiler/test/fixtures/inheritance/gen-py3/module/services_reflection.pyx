@@ -18,13 +18,13 @@ cimport module.types as _module_types
 
 
 cdef __InterfaceSpec get_reflection__MyRoot(bint for_clients):
-    cdef __InterfaceSpec spec = __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec._fbthrift_create(
         name="MyRoot",
         annotations={
         },
     )
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="do_root",
             arguments=(
             ),
@@ -40,13 +40,13 @@ cdef __InterfaceSpec get_reflection__MyRoot(bint for_clients):
 
 
 cdef __InterfaceSpec get_reflection__MyNode(bint for_clients):
-    cdef __InterfaceSpec spec = __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec._fbthrift_create(
         name="MyNode",
         annotations={
         },
     )
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="do_mid",
             arguments=(
             ),
@@ -62,13 +62,13 @@ cdef __InterfaceSpec get_reflection__MyNode(bint for_clients):
 
 
 cdef __InterfaceSpec get_reflection__MyLeaf(bint for_clients):
-    cdef __InterfaceSpec spec = __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec._fbthrift_create(
         name="MyLeaf",
         annotations={
         },
     )
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="do_leaf",
             arguments=(
             ),

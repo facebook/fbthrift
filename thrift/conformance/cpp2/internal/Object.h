@@ -23,6 +23,7 @@
 #include <folly/CPortability.h>
 #include <thrift/conformance/if/gen-cpp2/object_types.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
+#include <thrift/lib/cpp2/type/Traits.h>
 
 namespace apache::thrift::conformance::detail {
 
@@ -36,23 +37,23 @@ struct ValueHelper {
   template <typename T>
   static void set(Value& result, T&& value) {
     if constexpr (false) {
-    } else if constexpr (TT::kBaseType == type::BaseType::Bool) {
+    } else if constexpr (type::base_type_v<TT> == type::BaseType::Bool) {
       result.set_boolValue(value);
-    } else if constexpr (TT::kBaseType == type::BaseType::Byte) {
+    } else if constexpr (type::base_type_v<TT> == type::BaseType::Byte) {
       result.set_byteValue(value);
-    } else if constexpr (TT::kBaseType == type::BaseType::I16) {
+    } else if constexpr (type::base_type_v<TT> == type::BaseType::I16) {
       result.set_i16Value(value);
-    } else if constexpr (TT::kBaseType == type::BaseType::I32) {
+    } else if constexpr (type::base_type_v<TT> == type::BaseType::I32) {
       result.set_i32Value(value);
-    } else if constexpr (TT::kBaseType == type::BaseType::I64) {
+    } else if constexpr (type::base_type_v<TT> == type::BaseType::I64) {
       result.set_i64Value(value);
-    } else if constexpr (TT::kBaseType == type::BaseType::Enum) {
+    } else if constexpr (type::base_type_v<TT> == type::BaseType::Enum) {
       result.set_i32Value(static_cast<int32_t>(value));
-    } else if constexpr (TT::kBaseType == type::BaseType::Float) {
+    } else if constexpr (type::base_type_v<TT> == type::BaseType::Float) {
       result.set_floatValue(value);
-    } else if constexpr (TT::kBaseType == type::BaseType::Double) {
+    } else if constexpr (type::base_type_v<TT> == type::BaseType::Double) {
       result.set_doubleValue(value);
-    } else if constexpr (TT::kBaseType == type::BaseType::String) {
+    } else if constexpr (type::base_type_v<TT> == type::BaseType::String) {
       result.set_stringValue(std::forward<T>(value));
     }
   }

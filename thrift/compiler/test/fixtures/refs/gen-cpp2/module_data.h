@@ -41,7 +41,7 @@ template <> struct TStructDataStorage<::cpp2::MyUnion> {
 };
 
 template <> struct TStructDataStorage<::cpp2::MyField> {
-  static constexpr const std::size_t fields_size = 6;
+  static constexpr const std::size_t fields_size = 9;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;

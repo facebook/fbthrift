@@ -125,7 +125,7 @@ bool ComplexUnion::operator<(const ComplexUnion& rhs) const {
     case Type::typedefValue:
       return lhs.value_.typedefValue < rhs.value_.typedefValue;
     case Type::stringRef:
-      return lhs.value_.stringRef < rhs.value_.stringRef;
+      return *lhs.value_.stringRef < *rhs.value_.stringRef;
     default:
       return false;
   }

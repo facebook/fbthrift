@@ -18,13 +18,17 @@
 #include <thrift/lib/py3lite/server/server_api.h> // @manual
 
 namespace thrift {
-namespace py3 {
+namespace py3lite {
+
+namespace {
 
 void do_import() {
   if (0 != import_thrift__py3lite__server()) {
     throw std::runtime_error("import_thrift__py3lite__server failed");
   }
 }
+
+} // namespace
 
 void Py3LiteAsyncProcessor::handlePythonServerCallback(
     apache::thrift::ProtocolType protocol,
@@ -56,5 +60,5 @@ void Py3LiteAsyncProcessor::handlePythonServerCallbackOneway(
       protocol);
 }
 
-} // namespace py3
+} // namespace py3lite
 } // namespace thrift

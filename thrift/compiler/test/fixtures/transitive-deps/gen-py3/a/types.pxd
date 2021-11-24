@@ -71,8 +71,6 @@ cdef extern from "src/gen-cpp2/a_types_custom_protocol.h" namespace "::cpp2":
         bint operator>=(cA&)
         __field_ref[vector[vector[_c_types.cC]]] b_ref()
         __field_ref[vector[_c_types.cC]] other_ref()
-        vector[vector[_c_types.cC]] b
-        vector[_c_types.cC] other
 
 
 
@@ -84,20 +82,20 @@ cdef class A(thrift.py3.types.Struct):
     cdef List__c_C __fbthrift_cached_other
 
     @staticmethod
-    cdef create(shared_ptr[cA])
+    cdef _fbthrift_create(shared_ptr[cA])
 
 
 cdef class List__c_C(thrift.py3.types.List):
     cdef shared_ptr[vector[_c_types.cC]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[_c_types.cC]])
+    cdef _fbthrift_create(shared_ptr[vector[_c_types.cC]])
     @staticmethod
     cdef shared_ptr[vector[_c_types.cC]] _make_instance(object items) except *
 
 cdef class List__List__c_C(thrift.py3.types.List):
     cdef shared_ptr[vector[vector[_c_types.cC]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[vector[_c_types.cC]]])
+    cdef _fbthrift_create(shared_ptr[vector[vector[_c_types.cC]]])
     @staticmethod
     cdef shared_ptr[vector[vector[_c_types.cC]]] _make_instance(object items) except *
 

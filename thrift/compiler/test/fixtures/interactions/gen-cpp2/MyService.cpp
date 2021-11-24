@@ -338,31 +338,31 @@ void MyServiceSvIf::MyInteractionIf::async_tm_truthify(std::unique_ptr<apache::t
   }
 }
 
-::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string> MyServiceSvIf::MyInteractionIf::encode() {
+::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string> MyServiceSvIf::MyInteractionIf::encode() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("encode");
 }
 
-folly::SemiFuture<::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>> MyServiceSvIf::MyInteractionIf::semifuture_encode() {
+folly::SemiFuture<::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string>> MyServiceSvIf::MyInteractionIf::semifuture_encode() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_encode.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return encode();
 }
 
 #if FOLLY_HAS_COROUTINES
-folly::coro::Task<::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>> MyServiceSvIf::MyInteractionIf::co_encode() {
+folly::coro::Task<::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string>> MyServiceSvIf::MyInteractionIf::co_encode() {
   auto expected{apache::thrift::detail::si::InvocationType::Coro};
   __fbthrift_invocation_encode.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return folly::coro::toTask(semifuture_encode());
 }
 
-folly::coro::Task<::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>> MyServiceSvIf::MyInteractionIf::co_encode(apache::thrift::RequestParams /* params */) {
+folly::coro::Task<::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string>> MyServiceSvIf::MyInteractionIf::co_encode(apache::thrift::RequestParams /* params */) {
   auto expected{apache::thrift::detail::si::InvocationType::CoroParam};
   __fbthrift_invocation_encode.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Coro, std::memory_order_relaxed);
   return co_encode();
 }
 #endif // FOLLY_HAS_COROUTINES
 
-void MyServiceSvIf::MyInteractionIf::async_tm_encode(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>>> callback) {
+void MyServiceSvIf::MyInteractionIf::async_tm_encode(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string>>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -434,7 +434,7 @@ void MyServiceSvIf::MyInteractionFastIf::async_eb_truthify(std::unique_ptr<apach
   callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("truthify"));
 }
 
-void MyServiceSvIf::MyInteractionFastIf::async_eb_encode(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>>> callback) {
+void MyServiceSvIf::MyInteractionFastIf::async_eb_encode(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string>>> callback) {
   callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("encode"));
 }
 

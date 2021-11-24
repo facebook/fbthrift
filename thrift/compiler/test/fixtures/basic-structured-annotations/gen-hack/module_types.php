@@ -1005,7 +1005,7 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
         break;
     }
     $this->_type = MyUnionEnum::_EMPTY_;
-}
+  }
 
   public function set_first(string $first)[write_props]: this {
     $this->reset();

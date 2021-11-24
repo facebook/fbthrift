@@ -50,7 +50,7 @@ cdef class __SmallStruct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __SmallStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __SmallStruct_FieldsSetter create(_module_types.cSmallStruct* struct_cpp_obj)
+    cdef __SmallStruct_FieldsSetter _fbthrift_create(_module_types.cSmallStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
 
@@ -62,7 +62,7 @@ cdef class __containerStruct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __containerStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __containerStruct_FieldsSetter create(_module_types.ccontainerStruct* struct_cpp_obj)
+    cdef __containerStruct_FieldsSetter _fbthrift_create(_module_types.ccontainerStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *

@@ -16,3 +16,4 @@
 
 #include "thrift/compiler/test/fixtures/lazy_deserialization/gen-cpp2/simple_types.tcc"
 
+#include "thrift/annotation/gen-cpp2/cpp_types_custom_protocol.h"

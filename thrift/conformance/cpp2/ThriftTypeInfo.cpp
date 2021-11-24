@@ -17,13 +17,13 @@
 #include <thrift/conformance/cpp2/ThriftTypeInfo.h>
 
 namespace apache::thrift::conformance {
-using type::validateTypeHashBytes;
-using type::validateUniversalType;
+using type::validateUniversalHashBytes;
+using type::validateUniversalName;
 
 void validateThriftTypeInfo(const ThriftTypeInfo& type) {
-  validateUniversalType(*type.uri_ref());
+  validateUniversalName(*type.uri_ref());
   for (const auto& uri : *type.altUris_ref()) {
-    validateUniversalType(uri);
+    validateUniversalName(uri);
   }
   if (type.altUris_ref()->find(*type.uri_ref()) != type.altUris_ref()->end()) {
     folly::throw_exception<std::invalid_argument>(
@@ -31,7 +31,8 @@ void validateThriftTypeInfo(const ThriftTypeInfo& type) {
   }
 
   if (type.typeHashBytes_ref()) {
-    validateTypeHashBytes(type.typeHashBytes_ref().value_unchecked());
+    validateUniversalHashBytes(
+        type.typeHashBytes_ref().value(), kMinTypeHashBytes);
   }
 }
 

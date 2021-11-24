@@ -194,7 +194,7 @@ class ThriftServerExceptionTest : public testing::Test {
   Banal make_banal() const { return Banal(); }
   Fiery make_fiery() const {
     Fiery f;
-    f.message = message;
+    *f.message_ref() = message;
     return f;
   }
 
@@ -380,7 +380,7 @@ TEST_F(ThriftServerExceptionTest, fiery_with_exception_ptr) {
   }));
   EXPECT_TRUE(exn(client->future_doRaise(), [&](const Fiery& e) {
     EXPECT_EQ(fiery_w_known, string(e.what()));
-    EXPECT_EQ(message, e.message);
+    EXPECT_EQ(message, *e.message_ref());
     EXPECT_EQ(fiery_s, ctx().ex_type);
     EXPECT_EQ(fiery_w_known, ctx().ex_what);
     EXPECT_TRUE(ctx().ew.is_compatible_with<Fiery>());
@@ -393,7 +393,7 @@ TEST_F(ThriftServerExceptionTest, fiery_with_exception_ptr) {
   }));
   EXPECT_TRUE(exn(client->future_get500(), [&](const Fiery& e) {
     EXPECT_EQ(fiery_w_known, string(e.what()));
-    EXPECT_EQ(message, e.message);
+    EXPECT_EQ(message, *e.message_ref());
     EXPECT_EQ(fiery_s, ctx().ex_type);
     EXPECT_EQ(fiery_w_known, ctx().ex_what);
     EXPECT_TRUE(ctx().ew.is_compatible_with<Fiery>());
@@ -499,7 +499,7 @@ TEST_F(ThriftServerExceptionTest, fiery_with_exception_wrapper) {
   }));
   EXPECT_TRUE(exn(client->future_doRaise(), [&](const Fiery& e) {
     EXPECT_EQ(fiery_w_known, string(e.what()));
-    EXPECT_EQ(message, e.message);
+    EXPECT_EQ(message, *e.message_ref());
     EXPECT_EQ(fiery_s, ctx().ex_type);
     EXPECT_EQ(fiery_w_known, ctx().ex_what);
     EXPECT_TRUE(ctx().ew.is_compatible_with<Fiery>());
@@ -512,7 +512,7 @@ TEST_F(ThriftServerExceptionTest, fiery_with_exception_wrapper) {
   }));
   EXPECT_TRUE(exn(client->future_get500(), [&](const Fiery& e) {
     EXPECT_EQ(fiery_w_known, string(e.what()));
-    EXPECT_EQ(message, e.message);
+    EXPECT_EQ(message, *e.message_ref());
     EXPECT_EQ(fiery_s, ctx().ex_type);
     EXPECT_EQ(fiery_w_known, ctx().ex_what);
     EXPECT_TRUE(ctx().ew.is_compatible_with<Fiery>());

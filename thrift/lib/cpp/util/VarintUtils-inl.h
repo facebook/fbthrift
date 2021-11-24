@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#if __BMI2__
+#ifdef __BMI2__
 #include <immintrin.h>
 #endif
 
@@ -181,7 +181,7 @@ uint8_t writeVarintUnrolled(Cursor& c, T value) {
   return apache::thrift::util::detail::writeVarintSlow<Cursor, T>(c, value);
 }
 
-#if __BMI2__
+#ifdef __BMI2__
 
 template <class Cursor, class T>
 uint8_t writeVarintBMI2(Cursor& c, T valueS) {

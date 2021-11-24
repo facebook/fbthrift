@@ -428,7 +428,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator==(cASimpleStruct&)
         bint operator!=(cASimpleStruct&)
         __field_ref[cint64_t] boolField_ref()
-        cint64_t boolField
 
 
     cdef cppclass cASimpleStructNoexcept "::some::valid::ns::ASimpleStructNoexcept":
@@ -441,7 +440,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator<=(cASimpleStructNoexcept&)
         bint operator>=(cASimpleStructNoexcept&)
         __field_ref[cint64_t] boolField_ref()
-        cint64_t boolField
 
 
     cdef cppclass cMyStruct "::some::valid::ns::MyStruct":
@@ -464,17 +462,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         __field_ref[cmap[cMyEnumA,string]] MyMapEnumAndInt_ref()
         __field_ref[_folly_IOBuf] MyCustomField_ref()
         __optional_field_ref[_folly_IOBuf] MyOptCustomField_ref()
-        cbool MyBoolField
-        cint64_t MyIntField
-        string MyStringField
-        string MyStringField2
-        string MyBinaryField
-        string MyBinaryField2
-        string MyBinaryField3
-        vector[string] MyBinaryListField4
-        cmap[cMyEnumA,string] MyMapEnumAndInt
-        _folly_IOBuf MyCustomField
-        _folly_IOBuf MyOptCustomField
 
     cdef enum cSimpleUnion__type "::some::valid::ns::SimpleUnion::Type":
         cSimpleUnion__type___EMPTY__ "::some::valid::ns::SimpleUnion::Type::__EMPTY__",
@@ -621,23 +608,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         __field_ref[vector[cset[cSimpleUnion]]] a_union_typedef_list_ref()
         __field_ref[_folly_IOBuf] MyCustomField_ref()
         __optional_field_ref[_folly_IOBuf] MyOptCustomField_ref()
-        cint32_t code
-        cint32_t req_code
-        string message2
-        string req_message
-        vector[cint32_t] exception_list
-        cset[cint64_t] exception_set
-        cmap[string,cint32_t] exception_map
-        cmap[string,cint32_t] req_exception_map
-        cMyEnumA enum_field
-        vector[cMyEnumA] enum_container
-        cMyStruct a_struct
-        cset[cMyStruct] a_set_struct
-        vector[cSimpleUnion] a_union_list
-        cset[cSimpleUnion] union_typedef
-        vector[cset[cSimpleUnion]] a_union_typedef_list
-        _folly_IOBuf MyCustomField
-        _folly_IOBuf MyOptCustomField
 
 
     cdef cppclass cAnotherException "::some::valid::ns::AnotherException"(cTException):
@@ -652,9 +622,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         __field_ref[cint32_t] code_ref()
         __required_field_ref[cint32_t] req_code_ref()
         __field_ref[string] message_ref()
-        cint32_t code
-        cint32_t req_code
-        string message
 
 
     cdef cppclass ccontainerStruct "::some::valid::ns::containerStruct":
@@ -711,52 +678,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         __field_ref[_includes_types.cAnEnum] fieldAD_ref()
         __field_ref[cmap[string,cint32_t]] fieldAE_ref()
         __field_ref[FooBar] fieldSD_ref()
-        cbool fieldA
-        cbool req_fieldA
-        cbool opt_fieldA
-        cmap[string,cbool] fieldB
-        cmap[string,cbool] req_fieldB
-        cmap[string,cbool] opt_fieldB
-        cset[cint32_t] fieldC
-        cset[cint32_t] req_fieldC
-        cset[cint32_t] opt_fieldC
-        string fieldD
-        string fieldE
-        string req_fieldE
-        string opt_fieldE
-        vector[vector[cint32_t]] fieldF
-        cmap[string,cmap[string,cmap[string,cint32_t]]] fieldG
-        vector[cset[cint32_t]] fieldH
-        cbool fieldI
-        cmap[string,vector[cint32_t]] fieldJ
-        vector[vector[vector[vector[cint32_t]]]] fieldK
-        cset[cset[cset[cbool]]] fieldL
-        cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]] fieldM
-        cint32_t fieldN
-        vector[cmap[cEmpty,cMyStruct]] fieldO
-        vector[vector[vector[cmap[cEmpty,cMyStruct]]]] fieldP
-        cMyEnumA fieldQ
-        cMyEnumA fieldR
-        cMyEnumA req_fieldR
-        cMyEnumA opt_fieldR
-        cMyEnumA fieldS
-        vector[cMyEnumA] fieldT
-        vector[cMyEnumA] fieldU
-        cMyStruct fieldV
-        cMyStruct req_fieldV
-        cMyStruct opt_fieldV
-        cset[cMyStruct] fieldW
-        cComplexUnion fieldX
-        cComplexUnion req_fieldX
-        cComplexUnion opt_fieldX
-        vector[cComplexUnion] fieldY
-        cset[cSimpleUnion] fieldZ
-        vector[cset[cSimpleUnion]] fieldAA
-        cmap[Bar,Baz] fieldAB
-        cMyEnumB fieldAC
-        _includes_types.cAnEnum fieldAD
-        cmap[string,cint32_t] fieldAE
-        FooBar fieldSD
 
 
     cdef cppclass cMyIncludedStruct "::some::valid::ns::MyIncludedStruct":
@@ -772,10 +693,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         __field_ref[_includes_types.cAStruct] MyIncludedStruct_ref()
         unique_ptr[_includes_types.cAStruct] ARefField_ref()
         __required_field_ref[_includes_types.cAStruct] ARequiredField_ref()
-        cint64_t MyIncludedInt
-        _includes_types.cAStruct MyIncludedStruct
-        unique_ptr[_includes_types.cAStruct] ARefField
-        _includes_types.cAStruct ARequiredField
 
 
     cdef cppclass cAnnotatedStruct "::some::valid::ns::AnnotatedStruct":
@@ -822,46 +739,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         __field_ref[_fbthrift_iobuf.cIOBuf] iobuf_type_val_ref()
         __field_ref[unique_ptr[_fbthrift_iobuf.cIOBuf]] iobuf_ptr_val_ref()
         __field_ref[ccontainerStruct] struct_struct_ref()
-        ccontainerStruct no_annotation
-        unique_ptr[ccontainerStruct] cpp_unique_ref
-        unique_ptr[ccontainerStruct] cpp2_unique_ref
-        unique_ptr[cmap[cint32_t,vector[string]]] container_with_ref
-        unique_ptr[ccontainerStruct] req_cpp_unique_ref
-        unique_ptr[ccontainerStruct] req_cpp2_unique_ref
-        unique_ptr[vector[string]] req_container_with_ref
-        unique_ptr[ccontainerStruct] opt_cpp_unique_ref
-        unique_ptr[ccontainerStruct] opt_cpp2_unique_ref
-        unique_ptr[cset[cint32_t]] opt_container_with_ref
-        unique_ptr[ccontainerStruct] ref_type_unique
-        shared_ptr[ccontainerStruct] ref_type_shared
-        shared_ptr[const cmap[cint32_t,vector[string]]] ref_type_const
-        shared_ptr[ccontainerStruct] req_ref_type_shared
-        shared_ptr[const ccontainerStruct] req_ref_type_const
-        unique_ptr[vector[string]] req_ref_type_unique
-        shared_ptr[const ccontainerStruct] opt_ref_type_const
-        unique_ptr[ccontainerStruct] opt_ref_type_unique
-        shared_ptr[cset[cint32_t]] opt_ref_type_shared
-        CppFakeI32 base_type
-        folly_small_vector_int64_t_8 list_type
-        folly_sorted_vector_set_std_string set_type
-        FakeMap map_type
-        std_unordered_map_std_string_containerStruct map_struct_type
-        _fbthrift_iobuf.cIOBuf iobuf_type
-        unique_ptr[_fbthrift_iobuf.cIOBuf] iobuf_ptr
-        std_list[cint32_t] list_i32_template
-        std_deque[string] list_string_template
-        folly_sorted_vector_set[string] set_template
-        folly_sorted_vector_map[cint64_t,string] map_template
-        std_list[cint32_t] typedef_list_template
-        std_deque[string] typedef_deque_template
-        folly_sorted_vector_set[string] typedef_set_template
-        folly_sorted_vector_map[cint64_t,string] typedef_map_template
-        Foo indirection_a
-        vector[Bar] indirection_b
-        cset[Baz] indirection_c
-        _fbthrift_iobuf.cIOBuf iobuf_type_val
-        unique_ptr[_fbthrift_iobuf.cIOBuf] iobuf_ptr_val
-        ccontainerStruct struct_struct
 
 
     cdef cppclass cComplexContainerStruct "::some::valid::ns::ComplexContainerStruct":
@@ -875,8 +752,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>=(cComplexContainerStruct&)
         __field_ref[cmap[string,_fbthrift_iobuf.cIOBuf]] map_of_iobufs_ref()
         __field_ref[cmap[string,unique_ptr[_fbthrift_iobuf.cIOBuf]]] map_of_iobuf_ptrs_ref()
-        cmap[string,_fbthrift_iobuf.cIOBuf] map_of_iobufs
-        cmap[string,unique_ptr[_fbthrift_iobuf.cIOBuf]] map_of_iobuf_ptrs
 
 
     cdef cppclass cFloatStruct "::some::valid::ns::FloatStruct":
@@ -890,8 +765,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>=(cFloatStruct&)
         __field_ref[float] floatField_ref()
         __field_ref[double] doubleField_ref()
-        float floatField
-        double doubleField
 
     cdef enum cFloatUnion__type "::some::valid::ns::FloatUnion::Type":
         cFloatUnion__type___EMPTY__ "::some::valid::ns::FloatUnion::Type::__EMPTY__",
@@ -924,7 +797,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator<=(cAllRequiredNoExceptMoveCtrStruct&)
         bint operator>=(cAllRequiredNoExceptMoveCtrStruct&)
         __required_field_ref[cint64_t] intField_ref()
-        cint64_t intField
 
 
 
@@ -934,7 +806,7 @@ cdef class Empty(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__Empty_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cEmpty])
+    cdef _fbthrift_create(shared_ptr[cEmpty])
 
 
 
@@ -943,7 +815,7 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__ASimpleStruct_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cASimpleStruct])
+    cdef _fbthrift_create(shared_ptr[cASimpleStruct])
 
 
 
@@ -952,7 +824,7 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__ASimpleStructNoexcept_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cASimpleStructNoexcept])
+    cdef _fbthrift_create(shared_ptr[cASimpleStructNoexcept])
 
 
 
@@ -963,7 +835,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef Map__MyEnumA_string __fbthrift_cached_MyMapEnumAndInt
 
     @staticmethod
-    cdef create(shared_ptr[cMyStruct])
+    cdef _fbthrift_create(shared_ptr[cMyStruct])
 
 cdef class __SimpleUnionType(thrift.py3.types.CompiledEnum):
     pass
@@ -985,7 +857,7 @@ cdef class SimpleUnion(thrift.py3.types.Union):
     ) except *
 
     @staticmethod
-    cdef create(shared_ptr[cSimpleUnion])
+    cdef _fbthrift_create(shared_ptr[cSimpleUnion])
 
 cdef class __ComplexUnionType(thrift.py3.types.CompiledEnum):
     pass
@@ -1033,7 +905,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
     ) except *
 
     @staticmethod
-    cdef create(shared_ptr[cComplexUnion])
+    cdef _fbthrift_create(shared_ptr[cComplexUnion])
 
 
 
@@ -1053,7 +925,7 @@ cdef class AnException(thrift.py3.exceptions.GeneratedError):
     cdef List__Set__SimpleUnion __fbthrift_cached_a_union_typedef_list
 
     @staticmethod
-    cdef create(shared_ptr[cAnException])
+    cdef _fbthrift_create(shared_ptr[cAnException])
 
 
 
@@ -1062,7 +934,7 @@ cdef class AnotherException(thrift.py3.exceptions.GeneratedError):
     cdef _fbthrift_types_fields.__AnotherException_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cAnotherException])
+    cdef _fbthrift_create(shared_ptr[cAnotherException])
 
 
 
@@ -1107,7 +979,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
     cdef Map__string_i32 __fbthrift_cached_fieldAE
 
     @staticmethod
-    cdef create(shared_ptr[ccontainerStruct])
+    cdef _fbthrift_create(shared_ptr[ccontainerStruct])
 
 
 
@@ -1119,7 +991,7 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
     cdef _includes_types.AStruct __fbthrift_cached_ARequiredField
 
     @staticmethod
-    cdef create(shared_ptr[cMyIncludedStruct])
+    cdef _fbthrift_create(shared_ptr[cMyIncludedStruct])
 
 
 
@@ -1166,7 +1038,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
     cdef containerStruct __fbthrift_cached_struct_struct
 
     @staticmethod
-    cdef create(shared_ptr[cAnnotatedStruct])
+    cdef _fbthrift_create(shared_ptr[cAnnotatedStruct])
 
 
 
@@ -1177,7 +1049,7 @@ cdef class ComplexContainerStruct(thrift.py3.types.Struct):
     cdef Map__string_std_unique_ptr_folly_IOBuf__binary __fbthrift_cached_map_of_iobuf_ptrs
 
     @staticmethod
-    cdef create(shared_ptr[cComplexContainerStruct])
+    cdef _fbthrift_create(shared_ptr[cComplexContainerStruct])
 
 
 
@@ -1186,7 +1058,7 @@ cdef class FloatStruct(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__FloatStruct_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cFloatStruct])
+    cdef _fbthrift_create(shared_ptr[cFloatStruct])
 
 cdef class __FloatUnionType(thrift.py3.types.CompiledEnum):
     pass
@@ -1208,7 +1080,7 @@ cdef class FloatUnion(thrift.py3.types.Union):
     ) except *
 
     @staticmethod
-    cdef create(shared_ptr[cFloatUnion])
+    cdef _fbthrift_create(shared_ptr[cFloatUnion])
 
 
 
@@ -1217,398 +1089,398 @@ cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__AllRequiredNoExceptMoveCtrStruct_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cAllRequiredNoExceptMoveCtrStruct])
+    cdef _fbthrift_create(shared_ptr[cAllRequiredNoExceptMoveCtrStruct])
 
 
 cdef class Map__string_i64(thrift.py3.types.Map):
     cdef shared_ptr[cmap[string,cint64_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[string,cint64_t]])
+    cdef _fbthrift_create(shared_ptr[cmap[string,cint64_t]])
     @staticmethod
     cdef shared_ptr[cmap[string,cint64_t]] _make_instance(object items) except *
 
 cdef class Map__Empty_MyStruct(thrift.py3.types.Map):
     cdef shared_ptr[cmap[cEmpty,cMyStruct]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[cEmpty,cMyStruct]])
+    cdef _fbthrift_create(shared_ptr[cmap[cEmpty,cMyStruct]])
     @staticmethod
     cdef shared_ptr[cmap[cEmpty,cMyStruct]] _make_instance(object items) except *
 
 cdef class List__Map__Empty_MyStruct(thrift.py3.types.List):
     cdef shared_ptr[vector[cmap[cEmpty,cMyStruct]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cmap[cEmpty,cMyStruct]]])
+    cdef _fbthrift_create(shared_ptr[vector[cmap[cEmpty,cMyStruct]]])
     @staticmethod
     cdef shared_ptr[vector[cmap[cEmpty,cMyStruct]]] _make_instance(object items) except *
 
 cdef class List__List__Map__Empty_MyStruct(thrift.py3.types.List):
     cdef shared_ptr[vector[vector[cmap[cEmpty,cMyStruct]]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[vector[cmap[cEmpty,cMyStruct]]]])
+    cdef _fbthrift_create(shared_ptr[vector[vector[cmap[cEmpty,cMyStruct]]]])
     @staticmethod
     cdef shared_ptr[vector[vector[cmap[cEmpty,cMyStruct]]]] _make_instance(object items) except *
 
 cdef class List__List__List__Map__Empty_MyStruct(thrift.py3.types.List):
     cdef shared_ptr[vector[vector[vector[cmap[cEmpty,cMyStruct]]]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[vector[vector[cmap[cEmpty,cMyStruct]]]]])
+    cdef _fbthrift_create(shared_ptr[vector[vector[vector[cmap[cEmpty,cMyStruct]]]]])
     @staticmethod
     cdef shared_ptr[vector[vector[vector[cmap[cEmpty,cMyStruct]]]]] _make_instance(object items) except *
 
 cdef class List__MyEnumA(thrift.py3.types.List):
     cdef shared_ptr[vector[cMyEnumA]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cMyEnumA]])
+    cdef _fbthrift_create(shared_ptr[vector[cMyEnumA]])
     @staticmethod
     cdef shared_ptr[vector[cMyEnumA]] _make_instance(object items) except *
 
 cdef class Set__MyStruct(thrift.py3.types.Set):
     cdef shared_ptr[cset[cMyStruct]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cset[cMyStruct]])
+    cdef _fbthrift_create(shared_ptr[cset[cMyStruct]])
     @staticmethod
     cdef shared_ptr[cset[cMyStruct]] _make_instance(object items) except *
 
 cdef class List__ComplexUnion(thrift.py3.types.List):
     cdef shared_ptr[vector[cComplexUnion]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cComplexUnion]])
+    cdef _fbthrift_create(shared_ptr[vector[cComplexUnion]])
     @staticmethod
     cdef shared_ptr[vector[cComplexUnion]] _make_instance(object items) except *
 
 cdef class List__string(thrift.py3.types.List):
     cdef shared_ptr[vector[string]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[string]])
+    cdef _fbthrift_create(shared_ptr[vector[string]])
     @staticmethod
     cdef shared_ptr[vector[string]] _make_instance(object items) except *
 
 cdef class Set__List__string(thrift.py3.types.Set):
     cdef shared_ptr[cset[vector[string]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cset[vector[string]]])
+    cdef _fbthrift_create(shared_ptr[cset[vector[string]]])
     @staticmethod
     cdef shared_ptr[cset[vector[string]]] _make_instance(object items) except *
 
 cdef class Set__List__List__Map__Empty_MyStruct(thrift.py3.types.Set):
     cdef shared_ptr[cset[vector[vector[cmap[cEmpty,cMyStruct]]]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cset[vector[vector[cmap[cEmpty,cMyStruct]]]]])
+    cdef _fbthrift_create(shared_ptr[cset[vector[vector[cmap[cEmpty,cMyStruct]]]]])
     @staticmethod
     cdef shared_ptr[cset[vector[vector[cmap[cEmpty,cMyStruct]]]]] _make_instance(object items) except *
 
 cdef class Map__i32_List__string(thrift.py3.types.Map):
     cdef shared_ptr[cmap[cint32_t,vector[string]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[cint32_t,vector[string]]])
+    cdef _fbthrift_create(shared_ptr[cmap[cint32_t,vector[string]]])
     @staticmethod
     cdef shared_ptr[cmap[cint32_t,vector[string]]] _make_instance(object items) except *
 
 cdef class List__bool(thrift.py3.types.List):
     cdef shared_ptr[vector[cbool]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cbool]])
+    cdef _fbthrift_create(shared_ptr[vector[cbool]])
     @staticmethod
     cdef shared_ptr[vector[cbool]] _make_instance(object items) except *
 
 cdef class List__i32(thrift.py3.types.List):
     cdef shared_ptr[vector[cint32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cint32_t]])
+    cdef _fbthrift_create(shared_ptr[vector[cint32_t]])
     @staticmethod
     cdef shared_ptr[vector[cint32_t]] _make_instance(object items) except *
 
 cdef class List__List__i32(thrift.py3.types.List):
     cdef shared_ptr[vector[vector[cint32_t]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[vector[cint32_t]]])
+    cdef _fbthrift_create(shared_ptr[vector[vector[cint32_t]]])
     @staticmethod
     cdef shared_ptr[vector[vector[cint32_t]]] _make_instance(object items) except *
 
 cdef class List__List__List__i32(thrift.py3.types.List):
     cdef shared_ptr[vector[vector[vector[cint32_t]]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[vector[vector[cint32_t]]]])
+    cdef _fbthrift_create(shared_ptr[vector[vector[vector[cint32_t]]]])
     @staticmethod
     cdef shared_ptr[vector[vector[vector[cint32_t]]]] _make_instance(object items) except *
 
 cdef class List__List__List__List__i32(thrift.py3.types.List):
     cdef shared_ptr[vector[vector[vector[vector[cint32_t]]]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[vector[vector[vector[cint32_t]]]]])
+    cdef _fbthrift_create(shared_ptr[vector[vector[vector[vector[cint32_t]]]]])
     @staticmethod
     cdef shared_ptr[vector[vector[vector[vector[cint32_t]]]]] _make_instance(object items) except *
 
 cdef class Set__List__i32(thrift.py3.types.Set):
     cdef shared_ptr[cset[vector[cint32_t]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cset[vector[cint32_t]]])
+    cdef _fbthrift_create(shared_ptr[cset[vector[cint32_t]]])
     @staticmethod
     cdef shared_ptr[cset[vector[cint32_t]]] _make_instance(object items) except *
 
 cdef class Set__string(thrift.py3.types.Set):
     cdef shared_ptr[cset[string]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cset[string]])
+    cdef _fbthrift_create(shared_ptr[cset[string]])
     @staticmethod
     cdef shared_ptr[cset[string]] _make_instance(object items) except *
 
 cdef class List__Set__string(thrift.py3.types.List):
     cdef shared_ptr[vector[cset[string]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cset[string]]])
+    cdef _fbthrift_create(shared_ptr[vector[cset[string]]])
     @staticmethod
     cdef shared_ptr[vector[cset[string]]] _make_instance(object items) except *
 
 cdef class Map__List__Set__string_string(thrift.py3.types.Map):
     cdef shared_ptr[cmap[vector[cset[string]],string]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[vector[cset[string]],string]])
+    cdef _fbthrift_create(shared_ptr[cmap[vector[cset[string]],string]])
     @staticmethod
     cdef shared_ptr[cmap[vector[cset[string]],string]] _make_instance(object items) except *
 
 cdef class Map__Set__List__i32_Map__List__Set__string_string(thrift.py3.types.Map):
     cdef shared_ptr[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]])
+    cdef _fbthrift_create(shared_ptr[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]])
     @staticmethod
     cdef shared_ptr[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]] _make_instance(object items) except *
 
 cdef class List__binary(thrift.py3.types.List):
     cdef shared_ptr[vector[string]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[string]])
+    cdef _fbthrift_create(shared_ptr[vector[string]])
     @staticmethod
     cdef shared_ptr[vector[string]] _make_instance(object items) except *
 
 cdef class Map__MyEnumA_string(thrift.py3.types.Map):
     cdef shared_ptr[cmap[cMyEnumA,string]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[cMyEnumA,string]])
+    cdef _fbthrift_create(shared_ptr[cmap[cMyEnumA,string]])
     @staticmethod
     cdef shared_ptr[cmap[cMyEnumA,string]] _make_instance(object items) except *
 
 cdef class Set__i64(thrift.py3.types.Set):
     cdef shared_ptr[cset[cint64_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cset[cint64_t]])
+    cdef _fbthrift_create(shared_ptr[cset[cint64_t]])
     @staticmethod
     cdef shared_ptr[cset[cint64_t]] _make_instance(object items) except *
 
 cdef class Map__string_i32(thrift.py3.types.Map):
     cdef shared_ptr[cmap[string,cint32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[string,cint32_t]])
+    cdef _fbthrift_create(shared_ptr[cmap[string,cint32_t]])
     @staticmethod
     cdef shared_ptr[cmap[string,cint32_t]] _make_instance(object items) except *
 
 cdef class List__SimpleUnion(thrift.py3.types.List):
     cdef shared_ptr[vector[cSimpleUnion]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cSimpleUnion]])
+    cdef _fbthrift_create(shared_ptr[vector[cSimpleUnion]])
     @staticmethod
     cdef shared_ptr[vector[cSimpleUnion]] _make_instance(object items) except *
 
 cdef class Set__SimpleUnion(thrift.py3.types.Set):
     cdef shared_ptr[cset[cSimpleUnion]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cset[cSimpleUnion]])
+    cdef _fbthrift_create(shared_ptr[cset[cSimpleUnion]])
     @staticmethod
     cdef shared_ptr[cset[cSimpleUnion]] _make_instance(object items) except *
 
 cdef class List__Set__SimpleUnion(thrift.py3.types.List):
     cdef shared_ptr[vector[cset[cSimpleUnion]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cset[cSimpleUnion]]])
+    cdef _fbthrift_create(shared_ptr[vector[cset[cSimpleUnion]]])
     @staticmethod
     cdef shared_ptr[vector[cset[cSimpleUnion]]] _make_instance(object items) except *
 
 cdef class Map__string_bool(thrift.py3.types.Map):
     cdef shared_ptr[cmap[string,cbool]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[string,cbool]])
+    cdef _fbthrift_create(shared_ptr[cmap[string,cbool]])
     @staticmethod
     cdef shared_ptr[cmap[string,cbool]] _make_instance(object items) except *
 
 cdef class Set__i32(thrift.py3.types.Set):
     cdef shared_ptr[cset[cint32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cset[cint32_t]])
+    cdef _fbthrift_create(shared_ptr[cset[cint32_t]])
     @staticmethod
     cdef shared_ptr[cset[cint32_t]] _make_instance(object items) except *
 
 cdef class Map__string_Map__string_i32(thrift.py3.types.Map):
     cdef shared_ptr[cmap[string,cmap[string,cint32_t]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[string,cmap[string,cint32_t]]])
+    cdef _fbthrift_create(shared_ptr[cmap[string,cmap[string,cint32_t]]])
     @staticmethod
     cdef shared_ptr[cmap[string,cmap[string,cint32_t]]] _make_instance(object items) except *
 
 cdef class Map__string_Map__string_Map__string_i32(thrift.py3.types.Map):
     cdef shared_ptr[cmap[string,cmap[string,cmap[string,cint32_t]]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[string,cmap[string,cmap[string,cint32_t]]]])
+    cdef _fbthrift_create(shared_ptr[cmap[string,cmap[string,cmap[string,cint32_t]]]])
     @staticmethod
     cdef shared_ptr[cmap[string,cmap[string,cmap[string,cint32_t]]]] _make_instance(object items) except *
 
 cdef class List__Set__i32(thrift.py3.types.List):
     cdef shared_ptr[vector[cset[cint32_t]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cset[cint32_t]]])
+    cdef _fbthrift_create(shared_ptr[vector[cset[cint32_t]]])
     @staticmethod
     cdef shared_ptr[vector[cset[cint32_t]]] _make_instance(object items) except *
 
 cdef class Map__string_List__i32(thrift.py3.types.Map):
     cdef shared_ptr[cmap[string,vector[cint32_t]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[string,vector[cint32_t]]])
+    cdef _fbthrift_create(shared_ptr[cmap[string,vector[cint32_t]]])
     @staticmethod
     cdef shared_ptr[cmap[string,vector[cint32_t]]] _make_instance(object items) except *
 
 cdef class Set__bool(thrift.py3.types.Set):
     cdef shared_ptr[cset[cbool]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cset[cbool]])
+    cdef _fbthrift_create(shared_ptr[cset[cbool]])
     @staticmethod
     cdef shared_ptr[cset[cbool]] _make_instance(object items) except *
 
 cdef class Set__Set__bool(thrift.py3.types.Set):
     cdef shared_ptr[cset[cset[cbool]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cset[cset[cbool]]])
+    cdef _fbthrift_create(shared_ptr[cset[cset[cbool]]])
     @staticmethod
     cdef shared_ptr[cset[cset[cbool]]] _make_instance(object items) except *
 
 cdef class Set__Set__Set__bool(thrift.py3.types.Set):
     cdef shared_ptr[cset[cset[cset[cbool]]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cset[cset[cset[cbool]]]])
+    cdef _fbthrift_create(shared_ptr[cset[cset[cset[cbool]]]])
     @staticmethod
     cdef shared_ptr[cset[cset[cset[cbool]]]] _make_instance(object items) except *
 
 cdef class Map__Bar__double_Baz__i32(thrift.py3.types.Map):
     cdef shared_ptr[cmap[Bar,Baz]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[Bar,Baz]])
+    cdef _fbthrift_create(shared_ptr[cmap[Bar,Baz]])
     @staticmethod
     cdef shared_ptr[cmap[Bar,Baz]] _make_instance(object items) except *
 
 cdef class folly_small_vector_int64_t_8__List__i64(thrift.py3.types.List):
     cdef shared_ptr[folly_small_vector_int64_t_8] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[folly_small_vector_int64_t_8])
+    cdef _fbthrift_create(shared_ptr[folly_small_vector_int64_t_8])
     @staticmethod
     cdef shared_ptr[folly_small_vector_int64_t_8] _make_instance(object items) except *
 
 cdef class folly_sorted_vector_set_std_string__Set__string(thrift.py3.types.Set):
     cdef shared_ptr[folly_sorted_vector_set_std_string] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[folly_sorted_vector_set_std_string])
+    cdef _fbthrift_create(shared_ptr[folly_sorted_vector_set_std_string])
     @staticmethod
     cdef shared_ptr[folly_sorted_vector_set_std_string] _make_instance(object items) except *
 
 cdef class FakeMap__Map__i64_double(thrift.py3.types.Map):
     cdef shared_ptr[FakeMap] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[FakeMap])
+    cdef _fbthrift_create(shared_ptr[FakeMap])
     @staticmethod
     cdef shared_ptr[FakeMap] _make_instance(object items) except *
 
 cdef class std_unordered_map_std_string_containerStruct__Map__string_containerStruct(thrift.py3.types.Map):
     cdef shared_ptr[std_unordered_map_std_string_containerStruct] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[std_unordered_map_std_string_containerStruct])
+    cdef _fbthrift_create(shared_ptr[std_unordered_map_std_string_containerStruct])
     @staticmethod
     cdef shared_ptr[std_unordered_map_std_string_containerStruct] _make_instance(object items) except *
 
 cdef class std_list__List__i32(thrift.py3.types.List):
     cdef shared_ptr[std_list[cint32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[std_list[cint32_t]])
+    cdef _fbthrift_create(shared_ptr[std_list[cint32_t]])
     @staticmethod
     cdef shared_ptr[std_list[cint32_t]] _make_instance(object items) except *
 
 cdef class std_deque__List__string(thrift.py3.types.List):
     cdef shared_ptr[std_deque[string]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[std_deque[string]])
+    cdef _fbthrift_create(shared_ptr[std_deque[string]])
     @staticmethod
     cdef shared_ptr[std_deque[string]] _make_instance(object items) except *
 
 cdef class folly_sorted_vector_set__Set__string(thrift.py3.types.Set):
     cdef shared_ptr[folly_sorted_vector_set[string]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[folly_sorted_vector_set[string]])
+    cdef _fbthrift_create(shared_ptr[folly_sorted_vector_set[string]])
     @staticmethod
     cdef shared_ptr[folly_sorted_vector_set[string]] _make_instance(object items) except *
 
 cdef class folly_sorted_vector_map__Map__i64_string(thrift.py3.types.Map):
     cdef shared_ptr[folly_sorted_vector_map[cint64_t,string]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[folly_sorted_vector_map[cint64_t,string]])
+    cdef _fbthrift_create(shared_ptr[folly_sorted_vector_map[cint64_t,string]])
     @staticmethod
     cdef shared_ptr[folly_sorted_vector_map[cint64_t,string]] _make_instance(object items) except *
 
 cdef class List__Bar__double(thrift.py3.types.List):
     cdef shared_ptr[vector[Bar]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[Bar]])
+    cdef _fbthrift_create(shared_ptr[vector[Bar]])
     @staticmethod
     cdef shared_ptr[vector[Bar]] _make_instance(object items) except *
 
 cdef class Set__Baz__i32(thrift.py3.types.Set):
     cdef shared_ptr[cset[Baz]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cset[Baz]])
+    cdef _fbthrift_create(shared_ptr[cset[Baz]])
     @staticmethod
     cdef shared_ptr[cset[Baz]] _make_instance(object items) except *
 
 cdef class Map__string_folly_IOBuf__binary(thrift.py3.types.Map):
     cdef shared_ptr[cmap[string,_fbthrift_iobuf.cIOBuf]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[string,_fbthrift_iobuf.cIOBuf]])
+    cdef _fbthrift_create(shared_ptr[cmap[string,_fbthrift_iobuf.cIOBuf]])
     @staticmethod
     cdef shared_ptr[cmap[string,_fbthrift_iobuf.cIOBuf]] _make_instance(object items) except *
 
 cdef class Map__string_std_unique_ptr_folly_IOBuf__binary(thrift.py3.types.Map):
     cdef shared_ptr[cmap[string,unique_ptr[_fbthrift_iobuf.cIOBuf]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[string,unique_ptr[_fbthrift_iobuf.cIOBuf]]])
+    cdef _fbthrift_create(shared_ptr[cmap[string,unique_ptr[_fbthrift_iobuf.cIOBuf]]])
     @staticmethod
     cdef shared_ptr[cmap[string,unique_ptr[_fbthrift_iobuf.cIOBuf]]] _make_instance(object items) except *
 
 cdef class Map__i32_string(thrift.py3.types.Map):
     cdef shared_ptr[cmap[cint32_t,string]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[cint32_t,string]])
+    cdef _fbthrift_create(shared_ptr[cmap[cint32_t,string]])
     @staticmethod
     cdef shared_ptr[cmap[cint32_t,string]] _make_instance(object items) except *
 
 cdef class List__Map__string_i32(thrift.py3.types.List):
     cdef shared_ptr[vector[cmap[string,cint32_t]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cmap[string,cint32_t]]])
+    cdef _fbthrift_create(shared_ptr[vector[cmap[string,cint32_t]]])
     @staticmethod
     cdef shared_ptr[vector[cmap[string,cint32_t]]] _make_instance(object items) except *
 
 cdef class Map__i16_string(thrift.py3.types.Map):
     cdef shared_ptr[cmap[cint16_t,string]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[cint16_t,string]])
+    cdef _fbthrift_create(shared_ptr[cmap[cint16_t,string]])
     @staticmethod
     cdef shared_ptr[cmap[cint16_t,string]] _make_instance(object items) except *
 
 cdef class List__Map__i16_string(thrift.py3.types.List):
     cdef shared_ptr[vector[cmap[cint16_t,string]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cmap[cint16_t,string]]])
+    cdef _fbthrift_create(shared_ptr[vector[cmap[cint16_t,string]]])
     @staticmethod
     cdef shared_ptr[vector[cmap[cint16_t,string]]] _make_instance(object items) except *
 
 cdef class List__MyStruct(thrift.py3.types.List):
     cdef shared_ptr[vector[cMyStruct]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cMyStruct]])
+    cdef _fbthrift_create(shared_ptr[vector[cMyStruct]])
     @staticmethod
     cdef shared_ptr[vector[cMyStruct]] _make_instance(object items) except *
 

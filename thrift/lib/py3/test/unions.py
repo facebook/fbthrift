@@ -69,7 +69,7 @@ class UnionTests(unittest.TestCase):
 
     def test_wrong_type(self) -> None:
         x = Integers(small=1)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(AttributeError):
             x.large
         x.small
 

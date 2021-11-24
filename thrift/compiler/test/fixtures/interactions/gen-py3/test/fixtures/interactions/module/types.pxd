@@ -75,7 +75,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cCustomException&)
         bint operator>=(cCustomException&)
         __field_ref[string] message_ref()
-        string message
 
 
 
@@ -85,7 +84,7 @@ cdef class CustomException(thrift.py3.exceptions.GeneratedError):
     cdef _fbthrift_types_fields.__CustomException_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cCustomException])
+    cdef _fbthrift_create(shared_ptr[cCustomException])
 
 
 
@@ -94,7 +93,7 @@ cdef class ClientBufferedStream__bool(ClientBufferedStream):
     cdef unique_ptr[cClientBufferedStreamWrapper[cbool]] _gen
 
     @staticmethod
-    cdef create(cClientBufferedStream[cbool]& c_obj, __RpcOptions rpc_options)
+    cdef _fbthrift_create(cClientBufferedStream[cbool]& c_obj, __RpcOptions rpc_options)
 
     @staticmethod
     cdef void callback(

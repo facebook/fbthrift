@@ -27,14 +27,14 @@ interaction MyInteraction {
   i32 frobnicate() throws (1: CustomException ex);
   oneway void ping();
   stream<bool> truthify();
-  set<float>, sink<string, binary> encode();
+  set<i32>, sink<string, binary> encode();
 }
 
 interaction MyInteractionFast {
   i32 frobnicate();
   oneway void ping();
   stream<bool> truthify();
-  set<float>, sink<string, binary> encode();
+  set<i32>, sink<string, binary> encode();
 } (process_in_event_base)
 
 interaction SerialInteraction {

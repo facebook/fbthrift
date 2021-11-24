@@ -18,10 +18,10 @@
 
 #include <fmt/core.h>
 #include <folly/lang/Exception.h>
-#include <thrift/lib/cpp2/type/UniversalType.h>
+#include <thrift/lib/cpp2/type/UniversalName.h>
 
 namespace apache::thrift::conformance {
-using type::validateUniversalType;
+using type::validateUniversalName;
 
 Protocol getProtocol(const Any& any) noexcept {
   if (!any.protocol_ref()) {
@@ -70,11 +70,11 @@ void setProtocol(const Protocol& protocol, Any& any) noexcept {
 
 void validateAny(const Any& any) {
   if (any.type_ref().has_value() && !any.type_ref().value_unchecked().empty()) {
-    validateUniversalType(any.type_ref().value_unchecked());
+    validateUniversalName(any.type_ref().value_unchecked());
   }
   if (any.customProtocol_ref().has_value() &&
       !any.customProtocol_ref().value_unchecked().empty()) {
-    validateUniversalType(any.customProtocol_ref().value_unchecked());
+    validateUniversalName(any.customProtocol_ref().value_unchecked());
   }
 }
 

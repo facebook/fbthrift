@@ -36,6 +36,9 @@ using namespace apache::thrift;
 using namespace thrift::py3lite::client;
 using namespace thrift::py3lite::test;
 
+const std::string kTestHeaderKey = "headerKey";
+const std::string kTestHeaderValue = "headerValue";
+
 /**
  * A simple Scaffold service that will be used to test the Thrift OmniClient.
  */
@@ -45,6 +48,10 @@ class TestService : virtual public TestServiceSvIf {
   virtual ~TestService() override {}
   int add(int num1, int num2) override { return num1 + num2; }
   void oneway() override {}
+  void readHeader(
+      std::string& value, std::unique_ptr<std::string> key) override {
+    value = getRequestContext()->getHeader()->getHeaders().at(*key);
+  }
 };
 
 /**
@@ -116,6 +123,29 @@ class OmniClientTest : public ::testing::Test {
         expected);
   }
 
+  // Send a request and compare the results to the expected value.
+  template <class Request, class Result, class Client>
+  void testSendHeaders(
+      const std::unique_ptr<Client>& client,
+      const std::string& service,
+      const std::string& function,
+      const Request& req,
+      const std::unordered_map<std::string, std::string>& headers,
+      const Result& expected) {
+    switch (client->getChannelProtocolId()) {
+      case protocol::T_BINARY_PROTOCOL:
+        testSendHeaders<BinarySerializer>(
+            client, service, function, req, headers, expected);
+        break;
+      case protocol::T_COMPACT_PROTOCOL:
+        testSendHeaders<CompactSerializer>(
+            client, service, function, req, headers, expected);
+        break;
+      default:
+        FAIL() << "Channel protocol not supported";
+    }
+  }
+
   template <class Request, class Result, class Client>
   void testSend(
       const std::unique_ptr<Client>& client,
@@ -123,18 +153,7 @@ class OmniClientTest : public ::testing::Test {
       const std::string& function,
       const Request& req,
       const Result& expected) {
-    switch (client->getChannelProtocolId()) {
-      case protocol::T_BINARY_PROTOCOL:
-        testSendHeaders<BinarySerializer>(
-            client, service, function, req, {}, expected);
-        break;
-      case protocol::T_COMPACT_PROTOCOL:
-        testSendHeaders<CompactSerializer>(
-            client, service, function, req, {}, expected);
-        break;
-      default:
-        FAIL() << "Channel protocol not supported";
-    }
+    testSendHeaders(client, service, function, req, {}, expected);
   }
 
   // Send a request and compare the results to the expected value.
@@ -197,4 +216,17 @@ TEST_F(OmniClientTest, AddTest) {
 TEST_F(OmniClientTest, OnewayTest) {
   EmptyRequest request;
   testOnewaySend(client_, "TestService", "oneway", request);
+}
+
+TEST_F(OmniClientTest, ReadHeaderTest) {
+  ReadHeaderRequest request;
+  request.key() = kTestHeaderKey;
+
+  testSendHeaders(
+      client_,
+      "TestService",
+      "readHeader",
+      request,
+      {{kTestHeaderKey, kTestHeaderValue}},
+      kTestHeaderValue);
 }

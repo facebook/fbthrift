@@ -233,6 +233,15 @@ uint64_t RpcOptions::getRoutingHint() const {
   return routingHint_;
 }
 
+RpcOptions& RpcOptions::setContextPropMask(uint8_t mask) {
+  contextPropComponentEnabledMask_ = mask;
+  return *this;
+}
+
+uint8_t RpcOptions::getContextPropMask() const {
+  return contextPropComponentEnabledMask_;
+}
+
 RpcOptions& RpcOptions::setCallerContext(std::shared_ptr<void> callerContext) {
   callerContext_ = std::move(callerContext);
   return *this;

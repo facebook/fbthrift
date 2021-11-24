@@ -183,13 +183,20 @@ func (p *Ref) String() string {
   return fmt.Sprintf("Ref({Type:%s})", typeVal)
 }
 
+// Attributes:
+//  - Ref
 type Lazy struct {
+  Ref bool `thrift:"ref,1" db:"ref" json:"ref"`
 }
 
 func NewLazy() *Lazy {
   return &Lazy{}
 }
 
+
+func (p *Lazy) GetRef() bool {
+  return p.Ref
+}
 type LazyBuilder struct {
   obj *Lazy
 }
@@ -202,7 +209,18 @@ func NewLazyBuilder() *LazyBuilder{
 
 func (p LazyBuilder) Emit() *Lazy{
   return &Lazy{
+    Ref: p.obj.Ref,
   }
+}
+
+func (l *LazyBuilder) Ref(ref bool) *LazyBuilder {
+  l.obj.Ref = ref
+  return l
+}
+
+func (l *Lazy) SetRef(ref bool) *Lazy {
+  l.Ref = ref
+  return l
 }
 
 func (p *Lazy) Read(iprot thrift.Protocol) error {
@@ -217,8 +235,15 @@ func (p *Lazy) Read(iprot thrift.Protocol) error {
       return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
     }
     if fieldTypeId == thrift.STOP { break; }
-    if err := iprot.Skip(fieldTypeId); err != nil {
-      return err
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
     }
     if err := iprot.ReadFieldEnd(); err != nil {
       return err
@@ -230,9 +255,19 @@ func (p *Lazy) Read(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *Lazy)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadBool(); err != nil {
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Ref = v
+  }
+  return nil
+}
+
 func (p *Lazy) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("Lazy"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -240,12 +275,23 @@ func (p *Lazy) Write(oprot thrift.Protocol) error {
   return nil
 }
 
+func (p *Lazy) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("ref", thrift.BOOL, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:ref: ", p), err) }
+  if err := oprot.WriteBool(bool(p.Ref)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.ref (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:ref: ", p), err) }
+  return err
+}
+
 func (p *Lazy) String() string {
   if p == nil {
     return "<nil>"
   }
 
-  return fmt.Sprintf("Lazy({})")
+  refVal := fmt.Sprintf("%v", p.Ref)
+  return fmt.Sprintf("Lazy({Ref:%s})", refVal)
 }
 
 type DisableLazyChecksum struct {

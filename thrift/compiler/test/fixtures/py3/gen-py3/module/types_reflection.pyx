@@ -24,19 +24,19 @@ from thrift.py3.types cimport (
 
 
 cdef __StructSpec get_reflection__SimpleException():
-    cdef _module_types.SimpleException defaults = _module_types.SimpleException.create(
+    cdef _module_types.SimpleException defaults = _module_types.SimpleException._fbthrift_create(
         constant_shared_ptr[_module_types.cSimpleException](
             default_inst[_module_types.cSimpleException]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="SimpleException",
         kind=__StructType.EXCEPTION,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="err_code",
             type=int,
@@ -49,19 +49,19 @@ cdef __StructSpec get_reflection__SimpleException():
     )
     return spec
 cdef __StructSpec get_reflection__OptionalRefStruct():
-    cdef _module_types.OptionalRefStruct defaults = _module_types.OptionalRefStruct.create(
+    cdef _module_types.OptionalRefStruct defaults = _module_types.OptionalRefStruct._fbthrift_create(
         constant_shared_ptr[_module_types.cOptionalRefStruct](
             default_inst[_module_types.cOptionalRefStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="OptionalRefStruct",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="optional_blob",
             type=_fbthrift_iobuf.IOBuf,
@@ -74,19 +74,19 @@ cdef __StructSpec get_reflection__OptionalRefStruct():
     )
     return spec
 cdef __StructSpec get_reflection__SimpleStruct():
-    cdef _module_types.SimpleStruct defaults = _module_types.SimpleStruct.create(
+    cdef _module_types.SimpleStruct defaults = _module_types.SimpleStruct._fbthrift_create(
         constant_shared_ptr[_module_types.cSimpleStruct](
             default_inst[_module_types.cSimpleStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="SimpleStruct",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="is_on",
             type=bool,
@@ -98,7 +98,7 @@ cdef __StructSpec get_reflection__SimpleStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="tiny_int",
             type=int,
@@ -110,7 +110,7 @@ cdef __StructSpec get_reflection__SimpleStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=3,
             name="small_int",
             type=int,
@@ -122,7 +122,7 @@ cdef __StructSpec get_reflection__SimpleStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=4,
             name="nice_sized_int",
             type=int,
@@ -134,7 +134,7 @@ cdef __StructSpec get_reflection__SimpleStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=5,
             name="big_int",
             type=int,
@@ -146,7 +146,7 @@ cdef __StructSpec get_reflection__SimpleStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=6,
             name="real",
             type=float,
@@ -158,7 +158,7 @@ cdef __StructSpec get_reflection__SimpleStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=7,
             name="smaller_real",
             type=float,
@@ -171,19 +171,19 @@ cdef __StructSpec get_reflection__SimpleStruct():
     )
     return spec
 cdef __StructSpec get_reflection__ComplexStruct():
-    cdef _module_types.ComplexStruct defaults = _module_types.ComplexStruct.create(
+    cdef _module_types.ComplexStruct defaults = _module_types.ComplexStruct._fbthrift_create(
         constant_shared_ptr[_module_types.cComplexStruct](
             default_inst[_module_types.cComplexStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="ComplexStruct",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="structOne",
             type=_module_types.SimpleStruct,
@@ -195,7 +195,7 @@ cdef __StructSpec get_reflection__ComplexStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="structTwo",
             type=_module_types.SimpleStruct,
@@ -207,7 +207,7 @@ cdef __StructSpec get_reflection__ComplexStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=3,
             name="an_integer",
             type=int,
@@ -219,7 +219,7 @@ cdef __StructSpec get_reflection__ComplexStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=4,
             name="name",
             type=str,
@@ -231,7 +231,7 @@ cdef __StructSpec get_reflection__ComplexStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=5,
             name="an_enum",
             type=_module_types.AnEnum,
@@ -243,7 +243,7 @@ cdef __StructSpec get_reflection__ComplexStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=6,
             name="some_bytes",
             type=bytes,
@@ -255,7 +255,7 @@ cdef __StructSpec get_reflection__ComplexStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=7,
             name="from",
             type=str,
@@ -267,7 +267,7 @@ cdef __StructSpec get_reflection__ComplexStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=8,
             name="cdef",
             type=str,
@@ -279,7 +279,7 @@ cdef __StructSpec get_reflection__ComplexStruct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=9,
             name="bytes_with_cpp_type",
             type=bytes,
@@ -292,14 +292,14 @@ cdef __StructSpec get_reflection__ComplexStruct():
     )
     return spec
 cdef __StructSpec get_reflection__BinaryUnion():
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="BinaryUnion",
         kind=__StructType.UNION,
         annotations={
             """cpp.noncomparable""": """1""",        },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="iobuf_val",
             type=_fbthrift_iobuf.IOBuf,
@@ -312,19 +312,19 @@ cdef __StructSpec get_reflection__BinaryUnion():
     )
     return spec
 cdef __StructSpec get_reflection__BinaryUnionStruct():
-    cdef _module_types.BinaryUnionStruct defaults = _module_types.BinaryUnionStruct.create(
+    cdef _module_types.BinaryUnionStruct defaults = _module_types.BinaryUnionStruct._fbthrift_create(
         constant_shared_ptr[_module_types.cBinaryUnionStruct](
             default_inst[_module_types.cBinaryUnionStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="BinaryUnionStruct",
         kind=__StructType.STRUCT,
         annotations={
             """cpp.noncomparable""": """1""",        },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="u",
             type=_module_types.BinaryUnion,
@@ -337,49 +337,49 @@ cdef __StructSpec get_reflection__BinaryUnionStruct():
     )
     return spec
 cdef __ListSpec get_reflection__List__i16():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=int,
         kind=__NumberType.I16,
     )
 
 cdef __ListSpec get_reflection__List__i32():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=int,
         kind=__NumberType.I32,
     )
 
 cdef __ListSpec get_reflection__List__i64():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=int,
         kind=__NumberType.I64,
     )
 
 cdef __ListSpec get_reflection__List__string():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=str,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __ListSpec get_reflection__List__SimpleStruct():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.SimpleStruct,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __SetSpec get_reflection__Set__i32():
-    return __SetSpec.create(
+    return __SetSpec._fbthrift_create(
         value=int,
         kind=__NumberType.I32,
      )
 
 cdef __SetSpec get_reflection__Set__string():
-    return __SetSpec.create(
+    return __SetSpec._fbthrift_create(
         value=str,
         kind=__NumberType.NOT_A_NUMBER,
      )
 
 cdef __MapSpec get_reflection__Map__string_string():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=str,
         key_kind=__NumberType.NOT_A_NUMBER,
         value=str,
@@ -387,7 +387,7 @@ cdef __MapSpec get_reflection__Map__string_string():
     )
 
 cdef __MapSpec get_reflection__Map__string_SimpleStruct():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=str,
         key_kind=__NumberType.NOT_A_NUMBER,
         value=_module_types.SimpleStruct,
@@ -395,7 +395,7 @@ cdef __MapSpec get_reflection__Map__string_SimpleStruct():
     )
 
 cdef __MapSpec get_reflection__Map__string_i16():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=str,
         key_kind=__NumberType.NOT_A_NUMBER,
         value=int,
@@ -403,13 +403,13 @@ cdef __MapSpec get_reflection__Map__string_i16():
     )
 
 cdef __ListSpec get_reflection__List__List__i32():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.List__i32,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __MapSpec get_reflection__Map__string_i32():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=str,
         key_kind=__NumberType.NOT_A_NUMBER,
         value=int,
@@ -417,7 +417,7 @@ cdef __MapSpec get_reflection__Map__string_i32():
     )
 
 cdef __MapSpec get_reflection__Map__string_Map__string_i32():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=str,
         key_kind=__NumberType.NOT_A_NUMBER,
         value=_module_types.Map__string_i32,
@@ -425,13 +425,13 @@ cdef __MapSpec get_reflection__Map__string_Map__string_i32():
     )
 
 cdef __ListSpec get_reflection__List__Set__string():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.Set__string,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __MapSpec get_reflection__Map__string_List__SimpleStruct():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=str,
         key_kind=__NumberType.NOT_A_NUMBER,
         value=_module_types.List__SimpleStruct,
@@ -439,43 +439,43 @@ cdef __MapSpec get_reflection__Map__string_List__SimpleStruct():
     )
 
 cdef __ListSpec get_reflection__List__List__string():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.List__string,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __ListSpec get_reflection__List__Set__i32():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.Set__i32,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __ListSpec get_reflection__List__Map__string_string():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.Map__string_string,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __ListSpec get_reflection__List__binary():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=bytes,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __SetSpec get_reflection__Set__binary():
-    return __SetSpec.create(
+    return __SetSpec._fbthrift_create(
         value=bytes,
         kind=__NumberType.NOT_A_NUMBER,
      )
 
 cdef __ListSpec get_reflection__List__AnEnum():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.AnEnum,
         kind=__NumberType.NOT_A_NUMBER,
     )
 
 cdef __MapSpec get_reflection__Map__i32_double():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=int,
         key_kind=__NumberType.I32,
         value=float,
@@ -483,7 +483,7 @@ cdef __MapSpec get_reflection__Map__i32_double():
     )
 
 cdef __ListSpec get_reflection__List__Map__i32_double():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module_types.Map__i32_double,
         kind=__NumberType.NOT_A_NUMBER,
     )

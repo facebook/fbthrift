@@ -50,7 +50,7 @@ cdef class __SimpleException_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __SimpleException_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __SimpleException_FieldsSetter create(_module_types.cSimpleException* struct_cpp_obj)
+    cdef __SimpleException_FieldsSetter _fbthrift_create(_module_types.cSimpleException* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
 
 
@@ -61,7 +61,7 @@ cdef class __OptionalRefStruct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __OptionalRefStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __OptionalRefStruct_FieldsSetter create(_module_types.cOptionalRefStruct* struct_cpp_obj)
+    cdef __OptionalRefStruct_FieldsSetter _fbthrift_create(_module_types.cOptionalRefStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
 
 
@@ -72,7 +72,7 @@ cdef class __SimpleStruct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __SimpleStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __SimpleStruct_FieldsSetter create(_module_types.cSimpleStruct* struct_cpp_obj)
+    cdef __SimpleStruct_FieldsSetter _fbthrift_create(_module_types.cSimpleStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *
@@ -89,7 +89,7 @@ cdef class __ComplexStruct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __ComplexStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __ComplexStruct_FieldsSetter create(_module_types.cComplexStruct* struct_cpp_obj)
+    cdef __ComplexStruct_FieldsSetter _fbthrift_create(_module_types.cComplexStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *
@@ -108,6 +108,6 @@ cdef class __BinaryUnionStruct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __BinaryUnionStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __BinaryUnionStruct_FieldsSetter create(_module_types.cBinaryUnionStruct* struct_cpp_obj)
+    cdef __BinaryUnionStruct_FieldsSetter _fbthrift_create(_module_types.cBinaryUnionStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
 

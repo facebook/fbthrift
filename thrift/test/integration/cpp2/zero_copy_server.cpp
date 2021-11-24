@@ -79,6 +79,9 @@ int main(int argc, char* argv[]) {
 
   auto server = std::make_shared<apache::thrift::ThriftServer>();
   facebook::services::TLSConfig::applyDefaultsToThriftServer(*server);
+
+  server->setSSLPolicy(apache::thrift::SSLPolicy::PERMITTED);
+
   if (FLAGS_threshold > 0) {
     LOG(INFO) << "Adding zerocopy enable func with threshold = "
               << FLAGS_threshold;

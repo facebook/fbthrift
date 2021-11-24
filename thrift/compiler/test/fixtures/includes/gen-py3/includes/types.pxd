@@ -70,8 +70,6 @@ cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::cpp2":
         bint operator>=(cIncluded&)
         __field_ref[cint64_t] MyIntField_ref()
         __field_ref[_transitive_types.cFoo] MyTransitiveField_ref()
-        cint64_t MyIntField
-        _transitive_types.cFoo MyTransitiveField
 
 
 
@@ -82,7 +80,7 @@ cdef class Included(thrift.py3.types.Struct):
     cdef _transitive_types.Foo __fbthrift_cached_MyTransitiveField
 
     @staticmethod
-    cdef create(shared_ptr[cIncluded])
+    cdef _fbthrift_create(shared_ptr[cIncluded])
 
 
 

@@ -12,46 +12,34 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import ipaddress
+import enum
 import types
 import typing
 
-from thrift.py3lite.client.request_channel import RequestChannel
-from thrift.py3lite.serializer import Protocol
 from thrift.py3lite.types import Struct, Union
 
+TAsyncClient = typing.TypeVar("TAsyncClient", bound="AsyncClient")
 StructOrUnion = typing.TypeVar("StructOrUnion", bound=typing.Union[Struct, Union])
 
 class AsyncClient:
     def __init__(self, service_name: str) -> None: ...
-    async def __aenter__() -> AsyncClient: ...
+    async def __aenter__(self: TAsyncClient) -> TAsyncClient: ...
     async def __aexit__(
         self,
-        type: typing.Type[Exception],
-        value: Exception,
-        traceback: types.TracebackType,
+        exc_type: typing.Optional[typing.Type[BaseException]],
+        exc_value: typing.Optional[BaseException],
+        traceback: typing.Optional[types.TracebackType],
     ) -> None: ...
     async def _send_request(
         self,
+        service_name: str,
         function_name: str,
         args: Struct,
-        response_cls: typing.Type[StructOrUnion],
+        response_cls: typing.Optional[typing.Type[StructOrUnion]],
     ) -> StructOrUnion: ...
+    def set_persistent_header(self, key: str, value: str) -> None: ...
 
-IPAddress = Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
-TClient = TypeVar("TClient")
-
-class ClientType(Enum):
+class ClientType(enum.Enum):
     THRIFT_HEADER_CLIENT_TYPE: ClientType = ...
     THRIFT_ROCKET_CLIENT_TYPE: ClientType = ...
-
-def get_client(
-    clientKlass: Type[TClient],
-    *,
-    host: Optional[Union[IPAddress, str]] = ...,
-    port: Optional[int] = ...,
-    path: Optional[str] = ...,
-    timeout: float = ...,
-    client_type: ClientType = ...,
-    protocol: Protocol = ...,
-) -> TClient: ...
+    THRIFT_HTTP_CLIENT_TYPE: ClientType = ...

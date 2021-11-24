@@ -77,7 +77,7 @@ cdef class Promise_string:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[string]] cPromise):
+    cdef _fbthrift_create(cFollyPromise[unique_ptr[string]] cPromise):
         cdef Promise_string inst = Promise_string.__new__(Promise_string)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -93,7 +93,7 @@ cdef class Promise_cFollyUnit:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cFollyUnit] cPromise):
+    cdef _fbthrift_create(cFollyPromise[cFollyUnit] cPromise):
         cdef Promise_cFollyUnit inst = Promise_cFollyUnit.__new__(Promise_cFollyUnit)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -151,8 +151,8 @@ cdef api void call_cy_Raiser_doBland(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         Raiser_doBland_coro(
@@ -195,8 +195,8 @@ cdef api void call_cy_Raiser_doRaise(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         Raiser_doRaise_coro(
@@ -245,8 +245,8 @@ cdef api void call_cy_Raiser_get200(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
 ):
-    cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_string __promise = Promise_string._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         Raiser_get200_coro(
@@ -289,8 +289,8 @@ cdef api void call_cy_Raiser_get500(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
 ):
-    cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_string __promise = Promise_string._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         Raiser_get500_coro(

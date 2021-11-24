@@ -19,16 +19,16 @@ cimport module.types as _module_types
 
 
 cdef __InterfaceSpec get_reflection__SomeService(bint for_clients):
-    cdef __InterfaceSpec spec = __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec._fbthrift_create(
         name="SomeService",
         annotations={
         },
     )
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="bounce_map",
             arguments=(
-                __ArgumentSpec.create(
+                __ArgumentSpec._fbthrift_create(
                     name="m",
                     type=_module_types.std_unordered_map__Map__i32_string,
                     kind=__NumberType.NOT_A_NUMBER,
@@ -45,10 +45,10 @@ cdef __InterfaceSpec get_reflection__SomeService(bint for_clients):
         )
     )
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="binary_keyed_map",
             arguments=(
-                __ArgumentSpec.create(
+                __ArgumentSpec._fbthrift_create(
                     name="r",
                     type=_module_types.List__i64,
                     kind=__NumberType.NOT_A_NUMBER,

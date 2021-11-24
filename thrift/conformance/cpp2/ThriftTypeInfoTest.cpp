@@ -21,8 +21,13 @@
 #include <thrift/conformance/cpp2/Testing.h>
 
 namespace apache::thrift::conformance {
-using type::kMinTypeHashBytes;
 namespace {
+
+TEST(ThriftTypeInfoTest, Constants) {
+  EXPECT_EQ(kMinTypeHashBytes, type::type_constants::minTypeHashBytes());
+  EXPECT_EQ(
+      kDefaultTypeHashBytes, type::type_constants::defaultTypeHashBytes());
+}
 
 TEST(ThriftTypeInfoTest, ValidateThriftTypeInfo) {
   const auto bad = "foo.com:42/my/typeInfo";

@@ -133,7 +133,9 @@ class Cpp2Worker : public IOWorkerContext,
       const folly::exception_wrapper& ex) noexcept override;
 
   void handleHeader(
-      folly::AsyncTransport::UniquePtr sock, const folly::SocketAddress* addr);
+      folly::AsyncTransport::UniquePtr sock,
+      const folly::SocketAddress* addr,
+      const wangle::TransportInfo& tinfo);
 
   RequestsRegistry* getRequestsRegistry() const { return requestsRegistry_; }
 

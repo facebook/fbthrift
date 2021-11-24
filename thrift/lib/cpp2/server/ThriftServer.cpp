@@ -84,7 +84,8 @@ THRIFT_PLUGGABLE_FUNC_REGISTER(
 THRIFT_PLUGGABLE_FUNC_REGISTER(
     apache::thrift::ThriftServer::ExtraInterfaces,
     createDefaultExtraInterfaces) {
-  return {nullptr /* monitoring */, nullptr /* status */};
+  return {
+      nullptr /* monitoring */, nullptr /* status */, nullptr /* control */};
 }
 
 THRIFT_PLUGGABLE_FUNC_REGISTER(
@@ -133,16 +134,31 @@ namespace {
 std::unique_ptr<AsyncProcessorFactory> createDecoratedProcessorFactory(
     std::shared_ptr<AsyncProcessorFactory> processorFactory,
     std::shared_ptr<StatusServerInterface> statusProcessorFactory,
-    std::shared_ptr<MonitoringServerInterface> monitoringProcessorFactory) {
+    std::shared_ptr<MonitoringServerInterface> monitoringProcessorFactory,
+    std::shared_ptr<ControlServerInterface> controlProcessorFactory,
+    bool shouldCheckForUnimplementedExtraInterfaces) {
   std::vector<std::shared_ptr<AsyncProcessorFactory>> servicesToMultiplex;
   CHECK(processorFactory != nullptr);
-  servicesToMultiplex.emplace_back(std::move(processorFactory));
   if (statusProcessorFactory != nullptr) {
     servicesToMultiplex.emplace_back(std::move(statusProcessorFactory));
   }
   if (monitoringProcessorFactory != nullptr) {
     servicesToMultiplex.emplace_back(std::move(monitoringProcessorFactory));
   }
+  if (controlProcessorFactory != nullptr) {
+    servicesToMultiplex.emplace_back(std::move(controlProcessorFactory));
+  }
+
+  const bool shouldPlaceExtraInterfacesInFront =
+      shouldCheckForUnimplementedExtraInterfaces &&
+      apache::thrift::detail::serviceHasUnimplementedExtraInterfaces(
+          *processorFactory) ==
+          ThriftServer::UnimplementedExtraInterfacesResult::UNIMPLEMENTED;
+  auto userServicePosition = shouldPlaceExtraInterfacesInFront
+      ? servicesToMultiplex.end()
+      : servicesToMultiplex.begin();
+  servicesToMultiplex.insert(userServicePosition, std::move(processorFactory));
+
   return std::make_unique<MultiplexAsyncProcessorFactory>(
       std::move(servicesToMultiplex));
 }
@@ -178,6 +194,7 @@ ThriftServer::ThriftServer()
   auto extraInterfaces = apache::thrift::detail::createDefaultExtraInterfaces();
   setMonitoringInterface(std::move(extraInterfaces.monitoring));
   setStatusInterface(std::move(extraInterfaces.status));
+  setControlInterface(std::move(extraInterfaces.control));
 }
 
 ThriftServer::ThriftServer(
@@ -830,7 +847,12 @@ void ThriftServer::ensureDecoratedProcessorFactoryInitialized() {
   DCHECK(getProcessorFactory().get());
   if (decoratedProcessorFactory_ == nullptr) {
     decoratedProcessorFactory_ = createDecoratedProcessorFactory(
-        getProcessorFactory(), getStatusInterface(), getMonitoringInterface());
+        getProcessorFactory(),
+        getStatusInterface(),
+        getMonitoringInterface(),
+        getControlInterface(),
+        isCheckUnimplementedExtraInterfacesAllowed() &&
+            THRIFT_FLAG(server_check_unimplemented_extra_interfaces));
   }
 }
 
@@ -1145,7 +1167,10 @@ ThriftServer::defaultNextProtocols() {
               // "http" is not a legit specifier but need to include it for
               // legacy.  Thrift's HTTP2RoutingHandler uses this, and clients
               // may be sending it.
-              "http"};
+              "http",
+              // Many clients still send http/1.1 which is handled by the
+              // default handler.
+              "http/1.1"};
         }
         return std::list<std::string>{
             "thrift",
@@ -1154,6 +1179,9 @@ ThriftServer::defaultNextProtocols() {
             // legacy.  Thrift's HTTP2RoutingHandler uses this, and clients
             // may be sending it.
             "http",
+            // Many clients still send http/1.1 which is handled by the default
+            // handler.
+            "http/1.1",
             "rs"};
       });
 }

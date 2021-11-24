@@ -3337,7 +3337,7 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
         break;
     }
     $this->_type = NoExceptMoveUnionEnum::_EMPTY_;
-}
+  }
 
   public function set_string_field(string $string_field)[write_props]: this {
     $this->reset();

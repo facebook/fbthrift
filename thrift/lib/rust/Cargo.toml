@@ -8,7 +8,7 @@ license = "Apache-2.0"
 publish = false
 
 [dependencies]
-anyhow = "1.0"
+anyhow = "1.0.48"
 async-trait = "0.1.51"
 base64 = "0.11.0"
 bufsize = "1.0"
@@ -20,7 +20,7 @@ num-derive = "0.3"
 num-traits = "0.2"
 ordered-float = { version = "1.1.1", features = ["serde"] }
 panic-message = "0.3"
-serde_json = { version = "1.0", features = ["float_roundtrip", "unbounded_depth"] }
+serde_json = { version = "1.0.64", features = ["float_roundtrip", "unbounded_depth"] }
 thiserror = "1.0.29"
 
 [dev-dependencies]

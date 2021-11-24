@@ -24,19 +24,19 @@ from thrift.py3.types cimport (
 
 
 cdef __StructSpec get_reflection__Struct():
-    cdef _module1_types.Struct defaults = _module1_types.Struct.create(
+    cdef _module1_types.Struct defaults = _module1_types.Struct._fbthrift_create(
         constant_shared_ptr[_module1_types.cStruct](
             default_inst[_module1_types.cStruct]()
         )
     )
-    cdef __StructSpec spec = __StructSpec.create(
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
         name="Struct",
         kind=__StructType.STRUCT,
         annotations={
         },
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=1,
             name="first",
             type=int,
@@ -48,7 +48,7 @@ cdef __StructSpec get_reflection__Struct():
         ),
     )
     spec.add_field(
-        __FieldSpec.create(
+        __FieldSpec._fbthrift_create(
             id=2,
             name="second",
             type=str,
@@ -61,7 +61,7 @@ cdef __StructSpec get_reflection__Struct():
     )
     return spec
 cdef __ListSpec get_reflection__List__Enum():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_module1_types.Enum,
         kind=__NumberType.NOT_A_NUMBER,
     )

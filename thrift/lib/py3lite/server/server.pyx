@@ -17,11 +17,15 @@ import sys
 import traceback
 
 from cpython.ref cimport PyObject
-from libcpp.map cimport map
+from libcpp.map cimport map as cmap
+from libcpp.memory cimport make_shared, static_pointer_cast
+from libcpp.string cimport string
 from libcpp.unordered_set cimport unordered_set
 from libcpp.utility cimport move as cmove
 from folly.executor cimport get_executor
+from folly.iobuf cimport IOBuf, from_unique_ptr
 from thrift.py3.exceptions cimport cTApplicationException, cTApplicationExceptionType__UNKNOWN, ApplicationError
+from thrift.py3.server cimport Cpp2RequestContext, ThriftServer as ThriftServer_py3, RequestContext, THRIFT_REQUEST_CONTEXT
 from thrift.py3lite.serializer cimport Protocol
 from folly cimport (
   cFollyPromise,
@@ -108,7 +112,7 @@ async def serverCallback_coro(object callFunc, str funcName, Promise_Py promise,
         promise.complete(val)
 
 cdef void combinedHandler(object func, string funcName, Cpp2RequestContext* ctx, Promise_Py promise, SerializedRequest serializedRequest, Protocol prot):
-    __context = RequestContext.create(ctx)
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = THRIFT_REQUEST_CONTEXT.set(__context)
 
     asyncio.get_event_loop().create_task(
@@ -132,16 +136,16 @@ cdef public api void handleServerCallbackOneway(object func, string funcName, Cp
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     combinedHandler(func, funcName, ctx, __promise, cmove(serializedRequest), prot)
 
-cdef class Py3LiteAsyncProcessor(AsyncProcessorFactory):
+cdef class Py3LiteAsyncProcessorFactory(AsyncProcessorFactory):
     @staticmethod
-    cdef Py3LiteAsyncProcessor create(dict funcMap, bytes serviceName):
-        cdef map[string, PyObject*] funcs
+    cdef Py3LiteAsyncProcessorFactory create(dict funcMap, bytes serviceName):
+        cdef cmap[string, PyObject*] funcs
         cdef unordered_set[string] oneways
         for name, func in funcMap.items():
             funcs[<string>name] = <PyObject*>func
             if getattr(func, "is_one_way", False):
                 oneways.insert(name)
-        cdef Py3LiteAsyncProcessor inst = Py3LiteAsyncProcessor.__new__(Py3LiteAsyncProcessor)
+        cdef Py3LiteAsyncProcessorFactory inst = Py3LiteAsyncProcessorFactory.__new__(Py3LiteAsyncProcessorFactory)
         inst._cpp_obj = static_pointer_cast[cAsyncProcessorFactory, cPy3LiteAsyncProcessorFactory](
             make_shared[cPy3LiteAsyncProcessorFactory](cmove(funcs), cmove(oneways), get_executor(), serviceName))
         return inst
@@ -152,7 +156,7 @@ cdef class ServiceInterface:
         raise NotImplementedError("Service name not implemented")
 
     def getFunctionTable(self):
-        raise NotImplementedError("Function Table not implemented")
+        return {}
 
     async def __aenter__(self):
         # Establish async context managers as a way for end users to async initalize
@@ -163,11 +167,11 @@ cdef class ServiceInterface:
         # Same as above, but allow end users to define things to be cleaned up
         pass
 
-cdef class Py3LiteServer(ThriftServer):
+cdef class ThriftServer(ThriftServer_py3):
     cdef readonly dict funcMap
     cdef readonly ServiceInterface handler
 
     def __init__(self, ServiceInterface server, int port=0, ip=None, path=None):
         self.funcMap = server.getFunctionTable()
         self.handler = server
-        super().__init__(Py3LiteAsyncProcessor.create(self.funcMap, self.handler.service_name()), port, ip, path)
+        super().__init__(Py3LiteAsyncProcessorFactory.create(self.funcMap, self.handler.service_name()), port, ip, path)

@@ -24,19 +24,38 @@ import com.facebook.thrift.protocol.*;
 @SuppressWarnings({ "unused", "serial" })
 public class Lazy implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("Lazy");
+  private static final TField REF_FIELD_DESC = new TField("ref", TType.BOOL, (short)1);
 
+  public final Boolean ref;
+  public static final int REF = 1;
 
-  public Lazy() {
+  public Lazy(
+      Boolean ref) {
+    this.ref = ref;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
   public Lazy(Lazy other) {
+    if (other.isSetRef()) {
+      this.ref = TBaseHelper.deepCopy(other.ref);
+    } else {
+      this.ref = null;
+    }
   }
 
   public Lazy deepCopy() {
     return new Lazy(this);
+  }
+
+  public Boolean isRef() {
+    return this.ref;
+  }
+
+  // Returns true if field ref is set (has been assigned a value) and false otherwise
+  public boolean isSetRef() {
+    return this.ref != null;
   }
 
   @Override
@@ -49,12 +68,14 @@ public class Lazy implements TBase, java.io.Serializable, Cloneable {
       return false;
     Lazy that = (Lazy)_that;
 
+    if (!TBaseHelper.equalsNobinary(this.isSetRef(), that.isSetRef(), this.ref, that.ref)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {});
+    return Arrays.deepHashCode(new Object[] {ref});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -63,6 +84,7 @@ public class Lazy implements TBase, java.io.Serializable, Cloneable {
   }
 
   public static Lazy deserialize(TProtocol iprot) throws TException {
+    Boolean tmp_ref = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -73,6 +95,13 @@ public class Lazy implements TBase, java.io.Serializable, Cloneable {
       }
       switch (__field.id)
       {
+        case REF:
+          if (__field.type == TType.BOOL) {
+            tmp_ref = iprot.readBool();
+          } else { 
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -83,6 +112,7 @@ public class Lazy implements TBase, java.io.Serializable, Cloneable {
 
     Lazy _that;
     _that = new Lazy(
+      tmp_ref
     );
     _that.validate();
     return _that;
@@ -92,6 +122,11 @@ public class Lazy implements TBase, java.io.Serializable, Cloneable {
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
+    if (this.ref != null) {
+      oprot.writeFieldBegin(REF_FIELD_DESC);
+      oprot.writeBool(this.ref);
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }

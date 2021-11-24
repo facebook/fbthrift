@@ -14,41 +14,32 @@
 
 # cython: c_string_type=unicode, c_string_encoding=utf8
 
-import time
 cimport folly.iobuf
 
 from cython.operator cimport dereference as deref
 from folly.iobuf cimport IOBuf
-from libc.stdint cimport uint32_t
 from libcpp.memory cimport make_unique
 from libcpp.string cimport string
 from libcpp.utility cimport move as cmove
-from thrift.py3lite.client.request_channel cimport (
-    sync_createThriftChannelTCP,
-    sync_createThriftChannelUnix,
-    ClientType as cClientType,
-    RequestChannel,
-)
-from thrift.py3lite.client.request_channel import ClientType
+from thrift.py3lite.client.request_channel cimport RequestChannel
 from thrift.py3lite.exceptions cimport create_py_exception
 from thrift.py3lite.exceptions import ApplicationError, ApplicationErrorType
-from thrift.py3lite.serializer cimport Protocol as cProtocol
 from thrift.py3lite.serializer import serialize_iobuf, deserialize
 
 
 cdef class SyncClient:
-    def __init__(self, RequestChannel channel):
+    def __init__(SyncClient self, RequestChannel channel):
         self._omni_client = make_unique[cOmniClient](cmove(channel._cpp_obj))
 
-    def __enter__(self):
+    def __enter__(SyncClient self):
         return self
 
-    def __exit__(self, exec_type, exc_value, traceback):
+    def __exit__(SyncClient self, exec_type, exc_value, traceback):
         # TODO: close channel
         pass
 
     def _send_request(
-        self,
+        SyncClient self,
         string service_name,
         string function_name,
         args,
@@ -61,12 +52,14 @@ cdef class SyncClient:
                 service_name,
                 function_name,
                 args_iobuf.c_clone(),
+                self._persistent_headers,
             )
         else:
             resp = deref(self._omni_client).sync_send(
                 service_name,
                 function_name,
                 args_iobuf.c_clone(),
+                self._persistent_headers,
             )
             if resp.buf.hasValue():
                 response_iobuf = folly.iobuf.from_unique_ptr(cmove(resp.buf.value()))
@@ -79,34 +72,5 @@ cdef class SyncClient:
                     "Received no result nor error",
                 )
 
-
-def get_client(
-    clientKlass,
-    *,
-    host=None,
-    port=None,
-    path=None,
-    double timeout=1,
-    cClientType client_type = ClientType.THRIFT_HEADER_CLIENT_TYPE,
-    cProtocol protocol = cProtocol.COMPACT,
-):
-    if not issubclass(clientKlass, SyncClient):
-        if hasattr(clientKlass, "Sync"):
-            clientKlass = clientKlass.Sync
-    assert issubclass(clientKlass, SyncClient), "Must be a py3lite sync client"
-
-    cdef uint32_t _timeout_ms = int(timeout * 1000)
-
-    if host is not None and port is not None:
-        if path is not None:
-            raise ValueError("Can not set path and host/port at same time")
-        channel = RequestChannel.create(sync_createThriftChannelTCP(
-            host, port, _timeout_ms, client_type, protocol
-        ))
-    elif path is not None:
-        channel = RequestChannel.create(sync_createThriftChannelUnix(
-            path, _timeout_ms, client_type, protocol
-        ))
-    else:
-        raise ValueError("Must set path or host/port")
-    return clientKlass(channel)
+    def set_persistent_header(SyncClient self, string key, string value):
+        self._persistent_headers[key] = value

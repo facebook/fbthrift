@@ -22,7 +22,7 @@ from thrift.py3.types cimport const_pointer_cast
 cdef class __C_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __C_FieldsSetter create(_c_types.cC* struct_cpp_obj):
+    cdef __C_FieldsSetter _fbthrift_create(_c_types.cC* struct_cpp_obj):
         cdef __C_FieldsSetter __fbthrift_inst = __C_FieldsSetter.__new__(__C_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"i")] = __C_FieldsSetter._set_field_0

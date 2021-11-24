@@ -62,7 +62,7 @@ cimport my.namespacing.test.hsmodule.types_reflection as _types_reflection
 cdef class HsFoo(thrift.py3.types.Struct):
     def __init__(HsFoo self, **kwargs):
         self._cpp_obj = make_shared[cHsFoo]()
-        self._fields_setter = _fbthrift_types_fields.__HsFoo_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__HsFoo_FieldsSetter._fbthrift_create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(HsFoo self, **kwargs):
@@ -70,7 +70,7 @@ cdef class HsFoo(thrift.py3.types.Struct):
             return self
         cdef HsFoo __fbthrift_inst = HsFoo.__new__(HsFoo)
         __fbthrift_inst._cpp_obj = make_shared[cHsFoo](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__HsFoo_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__HsFoo_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
         for __fbthrift_name, _fbthrift_value in kwargs.items():
             __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
@@ -84,7 +84,7 @@ cdef class HsFoo(thrift.py3.types.Struct):
         })
 
     @staticmethod
-    cdef create(shared_ptr[cHsFoo] cpp_obj):
+    cdef _fbthrift_create(shared_ptr[cHsFoo] cpp_obj):
         __fbthrift_inst = <HsFoo>HsFoo.__new__(HsFoo)
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
@@ -109,7 +109,7 @@ cdef class HsFoo(thrift.py3.types.Struct):
         cdef shared_ptr[cHsFoo] cpp_obj = make_shared[cHsFoo](
             deref(self._cpp_obj)
         )
-        return HsFoo.create(cmove(cpp_obj))
+        return HsFoo._fbthrift_create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
         r = self._fbthrift_cmp_sametype(other, op)

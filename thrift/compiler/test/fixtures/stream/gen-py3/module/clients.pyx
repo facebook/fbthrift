@@ -65,7 +65,7 @@ cdef void PubSubStreamingService_returnstream_callback(
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
-            pyfuture.set_result(_module_types.ClientBufferedStream__i32.create(result.value(), options))
+            pyfuture.set_result(_module_types.ClientBufferedStream__i32._fbthrift_create(result.value(), options))
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
@@ -78,7 +78,7 @@ cdef void PubSubStreamingService_streamthrows_callback(
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
-            pyfuture.set_result(_module_types.ClientBufferedStream__i32.create(result.value(), options))
+            pyfuture.set_result(_module_types.ClientBufferedStream__i32._fbthrift_create(result.value(), options))
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
@@ -89,7 +89,7 @@ cdef void PubSubStreamingService_boththrows_callback(
     client, pyfuture, options = <object> userdata  
     if result.hasException[_module_types.cFooEx]():
         try:
-            exc = _module_types.FooEx.create(try_make_shared_exception[_module_types.cFooEx](result.exception()))
+            exc = _module_types.FooEx._fbthrift_create(try_make_shared_exception[_module_types.cFooEx](result.exception()))
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
         else:
@@ -98,7 +98,7 @@ cdef void PubSubStreamingService_boththrows_callback(
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
-            pyfuture.set_result(_module_types.ClientBufferedStream__i32.create(result.value(), options))
+            pyfuture.set_result(_module_types.ClientBufferedStream__i32._fbthrift_create(result.value(), options))
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
@@ -109,7 +109,7 @@ cdef void PubSubStreamingService_responseandstreamthrows_callback(
     client, pyfuture, options = <object> userdata  
     if result.hasException[_module_types.cFooEx]():
         try:
-            exc = _module_types.FooEx.create(try_make_shared_exception[_module_types.cFooEx](result.exception()))
+            exc = _module_types.FooEx._fbthrift_create(try_make_shared_exception[_module_types.cFooEx](result.exception()))
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
         else:
@@ -118,7 +118,7 @@ cdef void PubSubStreamingService_responseandstreamthrows_callback(
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
-            pyfuture.set_result(_module_types.ResponseAndClientBufferedStream__i32_i32.create(result.value(), options))
+            pyfuture.set_result(_module_types.ResponseAndClientBufferedStream__i32_i32._fbthrift_create(result.value(), options))
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
@@ -131,7 +131,7 @@ cdef void PubSubStreamingService_returnstreamFast_callback(
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
-            pyfuture.set_result(_module_types.ClientBufferedStream__i32.create(result.value(), options))
+            pyfuture.set_result(_module_types.ClientBufferedStream__i32._fbthrift_create(result.value(), options))
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 

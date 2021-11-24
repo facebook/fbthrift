@@ -18,13 +18,13 @@ cimport module.types as _module_types
 
 
 cdef __InterfaceSpec get_reflection__Raiser(bint for_clients):
-    cdef __InterfaceSpec spec = __InterfaceSpec.create(
+    cdef __InterfaceSpec spec = __InterfaceSpec._fbthrift_create(
         name="Raiser",
         annotations={
         },
     )
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="doBland",
             arguments=(
             ),
@@ -37,7 +37,7 @@ cdef __InterfaceSpec get_reflection__Raiser(bint for_clients):
         )
     )
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="doRaise",
             arguments=(
             ),
@@ -53,7 +53,7 @@ cdef __InterfaceSpec get_reflection__Raiser(bint for_clients):
         )
     )
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="get200",
             arguments=(
             ),
@@ -66,7 +66,7 @@ cdef __InterfaceSpec get_reflection__Raiser(bint for_clients):
         )
     )
     spec.add_method(
-        __MethodSpec.create(
+        __MethodSpec._fbthrift_create(
             name="get500",
             arguments=(
             ),

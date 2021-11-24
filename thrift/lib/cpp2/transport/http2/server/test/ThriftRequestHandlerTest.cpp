@@ -97,8 +97,8 @@ class ThriftRequestHandlerTest : public testing::Test {
 TEST_F(ThriftRequestHandlerTest, SingleRpcChannelNoErrors) {
   auto msg = std::make_unique<HTTPMessage>();
   auto& headers = msg->getHeaders();
-  headers.rawSet("key1", "value1");
-  headers.rawSet("key2", "value2");
+  headers.set("key1", "value1");
+  headers.set("key2", "value2");
   eventBase_->runInEventBaseThread([&] {
     requestHandler_->onHeadersComplete(std::move(msg));
     requestHandler_->onBody(makeBody());
@@ -121,8 +121,8 @@ TEST_F(ThriftRequestHandlerTest, SingleRpcChannelNoErrors) {
 TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorAtEnd) {
   auto msg = std::make_unique<HTTPMessage>();
   auto& headers = msg->getHeaders();
-  headers.rawSet("key1", "value1");
-  headers.rawSet("key2", "value2");
+  headers.set("key1", "value1");
+  headers.set("key2", "value2");
   eventBase_->runInEventBaseThread([&] {
     requestHandler_->onHeadersComplete(std::move(msg));
     requestHandler_->onBody(makeBody());
@@ -145,8 +145,8 @@ TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorAtEnd) {
 TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorBeforeCallbacks) {
   auto msg = std::make_unique<HTTPMessage>();
   auto& headers = msg->getHeaders();
-  headers.rawSet("key1", "value1");
-  headers.rawSet("key2", "value2");
+  headers.set("key1", "value1");
+  headers.set("key2", "value2");
   eventBase_->runInEventBaseThread([&] {
     requestHandler_->onHeadersComplete(std::move(msg));
     requestHandler_->onBody(makeBody());
@@ -165,8 +165,8 @@ TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorBeforeCallbacks) {
 TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorBeforeEOM) {
   auto msg = std::make_unique<HTTPMessage>();
   auto& headers = msg->getHeaders();
-  headers.rawSet("key1", "value1");
-  headers.rawSet("key2", "value2");
+  headers.set("key1", "value1");
+  headers.set("key2", "value2");
   requestHandler_->onHeadersComplete(std::move(msg));
   requestHandler_->onBody(makeBody());
   onError(proxygen::kErrorUnknown);
@@ -182,8 +182,8 @@ TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorBeforeEOM) {
 TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorBeforeOnBody) {
   auto msg = std::make_unique<HTTPMessage>();
   auto& headers = msg->getHeaders();
-  headers.rawSet("key1", "value1");
-  headers.rawSet("key2", "value2");
+  headers.set("key1", "value1");
+  headers.set("key2", "value2");
   requestHandler_->onHeadersComplete(std::move(msg));
   onError(proxygen::kErrorUnknown);
   eventBase_->loopOnce();
@@ -198,8 +198,8 @@ TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorBeforeOnBody) {
 TEST_F(ThriftRequestHandlerTest, SingleRpcChannelTimeoutDuringBody) {
   auto msg = std::make_unique<HTTPMessage>();
   auto& headers = msg->getHeaders();
-  headers.rawSet("key1", "value1");
-  headers.rawSet("key2", "value2");
+  headers.set("key1", "value1");
+  headers.set("key2", "value2");
   responseHandler_->getTransaction()->onIngressHeadersComplete(std::move(msg));
   responseHandler_->getTransaction()->onIngressBody(
       folly::IOBuf::wrapBuffer("hello world", 11), 0);

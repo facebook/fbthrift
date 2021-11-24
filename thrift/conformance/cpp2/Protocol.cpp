@@ -17,10 +17,10 @@
 #include <thrift/conformance/cpp2/Protocol.h>
 
 #include <folly/lang/Exception.h>
-#include <thrift/lib/cpp2/type/UniversalType.h>
+#include <thrift/lib/cpp2/type/UniversalName.h>
 
 namespace apache::thrift::conformance {
-using type::validateUniversalType;
+using type::validateUniversalName;
 
 Protocol::Protocol(ProtocolStruct protocolStruct) noexcept
     : standard_(*protocolStruct.standard_ref()) {
@@ -35,7 +35,7 @@ Protocol Protocol::fromName(const char* name) {
   if (TEnumTraits<StandardProtocol>::findValue(name, &standard)) {
     return Protocol(standard);
   }
-  validateUniversalType(name);
+  validateUniversalName(name);
   return Protocol(name);
 }
 
@@ -80,7 +80,7 @@ bool operator<(const Protocol& lhs, const Protocol& rhs) {
 
 void validateProtocol(const Protocol& protocol) {
   if (protocol.isCustom()) {
-    validateUniversalType(protocol.custom());
+    validateUniversalName(protocol.custom());
   }
 }
 

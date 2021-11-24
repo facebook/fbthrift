@@ -76,14 +76,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[cmap[string,vector[string]]] mapField_ref()
         __optional_field_ref[cmap[string,vector[string]]] optionalMapField_ref()
         __field_ref[string] binaryField_ref()
-        cint32_t intField
-        cint32_t optionalIntField
-        cint32_t intFieldWithDefault
-        cset[string] setField
-        cset[string] optionalSetField
-        cmap[string,vector[string]] mapField
-        cmap[string,vector[string]] optionalMapField
-        string binaryField
 
     cdef enum cBaz__type "::cpp2::Baz::Type":
         cBaz__type___EMPTY__ "::cpp2::Baz::Type::__EMPTY__",
@@ -127,12 +119,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[vector[cFoo]] optionalStructListField_ref()
         __field_ref[cBaz] unionField_ref()
         __optional_field_ref[cBaz] optionalUnionField_ref()
-        cFoo structField
-        cFoo optionalStructField
-        vector[cFoo] structListField
-        vector[cFoo] optionalStructListField
-        cBaz unionField
-        cBaz optionalUnionField
 
 
     cdef cppclass cStructWithFieldAdapter "::cpp2::StructWithFieldAdapter":
@@ -145,7 +131,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cStructWithFieldAdapter&)
         bint operator>=(cStructWithFieldAdapter&)
         __field_ref[cint32_t] field_ref()
-        cint32_t field
 
 
 
@@ -159,7 +144,7 @@ cdef class Foo(thrift.py3.types.Struct):
     cdef Map__string_List__string __fbthrift_cached_optionalMapField
 
     @staticmethod
-    cdef create(shared_ptr[cFoo])
+    cdef _fbthrift_create(shared_ptr[cFoo])
 
 cdef class __BazType(thrift.py3.types.CompiledEnum):
     pass
@@ -183,7 +168,7 @@ cdef class Baz(thrift.py3.types.Union):
     ) except *
 
     @staticmethod
-    cdef create(shared_ptr[cBaz])
+    cdef _fbthrift_create(shared_ptr[cBaz])
 
 
 
@@ -198,7 +183,7 @@ cdef class Bar(thrift.py3.types.Struct):
     cdef Baz __fbthrift_cached_optionalUnionField
 
     @staticmethod
-    cdef create(shared_ptr[cBar])
+    cdef _fbthrift_create(shared_ptr[cBar])
 
 
 
@@ -207,34 +192,34 @@ cdef class StructWithFieldAdapter(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__StructWithFieldAdapter_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cStructWithFieldAdapter])
+    cdef _fbthrift_create(shared_ptr[cStructWithFieldAdapter])
 
 
 cdef class Set__string(thrift.py3.types.Set):
     cdef shared_ptr[cset[string]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cset[string]])
+    cdef _fbthrift_create(shared_ptr[cset[string]])
     @staticmethod
     cdef shared_ptr[cset[string]] _make_instance(object items) except *
 
 cdef class List__string(thrift.py3.types.List):
     cdef shared_ptr[vector[string]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[string]])
+    cdef _fbthrift_create(shared_ptr[vector[string]])
     @staticmethod
     cdef shared_ptr[vector[string]] _make_instance(object items) except *
 
 cdef class Map__string_List__string(thrift.py3.types.Map):
     cdef shared_ptr[cmap[string,vector[string]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[string,vector[string]]])
+    cdef _fbthrift_create(shared_ptr[cmap[string,vector[string]]])
     @staticmethod
     cdef shared_ptr[cmap[string,vector[string]]] _make_instance(object items) except *
 
 cdef class List__Foo(thrift.py3.types.List):
     cdef shared_ptr[vector[cFoo]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cFoo]])
+    cdef _fbthrift_create(shared_ptr[vector[cFoo]])
     @staticmethod
     cdef shared_ptr[vector[cFoo]] _make_instance(object items) except *
 

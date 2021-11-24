@@ -83,7 +83,7 @@ cdef class Promise_cFollyUnit:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cFollyUnit] cPromise):
+    cdef _fbthrift_create(cFollyPromise[cFollyUnit] cPromise):
         cdef Promise_cFollyUnit inst = Promise_cFollyUnit.__new__(Promise_cFollyUnit)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -139,10 +139,10 @@ cdef api void call_cy_MyService_query(
     unique_ptr[_module_types.cMyStruct] s,
     unique_ptr[_includes_types.cIncluded] i
 ):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
-    arg_s = _module_types.MyStruct.create(shared_ptr[_module_types.cMyStruct](s.release()))
-    arg_i = _includes_types.Included.create(shared_ptr[_includes_types.cIncluded](i.release()))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    arg_s = _module_types.MyStruct._fbthrift_create(shared_ptr[_module_types.cMyStruct](s.release()))
+    arg_i = _includes_types.Included._fbthrift_create(shared_ptr[_includes_types.cIncluded](i.release()))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyService_query_coro(
@@ -193,10 +193,10 @@ cdef api void call_cy_MyService_has_arg_docs(
     unique_ptr[_module_types.cMyStruct] s,
     unique_ptr[_includes_types.cIncluded] i
 ):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
-    arg_s = _module_types.MyStruct.create(shared_ptr[_module_types.cMyStruct](s.release()))
-    arg_i = _includes_types.Included.create(shared_ptr[_includes_types.cIncluded](i.release()))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    arg_s = _module_types.MyStruct._fbthrift_create(shared_ptr[_module_types.cMyStruct](s.release()))
+    arg_i = _includes_types.Included._fbthrift_create(shared_ptr[_includes_types.cIncluded](i.release()))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyService_has_arg_docs_coro(

@@ -18,7 +18,7 @@ class Fiery(_fbthrift_py3lite_exceptions.GeneratedError):
         message: _typing.Optional[str]=...
     ) -> None: ...
 
-    def __iter__(self) -> typing.Iterator[typing.Tuple[str, _typing.Union[None, str]]]: ...
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[None, str]]]: ...
 
 
 class Serious(_fbthrift_py3lite_exceptions.GeneratedError):
@@ -28,7 +28,7 @@ class Serious(_fbthrift_py3lite_exceptions.GeneratedError):
         sonnet: _typing.Optional[str]=...
     ) -> None: ...
 
-    def __iter__(self) -> typing.Iterator[typing.Tuple[str, _typing.Union[None, str]]]: ...
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[None, str]]]: ...
 
 
 class ComplexFieldNames(_fbthrift_py3lite_exceptions.GeneratedError):
@@ -40,7 +40,7 @@ class ComplexFieldNames(_fbthrift_py3lite_exceptions.GeneratedError):
         internal_error_message: _typing.Optional[str]=...
     ) -> None: ...
 
-    def __iter__(self) -> typing.Iterator[typing.Tuple[str, _typing.Union[None, str, str]]]: ...
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[None, str, str]]]: ...
 
 
 class CustomFieldNames(_fbthrift_py3lite_exceptions.GeneratedError):
@@ -52,7 +52,7 @@ class CustomFieldNames(_fbthrift_py3lite_exceptions.GeneratedError):
         internal_error_message: _typing.Optional[str]=...
     ) -> None: ...
 
-    def __iter__(self) -> typing.Iterator[typing.Tuple[str, _typing.Union[None, str, str]]]: ...
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[None, str, str]]]: ...
 
 
 class ExceptionWithPrimitiveField(_fbthrift_py3lite_exceptions.GeneratedError):
@@ -64,7 +64,7 @@ class ExceptionWithPrimitiveField(_fbthrift_py3lite_exceptions.GeneratedError):
         error_code: _typing.Optional[int]=...
     ) -> None: ...
 
-    def __iter__(self) -> typing.Iterator[typing.Tuple[str, _typing.Union[None, str, int]]]: ...
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[None, str, int]]]: ...
 
 
 class Banal(_fbthrift_py3lite_exceptions.GeneratedError):
@@ -72,4 +72,120 @@ class Banal(_fbthrift_py3lite_exceptions.GeneratedError):
         self,
     ) -> None: ...
 
-    def __iter__(self) -> typing.Iterator[typing.Tuple[str, _typing.Union[None]]]: ...
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[None]]]: ...
+
+
+class _fbthrift_Raiser_doBland_args(_fbthrift_py3lite_types.Struct):
+
+    def __init__(
+        self,
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[None]]]: ...
+
+class _fbthrift_Raiser_doBland_result(_fbthrift_py3lite_types.Struct):
+    success: _typing.Final[None]
+
+    def __init__(
+        self, *, success: _typing.Optional[None] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[
+            None,
+        ]]]: ...
+
+
+
+
+class _fbthrift_Raiser_doRaise_args(_fbthrift_py3lite_types.Struct):
+
+    def __init__(
+        self,
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[None]]]: ...
+
+class _fbthrift_Raiser_doRaise_result(_fbthrift_py3lite_types.Struct):
+    success: _typing.Final[None]
+    b: _typing.Final[Banal]
+    f: _typing.Final[Fiery]
+    s: _typing.Final[Serious]
+
+    def __init__(
+        self, *, success: _typing.Optional[None] = ..., b: _typing.Optional[Banal]=..., f: _typing.Optional[Fiery]=..., s: _typing.Optional[Serious]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[
+            None,
+            Banal,
+            Fiery,
+            Serious,
+        ]]]: ...
+
+
+
+
+class _fbthrift_Raiser_get200_args(_fbthrift_py3lite_types.Struct):
+
+    def __init__(
+        self,
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[None]]]: ...
+
+class _fbthrift_Raiser_get200_result(_fbthrift_py3lite_types.Struct):
+    success: _typing.Final[str]
+
+    def __init__(
+        self, *, success: _typing.Optional[str] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[
+            str,
+        ]]]: ...
+
+
+
+
+class _fbthrift_Raiser_get500_args(_fbthrift_py3lite_types.Struct):
+
+    def __init__(
+        self,
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[None]]]: ...
+
+class _fbthrift_Raiser_get500_result(_fbthrift_py3lite_types.Struct):
+    success: _typing.Final[str]
+    f: _typing.Final[Fiery]
+    b: _typing.Final[Banal]
+    s: _typing.Final[Serious]
+
+    def __init__(
+        self, *, success: _typing.Optional[str] = ..., f: _typing.Optional[Fiery]=..., b: _typing.Optional[Banal]=..., s: _typing.Optional[Serious]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[
+            str,
+            Fiery,
+            Banal,
+            Serious,
+        ]]]: ...
+
+

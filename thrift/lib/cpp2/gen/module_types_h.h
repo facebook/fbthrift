@@ -19,10 +19,12 @@
 #include <cstdint>
 #include <initializer_list>
 #include <memory>
+#include <shared_mutex>
 #include <type_traits>
 
 #include <folly/CPortability.h>
 #include <folly/Traits.h>
+#include <folly/synchronization/Lock.h>
 #include <thrift/lib/cpp2/Adapt.h>
 #include <thrift/lib/cpp2/FieldRef.h>
 #include <thrift/lib/cpp2/Thrift.h>
@@ -30,6 +32,11 @@
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/TableBasedForwardTypes.h>
+
+#if !FOLLY_MOBILE
+#include <folly/SharedMutex.h>
+#else
+#endif
 
 #ifdef SWIG
 #error SWIG
@@ -91,6 +98,7 @@ struct invoke_setter;
 
 template <typename Tag>
 struct invoke_reffer_thru {
+  // optional field
   template <typename... A>
   FOLLY_ERASE constexpr auto operator()(A&&... a) noexcept(
       noexcept(invoke_reffer<Tag>{}(static_cast<A&&>(a)...).value_unchecked()))
@@ -99,6 +107,7 @@ struct invoke_reffer_thru {
     return invoke_reffer<Tag>{}(static_cast<A&&>(a)...).value_unchecked();
   }
 
+  // unqualified field
   template <typename... A>
   FOLLY_ERASE constexpr auto operator()(A&&... a) noexcept(
       noexcept(*invoke_reffer<Tag>{}(static_cast<A&&>(a)...)))
@@ -106,6 +115,16 @@ struct invoke_reffer_thru {
           invoke_reffer<Tag>{}(static_cast<A&&>(a)...).is_set(),
           *invoke_reffer<Tag>{}(static_cast<A&&>(a)...)) {
     return *invoke_reffer<Tag>{}(static_cast<A&&>(a)...);
+  }
+
+  // cpp.ref field
+  template <typename... A>
+  FOLLY_ERASE constexpr auto operator()(A&&... a) noexcept(
+      noexcept(invoke_reffer<Tag>{}(static_cast<A&&>(a)...)))
+      -> decltype(
+          invoke_reffer<Tag>{}(static_cast<A&&>(a)...).get(),
+          invoke_reffer<Tag>{}(static_cast<A&&>(a)...)) {
+    return invoke_reffer<Tag>{}(static_cast<A&&>(a)...);
   }
 };
 
@@ -204,49 +223,56 @@ constexpr bool operator>=(const T& lhs, const T& rhs) {
 template <size_t NumBits, bool packed = false>
 class isset_bitset {
  public:
-  template <size_t field_index>
-  bool get(folly::index_constant<field_index>) const {
-    check<field_index>();
+  bool get(size_t field_index) const {
+    check(field_index);
     return array_isset[field_index / kBits][field_index % kBits];
   }
-  template <size_t field_index>
-  void set(folly::index_constant<field_index>, bool isset_flag) {
-    check<field_index>();
+
+  void set(size_t field_index, bool isset_flag) {
+    check(field_index);
     array_isset[field_index / kBits][field_index % kBits] = isset_flag;
   }
-  template <size_t field_index>
-  const uint8_t& at(folly::index_constant<field_index>) const {
-    check<field_index>();
+
+  const uint8_t& at(size_t field_index) const {
+    check(field_index);
     return array_isset[field_index / kBits].value();
   }
-  template <size_t field_index>
-  uint8_t& at(folly::index_constant<field_index>) {
-    check<field_index>();
+
+  uint8_t& at(size_t field_index) {
+    check(field_index);
     return array_isset[field_index / kBits].value();
   }
-  template <size_t field_index>
-  uint8_t bit(folly::index_constant<field_index>) const {
-    check<field_index>();
+
+  uint8_t bit(size_t field_index) const {
+    check(field_index);
     return field_index % kBits;
   }
+
   static constexpr ptrdiff_t get_offset() {
     return offsetof(isset_bitset, array_isset);
   }
 
  private:
-  template <size_t field_index>
-  static void check() {
-    static_assert(
-        field_index / kBits < NumBits, "Isset index is out of boundary");
+  static void check(size_t field_index) {
+    DCHECK(field_index / kBits < NumBits);
   }
 
- private:
   static constexpr size_t kBits = packed ? 8 : 1;
   std::array<
       apache::thrift::detail::BitSet<uint8_t>,
       (NumBits + kBits - 1) / kBits>
       array_isset;
 };
+
+namespace st {
+
+#if !FOLLY_MOBILE
+using DeserializationMutex = folly::SharedMutex;
+#else
+using DeserializationMutex = std::shared_timed_mutex; // C++14
+#endif
+
+} // namespace st
 
 } // namespace detail
 } // namespace thrift

@@ -115,17 +115,17 @@ cdef class EnumData:
     cdef int size(self)
     cdef void _value_error(self, int value) except *
     @staticmethod
-    cdef EnumData create(cEnumData* ptr, py_type)
+    cdef EnumData _fbthrift_create(cEnumData* ptr, py_type)
 
 cdef class EnumFlagsData(EnumData):
     cdef get_invert(self, uint32_t value)
     @staticmethod
-    cdef EnumFlagsData create(cEnumFlagsData* ptr, py_type)
+    cdef EnumFlagsData _fbthrift_create(cEnumFlagsData* ptr, py_type)
 
 cdef class UnionTypeEnumData(EnumData):
     cdef object __empty
     @staticmethod
-    cdef UnionTypeEnumData create(cEnumData* ptr, py_type)
+    cdef UnionTypeEnumData _fbthrift_create(cEnumData* ptr, py_type)
 
 cdef class EnumMeta(type):
     pass

@@ -398,7 +398,7 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
         break;
     }
     $this->_type = \test\fixtures\jsenum\UnionTestingEnum::_EMPTY_;
-}
+  }
 
   public function set_foo(string $foo)[write_props]: this {
     $this->reset();

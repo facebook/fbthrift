@@ -128,16 +128,16 @@ TEST_F(StructTest, equal_to) {
     Basic a;
     Basic b;
 
-    a.req_field = 3;
-    b.req_field = 3;
+    *a.req_field_ref() = 3;
+    *b.req_field_ref() = 3;
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
-    a.req_field = 4;
+    *a.req_field_ref() = 4;
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    b.req_field = 4;
+    *b.req_field_ref() = 4;
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
   }
@@ -216,16 +216,16 @@ TEST_F(StructTest, equal_to_binary) {
     BasicBinaries a;
     BasicBinaries b;
 
-    a.req_field = "hello";
-    b.req_field = "hello";
+    *a.req_field_ref() = "hello";
+    *b.req_field_ref() = "hello";
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
-    a.req_field = "world";
+    *a.req_field_ref() = "world";
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    b.req_field = "world";
+    *b.req_field_ref() = "world";
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
   }
@@ -263,16 +263,16 @@ TEST_F(StructTest, equal_to_refs) {
     EXPECT_TRUE(op(b, a));
 
     a.def_field_ref() = std::make_unique<HasInt>();
-    a.def_field_ref()->field = 3;
+    *a.def_field_ref()->field_ref() = 3;
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
     b.def_field_ref() = std::make_unique<HasInt>();
-    b.def_field_ref()->field = 4;
+    *b.def_field_ref()->field_ref() = 4;
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    a.def_field_ref()->field = 4;
+    *a.def_field_ref()->field_ref() = 4;
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
   }
@@ -286,16 +286,16 @@ TEST_F(StructTest, equal_to_refs) {
     EXPECT_TRUE(op(b, a));
 
     a.def_field_ref() = std::make_unique<HasInt>();
-    a.def_field_ref()->field = 3;
+    *a.def_field_ref()->field_ref() = 3;
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
     b.def_field_ref() = std::make_unique<HasInt>();
-    b.def_field_ref()->field = 4;
+    *b.def_field_ref()->field_ref() = 4;
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    a.def_field_ref()->field = 4;
+    *a.def_field_ref()->field_ref() = 4;
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
   }
@@ -314,16 +314,16 @@ TEST_F(StructTest, equal_to_refs_shared) {
     EXPECT_TRUE(op(b, a));
 
     a.def_field_ref() = std::make_shared<HasInt>();
-    a.def_field_ref()->field = 3;
+    *a.def_field_ref()->field_ref() = 3;
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
     b.def_field_ref() = std::make_shared<HasInt>();
-    b.def_field_ref()->field = 4;
+    *b.def_field_ref()->field_ref() = 4;
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    a.def_field_ref()->field = 4;
+    *a.def_field_ref()->field_ref() = 4;
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
@@ -388,16 +388,16 @@ TEST_F(StructTest, less) {
     Basic a;
     Basic b;
 
-    b.req_field = 3;
-    a.req_field = 3;
+    *b.req_field_ref() = 3;
+    *a.req_field_ref() = 3;
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    b.req_field = 4;
+    *b.req_field_ref() = 4;
     EXPECT_TRUE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    a.req_field = 4;
+    *a.req_field_ref() = 4;
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
   }
@@ -476,16 +476,16 @@ TEST_F(StructTest, less_binary) {
     BasicBinaries a;
     BasicBinaries b;
 
-    b.req_field = "hello";
-    a.req_field = "hello";
+    *b.req_field_ref() = "hello";
+    *a.req_field_ref() = "hello";
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    b.req_field = "world";
+    *b.req_field_ref() = "world";
     EXPECT_TRUE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    a.req_field = "world";
+    *a.req_field_ref() = "world";
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
   }
@@ -523,16 +523,16 @@ TEST_F(StructTest, less_refs) {
     EXPECT_FALSE(op(b, a));
 
     b.def_field_ref() = std::make_unique<HasInt>();
-    b.def_field_ref()->field = 3;
+    *b.def_field_ref()->field_ref() = 3;
     EXPECT_TRUE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
     a.def_field_ref() = std::make_unique<HasInt>();
-    a.def_field_ref()->field = 4;
+    *a.def_field_ref()->field_ref() = 4;
     EXPECT_FALSE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
-    b.def_field_ref()->field = 4;
+    *b.def_field_ref()->field_ref() = 4;
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
   }
@@ -551,16 +551,16 @@ TEST_F(StructTest, less_refs_shared) {
     EXPECT_FALSE(op(b, a));
 
     b.def_field_ref() = std::make_unique<HasInt>();
-    b.def_field_ref()->field = 3;
+    *b.def_field_ref()->field_ref() = 3;
     EXPECT_TRUE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
     a.def_field_ref() = std::make_unique<HasInt>();
-    a.def_field_ref()->field = 4;
+    *a.def_field_ref()->field_ref() = 4;
     EXPECT_FALSE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
-    b.def_field_ref()->field = 4;
+    *b.def_field_ref()->field_ref() = 4;
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
@@ -578,16 +578,16 @@ TEST_F(StructTest, less_refs_shared) {
     EXPECT_FALSE(op(b, a));
 
     b.def_field_ref() = std::make_unique<HasInt>();
-    b.def_field_ref()->field = 3;
+    *b.def_field_ref()->field_ref() = 3;
     EXPECT_TRUE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
     a.def_field_ref() = std::make_unique<HasInt>();
-    a.def_field_ref()->field = 4;
+    *a.def_field_ref()->field_ref() = 4;
     EXPECT_FALSE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
-    b.def_field_ref()->field = 4;
+    *b.def_field_ref()->field_ref() = 4;
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 

@@ -14,19 +14,71 @@
  * limitations under the License.
  */
 
+#include <optional>
 #include <thrift/lib/cpp2/test/Matcher.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/Matcher_types.h>
 
 #include <folly/portability/GTest.h>
 
+// portability/GTest must be imported before any other gtest header
+#include <gtest/gtest-spi.h>
+
 using apache::thrift::test::Person;
 using apache::thrift::test::ThriftField;
+using testing::_;
+using testing::A;
 using testing::Eq;
+using testing::HasSubstr;
+using testing::IsNull;
+using testing::Optional;
 
 TEST(MatcherTest, ThriftField) {
   auto p = Person();
+  p.name() = "Zaphod";
+  EXPECT_THAT(p, ThriftField(&Person::name<>, Eq("Zaphod")));
+  p.id() = 42;
+  EXPECT_THAT(p, ThriftField(&Person::id<>, Eq(42)));
+}
+
+TEST(MatcherTest_ThriftMacher, FieldRef) {
+  namespace field = apache::thrift::tag;
+  int value = 42;
+
+  auto p = Person();
+  p.id() = value;
+  EXPECT_THAT(p, ThriftField<field::id>(Eq(value)));
+  EXPECT_NONFATAL_FAILURE(
+      EXPECT_THAT(p, ThriftField<field::id>(Eq(value + 1))), "");
+}
+
+TEST(MatcherTest_ThriftMacher, OptionalRef) {
+  namespace field = apache::thrift::tag;
+  std::string value = "Zaphod";
+  std::string wrong = "wrong";
+
+  auto p = Person();
+  EXPECT_THAT(p, ThriftField<field::name>(Eq(std::nullopt)));
+  EXPECT_NONFATAL_FAILURE(
+      EXPECT_THAT(p, ThriftField<field::name>(Optional(_))), "");
+  // An unset optional_field_ref always compares false to the inner type
+  EXPECT_NONFATAL_FAILURE(EXPECT_THAT(p, ThriftField<field::name>(wrong)), "");
+
+  p.name() = value;
+  EXPECT_THAT(p, ThriftField<field::name>(value));
+  EXPECT_THAT(p, ThriftField<field::name>(Optional(Eq(value))));
+  EXPECT_NONFATAL_FAILURE(
+      EXPECT_THAT(p, ThriftField<field::name>(Eq(wrong))), "");
+  EXPECT_NONFATAL_FAILURE(
+      EXPECT_THAT(p, ThriftField<field::name>(Optional(Eq(wrong)))), "");
+}
+
+TEST(MatcherTest, FiledRefPrintsCorrectly) {
+  auto p = Person();
+  EXPECT_EQ(testing::PrintToString(p.name_ref()), "empty optional_field_ref");
   p.name_ref() = "Zaphod";
-  EXPECT_THAT(p, ThriftField(&Person::name_ref<>, Eq("Zaphod")));
+  EXPECT_EQ(
+      testing::PrintToString(p.name_ref()),
+      "optional_field_ref holding \"Zaphod\"");
   p.id_ref() = 42;
-  EXPECT_THAT(p, ThriftField(&Person::id_ref<>, Eq(42)));
+  EXPECT_EQ(testing::PrintToString(p.id_ref()), "field_ref holding 42");
 }

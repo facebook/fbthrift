@@ -107,12 +107,12 @@ ServerStreamFn<T> ServerGeneratorStream::fromAsyncGenerator(
               if constexpr (WithHeader) {
                 if (!item.payload) {
                   StreamPayloadMetadata md;
-                  md.otherMetadata_ref() = std::move(item.metadata);
+                  md.otherMetadata() = std::move(item.metadata);
                   stream->publish(folly::Try<StreamPayload>(
                       folly::in_place, nullptr, std::move(md)));
                 } else {
                   StreamPayload sp = *(*encode)(*std::move(item.payload));
-                  sp.metadata.otherMetadata_ref() = std::move(item.metadata);
+                  sp.metadata.otherMetadata() = std::move(item.metadata);
                   stream->publish(folly::Try<StreamPayload>(std::move(sp)));
                   --credits;
                 }

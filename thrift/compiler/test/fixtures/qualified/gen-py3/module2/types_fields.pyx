@@ -22,7 +22,7 @@ from thrift.py3.types cimport const_pointer_cast
 cdef class __Struct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __Struct_FieldsSetter create(_module2_types.cStruct* struct_cpp_obj):
+    cdef __Struct_FieldsSetter _fbthrift_create(_module2_types.cStruct* struct_cpp_obj):
         cdef __Struct_FieldsSetter __fbthrift_inst = __Struct_FieldsSetter.__new__(__Struct_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"first")] = __Struct_FieldsSetter._set_field_0
@@ -59,7 +59,7 @@ cdef class __Struct_FieldsSetter(__StructFieldsSetter):
 cdef class __BigStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __BigStruct_FieldsSetter create(_module2_types.cBigStruct* struct_cpp_obj):
+    cdef __BigStruct_FieldsSetter _fbthrift_create(_module2_types.cBigStruct* struct_cpp_obj):
         cdef __BigStruct_FieldsSetter __fbthrift_inst = __BigStruct_FieldsSetter.__new__(__BigStruct_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"s")] = __BigStruct_FieldsSetter._set_field_0

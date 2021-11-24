@@ -37,21 +37,21 @@ namespace cpp2 {
 
 Foo::Foo(const Foo& srcObj) {
   __fbthrift_field_intField = srcObj.__fbthrift_field_intField;
-  __isset.set(folly::index_constant<0>(),srcObj.__isset.get(folly::index_constant<0>()));
+  __isset.set(0,srcObj.__isset.get(0));
   __fbthrift_field_optionalIntField = srcObj.__fbthrift_field_optionalIntField;
-  __isset.set(folly::index_constant<1>(),srcObj.__isset.get(folly::index_constant<1>()));
+  __isset.set(1,srcObj.__isset.get(1));
   __fbthrift_field_intFieldWithDefault = srcObj.__fbthrift_field_intFieldWithDefault;
-  __isset.set(folly::index_constant<2>(),srcObj.__isset.get(folly::index_constant<2>()));
+  __isset.set(2,srcObj.__isset.get(2));
   __fbthrift_field_setField = srcObj.__fbthrift_field_setField;
-  __isset.set(folly::index_constant<3>(),srcObj.__isset.get(folly::index_constant<3>()));
+  __isset.set(3,srcObj.__isset.get(3));
   __fbthrift_field_optionalSetField = srcObj.__fbthrift_field_optionalSetField;
-  __isset.set(folly::index_constant<4>(),srcObj.__isset.get(folly::index_constant<4>()));
+  __isset.set(4,srcObj.__isset.get(4));
   __fbthrift_field_mapField = srcObj.__fbthrift_field_mapField;
-  __isset.set(folly::index_constant<5>(),srcObj.__isset.get(folly::index_constant<5>()));
+  __isset.set(5,srcObj.__isset.get(5));
   __fbthrift_field_optionalMapField = srcObj.__fbthrift_field_optionalMapField;
-  __isset.set(folly::index_constant<6>(),srcObj.__isset.get(folly::index_constant<6>()));
+  __isset.set(6,srcObj.__isset.get(6));
   __fbthrift_field_binaryField = srcObj.__fbthrift_field_binaryField;
-  __isset.set(folly::index_constant<7>(),srcObj.__isset.get(folly::index_constant<7>()));
+  __isset.set(7,srcObj.__isset.get(7));
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_intField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(__fbthrift_field_optionalIntField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 3>(__fbthrift_field_intFieldWithDefault, *this);
@@ -393,17 +393,17 @@ namespace cpp2 {
 
 Bar::Bar(const Bar& srcObj) {
   __fbthrift_field_structField = srcObj.__fbthrift_field_structField;
-  __isset.set(folly::index_constant<0>(),srcObj.__isset.get(folly::index_constant<0>()));
+  __isset.set(0,srcObj.__isset.get(0));
   __fbthrift_field_optionalStructField = srcObj.__fbthrift_field_optionalStructField;
-  __isset.set(folly::index_constant<1>(),srcObj.__isset.get(folly::index_constant<1>()));
+  __isset.set(1,srcObj.__isset.get(1));
   __fbthrift_field_structListField = srcObj.__fbthrift_field_structListField;
-  __isset.set(folly::index_constant<2>(),srcObj.__isset.get(folly::index_constant<2>()));
+  __isset.set(2,srcObj.__isset.get(2));
   __fbthrift_field_optionalStructListField = srcObj.__fbthrift_field_optionalStructListField;
-  __isset.set(folly::index_constant<3>(),srcObj.__isset.get(folly::index_constant<3>()));
+  __isset.set(3,srcObj.__isset.get(3));
   __fbthrift_field_unionField = srcObj.__fbthrift_field_unionField;
-  __isset.set(folly::index_constant<4>(),srcObj.__isset.get(folly::index_constant<4>()));
+  __isset.set(4,srcObj.__isset.get(4));
   __fbthrift_field_optionalUnionField = srcObj.__fbthrift_field_optionalUnionField;
-  __isset.set(folly::index_constant<5>(),srcObj.__isset.get(folly::index_constant<5>()));
+  __isset.set(5,srcObj.__isset.get(5));
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_structField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(__fbthrift_field_optionalStructField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 5>(__fbthrift_field_unionField, *this);
@@ -643,7 +643,7 @@ namespace cpp2 {
 
 StructWithFieldAdapter::StructWithFieldAdapter(const StructWithFieldAdapter& srcObj) {
   __fbthrift_field_field = srcObj.__fbthrift_field_field;
-  __isset.set(folly::index_constant<0>(),srcObj.__isset.get(folly::index_constant<0>()));
+  __isset.set(0,srcObj.__isset.get(0));
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_field, *this);
 }
 

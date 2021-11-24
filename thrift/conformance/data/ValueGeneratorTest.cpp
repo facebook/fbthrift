@@ -22,6 +22,7 @@
 #include <type_traits>
 
 #include <folly/portability/GTest.h>
+#include <thrift/lib/cpp2/type/Name.h>
 
 namespace apache::thrift::conformance::data {
 
@@ -66,12 +67,12 @@ template <typename C>
   return ::testing::AssertionSuccess();
 }
 
-template <typename T>
+template <typename Tag>
 class ValueGeneratorTest : public ::testing::Test {
  public:
-  using native_type = typename T::native_type;
-  static inline const auto values = ValueGenerator<T>::getInterestingValues();
-  static inline const auto keyValues = ValueGenerator<T>::getKeyValues();
+  using standard_type = type::standard_type<Tag>;
+  static inline const auto values = ValueGenerator<Tag>::getInterestingValues();
+  static inline const auto keyValues = ValueGenerator<Tag>::getKeyValues();
 };
 
 template <typename T>
@@ -79,7 +80,7 @@ class FloatingPointGeneratorTest : public ValueGeneratorTest<T> {};
 
 template <typename Ts>
 using gtest_types_t =
-    typename fatal::filter<Ts, type::bound::is_concrete_type>::template as<
+    typename fatal::filter<Ts, type::bound::is_concrete>::template as<
         ::testing::Types>;
 
 TYPED_TEST_CASE(ValueGeneratorTest, gtest_types_t<type::all_types>);
@@ -87,12 +88,12 @@ TYPED_TEST_CASE(
     FloatingPointGeneratorTest, gtest_types_t<type::floating_point_types>);
 
 TYPED_TEST(ValueGeneratorTest, UniqueKeys) {
-  SCOPED_TRACE(TypeParam::getName());
+  SCOPED_TRACE(type::getName<TypeParam>());
   EXPECT_TRUE(allUnique(this->keyValues));
 }
 
 TYPED_TEST(ValueGeneratorTest, List_Interesting) {
-  SCOPED_TRACE(TypeParam::getName());
+  SCOPED_TRACE(type::getName<TypeParam>());
   auto lists = ValueGenerator<type::list<TypeParam>>::getInterestingValues();
   size_t count = this->values.size();
   size_t extra = count > 2 ? 2 : (count == 2 ? 1 : 0);
@@ -107,7 +108,7 @@ TYPED_TEST(ValueGeneratorTest, List_Interesting) {
 }
 
 TYPED_TEST(ValueGeneratorTest, List_Key) {
-  SCOPED_TRACE(TypeParam::getName());
+  SCOPED_TRACE(type::getName<TypeParam>());
   auto lists = ValueGenerator<type::list<TypeParam>>::getKeyValues();
   size_t count = this->keyValues.size();
   size_t extra = count > 2 ? 2 : (count == 2 ? 1 : 0);
@@ -123,7 +124,7 @@ TYPED_TEST(ValueGeneratorTest, List_Key) {
 }
 
 TYPED_TEST(ValueGeneratorTest, Set) {
-  SCOPED_TRACE(TypeParam::getName());
+  SCOPED_TRACE(type::getName<TypeParam>());
   auto sets = ValueGenerator<type::set<TypeParam>>::getInterestingValues();
   EXPECT_EQ(ValueGenerator<type::set<TypeParam>>::getKeyValues(), sets);
   ASSERT_EQ(sets.size(), 2 + this->keyValues.size());
@@ -136,7 +137,7 @@ TYPED_TEST(ValueGeneratorTest, Set) {
 }
 
 TYPED_TEST(ValueGeneratorTest, Map_Interesting) {
-  SCOPED_TRACE(TypeParam::getName());
+  SCOPED_TRACE(type::getName<TypeParam>());
   size_t valueCount = this->values.size();
   size_t keyCount = this->keyValues.size();
   auto maps =
@@ -151,7 +152,7 @@ TYPED_TEST(ValueGeneratorTest, Map_Interesting) {
 }
 
 TYPED_TEST(ValueGeneratorTest, Map_Keys) {
-  SCOPED_TRACE(TypeParam::getName());
+  SCOPED_TRACE(type::getName<TypeParam>());
   size_t valueCount = this->keyValues.size();
   size_t keyCount = this->keyValues.size();
   auto maps = ValueGenerator<type::map<TypeParam, TypeParam>>::getKeyValues();
@@ -166,13 +167,13 @@ TYPED_TEST(ValueGeneratorTest, Map_Keys) {
 }
 
 TYPED_TEST(FloatingPointGeneratorTest, Nan) {
-  SCOPED_TRACE(TypeParam::getName());
+  SCOPED_TRACE(type::getName<TypeParam>());
   EXPECT_TRUE(includesNan(this->values));
   EXPECT_FALSE(includesNan(this->keyValues));
 }
 
 TYPED_TEST(FloatingPointGeneratorTest, NegZero) {
-  SCOPED_TRACE(TypeParam::getName());
+  SCOPED_TRACE(type::getName<TypeParam>());
   EXPECT_TRUE(includesNegZero(this->values));
   EXPECT_FALSE(includesNegZero(this->keyValues));
 }

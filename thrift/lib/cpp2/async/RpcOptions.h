@@ -120,6 +120,9 @@ class RpcOptions {
   RpcOptions& setRoutingHint(uint64_t hint);
   uint64_t getRoutingHint() const;
 
+  RpcOptions& setContextPropMask(uint8_t mask);
+  uint8_t getContextPropMask() const;
+
   RpcOptions& setCallerContext(std::shared_ptr<void> callerContext);
   const std::shared_ptr<void>& getCallerContext() const;
 
@@ -137,6 +140,7 @@ class RpcOptions {
   BufferOptions bufferOptions_;
   int64_t interactionId_{0};
   uint64_t routingHint_{0};
+  uint8_t contextPropComponentEnabledMask_{0xff};
 
   std::string routingKey_;
   std::string shardId_;

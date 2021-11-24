@@ -238,7 +238,7 @@ typedef apache::thrift::ThriftPResultStream<
     > MyService_MyInteraction_truthify_presult;
 typedef apache::thrift::ThriftPresult<false> MyService_MyInteraction_encode_pargs;
 typedef apache::thrift::ThriftPResultSink<
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::set<::apache::thrift::type_class::floating_point>, ::std::set<float>*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>*>>,
     apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::string, ::std::string*>>,
     apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::binary, ::std::string*>>
     > MyService_MyInteraction_encode_presult;
@@ -746,11 +746,11 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
 }
 
 #if FOLLY_HAS_COROUTINES
-folly::coro::Task<apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::string>> MyServiceAsyncClient::MyInteraction::co_encode() {
+folly::coro::Task<apache::thrift::ResponseAndClientSink<::std::set<::std::int32_t>, ::std::string, ::std::string>> MyServiceAsyncClient::MyInteraction::co_encode() {
   ::apache::thrift::RpcOptions rpcOptions;
   co_return co_await co_encode(rpcOptions);
 }
-folly::coro::Task<apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::string>> MyServiceAsyncClient::MyInteraction::co_encode(apache::thrift::RpcOptions& rpcOptions) {
+folly::coro::Task<apache::thrift::ResponseAndClientSink<::std::set<::std::int32_t>, ::std::string, ::std::string>> MyServiceAsyncClient::MyInteraction::co_encode(apache::thrift::RpcOptions& rpcOptions) {
   const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
   const bool cancellable = cancelToken.canBeCancelled();
@@ -779,7 +779,7 @@ folly::coro::Task<apache::thrift::ResponseAndClientSink<::std::set<float>, ::std
   co_return recv_encode(returnState);
 }
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper MyServiceAsyncClient::MyInteraction::recv_wrapped_encode(apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper MyServiceAsyncClient::MyInteraction::recv_wrapped_encode(apache::thrift::ResponseAndClientSink<::std::set<::std::int32_t>, ::std::string, ::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -808,8 +808,8 @@ folly::exception_wrapper MyServiceAsyncClient::MyInteraction::recv_wrapped_encod
   }
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
-apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::string> MyServiceAsyncClient::MyInteraction::recv_encode(::apache::thrift::ClientReceiveState& state) {
-  apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::string> _return;
+apache::thrift::ResponseAndClientSink<::std::set<::std::int32_t>, ::std::string, ::std::string> MyServiceAsyncClient::MyInteraction::recv_encode(::apache::thrift::ClientReceiveState& state) {
+  apache::thrift::ResponseAndClientSink<::std::set<::std::int32_t>, ::std::string, ::std::string> _return;
   auto ew = recv_wrapped_encode(_return, state);
   if (ew) {
     ew.throw_exception();
@@ -828,7 +828,7 @@ typedef apache::thrift::ThriftPResultStream<
     > MyService_MyInteractionFast_truthify_presult;
 typedef apache::thrift::ThriftPresult<false> MyService_MyInteractionFast_encode_pargs;
 typedef apache::thrift::ThriftPResultSink<
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::set<::apache::thrift::type_class::floating_point>, ::std::set<float>*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>*>>,
     apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::string, ::std::string*>>,
     apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::binary, ::std::string*>>
     > MyService_MyInteractionFast_encode_presult;
@@ -1336,11 +1336,11 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
 }
 
 #if FOLLY_HAS_COROUTINES
-folly::coro::Task<apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::string>> MyServiceAsyncClient::MyInteractionFast::co_encode() {
+folly::coro::Task<apache::thrift::ResponseAndClientSink<::std::set<::std::int32_t>, ::std::string, ::std::string>> MyServiceAsyncClient::MyInteractionFast::co_encode() {
   ::apache::thrift::RpcOptions rpcOptions;
   co_return co_await co_encode(rpcOptions);
 }
-folly::coro::Task<apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::string>> MyServiceAsyncClient::MyInteractionFast::co_encode(apache::thrift::RpcOptions& rpcOptions) {
+folly::coro::Task<apache::thrift::ResponseAndClientSink<::std::set<::std::int32_t>, ::std::string, ::std::string>> MyServiceAsyncClient::MyInteractionFast::co_encode(apache::thrift::RpcOptions& rpcOptions) {
   const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
   const bool cancellable = cancelToken.canBeCancelled();
@@ -1369,7 +1369,7 @@ folly::coro::Task<apache::thrift::ResponseAndClientSink<::std::set<float>, ::std
   co_return recv_encode(returnState);
 }
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper MyServiceAsyncClient::MyInteractionFast::recv_wrapped_encode(apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper MyServiceAsyncClient::MyInteractionFast::recv_wrapped_encode(apache::thrift::ResponseAndClientSink<::std::set<::std::int32_t>, ::std::string, ::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -1398,8 +1398,8 @@ folly::exception_wrapper MyServiceAsyncClient::MyInteractionFast::recv_wrapped_e
   }
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
-apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::string> MyServiceAsyncClient::MyInteractionFast::recv_encode(::apache::thrift::ClientReceiveState& state) {
-  apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::string> _return;
+apache::thrift::ResponseAndClientSink<::std::set<::std::int32_t>, ::std::string, ::std::string> MyServiceAsyncClient::MyInteractionFast::recv_encode(::apache::thrift::ClientReceiveState& state) {
+  apache::thrift::ResponseAndClientSink<::std::set<::std::int32_t>, ::std::string, ::std::string> _return;
   auto ew = recv_wrapped_encode(_return, state);
   if (ew) {
     ew.throw_exception();

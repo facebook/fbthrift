@@ -73,7 +73,7 @@ class MetadataTests(unittest.TestCase):
         self.assertEqual(meta.structs["testing.EmptyUnion"].is_union, True)
 
         mixedStruct = gen_metadata(mixed)
-        _, _, _, _, _, _, field, *rest = mixedStruct.fields
+        _, _, _, _, field, *rest = mixedStruct.fields
         self.assertEqual(field.name, "some_field")
         self.assertEqual(field.pyname, "some_field_")
 
@@ -105,7 +105,7 @@ class MetadataTests(unittest.TestCase):
 
         # Grab another struct of type Integers
         mixed_struct = gen_metadata(mixed)
-        _, _, _, easy_struct, *rest = mixed_struct.fields
+        _, _, easy_struct, *rest = mixed_struct.fields
         _, _, _, other_integers, *rest = easy_struct.type.as_struct().fields
         other_integers = other_integers.type.as_union()
 

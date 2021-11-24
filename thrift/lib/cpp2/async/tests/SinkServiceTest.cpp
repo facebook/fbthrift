@@ -17,6 +17,7 @@
 #include <folly/portability/GTest.h>
 
 #include <folly/experimental/coro/Sleep.h>
+#include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/async/tests/util/Util.h>
 
 namespace apache {
@@ -194,6 +195,66 @@ TEST_F(SinkServiceTest, SinkInitialThrows) {
         }
         // connection should still be alive after initial throw
         co_await client.co_purge();
+      });
+}
+
+TEST_F(SinkServiceTest, SinkInitialThrowsOnFinalResponseCalled) {
+  class Callback : public SinkClientCallback {
+   public:
+    Callback(
+        bool onFirstResponseBool,
+        folly::coro::Baton& responseReceived,
+        folly::coro::Baton& onFinalResponseCalled)
+        : onFirstResponseBool_(onFirstResponseBool),
+          responseReceived_(responseReceived),
+          onFinalResponseCalled_(onFinalResponseCalled) {}
+    bool onFirstResponse(
+        FirstResponsePayload&&,
+        folly::EventBase*,
+        SinkServerCallback* serverCallback) override {
+      SCOPE_EXIT { responseReceived_.post(); };
+      if (!onFirstResponseBool_) {
+        serverCallback->onSinkError(std::runtime_error("stop sink"));
+        return false;
+      }
+      return true;
+    }
+    void onFinalResponse(StreamPayload&&) override {
+      if (onFirstResponseBool_) {
+        onFinalResponseCalled_.post();
+      } else {
+        FAIL() << "onFinalResponse called when onFirstResponse returned false";
+      }
+    }
+    bool onFirstResponseBool_;
+    folly::coro::Baton& responseReceived_;
+    folly::coro::Baton& onFinalResponseCalled_;
+
+    // unused
+    void onFirstResponseError(folly::exception_wrapper) override {}
+    bool onSinkRequestN(uint64_t) override { return true; }
+    void onFinalResponseError(folly::exception_wrapper) override {}
+    void resetServerCallback(SinkServerCallback&) override {}
+  };
+  connectToServer(
+      [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
+        ThriftPresult<false> pargs;
+        auto req = CompactSerializer::serialize<std::string>(pargs);
+        for (auto onFirstResponseBool : {true, false}) {
+          folly::coro::Baton responseReceived, onFinalResponseCalled;
+          Callback callback(
+              onFirstResponseBool, responseReceived, onFinalResponseCalled);
+          client.getChannelShared()->sendRequestSink(
+              RpcOptions(),
+              "initialThrow",
+              SerializedRequest(folly::IOBuf::copyBuffer(req)),
+              std::make_shared<transport::THeader>(),
+              &callback);
+          co_await responseReceived;
+          if (onFirstResponseBool) {
+            co_await onFinalResponseCalled;
+          }
+        }
       });
 }
 

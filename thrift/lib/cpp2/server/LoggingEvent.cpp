@@ -21,7 +21,6 @@
 #include <folly/Singleton.h>
 #include <folly/Synchronized.h>
 #include <folly/io/async/AsyncSSLSocket.h>
-#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 
 namespace apache {
 namespace thrift {

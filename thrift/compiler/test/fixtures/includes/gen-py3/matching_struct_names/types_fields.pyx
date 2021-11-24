@@ -22,7 +22,7 @@ from thrift.py3.types cimport const_pointer_cast
 cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __MyStruct_FieldsSetter create(_matching_struct_names_types.cMyStruct* struct_cpp_obj):
+    cdef __MyStruct_FieldsSetter _fbthrift_create(_matching_struct_names_types.cMyStruct* struct_cpp_obj):
         cdef __MyStruct_FieldsSetter __fbthrift_inst = __MyStruct_FieldsSetter.__new__(__MyStruct_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"field")] = __MyStruct_FieldsSetter._set_field_0
@@ -49,7 +49,7 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
 cdef class __Combo_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
-    cdef __Combo_FieldsSetter create(_matching_struct_names_types.cCombo* struct_cpp_obj):
+    cdef __Combo_FieldsSetter _fbthrift_create(_matching_struct_names_types.cCombo* struct_cpp_obj):
         cdef __Combo_FieldsSetter __fbthrift_inst = __Combo_FieldsSetter.__new__(__Combo_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"listOfOurMyStructLists")] = __Combo_FieldsSetter._set_field_0

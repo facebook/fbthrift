@@ -24,6 +24,7 @@
 #include <thrift/conformance/cpp2/AnyRegistry.h>
 #include <thrift/conformance/cpp2/Object.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/type/ThriftOp.h>
 
 namespace apache::thrift::conformance {
 namespace {
@@ -72,12 +73,11 @@ testing::AssertionResult RunRoundTripTest(
       ? *roundTrip.expectedResponse_ref().value_unchecked().value_ref()
       : *roundTrip.request_ref()->value_ref();
 
-  // TODO(afuller): Make add asValueStruct support to AnyRegistery and use that
+  // TODO(afuller): Make add asValueStruct support to AnyRegistry and use that
   // instead of hard coding type.
   auto actual = AnyRegistry::generated().load<Value>(*res.value_ref());
   auto expected = AnyRegistry::generated().load<Value>(expectedAny);
-  // TODO(afuller): Test for equivelence, not equality.
-  if (actual != expected) {
+  if (!op::identical<type::struct_t<Value>>(actual, expected)) {
     // TODO(afuller): Report out the delta
     return testing::AssertionFailure();
   }

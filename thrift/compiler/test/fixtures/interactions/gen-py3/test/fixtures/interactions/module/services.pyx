@@ -77,7 +77,7 @@ cdef class ServerPublisher_cbool(ServerPublisher):
         deref(self.cPublisher).next(<cbool?>item)
 
     @staticmethod
-    cdef create(cServerStreamPublisher[cbool] cPublisher):
+    cdef _fbthrift_create(cServerStreamPublisher[cbool] cPublisher):
         cdef ServerPublisher_cbool inst = ServerPublisher_cbool.__new__(ServerPublisher_cbool)
         inst.cPublisher = make_unique[cServerStreamPublisher[cbool]](cmove(cPublisher))
         return inst
@@ -86,7 +86,7 @@ cdef class ServerStream_cbool(ServerStream):
     cdef unique_ptr[cServerStream[cbool]] cStream
 
     @staticmethod
-    cdef create(cServerStream[cbool] cStream):
+    cdef _fbthrift_create(cServerStream[cbool] cStream):
         cdef ServerStream_cbool inst = ServerStream_cbool.__new__(ServerStream_cbool)
         inst.cStream = make_unique[cServerStream[cbool]](cmove(cStream))
         return inst
@@ -104,7 +104,7 @@ cdef class Promise_cServerStream__cbool:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cServerStream[cbool]] cPromise):
+    cdef _fbthrift_create(cFollyPromise[cServerStream[cbool]] cPromise):
         cdef Promise_cServerStream__cbool inst = Promise_cServerStream__cbool.__new__(Promise_cServerStream__cbool)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -120,7 +120,7 @@ cdef class Promise_cint32_t:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cint32_t] cPromise):
+    cdef _fbthrift_create(cFollyPromise[cint32_t] cPromise):
         cdef Promise_cint32_t inst = Promise_cint32_t.__new__(Promise_cint32_t)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -136,7 +136,7 @@ cdef class Promise_cFollyUnit:
         del self.cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cFollyUnit] cPromise):
+    cdef _fbthrift_create(cFollyPromise[cFollyUnit] cPromise):
         cdef Promise_cFollyUnit inst = Promise_cFollyUnit.__new__(Promise_cFollyUnit)
         inst.cPromise[0] = cmove(cPromise)
         return inst
@@ -146,7 +146,7 @@ cdef class Promise_cbool_Stream:
     cdef cFollyPromise[optional[cbool]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[optional[cbool]] cPromise):
+    cdef _fbthrift_create(cFollyPromise[optional[cbool]] cPromise):
         cdef Promise_cbool_Stream inst = Promise_cbool_Stream.__new__(Promise_cbool_Stream)
         inst.cPromise = cmove(cPromise)
         return inst
@@ -192,8 +192,8 @@ cdef api void call_cy_MyService_foo(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
-    __context = RequestContext.create(ctx)
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyService_foo_coro(

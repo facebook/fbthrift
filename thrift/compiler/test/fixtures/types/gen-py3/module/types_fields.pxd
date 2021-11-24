@@ -51,7 +51,7 @@ cdef class __decorated_struct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __decorated_struct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __decorated_struct_FieldsSetter create(_module_types.cdecorated_struct* struct_cpp_obj)
+    cdef __decorated_struct_FieldsSetter _fbthrift_create(_module_types.cdecorated_struct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
 
 
@@ -62,7 +62,7 @@ cdef class __ContainerStruct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __ContainerStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __ContainerStruct_FieldsSetter create(_module_types.cContainerStruct* struct_cpp_obj)
+    cdef __ContainerStruct_FieldsSetter _fbthrift_create(_module_types.cContainerStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *
@@ -80,7 +80,7 @@ cdef class __CppTypeStruct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __CppTypeStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __CppTypeStruct_FieldsSetter create(_module_types.cCppTypeStruct* struct_cpp_obj)
+    cdef __CppTypeStruct_FieldsSetter _fbthrift_create(_module_types.cCppTypeStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
 
 
@@ -91,7 +91,7 @@ cdef class __VirtualStruct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __VirtualStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __VirtualStruct_FieldsSetter create(_module_types.cVirtualStruct* struct_cpp_obj)
+    cdef __VirtualStruct_FieldsSetter _fbthrift_create(_module_types.cVirtualStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
 
 
@@ -102,7 +102,7 @@ cdef class __MyStructWithForwardRefEnum_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __MyStructWithForwardRefEnum_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __MyStructWithForwardRefEnum_FieldsSetter create(_module_types.cMyStructWithForwardRefEnum* struct_cpp_obj)
+    cdef __MyStructWithForwardRefEnum_FieldsSetter _fbthrift_create(_module_types.cMyStructWithForwardRefEnum* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
 
@@ -114,7 +114,7 @@ cdef class __TrivialNumeric_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __TrivialNumeric_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __TrivialNumeric_FieldsSetter create(_module_types.cTrivialNumeric* struct_cpp_obj)
+    cdef __TrivialNumeric_FieldsSetter _fbthrift_create(_module_types.cTrivialNumeric* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
 
@@ -126,7 +126,7 @@ cdef class __TrivialNestedWithDefault_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __TrivialNestedWithDefault_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __TrivialNestedWithDefault_FieldsSetter create(_module_types.cTrivialNestedWithDefault* struct_cpp_obj)
+    cdef __TrivialNestedWithDefault_FieldsSetter _fbthrift_create(_module_types.cTrivialNestedWithDefault* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
 
@@ -138,7 +138,7 @@ cdef class __ComplexString_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __ComplexString_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __ComplexString_FieldsSetter create(_module_types.cComplexString* struct_cpp_obj)
+    cdef __ComplexString_FieldsSetter _fbthrift_create(_module_types.cComplexString* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
 
@@ -150,7 +150,7 @@ cdef class __ComplexNestedWithDefault_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __ComplexNestedWithDefault_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __ComplexNestedWithDefault_FieldsSetter create(_module_types.cComplexNestedWithDefault* struct_cpp_obj)
+    cdef __ComplexNestedWithDefault_FieldsSetter _fbthrift_create(_module_types.cComplexNestedWithDefault* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
 
@@ -162,7 +162,7 @@ cdef class __MinPadding_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __MinPadding_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __MinPadding_FieldsSetter create(_module_types.cMinPadding* struct_cpp_obj)
+    cdef __MinPadding_FieldsSetter _fbthrift_create(_module_types.cMinPadding* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *
@@ -177,7 +177,7 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __MyStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __MyStruct_FieldsSetter create(_module_types.cMyStruct* struct_cpp_obj)
+    cdef __MyStruct_FieldsSetter _fbthrift_create(_module_types.cMyStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *
@@ -191,7 +191,7 @@ cdef class __MyDataItem_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __MyDataItem_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __MyDataItem_FieldsSetter create(_module_types.cMyDataItem* struct_cpp_obj)
+    cdef __MyDataItem_FieldsSetter _fbthrift_create(_module_types.cMyDataItem* struct_cpp_obj)
 
 
 ctypedef void (*__Renaming_FieldsSetterFunc)(__Renaming_FieldsSetter, object) except *
@@ -201,7 +201,7 @@ cdef class __Renaming_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __Renaming_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __Renaming_FieldsSetter create(_module_types.cRenaming* struct_cpp_obj)
+    cdef __Renaming_FieldsSetter _fbthrift_create(_module_types.cRenaming* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
 
 
@@ -212,7 +212,7 @@ cdef class __AnnotatedTypes_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __AnnotatedTypes_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __AnnotatedTypes_FieldsSetter create(_module_types.cAnnotatedTypes* struct_cpp_obj)
+    cdef __AnnotatedTypes_FieldsSetter _fbthrift_create(_module_types.cAnnotatedTypes* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
 
@@ -224,7 +224,7 @@ cdef class __ForwardUsageRoot_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __ForwardUsageRoot_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __ForwardUsageRoot_FieldsSetter create(_module_types.cForwardUsageRoot* struct_cpp_obj)
+    cdef __ForwardUsageRoot_FieldsSetter _fbthrift_create(_module_types.cForwardUsageRoot* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
 
@@ -236,7 +236,7 @@ cdef class __ForwardUsageStruct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __ForwardUsageStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __ForwardUsageStruct_FieldsSetter create(_module_types.cForwardUsageStruct* struct_cpp_obj)
+    cdef __ForwardUsageStruct_FieldsSetter _fbthrift_create(_module_types.cForwardUsageStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
 
 
@@ -247,7 +247,7 @@ cdef class __ForwardUsageByRef_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __ForwardUsageByRef_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __ForwardUsageByRef_FieldsSetter create(_module_types.cForwardUsageByRef* struct_cpp_obj)
+    cdef __ForwardUsageByRef_FieldsSetter _fbthrift_create(_module_types.cForwardUsageByRef* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
 
 
@@ -258,7 +258,7 @@ cdef class __NoexceptMoveEmpty_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __NoexceptMoveEmpty_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __NoexceptMoveEmpty_FieldsSetter create(_module_types.cNoexceptMoveEmpty* struct_cpp_obj)
+    cdef __NoexceptMoveEmpty_FieldsSetter _fbthrift_create(_module_types.cNoexceptMoveEmpty* struct_cpp_obj)
 
 
 ctypedef void (*__NoexceptMoveSimpleStruct_FieldsSetterFunc)(__NoexceptMoveSimpleStruct_FieldsSetter, object) except *
@@ -268,7 +268,7 @@ cdef class __NoexceptMoveSimpleStruct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __NoexceptMoveSimpleStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __NoexceptMoveSimpleStruct_FieldsSetter create(_module_types.cNoexceptMoveSimpleStruct* struct_cpp_obj)
+    cdef __NoexceptMoveSimpleStruct_FieldsSetter _fbthrift_create(_module_types.cNoexceptMoveSimpleStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
 
 
@@ -279,7 +279,7 @@ cdef class __NoexceptMoveComplexStruct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __NoexceptMoveComplexStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __NoexceptMoveComplexStruct_FieldsSetter create(_module_types.cNoexceptMoveComplexStruct* struct_cpp_obj)
+    cdef __NoexceptMoveComplexStruct_FieldsSetter _fbthrift_create(_module_types.cNoexceptMoveComplexStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *
@@ -298,7 +298,7 @@ cdef class __AllocatorAware_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __AllocatorAware_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __AllocatorAware_FieldsSetter create(_module_types.cAllocatorAware* struct_cpp_obj)
+    cdef __AllocatorAware_FieldsSetter _fbthrift_create(_module_types.cAllocatorAware* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *
@@ -313,7 +313,7 @@ cdef class __AllocatorAware2_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __AllocatorAware2_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __AllocatorAware2_FieldsSetter create(_module_types.cAllocatorAware2* struct_cpp_obj)
+    cdef __AllocatorAware2_FieldsSetter _fbthrift_create(_module_types.cAllocatorAware2* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
 
 
@@ -324,7 +324,7 @@ cdef class __TypedefStruct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __TypedefStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __TypedefStruct_FieldsSetter create(_module_types.cTypedefStruct* struct_cpp_obj)
+    cdef __TypedefStruct_FieldsSetter _fbthrift_create(_module_types.cTypedefStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *
@@ -337,6 +337,6 @@ cdef class __StructWithDoubleUnderscores_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __StructWithDoubleUnderscores_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __StructWithDoubleUnderscores_FieldsSetter create(_module_types.cStructWithDoubleUnderscores* struct_cpp_obj)
+    cdef __StructWithDoubleUnderscores_FieldsSetter _fbthrift_create(_module_types.cStructWithDoubleUnderscores* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
 

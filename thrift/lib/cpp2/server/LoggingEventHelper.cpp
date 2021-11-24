@@ -60,7 +60,7 @@ void logIfAlpnMismatch(
         !sock->getClientAlpns().empty()) {
       THRIFT_CONNECTION_EVENT(alpn.mismatch.ssl).log(context);
     }
-  } else if (auto fizz = dynamic_cast<const AsyncFizzServer*>(transport)) {
+  } else if (auto fizz = transport->getUnderlyingTransport<AsyncFizzServer>()) {
     auto& state = fizz->getState();
     if (!state.alpn() && !state.handshakeLogging()->clientAlpns.empty()) {
       THRIFT_CONNECTION_EVENT(alpn.mismatch.fizz).log(context);

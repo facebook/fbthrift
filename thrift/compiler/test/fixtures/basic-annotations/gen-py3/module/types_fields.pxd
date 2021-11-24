@@ -50,7 +50,7 @@ cdef class __MyStructNestedAnnotation_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __MyStructNestedAnnotation_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __MyStructNestedAnnotation_FieldsSetter create(_module_types.cMyStructNestedAnnotation* struct_cpp_obj)
+    cdef __MyStructNestedAnnotation_FieldsSetter _fbthrift_create(_module_types.cMyStructNestedAnnotation* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
 
 
@@ -61,7 +61,7 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __MyStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __MyStruct_FieldsSetter create(_module_types.cMyStruct* struct_cpp_obj)
+    cdef __MyStruct_FieldsSetter _fbthrift_create(_module_types.cMyStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *
@@ -77,7 +77,7 @@ cdef class __SecretStruct_FieldsSetter(__StructFieldsSetter):
     cdef cumap[__cstring_view, __SecretStruct_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __SecretStruct_FieldsSetter create(_module_types.cSecretStruct* struct_cpp_obj)
+    cdef __SecretStruct_FieldsSetter _fbthrift_create(_module_types.cSecretStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
 

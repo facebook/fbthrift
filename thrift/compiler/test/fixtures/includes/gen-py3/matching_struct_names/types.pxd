@@ -69,7 +69,6 @@ cdef extern from "src/gen-cpp2/matching_struct_names_types_custom_protocol.h" na
         bint operator<=(cMyStruct&)
         bint operator>=(cMyStruct&)
         __field_ref[string] field_ref()
-        string field
 
 
     cdef cppclass cCombo "::cpp2::Combo":
@@ -85,10 +84,6 @@ cdef extern from "src/gen-cpp2/matching_struct_names_types_custom_protocol.h" na
         __field_ref[vector[_module_types.cMyStruct]] theirMyStructList_ref()
         __field_ref[vector[cMyStruct]] ourMyStructList_ref()
         __field_ref[vector[vector[_module_types.cMyStruct]]] listOfTheirMyStructList_ref()
-        vector[vector[cMyStruct]] listOfOurMyStructLists
-        vector[_module_types.cMyStruct] theirMyStructList
-        vector[cMyStruct] ourMyStructList
-        vector[vector[_module_types.cMyStruct]] listOfTheirMyStructList
 
 
 
@@ -98,7 +93,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
 
     @staticmethod
-    cdef create(shared_ptr[cMyStruct])
+    cdef _fbthrift_create(shared_ptr[cMyStruct])
 
 
 
@@ -111,34 +106,34 @@ cdef class Combo(thrift.py3.types.Struct):
     cdef List__List__module_MyStruct __fbthrift_cached_listOfTheirMyStructList
 
     @staticmethod
-    cdef create(shared_ptr[cCombo])
+    cdef _fbthrift_create(shared_ptr[cCombo])
 
 
 cdef class List__MyStruct(thrift.py3.types.List):
     cdef shared_ptr[vector[cMyStruct]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[cMyStruct]])
+    cdef _fbthrift_create(shared_ptr[vector[cMyStruct]])
     @staticmethod
     cdef shared_ptr[vector[cMyStruct]] _make_instance(object items) except *
 
 cdef class List__List__MyStruct(thrift.py3.types.List):
     cdef shared_ptr[vector[vector[cMyStruct]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[vector[cMyStruct]]])
+    cdef _fbthrift_create(shared_ptr[vector[vector[cMyStruct]]])
     @staticmethod
     cdef shared_ptr[vector[vector[cMyStruct]]] _make_instance(object items) except *
 
 cdef class List__module_MyStruct(thrift.py3.types.List):
     cdef shared_ptr[vector[_module_types.cMyStruct]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[_module_types.cMyStruct]])
+    cdef _fbthrift_create(shared_ptr[vector[_module_types.cMyStruct]])
     @staticmethod
     cdef shared_ptr[vector[_module_types.cMyStruct]] _make_instance(object items) except *
 
 cdef class List__List__module_MyStruct(thrift.py3.types.List):
     cdef shared_ptr[vector[vector[_module_types.cMyStruct]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[vector[_module_types.cMyStruct]]])
+    cdef _fbthrift_create(shared_ptr[vector[vector[_module_types.cMyStruct]]])
     @staticmethod
     cdef shared_ptr[vector[vector[_module_types.cMyStruct]]] _make_instance(object items) except *
 

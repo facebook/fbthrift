@@ -67,7 +67,7 @@ void reset_field<::py3::simple::OptionalRefStruct>(
     ::py3::simple::OptionalRefStruct& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.optional_blob.reset();
+      obj.optional_blob_ref()->reset();
       return;
   }
 }

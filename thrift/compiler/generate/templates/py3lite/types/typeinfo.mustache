@@ -33,7 +33,7 @@ in the client or server source rather than the type definition source.
 }}{{#type:string?}}_fbthrift_py3lite_types.typeinfo_string{{/type:string?}}{{!
 }}{{#type:binary?}}_fbthrift_py3lite_types.typeinfo_binary{{/type:binary?}}{{!
 }}{{#type:struct}}_fbthrift_py3lite_types.StructTypeInfo({{!
-  }}{{#type:external_program?}}{{type:module_path}}.{{/type:external_program?}}{{!
+  }}{{#type:need_module_path?}}{{type:module_path}}.{{/type:need_module_path?}}{{!
   }}{{struct:name}}){{!
 }}{{/type:struct}}{{!
 }}{{#type:list?}}_fbthrift_py3lite_types.ListTypeInfo({{#type:list_elem_type}}{{ >types/typeinfo }}{{/type:list_elem_type}}){{/type:list?}}{{!
@@ -43,5 +43,5 @@ in the client or server source rather than the type definition source.
   }}{{#type:value_type}}{{ >types/typeinfo }}{{/type:value_type}}{{!
 }}){{/type:map?}}{{!
 }}{{#type:enum}}_fbthrift_py3lite_types.EnumTypeInfo({{!
-  }}{{#type:external_program?}}{{type:module_path}}.{{/type:external_program?}}{{!
+  }}{{#type:need_module_path?}}{{type:module_path}}.{{/type:need_module_path?}}{{!
   }}{{enum:name}}){{/type:enum}}

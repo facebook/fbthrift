@@ -24,7 +24,7 @@ from thrift.py3.types cimport (
 
 
 cdef __MapSpec get_reflection__std_unordered_map__Map__i32_string():
-    return __MapSpec.create(
+    return __MapSpec._fbthrift_create(
         key=int,
         key_kind=__NumberType.I32,
         value=str,
@@ -32,7 +32,7 @@ cdef __MapSpec get_reflection__std_unordered_map__Map__i32_string():
     )
 
 cdef __ListSpec get_reflection__List__std_unordered_map__Map__i32_string():
-    return __ListSpec.create(
+    return __ListSpec._fbthrift_create(
         value=_include_types.std_unordered_map__Map__i32_string,
         kind=__NumberType.NOT_A_NUMBER,
     )

@@ -32,7 +32,7 @@ struct LazyFoo {
   2: list<i32> field2;
   @cpp.Lazy
   3: list<double> field3;
-  @cpp.Lazy
+  @cpp.Lazy{ref = true}
   4: list<i32> field4;
 }
 
@@ -79,6 +79,9 @@ struct LazyCppRef {
   @cpp.Lazy
   @cpp.Ref{type = cpp.RefType.Shared}
   3: optional list<i32> field3;
+  @cpp.Lazy
+  @cpp.Ref{type = cpp.RefType.Unique}
+  4: list<i32> field4;
 }
 
 // Same as Foo, except adding index field explicitly

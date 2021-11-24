@@ -20,6 +20,7 @@
 
 #include <thrift/conformance/cpp2/Object.h>
 #include <thrift/conformance/data/ValueGenerator.h>
+#include <thrift/lib/cpp2/type/Name.h>
 
 namespace apache::thrift::conformance::data {
 
@@ -36,7 +37,7 @@ Test createRoundTripTest(
         registry.store(asValueStruct<TT>(value.value), protocol);
 
     auto& testCase = test.testCases_ref()->emplace_back();
-    testCase.name_ref() = fmt::format("{}/{}", TT::getName(), value.name);
+    testCase.name_ref() = fmt::format("{}/{}", type::getName<TT>(), value.name);
     testCase.test_ref()->set_roundTrip(std::move(roundTrip));
   }
 
