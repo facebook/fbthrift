@@ -26,9 +26,9 @@ class AsyncClient:
     async def __aenter__(self: TAsyncClient) -> TAsyncClient: ...
     async def __aexit__(
         self,
-        type: typing.Type[Exception],
-        value: Exception,
-        traceback: types.TracebackType,
+        exc_type: typing.Optional[typing.Type[BaseException]],
+        exc_value: typing.Optional[BaseException],
+        traceback: typing.Optional[types.TracebackType],
     ) -> None: ...
     async def _send_request(
         self,
