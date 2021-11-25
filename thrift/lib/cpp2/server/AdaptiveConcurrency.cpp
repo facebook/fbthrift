@@ -48,6 +48,7 @@ AdaptiveConcurrencyController::AdaptiveConcurrencyController(
     folly::observer::Observer<uint32_t> maxRequestsLimit)
     : config_(std::move(oConfig)),
       maxRequestsLimit_(std::move(maxRequestsLimit)),
+      minRtt_(config().minTargetRtt),
       concurrencyLimit_(config().minConcurrency) {
   rttRecalcStart_ = config().isEnabled() ? Clock::now() : kZero;
   enablingCallback_ = config_.addCallback([this](auto snapshot) {
@@ -131,10 +132,16 @@ void AdaptiveConcurrencyController::recalculate() {
   Duration p95rtt{*p95};
   sampledRtt_.store(p95rtt, std::memory_order_relaxed); // for monitoring
   const auto& cfg = config();
+  minRtt_.store(Clock::duration{cfg.minTargetRtt}, std::memory_order_relaxed);
   if (targetRtt_.load(std::memory_order_relaxed) == Duration{}) {
     if (cfg.targetRttFixed == std::chrono::milliseconds{}) {
+      // If a min target RTT latency is specified then ensure that the
+      // computed target is not below that minimum threshold.
       targetRtt_.store(
-          std::chrono::round<Clock::duration>(p95rtt * cfg.targetRttFactor),
+          std::max(
+              std::chrono::round<Clock::duration>(cfg.minTargetRtt),
+              std::chrono::round<Clock::duration>(
+                  p95rtt * cfg.targetRttFactor)),
           std::memory_order_relaxed);
     } else {
       targetRtt_.store(
@@ -143,7 +150,14 @@ void AdaptiveConcurrencyController::recalculate() {
     // reset concurrency limit to what it was before we started rtt calibration
     maxRequests_.store(concurrencyLimit_, std::memory_order_relaxed);
   } else {
-    double raw_gradient = targetRtt_.load(std::memory_order_relaxed) / p95rtt;
+    // The gradient is computed as the ratio between the target RTT latency
+    // and the p95 RTT latency measured during the sampling period.
+    // Sanity check that the p95 value isn't zero before computing gradient.
+    double raw_gradient = targetRtt_.load(std::memory_order_relaxed) /
+        std::max(Clock::duration(1), p95rtt);
+    // Cap the gradient between 0.5 and 2.0.
+    // TODO: follow up on this range and see if it can be tuned further (or make
+    // it configurable).
     double gradient = std::max(0.5, std::min(2.0, raw_gradient));
 
     double limit = concurrencyLimit_ * gradient;
@@ -188,6 +202,11 @@ std::chrono::microseconds AdaptiveConcurrencyController::targetRtt() const {
 std::chrono::microseconds AdaptiveConcurrencyController::sampledRtt() const {
   return std::chrono::round<std::chrono::microseconds>(
       sampledRtt_.load(std::memory_order_relaxed));
+}
+
+std::chrono::microseconds AdaptiveConcurrencyController::minTargetRtt() const {
+  return std::chrono::round<std::chrono::microseconds>(
+      minRtt_.load(std::memory_order_relaxed));
 }
 
 size_t AdaptiveConcurrencyController::getMinConcurrency() const {

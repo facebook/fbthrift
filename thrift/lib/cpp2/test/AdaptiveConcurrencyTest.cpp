@@ -41,7 +41,7 @@ class AdaptiveConcurrencyTestHelper {
 };
 } // namespace apache::thrift
 
-// helper to be call private methods on the controller
+// helper to call private methods on the controller
 AdaptiveConcurrencyTestHelper p(AdaptiveConcurrencyController& c) {
   return AdaptiveConcurrencyTestHelper(c);
 }
@@ -49,6 +49,7 @@ AdaptiveConcurrencyTestHelper p(AdaptiveConcurrencyController& c) {
 template <size_t MinConcurrency = 5>
 class AdaptiveConcurrencyBase : public testing::Test {
  protected:
+  static constexpr Clock::duration kMinRtt = 1ms;
   static constexpr Clock::duration kIdealRtt = 10ms;
   static constexpr uint32_t minConcurrency = MinConcurrency;
 
@@ -58,21 +59,26 @@ class AdaptiveConcurrencyBase : public testing::Test {
   void setConfig(
       size_t concurrency,
       double jitter = 0.0,
-      std::chrono::milliseconds targetRttFixed = {}) {
-    oConfig.setValue(makeConfig(concurrency, jitter, targetRttFixed));
+      std::chrono::milliseconds targetRttFixed = {},
+      std::chrono::milliseconds minTargetRtt = {}) {
+    oConfig.setValue(
+        makeConfig(concurrency, jitter, targetRttFixed, minTargetRtt));
     folly::observer_detail::ObserverManager::waitForAllUpdates();
   }
 
   static auto makeConfig(
       size_t concurrency,
       double jitter = 0.0,
-      std::chrono::milliseconds targetRttFixed = {}) {
+      std::chrono::milliseconds targetRttFixed = {},
+      std::chrono::milliseconds minTargetRtt = {}) {
     AdaptiveConcurrencyController::Config config;
     config.minConcurrency = concurrency;
     config.recalcPeriodJitter = jitter;
     config.targetRttFixed = targetRttFixed;
+    config.minTargetRtt = minTargetRtt;
     return config;
   }
+
   folly::observer::SimpleObservable<AdaptiveConcurrencyController::Config>
       oConfig{makeConfig(MinConcurrency)};
   folly::observer::SimpleObservable<uint32_t> oMaxRequests{0u};
@@ -90,6 +96,7 @@ class AdaptiveConcurrencyBase : public testing::Test {
     SamplingScheduled,
     RecalcScheduled,
   };
+
   void doSamplingRequests(
       Clock::duration latency = kIdealRtt,
       EndState endState = EndState::SamplingScheduled) {
@@ -136,6 +143,7 @@ class AdaptiveConcurrencyBase : public testing::Test {
 
 class AdaptiveConcurrency : public AdaptiveConcurrencyBase<5> {};
 class AdaptiveConcurrencyDisabled : public AdaptiveConcurrencyBase<0> {};
+
 TEST_F(AdaptiveConcurrency, IdealRttCalc) {
   // first request primes the system to start ideal rtt calibration
   EXPECT_EQ(p(controller).samplingPeriodStart(), Clock::time_point{});
@@ -322,9 +330,80 @@ TEST_F(AdaptiveConcurrency, FixedTargetRtt) {
   EXPECT_EQ(p(controller).nextRttRecalcStart(), Clock::time_point{});
 }
 
+TEST_F(AdaptiveConcurrency, MinTargetRtt) {
+  // Validate that the minimum target RTT setting is observed if specified.
+  Clock::duration minTargetRtt = 5ms;
+  EXPECT_EQ(controller.minTargetRtt(), std::chrono::microseconds{});
+
+  setConfig(
+      5,
+      0.2,
+      std::chrono::milliseconds{},
+      std::chrono::duration_cast<std::chrono::milliseconds>(minTargetRtt));
+
+  // The stored min target RTT value is updated upon recalibration.
+  makeRequest();
+  doSamplingRequests(kMinRtt);
+
+  EXPECT_EQ(
+      controller.minTargetRtt(),
+      std::chrono::duration_cast<std::chrono::microseconds>(minTargetRtt));
+  EXPECT_EQ(controller.getMaxRequests(), 5);
+  // The target RTT should be floored at 5ms (minTargetRtt) even though the
+  // sampled RTT times will be smaller (1 ms).
+  EXPECT_EQ(controller.targetRtt(), minTargetRtt);
+  EXPECT_EQ(controller.sampledRtt(), kMinRtt);
+
+  // Recalibrate again by bumping up the sampled RTT latencies to kIdealRtt.
+  // The minTargetRtt shouldn't change after this but the sampled RTT should.
+  p(controller).samplingPeriodStart(Clock::now());
+  doSamplingRequests(kIdealRtt);
+  EXPECT_EQ(controller.getMaxRequests(), 5);
+  EXPECT_EQ(controller.targetRtt(), minTargetRtt);
+  EXPECT_EQ(controller.sampledRtt(), kIdealRtt);
+
+  // Reset the minTargetRTT to a value higher than kIdealRtt and redo the same
+  // checks.
+  minTargetRtt = 30ms;
+  setConfig(
+      5,
+      0.2,
+      std::chrono::milliseconds{},
+      std::chrono::duration_cast<std::chrono::milliseconds>(minTargetRtt));
+  makeRequest();
+  p(controller).samplingPeriodStart(Clock::now());
+  doSamplingRequests(kIdealRtt);
+  // Concurrency shouldn't be bumped up since the minimum limit is higher
+  // than the sampled latencies. So even though requests are getting processed
+  // faster, we still adhere to the configured lower limit.
+  EXPECT_EQ(controller.getMaxRequests(), 5);
+  EXPECT_EQ(controller.targetRtt(), minTargetRtt);
+  EXPECT_EQ(controller.sampledRtt(), kIdealRtt);
+
+  // Now remove the minimum latency limit and redo the checks.
+  setConfig(5);
+  makeRequest();
+  p(controller).samplingPeriodStart(Clock::now());
+  doSamplingRequests(kIdealRtt, EndState::SamplingScheduled);
+  EXPECT_EQ(controller.minTargetRtt(), std::chrono::microseconds{});
+  EXPECT_EQ(controller.getMaxRequests(), 5);
+  EXPECT_EQ(controller.targetRtt(), 2 * kIdealRtt);
+  EXPECT_EQ(controller.sampledRtt(), kIdealRtt);
+
+  // Use a smaller sampled latency value and verify the target RTT
+  // goes below minTargetRtt (since it's been disabled).
+  setConfig(5);
+  makeRequest();
+  p(controller).samplingPeriodStart(Clock::now());
+  doSamplingRequests(kMinRtt);
+  EXPECT_EQ(controller.getMaxRequests(), 5);
+  EXPECT_EQ(controller.targetRtt(), 2 * kMinRtt);
+  EXPECT_EQ(controller.sampledRtt(), kMinRtt);
+}
+
 TEST_F(AdaptiveConcurrencyDisabled, Enabling) {
   makeRequest();
-  //
+
   EXPECT_EQ(controller.getMaxRequests(), 0);
   EXPECT_EQ(p(controller).samplingPeriodStart(), Clock::time_point{});
 

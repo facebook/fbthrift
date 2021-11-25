@@ -79,6 +79,10 @@ class AdaptiveConcurrencyController {
     // alternatively, a fixed targetRtt can be configured. Takes
     // effect if not 0.
     std::chrono::milliseconds targetRttFixed{};
+    // minimum (floor) for the targetRtt value. If the computed
+    // ideal rtt latency is below this, targetRtt will be overridden
+    // to this value.
+    std::chrono::milliseconds minTargetRtt{};
     double recalcPeriodJitter = 0.5;
 
     std::chrono::milliseconds samplingInterval{500};
@@ -102,6 +106,8 @@ class AdaptiveConcurrencyController {
   // info helpers, to use in monitoring
   std::chrono::microseconds targetRtt() const;
   std::chrono::microseconds sampledRtt() const;
+  std::chrono::microseconds minTargetRtt() const;
+
   size_t getMinConcurrency() const;
   // Similar to getMaxRequests() except that it wont drop
   // to minConcurrency when controller is in the rtt calibration state.
@@ -133,11 +139,13 @@ class AdaptiveConcurrencyController {
   std::atomic<Clock::time_point> nextRttRecalcStart_{Clock::time_point{}};
   std::atomic<Clock::time_point> samplingPeriodStart_{Clock::time_point{}};
 
-  std::atomic<Duration> targetRtt_{Duration{}};
-  std::atomic<Duration> sampledRtt_{Duration{}};
   folly::observer::Observer<Config> config_;
   folly::observer::Observer<uint32_t> maxRequestsLimit_;
   folly::observer::CallbackHandle enablingCallback_;
+
+  std::atomic<Duration> targetRtt_{Duration{}};
+  std::atomic<Duration> minRtt_{Duration{}};
+  std::atomic<Duration> sampledRtt_{Duration{}};
   // the following concurrency limits are related but are not always
   // identical. Both keep track of the concurrency limit for the server.
   // maxRequests_, however, will be set to minRequests during rtt recalibration
