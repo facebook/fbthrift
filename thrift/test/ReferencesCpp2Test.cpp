@@ -40,10 +40,10 @@ TEST(References, recursive_ref_fields) {
   // (meaning we can't possibly serialize it) or a nullptr (meaning it's in fact
   // optional), but for historical reasons we allow this and default the
   // value to `nullptr`.
-  EXPECT_EQ(nullptr, a.def_field.get());
-  EXPECT_EQ(nullptr, a.req_field.get());
+  EXPECT_EQ(nullptr, a.def_field_ref().get());
+  EXPECT_EQ(nullptr, a.req_field_ref().get());
   // Check that optional fields are absent from a default-constructed object
-  EXPECT_EQ(nullptr, a.opt_field.get());
+  EXPECT_EQ(nullptr, a.opt_field_ref().get());
 
   EXPECT_EQ(nullptr, a.def_field_ref().get());
   EXPECT_EQ(nullptr, a.req_field_ref().get());

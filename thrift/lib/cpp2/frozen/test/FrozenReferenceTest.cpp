@@ -60,16 +60,16 @@ TEST(Frozen, simple_ref) {
   t.c2u_opt_ref() = makePerson("c2u_opt");
   t.c2r_opt_ref() = makePerson("c2r_opt");
   // unset default ref fields have default value
-  EXPECT_EQ(*t.c2s->name_ref(), "");
-  EXPECT_EQ(*t.c2u->name_ref(), "");
+  EXPECT_EQ(*t.c2s_ref()->name_ref(), "");
+  EXPECT_EQ(*t.c2u_ref()->name_ref(), "");
   // unset optional ref field is nullptr
-  EXPECT_EQ(t.c1r_opt, nullptr);
+  EXPECT_EQ(t.c1r_opt_ref(), nullptr);
 
   auto f = freeze(t);
   // empty pointers
-  EXPECT_EQ(f.c2s()->name(), *t.c2s->name_ref());
+  EXPECT_EQ(f.c2s()->name(), *t.c2s_ref()->name_ref());
   EXPECT_EQ(f.c2s()->name(), "");
-  EXPECT_EQ(f.c2u()->name(), *t.c2u->name_ref());
+  EXPECT_EQ(f.c2u()->name(), *t.c2u_ref()->name_ref());
   EXPECT_EQ(f.c2u()->name(), "");
 
   EXPECT_EQ(f.c1r()->name(), "c1r");
@@ -82,9 +82,9 @@ TEST(Frozen, simple_ref) {
 
   auto str = freezeToString(t);
   auto f2 = mapFrozen<SimpleRef>(std::move(str));
-  EXPECT_EQ(f2.c2s()->name(), *t.c2s->name_ref());
+  EXPECT_EQ(f2.c2s()->name(), *t.c2s_ref()->name_ref());
   EXPECT_EQ(f2.c2s()->name(), "");
-  EXPECT_EQ(f2.c2u()->name(), *t.c2u->name_ref());
+  EXPECT_EQ(f2.c2u()->name(), *t.c2u_ref()->name_ref());
   EXPECT_EQ(f2.c2u()->name(), "");
   EXPECT_EQ(f2.c1r()->name(), "c1r");
   EXPECT_EQ(f2.c2r()->name(), "c2r");
@@ -101,7 +101,7 @@ TEST(Frozen, recursive_node_ref) {
   root.left_ref() = makeNode(3, s1);
   root.right_ref() = makeNode(5, s2);
   *root.content_ref() = s2;
-  EXPECT_EQ(root.left->left, nullptr);
+  EXPECT_EQ(root.left_ref()->left, nullptr);
 
   auto f = freeze(root);
   EXPECT_EQ(f.id(), 8);
@@ -229,7 +229,7 @@ TEST(Frozen, shared_ref) {
   std::shared_ptr<Person> that = makePerson(s2);
   t.p1_ref() = that;
   t.p2_ref() = that;
-  EXPECT_EQ(t.p1, t.p2);
+  EXPECT_EQ(t.p1_ref(), t.p2_ref());
 
   auto f = freeze(t);
   EXPECT_EQ(f.id(), 9527);

@@ -69,10 +69,10 @@ TEST(Recursive, list) {
 
   RecList result;
   serializer.deserialize(bufq.front(), result);
-  EXPECT_TRUE(l.next != nullptr);
-  EXPECT_TRUE(result.next != nullptr);
-  EXPECT_TRUE(l.next->next == nullptr);
-  EXPECT_TRUE(result.next->next == nullptr);
+  EXPECT_TRUE(l.next_ref() != nullptr);
+  EXPECT_TRUE(result.next_ref() != nullptr);
+  EXPECT_TRUE(l.next_ref()->next == nullptr);
+  EXPECT_TRUE(result.next_ref()->next == nullptr);
 }
 
 TEST(Recursive, CoRec) {
@@ -86,8 +86,8 @@ TEST(Recursive, CoRec) {
 
   CoRec result;
   serializer.deserialize(bufq.front(), result);
-  EXPECT_TRUE(result.other != nullptr);
-  EXPECT_TRUE(result.other->other_ref()->other == nullptr);
+  EXPECT_TRUE(result.other_ref() != nullptr);
+  EXPECT_TRUE(result.other_ref()->other_ref()->other == nullptr);
 }
 
 TEST(Recursive, Roundtrip) {
@@ -101,7 +101,7 @@ TEST(Recursive, Roundtrip) {
 
   MyStruct result;
   serializer.deserialize(bufq.front(), result);
-  EXPECT_TRUE(result.field != nullptr);
+  EXPECT_TRUE(result.field_ref() != nullptr);
 }
 
 TEST(Recursive, CoRecJson) {
@@ -115,8 +115,8 @@ TEST(Recursive, CoRecJson) {
 
   RecList result;
   serializer.deserialize(bufq.front(), result);
-  EXPECT_TRUE(c.other != nullptr);
-  EXPECT_TRUE(c.other->other_ref()->other == nullptr);
+  EXPECT_TRUE(c.other_ref() != nullptr);
+  EXPECT_TRUE(c.other_ref()->other_ref()->other == nullptr);
 }
 
 TEST(Recursive, StructUsingAnnotation) {

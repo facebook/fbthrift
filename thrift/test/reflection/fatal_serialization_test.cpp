@@ -194,9 +194,9 @@ TYPED_TEST(MultiProtocolTest, test_blank_default_ref_field) {
   this->debug_buffer();
   serializer_read(b, this->reader);
 
-  EXPECT_EQ(smallstruct(), *(b.def_nested));
-  EXPECT_EQ(*(a.opt_nested), *(b.opt_nested));
-  EXPECT_EQ(*(a.req_nested), *(b.req_nested));
+  EXPECT_EQ(smallstruct(), *(b.def_nested_ref()));
+  EXPECT_EQ(*(a.opt_nested_ref()), *(b.opt_nested_ref()));
+  EXPECT_EQ(*(a.req_nested_ref()), *(b.req_nested_ref()));
   expect_same_serialized_size(a, this->writer);
 }
 
@@ -214,9 +214,9 @@ TYPED_TEST(MultiProtocolTest, test_blank_optional_ref_field) {
   serializer_read(b, this->reader);
 
   // null optional fields are deserialized to nullptr
-  EXPECT_EQ(*(a.def_nested), *(b.def_nested));
-  EXPECT_EQ(nullptr, b.opt_nested.get());
-  EXPECT_EQ(*(a.req_nested), *(b.req_nested));
+  EXPECT_EQ(*(a.def_nested_ref()), *(b.def_nested_ref()));
+  EXPECT_EQ(nullptr, b.opt_nested_ref().get());
+  EXPECT_EQ(*(a.req_nested_ref()), *(b.req_nested_ref()));
   expect_same_serialized_size(a, this->writer);
 }
 
@@ -233,9 +233,9 @@ TYPED_TEST(MultiProtocolTest, test_blank_required_ref_field) {
   this->debug_buffer();
   serializer_read(b, this->reader);
 
-  EXPECT_EQ(*(a.def_nested), *(b.def_nested));
-  EXPECT_EQ(*(a.opt_nested), *(b.opt_nested));
-  EXPECT_EQ(smallstruct(), *(b.req_nested));
+  EXPECT_EQ(*(a.def_nested_ref()), *(b.def_nested_ref()));
+  EXPECT_EQ(*(a.opt_nested_ref()), *(b.opt_nested_ref()));
+  EXPECT_EQ(smallstruct(), *(b.req_nested_ref()));
   expect_same_serialized_size(a, this->writer);
 }
 
@@ -595,9 +595,9 @@ TEST_F(SimpleJsonTest, doesnt_throw_when_req_field_present) {
 
   struct3 a;
   serializer_read(a, reader);
-  EXPECT_EQ(10, *a.opt_nested->f1_ref());
-  EXPECT_EQ(5, *a.def_nested->f1_ref());
-  EXPECT_EQ(15, *a.req_nested->f1_ref());
+  EXPECT_EQ(10, *a.opt_nested_ref()->f1_ref());
+  EXPECT_EQ(5, *a.def_nested_ref()->f1_ref());
+  EXPECT_EQ(15, *a.req_nested_ref()->f1_ref());
 }
 #undef KV
 } // namespace simple_cpp_reflection
