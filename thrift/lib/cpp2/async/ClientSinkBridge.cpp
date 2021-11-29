@@ -63,15 +63,14 @@ ClientSinkBridge::ClientQueue ClientSinkBridge::getMessages() {
 folly::coro::Task<folly::Try<StreamPayload>> ClientSinkBridge::sink(
     folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> generator) {
   uint64_t credits = 0;
-  folly::Try<StreamPayload> finalResponse;
   const auto& clientCancelToken =
       co_await folly::coro::co_current_cancellation_token;
   auto mergedToken = folly::CancellationToken::merge(
       serverCancelSource_.getToken(), clientCancelToken);
+  bool sinkComplete = false;
 
-  auto waitEvent = [&]() -> folly::coro::Task<void> {
-    CoroConsumer consumer;
-    if (clientWait(&consumer)) {
+  while (true) {
+    if (CoroConsumer consumer; clientWait(&consumer)) {
       folly::CancellationCallback cb{
           clientCancelToken, [&]() {
             if (auto* cancelledCb = cancelClientWait()) {
@@ -80,29 +79,14 @@ folly::coro::Task<folly::Try<StreamPayload>> ClientSinkBridge::sink(
           }};
       co_await consumer.wait();
     }
-    auto queue = clientGetMessages();
-    while (!queue.empty()) {
+
+    for (auto queue = clientGetMessages(); !queue.empty(); queue.pop()) {
       auto& message = queue.front();
-      folly::variant_match(
-          message,
-          [&](folly::Try<StreamPayload>& payload) {
-            finalResponse = std::move(payload);
-          },
-          [&](uint64_t n) { credits += n; });
-      queue.pop();
-      if (finalResponse.hasValue() || finalResponse.hasException()) {
-        co_return;
+      if (auto* n = std::get_if<uint64_t>(&message)) {
+        credits += *n;
+      } else {
+        co_return std::get<folly::Try<StreamPayload>>(std::move(message));
       }
-    }
-    co_return;
-  };
-
-  bool sinkComplete = false;
-
-  while (true) {
-    co_await waitEvent();
-    if (finalResponse.hasValue() || finalResponse.hasException()) {
-      break;
     }
 
     if (clientCancelToken.isCancellationRequested()) {
@@ -146,7 +130,6 @@ folly::coro::Task<folly::Try<StreamPayload>> ClientSinkBridge::sink(
       credits--;
     }
   }
-  co_return std::move(finalResponse);
 }
 
 #endif
