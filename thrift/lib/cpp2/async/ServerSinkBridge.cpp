@@ -81,20 +81,16 @@ void ServerSinkBridge::resetClientCallback(SinkClientCallback& clientCallback) {
 }
 
 // start should be called on threadmanager's thread
-folly::coro::Task<void> ServerSinkBridge::startImpl(ServerSinkBridge& self) {
-  self.serverPush(self.consumer_.bufferSize);
+folly::coro::Task<void> ServerSinkBridge::start() {
+  serverPush(consumer_.bufferSize);
   folly::Try<StreamPayload> finalResponse =
-      co_await self.consumer_.consumer(makeGenerator(self));
+      co_await consumer_.consumer(makeGenerator());
 
-  if (self.clientException_) {
+  if (clientException_) {
     co_return;
   }
 
-  self.serverPush(std::move(finalResponse));
-}
-
-folly::coro::Task<void> ServerSinkBridge::start() {
-  return startImpl(*this);
+  serverPush(std::move(finalResponse));
 }
 
 // TwoWayBridge consumer
@@ -104,18 +100,18 @@ void ServerSinkBridge::consume() {
 }
 
 folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&>
-ServerSinkBridge::makeGenerator(ServerSinkBridge& self) {
+ServerSinkBridge::makeGenerator() {
   uint64_t counter = 0;
   while (true) {
     CoroConsumer consumer;
-    if (self.serverWait(&consumer)) {
+    if (serverWait(&consumer)) {
       folly::CancellationCallback cb{
           co_await folly::coro::co_current_cancellation_token,
-          [&]() { self.serverClose(); }};
+          [&]() { serverClose(); }};
       co_await consumer.wait();
     }
     co_await folly::coro::co_safe_point;
-    for (auto messages = self.serverGetMessages(); !messages.empty();
+    for (auto messages = serverGetMessages(); !messages.empty();
          messages.pop()) {
       folly::Try<StreamPayload> payload = std::move(messages.front());
       if (!payload.hasValue() && !payload.hasException()) {
@@ -123,15 +119,15 @@ ServerSinkBridge::makeGenerator(ServerSinkBridge& self) {
       }
 
       if (payload.hasException()) {
-        self.clientException_ = true;
+        clientException_ = true;
         co_yield std::move(payload);
         co_return;
       }
 
       co_yield std::move(payload);
       counter++;
-      if (counter > self.consumer_.bufferSize / 2) {
-        self.serverPush(counter);
+      if (counter > consumer_.bufferSize / 2) {
+        serverPush(counter);
         counter = 0;
       }
     }

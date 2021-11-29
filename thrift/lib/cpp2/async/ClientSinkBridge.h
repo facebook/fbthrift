@@ -97,21 +97,6 @@ class ClientSinkBridge : public TwoWayBridge<
 
   void processServerMessages();
 
-#if FOLLY_HAS_COROUTINES
-  // TODO(T88629984): These are implemented as static functions because
-  // clang-9 + member function coroutines + ASAN == ICE. Revert D27688850
-  // once everything using thrift sink is past clang-9.
-  static folly::coro::Task<folly::Try<StreamPayload>> sinkImpl(
-      ClientSinkBridge& self,
-      folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> generator);
-
-  static folly::coro::Task<void> waitEventImpl(
-      ClientSinkBridge& self,
-      uint64_t& credits,
-      folly::Try<StreamPayload>& finalResponse,
-      const folly::CancellationToken& clientCancelToken);
-#endif
-
   union {
     FirstResponseCallback* firstResponseCallback_;
     SinkServerCallback* serverCallback_;

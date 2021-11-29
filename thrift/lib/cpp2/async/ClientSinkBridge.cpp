@@ -59,90 +59,86 @@ ClientSinkBridge::ClientQueue ClientSinkBridge::getMessages() {
 }
 
 #if FOLLY_HAS_COROUTINES
-folly::coro::Task<void> ClientSinkBridge::waitEventImpl(
-    ClientSinkBridge& self,
-    uint64_t& credits,
-    folly::Try<StreamPayload>& finalResponse,
-    const folly::CancellationToken& clientCancelToken) {
-  CoroConsumer consumer;
-  if (self.clientWait(&consumer)) {
-    folly::CancellationCallback cb{
-        clientCancelToken, [&]() {
-          if (auto* cancelledCb = self.cancelClientWait()) {
-            cancelledCb->canceled();
-          }
-        }};
-    co_await consumer.wait();
-  }
-  auto queue = self.clientGetMessages();
-  while (!queue.empty()) {
-    auto& message = queue.front();
-    folly::variant_match(
-        message,
-        [&](folly::Try<StreamPayload>& payload) {
-          finalResponse = std::move(payload);
-        },
-        [&](uint64_t n) { credits += n; });
-    queue.pop();
-    if (finalResponse.hasValue() || finalResponse.hasException()) {
-      co_return;
-    }
-  }
-  co_return;
-}
 
-folly::coro::Task<folly::Try<StreamPayload>> ClientSinkBridge::sinkImpl(
-    ClientSinkBridge& self,
+folly::coro::Task<folly::Try<StreamPayload>> ClientSinkBridge::sink(
     folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> generator) {
   uint64_t credits = 0;
   folly::Try<StreamPayload> finalResponse;
   const auto& clientCancelToken =
       co_await folly::coro::co_current_cancellation_token;
   auto mergedToken = folly::CancellationToken::merge(
-      self.serverCancelSource_.getToken(), clientCancelToken);
+      serverCancelSource_.getToken(), clientCancelToken);
+
+  auto waitEvent = [&]() -> folly::coro::Task<void> {
+    CoroConsumer consumer;
+    if (clientWait(&consumer)) {
+      folly::CancellationCallback cb{
+          clientCancelToken, [&]() {
+            if (auto* cancelledCb = cancelClientWait()) {
+              cancelledCb->canceled();
+            }
+          }};
+      co_await consumer.wait();
+    }
+    auto queue = clientGetMessages();
+    while (!queue.empty()) {
+      auto& message = queue.front();
+      folly::variant_match(
+          message,
+          [&](folly::Try<StreamPayload>& payload) {
+            finalResponse = std::move(payload);
+          },
+          [&](uint64_t n) { credits += n; });
+      queue.pop();
+      if (finalResponse.hasValue() || finalResponse.hasException()) {
+        co_return;
+      }
+    }
+    co_return;
+  };
 
   bool sinkComplete = false;
 
   while (true) {
-    co_await waitEventImpl(self, credits, finalResponse, clientCancelToken);
+    co_await waitEvent();
     if (finalResponse.hasValue() || finalResponse.hasException()) {
       break;
     }
 
     if (clientCancelToken.isCancellationRequested()) {
       if (!sinkComplete) {
-        self.clientPush(folly::Try<apache::thrift::StreamPayload>(
+        clientPush(folly::Try<apache::thrift::StreamPayload>(
             rocket::RocketException(rocket::ErrorCode::CANCELED)));
       }
       co_yield folly::coro::co_cancelled;
     }
 
     while (credits > 0 && !sinkComplete &&
-           !self.serverCancelSource_.isCancellationRequested()) {
+           !serverCancelSource_.isCancellationRequested()) {
       auto item = co_await folly::coro::co_withCancellation(
           mergedToken, generator.next());
-      if (self.serverCancelSource_.isCancellationRequested()) {
+      if (serverCancelSource_.isCancellationRequested()) {
         break;
       }
 
       if (clientCancelToken.isCancellationRequested()) {
-        self.clientPush(folly::Try<apache::thrift::StreamPayload>(
+        clientPush(folly::Try<apache::thrift::StreamPayload>(
             rocket::RocketException(rocket::ErrorCode::CANCELED)));
         co_yield folly::coro::co_cancelled;
       }
 
       if (item.has_value()) {
         if ((*item).hasValue()) {
-          self.clientPush(std::move(*item));
+          clientPush(std::move(*item));
         } else {
-          self.clientPush(std::move(*item));
+          clientPush(std::move(*item));
           // AsyncGenerator who serialized and yield the exception also in
           // charge of propagating it back to user, just return empty Try
           // here.
           co_return folly::Try<StreamPayload>();
         }
       } else {
-        self.clientPush({});
+        clientPush({});
         sinkComplete = true;
         // release generator
         generator = {};
@@ -153,10 +149,6 @@ folly::coro::Task<folly::Try<StreamPayload>> ClientSinkBridge::sinkImpl(
   co_return std::move(finalResponse);
 }
 
-folly::coro::Task<folly::Try<StreamPayload>> ClientSinkBridge::sink(
-    folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> generator) {
-  return sinkImpl(*this, std::move(generator));
-}
 #endif
 
 void ClientSinkBridge::cancel(folly::Try<StreamPayload> payload) {
