@@ -160,7 +160,7 @@ TEST(fatal_diff, fieldC) {
 
 TEST(fatal_diff, fieldE) {
   auto pod = test_data();
-  pod.fieldE_ref()->__clear();
+  pod.fieldE_ref() = {};
   TEST_IMPL(pod, test_data(), R"(
     $.fieldE.ud:
     + 5.6
@@ -176,7 +176,7 @@ TEST(fatal_diff, fieldE) {
     $.fieldE.ud:
     + 5.6
   )");
-  pod.fieldE_ref()->__clear();
+  pod.fieldE_ref() = {};
   TEST_IMPL(pod, test_data(), R"(
     $.fieldE.ud:
     + 5.6
@@ -198,7 +198,7 @@ TEST(fatal_diff, fieldH) {
     $.fieldH.ui_2:
     - 3
   )");
-  pod.fieldH_ref()->__clear();
+  pod.fieldH_ref() = {};
   TEST_IMPL(pod, test_data(), "");
 }
 
@@ -403,7 +403,7 @@ TEST(fatal_diff, fieldG_field5) {
     $.fieldG.field5.ue_2:
     + field1
   )");
-  pod.fieldG_ref()->field5_ref()->__clear();
+  pod.fieldG_ref()->field5_ref() = {};
   TEST_IMPL(pod, test_data(), R"(
     $.fieldG.field5.ue_2:
     + field1

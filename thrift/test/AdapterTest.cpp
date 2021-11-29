@@ -166,7 +166,7 @@ TEST_F(AdapterTest, StructCodeGen) {
   EXPECT_TRUE(obj1b < obj1a);
   EXPECT_FALSE(obj1a < obj1b);
 
-  obj1a.__clear();
+  obj1a = {};
   EXPECT_EQ(obj1a.delay_ref(), std::chrono::milliseconds(0));
   EXPECT_EQ(obj1a.custom_ref()->val, 13);
   EXPECT_EQ(obj1a.timeout_ref(), std::chrono::milliseconds(0));
@@ -239,7 +239,7 @@ TEST_F(AdapterTest, StructCodeGen_Terse) {
   EXPECT_TRUE(obj1b < obj1a);
   EXPECT_FALSE(obj1a < obj1b);
 
-  obj1a.__clear();
+  obj1a = {};
   EXPECT_EQ(obj1a.delay_ref(), std::chrono::milliseconds(0));
   EXPECT_EQ(obj1a.custom_ref()->val, 13);
 }
@@ -381,7 +381,7 @@ TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedTestStruct) {
   EXPECT_EQ(obj, objd);
 
   // Adapted fields reset to the intrinsic default.
-  obj.__clear();
+  apache::thrift::clear(obj);
   EXPECT_EQ(obj.adaptedBoolDefault_ref()->value, false);
   EXPECT_EQ(obj.adaptedByteDefault_ref()->value, 0);
   EXPECT_EQ(obj.adaptedShortDefault_ref()->value, 0);
@@ -439,7 +439,7 @@ TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedNestedTestStruct) {
   EXPECT_EQ(obj, objd);
 
   // Adapted fields reset to the intrinsic default.
-  obj.__clear();
+  apache::thrift::clear(obj);
   EXPECT_EQ(obj.adaptedStruct_ref()->adaptedBoolDefault_ref()->value, false);
   EXPECT_EQ(obj.adaptedStruct_ref()->adaptedByteDefault_ref()->value, 0);
   EXPECT_EQ(obj.adaptedStruct_ref()->adaptedShortDefault_ref()->value, 0);
@@ -464,7 +464,7 @@ TEST_F(AdapterTest, StructFieldAdaptedStruct) {
   EXPECT_EQ(obj, objd);
 
   // Adapted fields reset to the intrinsic default.
-  obj.__clear();
+  apache::thrift::clear(obj);
   EXPECT_EQ(obj.adaptedStruct_ref()->value.data_ref(), 0);
 }
 } // namespace basic

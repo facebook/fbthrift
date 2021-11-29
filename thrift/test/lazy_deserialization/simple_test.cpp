@@ -295,7 +295,7 @@ TYPED_TEST(LazyDeserialization, Comparison) {
     EXPECT_LT(foo2, foo1);
 
     foo2 = this->template deserialize<LazyStruct>(s);
-    foo2.__clear();
+    foo2 = {};
     EXPECT_LT(foo2, foo1);
   }
 }

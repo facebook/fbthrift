@@ -174,7 +174,7 @@ TEST(fatal_debug, fieldE) {
   pod.fieldE_ref()->set_ui(5);
   TEST_IMPL(
       pod, test_data(), "$.fieldE.ui" /* missing */, "$.fieldE.ud" /* extra */);
-  pod.fieldE_ref()->__clear();
+  pod.fieldE_ref() = {};
   TEST_IMPL(pod, test_data(), "$.fieldE.ud" /* extra */);
   pod.fieldE_ref()->set_ud(4);
   TEST_IMPL(pod, test_data(), "$.fieldE.ud" /* changed */);
@@ -186,7 +186,7 @@ TEST(fatal_debug, fieldH) {
   auto pod = test_data();
   pod.fieldH_ref()->set_ui_2(3);
   TEST_IMPL(pod, test_data(), "$.fieldH.ui_2" /* extra */);
-  pod.fieldH_ref()->__clear();
+  pod.fieldH_ref() = {};
   TEST_IMPL(pod, test_data());
 }
 
@@ -305,7 +305,7 @@ TEST(fatal_debug, fieldG_field5) {
       test_data(),
       "$.fieldG.field5.ui_2" /* missing */,
       "$.fieldG.field5.ue_2" /* extra */);
-  pod.fieldG_ref()->field5_ref()->__clear();
+  pod.fieldG_ref()->field5_ref() = {};
   TEST_IMPL(pod, test_data(), "$.fieldG.field5.ue_2" /* extra */);
   pod.fieldG_ref()->field5_ref()->set_ue_2(enum1::field0);
   TEST_IMPL(pod, test_data(), "$.fieldG.field5.ue_2" /* changed */);

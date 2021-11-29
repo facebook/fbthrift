@@ -40,7 +40,7 @@ template <class T>
 static T jsonToObj(const std::string& json) {
   SimpleJSONProtocolReader reader;
   T ret;
-  ret.__clear();
+  ret = {};
   auto iobuf = folly::IOBuf::copyBuffer(json);
   reader.setInput(iobuf.get());
   ret.read(&reader);
@@ -53,8 +53,8 @@ TEST(OptionalsTest, SerDesTests) {
 
   cpp2::HasOptionals obj1;
   cpp2::HasOptionals obj2;
-  obj1.__clear();
-  obj2.__clear();
+  obj1 = {};
+  obj2 = {};
 
   // first try with only the default fields, leave all optionals empty
   obj1.int64Def() = 42;
@@ -64,7 +64,7 @@ TEST(OptionalsTest, SerDesTests) {
   obj1.mapDef() = std::map<int64_t, int64_t>{{100, 101}, {102, 103}};
   obj1.enumDef() = cpp2::HasOptionalsTestEnum::FOO;
   obj1.structDef() = cpp2::HasOptionalsExtra();
-  obj1.structDef()->__clear();
+  obj1.structDef() = {};
   obj1.structDef()->extraInt64Def() = 69;
   obj1.structDef()->extraStringDef() = "world";
   obj1.structDef()->extraSetDef() = std::set<int64_t>{210, 220, 230};
@@ -88,7 +88,7 @@ TEST(OptionalsTest, SerDesTests) {
   obj1.mapReq_ref() = std::map<int64_t, int64_t>{{100, 101}, {102, 103}};
   obj1.enumReq_ref() = cpp2::HasOptionalsTestEnum::FOO;
   obj1.structReq_ref() = cpp2::HasOptionalsExtra();
-  obj1.structReq_ref()->__clear();
+  obj1.structReq_ref() = {};
   obj1.structReq_ref()->extraInt64Req_ref() = 69;
   obj1.structReq_ref()->extraStringReq_ref() = "world";
   obj1.structReq_ref()->extraSetReq_ref() = std::set<int64_t>{210, 220, 230};
@@ -113,7 +113,7 @@ TEST(OptionalsTest, SerDesTests) {
   obj1.mapOpt() = std::map<int64_t, int64_t>{{100, 101}, {102, 103}};
   obj1.enumOpt() = cpp2::HasOptionalsTestEnum::FOO;
   obj1.structOpt() = cpp2::HasOptionalsExtra();
-  obj1.structOpt()->__clear();
+  obj1.structOpt() = {};
   obj1.structOpt()->extraInt64Opt() = 69;
   obj1.structOpt()->extraStringOpt() = "world";
   obj1.structOpt()->extraSetOpt() = std::set<int64_t>{210, 220, 230};
@@ -149,8 +149,8 @@ TEST(OptionalsTest, ValueUncheckedTest) {
 TEST(OptionalsTest, EqualityTests) {
   cpp2::HasOptionals obj1;
   cpp2::HasOptionals obj2;
-  obj1.__clear();
-  obj2.__clear();
+  obj1 = {};
+  obj2 = {};
 
   // for each of the fields:
   // * set a required field, expect equal.
@@ -233,21 +233,21 @@ TEST(OptionalsTest, EqualityTests) {
   EXPECT_EQ(obj1, obj2);
 
   obj1.structDef() = cpp2::HasOptionalsExtra();
-  obj1.structDef()->__clear();
+  obj1.structDef() = {};
   obj2.structDef() = cpp2::HasOptionalsExtra();
-  obj2.structDef()->__clear();
+  obj2.structDef() = {};
   EXPECT_EQ(obj1, obj2);
   obj1.structReq_ref() = cpp2::HasOptionalsExtra();
-  obj1.structReq_ref()->__clear();
+  obj1.structReq_ref() = {};
   obj2.structReq_ref() = cpp2::HasOptionalsExtra();
-  obj2.structReq_ref()->__clear();
+  obj2.structReq_ref() = {};
   EXPECT_EQ(obj1, obj2);
   obj1.structOpt() = cpp2::HasOptionalsExtra();
-  obj1.structOpt()->__clear();
+  obj1.structOpt() = {};
   apache::thrift::ensure_isset_unsafe(obj1.structOpt());
   EXPECT_NE(obj1, obj2);
   obj2.structOpt() = cpp2::HasOptionalsExtra();
-  obj2.structOpt()->__clear();
+  obj2.structOpt() = {};
   apache::thrift::ensure_isset_unsafe(obj2.structOpt());
   EXPECT_EQ(obj1, obj2);
 
