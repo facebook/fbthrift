@@ -343,7 +343,7 @@ func (p *myServiceProcessorQuery) Run(argStruct thrift.Struct) (thrift.WritableS
   if err := p.handler.Query(args.S, args.I); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing query: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing query: " + err.Error(), err)
       return x, x
     }
   }
@@ -396,7 +396,7 @@ func (p *myServiceProcessorHasArgDocs) Run(argStruct thrift.Struct) (thrift.Writ
   if err := p.handler.HasArgDocs(args.S, args.I); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing has_arg_docs: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing has_arg_docs: " + err.Error(), err)
       return x, x
     }
   }

@@ -320,7 +320,7 @@ func (p *dbMixedStackArgumentsProcessorGetDataByKey0) Run(argStruct thrift.Struc
   if retval, err := p.handler.GetDataByKey0(args.Key); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getDataByKey0: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing getDataByKey0: " + err.Error(), err)
       return x, x
     }
   } else {
@@ -375,7 +375,7 @@ func (p *dbMixedStackArgumentsProcessorGetDataByKey1) Run(argStruct thrift.Struc
   if retval, err := p.handler.GetDataByKey1(args.Key); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getDataByKey1: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing getDataByKey1: " + err.Error(), err)
       return x, x
     }
   } else {

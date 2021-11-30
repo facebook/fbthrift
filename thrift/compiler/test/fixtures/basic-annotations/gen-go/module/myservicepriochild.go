@@ -211,7 +211,7 @@ func (p *myServicePrioChildProcessorPang) Run(argStruct thrift.Struct) (thrift.W
   if err := p.handler.Pang(); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing pang: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing pang: " + err.Error(), err)
       return x, x
     }
   }

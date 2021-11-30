@@ -235,7 +235,7 @@ func (p *myRootProcessorDoRoot) Run(argStruct thrift.Struct) (thrift.WritableStr
   if err := p.handler.DoRoot(); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing do_root: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing do_root: " + err.Error(), err)
       return x, x
     }
   }

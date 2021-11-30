@@ -386,7 +386,7 @@ func (p *finderProcessorByPlate) Run(argStruct thrift.Struct) (thrift.WritableSt
   if retval, err := p.handler.ByPlate(args.Plate); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing byPlate: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing byPlate: " + err.Error(), err)
       return x, x
     }
   } else {
@@ -441,7 +441,7 @@ func (p *finderProcessorAliasByPlate) Run(argStruct thrift.Struct) (thrift.Writa
   if retval, err := p.handler.AliasByPlate(args.Plate); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing aliasByPlate: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing aliasByPlate: " + err.Error(), err)
       return x, x
     }
   } else {
@@ -496,7 +496,7 @@ func (p *finderProcessorPreviousPlate) Run(argStruct thrift.Struct) (thrift.Writ
   if retval, err := p.handler.PreviousPlate(args.Plate); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing previousPlate: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing previousPlate: " + err.Error(), err)
       return x, x
     }
   } else {

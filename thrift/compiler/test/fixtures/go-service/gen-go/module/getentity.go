@@ -864,7 +864,7 @@ func (p *getEntityProcessorGetEntity) Run(argStruct thrift.Struct) (thrift.Writa
   if retval, err := p.handler.GetEntity(args.R); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getEntity: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing getEntity: " + err.Error(), err)
       return x, x
     }
   } else {
@@ -918,7 +918,7 @@ func (p *getEntityProcessorGetBool) Run(argStruct thrift.Struct) (thrift.Writabl
   if retval, err := p.handler.GetBool(); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getBool: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing getBool: " + err.Error(), err)
       return x, x
     }
   } else {
@@ -972,7 +972,7 @@ func (p *getEntityProcessorGetByte) Run(argStruct thrift.Struct) (thrift.Writabl
   if retval, err := p.handler.GetByte(); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getByte: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing getByte: " + err.Error(), err)
       return x, x
     }
   } else {
@@ -1026,7 +1026,7 @@ func (p *getEntityProcessorGetI16) Run(argStruct thrift.Struct) (thrift.Writable
   if retval, err := p.handler.GetI16(); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getI16: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing getI16: " + err.Error(), err)
       return x, x
     }
   } else {
@@ -1080,7 +1080,7 @@ func (p *getEntityProcessorGetI32) Run(argStruct thrift.Struct) (thrift.Writable
   if retval, err := p.handler.GetI32(); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getI32: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing getI32: " + err.Error(), err)
       return x, x
     }
   } else {
@@ -1134,7 +1134,7 @@ func (p *getEntityProcessorGetI64) Run(argStruct thrift.Struct) (thrift.Writable
   if retval, err := p.handler.GetI64(); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getI64: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing getI64: " + err.Error(), err)
       return x, x
     }
   } else {
@@ -1188,7 +1188,7 @@ func (p *getEntityProcessorGetDouble) Run(argStruct thrift.Struct) (thrift.Writa
   if retval, err := p.handler.GetDouble(); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getDouble: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing getDouble: " + err.Error(), err)
       return x, x
     }
   } else {
@@ -1242,7 +1242,7 @@ func (p *getEntityProcessorGetString) Run(argStruct thrift.Struct) (thrift.Writa
   if retval, err := p.handler.GetString(); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getString: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing getString: " + err.Error(), err)
       return x, x
     }
   } else {
@@ -1296,7 +1296,7 @@ func (p *getEntityProcessorGetBinary) Run(argStruct thrift.Struct) (thrift.Writa
   if retval, err := p.handler.GetBinary(); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getBinary: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing getBinary: " + err.Error(), err)
       return x, x
     }
   } else {
@@ -1350,7 +1350,7 @@ func (p *getEntityProcessorGetMap) Run(argStruct thrift.Struct) (thrift.Writable
   if retval, err := p.handler.GetMap(); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getMap: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing getMap: " + err.Error(), err)
       return x, x
     }
   } else {
@@ -1404,7 +1404,7 @@ func (p *getEntityProcessorGetSet) Run(argStruct thrift.Struct) (thrift.Writable
   if retval, err := p.handler.GetSet(); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getSet: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing getSet: " + err.Error(), err)
       return x, x
     }
   } else {
@@ -1458,7 +1458,7 @@ func (p *getEntityProcessorGetList) Run(argStruct thrift.Struct) (thrift.Writabl
   if retval, err := p.handler.GetList(); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getList: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing getList: " + err.Error(), err)
       return x, x
     }
   } else {
@@ -1513,7 +1513,7 @@ func (p *getEntityProcessorGetLegacyStuff) Run(argStruct thrift.Struct) (thrift.
   if retval, err := p.handler.GetLegacyStuff(args.NumPos, args.NumNeg1, args.NumNeg2); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getLegacyStuff: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing getLegacyStuff: " + err.Error(), err)
       return x, x
     }
   } else {

@@ -433,7 +433,7 @@ func (p *raiserProcessorDoBland) Run(argStruct thrift.Struct) (thrift.WritableSt
   if err := p.handler.DoBland(); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing doBland: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing doBland: " + err.Error(), err)
       return x, x
     }
   }
@@ -509,7 +509,7 @@ func (p *raiserProcessorDoRaise) Run(argStruct thrift.Struct) (thrift.WritableSt
     case *Serious:
       result.S = v
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing doRaise: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing doRaise: " + err.Error(), err)
       return x, x
     }
   }
@@ -561,7 +561,7 @@ func (p *raiserProcessorGet200) Run(argStruct thrift.Struct) (thrift.WritableStr
   if retval, err := p.handler.Get200(); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing get200: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing get200: " + err.Error(), err)
       return x, x
     }
   } else {
@@ -639,7 +639,7 @@ func (p *raiserProcessorGet500) Run(argStruct thrift.Struct) (thrift.WritableStr
     case *Serious:
       result.S = v
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing get500: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing get500: " + err.Error(), err)
       return x, x
     }
   } else {

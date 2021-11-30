@@ -211,7 +211,7 @@ func (p *myNodeProcessorDoMid) Run(argStruct thrift.Struct) (thrift.WritableStru
   if err := p.handler.DoMid(); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing do_mid: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing do_mid: " + err.Error(), err)
       return x, x
     }
   }

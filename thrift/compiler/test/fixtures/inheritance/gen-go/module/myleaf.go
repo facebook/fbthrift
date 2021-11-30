@@ -211,7 +211,7 @@ func (p *myLeafProcessorDoLeaf) Run(argStruct thrift.Struct) (thrift.WritableStr
   if err := p.handler.DoLeaf(); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing do_leaf: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing do_leaf: " + err.Error(), err)
       return x, x
     }
   }

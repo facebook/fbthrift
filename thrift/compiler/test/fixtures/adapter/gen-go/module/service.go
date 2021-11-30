@@ -276,7 +276,7 @@ func (p *serviceProcessorFunc) Run(argStruct thrift.Struct) (thrift.WritableStru
   if retval, err := p.handler.Func(args.Arg1, args.Arg2, args.Arg3); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing func: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing func: " + err.Error(), err)
       return x, x
     }
   } else {

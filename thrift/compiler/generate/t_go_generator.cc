@@ -3533,9 +3533,9 @@ void t_go_generator::generate_run_function(
   indent(f_service_) << "default:" << endl;
   indent_up();
   indent(f_service_)
-      << "x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "
+      << "x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "
       << "\"Internal error processing " << escape_string(tfunction->get_name())
-      << ": \" + err.Error())" << endl;
+      << ": \" + err.Error(), err)" << endl;
   indent(f_service_) << "return x, x" << endl;
   indent_down();
   indent(f_service_) << "}" << endl;

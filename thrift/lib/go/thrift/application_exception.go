@@ -38,6 +38,8 @@ type ApplicationException interface {
 type applicationException struct {
 	message       string
 	exceptionType int32
+	// The original error that caused the application exception
+	cause error
 }
 
 func (e applicationException) Error() string {
@@ -46,12 +48,22 @@ func (e applicationException) Error() string {
 
 // NewApplicationException creates a new ApplicationException
 func NewApplicationException(exceptionType int32, message string) ApplicationException {
-	return &applicationException{message, exceptionType}
+	return &applicationException{message: message, exceptionType: exceptionType}
+}
+
+// NewApplicationExceptionCause creates a new ApplicationException with a root cause error
+func NewApplicationExceptionCause(exceptionType int32, message string, cause error) ApplicationException {
+	return &applicationException{message, exceptionType, cause}
 }
 
 // TypeID returns the exception type
 func (e *applicationException) TypeID() int32 {
 	return e.exceptionType
+}
+
+// Unwrap returns the original error that cause the application error. Returns nil if there was no wrapped error.
+func (e *applicationException) Unwrap() error {
+	return e.cause
 }
 
 // Read reads an ApplicationException from the protocol

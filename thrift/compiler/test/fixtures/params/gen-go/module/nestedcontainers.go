@@ -479,7 +479,7 @@ func (p *nestedContainersProcessorMapList) Run(argStruct thrift.Struct) (thrift.
   if err := p.handler.MapList(args.Foo); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing mapList: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing mapList: " + err.Error(), err)
       return x, x
     }
   }
@@ -532,7 +532,7 @@ func (p *nestedContainersProcessorMapSet) Run(argStruct thrift.Struct) (thrift.W
   if err := p.handler.MapSet(args.Foo); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing mapSet: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing mapSet: " + err.Error(), err)
       return x, x
     }
   }
@@ -585,7 +585,7 @@ func (p *nestedContainersProcessorListMap) Run(argStruct thrift.Struct) (thrift.
   if err := p.handler.ListMap(args.Foo); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing listMap: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing listMap: " + err.Error(), err)
       return x, x
     }
   }
@@ -638,7 +638,7 @@ func (p *nestedContainersProcessorListSet) Run(argStruct thrift.Struct) (thrift.
   if err := p.handler.ListSet(args.Foo); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing listSet: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing listSet: " + err.Error(), err)
       return x, x
     }
   }
@@ -691,7 +691,7 @@ func (p *nestedContainersProcessorTurtles) Run(argStruct thrift.Struct) (thrift.
   if err := p.handler.Turtles(args.Foo); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing turtles: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing turtles: " + err.Error(), err)
       return x, x
     }
   }

@@ -640,7 +640,7 @@ func (p *myServiceProcessorPing) Run(argStruct thrift.Struct) (thrift.WritableSt
   if err := p.handler.Ping(); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing ping: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing ping: " + err.Error(), err)
       return x, x
     }
   }
@@ -692,7 +692,7 @@ func (p *myServiceProcessorGetRandomData) Run(argStruct thrift.Struct) (thrift.W
   if retval, err := p.handler.GetRandomData(); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getRandomData: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing getRandomData: " + err.Error(), err)
       return x, x
     }
   } else {
@@ -747,7 +747,7 @@ func (p *myServiceProcessorSink) Run(argStruct thrift.Struct) (thrift.WritableSt
   if err := p.handler.Sink(args.Sink); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing sink: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing sink: " + err.Error(), err)
       return x, x
     }
   }
@@ -800,7 +800,7 @@ func (p *myServiceProcessorPutDataById) Run(argStruct thrift.Struct) (thrift.Wri
   if err := p.handler.PutDataById(args.Id, args.Data); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing putDataById: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing putDataById: " + err.Error(), err)
       return x, x
     }
   }
@@ -853,7 +853,7 @@ func (p *myServiceProcessorHasDataById) Run(argStruct thrift.Struct) (thrift.Wri
   if retval, err := p.handler.HasDataById(args.Id); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing hasDataById: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing hasDataById: " + err.Error(), err)
       return x, x
     }
   } else {
@@ -908,7 +908,7 @@ func (p *myServiceProcessorGetDataById) Run(argStruct thrift.Struct) (thrift.Wri
   if retval, err := p.handler.GetDataById(args.Id); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getDataById: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing getDataById: " + err.Error(), err)
       return x, x
     }
   } else {
@@ -963,7 +963,7 @@ func (p *myServiceProcessorDeleteDataById) Run(argStruct thrift.Struct) (thrift.
   if err := p.handler.DeleteDataById(args.Id); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing deleteDataById: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing deleteDataById: " + err.Error(), err)
       return x, x
     }
   }
@@ -1010,7 +1010,7 @@ func (p *myServiceProcessorLobDataById) Run(argStruct thrift.Struct) (thrift.Wri
   if err := p.handler.LobDataById(args.Id, args.Data); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing lobDataById: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing lobDataById: " + err.Error(), err)
       return x, x
     }
   }

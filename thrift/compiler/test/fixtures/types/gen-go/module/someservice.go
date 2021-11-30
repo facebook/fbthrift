@@ -323,7 +323,7 @@ func (p *someServiceProcessorBounceMap) Run(argStruct thrift.Struct) (thrift.Wri
   if retval, err := p.handler.BounceMap(args.M); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing bounce_map: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing bounce_map: " + err.Error(), err)
       return x, x
     }
   } else {
@@ -378,7 +378,7 @@ func (p *someServiceProcessorBinaryKeyedMap) Run(argStruct thrift.Struct) (thrif
   if retval, err := p.handler.BinaryKeyedMap(args.R); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing binary_keyed_map: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing binary_keyed_map: " + err.Error(), err)
       return x, x
     }
   } else {

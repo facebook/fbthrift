@@ -277,7 +277,7 @@ func (p *myServicePrioParentProcessorPing) Run(argStruct thrift.Struct) (thrift.
   if err := p.handler.Ping(); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing ping: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing ping: " + err.Error(), err)
       return x, x
     }
   }
@@ -329,7 +329,7 @@ func (p *myServicePrioParentProcessorPong) Run(argStruct thrift.Struct) (thrift.
   if err := p.handler.Pong(); err != nil {
     switch err.(type) {
     default:
-      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing pong: " + err.Error())
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing pong: " + err.Error(), err)
       return x, x
     }
   }
