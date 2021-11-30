@@ -14,7 +14,7 @@ from thrift.py3lite.client import (
 )
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 import thrift.py3lite.types as _fbthrift_py3lite_types
-import my.namespacing.test.hsmodule.lite_types
+import py3lite_module_root.my.namespacing.test.hsmodule.lite_types
 
 
 class HsTestService(_fbthrift_py3lite_Client["HsTestService.Async", "HsTestService.Sync"]):
@@ -26,9 +26,9 @@ class HsTestService(_fbthrift_py3lite_Client["HsTestService.Async", "HsTestServi
             resp = await self._send_request(
                 "HsTestService",
                 "init",
-                my.namespacing.test.hsmodule.lite_types._fbthrift_HsTestService_init_args(
+                py3lite_module_root.my.namespacing.test.hsmodule.lite_types._fbthrift_HsTestService_init_args(
                     int1=int1,),
-                my.namespacing.test.hsmodule.lite_types._fbthrift_HsTestService_init_result,
+                py3lite_module_root.my.namespacing.test.hsmodule.lite_types._fbthrift_HsTestService_init_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -47,9 +47,9 @@ class HsTestService(_fbthrift_py3lite_Client["HsTestService.Async", "HsTestServi
             resp = self._send_request(
                 "HsTestService",
                 "init",
-                my.namespacing.test.hsmodule.lite_types._fbthrift_HsTestService_init_args(
+                py3lite_module_root.my.namespacing.test.hsmodule.lite_types._fbthrift_HsTestService_init_args(
                     int1=int1,),
-                my.namespacing.test.hsmodule.lite_types._fbthrift_HsTestService_init_result,
+                py3lite_module_root.my.namespacing.test.hsmodule.lite_types._fbthrift_HsTestService_init_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:

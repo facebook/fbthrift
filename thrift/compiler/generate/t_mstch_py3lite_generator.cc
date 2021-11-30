@@ -15,6 +15,7 @@
  */
 
 #include <iterator>
+#include <string>
 #include <utility>
 
 #include <boost/algorithm/string.hpp>
@@ -34,8 +35,12 @@ namespace compiler {
 
 namespace {
 
-std::string get_py3_namespace_with_name(const t_program* prog) {
+std::string get_py3_namespace_with_name_and_prefix(
+    const t_program* prog, const std::string& prefix) {
   std::ostringstream ss;
+  if (!prefix.empty()) {
+    ss << prefix << ".";
+  }
   for (const auto& name : split_namespace(prog->get_namespace("py3"))) {
     ss << name << ".";
   }
@@ -70,7 +75,9 @@ class mstch_py3lite_type : public mstch_type {
   }
 
   mstch::node module_path() {
-    return get_py3_namespace_with_name(get_type_program()) + ".lite_types";
+    return get_py3_namespace_with_name_and_prefix(
+               get_type_program(), get_option("root_module_prefix")) +
+        ".lite_types";
   }
 
   mstch::node need_module_path() {
@@ -323,7 +330,10 @@ class mstch_py3lite_program : public mstch_program {
     return a;
   }
 
-  mstch::node module_path() { return get_py3_namespace_with_name(program_); }
+  mstch::node module_path() {
+    return get_py3_namespace_with_name_and_prefix(
+        program_, get_option("root_module_prefix"));
+  }
 
   mstch::node base_library_package() {
     auto option = get_option("base_library_package");
@@ -346,7 +356,8 @@ class mstch_py3lite_program : public mstch_program {
             included_program->typedefs().empty() &&
             included_program->consts().empty());
       include_namespaces_[included_program->path()] = Namespace{
-          get_py3_namespace_with_name(included_program),
+          get_py3_namespace_with_name_and_prefix(
+              included_program, get_option("root_module_prefix")),
           !included_program->services().empty(),
           has_types,
       };
@@ -361,7 +372,8 @@ class mstch_py3lite_program : public mstch_program {
         return;
       }
       auto ns = Namespace();
-      ns.ns = get_py3_namespace_with_name(prog);
+      ns.ns = get_py3_namespace_with_name_and_prefix(
+          prog, get_option("root_module_prefix"));
       ns.has_services = false;
       ns.has_types = true;
       include_namespaces_[path] = std::move(ns);
@@ -660,7 +672,8 @@ class mstch_py3lite_service : public mstch_service {
   }
 
   mstch::node module_path() {
-    return get_py3_namespace_with_name(service_->program());
+    return get_py3_namespace_with_name_and_prefix(
+        service_->program(), get_option("root_module_prefix"));
   }
 
   mstch::node program_name() { return service_->program()->name(); }

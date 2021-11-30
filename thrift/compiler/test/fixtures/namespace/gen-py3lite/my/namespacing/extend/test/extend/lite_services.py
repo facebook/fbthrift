@@ -12,12 +12,12 @@ import folly.iobuf
 from thrift.py3lite.serializer import serialize_iobuf, deserialize, Protocol
 from thrift.py3lite.server import ServiceInterface, oneway
 
-import my.namespacing.extend.test.extend.lite_types
-import my.namespacing.test.hsmodule.lite_services
-import my.namespacing.test.hsmodule.lite_types
+import py3lite_module_root.my.namespacing.extend.test.extend.lite_types
+import py3lite_module_root.my.namespacing.test.hsmodule.lite_services
+import py3lite_module_root.my.namespacing.test.hsmodule.lite_types
 
 class ExtendTestServiceInterface(
-    my.namespacing.test.hsmodule.lite_services.HsTestServiceInterface,
+    py3lite_module_root.my.namespacing.test.hsmodule.lite_services.HsTestServiceInterface,
     metaclass=ABCMeta
 ):
 
@@ -36,14 +36,14 @@ class ExtendTestServiceInterface(
 
     async def check(
             self,
-            struct1: my.namespacing.test.hsmodule.lite_types.HsFoo
+            struct1: py3lite_module_root.my.namespacing.test.hsmodule.lite_types.HsFoo
         ) -> bool:
         raise NotImplementedError("async def check is not implemented")
 
     async def _fbthrift__handler_check(self, args: folly.iobuf.IOBuf, protocol: Protocol) -> folly.iobuf.IOBuf:
-        args_struct = deserialize(my.namespacing.extend.test.extend.lite_types._fbthrift_ExtendTestService_check_args, args, protocol)
+        args_struct = deserialize(py3lite_module_root.my.namespacing.extend.test.extend.lite_types._fbthrift_ExtendTestService_check_args, args, protocol)
         value = await self.check(args_struct.struct1,)
-        return_struct = my.namespacing.extend.test.extend.lite_types._fbthrift_ExtendTestService_check_result(success=value)
+        return_struct = py3lite_module_root.my.namespacing.extend.test.extend.lite_types._fbthrift_ExtendTestService_check_result(success=value)
 
         return serialize_iobuf(return_struct, protocol)
 

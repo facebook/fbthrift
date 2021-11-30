@@ -14,23 +14,23 @@ from thrift.py3lite.client import (
 )
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 import thrift.py3lite.types as _fbthrift_py3lite_types
-import my.namespacing.extend.test.extend.lite_types
-import my.namespacing.test.hsmodule.lite_types
-import my.namespacing.test.hsmodule.lite_clients
+import py3lite_module_root.my.namespacing.extend.test.extend.lite_types
+import py3lite_module_root.my.namespacing.test.hsmodule.lite_types
+import py3lite_module_root.my.namespacing.test.hsmodule.lite_clients
 
 
 class ExtendTestService(_fbthrift_py3lite_Client["ExtendTestService.Async", "ExtendTestService.Sync"]):
-    class Async(my.namespacing.test.hsmodule.lite_clients.HsTestService.Async):
+    class Async(py3lite_module_root.my.namespacing.test.hsmodule.lite_clients.HsTestService.Async):
         async def check(
             self,
-            struct1: my.namespacing.test.hsmodule.lite_types.HsFoo
+            struct1: py3lite_module_root.my.namespacing.test.hsmodule.lite_types.HsFoo
         ) -> bool:
             resp = await self._send_request(
                 "ExtendTestService",
                 "check",
-                my.namespacing.extend.test.extend.lite_types._fbthrift_ExtendTestService_check_args(
+                py3lite_module_root.my.namespacing.extend.test.extend.lite_types._fbthrift_ExtendTestService_check_args(
                     struct1=struct1,),
-                my.namespacing.extend.test.extend.lite_types._fbthrift_ExtendTestService_check_result,
+                py3lite_module_root.my.namespacing.extend.test.extend.lite_types._fbthrift_ExtendTestService_check_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -41,17 +41,17 @@ class ExtendTestService(_fbthrift_py3lite_Client["ExtendTestService.Async", "Ext
             )
 
 
-    class Sync(my.namespacing.test.hsmodule.lite_clients.HsTestService.Sync):
+    class Sync(py3lite_module_root.my.namespacing.test.hsmodule.lite_clients.HsTestService.Sync):
         def check(
             self,
-            struct1: my.namespacing.test.hsmodule.lite_types.HsFoo
+            struct1: py3lite_module_root.my.namespacing.test.hsmodule.lite_types.HsFoo
         ) -> bool:
             resp = self._send_request(
                 "ExtendTestService",
                 "check",
-                my.namespacing.extend.test.extend.lite_types._fbthrift_ExtendTestService_check_args(
+                py3lite_module_root.my.namespacing.extend.test.extend.lite_types._fbthrift_ExtendTestService_check_args(
                     struct1=struct1,),
-                my.namespacing.extend.test.extend.lite_types._fbthrift_ExtendTestService_check_result,
+                py3lite_module_root.my.namespacing.extend.test.extend.lite_types._fbthrift_ExtendTestService_check_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:

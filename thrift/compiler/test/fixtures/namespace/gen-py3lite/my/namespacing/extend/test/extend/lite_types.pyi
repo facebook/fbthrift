@@ -10,20 +10,20 @@ import typing as _typing
 import thrift.py3lite.types as _fbthrift_py3lite_types
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 
-import my.namespacing.test.hsmodule.lite_types
+import py3lite_module_root.my.namespacing.test.hsmodule.lite_types
 
 
 class _fbthrift_ExtendTestService_check_args(_fbthrift_py3lite_types.Struct):
-    struct1: _typing.Final[my.namespacing.test.hsmodule.lite_types.HsFoo] = ...
+    struct1: _typing.Final[py3lite_module_root.my.namespacing.test.hsmodule.lite_types.HsFoo] = ...
 
     def __init__(
         self, *,
-        struct1: _typing.Optional[my.namespacing.test.hsmodule.lite_types.HsFoo]=...
+        struct1: _typing.Optional[py3lite_module_root.my.namespacing.test.hsmodule.lite_types.HsFoo]=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
         str,
-        _typing.Union[None, my.namespacing.test.hsmodule.lite_types.HsFoo]]]: ...
+        _typing.Union[None, py3lite_module_root.my.namespacing.test.hsmodule.lite_types.HsFoo]]]: ...
 
 class _fbthrift_ExtendTestService_check_result(_fbthrift_py3lite_types.Struct):
     success: _typing.Final[bool]
