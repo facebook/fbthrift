@@ -34,14 +34,13 @@ namespace compiler {
 
 namespace {
 
-std::vector<std::string> get_py3_namespace(const t_program* prog) {
-  return split_namespace(prog->get_namespace("py3"));
-}
-
-std::vector<std::string> get_py3_namespace_with_name(const t_program* prog) {
-  auto ns = get_py3_namespace(prog);
-  ns.push_back(prog->name());
-  return ns;
+std::string get_py3_namespace_with_name(const t_program* prog) {
+  std::ostringstream ss;
+  for (const auto& name : split_namespace(prog->get_namespace("py3"))) {
+    ss << name << ".";
+  }
+  ss << prog->name();
+  return ss.str();
 }
 
 bool is_func_supported(const t_function* func) {
@@ -71,12 +70,7 @@ class mstch_py3lite_type : public mstch_type {
   }
 
   mstch::node module_path() {
-    std::ostringstream ss;
-    for (const auto& path : get_py3_namespace_with_name(get_type_program())) {
-      ss << path << ".";
-    }
-    ss << "lite_types";
-    return ss.str();
+    return get_py3_namespace_with_name(get_type_program()) + ".lite_types";
   }
 
   mstch::node need_module_path() {
@@ -322,16 +316,14 @@ class mstch_py3lite_program : public mstch_program {
     mstch::array a;
     for (auto& it : include_namespaces_) {
       a.push_back(mstch::map{
-          {"included_module_path", boost::algorithm::join(it.second.ns, ".")},
+          {"included_module_path", it.second.ns},
           {"has_services?", it.second.has_services},
           {"has_types?", it.second.has_types}});
     }
     return a;
   }
 
-  mstch::node module_path() {
-    return boost::algorithm::join(get_py3_namespace_with_name(program_), ".");
-  }
+  mstch::node module_path() { return get_py3_namespace_with_name(program_); }
 
   mstch::node base_library_package() {
     auto option = get_option("base_library_package");
@@ -340,7 +332,7 @@ class mstch_py3lite_program : public mstch_program {
 
  protected:
   struct Namespace {
-    std::vector<std::string> ns;
+    std::string ns;
     bool has_services;
     bool has_types;
   };
@@ -668,8 +660,7 @@ class mstch_py3lite_service : public mstch_service {
   }
 
   mstch::node module_path() {
-    return boost::algorithm::join(
-        get_py3_namespace_with_name(service_->program()), ".");
+    return get_py3_namespace_with_name(service_->program());
   }
 
   mstch::node program_name() { return service_->program()->name(); }
