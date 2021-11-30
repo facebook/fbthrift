@@ -62,47 +62,34 @@ ClientSinkBridge::ClientQueue ClientSinkBridge::getMessages() {
 
 folly::coro::Task<folly::Try<StreamPayload>> ClientSinkBridge::sink(
     folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> generator) {
-  uint64_t credits = 0;
   const auto& clientCancelToken =
       co_await folly::coro::co_current_cancellation_token;
   auto mergedToken = folly::CancellationToken::merge(
       serverCancelSource_.getToken(), clientCancelToken);
-  bool sinkComplete = false;
+  auto makeCancellationCallback = [&] {
+    return folly::CancellationCallback{
+        clientCancelToken, [&]() {
+          if (auto* cancelledCb = cancelClientWait()) {
+            cancelledCb->canceled();
+          }
+        }};
+  };
 
-  while (true) {
-    if (CoroConsumer consumer; clientWait(&consumer)) {
-      folly::CancellationCallback cb{
-          clientCancelToken, [&]() {
-            if (auto* cancelledCb = cancelClientWait()) {
-              cancelledCb->canceled();
-            }
-          }};
-      co_await consumer.wait();
-    }
-
-    for (auto queue = clientGetMessages(); !queue.empty(); queue.pop()) {
-      auto& message = queue.front();
-      if (auto* n = std::get_if<uint64_t>(&message)) {
-        credits += *n;
-      } else {
-        co_return std::get<folly::Try<StreamPayload>>(std::move(message));
+  for (uint64_t credits = 0; !serverCancelSource_.isCancellationRequested();
+       credits--) {
+    if (credits == 0) {
+      if (CoroConsumer consumer; clientWait(&consumer)) {
+        auto cb = makeCancellationCallback();
+        co_await consumer.wait();
       }
-    }
 
-    if (clientCancelToken.isCancellationRequested()) {
-      if (!sinkComplete) {
-        clientPush(folly::Try<apache::thrift::StreamPayload>(
-            rocket::RocketException(rocket::ErrorCode::CANCELED)));
-      }
-      co_yield folly::coro::co_cancelled;
-    }
-
-    while (credits > 0 && !sinkComplete &&
-           !serverCancelSource_.isCancellationRequested()) {
-      auto item = co_await folly::coro::co_withCancellation(
-          mergedToken, generator.next());
-      if (serverCancelSource_.isCancellationRequested()) {
-        break;
+      for (auto queue = clientGetMessages(); !queue.empty(); queue.pop()) {
+        auto& message = queue.front();
+        if (auto* n = std::get_if<uint64_t>(&message)) {
+          credits += *n;
+        } else {
+          co_return std::get<folly::Try<StreamPayload>>(std::move(message));
+        }
       }
 
       if (clientCancelToken.isCancellationRequested()) {
@@ -110,24 +97,58 @@ folly::coro::Task<folly::Try<StreamPayload>> ClientSinkBridge::sink(
             rocket::RocketException(rocket::ErrorCode::CANCELED)));
         co_yield folly::coro::co_cancelled;
       }
+    }
 
-      if (item.has_value()) {
-        if ((*item).hasValue()) {
-          clientPush(std::move(*item));
-        } else {
-          clientPush(std::move(*item));
-          // AsyncGenerator who serialized and yield the exception also in
-          // charge of propagating it back to user, just return empty Try
-          // here.
-          co_return folly::Try<StreamPayload>();
-        }
+    auto item = co_await folly::coro::co_withCancellation(
+        mergedToken, generator.next());
+    if (serverCancelSource_.isCancellationRequested()) {
+      break;
+    }
+
+    if (clientCancelToken.isCancellationRequested()) {
+      clientPush(folly::Try<apache::thrift::StreamPayload>(
+          rocket::RocketException(rocket::ErrorCode::CANCELED)));
+      co_yield folly::coro::co_cancelled;
+    }
+
+    if (item.has_value()) {
+      if ((*item).hasValue()) {
+        clientPush(std::move(*item));
       } else {
-        clientPush({});
-        sinkComplete = true;
-        // release generator
-        generator = {};
+        clientPush(std::move(*item));
+        // AsyncGenerator who serialized and yield the exception also in
+        // charge of propagating it back to user, just return empty Try
+        // here.
+        co_return folly::Try<StreamPayload>();
       }
-      credits--;
+    } else {
+      clientPush({});
+      // release generator
+      generator = {};
+      break;
+    }
+  }
+
+  // Generator is done or server cancel source signalled: wait for final respose
+  while (true) {
+    if (CoroConsumer consumer; clientWait(&consumer)) {
+      auto cb = makeCancellationCallback();
+      co_await consumer.wait();
+    }
+
+    for (auto queue = clientGetMessages(); !queue.empty(); queue.pop()) {
+      auto& message = queue.front();
+      if (auto* response = std::get_if<folly::Try<StreamPayload>>(&message)) {
+        co_return std::move(*response);
+      }
+    }
+
+    if (clientCancelToken.isCancellationRequested()) {
+      if (!serverCancelSource_.isCancellationRequested()) {
+        clientPush(folly::Try<apache::thrift::StreamPayload>(
+            rocket::RocketException(rocket::ErrorCode::CANCELED)));
+      }
+      co_yield folly::coro::co_cancelled;
     }
   }
 }
