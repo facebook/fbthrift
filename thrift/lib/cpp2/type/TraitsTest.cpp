@@ -23,6 +23,7 @@
 #include <folly/portability/GTest.h>
 #include <thrift/conformance/if/gen-cpp2/object_fatal_all.h>
 #include <thrift/conformance/if/gen-cpp2/object_types.h>
+#include <thrift/lib/cpp2/type/AnyType.h>
 #include <thrift/lib/cpp2/type/Name.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
 
@@ -37,18 +38,29 @@ struct IsSameType;
 template <typename T>
 struct IsSameType<T, T> {};
 
+template <typename Types, typename Tag, bool Expected>
+void testContains() {
+  static_assert(Types::template contains<Tag>() == Expected);
+  if constexpr (
+      is_concrete_v<Tag> &&
+      // TODO(afuller): Support concrete named types.
+      !named_types::contains<Tag>()) {
+    EXPECT_EQ(Types::contains(AnyType::create<Tag>()), Expected);
+  }
+}
+
 TEST(TraitsTest, Bool) {
   using tag = type::bool_t;
-  EXPECT_TRUE(integral_types::contains<tag>);
-  EXPECT_FALSE(floating_point_types::contains<tag>);
-  EXPECT_TRUE(numeric_types::contains<tag>);
-  EXPECT_FALSE(string_types::contains<tag>);
-  EXPECT_TRUE(primitive_types::contains<tag>);
-  EXPECT_FALSE(structured_types::contains<tag>);
-  EXPECT_TRUE(singular_types::contains<tag>);
-  EXPECT_FALSE(container_types::contains<tag>);
-  EXPECT_FALSE(composite_types::contains<tag>);
-  EXPECT_TRUE(all_types::contains<tag>);
+  testContains<integral_types, tag, true>();
+  testContains<floating_point_types, tag, false>();
+  testContains<numeric_types, tag, true>();
+  testContains<string_types, tag, false>();
+  testContains<primitive_types, tag, true>();
+  testContains<structured_types, tag, false>();
+  testContains<singular_types, tag, true>();
+  testContains<container_types, tag, false>();
+  testContains<composite_types, tag, false>();
+  testContains<all_types, tag, true>();
 
   EXPECT_EQ(base_type_v<tag>, BaseType::Bool);
   EXPECT_EQ(getName<tag>(), "bool");
@@ -61,16 +73,16 @@ TEST(TraitsTest, Bool) {
 
 TEST(TraitsTest, Byte) {
   using tag = type::byte_t;
-  EXPECT_TRUE(integral_types::contains<tag>);
-  EXPECT_FALSE(floating_point_types::contains<tag>);
-  EXPECT_TRUE(numeric_types::contains<tag>);
-  EXPECT_FALSE(string_types::contains<tag>);
-  EXPECT_TRUE(primitive_types::contains<tag>);
-  EXPECT_FALSE(structured_types::contains<tag>);
-  EXPECT_TRUE(singular_types::contains<tag>);
-  EXPECT_FALSE(container_types::contains<tag>);
-  EXPECT_FALSE(composite_types::contains<tag>);
-  EXPECT_TRUE(all_types::contains<tag>);
+  testContains<integral_types, tag, true>();
+  testContains<floating_point_types, tag, false>();
+  testContains<numeric_types, tag, true>();
+  testContains<string_types, tag, false>();
+  testContains<primitive_types, tag, true>();
+  testContains<structured_types, tag, false>();
+  testContains<singular_types, tag, true>();
+  testContains<container_types, tag, false>();
+  testContains<composite_types, tag, false>();
+  testContains<all_types, tag, true>();
 
   EXPECT_EQ(base_type_v<tag>, BaseType::Byte);
   EXPECT_EQ(getName<tag>(), "byte");
@@ -83,16 +95,16 @@ TEST(TraitsTest, Byte) {
 
 TEST(TraitsTest, I16) {
   using tag = type::i16_t;
-  EXPECT_TRUE(integral_types::contains<tag>);
-  EXPECT_FALSE(floating_point_types::contains<tag>);
-  EXPECT_TRUE(numeric_types::contains<tag>);
-  EXPECT_FALSE(string_types::contains<tag>);
-  EXPECT_TRUE(primitive_types::contains<tag>);
-  EXPECT_FALSE(structured_types::contains<tag>);
-  EXPECT_TRUE(singular_types::contains<tag>);
-  EXPECT_FALSE(container_types::contains<tag>);
-  EXPECT_FALSE(composite_types::contains<tag>);
-  EXPECT_TRUE(all_types::contains<tag>);
+  testContains<integral_types, tag, true>();
+  testContains<floating_point_types, tag, false>();
+  testContains<numeric_types, tag, true>();
+  testContains<string_types, tag, false>();
+  testContains<primitive_types, tag, true>();
+  testContains<structured_types, tag, false>();
+  testContains<singular_types, tag, true>();
+  testContains<container_types, tag, false>();
+  testContains<composite_types, tag, false>();
+  testContains<all_types, tag, true>();
 
   EXPECT_EQ(base_type_v<tag>, BaseType::I16);
   EXPECT_EQ(getName<tag>(), "i16");
@@ -105,16 +117,16 @@ TEST(TraitsTest, I16) {
 
 TEST(TraitsTest, I32) {
   using tag = type::i32_t;
-  EXPECT_TRUE(integral_types::contains<tag>);
-  EXPECT_FALSE(floating_point_types::contains<tag>);
-  EXPECT_TRUE(numeric_types::contains<tag>);
-  EXPECT_FALSE(string_types::contains<tag>);
-  EXPECT_TRUE(primitive_types::contains<tag>);
-  EXPECT_FALSE(structured_types::contains<tag>);
-  EXPECT_TRUE(singular_types::contains<tag>);
-  EXPECT_FALSE(container_types::contains<tag>);
-  EXPECT_FALSE(composite_types::contains<tag>);
-  EXPECT_TRUE(all_types::contains<tag>);
+  testContains<integral_types, tag, true>();
+  testContains<floating_point_types, tag, false>();
+  testContains<numeric_types, tag, true>();
+  testContains<string_types, tag, false>();
+  testContains<primitive_types, tag, true>();
+  testContains<structured_types, tag, false>();
+  testContains<singular_types, tag, true>();
+  testContains<container_types, tag, false>();
+  testContains<composite_types, tag, false>();
+  testContains<all_types, tag, true>();
 
   EXPECT_EQ(base_type_v<tag>, BaseType::I32);
   EXPECT_EQ(getName<tag>(), "i32");
@@ -127,16 +139,16 @@ TEST(TraitsTest, I32) {
 
 TEST(TraitsTest, I64) {
   using tag = type::i64_t;
-  EXPECT_TRUE(integral_types::contains<tag>);
-  EXPECT_FALSE(floating_point_types::contains<tag>);
-  EXPECT_TRUE(numeric_types::contains<tag>);
-  EXPECT_FALSE(string_types::contains<tag>);
-  EXPECT_TRUE(primitive_types::contains<tag>);
-  EXPECT_FALSE(structured_types::contains<tag>);
-  EXPECT_TRUE(singular_types::contains<tag>);
-  EXPECT_FALSE(container_types::contains<tag>);
-  EXPECT_FALSE(composite_types::contains<tag>);
-  EXPECT_TRUE(all_types::contains<tag>);
+  testContains<integral_types, tag, true>();
+  testContains<floating_point_types, tag, false>();
+  testContains<numeric_types, tag, true>();
+  testContains<string_types, tag, false>();
+  testContains<primitive_types, tag, true>();
+  testContains<structured_types, tag, false>();
+  testContains<singular_types, tag, true>();
+  testContains<container_types, tag, false>();
+  testContains<composite_types, tag, false>();
+  testContains<all_types, tag, true>();
 
   EXPECT_EQ(base_type_v<tag>, BaseType::I64);
   EXPECT_EQ(getName<tag>(), "i64");
@@ -149,18 +161,17 @@ TEST(TraitsTest, I64) {
 
 TEST(TraitsTest, Enum) {
   using tag = type::enum_c;
-  EXPECT_TRUE(integral_types::contains<tag>);
-  EXPECT_FALSE(floating_point_types::contains<tag>);
-  EXPECT_TRUE(numeric_types::contains<tag>);
-  EXPECT_FALSE(string_types::contains<tag>);
-  EXPECT_TRUE(primitive_types::contains<tag>);
-  EXPECT_FALSE(structured_types::contains<tag>);
-  EXPECT_TRUE(singular_types::contains<tag>);
-  EXPECT_FALSE(container_types::contains<tag>);
-  EXPECT_FALSE(composite_types::contains<tag>);
-  EXPECT_TRUE(all_types::contains<tag>);
+  testContains<integral_types, tag, true>();
+  testContains<floating_point_types, tag, false>();
+  testContains<numeric_types, tag, true>();
+  testContains<string_types, tag, false>();
+  testContains<primitive_types, tag, true>();
+  testContains<structured_types, tag, false>();
+  testContains<singular_types, tag, true>();
+  testContains<container_types, tag, false>();
+  testContains<composite_types, tag, false>();
+  testContains<all_types, tag, true>();
 
-  EXPECT_TRUE(integral_types::contains_bt<BaseType::Enum>);
   EXPECT_EQ(base_type_v<tag>, BaseType::Enum);
   EXPECT_EQ(getName<tag>(), "enum");
 
@@ -170,22 +181,22 @@ TEST(TraitsTest, Enum) {
   IsSameType<standard_type<tag_t>, BaseType>();
   IsSameType<native_type<tag_t>, BaseType>();
   IsSameType<standard_types<tag_t>, detail::types<BaseType>>();
-  EXPECT_TRUE(all_types::contains<tag_t>);
+  testContains<all_types, tag_t, true>();
   EXPECT_EQ(toTType(BaseType::Enum), TType::T_I32);
 }
 
 TEST(TraitsTest, Float) {
   using tag = type::float_t;
-  EXPECT_FALSE(integral_types::contains<tag>);
-  EXPECT_TRUE(floating_point_types::contains<tag>);
-  EXPECT_TRUE(numeric_types::contains<tag>);
-  EXPECT_FALSE(string_types::contains<tag>);
-  EXPECT_TRUE(primitive_types::contains<tag>);
-  EXPECT_FALSE(structured_types::contains<tag>);
-  EXPECT_TRUE(singular_types::contains<tag>);
-  EXPECT_FALSE(container_types::contains<tag>);
-  EXPECT_FALSE(composite_types::contains<tag>);
-  EXPECT_TRUE(all_types::contains<tag>);
+  testContains<integral_types, tag, false>();
+  testContains<floating_point_types, tag, true>();
+  testContains<numeric_types, tag, true>();
+  testContains<string_types, tag, false>();
+  testContains<primitive_types, tag, true>();
+  testContains<structured_types, tag, false>();
+  testContains<singular_types, tag, true>();
+  testContains<container_types, tag, false>();
+  testContains<composite_types, tag, false>();
+  testContains<all_types, tag, true>();
 
   EXPECT_EQ(base_type_v<tag>, BaseType::Float);
   EXPECT_EQ(getName<tag>(), "float");
@@ -198,16 +209,16 @@ TEST(TraitsTest, Float) {
 
 TEST(TraitsTest, Double) {
   using tag = type::double_t;
-  EXPECT_FALSE(integral_types::contains<tag>);
-  EXPECT_TRUE(floating_point_types::contains<tag>);
-  EXPECT_TRUE(numeric_types::contains<tag>);
-  EXPECT_FALSE(string_types::contains<tag>);
-  EXPECT_TRUE(primitive_types::contains<tag>);
-  EXPECT_FALSE(structured_types::contains<tag>);
-  EXPECT_TRUE(singular_types::contains<tag>);
-  EXPECT_FALSE(container_types::contains<tag>);
-  EXPECT_FALSE(composite_types::contains<tag>);
-  EXPECT_TRUE(all_types::contains<tag>);
+  testContains<integral_types, tag, false>();
+  testContains<floating_point_types, tag, true>();
+  testContains<numeric_types, tag, true>();
+  testContains<string_types, tag, false>();
+  testContains<primitive_types, tag, true>();
+  testContains<structured_types, tag, false>();
+  testContains<singular_types, tag, true>();
+  testContains<container_types, tag, false>();
+  testContains<composite_types, tag, false>();
+  testContains<all_types, tag, true>();
 
   EXPECT_EQ(base_type_v<tag>, BaseType::Double);
   EXPECT_EQ(getName<tag>(), "double");
@@ -220,16 +231,16 @@ TEST(TraitsTest, Double) {
 
 TEST(TraitsTest, String) {
   using tag = type::string_t;
-  EXPECT_FALSE(integral_types::contains<tag>);
-  EXPECT_FALSE(floating_point_types::contains<tag>);
-  EXPECT_FALSE(numeric_types::contains<tag>);
-  EXPECT_TRUE(string_types::contains<tag>);
-  EXPECT_TRUE(primitive_types::contains<tag>);
-  EXPECT_FALSE(structured_types::contains<tag>);
-  EXPECT_TRUE(singular_types::contains<tag>);
-  EXPECT_FALSE(container_types::contains<tag>);
-  EXPECT_FALSE(composite_types::contains<tag>);
-  EXPECT_TRUE(all_types::contains<tag>);
+  testContains<integral_types, tag, false>();
+  testContains<floating_point_types, tag, false>();
+  testContains<numeric_types, tag, false>();
+  testContains<string_types, tag, true>();
+  testContains<primitive_types, tag, true>();
+  testContains<structured_types, tag, false>();
+  testContains<singular_types, tag, true>();
+  testContains<container_types, tag, false>();
+  testContains<composite_types, tag, false>();
+  testContains<all_types, tag, true>();
 
   EXPECT_EQ(base_type_v<tag>, BaseType::String);
   EXPECT_EQ(getName<tag>(), "string");
@@ -248,16 +259,16 @@ TEST(TraitsTest, String) {
 
 TEST(TraitsTest, Binary) {
   using tag = type::binary_t;
-  EXPECT_FALSE(integral_types::contains<tag>);
-  EXPECT_FALSE(floating_point_types::contains<tag>);
-  EXPECT_FALSE(numeric_types::contains<tag>);
-  EXPECT_TRUE(string_types::contains<tag>);
-  EXPECT_TRUE(primitive_types::contains<tag>);
-  EXPECT_FALSE(structured_types::contains<tag>);
-  EXPECT_TRUE(singular_types::contains<tag>);
-  EXPECT_FALSE(container_types::contains<tag>);
-  EXPECT_FALSE(composite_types::contains<tag>);
-  EXPECT_TRUE(all_types::contains<tag>);
+  testContains<integral_types, tag, false>();
+  testContains<floating_point_types, tag, false>();
+  testContains<numeric_types, tag, false>();
+  testContains<string_types, tag, true>();
+  testContains<primitive_types, tag, true>();
+  testContains<structured_types, tag, false>();
+  testContains<singular_types, tag, true>();
+  testContains<container_types, tag, false>();
+  testContains<composite_types, tag, false>();
+  testContains<all_types, tag, true>();
 
   EXPECT_EQ(base_type_v<tag>, BaseType::Binary);
   EXPECT_EQ(getName<tag>(), "binary");
@@ -276,16 +287,16 @@ TEST(TraitsTest, Binary) {
 
 TEST(TraitsTest, Struct) {
   using tag = type::struct_c;
-  EXPECT_FALSE(integral_types::contains<tag>);
-  EXPECT_FALSE(floating_point_types::contains<tag>);
-  EXPECT_FALSE(numeric_types::contains<tag>);
-  EXPECT_FALSE(string_types::contains<tag>);
-  EXPECT_FALSE(primitive_types::contains<tag>);
-  EXPECT_TRUE(structured_types::contains<tag>);
-  EXPECT_TRUE(singular_types::contains<tag>);
-  EXPECT_FALSE(container_types::contains<tag>);
-  EXPECT_TRUE(composite_types::contains<tag>);
-  EXPECT_TRUE(all_types::contains<tag>);
+  testContains<integral_types, tag, false>();
+  testContains<floating_point_types, tag, false>();
+  testContains<numeric_types, tag, false>();
+  testContains<string_types, tag, false>();
+  testContains<primitive_types, tag, false>();
+  testContains<structured_types, tag, true>();
+  testContains<singular_types, tag, true>();
+  testContains<container_types, tag, false>();
+  testContains<composite_types, tag, true>();
+  testContains<all_types, tag, true>();
 
   EXPECT_EQ(base_type_v<tag>, BaseType::Struct);
   EXPECT_EQ(getName<tag>(), "struct");
@@ -296,23 +307,23 @@ TEST(TraitsTest, Struct) {
   IsSameType<standard_type<tag_t>, Object>();
   IsSameType<native_type<tag_t>, Object>();
   IsSameType<standard_types<tag_t>, detail::types<Object>>();
-  EXPECT_TRUE(all_types::contains<tag_t>);
+  testContains<all_types, tag_t, true>();
   EXPECT_EQ(toTType(BaseType::Struct), TType::T_STRUCT);
   EXPECT_EQ(toThriftBaseType(TType::T_STRUCT), BaseType::Struct);
 }
 
 TEST(TraitsTest, Union) {
   using tag = type::union_c;
-  EXPECT_FALSE(integral_types::contains<tag>);
-  EXPECT_FALSE(floating_point_types::contains<tag>);
-  EXPECT_FALSE(numeric_types::contains<tag>);
-  EXPECT_FALSE(string_types::contains<tag>);
-  EXPECT_FALSE(primitive_types::contains<tag>);
-  EXPECT_TRUE(structured_types::contains<tag>);
-  EXPECT_TRUE(singular_types::contains<tag>);
-  EXPECT_FALSE(container_types::contains<tag>);
-  EXPECT_TRUE(composite_types::contains<tag>);
-  EXPECT_TRUE(all_types::contains<tag>);
+  testContains<integral_types, tag, false>();
+  testContains<floating_point_types, tag, false>();
+  testContains<numeric_types, tag, false>();
+  testContains<string_types, tag, false>();
+  testContains<primitive_types, tag, false>();
+  testContains<structured_types, tag, true>();
+  testContains<singular_types, tag, true>();
+  testContains<container_types, tag, false>();
+  testContains<composite_types, tag, true>();
+  testContains<all_types, tag, true>();
 
   EXPECT_EQ(base_type_v<tag>, BaseType::Union);
   EXPECT_EQ(getName<tag>(), "union");
@@ -323,22 +334,22 @@ TEST(TraitsTest, Union) {
   IsSameType<standard_type<tag_t>, Value>();
   IsSameType<native_type<tag_t>, Value>();
   IsSameType<standard_types<tag_t>, detail::types<Value>>();
-  EXPECT_TRUE(all_types::contains<tag_t>);
+  testContains<all_types, tag_t, true>();
   EXPECT_EQ(toTType(BaseType::Union), TType::T_STRUCT);
 }
 
 TEST(TraitsTest, Exception) {
   using tag = type::exception_c;
-  EXPECT_FALSE(integral_types::contains<tag>);
-  EXPECT_FALSE(floating_point_types::contains<tag>);
-  EXPECT_FALSE(numeric_types::contains<tag>);
-  EXPECT_FALSE(string_types::contains<tag>);
-  EXPECT_FALSE(primitive_types::contains<tag>);
-  EXPECT_TRUE(structured_types::contains<tag>);
-  EXPECT_TRUE(singular_types::contains<tag>);
-  EXPECT_FALSE(container_types::contains<tag>);
-  EXPECT_TRUE(composite_types::contains<tag>);
-  EXPECT_TRUE(all_types::contains<tag>);
+  testContains<integral_types, tag, false>();
+  testContains<floating_point_types, tag, false>();
+  testContains<numeric_types, tag, false>();
+  testContains<string_types, tag, false>();
+  testContains<primitive_types, tag, false>();
+  testContains<structured_types, tag, true>();
+  testContains<singular_types, tag, true>();
+  testContains<container_types, tag, false>();
+  testContains<composite_types, tag, true>();
+  testContains<all_types, tag, true>();
 
   EXPECT_EQ(base_type_v<tag>, BaseType::Exception);
   EXPECT_EQ(getName<tag>(), "exception");
@@ -350,16 +361,16 @@ TEST(TraitsTest, Exception) {
 
 TEST(TraitsTest, List) {
   using tag = type::list_c;
-  EXPECT_FALSE(integral_types::contains<tag>);
-  EXPECT_FALSE(floating_point_types::contains<tag>);
-  EXPECT_FALSE(numeric_types::contains<tag>);
-  EXPECT_FALSE(string_types::contains<tag>);
-  EXPECT_FALSE(primitive_types::contains<tag>);
-  EXPECT_FALSE(structured_types::contains<tag>);
-  EXPECT_FALSE(singular_types::contains<tag>);
-  EXPECT_TRUE(container_types::contains<tag>);
-  EXPECT_TRUE(composite_types::contains<tag>);
-  EXPECT_TRUE(all_types::contains<tag>);
+  testContains<integral_types, tag, false>();
+  testContains<floating_point_types, tag, false>();
+  testContains<numeric_types, tag, false>();
+  testContains<string_types, tag, false>();
+  testContains<primitive_types, tag, false>();
+  testContains<structured_types, tag, false>();
+  testContains<singular_types, tag, false>();
+  testContains<container_types, tag, true>();
+  testContains<composite_types, tag, true>();
+  testContains<all_types, tag, true>();
 
   EXPECT_EQ(base_type_v<tag>, BaseType::List);
   EXPECT_EQ(getName<tag>(), "list");
@@ -367,7 +378,7 @@ TEST(TraitsTest, List) {
   using tag_c = type::list<type::struct_c>;
   EXPECT_EQ(base_type_v<tag_c>, BaseType::List);
   EXPECT_EQ(getName<tag_c>(), "list<struct>");
-  EXPECT_TRUE(all_types::contains<tag_c>);
+  testContains<all_types, tag_c, true>();
 
   using tag_t = type::list<type::string_t>;
   EXPECT_EQ(base_type_v<tag_t>, BaseType::List);
@@ -381,7 +392,7 @@ TEST(TraitsTest, List) {
           std::vector<folly::fbstring>,
           std::vector<folly::IOBuf>,
           std::vector<std::unique_ptr<folly::IOBuf>>>>();
-  EXPECT_TRUE(all_types::contains<tag_t>);
+  testContains<all_types, tag_t, true>();
 
   using tag_s = type::list<type::string_t, std::list>;
   EXPECT_EQ(base_type_v<tag_s>, BaseType::List);
@@ -395,7 +406,7 @@ TEST(TraitsTest, List) {
           std::list<folly::fbstring>,
           std::list<folly::IOBuf>,
           std::list<std::unique_ptr<folly::IOBuf>>>>();
-  EXPECT_TRUE(all_types::contains<tag_s>);
+  testContains<all_types, tag_s, true>();
 
   EXPECT_EQ(toTType(BaseType::List), TType::T_LIST);
   EXPECT_EQ(toThriftBaseType(TType::T_LIST), BaseType::List);
@@ -403,16 +414,16 @@ TEST(TraitsTest, List) {
 
 TEST(TraitsTest, Set) {
   using tag = type::set_c;
-  EXPECT_FALSE(integral_types::contains<tag>);
-  EXPECT_FALSE(floating_point_types::contains<tag>);
-  EXPECT_FALSE(numeric_types::contains<tag>);
-  EXPECT_FALSE(string_types::contains<tag>);
-  EXPECT_FALSE(primitive_types::contains<tag>);
-  EXPECT_FALSE(structured_types::contains<tag>);
-  EXPECT_FALSE(singular_types::contains<tag>);
-  EXPECT_TRUE(container_types::contains<tag>);
-  EXPECT_TRUE(composite_types::contains<tag>);
-  EXPECT_TRUE(all_types::contains<tag>);
+  testContains<integral_types, tag, false>();
+  testContains<floating_point_types, tag, false>();
+  testContains<numeric_types, tag, false>();
+  testContains<string_types, tag, false>();
+  testContains<primitive_types, tag, false>();
+  testContains<structured_types, tag, false>();
+  testContains<singular_types, tag, false>();
+  testContains<container_types, tag, true>();
+  testContains<composite_types, tag, true>();
+  testContains<all_types, tag, true>();
 
   EXPECT_EQ(base_type_v<tag>, BaseType::Set);
   EXPECT_EQ(getName<tag>(), "set");
@@ -420,7 +431,7 @@ TEST(TraitsTest, Set) {
   using tag_c = type::set<type::struct_c>;
   EXPECT_EQ(base_type_v<tag_c>, BaseType::Set);
   EXPECT_EQ(getName<tag_c>(), "set<struct>");
-  EXPECT_TRUE(all_types::contains<tag_c>);
+  testContains<all_types, tag_c, true>();
 
   using tag_t = type::set<type::string_t>;
   EXPECT_EQ(base_type_v<tag_t>, BaseType::Set);
@@ -434,7 +445,7 @@ TEST(TraitsTest, Set) {
           std::set<folly::fbstring>,
           std::set<folly::IOBuf>,
           std::set<std::unique_ptr<folly::IOBuf>>>>();
-  EXPECT_TRUE(all_types::contains<tag_t>);
+  testContains<all_types, tag_t, true>();
 
   using tag_s = type::set<type::string_t, std::unordered_set>;
   EXPECT_EQ(base_type_v<tag_s>, BaseType::Set);
@@ -448,7 +459,7 @@ TEST(TraitsTest, Set) {
           std::unordered_set<folly::fbstring>,
           std::unordered_set<folly::IOBuf>,
           std::unordered_set<std::unique_ptr<folly::IOBuf>>>>();
-  EXPECT_TRUE(all_types::contains<tag_s>);
+  testContains<all_types, tag_s, true>();
 
   EXPECT_EQ(toTType(BaseType::Set), TType::T_SET);
   EXPECT_EQ(toThriftBaseType(TType::T_SET), BaseType::Set);
@@ -456,16 +467,16 @@ TEST(TraitsTest, Set) {
 
 TEST(TraitsTest, Map) {
   using tag = type::map_c;
-  EXPECT_FALSE(integral_types::contains<tag>);
-  EXPECT_FALSE(floating_point_types::contains<tag>);
-  EXPECT_FALSE(numeric_types::contains<tag>);
-  EXPECT_FALSE(string_types::contains<tag>);
-  EXPECT_FALSE(primitive_types::contains<tag>);
-  EXPECT_FALSE(structured_types::contains<tag>);
-  EXPECT_FALSE(singular_types::contains<tag>);
-  EXPECT_TRUE(container_types::contains<tag>);
-  EXPECT_TRUE(composite_types::contains<tag>);
-  EXPECT_TRUE(all_types::contains<tag>);
+  testContains<integral_types, tag, false>();
+  testContains<floating_point_types, tag, false>();
+  testContains<numeric_types, tag, false>();
+  testContains<string_types, tag, false>();
+  testContains<primitive_types, tag, false>();
+  testContains<structured_types, tag, false>();
+  testContains<singular_types, tag, false>();
+  testContains<container_types, tag, true>();
+  testContains<composite_types, tag, true>();
+  testContains<all_types, tag, true>();
 
   EXPECT_EQ(base_type_v<tag>, BaseType::Map);
   EXPECT_EQ(getName<tag>(), "map");
@@ -473,17 +484,17 @@ TEST(TraitsTest, Map) {
   using tag_c = type::map<type::struct_c, type::struct_c>;
   EXPECT_EQ(base_type_v<tag_c>, BaseType::Map);
   EXPECT_EQ(getName<tag_c>(), "map<struct, struct>");
-  EXPECT_TRUE(all_types::contains<tag_c>);
+  testContains<all_types, tag_c, true>();
 
   using tag_kc = type::map<type::struct_c, type::byte_t>;
   EXPECT_EQ(base_type_v<tag_kc>, BaseType::Map);
   EXPECT_EQ(getName<tag_kc>(), "map<struct, byte>");
-  EXPECT_TRUE(all_types::contains<tag_kc>);
+  testContains<all_types, tag_kc, true>();
 
   using tag_vc = type::map<type::byte_t, type::struct_c>;
   EXPECT_EQ(base_type_v<tag_vc>, BaseType::Map);
   EXPECT_EQ(getName<tag_vc>(), "map<byte, struct>");
-  EXPECT_TRUE(all_types::contains<tag_vc>);
+  testContains<all_types, tag_vc, true>();
 
   using tag_t = type::map<type::i16_t, type::i32_t>;
   EXPECT_EQ(base_type_v<tag_t>, BaseType::Map);
@@ -493,7 +504,7 @@ TEST(TraitsTest, Map) {
   IsSameType<
       standard_types<tag_t>,
       detail::types<std::map<int16_t, int32_t>, std::map<int16_t, uint32_t>>>();
-  EXPECT_TRUE(all_types::contains<tag_t>);
+  testContains<all_types, tag_t, true>();
 
   using tag_s = type::map<type::i16_t, type::i32_t, std::unordered_map>;
   EXPECT_EQ(base_type_v<tag_s>, BaseType::Map);
@@ -505,7 +516,7 @@ TEST(TraitsTest, Map) {
       detail::types<
           std::unordered_map<int16_t, int32_t>,
           std::unordered_map<int16_t, uint32_t>>>();
-  EXPECT_TRUE(all_types::contains<tag_s>);
+  testContains<all_types, tag_s, true>();
 
   EXPECT_EQ(toTType(BaseType::Map), TType::T_MAP);
   EXPECT_EQ(toThriftBaseType(TType::T_MAP), BaseType::Map);
@@ -526,16 +537,16 @@ struct TestAdapter {
 TEST(TraitsTest, Adapted) {
   using tag = type::adapted<TestAdapter, type::i64_t>;
   // All traits that operate on the standard type, match the given tag.
-  EXPECT_TRUE(integral_types::contains<tag>);
-  EXPECT_FALSE(floating_point_types::contains<tag>);
-  EXPECT_TRUE(numeric_types::contains<tag>);
-  EXPECT_FALSE(string_types::contains<tag>);
-  EXPECT_TRUE(primitive_types::contains<tag>);
-  EXPECT_FALSE(structured_types::contains<tag>);
-  EXPECT_TRUE(singular_types::contains<tag>);
-  EXPECT_FALSE(container_types::contains<tag>);
-  EXPECT_FALSE(composite_types::contains<tag>);
-  EXPECT_TRUE(all_types::contains<tag>);
+  testContains<integral_types, tag, true>();
+  testContains<floating_point_types, tag, false>();
+  testContains<numeric_types, tag, true>();
+  testContains<string_types, tag, false>();
+  testContains<primitive_types, tag, true>();
+  testContains<structured_types, tag, false>();
+  testContains<singular_types, tag, true>();
+  testContains<container_types, tag, false>();
+  testContains<composite_types, tag, false>();
+  testContains<all_types, tag, true>();
   EXPECT_EQ(base_type_v<tag>, BaseType::I64);
   IsSameType<standard_type<tag>, int64_t>();
   IsSameType<standard_types<tag>, detail::types<int64_t, uint64_t>>();
@@ -549,7 +560,7 @@ TEST(TraitsTest, AdaptedListElems) {
   using tag_t = type::list<type::adapted<TestAdapter, type::i64_t>>;
   EXPECT_EQ(base_type_v<tag_t>, BaseType::List);
   IsSameType<standard_type<tag_t>, std::vector<int64_t>>();
-  EXPECT_TRUE(all_types::contains<tag_t>);
+  testContains<all_types, tag_t, true>();
 
   EXPECT_EQ(
       getName<tag_t>(),
@@ -561,7 +572,7 @@ TEST(TraitsTest, AdaptedSetEntries) {
   using tag_t = type::set<type::adapted<TestAdapter, type::i64_t>>;
   EXPECT_EQ(base_type_v<tag_t>, BaseType::Set);
   IsSameType<standard_type<tag_t>, std::set<int64_t>>();
-  EXPECT_TRUE(all_types::contains<tag_t>);
+  testContains<all_types, tag_t, true>();
 
   EXPECT_EQ(
       getName<tag_t>(),
@@ -587,7 +598,7 @@ TEST(TraitsTest, AdaptedMapEntries) {
       type::adapted<TestAdapter, type::bool_t>>;
   EXPECT_EQ(base_type_v<tag_t>, BaseType::Map);
   IsSameType<standard_type<tag_t>, std::map<int64_t, bool>>();
-  EXPECT_TRUE(all_types::contains<tag_t>);
+  testContains<all_types, tag_t, true>();
   EXPECT_EQ(toTType(BaseType::Set), TType::T_SET);
   EXPECT_EQ(toThriftBaseType(TType::T_SET), BaseType::Set);
 

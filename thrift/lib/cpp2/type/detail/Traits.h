@@ -21,11 +21,12 @@
 #include <vector>
 
 #include <fatal/type/find.h>
-#include <fatal/type/sort.h>
+#include <fatal/type/slice.h>
 #include <fatal/type/transform.h>
 #include <folly/String.h>
 #include <folly/Traits.h>
 #include <folly/io/IOBuf.h>
+#include <thrift/lib/cpp2/type/AnyType.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
 #include <thrift/lib/thrift/gen-cpp2/type_types.h>
 
@@ -62,14 +63,18 @@ using if_all_concrete = std::enable_if_t<(is_concrete_v<Tags> && ...)>;
 
 template <typename... Tags>
 struct types {
-  template <BaseType B>
-  static constexpr bool contains_bt =
-      !fatal::empty<fatal::filter<types, has_base_type<B>>>::value;
+  static constexpr bool contains(BaseType baseType) {
+    return (... || (traits<Tags>::kBaseType == baseType));
+  }
 
-  // TODO(afuller): Make work for list of arbitrary thrift types, instead
-  // of just the base thrift types.
   template <typename Tag>
-  static constexpr bool contains = contains_bt<traits<Tag>::kBaseType>;
+  static constexpr bool contains() {
+    return contains(traits<Tag>::kBaseType);
+  }
+
+  static bool contains(const AnyType& type) {
+    return contains(type.base_type());
+  }
 
   // The Ith type.
   template <size_t I>
@@ -81,7 +86,7 @@ struct types {
 };
 
 template <typename Ts, typename Tag, typename R = void>
-using if_contains = std::enable_if_t<Ts::template contains<Tag>, R>;
+using if_contains = std::enable_if_t<Ts::template contains<Tag>(), R>;
 
 template <typename Tag, typename A>
 using expand_types = fatal::transform<typename traits<Tag>::standard_types, A>;

@@ -50,14 +50,14 @@ template <typename Tag>
 struct IdenticalTo : EqualTo<Tag> {
   // Identical is the same as equal for integral and string types.
   static_assert(
-      type::integral_types::contains<Tag> ||
-      type::string_types::contains<Tag> ||
+      type::integral_types::contains<Tag>() ||
+      type::string_types::contains<Tag>() ||
       // TODO(afuller): Implement proper specializations for all container
       // types.
-      type::container_types::contains<Tag> ||
+      type::container_types::contains<Tag>() ||
       // TODO(afuller): Implement proper specializations for all structured
       // types.
-      type::structured_types::contains<Tag>);
+      type::structured_types::contains<Tag>());
 };
 
 template <typename F, typename I>
@@ -94,7 +94,7 @@ struct DefaultOf {
   static_assert(type::is_standard_type<Tag, T>::value);
   // C++'s intrinsic default for the underlying native type, is the intrisitic
   // default for for all unstructured types.
-  static_assert(!type::structured_types::contains<Tag>);
+  static_assert(!type::structured_types::contains<Tag>());
   constexpr static T get() { return {}; }
 };
 
@@ -141,7 +141,7 @@ struct Empty {
     //
     // TODO(afuller): Implement a specialization for structured types that
     // can serialize to an empty buffer.
-    // static_assert(!type::structured_types::contains<Tag>);
+    // static_assert(!type::structured_types::contains<Tag>());
     return EqualTo<Tag>()(value, DefaultOf<Tag, T>::get());
   }
 };
@@ -182,7 +182,7 @@ struct Clear {
     // default.
     //
     // TODO(afuller): Implement specializations for structured types.
-    static_assert(!type::structured_types::contains<Tag>);
+    static_assert(!type::structured_types::contains<Tag>());
     value = DefaultOf<Tag, T>::get();
   }
 };

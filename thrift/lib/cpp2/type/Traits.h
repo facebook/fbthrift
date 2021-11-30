@@ -88,6 +88,9 @@ using primitive_types = fatal::cat<numeric_types, string_types>;
 // All structured types.
 using structured_types = detail::types<struct_c, union_c, exception_c>;
 
+// Types with an IDL specified name
+using named_types = fatal::cat<structured_types, detail::types<enum_c>>;
+
 // Types that are a single value.
 using singular_types = fatal::cat<primitive_types, structured_types>;
 // Types that are containers of other types.

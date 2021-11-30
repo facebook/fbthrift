@@ -89,16 +89,16 @@ void addNumericValues(NamedValues<Tag>& values) {
 
 template <typename Tag, bool key>
 NamedValues<Tag> generateValues() {
-  static_assert(type::primitive_types::contains<Tag>, "");
+  static_assert(type::primitive_types::contains<Tag>(), "");
   using T = type::standard_type<Tag>;
   NamedValues<Tag> values;
 
   if constexpr (type::base_type_v<Tag> == type::BaseType::Bool) {
     values.emplace_back(true, "true");
     values.emplace_back(false, "false");
-  } else if constexpr (type::string_types::contains<Tag>) {
+  } else if constexpr (type::string_types::contains<Tag>()) {
     addStringValues<Tag>(values);
-  } else if constexpr (type::numeric_types::contains<Tag>) {
+  } else if constexpr (type::numeric_types::contains<Tag>()) {
     addNumericValues<Tag, key>(values);
   } else {
     values.emplace_back(T(), "default");
