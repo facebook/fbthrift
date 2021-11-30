@@ -20,6 +20,7 @@
 
 #include <thrift/lib/cpp2/type/ThriftType.h>
 #include <thrift/lib/cpp2/type/detail/AnyType.h>
+#include <thrift/lib/thrift/gen-cpp2/type_types.h>
 
 namespace apache::thrift::type {
 
@@ -84,6 +85,10 @@ class AnyType {
   template <typename Tag, typename... Args>
   static AnyType create(Args&&... args) {
     return {Tag{}, std::forward<Args>(args)...};
+  }
+
+  constexpr BaseType base_type() const noexcept {
+    return static_cast<BaseType>(type_.index());
   }
 
   AnyType& operator=(const AnyType&) noexcept = default;

@@ -22,54 +22,66 @@
 #include <vector>
 
 #include <folly/portability/GTest.h>
+#include <thrift/lib/cpp2/type/Traits.h>
+#include <thrift/lib/thrift/gen-cpp2/type_types.h>
 
 namespace apache::thrift::type {
 namespace {
 
-std::vector<AnyType> getUniqueNonContainerTypes() {
+struct AnyTypeTestCase {
+  AnyType type;
+  BaseType expected_type;
+};
+
+template <typename Tag, typename... Args>
+AnyTypeTestCase test(Args&&... args) {
+  return {AnyType::create<Tag>(std::forward<Args>(args)...), base_type_v<Tag>};
+}
+
+std::vector<AnyTypeTestCase> getUniqueNonContainerTypes() {
   return {
-      {void_t{}},
-      {bool_t{}},
-      {byte_t{}},
-      {i16_t{}},
-      {i32_t{}},
-      {i64_t{}},
-      {float_t{}},
-      {double_t{}},
-      {string_t{}},
-      {binary_t{}},
-      {struct_c{}, "MyStruct"},
-      {struct_c{}, "MyOtherStruct"},
-      {struct_c{}, "MyNamed"},
-      {union_c{}, "MyUnion"},
-      {union_c{}, "MyOtherUnion"},
-      {union_c{}, "MyNamed"},
-      {exception_c{}, "MyException"},
-      {exception_c{}, "MyOtherExcpetion"},
-      {exception_c{}, "MyNamed"},
-      {enum_c{}, "MyEnum"},
-      {enum_c{}, "MyOtherEnum"},
-      {enum_c{}, "MyNamed"},
+      test<void_t>(),
+      test<bool_t>(),
+      test<byte_t>(),
+      test<i16_t>(),
+      test<i32_t>(),
+      test<i64_t>(),
+      test<float_t>(),
+      test<double_t>(),
+      test<string_t>(),
+      test<binary_t>(),
+      test<struct_c>("MyStruct"),
+      test<struct_c>("MyOtherStruct"),
+      test<struct_c>("MyNamed"),
+      test<union_c>("MyUnion"),
+      test<union_c>("MyOtherUnion"),
+      test<union_c>("MyNamed"),
+      test<exception_c>("MyException"),
+      test<exception_c>("MyOtherExcpetion"),
+      test<exception_c>("MyNamed"),
+      test<enum_c>("MyEnum"),
+      test<enum_c>("MyOtherEnum"),
+      test<enum_c>("MyNamed"),
   };
 }
 
-std::vector<AnyType> getUniqueContainerTypesOf(
-    const std::vector<AnyType>& keyTypes,
-    const std::vector<AnyType>& valueTypes) {
-  std::vector<AnyType> result;
-  for (const auto& valType : valueTypes) {
-    result.emplace_back(list_c{}, valType);
+std::vector<AnyTypeTestCase> getUniqueContainerTypesOf(
+    const std::vector<AnyTypeTestCase>& keys,
+    const std::vector<AnyTypeTestCase>& values) {
+  std::vector<AnyTypeTestCase> result;
+  for (const auto& val : values) {
+    result.emplace_back(test<list_c>(val.type));
   }
-  for (const auto& keyType : keyTypes) {
-    result.emplace_back(set_c{}, keyType);
-    for (const auto& valType : valueTypes) {
-      result.emplace_back(map_c{}, keyType, valType);
+  for (const auto& key : keys) {
+    result.emplace_back(test<set_c>(key.type));
+    for (const auto& val : values) {
+      result.emplace_back(test<map_c>(key.type, val.type));
     }
   }
   return result;
 }
 
-std::vector<AnyType> getUniqueTypes() {
+std::vector<AnyTypeTestCase> getUniqueTypes() {
   auto unique = getUniqueNonContainerTypes();
   auto uniqueContainer = getUniqueContainerTypesOf(unique, unique);
   unique.insert(unique.end(), uniqueContainer.begin(), uniqueContainer.end());
@@ -81,9 +93,16 @@ TEST(AnyTypeTest, Equality) {
   EXPECT_FALSE(unique.empty());
   for (size_t i = 0; i < unique.size(); ++i) {
     for (size_t j = 0; j < unique.size(); ++j) {
-      EXPECT_EQ(unique[i] == unique[j], i == j);
-      EXPECT_EQ(unique[i] != unique[j], i != j);
+      EXPECT_EQ(unique[i].type == unique[j].type, i == j);
+      EXPECT_EQ(unique[i].type != unique[j].type, i != j);
     }
+  }
+}
+
+TEST(AnyTypeTest, BaseType) {
+  auto unique = getUniqueTypes();
+  for (const auto& test : unique) {
+    EXPECT_EQ(test.type.base_type(), test.expected_type);
   }
 }
 

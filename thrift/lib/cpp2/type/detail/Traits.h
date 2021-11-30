@@ -116,6 +116,9 @@ struct concrete_type : Base {
 template <BaseType B, typename... StandardTs>
 using primitive_type = concrete_type<base_type<B>, types<StandardTs...>>;
 
+template <>
+struct traits<void_t> : primitive_type<BaseType::Void, void> {};
+
 // Type traits for all primitive types.
 template <>
 struct traits<bool_t> : primitive_type<BaseType::Bool, bool> {};
