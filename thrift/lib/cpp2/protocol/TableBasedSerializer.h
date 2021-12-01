@@ -226,7 +226,7 @@ struct MapFieldExt {
 
 template <typename ThriftUnion>
 void clearUnion(void* object) {
-  reinterpret_cast<ThriftUnion*>(object)->__clear();
+  apache::thrift::clear(*reinterpret_cast<ThriftUnion*>(object));
 }
 
 union ThriftValue {

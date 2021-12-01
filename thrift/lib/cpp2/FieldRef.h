@@ -36,6 +36,7 @@
 #include <folly/Portability.h>
 #include <folly/Traits.h>
 #include <thrift/lib/cpp2/BoxedValuePtr.h>
+#include <thrift/lib/cpp2/ThriftOp.h>
 
 namespace apache {
 namespace thrift {
@@ -1220,7 +1221,7 @@ struct union_field_ref_owner_vtable {
 struct union_field_ref_owner_vtable_impl {
   template <typename T>
   static void reset(void* obj) {
-    static_cast<T*>(obj)->__clear();
+    apache::thrift::clear(*static_cast<T*>(obj));
   }
 };
 

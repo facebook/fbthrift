@@ -71,7 +71,7 @@ class IndirectionWrapper {
     return lhs.__fbthrift_data() < rhs.__fbthrift_data();
   }
 
-  void __clear() { __fbthrift_data().__clear(); }
+  void __clear() { apache::thrift::clear(__fbthrift_data()); }
 
   T& __fbthrift_data() & { return *raw_; }
 

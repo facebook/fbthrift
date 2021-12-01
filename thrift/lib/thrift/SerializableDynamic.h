@@ -234,7 +234,7 @@ class SerializableDynamic {
 template <>
 class Cpp2Ops<SerializableDynamic> {
  public:
-  static void clear(SerializableDynamic* obj) { obj->__clear(); }
+  static void clear(SerializableDynamic* obj) { apache::thrift::clear(*obj); }
 
   static constexpr protocol::TType thriftType() { return protocol::T_STRUCT; }
 
@@ -314,7 +314,7 @@ class Cpp2Ops<SerializableDynamic> {
     iprot->readStructBegin(fname);
     iprot->readFieldBegin(fname, ftype, fid);
     if (ftype == protocol::T_STOP) {
-      obj->__clear();
+      apache::thrift::clear(*obj);
     } else {
       switch (fid) {
         case 1: {
