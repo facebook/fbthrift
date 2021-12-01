@@ -106,7 +106,12 @@ TEST(AnyTypeTest, BaseType) {
   }
 }
 
-struct MyStruct {};
+struct MyStruct {
+  constexpr static auto __fbthrift_cpp2_gen_thrift_uri() {
+    return "domain.com/my/package/MyStruct";
+  }
+};
+
 struct MyAdapter {};
 
 TEST(AnyTypeTest, Create) {
@@ -129,11 +134,15 @@ TEST(AnyTypeTest, Create) {
       (AnyType::create<map<set<string_t>, list<binary_t>>>()),
       AnyType::create<map_c>(
           AnyType::create<set<string_t>>(), AnyType::create<list<binary_t>>()));
-
-  // TODO(afuller): support extracting names from concrete type tags for named
-  // types.
-  // Uncomment to get expected compile time error.
-  // AnyType::create<struct_t<MyStruct>>();
+  EXPECT_EQ(
+      AnyType::create<struct_t<MyStruct>>(),
+      AnyType::create<struct_c>("domain.com/my/package/MyStruct"));
+  EXPECT_EQ(
+      AnyType::create<union_t<MyStruct>>(),
+      AnyType::create<union_c>("domain.com/my/package/MyStruct"));
+  EXPECT_EQ(
+      AnyType::create<exception_t<MyStruct>>(),
+      AnyType::create<exception_c>("domain.com/my/package/MyStruct"));
 }
 
 TEST(AnyTypeTest, Adapted) {

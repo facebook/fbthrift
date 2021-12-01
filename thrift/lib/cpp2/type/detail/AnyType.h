@@ -22,6 +22,7 @@
 #include <type_traits>
 #include <variant>
 
+#include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
 
 namespace apache::thrift::type {
@@ -113,6 +114,37 @@ template <typename Tag>
 struct AnyTypeHelper {
   static AnyTypeHolder make_type() { return ConcreteType<Tag>{}; }
 };
+
+// Named structured types.
+//
+// All 'named' types (a.k.a. IDL defined types) have a name by which they can be
+// referenced in the context of a specific Thrift file. However, that name
+// is not well defined outside the context of that file. Thus Thrift
+// also supports 'universal' names. For example, one way of specifying this
+// universal name is via a 'thrift.uri' annotation on the type itself. This
+// helper only supports types that have a universal name. All other named types
+// will produce a compile time error indicating the universal name for the type
+// could not be resolved.
+//
+// Note that struct_c can be used to specify the universal name manually, and
+// the UniversalName.h logic will be used to validate names, but only when used
+// at runtime.
+// TODO(afuller): Validate names on construction of AnyType, when passed in
+// manually.
+template <typename CTag, typename T>
+struct NamedTypeHelper {
+  static AnyTypeHolder make_type() {
+    using ::apache::thrift::detail::st::struct_private_access;
+    return NamedType<CTag>{
+        struct_private_access::__fbthrift_cpp2_gen_thrift_uri<T>()};
+  }
+};
+template <typename T>
+struct AnyTypeHelper<struct_t<T>> : NamedTypeHelper<struct_c, T> {};
+template <typename T>
+struct AnyTypeHelper<union_t<T>> : NamedTypeHelper<union_c, T> {};
+template <typename T>
+struct AnyTypeHelper<exception_t<T>> : NamedTypeHelper<exception_c, T> {};
 
 // Skip through adapters.
 template <typename Adapter, typename Tag>
