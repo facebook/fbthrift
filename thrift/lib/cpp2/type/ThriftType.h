@@ -106,6 +106,12 @@ template <typename Tag>
 struct is_concrete : std::false_type {};
 template <typename Tag>
 constexpr bool is_concrete_v = is_concrete<Tag>::value;
+namespace bound {
+struct is_concrete {
+  template <typename Tag>
+  using apply = type::is_concrete<Tag>;
+};
+} // namespace bound
 
 // If a given Thrift type tag is wellformed.
 //
@@ -120,6 +126,20 @@ template <typename Tag>
 struct is_thrift_type_tag : is_concrete<Tag> {};
 template <typename Tag>
 constexpr bool is_thrift_type_tag_v = is_thrift_type_tag<Tag>::value;
+namespace bound {
+struct is_thrift_type_tag {
+  template <typename Tag>
+  using apply = type::is_thrift_type_tag<Tag>;
+};
+} // namespace bound
+
+// Helpers to enable/disable declarations based on if a type tag represents
+// a concrete type or not.
+template <typename Tag, typename R = void, typename...>
+using if_concrete = std::enable_if_t<is_concrete_v<Tag>, R>;
+template <typename Tag, typename R = void, typename...>
+using if_not_concrete =
+    std::enable_if_t<is_thrift_type_tag_v<Tag> && !is_concrete_v<Tag>, R>;
 
 ////
 // Implemnation details

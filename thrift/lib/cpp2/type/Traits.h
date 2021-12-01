@@ -30,6 +30,7 @@
 #include <folly/Range.h>
 #include <folly/io/IOBuf.h>
 #include <thrift/lib/cpp/protocol/TType.h>
+#include <thrift/lib/thrift/gen-cpp2/type_types.h>
 
 namespace apache::thrift::type {
 
@@ -64,16 +65,6 @@ using native_type = typename detail::traits<Tag>::native_type;
 // If T is a standard type for the given ThriftType.
 template <typename Tag, typename T>
 struct is_standard_type : fatal::contains<standard_types<Tag>, T> {};
-
-template <typename Tag, typename R = void>
-using if_concrete = std::enable_if<is_concrete_v<Tag>, R>;
-
-namespace bound {
-struct is_concrete {
-  template <typename Tag>
-  using apply = type::is_concrete<Tag>;
-};
-} // namespace bound
 
 // Useful groupings of primitive types.
 using integral_types =
