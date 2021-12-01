@@ -28,7 +28,7 @@
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 
-#include <thrift/lib/py3lite/client/OmniClient.h>
+#include <thrift/lib/py3lite/client/OmniClient.h> // @manual=//thrift/lib/py3lite/client:omni_client__cython-lib
 #include <thrift/lib/py3lite/client/test/gen-cpp2/TestService.h>
 #include <thrift/lib/py3lite/client/test/gen-cpp2/test_types.h>
 
