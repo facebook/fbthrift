@@ -71,8 +71,8 @@ TEST(Recursive, list) {
   serializer.deserialize(bufq.front(), result);
   EXPECT_TRUE(l.next_ref() != nullptr);
   EXPECT_TRUE(result.next_ref() != nullptr);
-  EXPECT_TRUE(l.next_ref()->next == nullptr);
-  EXPECT_TRUE(result.next_ref()->next == nullptr);
+  EXPECT_TRUE(l.next_ref()->next_ref() == nullptr);
+  EXPECT_TRUE(result.next_ref()->next_ref() == nullptr);
 }
 
 TEST(Recursive, CoRec) {
@@ -87,7 +87,7 @@ TEST(Recursive, CoRec) {
   CoRec result;
   serializer.deserialize(bufq.front(), result);
   EXPECT_TRUE(result.other_ref() != nullptr);
-  EXPECT_TRUE(result.other_ref()->other_ref()->other == nullptr);
+  EXPECT_TRUE(result.other_ref()->other_ref()->other_ref() == nullptr);
 }
 
 TEST(Recursive, Roundtrip) {
@@ -116,7 +116,7 @@ TEST(Recursive, CoRecJson) {
   RecList result;
   serializer.deserialize(bufq.front(), result);
   EXPECT_TRUE(c.other_ref() != nullptr);
-  EXPECT_TRUE(c.other_ref()->other_ref()->other == nullptr);
+  EXPECT_TRUE(c.other_ref()->other_ref()->other_ref() == nullptr);
 }
 
 TEST(Recursive, StructUsingAnnotation) {

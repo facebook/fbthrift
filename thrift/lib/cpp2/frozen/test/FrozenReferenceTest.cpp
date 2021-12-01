@@ -101,7 +101,7 @@ TEST(Frozen, recursive_node_ref) {
   root.left_ref() = makeNode(3, s1);
   root.right_ref() = makeNode(5, s2);
   *root.content_ref() = s2;
-  EXPECT_EQ(root.left_ref()->left, nullptr);
+  EXPECT_EQ(root.left_ref()->left_ref(), nullptr);
 
   auto f = freeze(root);
   EXPECT_EQ(f.id(), 8);
