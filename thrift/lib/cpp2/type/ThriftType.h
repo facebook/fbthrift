@@ -51,37 +51,37 @@ struct binary_t {};
 struct enum_c {};
 // A concrete enum type.
 template <typename T>
-struct enum_t {};
+struct enum_t : enum_c {};
 
 // The struct class of types.
 struct struct_c {};
 // A concrete struct type.
 template <typename T>
-struct struct_t {};
+struct struct_t : struct_c {};
 
 // The union class of types.
 struct union_c {};
 template <typename T>
-struct union_t {};
+struct union_t : union_c {};
 
 // The exception class of types.
 struct exception_c {};
 template <typename T>
-struct exception_t {};
+struct exception_t : exception_c {};
 
 // The list class of types.
 struct list_c {};
 template <
     typename ValTag,
     template <typename...> typename ListT = detail::DefaultT>
-struct list {};
+struct list : list_c {};
 
 // The set class of types.
 struct set_c {};
 template <
     typename KeyTag,
     template <typename...> typename SetT = detail::DefaultT>
-struct set {};
+struct set : set_c {};
 
 // The map class of types.
 struct map_c {};
@@ -89,11 +89,11 @@ template <
     typename KeyTag,
     typename ValTag,
     template <typename...> typename MapT = detail::DefaultT>
-struct map {};
+struct map : map_c {};
 
 // An adapted type.
 template <typename Adapter, typename Tag>
-struct adapted {};
+struct adapted : Tag {};
 
 // If a given type tag refers to concrete type and not a class of types.
 //
