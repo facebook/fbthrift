@@ -28,14 +28,19 @@ struct IntValue {
 
   bool empty() const { return value == 0; }
   void clear() { value = 0; }
+  bool identical(IntValue other) const { return value == other.value; }
 };
 
 TEST(AnyValueTest, AnyValueHolder) {
   detail::AnyValueHolder data = IntValue{1};
   EXPECT_FALSE(data.empty());
+  EXPECT_TRUE(data.identical(IntValue{1}));
+
   data.clear();
   EXPECT_TRUE(data.empty());
   EXPECT_EQ(folly::poly_cast<IntValue&>(data).value, 0);
+  EXPECT_TRUE(data.identical(IntValue{0}));
+  EXPECT_FALSE(data.identical(IntValue{1}));
 }
 
 TEST(AnyValueTest, Void) {
@@ -69,6 +74,17 @@ TEST(AnyValueTest, List) {
   value.clear();
   EXPECT_TRUE(value.empty());
   EXPECT_TRUE(value.as<list<string_t>>().empty());
+}
+
+TEST(AnyValueTest, Identical) {
+  AnyValue value;
+  value = AnyValue::create<float_t>(1.0f);
+  EXPECT_FALSE(value.empty());
+  value.clear();
+  EXPECT_TRUE(value.empty());
+  EXPECT_TRUE(value.identical(AnyValue::create<float_t>(0.0f)));
+  EXPECT_FALSE(value.identical(AnyValue::create<float_t>(-0.0f)));
+  EXPECT_FALSE(value.identical(AnyValue::create<double_t>(0.0)));
 }
 
 } // namespace

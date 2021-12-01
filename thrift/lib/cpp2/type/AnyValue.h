@@ -48,6 +48,11 @@ class AnyValue {
   bool empty() const noexcept { return value_.empty(); }
   void clear() noexcept { value_.clear(); }
 
+  // Throws folly::BadPolyCast if the underlying types are incompatible.
+  bool identical(const AnyValue& other) const {
+    return type_ == other.type_ && value_.identical(other.value_);
+  }
+
  private:
   AnyValue(AnyType type, detail::AnyValueHolder value)
       : type_(std::move(type)), value_(std::move(value)) {}

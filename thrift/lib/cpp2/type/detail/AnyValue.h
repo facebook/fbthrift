@@ -29,11 +29,15 @@ struct AnyValueData {
 
   constexpr bool empty() const noexcept { return op::isEmpty<Tag>(data); }
   constexpr void clear() noexcept { op::clear<Tag>(data); }
+  constexpr bool identical(const AnyValueData& other) const noexcept {
+    return op::identical<Tag>(data, other.data);
+  }
 };
 
 struct VoidValueData {
   constexpr bool empty() const noexcept { return true; }
   constexpr void clear() noexcept {}
+  constexpr bool identical(VoidValueData) const { return true; }
 };
 
 struct IAnyValueData {
@@ -42,10 +46,13 @@ struct IAnyValueData {
   struct Interface : Base {
     bool empty() const { return folly::poly_call<0>(*this); }
     void clear() { folly::poly_call<1>(*this); }
+    bool identical(const folly::PolySelf<Base>& other) const {
+      return folly::poly_call<2>(*this, other);
+    }
   };
 
   template <class T>
-  using Members = folly::PolyMembers<&T::empty, &T::clear>;
+  using Members = folly::PolyMembers<&T::empty, &T::clear, &T::identical>;
 };
 
 using AnyValueHolder = folly::Poly<IAnyValueData>;
