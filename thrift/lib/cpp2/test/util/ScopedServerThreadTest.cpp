@@ -34,9 +34,11 @@ using namespace google;
 using namespace std;
 using namespace testing;
 
-class DummyServiceHandler : virtual public facebook::fb303::FacebookBase2 {
+class DummyServiceHandler
+    : virtual public ::facebook::fb303::FacebookBase2DeprecationMigration {
  public:
-  DummyServiceHandler() : FacebookBase2("dummy") {}
+  DummyServiceHandler()
+      : ::facebook::fb303::FacebookBase2DeprecationMigration("dummy") {}
   cpp2::fb_status getStatus() override { return cpp2::fb_status::ALIVE; }
 };
 

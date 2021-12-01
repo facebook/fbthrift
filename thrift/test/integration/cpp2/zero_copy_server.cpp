@@ -29,10 +29,12 @@ DEFINE_bool(debug_logs, false, "Debug logs");
 using namespace thrift::zerocopy::cpp2;
 
 namespace {
-class ZeroCopyServiceImpl : public ZeroCopyServiceSvIf,
-                            public facebook::fb303::FacebookBase2 {
+class ZeroCopyServiceImpl
+    : public ZeroCopyServiceSvIf,
+      public ::facebook::fb303::FacebookBase2DeprecationMigration {
  public:
-  ZeroCopyServiceImpl() : facebook::fb303::FacebookBase2("Zerocopy") {}
+  ZeroCopyServiceImpl()
+      : ::facebook::fb303::FacebookBase2DeprecationMigration("Zerocopy") {}
   ~ZeroCopyServiceImpl() override = default;
 
   void echo(IOBuf& ret, std::unique_ptr<IOBuf> data) override {
