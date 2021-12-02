@@ -511,6 +511,51 @@ void validate_hack_adapter_annotation(
     });
   }
 }
+
+void validate_box_annotation(diagnostic_context& ctx, const t_field& node) {
+  if (node.has_annotation("cpp.box")) {
+    ctx.warning([&](auto& o) {
+      o << "Cpp.box is deprecated. Please use thrift.box annotation instead in `"
+        << node.name() << "`.";
+    });
+  }
+}
+void validate_box_annotation_in_struct(
+    diagnostic_context& ctx, const t_struct& node) {
+  if (node.is_struct()) {
+    for (const t_field& f : node.fields()) {
+      validate_box_annotation(ctx, f);
+    }
+  }
+}
+
+void validate_ref_unique_and_box_annotation(
+    diagnostic_context& ctx, const t_field& node) {
+  if (cpp2::is_unique_ref(&node)) {
+    if (node.has_annotation({"cpp.ref", "cpp2.ref"})) {
+      ctx.warning([&](auto& o) {
+        o << "cpp.ref, cpp2.ref "
+          << "are deprecated. Please use thrift.box annotation instead in `"
+          << node.name() << "`.";
+      });
+    }
+    if (node.find_annotation_or_null({"cpp.ref_type", "cpp2.ref_type"})) {
+      ctx.warning([&](auto& o) {
+        o << "cpp.ref_type = `unique`, cpp2.ref_type = `unique` "
+          << "are deprecated. Please use thrift.box annotation instead in `"
+          << node.name() << "`.";
+      });
+    }
+    if (node.find_structured_annotation_or_null(
+            "facebook.com/thrift/annotation/cpp/Ref")) {
+      ctx.warning([&](auto& o) {
+        o << "@cpp.Ref{type = cpp.RefType.Unique} "
+          << "is deprecated. Please use thrift.box annotation instead in `"
+          << node.name() << "`.";
+      });
+    }
+  }
+}
 } // namespace
 
 ast_validator standard_validator() {
@@ -523,6 +568,8 @@ ast_validator standard_validator() {
   validator.add_structured_definition_visitor(&validate_field_names_uniqueness);
   validator.add_structured_definition_visitor(
       &validate_compatibility_with_lazy_field);
+  validator.add_structured_definition_visitor(
+      &validate_box_annotation_in_struct);
   validator.add_union_visitor(&validate_union_field_attributes);
   validator.add_field_visitor(&validate_field_id);
   validator.add_field_visitor(&validate_mixin_field_attributes);
@@ -532,6 +579,7 @@ ast_validator standard_validator() {
   validator.add_field_visitor(&validate_ref_annotation);
   validator.add_field_visitor(&validate_adapter_annotation);
   validator.add_field_visitor(&validate_hack_adapter_annotation);
+  validator.add_field_visitor(&validate_ref_unique_and_box_annotation);
 
   validator.add_enum_visitor(&validate_enum_value_name_uniqueness);
   validator.add_enum_visitor(&validate_enum_value_uniqueness);
