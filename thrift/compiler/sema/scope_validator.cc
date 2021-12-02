@@ -53,8 +53,14 @@ const std::unordered_map<std::string, std::type_index>& uri_map() {
 struct allowed_scopes {
   std::unordered_set<std::type_index> types;
 
-  explicit allowed_scopes(const t_const& annot) {
+  explicit allowed_scopes(node_metadata_cache& cache, const t_const& annot) {
     for (const auto* meta_annot : annot.get_type()->structured_annotations()) {
+      const t_type& meta_annot_type = *meta_annot->get_type();
+      if (is_transitive_annotation(meta_annot_type)) {
+        const auto& transitive_scopes =
+            cache.get<allowed_scopes>(*meta_annot).types;
+        types.insert(transitive_scopes.begin(), transitive_scopes.end());
+      }
       const auto& uri = meta_annot->get_type()->get_annotation("thrift.uri");
       auto itr = uri_map().find(uri);
       if (itr != uri_map().end()) {
@@ -81,8 +87,8 @@ void validate_annotation_scopes(diagnostic_context& ctx, const t_named& node) {
   }
 
   for (const t_const* annot : node.structured_annotations()) {
-    // Ignore scoping annotations themselves.
     const t_type* annot_type = &*annot->type();
+    // Ignore scoping annotations themselves.
     if (uri_map().find(annot_type->get_annotation("thrift.uri")) !=
         uri_map().end()) {
       continue;

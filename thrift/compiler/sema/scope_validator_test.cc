@@ -61,6 +61,8 @@ class ScopeValidatorTest : public ::testing::Test {
         "thrift.uri", "facebook.com/thrift/annotation/EnumValue");
     scopeConst.set_annotation(
         "thrift.uri", "facebook.com/thrift/annotation/Const");
+    metaTransitive.set_annotation(
+        "thrift.uri", "facebook.com/thrift/annotation/Transitive");
   }
 
   void SetUp() override {
@@ -75,6 +77,43 @@ class ScopeValidatorTest : public ::testing::Test {
     annotEnum.add_structured_annotation(inst(&scopeEnum));
     annotEnumValue.add_structured_annotation(inst(&scopeEnumValue));
     annotConst.add_structured_annotation(inst(&scopeConst));
+
+    // Equivalent to the following:
+    // @scope.Struct
+    // @scope.Union
+    // @scope.Exception
+    // @meta.Transitive
+    // struct MyStructuredAnnot{}
+
+    // @scope.Struct
+    // @scope.Union
+    // @scope.Exception
+    // struct MyNonTransitiveStructuredAnnot{}
+
+    // @MyStructuredAnnot
+    // @meta.Transitive
+    // struct MyStructuredAnnot{}
+
+    // @MyNonTransitiveStructuredAnnot
+    // struct MyNonTransitiveStructuredAnnot{}
+
+    // @MyStructuredAnnot
+    // struct MyNestedStructuredAnnot{}
+
+    metaTransitive.add_structured_annotation(inst(&scopeStruct));
+    annotStructured.add_structured_annotation(inst(&scopeStruct));
+    annotStructured.add_structured_annotation(inst(&scopeUnion));
+    annotStructured.add_structured_annotation(inst(&scopeException));
+    annotStructured.add_structured_annotation(inst(&metaTransitive));
+    annotNonTransitiveStructured.add_structured_annotation(inst(&scopeStruct));
+    annotNonTransitiveStructured.add_structured_annotation(inst(&scopeUnion));
+    annotNonTransitiveStructured.add_structured_annotation(
+        inst(&scopeException));
+    annotMyStructured.add_structured_annotation(inst(&annotStructured));
+    annotMyStructured.add_structured_annotation(inst(&metaTransitive));
+    annotMyNonTransitiveStructured.add_structured_annotation(
+        inst(&annotNonTransitiveStructured));
+    annotMyNestedStructured.add_structured_annotation(inst(&annotMyStructured));
 
     all_annots.emplace_back(&annotStruct);
     all_annots.emplace_back(&annotUnion);
@@ -108,6 +147,7 @@ class ScopeValidatorTest : public ::testing::Test {
   t_struct scopeEnum{nullptr, "Enum"};
   t_struct scopeEnumValue{nullptr, "EnumValue"};
   t_struct scopeConst{nullptr, "Const"};
+  t_struct metaTransitive{nullptr, "Transitive"};
 
   t_struct annotStruct{nullptr, "StructAnnot"};
   t_struct annotUnion{nullptr, "UnionAnnot"};
@@ -121,6 +161,13 @@ class ScopeValidatorTest : public ::testing::Test {
   t_struct annotEnumValue{nullptr, "EnumValueAnnot"};
   t_struct annotConst{nullptr, "ConstAnnot"};
   t_struct annotUnscoped{nullptr, "UnscopedAnnot"};
+  t_struct annotStructured{nullptr, "StructuredAnnot"};
+  t_struct annotMyStructured{nullptr, "MyStructuredAnnot"};
+  t_struct annotNonTransitiveStructured{
+      nullptr, "NonTransitiveStructuredAnnot"};
+  t_struct annotMyNonTransitiveStructured{
+      nullptr, "MyNonTransitiveStructuredAnnot"};
+  t_struct annotMyNestedStructured{nullptr, "MyNestedStructuredAnnot"};
   std::vector<const t_struct*> all_annots;
 
   t_program program{"path/to/file.thrift"};
@@ -173,7 +220,7 @@ TEST_F(ScopeValidatorTest, Union) {
   runTest(t_union{&program, "MyUnion"}, "Union");
 }
 
-TEST_F(ScopeValidatorTest, Excpetion) {
+TEST_F(ScopeValidatorTest, Exception) {
   runTest(t_exception{&program, "MyException"}, "Exception");
 }
 
@@ -214,5 +261,53 @@ TEST_F(ScopeValidatorTest, Const) {
   runTest(t_const{&program, t_base_type::t_i32(), "MyConst", nullptr}, "Const");
 }
 
+TEST_F(ScopeValidatorTest, StructWithTransitiveStructuredScope) {
+  t_struct strct{&program, "MyStruct"};
+  strct.add_structured_annotation(inst(&annotMyStructured));
+  strct.add_structured_annotation(inst(&annotMyNestedStructured));
+  auto result = validate(strct);
+  EXPECT_TRUE(result.diagnostics().empty());
+}
+
+TEST_F(ScopeValidatorTest, FieldWithTransitiveStructuredScope) {
+  t_field field{&t_base_type::t_i32(), "MyField"};
+  field.add_structured_annotation(inst(&annotMyStructured));
+  field.add_structured_annotation(inst(&annotMyNestedStructured));
+  auto result = validate(field);
+  std::vector<diagnostic> expected{
+      {diagnostic_level::failure,
+       "`MyStructuredAnnot` cannot annotate `" + field.name() + "`",
+       "path/to/file.thrift",
+       -1},
+      {diagnostic_level::failure,
+       "`MyNestedStructuredAnnot` cannot annotate `" + field.name() + "`",
+       "path/to/file.thrift",
+       -1}};
+  EXPECT_THAT(result.diagnostics(), ::testing::ContainerEq(expected));
+}
+
+TEST_F(ScopeValidatorTest, StructWithNonTransitiveStructuredScope) {
+  t_struct strct{&program, "MyStruct"};
+  strct.add_structured_annotation(inst(&annotMyNonTransitiveStructured));
+  auto result = validate(strct);
+  std::vector<diagnostic> expected{
+      {diagnostic_level::warning,
+       "Using `MyNonTransitiveStructuredAnnot` as an annotation, even though it has not been enabled for any annotation scope.",
+       "path/to/file.thrift",
+       -1}};
+  EXPECT_THAT(result.diagnostics(), ::testing::ContainerEq(expected));
+}
+
+TEST_F(ScopeValidatorTest, FieldWithNonTransitiveStructuredScope) {
+  t_field field{&t_base_type::t_i32(), "MyField"};
+  field.add_structured_annotation(inst(&annotMyNonTransitiveStructured));
+  auto result = validate(field);
+  std::vector<diagnostic> expected{
+      {diagnostic_level::warning,
+       "Using `MyNonTransitiveStructuredAnnot` as an annotation, even though it has not been enabled for any annotation scope.",
+       "path/to/file.thrift",
+       -1}};
+  EXPECT_THAT(result.diagnostics(), ::testing::ContainerEq(expected));
+}
 } // namespace
 } // namespace apache::thrift::compiler
