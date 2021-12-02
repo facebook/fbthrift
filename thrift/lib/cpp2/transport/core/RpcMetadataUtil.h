@@ -19,6 +19,7 @@
 #include <chrono>
 
 #include <folly/Optional.h>
+#include <folly/dynamic.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/util/ManagedStringView.h>
@@ -37,7 +38,10 @@ inline constexpr std::string_view kHeaderEx = "ex";
 inline constexpr std::string_view kHeaderExMeta = "exm";
 
 THRIFT_PLUGGABLE_FUNC_DECLARE(
-    std::unique_ptr<folly::IOBuf>, makeFrameworkMetadata, const RpcOptions&);
+    std::unique_ptr<folly::IOBuf>,
+    makeFrameworkMetadata,
+    const RpcOptions&,
+    folly::dynamic& logMessages);
 
 RequestRpcMetadata makeRequestRpcMetadata(
     const RpcOptions& rpcOptions,

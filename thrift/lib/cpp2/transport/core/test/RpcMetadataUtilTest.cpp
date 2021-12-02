@@ -27,7 +27,8 @@ namespace apache::thrift::detail {
 THRIFT_PLUGGABLE_FUNC_SET(
     std::unique_ptr<folly::IOBuf>,
     makeFrameworkMetadata,
-    const RpcOptions& rpcOptions) {
+    const RpcOptions& rpcOptions,
+    folly::dynamic&) {
   EXPECT_EQ(rpcOptions.getShardId(), "123");
   return folly::IOBuf::copyBuffer(std::string("linked"));
 }

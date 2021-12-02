@@ -27,12 +27,16 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/RequestCallback.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/server/LoggingEvent.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache::thrift::detail {
 
 THRIFT_PLUGGABLE_FUNC_REGISTER(
-    std::unique_ptr<folly::IOBuf>, makeFrameworkMetadata, const RpcOptions&) {
+    std::unique_ptr<folly::IOBuf>,
+    makeFrameworkMetadata,
+    const RpcOptions&,
+    folly::dynamic&) {
   return nullptr;
 }
 
@@ -94,9 +98,15 @@ RequestRpcMetadata makeRequestRpcMetadata(
     metadata.otherMetadata_ref() = std::move(writeHeaders);
   }
 
-  auto frameworkMetadata = makeFrameworkMetadata(rpcOptions);
+  folly::dynamic logMessages = folly::dynamic::object();
+  auto frameworkMetadata = makeFrameworkMetadata(rpcOptions, logMessages);
   if (frameworkMetadata) {
     metadata.frameworkMetadata_ref() = std::move(frameworkMetadata);
+  }
+  if (!logMessages.empty()) {
+    THRIFT_APPLICATION_EVENT(framework_metadata_construction).log([&] {
+      return logMessages;
+    });
   }
 
   return metadata;
