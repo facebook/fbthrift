@@ -50,7 +50,7 @@ template <typename R>
 ThriftTypeInfo createThriftTypeInfo(R&& uris, type::hash_size_t typeHashBytes) {
   ThriftTypeInfo type;
   if (typeHashBytes != kTypeHashBytesNotSpecified) {
-    type.typeHashBytes_ref() = typeHashBytes;
+    type.typeHashBytes() = typeHashBytes;
   }
   auto itr = folly::access::begin(std::forward<R>(uris));
   auto iend = folly::access::end(std::forward<R>(uris));
@@ -60,7 +60,7 @@ ThriftTypeInfo createThriftTypeInfo(R&& uris, type::hash_size_t typeHashBytes) {
   }
   type.set_uri(std::forward<decltype(*itr)>(*itr++));
   for (; itr != iend; ++itr) {
-    type.altUris_ref()->emplace(std::forward<decltype(*itr)>(*itr++));
+    type.altUris()->emplace(std::forward<decltype(*itr)>(*itr++));
   }
   return type;
 }
