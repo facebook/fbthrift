@@ -94,19 +94,25 @@ cdef class Struct(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def first(self):
+    cdef inline first_impl(self):
 
         if self.__fbthrift_cached_first is None:
             self.__fbthrift_cached_first = _module0_types.Struct._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).first_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_first
 
     @property
-    def second(self):
+    def first(self):
+        return self.first_impl()
+
+    cdef inline second_impl(self):
 
         if self.__fbthrift_cached_second is None:
             self.__fbthrift_cached_second = _module1_types.Struct._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).second_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_second
+
+    @property
+    def second(self):
+        return self.second_impl()
 
 
     def __hash__(Struct self):
@@ -199,17 +205,23 @@ cdef class BigStruct(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def s(self):
+    cdef inline s_impl(self):
 
         if self.__fbthrift_cached_s is None:
             self.__fbthrift_cached_s = Struct._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).s_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_s
 
     @property
-    def id(self):
+    def s(self):
+        return self.s_impl()
+
+    cdef inline id_impl(self):
 
         return deref(self._cpp_obj).id_ref().value()
+
+    @property
+    def id(self):
+        return self.id_impl()
 
 
     def __hash__(BigStruct self):

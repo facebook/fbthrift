@@ -132,32 +132,43 @@ cdef class Foo(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def intField(self):
+    cdef inline intField_impl(self):
 
         return deref(self._cpp_obj).intField_ref().value()
 
     @property
-    def optionalIntField(self):
+    def intField(self):
+        return self.intField_impl()
+
+    cdef inline optionalIntField_impl(self):
         if not deref(self._cpp_obj).optionalIntField_ref().has_value():
             return None
 
         return deref(self._cpp_obj).optionalIntField_ref().value_unchecked()
 
     @property
-    def intFieldWithDefault(self):
+    def optionalIntField(self):
+        return self.optionalIntField_impl()
+
+    cdef inline intFieldWithDefault_impl(self):
 
         return deref(self._cpp_obj).intFieldWithDefault_ref().value()
 
     @property
-    def setField(self):
+    def intFieldWithDefault(self):
+        return self.intFieldWithDefault_impl()
+
+    cdef inline setField_impl(self):
 
         if self.__fbthrift_cached_setField is None:
             self.__fbthrift_cached_setField = Set__string._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).setField_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_setField
 
     @property
-    def optionalSetField(self):
+    def setField(self):
+        return self.setField_impl()
+
+    cdef inline optionalSetField_impl(self):
         if not deref(self._cpp_obj).optionalSetField_ref().has_value():
             return None
 
@@ -166,14 +177,20 @@ cdef class Foo(thrift.py3.types.Struct):
         return self.__fbthrift_cached_optionalSetField
 
     @property
-    def mapField(self):
+    def optionalSetField(self):
+        return self.optionalSetField_impl()
+
+    cdef inline mapField_impl(self):
 
         if self.__fbthrift_cached_mapField is None:
             self.__fbthrift_cached_mapField = Map__string_List__string._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).mapField_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_mapField
 
     @property
-    def optionalMapField(self):
+    def mapField(self):
+        return self.mapField_impl()
+
+    cdef inline optionalMapField_impl(self):
         if not deref(self._cpp_obj).optionalMapField_ref().has_value():
             return None
 
@@ -182,9 +199,16 @@ cdef class Foo(thrift.py3.types.Struct):
         return self.__fbthrift_cached_optionalMapField
 
     @property
-    def binaryField(self):
+    def optionalMapField(self):
+        return self.optionalMapField_impl()
+
+    cdef inline binaryField_impl(self):
 
         return deref(self._cpp_obj).binaryField_ref().value()
+
+    @property
+    def binaryField(self):
+        return self.binaryField_impl()
 
 
     def __hash__(Foo self):
@@ -460,15 +484,17 @@ cdef class Bar(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def structField(self):
+    cdef inline structField_impl(self):
 
         if self.__fbthrift_cached_structField is None:
             self.__fbthrift_cached_structField = Foo._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).structField_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_structField
 
     @property
-    def optionalStructField(self):
+    def structField(self):
+        return self.structField_impl()
+
+    cdef inline optionalStructField_impl(self):
         if not deref(self._cpp_obj).optionalStructField_ref().has_value():
             return None
 
@@ -477,14 +503,20 @@ cdef class Bar(thrift.py3.types.Struct):
         return self.__fbthrift_cached_optionalStructField
 
     @property
-    def structListField(self):
+    def optionalStructField(self):
+        return self.optionalStructField_impl()
+
+    cdef inline structListField_impl(self):
 
         if self.__fbthrift_cached_structListField is None:
             self.__fbthrift_cached_structListField = List__Foo._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).structListField_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_structListField
 
     @property
-    def optionalStructListField(self):
+    def structListField(self):
+        return self.structListField_impl()
+
+    cdef inline optionalStructListField_impl(self):
         if not deref(self._cpp_obj).optionalStructListField_ref().has_value():
             return None
 
@@ -493,20 +525,30 @@ cdef class Bar(thrift.py3.types.Struct):
         return self.__fbthrift_cached_optionalStructListField
 
     @property
-    def unionField(self):
+    def optionalStructListField(self):
+        return self.optionalStructListField_impl()
+
+    cdef inline unionField_impl(self):
 
         if self.__fbthrift_cached_unionField is None:
             self.__fbthrift_cached_unionField = Baz._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).unionField_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_unionField
 
     @property
-    def optionalUnionField(self):
+    def unionField(self):
+        return self.unionField_impl()
+
+    cdef inline optionalUnionField_impl(self):
         if not deref(self._cpp_obj).optionalUnionField_ref().has_value():
             return None
 
         if self.__fbthrift_cached_optionalUnionField is None:
             self.__fbthrift_cached_optionalUnionField = Baz._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optionalUnionField_ref().ref_unchecked(), self._cpp_obj))
         return self.__fbthrift_cached_optionalUnionField
+
+    @property
+    def optionalUnionField(self):
+        return self.optionalUnionField_impl()
 
 
     def __hash__(Bar self):
@@ -598,10 +640,13 @@ cdef class StructWithFieldAdapter(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def field(self):
+    cdef inline field_impl(self):
 
         return deref(self._cpp_obj).field_ref().value()
+
+    @property
+    def field(self):
+        return self.field_impl()
 
 
     def __hash__(StructWithFieldAdapter self):

@@ -137,6 +137,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
 cdef class Fiery(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cFiery] _cpp_obj
     cdef _fbthrift_types_fields.__Fiery_FieldsSetter _fields_setter
+    cdef inline object message_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cFiery])
@@ -146,6 +147,7 @@ cdef class Fiery(thrift.py3.exceptions.GeneratedError):
 cdef class Serious(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cSerious] _cpp_obj
     cdef _fbthrift_types_fields.__Serious_FieldsSetter _fields_setter
+    cdef inline object sonnet_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cSerious])
@@ -155,6 +157,8 @@ cdef class Serious(thrift.py3.exceptions.GeneratedError):
 cdef class ComplexFieldNames(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cComplexFieldNames] _cpp_obj
     cdef _fbthrift_types_fields.__ComplexFieldNames_FieldsSetter _fields_setter
+    cdef inline object error_message_impl(self)
+    cdef inline object internal_error_message_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cComplexFieldNames])
@@ -164,6 +168,8 @@ cdef class ComplexFieldNames(thrift.py3.exceptions.GeneratedError):
 cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cCustomFieldNames] _cpp_obj
     cdef _fbthrift_types_fields.__CustomFieldNames_FieldsSetter _fields_setter
+    cdef inline object error_message_impl(self)
+    cdef inline object internal_error_message_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cCustomFieldNames])
@@ -173,6 +179,8 @@ cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
 cdef class ExceptionWithPrimitiveField(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cExceptionWithPrimitiveField] _cpp_obj
     cdef _fbthrift_types_fields.__ExceptionWithPrimitiveField_FieldsSetter _fields_setter
+    cdef inline object message_impl(self)
+    cdef inline object error_code_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cExceptionWithPrimitiveField])

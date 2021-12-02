@@ -134,25 +134,37 @@ cdef class Color(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def red(self):
+    cdef inline red_impl(self):
 
         return deref(self._cpp_obj).red_ref().value()
 
     @property
-    def green(self):
+    def red(self):
+        return self.red_impl()
+
+    cdef inline green_impl(self):
 
         return deref(self._cpp_obj).green_ref().value()
 
     @property
-    def blue(self):
+    def green(self):
+        return self.green_impl()
+
+    cdef inline blue_impl(self):
 
         return deref(self._cpp_obj).blue_ref().value()
 
     @property
-    def alpha(self):
+    def blue(self):
+        return self.blue_impl()
+
+    cdef inline alpha_impl(self):
 
         return deref(self._cpp_obj).alpha_ref().value()
+
+    @property
+    def alpha(self):
+        return self.alpha_impl()
 
 
     def __hash__(Color self):
@@ -248,38 +260,53 @@ cdef class Vehicle(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def color(self):
+    cdef inline color_impl(self):
 
         if self.__fbthrift_cached_color is None:
             self.__fbthrift_cached_color = Color._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).color_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_color
 
     @property
-    def licensePlate(self):
+    def color(self):
+        return self.color_impl()
+
+    cdef inline licensePlate_impl(self):
         if not deref(self._cpp_obj).licensePlate_ref().has_value():
             return None
 
         return (<bytes>deref(self._cpp_obj).licensePlate_ref().value_unchecked()).decode('UTF-8')
 
     @property
-    def description(self):
+    def licensePlate(self):
+        return self.licensePlate_impl()
+
+    cdef inline description_impl(self):
         if not deref(self._cpp_obj).description_ref().has_value():
             return None
 
         return (<bytes>deref(self._cpp_obj).description_ref().value_unchecked()).decode('UTF-8')
 
     @property
-    def name(self):
+    def description(self):
+        return self.description_impl()
+
+    cdef inline name_impl(self):
         if not deref(self._cpp_obj).name_ref().has_value():
             return None
 
         return (<bytes>deref(self._cpp_obj).name_ref().value_unchecked()).decode('UTF-8')
 
     @property
-    def hasAC(self):
+    def name(self):
+        return self.name_impl()
+
+    cdef inline hasAC_impl(self):
 
         return <pbool> deref(self._cpp_obj).hasAC_ref().value_unchecked()
+
+    @property
+    def hasAC(self):
+        return self.hasAC_impl()
 
 
     def __hash__(Vehicle self):
@@ -380,32 +407,43 @@ cdef class Person(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def id(self):
+    cdef inline id_impl(self):
 
         return deref(self._cpp_obj).id_ref().value()
 
     @property
-    def name(self):
+    def id(self):
+        return self.id_impl()
+
+    cdef inline name_impl(self):
 
         return (<bytes>deref(self._cpp_obj).name_ref().value()).decode('UTF-8')
 
     @property
-    def age(self):
+    def name(self):
+        return self.name_impl()
+
+    cdef inline age_impl(self):
         if not deref(self._cpp_obj).age_ref().has_value():
             return None
 
         return deref(self._cpp_obj).age_ref().value_unchecked()
 
     @property
-    def address(self):
+    def age(self):
+        return self.age_impl()
+
+    cdef inline address_impl(self):
         if not deref(self._cpp_obj).address_ref().has_value():
             return None
 
         return (<bytes>deref(self._cpp_obj).address_ref().value_unchecked()).decode('UTF-8')
 
     @property
-    def favoriteColor(self):
+    def address(self):
+        return self.address_impl()
+
+    cdef inline favoriteColor_impl(self):
         if not deref(self._cpp_obj).favoriteColor_ref().has_value():
             return None
 
@@ -414,7 +452,10 @@ cdef class Person(thrift.py3.types.Struct):
         return self.__fbthrift_cached_favoriteColor
 
     @property
-    def friends(self):
+    def favoriteColor(self):
+        return self.favoriteColor_impl()
+
+    cdef inline friends_impl(self):
         if not deref(self._cpp_obj).friends_ref().has_value():
             return None
 
@@ -423,14 +464,20 @@ cdef class Person(thrift.py3.types.Struct):
         return self.__fbthrift_cached_friends
 
     @property
-    def bestFriend(self):
+    def friends(self):
+        return self.friends_impl()
+
+    cdef inline bestFriend_impl(self):
         if not deref(self._cpp_obj).bestFriend_ref().has_value():
             return None
 
         return deref(self._cpp_obj).bestFriend_ref().value_unchecked()
 
     @property
-    def petNames(self):
+    def bestFriend(self):
+        return self.bestFriend_impl()
+
+    cdef inline petNames_impl(self):
         if not deref(self._cpp_obj).petNames_ref().has_value():
             return None
 
@@ -439,7 +486,10 @@ cdef class Person(thrift.py3.types.Struct):
         return self.__fbthrift_cached_petNames
 
     @property
-    def afraidOfAnimal(self):
+    def petNames(self):
+        return self.petNames_impl()
+
+    cdef inline afraidOfAnimal_impl(self):
         if not deref(self._cpp_obj).afraidOfAnimal_ref().has_value():
             return None
 
@@ -448,13 +498,20 @@ cdef class Person(thrift.py3.types.Struct):
         return self.__fbthrift_cached_afraidOfAnimal
 
     @property
-    def vehicles(self):
+    def afraidOfAnimal(self):
+        return self.afraidOfAnimal_impl()
+
+    cdef inline vehicles_impl(self):
         if not deref(self._cpp_obj).vehicles_ref().has_value():
             return None
 
         if self.__fbthrift_cached_vehicles is None:
             self.__fbthrift_cached_vehicles = List__Vehicle._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).vehicles_ref().ref_unchecked(), self._cpp_obj))
         return self.__fbthrift_cached_vehicles
+
+    @property
+    def vehicles(self):
+        return self.vehicles_impl()
 
 
     def __hash__(Person self):

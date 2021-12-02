@@ -80,10 +80,13 @@ cdef class Fiery(thrift.py3.exceptions.GeneratedError):
         _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
         return __fbthrift_inst
 
-    @property
-    def message(self):
+    cdef inline message_impl(self):
 
         return (<bytes>deref(self._cpp_obj).message_ref().value()).decode('UTF-8')
+
+    @property
+    def message(self):
+        return self.message_impl()
 
 
     def __hash__(Fiery self):
@@ -169,12 +172,15 @@ cdef class Serious(thrift.py3.exceptions.GeneratedError):
         _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
         return __fbthrift_inst
 
-    @property
-    def sonnet(self):
+    cdef inline sonnet_impl(self):
         if not deref(self._cpp_obj).sonnet_ref().has_value():
             return None
 
         return (<bytes>deref(self._cpp_obj).sonnet_ref().value_unchecked()).decode('UTF-8')
+
+    @property
+    def sonnet(self):
+        return self.sonnet_impl()
 
 
     def __hash__(Serious self):
@@ -261,15 +267,21 @@ cdef class ComplexFieldNames(thrift.py3.exceptions.GeneratedError):
         _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
         return __fbthrift_inst
 
-    @property
-    def error_message(self):
+    cdef inline error_message_impl(self):
 
         return (<bytes>deref(self._cpp_obj).error_message_ref().value()).decode('UTF-8')
 
     @property
-    def internal_error_message(self):
+    def error_message(self):
+        return self.error_message_impl()
+
+    cdef inline internal_error_message_impl(self):
 
         return (<bytes>deref(self._cpp_obj).internal_error_message_ref().value()).decode('UTF-8')
+
+    @property
+    def internal_error_message(self):
+        return self.internal_error_message_impl()
 
 
     def __hash__(ComplexFieldNames self):
@@ -356,15 +368,21 @@ cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
         _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
         return __fbthrift_inst
 
-    @property
-    def error_message(self):
+    cdef inline error_message_impl(self):
 
         return (<bytes>deref(self._cpp_obj).error_message_ref().value()).decode('UTF-8')
 
     @property
-    def internal_error_message(self):
+    def error_message(self):
+        return self.error_message_impl()
+
+    cdef inline internal_error_message_impl(self):
 
         return (<bytes>deref(self._cpp_obj).internal_error_message_ref().value()).decode('UTF-8')
+
+    @property
+    def internal_error_message(self):
+        return self.internal_error_message_impl()
 
 
     def __hash__(CustomFieldNames self):
@@ -451,15 +469,21 @@ cdef class ExceptionWithPrimitiveField(thrift.py3.exceptions.GeneratedError):
         _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
         return __fbthrift_inst
 
-    @property
-    def message(self):
+    cdef inline message_impl(self):
 
         return (<bytes>deref(self._cpp_obj).message_ref().value()).decode('UTF-8')
 
     @property
-    def error_code(self):
+    def message(self):
+        return self.message_impl()
+
+    cdef inline error_code_impl(self):
 
         return deref(self._cpp_obj).error_code_ref().value()
+
+    @property
+    def error_code(self):
+        return self.error_code_impl()
 
 
     def __hash__(ExceptionWithPrimitiveField self):

@@ -171,44 +171,65 @@ cdef class MyStruct(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def MyIntField(self):
+    cdef inline MyIntField_impl(self):
 
         return deref(self._cpp_obj).MyIntField_ref().value()
 
     @property
-    def MyStringField(self):
+    def MyIntField(self):
+        return self.MyIntField_impl()
+
+    cdef inline MyStringField_impl(self):
 
         return (<bytes>deref(self._cpp_obj).MyStringField_ref().value()).decode('UTF-8')
 
     @property
-    def MyDataField(self):
+    def MyStringField(self):
+        return self.MyStringField_impl()
+
+    cdef inline MyDataField_impl(self):
 
         if self.__fbthrift_cached_MyDataField is None:
             self.__fbthrift_cached_MyDataField = MyDataItem._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).MyDataField_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_MyDataField
 
     @property
-    def myEnum(self):
+    def MyDataField(self):
+        return self.MyDataField_impl()
+
+    cdef inline myEnum_impl(self):
 
         if self.__fbthrift_cached_myEnum is None:
             self.__fbthrift_cached_myEnum = translate_cpp_enum_to_python(MyEnum, <int>(deref(self._cpp_obj).myEnum_ref().value()))
         return self.__fbthrift_cached_myEnum
 
     @property
-    def oneway(self):
+    def myEnum(self):
+        return self.myEnum_impl()
+
+    cdef inline oneway_impl(self):
 
         return <pbool> deref(self._cpp_obj).oneway_ref().value()
 
     @property
-    def readonly(self):
+    def oneway(self):
+        return self.oneway_impl()
+
+    cdef inline readonly_impl(self):
 
         return <pbool> deref(self._cpp_obj).readonly_ref().value()
 
     @property
-    def idempotent(self):
+    def readonly(self):
+        return self.readonly_impl()
+
+    cdef inline idempotent_impl(self):
 
         return <pbool> deref(self._cpp_obj).idempotent_ref().value()
+
+    @property
+    def idempotent(self):
+        return self.idempotent_impl()
 
 
     def __hash__(MyStruct self):

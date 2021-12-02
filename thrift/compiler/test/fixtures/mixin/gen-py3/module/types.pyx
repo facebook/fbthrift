@@ -89,10 +89,13 @@ cdef class Mixin1(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def field1(self):
+    cdef inline field1_impl(self):
 
         return (<bytes>deref(self._cpp_obj).field1_ref().value()).decode('UTF-8')
+
+    @property
+    def field1(self):
+        return self.field1_impl()
 
 
     def __hash__(Mixin1 self):
@@ -185,24 +188,33 @@ cdef class Mixin2(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def m1(self):
+    cdef inline m1_impl(self):
 
         if self.__fbthrift_cached_m1 is None:
             self.__fbthrift_cached_m1 = Mixin1._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).m1_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_m1
 
     @property
-    def field2(self):
+    def m1(self):
+        return self.m1_impl()
+
+    cdef inline field2_impl(self):
         if not deref(self._cpp_obj).field2_ref().has_value():
             return None
 
         return (<bytes>deref(self._cpp_obj).field2_ref().value_unchecked()).decode('UTF-8')
 
     @property
-    def field1(self):
+    def field2(self):
+        return self.field2_impl()
+
+    cdef inline field1_impl(self):
 
         return (<bytes>deref(self._cpp_obj).field1_ref().value()).decode('UTF-8')
+
+    @property
+    def field1(self):
+        return self.field1_impl()
 
 
     def __hash__(Mixin2 self):
@@ -294,10 +306,13 @@ cdef class Mixin3Base(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def field3(self):
+    cdef inline field3_impl(self):
 
         return (<bytes>deref(self._cpp_obj).field3_ref().value()).decode('UTF-8')
+
+    @property
+    def field3(self):
+        return self.field3_impl()
 
 
     def __hash__(Mixin3Base self):
@@ -391,48 +406,69 @@ cdef class Foo(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def field4(self):
+    cdef inline field4_impl(self):
 
         return (<bytes>deref(self._cpp_obj).field4_ref().value()).decode('UTF-8')
 
     @property
-    def m2(self):
+    def field4(self):
+        return self.field4_impl()
+
+    cdef inline m2_impl(self):
 
         if self.__fbthrift_cached_m2 is None:
             self.__fbthrift_cached_m2 = Mixin2._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).m2_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_m2
 
     @property
-    def m3(self):
+    def m2(self):
+        return self.m2_impl()
+
+    cdef inline m3_impl(self):
 
         if self.__fbthrift_cached_m3 is None:
             self.__fbthrift_cached_m3 = Mixin3Base._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).m3_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_m3
 
     @property
-    def m1(self):
+    def m3(self):
+        return self.m3_impl()
+
+    cdef inline m1_impl(self):
 
         if self.__fbthrift_cached_m1 is None:
             self.__fbthrift_cached_m1 = Mixin1._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).m1_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_m1
 
     @property
-    def field2(self):
+    def m1(self):
+        return self.m1_impl()
+
+    cdef inline field2_impl(self):
         if not deref(self._cpp_obj).field2_ref().has_value():
             return None
 
         return (<bytes>deref(self._cpp_obj).field2_ref().value_unchecked()).decode('UTF-8')
 
     @property
-    def field1(self):
+    def field2(self):
+        return self.field2_impl()
+
+    cdef inline field1_impl(self):
 
         return (<bytes>deref(self._cpp_obj).field1_ref().value()).decode('UTF-8')
 
     @property
-    def field3(self):
+    def field1(self):
+        return self.field1_impl()
+
+    cdef inline field3_impl(self):
 
         return (<bytes>deref(self._cpp_obj).field3_ref().value()).decode('UTF-8')
+
+    @property
+    def field3(self):
+        return self.field3_impl()
 
 
     def __hash__(Foo self):

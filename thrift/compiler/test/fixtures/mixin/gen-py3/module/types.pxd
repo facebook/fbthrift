@@ -119,6 +119,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
 cdef class Mixin1(thrift.py3.types.Struct):
     cdef shared_ptr[cMixin1] _cpp_obj
     cdef _fbthrift_types_fields.__Mixin1_FieldsSetter _fields_setter
+    cdef inline object field1_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMixin1])
@@ -128,6 +129,9 @@ cdef class Mixin1(thrift.py3.types.Struct):
 cdef class Mixin2(thrift.py3.types.Struct):
     cdef shared_ptr[cMixin2] _cpp_obj
     cdef _fbthrift_types_fields.__Mixin2_FieldsSetter _fields_setter
+    cdef inline object m1_impl(self)
+    cdef inline object field2_impl(self)
+    cdef inline object field1_impl(self)
     cdef Mixin1 __fbthrift_cached_m1
 
     @staticmethod
@@ -138,6 +142,7 @@ cdef class Mixin2(thrift.py3.types.Struct):
 cdef class Mixin3Base(thrift.py3.types.Struct):
     cdef shared_ptr[cMixin3Base] _cpp_obj
     cdef _fbthrift_types_fields.__Mixin3Base_FieldsSetter _fields_setter
+    cdef inline object field3_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMixin3Base])
@@ -147,6 +152,13 @@ cdef class Mixin3Base(thrift.py3.types.Struct):
 cdef class Foo(thrift.py3.types.Struct):
     cdef shared_ptr[cFoo] _cpp_obj
     cdef _fbthrift_types_fields.__Foo_FieldsSetter _fields_setter
+    cdef inline object field4_impl(self)
+    cdef inline object m2_impl(self)
+    cdef inline object m3_impl(self)
+    cdef inline object m1_impl(self)
+    cdef inline object field2_impl(self)
+    cdef inline object field1_impl(self)
+    cdef inline object field3_impl(self)
     cdef Mixin2 __fbthrift_cached_m2
     cdef Mixin3Base __fbthrift_cached_m3
 

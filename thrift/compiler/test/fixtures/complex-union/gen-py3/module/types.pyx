@@ -779,22 +779,31 @@ cdef class Val(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def strVal(self):
+    cdef inline strVal_impl(self):
 
         return (<bytes>deref(self._cpp_obj).strVal_ref().value()).decode('UTF-8')
 
     @property
-    def intVal(self):
+    def strVal(self):
+        return self.strVal_impl()
+
+    cdef inline intVal_impl(self):
 
         return deref(self._cpp_obj).intVal_ref().value()
 
     @property
-    def typedefValue(self):
+    def intVal(self):
+        return self.intVal_impl()
+
+    cdef inline typedefValue_impl(self):
 
         if self.__fbthrift_cached_typedefValue is None:
             self.__fbthrift_cached_typedefValue = Map__i16_string._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).typedefValue_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_typedefValue
+
+    @property
+    def typedefValue(self):
+        return self.typedefValue_impl()
 
 
     def __hash__(Val self):
@@ -1142,10 +1151,13 @@ cdef class NonCopyableStruct(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def num(self):
+    cdef inline num_impl(self):
 
         return deref(self._cpp_obj).num_ref().value()
+
+    @property
+    def num(self):
+        return self.num_impl()
 
 
     def __hash__(NonCopyableStruct self):

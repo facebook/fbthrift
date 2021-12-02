@@ -127,6 +127,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
 cdef class Color(thrift.py3.types.Struct):
     cdef shared_ptr[cColor] _cpp_obj
     cdef _fbthrift_types_fields.__Color_FieldsSetter _fields_setter
+    cdef inline object red_impl(self)
+    cdef inline object green_impl(self)
+    cdef inline object blue_impl(self)
+    cdef inline object alpha_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cColor])
@@ -136,6 +140,11 @@ cdef class Color(thrift.py3.types.Struct):
 cdef class Vehicle(thrift.py3.types.Struct):
     cdef shared_ptr[cVehicle] _cpp_obj
     cdef _fbthrift_types_fields.__Vehicle_FieldsSetter _fields_setter
+    cdef inline object color_impl(self)
+    cdef inline object licensePlate_impl(self)
+    cdef inline object description_impl(self)
+    cdef inline object name_impl(self)
+    cdef inline object hasAC_impl(self)
     cdef Color __fbthrift_cached_color
 
     @staticmethod
@@ -146,6 +155,16 @@ cdef class Vehicle(thrift.py3.types.Struct):
 cdef class Person(thrift.py3.types.Struct):
     cdef shared_ptr[cPerson] _cpp_obj
     cdef _fbthrift_types_fields.__Person_FieldsSetter _fields_setter
+    cdef inline object id_impl(self)
+    cdef inline object name_impl(self)
+    cdef inline object age_impl(self)
+    cdef inline object address_impl(self)
+    cdef inline object favoriteColor_impl(self)
+    cdef inline object friends_impl(self)
+    cdef inline object bestFriend_impl(self)
+    cdef inline object petNames_impl(self)
+    cdef inline object afraidOfAnimal_impl(self)
+    cdef inline object vehicles_impl(self)
     cdef Color __fbthrift_cached_favoriteColor
     cdef Set__i64 __fbthrift_cached_friends
     cdef Map__Animal_string __fbthrift_cached_petNames

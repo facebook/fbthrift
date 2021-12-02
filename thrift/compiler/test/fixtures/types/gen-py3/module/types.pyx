@@ -293,10 +293,13 @@ cdef class decorated_struct(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def field(self):
+    cdef inline field_impl(self):
 
         return (<bytes>deref(self._cpp_obj).field_ref().value()).decode('UTF-8')
+
+    @property
+    def field(self):
+        return self.field_impl()
 
 
     def __hash__(decorated_struct self):
@@ -395,61 +398,85 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def fieldA(self):
+    cdef inline fieldA_impl(self):
 
         if self.__fbthrift_cached_fieldA is None:
             self.__fbthrift_cached_fieldA = List__i32._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).fieldA_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_fieldA
 
     @property
-    def fieldB(self):
+    def fieldA(self):
+        return self.fieldA_impl()
+
+    cdef inline fieldB_impl(self):
 
         if self.__fbthrift_cached_fieldB is None:
             self.__fbthrift_cached_fieldB = std_list__List__i32._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).fieldB_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_fieldB
 
     @property
-    def fieldC(self):
+    def fieldB(self):
+        return self.fieldB_impl()
+
+    cdef inline fieldC_impl(self):
 
         if self.__fbthrift_cached_fieldC is None:
             self.__fbthrift_cached_fieldC = std_deque__List__i32._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).fieldC_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_fieldC
 
     @property
-    def fieldD(self):
+    def fieldC(self):
+        return self.fieldC_impl()
+
+    cdef inline fieldD_impl(self):
 
         if self.__fbthrift_cached_fieldD is None:
             self.__fbthrift_cached_fieldD = folly_fbvector__List__i32._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).fieldD_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_fieldD
 
     @property
-    def fieldE(self):
+    def fieldD(self):
+        return self.fieldD_impl()
+
+    cdef inline fieldE_impl(self):
 
         if self.__fbthrift_cached_fieldE is None:
             self.__fbthrift_cached_fieldE = folly_small_vector__List__i32._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).fieldE_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_fieldE
 
     @property
-    def fieldF(self):
+    def fieldE(self):
+        return self.fieldE_impl()
+
+    cdef inline fieldF_impl(self):
 
         if self.__fbthrift_cached_fieldF is None:
             self.__fbthrift_cached_fieldF = folly_sorted_vector_set__Set__i32._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).fieldF_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_fieldF
 
     @property
-    def fieldG(self):
+    def fieldF(self):
+        return self.fieldF_impl()
+
+    cdef inline fieldG_impl(self):
 
         if self.__fbthrift_cached_fieldG is None:
             self.__fbthrift_cached_fieldG = folly_sorted_vector_map__Map__i32_string._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).fieldG_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_fieldG
 
     @property
-    def fieldH(self):
+    def fieldG(self):
+        return self.fieldG_impl()
+
+    cdef inline fieldH_impl(self):
 
         if self.__fbthrift_cached_fieldH is None:
             self.__fbthrift_cached_fieldH = std_unordered_map__Map__i32_string._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).fieldH_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_fieldH
+
+    @property
+    def fieldH(self):
+        return self.fieldH_impl()
 
 
     def __hash__(ContainerStruct self):
@@ -543,12 +570,15 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def fieldA(self):
+    cdef inline fieldA_impl(self):
 
         if self.__fbthrift_cached_fieldA is None:
             self.__fbthrift_cached_fieldA = std_list_int32_t__List__i32._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).fieldA_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_fieldA
+
+    @property
+    def fieldA(self):
+        return self.fieldA_impl()
 
 
     def __hash__(CppTypeStruct self):
@@ -640,10 +670,13 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def MyIntField(self):
+    cdef inline MyIntField_impl(self):
 
         return deref(self._cpp_obj).MyIntField_ref().value()
+
+    @property
+    def MyIntField(self):
+        return self.MyIntField_impl()
 
 
     def __hash__(VirtualStruct self):
@@ -736,19 +769,25 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def a(self):
+    cdef inline a_impl(self):
 
         if self.__fbthrift_cached_a is None:
             self.__fbthrift_cached_a = translate_cpp_enum_to_python(MyForwardRefEnum, <int>(deref(self._cpp_obj).a_ref().value()))
         return self.__fbthrift_cached_a
 
     @property
-    def b(self):
+    def a(self):
+        return self.a_impl()
+
+    cdef inline b_impl(self):
 
         if self.__fbthrift_cached_b is None:
             self.__fbthrift_cached_b = translate_cpp_enum_to_python(MyForwardRefEnum, <int>(deref(self._cpp_obj).b_ref().value()))
         return self.__fbthrift_cached_b
+
+    @property
+    def b(self):
+        return self.b_impl()
 
 
     def __hash__(MyStructWithForwardRefEnum self):
@@ -841,15 +880,21 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def a(self):
+    cdef inline a_impl(self):
 
         return deref(self._cpp_obj).a_ref().value()
 
     @property
-    def b(self):
+    def a(self):
+        return self.a_impl()
+
+    cdef inline b_impl(self):
 
         return <pbool> deref(self._cpp_obj).b_ref().value()
+
+    @property
+    def b(self):
+        return self.b_impl()
 
 
     def __hash__(TrivialNumeric self):
@@ -942,17 +987,23 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def z(self):
+    cdef inline z_impl(self):
 
         return deref(self._cpp_obj).z_ref().value()
 
     @property
-    def n(self):
+    def z(self):
+        return self.z_impl()
+
+    cdef inline n_impl(self):
 
         if self.__fbthrift_cached_n is None:
             self.__fbthrift_cached_n = TrivialNumeric._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).n_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_n
+
+    @property
+    def n(self):
+        return self.n_impl()
 
 
     def __hash__(TrivialNestedWithDefault self):
@@ -1045,17 +1096,23 @@ cdef class ComplexString(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def a(self):
+    cdef inline a_impl(self):
 
         return (<bytes>deref(self._cpp_obj).a_ref().value()).decode('UTF-8')
 
     @property
-    def b(self):
+    def a(self):
+        return self.a_impl()
+
+    cdef inline b_impl(self):
 
         if self.__fbthrift_cached_b is None:
             self.__fbthrift_cached_b = Map__string_i32._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).b_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_b
+
+    @property
+    def b(self):
+        return self.b_impl()
 
 
     def __hash__(ComplexString self):
@@ -1148,17 +1205,23 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def z(self):
+    cdef inline z_impl(self):
 
         return (<bytes>deref(self._cpp_obj).z_ref().value()).decode('UTF-8')
 
     @property
-    def n(self):
+    def z(self):
+        return self.z_impl()
+
+    cdef inline n_impl(self):
 
         if self.__fbthrift_cached_n is None:
             self.__fbthrift_cached_n = ComplexString._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).n_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_n
+
+    @property
+    def n(self):
+        return self.n_impl()
 
 
     def __hash__(ComplexNestedWithDefault self):
@@ -1254,30 +1317,45 @@ cdef class MinPadding(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def small(self):
+    cdef inline small_impl(self):
 
         return deref(self._cpp_obj).small_ref().value()
 
     @property
-    def big(self):
+    def small(self):
+        return self.small_impl()
+
+    cdef inline big_impl(self):
 
         return deref(self._cpp_obj).big_ref().value()
 
     @property
-    def medium(self):
+    def big(self):
+        return self.big_impl()
+
+    cdef inline medium_impl(self):
 
         return deref(self._cpp_obj).medium_ref().value()
 
     @property
-    def biggish(self):
+    def medium(self):
+        return self.medium_impl()
+
+    cdef inline biggish_impl(self):
 
         return deref(self._cpp_obj).biggish_ref().value()
 
     @property
-    def tiny(self):
+    def biggish(self):
+        return self.biggish_impl()
+
+    cdef inline tiny_impl(self):
 
         return deref(self._cpp_obj).tiny_ref().value()
+
+    @property
+    def tiny(self):
+        return self.tiny_impl()
 
 
     def __hash__(MinPadding self):
@@ -1372,27 +1450,39 @@ cdef class MyStruct(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def MyIntField(self):
+    cdef inline MyIntField_impl(self):
 
         return deref(self._cpp_obj).MyIntField_ref().value()
 
     @property
-    def MyStringField(self):
+    def MyIntField(self):
+        return self.MyIntField_impl()
+
+    cdef inline MyStringField_impl(self):
 
         return (<bytes>deref(self._cpp_obj).MyStringField_ref().value()).decode('UTF-8')
 
     @property
-    def majorVer(self):
+    def MyStringField(self):
+        return self.MyStringField_impl()
+
+    cdef inline majorVer_impl(self):
 
         return deref(self._cpp_obj).majorVer_ref().value()
 
     @property
-    def data(self):
+    def majorVer(self):
+        return self.majorVer_impl()
+
+    cdef inline data_impl(self):
 
         if self.__fbthrift_cached_data is None:
             self.__fbthrift_cached_data = MyDataItem._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).data_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_data
+
+    @property
+    def data(self):
+        return self.data_impl()
 
 
     def __hash__(MyStruct self):
@@ -1556,10 +1646,13 @@ cdef class Renaming(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def foo(self):
+    cdef inline foo_impl(self):
 
         return deref(self._cpp_obj).foo_ref().value()
+
+    @property
+    def foo(self):
+        return self.foo_impl()
 
 
     def __hash__(Renaming self):
@@ -1652,17 +1745,23 @@ cdef class AnnotatedTypes(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def binary_field(self):
+    cdef inline binary_field_impl(self):
 
         return deref(self._cpp_obj).binary_field_ref().value()
 
     @property
-    def list_field(self):
+    def binary_field(self):
+        return self.binary_field_impl()
+
+    cdef inline list_field_impl(self):
 
         if self.__fbthrift_cached_list_field is None:
             self.__fbthrift_cached_list_field = List__std_unordered_map__Map__i32_string._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).list_field_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_list_field
+
+    @property
+    def list_field(self):
+        return self.list_field_impl()
 
 
     def __hash__(AnnotatedTypes self):
@@ -1756,8 +1855,7 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def ForwardUsageStruct(self):
+    cdef inline ForwardUsageStruct_impl(self):
         if not deref(self._cpp_obj).ForwardUsageStruct_ref().has_value():
             return None
 
@@ -1766,13 +1864,20 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
         return self.__fbthrift_cached_ForwardUsageStruct
 
     @property
-    def ForwardUsageByRef(self):
+    def ForwardUsageStruct(self):
+        return self.ForwardUsageStruct_impl()
+
+    cdef inline ForwardUsageByRef_impl(self):
 
         if self.__fbthrift_cached_ForwardUsageByRef is None:
             if not deref(self._cpp_obj).ForwardUsageByRef_ref():
                 return None
             self.__fbthrift_cached_ForwardUsageByRef = ForwardUsageByRef._fbthrift_create(__reference_shared_ptr(deref(deref(self._cpp_obj).ForwardUsageByRef_ref()), self._cpp_obj))
         return self.__fbthrift_cached_ForwardUsageByRef
+
+    @property
+    def ForwardUsageByRef(self):
+        return self.ForwardUsageByRef_impl()
 
 
     def __hash__(ForwardUsageRoot self):
@@ -1864,14 +1969,17 @@ cdef class ForwardUsageStruct(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def foo(self):
+    cdef inline foo_impl(self):
         if not deref(self._cpp_obj).foo_ref().has_value():
             return None
 
         if self.__fbthrift_cached_foo is None:
             self.__fbthrift_cached_foo = ForwardUsageRoot._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).foo_ref().ref_unchecked(), self._cpp_obj))
         return self.__fbthrift_cached_foo
+
+    @property
+    def foo(self):
+        return self.foo_impl()
 
 
     def __hash__(ForwardUsageStruct self):
@@ -1963,14 +2071,17 @@ cdef class ForwardUsageByRef(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def foo(self):
+    cdef inline foo_impl(self):
         if not deref(self._cpp_obj).foo_ref().has_value():
             return None
 
         if self.__fbthrift_cached_foo is None:
             self.__fbthrift_cached_foo = ForwardUsageRoot._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).foo_ref().ref_unchecked(), self._cpp_obj))
         return self.__fbthrift_cached_foo
+
+    @property
+    def foo(self):
+        return self.foo_impl()
 
 
     def __hash__(ForwardUsageByRef self):
@@ -2144,10 +2255,13 @@ cdef class NoexceptMoveSimpleStruct(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def boolField(self):
+    cdef inline boolField_impl(self):
 
         return deref(self._cpp_obj).boolField_ref().value()
+
+    @property
+    def boolField(self):
+        return self.boolField_impl()
 
 
     def __hash__(NoexceptMoveSimpleStruct self):
@@ -2247,56 +2361,83 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def MyBoolField(self):
+    cdef inline MyBoolField_impl(self):
 
         return <pbool> deref(self._cpp_obj).MyBoolField_ref().value()
 
     @property
-    def MyIntField(self):
+    def MyBoolField(self):
+        return self.MyBoolField_impl()
+
+    cdef inline MyIntField_impl(self):
 
         return deref(self._cpp_obj).MyIntField_ref().value()
 
     @property
-    def MyStringField(self):
+    def MyIntField(self):
+        return self.MyIntField_impl()
+
+    cdef inline MyStringField_impl(self):
 
         return (<bytes>deref(self._cpp_obj).MyStringField_ref().value()).decode('UTF-8')
 
     @property
-    def MyStringField2(self):
+    def MyStringField(self):
+        return self.MyStringField_impl()
+
+    cdef inline MyStringField2_impl(self):
 
         return (<bytes>deref(self._cpp_obj).MyStringField2_ref().value()).decode('UTF-8')
 
     @property
-    def MyBinaryField(self):
+    def MyStringField2(self):
+        return self.MyStringField2_impl()
+
+    cdef inline MyBinaryField_impl(self):
 
         return deref(self._cpp_obj).MyBinaryField_ref().value()
 
     @property
-    def MyBinaryField2(self):
+    def MyBinaryField(self):
+        return self.MyBinaryField_impl()
+
+    cdef inline MyBinaryField2_impl(self):
         if not deref(self._cpp_obj).MyBinaryField2_ref().has_value():
             return None
 
         return deref(self._cpp_obj).MyBinaryField2_ref().value_unchecked()
 
     @property
-    def MyBinaryField3(self):
+    def MyBinaryField2(self):
+        return self.MyBinaryField2_impl()
+
+    cdef inline MyBinaryField3_impl(self):
 
         return deref(self._cpp_obj).MyBinaryField3_ref().value()
 
     @property
-    def MyBinaryListField4(self):
+    def MyBinaryField3(self):
+        return self.MyBinaryField3_impl()
+
+    cdef inline MyBinaryListField4_impl(self):
 
         if self.__fbthrift_cached_MyBinaryListField4 is None:
             self.__fbthrift_cached_MyBinaryListField4 = List__binary._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).MyBinaryListField4_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_MyBinaryListField4
 
     @property
-    def MyMapEnumAndInt(self):
+    def MyBinaryListField4(self):
+        return self.MyBinaryListField4_impl()
+
+    cdef inline MyMapEnumAndInt_impl(self):
 
         if self.__fbthrift_cached_MyMapEnumAndInt is None:
             self.__fbthrift_cached_MyMapEnumAndInt = Map__MyEnumA_string._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).MyMapEnumAndInt_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_MyMapEnumAndInt
+
+    @property
+    def MyMapEnumAndInt(self):
+        return self.MyMapEnumAndInt_impl()
 
 
     def __hash__(NoexceptMoveComplexStruct self):
@@ -2535,36 +2676,51 @@ cdef class AllocatorAware(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def aa_list(self):
+    cdef inline aa_list_impl(self):
 
         if self.__fbthrift_cached_aa_list is None:
             self.__fbthrift_cached_aa_list = List__i32._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).aa_list_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_aa_list
 
     @property
-    def aa_set(self):
+    def aa_list(self):
+        return self.aa_list_impl()
+
+    cdef inline aa_set_impl(self):
 
         if self.__fbthrift_cached_aa_set is None:
             self.__fbthrift_cached_aa_set = Set__i32._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).aa_set_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_aa_set
 
     @property
-    def aa_map(self):
+    def aa_set(self):
+        return self.aa_set_impl()
+
+    cdef inline aa_map_impl(self):
 
         if self.__fbthrift_cached_aa_map is None:
             self.__fbthrift_cached_aa_map = Map__i32_i32._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).aa_map_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_aa_map
 
     @property
-    def aa_string(self):
+    def aa_map(self):
+        return self.aa_map_impl()
+
+    cdef inline aa_string_impl(self):
 
         return (<bytes>deref(self._cpp_obj).aa_string_ref().value()).decode('UTF-8')
 
     @property
-    def not_a_container(self):
+    def aa_string(self):
+        return self.aa_string_impl()
+
+    cdef inline not_a_container_impl(self):
 
         return deref(self._cpp_obj).not_a_container_ref().value()
+
+    @property
+    def not_a_container(self):
+        return self.not_a_container_impl()
 
 
     def __hash__(AllocatorAware self):
@@ -2656,10 +2812,13 @@ cdef class AllocatorAware2(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def not_a_container(self):
+    cdef inline not_a_container_impl(self):
 
         return deref(self._cpp_obj).not_a_container_ref().value()
+
+    @property
+    def not_a_container(self):
+        return self.not_a_container_impl()
 
 
     def __hash__(AllocatorAware2 self):
@@ -2753,20 +2912,29 @@ cdef class TypedefStruct(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def i32_field(self):
+    cdef inline i32_field_impl(self):
 
         return deref(self._cpp_obj).i32_field_ref().value()
 
     @property
-    def IntTypedef_field(self):
+    def i32_field(self):
+        return self.i32_field_impl()
+
+    cdef inline IntTypedef_field_impl(self):
 
         return deref(self._cpp_obj).IntTypedef_field_ref().value()
 
     @property
-    def UintTypedef_field(self):
+    def IntTypedef_field(self):
+        return self.IntTypedef_field_impl()
+
+    cdef inline UintTypedef_field_impl(self):
 
         return deref(self._cpp_obj).UintTypedef_field_ref().value()
+
+    @property
+    def UintTypedef_field(self):
+        return self.UintTypedef_field_impl()
 
 
     def __hash__(TypedefStruct self):
@@ -2858,10 +3026,13 @@ cdef class StructWithDoubleUnderscores(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def __field(self):
+    cdef inline __field_impl(self):
 
         return deref(self._cpp_obj).__field_ref().value()
+
+    @property
+    def __field(self):
+        return self.__field_impl()
 
 
     def __hash__(StructWithDoubleUnderscores self):

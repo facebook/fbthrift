@@ -131,10 +131,13 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def name(self):
+    cdef inline name_impl(self):
 
         return (<bytes>deref(self._cpp_obj).name_ref().value()).decode('UTF-8')
+
+    @property
+    def name(self):
+        return self.name_impl()
 
 
     def __hash__(MyStructNestedAnnotation self):
@@ -231,35 +234,53 @@ cdef class MyStruct(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def major(self):
+    cdef inline major_impl(self):
 
         return deref(self._cpp_obj).major_ref().value()
 
     @property
-    def package(self):
+    def major(self):
+        return self.major_impl()
+
+    cdef inline package_impl(self):
 
         return (<bytes>deref(self._cpp_obj).package_ref().value()).decode('UTF-8')
 
     @property
-    def annotation_with_quote(self):
+    def package(self):
+        return self.package_impl()
+
+    cdef inline annotation_with_quote_impl(self):
 
         return (<bytes>deref(self._cpp_obj).annotation_with_quote_ref().value()).decode('UTF-8')
 
     @property
-    def class_(self):
+    def annotation_with_quote(self):
+        return self.annotation_with_quote_impl()
+
+    cdef inline class__impl(self):
 
         return (<bytes>deref(self._cpp_obj).class__ref().value()).decode('UTF-8')
 
     @property
-    def annotation_with_trailing_comma(self):
+    def class_(self):
+        return self.class__impl()
+
+    cdef inline annotation_with_trailing_comma_impl(self):
 
         return (<bytes>deref(self._cpp_obj).annotation_with_trailing_comma_ref().value()).decode('UTF-8')
 
     @property
-    def empty_annotations(self):
+    def annotation_with_trailing_comma(self):
+        return self.annotation_with_trailing_comma_impl()
+
+    cdef inline empty_annotations_impl(self):
 
         return (<bytes>deref(self._cpp_obj).empty_annotations_ref().value()).decode('UTF-8')
+
+    @property
+    def empty_annotations(self):
+        return self.empty_annotations_impl()
 
 
     def __hash__(MyStruct self):
@@ -352,15 +373,21 @@ cdef class SecretStruct(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def id(self):
+    cdef inline id_impl(self):
 
         return deref(self._cpp_obj).id_ref().value()
 
     @property
-    def password(self):
+    def id(self):
+        return self.id_impl()
+
+    cdef inline password_impl(self):
 
         return (<bytes>deref(self._cpp_obj).password_ref().value()).decode('UTF-8')
+
+    @property
+    def password(self):
+        return self.password_impl()
 
 
     def __hash__(SecretStruct self):

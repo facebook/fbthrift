@@ -186,6 +186,9 @@ cdef class {{struct:name}}({{> types/python_struct_class}}):
     cdef shared_ptr[c{{struct:name}}] _cpp_obj
     {{^struct:union?}}
     cdef _fbthrift_types_fields.__{{struct:name}}_FieldsSetter _fields_setter
+    {{#struct:fields_and_mixin_fields}}
+    cdef inline object {{field:py_name}}_impl(self)
+    {{/struct:fields_and_mixin_fields}}
     {{!Memoized Python wrappers of struct fields, created lazily}}
     {{#struct:py3_fields}}
     {{#field:type}}{{#type:struct}}

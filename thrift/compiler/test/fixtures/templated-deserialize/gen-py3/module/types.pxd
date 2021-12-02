@@ -127,6 +127,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
 cdef class SmallStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cSmallStruct] _cpp_obj
     cdef _fbthrift_types_fields.__SmallStruct_FieldsSetter _fields_setter
+    cdef inline object small_A_impl(self)
+    cdef inline object small_B_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cSmallStruct])
@@ -136,6 +138,28 @@ cdef class SmallStruct(thrift.py3.types.Struct):
 cdef class containerStruct(thrift.py3.types.Struct):
     cdef shared_ptr[ccontainerStruct] _cpp_obj
     cdef _fbthrift_types_fields.__containerStruct_FieldsSetter _fields_setter
+    cdef inline object fieldA_impl(self)
+    cdef inline object fieldB_impl(self)
+    cdef inline object fieldC_impl(self)
+    cdef inline object fieldD_impl(self)
+    cdef inline object fieldE_impl(self)
+    cdef inline object fieldF_impl(self)
+    cdef inline object fieldG_impl(self)
+    cdef inline object fieldH_impl(self)
+    cdef inline object fieldI_impl(self)
+    cdef inline object fieldJ_impl(self)
+    cdef inline object fieldK_impl(self)
+    cdef inline object fieldL_impl(self)
+    cdef inline object fieldM_impl(self)
+    cdef inline object fieldN_impl(self)
+    cdef inline object fieldO_impl(self)
+    cdef inline object fieldP_impl(self)
+    cdef inline object fieldQ_impl(self)
+    cdef inline object fieldR_impl(self)
+    cdef inline object fieldS_impl(self)
+    cdef inline object fieldT_impl(self)
+    cdef inline object fieldU_impl(self)
+    cdef inline object fieldX_impl(self)
     cdef Map__string_bool __fbthrift_cached_fieldB
     cdef Set__i32 __fbthrift_cached_fieldC
     cdef List__List__List__i32 __fbthrift_cached_fieldF

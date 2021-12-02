@@ -220,6 +220,11 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
 cdef class Internship(thrift.py3.types.Struct):
     cdef shared_ptr[cInternship] _cpp_obj
     cdef _fbthrift_types_fields.__Internship_FieldsSetter _fields_setter
+    cdef inline object weeks_impl(self)
+    cdef inline object title_impl(self)
+    cdef inline object employer_impl(self)
+    cdef inline object compensation_impl(self)
+    cdef inline object school_impl(self)
     cdef object __fbthrift_cached_employer
 
     @staticmethod
@@ -230,6 +235,8 @@ cdef class Internship(thrift.py3.types.Struct):
 cdef class Range(thrift.py3.types.Struct):
     cdef shared_ptr[cRange] _cpp_obj
     cdef _fbthrift_types_fields.__Range_FieldsSetter _fields_setter
+    cdef inline object min_impl(self)
+    cdef inline object max_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cRange])
@@ -239,6 +246,8 @@ cdef class Range(thrift.py3.types.Struct):
 cdef class struct1(thrift.py3.types.Struct):
     cdef shared_ptr[cstruct1] _cpp_obj
     cdef _fbthrift_types_fields.__struct1_FieldsSetter _fields_setter
+    cdef inline object a_impl(self)
+    cdef inline object b_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cstruct1])
@@ -248,6 +257,10 @@ cdef class struct1(thrift.py3.types.Struct):
 cdef class struct2(thrift.py3.types.Struct):
     cdef shared_ptr[cstruct2] _cpp_obj
     cdef _fbthrift_types_fields.__struct2_FieldsSetter _fields_setter
+    cdef inline object a_impl(self)
+    cdef inline object b_impl(self)
+    cdef inline object c_impl(self)
+    cdef inline object d_impl(self)
     cdef struct1 __fbthrift_cached_c
     cdef List__i32 __fbthrift_cached_d
 
@@ -259,6 +272,9 @@ cdef class struct2(thrift.py3.types.Struct):
 cdef class struct3(thrift.py3.types.Struct):
     cdef shared_ptr[cstruct3] _cpp_obj
     cdef _fbthrift_types_fields.__struct3_FieldsSetter _fields_setter
+    cdef inline object a_impl(self)
+    cdef inline object b_impl(self)
+    cdef inline object c_impl(self)
     cdef struct2 __fbthrift_cached_c
 
     @staticmethod
@@ -269,6 +285,9 @@ cdef class struct3(thrift.py3.types.Struct):
 cdef class struct4(thrift.py3.types.Struct):
     cdef shared_ptr[cstruct4] _cpp_obj
     cdef _fbthrift_types_fields.__struct4_FieldsSetter _fields_setter
+    cdef inline object a_impl(self)
+    cdef inline object b_impl(self)
+    cdef inline object c_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cstruct4])

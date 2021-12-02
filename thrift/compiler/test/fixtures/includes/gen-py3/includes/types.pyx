@@ -92,17 +92,23 @@ cdef class Included(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def MyIntField(self):
+    cdef inline MyIntField_impl(self):
 
         return deref(self._cpp_obj).MyIntField_ref().value()
 
     @property
-    def MyTransitiveField(self):
+    def MyIntField(self):
+        return self.MyIntField_impl()
+
+    cdef inline MyTransitiveField_impl(self):
 
         if self.__fbthrift_cached_MyTransitiveField is None:
             self.__fbthrift_cached_MyTransitiveField = _transitive_types.Foo._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).MyTransitiveField_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_MyTransitiveField
+
+    @property
+    def MyTransitiveField(self):
+        return self.MyTransitiveField_impl()
 
 
     def __hash__(Included self):

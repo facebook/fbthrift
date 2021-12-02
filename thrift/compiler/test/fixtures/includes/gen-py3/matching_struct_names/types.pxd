@@ -91,6 +91,7 @@ cdef extern from "src/gen-cpp2/matching_struct_names_types_custom_protocol.h" na
 cdef class MyStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStruct] _cpp_obj
     cdef _fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
+    cdef inline object field_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyStruct])
@@ -100,6 +101,10 @@ cdef class MyStruct(thrift.py3.types.Struct):
 cdef class Combo(thrift.py3.types.Struct):
     cdef shared_ptr[cCombo] _cpp_obj
     cdef _fbthrift_types_fields.__Combo_FieldsSetter _fields_setter
+    cdef inline object listOfOurMyStructLists_impl(self)
+    cdef inline object theirMyStructList_impl(self)
+    cdef inline object ourMyStructList_impl(self)
+    cdef inline object listOfTheirMyStructList_impl(self)
     cdef List__List__MyStruct __fbthrift_cached_listOfOurMyStructLists
     cdef List__module_MyStruct __fbthrift_cached_theirMyStructList
     cdef List__MyStruct __fbthrift_cached_ourMyStructList

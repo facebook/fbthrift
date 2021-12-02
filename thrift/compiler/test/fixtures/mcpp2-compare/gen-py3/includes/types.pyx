@@ -131,10 +131,13 @@ cdef class AStruct(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def FieldA(self):
+    cdef inline FieldA_impl(self):
 
         return deref(self._cpp_obj).FieldA_ref().value()
+
+    @property
+    def FieldA(self):
+        return self.FieldA_impl()
 
 
     def __hash__(AStruct self):
@@ -225,14 +228,17 @@ cdef class AStructB(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def FieldA(self):
+    cdef inline FieldA_impl(self):
 
         if self.__fbthrift_cached_FieldA is None:
             if not deref(self._cpp_obj).FieldA_ref():
                 return None
             self.__fbthrift_cached_FieldA = AStruct._fbthrift_create(__reference_shared_ptr(deref(deref(self._cpp_obj).FieldA_ref()), self._cpp_obj))
         return self.__fbthrift_cached_FieldA
+
+    @property
+    def FieldA(self):
+        return self.FieldA_impl()
 
 
     def __hash__(AStructB self):

@@ -813,6 +813,7 @@ cdef class Empty(thrift.py3.types.Struct):
 cdef class ASimpleStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cASimpleStruct] _cpp_obj
     cdef _fbthrift_types_fields.__ASimpleStruct_FieldsSetter _fields_setter
+    cdef inline object boolField_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cASimpleStruct])
@@ -822,6 +823,7 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
 cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
     cdef shared_ptr[cASimpleStructNoexcept] _cpp_obj
     cdef _fbthrift_types_fields.__ASimpleStructNoexcept_FieldsSetter _fields_setter
+    cdef inline object boolField_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cASimpleStructNoexcept])
@@ -831,6 +833,17 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
 cdef class MyStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStruct] _cpp_obj
     cdef _fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
+    cdef inline object MyBoolField_impl(self)
+    cdef inline object MyIntField_impl(self)
+    cdef inline object MyStringField_impl(self)
+    cdef inline object MyStringField2_impl(self)
+    cdef inline object MyBinaryField_impl(self)
+    cdef inline object MyBinaryField2_impl(self)
+    cdef inline object MyBinaryField3_impl(self)
+    cdef inline object MyBinaryListField4_impl(self)
+    cdef inline object MyMapEnumAndInt_impl(self)
+    cdef inline object MyCustomField_impl(self)
+    cdef inline object MyOptCustomField_impl(self)
     cdef List__binary __fbthrift_cached_MyBinaryListField4
     cdef Map__MyEnumA_string __fbthrift_cached_MyMapEnumAndInt
 
@@ -912,6 +925,23 @@ cdef class ComplexUnion(thrift.py3.types.Union):
 cdef class AnException(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cAnException] _cpp_obj
     cdef _fbthrift_types_fields.__AnException_FieldsSetter _fields_setter
+    cdef inline object code_impl(self)
+    cdef inline object req_code_impl(self)
+    cdef inline object message2_impl(self)
+    cdef inline object req_message_impl(self)
+    cdef inline object exception_list_impl(self)
+    cdef inline object exception_set_impl(self)
+    cdef inline object exception_map_impl(self)
+    cdef inline object req_exception_map_impl(self)
+    cdef inline object enum_field_impl(self)
+    cdef inline object enum_container_impl(self)
+    cdef inline object a_struct_impl(self)
+    cdef inline object a_set_struct_impl(self)
+    cdef inline object a_union_list_impl(self)
+    cdef inline object union_typedef_impl(self)
+    cdef inline object a_union_typedef_list_impl(self)
+    cdef inline object MyCustomField_impl(self)
+    cdef inline object MyOptCustomField_impl(self)
     cdef List__i32 __fbthrift_cached_exception_list
     cdef Set__i64 __fbthrift_cached_exception_set
     cdef Map__string_i32 __fbthrift_cached_exception_map
@@ -932,6 +962,9 @@ cdef class AnException(thrift.py3.exceptions.GeneratedError):
 cdef class AnotherException(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cAnotherException] _cpp_obj
     cdef _fbthrift_types_fields.__AnotherException_FieldsSetter _fields_setter
+    cdef inline object code_impl(self)
+    cdef inline object req_code_impl(self)
+    cdef inline object message_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cAnotherException])
@@ -941,6 +974,52 @@ cdef class AnotherException(thrift.py3.exceptions.GeneratedError):
 cdef class containerStruct(thrift.py3.types.Struct):
     cdef shared_ptr[ccontainerStruct] _cpp_obj
     cdef _fbthrift_types_fields.__containerStruct_FieldsSetter _fields_setter
+    cdef inline object fieldA_impl(self)
+    cdef inline object req_fieldA_impl(self)
+    cdef inline object opt_fieldA_impl(self)
+    cdef inline object fieldB_impl(self)
+    cdef inline object req_fieldB_impl(self)
+    cdef inline object opt_fieldB_impl(self)
+    cdef inline object fieldC_impl(self)
+    cdef inline object req_fieldC_impl(self)
+    cdef inline object opt_fieldC_impl(self)
+    cdef inline object fieldD_impl(self)
+    cdef inline object fieldE_impl(self)
+    cdef inline object req_fieldE_impl(self)
+    cdef inline object opt_fieldE_impl(self)
+    cdef inline object fieldF_impl(self)
+    cdef inline object fieldG_impl(self)
+    cdef inline object fieldH_impl(self)
+    cdef inline object fieldI_impl(self)
+    cdef inline object fieldJ_impl(self)
+    cdef inline object fieldK_impl(self)
+    cdef inline object fieldL_impl(self)
+    cdef inline object fieldM_impl(self)
+    cdef inline object fieldN_impl(self)
+    cdef inline object fieldO_impl(self)
+    cdef inline object fieldP_impl(self)
+    cdef inline object fieldQ_impl(self)
+    cdef inline object fieldR_impl(self)
+    cdef inline object req_fieldR_impl(self)
+    cdef inline object opt_fieldR_impl(self)
+    cdef inline object fieldS_impl(self)
+    cdef inline object fieldT_impl(self)
+    cdef inline object fieldU_impl(self)
+    cdef inline object fieldV_impl(self)
+    cdef inline object req_fieldV_impl(self)
+    cdef inline object opt_fieldV_impl(self)
+    cdef inline object fieldW_impl(self)
+    cdef inline object fieldX_impl(self)
+    cdef inline object req_fieldX_impl(self)
+    cdef inline object opt_fieldX_impl(self)
+    cdef inline object fieldY_impl(self)
+    cdef inline object fieldZ_impl(self)
+    cdef inline object fieldAA_impl(self)
+    cdef inline object fieldAB_impl(self)
+    cdef inline object fieldAC_impl(self)
+    cdef inline object fieldAD_impl(self)
+    cdef inline object fieldAE_impl(self)
+    cdef inline object fieldSD_impl(self)
     cdef Map__string_bool __fbthrift_cached_fieldB
     cdef Map__string_bool __fbthrift_cached_req_fieldB
     cdef Map__string_bool __fbthrift_cached_opt_fieldB
@@ -986,6 +1065,10 @@ cdef class containerStruct(thrift.py3.types.Struct):
 cdef class MyIncludedStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cMyIncludedStruct] _cpp_obj
     cdef _fbthrift_types_fields.__MyIncludedStruct_FieldsSetter _fields_setter
+    cdef inline object MyIncludedInt_impl(self)
+    cdef inline object MyIncludedStruct_impl(self)
+    cdef inline object ARefField_impl(self)
+    cdef inline object ARequiredField_impl(self)
     cdef _includes_types.AStruct __fbthrift_cached_MyIncludedStruct
     cdef _includes_types.AStruct __fbthrift_cached_ARefField
     cdef _includes_types.AStruct __fbthrift_cached_ARequiredField
@@ -998,6 +1081,46 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
 cdef class AnnotatedStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cAnnotatedStruct] _cpp_obj
     cdef _fbthrift_types_fields.__AnnotatedStruct_FieldsSetter _fields_setter
+    cdef inline object no_annotation_impl(self)
+    cdef inline object cpp_unique_ref_impl(self)
+    cdef inline object cpp2_unique_ref_impl(self)
+    cdef inline object container_with_ref_impl(self)
+    cdef inline object req_cpp_unique_ref_impl(self)
+    cdef inline object req_cpp2_unique_ref_impl(self)
+    cdef inline object req_container_with_ref_impl(self)
+    cdef inline object opt_cpp_unique_ref_impl(self)
+    cdef inline object opt_cpp2_unique_ref_impl(self)
+    cdef inline object opt_container_with_ref_impl(self)
+    cdef inline object ref_type_unique_impl(self)
+    cdef inline object ref_type_shared_impl(self)
+    cdef inline object ref_type_const_impl(self)
+    cdef inline object req_ref_type_shared_impl(self)
+    cdef inline object req_ref_type_const_impl(self)
+    cdef inline object req_ref_type_unique_impl(self)
+    cdef inline object opt_ref_type_const_impl(self)
+    cdef inline object opt_ref_type_unique_impl(self)
+    cdef inline object opt_ref_type_shared_impl(self)
+    cdef inline object base_type_impl(self)
+    cdef inline object list_type_impl(self)
+    cdef inline object set_type_impl(self)
+    cdef inline object map_type_impl(self)
+    cdef inline object map_struct_type_impl(self)
+    cdef inline object iobuf_type_impl(self)
+    cdef inline object iobuf_ptr_impl(self)
+    cdef inline object list_i32_template_impl(self)
+    cdef inline object list_string_template_impl(self)
+    cdef inline object set_template_impl(self)
+    cdef inline object map_template_impl(self)
+    cdef inline object typedef_list_template_impl(self)
+    cdef inline object typedef_deque_template_impl(self)
+    cdef inline object typedef_set_template_impl(self)
+    cdef inline object typedef_map_template_impl(self)
+    cdef inline object indirection_a_impl(self)
+    cdef inline object indirection_b_impl(self)
+    cdef inline object indirection_c_impl(self)
+    cdef inline object iobuf_type_val_impl(self)
+    cdef inline object iobuf_ptr_val_impl(self)
+    cdef inline object struct_struct_impl(self)
     cdef containerStruct __fbthrift_cached_no_annotation
     cdef containerStruct __fbthrift_cached_cpp_unique_ref
     cdef containerStruct __fbthrift_cached_cpp2_unique_ref
@@ -1045,6 +1168,8 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
 cdef class ComplexContainerStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cComplexContainerStruct] _cpp_obj
     cdef _fbthrift_types_fields.__ComplexContainerStruct_FieldsSetter _fields_setter
+    cdef inline object map_of_iobufs_impl(self)
+    cdef inline object map_of_iobuf_ptrs_impl(self)
     cdef Map__string_folly_IOBuf__binary __fbthrift_cached_map_of_iobufs
     cdef Map__string_std_unique_ptr_folly_IOBuf__binary __fbthrift_cached_map_of_iobuf_ptrs
 
@@ -1056,6 +1181,8 @@ cdef class ComplexContainerStruct(thrift.py3.types.Struct):
 cdef class FloatStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cFloatStruct] _cpp_obj
     cdef _fbthrift_types_fields.__FloatStruct_FieldsSetter _fields_setter
+    cdef inline object floatField_impl(self)
+    cdef inline object doubleField_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cFloatStruct])
@@ -1087,6 +1214,7 @@ cdef class FloatUnion(thrift.py3.types.Union):
 cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cAllRequiredNoExceptMoveCtrStruct] _cpp_obj
     cdef _fbthrift_types_fields.__AllRequiredNoExceptMoveCtrStruct_FieldsSetter _fields_setter
+    cdef inline object intField_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cAllRequiredNoExceptMoveCtrStruct])

@@ -82,6 +82,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
 cdef class CustomException(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cCustomException] _cpp_obj
     cdef _fbthrift_types_fields.__CustomException_FieldsSetter _fields_setter
+    cdef inline object message_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cCustomException])

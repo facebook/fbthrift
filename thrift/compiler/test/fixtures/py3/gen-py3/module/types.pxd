@@ -163,6 +163,7 @@ cdef extern from "src/gen-py3cpp/module_types_custom_protocol.h" namespace "::py
 cdef class SimpleException(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cSimpleException] _cpp_obj
     cdef _fbthrift_types_fields.__SimpleException_FieldsSetter _fields_setter
+    cdef inline object err_code_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cSimpleException])
@@ -172,6 +173,7 @@ cdef class SimpleException(thrift.py3.exceptions.GeneratedError):
 cdef class OptionalRefStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cOptionalRefStruct] _cpp_obj
     cdef _fbthrift_types_fields.__OptionalRefStruct_FieldsSetter _fields_setter
+    cdef inline object optional_blob_impl(self)
     cdef _fbthrift_iobuf.IOBuf __fbthrift_cached_optional_blob
 
     @staticmethod
@@ -182,6 +184,13 @@ cdef class OptionalRefStruct(thrift.py3.types.Struct):
 cdef class SimpleStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cSimpleStruct] _cpp_obj
     cdef _fbthrift_types_fields.__SimpleStruct_FieldsSetter _fields_setter
+    cdef inline object is_on_impl(self)
+    cdef inline object tiny_int_impl(self)
+    cdef inline object small_int_impl(self)
+    cdef inline object nice_sized_int_impl(self)
+    cdef inline object big_int_impl(self)
+    cdef inline object real_impl(self)
+    cdef inline object smaller_real_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cSimpleStruct])
@@ -191,6 +200,15 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
 cdef class ComplexStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cComplexStruct] _cpp_obj
     cdef _fbthrift_types_fields.__ComplexStruct_FieldsSetter _fields_setter
+    cdef inline object structOne_impl(self)
+    cdef inline object structTwo_impl(self)
+    cdef inline object an_integer_impl(self)
+    cdef inline object name_impl(self)
+    cdef inline object an_enum_impl(self)
+    cdef inline object some_bytes_impl(self)
+    cdef inline object sender_impl(self)
+    cdef inline object cdef__impl(self)
+    cdef inline object bytes_with_cpp_type_impl(self)
     cdef SimpleStruct __fbthrift_cached_structOne
     cdef SimpleStruct __fbthrift_cached_structTwo
     cdef object __fbthrift_cached_an_enum
@@ -224,6 +242,7 @@ cdef class BinaryUnion(thrift.py3.types.Union):
 cdef class BinaryUnionStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cBinaryUnionStruct] _cpp_obj
     cdef _fbthrift_types_fields.__BinaryUnionStruct_FieldsSetter _fields_setter
+    cdef inline object u_impl(self)
     cdef BinaryUnion __fbthrift_cached_u
 
     @staticmethod

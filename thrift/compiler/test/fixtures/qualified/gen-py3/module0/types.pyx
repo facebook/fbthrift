@@ -132,15 +132,21 @@ cdef class Struct(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def first(self):
+    cdef inline first_impl(self):
 
         return deref(self._cpp_obj).first_ref().value()
 
     @property
-    def second(self):
+    def first(self):
+        return self.first_impl()
+
+    cdef inline second_impl(self):
 
         return (<bytes>deref(self._cpp_obj).second_ref().value()).decode('UTF-8')
+
+    @property
+    def second(self):
+        return self.second_impl()
 
 
     def __hash__(Struct self):

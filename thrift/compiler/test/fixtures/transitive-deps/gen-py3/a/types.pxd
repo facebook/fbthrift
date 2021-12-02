@@ -78,6 +78,8 @@ cdef extern from "src/gen-cpp2/a_types_custom_protocol.h" namespace "::cpp2":
 cdef class A(thrift.py3.types.Struct):
     cdef shared_ptr[cA] _cpp_obj
     cdef _fbthrift_types_fields.__A_FieldsSetter _fields_setter
+    cdef inline object b_impl(self)
+    cdef inline object other_impl(self)
     cdef List__List__c_C __fbthrift_cached_b
     cdef List__c_C __fbthrift_cached_other
 

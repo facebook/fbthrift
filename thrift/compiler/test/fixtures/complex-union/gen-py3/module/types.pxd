@@ -286,6 +286,9 @@ cdef class DataUnion(thrift.py3.types.Union):
 cdef class Val(thrift.py3.types.Struct):
     cdef shared_ptr[cVal] _cpp_obj
     cdef _fbthrift_types_fields.__Val_FieldsSetter _fields_setter
+    cdef inline object strVal_impl(self)
+    cdef inline object intVal_impl(self)
+    cdef inline object typedefValue_impl(self)
     cdef Map__i16_string __fbthrift_cached_typedefValue
 
     @staticmethod
@@ -340,6 +343,7 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
 cdef class NonCopyableStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cNonCopyableStruct] _cpp_obj
     cdef _fbthrift_types_fields.__NonCopyableStruct_FieldsSetter _fields_setter
+    cdef inline object num_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cNonCopyableStruct])

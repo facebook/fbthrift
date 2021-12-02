@@ -132,15 +132,21 @@ cdef class MyStruct(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def MyIntField(self):
+    cdef inline MyIntField_impl(self):
 
         return deref(self._cpp_obj).MyIntField_ref().value()
 
     @property
-    def MyStringField(self):
+    def MyIntField(self):
+        return self.MyIntField_impl()
+
+    cdef inline MyStringField_impl(self):
 
         return (<bytes>deref(self._cpp_obj).MyStringField_ref().value()).decode('UTF-8')
+
+    @property
+    def MyStringField(self):
+        return self.MyStringField_impl()
 
 
     def __hash__(MyStruct self):

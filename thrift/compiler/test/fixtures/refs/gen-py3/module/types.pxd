@@ -324,6 +324,15 @@ cdef class MyUnion(thrift.py3.types.Union):
 cdef class MyField(thrift.py3.types.Struct):
     cdef shared_ptr[cMyField] _cpp_obj
     cdef _fbthrift_types_fields.__MyField_FieldsSetter _fields_setter
+    cdef inline object opt_value_impl(self)
+    cdef inline object value_impl(self)
+    cdef inline object req_value_impl(self)
+    cdef inline object opt_enum_value_impl(self)
+    cdef inline object enum_value_impl(self)
+    cdef inline object req_enum_value_impl(self)
+    cdef inline object opt_str_value_impl(self)
+    cdef inline object str_value_impl(self)
+    cdef inline object req_str_value_impl(self)
     cdef object __fbthrift_cached_opt_enum_value
     cdef object __fbthrift_cached_enum_value
     cdef object __fbthrift_cached_req_enum_value
@@ -336,6 +345,9 @@ cdef class MyField(thrift.py3.types.Struct):
 cdef class MyStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStruct] _cpp_obj
     cdef _fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
+    cdef inline object opt_ref_impl(self)
+    cdef inline object ref_impl(self)
+    cdef inline object req_ref_impl(self)
     cdef MyField __fbthrift_cached_opt_ref
     cdef MyField __fbthrift_cached_ref
     cdef MyField __fbthrift_cached_req_ref
@@ -348,6 +360,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
 cdef class StructWithUnion(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithUnion] _cpp_obj
     cdef _fbthrift_types_fields.__StructWithUnion_FieldsSetter _fields_setter
+    cdef inline object u_impl(self)
+    cdef inline object aDouble_impl(self)
+    cdef inline object f_impl(self)
     cdef MyUnion __fbthrift_cached_u
     cdef MyField __fbthrift_cached_f
 
@@ -359,6 +374,7 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
 cdef class RecursiveStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cRecursiveStruct] _cpp_obj
     cdef _fbthrift_types_fields.__RecursiveStruct_FieldsSetter _fields_setter
+    cdef inline object mes_impl(self)
     cdef List__RecursiveStruct __fbthrift_cached_mes
 
     @staticmethod
@@ -369,6 +385,12 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
 cdef class StructWithContainers(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithContainers] _cpp_obj
     cdef _fbthrift_types_fields.__StructWithContainers_FieldsSetter _fields_setter
+    cdef inline object list_ref_impl(self)
+    cdef inline object set_ref_impl(self)
+    cdef inline object map_ref_impl(self)
+    cdef inline object list_ref_unique_impl(self)
+    cdef inline object set_ref_shared_impl(self)
+    cdef inline object list_ref_shared_const_impl(self)
     cdef List__i32 __fbthrift_cached_list_ref
     cdef Set__i32 __fbthrift_cached_set_ref
     cdef Map__i32_i32 __fbthrift_cached_map_ref
@@ -384,6 +406,9 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
 cdef class StructWithSharedConst(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithSharedConst] _cpp_obj
     cdef _fbthrift_types_fields.__StructWithSharedConst_FieldsSetter _fields_setter
+    cdef inline object opt_shared_const_impl(self)
+    cdef inline object shared_const_impl(self)
+    cdef inline object req_shared_const_impl(self)
     cdef MyField __fbthrift_cached_opt_shared_const
     cdef MyField __fbthrift_cached_shared_const
     cdef MyField __fbthrift_cached_req_shared_const
@@ -405,6 +430,9 @@ cdef class Empty(thrift.py3.types.Struct):
 cdef class StructWithRef(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithRef] _cpp_obj
     cdef _fbthrift_types_fields.__StructWithRef_FieldsSetter _fields_setter
+    cdef inline object def_field_impl(self)
+    cdef inline object opt_field_impl(self)
+    cdef inline object req_field_impl(self)
     cdef Empty __fbthrift_cached_def_field
     cdef Empty __fbthrift_cached_opt_field
     cdef Empty __fbthrift_cached_req_field
@@ -417,6 +445,9 @@ cdef class StructWithRef(thrift.py3.types.Struct):
 cdef class StructWithBox(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithBox] _cpp_obj
     cdef _fbthrift_types_fields.__StructWithBox_FieldsSetter _fields_setter
+    cdef inline object a_impl(self)
+    cdef inline object b_impl(self)
+    cdef inline object c_impl(self)
     cdef List__i64 __fbthrift_cached_b
     cdef StructWithRef __fbthrift_cached_c
 
@@ -428,6 +459,9 @@ cdef class StructWithBox(thrift.py3.types.Struct):
 cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithRefTypeUnique] _cpp_obj
     cdef _fbthrift_types_fields.__StructWithRefTypeUnique_FieldsSetter _fields_setter
+    cdef inline object def_field_impl(self)
+    cdef inline object opt_field_impl(self)
+    cdef inline object req_field_impl(self)
     cdef Empty __fbthrift_cached_def_field
     cdef Empty __fbthrift_cached_opt_field
     cdef Empty __fbthrift_cached_req_field
@@ -440,6 +474,9 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
 cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithRefTypeShared] _cpp_obj
     cdef _fbthrift_types_fields.__StructWithRefTypeShared_FieldsSetter _fields_setter
+    cdef inline object def_field_impl(self)
+    cdef inline object opt_field_impl(self)
+    cdef inline object req_field_impl(self)
     cdef Empty __fbthrift_cached_def_field
     cdef Empty __fbthrift_cached_opt_field
     cdef Empty __fbthrift_cached_req_field
@@ -452,6 +489,9 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
 cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithRefTypeSharedConst] _cpp_obj
     cdef _fbthrift_types_fields.__StructWithRefTypeSharedConst_FieldsSetter _fields_setter
+    cdef inline object def_field_impl(self)
+    cdef inline object opt_field_impl(self)
+    cdef inline object req_field_impl(self)
     cdef Empty __fbthrift_cached_def_field
     cdef Empty __fbthrift_cached_opt_field
     cdef Empty __fbthrift_cached_req_field
@@ -464,6 +504,7 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
 cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] _cpp_obj
     cdef _fbthrift_types_fields.__StructWithRefAndAnnotCppNoexceptMoveCtor_FieldsSetter _fields_setter
+    cdef inline object def_field_impl(self)
     cdef Empty __fbthrift_cached_def_field
 
     @staticmethod
@@ -474,6 +515,11 @@ cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
 cdef class StructWithString(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithString] _cpp_obj
     cdef _fbthrift_types_fields.__StructWithString_FieldsSetter _fields_setter
+    cdef inline object def_unique_string_ref_impl(self)
+    cdef inline object def_shared_string_ref_impl(self)
+    cdef inline object def_shared_string_const_ref_impl(self)
+    cdef inline object unique_string_ref_impl(self)
+    cdef inline object shared_string_ref_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cStructWithString])

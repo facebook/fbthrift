@@ -201,10 +201,13 @@ cdef class SimpleException(thrift.py3.exceptions.GeneratedError):
         _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
         return __fbthrift_inst
 
-    @property
-    def err_code(self):
+    cdef inline err_code_impl(self):
 
         return deref(self._cpp_obj).err_code_ref().value()
+
+    @property
+    def err_code(self):
+        return self.err_code_impl()
 
 
     def __hash__(SimpleException self):
@@ -296,8 +299,7 @@ cdef class OptionalRefStruct(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def optional_blob(self):
+    cdef inline optional_blob_impl(self):
         if not deref(self._cpp_obj).optional_blob_ref().has_value():
             return None
 
@@ -306,6 +308,10 @@ cdef class OptionalRefStruct(thrift.py3.types.Struct):
                 return None
             self.__fbthrift_cached_optional_blob = _fbthrift_iobuf.IOBuf.create(deref(self._cpp_obj).optional_blob_ref().value_unchecked().get(), self)
         return self.__fbthrift_cached_optional_blob
+
+    @property
+    def optional_blob(self):
+        return self.optional_blob_impl()
 
 
     def __hash__(OptionalRefStruct self):
@@ -403,40 +409,61 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def is_on(self):
+    cdef inline is_on_impl(self):
 
         return <pbool> deref(self._cpp_obj).is_on_ref().value()
 
     @property
-    def tiny_int(self):
+    def is_on(self):
+        return self.is_on_impl()
+
+    cdef inline tiny_int_impl(self):
 
         return deref(self._cpp_obj).tiny_int_ref().value()
 
     @property
-    def small_int(self):
+    def tiny_int(self):
+        return self.tiny_int_impl()
+
+    cdef inline small_int_impl(self):
 
         return deref(self._cpp_obj).small_int_ref().value()
 
     @property
-    def nice_sized_int(self):
+    def small_int(self):
+        return self.small_int_impl()
+
+    cdef inline nice_sized_int_impl(self):
 
         return deref(self._cpp_obj).nice_sized_int_ref().value()
 
     @property
-    def big_int(self):
+    def nice_sized_int(self):
+        return self.nice_sized_int_impl()
+
+    cdef inline big_int_impl(self):
 
         return deref(self._cpp_obj).big_int_ref().value()
 
     @property
-    def real(self):
+    def big_int(self):
+        return self.big_int_impl()
+
+    cdef inline real_impl(self):
 
         return deref(self._cpp_obj).real_ref().value()
 
     @property
-    def smaller_real(self):
+    def real(self):
+        return self.real_impl()
+
+    cdef inline smaller_real_impl(self):
 
         return deref(self._cpp_obj).smaller_real_ref().value()
+
+    @property
+    def smaller_real(self):
+        return self.smaller_real_impl()
 
 
     def __hash__(SimpleStruct self):
@@ -536,56 +563,83 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def structOne(self):
+    cdef inline structOne_impl(self):
 
         if self.__fbthrift_cached_structOne is None:
             self.__fbthrift_cached_structOne = SimpleStruct._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).structOne_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_structOne
 
     @property
-    def structTwo(self):
+    def structOne(self):
+        return self.structOne_impl()
+
+    cdef inline structTwo_impl(self):
 
         if self.__fbthrift_cached_structTwo is None:
             self.__fbthrift_cached_structTwo = SimpleStruct._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).structTwo_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_structTwo
 
     @property
-    def an_integer(self):
+    def structTwo(self):
+        return self.structTwo_impl()
+
+    cdef inline an_integer_impl(self):
 
         return deref(self._cpp_obj).an_integer_ref().value()
 
     @property
-    def name(self):
+    def an_integer(self):
+        return self.an_integer_impl()
+
+    cdef inline name_impl(self):
 
         return (<bytes>deref(self._cpp_obj).name_ref().value()).decode('UTF-8')
 
     @property
-    def an_enum(self):
+    def name(self):
+        return self.name_impl()
+
+    cdef inline an_enum_impl(self):
 
         if self.__fbthrift_cached_an_enum is None:
             self.__fbthrift_cached_an_enum = translate_cpp_enum_to_python(AnEnum, <int>(deref(self._cpp_obj).an_enum_ref().value()))
         return self.__fbthrift_cached_an_enum
 
     @property
-    def some_bytes(self):
+    def an_enum(self):
+        return self.an_enum_impl()
+
+    cdef inline some_bytes_impl(self):
 
         return deref(self._cpp_obj).some_bytes_ref().value()
 
     @property
-    def sender(self):
+    def some_bytes(self):
+        return self.some_bytes_impl()
+
+    cdef inline sender_impl(self):
 
         return (<bytes>deref(self._cpp_obj).sender_ref().value()).decode('UTF-8')
 
     @property
-    def cdef_(self):
+    def sender(self):
+        return self.sender_impl()
+
+    cdef inline cdef__impl(self):
 
         return (<bytes>deref(self._cpp_obj).cdef__ref().value()).decode('UTF-8')
 
     @property
-    def bytes_with_cpp_type(self):
+    def cdef_(self):
+        return self.cdef__impl()
+
+    cdef inline bytes_with_cpp_type_impl(self):
 
         return (<const char*>deref(self._cpp_obj).bytes_with_cpp_type_ref().value().data())[:deref(self._cpp_obj).bytes_with_cpp_type_ref().value().size()]
+
+    @property
+    def bytes_with_cpp_type(self):
+        return self.bytes_with_cpp_type_impl()
 
 
     def __hash__(ComplexStruct self):
@@ -787,12 +841,15 @@ cdef class BinaryUnionStruct(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def u(self):
+    cdef inline u_impl(self):
 
         if self.__fbthrift_cached_u is None:
             self.__fbthrift_cached_u = BinaryUnion._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).u_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_u
+
+    @property
+    def u(self):
+        return self.u_impl()
 
 
     def __hash__(BinaryUnionStruct self):

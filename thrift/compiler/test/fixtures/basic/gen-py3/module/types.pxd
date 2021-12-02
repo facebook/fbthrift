@@ -127,6 +127,13 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
 cdef class MyStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStruct] _cpp_obj
     cdef _fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
+    cdef inline object MyIntField_impl(self)
+    cdef inline object MyStringField_impl(self)
+    cdef inline object MyDataField_impl(self)
+    cdef inline object myEnum_impl(self)
+    cdef inline object oneway_impl(self)
+    cdef inline object readonly_impl(self)
+    cdef inline object idempotent_impl(self)
     cdef MyDataItem __fbthrift_cached_MyDataField
     cdef object __fbthrift_cached_myEnum
 

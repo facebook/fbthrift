@@ -92,31 +92,43 @@ cdef class Foo(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def myInteger(self):
+    cdef inline myInteger_impl(self):
 
         return deref(self._cpp_obj).myInteger_ref().value()
 
     @property
-    def myString(self):
+    def myInteger(self):
+        return self.myInteger_impl()
+
+    cdef inline myString_impl(self):
         if not deref(self._cpp_obj).myString_ref().has_value():
             return None
 
         return (<bytes>deref(self._cpp_obj).myString_ref().value_unchecked()).decode('UTF-8')
 
     @property
-    def myBools(self):
+    def myString(self):
+        return self.myString_impl()
+
+    cdef inline myBools_impl(self):
 
         if self.__fbthrift_cached_myBools is None:
             self.__fbthrift_cached_myBools = List__bool._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).myBools_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_myBools
 
     @property
-    def myNumbers(self):
+    def myBools(self):
+        return self.myBools_impl()
+
+    cdef inline myNumbers_impl(self):
 
         if self.__fbthrift_cached_myNumbers is None:
             self.__fbthrift_cached_myNumbers = List__i32._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).myNumbers_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_myNumbers
+
+    @property
+    def myNumbers(self):
+        return self.myNumbers_impl()
 
 
     def __hash__(Foo self):

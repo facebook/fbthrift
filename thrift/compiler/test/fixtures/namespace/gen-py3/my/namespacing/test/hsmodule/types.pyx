@@ -89,10 +89,13 @@ cdef class HsFoo(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def MyInt(self):
+    cdef inline MyInt_impl(self):
 
         return deref(self._cpp_obj).MyInt_ref().value()
+
+    @property
+    def MyInt(self):
+        return self.MyInt_impl()
 
 
     def __hash__(HsFoo self):

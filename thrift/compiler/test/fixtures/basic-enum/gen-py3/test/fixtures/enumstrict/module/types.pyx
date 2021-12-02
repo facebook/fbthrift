@@ -216,19 +216,25 @@ cdef class MyStruct(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def myEnum(self):
+    cdef inline myEnum_impl(self):
 
         if self.__fbthrift_cached_myEnum is None:
             self.__fbthrift_cached_myEnum = translate_cpp_enum_to_python(MyEnum, <int>(deref(self._cpp_obj).myEnum_ref().value()))
         return self.__fbthrift_cached_myEnum
 
     @property
-    def myBigEnum(self):
+    def myEnum(self):
+        return self.myEnum_impl()
+
+    cdef inline myBigEnum_impl(self):
 
         if self.__fbthrift_cached_myBigEnum is None:
             self.__fbthrift_cached_myBigEnum = translate_cpp_enum_to_python(MyBigEnum, <int>(deref(self._cpp_obj).myBigEnum_ref().value()))
         return self.__fbthrift_cached_myBigEnum
+
+    @property
+    def myBigEnum(self):
+        return self.myBigEnum_impl()
 
 
     def __hash__(MyStruct self):

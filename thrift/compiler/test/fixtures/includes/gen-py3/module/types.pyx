@@ -93,24 +93,33 @@ cdef class MyStruct(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def MyIncludedField(self):
+    cdef inline MyIncludedField_impl(self):
 
         if self.__fbthrift_cached_MyIncludedField is None:
             self.__fbthrift_cached_MyIncludedField = _includes_types.Included._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).MyIncludedField_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_MyIncludedField
 
     @property
-    def MyOtherIncludedField(self):
+    def MyIncludedField(self):
+        return self.MyIncludedField_impl()
+
+    cdef inline MyOtherIncludedField_impl(self):
 
         if self.__fbthrift_cached_MyOtherIncludedField is None:
             self.__fbthrift_cached_MyOtherIncludedField = _includes_types.Included._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).MyOtherIncludedField_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_MyOtherIncludedField
 
     @property
-    def MyIncludedInt(self):
+    def MyOtherIncludedField(self):
+        return self.MyOtherIncludedField_impl()
+
+    cdef inline MyIncludedInt_impl(self):
 
         return deref(self._cpp_obj).MyIncludedInt_ref().value()
+
+    @property
+    def MyIncludedInt(self):
+        return self.MyIncludedInt_impl()
 
 
     def __hash__(MyStruct self):

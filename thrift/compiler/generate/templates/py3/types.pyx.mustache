@@ -148,8 +148,7 @@ cdef class {{struct:name}}({{> types/python_struct_class}}):
         return __fbthrift_inst
 
     {{#struct:fields_and_mixin_fields}}
-    @property
-    def {{field:py_name}}(self):
+    cdef inline {{field:py_name}}_impl(self):
         {{#field:optional?}}
         {{^field:hasDefaultValue?}}
         {{#field:has_ref_accessor?}}
@@ -163,6 +162,10 @@ cdef class {{struct:name}}({{> types/python_struct_class}}):
         {{> types/cython_struct_getter}}
 
         {{/field:type}}
+
+    @property
+    def {{field:py_name}}(self):
+        return self.{{field:py_name}}_impl()
 
     {{/struct:fields_and_mixin_fields}}
 

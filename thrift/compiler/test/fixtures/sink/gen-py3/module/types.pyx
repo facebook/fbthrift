@@ -89,10 +89,13 @@ cdef class InitialResponse(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def content(self):
+    cdef inline content_impl(self):
 
         return (<bytes>deref(self._cpp_obj).content_ref().value()).decode('UTF-8')
+
+    @property
+    def content(self):
+        return self.content_impl()
 
 
     def __hash__(InitialResponse self):
@@ -184,10 +187,13 @@ cdef class FinalResponse(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def content(self):
+    cdef inline content_impl(self):
 
         return (<bytes>deref(self._cpp_obj).content_ref().value()).decode('UTF-8')
+
+    @property
+    def content(self):
+        return self.content_impl()
 
 
     def __hash__(FinalResponse self):
@@ -279,10 +285,13 @@ cdef class SinkPayload(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def content(self):
+    cdef inline content_impl(self):
 
         return (<bytes>deref(self._cpp_obj).content_ref().value()).decode('UTF-8')
+
+    @property
+    def content(self):
+        return self.content_impl()
 
 
     def __hash__(SinkPayload self):
@@ -374,10 +383,13 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def sink(self):
+    cdef inline sink_impl(self):
 
         return (<bytes>deref(self._cpp_obj).sink_ref().value()).decode('UTF-8')
+
+    @property
+    def sink(self):
+        return self.sink_impl()
 
 
     def __hash__(CompatibleWithKeywordSink self):
@@ -460,10 +472,13 @@ cdef class InitialException(thrift.py3.exceptions.GeneratedError):
         _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
         return __fbthrift_inst
 
-    @property
-    def reason(self):
+    cdef inline reason_impl(self):
 
         return (<bytes>deref(self._cpp_obj).reason_ref().value()).decode('UTF-8')
+
+    @property
+    def reason(self):
+        return self.reason_impl()
 
 
     def __hash__(InitialException self):
@@ -546,10 +561,13 @@ cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
         _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
         return __fbthrift_inst
 
-    @property
-    def reason(self):
+    cdef inline reason_impl(self):
 
         return (<bytes>deref(self._cpp_obj).reason_ref().value()).decode('UTF-8')
+
+    @property
+    def reason(self):
+        return self.reason_impl()
 
 
     def __hash__(SinkException1 self):
@@ -632,10 +650,13 @@ cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
         _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
         return __fbthrift_inst
 
-    @property
-    def reason(self):
+    cdef inline reason_impl(self):
 
         return deref(self._cpp_obj).reason_ref().value()
+
+    @property
+    def reason(self):
+        return self.reason_impl()
 
 
     def __hash__(SinkException2 self):

@@ -101,6 +101,7 @@ cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::a::dif
 cdef class AStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cAStruct] _cpp_obj
     cdef _fbthrift_types_fields.__AStruct_FieldsSetter _fields_setter
+    cdef inline object FieldA_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cAStruct])
@@ -110,6 +111,7 @@ cdef class AStruct(thrift.py3.types.Struct):
 cdef class AStructB(thrift.py3.types.Struct):
     cdef shared_ptr[cAStructB] _cpp_obj
     cdef _fbthrift_types_fields.__AStructB_FieldsSetter _fields_setter
+    cdef inline object FieldA_impl(self)
     cdef AStruct __fbthrift_cached_FieldA
 
     @staticmethod

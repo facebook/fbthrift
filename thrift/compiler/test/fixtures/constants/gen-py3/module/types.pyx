@@ -287,18 +287,23 @@ cdef class Internship(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def weeks(self):
+    cdef inline weeks_impl(self):
 
         return deref(self._cpp_obj).weeks_ref().value()
 
     @property
-    def title(self):
+    def weeks(self):
+        return self.weeks_impl()
+
+    cdef inline title_impl(self):
 
         return (<bytes>deref(self._cpp_obj).title_ref().value()).decode('UTF-8')
 
     @property
-    def employer(self):
+    def title(self):
+        return self.title_impl()
+
+    cdef inline employer_impl(self):
         if not deref(self._cpp_obj).employer_ref().has_value():
             return None
 
@@ -307,18 +312,28 @@ cdef class Internship(thrift.py3.types.Struct):
         return self.__fbthrift_cached_employer
 
     @property
-    def compensation(self):
+    def employer(self):
+        return self.employer_impl()
+
+    cdef inline compensation_impl(self):
         if not deref(self._cpp_obj).compensation_ref().has_value():
             return None
 
         return deref(self._cpp_obj).compensation_ref().value_unchecked()
 
     @property
-    def school(self):
+    def compensation(self):
+        return self.compensation_impl()
+
+    cdef inline school_impl(self):
         if not deref(self._cpp_obj).school_ref().has_value():
             return None
 
         return (<bytes>deref(self._cpp_obj).school_ref().value_unchecked()).decode('UTF-8')
+
+    @property
+    def school(self):
+        return self.school_impl()
 
 
     def __hash__(Internship self):
@@ -411,15 +426,21 @@ cdef class Range(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def min(self):
+    cdef inline min_impl(self):
 
         return deref(self._cpp_obj).min_ref().value()
 
     @property
-    def max(self):
+    def min(self):
+        return self.min_impl()
+
+    cdef inline max_impl(self):
 
         return deref(self._cpp_obj).max_ref().value()
+
+    @property
+    def max(self):
+        return self.max_impl()
 
 
     def __hash__(Range self):
@@ -512,15 +533,21 @@ cdef class struct1(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def a(self):
+    cdef inline a_impl(self):
 
         return deref(self._cpp_obj).a_ref().value()
 
     @property
-    def b(self):
+    def a(self):
+        return self.a_impl()
+
+    cdef inline b_impl(self):
 
         return (<bytes>deref(self._cpp_obj).b_ref().value()).decode('UTF-8')
+
+    @property
+    def b(self):
+        return self.b_impl()
 
 
     def __hash__(struct1 self):
@@ -615,29 +642,41 @@ cdef class struct2(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def a(self):
+    cdef inline a_impl(self):
 
         return deref(self._cpp_obj).a_ref().value()
 
     @property
-    def b(self):
+    def a(self):
+        return self.a_impl()
+
+    cdef inline b_impl(self):
 
         return (<bytes>deref(self._cpp_obj).b_ref().value()).decode('UTF-8')
 
     @property
-    def c(self):
+    def b(self):
+        return self.b_impl()
+
+    cdef inline c_impl(self):
 
         if self.__fbthrift_cached_c is None:
             self.__fbthrift_cached_c = struct1._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).c_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_c
 
     @property
-    def d(self):
+    def c(self):
+        return self.c_impl()
+
+    cdef inline d_impl(self):
 
         if self.__fbthrift_cached_d is None:
             self.__fbthrift_cached_d = List__i32._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).d_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_d
+
+    @property
+    def d(self):
+        return self.d_impl()
 
 
     def __hash__(struct2 self):
@@ -731,22 +770,31 @@ cdef class struct3(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def a(self):
+    cdef inline a_impl(self):
 
         return (<bytes>deref(self._cpp_obj).a_ref().value()).decode('UTF-8')
 
     @property
-    def b(self):
+    def a(self):
+        return self.a_impl()
+
+    cdef inline b_impl(self):
 
         return deref(self._cpp_obj).b_ref().value()
 
     @property
-    def c(self):
+    def b(self):
+        return self.b_impl()
+
+    cdef inline c_impl(self):
 
         if self.__fbthrift_cached_c is None:
             self.__fbthrift_cached_c = struct2._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).c_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_c
+
+    @property
+    def c(self):
+        return self.c_impl()
 
 
     def __hash__(struct3 self):
@@ -840,24 +888,33 @@ cdef class struct4(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def a(self):
+    cdef inline a_impl(self):
 
         return deref(self._cpp_obj).a_ref().value()
 
     @property
-    def b(self):
+    def a(self):
+        return self.a_impl()
+
+    cdef inline b_impl(self):
         if not deref(self._cpp_obj).b_ref().has_value():
             return None
 
         return deref(self._cpp_obj).b_ref().value_unchecked()
 
     @property
-    def c(self):
+    def b(self):
+        return self.b_impl()
+
+    cdef inline c_impl(self):
         if not deref(self._cpp_obj).c_ref().has_value():
             return None
 
         return deref(self._cpp_obj).c_ref().value_unchecked()
+
+    @property
+    def c(self):
+        return self.c_impl()
 
 
     def __hash__(struct4 self):

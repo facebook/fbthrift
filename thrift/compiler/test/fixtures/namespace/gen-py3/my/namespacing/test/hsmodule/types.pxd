@@ -75,6 +75,7 @@ cdef extern from "gen-cpp2/hsmodule_types_custom_protocol.h" namespace "::cpp2":
 cdef class HsFoo(thrift.py3.types.Struct):
     cdef shared_ptr[cHsFoo] _cpp_obj
     cdef _fbthrift_types_fields.__HsFoo_FieldsSetter _fields_setter
+    cdef inline object MyInt_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cHsFoo])

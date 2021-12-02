@@ -117,6 +117,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
 cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStructNestedAnnotation] _cpp_obj
     cdef _fbthrift_types_fields.__MyStructNestedAnnotation_FieldsSetter _fields_setter
+    cdef inline object name_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyStructNestedAnnotation])
@@ -126,6 +127,12 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
 cdef class MyStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStruct] _cpp_obj
     cdef _fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
+    cdef inline object major_impl(self)
+    cdef inline object package_impl(self)
+    cdef inline object annotation_with_quote_impl(self)
+    cdef inline object class__impl(self)
+    cdef inline object annotation_with_trailing_comma_impl(self)
+    cdef inline object empty_annotations_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyStruct])
@@ -135,6 +142,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
 cdef class SecretStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cSecretStruct] _cpp_obj
     cdef _fbthrift_types_fields.__SecretStruct_FieldsSetter _fields_setter
+    cdef inline object id_impl(self)
+    cdef inline object password_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cSecretStruct])

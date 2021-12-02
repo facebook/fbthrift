@@ -82,10 +82,13 @@ cdef class CustomException(thrift.py3.exceptions.GeneratedError):
         _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
         return __fbthrift_inst
 
-    @property
-    def message(self):
+    cdef inline message_impl(self):
 
         return (<bytes>deref(self._cpp_obj).message_ref().value()).decode('UTF-8')
+
+    @property
+    def message(self):
+        return self.message_impl()
 
 
     def __hash__(CustomException self):

@@ -138,6 +138,14 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
 cdef class Foo(thrift.py3.types.Struct):
     cdef shared_ptr[cFoo] _cpp_obj
     cdef _fbthrift_types_fields.__Foo_FieldsSetter _fields_setter
+    cdef inline object intField_impl(self)
+    cdef inline object optionalIntField_impl(self)
+    cdef inline object intFieldWithDefault_impl(self)
+    cdef inline object setField_impl(self)
+    cdef inline object optionalSetField_impl(self)
+    cdef inline object mapField_impl(self)
+    cdef inline object optionalMapField_impl(self)
+    cdef inline object binaryField_impl(self)
     cdef Set__string __fbthrift_cached_setField
     cdef Set__string __fbthrift_cached_optionalSetField
     cdef Map__string_List__string __fbthrift_cached_mapField
@@ -175,6 +183,12 @@ cdef class Baz(thrift.py3.types.Union):
 cdef class Bar(thrift.py3.types.Struct):
     cdef shared_ptr[cBar] _cpp_obj
     cdef _fbthrift_types_fields.__Bar_FieldsSetter _fields_setter
+    cdef inline object structField_impl(self)
+    cdef inline object optionalStructField_impl(self)
+    cdef inline object structListField_impl(self)
+    cdef inline object optionalStructListField_impl(self)
+    cdef inline object unionField_impl(self)
+    cdef inline object optionalUnionField_impl(self)
     cdef Foo __fbthrift_cached_structField
     cdef Foo __fbthrift_cached_optionalStructField
     cdef List__Foo __fbthrift_cached_structListField
@@ -190,6 +204,7 @@ cdef class Bar(thrift.py3.types.Struct):
 cdef class StructWithFieldAdapter(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithFieldAdapter] _cpp_obj
     cdef _fbthrift_types_fields.__StructWithFieldAdapter_FieldsSetter _fields_setter
+    cdef inline object field_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cStructWithFieldAdapter])

@@ -94,19 +94,25 @@ cdef class A(thrift.py3.types.Struct):
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
-    @property
-    def b(self):
+    cdef inline b_impl(self):
 
         if self.__fbthrift_cached_b is None:
             self.__fbthrift_cached_b = List__List__c_C._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).b_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_b
 
     @property
-    def other(self):
+    def b(self):
+        return self.b_impl()
+
+    cdef inline other_impl(self):
 
         if self.__fbthrift_cached_other is None:
             self.__fbthrift_cached_other = List__c_C._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).other_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_other
+
+    @property
+    def other(self):
+        return self.other_impl()
 
 
     def __hash__(A self):
