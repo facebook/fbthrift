@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <cassert>
 #include <cctype>
 #include <set>
 #include <string>
@@ -215,6 +216,12 @@ struct rust_codegen_options {
   // Enabled by `--gen rust:serde`.
   bool serde = false;
 
+  // Whether fields w/optional values of None should
+  // be skipped during serialization. Enabled w/ `--gen
+  // rust:skip_none_serialization` Note: `rust:serde` must also be set for this
+  // to affect codegen.
+  bool skip_none_serialization = false;
+
   // Whether to skip server stubs. Server stubs are built by default, but can
   // be turned off via `--gen rust:noserver`.
   bool noserver = false;
@@ -281,6 +288,11 @@ class t_mstch_rust_generator : public t_mstch_generator {
 
     options_.serde = parsed_options.count("serde");
     options_.noserver = parsed_options.count("noserver");
+    options_.skip_none_serialization =
+        parsed_options.count("skip_none_serialization");
+    if (options_.skip_none_serialization) {
+      assert(options_.serde);
+    }
 
     auto include_prefix_flag = parsed_options.find("include_prefix");
     if (include_prefix_flag != parsed_options.end()) {
@@ -337,6 +349,8 @@ class mstch_rust_program : public mstch_program {
             {"program:nonexhaustiveStructs?",
              &mstch_rust_program::rust_nonexhaustive_structs},
             {"program:serde?", &mstch_rust_program::rust_serde},
+            {"program:skip_none_serialization?",
+             &mstch_rust_program::rust_skip_none_serialization},
             {"program:server?", &mstch_rust_program::rust_server},
             {"program:multifile?", &mstch_rust_program::rust_multifile},
             {"program:crate", &mstch_rust_program::rust_crate},
@@ -376,6 +390,9 @@ class mstch_rust_program : public mstch_program {
     return false;
   }
   mstch::node rust_serde() { return options_.serde; }
+  mstch::node rust_skip_none_serialization() {
+    return options_.skip_none_serialization;
+  }
   mstch::node rust_server() { return !options_.noserver; }
   mstch::node rust_multifile() { return options_.multifile_mode; }
   mstch::node rust_crate() {

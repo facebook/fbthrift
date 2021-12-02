@@ -35,7 +35,11 @@
         #[serde(rename = "{{field:name}}")]{{!
         }}{{/field:rename?}}{{^field:optional?}}
         #[serde(default)]{{!
-        }}{{/field:optional?}}{{/program:serde?}}{{#field:docs?}}
+        }}{{/field:optional?}}{{!
+        }}{{#field:optional?}}{{#program:skip_none_serialization?}}
+        #[serde(skip_serializing_if = "Option::is_none")]{{!
+        }}{{/program:skip_none_serialization?}}{{/field:optional?}}{{!
+        }}{{/program:serde?}}{{#field:docs?}}
         #[doc = {{field:docs}}]{{!
         }}{{/field:docs?}}
         pub {{field:rust_name}}: {{>lib/fieldtype}},{{!
