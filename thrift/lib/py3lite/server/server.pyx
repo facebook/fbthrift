@@ -17,9 +17,9 @@ import sys
 import traceback
 
 from cpython.ref cimport PyObject
+from cython.operator cimport dereference
 from libcpp.map cimport map as cmap
-from libcpp.memory cimport make_shared, static_pointer_cast
-from libcpp.string cimport string
+from libcpp.memory cimport make_unique, make_shared, static_pointer_cast
 from libcpp.unordered_set cimport unordered_set
 from libcpp.utility cimport move as cmove
 from folly.executor cimport get_executor
@@ -37,8 +37,15 @@ def oneway(func):
     func.is_one_way = True
     return func
 
+cdef class PythonUserException(Exception):
+    def __init__(self, type_: str, reason: str, buf: IOBuf) -> None:
+        self._cpp_obj = make_unique[cPythonUserException](<string>type_.encode('UTF-8'), <string>reason.encode('UTF-8'), cmove(buf._ours))
+
 cdef class Promise_Py:
-    cdef error(Promise_Py self, cTApplicationException err):
+    cdef error_ta(Promise_Py self, cTApplicationException err):
+        pass
+
+    cdef error_py(Promise_Py self, cPythonUserException err):
         pass
 
     cdef complete(Promise_Py self, object pyobj):
@@ -53,8 +60,11 @@ cdef class Promise_IOBuf(Promise_Py):
     def __dealloc__(self):
         del self.cPromise
 
-    cdef error(Promise_IOBuf self, cTApplicationException err):
+    cdef error_ta(Promise_IOBuf self, cTApplicationException err):
         self.cPromise.setException(err)
+
+    cdef error_py(Promise_IOBuf self, cPythonUserException err):
+        self.cPromise.setException(cmove(err))
 
     cdef complete(Promise_IOBuf self, object pyobj):
         self.cPromise.setValue(cmove((<IOBuf>pyobj)._ours))
@@ -74,8 +84,11 @@ cdef class Promise_cFollyUnit(Promise_Py):
     def __dealloc__(self):
         del self.cPromise
 
-    cdef error(Promise_cFollyUnit self, cTApplicationException err):
+    cdef error_ta(Promise_cFollyUnit self, cTApplicationException err):
         self.cPromise.setException(err)
+
+    cdef error_py(Promise_cFollyUnit self, cPythonUserException err):
+        self.cPromise.setException(cmove(err))
 
     cdef complete(Promise_cFollyUnit self, object _):
         self.cPromise.setValue(c_unit)
@@ -89,9 +102,12 @@ cdef class Promise_cFollyUnit(Promise_Py):
 async def serverCallback_coro(object callFunc, str funcName, Promise_Py promise, IOBuf buf, Protocol prot):
     try:
         val = await callFunc(buf, prot)
+    except PythonUserException as pyex:
+        promise.error_py(cmove(dereference((<PythonUserException>pyex)._cpp_obj.release())))
     except ApplicationError as ex:
+        pass
         # If the handler raised an ApplicationError convert it to a C++ one
-        promise.error(cTApplicationException(
+        promise.error_ta(cTApplicationException(
             ex.type.value, ex.message.encode('UTF-8')
         ))
     except Exception as ex:
@@ -99,13 +115,13 @@ async def serverCallback_coro(object callFunc, str funcName, Promise_Py promise,
             f"Unexpected error in {funcName}:",
             file=sys.stderr)
         traceback.print_exc()
-        promise.error(cTApplicationException(
+        promise.error_ta(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     except asyncio.CancelledError as ex:
         print(f"Coroutine was cancelled in service handler {funcName}:", file=sys.stderr)
         traceback.print_exc()
-        promise.error(cTApplicationException(
+        promise.error_ta(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
     else:

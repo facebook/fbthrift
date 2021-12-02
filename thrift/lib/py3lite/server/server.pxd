@@ -13,12 +13,16 @@
 # limitations under the License.
 
 from libcpp.memory cimport unique_ptr
+from libcpp.string cimport string
 from folly.iobuf cimport cIOBuf
 from thrift.py3.server cimport cAsyncProcessorFactory, AsyncProcessorFactory
+from thrift.py3.exceptions cimport cException
 
 cdef extern from "thrift/lib/py3lite/server/server.h" namespace "::thrift::py3lite":
     cdef cppclass cPy3LiteAsyncProcessorFactory "::thrift::py3lite::Py3LiteAsyncProcessorFactory"(cAsyncProcessorFactory):
         cPy3LiteAsyncProcessorFactory()
+    cdef cppclass cPythonUserException "::thrift::py3lite::PythonUserException"(cException):
+        cPythonUserException(string, string, unique_ptr[cIOBuf] buf) except +
 
 cdef extern from "thrift/lib/cpp2/async/RpcTypes.h" namespace "::apache::thrift":
     cdef cppclass SerializedRequest "::apache::thrift::SerializedRequest":
@@ -30,3 +34,6 @@ cdef class ServiceInterface:
 cdef class Py3LiteAsyncProcessorFactory(AsyncProcessorFactory):
     @staticmethod
     cdef Py3LiteAsyncProcessorFactory create(dict funcMap, bytes serviceName)
+
+cdef class PythonUserException(Exception):
+    cdef unique_ptr[cPythonUserException] _cpp_obj

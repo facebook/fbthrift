@@ -10,7 +10,7 @@ import typing as _typing
 import folly.iobuf
 
 from thrift.py3lite.serializer import serialize_iobuf, deserialize, Protocol
-from thrift.py3lite.server import ServiceInterface, oneway
+from thrift.py3lite.server import ServiceInterface, oneway, PythonUserException
 
 import py3lite_module_root.my.namespacing.test.hsmodule.lite_types
 

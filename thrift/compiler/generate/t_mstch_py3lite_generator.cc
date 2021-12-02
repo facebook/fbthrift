@@ -35,6 +35,10 @@ namespace compiler {
 
 namespace {
 
+std::vector<std::string> get_py3_namespace(const t_program* prog) {
+  return split_namespace(prog->get_namespace("py3"));
+}
+
 std::string get_py3_namespace_with_name_and_prefix(
     const t_program* prog, const std::string& prefix) {
   std::ostringstream ss;
@@ -67,6 +71,7 @@ class mstch_py3lite_type : public mstch_type {
         this,
         {
             {"type:module_path", &mstch_py3lite_type::module_path},
+            {"type:py3_namespace", &mstch_py3lite_type::py3_namespace},
             {"type:need_module_path?", &mstch_py3lite_type::need_module_path},
             {"type:external_program?",
              &mstch_py3lite_type::is_external_program},
@@ -78,6 +83,14 @@ class mstch_py3lite_type : public mstch_type {
     return get_py3_namespace_with_name_and_prefix(
                get_type_program(), get_option("root_module_prefix")) +
         ".lite_types";
+  }
+
+  mstch::node py3_namespace() {
+    std::ostringstream ss;
+    for (const auto& path : get_py3_namespace(get_type_program())) {
+      ss << path << ".";
+    }
+    return ss.str();
   }
 
   mstch::node need_module_path() {

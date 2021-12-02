@@ -26,7 +26,7 @@ from stack_args.lite_services import StackServiceInterface
 from stack_args.lite_types import simple
 from testing.lite_clients import TestingService
 from testing.lite_services import TestingServiceInterface
-from testing.lite_types import Color, easy
+from testing.lite_types import Color, easy, SimpleError
 from thrift.py3.server import (
     SocketAddress,
     get_context,
@@ -72,7 +72,7 @@ class Handler(TestingServiceInterface):
         return third
 
     async def takes_a_list(self, ints: Sequence[int]) -> None:
-        pass
+        raise SimpleError(color=Color.red)
 
     async def take_it_easy(self, how: int, what: easy) -> None:
         pass
@@ -158,6 +158,9 @@ class ClientServerTests(unittest.TestCase):
                 async with get_client(TestingService, host=ip, port=port) as client:
                     self.assertTrue(await client.invert(False))
                     self.assertFalse(await client.invert(True))
+                    # TODO (ffrancet): after RPC headers are supported, check uex and uexw
+                    with self.assertRaises(SimpleError):
+                        await client.takes_a_list([])
 
         loop.run_until_complete(inner_test())
 

@@ -25,7 +25,7 @@ import typing as _typing
 import folly.iobuf
 
 from thrift.py3lite.serializer import serialize_iobuf, deserialize, Protocol
-from thrift.py3lite.server import ServiceInterface, oneway
+from thrift.py3lite.server import ServiceInterface, oneway, PythonUserException
 
 import {{program:module_path}}.lite_types
 {{#program:include_namespaces}}
@@ -86,6 +86,9 @@ class {{service:name}}Interface(
         {{#function:exceptions}}{{#field:type}}
         except {{type:module_path}}.{{#type:struct}}{{struct:name}}{{/type:struct}} as e:
             return_struct = {{> types/function_return_type}}({{field:py_name}}=e)
+            buf = serialize_iobuf(return_struct, protocol)
+            exp = PythonUserException('{{type:py3_namespace}}{{#type:struct}}{{struct:name}}{{/type:struct}}', str(e), buf)
+            raise exp
         {{/field:type}}
         {{/function:exceptions}}
         {{/function:exceptions?}}

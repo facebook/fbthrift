@@ -10,7 +10,7 @@ import typing as _typing
 import folly.iobuf
 
 from thrift.py3lite.serializer import serialize_iobuf, deserialize, Protocol
-from thrift.py3lite.server import ServiceInterface, oneway
+from thrift.py3lite.server import ServiceInterface, oneway, PythonUserException
 
 import module.lite_types
 
@@ -223,6 +223,9 @@ class SimpleServiceInterface(
             return_struct = module.lite_types._fbthrift_SimpleService_expected_exception_result()
         except module.lite_types.SimpleException as e:
             return_struct = module.lite_types._fbthrift_SimpleService_expected_exception_result(se=e)
+            buf = serialize_iobuf(return_struct, protocol)
+            exp = PythonUserException('SimpleException', str(e), buf)
+            raise exp
 
         return serialize_iobuf(return_struct, protocol)
 
