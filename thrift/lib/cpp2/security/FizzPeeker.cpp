@@ -18,6 +18,7 @@
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/net/NetworkSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
+#include <thrift/lib/cpp2/security/AsyncStopTLS.h>
 #include <thrift/lib/cpp2/security/FizzPeeker.h>
 #include <thrift/lib/cpp2/security/SSLUtil.h>
 #include <thrift/lib/cpp2/security/extensions/ThriftParametersContext.h>
@@ -30,9 +31,35 @@ namespace apache {
 namespace thrift {
 
 namespace {
+
+class ThriftFizzAcceptorHandshakeHelper;
+
+/**
+ * ThriftFizzAcceptorHandshakeHelper represents a single asynchronous Fizz
+ * handshake. It has Thrift specific functionality such as including
+ * a Thrift extension in the handshake and managing StopTLS negotiations.
+ *
+ * IMPLEMENTATION NOTES:
+ * To fulfill the AcceptorHandshakeHelper contract as documented in wangle,
+ * we must ensure that we always send either a `connectionReady()` or
+ * `connectionError()` during the lifetime of this helper object.
+ *
+ * `dropConnection()` is inherited from the parent, which will close the
+ * underlying socket. To fulfill our promises to the Handshake Manager, we
+ * just need to ensure that at any time while this object lives, if we close
+ * the underlying socket, this will result in some error being propagated.
+ *
+ * If the socket is closed:
+ *    * During the initial TLS handshake, this results in a fizzHandshakeErr
+ *      firing, which will trigger a connectionError().
+ *    * If we are performing StopTLS, and we receive a `dropConnection()` after
+ *      the initial TLS handshake but before the peer close_notify arrives, then
+ *      we rely on `AsyncStopTLS` to receive a `readErr()` which will fire
+ *      `stopTLSError()` which will fire `connectionError()`
+ */
 class ThriftFizzAcceptorHandshakeHelper
     : public wangle::FizzAcceptorHandshakeHelper,
-      public fizz::AsyncFizzBase::EndOfTLSCallback {
+      private AsyncStopTLS::Callback {
  public:
   ThriftFizzAcceptorHandshakeHelper(
       std::shared_ptr<const fizz::server::FizzServerContext> context,
@@ -61,7 +88,7 @@ class ThriftFizzAcceptorHandshakeHelper
     transport_->accept(this);
   }
 
- protected:
+ private:
   // AsyncFizzServer::HandshakeCallback API
   void fizzHandshakeSuccess(
       fizz::server::AsyncFizzServer* transport) noexcept override {
@@ -87,8 +114,9 @@ class ThriftFizzAcceptorHandshakeHelper
     }
 
     if (thriftExtension_ && thriftExtension_->getNegotiatedStopTLS()) {
-      transport->setEndOfTLSCallback(this);
-      transport->tlsShutdown();
+      VLOG(5) << "Beginning StopTLS negotiation";
+      stopTLSAsyncFrame_.reset(new AsyncStopTLS(*this));
+      stopTLSAsyncFrame_->start(transport);
     } else {
       callback_->connectionReady(
           std::move(transport_),
@@ -98,11 +126,10 @@ class ThriftFizzAcceptorHandshakeHelper
     }
   }
 
-  void endOfTLS(
-      fizz::AsyncFizzBase* transport,
-      std::unique_ptr<folly::IOBuf> endOfData) override {
-    auto appProto = transport->getApplicationProtocol();
-    auto plaintextTransport = moveToPlaintext(transport);
+  // Invoked by AsyncStopTLS when StopTLS downgrade completes successfully
+  void stopTLSSuccess(std::unique_ptr<folly::IOBuf> endOfData) override {
+    auto appProto = transport_->getApplicationProtocol();
+    auto plaintextTransport = moveToPlaintext(transport_.get());
     // The server initiates the close, which means the client will be the first
     // to successfully terminate tls and return the socket back to the caller.
     // What this means for us is we clearly don't know if our fizz transport
@@ -121,10 +148,17 @@ class ThriftFizzAcceptorHandshakeHelper
         wangle::SSLErrorEnum::NO_ERROR);
   }
 
+  // Invoked by AsyncStopTLS when StopTLS downgrade was interrupted or did
+  // not finish successfully.
+  void stopTLSError(const folly::exception_wrapper& ew) override {
+    callback_->connectionError(transport_.get(), ew, sslError_);
+  }
+
   std::shared_ptr<apache::thrift::ThriftParametersContext>
       thriftParametersContext_;
   std::shared_ptr<apache::thrift::ThriftParametersServerExtension>
       thriftExtension_;
+  AsyncStopTLS::UniquePtr stopTLSAsyncFrame_;
 };
 } // namespace
 
