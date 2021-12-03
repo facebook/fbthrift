@@ -126,12 +126,17 @@ void AdaptiveConcurrencyController::requestFinished(
 }
 
 void AdaptiveConcurrencyController::recalculate() {
-  auto p95 = latencySamples_.begin() +
-      static_cast<size_t>(latencySamples_.size() * 0.95);
-  std::nth_element(latencySamples_.begin(), p95, latencySamples_.end());
-  Duration p95rtt{*p95};
-  sampledRtt_.store(p95rtt, std::memory_order_relaxed); // for monitoring
   const auto& cfg = config();
+  // Enforce that the targetRttPercentile is strictly < 1.0 and > 0.0
+  // All other values 0.0 < x < 1.0 are viable.
+  auto targetPct = std::min(
+      std::nextafter(1.0, 0.0),
+      std::max(std::nextafter(0.0, 1.0), cfg.targetRttPercentile));
+  auto pct = latencySamples_.begin() +
+      static_cast<size_t>(latencySamples_.size() * targetPct);
+  std::nth_element(latencySamples_.begin(), pct, latencySamples_.end());
+  Duration pctRtt{*pct};
+  sampledRtt_.store(pctRtt, std::memory_order_relaxed); // for monitoring
   minRtt_.store(Clock::duration{cfg.minTargetRtt}, std::memory_order_relaxed);
   if (targetRtt_.load(std::memory_order_relaxed) == Duration{}) {
     if (cfg.targetRttFixed == std::chrono::milliseconds{}) {
@@ -141,7 +146,7 @@ void AdaptiveConcurrencyController::recalculate() {
           std::max(
               std::chrono::round<Clock::duration>(cfg.minTargetRtt),
               std::chrono::round<Clock::duration>(
-                  p95rtt * cfg.targetRttFactor)),
+                  pctRtt * cfg.targetRttFactor)),
           std::memory_order_relaxed);
     } else {
       targetRtt_.store(
@@ -151,10 +156,10 @@ void AdaptiveConcurrencyController::recalculate() {
     maxRequests_.store(concurrencyLimit_, std::memory_order_relaxed);
   } else {
     // The gradient is computed as the ratio between the target RTT latency
-    // and the p95 RTT latency measured during the sampling period.
-    // Sanity check that the p95 value isn't zero before computing gradient.
+    // and the pct RTT latency measured during the sampling period.
+    // Sanity check that the pct value isn't zero before computing gradient.
     double raw_gradient = targetRtt_.load(std::memory_order_relaxed) /
-        std::max(Clock::duration(1), p95rtt);
+        std::max(Clock::duration(1), pctRtt);
     // Cap the gradient between 0.5 and 2.0.
     // TODO: follow up on this range and see if it can be tuned further (or make
     // it configurable).

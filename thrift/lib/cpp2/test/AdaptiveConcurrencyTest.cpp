@@ -60,9 +60,14 @@ class AdaptiveConcurrencyBase : public testing::Test {
       size_t concurrency,
       double jitter = 0.0,
       std::chrono::milliseconds targetRttFixed = {},
-      std::chrono::milliseconds minTargetRtt = {}) {
-    oConfig.setValue(
-        makeConfig(concurrency, jitter, targetRttFixed, minTargetRtt));
+      std::chrono::milliseconds minTargetRtt = {},
+      double targetRttPercentile = 0.95) {
+    oConfig.setValue(makeConfig(
+        concurrency,
+        jitter,
+        targetRttFixed,
+        minTargetRtt,
+        targetRttPercentile));
     folly::observer_detail::ObserverManager::waitForAllUpdates();
   }
 
@@ -70,12 +75,14 @@ class AdaptiveConcurrencyBase : public testing::Test {
       size_t concurrency,
       double jitter = 0.0,
       std::chrono::milliseconds targetRttFixed = {},
-      std::chrono::milliseconds minTargetRtt = {}) {
+      std::chrono::milliseconds minTargetRtt = {},
+      double targetRttPercentile = 0.95) {
     AdaptiveConcurrencyController::Config config;
     config.minConcurrency = concurrency;
     config.recalcPeriodJitter = jitter;
     config.targetRttFixed = targetRttFixed;
     config.minTargetRtt = minTargetRtt;
+    config.targetRttPercentile = targetRttPercentile;
     return config;
   }
 
@@ -329,6 +336,67 @@ TEST_F(AdaptiveConcurrency, FixedTargetRtt) {
   EXPECT_EQ(controller.getMaxRequests(), 13);
   EXPECT_EQ(p(controller).nextRttRecalcStart(), Clock::time_point{});
 }
+
+class TargetRttPercentileTestP : public AdaptiveConcurrencyBase<5>,
+                                 public ::testing::WithParamInterface<double> {
+ public:
+  TargetRttPercentileTestP() : targetRttPct_(GetParam()) {}
+
+ protected:
+  double targetRttPct_{0.95};
+  // Range of pct values to be tested. Note that values out side
+  // of the range (0.0, 1.0) (eclusive) are invalid.
+  std::map<double, std::chrono::milliseconds> pctToTarget_{
+      {std::numeric_limits<double>::lowest(), 2 * 100ms},
+      {0.0, 2 * 100ms},
+      {0.25, 2 * 150ms},
+      {0.50, 2 * 200ms},
+      {0.75, 2 * 250ms},
+      {0.95, 2 * 290ms},
+      {1.0, 2 * 299ms},
+      {2.0, 2 * 299ms},
+      {std::numeric_limits<double>::max(), 2 * 299ms}};
+};
+
+TEST_P(TargetRttPercentileTestP, TargetRttPercentileTest) {
+  // Validate that changing the targetRTT percentile will result in
+  // the appropriate targetRTT being selected during the sampling period.
+  // The test basically configures a range of targetRTT pct values
+  // and then verifies that the correct target latency is picked.
+  EXPECT_EQ(p(controller).samplingPeriodStart(), Clock::time_point{});
+  setConfig(
+      5,
+      0.2,
+      std::chrono::milliseconds{},
+      std::chrono::milliseconds{},
+      targetRttPct_);
+  {
+    auto now = Clock::now();
+    makeRequest();
+    EXPECT_GT(p(controller).samplingPeriodStart(), now);
+  }
+
+  p(controller).samplingPeriodStart(Clock::now());
+  for (int i = 0; i < 200; i++) {
+    makeRequest(std::chrono::milliseconds(i) + 100ms);
+  }
+  // target should be 2 x pctTargetRtt of the sampled latencies
+  EXPECT_EQ(controller.targetRtt(), pctToTarget_[targetRttPct_]);
+}
+
+INSTANTIATE_TEST_CASE_P(
+    TargetRttPercentileTestSequence,
+    TargetRttPercentileTestP,
+    testing::Values(
+        std::numeric_limits<double>::lowest(),
+        0.0,
+        0.25,
+        0.50,
+        0.75,
+        0.95,
+        1.0,
+        2.0,
+        std::numeric_limits<double>::max()));
 
 TEST_F(AdaptiveConcurrency, MinTargetRtt) {
   // Validate that the minimum target RTT setting is observed if specified.

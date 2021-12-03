@@ -57,10 +57,10 @@ namespace thrift {
 //
 // To compute either sampledRtt or targetRtt, the controller relies on sampling
 // latencies of pre-defined number of requests and computing the target as their
-// percentile (default is p95). However, to compute targetRtt the concurrency of
-// the server is first set to pre-defined value of *minConncurrency*. The
-// sampling windows for sampledRtt and targetRtt never overlap and the algorithm
-// makes sure of that.
+// percentile (default is p95 but this is configurable). However, to compute
+// targetRtt the concurrency of the server is first set to pre-defined value of
+// *minConncurrency*. The sampling windows for sampledRtt and targetRtt never
+// overlap and the algorithm makes sure of that.
 //
 // To sample latency, the controller periodically sets a timepoint, and starts
 // collecting latencies of requests that started their execution after that
@@ -83,6 +83,11 @@ class AdaptiveConcurrencyController {
     // ideal rtt latency is below this, targetRtt will be overridden
     // to this value.
     std::chrono::milliseconds minTargetRtt{};
+    // percentile to be used for computing the targetRtt from the sampled
+    // set of request latencies. NOTE that this has no effect if
+    // targetRttFixed is non-zero.
+    double targetRttPercentile = 0.95;
+
     double recalcPeriodJitter = 0.5;
 
     std::chrono::milliseconds samplingInterval{500};
