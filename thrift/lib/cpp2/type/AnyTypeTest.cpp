@@ -17,6 +17,7 @@
 #include <thrift/lib/cpp2/type/AnyType.h>
 
 #include <list>
+#include <stdexcept>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
@@ -50,18 +51,18 @@ std::vector<AnyTypeTestCase> getUniqueNonContainerTypes() {
       test<double_t>(),
       test<string_t>(),
       test<binary_t>(),
-      test<struct_c>("MyStruct"),
-      test<struct_c>("MyOtherStruct"),
-      test<struct_c>("MyNamed"),
-      test<union_c>("MyUnion"),
-      test<union_c>("MyOtherUnion"),
-      test<union_c>("MyNamed"),
-      test<exception_c>("MyException"),
-      test<exception_c>("MyOtherExcpetion"),
-      test<exception_c>("MyNamed"),
-      test<enum_c>("MyEnum"),
-      test<enum_c>("MyOtherEnum"),
-      test<enum_c>("MyNamed"),
+      test<struct_c>("d.c/p/MyStruct"),
+      test<struct_c>("d.c/p/MyOtherStruct"),
+      test<struct_c>("d.c/p/MyNamed"),
+      test<union_c>("d.c/p/MyUnion"),
+      test<union_c>("d.c/p/MyOtherUnion"),
+      test<union_c>("d.c/p/MyNamed"),
+      test<exception_c>("d.c/p/MyException"),
+      test<exception_c>("d.c/p/MyOtherExcpetion"),
+      test<exception_c>("d.c/p/MyNamed"),
+      test<enum_c>("d.c/p/MyEnum"),
+      test<enum_c>("d.c/p/MyOtherEnum"),
+      test<enum_c>("d.c/p/MyNamed"),
   };
 }
 
@@ -172,6 +173,13 @@ TEST(AnyTypeTest, ImplicitConversion) {
   type = void_t{};
   EXPECT_NE(type, AnyType::create<i16_t>());
   EXPECT_EQ(type, AnyType());
+}
+
+TEST(AnyTypeTest, NameValidation) {
+  EXPECT_THROW(AnyType::create<enum_c>("BadName"), std::invalid_argument);
+  EXPECT_THROW(AnyType::create<struct_c>("BadName"), std::invalid_argument);
+  EXPECT_THROW(AnyType::create<union_c>("BadName"), std::invalid_argument);
+  EXPECT_THROW(AnyType::create<exception_c>("BadName"), std::invalid_argument);
 }
 
 } // namespace

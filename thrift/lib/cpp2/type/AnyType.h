@@ -54,14 +54,14 @@ class AnyType {
       : type_(detail::AnyTypeHelper<Tag>::make_type()) {}
 
   // Named types.
-  AnyType(enum_c t, std::string name) noexcept
-      : type_{detail::make_named(t, std::move(name))} {}
-  AnyType(struct_c t, std::string name) noexcept
-      : type_{detail::make_named(t, std::move(name))} {}
-  AnyType(union_c t, std::string name) noexcept
-      : type_{detail::make_named(t, std::move(name))} {}
-  AnyType(exception_c t, std::string name) noexcept
-      : type_{detail::make_named(t, std::move(name))} {}
+  AnyType(enum_c t, std::string name)
+      : type_{detail::make_named(t, checkName(std::move(name)))} {}
+  AnyType(struct_c t, std::string name)
+      : type_{detail::make_named(t, checkName(std::move(name)))} {}
+  AnyType(union_c t, std::string name)
+      : type_{detail::make_named(t, checkName(std::move(name)))} {}
+  AnyType(exception_c t, std::string name)
+      : type_{detail::make_named(t, checkName(std::move(name)))} {}
 
   // Parameterized types.
   AnyType(list_c t, AnyType valueType) noexcept
@@ -108,6 +108,8 @@ class AnyType {
   }
 
   detail::AnyTypeHolder type_;
+
+  static std::string&& checkName(std::string&& name);
 };
 
 namespace detail {

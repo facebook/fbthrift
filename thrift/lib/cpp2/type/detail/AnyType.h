@@ -129,8 +129,6 @@ struct AnyTypeHelper {
 // Note that struct_c can be used to specify the universal name manually, and
 // the UniversalName.h logic will be used to validate names, but only when used
 // at runtime.
-// TODO(afuller): Validate names on construction of AnyType, when passed in
-// manually.
 template <typename CTag, typename T>
 struct NamedTypeHelper {
   static AnyTypeHolder make_type() {
