@@ -16,77 +16,79 @@
 
 #pragma once
 
-#include <folly/Poly.h>
 #include <thrift/lib/cpp2/type/AnyType.h>
-#include <thrift/lib/cpp2/type/ThriftType.h>
 #include <thrift/lib/cpp2/type/Traits.h>
-#include <thrift/lib/cpp2/type/detail/AnyValue.h>
+#include <thrift/lib/cpp2/type/detail/AnyData.h>
 
 namespace apache::thrift::type {
 
 // A type-erased Thrift value.
-class AnyValue {
+class AnyValue : public detail::AnyValueBase {
+  using Base = detail::AnyValueBase;
+
  public:
+  // The null, nil, None, falsum (or whatever you want to call it) value.
   constexpr AnyValue() noexcept = default;
 
   template <typename Tag, typename... Args>
-  static AnyValue create(Args&&... args);
-
-  constexpr const AnyType& type() const { return type_; }
-
-  // Type safe access to the internal storage.
-  // Throws folly::BadPolyCast if the types are incompatible.
-  template <typename Tag>
-  native_type<Tag>& as() &;
-  template <typename Tag>
-  native_type<Tag>&& as() &&;
-  template <typename Tag>
-  const native_type<Tag>& as() const&;
-  template <typename Tag>
-  const native_type<Tag>&& as() const&&;
-
-  bool empty() const noexcept { return value_.empty(); }
-  void clear() noexcept { value_.clear(); }
-
-  // Throws folly::BadPolyCast if the underlying types are incompatible.
-  bool identical(const AnyValue& other) const {
-    return type_ == other.type_ && value_.identical(other.value_);
+  static AnyValue create(Args&&... args) {
+    return AnyValue{Tag{}, std::forward<Args>(args)...};
   }
 
+  // Type safe access to the internal storage.
+  //
+  // Throws folly::BadPolyCast if the wrong Tag is used.
+  //
+  //   template<typename Tag> native_type<Tag>& as() &;
+  //   template<typename Tag> native_type<Tag>&& as() &&;
+  //   template<typename Tag> const native_type<Tag>& as() const &;
+  //   template<typename Tag> const native_type<Tag>&& as() const &&;
+  //
+  using Base::as;
+
+  // Type safe access to the internal storage.
+  //
+  // Returns nullptr if the wrong Tag is used.
+  //
+  //   template<typename Tag> native_type<Tag>* try_as() noexcept;
+  //   template<typename Tag> const native_type<Tag>* try_as() const noexcept;
+  //
+  using Base::try_as;
+
+  // The runtime type of the stored value (or void_t{} if no value is stored)
+  //
+  //   const AnyType& type() const noexcept;
+  //
+  using Base::type;
+
+  // If the stored value is 'empty'. See `op::empty`.
+  //
+  //   bool empty() const noexcept;
+  //
+  using Base::empty;
+
+  // Determines if the give AnyValue is identical to this one.
+  //
+  // Two AnyValues are 'identical' if they have the same `type()` and
+  // the values stored are also identical. See `op::identical`.
+  //
+  // Throws folly::BadPolyCast if the underlying Tags are different, but have
+  // the same AnyType.
+  //
+  //   bool identical(const AnyValue& other);
+  //
+  using Base::identical;
+
+  // Clears the underlying value, leaving it equal it to it's intrinsic default.
+  //
+  // See `op::clear`
+  //
+  //   void clear() noexcept;
+  //
+  using Base::clear;
+
  private:
-  AnyValue(AnyType type, detail::AnyValueHolder value)
-      : type_(std::move(type)), value_(std::move(value)) {}
-
-  AnyType type_;
-  detail::AnyValueHolder value_ = detail::VoidValueData{};
+  using Base::Base;
 };
-
-///////
-// Implemnation Details
-
-template <typename Tag, typename... Args>
-AnyValue AnyValue::create(Args&&... args) {
-  return {
-      AnyType::create<Tag>(),
-      detail::AnyValueData<Tag>{{std::forward<Args>(args)...}}};
-}
-
-template <typename Tag>
-native_type<Tag>& AnyValue::as() & {
-  return folly::poly_cast<detail::AnyValueData<Tag>&>(value_).data;
-}
-template <typename Tag>
-native_type<Tag>&& AnyValue::as() && {
-  return std::move(folly::poly_cast<detail::AnyValueData<Tag>&>(value_).data);
-}
-template <typename Tag>
-const native_type<Tag>& AnyValue::as() const& {
-  return folly::poly_cast<const detail::AnyValueData<Tag>&>(value_).data;
-}
-template <typename Tag>
-const native_type<Tag>&& AnyValue::as() const&& {
-  return std::move(
-      folly::poly_cast<const detail::AnyValueData<Tag>&>(value_).data);
-}
 
 } // namespace apache::thrift::type

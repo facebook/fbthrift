@@ -23,26 +23,6 @@
 namespace apache::thrift::type {
 namespace {
 
-struct IntValue {
-  int value;
-
-  bool empty() const { return value == 0; }
-  void clear() { value = 0; }
-  bool identical(IntValue other) const { return value == other.value; }
-};
-
-TEST(AnyValueTest, AnyValueHolder) {
-  detail::AnyValueHolder data = IntValue{1};
-  EXPECT_FALSE(data.empty());
-  EXPECT_TRUE(data.identical(IntValue{1}));
-
-  data.clear();
-  EXPECT_TRUE(data.empty());
-  EXPECT_EQ(folly::poly_cast<IntValue&>(data).value, 0);
-  EXPECT_TRUE(data.identical(IntValue{0}));
-  EXPECT_FALSE(data.identical(IntValue{1}));
-}
-
 TEST(AnyValueTest, Void) {
   AnyValue value;
   EXPECT_EQ(value.type(), AnyType::create<void_t>());
@@ -51,6 +31,7 @@ TEST(AnyValueTest, Void) {
   EXPECT_TRUE(value.empty());
 
   EXPECT_THROW(value.as<string_t>(), folly::BadPolyCast);
+  EXPECT_TRUE(value.try_as<string_t>() == nullptr);
 }
 
 TEST(AnyValueTest, Int) {
