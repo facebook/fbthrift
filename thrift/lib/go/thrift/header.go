@@ -34,7 +34,7 @@ const (
 	ClientTimeoutHeader  string = "client_timeout"
 	QueueTimeoutHeader   string = "queue_timeout"
 	ClientMetadataHeader string = "client_metadata"
-	ClientMetadata       string = "{\"agent\":\"header_transport.go\"}"
+	ClientMetadata       string = "{\"agent\":\"headertransport.go\"}"
 	// Header Magicks
 	// 0 and 16th bits must be 0 to differentiate from framed & unframed
 	HeaderMagic         uint32 = 0x0FFF0000
