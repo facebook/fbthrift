@@ -295,7 +295,7 @@ cdef class ConnectionContext:
         osslCert = transport.getPeerCertificate()
         if not osslCert:
             return None
-        cert = osslCert.getX509();
+        cert = tryExtractX509(osslCert);
         if cert.get():
             iobuf = create_IOBuf(derEncode(deref(cert.get())))
             if iobuf.is_chained:

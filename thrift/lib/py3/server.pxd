@@ -140,7 +140,10 @@ cdef extern from "folly/io/async/AsyncTransportCertificate.h" \
         namespace "folly":
     cdef cppclass AsyncTransportCertificate:
         string getIdentity()
-        X509UniquePtr getX509()
+
+cdef extern from "folly/io/async/ssl/OpenSSLTransportCertificate.h" \
+        namespace "folly::OpenSSLTransportCertificate":
+    X509UniquePtr tryExtractX509(const AsyncTransportCertificate* cert)
 
 cdef extern from "folly/io/async/AsyncTransport.h" namespace "folly":
     cdef cppclass AsyncTransport:
