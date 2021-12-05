@@ -24,6 +24,7 @@
 
 #include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string/trim.hpp>
 
 #include <thrift/compiler/ast/t_list.h>
 #include <thrift/compiler/ast/t_map.h>
@@ -245,6 +246,40 @@ int32_t get_split_count(std::map<std::string, std::string> const& options) {
   return std::stoi(iter->second);
 }
 
+static auto split(const std::string& s, char delimiter) {
+  std::vector<std::string> ret;
+  boost::algorithm::split(ret, s, [&](char c) { return c == delimiter; });
+  return ret;
+}
+
+std::unordered_map<std::string, int32_t> get_client_name_to_split_count(
+    std::map<std::string, std::string> const& options) {
+  auto iter = options.find("client_cpp_splits");
+  if (iter == options.end()) {
+    return {};
+  }
+
+  auto map = iter->second;
+  if (map.size() < 2 || map[0] != '{' || *map.rbegin() != '}') {
+    throw std::runtime_error("Invalid client_cpp_splits value: `" + map + "`");
+  }
+  map = map.substr(1, map.size() - 2);
+  if (map.empty()) {
+    return {};
+  }
+  std::unordered_map<std::string, int32_t> ret;
+  for (auto kv : split(map, ',')) {
+    auto a = split(kv, ':');
+    if (a.size() != 2) {
+      throw std::runtime_error(
+          "Invalid pair `" + kv + "` in client_cpp_splits value: `" + map +
+          "`");
+    }
+    ret[a[0]] = std::stoi(a[1]);
+  }
+  return ret;
+}
+
 bool is_mixin(const t_field& field) {
   return field.has_annotation("cpp.mixin");
 }
@@ -293,7 +328,6 @@ std::vector<mixin_member> get_mixins_and_members(const t_struct& strct) {
 }
 
 namespace {
-
 struct get_gen_type_class_options {
   bool gen_indirection = false;
   bool gen_indirection_inner_ = false;

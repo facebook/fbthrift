@@ -224,6 +224,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   void generate_service(t_service const* service);
 
   std::shared_ptr<cpp2_generator_context> context_;
+  std::unordered_map<std::string, int32_t> client_name_to_split_count_;
 };
 
 class mstch_cpp2_enum : public mstch_enum {
@@ -1251,7 +1252,9 @@ class mstch_cpp2_service : public mstch_service {
       t_service const* service,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
+      ELEMENT_POSITION const pos,
+      int32_t split_id = 0,
+      int32_t split_count = 1)
       : mstch_service(service, std::move(generators), std::move(cache), pos) {
     register_methods(
         this,
@@ -1269,6 +1272,11 @@ class mstch_cpp2_service : public mstch_service {
              &mstch_cpp2_service::parent_service_name},
             {"service:reduced_client?", &mstch_service::is_interaction},
         });
+
+    const auto all_functions = mstch_service::get_functions();
+    for (size_t id = split_id; id < all_functions.size(); id += split_count) {
+      functions_.push_back(all_functions[id]);
+    }
   }
   std::string get_service_namespace(t_program const* program) override {
     return t_mstch_cpp2_generator::get_cpp2_namespace(program);
@@ -1295,7 +1303,7 @@ class mstch_cpp2_service : public mstch_service {
   }
   mstch::node oneway_functions() {
     std::vector<t_function const*> oneway_functions;
-    for (auto const* function : service_->get_functions()) {
+    for (auto const* function : get_functions()) {
       if (function->qualifier() == t_function_qualifier::one_way) {
         oneway_functions.push_back(function);
       }
@@ -1303,7 +1311,7 @@ class mstch_cpp2_service : public mstch_service {
     return generate_functions(oneway_functions);
   }
   mstch::node has_oneway() {
-    for (auto const* function : service_->get_functions()) {
+    for (auto const* function : get_functions()) {
       if (function->qualifier() == t_function_qualifier::one_way) {
         return true;
       }
@@ -1316,6 +1324,13 @@ class mstch_cpp2_service : public mstch_service {
   mstch::node parent_service_name() {
     return cache_->parsed_options_.at("parent_service_name");
   }
+
+ private:
+  const std::vector<t_function*>& get_functions() const override {
+    return functions_;
+  }
+
+  std::vector<t_function*> functions_;
 };
 
 class mstch_cpp2_annotation : public mstch_annotation {
@@ -1864,6 +1879,20 @@ class service_cpp2_generator : public service_generator {
     return std::make_shared<mstch_cpp2_service>(
         service, std::move(generators), std::move(cache), pos);
   }
+  std::shared_ptr<mstch_base> generate_with_split_id(
+      t_service const* service,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      int32_t split_id,
+      int32_t split_count) const {
+    return std::make_shared<mstch_cpp2_service>(
+        service,
+        generators,
+        cache,
+        ELEMENT_POSITION::NONE,
+        split_id,
+        split_count);
+  }
 };
 
 class annotation_cpp2_generator : public annotation_generator {
@@ -1969,7 +1998,9 @@ t_mstch_cpp2_generator::t_mstch_cpp2_generator(
     : t_mstch_generator(
           program, std::move(context), "cpp2", parsed_options, true),
       context_(std::make_shared<cpp2_generator_context>(
-          cpp2_generator_context::create())) {
+          cpp2_generator_context::create())),
+      client_name_to_split_count_(
+          cpp2::get_client_name_to_split_count(parsed_options)) {
   out_dir_base_ = get_out_dir_base(parsed_options);
 }
 
@@ -2112,11 +2143,28 @@ void t_mstch_cpp2_generator::generate_service(t_service const* service) {
       get_program(), service, generators_, cache_);
 
   render_to_file(serv, "ServiceAsyncClient.h", name + "AsyncClient.h");
-  render_to_file(serv, "ServiceAsyncClient.cpp", name + "AsyncClient.cpp");
   render_to_file(serv, "service.cpp", name + ".cpp");
   render_to_file(serv, "service.h", name + ".h");
   render_to_file(serv, "service.tcc", name + ".tcc");
   render_to_file(serv, "types_custom_protocol.h", name + "_custom_protocol.h");
+
+  auto iter = client_name_to_split_count_.find(name);
+  if (iter != client_name_to_split_count_.end()) {
+    auto split_count = iter->second;
+    auto digit = std::to_string(split_count - 1).size();
+    for (int split_id = 0; split_id < split_count; ++split_id) {
+      auto s = std::to_string(split_id);
+      s = std::string(digit - s.size(), '0') + s;
+      auto split_service = service_cpp2_generator{}.generate_with_split_id(
+          service, generators_, cache_, split_id, split_count);
+      render_to_file(
+          split_service,
+          "ServiceAsyncClient.cpp",
+          name + "." + s + ".async_client_split.cpp");
+    }
+  } else {
+    render_to_file(serv, "ServiceAsyncClient.cpp", name + "AsyncClient.cpp");
+  }
 
   std::vector<std::array<std::string, 3>> protocols = {
       {{"binary", "BinaryProtocol", "T_BINARY_PROTOCOL"}},

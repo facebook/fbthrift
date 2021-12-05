@@ -35,3 +35,15 @@ struct struct3 {
   1: struct1 field1;
   2: optional struct2 field2;
 }
+
+service Service1 {
+  void method1();
+  void method2();
+  void method3();
+}
+
+service Service2 {
+  void method4();
+  void method5();
+  void method6();
+}

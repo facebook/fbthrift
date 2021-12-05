@@ -93,7 +93,13 @@ void parse_generator_options(
     const std::string& options,
     std::function<CallbackLoopControl(std::string, std::string)> callback) {
   std::vector<std::string> parts;
-  boost::algorithm::split(parts, options, [](char c) { return c == ','; });
+  bool inside_braces = false;
+  boost::algorithm::split(parts, options, [&inside_braces](char c) {
+    if (c == '{' || c == '}') {
+      inside_braces = (c == '{');
+    }
+    return c == ',' && !inside_braces;
+  });
   for (const auto& part : parts) {
     auto key = part.substr(0, part.find('='));
     auto value = part.substr(std::min(key.size() + 1, part.size()));

@@ -634,7 +634,7 @@ mstch::node mstch_function::returns_stream() {
 }
 
 mstch::node mstch_service::functions() {
-  return generate_functions(service_->get_functions());
+  return generate_functions(get_functions());
 }
 
 mstch::node mstch_service::extends() {

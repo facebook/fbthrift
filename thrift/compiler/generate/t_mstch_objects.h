@@ -1198,7 +1198,7 @@ class mstch_service : public mstch_base {
   virtual std::string get_service_namespace(t_program const*) { return {}; }
 
   mstch::node name() { return service_->get_name(); }
-  mstch::node has_functions() { return !service_->get_functions().empty(); }
+  mstch::node has_functions() { return !get_functions().empty(); }
   mstch::node has_extends() { return service_->get_extends() != nullptr; }
   mstch::node functions();
   mstch::node extends();
@@ -1209,21 +1209,21 @@ class mstch_service : public mstch_base {
   }
 
   mstch::node has_streams() {
-    auto& funcs = service_->get_functions();
+    auto& funcs = get_functions();
     return std::any_of(funcs.cbegin(), funcs.cend(), [](auto const& func) {
       return func->returns_stream();
     });
   }
 
   mstch::node has_sinks() {
-    auto& funcs = service_->get_functions();
+    auto& funcs = get_functions();
     return std::any_of(funcs.cbegin(), funcs.cend(), [](auto const& func) {
       return func->returns_sink();
     });
   }
 
   mstch::node has_interactions() {
-    auto& funcs = service_->get_functions();
+    auto& funcs = get_functions();
     return std::any_of(funcs.cbegin(), funcs.cend(), [](auto const& func) {
       return func->get_returntype()->is_service();
     });
@@ -1233,7 +1233,7 @@ class mstch_service : public mstch_base {
       cache_->parsed_options_["parent_service_name"] = service_->get_name();
     }
     std::vector<t_service const*> interactions;
-    for (auto const* function : service_->get_functions()) {
+    for (auto const* function : get_functions()) {
       if (function->get_returntype()->is_service()) {
         interactions.push_back(
             dynamic_cast<t_service const*>(function->get_returntype()));
@@ -1249,10 +1249,15 @@ class mstch_service : public mstch_base {
     return service_->is_serial_interaction();
   }
 
+  virtual ~mstch_service() = default;
+
  protected:
   t_service const* service_;
 
   mstch::node generate_cached_extended_service(const t_service* service);
+  virtual const std::vector<t_function*>& get_functions() const {
+    return service_->get_functions();
+  }
 };
 
 class mstch_typedef : public mstch_base {
