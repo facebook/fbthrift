@@ -20,6 +20,7 @@
 
 #include <folly/portability/GTest.h>
 #include <thrift/conformance/if/gen-cpp2/object_types.h>
+#include <thrift/lib/cpp2/protocol/test/gen-cpp2/Module_types_custom_protocol.h>
 
 namespace apache::thrift {
 namespace {
@@ -274,6 +275,42 @@ TYPED_TEST(TypedOpTest, Clear) {
   EXPECT_TRUE(op::isEmpty<Tag>(value));
   EXPECT_TRUE(op::equal<Tag>(value, TypeParam::default_));
   EXPECT_FALSE(op::equal<Tag>(value, TypeParam::one));
+}
+
+TEST(TypedOpTest, HashType) {
+  test::OneOfEach value;
+  using Tag = type::struct_t<test::OneOfEach>;
+
+  std::unordered_set<std::size_t> s;
+  auto check_and_add = [&s](auto tag, const auto& v) {
+    using Tag = decltype(tag);
+    EXPECT_EQ(s.count(op::hash<Tag>(v)), 0);
+    s.insert(op::hash<Tag>(v));
+    EXPECT_EQ(s.count(op::hash<Tag>(v)), 1);
+  };
+
+  for (auto i = 0; i < 10; i++) {
+    value.myI32_ref() = i + 100;
+    check_and_add(Tag{}, value);
+    value.myList_ref() = {std::to_string(i + 200)};
+    check_and_add(Tag{}, value);
+    value.mySet_ref() = {std::to_string(i + 300)};
+    check_and_add(Tag{}, value);
+    value.myMap_ref() = {{std::to_string(i + 400), 0}};
+    check_and_add(Tag{}, value);
+
+    check_and_add(type::i32_t{}, *value.myI32_ref());
+    check_and_add(type::list<type::string_t>{}, *value.myList_ref());
+    check_and_add(type::set<type::string_t>{}, *value.mySet_ref());
+    check_and_add(type::map<type::string_t, type::i64_t>{}, *value.myMap_ref());
+  }
+}
+
+TEST(TypedOpTest, HashDouble) {
+  EXPECT_EQ(op::hash<type::double_t>(-0.0), op::hash<type::double_t>(+0.0));
+  EXPECT_EQ(
+      op::hash<type::double_t>(std::numeric_limits<double>::quiet_NaN()),
+      op::hash<type::double_t>(std::numeric_limits<double>::quiet_NaN()));
 }
 
 } // namespace

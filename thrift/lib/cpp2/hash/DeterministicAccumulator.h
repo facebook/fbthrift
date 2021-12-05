@@ -92,7 +92,7 @@ class DeterministicAccumulator {
   using Hasher = decltype(std::declval<HasherGenerator>()());
 
  public:
-  inline explicit DeterministicAccumulator(HasherGenerator generator);
+  inline explicit DeterministicAccumulator(HasherGenerator generator = {});
 
   inline operator Hasher&&() &&;
   auto getResult() && { return std::move(result_)->getResult(); }

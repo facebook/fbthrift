@@ -20,6 +20,7 @@
 #include <algorithm>
 
 #include <folly/lang/Bits.h>
+#include <thrift/lib/cpp2/hash/StdHasher.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
 #include <thrift/lib/cpp2/type/Traits.h>
 #include <thrift/lib/cpp2/type/detail/ThriftOp.h>
@@ -88,5 +89,24 @@ constexpr detail::Empty<Tag> isEmpty;
 //   clear<set<i32_t>>(myIntSet) // calls myIntSet.clear()
 template <typename Tag>
 constexpr detail::Clear<Tag> clear;
+
+namespace detail {
+struct StdHasherGenerator {
+  hash::StdHasher operator()() const { return {}; }
+};
+} // namespace detail
+
+// Hash the given value. Same hash result will be produced for thrift values
+// that are identical to, or equal to each other. Default hash algorithm is
+// folly::hash_combine.
+//
+// For example:
+//   hash<i32_t>(myInt) // returns hash of myInt.
+//   hash<set<i32_t>>(myIntSet) // returns hash of myIntSet
+template <
+    typename Tag,
+    typename HashAccumulator =
+        hash::DeterministicAccumulator<detail::StdHasherGenerator>>
+constexpr detail::Hash<Tag, HashAccumulator> hash;
 
 } // namespace apache::thrift::op
