@@ -217,6 +217,8 @@ ThriftServer::~ThriftServer() {
         << " duplex ThriftServer. Consider using startDuplex & stopDuplex";
   }
 
+  SCOPE_EXIT { stopController_.join(); };
+
   if (stopWorkersOnStopListening_) {
     // Everything is already taken care of.
     return;
@@ -359,6 +361,8 @@ void ThriftServer::setup() {
   // Initialize event base for this thread
   auto serveEventBase = eventBaseManager_->getEventBase();
   serveEventBase_ = serveEventBase;
+  stopController_.set(std::make_unique<StopController>(
+      folly::badge<ThriftServer>{}, *serveEventBase));
   if (idleServerTimeout_.count() > 0) {
     idleServer_.emplace(*this, serveEventBase->timer(), idleServerTimeout_);
   }
@@ -637,6 +641,7 @@ void ThriftServer::cleanUp() {
   // should have returned before doing this cleanup
   idleServer_.reset();
   serveEventBase_ = nullptr;
+  stopController_.join();
   stopListening();
 
   // Stop the routing handlers.
@@ -667,10 +672,13 @@ uint64_t ThriftServer::getNumDroppedConnections() const {
   return droppedConns;
 }
 
+void ThriftServerStopController::stop() {
+  folly::call_once(stopped_, [&] { serveEventBase_.terminateLoopSoon(); });
+}
+
 void ThriftServer::stop() {
-  folly::EventBase* eventBase = serveEventBase_;
-  if (eventBase) {
-    eventBase->terminateLoopSoon();
+  if (auto s = stopController_.lock()) {
+    s->stop();
   }
 }
 
@@ -930,6 +938,7 @@ void ThriftServer::handleSetupFailure(void) {
   // avoid crash on stop()
   idleServer_.reset();
   serveEventBase_ = nullptr;
+  stopController_.join();
 }
 
 void ThriftServer::updateTicketSeeds(wangle::TLSTicketKeySeeds seeds) {

@@ -32,12 +32,15 @@
 #include <folly/Singleton.h>
 #include <folly/SocketAddress.h>
 #include <folly/executors/IOThreadPoolExecutor.h>
+#include <folly/experimental/PrimaryPtr.h>
 #include <folly/experimental/coro/AsyncScope.h>
 #include <folly/experimental/observer/Observer.h>
 #include <folly/io/ShutdownSocketSet.h>
 #include <folly/io/async/AsyncServerSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/EventBaseManager.h>
+#include <folly/lang/Badge.h>
+#include <folly/synchronization/CallOnce.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
@@ -107,6 +110,31 @@ class TLSCredentialWatcher {
 
  private:
   wangle::TLSCredProcessor credProcessor_;
+};
+
+/**
+ * State pertaining to stopping a running Thrift server. It is safe to call
+ * stop() on this even after the relevant ThriftServer has been destroyed as
+ * long as the server's event base is not re-used for something else. This is
+ * useful to prevent racing between requests to stop (such as from signal
+ * handlers) and ThriftServer's destructor.
+ *
+ * This class cannot be directly constructed by user code. Instead every
+ * ThriftServer owns a stop controller (using folly::PrimaryPtr) and hands out
+ * non-owning references to use (folly::PrimaryPtrRef). ThriftServer's
+ * destructor will block until all locked references have been released.
+ */
+class ThriftServerStopController final {
+ public:
+  explicit ThriftServerStopController(
+      folly::badge<ThriftServer>, folly::EventBase& eventBase)
+      : serveEventBase_(eventBase) {}
+
+  void stop();
+
+ private:
+  folly::EventBase& serveEventBase_;
+  folly::once_flag stopped_;
 };
 
 /**
@@ -837,11 +865,28 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   /**
    * Call this to stop the server, if started by serve()
    *
-   * This causes the main serve() function to stop listening for new
-   * connections, close existing connections, shut down the worker threads,
-   * and then return.
+   * This (asynchronously) causes the main serve() function to stop listening
+   * for new connections, close existing connections, shut down the worker
+   * threads, and then return.
+   *
+   * NOTE: that this function may not be safe to call multiple times (such as
+   * from a signal handler) because a previous call may initiate a sequence of
+   * events leading to the destruction of this object.
+   * Instead you should use StopController (see getStopController()) which lets
+   * you guard against destruction (by way of folly::PrimaryPtr).
    */
   void stop() override;
+
+  using StopController = ThriftServerStopController;
+
+ private:
+  folly::PrimaryPtr<StopController> stopController_{
+      std::unique_ptr<StopController>{}};
+
+ public:
+  folly::PrimaryPtrRef<StopController> getStopController() {
+    return stopController_.ref();
+  }
 
   /**
    * Call this to stop listening on the server port.
