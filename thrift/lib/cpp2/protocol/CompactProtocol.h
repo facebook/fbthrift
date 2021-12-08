@@ -304,12 +304,6 @@ class CompactProtocolReader {
 
   size_t getCursorPosition() const { return in_.getCurrentPosition(); }
 
-  inline uint32_t readFromPositionAndAppend(
-      Cursor& /*cursor*/, std::unique_ptr<folly::IOBuf>& /*ser*/) {
-    // TODO
-    return 0;
-  }
-
   struct StructReadState;
 
  protected:

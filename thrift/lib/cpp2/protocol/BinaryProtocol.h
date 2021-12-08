@@ -266,9 +266,6 @@ class BinaryProtocolReader {
 
   size_t getCursorPosition() const { return in_.getCurrentPosition(); }
 
-  inline uint32_t readFromPositionAndAppend(
-      Cursor& cursor, std::unique_ptr<folly::IOBuf>& ser);
-
   struct StructReadState;
 
  protected:

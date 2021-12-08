@@ -425,25 +425,6 @@ void JSONProtocolReaderCommon::readBinary(folly::IOBuf& str) {
   str.appendChain(folly::IOBuf::copyBuffer(tmp));
 }
 
-uint32_t JSONProtocolReaderCommon::readFromPositionAndAppend(
-    folly::io::Cursor& snapshot, std::unique_ptr<folly::IOBuf>& ser) {
-  int32_t size =
-      folly::to_narrow(folly::to_signed(folly::io::Cursor(in_) - snapshot));
-
-  if (ser) {
-    std::unique_ptr<folly::IOBuf> newBuf;
-    snapshot.clone(newBuf, size);
-    // IOBuf are circular, so prependChain called on head is the same as
-    // appending the whole chain at the tail.
-    ser->prependChain(std::move(newBuf));
-  } else {
-    // cut a chunk of things directly
-    snapshot.clone(ser, size);
-  }
-
-  return (uint32_t)size;
-}
-
 /**
  * Protected reading functions
  */

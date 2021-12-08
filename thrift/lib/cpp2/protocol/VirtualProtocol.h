@@ -79,8 +79,6 @@ class VirtualReaderBase {
   virtual void skip(TType type) = 0;
   virtual const folly::io::Cursor& getCursor() const = 0;
   virtual size_t getCursorPosition() const = 0;
-  virtual uint32_t readFromPositionAndAppend(
-      folly::io::Cursor& cursor, std::unique_ptr<folly::IOBuf>& ser) = 0;
   virtual bool peekMap() { return false; }
   virtual bool peekSet() { return false; }
   virtual bool peekList() { return false; }
@@ -183,10 +181,6 @@ class VirtualReader : public VirtualReaderBase {
   }
   size_t getCursorPosition() const override {
     return protocol_.getCursorPosition();
-  }
-  uint32_t readFromPositionAndAppend(
-      folly::io::Cursor& cursor, std::unique_ptr<folly::IOBuf>& ser) override {
-    return protocol_.readFromPositionAndAppend(cursor, ser);
   }
 
  protected:

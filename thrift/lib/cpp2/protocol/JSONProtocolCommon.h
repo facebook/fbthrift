@@ -201,9 +201,6 @@ class JSONProtocolReaderCommon {
 
   size_t getCursorPosition() const { return in_.getCurrentPosition(); }
 
-  inline uint32_t readFromPositionAndAppend(
-      folly::io::Cursor& cursor, std::unique_ptr<folly::IOBuf>& ser);
-
   static constexpr std::size_t fixedSizeInContainer(TType) { return 0; }
   void skipBytes(size_t bytes) { in_.skip(bytes); }
 

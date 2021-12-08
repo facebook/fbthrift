@@ -137,7 +137,6 @@ class CompactV1ProtocolReader : protected CompactProtocolReader {
 
   using CompactProtocolReader::getCursor;
   using CompactProtocolReader::getCursorPosition;
-  using CompactProtocolReader::readFromPositionAndAppend;
 };
 
 } // namespace thrift

@@ -563,27 +563,6 @@ void BinaryProtocolReader::readStringBody(StrType& str, int32_t size) {
   }
 }
 
-uint32_t BinaryProtocolReader::readFromPositionAndAppend(
-    Cursor& snapshot, std::unique_ptr<IOBuf>& ser) {
-  int32_t size =
-      folly::to_narrow(folly::to_signed(folly::io::Cursor(in_) - snapshot));
-
-  std::unique_ptr<IOBuf> newBuf;
-  snapshot.clone(newBuf, size);
-  if (sharing_ != SHARE_EXTERNAL_BUFFER && !newBuf->isManaged()) {
-    newBuf = newBuf->cloneCoalescedWithHeadroomTailroom(0, 0);
-    newBuf->makeManaged();
-  }
-  if (ser) {
-    // IOBuf are circular, so prependChain called on head is the same as
-    // appending the whole chain at the tail.
-    ser->prependChain(std::move(newBuf));
-  } else {
-    ser = std::move(newBuf);
-  }
-  return (uint32_t)size;
-}
-
 bool BinaryProtocolReader::advanceToNextField(
     int16_t nextFieldId, TType nextFieldType, StructReadState& state) {
   if (nextFieldType == TType::T_STOP) {
