@@ -203,6 +203,105 @@ struct struct_map_i64_set_string_cpp_ref {
 struct struct_map_i64_set_i64_cpp_ref {
   1: map<i64, set<i64>> field_1 (cpp.ref);
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_set_i64_cpp_ref")
+struct struct_list_bool_shared_cpp_ref {
+  1: list<bool> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_bool_shared_cpp_ref")
+struct struct_list_byte_shared_cpp_ref {
+  1: list<byte> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_byte_shared_cpp_ref")
+struct struct_list_i16_shared_cpp_ref {
+  1: list<i16> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_i16_shared_cpp_ref")
+struct struct_list_i32_shared_cpp_ref {
+  1: list<i32> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_i32_shared_cpp_ref")
+struct struct_list_i64_shared_cpp_ref {
+  1: list<i64> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_i64_shared_cpp_ref")
+struct struct_list_float_shared_cpp_ref {
+  1: list<float> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_float_shared_cpp_ref")
+struct struct_list_double_shared_cpp_ref {
+  1: list<double> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_double_shared_cpp_ref")
+struct struct_list_binary_shared_cpp_ref {
+  1: list<binary> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_binary_shared_cpp_ref")
+struct struct_list_string_shared_cpp_ref {
+  1: list<string> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_string_shared_cpp_ref")
+struct struct_set_string_shared_cpp_ref {
+  1: set<string> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_set_string_shared_cpp_ref")
+struct struct_set_i64_shared_cpp_ref {
+  1: set<i64> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_set_i64_shared_cpp_ref")
+struct struct_map_string_bool_shared_cpp_ref {
+  1: map<string, bool> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_bool_shared_cpp_ref")
+struct struct_map_string_byte_shared_cpp_ref {
+  1: map<string, byte> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_byte_shared_cpp_ref")
+struct struct_map_string_i16_shared_cpp_ref {
+  1: map<string, i16> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_i16_shared_cpp_ref")
+struct struct_map_string_i32_shared_cpp_ref {
+  1: map<string, i32> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_i32_shared_cpp_ref")
+struct struct_map_string_i64_shared_cpp_ref {
+  1: map<string, i64> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_i64_shared_cpp_ref")
+struct struct_map_string_float_shared_cpp_ref {
+  1: map<string, float> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_float_shared_cpp_ref")
+struct struct_map_string_double_shared_cpp_ref {
+  1: map<string, double> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_double_shared_cpp_ref")
+struct struct_map_string_binary_shared_cpp_ref {
+  1: map<string, binary> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_binary_shared_cpp_ref")
+struct struct_map_string_string_shared_cpp_ref {
+  1: map<string, string> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_string_shared_cpp_ref")
+struct struct_map_i64_bool_shared_cpp_ref {
+  1: map<i64, bool> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_bool_shared_cpp_ref")
+struct struct_map_i64_byte_shared_cpp_ref {
+  1: map<i64, byte> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_byte_shared_cpp_ref")
+struct struct_map_i64_i16_shared_cpp_ref {
+  1: map<i64, i16> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_i16_shared_cpp_ref")
+struct struct_map_i64_i32_shared_cpp_ref {
+  1: map<i64, i32> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_i32_shared_cpp_ref")
+struct struct_map_i64_i64_shared_cpp_ref {
+  1: map<i64, i64> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_i64_shared_cpp_ref")
+struct struct_map_i64_float_shared_cpp_ref {
+  1: map<i64, float> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_float_shared_cpp_ref")
+struct struct_map_i64_double_shared_cpp_ref {
+  1: map<i64, double> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_double_shared_cpp_ref")
+struct struct_map_i64_binary_shared_cpp_ref {
+  1: map<i64, binary> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_binary_shared_cpp_ref")
+struct struct_map_i64_string_shared_cpp_ref {
+  1: map<i64, string> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_string_shared_cpp_ref")
+struct struct_map_string_set_string_shared_cpp_ref {
+  1: map<string, set<string>> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_string_shared_cpp_ref")
+struct struct_map_string_set_i64_shared_cpp_ref {
+  1: map<string, set<i64>> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_i64_shared_cpp_ref")
+struct struct_map_i64_set_string_shared_cpp_ref {
+  1: map<i64, set<string>> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_set_string_shared_cpp_ref")
+struct struct_map_i64_set_i64_shared_cpp_ref {
+  1: map<i64, set<i64>> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_set_i64_shared_cpp_ref")
 struct struct_bool {
   1: bool field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_bool")
@@ -428,6 +527,105 @@ struct struct_optional_map_i64_set_string_cpp_ref {
 struct struct_optional_map_i64_set_i64_cpp_ref {
   1: optional map<i64, set<i64>> field_1 (cpp.ref);
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_set_i64_cpp_ref")
+struct struct_optional_list_bool_shared_cpp_ref {
+  1: optional list<bool> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_bool_shared_cpp_ref")
+struct struct_optional_list_byte_shared_cpp_ref {
+  1: optional list<byte> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_byte_shared_cpp_ref")
+struct struct_optional_list_i16_shared_cpp_ref {
+  1: optional list<i16> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_i16_shared_cpp_ref")
+struct struct_optional_list_i32_shared_cpp_ref {
+  1: optional list<i32> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_i32_shared_cpp_ref")
+struct struct_optional_list_i64_shared_cpp_ref {
+  1: optional list<i64> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_i64_shared_cpp_ref")
+struct struct_optional_list_float_shared_cpp_ref {
+  1: optional list<float> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_float_shared_cpp_ref")
+struct struct_optional_list_double_shared_cpp_ref {
+  1: optional list<double> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_double_shared_cpp_ref")
+struct struct_optional_list_binary_shared_cpp_ref {
+  1: optional list<binary> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_binary_shared_cpp_ref")
+struct struct_optional_list_string_shared_cpp_ref {
+  1: optional list<string> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_string_shared_cpp_ref")
+struct struct_optional_set_string_shared_cpp_ref {
+  1: optional set<string> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_string_shared_cpp_ref")
+struct struct_optional_set_i64_shared_cpp_ref {
+  1: optional set<i64> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_i64_shared_cpp_ref")
+struct struct_optional_map_string_bool_shared_cpp_ref {
+  1: optional map<string, bool> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_bool_shared_cpp_ref")
+struct struct_optional_map_string_byte_shared_cpp_ref {
+  1: optional map<string, byte> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_byte_shared_cpp_ref")
+struct struct_optional_map_string_i16_shared_cpp_ref {
+  1: optional map<string, i16> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_i16_shared_cpp_ref")
+struct struct_optional_map_string_i32_shared_cpp_ref {
+  1: optional map<string, i32> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_i32_shared_cpp_ref")
+struct struct_optional_map_string_i64_shared_cpp_ref {
+  1: optional map<string, i64> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_i64_shared_cpp_ref")
+struct struct_optional_map_string_float_shared_cpp_ref {
+  1: optional map<string, float> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_float_shared_cpp_ref")
+struct struct_optional_map_string_double_shared_cpp_ref {
+  1: optional map<string, double> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_double_shared_cpp_ref")
+struct struct_optional_map_string_binary_shared_cpp_ref {
+  1: optional map<string, binary> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_binary_shared_cpp_ref")
+struct struct_optional_map_string_string_shared_cpp_ref {
+  1: optional map<string, string> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_string_shared_cpp_ref")
+struct struct_optional_map_i64_bool_shared_cpp_ref {
+  1: optional map<i64, bool> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_bool_shared_cpp_ref")
+struct struct_optional_map_i64_byte_shared_cpp_ref {
+  1: optional map<i64, byte> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_byte_shared_cpp_ref")
+struct struct_optional_map_i64_i16_shared_cpp_ref {
+  1: optional map<i64, i16> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_i16_shared_cpp_ref")
+struct struct_optional_map_i64_i32_shared_cpp_ref {
+  1: optional map<i64, i32> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_i32_shared_cpp_ref")
+struct struct_optional_map_i64_i64_shared_cpp_ref {
+  1: optional map<i64, i64> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_i64_shared_cpp_ref")
+struct struct_optional_map_i64_float_shared_cpp_ref {
+  1: optional map<i64, float> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_float_shared_cpp_ref")
+struct struct_optional_map_i64_double_shared_cpp_ref {
+  1: optional map<i64, double> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_double_shared_cpp_ref")
+struct struct_optional_map_i64_binary_shared_cpp_ref {
+  1: optional map<i64, binary> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_binary_shared_cpp_ref")
+struct struct_optional_map_i64_string_shared_cpp_ref {
+  1: optional map<i64, string> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_string_shared_cpp_ref")
+struct struct_optional_map_string_set_string_shared_cpp_ref {
+  1: optional map<string, set<string>> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_string_shared_cpp_ref")
+struct struct_optional_map_string_set_i64_shared_cpp_ref {
+  1: optional map<string, set<i64>> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_i64_shared_cpp_ref")
+struct struct_optional_map_i64_set_string_shared_cpp_ref {
+  1: optional map<i64, set<string>> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_set_string_shared_cpp_ref")
+struct struct_optional_map_i64_set_i64_shared_cpp_ref {
+  1: optional map<i64, set<i64>> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_set_i64_shared_cpp_ref")
 struct struct_optional_bool {
   1: optional bool field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_bool")
@@ -653,6 +851,105 @@ struct struct_required_map_i64_set_string_cpp_ref {
 struct struct_required_map_i64_set_i64_cpp_ref {
   1: required map<i64, set<i64>> field_1 (cpp.ref);
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_set_i64_cpp_ref")
+struct struct_required_list_bool_shared_cpp_ref {
+  1: required list<bool> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_bool_shared_cpp_ref")
+struct struct_required_list_byte_shared_cpp_ref {
+  1: required list<byte> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_byte_shared_cpp_ref")
+struct struct_required_list_i16_shared_cpp_ref {
+  1: required list<i16> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_i16_shared_cpp_ref")
+struct struct_required_list_i32_shared_cpp_ref {
+  1: required list<i32> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_i32_shared_cpp_ref")
+struct struct_required_list_i64_shared_cpp_ref {
+  1: required list<i64> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_i64_shared_cpp_ref")
+struct struct_required_list_float_shared_cpp_ref {
+  1: required list<float> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_float_shared_cpp_ref")
+struct struct_required_list_double_shared_cpp_ref {
+  1: required list<double> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_double_shared_cpp_ref")
+struct struct_required_list_binary_shared_cpp_ref {
+  1: required list<binary> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_binary_shared_cpp_ref")
+struct struct_required_list_string_shared_cpp_ref {
+  1: required list<string> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_string_shared_cpp_ref")
+struct struct_required_set_string_shared_cpp_ref {
+  1: required set<string> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_string_shared_cpp_ref")
+struct struct_required_set_i64_shared_cpp_ref {
+  1: required set<i64> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_i64_shared_cpp_ref")
+struct struct_required_map_string_bool_shared_cpp_ref {
+  1: required map<string, bool> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_bool_shared_cpp_ref")
+struct struct_required_map_string_byte_shared_cpp_ref {
+  1: required map<string, byte> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_byte_shared_cpp_ref")
+struct struct_required_map_string_i16_shared_cpp_ref {
+  1: required map<string, i16> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_i16_shared_cpp_ref")
+struct struct_required_map_string_i32_shared_cpp_ref {
+  1: required map<string, i32> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_i32_shared_cpp_ref")
+struct struct_required_map_string_i64_shared_cpp_ref {
+  1: required map<string, i64> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_i64_shared_cpp_ref")
+struct struct_required_map_string_float_shared_cpp_ref {
+  1: required map<string, float> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_float_shared_cpp_ref")
+struct struct_required_map_string_double_shared_cpp_ref {
+  1: required map<string, double> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_double_shared_cpp_ref")
+struct struct_required_map_string_binary_shared_cpp_ref {
+  1: required map<string, binary> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_binary_shared_cpp_ref")
+struct struct_required_map_string_string_shared_cpp_ref {
+  1: required map<string, string> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_string_shared_cpp_ref")
+struct struct_required_map_i64_bool_shared_cpp_ref {
+  1: required map<i64, bool> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_bool_shared_cpp_ref")
+struct struct_required_map_i64_byte_shared_cpp_ref {
+  1: required map<i64, byte> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_byte_shared_cpp_ref")
+struct struct_required_map_i64_i16_shared_cpp_ref {
+  1: required map<i64, i16> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_i16_shared_cpp_ref")
+struct struct_required_map_i64_i32_shared_cpp_ref {
+  1: required map<i64, i32> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_i32_shared_cpp_ref")
+struct struct_required_map_i64_i64_shared_cpp_ref {
+  1: required map<i64, i64> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_i64_shared_cpp_ref")
+struct struct_required_map_i64_float_shared_cpp_ref {
+  1: required map<i64, float> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_float_shared_cpp_ref")
+struct struct_required_map_i64_double_shared_cpp_ref {
+  1: required map<i64, double> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_double_shared_cpp_ref")
+struct struct_required_map_i64_binary_shared_cpp_ref {
+  1: required map<i64, binary> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_binary_shared_cpp_ref")
+struct struct_required_map_i64_string_shared_cpp_ref {
+  1: required map<i64, string> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_string_shared_cpp_ref")
+struct struct_required_map_string_set_string_shared_cpp_ref {
+  1: required map<string, set<string>> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_string_shared_cpp_ref")
+struct struct_required_map_string_set_i64_shared_cpp_ref {
+  1: required map<string, set<i64>> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_i64_shared_cpp_ref")
+struct struct_required_map_i64_set_string_shared_cpp_ref {
+  1: required map<i64, set<string>> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_set_string_shared_cpp_ref")
+struct struct_required_map_i64_set_i64_shared_cpp_ref {
+  1: required map<i64, set<i64>> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_set_i64_shared_cpp_ref")
 struct struct_required_bool {
   1: required bool field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_bool")
@@ -680,6 +977,105 @@ struct struct_required_binary {
 struct struct_required_string {
   1: required string field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_string")
+struct struct_optional_list_bool_box {
+  1: optional list<bool> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_bool_box")
+struct struct_optional_list_byte_box {
+  1: optional list<byte> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_byte_box")
+struct struct_optional_list_i16_box {
+  1: optional list<i16> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_i16_box")
+struct struct_optional_list_i32_box {
+  1: optional list<i32> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_i32_box")
+struct struct_optional_list_i64_box {
+  1: optional list<i64> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_i64_box")
+struct struct_optional_list_float_box {
+  1: optional list<float> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_float_box")
+struct struct_optional_list_double_box {
+  1: optional list<double> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_double_box")
+struct struct_optional_list_binary_box {
+  1: optional list<binary> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_binary_box")
+struct struct_optional_list_string_box {
+  1: optional list<string> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_string_box")
+struct struct_optional_set_string_box {
+  1: optional set<string> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_string_box")
+struct struct_optional_set_i64_box {
+  1: optional set<i64> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_i64_box")
+struct struct_optional_map_string_bool_box {
+  1: optional map<string, bool> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_bool_box")
+struct struct_optional_map_string_byte_box {
+  1: optional map<string, byte> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_byte_box")
+struct struct_optional_map_string_i16_box {
+  1: optional map<string, i16> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_i16_box")
+struct struct_optional_map_string_i32_box {
+  1: optional map<string, i32> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_i32_box")
+struct struct_optional_map_string_i64_box {
+  1: optional map<string, i64> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_i64_box")
+struct struct_optional_map_string_float_box {
+  1: optional map<string, float> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_float_box")
+struct struct_optional_map_string_double_box {
+  1: optional map<string, double> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_double_box")
+struct struct_optional_map_string_binary_box {
+  1: optional map<string, binary> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_binary_box")
+struct struct_optional_map_string_string_box {
+  1: optional map<string, string> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_string_box")
+struct struct_optional_map_i64_bool_box {
+  1: optional map<i64, bool> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_bool_box")
+struct struct_optional_map_i64_byte_box {
+  1: optional map<i64, byte> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_byte_box")
+struct struct_optional_map_i64_i16_box {
+  1: optional map<i64, i16> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_i16_box")
+struct struct_optional_map_i64_i32_box {
+  1: optional map<i64, i32> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_i32_box")
+struct struct_optional_map_i64_i64_box {
+  1: optional map<i64, i64> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_i64_box")
+struct struct_optional_map_i64_float_box {
+  1: optional map<i64, float> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_float_box")
+struct struct_optional_map_i64_double_box {
+  1: optional map<i64, double> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_double_box")
+struct struct_optional_map_i64_binary_box {
+  1: optional map<i64, binary> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_binary_box")
+struct struct_optional_map_i64_string_box {
+  1: optional map<i64, string> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_string_box")
+struct struct_optional_map_string_set_string_box {
+  1: optional map<string, set<string>> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_string_box")
+struct struct_optional_map_string_set_i64_box {
+  1: optional map<string, set<i64>> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_i64_box")
+struct struct_optional_map_i64_set_string_box {
+  1: optional map<i64, set<string>> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_set_string_box")
+struct struct_optional_map_i64_set_i64_box {
+  1: optional map<i64, set<i64>> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_set_i64_box")
 struct struct_list_bool_lazy {
   1: list<bool> field_1 (cpp.experimental.lazy);
 } (thrift.uri="facebook.com/thrift/test/testset/struct_list_bool_lazy")
@@ -982,6 +1378,105 @@ exception exception_map_i64_set_string_cpp_ref {
 exception exception_map_i64_set_i64_cpp_ref {
   1: map<i64, set<i64>> field_1 (cpp.ref);
 } (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_set_i64_cpp_ref")
+exception exception_list_bool_shared_cpp_ref {
+  1: list<bool> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_bool_shared_cpp_ref")
+exception exception_list_byte_shared_cpp_ref {
+  1: list<byte> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_byte_shared_cpp_ref")
+exception exception_list_i16_shared_cpp_ref {
+  1: list<i16> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_i16_shared_cpp_ref")
+exception exception_list_i32_shared_cpp_ref {
+  1: list<i32> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_i32_shared_cpp_ref")
+exception exception_list_i64_shared_cpp_ref {
+  1: list<i64> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_i64_shared_cpp_ref")
+exception exception_list_float_shared_cpp_ref {
+  1: list<float> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_float_shared_cpp_ref")
+exception exception_list_double_shared_cpp_ref {
+  1: list<double> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_double_shared_cpp_ref")
+exception exception_list_binary_shared_cpp_ref {
+  1: list<binary> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_binary_shared_cpp_ref")
+exception exception_list_string_shared_cpp_ref {
+  1: list<string> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_string_shared_cpp_ref")
+exception exception_set_string_shared_cpp_ref {
+  1: set<string> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_set_string_shared_cpp_ref")
+exception exception_set_i64_shared_cpp_ref {
+  1: set<i64> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_set_i64_shared_cpp_ref")
+exception exception_map_string_bool_shared_cpp_ref {
+  1: map<string, bool> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_bool_shared_cpp_ref")
+exception exception_map_string_byte_shared_cpp_ref {
+  1: map<string, byte> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_byte_shared_cpp_ref")
+exception exception_map_string_i16_shared_cpp_ref {
+  1: map<string, i16> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_i16_shared_cpp_ref")
+exception exception_map_string_i32_shared_cpp_ref {
+  1: map<string, i32> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_i32_shared_cpp_ref")
+exception exception_map_string_i64_shared_cpp_ref {
+  1: map<string, i64> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_i64_shared_cpp_ref")
+exception exception_map_string_float_shared_cpp_ref {
+  1: map<string, float> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_float_shared_cpp_ref")
+exception exception_map_string_double_shared_cpp_ref {
+  1: map<string, double> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_double_shared_cpp_ref")
+exception exception_map_string_binary_shared_cpp_ref {
+  1: map<string, binary> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_binary_shared_cpp_ref")
+exception exception_map_string_string_shared_cpp_ref {
+  1: map<string, string> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_string_shared_cpp_ref")
+exception exception_map_i64_bool_shared_cpp_ref {
+  1: map<i64, bool> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_bool_shared_cpp_ref")
+exception exception_map_i64_byte_shared_cpp_ref {
+  1: map<i64, byte> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_byte_shared_cpp_ref")
+exception exception_map_i64_i16_shared_cpp_ref {
+  1: map<i64, i16> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_i16_shared_cpp_ref")
+exception exception_map_i64_i32_shared_cpp_ref {
+  1: map<i64, i32> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_i32_shared_cpp_ref")
+exception exception_map_i64_i64_shared_cpp_ref {
+  1: map<i64, i64> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_i64_shared_cpp_ref")
+exception exception_map_i64_float_shared_cpp_ref {
+  1: map<i64, float> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_float_shared_cpp_ref")
+exception exception_map_i64_double_shared_cpp_ref {
+  1: map<i64, double> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_double_shared_cpp_ref")
+exception exception_map_i64_binary_shared_cpp_ref {
+  1: map<i64, binary> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_binary_shared_cpp_ref")
+exception exception_map_i64_string_shared_cpp_ref {
+  1: map<i64, string> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_string_shared_cpp_ref")
+exception exception_map_string_set_string_shared_cpp_ref {
+  1: map<string, set<string>> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_set_string_shared_cpp_ref")
+exception exception_map_string_set_i64_shared_cpp_ref {
+  1: map<string, set<i64>> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_set_i64_shared_cpp_ref")
+exception exception_map_i64_set_string_shared_cpp_ref {
+  1: map<i64, set<string>> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_set_string_shared_cpp_ref")
+exception exception_map_i64_set_i64_shared_cpp_ref {
+  1: map<i64, set<i64>> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_set_i64_shared_cpp_ref")
 exception exception_bool {
   1: bool field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_bool")
@@ -1207,6 +1702,105 @@ exception exception_optional_map_i64_set_string_cpp_ref {
 exception exception_optional_map_i64_set_i64_cpp_ref {
   1: optional map<i64, set<i64>> field_1 (cpp.ref);
 } (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_set_i64_cpp_ref")
+exception exception_optional_list_bool_shared_cpp_ref {
+  1: optional list<bool> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_bool_shared_cpp_ref")
+exception exception_optional_list_byte_shared_cpp_ref {
+  1: optional list<byte> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_byte_shared_cpp_ref")
+exception exception_optional_list_i16_shared_cpp_ref {
+  1: optional list<i16> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_i16_shared_cpp_ref")
+exception exception_optional_list_i32_shared_cpp_ref {
+  1: optional list<i32> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_i32_shared_cpp_ref")
+exception exception_optional_list_i64_shared_cpp_ref {
+  1: optional list<i64> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_i64_shared_cpp_ref")
+exception exception_optional_list_float_shared_cpp_ref {
+  1: optional list<float> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_float_shared_cpp_ref")
+exception exception_optional_list_double_shared_cpp_ref {
+  1: optional list<double> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_double_shared_cpp_ref")
+exception exception_optional_list_binary_shared_cpp_ref {
+  1: optional list<binary> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_binary_shared_cpp_ref")
+exception exception_optional_list_string_shared_cpp_ref {
+  1: optional list<string> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_string_shared_cpp_ref")
+exception exception_optional_set_string_shared_cpp_ref {
+  1: optional set<string> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_set_string_shared_cpp_ref")
+exception exception_optional_set_i64_shared_cpp_ref {
+  1: optional set<i64> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_set_i64_shared_cpp_ref")
+exception exception_optional_map_string_bool_shared_cpp_ref {
+  1: optional map<string, bool> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_bool_shared_cpp_ref")
+exception exception_optional_map_string_byte_shared_cpp_ref {
+  1: optional map<string, byte> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_byte_shared_cpp_ref")
+exception exception_optional_map_string_i16_shared_cpp_ref {
+  1: optional map<string, i16> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_i16_shared_cpp_ref")
+exception exception_optional_map_string_i32_shared_cpp_ref {
+  1: optional map<string, i32> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_i32_shared_cpp_ref")
+exception exception_optional_map_string_i64_shared_cpp_ref {
+  1: optional map<string, i64> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_i64_shared_cpp_ref")
+exception exception_optional_map_string_float_shared_cpp_ref {
+  1: optional map<string, float> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_float_shared_cpp_ref")
+exception exception_optional_map_string_double_shared_cpp_ref {
+  1: optional map<string, double> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_double_shared_cpp_ref")
+exception exception_optional_map_string_binary_shared_cpp_ref {
+  1: optional map<string, binary> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_binary_shared_cpp_ref")
+exception exception_optional_map_string_string_shared_cpp_ref {
+  1: optional map<string, string> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_string_shared_cpp_ref")
+exception exception_optional_map_i64_bool_shared_cpp_ref {
+  1: optional map<i64, bool> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_bool_shared_cpp_ref")
+exception exception_optional_map_i64_byte_shared_cpp_ref {
+  1: optional map<i64, byte> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_byte_shared_cpp_ref")
+exception exception_optional_map_i64_i16_shared_cpp_ref {
+  1: optional map<i64, i16> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_i16_shared_cpp_ref")
+exception exception_optional_map_i64_i32_shared_cpp_ref {
+  1: optional map<i64, i32> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_i32_shared_cpp_ref")
+exception exception_optional_map_i64_i64_shared_cpp_ref {
+  1: optional map<i64, i64> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_i64_shared_cpp_ref")
+exception exception_optional_map_i64_float_shared_cpp_ref {
+  1: optional map<i64, float> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_float_shared_cpp_ref")
+exception exception_optional_map_i64_double_shared_cpp_ref {
+  1: optional map<i64, double> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_double_shared_cpp_ref")
+exception exception_optional_map_i64_binary_shared_cpp_ref {
+  1: optional map<i64, binary> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_binary_shared_cpp_ref")
+exception exception_optional_map_i64_string_shared_cpp_ref {
+  1: optional map<i64, string> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_string_shared_cpp_ref")
+exception exception_optional_map_string_set_string_shared_cpp_ref {
+  1: optional map<string, set<string>> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_set_string_shared_cpp_ref")
+exception exception_optional_map_string_set_i64_shared_cpp_ref {
+  1: optional map<string, set<i64>> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_set_i64_shared_cpp_ref")
+exception exception_optional_map_i64_set_string_shared_cpp_ref {
+  1: optional map<i64, set<string>> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_set_string_shared_cpp_ref")
+exception exception_optional_map_i64_set_i64_shared_cpp_ref {
+  1: optional map<i64, set<i64>> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_set_i64_shared_cpp_ref")
 exception exception_optional_bool {
   1: optional bool field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_optional_bool")
@@ -1432,6 +2026,105 @@ exception exception_required_map_i64_set_string_cpp_ref {
 exception exception_required_map_i64_set_i64_cpp_ref {
   1: required map<i64, set<i64>> field_1 (cpp.ref);
 } (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_set_i64_cpp_ref")
+exception exception_required_list_bool_shared_cpp_ref {
+  1: required list<bool> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_bool_shared_cpp_ref")
+exception exception_required_list_byte_shared_cpp_ref {
+  1: required list<byte> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_byte_shared_cpp_ref")
+exception exception_required_list_i16_shared_cpp_ref {
+  1: required list<i16> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_i16_shared_cpp_ref")
+exception exception_required_list_i32_shared_cpp_ref {
+  1: required list<i32> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_i32_shared_cpp_ref")
+exception exception_required_list_i64_shared_cpp_ref {
+  1: required list<i64> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_i64_shared_cpp_ref")
+exception exception_required_list_float_shared_cpp_ref {
+  1: required list<float> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_float_shared_cpp_ref")
+exception exception_required_list_double_shared_cpp_ref {
+  1: required list<double> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_double_shared_cpp_ref")
+exception exception_required_list_binary_shared_cpp_ref {
+  1: required list<binary> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_binary_shared_cpp_ref")
+exception exception_required_list_string_shared_cpp_ref {
+  1: required list<string> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_string_shared_cpp_ref")
+exception exception_required_set_string_shared_cpp_ref {
+  1: required set<string> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_set_string_shared_cpp_ref")
+exception exception_required_set_i64_shared_cpp_ref {
+  1: required set<i64> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_set_i64_shared_cpp_ref")
+exception exception_required_map_string_bool_shared_cpp_ref {
+  1: required map<string, bool> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_bool_shared_cpp_ref")
+exception exception_required_map_string_byte_shared_cpp_ref {
+  1: required map<string, byte> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_byte_shared_cpp_ref")
+exception exception_required_map_string_i16_shared_cpp_ref {
+  1: required map<string, i16> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_i16_shared_cpp_ref")
+exception exception_required_map_string_i32_shared_cpp_ref {
+  1: required map<string, i32> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_i32_shared_cpp_ref")
+exception exception_required_map_string_i64_shared_cpp_ref {
+  1: required map<string, i64> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_i64_shared_cpp_ref")
+exception exception_required_map_string_float_shared_cpp_ref {
+  1: required map<string, float> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_float_shared_cpp_ref")
+exception exception_required_map_string_double_shared_cpp_ref {
+  1: required map<string, double> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_double_shared_cpp_ref")
+exception exception_required_map_string_binary_shared_cpp_ref {
+  1: required map<string, binary> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_binary_shared_cpp_ref")
+exception exception_required_map_string_string_shared_cpp_ref {
+  1: required map<string, string> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_string_shared_cpp_ref")
+exception exception_required_map_i64_bool_shared_cpp_ref {
+  1: required map<i64, bool> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_bool_shared_cpp_ref")
+exception exception_required_map_i64_byte_shared_cpp_ref {
+  1: required map<i64, byte> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_byte_shared_cpp_ref")
+exception exception_required_map_i64_i16_shared_cpp_ref {
+  1: required map<i64, i16> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_i16_shared_cpp_ref")
+exception exception_required_map_i64_i32_shared_cpp_ref {
+  1: required map<i64, i32> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_i32_shared_cpp_ref")
+exception exception_required_map_i64_i64_shared_cpp_ref {
+  1: required map<i64, i64> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_i64_shared_cpp_ref")
+exception exception_required_map_i64_float_shared_cpp_ref {
+  1: required map<i64, float> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_float_shared_cpp_ref")
+exception exception_required_map_i64_double_shared_cpp_ref {
+  1: required map<i64, double> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_double_shared_cpp_ref")
+exception exception_required_map_i64_binary_shared_cpp_ref {
+  1: required map<i64, binary> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_binary_shared_cpp_ref")
+exception exception_required_map_i64_string_shared_cpp_ref {
+  1: required map<i64, string> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_string_shared_cpp_ref")
+exception exception_required_map_string_set_string_shared_cpp_ref {
+  1: required map<string, set<string>> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_set_string_shared_cpp_ref")
+exception exception_required_map_string_set_i64_shared_cpp_ref {
+  1: required map<string, set<i64>> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_set_i64_shared_cpp_ref")
+exception exception_required_map_i64_set_string_shared_cpp_ref {
+  1: required map<i64, set<string>> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_set_string_shared_cpp_ref")
+exception exception_required_map_i64_set_i64_shared_cpp_ref {
+  1: required map<i64, set<i64>> field_1 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_set_i64_shared_cpp_ref")
 exception exception_required_bool {
   1: required bool field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_required_bool")
@@ -1459,6 +2152,105 @@ exception exception_required_binary {
 exception exception_required_string {
   1: required string field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_required_string")
+exception exception_optional_list_bool_box {
+  1: optional list<bool> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_bool_box")
+exception exception_optional_list_byte_box {
+  1: optional list<byte> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_byte_box")
+exception exception_optional_list_i16_box {
+  1: optional list<i16> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_i16_box")
+exception exception_optional_list_i32_box {
+  1: optional list<i32> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_i32_box")
+exception exception_optional_list_i64_box {
+  1: optional list<i64> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_i64_box")
+exception exception_optional_list_float_box {
+  1: optional list<float> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_float_box")
+exception exception_optional_list_double_box {
+  1: optional list<double> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_double_box")
+exception exception_optional_list_binary_box {
+  1: optional list<binary> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_binary_box")
+exception exception_optional_list_string_box {
+  1: optional list<string> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_string_box")
+exception exception_optional_set_string_box {
+  1: optional set<string> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_set_string_box")
+exception exception_optional_set_i64_box {
+  1: optional set<i64> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_set_i64_box")
+exception exception_optional_map_string_bool_box {
+  1: optional map<string, bool> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_bool_box")
+exception exception_optional_map_string_byte_box {
+  1: optional map<string, byte> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_byte_box")
+exception exception_optional_map_string_i16_box {
+  1: optional map<string, i16> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_i16_box")
+exception exception_optional_map_string_i32_box {
+  1: optional map<string, i32> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_i32_box")
+exception exception_optional_map_string_i64_box {
+  1: optional map<string, i64> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_i64_box")
+exception exception_optional_map_string_float_box {
+  1: optional map<string, float> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_float_box")
+exception exception_optional_map_string_double_box {
+  1: optional map<string, double> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_double_box")
+exception exception_optional_map_string_binary_box {
+  1: optional map<string, binary> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_binary_box")
+exception exception_optional_map_string_string_box {
+  1: optional map<string, string> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_string_box")
+exception exception_optional_map_i64_bool_box {
+  1: optional map<i64, bool> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_bool_box")
+exception exception_optional_map_i64_byte_box {
+  1: optional map<i64, byte> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_byte_box")
+exception exception_optional_map_i64_i16_box {
+  1: optional map<i64, i16> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_i16_box")
+exception exception_optional_map_i64_i32_box {
+  1: optional map<i64, i32> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_i32_box")
+exception exception_optional_map_i64_i64_box {
+  1: optional map<i64, i64> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_i64_box")
+exception exception_optional_map_i64_float_box {
+  1: optional map<i64, float> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_float_box")
+exception exception_optional_map_i64_double_box {
+  1: optional map<i64, double> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_double_box")
+exception exception_optional_map_i64_binary_box {
+  1: optional map<i64, binary> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_binary_box")
+exception exception_optional_map_i64_string_box {
+  1: optional map<i64, string> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_string_box")
+exception exception_optional_map_string_set_string_box {
+  1: optional map<string, set<string>> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_set_string_box")
+exception exception_optional_map_string_set_i64_box {
+  1: optional map<string, set<i64>> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_set_i64_box")
+exception exception_optional_map_i64_set_string_box {
+  1: optional map<i64, set<string>> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_set_string_box")
+exception exception_optional_map_i64_set_i64_box {
+  1: optional map<i64, set<i64>> field_1 (thrift.box);
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_set_i64_box")
 exception exception_list_bool_lazy {
   1: list<bool> field_1 (cpp.experimental.lazy);
 } (thrift.uri="facebook.com/thrift/test/testset/exception_list_bool_lazy")
@@ -1827,6 +2619,138 @@ union union_map_i64_set_i64_cpp_ref {
   1: map<i64, set<i64>> field_1 (cpp.ref);
   2: map<i64, set<i64>> field_2 (cpp.ref);
 } (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_set_i64_cpp_ref")
+union union_list_bool_shared_cpp_ref {
+  1: list<bool> field_1 (cpp.ref_type = "shared");
+  2: list<bool> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_bool_shared_cpp_ref")
+union union_list_byte_shared_cpp_ref {
+  1: list<byte> field_1 (cpp.ref_type = "shared");
+  2: list<byte> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_byte_shared_cpp_ref")
+union union_list_i16_shared_cpp_ref {
+  1: list<i16> field_1 (cpp.ref_type = "shared");
+  2: list<i16> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_i16_shared_cpp_ref")
+union union_list_i32_shared_cpp_ref {
+  1: list<i32> field_1 (cpp.ref_type = "shared");
+  2: list<i32> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_i32_shared_cpp_ref")
+union union_list_i64_shared_cpp_ref {
+  1: list<i64> field_1 (cpp.ref_type = "shared");
+  2: list<i64> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_i64_shared_cpp_ref")
+union union_list_float_shared_cpp_ref {
+  1: list<float> field_1 (cpp.ref_type = "shared");
+  2: list<float> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_float_shared_cpp_ref")
+union union_list_double_shared_cpp_ref {
+  1: list<double> field_1 (cpp.ref_type = "shared");
+  2: list<double> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_double_shared_cpp_ref")
+union union_list_binary_shared_cpp_ref {
+  1: list<binary> field_1 (cpp.ref_type = "shared");
+  2: list<binary> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_binary_shared_cpp_ref")
+union union_list_string_shared_cpp_ref {
+  1: list<string> field_1 (cpp.ref_type = "shared");
+  2: list<string> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_string_shared_cpp_ref")
+union union_set_string_shared_cpp_ref {
+  1: set<string> field_1 (cpp.ref_type = "shared");
+  2: set<string> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_set_string_shared_cpp_ref")
+union union_set_i64_shared_cpp_ref {
+  1: set<i64> field_1 (cpp.ref_type = "shared");
+  2: set<i64> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_set_i64_shared_cpp_ref")
+union union_map_string_bool_shared_cpp_ref {
+  1: map<string, bool> field_1 (cpp.ref_type = "shared");
+  2: map<string, bool> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_bool_shared_cpp_ref")
+union union_map_string_byte_shared_cpp_ref {
+  1: map<string, byte> field_1 (cpp.ref_type = "shared");
+  2: map<string, byte> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_byte_shared_cpp_ref")
+union union_map_string_i16_shared_cpp_ref {
+  1: map<string, i16> field_1 (cpp.ref_type = "shared");
+  2: map<string, i16> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_i16_shared_cpp_ref")
+union union_map_string_i32_shared_cpp_ref {
+  1: map<string, i32> field_1 (cpp.ref_type = "shared");
+  2: map<string, i32> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_i32_shared_cpp_ref")
+union union_map_string_i64_shared_cpp_ref {
+  1: map<string, i64> field_1 (cpp.ref_type = "shared");
+  2: map<string, i64> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_i64_shared_cpp_ref")
+union union_map_string_float_shared_cpp_ref {
+  1: map<string, float> field_1 (cpp.ref_type = "shared");
+  2: map<string, float> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_float_shared_cpp_ref")
+union union_map_string_double_shared_cpp_ref {
+  1: map<string, double> field_1 (cpp.ref_type = "shared");
+  2: map<string, double> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_double_shared_cpp_ref")
+union union_map_string_binary_shared_cpp_ref {
+  1: map<string, binary> field_1 (cpp.ref_type = "shared");
+  2: map<string, binary> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_binary_shared_cpp_ref")
+union union_map_string_string_shared_cpp_ref {
+  1: map<string, string> field_1 (cpp.ref_type = "shared");
+  2: map<string, string> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_string_shared_cpp_ref")
+union union_map_i64_bool_shared_cpp_ref {
+  1: map<i64, bool> field_1 (cpp.ref_type = "shared");
+  2: map<i64, bool> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_bool_shared_cpp_ref")
+union union_map_i64_byte_shared_cpp_ref {
+  1: map<i64, byte> field_1 (cpp.ref_type = "shared");
+  2: map<i64, byte> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_byte_shared_cpp_ref")
+union union_map_i64_i16_shared_cpp_ref {
+  1: map<i64, i16> field_1 (cpp.ref_type = "shared");
+  2: map<i64, i16> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_i16_shared_cpp_ref")
+union union_map_i64_i32_shared_cpp_ref {
+  1: map<i64, i32> field_1 (cpp.ref_type = "shared");
+  2: map<i64, i32> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_i32_shared_cpp_ref")
+union union_map_i64_i64_shared_cpp_ref {
+  1: map<i64, i64> field_1 (cpp.ref_type = "shared");
+  2: map<i64, i64> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_i64_shared_cpp_ref")
+union union_map_i64_float_shared_cpp_ref {
+  1: map<i64, float> field_1 (cpp.ref_type = "shared");
+  2: map<i64, float> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_float_shared_cpp_ref")
+union union_map_i64_double_shared_cpp_ref {
+  1: map<i64, double> field_1 (cpp.ref_type = "shared");
+  2: map<i64, double> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_double_shared_cpp_ref")
+union union_map_i64_binary_shared_cpp_ref {
+  1: map<i64, binary> field_1 (cpp.ref_type = "shared");
+  2: map<i64, binary> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_binary_shared_cpp_ref")
+union union_map_i64_string_shared_cpp_ref {
+  1: map<i64, string> field_1 (cpp.ref_type = "shared");
+  2: map<i64, string> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_string_shared_cpp_ref")
+union union_map_string_set_string_shared_cpp_ref {
+  1: map<string, set<string>> field_1 (cpp.ref_type = "shared");
+  2: map<string, set<string>> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_set_string_shared_cpp_ref")
+union union_map_string_set_i64_shared_cpp_ref {
+  1: map<string, set<i64>> field_1 (cpp.ref_type = "shared");
+  2: map<string, set<i64>> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_set_i64_shared_cpp_ref")
+union union_map_i64_set_string_shared_cpp_ref {
+  1: map<i64, set<string>> field_1 (cpp.ref_type = "shared");
+  2: map<i64, set<string>> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_set_string_shared_cpp_ref")
+union union_map_i64_set_i64_shared_cpp_ref {
+  1: map<i64, set<i64>> field_1 (cpp.ref_type = "shared");
+  2: map<i64, set<i64>> field_2 (cpp.ref_type = "shared");
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_set_i64_shared_cpp_ref")
 union union_bool {
   1: bool field_1;
   2: bool field_2;
@@ -1931,273 +2855,438 @@ struct struct_all {
   65: struct_map_string_set_i64_cpp_ref field_65;
   66: struct_map_i64_set_string_cpp_ref field_66;
   67: struct_map_i64_set_i64_cpp_ref field_67;
-  68: struct_bool field_68;
-  69: struct_byte field_69;
-  70: struct_i16 field_70;
-  71: struct_i32 field_71;
-  72: struct_i64 field_72;
-  73: struct_float field_73;
-  74: struct_double field_74;
-  75: struct_binary field_75;
-  76: struct_string field_76;
-  77: struct_optional_list_bool field_77;
-  78: struct_optional_list_byte field_78;
-  79: struct_optional_list_i16 field_79;
-  80: struct_optional_list_i32 field_80;
-  81: struct_optional_list_i64 field_81;
-  82: struct_optional_list_float field_82;
-  83: struct_optional_list_double field_83;
-  84: struct_optional_list_binary field_84;
-  85: struct_optional_list_string field_85;
-  86: struct_optional_set_string field_86;
-  87: struct_optional_set_i64 field_87;
-  88: struct_optional_map_string_bool field_88;
-  89: struct_optional_map_string_byte field_89;
-  90: struct_optional_map_string_i16 field_90;
-  91: struct_optional_map_string_i32 field_91;
-  92: struct_optional_map_string_i64 field_92;
-  93: struct_optional_map_string_float field_93;
-  94: struct_optional_map_string_double field_94;
-  95: struct_optional_map_string_binary field_95;
-  96: struct_optional_map_string_string field_96;
-  97: struct_optional_map_i64_bool field_97;
-  98: struct_optional_map_i64_byte field_98;
-  99: struct_optional_map_i64_i16 field_99;
-  100: struct_optional_map_i64_i32 field_100;
-  101: struct_optional_map_i64_i64 field_101;
-  102: struct_optional_map_i64_float field_102;
-  103: struct_optional_map_i64_double field_103;
-  104: struct_optional_map_i64_binary field_104;
-  105: struct_optional_map_i64_string field_105;
-  106: struct_optional_map_string_set_string field_106;
-  107: struct_optional_map_string_set_i64 field_107;
-  108: struct_optional_map_i64_set_string field_108;
-  109: struct_optional_map_i64_set_i64 field_109;
-  110: struct_optional_list_bool_cpp_ref field_110;
-  111: struct_optional_list_byte_cpp_ref field_111;
-  112: struct_optional_list_i16_cpp_ref field_112;
-  113: struct_optional_list_i32_cpp_ref field_113;
-  114: struct_optional_list_i64_cpp_ref field_114;
-  115: struct_optional_list_float_cpp_ref field_115;
-  116: struct_optional_list_double_cpp_ref field_116;
-  117: struct_optional_list_binary_cpp_ref field_117;
-  118: struct_optional_list_string_cpp_ref field_118;
-  119: struct_optional_set_string_cpp_ref field_119;
-  120: struct_optional_set_i64_cpp_ref field_120;
-  121: struct_optional_map_string_bool_cpp_ref field_121;
-  122: struct_optional_map_string_byte_cpp_ref field_122;
-  123: struct_optional_map_string_i16_cpp_ref field_123;
-  124: struct_optional_map_string_i32_cpp_ref field_124;
-  125: struct_optional_map_string_i64_cpp_ref field_125;
-  126: struct_optional_map_string_float_cpp_ref field_126;
-  127: struct_optional_map_string_double_cpp_ref field_127;
-  128: struct_optional_map_string_binary_cpp_ref field_128;
-  129: struct_optional_map_string_string_cpp_ref field_129;
-  130: struct_optional_map_i64_bool_cpp_ref field_130;
-  131: struct_optional_map_i64_byte_cpp_ref field_131;
-  132: struct_optional_map_i64_i16_cpp_ref field_132;
-  133: struct_optional_map_i64_i32_cpp_ref field_133;
-  134: struct_optional_map_i64_i64_cpp_ref field_134;
-  135: struct_optional_map_i64_float_cpp_ref field_135;
-  136: struct_optional_map_i64_double_cpp_ref field_136;
-  137: struct_optional_map_i64_binary_cpp_ref field_137;
-  138: struct_optional_map_i64_string_cpp_ref field_138;
-  139: struct_optional_map_string_set_string_cpp_ref field_139;
-  140: struct_optional_map_string_set_i64_cpp_ref field_140;
-  141: struct_optional_map_i64_set_string_cpp_ref field_141;
-  142: struct_optional_map_i64_set_i64_cpp_ref field_142;
-  143: struct_optional_bool field_143;
-  144: struct_optional_byte field_144;
-  145: struct_optional_i16 field_145;
-  146: struct_optional_i32 field_146;
-  147: struct_optional_i64 field_147;
-  148: struct_optional_float field_148;
-  149: struct_optional_double field_149;
-  150: struct_optional_binary field_150;
-  151: struct_optional_string field_151;
-  152: struct_required_list_bool field_152;
-  153: struct_required_list_byte field_153;
-  154: struct_required_list_i16 field_154;
-  155: struct_required_list_i32 field_155;
-  156: struct_required_list_i64 field_156;
-  157: struct_required_list_float field_157;
-  158: struct_required_list_double field_158;
-  159: struct_required_list_binary field_159;
-  160: struct_required_list_string field_160;
-  161: struct_required_set_string field_161;
-  162: struct_required_set_i64 field_162;
-  163: struct_required_map_string_bool field_163;
-  164: struct_required_map_string_byte field_164;
-  165: struct_required_map_string_i16 field_165;
-  166: struct_required_map_string_i32 field_166;
-  167: struct_required_map_string_i64 field_167;
-  168: struct_required_map_string_float field_168;
-  169: struct_required_map_string_double field_169;
-  170: struct_required_map_string_binary field_170;
-  171: struct_required_map_string_string field_171;
-  172: struct_required_map_i64_bool field_172;
-  173: struct_required_map_i64_byte field_173;
-  174: struct_required_map_i64_i16 field_174;
-  175: struct_required_map_i64_i32 field_175;
-  176: struct_required_map_i64_i64 field_176;
-  177: struct_required_map_i64_float field_177;
-  178: struct_required_map_i64_double field_178;
-  179: struct_required_map_i64_binary field_179;
-  180: struct_required_map_i64_string field_180;
-  181: struct_required_map_string_set_string field_181;
-  182: struct_required_map_string_set_i64 field_182;
-  183: struct_required_map_i64_set_string field_183;
-  184: struct_required_map_i64_set_i64 field_184;
-  185: struct_required_list_bool_cpp_ref field_185;
-  186: struct_required_list_byte_cpp_ref field_186;
-  187: struct_required_list_i16_cpp_ref field_187;
-  188: struct_required_list_i32_cpp_ref field_188;
-  189: struct_required_list_i64_cpp_ref field_189;
-  190: struct_required_list_float_cpp_ref field_190;
-  191: struct_required_list_double_cpp_ref field_191;
-  192: struct_required_list_binary_cpp_ref field_192;
-  193: struct_required_list_string_cpp_ref field_193;
-  194: struct_required_set_string_cpp_ref field_194;
-  195: struct_required_set_i64_cpp_ref field_195;
-  196: struct_required_map_string_bool_cpp_ref field_196;
-  197: struct_required_map_string_byte_cpp_ref field_197;
-  198: struct_required_map_string_i16_cpp_ref field_198;
-  199: struct_required_map_string_i32_cpp_ref field_199;
-  200: struct_required_map_string_i64_cpp_ref field_200;
-  201: struct_required_map_string_float_cpp_ref field_201;
-  202: struct_required_map_string_double_cpp_ref field_202;
-  203: struct_required_map_string_binary_cpp_ref field_203;
-  204: struct_required_map_string_string_cpp_ref field_204;
-  205: struct_required_map_i64_bool_cpp_ref field_205;
-  206: struct_required_map_i64_byte_cpp_ref field_206;
-  207: struct_required_map_i64_i16_cpp_ref field_207;
-  208: struct_required_map_i64_i32_cpp_ref field_208;
-  209: struct_required_map_i64_i64_cpp_ref field_209;
-  210: struct_required_map_i64_float_cpp_ref field_210;
-  211: struct_required_map_i64_double_cpp_ref field_211;
-  212: struct_required_map_i64_binary_cpp_ref field_212;
-  213: struct_required_map_i64_string_cpp_ref field_213;
-  214: struct_required_map_string_set_string_cpp_ref field_214;
-  215: struct_required_map_string_set_i64_cpp_ref field_215;
-  216: struct_required_map_i64_set_string_cpp_ref field_216;
-  217: struct_required_map_i64_set_i64_cpp_ref field_217;
-  218: struct_required_bool field_218;
-  219: struct_required_byte field_219;
-  220: struct_required_i16 field_220;
-  221: struct_required_i32 field_221;
-  222: struct_required_i64 field_222;
-  223: struct_required_float field_223;
-  224: struct_required_double field_224;
-  225: struct_required_binary field_225;
-  226: struct_required_string field_226;
-  227: struct_list_bool_lazy field_227;
-  228: struct_list_byte_lazy field_228;
-  229: struct_list_i16_lazy field_229;
-  230: struct_list_i32_lazy field_230;
-  231: struct_list_i64_lazy field_231;
-  232: struct_list_float_lazy field_232;
-  233: struct_list_double_lazy field_233;
-  234: struct_list_binary_lazy field_234;
-  235: struct_list_string_lazy field_235;
-  236: struct_set_string_lazy field_236;
-  237: struct_set_i64_lazy field_237;
-  238: struct_map_string_bool_lazy field_238;
-  239: struct_map_string_byte_lazy field_239;
-  240: struct_map_string_i16_lazy field_240;
-  241: struct_map_string_i32_lazy field_241;
-  242: struct_map_string_i64_lazy field_242;
-  243: struct_map_string_float_lazy field_243;
-  244: struct_map_string_double_lazy field_244;
-  245: struct_map_string_binary_lazy field_245;
-  246: struct_map_string_string_lazy field_246;
-  247: struct_map_i64_bool_lazy field_247;
-  248: struct_map_i64_byte_lazy field_248;
-  249: struct_map_i64_i16_lazy field_249;
-  250: struct_map_i64_i32_lazy field_250;
-  251: struct_map_i64_i64_lazy field_251;
-  252: struct_map_i64_float_lazy field_252;
-  253: struct_map_i64_double_lazy field_253;
-  254: struct_map_i64_binary_lazy field_254;
-  255: struct_map_i64_string_lazy field_255;
-  256: struct_map_string_set_string_lazy field_256;
-  257: struct_map_string_set_i64_lazy field_257;
-  258: struct_map_i64_set_string_lazy field_258;
-  259: struct_map_i64_set_i64_lazy field_259;
-  260: struct_string_lazy field_260;
-  261: union_empty field_261;
-  262: union_list_bool field_262;
-  263: union_list_byte field_263;
-  264: union_list_i16 field_264;
-  265: union_list_i32 field_265;
-  266: union_list_i64 field_266;
-  267: union_list_float field_267;
-  268: union_list_double field_268;
-  269: union_list_binary field_269;
-  270: union_list_string field_270;
-  271: union_set_string field_271;
-  272: union_set_i64 field_272;
-  273: union_map_string_bool field_273;
-  274: union_map_string_byte field_274;
-  275: union_map_string_i16 field_275;
-  276: union_map_string_i32 field_276;
-  277: union_map_string_i64 field_277;
-  278: union_map_string_float field_278;
-  279: union_map_string_double field_279;
-  280: union_map_string_binary field_280;
-  281: union_map_string_string field_281;
-  282: union_map_i64_bool field_282;
-  283: union_map_i64_byte field_283;
-  284: union_map_i64_i16 field_284;
-  285: union_map_i64_i32 field_285;
-  286: union_map_i64_i64 field_286;
-  287: union_map_i64_float field_287;
-  288: union_map_i64_double field_288;
-  289: union_map_i64_binary field_289;
-  290: union_map_i64_string field_290;
-  291: union_map_string_set_string field_291;
-  292: union_map_string_set_i64 field_292;
-  293: union_map_i64_set_string field_293;
-  294: union_map_i64_set_i64 field_294;
-  295: union_list_bool_cpp_ref field_295;
-  296: union_list_byte_cpp_ref field_296;
-  297: union_list_i16_cpp_ref field_297;
-  298: union_list_i32_cpp_ref field_298;
-  299: union_list_i64_cpp_ref field_299;
-  300: union_list_float_cpp_ref field_300;
-  301: union_list_double_cpp_ref field_301;
-  302: union_list_binary_cpp_ref field_302;
-  303: union_list_string_cpp_ref field_303;
-  304: union_set_string_cpp_ref field_304;
-  305: union_set_i64_cpp_ref field_305;
-  306: union_map_string_bool_cpp_ref field_306;
-  307: union_map_string_byte_cpp_ref field_307;
-  308: union_map_string_i16_cpp_ref field_308;
-  309: union_map_string_i32_cpp_ref field_309;
-  310: union_map_string_i64_cpp_ref field_310;
-  311: union_map_string_float_cpp_ref field_311;
-  312: union_map_string_double_cpp_ref field_312;
-  313: union_map_string_binary_cpp_ref field_313;
-  314: union_map_string_string_cpp_ref field_314;
-  315: union_map_i64_bool_cpp_ref field_315;
-  316: union_map_i64_byte_cpp_ref field_316;
-  317: union_map_i64_i16_cpp_ref field_317;
-  318: union_map_i64_i32_cpp_ref field_318;
-  319: union_map_i64_i64_cpp_ref field_319;
-  320: union_map_i64_float_cpp_ref field_320;
-  321: union_map_i64_double_cpp_ref field_321;
-  322: union_map_i64_binary_cpp_ref field_322;
-  323: union_map_i64_string_cpp_ref field_323;
-  324: union_map_string_set_string_cpp_ref field_324;
-  325: union_map_string_set_i64_cpp_ref field_325;
-  326: union_map_i64_set_string_cpp_ref field_326;
-  327: union_map_i64_set_i64_cpp_ref field_327;
-  328: union_bool field_328;
-  329: union_byte field_329;
-  330: union_i16 field_330;
-  331: union_i32 field_331;
-  332: union_i64 field_332;
-  333: union_float field_333;
-  334: union_double field_334;
-  335: union_binary field_335;
-  336: union_string field_336;
+  68: struct_list_bool_shared_cpp_ref field_68;
+  69: struct_list_byte_shared_cpp_ref field_69;
+  70: struct_list_i16_shared_cpp_ref field_70;
+  71: struct_list_i32_shared_cpp_ref field_71;
+  72: struct_list_i64_shared_cpp_ref field_72;
+  73: struct_list_float_shared_cpp_ref field_73;
+  74: struct_list_double_shared_cpp_ref field_74;
+  75: struct_list_binary_shared_cpp_ref field_75;
+  76: struct_list_string_shared_cpp_ref field_76;
+  77: struct_set_string_shared_cpp_ref field_77;
+  78: struct_set_i64_shared_cpp_ref field_78;
+  79: struct_map_string_bool_shared_cpp_ref field_79;
+  80: struct_map_string_byte_shared_cpp_ref field_80;
+  81: struct_map_string_i16_shared_cpp_ref field_81;
+  82: struct_map_string_i32_shared_cpp_ref field_82;
+  83: struct_map_string_i64_shared_cpp_ref field_83;
+  84: struct_map_string_float_shared_cpp_ref field_84;
+  85: struct_map_string_double_shared_cpp_ref field_85;
+  86: struct_map_string_binary_shared_cpp_ref field_86;
+  87: struct_map_string_string_shared_cpp_ref field_87;
+  88: struct_map_i64_bool_shared_cpp_ref field_88;
+  89: struct_map_i64_byte_shared_cpp_ref field_89;
+  90: struct_map_i64_i16_shared_cpp_ref field_90;
+  91: struct_map_i64_i32_shared_cpp_ref field_91;
+  92: struct_map_i64_i64_shared_cpp_ref field_92;
+  93: struct_map_i64_float_shared_cpp_ref field_93;
+  94: struct_map_i64_double_shared_cpp_ref field_94;
+  95: struct_map_i64_binary_shared_cpp_ref field_95;
+  96: struct_map_i64_string_shared_cpp_ref field_96;
+  97: struct_map_string_set_string_shared_cpp_ref field_97;
+  98: struct_map_string_set_i64_shared_cpp_ref field_98;
+  99: struct_map_i64_set_string_shared_cpp_ref field_99;
+  100: struct_map_i64_set_i64_shared_cpp_ref field_100;
+  101: struct_bool field_101;
+  102: struct_byte field_102;
+  103: struct_i16 field_103;
+  104: struct_i32 field_104;
+  105: struct_i64 field_105;
+  106: struct_float field_106;
+  107: struct_double field_107;
+  108: struct_binary field_108;
+  109: struct_string field_109;
+  110: struct_optional_list_bool field_110;
+  111: struct_optional_list_byte field_111;
+  112: struct_optional_list_i16 field_112;
+  113: struct_optional_list_i32 field_113;
+  114: struct_optional_list_i64 field_114;
+  115: struct_optional_list_float field_115;
+  116: struct_optional_list_double field_116;
+  117: struct_optional_list_binary field_117;
+  118: struct_optional_list_string field_118;
+  119: struct_optional_set_string field_119;
+  120: struct_optional_set_i64 field_120;
+  121: struct_optional_map_string_bool field_121;
+  122: struct_optional_map_string_byte field_122;
+  123: struct_optional_map_string_i16 field_123;
+  124: struct_optional_map_string_i32 field_124;
+  125: struct_optional_map_string_i64 field_125;
+  126: struct_optional_map_string_float field_126;
+  127: struct_optional_map_string_double field_127;
+  128: struct_optional_map_string_binary field_128;
+  129: struct_optional_map_string_string field_129;
+  130: struct_optional_map_i64_bool field_130;
+  131: struct_optional_map_i64_byte field_131;
+  132: struct_optional_map_i64_i16 field_132;
+  133: struct_optional_map_i64_i32 field_133;
+  134: struct_optional_map_i64_i64 field_134;
+  135: struct_optional_map_i64_float field_135;
+  136: struct_optional_map_i64_double field_136;
+  137: struct_optional_map_i64_binary field_137;
+  138: struct_optional_map_i64_string field_138;
+  139: struct_optional_map_string_set_string field_139;
+  140: struct_optional_map_string_set_i64 field_140;
+  141: struct_optional_map_i64_set_string field_141;
+  142: struct_optional_map_i64_set_i64 field_142;
+  143: struct_optional_list_bool_cpp_ref field_143;
+  144: struct_optional_list_byte_cpp_ref field_144;
+  145: struct_optional_list_i16_cpp_ref field_145;
+  146: struct_optional_list_i32_cpp_ref field_146;
+  147: struct_optional_list_i64_cpp_ref field_147;
+  148: struct_optional_list_float_cpp_ref field_148;
+  149: struct_optional_list_double_cpp_ref field_149;
+  150: struct_optional_list_binary_cpp_ref field_150;
+  151: struct_optional_list_string_cpp_ref field_151;
+  152: struct_optional_set_string_cpp_ref field_152;
+  153: struct_optional_set_i64_cpp_ref field_153;
+  154: struct_optional_map_string_bool_cpp_ref field_154;
+  155: struct_optional_map_string_byte_cpp_ref field_155;
+  156: struct_optional_map_string_i16_cpp_ref field_156;
+  157: struct_optional_map_string_i32_cpp_ref field_157;
+  158: struct_optional_map_string_i64_cpp_ref field_158;
+  159: struct_optional_map_string_float_cpp_ref field_159;
+  160: struct_optional_map_string_double_cpp_ref field_160;
+  161: struct_optional_map_string_binary_cpp_ref field_161;
+  162: struct_optional_map_string_string_cpp_ref field_162;
+  163: struct_optional_map_i64_bool_cpp_ref field_163;
+  164: struct_optional_map_i64_byte_cpp_ref field_164;
+  165: struct_optional_map_i64_i16_cpp_ref field_165;
+  166: struct_optional_map_i64_i32_cpp_ref field_166;
+  167: struct_optional_map_i64_i64_cpp_ref field_167;
+  168: struct_optional_map_i64_float_cpp_ref field_168;
+  169: struct_optional_map_i64_double_cpp_ref field_169;
+  170: struct_optional_map_i64_binary_cpp_ref field_170;
+  171: struct_optional_map_i64_string_cpp_ref field_171;
+  172: struct_optional_map_string_set_string_cpp_ref field_172;
+  173: struct_optional_map_string_set_i64_cpp_ref field_173;
+  174: struct_optional_map_i64_set_string_cpp_ref field_174;
+  175: struct_optional_map_i64_set_i64_cpp_ref field_175;
+  176: struct_optional_list_bool_shared_cpp_ref field_176;
+  177: struct_optional_list_byte_shared_cpp_ref field_177;
+  178: struct_optional_list_i16_shared_cpp_ref field_178;
+  179: struct_optional_list_i32_shared_cpp_ref field_179;
+  180: struct_optional_list_i64_shared_cpp_ref field_180;
+  181: struct_optional_list_float_shared_cpp_ref field_181;
+  182: struct_optional_list_double_shared_cpp_ref field_182;
+  183: struct_optional_list_binary_shared_cpp_ref field_183;
+  184: struct_optional_list_string_shared_cpp_ref field_184;
+  185: struct_optional_set_string_shared_cpp_ref field_185;
+  186: struct_optional_set_i64_shared_cpp_ref field_186;
+  187: struct_optional_map_string_bool_shared_cpp_ref field_187;
+  188: struct_optional_map_string_byte_shared_cpp_ref field_188;
+  189: struct_optional_map_string_i16_shared_cpp_ref field_189;
+  190: struct_optional_map_string_i32_shared_cpp_ref field_190;
+  191: struct_optional_map_string_i64_shared_cpp_ref field_191;
+  192: struct_optional_map_string_float_shared_cpp_ref field_192;
+  193: struct_optional_map_string_double_shared_cpp_ref field_193;
+  194: struct_optional_map_string_binary_shared_cpp_ref field_194;
+  195: struct_optional_map_string_string_shared_cpp_ref field_195;
+  196: struct_optional_map_i64_bool_shared_cpp_ref field_196;
+  197: struct_optional_map_i64_byte_shared_cpp_ref field_197;
+  198: struct_optional_map_i64_i16_shared_cpp_ref field_198;
+  199: struct_optional_map_i64_i32_shared_cpp_ref field_199;
+  200: struct_optional_map_i64_i64_shared_cpp_ref field_200;
+  201: struct_optional_map_i64_float_shared_cpp_ref field_201;
+  202: struct_optional_map_i64_double_shared_cpp_ref field_202;
+  203: struct_optional_map_i64_binary_shared_cpp_ref field_203;
+  204: struct_optional_map_i64_string_shared_cpp_ref field_204;
+  205: struct_optional_map_string_set_string_shared_cpp_ref field_205;
+  206: struct_optional_map_string_set_i64_shared_cpp_ref field_206;
+  207: struct_optional_map_i64_set_string_shared_cpp_ref field_207;
+  208: struct_optional_map_i64_set_i64_shared_cpp_ref field_208;
+  209: struct_optional_bool field_209;
+  210: struct_optional_byte field_210;
+  211: struct_optional_i16 field_211;
+  212: struct_optional_i32 field_212;
+  213: struct_optional_i64 field_213;
+  214: struct_optional_float field_214;
+  215: struct_optional_double field_215;
+  216: struct_optional_binary field_216;
+  217: struct_optional_string field_217;
+  218: struct_required_list_bool field_218;
+  219: struct_required_list_byte field_219;
+  220: struct_required_list_i16 field_220;
+  221: struct_required_list_i32 field_221;
+  222: struct_required_list_i64 field_222;
+  223: struct_required_list_float field_223;
+  224: struct_required_list_double field_224;
+  225: struct_required_list_binary field_225;
+  226: struct_required_list_string field_226;
+  227: struct_required_set_string field_227;
+  228: struct_required_set_i64 field_228;
+  229: struct_required_map_string_bool field_229;
+  230: struct_required_map_string_byte field_230;
+  231: struct_required_map_string_i16 field_231;
+  232: struct_required_map_string_i32 field_232;
+  233: struct_required_map_string_i64 field_233;
+  234: struct_required_map_string_float field_234;
+  235: struct_required_map_string_double field_235;
+  236: struct_required_map_string_binary field_236;
+  237: struct_required_map_string_string field_237;
+  238: struct_required_map_i64_bool field_238;
+  239: struct_required_map_i64_byte field_239;
+  240: struct_required_map_i64_i16 field_240;
+  241: struct_required_map_i64_i32 field_241;
+  242: struct_required_map_i64_i64 field_242;
+  243: struct_required_map_i64_float field_243;
+  244: struct_required_map_i64_double field_244;
+  245: struct_required_map_i64_binary field_245;
+  246: struct_required_map_i64_string field_246;
+  247: struct_required_map_string_set_string field_247;
+  248: struct_required_map_string_set_i64 field_248;
+  249: struct_required_map_i64_set_string field_249;
+  250: struct_required_map_i64_set_i64 field_250;
+  251: struct_required_list_bool_cpp_ref field_251;
+  252: struct_required_list_byte_cpp_ref field_252;
+  253: struct_required_list_i16_cpp_ref field_253;
+  254: struct_required_list_i32_cpp_ref field_254;
+  255: struct_required_list_i64_cpp_ref field_255;
+  256: struct_required_list_float_cpp_ref field_256;
+  257: struct_required_list_double_cpp_ref field_257;
+  258: struct_required_list_binary_cpp_ref field_258;
+  259: struct_required_list_string_cpp_ref field_259;
+  260: struct_required_set_string_cpp_ref field_260;
+  261: struct_required_set_i64_cpp_ref field_261;
+  262: struct_required_map_string_bool_cpp_ref field_262;
+  263: struct_required_map_string_byte_cpp_ref field_263;
+  264: struct_required_map_string_i16_cpp_ref field_264;
+  265: struct_required_map_string_i32_cpp_ref field_265;
+  266: struct_required_map_string_i64_cpp_ref field_266;
+  267: struct_required_map_string_float_cpp_ref field_267;
+  268: struct_required_map_string_double_cpp_ref field_268;
+  269: struct_required_map_string_binary_cpp_ref field_269;
+  270: struct_required_map_string_string_cpp_ref field_270;
+  271: struct_required_map_i64_bool_cpp_ref field_271;
+  272: struct_required_map_i64_byte_cpp_ref field_272;
+  273: struct_required_map_i64_i16_cpp_ref field_273;
+  274: struct_required_map_i64_i32_cpp_ref field_274;
+  275: struct_required_map_i64_i64_cpp_ref field_275;
+  276: struct_required_map_i64_float_cpp_ref field_276;
+  277: struct_required_map_i64_double_cpp_ref field_277;
+  278: struct_required_map_i64_binary_cpp_ref field_278;
+  279: struct_required_map_i64_string_cpp_ref field_279;
+  280: struct_required_map_string_set_string_cpp_ref field_280;
+  281: struct_required_map_string_set_i64_cpp_ref field_281;
+  282: struct_required_map_i64_set_string_cpp_ref field_282;
+  283: struct_required_map_i64_set_i64_cpp_ref field_283;
+  284: struct_required_list_bool_shared_cpp_ref field_284;
+  285: struct_required_list_byte_shared_cpp_ref field_285;
+  286: struct_required_list_i16_shared_cpp_ref field_286;
+  287: struct_required_list_i32_shared_cpp_ref field_287;
+  288: struct_required_list_i64_shared_cpp_ref field_288;
+  289: struct_required_list_float_shared_cpp_ref field_289;
+  290: struct_required_list_double_shared_cpp_ref field_290;
+  291: struct_required_list_binary_shared_cpp_ref field_291;
+  292: struct_required_list_string_shared_cpp_ref field_292;
+  293: struct_required_set_string_shared_cpp_ref field_293;
+  294: struct_required_set_i64_shared_cpp_ref field_294;
+  295: struct_required_map_string_bool_shared_cpp_ref field_295;
+  296: struct_required_map_string_byte_shared_cpp_ref field_296;
+  297: struct_required_map_string_i16_shared_cpp_ref field_297;
+  298: struct_required_map_string_i32_shared_cpp_ref field_298;
+  299: struct_required_map_string_i64_shared_cpp_ref field_299;
+  300: struct_required_map_string_float_shared_cpp_ref field_300;
+  301: struct_required_map_string_double_shared_cpp_ref field_301;
+  302: struct_required_map_string_binary_shared_cpp_ref field_302;
+  303: struct_required_map_string_string_shared_cpp_ref field_303;
+  304: struct_required_map_i64_bool_shared_cpp_ref field_304;
+  305: struct_required_map_i64_byte_shared_cpp_ref field_305;
+  306: struct_required_map_i64_i16_shared_cpp_ref field_306;
+  307: struct_required_map_i64_i32_shared_cpp_ref field_307;
+  308: struct_required_map_i64_i64_shared_cpp_ref field_308;
+  309: struct_required_map_i64_float_shared_cpp_ref field_309;
+  310: struct_required_map_i64_double_shared_cpp_ref field_310;
+  311: struct_required_map_i64_binary_shared_cpp_ref field_311;
+  312: struct_required_map_i64_string_shared_cpp_ref field_312;
+  313: struct_required_map_string_set_string_shared_cpp_ref field_313;
+  314: struct_required_map_string_set_i64_shared_cpp_ref field_314;
+  315: struct_required_map_i64_set_string_shared_cpp_ref field_315;
+  316: struct_required_map_i64_set_i64_shared_cpp_ref field_316;
+  317: struct_required_bool field_317;
+  318: struct_required_byte field_318;
+  319: struct_required_i16 field_319;
+  320: struct_required_i32 field_320;
+  321: struct_required_i64 field_321;
+  322: struct_required_float field_322;
+  323: struct_required_double field_323;
+  324: struct_required_binary field_324;
+  325: struct_required_string field_325;
+  326: struct_optional_list_bool_box field_326;
+  327: struct_optional_list_byte_box field_327;
+  328: struct_optional_list_i16_box field_328;
+  329: struct_optional_list_i32_box field_329;
+  330: struct_optional_list_i64_box field_330;
+  331: struct_optional_list_float_box field_331;
+  332: struct_optional_list_double_box field_332;
+  333: struct_optional_list_binary_box field_333;
+  334: struct_optional_list_string_box field_334;
+  335: struct_optional_set_string_box field_335;
+  336: struct_optional_set_i64_box field_336;
+  337: struct_optional_map_string_bool_box field_337;
+  338: struct_optional_map_string_byte_box field_338;
+  339: struct_optional_map_string_i16_box field_339;
+  340: struct_optional_map_string_i32_box field_340;
+  341: struct_optional_map_string_i64_box field_341;
+  342: struct_optional_map_string_float_box field_342;
+  343: struct_optional_map_string_double_box field_343;
+  344: struct_optional_map_string_binary_box field_344;
+  345: struct_optional_map_string_string_box field_345;
+  346: struct_optional_map_i64_bool_box field_346;
+  347: struct_optional_map_i64_byte_box field_347;
+  348: struct_optional_map_i64_i16_box field_348;
+  349: struct_optional_map_i64_i32_box field_349;
+  350: struct_optional_map_i64_i64_box field_350;
+  351: struct_optional_map_i64_float_box field_351;
+  352: struct_optional_map_i64_double_box field_352;
+  353: struct_optional_map_i64_binary_box field_353;
+  354: struct_optional_map_i64_string_box field_354;
+  355: struct_optional_map_string_set_string_box field_355;
+  356: struct_optional_map_string_set_i64_box field_356;
+  357: struct_optional_map_i64_set_string_box field_357;
+  358: struct_optional_map_i64_set_i64_box field_358;
+  359: struct_list_bool_lazy field_359;
+  360: struct_list_byte_lazy field_360;
+  361: struct_list_i16_lazy field_361;
+  362: struct_list_i32_lazy field_362;
+  363: struct_list_i64_lazy field_363;
+  364: struct_list_float_lazy field_364;
+  365: struct_list_double_lazy field_365;
+  366: struct_list_binary_lazy field_366;
+  367: struct_list_string_lazy field_367;
+  368: struct_set_string_lazy field_368;
+  369: struct_set_i64_lazy field_369;
+  370: struct_map_string_bool_lazy field_370;
+  371: struct_map_string_byte_lazy field_371;
+  372: struct_map_string_i16_lazy field_372;
+  373: struct_map_string_i32_lazy field_373;
+  374: struct_map_string_i64_lazy field_374;
+  375: struct_map_string_float_lazy field_375;
+  376: struct_map_string_double_lazy field_376;
+  377: struct_map_string_binary_lazy field_377;
+  378: struct_map_string_string_lazy field_378;
+  379: struct_map_i64_bool_lazy field_379;
+  380: struct_map_i64_byte_lazy field_380;
+  381: struct_map_i64_i16_lazy field_381;
+  382: struct_map_i64_i32_lazy field_382;
+  383: struct_map_i64_i64_lazy field_383;
+  384: struct_map_i64_float_lazy field_384;
+  385: struct_map_i64_double_lazy field_385;
+  386: struct_map_i64_binary_lazy field_386;
+  387: struct_map_i64_string_lazy field_387;
+  388: struct_map_string_set_string_lazy field_388;
+  389: struct_map_string_set_i64_lazy field_389;
+  390: struct_map_i64_set_string_lazy field_390;
+  391: struct_map_i64_set_i64_lazy field_391;
+  392: struct_string_lazy field_392;
+  393: union_empty field_393;
+  394: union_list_bool field_394;
+  395: union_list_byte field_395;
+  396: union_list_i16 field_396;
+  397: union_list_i32 field_397;
+  398: union_list_i64 field_398;
+  399: union_list_float field_399;
+  400: union_list_double field_400;
+  401: union_list_binary field_401;
+  402: union_list_string field_402;
+  403: union_set_string field_403;
+  404: union_set_i64 field_404;
+  405: union_map_string_bool field_405;
+  406: union_map_string_byte field_406;
+  407: union_map_string_i16 field_407;
+  408: union_map_string_i32 field_408;
+  409: union_map_string_i64 field_409;
+  410: union_map_string_float field_410;
+  411: union_map_string_double field_411;
+  412: union_map_string_binary field_412;
+  413: union_map_string_string field_413;
+  414: union_map_i64_bool field_414;
+  415: union_map_i64_byte field_415;
+  416: union_map_i64_i16 field_416;
+  417: union_map_i64_i32 field_417;
+  418: union_map_i64_i64 field_418;
+  419: union_map_i64_float field_419;
+  420: union_map_i64_double field_420;
+  421: union_map_i64_binary field_421;
+  422: union_map_i64_string field_422;
+  423: union_map_string_set_string field_423;
+  424: union_map_string_set_i64 field_424;
+  425: union_map_i64_set_string field_425;
+  426: union_map_i64_set_i64 field_426;
+  427: union_list_bool_cpp_ref field_427;
+  428: union_list_byte_cpp_ref field_428;
+  429: union_list_i16_cpp_ref field_429;
+  430: union_list_i32_cpp_ref field_430;
+  431: union_list_i64_cpp_ref field_431;
+  432: union_list_float_cpp_ref field_432;
+  433: union_list_double_cpp_ref field_433;
+  434: union_list_binary_cpp_ref field_434;
+  435: union_list_string_cpp_ref field_435;
+  436: union_set_string_cpp_ref field_436;
+  437: union_set_i64_cpp_ref field_437;
+  438: union_map_string_bool_cpp_ref field_438;
+  439: union_map_string_byte_cpp_ref field_439;
+  440: union_map_string_i16_cpp_ref field_440;
+  441: union_map_string_i32_cpp_ref field_441;
+  442: union_map_string_i64_cpp_ref field_442;
+  443: union_map_string_float_cpp_ref field_443;
+  444: union_map_string_double_cpp_ref field_444;
+  445: union_map_string_binary_cpp_ref field_445;
+  446: union_map_string_string_cpp_ref field_446;
+  447: union_map_i64_bool_cpp_ref field_447;
+  448: union_map_i64_byte_cpp_ref field_448;
+  449: union_map_i64_i16_cpp_ref field_449;
+  450: union_map_i64_i32_cpp_ref field_450;
+  451: union_map_i64_i64_cpp_ref field_451;
+  452: union_map_i64_float_cpp_ref field_452;
+  453: union_map_i64_double_cpp_ref field_453;
+  454: union_map_i64_binary_cpp_ref field_454;
+  455: union_map_i64_string_cpp_ref field_455;
+  456: union_map_string_set_string_cpp_ref field_456;
+  457: union_map_string_set_i64_cpp_ref field_457;
+  458: union_map_i64_set_string_cpp_ref field_458;
+  459: union_map_i64_set_i64_cpp_ref field_459;
+  460: union_list_bool_shared_cpp_ref field_460;
+  461: union_list_byte_shared_cpp_ref field_461;
+  462: union_list_i16_shared_cpp_ref field_462;
+  463: union_list_i32_shared_cpp_ref field_463;
+  464: union_list_i64_shared_cpp_ref field_464;
+  465: union_list_float_shared_cpp_ref field_465;
+  466: union_list_double_shared_cpp_ref field_466;
+  467: union_list_binary_shared_cpp_ref field_467;
+  468: union_list_string_shared_cpp_ref field_468;
+  469: union_set_string_shared_cpp_ref field_469;
+  470: union_set_i64_shared_cpp_ref field_470;
+  471: union_map_string_bool_shared_cpp_ref field_471;
+  472: union_map_string_byte_shared_cpp_ref field_472;
+  473: union_map_string_i16_shared_cpp_ref field_473;
+  474: union_map_string_i32_shared_cpp_ref field_474;
+  475: union_map_string_i64_shared_cpp_ref field_475;
+  476: union_map_string_float_shared_cpp_ref field_476;
+  477: union_map_string_double_shared_cpp_ref field_477;
+  478: union_map_string_binary_shared_cpp_ref field_478;
+  479: union_map_string_string_shared_cpp_ref field_479;
+  480: union_map_i64_bool_shared_cpp_ref field_480;
+  481: union_map_i64_byte_shared_cpp_ref field_481;
+  482: union_map_i64_i16_shared_cpp_ref field_482;
+  483: union_map_i64_i32_shared_cpp_ref field_483;
+  484: union_map_i64_i64_shared_cpp_ref field_484;
+  485: union_map_i64_float_shared_cpp_ref field_485;
+  486: union_map_i64_double_shared_cpp_ref field_486;
+  487: union_map_i64_binary_shared_cpp_ref field_487;
+  488: union_map_i64_string_shared_cpp_ref field_488;
+  489: union_map_string_set_string_shared_cpp_ref field_489;
+  490: union_map_string_set_i64_shared_cpp_ref field_490;
+  491: union_map_i64_set_string_shared_cpp_ref field_491;
+  492: union_map_i64_set_i64_shared_cpp_ref field_492;
+  493: union_bool field_493;
+  494: union_byte field_494;
+  495: union_i16 field_495;
+  496: union_i32 field_496;
+  497: union_i64 field_497;
+  498: union_float field_498;
+  499: union_double field_499;
+  500: union_binary field_500;
+  501: union_string field_501;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_all")

@@ -48,7 +48,9 @@ enum class FieldModifier {{
   Optional = 1,
   Required,
   Reference,
+  SharedReference,
   Lazy,
+  Box,
 }};
 
 namespace detail {{
@@ -160,10 +162,22 @@ CPP_REF_TRANSFORM: Dict[Target, str] = {
     Target.CPP2: "{}|FieldModifier::Reference",
 }
 
+SHARED_CPP_REF_TRANSFORM: Dict[Target, str] = {
+    Target.NAME: "{}_shared_cpp_ref",
+    Target.THRIFT: "{}|cpp.ref_type = \"shared\"",
+    Target.CPP2: "{}|FieldModifier::SharedReference",
+}
+
 LAZY_TRANSFORM: Dict[Target, str] = {
     Target.NAME: "{}_lazy",
     Target.THRIFT: "{}|cpp.experimental.lazy",
     Target.CPP2: "{}|FieldModifier::Lazy",
+}
+
+BOX_TRANSFORM: Dict[Target, str] = {
+    Target.NAME: "{}_box",
+    Target.THRIFT: "{}|thrift.box",
+    Target.CPP2: "{}|FieldModifier::Box",
 }
 
 
@@ -218,8 +232,16 @@ def gen_cpp_ref(target: Target, values: Dict[str, str]) -> Dict[str, str]:
     return _gen_unary_tramsform(CPP_REF_TRANSFORM, target, values)
 
 
+def gen_shared_cpp_ref(target: Target, values: Dict[str, str]) -> Dict[str, str]:
+    return _gen_unary_tramsform(SHARED_CPP_REF_TRANSFORM, target, values)
+
+
 def gen_lazy(target: Target, values: Dict[str, str]) -> Dict[str, str]:
     return _gen_unary_tramsform(LAZY_TRANSFORM, target, values)
+
+
+def gen_box(target: Target, values: Dict[str, str]) -> Dict[str, str]:
+    return _gen_unary_tramsform(BOX_TRANSFORM, target, values)
 
 
 def gen_container_fields(target: Target) -> Dict[str, str]:
@@ -238,7 +260,7 @@ def gen_container_fields(target: Target) -> Dict[str, str]:
 
 def gen_union_fields(target: Target) -> Dict[str, str]:
     ret = gen_container_fields(target)
-    ret.update(gen_cpp_ref(target, ret))
+    ret.update(**gen_cpp_ref(target, ret), **gen_shared_cpp_ref(target, ret))
     ret.update(gen_primatives(target, PRIMITIVE_TYPES))
     return ret
 
@@ -249,10 +271,14 @@ def gen_lazy_fields(target: Target) -> Dict[str, str]:
     return gen_lazy(target, fields)
 
 
+def gen_optional_box_fields(target: Target) -> Dict[str, str]:
+    return gen_optional(target, gen_box(target, gen_container_fields(target)))
+
+
 def gen_struct_fields(target: Target) -> Dict[str, str]:
     """Generates field name -> type that are appropriate for use in structs."""
     ret = gen_union_fields(target)
-    ret.update(**gen_optional(target, ret), **gen_required(target, ret))
+    ret.update(**gen_optional(target, ret), **gen_required(target, ret), **gen_optional_box_fields(target))
     ret.update(**gen_lazy_fields(target))
     return ret
 

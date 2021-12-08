@@ -14,7 +14,9 @@ enum class FieldModifier {
   Optional = 1,
   Required,
   Reference,
+  SharedReference,
   Lazy,
+  Box,
 };
 
 namespace detail {
@@ -359,6 +361,171 @@ struct struct_ByFieldType<type::map<type::i64_t, type::set<type::string_t>>, mod
 template <>
 struct struct_ByFieldType<type::map<type::i64_t, type::set<type::i64_t>>, mod_set<FieldModifier::Reference>> {
   using type = struct_map_i64_set_i64_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::bool_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_list_bool_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::byte_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_list_byte_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::i16_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_list_i16_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::i32_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_list_i32_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::i64_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_list_i64_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::float_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_list_float_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::double_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_list_double_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::binary_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_list_binary_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::string_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_list_string_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::set<type::string_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_set_string_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::set<type::i64_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_set_i64_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::bool_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_map_string_bool_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::byte_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_map_string_byte_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::i16_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_map_string_i16_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::i32_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_map_string_i32_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::i64_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_map_string_i64_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::float_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_map_string_float_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::double_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_map_string_double_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::binary_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_map_string_binary_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::string_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_map_string_string_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::bool_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_map_i64_bool_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::byte_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_map_i64_byte_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::i16_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_map_i64_i16_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::i32_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_map_i64_i32_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::i64_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_map_i64_i64_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::float_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_map_i64_float_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::double_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_map_i64_double_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::binary_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_map_i64_binary_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::string_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_map_i64_string_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::set<type::string_t>>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_map_string_set_string_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::set<type::i64_t>>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_map_string_set_i64_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::set<type::string_t>>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_map_i64_set_string_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::set<type::i64_t>>, mod_set<FieldModifier::SharedReference>> {
+  using type = struct_map_i64_set_i64_shared_cpp_ref;
 };
 
 template <>
@@ -737,6 +904,171 @@ struct struct_ByFieldType<type::map<type::i64_t, type::set<type::i64_t>>, mod_se
 };
 
 template <>
+struct struct_ByFieldType<type::list<type::bool_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_list_bool_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::byte_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_list_byte_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::i16_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_list_i16_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::i32_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_list_i32_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::i64_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_list_i64_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::float_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_list_float_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::double_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_list_double_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::binary_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_list_binary_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::string_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_list_string_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::set<type::string_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_set_string_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::set<type::i64_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_set_i64_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::bool_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_map_string_bool_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::byte_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_map_string_byte_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::i16_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_map_string_i16_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::i32_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_map_string_i32_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::i64_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_map_string_i64_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::float_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_map_string_float_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::double_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_map_string_double_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::binary_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_map_string_binary_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::string_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_map_string_string_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::bool_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_map_i64_bool_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::byte_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_map_i64_byte_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::i16_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_map_i64_i16_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::i32_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_map_i64_i32_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::i64_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_map_i64_i64_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::float_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_map_i64_float_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::double_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_map_i64_double_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::binary_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_map_i64_binary_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::string_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_map_i64_string_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::set<type::string_t>>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_map_string_set_string_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::set<type::i64_t>>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_map_string_set_i64_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::set<type::string_t>>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_map_i64_set_string_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::set<type::i64_t>>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = struct_optional_map_i64_set_i64_shared_cpp_ref;
+};
+
+template <>
 struct struct_ByFieldType<type::bool_t, mod_set<FieldModifier::Optional>> {
   using type = struct_optional_bool;
 };
@@ -1112,6 +1444,171 @@ struct struct_ByFieldType<type::map<type::i64_t, type::set<type::i64_t>>, mod_se
 };
 
 template <>
+struct struct_ByFieldType<type::list<type::bool_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_list_bool_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::byte_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_list_byte_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::i16_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_list_i16_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::i32_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_list_i32_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::i64_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_list_i64_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::float_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_list_float_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::double_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_list_double_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::binary_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_list_binary_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::string_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_list_string_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::set<type::string_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_set_string_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::set<type::i64_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_set_i64_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::bool_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_map_string_bool_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::byte_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_map_string_byte_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::i16_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_map_string_i16_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::i32_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_map_string_i32_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::i64_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_map_string_i64_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::float_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_map_string_float_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::double_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_map_string_double_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::binary_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_map_string_binary_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::string_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_map_string_string_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::bool_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_map_i64_bool_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::byte_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_map_i64_byte_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::i16_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_map_i64_i16_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::i32_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_map_i64_i32_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::i64_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_map_i64_i64_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::float_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_map_i64_float_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::double_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_map_i64_double_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::binary_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_map_i64_binary_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::string_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_map_i64_string_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::set<type::string_t>>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_map_string_set_string_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::set<type::i64_t>>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_map_string_set_i64_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::set<type::string_t>>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_map_i64_set_string_shared_cpp_ref;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::set<type::i64_t>>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = struct_required_map_i64_set_i64_shared_cpp_ref;
+};
+
+template <>
 struct struct_ByFieldType<type::bool_t, mod_set<FieldModifier::Required>> {
   using type = struct_required_bool;
 };
@@ -1154,6 +1651,171 @@ struct struct_ByFieldType<type::binary_t, mod_set<FieldModifier::Required>> {
 template <>
 struct struct_ByFieldType<type::string_t, mod_set<FieldModifier::Required>> {
   using type = struct_required_string;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::bool_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_list_bool_box;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::byte_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_list_byte_box;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::i16_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_list_i16_box;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::i32_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_list_i32_box;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::i64_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_list_i64_box;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::float_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_list_float_box;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::double_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_list_double_box;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::binary_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_list_binary_box;
+};
+
+template <>
+struct struct_ByFieldType<type::list<type::string_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_list_string_box;
+};
+
+template <>
+struct struct_ByFieldType<type::set<type::string_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_set_string_box;
+};
+
+template <>
+struct struct_ByFieldType<type::set<type::i64_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_set_i64_box;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::bool_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_map_string_bool_box;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::byte_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_map_string_byte_box;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::i16_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_map_string_i16_box;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::i32_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_map_string_i32_box;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::i64_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_map_string_i64_box;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::float_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_map_string_float_box;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::double_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_map_string_double_box;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::binary_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_map_string_binary_box;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::string_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_map_string_string_box;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::bool_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_map_i64_bool_box;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::byte_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_map_i64_byte_box;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::i16_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_map_i64_i16_box;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::i32_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_map_i64_i32_box;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::i64_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_map_i64_i64_box;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::float_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_map_i64_float_box;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::double_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_map_i64_double_box;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::binary_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_map_i64_binary_box;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::string_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_map_i64_string_box;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::set<type::string_t>>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_map_string_set_string_box;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::string_t, type::set<type::i64_t>>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_map_string_set_i64_box;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::set<type::string_t>>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_map_i64_set_string_box;
+};
+
+template <>
+struct struct_ByFieldType<type::map<type::i64_t, type::set<type::i64_t>>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = struct_optional_map_i64_set_i64_box;
 };
 
 template <>
@@ -1657,6 +2319,171 @@ struct exception_ByFieldType<type::map<type::i64_t, type::set<type::i64_t>>, mod
 };
 
 template <>
+struct exception_ByFieldType<type::list<type::bool_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_list_bool_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::byte_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_list_byte_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::i16_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_list_i16_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::i32_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_list_i32_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::i64_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_list_i64_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::float_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_list_float_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::double_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_list_double_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::binary_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_list_binary_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::string_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_list_string_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::set<type::string_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_set_string_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::set<type::i64_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_set_i64_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::bool_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_map_string_bool_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::byte_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_map_string_byte_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::i16_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_map_string_i16_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::i32_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_map_string_i32_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::i64_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_map_string_i64_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::float_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_map_string_float_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::double_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_map_string_double_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::binary_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_map_string_binary_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::string_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_map_string_string_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::bool_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_map_i64_bool_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::byte_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_map_i64_byte_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::i16_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_map_i64_i16_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::i32_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_map_i64_i32_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::i64_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_map_i64_i64_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::float_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_map_i64_float_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::double_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_map_i64_double_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::binary_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_map_i64_binary_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::string_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_map_i64_string_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::set<type::string_t>>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_map_string_set_string_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::set<type::i64_t>>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_map_string_set_i64_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::set<type::string_t>>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_map_i64_set_string_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::set<type::i64_t>>, mod_set<FieldModifier::SharedReference>> {
+  using type = exception_map_i64_set_i64_shared_cpp_ref;
+};
+
+template <>
 struct exception_ByFieldType<type::bool_t, mod_set<>> {
   using type = exception_bool;
 };
@@ -2029,6 +2856,171 @@ struct exception_ByFieldType<type::map<type::i64_t, type::set<type::string_t>>, 
 template <>
 struct exception_ByFieldType<type::map<type::i64_t, type::set<type::i64_t>>, mod_set<FieldModifier::Reference, FieldModifier::Optional>> {
   using type = exception_optional_map_i64_set_i64_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::bool_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_list_bool_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::byte_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_list_byte_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::i16_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_list_i16_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::i32_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_list_i32_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::i64_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_list_i64_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::float_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_list_float_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::double_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_list_double_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::binary_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_list_binary_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::string_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_list_string_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::set<type::string_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_set_string_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::set<type::i64_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_set_i64_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::bool_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_map_string_bool_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::byte_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_map_string_byte_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::i16_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_map_string_i16_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::i32_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_map_string_i32_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::i64_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_map_string_i64_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::float_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_map_string_float_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::double_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_map_string_double_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::binary_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_map_string_binary_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::string_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_map_string_string_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::bool_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_map_i64_bool_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::byte_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_map_i64_byte_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::i16_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_map_i64_i16_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::i32_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_map_i64_i32_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::i64_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_map_i64_i64_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::float_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_map_i64_float_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::double_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_map_i64_double_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::binary_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_map_i64_binary_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::string_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_map_i64_string_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::set<type::string_t>>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_map_string_set_string_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::set<type::i64_t>>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_map_string_set_i64_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::set<type::string_t>>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_map_i64_set_string_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::set<type::i64_t>>, mod_set<FieldModifier::SharedReference, FieldModifier::Optional>> {
+  using type = exception_optional_map_i64_set_i64_shared_cpp_ref;
 };
 
 template <>
@@ -2407,6 +3399,171 @@ struct exception_ByFieldType<type::map<type::i64_t, type::set<type::i64_t>>, mod
 };
 
 template <>
+struct exception_ByFieldType<type::list<type::bool_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_list_bool_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::byte_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_list_byte_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::i16_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_list_i16_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::i32_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_list_i32_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::i64_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_list_i64_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::float_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_list_float_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::double_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_list_double_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::binary_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_list_binary_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::string_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_list_string_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::set<type::string_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_set_string_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::set<type::i64_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_set_i64_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::bool_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_map_string_bool_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::byte_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_map_string_byte_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::i16_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_map_string_i16_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::i32_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_map_string_i32_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::i64_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_map_string_i64_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::float_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_map_string_float_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::double_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_map_string_double_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::binary_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_map_string_binary_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::string_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_map_string_string_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::bool_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_map_i64_bool_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::byte_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_map_i64_byte_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::i16_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_map_i64_i16_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::i32_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_map_i64_i32_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::i64_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_map_i64_i64_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::float_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_map_i64_float_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::double_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_map_i64_double_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::binary_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_map_i64_binary_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::string_t>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_map_i64_string_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::set<type::string_t>>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_map_string_set_string_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::set<type::i64_t>>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_map_string_set_i64_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::set<type::string_t>>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_map_i64_set_string_shared_cpp_ref;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::set<type::i64_t>>, mod_set<FieldModifier::SharedReference, FieldModifier::Required>> {
+  using type = exception_required_map_i64_set_i64_shared_cpp_ref;
+};
+
+template <>
 struct exception_ByFieldType<type::bool_t, mod_set<FieldModifier::Required>> {
   using type = exception_required_bool;
 };
@@ -2449,6 +3606,171 @@ struct exception_ByFieldType<type::binary_t, mod_set<FieldModifier::Required>> {
 template <>
 struct exception_ByFieldType<type::string_t, mod_set<FieldModifier::Required>> {
   using type = exception_required_string;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::bool_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_list_bool_box;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::byte_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_list_byte_box;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::i16_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_list_i16_box;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::i32_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_list_i32_box;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::i64_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_list_i64_box;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::float_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_list_float_box;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::double_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_list_double_box;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::binary_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_list_binary_box;
+};
+
+template <>
+struct exception_ByFieldType<type::list<type::string_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_list_string_box;
+};
+
+template <>
+struct exception_ByFieldType<type::set<type::string_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_set_string_box;
+};
+
+template <>
+struct exception_ByFieldType<type::set<type::i64_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_set_i64_box;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::bool_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_map_string_bool_box;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::byte_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_map_string_byte_box;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::i16_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_map_string_i16_box;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::i32_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_map_string_i32_box;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::i64_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_map_string_i64_box;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::float_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_map_string_float_box;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::double_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_map_string_double_box;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::binary_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_map_string_binary_box;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::string_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_map_string_string_box;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::bool_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_map_i64_bool_box;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::byte_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_map_i64_byte_box;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::i16_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_map_i64_i16_box;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::i32_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_map_i64_i32_box;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::i64_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_map_i64_i64_box;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::float_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_map_i64_float_box;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::double_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_map_i64_double_box;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::binary_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_map_i64_binary_box;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::string_t>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_map_i64_string_box;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::set<type::string_t>>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_map_string_set_string_box;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::string_t, type::set<type::i64_t>>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_map_string_set_i64_box;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::set<type::string_t>>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_map_i64_set_string_box;
+};
+
+template <>
+struct exception_ByFieldType<type::map<type::i64_t, type::set<type::i64_t>>, mod_set<FieldModifier::Box, FieldModifier::Optional>> {
+  using type = exception_optional_map_i64_set_i64_box;
 };
 
 template <>
@@ -2949,6 +4271,171 @@ struct union_ByFieldType<type::map<type::i64_t, type::set<type::string_t>>, mod_
 template <>
 struct union_ByFieldType<type::map<type::i64_t, type::set<type::i64_t>>, mod_set<FieldModifier::Reference>> {
   using type = union_map_i64_set_i64_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::list<type::bool_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_list_bool_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::list<type::byte_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_list_byte_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::list<type::i16_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_list_i16_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::list<type::i32_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_list_i32_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::list<type::i64_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_list_i64_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::list<type::float_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_list_float_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::list<type::double_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_list_double_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::list<type::binary_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_list_binary_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::list<type::string_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_list_string_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::set<type::string_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_set_string_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::set<type::i64_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_set_i64_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::map<type::string_t, type::bool_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_map_string_bool_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::map<type::string_t, type::byte_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_map_string_byte_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::map<type::string_t, type::i16_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_map_string_i16_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::map<type::string_t, type::i32_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_map_string_i32_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::map<type::string_t, type::i64_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_map_string_i64_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::map<type::string_t, type::float_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_map_string_float_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::map<type::string_t, type::double_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_map_string_double_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::map<type::string_t, type::binary_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_map_string_binary_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::map<type::string_t, type::string_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_map_string_string_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::map<type::i64_t, type::bool_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_map_i64_bool_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::map<type::i64_t, type::byte_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_map_i64_byte_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::map<type::i64_t, type::i16_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_map_i64_i16_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::map<type::i64_t, type::i32_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_map_i64_i32_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::map<type::i64_t, type::i64_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_map_i64_i64_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::map<type::i64_t, type::float_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_map_i64_float_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::map<type::i64_t, type::double_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_map_i64_double_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::map<type::i64_t, type::binary_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_map_i64_binary_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::map<type::i64_t, type::string_t>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_map_i64_string_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::map<type::string_t, type::set<type::string_t>>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_map_string_set_string_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::map<type::string_t, type::set<type::i64_t>>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_map_string_set_i64_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::map<type::i64_t, type::set<type::string_t>>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_map_i64_set_string_shared_cpp_ref;
+};
+
+template <>
+struct union_ByFieldType<type::map<type::i64_t, type::set<type::i64_t>>, mod_set<FieldModifier::SharedReference>> {
+  using type = union_map_i64_set_i64_shared_cpp_ref;
 };
 
 template <>
