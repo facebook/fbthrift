@@ -74,5 +74,14 @@ TEST_F(NamespaceResolverTest, get_namespace_none) {
   EXPECT_EQ("::cpp2", namespaces_.get_namespace(&p));
 }
 
+TEST_F(NamespaceResolverTest, gen_namespaced_name) {
+  t_program p("path/to/program.thrift");
+  p.set_namespace("cpp2", "foo.bar");
+  t_enum e(&p, "MyEnum");
+  EXPECT_EQ("::foo::bar::MyEnum", namespaces_.gen_namespaced_name(&e));
+  e.set_annotation("cpp.name", "YourEnum");
+  EXPECT_EQ("::foo::bar::YourEnum", namespaces_.gen_namespaced_name(&e));
+}
+
 } // namespace
 } // namespace apache::thrift::compiler::gen::cpp

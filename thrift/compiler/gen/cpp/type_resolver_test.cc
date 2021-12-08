@@ -108,6 +108,12 @@ TEST_F(TypeResolverTest, BaseTypes_Adapter) {
   EXPECT_TRUE(can_resolve_to_scalar(str));
 }
 
+TEST_F(TypeResolverTest, CppName) {
+  t_enum tenum(&program_, "MyEnum");
+  tenum.set_annotation("cpp.name", "YourEnum");
+  EXPECT_EQ(get_type_name(tenum), "::path::to::YourEnum");
+}
+
 TEST_F(TypeResolverTest, Containers) {
   // A container could not resolve to a scalar.
   t_map tmap(t_base_type::t_string(), t_base_type::t_i32());

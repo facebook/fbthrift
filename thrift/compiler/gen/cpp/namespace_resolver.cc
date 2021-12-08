@@ -57,11 +57,12 @@ std::string namespace_resolver::gen_namespace(const t_program* program) {
 }
 
 std::string namespace_resolver::gen_namespaced_name(const t_type* node) {
+  const std::string& name = node->get_annotation("cpp.name", &node->get_name());
   if (node->program() == nullptr) {
     // No namespace.
-    return node->get_name();
+    return name;
   }
-  return get_namespace(node->program()) + "::" + node->get_name();
+  return get_namespace(node->program()) + "::" + name;
 }
 
 } // namespace cpp
