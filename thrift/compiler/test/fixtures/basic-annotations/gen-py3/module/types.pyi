@@ -60,6 +60,7 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
         class_: bool
         annotation_with_trailing_comma: bool
         empty_annotations: bool
+        my_enum: bool
         pass
 
     major: Final[int] = ...
@@ -74,6 +75,8 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
 
     empty_annotations: Final[str] = ...
 
+    my_enum: Final[MyEnum] = ...
+
     def __init__(
         self, *,
         major: _typing.Optional[int]=None,
@@ -81,7 +84,8 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
         annotation_with_quote: _typing.Optional[str]=None,
         class_: _typing.Optional[str]=None,
         annotation_with_trailing_comma: _typing.Optional[str]=None,
-        empty_annotations: _typing.Optional[str]=None
+        empty_annotations: _typing.Optional[str]=None,
+        my_enum: _typing.Optional[MyEnum]=None
     ) -> None: ...
 
     def __call__(
@@ -91,7 +95,8 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
         annotation_with_quote: _typing.Union[str, __NotSet, None]=NOTSET,
         class_: _typing.Union[str, __NotSet, None]=NOTSET,
         annotation_with_trailing_comma: _typing.Union[str, __NotSet, None]=NOTSET,
-        empty_annotations: _typing.Union[str, __NotSet, None]=NOTSET
+        empty_annotations: _typing.Union[str, __NotSet, None]=NOTSET,
+        my_enum: _typing.Union[MyEnum, __NotSet, None]=NOTSET
     ) -> MyStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStruct'], bytes]]: ...

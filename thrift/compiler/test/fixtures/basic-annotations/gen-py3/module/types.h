@@ -62,6 +62,9 @@ void reset_field<::cpp2::MyStruct>(
     case 5:
       obj.empty_annotations_ref().copy_from(default_inst<::cpp2::MyStruct>().empty_annotations_ref());
       return;
+    case 6:
+      obj.my_enum_ref().copy_from(default_inst<::cpp2::MyStruct>().my_enum_ref());
+      return;
   }
 }
 

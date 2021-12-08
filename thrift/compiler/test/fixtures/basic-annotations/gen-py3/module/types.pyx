@@ -226,6 +226,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
           "class_": deref(self._cpp_obj).class__ref().has_value(),
           "annotation_with_trailing_comma": deref(self._cpp_obj).annotation_with_trailing_comma_ref().has_value(),
           "empty_annotations": deref(self._cpp_obj).empty_annotations_ref().has_value(),
+          "my_enum": deref(self._cpp_obj).my_enum_ref().has_value(),
         })
 
     @staticmethod
@@ -282,6 +283,16 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def empty_annotations(self):
         return self.empty_annotations_impl()
 
+    cdef inline my_enum_impl(self):
+
+        if self.__fbthrift_cached_my_enum is None:
+            self.__fbthrift_cached_my_enum = translate_cpp_enum_to_python(MyEnum, <int>(deref(self._cpp_obj).my_enum_ref().value()))
+        return self.__fbthrift_cached_my_enum
+
+    @property
+    def my_enum(self):
+        return self.my_enum_impl()
+
 
     def __hash__(MyStruct self):
         return super().__hash__()
@@ -325,7 +336,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return __get_field_name_by_index[cMyStruct](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 6
+        self._fbthrift_struct_size = 7
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyStruct self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data

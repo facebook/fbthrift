@@ -186,6 +186,7 @@ func (p *MyStructNestedAnnotation) String() string {
 //  - Class_
 //  - AnnotationWithTrailingComma
 //  - EmptyAnnotations
+//  - MyEnum
 type MyStruct struct {
   Major int64 `thrift:"major,1" db:"major" json:"major"`
   Package string `thrift:"package,2" db:"package" json:"package"`
@@ -193,6 +194,7 @@ type MyStruct struct {
   Class_ string `thrift:"class_,4" db:"class_" json:"class_"`
   AnnotationWithTrailingComma string `thrift:"annotation_with_trailing_comma,5" db:"annotation_with_trailing_comma" json:"annotation_with_trailing_comma"`
   EmptyAnnotations string `thrift:"empty_annotations,6" db:"empty_annotations" json:"empty_annotations"`
+  MyEnum MyEnum `thrift:"my_enum,7" db:"my_enum" json:"my_enum"`
 }
 
 func NewMyStruct() *MyStruct {
@@ -223,6 +225,10 @@ func (p *MyStruct) GetAnnotationWithTrailingComma() string {
 func (p *MyStruct) GetEmptyAnnotations() string {
   return p.EmptyAnnotations
 }
+
+func (p *MyStruct) GetMyEnum() MyEnum {
+  return p.MyEnum
+}
 type MyStructBuilder struct {
   obj *MyStruct
 }
@@ -241,6 +247,7 @@ func (p MyStructBuilder) Emit() *MyStruct{
     Class_: p.obj.Class_,
     AnnotationWithTrailingComma: p.obj.AnnotationWithTrailingComma,
     EmptyAnnotations: p.obj.EmptyAnnotations,
+    MyEnum: p.obj.MyEnum,
   }
 }
 
@@ -274,6 +281,11 @@ func (m *MyStructBuilder) EmptyAnnotations(emptyAnnotations string) *MyStructBui
   return m
 }
 
+func (m *MyStructBuilder) MyEnum(myEnum MyEnum) *MyStructBuilder {
+  m.obj.MyEnum = myEnum
+  return m
+}
+
 func (m *MyStruct) SetMajor(major int64) *MyStruct {
   m.Major = major
   return m
@@ -301,6 +313,11 @@ func (m *MyStruct) SetAnnotationWithTrailingComma(annotationWithTrailingComma st
 
 func (m *MyStruct) SetEmptyAnnotations(emptyAnnotations string) *MyStruct {
   m.EmptyAnnotations = emptyAnnotations
+  return m
+}
+
+func (m *MyStruct) SetMyEnum(myEnum MyEnum) *MyStruct {
+  m.MyEnum = myEnum
   return m
 }
 
@@ -339,6 +356,10 @@ func (p *MyStruct) Read(iprot thrift.Protocol) error {
       }
     case 6:
       if err := p.ReadField6(iprot); err != nil {
+        return err
+      }
+    case 7:
+      if err := p.ReadField7(iprot); err != nil {
         return err
       }
     default:
@@ -410,6 +431,16 @@ func (p *MyStruct)  ReadField6(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *MyStruct)  ReadField7(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+    return thrift.PrependError("error reading field 7: ", err)
+  } else {
+    temp := MyEnum(v)
+    p.MyEnum = temp
+  }
+  return nil
+}
+
 func (p *MyStruct) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("MyStruct"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -419,6 +450,7 @@ func (p *MyStruct) Write(oprot thrift.Protocol) error {
   if err := p.writeField4(oprot); err != nil { return err }
   if err := p.writeField5(oprot); err != nil { return err }
   if err := p.writeField6(oprot); err != nil { return err }
+  if err := p.writeField7(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -486,6 +518,16 @@ func (p *MyStruct) writeField6(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *MyStruct) writeField7(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("my_enum", thrift.I32, 7); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 7:my_enum: ", p), err) }
+  if err := oprot.WriteI32(int32(p.MyEnum)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.my_enum (7) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 7:my_enum: ", p), err) }
+  return err
+}
+
 func (p *MyStruct) String() string {
   if p == nil {
     return "<nil>"
@@ -497,7 +539,8 @@ func (p *MyStruct) String() string {
   class_Val := fmt.Sprintf("%v", p.Class_)
   annotationWithTrailingCommaVal := fmt.Sprintf("%v", p.AnnotationWithTrailingComma)
   emptyAnnotationsVal := fmt.Sprintf("%v", p.EmptyAnnotations)
-  return fmt.Sprintf("MyStruct({Major:%s Package:%s AnnotationWithQuote:%s Class_:%s AnnotationWithTrailingComma:%s EmptyAnnotations:%s})", majorVal, packageVal, annotationWithQuoteVal, class_Val, annotationWithTrailingCommaVal, emptyAnnotationsVal)
+  myEnumVal := fmt.Sprintf("%v", p.MyEnum)
+  return fmt.Sprintf("MyStruct({Major:%s Package:%s AnnotationWithQuote:%s Class_:%s AnnotationWithTrailingComma:%s EmptyAnnotations:%s MyEnum:%s})", majorVal, packageVal, annotationWithQuoteVal, class_Val, annotationWithTrailingCommaVal, emptyAnnotationsVal, myEnumVal)
 }
 
 // Attributes:

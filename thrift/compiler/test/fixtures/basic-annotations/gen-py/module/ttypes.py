@@ -147,6 +147,7 @@ class MyStruct:
    - class_
    - annotation_with_trailing_comma
    - empty_annotations
+   - my_enum
   """
 
   thrift_spec = None
@@ -199,6 +200,11 @@ class MyStruct:
           self.empty_annotations = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
         else:
           iprot.skip(ftype)
+      elif fid == 7:
+        if ftype == TType.I32:
+          self.my_enum = iprot.readI32()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -236,6 +242,10 @@ class MyStruct:
       oprot.writeFieldBegin('empty_annotations', TType.STRING, 6)
       oprot.writeString(self.empty_annotations.encode('utf-8')) if UTF8STRINGS and not isinstance(self.empty_annotations, bytes) else oprot.writeString(self.empty_annotations)
       oprot.writeFieldEnd()
+    if self.my_enum != None:
+      oprot.writeFieldBegin('my_enum', TType.I32, 7)
+      oprot.writeI32(self.my_enum)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -263,6 +273,14 @@ class MyStruct:
       self.annotation_with_trailing_comma = json_obj['annotation_with_trailing_comma']
     if 'empty_annotations' in json_obj and json_obj['empty_annotations'] is not None:
       self.empty_annotations = json_obj['empty_annotations']
+    if 'my_enum' in json_obj and json_obj['my_enum'] is not None:
+      self.my_enum = json_obj['my_enum']
+      if not self.my_enum in MyEnum._VALUES_TO_NAMES:
+        msg = 'Integer value ''%s'' is not a recognized value of enum type MyEnum' % self.my_enum
+        if relax_enum_validation:
+            warnings.warn(msg)
+        else:
+            raise TProtocolException(TProtocolException.INVALID_DATA, msg)
 
   def __repr__(self):
     L = []
@@ -291,6 +309,10 @@ class MyStruct:
       value = pprint.pformat(self.empty_annotations, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    empty_annotations=%s' % (value))
+    if self.my_enum is not None:
+      value = pprint.pformat(self.my_enum, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    my_enum=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -440,6 +462,7 @@ MyStruct.thrift_spec = (
   (4, TType.STRING, 'class_', True, None, 2, ), # 4
   (5, TType.STRING, 'annotation_with_trailing_comma', True, None, 2, ), # 5
   (6, TType.STRING, 'empty_annotations', True, None, 2, ), # 6
+  (7, TType.I32, 'my_enum', MyEnum, None, 2, ), # 7
 )
 
 MyStruct.thrift_struct_annotations = {
@@ -464,13 +487,14 @@ MyStruct.thrift_field_annotations = {
   },
 }
 
-def MyStruct__init__(self, major=None, package=None, annotation_with_quote=None, class_=None, annotation_with_trailing_comma=None, empty_annotations=None,):
+def MyStruct__init__(self, major=None, package=None, annotation_with_quote=None, class_=None, annotation_with_trailing_comma=None, empty_annotations=None, my_enum=None,):
   self.major = major
   self.package = package
   self.annotation_with_quote = annotation_with_quote
   self.class_ = class_
   self.annotation_with_trailing_comma = annotation_with_trailing_comma
   self.empty_annotations = empty_annotations
+  self.my_enum = my_enum
 
 MyStruct.__init__ = MyStruct__init__
 
@@ -481,6 +505,7 @@ def MyStruct__setstate__(self, state):
   state.setdefault('class_', None)
   state.setdefault('annotation_with_trailing_comma', None)
   state.setdefault('empty_annotations', None)
+  state.setdefault('my_enum', None)
   self.__dict__ = state
 
 MyStruct.__getstate__ = lambda self: self.__dict__.copy()

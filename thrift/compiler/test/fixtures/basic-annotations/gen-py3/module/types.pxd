@@ -97,6 +97,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[string] class__ref()
         __field_ref[string] annotation_with_trailing_comma_ref()
         __field_ref[string] empty_annotations_ref()
+        __field_ref[cMyEnum] my_enum_ref()
 
 
     cdef cppclass cSecretStruct "::cpp2::SecretStruct":
@@ -133,6 +134,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef inline object class__impl(self)
     cdef inline object annotation_with_trailing_comma_impl(self)
     cdef inline object empty_annotations_impl(self)
+    cdef inline object my_enum_impl(self)
+    cdef object __fbthrift_cached_my_enum
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyStruct])

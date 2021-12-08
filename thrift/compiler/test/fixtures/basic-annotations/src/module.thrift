@@ -37,6 +37,7 @@ struct MyStruct {
   4: string class_ (java.swift.name = 'class_');
   5: string annotation_with_trailing_comma (custom = 'test');
   6: string empty_annotations ();
+  7: MyEnum my_enum;
 } (android.generate_builder, cpp.internal.deprecated._data.method)
 
 service MyService {

@@ -176,6 +176,11 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       'var' => 'empty_annotations',
       'type' => \TType::STRING,
     ),
+    7 => shape(
+      'var' => 'my_enum',
+      'type' => \TType::I32,
+      'enum' => MyEnum::class,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'major' => 1,
@@ -184,6 +189,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     'class_' => 4,
     'annotation_with_trailing_comma' => 5,
     'empty_annotations' => 6,
+    'my_enum' => 7,
   ];
 
   const type TConstructorShape = shape(
@@ -193,6 +199,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     ?'class_' => ?string,
     ?'annotation_with_trailing_comma' => ?string,
     ?'empty_annotations' => ?string,
+    ?'my_enum' => ?MyEnum,
   );
 
   const type TShape = shape(
@@ -202,9 +209,10 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     'class_' => string,
     'annotation_with_trailing_comma' => string,
     'empty_annotations' => string,
+    ?'my_enum' => ?MyEnum,
     ...
   );
-  const int STRUCTURAL_ID = 7960127824272155634;
+  const int STRUCTURAL_ID = 5541816595703942275;
   /**
    * Original thrift field:-
    * 1: i64 major
@@ -235,14 +243,20 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
    * 6: string empty_annotations
    */
   public string $empty_annotations;
+  /**
+   * Original thrift field:-
+   * 7: enum module.MyEnum my_enum
+   */
+  public ?MyEnum $my_enum;
 
-  public function __construct(?int $major = null, ?string $package = null, ?string $annotation_with_quote = null, ?string $class_ = null, ?string $annotation_with_trailing_comma = null, ?string $empty_annotations = null  )[] {
+  public function __construct(?int $major = null, ?string $package = null, ?string $annotation_with_quote = null, ?string $class_ = null, ?string $annotation_with_trailing_comma = null, ?string $empty_annotations = null, ?MyEnum $my_enum = null  )[] {
     $this->major = $major ?? 0;
     $this->package = $package ?? '';
     $this->annotation_with_quote = $annotation_with_quote ?? '';
     $this->class_ = $class_ ?? '';
     $this->annotation_with_trailing_comma = $annotation_with_trailing_comma ?? '';
     $this->empty_annotations = $empty_annotations ?? '';
+    $this->my_enum = $my_enum;
   }
 
   public static function withDefaultValues()[]: this {
@@ -257,6 +271,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       Shapes::idx($shape, 'class_'),
       Shapes::idx($shape, 'annotation_with_trailing_comma'),
       Shapes::idx($shape, 'empty_annotations'),
+      Shapes::idx($shape, 'my_enum'),
     );
   }
 
@@ -335,6 +350,21 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
               "name" => "empty_annotations",
             )
           ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 7,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_enum" => tmeta_ThriftEnumType::fromShape(
+                    shape(
+                      "name" => "module.MyEnum",
+                    )
+                  ),
+                )
+              ),
+              "name" => "my_enum",
+            )
+          ),
         ],
         "is_union" => false,
       )
@@ -357,6 +387,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       $shape['class_'],
       $shape['annotation_with_trailing_comma'],
       $shape['empty_annotations'],
+      Shapes::idx($shape, 'my_enum'),
     );
   }
 
@@ -368,6 +399,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       'class_' => $this->class_,
       'annotation_with_trailing_comma' => $this->annotation_with_trailing_comma,
       'empty_annotations' => $this->empty_annotations,
+      'my_enum' => $this->my_enum,
     );
   }
   public function readFromJson(string $jsonText): void {
@@ -395,6 +427,8 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     if (idx($parsed, 'empty_annotations') !== null) {
       $this->empty_annotations = /* HH_FIXME[4110] */ $parsed['empty_annotations'];
     }    
+    if (idx($parsed, 'my_enum') !== null) {
+      $this->my_enum = MyEnum::coerce(/* HH_FIXME[4110] */ $parsed['my_enum']);    }    
   }
 
 }

@@ -132,6 +132,18 @@ cdef __StructSpec get_reflection__MyStruct():
             },
         ),
     )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=7,
+            name="my_enum",
+            type=_module_types.MyEnum,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
     return spec
 cdef __StructSpec get_reflection__SecretStruct():
     cdef _module_types.SecretStruct defaults = _module_types.SecretStruct._fbthrift_create(

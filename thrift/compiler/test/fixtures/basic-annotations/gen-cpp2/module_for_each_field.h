@@ -31,6 +31,7 @@ struct ForEachField<::cpp2::MyStruct> {
     f(3, static_cast<T&&>(t).class__ref()...);
     f(4, static_cast<T&&>(t).annotation_with_trailing_comma_ref()...);
     f(5, static_cast<T&&>(t).empty_annotations_ref()...);
+    f(6, static_cast<T&&>(t).my_enum_ref()...);
   }
 };
 

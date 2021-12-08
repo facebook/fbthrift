@@ -33,7 +33,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         @com.facebook.swift.codec.ThriftField(value=3, name="annotation_with_quote", requiredness=Requiredness.NONE) final String annotationWithQuote,
         @com.facebook.swift.codec.ThriftField(value=4, name="class_", requiredness=Requiredness.NONE) final String class_,
         @com.facebook.swift.codec.ThriftField(value=5, name="annotation_with_trailing_comma", requiredness=Requiredness.NONE) final String annotationWithTrailingComma,
-        @com.facebook.swift.codec.ThriftField(value=6, name="empty_annotations", requiredness=Requiredness.NONE) final String emptyAnnotations
+        @com.facebook.swift.codec.ThriftField(value=6, name="empty_annotations", requiredness=Requiredness.NONE) final String emptyAnnotations,
+        @com.facebook.swift.codec.ThriftField(value=7, name="my_enum", requiredness=Requiredness.NONE) final test.fixtures.basicannotations.MyEnum myEnum
     ) {
         this.major = major;
         this._package = _package;
@@ -41,6 +42,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         this.class_ = class_;
         this.annotationWithTrailingComma = annotationWithTrailingComma;
         this.emptyAnnotations = emptyAnnotations;
+        this.myEnum = myEnum;
     }
     
     @ThriftConstructor
@@ -51,6 +53,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       this.class_ = null;
       this.annotationWithTrailingComma = null;
       this.emptyAnnotations = null;
+      this.myEnum = test.fixtures.basicannotations.MyEnum.fromInteger(0);
     }
     
     public static class Builder {
@@ -61,6 +64,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         private String class_ = null;
         private String annotationWithTrailingComma = null;
         private String emptyAnnotations = null;
+        private test.fixtures.basicannotations.MyEnum myEnum = test.fixtures.basicannotations.MyEnum.fromInteger(0);
     
         @com.facebook.swift.codec.ThriftField(value=1, name="major", requiredness=Requiredness.NONE)
         public Builder setMajor(long major) {
@@ -110,6 +114,14 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     
         public String getEmptyAnnotations() { return emptyAnnotations; }
     
+            @com.facebook.swift.codec.ThriftField(value=7, name="my_enum", requiredness=Requiredness.NONE)
+        public Builder setMyEnum(test.fixtures.basicannotations.MyEnum myEnum) {
+            this.myEnum = myEnum;
+            return this;
+        }
+    
+        public test.fixtures.basicannotations.MyEnum getMyEnum() { return myEnum; }
+    
         public Builder() { }
         public Builder(MyStruct other) {
             this.major = other.major;
@@ -118,6 +130,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             this.class_ = other.class_;
             this.annotationWithTrailingComma = other.annotationWithTrailingComma;
             this.emptyAnnotations = other.emptyAnnotations;
+            this.myEnum = other.myEnum;
         }
     
         @ThriftConstructor
@@ -128,7 +141,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                 this.annotationWithQuote,
                 this.class_,
                 this.annotationWithTrailingComma,
-                this.emptyAnnotations
+                this.emptyAnnotations,
+                this.myEnum
             );
             return result;
         }
@@ -155,6 +169,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         private final String emptyAnnotations;
     public static final int _EMPTY_ANNOTATIONS = 6;
     private static final TField EMPTY_ANNOTATIONS_FIELD_DESC = new TField("empty_annotations", TType.STRING, (short)6);
+        private final test.fixtures.basicannotations.MyEnum myEnum;
+    public static final int _MY_ENUM = 7;
+    private static final TField MY_ENUM_FIELD_DESC = new TField("my_enum", TType.I32, (short)7);
     static {
       NAMES_TO_IDS.put("major", 1);
       FIELD_METADATA.put(1, MAJOR_FIELD_DESC);
@@ -168,6 +185,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       FIELD_METADATA.put(5, ANNOTATION_WITH_TRAILING_COMMA_FIELD_DESC);
       NAMES_TO_IDS.put("emptyAnnotations", 6);
       FIELD_METADATA.put(6, EMPTY_ANNOTATIONS_FIELD_DESC);
+      NAMES_TO_IDS.put("myEnum", 7);
+      FIELD_METADATA.put(7, MY_ENUM_FIELD_DESC);
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="major", requiredness=Requiredness.NONE)
@@ -193,6 +212,10 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     @com.facebook.swift.codec.ThriftField(value=6, name="empty_annotations", requiredness=Requiredness.NONE)
     public String getEmptyAnnotations() { return emptyAnnotations; }
     
+    
+    @com.facebook.swift.codec.ThriftField(value=7, name="my_enum", requiredness=Requiredness.NONE)
+    public test.fixtures.basicannotations.MyEnum getMyEnum() { return myEnum; }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
@@ -202,6 +225,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         helper.add("class_", class_);
         helper.add("annotationWithTrailingComma", annotationWithTrailingComma);
         helper.add("emptyAnnotations", emptyAnnotations);
+        helper.add("myEnum", myEnum);
         return helper.toString();
     }
     
@@ -223,6 +247,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             Objects.equals(class_, other.class_) &&
             Objects.equals(annotationWithTrailingComma, other.annotationWithTrailingComma) &&
             Objects.equals(emptyAnnotations, other.emptyAnnotations) &&
+            Objects.equals(myEnum, other.myEnum) &&
             true;
     }
     
@@ -234,7 +259,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             annotationWithQuote,
             class_,
             annotationWithTrailingComma,
-            emptyAnnotations
+            emptyAnnotations,
+            myEnum
         });
     }
     
@@ -299,6 +325,14 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _MY_ENUM:
+          if (__field.type == TType.I32) {
+            test.fixtures.basicannotations.MyEnum myEnum = test.fixtures.basicannotations.MyEnum.fromInteger(oprot.readI32());
+            builder.setMyEnum(myEnum);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -339,6 +373,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         oprot.writeString(this.emptyAnnotations);
         oprot.writeFieldEnd();
       }
+      oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
+      oprot.writeI32(this.myEnum == null ? 0 : this.myEnum.getValue());
+      oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }

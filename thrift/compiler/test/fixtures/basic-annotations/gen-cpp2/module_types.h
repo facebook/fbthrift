@@ -20,6 +20,7 @@ struct annotation_with_quote;
 struct class_;
 struct annotation_with_trailing_comma;
 struct empty_annotations;
+struct my_enum;
 struct id;
 struct password;
 } // namespace tag
@@ -51,6 +52,10 @@ APACHE_THRIFT_DEFINE_ACCESSOR(annotation_with_trailing_comma);
 #ifndef APACHE_THRIFT_ACCESSOR_empty_annotations
 #define APACHE_THRIFT_ACCESSOR_empty_annotations
 APACHE_THRIFT_DEFINE_ACCESSOR(empty_annotations);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_my_enum
+#define APACHE_THRIFT_ACCESSOR_my_enum
+APACHE_THRIFT_DEFINE_ACCESSOR(my_enum);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_id
 #define APACHE_THRIFT_ACCESSOR_id
@@ -284,7 +289,7 @@ class MyStruct final  {
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg);
+  MyStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg, ::cpp2::MyEnum my_enum__arg);
 
   MyStruct(MyStruct&&) noexcept;
 
@@ -310,7 +315,9 @@ class MyStruct final  {
  private:
   ::std::string __fbthrift_field_empty_annotations;
  private:
-  apache::thrift::detail::isset_bitset<6, false> __isset;
+  ::cpp2::MyEnum __fbthrift_field_my_enum;
+ private:
+  apache::thrift::detail::isset_bitset<7, false> __isset;
 
  public:
 
@@ -557,6 +564,46 @@ class MyStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_empty_annotations), __isset.at(5), __isset.bit(5)};
   }
 
+  template <typename..., typename T = ::cpp2::MyEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> my_enum_ref() const& {
+    return {this->__fbthrift_field_my_enum, __isset.at(6), __isset.bit(6)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> my_enum_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_my_enum), __isset.at(6), __isset.bit(6)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> my_enum_ref() & {
+    return {this->__fbthrift_field_my_enum, __isset.at(6), __isset.bit(6)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> my_enum_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_my_enum), __isset.at(6), __isset.bit(6)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> my_enum() const& {
+    return {this->__fbthrift_field_my_enum, __isset.at(6), __isset.bit(6)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> my_enum() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_my_enum), __isset.at(6), __isset.bit(6)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> my_enum() & {
+    return {this->__fbthrift_field_my_enum, __isset.at(6), __isset.bit(6)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyEnum>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> my_enum() && {
+    return {static_cast<T&&>(this->__fbthrift_field_my_enum), __isset.at(6), __isset.bit(6)};
+  }
+
   ::std::int64_t get_majorVer() const {
     return __fbthrift_field_majorVer;
   }
@@ -640,6 +687,16 @@ class MyStruct final  {
   ::std::string& set_empty_annotations(T_MyStruct_empty_annotations_struct_setter&& empty_annotations_) {
     empty_annotations_ref() = std::forward<T_MyStruct_empty_annotations_struct_setter>(empty_annotations_);
     return __fbthrift_field_empty_annotations;
+  }
+
+  ::cpp2::MyEnum get_my_enum() const {
+    return __fbthrift_field_my_enum;
+  }
+
+  [[deprecated("Use `FOO.my_enum_ref() = BAR;` instead of `FOO.set_my_enum(BAR);`")]]
+  ::cpp2::MyEnum& set_my_enum(::cpp2::MyEnum my_enum_) {
+    my_enum_ref() = my_enum_;
+    return __fbthrift_field_my_enum;
   }
 
   template <class Protocol_>

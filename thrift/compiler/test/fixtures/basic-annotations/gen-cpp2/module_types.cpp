@@ -160,7 +160,8 @@ namespace cpp2 {
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
 MyStruct::MyStruct() :
-      __fbthrift_field_majorVer() {
+      __fbthrift_field_majorVer(),
+      __fbthrift_field_my_enum() {
 }
 
 
@@ -173,6 +174,7 @@ MyStruct::MyStruct(MyStruct&& other) noexcept  :
     __fbthrift_field_class_(std::move(other.__fbthrift_field_class_)),
     __fbthrift_field_annotation_with_trailing_comma(std::move(other.__fbthrift_field_annotation_with_trailing_comma)),
     __fbthrift_field_empty_annotations(std::move(other.__fbthrift_field_empty_annotations)),
+    __fbthrift_field_my_enum(std::move(other.__fbthrift_field_my_enum)),
     __isset(other.__isset) {
 }
 
@@ -183,24 +185,27 @@ MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
     this->__fbthrift_field_class_ = std::move(other.__fbthrift_field_class_);
     this->__fbthrift_field_annotation_with_trailing_comma = std::move(other.__fbthrift_field_annotation_with_trailing_comma);
     this->__fbthrift_field_empty_annotations = std::move(other.__fbthrift_field_empty_annotations);
+    this->__fbthrift_field_my_enum = std::move(other.__fbthrift_field_my_enum);
     __isset = other.__isset;
     return *this;
 }
 
 
-MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg, ::cpp2::MyEnum my_enum__arg) :
     __fbthrift_field_majorVer(std::move(majorVer__arg)),
     __fbthrift_field_package(std::move(package__arg)),
     __fbthrift_field_annotation_with_quote(std::move(annotation_with_quote__arg)),
     __fbthrift_field_class_(std::move(class___arg)),
     __fbthrift_field_annotation_with_trailing_comma(std::move(annotation_with_trailing_comma__arg)),
-    __fbthrift_field_empty_annotations(std::move(empty_annotations__arg)) {
+    __fbthrift_field_empty_annotations(std::move(empty_annotations__arg)),
+    __fbthrift_field_my_enum(std::move(my_enum__arg)) {
   __isset.set(folly::index_constant<0>(), true);
   __isset.set(folly::index_constant<1>(), true);
   __isset.set(folly::index_constant<2>(), true);
   __isset.set(folly::index_constant<3>(), true);
   __isset.set(folly::index_constant<4>(), true);
   __isset.set(folly::index_constant<5>(), true);
+  __isset.set(folly::index_constant<6>(), true);
 }
 
 
@@ -212,6 +217,7 @@ void MyStruct::__clear() {
   this->__fbthrift_field_class_ = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_annotation_with_trailing_comma = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_empty_annotations = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_my_enum = ::cpp2::MyEnum();
   __isset = {};
 }
 
@@ -235,6 +241,9 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
     return false;
   }
   if (!(lhs.empty_annotations_ref() == rhs.empty_annotations_ref())) {
+    return false;
+  }
+  if (!(lhs.my_enum_ref() == rhs.my_enum_ref())) {
     return false;
   }
   return true;
@@ -262,6 +271,9 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   if (!(lhs.empty_annotations_ref() == rhs.empty_annotations_ref())) {
     return lhs.empty_annotations_ref() < rhs.empty_annotations_ref();
   }
+  if (!(lhs.my_enum_ref() == rhs.my_enum_ref())) {
+    return lhs.my_enum_ref() < rhs.my_enum_ref();
+  }
   return false;
 }
 
@@ -274,6 +286,7 @@ void swap(MyStruct& a, MyStruct& b) {
   swap(a.class__ref().value(), b.class__ref().value());
   swap(a.annotation_with_trailing_comma_ref().value(), b.annotation_with_trailing_comma_ref().value());
   swap(a.empty_annotations_ref().value(), b.empty_annotations_ref().value());
+  swap(a.my_enum_ref().value(), b.my_enum_ref().value());
   swap(a.__isset, b.__isset);
 }
 

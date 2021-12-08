@@ -30,6 +30,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   private static final TField CLASS__FIELD_DESC = new TField("class_", TType.STRING, (short)4);
   private static final TField ANNOTATION_WITH_TRAILING_COMMA_FIELD_DESC = new TField("annotation_with_trailing_comma", TType.STRING, (short)5);
   private static final TField EMPTY_ANNOTATIONS_FIELD_DESC = new TField("empty_annotations", TType.STRING, (short)6);
+  private static final TField MY_ENUM_FIELD_DESC = new TField("my_enum", TType.I32, (short)7);
 
   public final Long major;
   public final String package;
@@ -37,12 +38,18 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   public final String class_;
   public final String annotation_with_trailing_comma;
   public final String empty_annotations;
+  /**
+   * 
+   * @see MyEnum
+   */
+  public final MyEnum my_enum;
   public static final int MAJOR = 1;
   public static final int PACKAGE = 2;
   public static final int ANNOTATION_WITH_QUOTE = 3;
   public static final int CLASS_ = 4;
   public static final int ANNOTATION_WITH_TRAILING_COMMA = 5;
   public static final int EMPTY_ANNOTATIONS = 6;
+  public static final int MY_ENUM = 7;
 
   public MyStruct(
       Long major,
@@ -50,13 +57,15 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       String annotation_with_quote,
       String class_,
       String annotation_with_trailing_comma,
-      String empty_annotations) {
+      String empty_annotations,
+      MyEnum my_enum) {
     this.major = major;
     this.package = package;
     this.annotation_with_quote = annotation_with_quote;
     this.class_ = class_;
     this.annotation_with_trailing_comma = annotation_with_trailing_comma;
     this.empty_annotations = empty_annotations;
+    this.my_enum = my_enum;
   }
 
   public static class Builder {
@@ -66,6 +75,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     private String class_;
     private String annotation_with_trailing_comma;
     private String empty_annotations;
+    private MyEnum my_enum;
 
     public Builder() {
     }
@@ -100,6 +110,11 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       return this;
     }
 
+    public Builder setMy_enum(final MyEnum my_enum) {
+      this.my_enum = my_enum;
+      return this;
+    }
+
     public MyStruct build() {
       return new MyStruct(
         this.major,
@@ -107,7 +122,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
         this.annotation_with_quote,
         this.class_,
         this.annotation_with_trailing_comma,
-        this.empty_annotations
+        this.empty_annotations,
+        this.my_enum
       );
     }
   }
@@ -149,6 +165,11 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       this.empty_annotations = TBaseHelper.deepCopy(other.empty_annotations);
     } else {
       this.empty_annotations = null;
+    }
+    if (other.isSetMy_enum()) {
+      this.my_enum = TBaseHelper.deepCopy(other.my_enum);
+    } else {
+      this.my_enum = null;
     }
   }
 
@@ -210,6 +231,19 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     return this.empty_annotations != null;
   }
 
+  /**
+   * 
+   * @see MyEnum
+   */
+  public MyEnum getMy_enum() {
+    return this.my_enum;
+  }
+
+  // Returns true if field my_enum is set (has been assigned a value) and false otherwise
+  public boolean isSetMy_enum() {
+    return this.my_enum != null;
+  }
+
   @Override
   public boolean equals(Object _that) {
     if (_that == null)
@@ -232,12 +266,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
 
     if (!TBaseHelper.equalsNobinary(this.isSetEmpty_annotations(), that.isSetEmpty_annotations(), this.empty_annotations, that.empty_annotations)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetMy_enum(), that.isSetMy_enum(), this.my_enum, that.my_enum)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {major, package, annotation_with_quote, class_, annotation_with_trailing_comma, empty_annotations});
+    return Arrays.deepHashCode(new Object[] {major, package, annotation_with_quote, class_, annotation_with_trailing_comma, empty_annotations, my_enum});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -252,6 +288,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     String tmp_class_ = null;
     String tmp_annotation_with_trailing_comma = null;
     String tmp_empty_annotations = null;
+    MyEnum tmp_my_enum = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -304,6 +341,13 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case MY_ENUM:
+          if (__field.type == TType.I32) {
+            tmp_my_enum = MyEnum.findByValue(iprot.readI32());
+          } else { 
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -320,6 +364,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       ,tmp_class_
       ,tmp_annotation_with_trailing_comma
       ,tmp_empty_annotations
+      ,tmp_my_enum
     );
     _that.validate();
     return _that;
@@ -357,6 +402,11 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     if (this.empty_annotations != null) {
       oprot.writeFieldBegin(EMPTY_ANNOTATIONS_FIELD_DESC);
       oprot.writeString(this.empty_annotations);
+      oprot.writeFieldEnd();
+    }
+    if (this.my_enum != null) {
+      oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
+      oprot.writeI32(this.my_enum == null ? 0 : this.my_enum.getValue());
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();

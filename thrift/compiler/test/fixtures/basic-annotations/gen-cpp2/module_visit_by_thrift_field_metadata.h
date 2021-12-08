@@ -43,6 +43,8 @@ struct VisitByFieldId<::cpp2::MyStruct> {
       return f(4, static_cast<T&&>(t).annotation_with_trailing_comma_ref());
     case 6:
       return f(5, static_cast<T&&>(t).empty_annotations_ref());
+    case 7:
+      return f(6, static_cast<T&&>(t).my_enum_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::MyStruct");
     }

@@ -32,6 +32,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   private static final TField CLASS__FIELD_DESC = new TField("class_", TType.STRING, (short)4);
   private static final TField ANNOTATION_WITH_TRAILING_COMMA_FIELD_DESC = new TField("annotation_with_trailing_comma", TType.STRING, (short)5);
   private static final TField EMPTY_ANNOTATIONS_FIELD_DESC = new TField("empty_annotations", TType.STRING, (short)6);
+  private static final TField MY_ENUM_FIELD_DESC = new TField("my_enum", TType.I32, (short)7);
 
   public long major;
   public String package;
@@ -39,12 +40,18 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   public String class_;
   public String annotation_with_trailing_comma;
   public String empty_annotations;
+  /**
+   * 
+   * @see MyEnum
+   */
+  public MyEnum my_enum;
   public static final int MAJOR = 1;
   public static final int PACKAGE = 2;
   public static final int ANNOTATION_WITH_QUOTE = 3;
   public static final int CLASS_ = 4;
   public static final int ANNOTATION_WITH_TRAILING_COMMA = 5;
   public static final int EMPTY_ANNOTATIONS = 6;
+  public static final int MY_ENUM = 7;
 
   // isset id assignments
   private static final int __MAJOR_ISSET_ID = 0;
@@ -66,6 +73,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
         new FieldValueMetaData(TType.STRING)));
     tmpMetaDataMap.put(EMPTY_ANNOTATIONS, new FieldMetaData("empty_annotations", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.STRING)));
+    tmpMetaDataMap.put(MY_ENUM, new FieldMetaData("my_enum", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -82,7 +91,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       String annotation_with_quote,
       String class_,
       String annotation_with_trailing_comma,
-      String empty_annotations) {
+      String empty_annotations,
+      MyEnum my_enum) {
     this();
     this.major = major;
     setMajorIsSet(true);
@@ -91,6 +101,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     this.class_ = class_;
     this.annotation_with_trailing_comma = annotation_with_trailing_comma;
     this.empty_annotations = empty_annotations;
+    this.my_enum = my_enum;
   }
 
   public static class Builder {
@@ -100,6 +111,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     private String class_;
     private String annotation_with_trailing_comma;
     private String empty_annotations;
+    private MyEnum my_enum;
 
     BitSet __optional_isset = new BitSet(1);
 
@@ -137,6 +149,11 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return this;
     }
 
+    public Builder setMy_enum(final MyEnum my_enum) {
+      this.my_enum = my_enum;
+      return this;
+    }
+
     public MyStruct build() {
       MyStruct result = new MyStruct();
       if (__optional_isset.get(__MAJOR_ISSET_ID)) {
@@ -147,6 +164,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       result.setClass_(this.class_);
       result.setAnnotation_with_trailing_comma(this.annotation_with_trailing_comma);
       result.setEmpty_annotations(this.empty_annotations);
+      result.setMy_enum(this.my_enum);
       return result;
     }
   }
@@ -176,6 +194,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     }
     if (other.isSetEmpty_annotations()) {
       this.empty_annotations = TBaseHelper.deepCopy(other.empty_annotations);
+    }
+    if (other.isSetMy_enum()) {
+      this.my_enum = TBaseHelper.deepCopy(other.my_enum);
     }
   }
 
@@ -326,6 +347,38 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     }
   }
 
+  /**
+   * 
+   * @see MyEnum
+   */
+  public MyEnum getMy_enum() {
+    return this.my_enum;
+  }
+
+  /**
+   * 
+   * @see MyEnum
+   */
+  public MyStruct setMy_enum(MyEnum my_enum) {
+    this.my_enum = my_enum;
+    return this;
+  }
+
+  public void unsetMy_enum() {
+    this.my_enum = null;
+  }
+
+  // Returns true if field my_enum is set (has been assigned a value) and false otherwise
+  public boolean isSetMy_enum() {
+    return this.my_enum != null;
+  }
+
+  public void setMy_enumIsSet(boolean __value) {
+    if (!__value) {
+      this.my_enum = null;
+    }
+  }
+
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case MAJOR:
@@ -376,6 +429,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       }
       break;
 
+    case MY_ENUM:
+      if (__value == null) {
+        unsetMy_enum();
+      } else {
+        setMy_enum((MyEnum)__value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -400,6 +461,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
 
     case EMPTY_ANNOTATIONS:
       return getEmpty_annotations();
+
+    case MY_ENUM:
+      return getMy_enum();
 
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -428,12 +492,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
 
     if (!TBaseHelper.equalsNobinary(this.isSetEmpty_annotations(), that.isSetEmpty_annotations(), this.empty_annotations, that.empty_annotations)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetMy_enum(), that.isSetMy_enum(), this.my_enum, that.my_enum)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {major, package, annotation_with_quote, class_, annotation_with_trailing_comma, empty_annotations});
+    return Arrays.deepHashCode(new Object[] {major, package, annotation_with_quote, class_, annotation_with_trailing_comma, empty_annotations, my_enum});
   }
 
   @Override
@@ -496,6 +562,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     if (lastComparison != 0) { 
       return lastComparison;
     }
+    lastComparison = Boolean.valueOf(isSetMy_enum()).compareTo(other.isSetMy_enum());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(my_enum, other.my_enum);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
     return 0;
   }
 
@@ -553,6 +627,13 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case MY_ENUM:
+          if (__field.type == TType.I32) {
+            this.my_enum = MyEnum.findByValue(iprot.readI32());
+          } else { 
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -596,6 +677,11 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     if (this.empty_annotations != null) {
       oprot.writeFieldBegin(EMPTY_ANNOTATIONS_FIELD_DESC);
       oprot.writeString(this.empty_annotations);
+      oprot.writeFieldEnd();
+    }
+    if (this.my_enum != null) {
+      oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
+      oprot.writeI32(this.my_enum == null ? 0 : this.my_enum.getValue());
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -677,6 +763,25 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       sb.append("null");
     } else {
       sb.append(TBaseHelper.toString(this.getEmpty_annotations(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("my_enum");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getMy_enum() == null) {
+      sb.append("null");
+    } else {
+      String my_enum_name = this.getMy_enum() == null ? "null" : this.getMy_enum().name();
+      if (my_enum_name != null) {
+        sb.append(my_enum_name);
+        sb.append(" (");
+      }
+      sb.append(this.getMy_enum());
+      if (my_enum_name != null) {
+        sb.append(")");
+      }
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
