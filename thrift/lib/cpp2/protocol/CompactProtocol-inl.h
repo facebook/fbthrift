@@ -329,9 +329,16 @@ uint32_t CompactProtocolWriter::writeBinaryImpl(const folly::IOBuf& str) {
   uint32_t result =
       kWriteSize ? apache::thrift::util::writeVarint(out_, (int32_t)size) : 0;
   if (sharing_ != SHARE_EXTERNAL_BUFFER && !str.isManaged()) {
-    auto clone = str.clone();
-    clone->makeManaged();
-    out_.insert(std::move(clone));
+    const auto growth = size - out_.length();
+    for (folly::ByteRange buf : str) {
+      const auto tailroom = out_.length();
+      if (tailroom < buf.size()) {
+        out_.push(buf.uncheckedSubpiece(0, tailroom));
+        buf.uncheckedAdvance(tailroom);
+        out_.ensure(growth);
+      }
+      out_.push(buf);
+    }
   } else {
     out_.insert(str);
   }
@@ -732,7 +739,8 @@ void CompactProtocolReader::readBinary(folly::IOBuf& str) {
   readStringSize(size);
 
   in_.clone(str, size);
-  if (sharing_ != SHARE_EXTERNAL_BUFFER) {
+  if (sharing_ != SHARE_EXTERNAL_BUFFER && !str.isManaged()) {
+    str = str.cloneCoalescedAsValueWithHeadroomTailroom(0, 0);
     str.makeManaged();
   }
 }

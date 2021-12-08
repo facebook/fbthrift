@@ -290,7 +290,13 @@ class ProtocolReaderStructReadStateWithIndexImpl
     skip();
     folly::IOBuf buf;
     cursor.clone(buf, iprot->getCursor() - cursor);
-    buf.makeManaged();
+    if (!buf.isManaged()) {
+      // Don't unshare the cloned buffer directly, as headroom and
+      // tailroom might be non-trivial in size and would be carried
+      // over into the allocation.
+      buf = buf.cloneCoalescedAsValueWithHeadroomTailroom(0, 0);
+      buf.makeManaged();
+    }
     return buf;
   }
 

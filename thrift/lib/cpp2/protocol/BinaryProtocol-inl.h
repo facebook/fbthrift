@@ -182,9 +182,16 @@ uint32_t BinaryProtocolWriter::writeBinaryImpl(const folly::IOBuf& str) {
   }
   uint32_t result = kWriteSize ? writeI32((int32_t)size) : 0;
   if (sharing_ != SHARE_EXTERNAL_BUFFER && !str.isManaged()) {
-    auto clone = str.clone();
-    clone->makeManaged();
-    out_.insert(std::move(clone));
+    const auto growth = size - out_.length();
+    for (folly::ByteRange buf : str) {
+      const auto tailroom = out_.length();
+      if (tailroom < buf.size()) {
+        out_.push(buf.uncheckedSubpiece(0, tailroom));
+        buf.uncheckedAdvance(tailroom);
+        out_.ensure(growth);
+      }
+      out_.push(buf);
+    }
   } else {
     out_.insert(str);
   }
@@ -519,7 +526,8 @@ void BinaryProtocolReader::readBinary(folly::IOBuf& str) {
   checkStringSize(size);
 
   in_.clone(str, size);
-  if (sharing_ != SHARE_EXTERNAL_BUFFER) {
+  if (sharing_ != SHARE_EXTERNAL_BUFFER && !str.isManaged()) {
+    str = str.cloneCoalescedAsValueWithHeadroomTailroom(0, 0);
     str.makeManaged();
   }
 }
@@ -560,23 +568,19 @@ uint32_t BinaryProtocolReader::readFromPositionAndAppend(
   int32_t size =
       folly::to_narrow(folly::to_signed(folly::io::Cursor(in_) - snapshot));
 
+  std::unique_ptr<IOBuf> newBuf;
+  snapshot.clone(newBuf, size);
+  if (sharing_ != SHARE_EXTERNAL_BUFFER && !newBuf->isManaged()) {
+    newBuf = newBuf->cloneCoalescedWithHeadroomTailroom(0, 0);
+    newBuf->makeManaged();
+  }
   if (ser) {
-    std::unique_ptr<IOBuf> newBuf;
-    snapshot.clone(newBuf, size);
-    if (sharing_ != SHARE_EXTERNAL_BUFFER) {
-      newBuf->makeManaged();
-    }
     // IOBuf are circular, so prependChain called on head is the same as
     // appending the whole chain at the tail.
     ser->prependChain(std::move(newBuf));
   } else {
-    // cut a chunk of things directly
-    snapshot.clone(ser, size);
-    if (sharing_ != SHARE_EXTERNAL_BUFFER) {
-      ser->makeManaged();
-    }
+    ser = std::move(newBuf);
   }
-
   return (uint32_t)size;
 }
 
