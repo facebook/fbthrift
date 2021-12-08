@@ -2080,7 +2080,7 @@ class SimpleUnion  {
         break;
       }
     }
-    rhs.__clear();
+    apache::thrift::clear(rhs);
   }
 
   SimpleUnion(const SimpleUnion& rhs)
@@ -2108,7 +2108,7 @@ class SimpleUnion  {
 
   SimpleUnion& operator=(SimpleUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    apache::thrift::clear(*this);
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::intValue:
@@ -2127,13 +2127,13 @@ class SimpleUnion  {
         break;
       }
     }
-    rhs.__clear();
+    apache::thrift::clear(rhs);
     return *this;
   }
 
   SimpleUnion& operator=(const SimpleUnion& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    apache::thrift::clear(*this);
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::intValue:
@@ -2157,7 +2157,7 @@ class SimpleUnion  {
   void __clear();
 
   virtual ~SimpleUnion() {
-    __clear();
+    apache::thrift::clear(*this);
   }
 
   union storage_type {
@@ -2172,28 +2172,28 @@ class SimpleUnion  {
   bool operator<(const SimpleUnion&) const;
 
   ::std::int64_t& set_intValue(::std::int64_t t = ::std::int64_t()) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::intValue;
     ::new (std::addressof(value_.intValue)) ::std::int64_t(t);
     return value_.intValue;
   }
 
   ::std::string& set_stringValue(::std::string const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::stringValue;
     ::new (std::addressof(value_.stringValue)) ::std::string(t);
     return value_.stringValue;
   }
 
   ::std::string& set_stringValue(::std::string&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::stringValue;
     ::new (std::addressof(value_.stringValue)) ::std::string(std::move(t));
     return value_.stringValue;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_stringValue(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::stringValue;
     ::new (std::addressof(value_.stringValue)) ::std::string(std::forward<T>(t)...);
     return value_.stringValue;
@@ -2509,7 +2509,7 @@ class ComplexUnion final  {
         break;
       }
     }
-    rhs.__clear();
+    apache::thrift::clear(rhs);
   }
 
   ComplexUnion(const ComplexUnion& rhs)
@@ -2667,7 +2667,7 @@ class ComplexUnion final  {
 
   ComplexUnion& operator=(ComplexUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    apache::thrift::clear(*this);
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::intValue:
@@ -2816,13 +2816,13 @@ class ComplexUnion final  {
         break;
       }
     }
-    rhs.__clear();
+    apache::thrift::clear(rhs);
     return *this;
   }
 
   ComplexUnion& operator=(const ComplexUnion& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    apache::thrift::clear(*this);
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::intValue:
@@ -2976,7 +2976,7 @@ class ComplexUnion final  {
   void __clear();
 
   ~ComplexUnion() {
-    __clear();
+    apache::thrift::clear(*this);
   }
   union storage_type {
     ::std::int64_t intValue;
@@ -3016,406 +3016,406 @@ class ComplexUnion final  {
   bool operator<(const ComplexUnion&) const;
 
   ::std::int64_t& set_intValue(::std::int64_t t = ::std::int64_t()) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::intValue;
     ::new (std::addressof(value_.intValue)) ::std::int64_t(t);
     return value_.intValue;
   }
 
   ::std::int64_t& set_opt_intValue(::std::int64_t t = ::std::int64_t()) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::opt_intValue;
     ::new (std::addressof(value_.opt_intValue)) ::std::int64_t(t);
     return value_.opt_intValue;
   }
 
   ::std::string& set_stringValue(::std::string const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::stringValue;
     ::new (std::addressof(value_.stringValue)) ::std::string(t);
     return value_.stringValue;
   }
 
   ::std::string& set_stringValue(::std::string&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::stringValue;
     ::new (std::addressof(value_.stringValue)) ::std::string(std::move(t));
     return value_.stringValue;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_stringValue(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::stringValue;
     ::new (std::addressof(value_.stringValue)) ::std::string(std::forward<T>(t)...);
     return value_.stringValue;
   }
 
   ::std::string& set_opt_stringValue(::std::string const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::opt_stringValue;
     ::new (std::addressof(value_.opt_stringValue)) ::std::string(t);
     return value_.opt_stringValue;
   }
 
   ::std::string& set_opt_stringValue(::std::string&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::opt_stringValue;
     ::new (std::addressof(value_.opt_stringValue)) ::std::string(std::move(t));
     return value_.opt_stringValue;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_opt_stringValue(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::opt_stringValue;
     ::new (std::addressof(value_.opt_stringValue)) ::std::string(std::forward<T>(t)...);
     return value_.opt_stringValue;
   }
 
   ::std::int16_t& set_intValue2(::std::int16_t t = ::std::int16_t()) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::intValue2;
     ::new (std::addressof(value_.intValue2)) ::std::int16_t(t);
     return value_.intValue2;
   }
 
   ::std::int32_t& set_intValue3(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::intValue3;
     ::new (std::addressof(value_.intValue3)) ::std::int32_t(t);
     return value_.intValue3;
   }
 
   double& set_doubelValue(double t = double()) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::doubelValue;
     ::new (std::addressof(value_.doubelValue)) double(t);
     return value_.doubelValue;
   }
 
   bool& set_boolValue(bool t = bool()) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::boolValue;
     ::new (std::addressof(value_.boolValue)) bool(t);
     return value_.boolValue;
   }
 
   ::std::vector<::std::int32_t>& set_union_list(::std::vector<::std::int32_t> const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::union_list;
     ::new (std::addressof(value_.union_list)) ::std::vector<::std::int32_t>(t);
     return value_.union_list;
   }
 
   ::std::vector<::std::int32_t>& set_union_list(::std::vector<::std::int32_t>&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::union_list;
     ::new (std::addressof(value_.union_list)) ::std::vector<::std::int32_t>(std::move(t));
     return value_.union_list;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<::std::int32_t>, T...>> ::std::vector<::std::int32_t>& set_union_list(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::union_list;
     ::new (std::addressof(value_.union_list)) ::std::vector<::std::int32_t>(std::forward<T>(t)...);
     return value_.union_list;
   }
 
   ::std::set<::std::int64_t>& set_union_set(::std::set<::std::int64_t> const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::union_set;
     ::new (std::addressof(value_.union_set)) ::std::set<::std::int64_t>(t);
     return value_.union_set;
   }
 
   ::std::set<::std::int64_t>& set_union_set(::std::set<::std::int64_t>&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::union_set;
     ::new (std::addressof(value_.union_set)) ::std::set<::std::int64_t>(std::move(t));
     return value_.union_set;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::set<::std::int64_t>, T...>> ::std::set<::std::int64_t>& set_union_set(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::union_set;
     ::new (std::addressof(value_.union_set)) ::std::set<::std::int64_t>(std::forward<T>(t)...);
     return value_.union_set;
   }
 
   ::std::map<::std::string, ::std::int32_t>& set_union_map(::std::map<::std::string, ::std::int32_t> const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::union_map;
     ::new (std::addressof(value_.union_map)) ::std::map<::std::string, ::std::int32_t>(t);
     return value_.union_map;
   }
 
   ::std::map<::std::string, ::std::int32_t>& set_union_map(::std::map<::std::string, ::std::int32_t>&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::union_map;
     ::new (std::addressof(value_.union_map)) ::std::map<::std::string, ::std::int32_t>(std::move(t));
     return value_.union_map;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::map<::std::string, ::std::int32_t>, T...>> ::std::map<::std::string, ::std::int32_t>& set_union_map(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::union_map;
     ::new (std::addressof(value_.union_map)) ::std::map<::std::string, ::std::int32_t>(std::forward<T>(t)...);
     return value_.union_map;
   }
 
   ::std::map<::std::string, ::std::int32_t>& set_opt_union_map(::std::map<::std::string, ::std::int32_t> const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::opt_union_map;
     ::new (std::addressof(value_.opt_union_map)) ::std::map<::std::string, ::std::int32_t>(t);
     return value_.opt_union_map;
   }
 
   ::std::map<::std::string, ::std::int32_t>& set_opt_union_map(::std::map<::std::string, ::std::int32_t>&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::opt_union_map;
     ::new (std::addressof(value_.opt_union_map)) ::std::map<::std::string, ::std::int32_t>(std::move(t));
     return value_.opt_union_map;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::map<::std::string, ::std::int32_t>, T...>> ::std::map<::std::string, ::std::int32_t>& set_opt_union_map(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::opt_union_map;
     ::new (std::addressof(value_.opt_union_map)) ::std::map<::std::string, ::std::int32_t>(std::forward<T>(t)...);
     return value_.opt_union_map;
   }
 
   ::some::valid::ns::MyEnumA& set_enum_field(::some::valid::ns::MyEnumA t = ::some::valid::ns::MyEnumA()) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::enum_field;
     ::new (std::addressof(value_.enum_field)) ::some::valid::ns::MyEnumA(t);
     return value_.enum_field;
   }
 
   ::std::vector<::some::valid::ns::MyEnumA>& set_enum_container(::std::vector<::some::valid::ns::MyEnumA> const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::enum_container;
     ::new (std::addressof(value_.enum_container)) ::std::vector<::some::valid::ns::MyEnumA>(t);
     return value_.enum_container;
   }
 
   ::std::vector<::some::valid::ns::MyEnumA>& set_enum_container(::std::vector<::some::valid::ns::MyEnumA>&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::enum_container;
     ::new (std::addressof(value_.enum_container)) ::std::vector<::some::valid::ns::MyEnumA>(std::move(t));
     return value_.enum_container;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<::some::valid::ns::MyEnumA>, T...>> ::std::vector<::some::valid::ns::MyEnumA>& set_enum_container(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::enum_container;
     ::new (std::addressof(value_.enum_container)) ::std::vector<::some::valid::ns::MyEnumA>(std::forward<T>(t)...);
     return value_.enum_container;
   }
 
   ::some::valid::ns::MyStruct& set_a_struct(::some::valid::ns::MyStruct const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::a_struct;
     ::new (std::addressof(value_.a_struct)) ::some::valid::ns::MyStruct(t);
     return value_.a_struct;
   }
 
   ::some::valid::ns::MyStruct& set_a_struct(::some::valid::ns::MyStruct&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::a_struct;
     ::new (std::addressof(value_.a_struct)) ::some::valid::ns::MyStruct(std::move(t));
     return value_.a_struct;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::MyStruct, T...>> ::some::valid::ns::MyStruct& set_a_struct(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::a_struct;
     ::new (std::addressof(value_.a_struct)) ::some::valid::ns::MyStruct(std::forward<T>(t)...);
     return value_.a_struct;
   }
 
   ::std::set<::some::valid::ns::MyStruct>& set_a_set_struct(::std::set<::some::valid::ns::MyStruct> const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::a_set_struct;
     ::new (std::addressof(value_.a_set_struct)) ::std::set<::some::valid::ns::MyStruct>(t);
     return value_.a_set_struct;
   }
 
   ::std::set<::some::valid::ns::MyStruct>& set_a_set_struct(::std::set<::some::valid::ns::MyStruct>&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::a_set_struct;
     ::new (std::addressof(value_.a_set_struct)) ::std::set<::some::valid::ns::MyStruct>(std::move(t));
     return value_.a_set_struct;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::set<::some::valid::ns::MyStruct>, T...>> ::std::set<::some::valid::ns::MyStruct>& set_a_set_struct(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::a_set_struct;
     ::new (std::addressof(value_.a_set_struct)) ::std::set<::some::valid::ns::MyStruct>(std::forward<T>(t)...);
     return value_.a_set_struct;
   }
 
   ::some::valid::ns::SimpleUnion& set_a_union(::some::valid::ns::SimpleUnion const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::a_union;
     ::new (std::addressof(value_.a_union)) ::some::valid::ns::SimpleUnion(t);
     return value_.a_union;
   }
 
   ::some::valid::ns::SimpleUnion& set_a_union(::some::valid::ns::SimpleUnion&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::a_union;
     ::new (std::addressof(value_.a_union)) ::some::valid::ns::SimpleUnion(std::move(t));
     return value_.a_union;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::SimpleUnion, T...>> ::some::valid::ns::SimpleUnion& set_a_union(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::a_union;
     ::new (std::addressof(value_.a_union)) ::some::valid::ns::SimpleUnion(std::forward<T>(t)...);
     return value_.a_union;
   }
 
   ::some::valid::ns::SimpleUnion& set_opt_a_union(::some::valid::ns::SimpleUnion const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::opt_a_union;
     ::new (std::addressof(value_.opt_a_union)) ::some::valid::ns::SimpleUnion(t);
     return value_.opt_a_union;
   }
 
   ::some::valid::ns::SimpleUnion& set_opt_a_union(::some::valid::ns::SimpleUnion&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::opt_a_union;
     ::new (std::addressof(value_.opt_a_union)) ::some::valid::ns::SimpleUnion(std::move(t));
     return value_.opt_a_union;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::SimpleUnion, T...>> ::some::valid::ns::SimpleUnion& set_opt_a_union(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::opt_a_union;
     ::new (std::addressof(value_.opt_a_union)) ::some::valid::ns::SimpleUnion(std::forward<T>(t)...);
     return value_.opt_a_union;
   }
 
   ::std::vector<::some::valid::ns::SimpleUnion>& set_a_union_list(::std::vector<::some::valid::ns::SimpleUnion> const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::a_union_list;
     ::new (std::addressof(value_.a_union_list)) ::std::vector<::some::valid::ns::SimpleUnion>(t);
     return value_.a_union_list;
   }
 
   ::std::vector<::some::valid::ns::SimpleUnion>& set_a_union_list(::std::vector<::some::valid::ns::SimpleUnion>&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::a_union_list;
     ::new (std::addressof(value_.a_union_list)) ::std::vector<::some::valid::ns::SimpleUnion>(std::move(t));
     return value_.a_union_list;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<::some::valid::ns::SimpleUnion>, T...>> ::std::vector<::some::valid::ns::SimpleUnion>& set_a_union_list(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::a_union_list;
     ::new (std::addressof(value_.a_union_list)) ::std::vector<::some::valid::ns::SimpleUnion>(std::forward<T>(t)...);
     return value_.a_union_list;
   }
 
   ::some::valid::ns::unionTypeDef& set_a_union_typedef(::some::valid::ns::unionTypeDef const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::a_union_typedef;
     ::new (std::addressof(value_.a_union_typedef)) ::some::valid::ns::unionTypeDef(t);
     return value_.a_union_typedef;
   }
 
   ::some::valid::ns::unionTypeDef& set_a_union_typedef(::some::valid::ns::unionTypeDef&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::a_union_typedef;
     ::new (std::addressof(value_.a_union_typedef)) ::some::valid::ns::unionTypeDef(std::move(t));
     return value_.a_union_typedef;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::unionTypeDef, T...>> ::some::valid::ns::unionTypeDef& set_a_union_typedef(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::a_union_typedef;
     ::new (std::addressof(value_.a_union_typedef)) ::some::valid::ns::unionTypeDef(std::forward<T>(t)...);
     return value_.a_union_typedef;
   }
 
   ::std::vector<::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(::std::vector<::some::valid::ns::unionTypeDef> const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::a_union_typedef_list;
     ::new (std::addressof(value_.a_union_typedef_list)) ::std::vector<::some::valid::ns::unionTypeDef>(t);
     return value_.a_union_typedef_list;
   }
 
   ::std::vector<::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(::std::vector<::some::valid::ns::unionTypeDef>&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::a_union_typedef_list;
     ::new (std::addressof(value_.a_union_typedef_list)) ::std::vector<::some::valid::ns::unionTypeDef>(std::move(t));
     return value_.a_union_typedef_list;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<::some::valid::ns::unionTypeDef>, T...>> ::std::vector<::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::a_union_typedef_list;
     ::new (std::addressof(value_.a_union_typedef_list)) ::std::vector<::some::valid::ns::unionTypeDef>(std::forward<T>(t)...);
     return value_.a_union_typedef_list;
   }
 
   ::std::string& set_MyBinaryField(::std::string const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::MyBinaryField;
     ::new (std::addressof(value_.MyBinaryField)) ::std::string(t);
     return value_.MyBinaryField;
   }
 
   ::std::string& set_MyBinaryField(::std::string&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::MyBinaryField;
     ::new (std::addressof(value_.MyBinaryField)) ::std::string(std::move(t));
     return value_.MyBinaryField;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_MyBinaryField(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::MyBinaryField;
     ::new (std::addressof(value_.MyBinaryField)) ::std::string(std::forward<T>(t)...);
     return value_.MyBinaryField;
   }
 
   ::std::string& set_MyBinaryField2(::std::string const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::MyBinaryField2;
     ::new (std::addressof(value_.MyBinaryField2)) ::std::string(t);
     return value_.MyBinaryField2;
   }
 
   ::std::string& set_MyBinaryField2(::std::string&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::MyBinaryField2;
     ::new (std::addressof(value_.MyBinaryField2)) ::std::string(std::move(t));
     return value_.MyBinaryField2;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_MyBinaryField2(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::MyBinaryField2;
     ::new (std::addressof(value_.MyBinaryField2)) ::std::string(std::forward<T>(t)...);
     return value_.MyBinaryField2;
   }
 
   ::std::vector<::std::string>& set_MyBinaryListField4(::std::vector<::std::string> const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::MyBinaryListField4;
     ::new (std::addressof(value_.MyBinaryListField4)) ::std::vector<::std::string>(t);
     return value_.MyBinaryListField4;
   }
 
   ::std::vector<::std::string>& set_MyBinaryListField4(::std::vector<::std::string>&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::MyBinaryListField4;
     ::new (std::addressof(value_.MyBinaryListField4)) ::std::vector<::std::string>(std::move(t));
     return value_.MyBinaryListField4;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<::std::string>, T...>> ::std::vector<::std::string>& set_MyBinaryListField4(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::MyBinaryListField4;
     ::new (std::addressof(value_.MyBinaryListField4)) ::std::vector<::std::string>(std::forward<T>(t)...);
     return value_.MyBinaryListField4;
@@ -3425,7 +3425,7 @@ class ComplexUnion final  {
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::MyStruct, T...>> ::std::unique_ptr<::some::valid::ns::MyStruct>& set_ref_field(T&&... t) {
     // defer resolution of ref_ in case ref_::element_type would here be incomplete
     using ref_ = folly::conditional_t<(sizeof...(T) < size_t(-1)), ::std::unique_ptr<::some::valid::ns::MyStruct>, void>;
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::ref_field;
     ::new (std::addressof(value_.ref_field)) ref_(new typename ref_::element_type(std::forward<T>(t)...));
     return value_.ref_field;
@@ -3435,49 +3435,49 @@ class ComplexUnion final  {
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::MyStruct, T...>> ::std::shared_ptr<const ::some::valid::ns::MyStruct>& set_ref_field2(T&&... t) {
     // defer resolution of ref_ in case ref_::element_type would here be incomplete
     using ref_ = folly::conditional_t<(sizeof...(T) < size_t(-1)), ::std::shared_ptr<const ::some::valid::ns::MyStruct>, void>;
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::ref_field2;
     ::new (std::addressof(value_.ref_field2)) ref_(new typename ref_::element_type(std::forward<T>(t)...));
     return value_.ref_field2;
   }
 
   ::some::valid::ns::AnException& set_excp_field(::some::valid::ns::AnException const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::excp_field;
     ::new (std::addressof(value_.excp_field)) ::some::valid::ns::AnException(t);
     return value_.excp_field;
   }
 
   ::some::valid::ns::AnException& set_excp_field(::some::valid::ns::AnException&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::excp_field;
     ::new (std::addressof(value_.excp_field)) ::some::valid::ns::AnException(std::move(t));
     return value_.excp_field;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::AnException, T...>> ::some::valid::ns::AnException& set_excp_field(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::excp_field;
     ::new (std::addressof(value_.excp_field)) ::some::valid::ns::AnException(std::forward<T>(t)...);
     return value_.excp_field;
   }
 
   ::some::valid::ns::CustomProtocolType& set_MyCustomField(::some::valid::ns::CustomProtocolType const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::MyCustomField;
     ::new (std::addressof(value_.MyCustomField)) ::some::valid::ns::CustomProtocolType(t);
     return value_.MyCustomField;
   }
 
   ::some::valid::ns::CustomProtocolType& set_MyCustomField(::some::valid::ns::CustomProtocolType&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::MyCustomField;
     ::new (std::addressof(value_.MyCustomField)) ::some::valid::ns::CustomProtocolType(std::move(t));
     return value_.MyCustomField;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::CustomProtocolType, T...>> ::some::valid::ns::CustomProtocolType& set_MyCustomField(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::MyCustomField;
     ::new (std::addressof(value_.MyCustomField)) ::some::valid::ns::CustomProtocolType(std::forward<T>(t)...);
     return value_.MyCustomField;
@@ -8466,7 +8466,7 @@ class FloatUnion final  {
         break;
       }
     }
-    rhs.__clear();
+    apache::thrift::clear(rhs);
   }
 
   FloatUnion(const FloatUnion& rhs)
@@ -8494,7 +8494,7 @@ class FloatUnion final  {
 
   FloatUnion& operator=(FloatUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    apache::thrift::clear(*this);
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::floatSide:
@@ -8513,13 +8513,13 @@ class FloatUnion final  {
         break;
       }
     }
-    rhs.__clear();
+    apache::thrift::clear(rhs);
     return *this;
   }
 
   FloatUnion& operator=(const FloatUnion& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    apache::thrift::clear(*this);
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::floatSide:
@@ -8543,7 +8543,7 @@ class FloatUnion final  {
   void __clear();
 
   ~FloatUnion() {
-    __clear();
+    apache::thrift::clear(*this);
   }
   union storage_type {
     float floatSide;
@@ -8557,14 +8557,14 @@ class FloatUnion final  {
   bool operator<(const FloatUnion&) const;
 
   float& set_floatSide(float t = float()) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::floatSide;
     ::new (std::addressof(value_.floatSide)) float(t);
     return value_.floatSide;
   }
 
   double& set_doubleSide(double t = double()) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::doubleSide;
     ::new (std::addressof(value_.doubleSide)) double(t);
     return value_.doubleSide;

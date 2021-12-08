@@ -1709,7 +1709,7 @@ class union1 final  {
         break;
       }
     }
-    rhs.__clear();
+    apache::thrift::clear(rhs);
   }
 
   union1(const union1& rhs)
@@ -1737,7 +1737,7 @@ class union1 final  {
 
   union1& operator=(union1&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    apache::thrift::clear(*this);
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::i:
@@ -1756,13 +1756,13 @@ class union1 final  {
         break;
       }
     }
-    rhs.__clear();
+    apache::thrift::clear(rhs);
     return *this;
   }
 
   union1& operator=(const union1& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    apache::thrift::clear(*this);
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::i:
@@ -1786,7 +1786,7 @@ class union1 final  {
   void __clear();
 
   ~union1() {
-    __clear();
+    apache::thrift::clear(*this);
   }
   union storage_type {
     ::std::int32_t i;
@@ -1800,14 +1800,14 @@ class union1 final  {
   bool operator<(const union1&) const;
 
   ::std::int32_t& set_i(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::i;
     ::new (std::addressof(value_.i)) ::std::int32_t(t);
     return value_.i;
   }
 
   double& set_d(double t = double()) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::d;
     ::new (std::addressof(value_.d)) double(t);
     return value_.d;
@@ -1979,7 +1979,7 @@ class union2 final  {
         break;
       }
     }
-    rhs.__clear();
+    apache::thrift::clear(rhs);
   }
 
   union2(const union2& rhs)
@@ -2017,7 +2017,7 @@ class union2 final  {
 
   union2& operator=(union2&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    apache::thrift::clear(*this);
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::i:
@@ -2046,13 +2046,13 @@ class union2 final  {
         break;
       }
     }
-    rhs.__clear();
+    apache::thrift::clear(rhs);
     return *this;
   }
 
   union2& operator=(const union2& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    apache::thrift::clear(*this);
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::i:
@@ -2086,7 +2086,7 @@ class union2 final  {
   void __clear();
 
   ~union2() {
-    __clear();
+    apache::thrift::clear(*this);
   }
   union storage_type {
     ::std::int32_t i;
@@ -2102,56 +2102,56 @@ class union2 final  {
   bool operator<(const union2&) const;
 
   ::std::int32_t& set_i(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::i;
     ::new (std::addressof(value_.i)) ::std::int32_t(t);
     return value_.i;
   }
 
   double& set_d(double t = double()) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::d;
     ::new (std::addressof(value_.d)) double(t);
     return value_.d;
   }
 
   ::cpp2::struct1& set_s(::cpp2::struct1 const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::s;
     ::new (std::addressof(value_.s)) ::cpp2::struct1(t);
     return value_.s;
   }
 
   ::cpp2::struct1& set_s(::cpp2::struct1&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::s;
     ::new (std::addressof(value_.s)) ::cpp2::struct1(std::move(t));
     return value_.s;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::struct1, T...>> ::cpp2::struct1& set_s(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::s;
     ::new (std::addressof(value_.s)) ::cpp2::struct1(std::forward<T>(t)...);
     return value_.s;
   }
 
   ::cpp2::union1& set_u(::cpp2::union1 const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::u;
     ::new (std::addressof(value_.u)) ::cpp2::union1(t);
     return value_.u;
   }
 
   ::cpp2::union1& set_u(::cpp2::union1&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::u;
     ::new (std::addressof(value_.u)) ::cpp2::union1(std::move(t));
     return value_.u;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::union1, T...>> ::cpp2::union1& set_u(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::u;
     ::new (std::addressof(value_.u)) ::cpp2::union1(std::forward<T>(t)...);
     return value_.u;

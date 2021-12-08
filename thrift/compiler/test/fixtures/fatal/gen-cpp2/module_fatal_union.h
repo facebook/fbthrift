@@ -221,7 +221,7 @@ class union1_variant_traits {
   }
 
   static void clear(type &variant) {
-    return variant.__clear();
+    return apache::thrift::clear(variant);
   }
 };
 class union2_tenum_traits {
@@ -424,7 +424,7 @@ class union2_variant_traits {
   }
 
   static void clear(type &variant) {
-    return variant.__clear();
+    return apache::thrift::clear(variant);
   }
 };
 class union3_tenum_traits {
@@ -627,7 +627,7 @@ class union3_variant_traits {
   }
 
   static void clear(type &variant) {
-    return variant.__clear();
+    return apache::thrift::clear(variant);
   }
 };
 class unionA_tenum_traits {
@@ -886,7 +886,7 @@ class unionA_variant_traits {
   }
 
   static void clear(type &variant) {
-    return variant.__clear();
+    return apache::thrift::clear(variant);
   }
 };
 class union_with_special_names_tenum_traits {
@@ -2001,7 +2001,7 @@ class union_with_special_names_variant_traits {
   }
 
   static void clear(type &variant) {
-    return variant.__clear();
+    return apache::thrift::clear(variant);
   }
 };
 } // __fbthrift_refl

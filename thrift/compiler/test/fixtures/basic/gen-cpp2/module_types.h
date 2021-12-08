@@ -691,7 +691,7 @@ class MyUnion final  {
         break;
       }
     }
-    rhs.__clear();
+    apache::thrift::clear(rhs);
   }
 
   MyUnion(const MyUnion& rhs)
@@ -724,7 +724,7 @@ class MyUnion final  {
 
   MyUnion& operator=(MyUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    apache::thrift::clear(*this);
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::myEnum:
@@ -748,13 +748,13 @@ class MyUnion final  {
         break;
       }
     }
-    rhs.__clear();
+    apache::thrift::clear(rhs);
     return *this;
   }
 
   MyUnion& operator=(const MyUnion& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    apache::thrift::clear(*this);
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::myEnum:
@@ -783,7 +783,7 @@ class MyUnion final  {
   void __clear();
 
   ~MyUnion() {
-    __clear();
+    apache::thrift::clear(*this);
   }
   union storage_type {
     ::cpp2::MyEnum myEnum;
@@ -798,49 +798,49 @@ class MyUnion final  {
   bool operator<(const MyUnion&) const;
 
   ::cpp2::MyEnum& set_myEnum(::cpp2::MyEnum t = ::cpp2::MyEnum()) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::myEnum;
     ::new (std::addressof(value_.myEnum)) ::cpp2::MyEnum(t);
     return value_.myEnum;
   }
 
   ::cpp2::MyStruct& set_myStruct(::cpp2::MyStruct const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::myStruct;
     ::new (std::addressof(value_.myStruct)) ::cpp2::MyStruct(t);
     return value_.myStruct;
   }
 
   ::cpp2::MyStruct& set_myStruct(::cpp2::MyStruct&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::myStruct;
     ::new (std::addressof(value_.myStruct)) ::cpp2::MyStruct(std::move(t));
     return value_.myStruct;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::MyStruct, T...>> ::cpp2::MyStruct& set_myStruct(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::myStruct;
     ::new (std::addressof(value_.myStruct)) ::cpp2::MyStruct(std::forward<T>(t)...);
     return value_.myStruct;
   }
 
   ::cpp2::MyDataItem& set_myDataItem(::cpp2::MyDataItem const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::myDataItem;
     ::new (std::addressof(value_.myDataItem)) ::cpp2::MyDataItem(t);
     return value_.myDataItem;
   }
 
   ::cpp2::MyDataItem& set_myDataItem(::cpp2::MyDataItem&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::myDataItem;
     ::new (std::addressof(value_.myDataItem)) ::cpp2::MyDataItem(std::move(t));
     return value_.myDataItem;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::MyDataItem, T...>> ::cpp2::MyDataItem& set_myDataItem(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::myDataItem;
     ::new (std::addressof(value_.myDataItem)) ::cpp2::MyDataItem(std::forward<T>(t)...);
     return value_.myDataItem;

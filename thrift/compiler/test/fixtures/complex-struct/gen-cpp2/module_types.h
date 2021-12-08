@@ -3912,7 +3912,7 @@ class MyUnion final  {
         break;
       }
     }
-    rhs.__clear();
+    apache::thrift::clear(rhs);
   }
 
   MyUnion(const MyUnion& rhs)
@@ -3960,7 +3960,7 @@ class MyUnion final  {
 
   MyUnion& operator=(MyUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    apache::thrift::clear(*this);
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::myEnum:
@@ -3999,13 +3999,13 @@ class MyUnion final  {
         break;
       }
     }
-    rhs.__clear();
+    apache::thrift::clear(rhs);
     return *this;
   }
 
   MyUnion& operator=(const MyUnion& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    apache::thrift::clear(*this);
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::myEnum:
@@ -4049,7 +4049,7 @@ class MyUnion final  {
   void __clear();
 
   ~MyUnion() {
-    __clear();
+    apache::thrift::clear(*this);
   }
   union storage_type {
     ::cpp2::MyEnum myEnum;
@@ -4067,84 +4067,84 @@ class MyUnion final  {
   bool operator<(const MyUnion&) const;
 
   ::cpp2::MyEnum& set_myEnum(::cpp2::MyEnum t = ::cpp2::MyEnum()) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::myEnum;
     ::new (std::addressof(value_.myEnum)) ::cpp2::MyEnum(t);
     return value_.myEnum;
   }
 
   ::cpp2::MyStruct& set_myStruct(::cpp2::MyStruct const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::myStruct;
     ::new (std::addressof(value_.myStruct)) ::cpp2::MyStruct(t);
     return value_.myStruct;
   }
 
   ::cpp2::MyStruct& set_myStruct(::cpp2::MyStruct&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::myStruct;
     ::new (std::addressof(value_.myStruct)) ::cpp2::MyStruct(std::move(t));
     return value_.myStruct;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::MyStruct, T...>> ::cpp2::MyStruct& set_myStruct(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::myStruct;
     ::new (std::addressof(value_.myStruct)) ::cpp2::MyStruct(std::forward<T>(t)...);
     return value_.myStruct;
   }
 
   ::cpp2::MyDataItem& set_myDataItem(::cpp2::MyDataItem const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::myDataItem;
     ::new (std::addressof(value_.myDataItem)) ::cpp2::MyDataItem(t);
     return value_.myDataItem;
   }
 
   ::cpp2::MyDataItem& set_myDataItem(::cpp2::MyDataItem&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::myDataItem;
     ::new (std::addressof(value_.myDataItem)) ::cpp2::MyDataItem(std::move(t));
     return value_.myDataItem;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::MyDataItem, T...>> ::cpp2::MyDataItem& set_myDataItem(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::myDataItem;
     ::new (std::addressof(value_.myDataItem)) ::cpp2::MyDataItem(std::forward<T>(t)...);
     return value_.myDataItem;
   }
 
   ::cpp2::ComplexNestedStruct& set_complexNestedStruct(::cpp2::ComplexNestedStruct const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::complexNestedStruct;
     ::new (std::addressof(value_.complexNestedStruct)) ::cpp2::ComplexNestedStruct(t);
     return value_.complexNestedStruct;
   }
 
   ::cpp2::ComplexNestedStruct& set_complexNestedStruct(::cpp2::ComplexNestedStruct&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::complexNestedStruct;
     ::new (std::addressof(value_.complexNestedStruct)) ::cpp2::ComplexNestedStruct(std::move(t));
     return value_.complexNestedStruct;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::ComplexNestedStruct, T...>> ::cpp2::ComplexNestedStruct& set_complexNestedStruct(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::complexNestedStruct;
     ::new (std::addressof(value_.complexNestedStruct)) ::cpp2::ComplexNestedStruct(std::forward<T>(t)...);
     return value_.complexNestedStruct;
   }
 
   ::std::int64_t& set_longValue(::std::int64_t t = ::std::int64_t()) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::longValue;
     ::new (std::addressof(value_.longValue)) ::std::int64_t(t);
     return value_.longValue;
   }
 
   ::std::int32_t& set_intValue(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::intValue;
     ::new (std::addressof(value_.intValue)) ::std::int32_t(t);
     return value_.intValue;
@@ -6212,7 +6212,7 @@ class MyUnionFloatFieldThrowExp final  {
         break;
       }
     }
-    rhs.__clear();
+    apache::thrift::clear(rhs);
   }
 
   MyUnionFloatFieldThrowExp(const MyUnionFloatFieldThrowExp& rhs)
@@ -6250,7 +6250,7 @@ class MyUnionFloatFieldThrowExp final  {
 
   MyUnionFloatFieldThrowExp& operator=(MyUnionFloatFieldThrowExp&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    apache::thrift::clear(*this);
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::myEnum:
@@ -6279,13 +6279,13 @@ class MyUnionFloatFieldThrowExp final  {
         break;
       }
     }
-    rhs.__clear();
+    apache::thrift::clear(rhs);
     return *this;
   }
 
   MyUnionFloatFieldThrowExp& operator=(const MyUnionFloatFieldThrowExp& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    apache::thrift::clear(*this);
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::myEnum:
@@ -6319,7 +6319,7 @@ class MyUnionFloatFieldThrowExp final  {
   void __clear();
 
   ~MyUnionFloatFieldThrowExp() {
-    __clear();
+    apache::thrift::clear(*this);
   }
   union storage_type {
     ::cpp2::MyEnum myEnum;
@@ -6335,70 +6335,70 @@ class MyUnionFloatFieldThrowExp final  {
   bool operator<(const MyUnionFloatFieldThrowExp&) const;
 
   ::cpp2::MyEnum& set_myEnum(::cpp2::MyEnum t = ::cpp2::MyEnum()) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::myEnum;
     ::new (std::addressof(value_.myEnum)) ::cpp2::MyEnum(t);
     return value_.myEnum;
   }
 
   ::std::vector<::std::vector<float>>& set_setFloat(::std::vector<::std::vector<float>> const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::setFloat;
     ::new (std::addressof(value_.setFloat)) ::std::vector<::std::vector<float>>(t);
     return value_.setFloat;
   }
 
   ::std::vector<::std::vector<float>>& set_setFloat(::std::vector<::std::vector<float>>&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::setFloat;
     ::new (std::addressof(value_.setFloat)) ::std::vector<::std::vector<float>>(std::move(t));
     return value_.setFloat;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<::std::vector<float>>, T...>> ::std::vector<::std::vector<float>>& set_setFloat(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::setFloat;
     ::new (std::addressof(value_.setFloat)) ::std::vector<::std::vector<float>>(std::forward<T>(t)...);
     return value_.setFloat;
   }
 
   ::cpp2::MyDataItem& set_myDataItem(::cpp2::MyDataItem const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::myDataItem;
     ::new (std::addressof(value_.myDataItem)) ::cpp2::MyDataItem(t);
     return value_.myDataItem;
   }
 
   ::cpp2::MyDataItem& set_myDataItem(::cpp2::MyDataItem&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::myDataItem;
     ::new (std::addressof(value_.myDataItem)) ::cpp2::MyDataItem(std::move(t));
     return value_.myDataItem;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::MyDataItem, T...>> ::cpp2::MyDataItem& set_myDataItem(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::myDataItem;
     ::new (std::addressof(value_.myDataItem)) ::cpp2::MyDataItem(std::forward<T>(t)...);
     return value_.myDataItem;
   }
 
   ::cpp2::ComplexNestedStruct& set_complexNestedStruct(::cpp2::ComplexNestedStruct const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::complexNestedStruct;
     ::new (std::addressof(value_.complexNestedStruct)) ::cpp2::ComplexNestedStruct(t);
     return value_.complexNestedStruct;
   }
 
   ::cpp2::ComplexNestedStruct& set_complexNestedStruct(::cpp2::ComplexNestedStruct&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::complexNestedStruct;
     ::new (std::addressof(value_.complexNestedStruct)) ::cpp2::ComplexNestedStruct(std::move(t));
     return value_.complexNestedStruct;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::ComplexNestedStruct, T...>> ::cpp2::ComplexNestedStruct& set_complexNestedStruct(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::complexNestedStruct;
     ::new (std::addressof(value_.complexNestedStruct)) ::cpp2::ComplexNestedStruct(std::forward<T>(t)...);
     return value_.complexNestedStruct;

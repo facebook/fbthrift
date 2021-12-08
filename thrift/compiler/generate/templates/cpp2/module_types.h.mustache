@@ -142,7 +142,7 @@ class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:name%> <
   void __clear();
 
   <%#struct:virtual%>virtual <%/struct:virtual%>~<%struct:name%>() {
-    __clear();
+    apache::thrift::clear(*this);
   }
 <%#struct:virtual%>
 

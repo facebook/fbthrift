@@ -1540,7 +1540,7 @@ class BinaryUnion final  {
         break;
       }
     }
-    rhs.__clear();
+    apache::thrift::clear(rhs);
   }
 
   BinaryUnion(const BinaryUnion& rhs)
@@ -1563,7 +1563,7 @@ class BinaryUnion final  {
 
   BinaryUnion& operator=(BinaryUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    apache::thrift::clear(*this);
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::iobuf_val:
@@ -1577,13 +1577,13 @@ class BinaryUnion final  {
         break;
       }
     }
-    rhs.__clear();
+    apache::thrift::clear(rhs);
     return *this;
   }
 
   BinaryUnion& operator=(const BinaryUnion& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    apache::thrift::clear(*this);
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::iobuf_val:
@@ -1602,7 +1602,7 @@ class BinaryUnion final  {
   void __clear();
 
   ~BinaryUnion() {
-    __clear();
+    apache::thrift::clear(*this);
   }
   union storage_type {
     ::py3::simple::IOBuf iobuf_val;
@@ -1612,21 +1612,21 @@ class BinaryUnion final  {
   } ;
 
   ::py3::simple::IOBuf& set_iobuf_val(::py3::simple::IOBuf const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::iobuf_val;
     ::new (std::addressof(value_.iobuf_val)) ::py3::simple::IOBuf(t);
     return value_.iobuf_val;
   }
 
   ::py3::simple::IOBuf& set_iobuf_val(::py3::simple::IOBuf&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::iobuf_val;
     ::new (std::addressof(value_.iobuf_val)) ::py3::simple::IOBuf(std::move(t));
     return value_.iobuf_val;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::py3::simple::IOBuf, T...>> ::py3::simple::IOBuf& set_iobuf_val(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::iobuf_val;
     ::new (std::addressof(value_.iobuf_val)) ::py3::simple::IOBuf(std::forward<T>(t)...);
     return value_.iobuf_val;

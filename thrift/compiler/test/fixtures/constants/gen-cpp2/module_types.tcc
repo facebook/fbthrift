@@ -1311,7 +1311,7 @@ void union1::readNoXfer(Protocol_* iprot) {
 
   _readState.readFieldBegin(iprot);
   if (_readState.atStop()) {
-    this->__clear();
+    apache::thrift::clear(*this);
   } else {
     if (iprot->kUsesFieldNames()) {
       _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<union1>>();
@@ -1449,7 +1449,7 @@ void union2::readNoXfer(Protocol_* iprot) {
 
   _readState.readFieldBegin(iprot);
   if (_readState.atStop()) {
-    this->__clear();
+    apache::thrift::clear(*this);
   } else {
     if (iprot->kUsesFieldNames()) {
       _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<union2>>();

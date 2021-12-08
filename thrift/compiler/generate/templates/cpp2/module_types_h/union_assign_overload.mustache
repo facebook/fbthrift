@@ -16,7 +16,7 @@
 
 %>  <%struct:name%>& operator=(<%struct:name%>&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    apache::thrift::clear(*this);
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
 <%#struct:fields%>
@@ -37,14 +37,14 @@
         break;
       }
     }
-    rhs.__clear();
+    apache::thrift::clear(rhs);
     return *this;
   }
 <%^struct:cpp_noncopyable%>
 
   <%struct:name%>& operator=(const <%struct:name%>& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    apache::thrift::clear(*this);
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
 <%#struct:fields%>

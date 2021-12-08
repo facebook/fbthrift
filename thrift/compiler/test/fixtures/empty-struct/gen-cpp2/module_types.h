@@ -138,7 +138,7 @@ class Nada final  {
         break;
       }
     }
-    rhs.__clear();
+    apache::thrift::clear(rhs);
   }
 
   Nada(const Nada& rhs)
@@ -156,7 +156,7 @@ class Nada final  {
 
   Nada& operator=(Nada&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    apache::thrift::clear(*this);
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       default:
@@ -165,13 +165,13 @@ class Nada final  {
         break;
       }
     }
-    rhs.__clear();
+    apache::thrift::clear(rhs);
     return *this;
   }
 
   Nada& operator=(const Nada& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    apache::thrift::clear(*this);
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       default:
@@ -185,7 +185,7 @@ class Nada final  {
   void __clear();
 
   ~Nada() {
-    __clear();
+    apache::thrift::clear(*this);
   }
   union storage_type {
 

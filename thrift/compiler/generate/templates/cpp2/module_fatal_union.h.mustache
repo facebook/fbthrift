@@ -187,7 +187,7 @@ class <%struct:name%>_variant_traits {
   }
 
   static void clear(type &variant) {
-    return variant.__clear();
+    return apache::thrift::clear(variant);
   }
 };
 <%/struct:union?%><%/program:structs%>

@@ -144,7 +144,7 @@ class NoExceptMoveUnion_variant_traits {
   }
 
   static void clear(type &variant) {
-    return variant.__clear();
+    return apache::thrift::clear(variant);
   }
 };
 } // __fbthrift_refl

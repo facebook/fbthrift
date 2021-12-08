@@ -48,7 +48,7 @@
       default: {
         <%! The field has been removed during schema evolution, set the "type_"
          to __EMPTY__ %>
-        out.__clear();
+        apache::thrift::clear(out);
         break;
       }
     }

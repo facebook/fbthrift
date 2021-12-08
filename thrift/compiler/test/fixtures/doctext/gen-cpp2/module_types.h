@@ -277,7 +277,7 @@ class U final  {
         break;
       }
     }
-    rhs.__clear();
+    apache::thrift::clear(rhs);
   }
 
   U(const U& rhs)
@@ -305,7 +305,7 @@ class U final  {
 
   U& operator=(U&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    apache::thrift::clear(*this);
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::i:
@@ -324,13 +324,13 @@ class U final  {
         break;
       }
     }
-    rhs.__clear();
+    apache::thrift::clear(rhs);
     return *this;
   }
 
   U& operator=(const U& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    apache::thrift::clear(*this);
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::i:
@@ -354,7 +354,7 @@ class U final  {
   void __clear();
 
   ~U() {
-    __clear();
+    apache::thrift::clear(*this);
   }
   union storage_type {
     ::std::int32_t i;
@@ -368,28 +368,28 @@ class U final  {
   bool operator<(const U&) const;
 
   ::std::int32_t& set_i(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::i;
     ::new (std::addressof(value_.i)) ::std::int32_t(t);
     return value_.i;
   }
 
   ::std::string& set_s(::std::string const &t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::s;
     ::new (std::addressof(value_.s)) ::std::string(t);
     return value_.s;
   }
 
   ::std::string& set_s(::std::string&& t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::s;
     ::new (std::addressof(value_.s)) ::std::string(std::move(t));
     return value_.s;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_s(T&&... t) {
-    __clear();
+    apache::thrift::clear(*this);
     type_ = Type::s;
     ::new (std::addressof(value_.s)) ::std::string(std::forward<T>(t)...);
     return value_.s;

@@ -87,7 +87,7 @@ void ComplexUnion::readNoXfer(Protocol_* iprot) {
 
   _readState.readFieldBegin(iprot);
   if (_readState.atStop()) {
-    this->__clear();
+    apache::thrift::clear(*this);
   } else {
     if (iprot->kUsesFieldNames()) {
       _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<ComplexUnion>>();
@@ -366,7 +366,7 @@ void ListUnion::readNoXfer(Protocol_* iprot) {
 
   _readState.readFieldBegin(iprot);
   if (_readState.atStop()) {
-    this->__clear();
+    apache::thrift::clear(*this);
   } else {
     if (iprot->kUsesFieldNames()) {
       _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<ListUnion>>();
@@ -510,7 +510,7 @@ void DataUnion::readNoXfer(Protocol_* iprot) {
 
   _readState.readFieldBegin(iprot);
   if (_readState.atStop()) {
-    this->__clear();
+    apache::thrift::clear(*this);
   } else {
     if (iprot->kUsesFieldNames()) {
       _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<DataUnion>>();
@@ -843,7 +843,7 @@ void ValUnion::readNoXfer(Protocol_* iprot) {
 
   _readState.readFieldBegin(iprot);
   if (_readState.atStop()) {
-    this->__clear();
+    apache::thrift::clear(*this);
   } else {
     if (iprot->kUsesFieldNames()) {
       _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<ValUnion>>();
@@ -985,7 +985,7 @@ void VirtualComplexUnion::readNoXfer(Protocol_* iprot) {
 
   _readState.readFieldBegin(iprot);
   if (_readState.atStop()) {
-    this->__clear();
+    apache::thrift::clear(*this);
   } else {
     if (iprot->kUsesFieldNames()) {
       _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<VirtualComplexUnion>>();
@@ -1241,7 +1241,7 @@ void NonCopyableUnion::readNoXfer(Protocol_* iprot) {
 
   _readState.readFieldBegin(iprot);
   if (_readState.atStop()) {
-    this->__clear();
+    apache::thrift::clear(*this);
   } else {
     if (iprot->kUsesFieldNames()) {
       _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<NonCopyableUnion>>();
