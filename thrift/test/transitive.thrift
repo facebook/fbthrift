@@ -21,7 +21,7 @@ include "thrift/annotation/meta.thrift"
 
 cpp_include "thrift/test/AdapterTest.h"
 
-@cpp.ExperimentalAdapter{name = "::apache::thrift::test::AdaptTestMsAdapter"}
+@cpp.Adapter{name = "::apache::thrift::test::AdaptTestMsAdapter"}
 @meta.Transitive
 struct MsAdapter {}
 

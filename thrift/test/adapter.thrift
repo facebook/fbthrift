@@ -65,10 +65,10 @@ struct AdaptTestStruct {
   1: DurationMs delay;
   2: CustomProtocolType custom;
 
-  @cpp.ExperimentalAdapter{name = "::apache::thrift::test::AdaptTestMsAdapter"}
+  @cpp.Adapter{name = "::apache::thrift::test::AdaptTestMsAdapter"}
   3: i64 timeout;
 
-  @cpp.ExperimentalAdapter{name = "::apache::thrift::test::AdapterWithContext"}
+  @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
   4: i64 data;
   5: string meta;
   6: IndirectionString indirectionString;
@@ -105,8 +105,6 @@ struct AdaptedStruct {
 }
 
 struct StructFieldAdaptedStruct {
-  @cpp.ExperimentalAdapter{
-    name = "::apache::thrift::test::TemplatedTestAdapter",
-  }
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
   1: AdaptedStruct adaptedStruct;
 }

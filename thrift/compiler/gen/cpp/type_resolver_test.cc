@@ -533,14 +533,13 @@ std::unique_ptr<t_const_value> make_string(const char* value) {
   return name;
 }
 
-struct experimental_adapter {
+struct adapter_builder {
   t_program* program;
   t_struct type;
 
-  explicit experimental_adapter(t_program* p)
-      : program(p), type(p, "ExperimentalAdapter") {
+  explicit adapter_builder(t_program* p) : program(p), type(p, "Adapter") {
     type.set_annotation(
-        "thrift.uri", "facebook.com/thrift/annotation/cpp/ExperimentalAdapter");
+        "thrift.uri", "facebook.com/thrift/annotation/cpp/Adapter");
   }
 
   std::unique_ptr<t_const> make() & {
@@ -555,7 +554,7 @@ struct experimental_adapter {
 TEST_F(TypeResolverTest, AdaptedFieldType) {
   auto i64 = t_base_type::t_i64();
   auto field = t_field(i64, "n", 42);
-  auto adapter = experimental_adapter(&program_);
+  auto adapter = adapter_builder(&program_);
   field.add_structured_annotation(adapter.make());
   EXPECT_EQ(
       get_storage_type_name(field),
@@ -566,7 +565,7 @@ TEST_F(TypeResolverTest, AdaptedFieldType) {
 TEST_F(TypeResolverTest, TransitivelyAdaptedFieldType) {
   auto annotation = t_struct(nullptr, "MyAnnotation");
 
-  auto adapter = experimental_adapter(&program_);
+  auto adapter = adapter_builder(&program_);
   annotation.add_structured_annotation(adapter.make());
 
   auto transitive = t_struct(nullptr, "Transitive");

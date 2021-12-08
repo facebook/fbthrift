@@ -474,7 +474,7 @@ void validate_adapter_annotation(diagnostic_context& ctx, const t_field& node) {
   const t_const* adapter_annotation = nullptr;
   for (const t_const* annotation : node.structured_annotations()) {
     if (annotation->type()->uri() ==
-        "facebook.com/thrift/annotation/cpp/ExperimentalAdapter") {
+        "facebook.com/thrift/annotation/cpp/Adapter") {
       adapter_annotation = annotation;
       break;
     }
@@ -483,8 +483,7 @@ void validate_adapter_annotation(diagnostic_context& ctx, const t_field& node) {
   if (adapter_annotation &&
       t_typedef::get_first_annotation_or_null(&*node.type(), {"cpp.adapter"})) {
     ctx.failure([&](auto& o) {
-      o << "`@cpp.ExperimentalAdapter` cannot be combined with "
-           "`cpp_adapter` in `"
+      o << "`@cpp.Adapter` cannot be combined with `cpp_adapter` in `"
         << node.name() << "`.";
     });
   }

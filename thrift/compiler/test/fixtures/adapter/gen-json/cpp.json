@@ -105,7 +105,7 @@
         }
       }
     },
-    "ExperimentalAdapter" : {
+    "Adapter" : {
       "lineno" : 59,
       "is_exception" : false,
       "is_union" : false,
@@ -133,16 +133,30 @@
         },
         "end" : {
           "line" : 63,
-          "column" : 74
+          "column" : 62
         }
       }
     },
-    "PackIsset" : {
+    "ExperimentalAdapter" : {
       "lineno" : 66,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
-
+        "name" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 67,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 67,
+              "column" : 18
+            }
+          }
+        }
       },
       "source_range" : {
         "begin" : {
@@ -151,6 +165,24 @@
         },
         "end" : {
           "line" : 68,
+          "column" : 74
+        }
+      }
+    },
+    "PackIsset" : {
+      "lineno" : 71,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 70,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 73,
           "column" : 2
         }
       }

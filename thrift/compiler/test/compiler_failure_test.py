@@ -716,14 +716,14 @@ class CompilerFailureTest(unittest.TestCase):
             """)
         )
 
-    def test_experimental_adapter(self):
+    def test_adapter(self):
         write_file(
             "thrift/annotation/cpp.thrift",
             textwrap.dedent(
                 """\
-                struct ExperimentalAdapter {
+                struct Adapter {
                     1: string name;
-                } (thrift.uri = "facebook.com/thrift/annotation/cpp/ExperimentalAdapter")
+                } (thrift.uri = "facebook.com/thrift/annotation/cpp/Adapter")
                 """
             ),
         )
@@ -737,7 +737,7 @@ class CompilerFailureTest(unittest.TestCase):
                 typedef i64 MyI64 (cpp.adapter="MyAdapter")
 
                 struct MyStruct {
-                    @cpp.ExperimentalAdapter{name="MyAdapter"}
+                    @cpp.Adapter{name="MyAdapter"}
                     1: MyI64 my_field;
                 }
                 """
@@ -749,8 +749,8 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:7] `@cpp.ExperimentalAdapter` cannot be "
-            "combined with `cpp_adapter` in `my_field`.\n",
+            "[FAILURE:foo.thrift:7] `@cpp.Adapter` cannot be combined with "
+            "`cpp_adapter` in `my_field`.\n",
         )
 
     def test_mixin_nonstruct_members(self):
