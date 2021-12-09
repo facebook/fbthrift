@@ -492,7 +492,7 @@ void ThriftServer::setup() {
     asyncScope_ = std::make_unique<folly::coro::CancellableAsyncScope>();
 #endif
     for (auto handler : collectServiceHandlers()) {
-      handler->setServer(this);
+      handler->attachServer(*this);
     }
 
     DCHECK(
@@ -657,7 +657,7 @@ void ThriftServer::cleanUp() {
   }
 
   for (auto handler : getProcessorFactory()->getServiceHandlers()) {
-    handler->setServer(nullptr);
+    handler->detachServer();
   }
 
   // Now clear all the handlers

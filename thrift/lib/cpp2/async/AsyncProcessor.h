@@ -556,7 +556,8 @@ class ServiceHandler {
 
   ThriftServer* getServer() { return server_; }
   const ThriftServer* getServer() const { return server_; }
-  void setServer(ThriftServer* server) { server_ = server; }
+  void attachServer(ThriftServer& server) { server_ = &server; }
+  void detachServer() { server_ = nullptr; }
 
   virtual ~ServiceHandler() = default;
 
