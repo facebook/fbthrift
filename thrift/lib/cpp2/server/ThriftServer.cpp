@@ -164,13 +164,24 @@ std::unique_ptr<AsyncProcessorFactory> createDecoratedProcessorFactory(
 }
 } // namespace
 
-#if FOLLY_HAS_COROUTINES
-// HACK: To avoid circular header includes, we define this in ThriftServer.h
+// HACK: To avoid circular header includes, we define these in ThriftServer.h
 // instead of AsyncProcessor.h
+
+#if FOLLY_HAS_COROUTINES
 folly::coro::CancellableAsyncScope* ServiceHandler::getAsyncScope() {
   return server_->getAsyncScope();
 }
 #endif
+
+void ServiceHandler::attachServer(ThriftServer& server) {
+  server_ = &server;
+  serverStopController_.emplace(server.getStopController());
+}
+
+void ServiceHandler::detachServer() {
+  server_ = nullptr;
+  serverStopController_.reset();
+}
 
 TLSCredentialWatcher::TLSCredentialWatcher(ThriftServer* server)
     : credProcessor_() {

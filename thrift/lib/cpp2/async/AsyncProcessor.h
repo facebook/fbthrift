@@ -25,6 +25,7 @@
 #include <folly/String.h>
 #include <folly/Unit.h>
 #include <folly/container/F14Map.h>
+#include <folly/experimental/PrimaryPtr.h>
 #include <folly/futures/Future.h>
 #include <folly/io/async/EventBase.h>
 
@@ -60,6 +61,7 @@ namespace apache {
 namespace thrift {
 
 class ThriftServer;
+class ThriftServerStopController;
 
 namespace detail {
 template <typename T>
@@ -556,8 +558,8 @@ class ServiceHandler {
 
   ThriftServer* getServer() { return server_; }
   const ThriftServer* getServer() const { return server_; }
-  void attachServer(ThriftServer& server) { server_ = &server; }
-  void detachServer() { server_ = nullptr; }
+  void attachServer(ThriftServer& server);
+  void detachServer();
 
   virtual ~ServiceHandler() = default;
 
@@ -568,6 +570,8 @@ class ServiceHandler {
 
  private:
   ThriftServer* server_{nullptr};
+  std::optional<folly::PrimaryPtrRef<ThriftServerStopController>>
+      serverStopController_;
 };
 
 /**
