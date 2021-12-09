@@ -19,10 +19,9 @@
 #include <atomic>
 #include <chrono>
 #include <string>
+#include <variant>
 
 #include <folly/lang/Assume.h>
-
-#include <boost/variant.hpp>
 
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
@@ -32,10 +31,11 @@
 namespace apache {
 namespace thrift {
 
-using PreprocessResult = folly::Optional<boost::variant<
+using PreprocessResult = std::variant<
+    std::monostate, // Allow request through
     AppClientException,
     AppServerException,
-    AppOverloadedException>>;
+    AppOverloadedException>;
 
 class Cpp2ConnContext;
 class AdaptiveConcurrencyController;

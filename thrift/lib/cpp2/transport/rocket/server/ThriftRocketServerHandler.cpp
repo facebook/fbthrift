@@ -36,7 +36,6 @@
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/LoggingEventHelper.h>
 #include <thrift/lib/cpp2/server/MonitoringMethodNames.h>
-#include <thrift/lib/cpp2/server/VisitorHelper.h>
 #include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
 #include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
@@ -500,21 +499,23 @@ void ThriftRocketServerHandler::handleRequestCommon(
 
   auto preprocessResult =
       serverConfigs_->preprocess({headers, name, connContext_, request.get()});
-  if (UNLIKELY(preprocessResult.has_value())) {
-    preprocessResult->apply_visitor(
-        apache::thrift::detail::VisitorHelper()
-            .with([&](AppClientException& ace) {
-              handleAppError(
-                  std::move(request), ace.name(), ace.getMessage(), true);
-            })
-            .with([&](AppOverloadedException&) {
-              handleRequestOverloadedServer(
-                  std::move(request), kAppOverloadedErrorCode);
-            })
-            .with([&](const AppServerException& ase) {
-              handleAppError(
-                  std::move(request), ase.name(), ase.getMessage(), false);
-            }));
+  if (UNLIKELY(!std::holds_alternative<std::monostate>(preprocessResult))) {
+    folly::variant_match(
+        preprocessResult,
+        [&](AppClientException& ace) {
+          handleAppError(
+              std::move(request), ace.name(), ace.getMessage(), true);
+        },
+        [&](AppOverloadedException&) {
+          handleRequestOverloadedServer(
+              std::move(request), kAppOverloadedErrorCode);
+        },
+        [&](const AppServerException& ase) {
+          handleAppError(
+              std::move(request), ase.name(), ase.getMessage(), false);
+        },
+        [](std::monostate&) { folly::assume_unreachable(); });
+
     return;
   }
 

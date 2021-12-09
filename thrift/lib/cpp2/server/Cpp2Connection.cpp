@@ -28,7 +28,6 @@
 #include <thrift/lib/cpp2/server/LoggingEventHelper.h>
 #include <thrift/lib/cpp2/server/MonitoringMethodNames.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp2/server/VisitorHelper.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
 
 THRIFT_FLAG_DEFINE_bool(server_rocket_upgrade_enabled, false);
@@ -470,24 +469,24 @@ void Cpp2Connection::requestReceived(
   }
 
   if (auto preprocessResult = server->preprocess(
-          {hreq->getHeader()->getHeaders(), methodName, context_})) {
-    preprocessResult.value().apply_visitor(
-        apache::thrift::detail::VisitorHelper() //
-            .with([&](AppClientException& ace) {
-              handleAppError(
-                  std::move(hreq), ace.name(), ace.getMessage(), true);
-            })
-            .with([&](AppOverloadedException& aoe) {
-              killRequest(
-                  std::move(hreq),
-                  TApplicationException::LOADSHEDDING,
-                  kAppOverloadedErrorCode,
-                  aoe.getMessage().c_str());
-            })
-            .with([&](AppServerException& ase) {
-              handleAppError(
-                  std::move(hreq), ase.name(), ase.getMessage(), false);
-            }));
+          {hreq->getHeader()->getHeaders(), methodName, context_});
+      !std::holds_alternative<std::monostate>(preprocessResult)) {
+    folly::variant_match(
+        preprocessResult,
+        [&](AppClientException& ace) {
+          handleAppError(std::move(hreq), ace.name(), ace.getMessage(), true);
+        },
+        [&](AppOverloadedException& aoe) {
+          killRequest(
+              std::move(hreq),
+              TApplicationException::LOADSHEDDING,
+              kAppOverloadedErrorCode,
+              aoe.getMessage().c_str());
+        },
+        [&](AppServerException& ase) {
+          handleAppError(std::move(hreq), ase.name(), ase.getMessage(), false);
+        },
+        [](std::monostate&) { folly::assume_unreachable(); });
     return;
   }
 
