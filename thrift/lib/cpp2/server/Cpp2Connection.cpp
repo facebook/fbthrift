@@ -32,6 +32,7 @@
 #include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
 
 THRIFT_FLAG_DEFINE_bool(server_rocket_upgrade_enabled, false);
+THRIFT_FLAG_DEFINE_bool(server_header_reject_http, true);
 
 THRIFT_FLAG_DEFINE_int64(monitoring_over_header_logging_sample_rate, 1'000'000);
 
@@ -347,6 +348,14 @@ void Cpp2Connection::requestReceived(
     channel_->setCallback(nullptr);
     channel_->setTransport(nullptr);
     stop();
+    return;
+  }
+
+  if (THRIFT_FLAG(server_header_reject_http) &&
+      (hreq->getHeader()->getClientType() == THRIFT_HTTP_SERVER_TYPE ||
+       hreq->getHeader()->getClientType() == THRIFT_HTTP_CLIENT_TYPE ||
+       hreq->getHeader()->getClientType() == THRIFT_HTTP_GET_CLIENT_TYPE)) {
+    disconnect("Rejecting HTTP connection over Header");
     return;
   }
 

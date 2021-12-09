@@ -126,28 +126,6 @@ class ClientServerTests(unittest.TestCase):
     These are tests where a client and server talk to each other
     """
 
-    def test_http_endpoint(self) -> None:
-        loop = asyncio.get_event_loop()
-
-        async def inner_test() -> None:
-            async with TestServer(ip="::1") as sa:
-                ip, port = sa.ip, sa.port
-                assert ip and port
-                async with get_client(
-                    TestingService,
-                    host=ip,
-                    port=port,
-                    path="/some/endpoint",
-                    client_type=ClientType.THRIFT_HTTP_CLIENT_TYPE,
-                ) as client:
-                    try:
-                        self.assertTrue(await client.invert(False))
-                    except TransportError as err:
-                        # The test server gets an invalid request because its a HTTP request
-                        self.assertEqual(err.type.value, 4)  # END OF FILE
-
-        loop.run_until_complete(inner_test())
-
     def test_server_localhost(self) -> None:
         loop = asyncio.get_event_loop()
 

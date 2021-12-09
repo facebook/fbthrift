@@ -15,6 +15,7 @@
  */
 
 #include <folly/io/async/test/BlockingSocket.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
@@ -27,6 +28,8 @@ using namespace apache::thrift;
 using namespace apache::thrift::test;
 using namespace apache::thrift::transport;
 
+THRIFT_FLAG_DECLARE_bool(server_header_reject_http);
+
 class ThriftServerProtocolResilienceTest : public testing::Test {};
 
 class Handler : public TestServiceSvIf {
@@ -38,6 +41,8 @@ class Handler : public TestServiceSvIf {
 
 void testTHeaderWithData(
     const std::string& data, bool expectResponse, bool expectConnectionClose) {
+  THRIFT_FLAG_SET_MOCK(server_header_reject_http, false);
+
   auto handler = make_shared<Handler>();
   ScopedServerInterfaceThread runner(handler);
 
