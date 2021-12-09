@@ -36,7 +36,7 @@
 #include <folly/Portability.h>
 #include <folly/Traits.h>
 #include <thrift/lib/cpp2/BoxedValuePtr.h>
-#include <thrift/lib/cpp2/ThriftOp.h>
+#include <thrift/lib/cpp2/Thrift.h>
 
 namespace apache {
 namespace thrift {
