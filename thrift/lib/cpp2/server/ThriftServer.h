@@ -123,6 +123,8 @@ class TLSCredentialWatcher {
  * ThriftServer owns a stop controller (using folly::PrimaryPtr) and hands out
  * non-owning references to use (folly::PrimaryPtrRef). ThriftServer's
  * destructor will block until all locked references have been released.
+ *
+ * The user-facing API that makes use of this is ServiceHandler::shutdownServer.
  */
 class ThriftServerStopController final {
  public:

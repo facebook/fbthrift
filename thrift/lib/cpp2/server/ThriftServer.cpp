@@ -175,12 +175,25 @@ folly::coro::CancellableAsyncScope* ServiceHandler::getAsyncScope() {
 
 void ServiceHandler::attachServer(ThriftServer& server) {
   server_ = &server;
-  serverStopController_.emplace(server.getStopController());
+  serverStopController_.lock()->emplace(server.getStopController());
 }
 
 void ServiceHandler::detachServer() {
   server_ = nullptr;
-  serverStopController_.reset();
+  serverStopController_.lock()->reset();
+}
+
+void ServiceHandler::shutdownServer() {
+  // shutdownServer should be idempotent -- this means that it can race with
+  // detachServer. Thus we should sychronize access to it.
+  serverStopController_.withLock([](auto& stopController) {
+    if (!stopController.has_value()) {
+      return;
+    }
+    if (auto lockedPtr = stopController->lock()) {
+      lockedPtr->stop();
+    }
+  });
 }
 
 TLSCredentialWatcher::TLSCredentialWatcher(ThriftServer* server)

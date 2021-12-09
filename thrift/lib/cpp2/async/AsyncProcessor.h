@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <mutex>
 #include <string>
 #include <string_view>
 #include <variant>
@@ -23,6 +24,7 @@
 #include <folly/ExceptionWrapper.h>
 #include <folly/Portability.h>
 #include <folly/String.h>
+#include <folly/Synchronized.h>
 #include <folly/Unit.h>
 #include <folly/container/F14Map.h>
 #include <folly/experimental/PrimaryPtr.h>
@@ -561,6 +563,15 @@ class ServiceHandler {
   void attachServer(ThriftServer& server);
   void detachServer();
 
+  /**
+   * Asynchronously begins shutting down the Thrift server this handler is
+   * attached to.
+   *
+   * This function is idempotent for the duration of a server lifecycle -- so
+   * it's safe to call multiple times (e.g. from signal handlers).
+   */
+  void shutdownServer();
+
   virtual ~ServiceHandler() = default;
 
  protected:
@@ -570,7 +581,9 @@ class ServiceHandler {
 
  private:
   ThriftServer* server_{nullptr};
-  std::optional<folly::PrimaryPtrRef<ThriftServerStopController>>
+  folly::Synchronized<
+      std::optional<folly::PrimaryPtrRef<ThriftServerStopController>>,
+      std::mutex>
       serverStopController_;
 };
 
