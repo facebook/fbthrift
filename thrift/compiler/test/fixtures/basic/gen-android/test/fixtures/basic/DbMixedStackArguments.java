@@ -108,8 +108,7 @@ public class DbMixedStackArguments {
         iprot_.readMessageEnd();
         throw x;
       }
-      getDataByKey0_result result = new getDataByKey0_result();
-      result.read(iprot_);
+      getDataByKey0_result result = getDataByKey0_result.deserialize(iprot_);
       iprot_.readMessageEnd();
       super.postRead(ctx, "DbMixedStackArguments.getDataByKey0", result);
 
@@ -153,8 +152,7 @@ public class DbMixedStackArguments {
         iprot_.readMessageEnd();
         throw x;
       }
-      getDataByKey1_result result = new getDataByKey1_result();
-      result.read(iprot_);
+      getDataByKey1_result result = getDataByKey1_result.deserialize(iprot_);
       iprot_.readMessageEnd();
       super.postRead(ctx, "DbMixedStackArguments.getDataByKey1", result);
 

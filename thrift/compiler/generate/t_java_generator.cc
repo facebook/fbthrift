@@ -2653,14 +2653,21 @@ void t_java_generator::generate_service_client(const t_service* tservice) {
           << endl
           << indent() << "  iprot_.readMessageEnd();" << endl
           << indent() << "  throw x;" << endl
-          << indent() << "}" << endl
-          << indent() << resultname << " result = new " << resultname << "();"
-          << endl
-          << indent() << "result.read(iprot_);" << endl
-          << indent() << "iprot_.readMessageEnd();" << endl
-          << indent() << "super.postRead(ctx, " << service_func_name
-          << ", result);" << endl
-          << endl;
+          << indent() << "}" << endl;
+
+      if (generate_immutable_structs_) {
+        f_service_ << indent() << resultname << " result = " << resultname
+                   << ".deserialize(iprot_);" << endl;
+      } else {
+        f_service_ << indent() << resultname << " result = new " << resultname
+                   << "();" << endl
+                   << indent() << "result.read(iprot_);" << endl;
+      }
+
+      f_service_ << indent() << "iprot_.readMessageEnd();" << endl
+                 << indent() << "super.postRead(ctx, " << service_func_name
+                 << ", result);" << endl
+                 << endl;
 
       // Careful, only return _result if not a void function
       if (!(*f_iter)->get_returntype()->is_void()) {

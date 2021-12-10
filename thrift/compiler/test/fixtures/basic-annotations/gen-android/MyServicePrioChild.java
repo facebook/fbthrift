@@ -83,8 +83,7 @@ public class MyServicePrioChild {
         iprot_.readMessageEnd();
         throw x;
       }
-      pang_result result = new pang_result();
-      result.read(iprot_);
+      pang_result result = pang_result.deserialize(iprot_);
       iprot_.readMessageEnd();
       super.postRead(ctx, "MyServicePrioChild.pang", result);
 

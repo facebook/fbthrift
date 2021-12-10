@@ -125,8 +125,7 @@ public class MyService {
         iprot_.readMessageEnd();
         throw x;
       }
-      ping_result result = new ping_result();
-      result.read(iprot_);
+      ping_result result = ping_result.deserialize(iprot_);
       iprot_.readMessageEnd();
       super.postRead(ctx, "MyService.ping", result);
 
@@ -166,8 +165,7 @@ public class MyService {
         iprot_.readMessageEnd();
         throw x;
       }
-      getRandomData_result result = new getRandomData_result();
-      result.read(iprot_);
+      getRandomData_result result = getRandomData_result.deserialize(iprot_);
       iprot_.readMessageEnd();
       super.postRead(ctx, "MyService.getRandomData", result);
 
@@ -211,8 +209,7 @@ public class MyService {
         iprot_.readMessageEnd();
         throw x;
       }
-      hasDataById_result result = new hasDataById_result();
-      result.read(iprot_);
+      hasDataById_result result = hasDataById_result.deserialize(iprot_);
       iprot_.readMessageEnd();
       super.postRead(ctx, "MyService.hasDataById", result);
 
@@ -256,8 +253,7 @@ public class MyService {
         iprot_.readMessageEnd();
         throw x;
       }
-      getDataById_result result = new getDataById_result();
-      result.read(iprot_);
+      getDataById_result result = getDataById_result.deserialize(iprot_);
       iprot_.readMessageEnd();
       super.postRead(ctx, "MyService.getDataById", result);
 
@@ -302,8 +298,7 @@ public class MyService {
         iprot_.readMessageEnd();
         throw x;
       }
-      putDataById_result result = new putDataById_result();
-      result.read(iprot_);
+      putDataById_result result = putDataById_result.deserialize(iprot_);
       iprot_.readMessageEnd();
       super.postRead(ctx, "MyService.putDataById", result);
 
@@ -365,8 +360,7 @@ public class MyService {
         iprot_.readMessageEnd();
         throw x;
       }
-      doNothing_result result = new doNothing_result();
-      result.read(iprot_);
+      doNothing_result result = doNothing_result.deserialize(iprot_);
       iprot_.readMessageEnd();
       super.postRead(ctx, "MyService.doNothing", result);
 

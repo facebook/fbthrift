@@ -105,8 +105,7 @@ public class MyServicePrioParent {
         iprot_.readMessageEnd();
         throw x;
       }
-      ping_result result = new ping_result();
-      result.read(iprot_);
+      ping_result result = ping_result.deserialize(iprot_);
       iprot_.readMessageEnd();
       super.postRead(ctx, "MyServicePrioParent.ping", result);
 
@@ -146,8 +145,7 @@ public class MyServicePrioParent {
         iprot_.readMessageEnd();
         throw x;
       }
-      pong_result result = new pong_result();
-      result.read(iprot_);
+      pong_result result = pong_result.deserialize(iprot_);
       iprot_.readMessageEnd();
       super.postRead(ctx, "MyServicePrioParent.pong", result);
 

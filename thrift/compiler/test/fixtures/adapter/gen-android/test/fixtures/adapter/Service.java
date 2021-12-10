@@ -106,8 +106,7 @@ public class Service {
         iprot_.readMessageEnd();
         throw x;
       }
-      func_result result = new func_result();
-      result.read(iprot_);
+      func_result result = func_result.deserialize(iprot_);
       iprot_.readMessageEnd();
       super.postRead(ctx, "Service.func", result);
 
