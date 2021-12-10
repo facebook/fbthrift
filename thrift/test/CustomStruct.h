@@ -36,6 +36,8 @@ class MyCustomStruct {
 
   void __clear() { data_.clear(); }
 
+  void __fbthrift_clear() { data_.clear(); }
+
   bool operator==(const MyCustomStruct& other) const {
     return data_ == other.data_;
   }
@@ -56,6 +58,8 @@ class MyCustomUnion {
   /* implicit */ MyCustomUnion(const std::string& data) : data_(data) {}
 
   void __clear() { data_.clear(); }
+
+  void __fbthrift_clear() { data_.clear(); }
 
   bool operator==(const MyCustomUnion& other) const {
     return data_ == other.data_;

@@ -80,6 +80,11 @@ class IndirectionWrapper {
   T&& __fbthrift_data() && { return std::move(*raw_); }
 
   const T&& __fbthrift_data() const&& { return std::move(*raw_); }
+
+ private:
+  friend struct apache::thrift::detail::st::struct_private_access;
+
+  void __fbthrift_clear() { apache::thrift::clear(__fbthrift_data()); }
 };
 } // namespace thrift
 } // namespace apache

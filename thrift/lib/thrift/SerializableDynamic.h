@@ -64,7 +64,7 @@ class SerializableDynamic {
     xfer += iprot->readStructBegin(fname);
     xfer += iprot->readFieldBegin(fname, ftype, fid);
     if (ftype == protocol::T_STOP) {
-      __clear();
+      __fbthrift_clear();
     } else {
       switch (fid) {
         case 1: {
@@ -227,6 +227,9 @@ class SerializableDynamic {
  private:
   folly::dynamic value_;
   friend class ::apache::thrift::Cpp2Ops<SerializableDynamic>;
+  friend struct apache::thrift::detail::st::struct_private_access;
+
+  void __fbthrift_clear() { value_ = nullptr; }
 };
 
 ////////////////////////////////////////////////////////////////////////////////
