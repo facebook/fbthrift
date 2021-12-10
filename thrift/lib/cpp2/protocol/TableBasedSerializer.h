@@ -90,6 +90,7 @@ enum class StringFieldType {
   Binary,
   IOBuf,
   IOBufPtr,
+  IOBufObj,
 };
 
 struct FieldInfo {
@@ -238,6 +239,7 @@ union ThriftValue {
   explicit ThriftValue(float value) : floatValue(value) {}
   explicit ThriftValue(double value) : doubleValue(value) {}
   explicit ThriftValue(const void* value) : object(value) {}
+  explicit ThriftValue(folly::IOBuf* value) : iobuf(value) {}
   explicit ThriftValue(folly::StringPiece value) : stringViewValue(value) {}
 
   bool boolValue;
@@ -248,6 +250,7 @@ union ThriftValue {
   float floatValue;
   double doubleValue;
   const void* object;
+  folly::IOBuf* iobuf;
   folly::StringPiece stringViewValue;
 };
 
