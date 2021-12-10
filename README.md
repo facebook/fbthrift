@@ -63,7 +63,17 @@ There are several key goals for these components:
 
 ### Dependencies
 
-Please install the following dependencies before building Facebook Thrift:
+If on Linux you can install system dependencies to save building them:
+
+    # Clone the repo
+    git clone https://github.com/facebook/fbthrift
+    # Install dependencies
+    cd fbthrift
+    sudo ./build/fbcode_builder/getdeps.py install-system-deps --recursive fbthrift
+
+On other platforms or if on Linux and without system dependencies `getdeps.py` will mostly download and build them for you during the build step.
+
+Some of the dependencies `getdeps.py` uses and installs are:
 
 **System**:
 [Bison 3.1 or later](https://www.gnu.org/software/bison),
@@ -87,16 +97,19 @@ Please install the following dependencies before building Facebook Thrift:
 
 ### Build
 
+    # Clone the repo
     git clone https://github.com/facebook/fbthrift
     cd fbthrift
-    cmake .
-    make # or cmake --build .
+    # Build, using system dependencies if available
+    ./build/fbcode_builder/getdeps.py --allow-system-packages build fbthrift
 
-This will create:
+`getdeps.py` will invoke cmake etc and put output in its scratch area (you can see in logs, and can override with `--scratch-path`):
 
-* `thrift/bin/thrift1`: The Thrift compiler binary to generate client and
+* `installed/fbthrift/bin/thrift1`: The Thrift compiler binary to generate client and
   server code.
-* `thrift/lib/libthriftcpp2.so`: Runtime library for clients and servers.
+* `installed/fbthrift/lib/libthriftcpp2.a`: Library for clients and servers.
+
+If you want to invoke `cmake` again to iterate, there is an helpful `run_cmake.py` output in the scratch `build/fbthrift` directory.
 
 ### Thrift Files
 
