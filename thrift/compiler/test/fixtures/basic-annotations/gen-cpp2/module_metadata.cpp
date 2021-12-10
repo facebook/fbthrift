@@ -18,14 +18,14 @@ using ThriftService = ::apache::thrift::metadata::ThriftService;
 using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
 using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
-void EnumMetadata<::cpp2::MyEnum>::gen(ThriftMetadata& metadata) {
+void EnumMetadata<::cpp2::YourEnum>::gen(ThriftMetadata& metadata) {
   auto res = metadata.enums_ref()->emplace("module.MyEnum", ::apache::thrift::metadata::ThriftEnum{});
   if (!res.second) {
     return;
   }
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name_ref() = "module.MyEnum";
-  using EnumTraits = TEnumTraits<::cpp2::MyEnum>;
+  using EnumTraits = TEnumTraits<::cpp2::YourEnum>;
   for (std::size_t i = 0; i < EnumTraits::size; ++i) {
     enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }

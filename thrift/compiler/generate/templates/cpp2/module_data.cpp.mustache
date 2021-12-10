@@ -24,12 +24,12 @@ namespace apache {
 namespace thrift {
 <%#program:enums%>
 
-const std::array<<% > common/namespace_cpp2%><%enum:name%>, <%enum:size%>> TEnumDataStorage<<% > common/namespace_cpp2%><%enum:name%>>::values = {{
+const std::array<<% > common/namespace_cpp2%><%enum:cpp_name%>, <%enum:size%>> TEnumDataStorage<<% > common/namespace_cpp2%><%enum:cpp_name%>>::values = {{
 <%#enum:values%><%!
 %>  type::<%enum_value:cpp_name%>,
 <%/enum:values%>
 }};
-const std::array<folly::StringPiece, <%enum:size%>> TEnumDataStorage<<% > common/namespace_cpp2%><%enum:name%>>::names = {{
+const std::array<folly::StringPiece, <%enum:size%>> TEnumDataStorage<<% > common/namespace_cpp2%><%enum:cpp_name%>>::names = {{
 <%#enum:values%><%!
 %>  "<%enum_value:name%>",
 <%/enum:values%>

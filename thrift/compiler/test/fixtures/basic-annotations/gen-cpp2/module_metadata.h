@@ -27,7 +27,7 @@ namespace detail {
 namespace md {
 
 template <>
-class EnumMetadata<::cpp2::MyEnum> {
+class EnumMetadata<::cpp2::YourEnum> {
  public:
   static void gen(ThriftMetadata& metadata);
 };

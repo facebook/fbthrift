@@ -30,14 +30,14 @@ using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
 using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 <%#program:enums%>
-void EnumMetadata<<% > common/namespace_cpp2%><%enum:name%>>::gen(ThriftMetadata& metadata) {
+void EnumMetadata<<% > common/namespace_cpp2%><%enum:cpp_name%>>::gen(ThriftMetadata& metadata) {
   auto res = metadata.enums_ref()->emplace("<%program:name%>.<%enum:name%>", ::apache::thrift::metadata::ThriftEnum{});
   if (!res.second) {
     return;
   }
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name_ref() = "<%program:name%>.<%enum:name%>";
-  using EnumTraits = TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>;
+  using EnumTraits = TEnumTraits<<% > common/namespace_cpp2%><%enum:cpp_name%>>;
   for (std::size_t i = 0; i < EnumTraits::size; ++i) {
     enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }

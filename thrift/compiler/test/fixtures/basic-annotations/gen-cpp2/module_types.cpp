@@ -14,20 +14,20 @@
 
 namespace apache { namespace thrift {
 
-constexpr std::size_t const TEnumTraits<::cpp2::MyEnum>::size;
-folly::Range<::cpp2::MyEnum const*> const TEnumTraits<::cpp2::MyEnum>::values = folly::range(TEnumDataStorage<::cpp2::MyEnum>::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::MyEnum>::names = folly::range(TEnumDataStorage<::cpp2::MyEnum>::names);
+constexpr std::size_t const TEnumTraits<::cpp2::YourEnum>::size;
+folly::Range<::cpp2::YourEnum const*> const TEnumTraits<::cpp2::YourEnum>::values = folly::range(TEnumDataStorage<::cpp2::YourEnum>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::YourEnum>::names = folly::range(TEnumDataStorage<::cpp2::YourEnum>::names);
 
-char const* TEnumTraits<::cpp2::MyEnum>::findName(type value) {
-  using factory = ::cpp2::_MyEnum_EnumMapFactory;
+char const* TEnumTraits<::cpp2::YourEnum>::findName(type value) {
+  using factory = ::cpp2::_YourEnum_EnumMapFactory;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
   return found == map->end() ? nullptr : found->second;
 }
 
-bool TEnumTraits<::cpp2::MyEnum>::findValue(char const* name, type* out) {
-  using factory = ::cpp2::_MyEnum_EnumMapFactory;
+bool TEnumTraits<::cpp2::YourEnum>::findValue(char const* name, type* out) {
+  using factory = ::cpp2::_YourEnum_EnumMapFactory;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);
@@ -39,8 +39,8 @@ bool TEnumTraits<::cpp2::MyEnum>::findValue(char const* name, type* out) {
 namespace cpp2 {
 FOLLY_PUSH_WARNING
 FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
-const _MyEnum_EnumMapFactory::ValuesToNamesMapType _MyEnum_VALUES_TO_NAMES = _MyEnum_EnumMapFactory::makeValuesToNamesMap();
-const _MyEnum_EnumMapFactory::NamesToValuesMapType _MyEnum_NAMES_TO_VALUES = _MyEnum_EnumMapFactory::makeNamesToValuesMap();
+const _YourEnum_EnumMapFactory::ValuesToNamesMapType _YourEnum_VALUES_TO_NAMES = _YourEnum_EnumMapFactory::makeValuesToNamesMap();
+const _YourEnum_EnumMapFactory::NamesToValuesMapType _YourEnum_NAMES_TO_VALUES = _YourEnum_EnumMapFactory::makeNamesToValuesMap();
 FOLLY_POP_WARNING
 
 } // cpp2
@@ -157,11 +157,34 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 
 namespace cpp2 {
 
-MyStruct::MyStruct(const MyStruct&) = default;
-MyStruct& MyStruct::operator=(const MyStruct&) = default;
+MyStruct::MyStruct(const MyStruct& srcObj) {
+  __fbthrift_field_majorVer = srcObj.__fbthrift_field_majorVer;
+  __isset.set(0,srcObj.__isset.get(0));
+  __fbthrift_field_package = srcObj.__fbthrift_field_package;
+  __isset.set(1,srcObj.__isset.get(1));
+  __fbthrift_field_annotation_with_quote = srcObj.__fbthrift_field_annotation_with_quote;
+  __isset.set(2,srcObj.__isset.get(2));
+  __fbthrift_field_class_ = srcObj.__fbthrift_field_class_;
+  __isset.set(3,srcObj.__isset.get(3));
+  __fbthrift_field_annotation_with_trailing_comma = srcObj.__fbthrift_field_annotation_with_trailing_comma;
+  __isset.set(4,srcObj.__isset.get(4));
+  __fbthrift_field_empty_annotations = srcObj.__fbthrift_field_empty_annotations;
+  __isset.set(5,srcObj.__isset.get(5));
+  __fbthrift_field_my_enum = srcObj.__fbthrift_field_my_enum;
+  __isset.set(6,srcObj.__isset.get(6));
+  ::apache::thrift::adapt_detail::construct<StaticCast, 7>(__fbthrift_field_my_enum, *this);
+}
+
+MyStruct& MyStruct::operator=(const MyStruct& src) {
+  MyStruct tmp(src);
+  swap(*this, tmp);
+  return *this;
+}
+
 MyStruct::MyStruct() :
       __fbthrift_field_majorVer(),
       __fbthrift_field_my_enum() {
+  ::apache::thrift::adapt_detail::construct<StaticCast, 7>(__fbthrift_field_my_enum, *this);
 }
 
 
@@ -176,6 +199,7 @@ MyStruct::MyStruct(MyStruct&& other) noexcept  :
     __fbthrift_field_empty_annotations(std::move(other.__fbthrift_field_empty_annotations)),
     __fbthrift_field_my_enum(std::move(other.__fbthrift_field_my_enum)),
     __isset(other.__isset) {
+  ::apache::thrift::adapt_detail::construct<StaticCast, 7>(__fbthrift_field_my_enum, *this);
 }
 
 MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
@@ -191,7 +215,7 @@ MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
 }
 
 
-MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg, ::cpp2::MyEnum my_enum__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg, ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourEnum> my_enum__arg) :
     __fbthrift_field_majorVer(std::move(majorVer__arg)),
     __fbthrift_field_package(std::move(package__arg)),
     __fbthrift_field_annotation_with_quote(std::move(annotation_with_quote__arg)),
@@ -199,6 +223,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__
     __fbthrift_field_annotation_with_trailing_comma(std::move(annotation_with_trailing_comma__arg)),
     __fbthrift_field_empty_annotations(std::move(empty_annotations__arg)),
     __fbthrift_field_my_enum(std::move(my_enum__arg)) {
+  ::apache::thrift::adapt_detail::construct<StaticCast, 7>(__fbthrift_field_my_enum, *this);
   __isset.set(folly::index_constant<0>(), true);
   __isset.set(folly::index_constant<1>(), true);
   __isset.set(folly::index_constant<2>(), true);
@@ -217,7 +242,7 @@ void MyStruct::__clear() {
   this->__fbthrift_field_class_ = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_annotation_with_trailing_comma = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_empty_annotations = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->__fbthrift_field_my_enum = ::cpp2::MyEnum();
+  this->__fbthrift_field_my_enum = decltype(this->__fbthrift_field_my_enum)();
   __isset = {};
 }
 
@@ -243,7 +268,7 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   if (!(lhs.empty_annotations_ref() == rhs.empty_annotations_ref())) {
     return false;
   }
-  if (!(lhs.my_enum_ref() == rhs.my_enum_ref())) {
+  if (::apache::thrift::adapt_detail::not_equal<StaticCast>(lhs.__fbthrift_field_my_enum, rhs.__fbthrift_field_my_enum)) {
     return false;
   }
   return true;
@@ -271,8 +296,8 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   if (!(lhs.empty_annotations_ref() == rhs.empty_annotations_ref())) {
     return lhs.empty_annotations_ref() < rhs.empty_annotations_ref();
   }
-  if (!(lhs.my_enum_ref() == rhs.my_enum_ref())) {
-    return lhs.my_enum_ref() < rhs.my_enum_ref();
+  if (::apache::thrift::adapt_detail::not_equal<StaticCast>(lhs.__fbthrift_field_my_enum, rhs.__fbthrift_field_my_enum)) {
+    return ::apache::thrift::adapt_detail::less<StaticCast>(lhs.__fbthrift_field_my_enum, rhs.__fbthrift_field_my_enum);
   }
   return false;
 }
@@ -406,5 +431,6 @@ template uint32_t SecretStruct::serializedSizeZC<>(apache::thrift::CompactProtoc
 
 namespace cpp2 { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
+  ::apache::thrift::adapt_detail::validateFieldAdapter<StaticCast, 7, ::cpp2::YourEnum, ::cpp2::MyStruct>();
 }
 }} // cpp2

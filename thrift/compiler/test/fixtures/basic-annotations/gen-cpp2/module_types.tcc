@@ -270,7 +270,9 @@ _readField_empty_annotations:
   }
 _readField_my_enum:
   {
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::MyEnum>::readWithContext(*iprot, this->__fbthrift_field_my_enum, _readState);
+    ::cpp2::YourEnum tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::YourEnum>::readWithContext(*iprot, tvalue, _readState);
+    this->__fbthrift_field_my_enum = ::apache::thrift::adapt_detail::fromThriftField<StaticCast, 7>(::std::move(tvalue), *this);
     
   }
  this->__isset.set(6, true);
@@ -395,7 +397,7 @@ uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
   }
   {
     xfer += prot_->serializedFieldSize("my_enum", apache::thrift::protocol::T_I32, 7);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::MyEnum>::serializedSize<false>(*prot_, this->__fbthrift_field_my_enum);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::YourEnum>::serializedSize<false>(*prot_, StaticCast::toThrift(this->__fbthrift_field_my_enum));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -431,7 +433,7 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
   }
   {
     xfer += prot_->serializedFieldSize("my_enum", apache::thrift::protocol::T_I32, 7);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::MyEnum>::serializedSize<false>(*prot_, this->__fbthrift_field_my_enum);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::YourEnum>::serializedSize<false>(*prot_, StaticCast::toThrift(this->__fbthrift_field_my_enum));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -488,7 +490,7 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 6;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 7, kPrevFieldId>(*prot_, "my_enum", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::MyEnum>::write(*prot_, this->__fbthrift_field_my_enum);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::YourEnum>::write(*prot_, StaticCast::toThrift(this->__fbthrift_field_my_enum));
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();

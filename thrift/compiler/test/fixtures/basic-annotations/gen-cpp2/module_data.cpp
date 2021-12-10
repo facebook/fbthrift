@@ -12,12 +12,12 @@
 namespace apache {
 namespace thrift {
 
-const std::array<::cpp2::MyEnum, 3> TEnumDataStorage<::cpp2::MyEnum>::values = {{
+const std::array<::cpp2::YourEnum, 3> TEnumDataStorage<::cpp2::YourEnum>::values = {{
   type::MyValue1,
   type::MyValue2,
   type::REALM,
 }};
-const std::array<folly::StringPiece, 3> TEnumDataStorage<::cpp2::MyEnum>::names = {{
+const std::array<folly::StringPiece, 3> TEnumDataStorage<::cpp2::YourEnum>::names = {{
   "MyValue1",
   "MyValue2",
   "DOMAIN",

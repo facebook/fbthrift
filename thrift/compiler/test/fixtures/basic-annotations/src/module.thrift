@@ -21,7 +21,7 @@ enum MyEnum {
   MyValue1 = 0,
   MyValue2 = 1,
   DOMAIN = 2 (cpp.name = 'REALM'),
-}
+} (cpp.name = "YourEnum", cpp.adapter = "StaticCast")
 
 struct MyStructNestedAnnotation {
   1: string name;

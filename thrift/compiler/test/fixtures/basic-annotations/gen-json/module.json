@@ -4,6 +4,35 @@
   "enumerations" : {
     "MyEnum" : {
       "lineno" : 20,
+      "annotations" : {
+        "cpp.adapter" : {
+          "value" : "StaticCast",
+          "source_range" : {
+            "begin" : {
+              "line" : 24,
+              "column" : 27
+            },
+            "end" : {
+              "line" : 24,
+              "column" : 53
+            }
+          }
+        }
+,
+        "cpp.name" : {
+          "value" : "YourEnum",
+          "source_range" : {
+            "begin" : {
+              "line" : 24,
+              "column" : 4
+            },
+            "end" : {
+              "line" : 24,
+              "column" : 25
+            }
+          }
+        }
+      },
       "constants" : {
         "MyValue1" : 0,
         "MyValue2" : 1,
@@ -16,7 +45,7 @@
         },
         "end" : {
           "line" : 24,
-          "column" : 2
+          "column" : 54
         }
       }
     }

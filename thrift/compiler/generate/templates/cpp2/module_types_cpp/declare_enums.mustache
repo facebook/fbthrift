@@ -18,32 +18,32 @@
 
 namespace apache { namespace thrift {
 
-constexpr std::size_t const TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::size;
-folly::Range<<% > common/namespace_cpp2%><%enum:name%> const*> const TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::values = <%!
+constexpr std::size_t const TEnumTraits<<% > common/namespace_cpp2%><%enum:cpp_name%>>::size;
+folly::Range<<% > common/namespace_cpp2%><%enum:cpp_name%> const*> const TEnumTraits<<% > common/namespace_cpp2%><%enum:cpp_name%>>::values = <%!
   %><%#enum:empty?%><%!
     %>{};<%!
   %><%/enum:empty?%><%!
   %><%^enum:empty?%><%!
-    %>folly::range(TEnumDataStorage<<% > common/namespace_cpp2%><%enum:name%>>::values);<%!
+    %>folly::range(TEnumDataStorage<<% > common/namespace_cpp2%><%enum:cpp_name%>>::values);<%!
   %><%/enum:empty?%>
-folly::Range<folly::StringPiece const*> const TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::names = <%!
+folly::Range<folly::StringPiece const*> const TEnumTraits<<% > common/namespace_cpp2%><%enum:cpp_name%>>::names = <%!
   %><%#enum:empty?%><%!
     %>{};<%!
   %><%/enum:empty?%><%!
   %><%^enum:empty?%><%!
-    %>folly::range(TEnumDataStorage<<% > common/namespace_cpp2%><%enum:name%>>::names);<%!
+    %>folly::range(TEnumDataStorage<<% > common/namespace_cpp2%><%enum:cpp_name%>>::names);<%!
   %><%/enum:empty?%>
 
-char const* TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::findName(type value) {
-  using factory = <% > common/namespace_cpp2%>_<%enum:name%>_EnumMapFactory;
+char const* TEnumTraits<<% > common/namespace_cpp2%><%enum:cpp_name%>>::findName(type value) {
+  using factory = <% > common/namespace_cpp2%>_<%enum:cpp_name%>_EnumMapFactory;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
   return found == map->end() ? nullptr : found->second;
 }
 
-bool TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::findValue(char const* name, type* out) {
-  using factory = <% > common/namespace_cpp2%>_<%enum:name%>_EnumMapFactory;
+bool TEnumTraits<<% > common/namespace_cpp2%><%enum:cpp_name%>>::findValue(char const* name, type* out) {
+  using factory = <% > common/namespace_cpp2%>_<%enum:cpp_name%>_EnumMapFactory;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);
@@ -56,8 +56,8 @@ bool TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::findValue(char cons
 
 FOLLY_PUSH_WARNING
 FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
-const _<%enum:name%>_EnumMapFactory::ValuesToNamesMapType _<%enum:name%>_VALUES_TO_NAMES = _<%enum:name%>_EnumMapFactory::makeValuesToNamesMap();
-const _<%enum:name%>_EnumMapFactory::NamesToValuesMapType _<%enum:name%>_NAMES_TO_VALUES = _<%enum:name%>_EnumMapFactory::makeNamesToValuesMap();
+const _<%enum:cpp_name%>_EnumMapFactory::ValuesToNamesMapType _<%enum:cpp_name%>_VALUES_TO_NAMES = _<%enum:cpp_name%>_EnumMapFactory::makeValuesToNamesMap();
+const _<%enum:cpp_name%>_EnumMapFactory::NamesToValuesMapType _<%enum:cpp_name%>_NAMES_TO_VALUES = _<%enum:cpp_name%>_EnumMapFactory::makeNamesToValuesMap();
 FOLLY_POP_WARNING
 
 <% > common/namespace_cpp2_end%>

@@ -243,6 +243,7 @@ class mstch_cpp2_enum : public mstch_enum {
             {"enum:min", &mstch_cpp2_enum::min},
             {"enum:max", &mstch_cpp2_enum::max},
             {"enum:cpp_is_unscoped", &mstch_cpp2_enum::cpp_is_unscoped},
+            {"enum:cpp_name", &mstch_cpp2_enum::cpp_name},
             {"enum:cpp_enum_type", &mstch_cpp2_enum::cpp_enum_type},
             {"enum:cpp_declare_bitwise_ops",
              &mstch_cpp2_enum::cpp_declare_bitwise_ops},
@@ -284,6 +285,7 @@ class mstch_cpp2_enum : public mstch_enum {
         {"cpp2.deprecated_enum_unscoped", "cpp.deprecated_enum_unscoped"});
   }
   mstch::node cpp_is_unscoped() { return cpp_is_unscoped_(); }
+  mstch::node cpp_name() { return cpp2::get_name(enm_); }
   mstch::node cpp_enum_type() {
     static std::string kInt = "int";
     return enm_->get_annotation(
