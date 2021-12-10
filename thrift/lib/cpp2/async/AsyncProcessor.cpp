@@ -209,31 +209,8 @@ void GeneratedAsyncProcessor::destroyAllInteractions(
 
 bool GeneratedAsyncProcessor::validateRpcKind(
     ResponseChannelRequest::UniquePtr& req, RpcKind kind) {
-  switch (kind) {
-    case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
-      switch (req->rpcKind()) {
-        case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
-          return true;
-        case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
-          req->sendReply(ResponsePayload{});
-          return true;
-        default:
-          break;
-      }
-      break;
-    case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
-      switch (req->rpcKind()) {
-        case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
-        case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
-          return true;
-        default:
-          break;
-      }
-      break;
-    default:
-      if (kind == req->rpcKind()) {
-        return true;
-      }
+  if (kind == req->rpcKind()) {
+    return true;
   }
   if (req->rpcKind() != RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
     req->sendErrorWrapped(
