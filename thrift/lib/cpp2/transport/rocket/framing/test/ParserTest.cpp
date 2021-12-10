@@ -130,7 +130,7 @@ TEST(ParserTest, AlignmentIOBufQueueTest) {
   EXPECT_EQ(iobuf->length() + iobuf->tailroom(), 1000);
   EXPECT_EQ(folly::StringPiece(iobuf->coalesce()), s);
 
-  iobufQueue.clear();
+  iobufQueue.reset();
   iobufQueue.append(folly::IOBuf::copyBuffer(s));
   // it is possible the aligned part has not been received yet
   res = alignTo4kBufQueue(iobufQueue, 256, 1000);
@@ -140,7 +140,7 @@ TEST(ParserTest, AlignmentIOBufQueueTest) {
   EXPECT_EQ(iobuf->length() + iobuf->tailroom(), 1000);
   EXPECT_EQ(folly::StringPiece(iobuf->coalesce()), s);
 
-  iobufQueue.clear();
+  iobufQueue.reset();
   iobufQueue.append(folly::IOBuf::copyBuffer(s));
   // it is also possible the frame is smaller than received data
   res = alignTo4kBufQueue(iobufQueue, 4, 7);

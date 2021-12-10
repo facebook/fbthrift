@@ -113,7 +113,7 @@ void testWrite(const std::vector<T>& ints) {
     for (auto v : ints) {                                              \
       fn(c, v);                                                        \
     }                                                                  \
-    iobufQueue.clear();                                                \
+    iobufQueue.clearAndTryReuseLargestBuffer();                        \
   }
 
 BENCHMARK(baseline_u8_1B, iters) {

@@ -35,7 +35,7 @@ void runTestWrite(int iters) {
   folly::IOBufQueue queue;
 
   for (int i = 0; i < iters; i++) {
-    queue.clear();
+    queue.clearAndTryReuseLargestBuffer();
     prot.setOutput(&queue, bufSize);
     ooe.write(&prot);
   }
