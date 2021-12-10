@@ -153,3 +153,9 @@ union ReferringUnionWithCppRef {
   2: PlainStruct box_plain (cpp.ref);
   3: ReferringUnionWithCppRef box_self (cpp.ref);
 }
+
+union ReferringUnion {
+  1: string box_string (cpp.box);
+  2: PlainStruct box_plain (cpp.box);
+  3: ReferringUnion box_self (cpp.box);
+}

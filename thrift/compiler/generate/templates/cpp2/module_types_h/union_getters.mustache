@@ -14,12 +14,17 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#struct:fields%>
-  <%field:cpp_deprecated_accessor_type%> const& get_<%field:cpp_name%>() const {
+%><%#struct:fields%><%#field:type%>
+  <%^field:boxed_ref?%><%field:cpp_deprecated_accessor_type%><%/field:boxed_ref?%><%#field:boxed_ref?%><%type:cpp_type%><%/field:boxed_ref?%> const& get_<%field:cpp_name%>() const {
     if (type_ != Type::<%field:cpp_name%>) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
+<%^field:boxed_ref?%>
     return value_.<%field:cpp_name%>;
+<%/field:boxed_ref?%>
+<%#field:boxed_ref?%>
+    return *value_.<%field:cpp_name%>;
+<%/field:boxed_ref?%>
   }
 
-<%/struct:fields%>
+<%/field:type%><%/struct:fields%>

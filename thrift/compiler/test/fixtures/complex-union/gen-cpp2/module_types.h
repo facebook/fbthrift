@@ -677,22 +677,22 @@ class ComplexUnion final  {
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> typedefValue_ref() && {
     return {std::move(value_.typedefValue), type_, typedefValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T = ::std::string>
+  template <typename..., typename T = ::std::unique_ptr<::std::string>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> stringRef_ref() const& {
     return {value_.stringRef, type_, stringRef, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::string>
+  template <typename..., typename T = ::std::unique_ptr<::std::string>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> stringRef_ref() const&& {
     return {std::move(value_.stringRef), type_, stringRef, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::string>
+  template <typename..., typename T = ::std::unique_ptr<::std::string>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> stringRef_ref() & {
     return {value_.stringRef, type_, stringRef, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::string>
+  template <typename..., typename T = ::std::unique_ptr<::std::string>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> stringRef_ref() && {
     return {std::move(value_.stringRef), type_, stringRef, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }

@@ -1236,6 +1236,19 @@ template <typename T>
 FOLLY_INLINE_VARIABLE constexpr union_field_ref_owner_vtable //
     union_field_ref_owner_vtable_for<T const&>{nullptr};
 
+template <class T, class = void>
+struct element_type {
+  using type = T;
+};
+
+template <class T>
+struct element_type<T, folly::void_t<typename T::element_type>> {
+  using type = typename T::element_type;
+};
+
+template <class T>
+using is_boxed = folly::detail::is_instantiation_of<boxed_value_ptr, T>;
+
 } // namespace detail
 
 // A reference to an union field of the possibly const-qualified type
@@ -1246,9 +1259,16 @@ class union_field_ref {
   template <typename>
   friend class union_field_ref;
 
+  using element_type =
+      typename detail::element_type<folly::remove_cvref_t<T>>::type;
+  using is_boxed = detail::is_boxed<folly::remove_cvref_t<T>>;
+
+  using storage_reference_type = T;
+  using storage_value_type = std::remove_reference_t<T>;
+
  public:
-  using value_type = std::remove_reference_t<T>;
-  using reference_type = T;
+  using value_type = detail::copy_const_t<T, element_type>;
+  using reference_type = detail::copy_reference_t<T, value_type>;
 
  private:
   using int_t =
@@ -1259,12 +1279,12 @@ class union_field_ref {
 
  public:
   FOLLY_ERASE union_field_ref(
-      reference_type value,
+      storage_reference_type storage_value,
       int_t& type,
       int field_type,
       owner ow,
       vtable const& vt) noexcept
-      : value_(value),
+      : storage_value_(storage_value),
         type_(type),
         field_type_(field_type),
         owner_(ow),
@@ -1280,7 +1300,7 @@ class union_field_ref {
       std::is_nothrow_constructible<value_type, U>::value&&
           std::is_nothrow_assignable<value_type, U>::value) {
     if (has_value()) {
-      value_ = static_cast<U&&>(other);
+      get_value() = static_cast<U&&>(other);
     } else {
       emplace(static_cast<U&&>(other));
     }
@@ -1295,29 +1315,29 @@ class union_field_ref {
   // bad_field_access otherwise.
   FOLLY_ERASE reference_type value() const {
     throw_if_unset();
-    return static_cast<reference_type>(value_);
+    return static_cast<reference_type>(get_value());
   }
 
   FOLLY_ERASE reference_type operator*() const { return value(); }
 
   FOLLY_ERASE value_type* operator->() const {
     throw_if_unset();
-    return &value_;
+    return &get_value();
   }
 
   FOLLY_ERASE reference_type ensure() {
     if (!has_value()) {
       emplace();
     }
-    return static_cast<reference_type>(value_);
+    return static_cast<reference_type>(get_value());
   }
 
   template <typename... Args>
   FOLLY_ERASE value_type& emplace(Args&&... args) {
     vtable_.reset(owner_);
-    ::new (&value_) value_type(static_cast<Args&&>(args)...);
+    ::new (&storage_value_) storage_value_type(static_cast<Args&&>(args)...);
     type_ = field_type_;
-    return value_;
+    return get_value();
   }
 
   template <class U, class... Args>
@@ -1327,9 +1347,10 @@ class union_field_ref {
       value_type&>
   emplace(std::initializer_list<U> ilist, Args&&... args) {
     vtable_.reset(owner_);
-    ::new (&value_) value_type(ilist, static_cast<Args&&>(args)...);
+    ::new (&storage_value_)
+        storage_value_type(ilist, static_cast<Args&&>(args)...);
     type_ = field_type_;
-    return value_;
+    return get_value();
   }
 
  private:
@@ -1339,7 +1360,15 @@ class union_field_ref {
     }
   }
 
-  value_type& value_;
+  FOLLY_ERASE value_type& get_value() const { return get_value(is_boxed{}); }
+  FOLLY_ERASE value_type& get_value(std::true_type) const {
+    return *storage_value_;
+  }
+  FOLLY_ERASE value_type& get_value(std::false_type) const {
+    return storage_value_;
+  }
+
+  storage_value_type& storage_value_;
   int_t& type_;
   const int field_type_;
   owner owner_;

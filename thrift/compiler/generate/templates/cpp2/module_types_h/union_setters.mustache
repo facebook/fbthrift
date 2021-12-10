@@ -15,6 +15,9 @@
   limitations under the License.
 
 %><%#struct:fields%><%#field:type%>
+<%#field:boxed_ref?%>
+ private:
+<%/field:boxed_ref?%>
   <%#type:resolves_to_base_or_enum?%>
 
   <%^type:string_or_binary?%>
@@ -30,7 +33,7 @@
     apache::thrift::clear(*this);
     type_ = Type::<%field:cpp_name%>;
 <%#field:cpp_ref?%>
-    ::new (std::addressof(value_.<%field:cpp_name%>)) <%field:cpp_storage_type%>(new <%field:cpp_storage_type%>::element_type(t));
+    ::new (std::addressof(value_.<%field:cpp_name%>)) <%field:cpp_storage_type%>(<%^field:boxed_ref?%>new <%/field:boxed_ref?%><%field:cpp_storage_type%>::element_type(t));
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
     ::new (std::addressof(value_.<%field:cpp_name%>)) <%type:cpp_type%>(t);
@@ -42,7 +45,7 @@
     apache::thrift::clear(*this);
     type_ = Type::<%field:cpp_name%>;
 <%#field:cpp_ref?%>
-    ::new (std::addressof(value_.<%field:cpp_name%>)) <%field:cpp_storage_type%>(new <%field:cpp_storage_type%>::element_type(std::move(t)));
+    ::new (std::addressof(value_.<%field:cpp_name%>)) <%field:cpp_storage_type%>(<%^field:boxed_ref?%>new <%/field:boxed_ref?%><%field:cpp_storage_type%>::element_type(std::move(t)));
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
     ::new (std::addressof(value_.<%field:cpp_name%>)) <%type:cpp_type%>(std::move(t));
@@ -54,7 +57,7 @@
     apache::thrift::clear(*this);
     type_ = Type::<%field:cpp_name%>;
 <%#field:cpp_ref?%>
-    ::new (std::addressof(value_.<%field:cpp_name%>)) <%field:cpp_storage_type%>(new <%field:cpp_storage_type%>::element_type(std::forward<T>(t)...));
+    ::new (std::addressof(value_.<%field:cpp_name%>)) <%field:cpp_storage_type%>(<%^field:boxed_ref?%>new <%/field:boxed_ref?%><%field:cpp_storage_type%>::element_type(std::forward<T>(t)...));
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
     ::new (std::addressof(value_.<%field:cpp_name%>)) <%type:cpp_type%>(std::forward<T>(t)...);
@@ -97,9 +100,12 @@
     using ref_ = folly::conditional_t<(sizeof...(T) < size_t(-1)), <%field:cpp_storage_type%>, void>;
     apache::thrift::clear(*this);
     type_ = Type::<%field:cpp_name%>;
-    ::new (std::addressof(value_.<%field:cpp_name%>)) ref_(new typename ref_::element_type(std::forward<T>(t)...));
+    ::new (std::addressof(value_.<%field:cpp_name%>)) ref_(<%^field:boxed_ref?%>new <%/field:boxed_ref?%>typename ref_::element_type(std::forward<T>(t)...));
     return value_.<%field:cpp_name%>;
   }
   <%/field:cpp_ref?%>
   <%/type:resolves_to_container_or_struct?%>
+<%#field:boxed_ref?%>
+ public:
+<%/field:boxed_ref?%>
 <%/field:type%><%/struct:fields%>

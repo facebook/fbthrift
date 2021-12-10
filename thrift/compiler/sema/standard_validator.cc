@@ -258,13 +258,8 @@ void validate_boxed_field_attributes(
     return;
   }
 
-  if (const auto* parent = dynamic_cast<const t_union*>(ctx.parent())) {
-    // TODO(afuller): Support cpp.box on union fields.
-    ctx.failure([&](auto& o) {
-      o << "Unions cannot contain fields with the `cpp.box` annotation. Remove the annotation from `"
-        << node.name() << "`.";
-    });
-  } else if (node.qualifier() != t_field_qualifier::optional) {
+  if (!dynamic_cast<const t_union*>(ctx.parent()) &&
+      node.qualifier() != t_field_qualifier::optional) {
     ctx.failure([&](auto& o) {
       o << "The `cpp.box` annotation can only be used with optional fields. Make sure `"
         << node.name() << "` is optional.";

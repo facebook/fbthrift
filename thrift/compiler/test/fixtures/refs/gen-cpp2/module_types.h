@@ -572,41 +572,41 @@ class MyUnion final  {
     return std::move(value_.aString);
   }
 
-  template <typename..., typename T = ::std::int32_t>
+  template <typename..., typename T = ::std::unique_ptr<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> anInteger_ref() const& {
     return {value_.anInteger, type_, anInteger, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::int32_t>
+  template <typename..., typename T = ::std::unique_ptr<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> anInteger_ref() const&& {
     return {std::move(value_.anInteger), type_, anInteger, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::int32_t>
+  template <typename..., typename T = ::std::unique_ptr<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> anInteger_ref() & {
     return {value_.anInteger, type_, anInteger, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::int32_t>
+  template <typename..., typename T = ::std::unique_ptr<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> anInteger_ref() && {
     return {std::move(value_.anInteger), type_, anInteger, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T = ::std::string>
+  template <typename..., typename T = ::std::unique_ptr<::std::string>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> aString_ref() const& {
     return {value_.aString, type_, aString, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::string>
+  template <typename..., typename T = ::std::unique_ptr<::std::string>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> aString_ref() const&& {
     return {std::move(value_.aString), type_, aString, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::string>
+  template <typename..., typename T = ::std::unique_ptr<::std::string>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> aString_ref() & {
     return {value_.aString, type_, aString, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::string>
+  template <typename..., typename T = ::std::unique_ptr<::std::string>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> aString_ref() && {
     return {std::move(value_.aString), type_, aString, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
