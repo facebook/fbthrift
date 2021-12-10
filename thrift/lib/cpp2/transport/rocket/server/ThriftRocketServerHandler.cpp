@@ -66,8 +66,9 @@ namespace rocket {
 thread_local uint32_t ThriftRocketServerHandler::sample_{0};
 
 namespace {
-bool isMetadataValid(const RequestRpcMetadata& metadata) {
-  return metadata.protocol_ref() && metadata.name_ref() && metadata.kind_ref();
+bool isMetadataValid(const RequestRpcMetadata& metadata, RpcKind expectedKind) {
+  return metadata.protocol_ref() && metadata.name_ref() &&
+      metadata.kind_ref() && metadata.kind_ref() == expectedKind;
 }
 } // namespace
 
@@ -253,7 +254,9 @@ void ThriftRocketServerHandler::handleRequestResponseFrame(
   };
 
   handleRequestCommon(
-      std::move(frame.payload()), std::move(makeRequestResponse));
+      std::move(frame.payload()),
+      std::move(makeRequestResponse),
+      RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
 }
 
 void ThriftRocketServerHandler::handleRequestFnfFrame(
@@ -276,7 +279,10 @@ void ThriftRocketServerHandler::handleRequestFnfFrame(
         [keepAlive = processor_] {});
   };
 
-  handleRequestCommon(std::move(frame.payload()), std::move(makeRequestFnf));
+  handleRequestCommon(
+      std::move(frame.payload()),
+      std::move(makeRequestFnf),
+      RpcKind::SINGLE_REQUEST_NO_RESPONSE);
 }
 
 void ThriftRocketServerHandler::handleRequestStreamFrame(
@@ -300,7 +306,10 @@ void ThriftRocketServerHandler::handleRequestStreamFrame(
         processor_);
   };
 
-  handleRequestCommon(std::move(frame.payload()), std::move(makeRequestStream));
+  handleRequestCommon(
+      std::move(frame.payload()),
+      std::move(makeRequestStream),
+      RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE);
 }
 
 void ThriftRocketServerHandler::handleRequestChannelFrame(
@@ -324,7 +333,8 @@ void ThriftRocketServerHandler::handleRequestChannelFrame(
         processor_);
   };
 
-  handleRequestCommon(std::move(frame.payload()), std::move(makeRequestSink));
+  handleRequestCommon(
+      std::move(frame.payload()), std::move(makeRequestSink), RpcKind::SINK);
 }
 
 void ThriftRocketServerHandler::connectionClosing() {
@@ -336,7 +346,7 @@ void ThriftRocketServerHandler::connectionClosing() {
 
 template <class F>
 void ThriftRocketServerHandler::handleRequestCommon(
-    Payload&& payload, F&& makeRequest) {
+    Payload&& payload, F&& makeRequest, RpcKind expectedKind) {
   // setup request sampling for counters and stats
   auto samplingStatus = shouldSample();
   std::chrono::steady_clock::time_point readEnd;
@@ -371,7 +381,7 @@ void ThriftRocketServerHandler::handleRequestCommon(
   auto& data = requestPayloadTry->payload;
   auto& metadata = requestPayloadTry->metadata;
 
-  if (!isMetadataValid(metadata)) {
+  if (!isMetadataValid(metadata, expectedKind)) {
     handleRequestWithBadMetadata(makeActiveRequest(
         std::move(metadata),
         std::move(debugPayload),

@@ -121,7 +121,8 @@ class ThriftRocketServerHandler : public RocketServerHandler {
   folly::once_flag setupLoggingFlag_;
 
   template <class F>
-  void handleRequestCommon(Payload&& payload, F&& makeRequest);
+  void handleRequestCommon(
+      Payload&& payload, F&& makeRequest, RpcKind expectedKind);
 
   FOLLY_NOINLINE void handleRequestWithBadMetadata(
       ThriftRequestCoreUniquePtr request);
