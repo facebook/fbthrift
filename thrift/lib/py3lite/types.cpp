@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/py3lite/PythonTableBased.h>
+#include <thrift/lib/py3lite/types.h>
+#include <thrift/lib/py3lite/types_api.h> // @manual
 
 #include <folly/Indestructible.h>
 #include <folly/Memory.h>
@@ -26,6 +27,16 @@ namespace python {
 
 constexpr const size_t kHeadOffset = sizeof(PyVarObject);
 constexpr const size_t kFieldOffset = sizeof(PyObject*);
+
+namespace {
+
+void do_import() {
+  if (0 != import_thrift__py3lite__types()) {
+    throw std::runtime_error("import_thrift__py3lite__types failed");
+  }
+}
+
+} // namespace
 
 PyObject* createUnionTuple() {
   UniquePyObjectPtr tuple{
@@ -44,6 +55,7 @@ UniquePyObjectPtr getDefaultValue(
     const detail::TypeInfo* typeInfo,
     const FieldValueMap& userValueMap,
     int16_t index) {
+  FOLLY_MAYBE_UNUSED static bool done = (do_import(), false);
   auto userValueFound = userValueMap.find(index);
   if (userValueFound != userValueMap.end()) {
     auto value = userValueFound->second;
@@ -54,6 +66,7 @@ UniquePyObjectPtr getDefaultValue(
       std::unordered_map<const detail::TypeInfo*, PyObject*>>
       defaultValueMap;
   auto defaultValueFound = defaultValueMap->find(typeInfo);
+  bool emplace = true;
   UniquePyObjectPtr value;
   if (defaultValueFound == defaultValueMap->end()) {
     switch (typeInfo->type) {
@@ -72,7 +85,22 @@ UniquePyObjectPtr getDefaultValue(
         Py_INCREF(Py_False);
         break;
       case protocol::TType::T_STRING:
-        value = UniquePyObjectPtr(PyBytes_FromString(""));
+        switch (
+            *static_cast<const detail::StringFieldType*>(typeInfo->typeExt)) {
+          case detail::StringFieldType::String:
+          case detail::StringFieldType::StringView:
+          case detail::StringFieldType::Binary:
+            value = UniquePyObjectPtr(PyBytes_FromString(""));
+            break;
+          case detail::StringFieldType::IOBuf:
+          case detail::StringFieldType::IOBufPtr:
+          case detail::StringFieldType::IOBufObj:
+            auto buf = create_IOBuf(folly::IOBuf::create(0));
+            Py_INCREF(buf);
+            value = UniquePyObjectPtr(buf);
+            emplace = false;
+            break;
+        }
         break;
       case protocol::TType::T_LIST:
       case protocol::TType::T_MAP:
@@ -95,7 +123,9 @@ UniquePyObjectPtr getDefaultValue(
     if (!value) {
       THRIFT_PY3_CHECK_ERROR();
     }
-    defaultValueMap->emplace(typeInfo, value.get());
+    if (emplace) {
+      defaultValueMap->emplace(typeInfo, value.get());
+    }
   } else {
     value = UniquePyObjectPtr(defaultValueFound->second);
   }
@@ -250,6 +280,27 @@ void setString(void* object, const std::string& value) {
     THRIFT_PY3_CHECK_ERROR();
   }
   setPyObject(object, std::move(bytesObj));
+}
+
+detail::OptionalThriftValue getIOBuf(const void* object) {
+  FOLLY_MAYBE_UNUSED static bool done = (do_import(), false);
+  PyObject* pyObj = *toPyObjectPtr(object);
+  folly::IOBuf* buf = get_cIOBuf(pyObj);
+  if (!buf) {
+    return folly::Optional<detail::ThriftValue>();
+  }
+  return folly::make_optional<detail::ThriftValue>(static_cast<void*>(buf));
+}
+
+void setIOBuf(void* object, const std::unique_ptr<folly::IOBuf> value) {
+  FOLLY_MAYBE_UNUSED static bool done = (do_import(), false);
+  const auto buf = create_IOBuf(value->clone());
+  Py_INCREF(buf);
+  UniquePyObjectPtr iobufObj{buf};
+  if (!buf) {
+    THRIFT_PY3_CHECK_ERROR();
+  }
+  setPyObject(object, std::move(iobufObj));
 }
 
 detail::OptionalThriftValue getStruct(const void* object) {
@@ -484,11 +535,21 @@ const auto& floatTypeInfo =
 const detail::StringFieldType stringFieldType =
     detail::StringFieldType::StringView;
 
+const detail::StringFieldType ioBufFieldType =
+    detail::StringFieldType::IOBufObj;
+
 const detail::TypeInfo stringTypeInfo{
     /* .type */ protocol::TType::T_STRING,
     /* .get */ getString,
     /* .set */ reinterpret_cast<detail::VoidFuncPtr>(setString),
     /* .typeExt */ &stringFieldType,
+};
+
+const detail::TypeInfo iobufTypeInfo{
+    /* .type */ protocol::TType::T_STRING,
+    /* .get */ getIOBuf,
+    /* .set */ reinterpret_cast<detail::VoidFuncPtr>(setIOBuf),
+    /* .typeExt */ &ioBufFieldType,
 };
 
 } // namespace python

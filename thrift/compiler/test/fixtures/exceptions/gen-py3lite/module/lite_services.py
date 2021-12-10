@@ -7,7 +7,7 @@
 from abc import ABCMeta
 import typing as _typing
 
-import folly.iobuf
+import folly.iobuf as _fbthrift_iobuf
 
 from thrift.py3lite.serializer import serialize_iobuf, deserialize, Protocol
 from thrift.py3lite.server import ServiceInterface, oneway, PythonUserException
@@ -40,7 +40,7 @@ class RaiserInterface(
         ) -> None:
         raise NotImplementedError("async def doBland is not implemented")
 
-    async def _fbthrift__handler_doBland(self, args: folly.iobuf.IOBuf, protocol: Protocol) -> folly.iobuf.IOBuf:
+    async def _fbthrift__handler_doBland(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) -> _fbthrift_iobuf.IOBuf:
         args_struct = deserialize(module.lite_types._fbthrift_Raiser_doBland_args, args, protocol)
         value = await self.doBland()
         return_struct = module.lite_types._fbthrift_Raiser_doBland_result()
@@ -53,7 +53,7 @@ class RaiserInterface(
         ) -> None:
         raise NotImplementedError("async def doRaise is not implemented")
 
-    async def _fbthrift__handler_doRaise(self, args: folly.iobuf.IOBuf, protocol: Protocol) -> folly.iobuf.IOBuf:
+    async def _fbthrift__handler_doRaise(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) -> _fbthrift_iobuf.IOBuf:
         args_struct = deserialize(module.lite_types._fbthrift_Raiser_doRaise_args, args, protocol)
         try:
             value = await self.doRaise()
@@ -82,7 +82,7 @@ class RaiserInterface(
         ) -> str:
         raise NotImplementedError("async def get200 is not implemented")
 
-    async def _fbthrift__handler_get200(self, args: folly.iobuf.IOBuf, protocol: Protocol) -> folly.iobuf.IOBuf:
+    async def _fbthrift__handler_get200(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) -> _fbthrift_iobuf.IOBuf:
         args_struct = deserialize(module.lite_types._fbthrift_Raiser_get200_args, args, protocol)
         value = await self.get200()
         return_struct = module.lite_types._fbthrift_Raiser_get200_result(success=value)
@@ -95,7 +95,7 @@ class RaiserInterface(
         ) -> str:
         raise NotImplementedError("async def get500 is not implemented")
 
-    async def _fbthrift__handler_get500(self, args: folly.iobuf.IOBuf, protocol: Protocol) -> folly.iobuf.IOBuf:
+    async def _fbthrift__handler_get500(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) -> _fbthrift_iobuf.IOBuf:
         args_struct = deserialize(module.lite_types._fbthrift_Raiser_get500_args, args, protocol)
         try:
             value = await self.get500()

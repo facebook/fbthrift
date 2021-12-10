@@ -16,6 +16,7 @@ from collections import defaultdict
 from collections.abc import Iterable, Mapping, Sequence, Set as pySet
 from types import MappingProxyType
 
+from folly.iobuf cimport cIOBuf, IOBuf, from_unique_ptr
 from libcpp.utility cimport move as cmove
 from libcpp.memory cimport make_unique
 from cpython cimport bool as pbool, int as pint, float as pfloat
@@ -33,6 +34,14 @@ import itertools
 from thrift.py3lite.exceptions cimport GeneratedError
 from thrift.py3lite.serializer cimport cserialize, cdeserialize
 
+
+cdef public api cIOBuf* get_cIOBuf(object buf):
+    if buf is None:
+        return NULL
+    return (<IOBuf>buf)._ours.get()
+
+cdef public api object create_IOBuf(unique_ptr[cIOBuf] ciobuf):
+    return from_unique_ptr(cmove(ciobuf))
 
 cdef class TypeInfo:
     @staticmethod
@@ -93,6 +102,21 @@ cdef class StringTypeInfo:
         return value.decode("UTF-8")
 
 
+cdef class IOBufTypeInfo:
+    @staticmethod
+    cdef create(const cTypeInfo& cpp_obj):
+        cdef IOBufTypeInfo inst = IOBufTypeInfo.__new__(IOBufTypeInfo)
+        inst.cpp_obj = &cpp_obj
+        return inst
+
+    def to_internal_data(self, IOBuf value):
+        return value
+
+    def to_python_value(self, object value):
+        return value
+
+
+
 typeinfo_bool = TypeInfo.create(boolTypeInfo, (pbool,))
 typeinfo_byte = IntegerTypeInfo.create(byteTypeInfo, -128, 127)
 typeinfo_i16 = IntegerTypeInfo.create(i16TypeInfo, -1<<15, (1<<15)-1)
@@ -102,6 +126,7 @@ typeinfo_double = TypeInfo.create(doubleTypeInfo, (pfloat, pint))
 typeinfo_float = TypeInfo.create(floatTypeInfo, (pfloat, pint))
 typeinfo_string = StringTypeInfo.create(stringTypeInfo)
 typeinfo_binary = TypeInfo.create(stringTypeInfo, (bytes,))
+typeinfo_iobuf = IOBufTypeInfo.create(iobufTypeInfo)
 
 
 StructOrError = cython.fused_type(Struct, GeneratedError)
@@ -174,6 +199,8 @@ cdef const cTypeInfo* getCTypeInfo(type_info):
             return (<TypeInfo>type_info).cpp_obj
         if isinstance(type_info, StringTypeInfo):
             return (<StringTypeInfo>type_info).cpp_obj
+        if isinstance(type_info, IOBufTypeInfo):
+            return (<IOBufTypeInfo>type_info).cpp_obj
         if isinstance(type_info, IntegerTypeInfo):
             return (<IntegerTypeInfo>type_info).cpp_obj
         if isinstance(type_info, StructTypeInfo):

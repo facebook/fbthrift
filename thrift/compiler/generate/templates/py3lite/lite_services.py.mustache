@@ -22,7 +22,7 @@ wrappers for each of the service handlers that the user is then able to extend.
 from abc import ABCMeta
 import typing as _typing
 
-import folly.iobuf
+import folly.iobuf as _fbthrift_iobuf
 
 from thrift.py3lite.serializer import serialize_iobuf, deserialize, Protocol
 from thrift.py3lite.server import ServiceInterface, oneway, PythonUserException
@@ -73,8 +73,8 @@ class {{service:name}}Interface(
     {{#function:oneway?}}
     @oneway
     {{/function:oneway?}}
-    async def _fbthrift__handler_{{function:name}}(self, args: folly.iobuf.IOBuf, protocol: Protocol) {{!
-            }}-> {{#function:oneway?}}None{{/function:oneway?}}{{^function:oneway?}}folly.iobuf.IOBuf{{/function:oneway?}}:
+    async def _fbthrift__handler_{{function:name}}(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) {{!
+            }}-> {{#function:oneway?}}None{{/function:oneway?}}{{^function:oneway?}}_fbthrift_iobuf.IOBuf{{/function:oneway?}}:
         args_struct = deserialize({{> types/function_args_type}}, args, protocol)
         {{#function:exceptions?}}
         try:

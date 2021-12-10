@@ -6,6 +6,7 @@
 #
 import enum
 
+import folly.iobuf as _fbthrift_iobuf
 import fbcode.thrift.py3lite.types as _fbthrift_py3lite_types
 import fbcode.thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 
@@ -43,7 +44,7 @@ class OptionalRefStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             1,  # id
             False,  # isUnqualified
             "optional_blob",  # name
-            _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
+            _fbthrift_py3lite_types.typeinfo_iobuf,  # typeinfo
             None,  # default value
         ),
     )
@@ -184,7 +185,7 @@ class BinaryUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
             1,  # id
             True,  # isUnqualified
             "iobuf_val",  # name
-            _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
+            _fbthrift_py3lite_types.typeinfo_iobuf,  # typeinfo
             None,  # default value
         ),
     )
@@ -240,8 +241,8 @@ DIGITS = _fbthrift_py3lite_types.Set(_fbthrift_py3lite_types.typeinfo_i32, (1, 2
 
 A_CONST_MAP = _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.StructTypeInfo(SimpleStruct), {"simple": SimpleStruct(is_on=False, tiny_int=50, small_int=61, nice_sized_int=72, big_int=83, real=float(99.9))})
 
-IOBufPtr = bytes
-IOBuf = bytes
+IOBufPtr = _fbthrift_iobuf.IOBuf
+IOBuf = _fbthrift_iobuf.IOBuf
 foo_bar = bytes
 
 

@@ -22,6 +22,7 @@ Generated Python classes for Thrift types
 import enum
 
 {{/program:enums?}}
+import folly.iobuf as _fbthrift_iobuf
 import {{program:base_library_package}}.types as _fbthrift_py3lite_types
 import {{program:base_library_package}}.exceptions as _fbthrift_py3lite_exceptions
 {{#program:include_namespaces}}

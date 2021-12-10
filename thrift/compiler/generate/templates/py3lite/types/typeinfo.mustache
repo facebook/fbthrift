@@ -31,7 +31,7 @@ in the client or server source rather than the type definition source.
 }}{{#type:double?}}_fbthrift_py3lite_types.typeinfo_double{{/type:double?}}{{!
 }}{{#type:float?}}_fbthrift_py3lite_types.typeinfo_float{{/type:float?}}{{!
 }}{{#type:string?}}_fbthrift_py3lite_types.typeinfo_string{{/type:string?}}{{!
-}}{{#type:binary?}}_fbthrift_py3lite_types.typeinfo_binary{{/type:binary?}}{{!
+}}{{#type:binary?}}{{#type:iobuf?}}_fbthrift_py3lite_types.typeinfo_iobuf{{/type:iobuf?}}{{^type:iobuf?}}_fbthrift_py3lite_types.typeinfo_binary{{/type:iobuf?}}{{/type:binary?}}{{!
 }}{{#type:struct}}_fbthrift_py3lite_types.StructTypeInfo({{!
   }}{{#type:need_module_path?}}{{type:module_path}}.{{/type:need_module_path?}}{{!
   }}{{struct:name}}){{!

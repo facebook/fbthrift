@@ -29,7 +29,7 @@ thrift-py3 specific container types.
 }}{{#type:double?}}float{{/type:double?}}{{!
 }}{{#type:float?}}float{{/type:float?}}{{!
 }}{{#type:string?}}str{{/type:string?}}{{!
-}}{{#type:binary?}}bytes{{/type:binary?}}{{!
+}}{{#type:binary?}}{{#type:iobuf?}}_fbthrift_iobuf.IOBuf{{/type:iobuf?}}{{^type:iobuf?}}bytes{{/type:iobuf?}}{{/type:binary?}}{{!
 }}{{#type:struct}}{{!
     }}{{#type:need_module_path?}}{{type:module_path}}.{{/type:need_module_path?}}{{!
   }}{{struct:name}}{{!

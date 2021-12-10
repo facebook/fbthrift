@@ -21,6 +21,7 @@ from typing import Optional, Sequence
 
 from derived.lite_clients import DerivedTestingService
 from derived.lite_services import DerivedTestingServiceInterface
+from folly.iobuf import IOBuf
 from stack_args.lite_clients import StackService
 from stack_args.lite_services import StackServiceInterface
 from stack_args.lite_types import simple
@@ -338,19 +339,19 @@ class StackHandler(StackServiceInterface):
         if smpl.val != 10:
             raise Exception("WRONG")
 
-    async def get_iobuf(self) -> bytes:
-        return b"abc"
+    async def get_iobuf(self) -> IOBuf:
+        return IOBuf(b"abc")
 
-    async def take_iobuf(self, val: bytes) -> None:
-        if val != b"cba":
+    async def take_iobuf(self, val: IOBuf) -> None:
+        if b"".join(val) != b"cba":
             raise Exception("WRONG")
 
     # currently unsupported by cpp backend:
     # async def get_iobuf_ptr(self) -> IOBuf:
     #     return IOBuf(b'xyz')
 
-    async def take_iobuf_ptr(self, val: bytes) -> None:
-        if val != b"zyx":
+    async def take_iobuf_ptr(self, val: IOBuf) -> None:
+        if b"".join(val) != b"zyx":
             raise Exception("WRONG")
 
 
@@ -373,10 +374,10 @@ class ClientStackServerTests(unittest.TestCase):
                     self.assertEqual(66, (await client.get_simple()).val)
                     self.assertEqual((await client.get_simple_no_sa()).val, 88)
                     await client.take_simple(simple(val=10))
-                    self.assertEqual(b"abc", await client.get_iobuf())
-                    await client.take_iobuf(b"cba")
+                    self.assertEqual(b"abc", b"".join(await client.get_iobuf()))
+                    await client.take_iobuf(IOBuf(b"cba"))
                     # currently unsupported by cpp backend:
                     # self.assertEqual(b'xyz', (await client.get_iobuf_ptr()))
-                    await client.take_iobuf_ptr(b"zyx")
+                    await client.take_iobuf_ptr(IOBuf(b"zyx"))
 
         loop.run_until_complete(inner_test())

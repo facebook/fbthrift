@@ -6,6 +6,7 @@
 #
 import enum
 
+import folly.iobuf as _fbthrift_iobuf
 import thrift.py3lite.types as _fbthrift_py3lite_types
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 

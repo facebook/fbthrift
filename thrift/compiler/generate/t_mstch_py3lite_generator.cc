@@ -52,6 +52,10 @@ std::string get_py3_namespace_with_name_and_prefix(
   return ss.str();
 }
 
+bool is_type_iobuf(const std::string& name) {
+  return name == "folly::IOBuf" || name == "std::unique_ptr<folly::IOBuf>";
+}
+
 bool is_func_supported(const t_function* func) {
   return !func->returns_stream() && !func->returns_sink() &&
       !func->get_returntype()->is_service();
@@ -76,6 +80,7 @@ class mstch_py3lite_type : public mstch_type {
             {"type:external_program?",
              &mstch_py3lite_type::is_external_program},
             {"type:integer?", &mstch_py3lite_type::is_integer},
+            {"type:iobuf?", &mstch_py3lite_type::is_iobuf},
         });
   }
 
@@ -111,6 +116,13 @@ class mstch_py3lite_type : public mstch_type {
   }
 
   mstch::node is_integer() { return type_->is_any_int() || type_->is_byte(); }
+
+  // Supporting legacy py3 cpp.type iobuf declaration here
+  mstch::node is_iobuf() {
+    return type_->has_annotation("py3.iobuf") ||
+        is_type_iobuf(type_->get_annotation("cpp2.type")) ||
+        is_type_iobuf(type_->get_annotation("cpp.type"));
+  }
 
  protected:
   const t_program* get_type_program() const {

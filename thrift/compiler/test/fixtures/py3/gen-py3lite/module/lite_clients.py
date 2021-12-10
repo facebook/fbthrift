@@ -7,6 +7,7 @@
 
 import typing as _typing
 
+import folly.iobuf as _fbthrift_iobuf
 from fbcode.thrift.py3lite.client import (
     AsyncClient as _fbthrift_py3lite_AsyncClient,
     SyncClient as _fbthrift_py3lite_SyncClient,

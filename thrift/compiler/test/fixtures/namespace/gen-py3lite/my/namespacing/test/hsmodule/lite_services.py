@@ -7,7 +7,7 @@
 from abc import ABCMeta
 import typing as _typing
 
-import folly.iobuf
+import folly.iobuf as _fbthrift_iobuf
 
 from thrift.py3lite.serializer import serialize_iobuf, deserialize, Protocol
 from thrift.py3lite.server import ServiceInterface, oneway, PythonUserException
@@ -38,7 +38,7 @@ class HsTestServiceInterface(
         ) -> int:
         raise NotImplementedError("async def init is not implemented")
 
-    async def _fbthrift__handler_init(self, args: folly.iobuf.IOBuf, protocol: Protocol) -> folly.iobuf.IOBuf:
+    async def _fbthrift__handler_init(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) -> _fbthrift_iobuf.IOBuf:
         args_struct = deserialize(py3lite_module_root.my.namespacing.test.hsmodule.lite_types._fbthrift_HsTestService_init_args, args, protocol)
         value = await self.init(args_struct.int1,)
         return_struct = py3lite_module_root.my.namespacing.test.hsmodule.lite_types._fbthrift_HsTestService_init_result(success=value)

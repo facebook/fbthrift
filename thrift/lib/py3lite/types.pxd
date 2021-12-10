@@ -25,7 +25,7 @@ cdef extern from "<thrift/lib/cpp2/protocol/TableBasedSerializer.h>" namespace "
     cdef struct cStructInfo "::apache::thrift::detail::StructInfo":
         pass
 
-cdef extern from "<thrift/lib/py3lite/PythonTableBased.h>" namespace "::apache::thrift::python":
+cdef extern from "<thrift/lib/py3lite/types.h>" namespace "::apache::thrift::python":
     cdef cppclass cDynamicStructInfo "::apache::thrift::python::DynamicStructInfo":
         cDynamicStructInfo(const char* name, int16_t numFields, bint isUnion)
         const cStructInfo& getStructInfo()
@@ -58,6 +58,7 @@ cdef extern from "<thrift/lib/py3lite/PythonTableBased.h>" namespace "::apache::
     cdef const cTypeInfo& floatTypeInfo
     cdef const cTypeInfo& doubleTypeInfo
     cdef const cTypeInfo  stringTypeInfo
+    cdef const cTypeInfo  iobufTypeInfo
 
 
 cdef class TypeInfo:
@@ -74,6 +75,11 @@ cdef class IntegerTypeInfo:
     cdef create(const cTypeInfo& cpp_obj, min_value, max_value)
 
 cdef class StringTypeInfo:
+    cdef const cTypeInfo* cpp_obj
+    @staticmethod
+    cdef create(const cTypeInfo& cpp_obj)
+
+cdef class IOBufTypeInfo:
     cdef const cTypeInfo* cpp_obj
     @staticmethod
     cdef create(const cTypeInfo& cpp_obj)

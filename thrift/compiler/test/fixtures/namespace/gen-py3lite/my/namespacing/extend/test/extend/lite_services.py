@@ -7,7 +7,7 @@
 from abc import ABCMeta
 import typing as _typing
 
-import folly.iobuf
+import folly.iobuf as _fbthrift_iobuf
 
 from thrift.py3lite.serializer import serialize_iobuf, deserialize, Protocol
 from thrift.py3lite.server import ServiceInterface, oneway, PythonUserException
@@ -40,7 +40,7 @@ class ExtendTestServiceInterface(
         ) -> bool:
         raise NotImplementedError("async def check is not implemented")
 
-    async def _fbthrift__handler_check(self, args: folly.iobuf.IOBuf, protocol: Protocol) -> folly.iobuf.IOBuf:
+    async def _fbthrift__handler_check(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) -> _fbthrift_iobuf.IOBuf:
         args_struct = deserialize(py3lite_module_root.my.namespacing.extend.test.extend.lite_types._fbthrift_ExtendTestService_check_args, args, protocol)
         value = await self.check(args_struct.struct1,)
         return_struct = py3lite_module_root.my.namespacing.extend.test.extend.lite_types._fbthrift_ExtendTestService_check_result(success=value)

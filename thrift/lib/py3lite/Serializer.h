@@ -22,7 +22,7 @@
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-#include <thrift/lib/py3lite/PythonTableBased.h>
+#include <thrift/lib/py3lite/types.h>
 
 namespace apache {
 namespace thrift {
