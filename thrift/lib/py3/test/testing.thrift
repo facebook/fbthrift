@@ -186,7 +186,7 @@ union ComplexUnion {
 }
 
 union IOBufUnion {
-  1: binary (cpp2.type = "folly::IOBuf") buf;
+  1: binary (cpp2.type = "folly::IOBuf", py3.iobuf) buf;
 } (cpp.noncomparable)
 
 struct hard {

@@ -16,7 +16,7 @@
 import unittest
 
 from folly.iobuf import IOBuf
-from iobuf.types import Moo
+from iobuf.lite_types import Moo
 
 
 class IOBufTests(unittest.TestCase):
@@ -31,11 +31,11 @@ class IOBufTests(unittest.TestCase):
         assert m.opt_ptr is not None
         assert m2.opt_ptr is not None
 
-        self.assertEqual(b"".join(m.ptr), b"".join(m2.ptr))
-        self.assertEqual(b"abcdef", b"".join(m.ptr))
+        self.assertEqual(bytes(m.ptr), bytes(m2.ptr))
+        self.assertEqual(b"abcdef", bytes(m.ptr))
 
-        self.assertEqual(b"".join(m.buf), b"".join(m2.buf))
-        self.assertEqual(b"xyzzy", b"".join(m.buf))
+        self.assertEqual(bytes(m.buf), bytes(m2.buf))
+        self.assertEqual(b"xyzzy", bytes(m.buf))
 
-        self.assertEqual(b"".join(m.opt_ptr), b"".join(m2.opt_ptr))
-        self.assertEqual(b"pqr", b"".join(m.opt_ptr))
+        self.assertEqual(bytes(m.opt_ptr), bytes(m2.opt_ptr))
+        self.assertEqual(b"pqr", bytes(m.opt_ptr))

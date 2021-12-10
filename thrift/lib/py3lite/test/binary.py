@@ -17,13 +17,13 @@ import asyncio
 import unittest
 from typing import Any
 
-import thrift.py3.server
-from binary.clients import BinaryService
-from binary.services import BinaryServiceInterface
-from binary.types import Binaries, BinaryUnion
+from binary.lite_clients import BinaryService
+from binary.lite_services import BinaryServiceInterface
+from binary.lite_types import Binaries, BinaryUnion
 from folly.iobuf import IOBuf
-from thrift.py3.client import get_client
-from thrift.py3.server import ThriftServer
+from thrift.py3.server import SocketAddress
+from thrift.py3lite.client import get_client
+from thrift.py3lite.server import ThriftServer, ServiceInterface
 
 
 class BinaryTests(unittest.TestCase):
@@ -36,15 +36,15 @@ class BinaryTests(unittest.TestCase):
             nonstandard_type=b"yzabcd",
         )
         self.assertEqual(val.no_special_type, b"abcdef")
-        self.assertEqual(b"".join(val.iobuf_val), b"mnopqr")
+        self.assertEqual(bytes(val.iobuf_val), b"mnopqr")
         assert val.iobuf_ptr is not None
-        self.assertEqual(b"".join(val.iobuf_ptr), b"ghijkl")
+        self.assertEqual(bytes(val.iobuf_ptr), b"ghijkl")
         self.assertEqual(val.fbstring, b"stuvwx")
         self.assertEqual(val.nonstandard_type, b"yzabcd")
 
     def test_binary_union(self) -> None:
         val = BinaryUnion(iobuf_val=IOBuf(b"mnopqr"))
-        self.assertEqual(b"".join(val.iobuf_val), b"mnopqr")
+        self.assertEqual(bytes(val.iobuf_val), b"mnopqr")
 
 
 class BinaryHandler(BinaryServiceInterface):
@@ -56,9 +56,9 @@ class BinaryHandler(BinaryServiceInterface):
 
     async def sendRecvBinaries(self, val: Binaries) -> Binaries:
         self.unit_test.assertEqual(val.no_special_type, b"c1")
-        self.unit_test.assertEqual(b"".join(val.iobuf_val), b"c2")
+        self.unit_test.assertEqual(bytes(val.iobuf_val), b"c2")
         assert val.iobuf_ptr is not None
-        self.unit_test.assertEqual(b"".join(val.iobuf_ptr), b"c3")
+        self.unit_test.assertEqual(bytes(val.iobuf_ptr), b"c3")
         self.unit_test.assertEqual(val.fbstring, b"c4")
         self.unit_test.assertEqual(val.nonstandard_type, b"c5")
         return Binaries(
@@ -74,11 +74,11 @@ class BinaryHandler(BinaryServiceInterface):
         return b"sv1"
 
     async def sendRecvIOBuf(self, val: IOBuf) -> IOBuf:
-        self.unit_test.assertEqual(b"".join(val), b"cv2")
+        self.unit_test.assertEqual(bytes(val), b"cv2")
         return IOBuf(b"sv2")
 
     async def sendRecvIOBufPtr(self, val: IOBuf) -> IOBuf:
-        self.unit_test.assertEqual(b"".join(val), b"cv3")
+        self.unit_test.assertEqual(bytes(val), b"cv3")
         return IOBuf(b"sv3")
 
     async def sendRecvFbstring(self, val: bytes) -> bytes:
@@ -90,7 +90,7 @@ class BinaryHandler(BinaryServiceInterface):
         return b"sv5"
 
     async def sendRecBinaryUnion(self, val: BinaryUnion) -> BinaryUnion:
-        self.unit_test.assertEqual(b"".join(val.iobuf_val), b"cv6")
+        self.unit_test.assertEqual(bytes(val.iobuf_val), b"cv6")
         return BinaryUnion(iobuf_val=IOBuf(b"sv6"))
 
 
@@ -99,10 +99,10 @@ class TestServer:
     server: ThriftServer
     serve_task: asyncio.Task
 
-    def __init__(self, *, ip: str, handler: thrift.py3.server.ServiceInterface) -> None:
+    def __init__(self, *, ip: str, handler: ServiceInterface) -> None:
         self.server = ThriftServer(handler, ip=ip, path=None)
 
-    async def __aenter__(self) -> thrift.py3.server.SocketAddress:
+    async def __aenter__(self) -> SocketAddress:
         self.serve_task = asyncio.get_event_loop().create_task(self.server.serve())
         return await self.server.get_address()
 
@@ -133,9 +133,9 @@ class ClientBinaryServerTests(unittest.TestCase):
                         )
                     )
                     self.assertEqual(val.no_special_type, b"s1")
-                    self.assertEqual(b"".join(val.iobuf_val), b"s2")
+                    self.assertEqual(bytes(val.iobuf_val), b"s2")
                     assert val.iobuf_ptr is not None
-                    self.assertEqual(b"".join(val.iobuf_ptr), b"s3")
+                    self.assertEqual(bytes(val.iobuf_ptr), b"s3")
                     self.assertEqual(val.fbstring, b"s4")
                     self.assertEqual(val.nonstandard_type, b"s5")
 
@@ -143,10 +143,10 @@ class ClientBinaryServerTests(unittest.TestCase):
                     self.assertEqual(val, b"sv1")
 
                     val = await client.sendRecvIOBuf(IOBuf(b"cv2"))
-                    self.assertEqual(b"".join(val), b"sv2")
+                    self.assertEqual(bytes(val), b"sv2")
 
                     val = await client.sendRecvIOBufPtr(IOBuf(b"cv3"))
-                    self.assertEqual(b"".join(val), b"sv3")
+                    self.assertEqual(bytes(val), b"sv3")
 
                     val = await client.sendRecvFbstring(b"cv4")
                     self.assertEqual(val, b"sv4")
@@ -156,6 +156,6 @@ class ClientBinaryServerTests(unittest.TestCase):
 
                     bu = BinaryUnion(iobuf_val=IOBuf(b"cv6"))
                     val = await client.sendRecBinaryUnion(bu)
-                    self.assertEqual(b"".join(val.iobuf_val), b"sv6")
+                    self.assertEqual(bytes(val.iobuf_val), b"sv6")
 
         loop.run_until_complete(inner_test())

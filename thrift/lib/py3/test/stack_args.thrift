@@ -16,8 +16,8 @@
 
 cpp_include "folly/io/IOBuf.h"
 
-typedef binary (cpp2.type = "std::unique_ptr<folly::IOBuf>") IOBufPtr
-typedef binary (cpp2.type = "folly::IOBuf") IOBuf
+typedef binary (cpp2.type = "std::unique_ptr<folly::IOBuf>", py3.iobuf) IOBufPtr
+typedef binary (cpp2.type = "folly::IOBuf", py3.iobuf) IOBuf
 
 struct simple {
   1: i32 val;
