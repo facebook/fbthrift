@@ -63,6 +63,8 @@ const int64_t kRocketClientMinVersion = 6;
 THRIFT_FLAG_DEFINE_bool(rocket_client_new_protocol_key, true);
 THRIFT_FLAG_DEFINE_int64(rocket_client_max_version, kRocketClientMaxVersion);
 
+THRIFT_FLAG_DEFINE_bool(rocket_client_upgrade_zlib_to_zstd, true);
+
 using namespace apache::thrift::transport;
 
 namespace apache {
@@ -474,6 +476,10 @@ class FirstRequestProcessorSink : public SinkClientCallback,
 void setCompression(RequestRpcMetadata& metadata, ssize_t payloadSize) {
   if (auto compressionConfig = metadata.compressionConfig_ref()) {
     if (auto codecRef = compressionConfig->codecConfig_ref()) {
+      if (codecRef->getType() == apache::thrift::CodecConfig::zlibConfig &&
+          THRIFT_FLAG(rocket_client_upgrade_zlib_to_zstd)) {
+        codecRef->set_zstdConfig({});
+      }
       if (payloadSize >
           compressionConfig->compressionSizeLimit_ref().value_or(0)) {
         switch (codecRef->getType()) {
