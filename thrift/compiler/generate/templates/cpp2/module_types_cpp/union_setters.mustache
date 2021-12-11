@@ -17,14 +17,14 @@
 %><%#struct:fields%><%#field:type%><%#type:resolves_to_container_or_struct?%><%#field:cpp_ref?%>
 
 <%field:cpp_deprecated_accessor_type%>& <%struct:name%>::set_<%field:cpp_name%>(<%type:cpp_type%> const &t) {
-  apache::thrift::clear(*this);
+  __clear();
   type_ = Type::<%field:cpp_name%>;
   ::new (std::addressof(value_.<%field:cpp_name%>)) <%field:cpp_storage_type%>(<%^field:boxed_ref?%>new <%/field:boxed_ref?%><%field:cpp_storage_type%>::element_type(t));
   return value_.<%field:cpp_name%>;
 }
 
 <%field:cpp_deprecated_accessor_type%>& <%struct:name%>::set_<%field:cpp_name%>(<%type:cpp_type%>&& t) {
-  apache::thrift::clear(*this);
+  __clear();
   type_ = Type::<%field:cpp_name%>;
   ::new (std::addressof(value_.<%field:cpp_name%>)) <%field:cpp_storage_type%>(<%^field:boxed_ref?%>new <%/field:boxed_ref?%><%field:cpp_storage_type%>::element_type(std::move(t)));
   return value_.<%field:cpp_name%>;

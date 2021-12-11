@@ -1563,7 +1563,7 @@ class BinaryUnion final  {
 
   BinaryUnion& operator=(BinaryUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    apache::thrift::clear(*this);
+    __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::iobuf_val:
@@ -1583,7 +1583,7 @@ class BinaryUnion final  {
 
   BinaryUnion& operator=(const BinaryUnion& rhs) {
     if (this == &rhs) { return *this; }
-    apache::thrift::clear(*this);
+    __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::iobuf_val:
@@ -1612,21 +1612,21 @@ class BinaryUnion final  {
   } ;
 
   ::py3::simple::IOBuf& set_iobuf_val(::py3::simple::IOBuf const &t) {
-    apache::thrift::clear(*this);
+    __clear();
     type_ = Type::iobuf_val;
     ::new (std::addressof(value_.iobuf_val)) ::py3::simple::IOBuf(t);
     return value_.iobuf_val;
   }
 
   ::py3::simple::IOBuf& set_iobuf_val(::py3::simple::IOBuf&& t) {
-    apache::thrift::clear(*this);
+    __clear();
     type_ = Type::iobuf_val;
     ::new (std::addressof(value_.iobuf_val)) ::py3::simple::IOBuf(std::move(t));
     return value_.iobuf_val;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::py3::simple::IOBuf, T...>> ::py3::simple::IOBuf& set_iobuf_val(T&&... t) {
-    apache::thrift::clear(*this);
+    __clear();
     type_ = Type::iobuf_val;
     ::new (std::addressof(value_.iobuf_val)) ::py3::simple::IOBuf(std::forward<T>(t)...);
     return value_.iobuf_val;

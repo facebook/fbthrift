@@ -1051,7 +1051,7 @@ class ExampleUnion final  {
 
   ExampleUnion& operator=(ExampleUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    apache::thrift::clear(*this);
+    __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::fieldA:
@@ -1076,7 +1076,7 @@ class ExampleUnion final  {
 
   ExampleUnion& operator=(const ExampleUnion& rhs) {
     if (this == &rhs) { return *this; }
-    apache::thrift::clear(*this);
+    __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::fieldA:
@@ -1114,42 +1114,42 @@ class ExampleUnion final  {
   bool operator<(const ExampleUnion&) const;
 
   ::test::fixtures::tablebased::ContainerStruct& set_fieldA(::test::fixtures::tablebased::ContainerStruct const &t) {
-    apache::thrift::clear(*this);
+    __clear();
     type_ = Type::fieldA;
     ::new (std::addressof(value_.fieldA)) ::test::fixtures::tablebased::ContainerStruct(t);
     return value_.fieldA;
   }
 
   ::test::fixtures::tablebased::ContainerStruct& set_fieldA(::test::fixtures::tablebased::ContainerStruct&& t) {
-    apache::thrift::clear(*this);
+    __clear();
     type_ = Type::fieldA;
     ::new (std::addressof(value_.fieldA)) ::test::fixtures::tablebased::ContainerStruct(std::move(t));
     return value_.fieldA;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::test::fixtures::tablebased::ContainerStruct, T...>> ::test::fixtures::tablebased::ContainerStruct& set_fieldA(T&&... t) {
-    apache::thrift::clear(*this);
+    __clear();
     type_ = Type::fieldA;
     ::new (std::addressof(value_.fieldA)) ::test::fixtures::tablebased::ContainerStruct(std::forward<T>(t)...);
     return value_.fieldA;
   }
 
   ::test::fixtures::tablebased::TrivialTypesStruct& set_fieldB(::test::fixtures::tablebased::TrivialTypesStruct const &t) {
-    apache::thrift::clear(*this);
+    __clear();
     type_ = Type::fieldB;
     ::new (std::addressof(value_.fieldB)) ::test::fixtures::tablebased::TrivialTypesStruct(t);
     return value_.fieldB;
   }
 
   ::test::fixtures::tablebased::TrivialTypesStruct& set_fieldB(::test::fixtures::tablebased::TrivialTypesStruct&& t) {
-    apache::thrift::clear(*this);
+    __clear();
     type_ = Type::fieldB;
     ::new (std::addressof(value_.fieldB)) ::test::fixtures::tablebased::TrivialTypesStruct(std::move(t));
     return value_.fieldB;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::test::fixtures::tablebased::TrivialTypesStruct, T...>> ::test::fixtures::tablebased::TrivialTypesStruct& set_fieldB(T&&... t) {
-    apache::thrift::clear(*this);
+    __clear();
     type_ = Type::fieldB;
     ::new (std::addressof(value_.fieldB)) ::test::fixtures::tablebased::TrivialTypesStruct(std::forward<T>(t)...);
     return value_.fieldB;

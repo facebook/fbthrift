@@ -156,7 +156,7 @@ class Nada final  {
 
   Nada& operator=(Nada&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    apache::thrift::clear(*this);
+    __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       default:
@@ -171,7 +171,7 @@ class Nada final  {
 
   Nada& operator=(const Nada& rhs) {
     if (this == &rhs) { return *this; }
-    apache::thrift::clear(*this);
+    __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       default:

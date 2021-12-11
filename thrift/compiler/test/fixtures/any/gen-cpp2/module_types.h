@@ -243,7 +243,7 @@ class MyUnion final  {
 
   MyUnion& operator=(MyUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    apache::thrift::clear(*this);
+    __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::myString:
@@ -263,7 +263,7 @@ class MyUnion final  {
 
   MyUnion& operator=(const MyUnion& rhs) {
     if (this == &rhs) { return *this; }
-    apache::thrift::clear(*this);
+    __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::myString:
@@ -295,21 +295,21 @@ class MyUnion final  {
   bool operator<(const MyUnion&) const;
 
   ::std::string& set_myString(::std::string const &t) {
-    apache::thrift::clear(*this);
+    __clear();
     type_ = Type::myString;
     ::new (std::addressof(value_.myString)) ::std::string(t);
     return value_.myString;
   }
 
   ::std::string& set_myString(::std::string&& t) {
-    apache::thrift::clear(*this);
+    __clear();
     type_ = Type::myString;
     ::new (std::addressof(value_.myString)) ::std::string(std::move(t));
     return value_.myString;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_myString(T&&... t) {
-    apache::thrift::clear(*this);
+    __clear();
     type_ = Type::myString;
     ::new (std::addressof(value_.myString)) ::std::string(std::forward<T>(t)...);
     return value_.myString;

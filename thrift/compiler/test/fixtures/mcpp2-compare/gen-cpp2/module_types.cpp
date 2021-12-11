@@ -1031,28 +1031,28 @@ bool ComplexUnion::operator<(const ComplexUnion& rhs) const {
 }
 
 ::std::unique_ptr<::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field(::some::valid::ns::MyStruct const &t) {
-  apache::thrift::clear(*this);
+  __clear();
   type_ = Type::ref_field;
   ::new (std::addressof(value_.ref_field)) ::std::unique_ptr<::some::valid::ns::MyStruct>(new ::std::unique_ptr<::some::valid::ns::MyStruct>::element_type(t));
   return value_.ref_field;
 }
 
 ::std::unique_ptr<::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field(::some::valid::ns::MyStruct&& t) {
-  apache::thrift::clear(*this);
+  __clear();
   type_ = Type::ref_field;
   ::new (std::addressof(value_.ref_field)) ::std::unique_ptr<::some::valid::ns::MyStruct>(new ::std::unique_ptr<::some::valid::ns::MyStruct>::element_type(std::move(t)));
   return value_.ref_field;
 }
 
 ::std::shared_ptr<const ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field2(::some::valid::ns::MyStruct const &t) {
-  apache::thrift::clear(*this);
+  __clear();
   type_ = Type::ref_field2;
   ::new (std::addressof(value_.ref_field2)) ::std::shared_ptr<const ::some::valid::ns::MyStruct>(new ::std::shared_ptr<const ::some::valid::ns::MyStruct>::element_type(t));
   return value_.ref_field2;
 }
 
 ::std::shared_ptr<const ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field2(::some::valid::ns::MyStruct&& t) {
-  apache::thrift::clear(*this);
+  __clear();
   type_ = Type::ref_field2;
   ::new (std::addressof(value_.ref_field2)) ::std::shared_ptr<const ::some::valid::ns::MyStruct>(new ::std::shared_ptr<const ::some::valid::ns::MyStruct>::element_type(std::move(t)));
   return value_.ref_field2;

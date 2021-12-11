@@ -305,7 +305,7 @@ class U final  {
 
   U& operator=(U&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    apache::thrift::clear(*this);
+    __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::i:
@@ -330,7 +330,7 @@ class U final  {
 
   U& operator=(const U& rhs) {
     if (this == &rhs) { return *this; }
-    apache::thrift::clear(*this);
+    __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::i:
@@ -368,28 +368,28 @@ class U final  {
   bool operator<(const U&) const;
 
   ::std::int32_t& set_i(::std::int32_t t = ::std::int32_t()) {
-    apache::thrift::clear(*this);
+    __clear();
     type_ = Type::i;
     ::new (std::addressof(value_.i)) ::std::int32_t(t);
     return value_.i;
   }
 
   ::std::string& set_s(::std::string const &t) {
-    apache::thrift::clear(*this);
+    __clear();
     type_ = Type::s;
     ::new (std::addressof(value_.s)) ::std::string(t);
     return value_.s;
   }
 
   ::std::string& set_s(::std::string&& t) {
-    apache::thrift::clear(*this);
+    __clear();
     type_ = Type::s;
     ::new (std::addressof(value_.s)) ::std::string(std::move(t));
     return value_.s;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_s(T&&... t) {
-    apache::thrift::clear(*this);
+    __clear();
     type_ = Type::s;
     ::new (std::addressof(value_.s)) ::std::string(std::forward<T>(t)...);
     return value_.s;

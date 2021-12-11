@@ -1470,7 +1470,7 @@ class MyUnion final  {
 
   MyUnion& operator=(MyUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    apache::thrift::clear(*this);
+    __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::first:
@@ -1495,7 +1495,7 @@ class MyUnion final  {
 
   MyUnion& operator=(const MyUnion& rhs) {
     if (this == &rhs) { return *this; }
-    apache::thrift::clear(*this);
+    __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::first:
@@ -1533,28 +1533,28 @@ class MyUnion final  {
   bool operator<(const MyUnion&) const;
 
   ::cpp2::annotated_inline_string& set_first(::cpp2::annotated_inline_string const &t) {
-    apache::thrift::clear(*this);
+    __clear();
     type_ = Type::first;
     ::new (std::addressof(value_.first)) ::cpp2::annotated_inline_string(t);
     return value_.first;
   }
 
   ::cpp2::annotated_inline_string& set_first(::cpp2::annotated_inline_string&& t) {
-    apache::thrift::clear(*this);
+    __clear();
     type_ = Type::first;
     ::new (std::addressof(value_.first)) ::cpp2::annotated_inline_string(std::move(t));
     return value_.first;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::annotated_inline_string, T...>> ::cpp2::annotated_inline_string& set_first(T&&... t) {
-    apache::thrift::clear(*this);
+    __clear();
     type_ = Type::first;
     ::new (std::addressof(value_.first)) ::cpp2::annotated_inline_string(std::forward<T>(t)...);
     return value_.first;
   }
 
   ::cpp2::annotated_inline_i64& set_second(::cpp2::annotated_inline_i64 t = ::cpp2::annotated_inline_i64()) {
-    apache::thrift::clear(*this);
+    __clear();
     type_ = Type::second;
     ::new (std::addressof(value_.second)) ::cpp2::annotated_inline_i64(t);
     return value_.second;

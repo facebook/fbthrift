@@ -4269,7 +4269,7 @@ class NoExceptMoveUnion final  {
 
   NoExceptMoveUnion& operator=(NoExceptMoveUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    apache::thrift::clear(*this);
+    __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::string_field:
@@ -4294,7 +4294,7 @@ class NoExceptMoveUnion final  {
 
   NoExceptMoveUnion& operator=(const NoExceptMoveUnion& rhs) {
     if (this == &rhs) { return *this; }
-    apache::thrift::clear(*this);
+    __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::string_field:
@@ -4332,28 +4332,28 @@ class NoExceptMoveUnion final  {
   bool operator<(const NoExceptMoveUnion&) const;
 
   ::std::string& set_string_field(::std::string const &t) {
-    apache::thrift::clear(*this);
+    __clear();
     type_ = Type::string_field;
     ::new (std::addressof(value_.string_field)) ::std::string(t);
     return value_.string_field;
   }
 
   ::std::string& set_string_field(::std::string&& t) {
-    apache::thrift::clear(*this);
+    __clear();
     type_ = Type::string_field;
     ::new (std::addressof(value_.string_field)) ::std::string(std::move(t));
     return value_.string_field;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_string_field(T&&... t) {
-    apache::thrift::clear(*this);
+    __clear();
     type_ = Type::string_field;
     ::new (std::addressof(value_.string_field)) ::std::string(std::forward<T>(t)...);
     return value_.string_field;
   }
 
   ::std::int32_t& set_i32_field(::std::int32_t t = ::std::int32_t()) {
-    apache::thrift::clear(*this);
+    __clear();
     type_ = Type::i32_field;
     ::new (std::addressof(value_.i32_field)) ::std::int32_t(t);
     return value_.i32_field;
