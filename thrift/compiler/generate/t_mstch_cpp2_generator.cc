@@ -405,6 +405,7 @@ class mstch_cpp2_type : public mstch_type {
             {"type:resolves_to_enum?", &mstch_cpp2_type::resolves_to_enum},
             {"type:transitively_refers_to_struct?",
              &mstch_cpp2_type::transitively_refers_to_struct},
+            {"type:cpp_name", &mstch_cpp2_type::cpp_name},
             {"type:cpp_type", &mstch_cpp2_type::cpp_type},
             {"type:cpp_standard_type", &mstch_cpp2_type::cpp_standard_type},
             {"type:cpp_adapter", &mstch_cpp2_type::cpp_adapter},
@@ -495,6 +496,7 @@ class mstch_cpp2_type : public mstch_type {
     }
     return false;
   }
+  mstch::node cpp_name() { return cpp2::get_name(type_); }
   mstch::node cpp_type() { return context_->resolver().get_type_name(type_); }
   mstch::node cpp_standard_type() {
     return context_->resolver().get_standard_type_name(type_);

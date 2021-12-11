@@ -150,7 +150,7 @@ func.arguments_ref()->push_back(std::move(<% > metadata/func_field_name%>));
 func.exceptions_ref()->push_back(std::move(<% > metadata/func_field_name%>));
 <%#field:type%>
 <%#type:struct?%>
-  ExceptionMetadata<<% > common/type_namespace_cpp2%><%type:name%>>::gen(metadata);
+  ExceptionMetadata<<% > common/type_namespace_cpp2%><%type:cpp_name%>>::gen(metadata);
 <%/type:struct?%>
 <%/field:type%>
 <%/function:exceptions%>
