@@ -331,5 +331,17 @@ struct IndirectionAdapter {
   }
 };
 
+template <typename AdaptedT, typename ThriftT>
+struct StaticCastAdapter {
+  template <typename T>
+  static constexpr decltype(auto) fromThrift(T&& value) {
+    return static_cast<AdaptedT>(std::forward<T>(value));
+  }
+  template <typename T>
+  static constexpr decltype(auto) toThrift(T&& value) {
+    return static_cast<ThriftT>(std::forward<T>(value));
+  }
+};
+
 } // namespace thrift
 } // namespace apache

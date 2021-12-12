@@ -34,6 +34,22 @@ struct AssertSameType<T, T> {};
 
 struct AdapterTest : ::testing::Test {};
 
+TEST_F(AdapterTest, AdaptedEnum) {
+  using basic::AdaptedEnum;
+  basic::AdaptTemplatedTestStruct myStruct;
+
+  AssertSameType<AdaptedEnum&, decltype(*myStruct.adaptedEnum())>();
+  EXPECT_EQ(myStruct.adaptedEnum(), AdaptedEnum::One);
+  myStruct.adaptedEnum() = AdaptedEnum::Two;
+
+  auto data = CompactSerializer::serialize<std::string>(myStruct);
+  basic::AdaptTemplatedTestStruct myStruct2;
+  CompactSerializer::deserialize(data, myStruct2);
+  EXPECT_EQ(myStruct2.adaptedEnum(), AdaptedEnum::Two);
+
+  EXPECT_EQ(myStruct, myStruct2);
+}
+
 TEST_F(AdapterTest, AdaptedT) {
   AssertSameType<adapt_detail::adapted_t<OverloadedAdapter, int64_t>, Num>();
   AssertSameType<

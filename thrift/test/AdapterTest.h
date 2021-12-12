@@ -25,6 +25,14 @@
 
 namespace apache::thrift::test {
 
+namespace basic {
+enum class AdaptedEnum {
+  Zero = 0,
+  One,
+  Two,
+};
+}
+
 template <typename T>
 struct Wrapper {
   T value;

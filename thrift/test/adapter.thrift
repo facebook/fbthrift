@@ -74,6 +74,14 @@ struct AdaptTestStruct {
   6: IndirectionString indirectionString;
 }
 
+enum AdaptedEnum {
+  Zero = 0,
+  One = 1,
+} (
+  cpp.name = "ThriftAdaptedEnum",
+  cpp.adapter = "::apache::thrift::StaticCastAdapter<::apache::thrift::test::basic::AdaptedEnum, ::apache::thrift::test::basic::ThriftAdaptedEnum>",
+)
+
 struct AdaptTemplatedTestStruct {
   1: AdaptedBool adaptedBool;
   2: AdaptedByte adaptedByte;
@@ -89,6 +97,7 @@ struct AdaptTemplatedTestStruct {
   12: AdaptedLong adaptedLongDefault = 4;
   13: AdaptedDouble adaptedDoubleDefault = 5;
   14: AdaptedString adaptedStringDefault = "6";
+  15: AdaptedEnum adaptedEnum = AdaptedEnum.One;
 }
 
 struct AdaptTemplatedNestedTestStruct {
