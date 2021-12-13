@@ -111,8 +111,8 @@ TYPED_TEST(MultiProtocolTest, test_serialization) {
   EXPECT_EQ(a.field4, b.field4);
   EXPECT_EQ(a.field5, b.field5);
 
-  EXPECT_EQ(a.field6.nfield00_ref(), b.field6.nfield00_ref());
-  EXPECT_EQ(a.field6.nfield01_ref(), b.field6.nfield01_ref());
+  EXPECT_EQ(a.field6_ref()->nfield00_ref(), b.field6_ref()->nfield00_ref());
+  EXPECT_EQ(a.field6_ref()->nfield01_ref(), b.field6_ref()->nfield01_ref());
   EXPECT_EQ(a.field6, b.field6);
   EXPECT_EQ(*a.field7_ref(), *b.field7_ref());
   EXPECT_EQ(
@@ -144,8 +144,8 @@ TYPED_TEST(MultiProtocolTest, test_legacy_serialization) {
   EXPECT_EQ(a.field4, b.field4);
   EXPECT_EQ(a.field5, b.field5);
 
-  EXPECT_EQ(a.field6.nfield00_ref(), b.field6.nfield00_ref());
-  EXPECT_EQ(a.field6.nfield01_ref(), b.field6.nfield01_ref());
+  EXPECT_EQ(a.field6_ref()->nfield00_ref(), b.field6_ref()->nfield00_ref());
+  EXPECT_EQ(a.field6_ref()->nfield01_ref(), b.field6_ref()->nfield01_ref());
   EXPECT_EQ(a.field6, b.field6);
   EXPECT_EQ(*a.field7_ref(), *b.field7_ref());
   EXPECT_EQ(
