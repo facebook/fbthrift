@@ -136,7 +136,7 @@ class EncodeValueRecorder {
   uint32_t writeFieldBegin(const char* name, TType fieldType, int16_t fieldId) {
     auto& fieldBegin = next().writeFieldBegin_ref().ensure();
     fieldBegin.name_ref() = name;
-    fieldBegin.type_ref() = type::toThriftBaseType(fieldType);
+    fieldBegin.type_ref() = type::toBaseType(fieldType);
     fieldBegin.id_ref() = fieldId;
     return 0;
   }
@@ -153,8 +153,8 @@ class EncodeValueRecorder {
 
   uint32_t writeMapBegin(TType keyType, TType valType, uint32_t size) {
     auto& mapBegin = next().writeMapBegin_ref().ensure();
-    mapBegin.keyType_ref() = type::toThriftBaseType(keyType);
-    mapBegin.valueType_ref() = type::toThriftBaseType(valType);
+    mapBegin.keyType_ref() = type::toBaseType(keyType);
+    mapBegin.valueType_ref() = type::toBaseType(valType);
     mapBegin.size_ref() = size;
     return 0;
   }
@@ -166,7 +166,7 @@ class EncodeValueRecorder {
 
   uint32_t writeListBegin(TType elemType, uint32_t size) {
     auto& listBegin = next().writeListBegin_ref().ensure();
-    listBegin.elemType_ref() = type::toThriftBaseType(elemType);
+    listBegin.elemType_ref() = type::toBaseType(elemType);
     listBegin.size_ref() = size;
     return 0;
   }
@@ -178,7 +178,7 @@ class EncodeValueRecorder {
 
   uint32_t writeSetBegin(TType elemType, uint32_t size) {
     auto& setBegin = next().writeSetBegin_ref().ensure();
-    setBegin.elemType_ref() = type::toThriftBaseType(elemType);
+    setBegin.elemType_ref() = type::toBaseType(elemType);
     setBegin.size_ref() = size;
     return 0;
   }

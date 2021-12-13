@@ -23,6 +23,6 @@ namespace apache::thrift::type {
 // When called, returns a std::string representing the given
 // type tag's name.
 template <typename T>
-inline static constexpr detail::get_name_fn<T> getName;
+inline static constexpr detail::GetName<T> getName;
 
 } // namespace apache::thrift::type

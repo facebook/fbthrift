@@ -981,10 +981,12 @@ class mstch_py3_enum : public mstch_enum {
         this,
         {
             {"enum:flags?", &mstch_py3_enum::hasFlags},
+            {"enum:cpp_name", &mstch_py3_enum::cpp_name},
         });
   }
 
   mstch::node hasFlags() { return enm_->has_annotation("py3.flags"); }
+  mstch::node cpp_name() { return cpp2::get_name(enm_); }
 };
 
 class mstch_py3_enum_value : public mstch_enum_value {

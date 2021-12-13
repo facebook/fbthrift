@@ -18,9 +18,9 @@
 
 #include <type_traits>
 
+#include <thrift/lib/cpp2/type/BaseType.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
 #include <thrift/lib/cpp2/type/detail/AnyType.h>
-#include <thrift/lib/thrift/gen-cpp2/type_types.h>
 
 namespace apache::thrift::type {
 

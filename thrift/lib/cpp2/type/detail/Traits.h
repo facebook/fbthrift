@@ -26,9 +26,10 @@
 #include <folly/String.h>
 #include <folly/Traits.h>
 #include <folly/io/IOBuf.h>
+#include <thrift/lib/cpp2/Adapt.h>
 #include <thrift/lib/cpp2/type/AnyType.h>
+#include <thrift/lib/cpp2/type/BaseType.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
-#include <thrift/lib/thrift/gen-cpp2/type_types.h>
 
 namespace apache::thrift::type::detail {
 

@@ -20,7 +20,7 @@
 
 #include <folly/FBString.h>
 #include <folly/Range.h>
-
+#include <folly/lang/Exception.h>
 #include <thrift/lib/thrift/gen-cpp2/type_types.h>
 
 namespace apache::thrift::type {

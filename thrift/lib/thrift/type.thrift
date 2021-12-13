@@ -23,6 +23,8 @@ namespace py.asyncio apache_thrift_asyncio.type
 namespace go thrift.lib.thrift.type
 namespace py thrift.lib.thrift.type
 
+cpp_include "thrift/lib/cpp2/type/BaseType.h"
+
 // An enumeration of all base types in thrift.
 //
 // Base types are not parameterized. For example, the base
@@ -61,7 +63,10 @@ enum BaseType {
   List = 14,
   Set = 15,
   Map = 16,
-}
+} (
+  cpp.name = "ThriftBaseType",
+  cpp.adapter = "::apache::thrift::StaticCastAdapter<::apache::thrift::type::BaseType, ::apache::thrift::type::ThriftBaseType>",
+)
 
 // The minimum and default number of bytes that can be used to identify
 // a type.
