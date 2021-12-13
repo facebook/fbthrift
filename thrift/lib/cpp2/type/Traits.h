@@ -24,17 +24,6 @@
 
 namespace apache::thrift::type {
 
-// The standard types associated with the given concrete ThriftType.
-//
-// These are the types that can be used directly with the Thrift
-// runtime libraries.
-//
-// TODO(afuller): Consider removing this, as it is difficult/impossible to
-// represent this as a list of types (something like c++20 concepts would be
-// needed).
-template <typename Tag>
-using standard_types = typename detail::traits<Tag>::standard_types;
-
 // The default standard type associated with the given concrete ThriftType.
 //
 // This is the type that is used by default, to represent the given ThriftType.
@@ -47,10 +36,6 @@ using standard_type = typename detail::traits<Tag>::standard_type;
 // into account any IDL annotations that modify the c++ type.
 template <typename Tag>
 using native_type = typename detail::traits<Tag>::native_type;
-
-// If T is a standard type for the given ThriftType.
-template <typename Tag, typename T>
-struct is_standard_type : fatal::contains<standard_types<Tag>, T> {};
 
 // Useful groupings of primitive types.
 using integral_types =

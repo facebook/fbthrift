@@ -18,14 +18,11 @@
 
 #include <map>
 #include <set>
+#include <string>
 #include <vector>
 
-#include <fatal/type/find.h>
 #include <fatal/type/slice.h>
-#include <fatal/type/transform.h>
-#include <folly/String.h>
 #include <folly/Traits.h>
-#include <folly/io/IOBuf.h>
 #include <thrift/lib/cpp2/Adapt.h>
 #include <thrift/lib/cpp2/type/AnyType.h>
 #include <thrift/lib/cpp2/type/BaseType.h>
@@ -40,12 +37,10 @@ struct traits {
   static_assert(is_not_concrete_v<Tag>);
 };
 
-// A 'bound' helper for resolving concrete template types.
-template <template <typename...> typename TemplateT, typename... Front>
-struct template_of {
-  template <typename T>
-  using apply = TemplateT<Front..., T>;
-};
+// Resolves the concrete template type when paramaterizing the given template,
+// with the standard types of the give Tags.
+template <template <typename...> typename TemplateT, typename... Tags>
+using standard_template_t = TemplateT<typename traits<Tags>::standard_type...>;
 
 // Resolves the concrete template type when paramaterizing the given template,
 // with the native types of the give Tags.
@@ -86,75 +81,54 @@ struct types {
 template <typename Ts, typename Tag, typename R = void>
 using if_contains = std::enable_if_t<Ts::template contains<Tag>(), R>;
 
-template <typename Tag, typename A>
-using expand_types = fatal::transform<typename traits<Tag>::standard_types, A>;
-
-template <typename A, typename... Tags>
-using apply_to_native_types =
-    typename A::template apply<typename traits<Tags>::native_type...>;
-
 // The (mixin) traits all concrete types (_t suffix) define.
 //
 // All concrete types have an associated set of standard types and a native type
 // (which by default is just the first standard type).
-template <typename StandardTs, typename NativeType = fatal::first<StandardTs>>
+template <typename StandardType, typename NativeType = StandardType>
 struct concrete_type {
-  using standard_types = StandardTs;
+  using standard_type = StandardType;
   using native_type = NativeType;
-  using standard_type = fatal::first<standard_types>;
 };
 
-// The traits for a concrete type that is associated with specific c++
-// types.
-template <typename... StandardTs>
-using cpp_type = concrete_type<types<StandardTs...>>;
-
 template <>
-struct traits<void_t> : cpp_type<void> {};
+struct traits<void_t> : concrete_type<void> {};
 
 // Type traits for all primitive types.
 template <>
-struct traits<bool_t> : cpp_type<bool> {};
+struct traits<bool_t> : concrete_type<bool> {};
 template <>
-struct traits<byte_t> : cpp_type<int8_t, uint8_t> {};
+struct traits<byte_t> : concrete_type<int8_t> {};
 template <>
-struct traits<i16_t> : cpp_type<int16_t, uint16_t> {};
+struct traits<i16_t> : concrete_type<int16_t> {};
 template <>
-struct traits<i32_t> : cpp_type<int32_t, uint32_t> {};
+struct traits<i32_t> : concrete_type<int32_t> {};
 template <>
-struct traits<i64_t> : cpp_type<int64_t, uint64_t> {};
+struct traits<i64_t> : concrete_type<int64_t> {};
 template <>
-struct traits<float_t> : cpp_type<float> {};
+struct traits<float_t> : concrete_type<float> {};
 template <>
-struct traits<double_t> : cpp_type<double> {};
+struct traits<double_t> : concrete_type<double> {};
 template <>
-struct traits<string_t> : cpp_type<
-                              std::string,
-                              folly::fbstring,
-                              folly::IOBuf,
-                              std::unique_ptr<folly::IOBuf>> {};
+struct traits<string_t> : concrete_type<std::string> {};
 template <>
-struct traits<binary_t> : cpp_type<
-                              std::string,
-                              folly::fbstring,
-                              folly::IOBuf,
-                              std::unique_ptr<folly::IOBuf>> {};
+struct traits<binary_t> : concrete_type<std::string> {};
 
 // Traits for enums.
 template <typename E>
-struct traits<enum_t<E>> : cpp_type<E> {};
+struct traits<enum_t<E>> : concrete_type<E> {};
 
 // Traits for structs.
 template <typename T>
-struct traits<struct_t<T>> : cpp_type<T> {};
+struct traits<struct_t<T>> : concrete_type<T> {};
 
 // Traits for unions.
 template <typename T>
-struct traits<union_t<T>> : cpp_type<T> {};
+struct traits<union_t<T>> : concrete_type<T> {};
 
 // Traits for excpetions.
 template <typename T>
-struct traits<exception_t<T>> : cpp_type<T> {};
+struct traits<exception_t<T>> : concrete_type<T> {};
 
 // The non-concrete list traits.
 template <
@@ -170,7 +144,7 @@ struct list_type {
 template <typename ValTag, template <typename...> typename ListT>
 struct list_type<ValTag, ListT, if_all_concrete<ValTag>>
     : concrete_type<
-          expand_types<ValTag, template_of<ListT>>,
+          standard_template_t<ListT, ValTag>,
           native_template_t<ListT, ValTag>> {
   using value_type = ValTag;
 };
@@ -237,7 +211,7 @@ struct set_type {
 template <typename KeyTag, template <typename...> typename SetT>
 struct set_type<KeyTag, SetT, if_all_concrete<KeyTag>>
     : concrete_type<
-          expand_types<KeyTag, template_of<SetT>>,
+          standard_template_t<SetT, KeyTag>,
           typename native_set<SetT, KeyTag>::type> {
   using key_type = KeyTag;
 };
@@ -314,9 +288,7 @@ template <
     typename MapT>
 struct map_type<KeyTag, ValTag, MapT, if_all_concrete<KeyTag, ValTag>>
     : concrete_type<
-          expand_types<
-              ValTag,
-              template_of<MapT, typename traits<KeyTag>::standard_type>>,
+          standard_template_t<MapT, KeyTag, ValTag>,
           typename native_map<MapT, KeyTag, ValTag>::type> {
   using key_type = KeyTag;
   using value_type = ValTag;
@@ -339,7 +311,7 @@ struct traits<map<KeyTag, ValTag, MapT>> : map_type<KeyTag, ValTag, MapT> {};
 template <typename Adapter, typename Tag>
 struct traits<adapted<Adapter, Tag>>
     : concrete_type<
-          typename traits<Tag>::standard_types,
+          typename traits<Tag>::standard_type,
           adapt_detail::adapted_t<Adapter, typename traits<Tag>::native_type>> {
 };
 

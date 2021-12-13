@@ -33,8 +33,7 @@ template <typename Tag>
 struct EqualTo {
   template <typename T = type::native_type<Tag>>
   constexpr bool operator()(const T& lhs, const T& rhs) const {
-    // All standard types implement this via the native c++ operator.
-    static_assert(type::is_standard_type<Tag, T>::value);
+    // Use the native c++ operator by default.
     return lhs == rhs;
   }
 };
@@ -95,7 +94,6 @@ struct IdenticalTo<type::list<ValTag, ListT>> {
 
 template <typename Tag, typename T = type::native_type<Tag>>
 struct DefaultOf {
-  static_assert(type::is_standard_type<Tag, T>::value);
   // C++'s intrinsic default for the underlying native type, is the intrisitic
   // default for for all unstructured types.
   static_assert(!type::structured_types::contains<Tag>());
@@ -113,7 +111,6 @@ struct DefaultOf<type::binary_t, T> : StringDefaultOf<T> {};
 
 template <typename Tag, typename T>
 struct StructureDefaultOf {
-  static_assert(type::is_standard_type<Tag, T>::value);
   FOLLY_EXPORT static const T& get() {
     const static T* kDefault = []() {
       auto* value = new T{};
@@ -139,7 +136,6 @@ template <typename Tag>
 struct Empty {
   template <typename T = type::native_type<Tag>>
   constexpr bool operator()(const T& value) const {
-    static_assert(type::is_standard_type<Tag, T>::value);
     // All unstructured values are 'empty' if they are equal to their intrinsic
     // default.
     //
