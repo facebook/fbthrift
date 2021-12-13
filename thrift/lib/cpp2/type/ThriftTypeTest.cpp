@@ -248,6 +248,49 @@ static_assert(!is_thrift_type_tag_v<adapted<int, int>>);
 static_assert(is_thrift_type_tag_v<adapted<int, void_t>>);
 static_assert(is_thrift_type_tag_v<list<adapted<int, void_t>>>);
 
+// is_not_concrete static asserts.
+static_assert(!is_not_concrete_v<int>);
+static_assert(!is_not_concrete_v<void_t>);
+static_assert(!is_not_concrete_v<bool_t>);
+static_assert(!is_not_concrete_v<byte_t>);
+static_assert(!is_not_concrete_v<i16_t>);
+static_assert(!is_not_concrete_v<i32_t>);
+static_assert(!is_not_concrete_v<i64_t>);
+static_assert(!is_not_concrete_v<float_t>);
+static_assert(!is_not_concrete_v<double_t>);
+static_assert(!is_not_concrete_v<string_t>);
+static_assert(!is_not_concrete_v<binary_t>);
+static_assert(is_not_concrete_v<enum_c>);
+static_assert(is_not_concrete_v<struct_c>);
+static_assert(is_not_concrete_v<union_c>);
+static_assert(is_not_concrete_v<exception_c>);
+static_assert(is_not_concrete_v<list_c>);
+static_assert(is_not_concrete_v<set_c>);
+static_assert(is_not_concrete_v<map_c>);
+
+static_assert(!is_not_concrete_v<enum_t<int>>);
+static_assert(!is_not_concrete_v<struct_t<int>>);
+static_assert(!is_not_concrete_v<union_t<int>>);
+static_assert(!is_not_concrete_v<exception_t<int>>);
+
+static_assert(!is_not_concrete_v<list<int>>);
+static_assert(!is_not_concrete_v<list<void_t>>);
+static_assert(!is_not_concrete_v<list<void_t, TestTemplate>>);
+
+static_assert(!is_not_concrete_v<set<int>>);
+static_assert(!is_not_concrete_v<set<void_t>>);
+static_assert(!is_not_concrete_v<set<void_t, TestTemplate>>);
+
+static_assert(!is_not_concrete_v<map<int, void_t>>);
+static_assert(!is_not_concrete_v<map<int, int>>);
+static_assert(!is_not_concrete_v<map<void_t, int>>);
+static_assert(!is_not_concrete_v<map<void_t, void_t>>);
+static_assert(!is_not_concrete_v<map<void_t, void_t, TestTemplate>>);
+
+static_assert(!is_not_concrete_v<adapted<int, int>>);
+static_assert(!is_not_concrete_v<adapted<int, void_t>>);
+static_assert(is_concrete_v<list<adapted<int, void_t>>>);
+
 // Test concrete helpers.
 template <typename Tag>
 constexpr if_concrete<Tag, bool> isConcrete() {

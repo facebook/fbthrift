@@ -18,9 +18,11 @@
 
 #include <stdexcept>
 #include <string>
+#include <type_traits>
 
 #include <folly/lang/Exception.h>
 #include <thrift/lib/cpp/protocol/TType.h>
+#include <thrift/lib/cpp2/type/ThriftType.h>
 
 namespace apache::thrift::type {
 
@@ -58,7 +60,69 @@ enum class BaseType {
 
 const char* getBaseTypeName(BaseType type) noexcept;
 
-constexpr inline protocol::TType toTType(BaseType type) {
+namespace detail {
+constexpr BaseType getBaseType(void_t) {
+  return BaseType::Void;
+}
+constexpr BaseType getBaseType(bool_t) {
+  return BaseType::Bool;
+}
+constexpr BaseType getBaseType(byte_t) {
+  return BaseType::Byte;
+}
+constexpr BaseType getBaseType(i16_t) {
+  return BaseType::I16;
+}
+constexpr BaseType getBaseType(i32_t) {
+  return BaseType::I32;
+}
+constexpr BaseType getBaseType(i64_t) {
+  return BaseType::I64;
+}
+constexpr BaseType getBaseType(float_t) {
+  return BaseType::Float;
+}
+constexpr BaseType getBaseType(double_t) {
+  return BaseType::Double;
+}
+constexpr BaseType getBaseType(string_t) {
+  return BaseType::String;
+}
+constexpr BaseType getBaseType(binary_t) {
+  return BaseType::Binary;
+}
+constexpr BaseType getBaseType(enum_c) {
+  return BaseType::Enum;
+}
+constexpr BaseType getBaseType(struct_c) {
+  return BaseType::Struct;
+}
+constexpr BaseType getBaseType(union_c) {
+  return BaseType::Union;
+}
+constexpr BaseType getBaseType(exception_c) {
+  return BaseType::Exception;
+}
+constexpr BaseType getBaseType(list_c) {
+  return BaseType::List;
+}
+constexpr BaseType getBaseType(set_c) {
+  return BaseType::Set;
+}
+constexpr BaseType getBaseType(map_c) {
+  return BaseType::Map;
+}
+} // namespace detail
+
+// The BaseType for the given ThriftType.
+template <typename Tag>
+constexpr BaseType base_type_v = detail::getBaseType(Tag{});
+
+// Only defined if T has the BaseType B.
+template <typename Tag, BaseType B, typename R = void>
+using if_base_type = std::enable_if_t<B == base_type_v<Tag>, R>;
+
+constexpr protocol::TType toTType(BaseType type) {
   using protocol::TType;
   switch (type) {
     case BaseType::Void:
@@ -102,7 +166,7 @@ constexpr inline protocol::TType toTType(BaseType type) {
   }
 }
 
-constexpr inline BaseType toBaseType(protocol::TType type) {
+constexpr BaseType toBaseType(protocol::TType type) {
   using protocol::TType;
   switch (type) {
     case TType::T_BOOL:
@@ -138,4 +202,5 @@ constexpr inline BaseType toBaseType(protocol::TType type) {
           "Unsupported conversion from: " + std::to_string(type));
   }
 }
+
 } // namespace apache::thrift::type

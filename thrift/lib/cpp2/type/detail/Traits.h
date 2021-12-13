@@ -35,12 +35,9 @@ namespace apache::thrift::type::detail {
 
 // All the traits for the given tag.
 template <typename Tag>
-struct traits;
-
-template <BaseType B>
-struct has_base_type {
-  template <typename Tag>
-  using apply = std::bool_constant<traits<Tag>::kBaseType == B>;
+struct traits {
+  // No types to declare for non concrete types.
+  static_assert(is_not_concrete_v<Tag>);
 };
 
 // A 'bound' helper for resolving concrete template types.
@@ -65,12 +62,12 @@ using if_all_concrete = std::enable_if_t<(is_concrete_v<Tags> && ...)>;
 template <typename... Tags>
 struct types {
   static constexpr bool contains(BaseType baseType) {
-    return (... || (traits<Tags>::kBaseType == baseType));
+    return (... || (base_type_v<Tags> == baseType));
   }
 
   template <typename Tag>
   static constexpr bool contains() {
-    return contains(traits<Tag>::kBaseType);
+    return contains(base_type_v<Tag>);
   }
 
   static bool contains(const AnyType& type) {
@@ -96,99 +93,68 @@ template <typename A, typename... Tags>
 using apply_to_native_types =
     typename A::template apply<typename traits<Tags>::native_type...>;
 
-// The traits all types define.
-//
-// Just the BaseType value.
-template <BaseType B>
-struct base_type {
-  static constexpr BaseType kBaseType = B;
-};
-
 // The (mixin) traits all concrete types (_t suffix) define.
 //
 // All concrete types have an associated set of standard types and a native type
 // (which by default is just the first standard type).
-template <
-    typename Base,
-    typename StandardTs,
-    typename NativeType = fatal::first<StandardTs>>
-struct concrete_type : Base {
+template <typename StandardTs, typename NativeType = fatal::first<StandardTs>>
+struct concrete_type {
   using standard_types = StandardTs;
   using native_type = NativeType;
   using standard_type = fatal::first<standard_types>;
 };
 
-// The traits all primitive types (bool, i64, string, etc) define.
-template <BaseType B, typename... StandardTs>
-using primitive_type = concrete_type<base_type<B>, types<StandardTs...>>;
+// The traits for a concrete type that is associated with specific c++
+// types.
+template <typename... StandardTs>
+using cpp_type = concrete_type<types<StandardTs...>>;
 
 template <>
-struct traits<void_t> : primitive_type<BaseType::Void, void> {};
+struct traits<void_t> : cpp_type<void> {};
 
 // Type traits for all primitive types.
 template <>
-struct traits<bool_t> : primitive_type<BaseType::Bool, bool> {};
+struct traits<bool_t> : cpp_type<bool> {};
 template <>
-struct traits<byte_t> : primitive_type<BaseType::Byte, int8_t, uint8_t> {};
+struct traits<byte_t> : cpp_type<int8_t, uint8_t> {};
 template <>
-struct traits<i16_t> : primitive_type<BaseType::I16, int16_t, uint16_t> {};
+struct traits<i16_t> : cpp_type<int16_t, uint16_t> {};
 template <>
-struct traits<i32_t> : primitive_type<BaseType::I32, int32_t, uint32_t> {};
+struct traits<i32_t> : cpp_type<int32_t, uint32_t> {};
 template <>
-struct traits<i64_t> : primitive_type<BaseType::I64, int64_t, uint64_t> {};
+struct traits<i64_t> : cpp_type<int64_t, uint64_t> {};
 template <>
-struct traits<float_t> : primitive_type<BaseType::Float, float> {};
+struct traits<float_t> : cpp_type<float> {};
 template <>
-struct traits<double_t> : primitive_type<BaseType::Double, double> {};
+struct traits<double_t> : cpp_type<double> {};
 template <>
-struct traits<string_t> : primitive_type<
-                              BaseType::String,
+struct traits<string_t> : cpp_type<
                               std::string,
                               folly::fbstring,
                               folly::IOBuf,
                               std::unique_ptr<folly::IOBuf>> {};
 template <>
-struct traits<binary_t> : primitive_type<
-                              BaseType::Binary,
+struct traits<binary_t> : cpp_type<
                               std::string,
                               folly::fbstring,
                               folly::IOBuf,
                               std::unique_ptr<folly::IOBuf>> {};
-
-// The traits for a concrete type that is associated with a single, specific c++
-// type.
-template <BaseType B, typename T>
-using cpp_type = concrete_type<base_type<B>, types<T>>;
 
 // Traits for enums.
-template <>
-struct traits<enum_c> : base_type<BaseType::Enum> {};
 template <typename E>
-struct traits<enum_t<E>> : cpp_type<BaseType::Enum, E> {};
+struct traits<enum_t<E>> : cpp_type<E> {};
 
 // Traits for structs.
-template <>
-struct traits<struct_c> : base_type<BaseType::Struct> {};
 template <typename T>
-struct traits<struct_t<T>> : cpp_type<BaseType::Struct, T> {};
+struct traits<struct_t<T>> : cpp_type<T> {};
 
 // Traits for unions.
-template <>
-struct traits<union_c> : base_type<BaseType::Union> {};
 template <typename T>
-struct traits<union_t<T>> : cpp_type<BaseType::Union, T> {};
+struct traits<union_t<T>> : cpp_type<T> {};
 
 // Traits for excpetions.
-template <>
-struct traits<exception_c> : base_type<BaseType::Exception> {};
 template <typename T>
-struct traits<exception_t<T>> : cpp_type<BaseType::Exception, T> {};
-
-// The traits all lists define.
-template <typename ValTag>
-struct base_list_type : base_type<BaseType::List> {
-  using value_type = ValTag;
-};
+struct traits<exception_t<T>> : cpp_type<T> {};
 
 // The non-concrete list traits.
 template <
@@ -196,19 +162,20 @@ template <
     template <typename...>
     typename ListT,
     typename = void>
-struct list_type : base_list_type<ValTag> {};
+struct list_type {
+  using value_type = ValTag;
+};
 
 // The concrete list traits.
 template <typename ValTag, template <typename...> typename ListT>
 struct list_type<ValTag, ListT, if_all_concrete<ValTag>>
     : concrete_type<
-          base_list_type<ValTag>,
           expand_types<ValTag, template_of<ListT>>,
-          native_template_t<ListT, ValTag>> {};
+          native_template_t<ListT, ValTag>> {
+  using value_type = ValTag;
+};
 
 // Traits for lists.
-template <>
-struct traits<list_c> : base_type<BaseType::List> {};
 template <typename ValTag>
 struct traits<type::list<ValTag, DefaultT>>
     : traits<type::list<ValTag, std::vector>> {};
@@ -256,31 +223,26 @@ struct native_set<SetT, adapted<Adapter, KeyTag>> {
       std::declval<native_template_t<SetT, adapted<Adapter, KeyTag>>>()));
 };
 
-// The traits all sets define.
-template <typename KeyTag>
-struct base_set_type : base_type<BaseType::Set> {
-  using value_type = KeyTag;
-};
-
 // The non-concrete set traits.
 template <
     typename KeyTag,
     template <typename...>
     typename SetT,
     typename = void>
-struct set_type : base_set_type<KeyTag> {};
+struct set_type {
+  using key_type = KeyTag;
+};
 
 // The concrete set traits.
 template <typename KeyTag, template <typename...> typename SetT>
 struct set_type<KeyTag, SetT, if_all_concrete<KeyTag>>
     : concrete_type<
-          base_set_type<KeyTag>,
           expand_types<KeyTag, template_of<SetT>>,
-          typename native_set<SetT, KeyTag>::type> {};
+          typename native_set<SetT, KeyTag>::type> {
+  using key_type = KeyTag;
+};
 
 // Traits for sets.
-template <>
-struct traits<set_c> : base_type<BaseType::Set> {};
 template <typename KeyTag>
 struct traits<set<KeyTag, DefaultT>> : set_type<KeyTag, std::set> {};
 template <typename KeyTag, template <typename...> typename SetT>
@@ -332,13 +294,6 @@ struct native_map<MapT, adapted<Adapter, KeyTag>, ValTag> {
           native_template_t<MapT, adapted<Adapter, KeyTag>, ValTag>>()));
 };
 
-// The traits all maps define.
-template <typename KeyTag, typename ValTag>
-struct base_map_type : base_type<BaseType::Map> {
-  using key_type = KeyTag;
-  using mapped_type = ValTag;
-};
-
 // The non-concrete map traits.
 template <
     typename KeyTag,
@@ -346,7 +301,10 @@ template <
     template <typename...>
     typename MapT,
     typename = void>
-struct map_type : base_map_type<KeyTag, ValTag> {};
+struct map_type {
+  using key_type = KeyTag;
+  using value_type = ValTag;
+};
 
 // The concrete map traits.
 template <
@@ -356,15 +314,15 @@ template <
     typename MapT>
 struct map_type<KeyTag, ValTag, MapT, if_all_concrete<KeyTag, ValTag>>
     : concrete_type<
-          base_map_type<KeyTag, ValTag>,
           expand_types<
               ValTag,
               template_of<MapT, typename traits<KeyTag>::standard_type>>,
-          typename native_map<MapT, KeyTag, ValTag>::type> {};
+          typename native_map<MapT, KeyTag, ValTag>::type> {
+  using key_type = KeyTag;
+  using value_type = ValTag;
+};
 
 // Traits for maps.
-template <>
-struct traits<map_c> : base_type<BaseType::Map> {};
 template <typename KeyTag, typename ValTag>
 struct traits<map<KeyTag, ValTag, DefaultT>>
     : traits<map<KeyTag, ValTag, std::map>> {};
@@ -381,7 +339,6 @@ struct traits<map<KeyTag, ValTag, MapT>> : map_type<KeyTag, ValTag, MapT> {};
 template <typename Adapter, typename Tag>
 struct traits<adapted<Adapter, Tag>>
     : concrete_type<
-          base_type<traits<Tag>::kBaseType>,
           typename traits<Tag>::standard_types,
           adapt_detail::adapted_t<Adapter, typename traits<Tag>::native_type>> {
 };

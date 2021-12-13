@@ -20,14 +20,9 @@
 #pragma once
 
 #include <fatal/type/cat.h>
-#include <thrift/lib/cpp2/type/BaseType.h>
 #include <thrift/lib/cpp2/type/detail/Traits.h>
 
 namespace apache::thrift::type {
-
-// The BaseType for the given ThriftType.
-template <typename Tag>
-constexpr BaseType base_type_v = detail::traits<Tag>::kBaseType;
 
 // The standard types associated with the given concrete ThriftType.
 //
@@ -104,9 +99,5 @@ template <typename T, typename R = void>
 using if_container = detail::if_contains<container_types, T, R>;
 template <typename T, typename R = void>
 using if_composite = detail::if_contains<composite_types, T, R>;
-
-// Only defined if T has the BaseType B.
-template <typename T, BaseType B, typename R = void>
-using if_base_type = std::enable_if_t<B == T::kBaseType, R>;
 
 } // namespace apache::thrift::type
