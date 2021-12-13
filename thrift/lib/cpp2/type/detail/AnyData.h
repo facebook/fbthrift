@@ -20,7 +20,8 @@
 
 #include <folly/Poly.h>
 #include <folly/Traits.h>
-#include <thrift/lib/cpp2/type/ThriftOp.h>
+#include <thrift/lib/cpp2/op/Clear.h>
+#include <thrift/lib/cpp2/op/Compare.h>
 #include <thrift/lib/cpp2/type/Traits.h>
 
 namespace apache::thrift::type::detail {

@@ -23,8 +23,8 @@
 #include <folly/lang/Exception.h>
 #include <thrift/conformance/cpp2/AnyRegistry.h>
 #include <thrift/conformance/cpp2/Object.h>
+#include <thrift/lib/cpp2/op/Compare.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
-#include <thrift/lib/cpp2/type/ThriftOp.h>
 
 namespace apache::thrift::conformance {
 namespace {
