@@ -57,7 +57,7 @@
 
 <% > module_types_cpp/lazy_deserialization%>
 
-void <%struct:name%>::__clear() {
+void <%struct:name%>::__fbthrift_clear() {
   // clear all fields
 <%#struct:fields%><%#field:type%><%!
 %><%#type:resolves_to_base_or_enum?%><%!
@@ -91,16 +91,16 @@ void <%struct:name%>::__clear() {
 <%/type:resolves_to_container?%>
 <%#type:non_empty_struct?%>
 <%^field:cpp_ref?%>
-  <%#field:cpp_adapter%><% > field/member%> = decltype(<% > field/member%>)();<%/field:cpp_adapter%><%^field:cpp_adapter%><% > field/member%>.__clear();<%/field:cpp_adapter%>
+  <%#field:cpp_adapter%><% > field/member%> = decltype(<% > field/member%>)();<%/field:cpp_adapter%><%^field:cpp_adapter%>apache::thrift::clear(<% > field/member%>);<%/field:cpp_adapter%>
 <%/field:cpp_ref?%>
 <%#field:cpp_ref_unique?%>
 <%^field:optional?%>
-  if (<% > field/member%>) <% > field/member%>->__clear();
+  if (<% > field/member%>) apache::thrift::clear(*<% > field/member%>);
 <%/field:optional?%>
 <%/field:cpp_ref_unique?%>
 <%#field:cpp_ref_shared?%>
 <%^field:optional?%>
-  if (<% > field/member%>) <% > field/member%>->__clear();
+  if (<% > field/member%>) apache::thrift::clear(*<% > field/member%>);
 <%/field:optional?%>
 <%/field:cpp_ref_shared?%>
 <%#field:cpp_ref_shared_const?%>

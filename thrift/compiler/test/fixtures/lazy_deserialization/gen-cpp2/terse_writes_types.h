@@ -131,6 +131,8 @@ class TerseFoo final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = TerseFoo;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -152,7 +154,6 @@ class TerseFoo final  {
 
   TerseFoo& operator=(TerseFoo&&) noexcept;
   TerseFoo& operator=(const TerseFoo& src);
-  void __clear();
  private:
   ::std::vector<double> __fbthrift_field_field1;
  private:
@@ -400,6 +401,8 @@ class TerseLazyFoo final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = TerseLazyFoo;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -420,7 +423,6 @@ class TerseLazyFoo final  {
 
   TerseLazyFoo& operator=(TerseLazyFoo&&) noexcept;
   TerseLazyFoo& operator=(const TerseLazyFoo& src);
-  void __clear();
  private:
   ::std::vector<double> __fbthrift_field_field1;
  private:
@@ -673,6 +675,8 @@ class TerseOptionalFoo final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = TerseOptionalFoo;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -694,7 +698,6 @@ class TerseOptionalFoo final  {
 
   TerseOptionalFoo& operator=(TerseOptionalFoo&&) noexcept;
   TerseOptionalFoo& operator=(const TerseOptionalFoo& src);
-  void __clear();
  private:
   ::std::vector<double> __fbthrift_field_field1;
  private:
@@ -946,6 +949,8 @@ class TerseOptionalLazyFoo final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = TerseOptionalLazyFoo;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -966,7 +971,6 @@ class TerseOptionalLazyFoo final  {
 
   TerseOptionalLazyFoo& operator=(TerseOptionalLazyFoo&&) noexcept;
   TerseOptionalLazyFoo& operator=(const TerseOptionalLazyFoo& src);
-  void __clear();
  private:
   ::std::vector<double> __fbthrift_field_field1;
  private:

@@ -89,6 +89,8 @@ class Mixin1 final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = Mixin1;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -110,7 +112,6 @@ class Mixin1 final  {
 
   Mixin1& operator=(Mixin1&&) noexcept;
   Mixin1& operator=(const Mixin1& src);
-  void __clear();
  private:
   ::std::string __fbthrift_field_field1;
  private:
@@ -211,6 +212,8 @@ class Mixin2 final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = Mixin2;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -232,7 +235,6 @@ class Mixin2 final  {
 
   Mixin2& operator=(Mixin2&&) noexcept;
   Mixin2& operator=(const Mixin2& src);
-  void __clear();
  private:
   ::cpp2::Mixin1 __fbthrift_field_m1;
  private:
@@ -393,6 +395,8 @@ class Mixin3Base final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = Mixin3Base;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -414,7 +418,6 @@ class Mixin3Base final  {
 
   Mixin3Base& operator=(Mixin3Base&&) noexcept;
   Mixin3Base& operator=(const Mixin3Base& src);
-  void __clear();
  private:
   ::std::string __fbthrift_field_field3;
  private:
@@ -515,6 +518,8 @@ class Foo final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = Foo;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -536,7 +541,6 @@ class Foo final  {
 
   Foo& operator=(Foo&&) noexcept;
   Foo& operator=(const Foo& src);
-  void __clear();
  private:
   ::std::string __fbthrift_field_field4;
  private:

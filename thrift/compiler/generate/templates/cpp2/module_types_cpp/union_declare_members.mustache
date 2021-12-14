@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>void <%struct:name%>::__clear() {
+%>void <%struct:name%>::__fbthrift_clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {

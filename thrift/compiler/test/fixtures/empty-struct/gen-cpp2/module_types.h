@@ -49,6 +49,8 @@ class Empty final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = Empty;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -71,7 +73,6 @@ class Empty final  {
   Empty& operator=(Empty&&) = default;
 
   Empty& operator=(const Empty&) = default;
-  void __clear();
 
  public:
 
@@ -112,6 +113,8 @@ class Nada final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+
+  void __fbthrift_clear();
 
  public:
   using __fbthrift_cpp2_type = Nada;
@@ -156,7 +159,7 @@ class Nada final  {
 
   Nada& operator=(Nada&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       default:
@@ -171,7 +174,7 @@ class Nada final  {
 
   Nada& operator=(const Nada& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       default:
@@ -182,7 +185,6 @@ class Nada final  {
     }
     return *this;
   }
-  void __clear();
 
   ~Nada() {
     apache::thrift::clear(*this);

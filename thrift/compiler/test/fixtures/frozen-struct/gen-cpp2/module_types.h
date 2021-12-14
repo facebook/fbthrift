@@ -138,6 +138,8 @@ class ModuleA final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = ModuleA;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -159,7 +161,6 @@ class ModuleA final  {
 
   ModuleA& operator=(ModuleA&&) noexcept;
   ModuleA& operator=(const ModuleA& src);
-  void __clear();
 
   ~ModuleA();
 
@@ -519,6 +520,8 @@ class ModuleB final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = ModuleB;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -543,7 +546,6 @@ class ModuleB final  {
   ModuleB& operator=(ModuleB&&) = default;
 
   ModuleB& operator=(const ModuleB&) = default;
-  void __clear();
  private:
   ::std::int32_t __fbthrift_field_i32Field;
  private:

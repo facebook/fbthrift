@@ -100,7 +100,7 @@ MyStructFloatFieldThrowExp::MyStructFloatFieldThrowExp(apache::thrift::FragileCo
 }
 
 
-void MyStructFloatFieldThrowExp::__clear() {
+void MyStructFloatFieldThrowExp::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_myLongField = ::std::int64_t();
   this->__fbthrift_field_MyByteField = ::std::int8_t();
@@ -217,7 +217,7 @@ MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(apache::thrift::FragileConstr
 }
 
 
-void MyStructMapFloatThrowExp::__clear() {
+void MyStructMapFloatThrowExp::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_myLongField = ::std::int64_t();
   this->__fbthrift_field_mapListOfFloats.clear();
@@ -306,7 +306,7 @@ namespace cpp2 {
 MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
 
 
-void MyDataItem::__clear() {
+void MyDataItem::__fbthrift_clear() {
   // clear all fields
 }
 
@@ -508,7 +508,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField
 }
 
 
-void MyStruct::__clear() {
+void MyStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_MyIntField = ::std::int64_t();
   this->__fbthrift_field_MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -988,7 +988,7 @@ SimpleStruct::SimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t ag
 }
 
 
-void SimpleStruct::__clear() {
+void SimpleStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_age = static_cast<::std::int64_t>(60);
   this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("Batman");
@@ -1159,7 +1159,7 @@ ComplexNestedStruct::ComplexNestedStruct(apache::thrift::FragileConstructor, ::s
 }
 
 
-void ComplexNestedStruct::__clear() {
+void ComplexNestedStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_setOfSetOfInt.clear();
   this->__fbthrift_field_listofListOfListOfListOfEnum.clear();
@@ -1590,7 +1590,7 @@ bool TEnumTraits<::cpp2::MyUnion::Type>::findValue(char const* name, type* out) 
 }} // apache::thrift
 namespace cpp2 {
 
-void MyUnion::__clear() {
+void MyUnion::__fbthrift_clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
@@ -1891,7 +1891,7 @@ defaultStruct::defaultStruct(apache::thrift::FragileConstructor, ::std::int64_t 
 }
 
 
-void defaultStruct::__clear() {
+void defaultStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_myLongDFset = static_cast<::std::int64_t>(10);
   this->__fbthrift_field_myLongDF = ::std::int64_t();
@@ -1907,9 +1907,9 @@ void defaultStruct::__clear() {
   this->__fbthrift_field_field3.clear();
   this->__fbthrift_field_myList.clear();
   this->__fbthrift_field_mySet.clear();
-  this->__fbthrift_field_simpleStruct.__clear();
+  apache::thrift::clear(this->__fbthrift_field_simpleStruct);
   this->__fbthrift_field_listStructDFset.clear();
-  this->__fbthrift_field_myUnion.__clear();
+  apache::thrift::clear(this->__fbthrift_field_myUnion);
   this->__fbthrift_field_listUnionDFset.clear();
   this->__fbthrift_field_mapNestlistStructDfSet.clear();
   this->__fbthrift_field_mapJavaTypeDFset.clear();
@@ -2324,7 +2324,7 @@ MyStructTypeDef::MyStructTypeDef(apache::thrift::FragileConstructor, ::std::int6
 }
 
 
-void MyStructTypeDef::__clear() {
+void MyStructTypeDef::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_myLongField = ::std::int64_t();
   this->__fbthrift_field_myLongTypeDef = ::cpp2::longTypeDef();
@@ -2519,7 +2519,7 @@ bool TEnumTraits<::cpp2::MyUnionFloatFieldThrowExp::Type>::findValue(char const*
 }} // apache::thrift
 namespace cpp2 {
 
-void MyUnionFloatFieldThrowExp::__clear() {
+void MyUnionFloatFieldThrowExp::__fbthrift_clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
@@ -2677,7 +2677,7 @@ TypeRemapped::TypeRemapped(apache::thrift::FragileConstructor, ::std::map<::std:
 }
 
 
-void TypeRemapped::__clear() {
+void TypeRemapped::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_lsMap.clear();
   this->__fbthrift_field_ioMap.clear();
@@ -2803,7 +2803,7 @@ emptyXcep& emptyXcep::operator=(FOLLY_MAYBE_UNUSED emptyXcep&& other) noexcept {
 emptyXcep::emptyXcep(apache::thrift::FragileConstructor) {}
 
 
-void emptyXcep::__clear() {
+void emptyXcep::__fbthrift_clear() {
   // clear all fields
 }
 
@@ -2891,7 +2891,7 @@ reqXcep::reqXcep(apache::thrift::FragileConstructor, ::std::string message__arg,
 }
 
 
-void reqXcep::__clear() {
+void reqXcep::__fbthrift_clear() {
   // clear all fields
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->errorCode = ::std::int32_t();
@@ -2997,7 +2997,7 @@ optXcep::optXcep(apache::thrift::FragileConstructor, ::std::string message__arg,
 }
 
 
-void optXcep::__clear() {
+void optXcep::__fbthrift_clear() {
   // clear all fields
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->errorCode = ::std::int32_t();
@@ -3121,13 +3121,13 @@ complexException::complexException(apache::thrift::FragileConstructor, ::std::st
 }
 
 
-void complexException::__clear() {
+void complexException::__fbthrift_clear() {
   // clear all fields
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->listStrings.clear();
   this->errorEnum = ::cpp2::MyEnum();
-  this->unionError.__clear();
-  this->structError.__clear();
+  apache::thrift::clear(this->unionError);
+  apache::thrift::clear(this->structError);
   this->lsMap.clear();
   __isset = {};
 }

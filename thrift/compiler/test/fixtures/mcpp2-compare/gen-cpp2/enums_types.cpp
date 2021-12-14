@@ -207,7 +207,7 @@ SomeStruct::SomeStruct(apache::thrift::FragileConstructor, ::std::int32_t fieldA
 }
 
 
-void SomeStruct::__clear() {
+void SomeStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_fieldA = ::std::int32_t();
   __isset = {};

@@ -47,6 +47,8 @@ class FOLLY_EXPORT FooEx : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+
+  void __fbthrift_clear();
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
   static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
@@ -75,7 +77,6 @@ class FOLLY_EXPORT FooEx : public apache::thrift::TException {
 
   FooEx& operator=(FooEx&&) noexcept;
   FooEx& operator=(const FooEx& src);
-  void __clear();
 
   ~FooEx() override;
 

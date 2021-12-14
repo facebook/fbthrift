@@ -61,7 +61,7 @@ CustomException::CustomException(apache::thrift::FragileConstructor, ::std::stri
 }
 
 
-void CustomException::__clear() {
+void CustomException::__fbthrift_clear() {
   // clear all fields
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};

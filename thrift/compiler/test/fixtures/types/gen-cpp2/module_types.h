@@ -564,6 +564,8 @@ class decorated_struct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = decorated_struct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -585,7 +587,6 @@ class decorated_struct final  {
 
   decorated_struct& operator=(decorated_struct&&) noexcept;
   decorated_struct& operator=(const decorated_struct& src);
-  void __clear();
  private:
   ::std::string __fbthrift_field_field;
  private:
@@ -686,6 +687,8 @@ class ContainerStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = ContainerStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -707,7 +710,6 @@ class ContainerStruct final  {
 
   ContainerStruct& operator=(ContainerStruct&&) noexcept;
   ContainerStruct& operator=(const ContainerStruct& src);
-  void __clear();
 
   ~ContainerStruct();
 
@@ -1162,6 +1164,8 @@ class CppTypeStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = CppTypeStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1183,7 +1187,6 @@ class CppTypeStruct final  {
 
   CppTypeStruct& operator=(CppTypeStruct&&) noexcept;
   CppTypeStruct& operator=(const CppTypeStruct& src);
-  void __clear();
  private:
   std::list<int32_t> __fbthrift_field_fieldA;
  private:
@@ -1278,6 +1281,8 @@ class VirtualStruct  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = VirtualStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1300,7 +1305,6 @@ class VirtualStruct  {
 
   VirtualStruct& operator=(VirtualStruct&&) noexcept;
   VirtualStruct& operator=(const VirtualStruct& src);
-  void __clear();
 
   virtual ~VirtualStruct() {}
 
@@ -1399,6 +1403,8 @@ class MyStructWithForwardRefEnum final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = MyStructWithForwardRefEnum;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1422,7 +1428,6 @@ class MyStructWithForwardRefEnum final  {
 
   MyStructWithForwardRefEnum& operator=(MyStructWithForwardRefEnum&&) noexcept;
   MyStructWithForwardRefEnum& operator=(const MyStructWithForwardRefEnum& src);
-  void __clear();
  private:
   ::apache::thrift::fixtures::types::MyForwardRefEnum __fbthrift_field_a;
  private:
@@ -1570,6 +1575,8 @@ class TrivialNumeric final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = TrivialNumeric;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1594,7 +1601,6 @@ class TrivialNumeric final  {
   TrivialNumeric& operator=(TrivialNumeric&&) = default;
 
   TrivialNumeric& operator=(const TrivialNumeric&) = default;
-  void __clear();
  private:
   ::std::int32_t __fbthrift_field_a;
  private:
@@ -1742,6 +1748,8 @@ class TrivialNestedWithDefault final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = TrivialNestedWithDefault;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1766,7 +1774,6 @@ class TrivialNestedWithDefault final  {
   TrivialNestedWithDefault& operator=(TrivialNestedWithDefault&&) = default;
 
   TrivialNestedWithDefault& operator=(const TrivialNestedWithDefault&) = default;
-  void __clear();
  private:
   ::std::int32_t __fbthrift_field_z;
  private:
@@ -1913,6 +1920,8 @@ class ComplexString final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = ComplexString;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1934,7 +1943,6 @@ class ComplexString final  {
 
   ComplexString& operator=(ComplexString&&) noexcept;
   ComplexString& operator=(const ComplexString& src);
-  void __clear();
  private:
   ::std::string __fbthrift_field_a;
  private:
@@ -2086,6 +2094,8 @@ class ComplexNestedWithDefault final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = ComplexNestedWithDefault;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -2109,7 +2119,6 @@ class ComplexNestedWithDefault final  {
 
   ComplexNestedWithDefault& operator=(ComplexNestedWithDefault&&) noexcept;
   ComplexNestedWithDefault& operator=(const ComplexNestedWithDefault& src);
-  void __clear();
  private:
   ::std::string __fbthrift_field_z;
  private:
@@ -2261,6 +2270,8 @@ class MinPadding final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = MinPadding;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -2287,7 +2298,6 @@ class MinPadding final  {
 
   MinPadding& operator=(MinPadding&&) noexcept;
   MinPadding& operator=(const MinPadding& src);
-  void __clear();
  public:
   ::std::int64_t big;
  public:
@@ -2489,6 +2499,8 @@ class MyDataItem final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = MyDataItem;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -2511,7 +2523,6 @@ class MyDataItem final  {
   MyDataItem& operator=(MyDataItem&&) = default;
 
   MyDataItem& operator=(const MyDataItem&) = default;
-  void __clear();
 
  public:
 
@@ -2550,6 +2561,8 @@ class MyStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = MyStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -2573,7 +2586,6 @@ class MyStruct final  {
 
   MyStruct& operator=(MyStruct&&) noexcept;
   MyStruct& operator=(const MyStruct& src);
-  void __clear();
  private:
   ::std::int64_t __fbthrift_field_MyIntField;
  private:
@@ -2826,6 +2838,8 @@ class Renaming final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = Renaming;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -2849,7 +2863,6 @@ class Renaming final  {
   Renaming& operator=(Renaming&&) = default;
 
   Renaming& operator=(const Renaming&) = default;
-  void __clear();
  private:
   ::std::int64_t __fbthrift_field_bar;
  private:
@@ -2945,6 +2958,8 @@ class AnnotatedTypes final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = AnnotatedTypes;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -2966,7 +2981,6 @@ class AnnotatedTypes final  {
 
   AnnotatedTypes& operator=(AnnotatedTypes&&) noexcept;
   AnnotatedTypes& operator=(const AnnotatedTypes& src);
-  void __clear();
  private:
   ::apache::thrift::fixtures::types::TBinary __fbthrift_field_binary_field;
  private:
@@ -3118,6 +3132,8 @@ class ForwardUsageStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = ForwardUsageStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -3139,7 +3155,6 @@ class ForwardUsageStruct final  {
 
   ForwardUsageStruct& operator=(ForwardUsageStruct&&) noexcept;
   ForwardUsageStruct& operator=(const ForwardUsageStruct& src);
-  void __clear();
  private:
   ::apache::thrift::fixtures::types::ForwardUsageRoot __fbthrift_field_foo;
  private:
@@ -3235,6 +3250,8 @@ class ForwardUsageRoot final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = ForwardUsageRoot;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -3255,7 +3272,6 @@ class ForwardUsageRoot final  {
 
   ForwardUsageRoot& operator=(ForwardUsageRoot&&) noexcept;
   ForwardUsageRoot& operator=(const ForwardUsageRoot& src);
-  void __clear();
  private:
   ::apache::thrift::fixtures::types::ForwardUsageStruct __fbthrift_field_ForwardUsageStruct;
  public:
@@ -3364,6 +3380,8 @@ class ForwardUsageByRef final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = ForwardUsageByRef;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -3385,7 +3403,6 @@ class ForwardUsageByRef final  {
 
   ForwardUsageByRef& operator=(ForwardUsageByRef&&) noexcept;
   ForwardUsageByRef& operator=(const ForwardUsageByRef& src);
-  void __clear();
  private:
   ::apache::thrift::fixtures::types::ForwardUsageRoot __fbthrift_field_foo;
  private:
@@ -3481,6 +3498,8 @@ class NoexceptMoveEmpty final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = NoexceptMoveEmpty;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -3503,7 +3522,6 @@ class NoexceptMoveEmpty final  {
   NoexceptMoveEmpty& operator=(NoexceptMoveEmpty&&) = default;
 
   NoexceptMoveEmpty& operator=(const NoexceptMoveEmpty&) = default;
-  void __clear();
 
  public:
 
@@ -3545,6 +3563,8 @@ class NoexceptMoveSimpleStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = NoexceptMoveSimpleStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -3568,7 +3588,6 @@ class NoexceptMoveSimpleStruct final  {
   NoexceptMoveSimpleStruct& operator=(NoexceptMoveSimpleStruct&&) = default;
 
   NoexceptMoveSimpleStruct& operator=(const NoexceptMoveSimpleStruct&) = default;
-  void __clear();
  private:
   ::std::int64_t __fbthrift_field_boolField;
  private:
@@ -3664,6 +3683,8 @@ class NoexceptMoveComplexStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = NoexceptMoveComplexStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -3685,7 +3706,6 @@ class NoexceptMoveComplexStruct final  {
 
   NoexceptMoveComplexStruct& operator=(NoexceptMoveComplexStruct&&) noexcept;
   NoexceptMoveComplexStruct& operator=(const NoexceptMoveComplexStruct& src);
-  void __clear();
 
   ~NoexceptMoveComplexStruct();
 
@@ -4204,6 +4224,8 @@ class NoExceptMoveUnion final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = NoExceptMoveUnion;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -4269,7 +4291,7 @@ class NoExceptMoveUnion final  {
 
   NoExceptMoveUnion& operator=(NoExceptMoveUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::string_field:
@@ -4294,7 +4316,7 @@ class NoExceptMoveUnion final  {
 
   NoExceptMoveUnion& operator=(const NoExceptMoveUnion& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::string_field:
@@ -4315,7 +4337,6 @@ class NoExceptMoveUnion final  {
     }
     return *this;
   }
-  void __clear();
 
   ~NoExceptMoveUnion() {
     apache::thrift::clear(*this);
@@ -4332,28 +4353,28 @@ class NoExceptMoveUnion final  {
   bool operator<(const NoExceptMoveUnion&) const;
 
   ::std::string& set_string_field(::std::string const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::string_field;
     ::new (std::addressof(value_.string_field)) ::std::string(t);
     return value_.string_field;
   }
 
   ::std::string& set_string_field(::std::string&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::string_field;
     ::new (std::addressof(value_.string_field)) ::std::string(std::move(t));
     return value_.string_field;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_string_field(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::string_field;
     ::new (std::addressof(value_.string_field)) ::std::string(std::forward<T>(t)...);
     return value_.string_field;
   }
 
   ::std::int32_t& set_i32_field(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::i32_field;
     ::new (std::addressof(value_.i32_field)) ::std::int32_t(t);
     return value_.i32_field;
@@ -4476,6 +4497,8 @@ class AllocatorAware final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = AllocatorAware;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -4529,7 +4552,6 @@ class AllocatorAware final  {
 
   AllocatorAware& operator=(AllocatorAware&&) noexcept;
   AllocatorAware& operator=(const AllocatorAware& src);
-  void __clear();
 
   ~AllocatorAware();
 
@@ -4838,6 +4860,8 @@ class AllocatorAware2 final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = AllocatorAware2;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -4880,7 +4904,6 @@ class AllocatorAware2 final  {
 
   AllocatorAware2& operator=(AllocatorAware2&&) noexcept;
   AllocatorAware2& operator=(const AllocatorAware2& src);
-  void __clear();
  private:
   ::std::int32_t __fbthrift_field_not_a_container;
  private:
@@ -4976,6 +4999,8 @@ class TypedefStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = TypedefStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -5000,7 +5025,6 @@ class TypedefStruct final  {
 
   TypedefStruct& operator=(TypedefStruct&&) noexcept;
   TypedefStruct& operator=(const TypedefStruct& src);
-  void __clear();
  private:
   ::std::int32_t __fbthrift_field_i32_field;
  private:
@@ -5200,6 +5224,8 @@ class StructWithDoubleUnderscores final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = StructWithDoubleUnderscores;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -5223,7 +5249,6 @@ class StructWithDoubleUnderscores final  {
   StructWithDoubleUnderscores& operator=(StructWithDoubleUnderscores&&) = default;
 
   StructWithDoubleUnderscores& operator=(const StructWithDoubleUnderscores&) = default;
-  void __clear();
  private:
   ::std::int32_t __fbthrift_field___field;
  private:

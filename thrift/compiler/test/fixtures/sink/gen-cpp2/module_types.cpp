@@ -55,7 +55,7 @@ InitialResponse::InitialResponse(apache::thrift::FragileConstructor, ::std::stri
 }
 
 
-void InitialResponse::__clear() {
+void InitialResponse::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_content = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
@@ -144,7 +144,7 @@ FinalResponse::FinalResponse(apache::thrift::FragileConstructor, ::std::string c
 }
 
 
-void FinalResponse::__clear() {
+void FinalResponse::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_content = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
@@ -233,7 +233,7 @@ SinkPayload::SinkPayload(apache::thrift::FragileConstructor, ::std::string conte
 }
 
 
-void SinkPayload::__clear() {
+void SinkPayload::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_content = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
@@ -322,7 +322,7 @@ CompatibleWithKeywordSink::CompatibleWithKeywordSink(apache::thrift::FragileCons
 }
 
 
-void CompatibleWithKeywordSink::__clear() {
+void CompatibleWithKeywordSink::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_sink = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
@@ -417,7 +417,7 @@ InitialException::InitialException(apache::thrift::FragileConstructor, ::std::st
 }
 
 
-void InitialException::__clear() {
+void InitialException::__fbthrift_clear() {
   // clear all fields
   this->reason = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
@@ -512,7 +512,7 @@ SinkException1::SinkException1(apache::thrift::FragileConstructor, ::std::string
 }
 
 
-void SinkException1::__clear() {
+void SinkException1::__fbthrift_clear() {
   // clear all fields
   this->reason = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
@@ -608,7 +608,7 @@ SinkException2::SinkException2(apache::thrift::FragileConstructor, ::std::int64_
 }
 
 
-void SinkException2::__clear() {
+void SinkException2::__fbthrift_clear() {
   // clear all fields
   this->reason = ::std::int64_t();
   __isset = {};

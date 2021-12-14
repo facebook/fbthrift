@@ -153,6 +153,8 @@ class Foo final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = Foo;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -173,7 +175,6 @@ class Foo final  {
 
   Foo& operator=(Foo&&) noexcept;
   Foo& operator=(const Foo& src);
-  void __clear();
 
   ~Foo();
 
@@ -556,6 +557,8 @@ class Baz final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = Baz;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -643,7 +646,7 @@ class Baz final  {
 
   Baz& operator=(Baz&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::intField:
@@ -678,7 +681,7 @@ class Baz final  {
 
   Baz& operator=(const Baz& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::intField:
@@ -709,7 +712,6 @@ class Baz final  {
     }
     return *this;
   }
-  void __clear();
 
   ~Baz() {
     apache::thrift::clear(*this);
@@ -728,70 +730,70 @@ class Baz final  {
   bool operator<(const Baz&) const;
 
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>& set_intField(::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> t = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::intField;
     ::new (std::addressof(value_.intField)) ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>(t);
     return value_.intField;
   }
 
   ::cpp2::SetWithAdapter& set_setField(::cpp2::SetWithAdapter const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::setField;
     ::new (std::addressof(value_.setField)) ::cpp2::SetWithAdapter(t);
     return value_.setField;
   }
 
   ::cpp2::SetWithAdapter& set_setField(::cpp2::SetWithAdapter&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::setField;
     ::new (std::addressof(value_.setField)) ::cpp2::SetWithAdapter(std::move(t));
     return value_.setField;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::SetWithAdapter, T...>> ::cpp2::SetWithAdapter& set_setField(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::setField;
     ::new (std::addressof(value_.setField)) ::cpp2::SetWithAdapter(std::forward<T>(t)...);
     return value_.setField;
   }
 
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>& set_mapField(::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::mapField;
     ::new (std::addressof(value_.mapField)) ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>(t);
     return value_.mapField;
   }
 
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>& set_mapField(::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::mapField;
     ::new (std::addressof(value_.mapField)) ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>(std::move(t));
     return value_.mapField;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>, T...>> ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>& set_mapField(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::mapField;
     ::new (std::addressof(value_.mapField)) ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>(std::forward<T>(t)...);
     return value_.mapField;
   }
 
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>& set_binaryField(::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string> const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::binaryField;
     ::new (std::addressof(value_.binaryField)) ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>(t);
     return value_.binaryField;
   }
 
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>& set_binaryField(::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::binaryField;
     ::new (std::addressof(value_.binaryField)) ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>(std::move(t));
     return value_.binaryField;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>, T...>> ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>& set_binaryField(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::binaryField;
     ::new (std::addressof(value_.binaryField)) ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>(std::forward<T>(t)...);
     return value_.binaryField;
@@ -986,6 +988,8 @@ class Bar final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = Bar;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1006,7 +1010,6 @@ class Bar final  {
 
   Bar& operator=(Bar&&) noexcept;
   Bar& operator=(const Bar& src);
-  void __clear();
 
   ~Bar();
 
@@ -1324,6 +1327,8 @@ class StructWithFieldAdapter final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = StructWithFieldAdapter;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1346,7 +1351,6 @@ class StructWithFieldAdapter final  {
 
   StructWithFieldAdapter& operator=(StructWithFieldAdapter&&) = default;
   StructWithFieldAdapter& operator=(const StructWithFieldAdapter& src);
-  void __clear();
  private:
   ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 1, ::std::int32_t, __fbthrift_cpp2_type> __fbthrift_field_field;
  private:

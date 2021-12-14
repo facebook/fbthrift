@@ -197,6 +197,8 @@ class Color final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = Color;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -223,7 +225,6 @@ class Color final  {
   Color& operator=(Color&&) = default;
 
   Color& operator=(const Color&) = default;
-  void __clear();
  private:
   double __fbthrift_field_red;
  private:
@@ -475,6 +476,8 @@ class Vehicle final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = Vehicle;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -496,7 +499,6 @@ class Vehicle final  {
 
   Vehicle& operator=(Vehicle&&) noexcept;
   Vehicle& operator=(const Vehicle& src);
-  void __clear();
 
   ~Vehicle();
 
@@ -825,6 +827,8 @@ class Person final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = Person;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -846,7 +850,6 @@ class Person final  {
 
   Person& operator=(Person&&) noexcept;
   Person& operator=(const Person& src);
-  void __clear();
 
   ~Person();
 

@@ -92,7 +92,7 @@ structured_annotation_inline::structured_annotation_inline(apache::thrift::Fragi
 }
 
 
-void structured_annotation_inline::__clear() {
+void structured_annotation_inline::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_count = ::std::int64_t();
   this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("abacaba");
@@ -189,7 +189,7 @@ structured_annotation_with_default::structured_annotation_with_default(apache::t
 }
 
 
-void structured_annotation_with_default::__clear() {
+void structured_annotation_with_default::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("abacabadabacaba");
   __isset = {};
@@ -265,7 +265,7 @@ structured_annotation_forward::structured_annotation_forward(apache::thrift::Fra
 }
 
 
-void structured_annotation_forward::__clear() {
+void structured_annotation_forward::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_count = ::std::int64_t();
   __isset = {};
@@ -362,11 +362,11 @@ structured_annotation_recursive::structured_annotation_recursive(apache::thrift:
 }
 
 
-void structured_annotation_recursive::__clear() {
+void structured_annotation_recursive::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->__fbthrift_field_recurse.__clear();
-  this->__fbthrift_field_forward.__clear();
+  apache::thrift::clear(this->__fbthrift_field_recurse);
+  apache::thrift::clear(this->__fbthrift_field_forward);
   __isset = {};
 }
 
@@ -511,10 +511,10 @@ structured_annotation_nested::structured_annotation_nested(apache::thrift::Fragi
 }
 
 
-void structured_annotation_nested::__clear() {
+void structured_annotation_nested::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->__fbthrift_field_nest.__clear();
+  apache::thrift::clear(this->__fbthrift_field_nest);
   __isset = {};
 }
 
@@ -640,7 +640,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t annotated_
 }
 
 
-void MyStruct::__clear() {
+void MyStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_annotated_field = ::std::int64_t();
   this->__fbthrift_field_annotated_type = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -759,7 +759,7 @@ MyException::MyException(apache::thrift::FragileConstructor, ::std::string conte
 }
 
 
-void MyException::__clear() {
+void MyException::__fbthrift_clear() {
   // clear all fields
   this->context = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
@@ -850,7 +850,7 @@ bool TEnumTraits<::cpp2::MyUnion::Type>::findValue(char const* name, type* out) 
 }} // apache::thrift
 namespace cpp2 {
 
-void MyUnion::__clear() {
+void MyUnion::__fbthrift_clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {

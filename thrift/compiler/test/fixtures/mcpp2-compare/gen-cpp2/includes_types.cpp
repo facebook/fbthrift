@@ -75,7 +75,7 @@ AStruct::AStruct(apache::thrift::FragileConstructor, ::std::int32_t FieldA__arg)
 }
 
 
-void AStruct::__clear() {
+void AStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_FieldA = ::std::int32_t();
   __isset = {};
@@ -165,7 +165,7 @@ AStructB::AStructB(apache::thrift::FragileConstructor, ::std::shared_ptr<const :
 }
 
 
-void AStructB::__clear() {
+void AStructB::__fbthrift_clear() {
   // clear all fields
   if (this->FieldA) this->FieldA = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::a::different::ns::AStruct>>();
 }

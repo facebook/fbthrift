@@ -53,6 +53,8 @@ class ReflectionStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = ReflectionStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -76,7 +78,6 @@ class ReflectionStruct final  {
   ReflectionStruct& operator=(ReflectionStruct&&) = default;
 
   ReflectionStruct& operator=(const ReflectionStruct&) = default;
-  void __clear();
  private:
   ::std::int32_t __fbthrift_field_fieldA;
  private:

@@ -66,6 +66,8 @@ class MyStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
   static const char* __fbthrift_cpp2_gen_thrift_uri();
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = MyStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -87,7 +89,6 @@ class MyStruct final  {
 
   MyStruct& operator=(MyStruct&&) noexcept;
   MyStruct& operator=(const MyStruct& src);
-  void __clear();
  private:
   ::std::string __fbthrift_field_myString;
  private:
@@ -189,6 +190,8 @@ class MyUnion final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
   static const char* __fbthrift_cpp2_gen_thrift_uri();
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = MyUnion;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -243,7 +246,7 @@ class MyUnion final  {
 
   MyUnion& operator=(MyUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::myString:
@@ -263,7 +266,7 @@ class MyUnion final  {
 
   MyUnion& operator=(const MyUnion& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::myString:
@@ -279,7 +282,6 @@ class MyUnion final  {
     }
     return *this;
   }
-  void __clear();
 
   ~MyUnion() {
     apache::thrift::clear(*this);
@@ -295,21 +297,21 @@ class MyUnion final  {
   bool operator<(const MyUnion&) const;
 
   ::std::string& set_myString(::std::string const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::myString;
     ::new (std::addressof(value_.myString)) ::std::string(t);
     return value_.myString;
   }
 
   ::std::string& set_myString(::std::string&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::myString;
     ::new (std::addressof(value_.myString)) ::std::string(std::move(t));
     return value_.myString;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_myString(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::myString;
     ::new (std::addressof(value_.myString)) ::std::string(std::forward<T>(t)...);
     return value_.myString;
@@ -396,6 +398,8 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
   static const char* __fbthrift_cpp2_gen_thrift_uri();
+
+  void __fbthrift_clear();
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
   static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
@@ -424,7 +428,6 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
 
   MyException& operator=(MyException&&) noexcept;
   MyException& operator=(const MyException& src);
-  void __clear();
 
   ~MyException() override;
 

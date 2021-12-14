@@ -81,7 +81,7 @@ Color::Color(apache::thrift::FragileConstructor, double red__arg, double green__
 }
 
 
-void Color::__clear() {
+void Color::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_red = double();
   this->__fbthrift_field_green = double();
@@ -217,9 +217,9 @@ Vehicle::Vehicle(apache::thrift::FragileConstructor, ::cpp2::Color color__arg, :
 }
 
 
-void Vehicle::__clear() {
+void Vehicle::__fbthrift_clear() {
   // clear all fields
-  this->__fbthrift_field_color.__clear();
+  apache::thrift::clear(this->__fbthrift_field_color);
   this->__fbthrift_field_licensePlate = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_description = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -404,13 +404,13 @@ Person::Person(apache::thrift::FragileConstructor, ::cpp2::PersonID id__arg, ::s
 }
 
 
-void Person::__clear() {
+void Person::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_id = ::cpp2::PersonID();
   this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_age = ::std::int16_t();
   this->__fbthrift_field_address = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->__fbthrift_field_favoriteColor.__clear();
+  apache::thrift::clear(this->__fbthrift_field_favoriteColor);
   this->__fbthrift_field_friends.clear();
   this->__fbthrift_field_bestFriend = ::cpp2::PersonID();
   this->__fbthrift_field_petNames.clear();

@@ -111,6 +111,8 @@ class AStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = AStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -134,7 +136,6 @@ class AStruct final  {
   AStruct& operator=(AStruct&&) = default;
 
   AStruct& operator=(const AStruct&) = default;
-  void __clear();
  private:
   ::std::int32_t __fbthrift_field_FieldA;
  private:
@@ -230,6 +231,8 @@ class AStructB final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = AStructB;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -252,7 +255,6 @@ class AStructB final  {
 
   AStructB& operator=(AStructB&&) noexcept;
   AStructB& operator=(const AStructB& src);
-  void __clear();
  public:
   ::std::shared_ptr<const ::a::different::ns::AStruct> FieldA;
 

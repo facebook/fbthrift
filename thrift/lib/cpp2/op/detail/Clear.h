@@ -18,6 +18,7 @@
 
 #include <cmath>
 
+#include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/op/Compare.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
 #include <thrift/lib/cpp2/type/Traits.h>
@@ -122,7 +123,7 @@ struct Clear {
 struct StructuredClear {
   template <typename T>
   constexpr void operator()(T& value) const {
-    value.__clear();
+    apache::thrift::clear(value);
   }
 };
 template <typename T>

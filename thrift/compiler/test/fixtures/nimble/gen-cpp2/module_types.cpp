@@ -47,7 +47,7 @@ BasicTypes::BasicTypes(apache::thrift::FragileConstructor, ::std::int32_t first_
 }
 
 
-void BasicTypes::__clear() {
+void BasicTypes::__fbthrift_clear() {
   // clear all fields
   this->first = ::std::int32_t();
   this->__fbthrift_field_second = ::std::int32_t();

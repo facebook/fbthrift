@@ -128,7 +128,7 @@ SimpleException::SimpleException(apache::thrift::FragileConstructor, ::std::int1
 }
 
 
-void SimpleException::__clear() {
+void SimpleException::__fbthrift_clear() {
   // clear all fields
   this->err_code = ::std::int16_t();
   __isset = {};
@@ -227,7 +227,7 @@ OptionalRefStruct::OptionalRefStruct(apache::thrift::FragileConstructor, ::py3::
 }
 
 
-void OptionalRefStruct::__clear() {
+void OptionalRefStruct::__fbthrift_clear() {
   // clear all fields
   this->optional_blob = apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::fromStringLiteral("");
   __isset = {};
@@ -344,7 +344,7 @@ SimpleStruct::SimpleStruct(apache::thrift::FragileConstructor, bool is_on__arg, 
 }
 
 
-void SimpleStruct::__clear() {
+void SimpleStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_is_on = bool();
   this->__fbthrift_field_tiny_int = ::std::int8_t();
@@ -529,10 +529,10 @@ ComplexStruct::ComplexStruct(apache::thrift::FragileConstructor, ::py3::simple::
 }
 
 
-void ComplexStruct::__clear() {
+void ComplexStruct::__fbthrift_clear() {
   // clear all fields
-  this->__fbthrift_field_structOne.__clear();
-  this->__fbthrift_field_structTwo.__clear();
+  apache::thrift::clear(this->__fbthrift_field_structOne);
+  apache::thrift::clear(this->__fbthrift_field_structTwo);
   this->__fbthrift_field_an_integer = ::std::int32_t();
   this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_an_enum = ::py3::simple::AnEnum();
@@ -724,7 +724,7 @@ bool TEnumTraits<::py3::simple::BinaryUnion::Type>::findValue(char const* name, 
 }} // apache::thrift
 namespace py3 { namespace simple {
 
-void BinaryUnion::__clear() {
+void BinaryUnion::__fbthrift_clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
@@ -801,9 +801,9 @@ BinaryUnionStruct::BinaryUnionStruct(apache::thrift::FragileConstructor, ::py3::
 }
 
 
-void BinaryUnionStruct::__clear() {
+void BinaryUnionStruct::__fbthrift_clear() {
   // clear all fields
-  this->__fbthrift_field_u.__clear();
+  apache::thrift::clear(this->__fbthrift_field_u);
   __isset = {};
 }
 

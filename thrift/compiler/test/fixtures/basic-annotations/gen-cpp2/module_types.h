@@ -149,6 +149,8 @@ class MyStructNestedAnnotation final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = MyStructNestedAnnotation;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -170,7 +172,6 @@ class MyStructNestedAnnotation final  {
 
   MyStructNestedAnnotation& operator=(MyStructNestedAnnotation&&) noexcept;
   MyStructNestedAnnotation& operator=(const MyStructNestedAnnotation& src);
-  void __clear();
  private:
   ::std::string __fbthrift_field_name;
  private:
@@ -271,6 +272,8 @@ class MyStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = MyStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -297,7 +300,6 @@ class MyStruct final  {
 
   MyStruct& operator=(MyStruct&&) noexcept;
   MyStruct& operator=(const MyStruct& src);
-  void __clear();
 
   ~MyStruct();
 
@@ -723,6 +725,8 @@ class SecretStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = SecretStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -745,7 +749,6 @@ class SecretStruct final  {
 
   SecretStruct& operator=(SecretStruct&&) noexcept;
   SecretStruct& operator=(const SecretStruct& src);
-  void __clear();
  private:
   ::std::int64_t __fbthrift_field_id;
  private:

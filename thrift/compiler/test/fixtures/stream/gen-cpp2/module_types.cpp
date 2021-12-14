@@ -52,7 +52,7 @@ FooEx& FooEx::operator=(FOLLY_MAYBE_UNUSED FooEx&& other) noexcept {
 FooEx::FooEx(apache::thrift::FragileConstructor) {}
 
 
-void FooEx::__clear() {
+void FooEx::__fbthrift_clear() {
   // clear all fields
 }
 

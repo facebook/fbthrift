@@ -80,7 +80,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::string myString__a
 }
 
 
-void MyStruct::__clear() {
+void MyStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_myString = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
@@ -175,7 +175,7 @@ const char* MyUnion::__fbthrift_cpp2_gen_thrift_uri() {
   return "facebook.com/thrift/compiler/test/fixtures/any/MyUnion";
 }
 
-void MyUnion::__clear() {
+void MyUnion::__fbthrift_clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
@@ -286,7 +286,7 @@ MyException::MyException(apache::thrift::FragileConstructor, ::std::string myStr
 }
 
 
-void MyException::__clear() {
+void MyException::__fbthrift_clear() {
   // clear all fields
   this->myString = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};

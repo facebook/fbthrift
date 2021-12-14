@@ -89,6 +89,8 @@ class InitialResponse final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = InitialResponse;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -110,7 +112,6 @@ class InitialResponse final  {
 
   InitialResponse& operator=(InitialResponse&&) noexcept;
   InitialResponse& operator=(const InitialResponse& src);
-  void __clear();
  private:
   ::std::string __fbthrift_field_content;
  private:
@@ -211,6 +212,8 @@ class FinalResponse final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = FinalResponse;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -232,7 +235,6 @@ class FinalResponse final  {
 
   FinalResponse& operator=(FinalResponse&&) noexcept;
   FinalResponse& operator=(const FinalResponse& src);
-  void __clear();
  private:
   ::std::string __fbthrift_field_content;
  private:
@@ -333,6 +335,8 @@ class SinkPayload final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = SinkPayload;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -354,7 +358,6 @@ class SinkPayload final  {
 
   SinkPayload& operator=(SinkPayload&&) noexcept;
   SinkPayload& operator=(const SinkPayload& src);
-  void __clear();
  private:
   ::std::string __fbthrift_field_content;
  private:
@@ -455,6 +458,8 @@ class CompatibleWithKeywordSink final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = CompatibleWithKeywordSink;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -476,7 +481,6 @@ class CompatibleWithKeywordSink final  {
 
   CompatibleWithKeywordSink& operator=(CompatibleWithKeywordSink&&) noexcept;
   CompatibleWithKeywordSink& operator=(const CompatibleWithKeywordSink& src);
-  void __clear();
  private:
   ::std::string __fbthrift_field_sink;
  private:
@@ -576,6 +580,8 @@ class FOLLY_EXPORT InitialException : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+
+  void __fbthrift_clear();
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
   static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
@@ -604,7 +610,6 @@ class FOLLY_EXPORT InitialException : public apache::thrift::TException {
 
   InitialException& operator=(InitialException&&) noexcept;
   InitialException& operator=(const InitialException& src);
-  void __clear();
 
   ~InitialException() override;
 
@@ -691,6 +696,8 @@ class FOLLY_EXPORT SinkException1 : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+
+  void __fbthrift_clear();
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
   static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
@@ -719,7 +726,6 @@ class FOLLY_EXPORT SinkException1 : public apache::thrift::TException {
 
   SinkException1& operator=(SinkException1&&) noexcept;
   SinkException1& operator=(const SinkException1& src);
-  void __clear();
 
   ~SinkException1() override;
 
@@ -806,6 +812,8 @@ class FOLLY_EXPORT SinkException2 : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+
+  void __fbthrift_clear();
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
   static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
@@ -834,7 +842,6 @@ class FOLLY_EXPORT SinkException2 : public apache::thrift::TException {
 
   SinkException2& operator=(SinkException2&&) noexcept;
   SinkException2& operator=(const SinkException2& src);
-  void __clear();
 
   ~SinkException2() override;
 

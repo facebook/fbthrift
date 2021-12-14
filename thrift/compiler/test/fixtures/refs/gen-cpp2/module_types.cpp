@@ -123,7 +123,7 @@ bool TEnumTraits<::cpp2::MyUnion::Type>::findValue(char const* name, type* out) 
 }} // apache::thrift
 namespace cpp2 {
 
-void MyUnion::__clear() {
+void MyUnion::__fbthrift_clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
@@ -289,7 +289,7 @@ MyField::MyField(apache::thrift::FragileConstructor, ::std::unique_ptr<::std::in
 }
 
 
-void MyField::__clear() {
+void MyField::__fbthrift_clear() {
   // clear all fields
   this->opt_value.reset();
   this->value = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::int64_t>>();
@@ -456,11 +456,11 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::unique_ptr<::cpp2:
 }
 
 
-void MyStruct::__clear() {
+void MyStruct::__fbthrift_clear() {
   // clear all fields
   this->opt_ref.reset();
-  if (this->ref) this->ref->__clear();
-  if (this->req_ref) this->req_ref->__clear();
+  if (this->ref) apache::thrift::clear(*this->ref);
+  if (this->req_ref) apache::thrift::clear(*this->req_ref);
 }
 
 bool MyStruct::operator==(const MyStruct& rhs) const {
@@ -614,11 +614,11 @@ StructWithUnion::StructWithUnion(apache::thrift::FragileConstructor, ::std::uniq
 }
 
 
-void StructWithUnion::__clear() {
+void StructWithUnion::__fbthrift_clear() {
   // clear all fields
-  if (this->u) this->u->__clear();
+  if (this->u) apache::thrift::clear(*this->u);
   this->aDouble = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<double>>();
-  this->__fbthrift_field_f.__clear();
+  apache::thrift::clear(this->__fbthrift_field_f);
   __isset = {};
 }
 
@@ -751,7 +751,7 @@ RecursiveStruct::RecursiveStruct(apache::thrift::FragileConstructor, ::std::vect
 }
 
 
-void RecursiveStruct::__clear() {
+void RecursiveStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_mes.clear();
   __isset = {};
@@ -889,7 +889,7 @@ StructWithContainers::StructWithContainers(apache::thrift::FragileConstructor, :
 }
 
 
-void StructWithContainers::__clear() {
+void StructWithContainers::__fbthrift_clear() {
   // clear all fields
   this->list_ref = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::vector<::std::int32_t>>>();
   this->set_ref = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::set<::std::int32_t>>>();
@@ -1019,7 +1019,7 @@ StructWithSharedConst::StructWithSharedConst(apache::thrift::FragileConstructor,
 }
 
 
-void StructWithSharedConst::__clear() {
+void StructWithSharedConst::__fbthrift_clear() {
   // clear all fields
   this->opt_shared_const.reset();
   if (this->shared_const) this->shared_const = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::cpp2::MyField>>();
@@ -1142,7 +1142,7 @@ namespace cpp2 {
 Empty::Empty(apache::thrift::FragileConstructor) {}
 
 
-void Empty::__clear() {
+void Empty::__fbthrift_clear() {
   // clear all fields
 }
 
@@ -1239,7 +1239,7 @@ StructWithRef::StructWithRef(apache::thrift::FragileConstructor, ::std::unique_p
 }
 
 
-void StructWithRef::__clear() {
+void StructWithRef::__fbthrift_clear() {
   // clear all fields
 }
 
@@ -1378,7 +1378,7 @@ StructWithBox::StructWithBox(apache::thrift::FragileConstructor, ::apache::thrif
 }
 
 
-void StructWithBox::__clear() {
+void StructWithBox::__fbthrift_clear() {
   // clear all fields
   this->a.reset();
   this->b.reset();
@@ -1509,7 +1509,7 @@ StructWithRefTypeUnique::StructWithRefTypeUnique(apache::thrift::FragileConstruc
 }
 
 
-void StructWithRefTypeUnique::__clear() {
+void StructWithRefTypeUnique::__fbthrift_clear() {
   // clear all fields
 }
 
@@ -1648,7 +1648,7 @@ StructWithRefTypeShared::StructWithRefTypeShared(apache::thrift::FragileConstruc
 }
 
 
-void StructWithRefTypeShared::__clear() {
+void StructWithRefTypeShared::__fbthrift_clear() {
   // clear all fields
 }
 
@@ -1787,7 +1787,7 @@ StructWithRefTypeSharedConst::StructWithRefTypeSharedConst(apache::thrift::Fragi
 }
 
 
-void StructWithRefTypeSharedConst::__clear() {
+void StructWithRefTypeSharedConst::__fbthrift_clear() {
   // clear all fields
 }
 
@@ -1929,7 +1929,7 @@ StructWithRefAndAnnotCppNoexceptMoveCtor::StructWithRefAndAnnotCppNoexceptMoveCt
 }
 
 
-void StructWithRefAndAnnotCppNoexceptMoveCtor::__clear() {
+void StructWithRefAndAnnotCppNoexceptMoveCtor::__fbthrift_clear() {
   // clear all fields
 }
 
@@ -2061,7 +2061,7 @@ StructWithString::StructWithString(apache::thrift::FragileConstructor, ::std::un
 }
 
 
-void StructWithString::__clear() {
+void StructWithString::__fbthrift_clear() {
   // clear all fields
   this->def_unique_string_ref = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::string>>();
   this->def_shared_string_ref = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<::std::string>>();

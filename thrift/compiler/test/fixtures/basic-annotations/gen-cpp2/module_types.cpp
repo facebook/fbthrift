@@ -88,7 +88,7 @@ MyStructNestedAnnotation::MyStructNestedAnnotation(apache::thrift::FragileConstr
 }
 
 
-void MyStructNestedAnnotation::__clear() {
+void MyStructNestedAnnotation::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
@@ -234,7 +234,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__
 }
 
 
-void MyStruct::__clear() {
+void MyStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_majorVer = ::std::int64_t();
   this->__fbthrift_field_package = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -375,7 +375,7 @@ SecretStruct::SecretStruct(apache::thrift::FragileConstructor, ::std::int64_t id
 }
 
 
-void SecretStruct::__clear() {
+void SecretStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_id = ::std::int64_t();
   this->__fbthrift_field_password = apache::thrift::StringTraits<std::string>::fromStringLiteral("");

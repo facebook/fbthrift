@@ -39,7 +39,7 @@ namespace cpp2 {
 Empty::Empty(apache::thrift::FragileConstructor) {}
 
 
-void Empty::__clear() {
+void Empty::__fbthrift_clear() {
   // clear all fields
 }
 
@@ -122,7 +122,7 @@ bool TEnumTraits<::cpp2::Nada::Type>::findValue(char const* name, type* out) {
 }} // apache::thrift
 namespace cpp2 {
 
-void Nada::__clear() {
+void Nada::__fbthrift_clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {

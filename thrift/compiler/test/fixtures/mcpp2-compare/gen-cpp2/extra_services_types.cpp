@@ -123,7 +123,7 @@ containerStruct2::containerStruct2(apache::thrift::FragileConstructor, bool fiel
 }
 
 
-void containerStruct2::__clear() {
+void containerStruct2::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_fieldA = bool();
   this->req_fieldA = bool();

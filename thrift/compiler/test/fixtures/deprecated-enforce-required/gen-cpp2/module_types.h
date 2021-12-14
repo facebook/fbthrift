@@ -53,6 +53,8 @@ class Foo final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = Foo;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -76,7 +78,6 @@ class Foo final  {
   Foo& operator=(Foo&&) = default;
 
   Foo& operator=(const Foo&) = default;
-  void __clear();
  public:
   ::std::int32_t bar;
 

@@ -176,6 +176,8 @@ class TrivialTypesStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = TrivialTypesStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -196,7 +198,6 @@ class TrivialTypesStruct final  {
 
   TrivialTypesStruct& operator=(TrivialTypesStruct&&) noexcept;
   TrivialTypesStruct& operator=(const TrivialTypesStruct& src);
-  void __clear();
 
   ~TrivialTypesStruct();
 
@@ -508,6 +509,8 @@ class ContainerStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = ContainerStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -529,7 +532,6 @@ class ContainerStruct final  {
 
   ContainerStruct& operator=(ContainerStruct&&) noexcept;
   ContainerStruct& operator=(const ContainerStruct& src);
-  void __clear();
 
   ~ContainerStruct();
 
@@ -986,6 +988,8 @@ class ExampleUnion final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = ExampleUnion;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1051,7 +1055,7 @@ class ExampleUnion final  {
 
   ExampleUnion& operator=(ExampleUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::fieldA:
@@ -1076,7 +1080,7 @@ class ExampleUnion final  {
 
   ExampleUnion& operator=(const ExampleUnion& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::fieldA:
@@ -1097,7 +1101,6 @@ class ExampleUnion final  {
     }
     return *this;
   }
-  void __clear();
 
   ~ExampleUnion() {
     apache::thrift::clear(*this);
@@ -1114,42 +1117,42 @@ class ExampleUnion final  {
   bool operator<(const ExampleUnion&) const;
 
   ::test::fixtures::tablebased::ContainerStruct& set_fieldA(::test::fixtures::tablebased::ContainerStruct const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::fieldA;
     ::new (std::addressof(value_.fieldA)) ::test::fixtures::tablebased::ContainerStruct(t);
     return value_.fieldA;
   }
 
   ::test::fixtures::tablebased::ContainerStruct& set_fieldA(::test::fixtures::tablebased::ContainerStruct&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::fieldA;
     ::new (std::addressof(value_.fieldA)) ::test::fixtures::tablebased::ContainerStruct(std::move(t));
     return value_.fieldA;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::test::fixtures::tablebased::ContainerStruct, T...>> ::test::fixtures::tablebased::ContainerStruct& set_fieldA(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::fieldA;
     ::new (std::addressof(value_.fieldA)) ::test::fixtures::tablebased::ContainerStruct(std::forward<T>(t)...);
     return value_.fieldA;
   }
 
   ::test::fixtures::tablebased::TrivialTypesStruct& set_fieldB(::test::fixtures::tablebased::TrivialTypesStruct const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::fieldB;
     ::new (std::addressof(value_.fieldB)) ::test::fixtures::tablebased::TrivialTypesStruct(t);
     return value_.fieldB;
   }
 
   ::test::fixtures::tablebased::TrivialTypesStruct& set_fieldB(::test::fixtures::tablebased::TrivialTypesStruct&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::fieldB;
     ::new (std::addressof(value_.fieldB)) ::test::fixtures::tablebased::TrivialTypesStruct(std::move(t));
     return value_.fieldB;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::test::fixtures::tablebased::TrivialTypesStruct, T...>> ::test::fixtures::tablebased::TrivialTypesStruct& set_fieldB(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::fieldB;
     ::new (std::addressof(value_.fieldB)) ::test::fixtures::tablebased::TrivialTypesStruct(std::forward<T>(t)...);
     return value_.fieldB;

@@ -63,10 +63,10 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::cpp2::Included MyInclud
 }
 
 
-void MyStruct::__clear() {
+void MyStruct::__fbthrift_clear() {
   // clear all fields
-  this->__fbthrift_field_MyIncludedField.__clear();
-  this->__fbthrift_field_MyOtherIncludedField.__clear();
+  apache::thrift::clear(this->__fbthrift_field_MyIncludedField);
+  apache::thrift::clear(this->__fbthrift_field_MyOtherIncludedField);
   this->__fbthrift_field_MyIncludedInt = static_cast<::cpp2::IncludedInt64>(42);
   __isset = {};
 }

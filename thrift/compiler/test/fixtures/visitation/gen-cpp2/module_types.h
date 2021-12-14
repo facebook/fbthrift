@@ -1051,6 +1051,8 @@ class union1 final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = union1;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1138,7 +1140,7 @@ class union1 final  {
 
   union1& operator=(union1&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::ui:
@@ -1173,7 +1175,7 @@ class union1 final  {
 
   union1& operator=(const union1& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::ui:
@@ -1204,7 +1206,6 @@ class union1 final  {
     }
     return *this;
   }
-  void __clear();
 
   ~union1() {
     apache::thrift::clear(*this);
@@ -1223,42 +1224,42 @@ class union1 final  {
   bool operator<(const union1&) const;
 
   ::std::int32_t& set_ui(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::ui;
     ::new (std::addressof(value_.ui)) ::std::int32_t(t);
     return value_.ui;
   }
 
   double& set_ud(double t = double()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::ud;
     ::new (std::addressof(value_.ud)) double(t);
     return value_.ud;
   }
 
   ::std::string& set_us(::std::string const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::us;
     ::new (std::addressof(value_.us)) ::std::string(t);
     return value_.us;
   }
 
   ::std::string& set_us(::std::string&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::us;
     ::new (std::addressof(value_.us)) ::std::string(std::move(t));
     return value_.us;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_us(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::us;
     ::new (std::addressof(value_.us)) ::std::string(std::forward<T>(t)...);
     return value_.us;
   }
 
   ::test_cpp2::cpp_reflection::enum1& set_ue(::test_cpp2::cpp_reflection::enum1 t = ::test_cpp2::cpp_reflection::enum1()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::ue;
     ::new (std::addressof(value_.ue)) ::test_cpp2::cpp_reflection::enum1(t);
     return value_.ue;
@@ -1453,6 +1454,8 @@ class union2 final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = union2;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1540,7 +1543,7 @@ class union2 final  {
 
   union2& operator=(union2&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::ui_2:
@@ -1575,7 +1578,7 @@ class union2 final  {
 
   union2& operator=(const union2& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::ui_2:
@@ -1606,7 +1609,6 @@ class union2 final  {
     }
     return *this;
   }
-  void __clear();
 
   ~union2() {
     apache::thrift::clear(*this);
@@ -1625,42 +1627,42 @@ class union2 final  {
   bool operator<(const union2&) const;
 
   ::std::int32_t& set_ui_2(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::ui_2;
     ::new (std::addressof(value_.ui_2)) ::std::int32_t(t);
     return value_.ui_2;
   }
 
   double& set_ud_2(double t = double()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::ud_2;
     ::new (std::addressof(value_.ud_2)) double(t);
     return value_.ud_2;
   }
 
   ::std::string& set_us_2(::std::string const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::us_2;
     ::new (std::addressof(value_.us_2)) ::std::string(t);
     return value_.us_2;
   }
 
   ::std::string& set_us_2(::std::string&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::us_2;
     ::new (std::addressof(value_.us_2)) ::std::string(std::move(t));
     return value_.us_2;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_us_2(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::us_2;
     ::new (std::addressof(value_.us_2)) ::std::string(std::forward<T>(t)...);
     return value_.us_2;
   }
 
   ::test_cpp2::cpp_reflection::enum1& set_ue_2(::test_cpp2::cpp_reflection::enum1 t = ::test_cpp2::cpp_reflection::enum1()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::ue_2;
     ::new (std::addressof(value_.ue_2)) ::test_cpp2::cpp_reflection::enum1(t);
     return value_.ue_2;
@@ -1855,6 +1857,8 @@ class union3 final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = union3;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1942,7 +1946,7 @@ class union3 final  {
 
   union3& operator=(union3&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::ui_3:
@@ -1977,7 +1981,7 @@ class union3 final  {
 
   union3& operator=(const union3& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::ui_3:
@@ -2008,7 +2012,6 @@ class union3 final  {
     }
     return *this;
   }
-  void __clear();
 
   ~union3() {
     apache::thrift::clear(*this);
@@ -2027,42 +2030,42 @@ class union3 final  {
   bool operator<(const union3&) const;
 
   ::std::int32_t& set_ui_3(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::ui_3;
     ::new (std::addressof(value_.ui_3)) ::std::int32_t(t);
     return value_.ui_3;
   }
 
   double& set_ud_3(double t = double()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::ud_3;
     ::new (std::addressof(value_.ud_3)) double(t);
     return value_.ud_3;
   }
 
   ::std::string& set_us_3(::std::string const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::us_3;
     ::new (std::addressof(value_.us_3)) ::std::string(t);
     return value_.us_3;
   }
 
   ::std::string& set_us_3(::std::string&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::us_3;
     ::new (std::addressof(value_.us_3)) ::std::string(std::move(t));
     return value_.us_3;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_us_3(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::us_3;
     ::new (std::addressof(value_.us_3)) ::std::string(std::forward<T>(t)...);
     return value_.us_3;
   }
 
   ::test_cpp2::cpp_reflection::enum1& set_ue_3(::test_cpp2::cpp_reflection::enum1 t = ::test_cpp2::cpp_reflection::enum1()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::ue_3;
     ::new (std::addressof(value_.ue_3)) ::test_cpp2::cpp_reflection::enum1(t);
     return value_.ue_3;
@@ -2257,6 +2260,8 @@ class structA final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = structA;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -2279,7 +2284,6 @@ class structA final  {
 
   structA& operator=(structA&&) noexcept;
   structA& operator=(const structA& src);
-  void __clear();
  private:
   ::std::int32_t __fbthrift_field_a;
  private:
@@ -2432,6 +2436,8 @@ class unionA final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = unionA;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -2530,7 +2536,7 @@ class unionA final  {
 
   unionA& operator=(unionA&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::i:
@@ -2570,7 +2576,7 @@ class unionA final  {
 
   unionA& operator=(const unionA& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::i:
@@ -2606,7 +2612,6 @@ class unionA final  {
     }
     return *this;
   }
-  void __clear();
 
   ~unionA() {
     apache::thrift::clear(*this);
@@ -2626,63 +2631,63 @@ class unionA final  {
   bool operator<(const unionA&) const;
 
   ::std::int32_t& set_i(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::i;
     ::new (std::addressof(value_.i)) ::std::int32_t(t);
     return value_.i;
   }
 
   double& set_d(double t = double()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::d;
     ::new (std::addressof(value_.d)) double(t);
     return value_.d;
   }
 
   ::std::string& set_s(::std::string const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::s;
     ::new (std::addressof(value_.s)) ::std::string(t);
     return value_.s;
   }
 
   ::std::string& set_s(::std::string&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::s;
     ::new (std::addressof(value_.s)) ::std::string(std::move(t));
     return value_.s;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_s(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::s;
     ::new (std::addressof(value_.s)) ::std::string(std::forward<T>(t)...);
     return value_.s;
   }
 
   ::test_cpp2::cpp_reflection::enum1& set_e(::test_cpp2::cpp_reflection::enum1 t = ::test_cpp2::cpp_reflection::enum1()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::e;
     ::new (std::addressof(value_.e)) ::test_cpp2::cpp_reflection::enum1(t);
     return value_.e;
   }
 
   ::test_cpp2::cpp_reflection::structA& set_a(::test_cpp2::cpp_reflection::structA const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::a;
     ::new (std::addressof(value_.a)) ::test_cpp2::cpp_reflection::structA(t);
     return value_.a;
   }
 
   ::test_cpp2::cpp_reflection::structA& set_a(::test_cpp2::cpp_reflection::structA&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::a;
     ::new (std::addressof(value_.a)) ::test_cpp2::cpp_reflection::structA(std::move(t));
     return value_.a;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::test_cpp2::cpp_reflection::structA, T...>> ::test_cpp2::cpp_reflection::structA& set_a(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::a;
     ::new (std::addressof(value_.a)) ::test_cpp2::cpp_reflection::structA(std::forward<T>(t)...);
     return value_.a;
@@ -2913,6 +2918,8 @@ class structB final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = structB;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -2937,7 +2944,6 @@ class structB final  {
   structB& operator=(structB&&) = default;
 
   structB& operator=(const structB&) = default;
-  void __clear();
  private:
   double __fbthrift_field_c;
  private:
@@ -3085,6 +3091,8 @@ class structC final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = structC;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -3106,7 +3114,6 @@ class structC final  {
 
   structC& operator=(structC&&) noexcept;
   structC& operator=(const structC& src);
-  void __clear();
 
   ~structC();
 
@@ -4694,6 +4701,8 @@ class struct1 final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = struct1;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -4715,7 +4724,6 @@ class struct1 final  {
 
   struct1& operator=(struct1&&) noexcept;
   struct1& operator=(const struct1& src);
-  void __clear();
 
   ~struct1();
 
@@ -5039,6 +5047,8 @@ class struct2 final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = struct2;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -5060,7 +5070,6 @@ class struct2 final  {
 
   struct2& operator=(struct2&&) noexcept;
   struct2& operator=(const struct2& src);
-  void __clear();
 
   ~struct2();
 
@@ -5473,6 +5482,8 @@ class struct3 final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = struct3;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -5494,7 +5505,6 @@ class struct3 final  {
 
   struct3& operator=(struct3&&) noexcept;
   struct3& operator=(const struct3& src);
-  void __clear();
 
   ~struct3();
 
@@ -6468,6 +6478,8 @@ class struct4 final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = struct4;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -6491,7 +6503,6 @@ class struct4 final  {
 
   struct4& operator=(struct4&&) noexcept;
   struct4& operator=(const struct4& src);
-  void __clear();
  public:
   ::std::int32_t field0;
  private:
@@ -6690,6 +6701,8 @@ class struct5 final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = struct5;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -6711,7 +6724,6 @@ class struct5 final  {
 
   struct5& operator=(struct5&&) noexcept;
   struct5& operator=(const struct5& src);
-  void __clear();
 
   ~struct5();
 
@@ -7002,6 +7014,8 @@ class struct_binary final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = struct_binary;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -7023,7 +7037,6 @@ class struct_binary final  {
 
   struct_binary& operator=(struct_binary&&) noexcept;
   struct_binary& operator=(const struct_binary& src);
-  void __clear();
  private:
   ::std::string __fbthrift_field_bi;
  private:
@@ -7124,6 +7137,8 @@ class dep_A_struct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = dep_A_struct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -7147,7 +7162,6 @@ class dep_A_struct final  {
   dep_A_struct& operator=(dep_A_struct&&) = default;
 
   dep_A_struct& operator=(const dep_A_struct&) = default;
-  void __clear();
  private:
   ::test_cpp2::cpp_reflection::dep_B_struct __fbthrift_field_b;
  private:
@@ -7345,6 +7359,8 @@ class dep_B_struct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = dep_B_struct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -7368,7 +7384,6 @@ class dep_B_struct final  {
   dep_B_struct& operator=(dep_B_struct&&) = default;
 
   dep_B_struct& operator=(const dep_B_struct&) = default;
-  void __clear();
  private:
   ::test_cpp2::cpp_reflection::dep_B_struct __fbthrift_field_b;
  private:
@@ -7566,6 +7581,8 @@ class annotated final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = annotated;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -7589,7 +7606,6 @@ class annotated final  {
   annotated& operator=(annotated&&) = default;
 
   annotated& operator=(const annotated&) = default;
-  void __clear();
  private:
   ::std::int32_t __fbthrift_field_a;
  private:
@@ -7684,6 +7700,8 @@ class union_with_special_names final  {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+
+  void __fbthrift_clear();
 
  public:
   using __fbthrift_cpp2_type = union_with_special_names;
@@ -8036,7 +8054,7 @@ class union_with_special_names final  {
 
   union_with_special_names& operator=(union_with_special_names&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::get:
@@ -8191,7 +8209,7 @@ class union_with_special_names final  {
 
   union_with_special_names& operator=(const union_with_special_names& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::get:
@@ -8342,7 +8360,6 @@ class union_with_special_names final  {
     }
     return *this;
   }
-  void __clear();
 
   ~union_with_special_names() {
     apache::thrift::clear(*this);
@@ -8385,196 +8402,196 @@ class union_with_special_names final  {
   bool operator<(const union_with_special_names&) const;
 
   ::std::int32_t& set_get(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::get;
     ::new (std::addressof(value_.get)) ::std::int32_t(t);
     return value_.get;
   }
 
   ::std::int32_t& set_getter(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::getter;
     ::new (std::addressof(value_.getter)) ::std::int32_t(t);
     return value_.getter;
   }
 
   ::std::int32_t& set_lists(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::lists;
     ::new (std::addressof(value_.lists)) ::std::int32_t(t);
     return value_.lists;
   }
 
   ::std::int32_t& set_maps(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::maps;
     ::new (std::addressof(value_.maps)) ::std::int32_t(t);
     return value_.maps;
   }
 
   ::std::int32_t& set_name(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::name;
     ::new (std::addressof(value_.name)) ::std::int32_t(t);
     return value_.name;
   }
 
   ::std::int32_t& set_name_to_value(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::name_to_value;
     ::new (std::addressof(value_.name_to_value)) ::std::int32_t(t);
     return value_.name_to_value;
   }
 
   ::std::int32_t& set_names(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::names;
     ::new (std::addressof(value_.names)) ::std::int32_t(t);
     return value_.names;
   }
 
   ::std::int32_t& set_prefix_tree(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::prefix_tree;
     ::new (std::addressof(value_.prefix_tree)) ::std::int32_t(t);
     return value_.prefix_tree;
   }
 
   ::std::int32_t& set_sets(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::sets;
     ::new (std::addressof(value_.sets)) ::std::int32_t(t);
     return value_.sets;
   }
 
   ::std::int32_t& set_setter(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::setter;
     ::new (std::addressof(value_.setter)) ::std::int32_t(t);
     return value_.setter;
   }
 
   ::std::int32_t& set_str(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::str;
     ::new (std::addressof(value_.str)) ::std::int32_t(t);
     return value_.str;
   }
 
   ::std::int32_t& set_strings(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::strings;
     ::new (std::addressof(value_.strings)) ::std::int32_t(t);
     return value_.strings;
   }
 
   ::std::int32_t& set_type(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::type;
     ::new (std::addressof(value_.type)) ::std::int32_t(t);
     return value_.type;
   }
 
   ::std::int32_t& set_value(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::value;
     ::new (std::addressof(value_.value)) ::std::int32_t(t);
     return value_.value;
   }
 
   ::std::int32_t& set_value_to_name(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::value_to_name;
     ::new (std::addressof(value_.value_to_name)) ::std::int32_t(t);
     return value_.value_to_name;
   }
 
   ::std::int32_t& set_values(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::values;
     ::new (std::addressof(value_.values)) ::std::int32_t(t);
     return value_.values;
   }
 
   ::std::int32_t& set_id(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::id;
     ::new (std::addressof(value_.id)) ::std::int32_t(t);
     return value_.id;
   }
 
   ::std::int32_t& set_ids(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::ids;
     ::new (std::addressof(value_.ids)) ::std::int32_t(t);
     return value_.ids;
   }
 
   ::std::int32_t& set_descriptor(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::descriptor;
     ::new (std::addressof(value_.descriptor)) ::std::int32_t(t);
     return value_.descriptor;
   }
 
   ::std::int32_t& set_descriptors(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::descriptors;
     ::new (std::addressof(value_.descriptors)) ::std::int32_t(t);
     return value_.descriptors;
   }
 
   ::std::int32_t& set_key(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::key;
     ::new (std::addressof(value_.key)) ::std::int32_t(t);
     return value_.key;
   }
 
   ::std::int32_t& set_keys(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::keys;
     ::new (std::addressof(value_.keys)) ::std::int32_t(t);
     return value_.keys;
   }
 
   ::std::int32_t& set_annotation(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::annotation;
     ::new (std::addressof(value_.annotation)) ::std::int32_t(t);
     return value_.annotation;
   }
 
   ::std::int32_t& set_annotations(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::annotations;
     ::new (std::addressof(value_.annotations)) ::std::int32_t(t);
     return value_.annotations;
   }
 
   ::std::int32_t& set_member(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::member;
     ::new (std::addressof(value_.member)) ::std::int32_t(t);
     return value_.member;
   }
 
   ::std::int32_t& set_members(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::members;
     ::new (std::addressof(value_.members)) ::std::int32_t(t);
     return value_.members;
   }
 
   ::std::int32_t& set_field(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::field;
     ::new (std::addressof(value_.field)) ::std::int32_t(t);
     return value_.field;
   }
 
   ::std::int32_t& set_fields(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::fields;
     ::new (std::addressof(value_.fields)) ::std::int32_t(t);
     return value_.fields;
@@ -9633,6 +9650,8 @@ class struct_with_special_names final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = struct_with_special_names;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -9683,7 +9702,6 @@ class struct_with_special_names final  {
   struct_with_special_names& operator=(struct_with_special_names&&) = default;
 
   struct_with_special_names& operator=(const struct_with_special_names&) = default;
-  void __clear();
  private:
   ::std::int32_t __fbthrift_field_get;
  private:
@@ -11183,6 +11201,8 @@ class struct_with_indirections final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = struct_with_indirections;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -11204,7 +11224,6 @@ class struct_with_indirections final  {
 
   struct_with_indirections& operator=(struct_with_indirections&&) noexcept;
   struct_with_indirections& operator=(const struct_with_indirections& src);
-  void __clear();
 
   ~struct_with_indirections();
 

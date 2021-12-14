@@ -121,6 +121,8 @@ class A final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = A;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -144,7 +146,6 @@ class A final  {
   A& operator=(A&&) = default;
 
   A& operator=(const A&) = default;
-  void __clear();
  private:
   ::std::int32_t __fbthrift_field_useless_field;
  private:
@@ -240,6 +241,8 @@ class U final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = U;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -305,7 +308,7 @@ class U final  {
 
   U& operator=(U&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::i:
@@ -330,7 +333,7 @@ class U final  {
 
   U& operator=(const U& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::i:
@@ -351,7 +354,6 @@ class U final  {
     }
     return *this;
   }
-  void __clear();
 
   ~U() {
     apache::thrift::clear(*this);
@@ -368,28 +370,28 @@ class U final  {
   bool operator<(const U&) const;
 
   ::std::int32_t& set_i(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::i;
     ::new (std::addressof(value_.i)) ::std::int32_t(t);
     return value_.i;
   }
 
   ::std::string& set_s(::std::string const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::s;
     ::new (std::addressof(value_.s)) ::std::string(t);
     return value_.s;
   }
 
   ::std::string& set_s(::std::string&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::s;
     ::new (std::addressof(value_.s)) ::std::string(std::move(t));
     return value_.s;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_s(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::s;
     ::new (std::addressof(value_.s)) ::std::string(std::forward<T>(t)...);
     return value_.s;
@@ -511,6 +513,8 @@ class FOLLY_EXPORT Bang : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+
+  void __fbthrift_clear();
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
   static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
@@ -539,7 +543,6 @@ class FOLLY_EXPORT Bang : public apache::thrift::TException {
 
   Bang& operator=(Bang&&) noexcept;
   Bang& operator=(const Bang& src);
-  void __clear();
 
   ~Bang() override;
 

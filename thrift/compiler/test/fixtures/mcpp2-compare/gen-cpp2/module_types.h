@@ -1118,6 +1118,8 @@ class Empty final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = Empty;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1140,7 +1142,6 @@ class Empty final  {
   Empty& operator=(Empty&&) = default;
 
   Empty& operator=(const Empty&) = default;
-  void __clear();
 
  public:
 
@@ -1182,6 +1183,8 @@ class ASimpleStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = ASimpleStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1205,7 +1208,6 @@ class ASimpleStruct final  {
   ASimpleStruct& operator=(ASimpleStruct&&) = default;
 
   ASimpleStruct& operator=(const ASimpleStruct&) = default;
-  void __clear();
  private:
   ::std::int64_t __fbthrift_field_boolField;
  private:
@@ -1301,6 +1303,8 @@ class ASimpleStructNoexcept final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = ASimpleStructNoexcept;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1324,7 +1328,6 @@ class ASimpleStructNoexcept final  {
   ASimpleStructNoexcept& operator=(ASimpleStructNoexcept&&) = default;
 
   ASimpleStructNoexcept& operator=(const ASimpleStructNoexcept&) = default;
-  void __clear();
  private:
   ::std::int64_t __fbthrift_field_boolField;
  private:
@@ -1420,6 +1423,8 @@ class MyStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = MyStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1440,7 +1445,6 @@ class MyStruct final  {
 
   MyStruct& operator=(MyStruct&&) noexcept;
   MyStruct& operator=(const MyStruct& src);
-  void __clear();
 
   ~MyStruct();
 
@@ -2043,6 +2047,8 @@ class SimpleUnion  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = SimpleUnion;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -2108,7 +2114,7 @@ class SimpleUnion  {
 
   SimpleUnion& operator=(SimpleUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::intValue:
@@ -2133,7 +2139,7 @@ class SimpleUnion  {
 
   SimpleUnion& operator=(const SimpleUnion& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::intValue:
@@ -2154,7 +2160,6 @@ class SimpleUnion  {
     }
     return *this;
   }
-  void __clear();
 
   virtual ~SimpleUnion() {
     apache::thrift::clear(*this);
@@ -2172,28 +2177,28 @@ class SimpleUnion  {
   bool operator<(const SimpleUnion&) const;
 
   ::std::int64_t& set_intValue(::std::int64_t t = ::std::int64_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::intValue;
     ::new (std::addressof(value_.intValue)) ::std::int64_t(t);
     return value_.intValue;
   }
 
   ::std::string& set_stringValue(::std::string const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::stringValue;
     ::new (std::addressof(value_.stringValue)) ::std::string(t);
     return value_.stringValue;
   }
 
   ::std::string& set_stringValue(::std::string&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::stringValue;
     ::new (std::addressof(value_.stringValue)) ::std::string(std::move(t));
     return value_.stringValue;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_stringValue(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::stringValue;
     ::new (std::addressof(value_.stringValue)) ::std::string(std::forward<T>(t)...);
     return value_.stringValue;
@@ -2315,6 +2320,8 @@ class ComplexUnion final  {
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+
+  void __fbthrift_clear();
 
  public:
   using __fbthrift_cpp2_type = ComplexUnion;
@@ -2667,7 +2674,7 @@ class ComplexUnion final  {
 
   ComplexUnion& operator=(ComplexUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::intValue:
@@ -2822,7 +2829,7 @@ class ComplexUnion final  {
 
   ComplexUnion& operator=(const ComplexUnion& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::intValue:
@@ -2973,7 +2980,6 @@ class ComplexUnion final  {
     }
     return *this;
   }
-  void __clear();
 
   ~ComplexUnion() {
     apache::thrift::clear(*this);
@@ -3016,406 +3022,406 @@ class ComplexUnion final  {
   bool operator<(const ComplexUnion&) const;
 
   ::std::int64_t& set_intValue(::std::int64_t t = ::std::int64_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::intValue;
     ::new (std::addressof(value_.intValue)) ::std::int64_t(t);
     return value_.intValue;
   }
 
   ::std::int64_t& set_opt_intValue(::std::int64_t t = ::std::int64_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::opt_intValue;
     ::new (std::addressof(value_.opt_intValue)) ::std::int64_t(t);
     return value_.opt_intValue;
   }
 
   ::std::string& set_stringValue(::std::string const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::stringValue;
     ::new (std::addressof(value_.stringValue)) ::std::string(t);
     return value_.stringValue;
   }
 
   ::std::string& set_stringValue(::std::string&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::stringValue;
     ::new (std::addressof(value_.stringValue)) ::std::string(std::move(t));
     return value_.stringValue;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_stringValue(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::stringValue;
     ::new (std::addressof(value_.stringValue)) ::std::string(std::forward<T>(t)...);
     return value_.stringValue;
   }
 
   ::std::string& set_opt_stringValue(::std::string const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::opt_stringValue;
     ::new (std::addressof(value_.opt_stringValue)) ::std::string(t);
     return value_.opt_stringValue;
   }
 
   ::std::string& set_opt_stringValue(::std::string&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::opt_stringValue;
     ::new (std::addressof(value_.opt_stringValue)) ::std::string(std::move(t));
     return value_.opt_stringValue;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_opt_stringValue(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::opt_stringValue;
     ::new (std::addressof(value_.opt_stringValue)) ::std::string(std::forward<T>(t)...);
     return value_.opt_stringValue;
   }
 
   ::std::int16_t& set_intValue2(::std::int16_t t = ::std::int16_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::intValue2;
     ::new (std::addressof(value_.intValue2)) ::std::int16_t(t);
     return value_.intValue2;
   }
 
   ::std::int32_t& set_intValue3(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::intValue3;
     ::new (std::addressof(value_.intValue3)) ::std::int32_t(t);
     return value_.intValue3;
   }
 
   double& set_doubelValue(double t = double()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::doubelValue;
     ::new (std::addressof(value_.doubelValue)) double(t);
     return value_.doubelValue;
   }
 
   bool& set_boolValue(bool t = bool()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::boolValue;
     ::new (std::addressof(value_.boolValue)) bool(t);
     return value_.boolValue;
   }
 
   ::std::vector<::std::int32_t>& set_union_list(::std::vector<::std::int32_t> const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::union_list;
     ::new (std::addressof(value_.union_list)) ::std::vector<::std::int32_t>(t);
     return value_.union_list;
   }
 
   ::std::vector<::std::int32_t>& set_union_list(::std::vector<::std::int32_t>&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::union_list;
     ::new (std::addressof(value_.union_list)) ::std::vector<::std::int32_t>(std::move(t));
     return value_.union_list;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<::std::int32_t>, T...>> ::std::vector<::std::int32_t>& set_union_list(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::union_list;
     ::new (std::addressof(value_.union_list)) ::std::vector<::std::int32_t>(std::forward<T>(t)...);
     return value_.union_list;
   }
 
   ::std::set<::std::int64_t>& set_union_set(::std::set<::std::int64_t> const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::union_set;
     ::new (std::addressof(value_.union_set)) ::std::set<::std::int64_t>(t);
     return value_.union_set;
   }
 
   ::std::set<::std::int64_t>& set_union_set(::std::set<::std::int64_t>&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::union_set;
     ::new (std::addressof(value_.union_set)) ::std::set<::std::int64_t>(std::move(t));
     return value_.union_set;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::set<::std::int64_t>, T...>> ::std::set<::std::int64_t>& set_union_set(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::union_set;
     ::new (std::addressof(value_.union_set)) ::std::set<::std::int64_t>(std::forward<T>(t)...);
     return value_.union_set;
   }
 
   ::std::map<::std::string, ::std::int32_t>& set_union_map(::std::map<::std::string, ::std::int32_t> const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::union_map;
     ::new (std::addressof(value_.union_map)) ::std::map<::std::string, ::std::int32_t>(t);
     return value_.union_map;
   }
 
   ::std::map<::std::string, ::std::int32_t>& set_union_map(::std::map<::std::string, ::std::int32_t>&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::union_map;
     ::new (std::addressof(value_.union_map)) ::std::map<::std::string, ::std::int32_t>(std::move(t));
     return value_.union_map;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::map<::std::string, ::std::int32_t>, T...>> ::std::map<::std::string, ::std::int32_t>& set_union_map(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::union_map;
     ::new (std::addressof(value_.union_map)) ::std::map<::std::string, ::std::int32_t>(std::forward<T>(t)...);
     return value_.union_map;
   }
 
   ::std::map<::std::string, ::std::int32_t>& set_opt_union_map(::std::map<::std::string, ::std::int32_t> const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::opt_union_map;
     ::new (std::addressof(value_.opt_union_map)) ::std::map<::std::string, ::std::int32_t>(t);
     return value_.opt_union_map;
   }
 
   ::std::map<::std::string, ::std::int32_t>& set_opt_union_map(::std::map<::std::string, ::std::int32_t>&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::opt_union_map;
     ::new (std::addressof(value_.opt_union_map)) ::std::map<::std::string, ::std::int32_t>(std::move(t));
     return value_.opt_union_map;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::map<::std::string, ::std::int32_t>, T...>> ::std::map<::std::string, ::std::int32_t>& set_opt_union_map(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::opt_union_map;
     ::new (std::addressof(value_.opt_union_map)) ::std::map<::std::string, ::std::int32_t>(std::forward<T>(t)...);
     return value_.opt_union_map;
   }
 
   ::some::valid::ns::MyEnumA& set_enum_field(::some::valid::ns::MyEnumA t = ::some::valid::ns::MyEnumA()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::enum_field;
     ::new (std::addressof(value_.enum_field)) ::some::valid::ns::MyEnumA(t);
     return value_.enum_field;
   }
 
   ::std::vector<::some::valid::ns::MyEnumA>& set_enum_container(::std::vector<::some::valid::ns::MyEnumA> const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::enum_container;
     ::new (std::addressof(value_.enum_container)) ::std::vector<::some::valid::ns::MyEnumA>(t);
     return value_.enum_container;
   }
 
   ::std::vector<::some::valid::ns::MyEnumA>& set_enum_container(::std::vector<::some::valid::ns::MyEnumA>&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::enum_container;
     ::new (std::addressof(value_.enum_container)) ::std::vector<::some::valid::ns::MyEnumA>(std::move(t));
     return value_.enum_container;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<::some::valid::ns::MyEnumA>, T...>> ::std::vector<::some::valid::ns::MyEnumA>& set_enum_container(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::enum_container;
     ::new (std::addressof(value_.enum_container)) ::std::vector<::some::valid::ns::MyEnumA>(std::forward<T>(t)...);
     return value_.enum_container;
   }
 
   ::some::valid::ns::MyStruct& set_a_struct(::some::valid::ns::MyStruct const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::a_struct;
     ::new (std::addressof(value_.a_struct)) ::some::valid::ns::MyStruct(t);
     return value_.a_struct;
   }
 
   ::some::valid::ns::MyStruct& set_a_struct(::some::valid::ns::MyStruct&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::a_struct;
     ::new (std::addressof(value_.a_struct)) ::some::valid::ns::MyStruct(std::move(t));
     return value_.a_struct;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::MyStruct, T...>> ::some::valid::ns::MyStruct& set_a_struct(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::a_struct;
     ::new (std::addressof(value_.a_struct)) ::some::valid::ns::MyStruct(std::forward<T>(t)...);
     return value_.a_struct;
   }
 
   ::std::set<::some::valid::ns::MyStruct>& set_a_set_struct(::std::set<::some::valid::ns::MyStruct> const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::a_set_struct;
     ::new (std::addressof(value_.a_set_struct)) ::std::set<::some::valid::ns::MyStruct>(t);
     return value_.a_set_struct;
   }
 
   ::std::set<::some::valid::ns::MyStruct>& set_a_set_struct(::std::set<::some::valid::ns::MyStruct>&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::a_set_struct;
     ::new (std::addressof(value_.a_set_struct)) ::std::set<::some::valid::ns::MyStruct>(std::move(t));
     return value_.a_set_struct;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::set<::some::valid::ns::MyStruct>, T...>> ::std::set<::some::valid::ns::MyStruct>& set_a_set_struct(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::a_set_struct;
     ::new (std::addressof(value_.a_set_struct)) ::std::set<::some::valid::ns::MyStruct>(std::forward<T>(t)...);
     return value_.a_set_struct;
   }
 
   ::some::valid::ns::SimpleUnion& set_a_union(::some::valid::ns::SimpleUnion const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::a_union;
     ::new (std::addressof(value_.a_union)) ::some::valid::ns::SimpleUnion(t);
     return value_.a_union;
   }
 
   ::some::valid::ns::SimpleUnion& set_a_union(::some::valid::ns::SimpleUnion&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::a_union;
     ::new (std::addressof(value_.a_union)) ::some::valid::ns::SimpleUnion(std::move(t));
     return value_.a_union;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::SimpleUnion, T...>> ::some::valid::ns::SimpleUnion& set_a_union(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::a_union;
     ::new (std::addressof(value_.a_union)) ::some::valid::ns::SimpleUnion(std::forward<T>(t)...);
     return value_.a_union;
   }
 
   ::some::valid::ns::SimpleUnion& set_opt_a_union(::some::valid::ns::SimpleUnion const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::opt_a_union;
     ::new (std::addressof(value_.opt_a_union)) ::some::valid::ns::SimpleUnion(t);
     return value_.opt_a_union;
   }
 
   ::some::valid::ns::SimpleUnion& set_opt_a_union(::some::valid::ns::SimpleUnion&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::opt_a_union;
     ::new (std::addressof(value_.opt_a_union)) ::some::valid::ns::SimpleUnion(std::move(t));
     return value_.opt_a_union;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::SimpleUnion, T...>> ::some::valid::ns::SimpleUnion& set_opt_a_union(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::opt_a_union;
     ::new (std::addressof(value_.opt_a_union)) ::some::valid::ns::SimpleUnion(std::forward<T>(t)...);
     return value_.opt_a_union;
   }
 
   ::std::vector<::some::valid::ns::SimpleUnion>& set_a_union_list(::std::vector<::some::valid::ns::SimpleUnion> const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::a_union_list;
     ::new (std::addressof(value_.a_union_list)) ::std::vector<::some::valid::ns::SimpleUnion>(t);
     return value_.a_union_list;
   }
 
   ::std::vector<::some::valid::ns::SimpleUnion>& set_a_union_list(::std::vector<::some::valid::ns::SimpleUnion>&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::a_union_list;
     ::new (std::addressof(value_.a_union_list)) ::std::vector<::some::valid::ns::SimpleUnion>(std::move(t));
     return value_.a_union_list;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<::some::valid::ns::SimpleUnion>, T...>> ::std::vector<::some::valid::ns::SimpleUnion>& set_a_union_list(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::a_union_list;
     ::new (std::addressof(value_.a_union_list)) ::std::vector<::some::valid::ns::SimpleUnion>(std::forward<T>(t)...);
     return value_.a_union_list;
   }
 
   ::some::valid::ns::unionTypeDef& set_a_union_typedef(::some::valid::ns::unionTypeDef const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::a_union_typedef;
     ::new (std::addressof(value_.a_union_typedef)) ::some::valid::ns::unionTypeDef(t);
     return value_.a_union_typedef;
   }
 
   ::some::valid::ns::unionTypeDef& set_a_union_typedef(::some::valid::ns::unionTypeDef&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::a_union_typedef;
     ::new (std::addressof(value_.a_union_typedef)) ::some::valid::ns::unionTypeDef(std::move(t));
     return value_.a_union_typedef;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::unionTypeDef, T...>> ::some::valid::ns::unionTypeDef& set_a_union_typedef(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::a_union_typedef;
     ::new (std::addressof(value_.a_union_typedef)) ::some::valid::ns::unionTypeDef(std::forward<T>(t)...);
     return value_.a_union_typedef;
   }
 
   ::std::vector<::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(::std::vector<::some::valid::ns::unionTypeDef> const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::a_union_typedef_list;
     ::new (std::addressof(value_.a_union_typedef_list)) ::std::vector<::some::valid::ns::unionTypeDef>(t);
     return value_.a_union_typedef_list;
   }
 
   ::std::vector<::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(::std::vector<::some::valid::ns::unionTypeDef>&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::a_union_typedef_list;
     ::new (std::addressof(value_.a_union_typedef_list)) ::std::vector<::some::valid::ns::unionTypeDef>(std::move(t));
     return value_.a_union_typedef_list;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<::some::valid::ns::unionTypeDef>, T...>> ::std::vector<::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::a_union_typedef_list;
     ::new (std::addressof(value_.a_union_typedef_list)) ::std::vector<::some::valid::ns::unionTypeDef>(std::forward<T>(t)...);
     return value_.a_union_typedef_list;
   }
 
   ::std::string& set_MyBinaryField(::std::string const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::MyBinaryField;
     ::new (std::addressof(value_.MyBinaryField)) ::std::string(t);
     return value_.MyBinaryField;
   }
 
   ::std::string& set_MyBinaryField(::std::string&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::MyBinaryField;
     ::new (std::addressof(value_.MyBinaryField)) ::std::string(std::move(t));
     return value_.MyBinaryField;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_MyBinaryField(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::MyBinaryField;
     ::new (std::addressof(value_.MyBinaryField)) ::std::string(std::forward<T>(t)...);
     return value_.MyBinaryField;
   }
 
   ::std::string& set_MyBinaryField2(::std::string const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::MyBinaryField2;
     ::new (std::addressof(value_.MyBinaryField2)) ::std::string(t);
     return value_.MyBinaryField2;
   }
 
   ::std::string& set_MyBinaryField2(::std::string&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::MyBinaryField2;
     ::new (std::addressof(value_.MyBinaryField2)) ::std::string(std::move(t));
     return value_.MyBinaryField2;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_MyBinaryField2(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::MyBinaryField2;
     ::new (std::addressof(value_.MyBinaryField2)) ::std::string(std::forward<T>(t)...);
     return value_.MyBinaryField2;
   }
 
   ::std::vector<::std::string>& set_MyBinaryListField4(::std::vector<::std::string> const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::MyBinaryListField4;
     ::new (std::addressof(value_.MyBinaryListField4)) ::std::vector<::std::string>(t);
     return value_.MyBinaryListField4;
   }
 
   ::std::vector<::std::string>& set_MyBinaryListField4(::std::vector<::std::string>&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::MyBinaryListField4;
     ::new (std::addressof(value_.MyBinaryListField4)) ::std::vector<::std::string>(std::move(t));
     return value_.MyBinaryListField4;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<::std::string>, T...>> ::std::vector<::std::string>& set_MyBinaryListField4(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::MyBinaryListField4;
     ::new (std::addressof(value_.MyBinaryListField4)) ::std::vector<::std::string>(std::forward<T>(t)...);
     return value_.MyBinaryListField4;
@@ -3425,7 +3431,7 @@ class ComplexUnion final  {
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::MyStruct, T...>> ::std::unique_ptr<::some::valid::ns::MyStruct>& set_ref_field(T&&... t) {
     // defer resolution of ref_ in case ref_::element_type would here be incomplete
     using ref_ = folly::conditional_t<(sizeof...(T) < size_t(-1)), ::std::unique_ptr<::some::valid::ns::MyStruct>, void>;
-    __clear();
+    __fbthrift_clear();
     type_ = Type::ref_field;
     ::new (std::addressof(value_.ref_field)) ref_(new typename ref_::element_type(std::forward<T>(t)...));
     return value_.ref_field;
@@ -3435,49 +3441,49 @@ class ComplexUnion final  {
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::MyStruct, T...>> ::std::shared_ptr<const ::some::valid::ns::MyStruct>& set_ref_field2(T&&... t) {
     // defer resolution of ref_ in case ref_::element_type would here be incomplete
     using ref_ = folly::conditional_t<(sizeof...(T) < size_t(-1)), ::std::shared_ptr<const ::some::valid::ns::MyStruct>, void>;
-    __clear();
+    __fbthrift_clear();
     type_ = Type::ref_field2;
     ::new (std::addressof(value_.ref_field2)) ref_(new typename ref_::element_type(std::forward<T>(t)...));
     return value_.ref_field2;
   }
 
   ::some::valid::ns::AnException& set_excp_field(::some::valid::ns::AnException const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::excp_field;
     ::new (std::addressof(value_.excp_field)) ::some::valid::ns::AnException(t);
     return value_.excp_field;
   }
 
   ::some::valid::ns::AnException& set_excp_field(::some::valid::ns::AnException&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::excp_field;
     ::new (std::addressof(value_.excp_field)) ::some::valid::ns::AnException(std::move(t));
     return value_.excp_field;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::AnException, T...>> ::some::valid::ns::AnException& set_excp_field(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::excp_field;
     ::new (std::addressof(value_.excp_field)) ::some::valid::ns::AnException(std::forward<T>(t)...);
     return value_.excp_field;
   }
 
   ::some::valid::ns::CustomProtocolType& set_MyCustomField(::some::valid::ns::CustomProtocolType const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::MyCustomField;
     ::new (std::addressof(value_.MyCustomField)) ::some::valid::ns::CustomProtocolType(t);
     return value_.MyCustomField;
   }
 
   ::some::valid::ns::CustomProtocolType& set_MyCustomField(::some::valid::ns::CustomProtocolType&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::MyCustomField;
     ::new (std::addressof(value_.MyCustomField)) ::some::valid::ns::CustomProtocolType(std::move(t));
     return value_.MyCustomField;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::CustomProtocolType, T...>> ::some::valid::ns::CustomProtocolType& set_MyCustomField(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::MyCustomField;
     ::new (std::addressof(value_.MyCustomField)) ::some::valid::ns::CustomProtocolType(std::forward<T>(t)...);
     return value_.MyCustomField;
@@ -4537,6 +4543,8 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+
+  void __fbthrift_clear();
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
   static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
@@ -4565,7 +4573,6 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
   AnException& operator=(AnException&&) noexcept;
   AnException& operator=(const AnException& src);
-  void __clear();
 
   ~AnException() override;
 
@@ -5139,6 +5146,8 @@ class FOLLY_EXPORT AnotherException : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+
+  void __fbthrift_clear();
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
   static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
@@ -5167,7 +5176,6 @@ class FOLLY_EXPORT AnotherException : public apache::thrift::TException {
 
   AnotherException& operator=(AnotherException&&) noexcept;
   AnotherException& operator=(const AnotherException& src);
-  void __clear();
 
   virtual ~AnotherException();
 
@@ -5319,6 +5327,8 @@ class containerStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = containerStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -5337,7 +5347,6 @@ class containerStruct final  {
 
 
   containerStruct& operator=(containerStruct&&) = default;
-  void __clear();
 
   ~containerStruct();
 
@@ -6869,6 +6878,8 @@ class MyIncludedStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = MyIncludedStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -6891,7 +6902,6 @@ class MyIncludedStruct final  {
 
   MyIncludedStruct& operator=(MyIncludedStruct&&) noexcept;
   MyIncludedStruct& operator=(const MyIncludedStruct& src);
-  void __clear();
  private:
   ::a::different::ns::IncludedInt64 __fbthrift_field_MyIncludedInt;
  private:
@@ -7082,6 +7092,8 @@ class AnnotatedStruct  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = AnnotatedStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -7100,7 +7112,6 @@ class AnnotatedStruct  {
 
 
   AnnotatedStruct& operator=(AnnotatedStruct&&) = default;
-  void __clear();
 
   virtual ~AnnotatedStruct();
 
@@ -8091,6 +8102,8 @@ class ComplexContainerStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = ComplexContainerStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -8111,7 +8124,6 @@ class ComplexContainerStruct final  {
 
   ComplexContainerStruct& operator=(ComplexContainerStruct&&) noexcept;
   ComplexContainerStruct& operator=(const ComplexContainerStruct& src);
-  void __clear();
  private:
   ::std::map<::std::string, ::some::valid::ns::IOBuf> __fbthrift_field_map_of_iobufs;
  private:
@@ -8257,6 +8269,8 @@ class FloatStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = FloatStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -8281,7 +8295,6 @@ class FloatStruct final  {
   FloatStruct& operator=(FloatStruct&&) = default;
 
   FloatStruct& operator=(const FloatStruct&) = default;
-  void __clear();
  private:
   float __fbthrift_field_floatField;
  private:
@@ -8429,6 +8442,8 @@ class FloatUnion final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = FloatUnion;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -8494,7 +8509,7 @@ class FloatUnion final  {
 
   FloatUnion& operator=(FloatUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::floatSide:
@@ -8519,7 +8534,7 @@ class FloatUnion final  {
 
   FloatUnion& operator=(const FloatUnion& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::floatSide:
@@ -8540,7 +8555,6 @@ class FloatUnion final  {
     }
     return *this;
   }
-  void __clear();
 
   ~FloatUnion() {
     apache::thrift::clear(*this);
@@ -8557,14 +8571,14 @@ class FloatUnion final  {
   bool operator<(const FloatUnion&) const;
 
   float& set_floatSide(float t = float()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::floatSide;
     ::new (std::addressof(value_.floatSide)) float(t);
     return value_.floatSide;
   }
 
   double& set_doubleSide(double t = double()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::doubleSide;
     ::new (std::addressof(value_.doubleSide)) double(t);
     return value_.doubleSide;
@@ -8687,6 +8701,8 @@ class AllRequiredNoExceptMoveCtrStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = AllRequiredNoExceptMoveCtrStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -8710,7 +8726,6 @@ class AllRequiredNoExceptMoveCtrStruct final  {
   AllRequiredNoExceptMoveCtrStruct& operator=(AllRequiredNoExceptMoveCtrStruct&&) = default;
 
   AllRequiredNoExceptMoveCtrStruct& operator=(const AllRequiredNoExceptMoveCtrStruct&) = default;
-  void __clear();
  public:
   ::std::int64_t intField;
 

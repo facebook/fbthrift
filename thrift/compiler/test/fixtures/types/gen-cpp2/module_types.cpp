@@ -187,7 +187,7 @@ decorated_struct::decorated_struct(apache::thrift::FragileConstructor, ::std::st
 }
 
 
-void decorated_struct::__clear() {
+void decorated_struct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
@@ -310,7 +310,7 @@ ContainerStruct::ContainerStruct(apache::thrift::FragileConstructor, ::std::vect
 }
 
 
-void ContainerStruct::__clear() {
+void ContainerStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_fieldA.clear();
   this->__fbthrift_field_fieldB.clear();
@@ -488,7 +488,7 @@ CppTypeStruct::CppTypeStruct(apache::thrift::FragileConstructor, std::list<int32
 }
 
 
-void CppTypeStruct::__clear() {
+void CppTypeStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_fieldA.clear();
   __isset = {};
@@ -585,7 +585,7 @@ VirtualStruct::VirtualStruct(apache::thrift::FragileConstructor, ::std::int64_t 
 }
 
 
-void VirtualStruct::__clear() {
+void VirtualStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_MyIntField = ::std::int64_t();
   __isset = {};
@@ -678,7 +678,7 @@ MyStructWithForwardRefEnum::MyStructWithForwardRefEnum(apache::thrift::FragileCo
 }
 
 
-void MyStructWithForwardRefEnum::__clear() {
+void MyStructWithForwardRefEnum::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_a =  ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO;
   this->__fbthrift_field_b =  ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO;
@@ -764,7 +764,7 @@ TrivialNumeric::TrivialNumeric(apache::thrift::FragileConstructor, ::std::int32_
 }
 
 
-void TrivialNumeric::__clear() {
+void TrivialNumeric::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_a = ::std::int32_t();
   this->__fbthrift_field_b = bool();
@@ -850,10 +850,10 @@ TrivialNestedWithDefault::TrivialNestedWithDefault(apache::thrift::FragileConstr
 }
 
 
-void TrivialNestedWithDefault::__clear() {
+void TrivialNestedWithDefault::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_z = static_cast<::std::int32_t>(4);
-  this->__fbthrift_field_n.__clear();
+  apache::thrift::clear(this->__fbthrift_field_n);
   __isset = {};
 }
 
@@ -971,7 +971,7 @@ ComplexString::ComplexString(apache::thrift::FragileConstructor, ::std::string a
 }
 
 
-void ComplexString::__clear() {
+void ComplexString::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_a = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_b.clear();
@@ -1080,10 +1080,10 @@ ComplexNestedWithDefault::ComplexNestedWithDefault(apache::thrift::FragileConstr
 }
 
 
-void ComplexNestedWithDefault::__clear() {
+void ComplexNestedWithDefault::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_z = apache::thrift::StringTraits<std::string>::fromStringLiteral("4");
-  this->__fbthrift_field_n.__clear();
+  apache::thrift::clear(this->__fbthrift_field_n);
   __isset = {};
 }
 
@@ -1206,7 +1206,7 @@ MinPadding::MinPadding(apache::thrift::FragileConstructor, ::std::int8_t small__
 }
 
 
-void MinPadding::__clear() {
+void MinPadding::__fbthrift_clear() {
   // clear all fields
   this->small = ::std::int8_t();
   this->big = ::std::int64_t();
@@ -1309,7 +1309,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
 
 
-void MyDataItem::__clear() {
+void MyDataItem::__fbthrift_clear() {
   // clear all fields
 }
 
@@ -1390,7 +1390,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField
 }
 
 
-void MyStruct::__clear() {
+void MyStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_MyIntField = ::std::int64_t();
   this->__fbthrift_field_MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -1473,7 +1473,7 @@ Renaming::Renaming(apache::thrift::FragileConstructor, ::std::int64_t bar__arg) 
 }
 
 
-void Renaming::__clear() {
+void Renaming::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_bar = ::std::int64_t();
   __isset = {};
@@ -1566,7 +1566,7 @@ AnnotatedTypes::AnnotatedTypes(apache::thrift::FragileConstructor, ::apache::thr
 }
 
 
-void AnnotatedTypes::__clear() {
+void AnnotatedTypes::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_binary_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_list_field.clear();
@@ -1658,9 +1658,9 @@ ForwardUsageStruct::ForwardUsageStruct(apache::thrift::FragileConstructor, ::apa
 }
 
 
-void ForwardUsageStruct::__clear() {
+void ForwardUsageStruct::__fbthrift_clear() {
   // clear all fields
-  this->__fbthrift_field_foo.__clear();
+  apache::thrift::clear(this->__fbthrift_field_foo);
   __isset = {};
 }
 
@@ -1781,9 +1781,9 @@ ForwardUsageRoot::ForwardUsageRoot(apache::thrift::FragileConstructor, ::apache:
 }
 
 
-void ForwardUsageRoot::__clear() {
+void ForwardUsageRoot::__fbthrift_clear() {
   // clear all fields
-  this->__fbthrift_field_ForwardUsageStruct.__clear();
+  apache::thrift::clear(this->__fbthrift_field_ForwardUsageStruct);
   this->ForwardUsageByRef.reset();
   __isset = {};
 }
@@ -1910,9 +1910,9 @@ ForwardUsageByRef::ForwardUsageByRef(apache::thrift::FragileConstructor, ::apach
 }
 
 
-void ForwardUsageByRef::__clear() {
+void ForwardUsageByRef::__fbthrift_clear() {
   // clear all fields
-  this->__fbthrift_field_foo.__clear();
+  apache::thrift::clear(this->__fbthrift_field_foo);
   __isset = {};
 }
 
@@ -2003,7 +2003,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 NoexceptMoveEmpty::NoexceptMoveEmpty(apache::thrift::FragileConstructor) {}
 
 
-void NoexceptMoveEmpty::__clear() {
+void NoexceptMoveEmpty::__fbthrift_clear() {
   // clear all fields
 }
 
@@ -2071,7 +2071,7 @@ NoexceptMoveSimpleStruct::NoexceptMoveSimpleStruct(apache::thrift::FragileConstr
 }
 
 
-void NoexceptMoveSimpleStruct::__clear() {
+void NoexceptMoveSimpleStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_boolField = ::std::int64_t();
   __isset = {};
@@ -2202,7 +2202,7 @@ NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(apache::thrift::FragileCons
 }
 
 
-void NoexceptMoveComplexStruct::__clear() {
+void NoexceptMoveComplexStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_MyBoolField = bool();
   this->__fbthrift_field_MyIntField = static_cast<::std::int64_t>(12);
@@ -2373,7 +2373,7 @@ bool TEnumTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::fi
 }} // apache::thrift
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
-void NoExceptMoveUnion::__clear() {
+void NoExceptMoveUnion::__fbthrift_clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
@@ -2504,7 +2504,7 @@ AllocatorAware::AllocatorAware(apache::thrift::FragileConstructor, ::std::vector
 }
 
 
-void AllocatorAware::__clear() {
+void AllocatorAware::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_aa_list.clear();
   this->__fbthrift_field_aa_set.clear();
@@ -2649,7 +2649,7 @@ AllocatorAware2::AllocatorAware2(apache::thrift::FragileConstructor, ::std::int3
 }
 
 
-void AllocatorAware2::__clear() {
+void AllocatorAware2::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_not_a_container = ::std::int32_t();
   __isset = {};
@@ -2746,7 +2746,7 @@ TypedefStruct::TypedefStruct(apache::thrift::FragileConstructor, ::std::int32_t 
 }
 
 
-void TypedefStruct::__clear() {
+void TypedefStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_i32_field = ::std::int32_t();
   this->__fbthrift_field_IntTypedef_field = ::apache::thrift::fixtures::types::IntTypedef();
@@ -2838,7 +2838,7 @@ StructWithDoubleUnderscores::StructWithDoubleUnderscores(apache::thrift::Fragile
 }
 
 
-void StructWithDoubleUnderscores::__clear() {
+void StructWithDoubleUnderscores::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field___field = ::std::int32_t();
   __isset = {};

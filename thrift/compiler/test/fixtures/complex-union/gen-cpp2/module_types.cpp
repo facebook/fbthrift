@@ -57,7 +57,7 @@ bool TEnumTraits<::cpp2::ComplexUnion::Type>::findValue(char const* name, type* 
 }} // apache::thrift
 namespace cpp2 {
 
-void ComplexUnion::__clear() {
+void ComplexUnion::__fbthrift_clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
@@ -195,7 +195,7 @@ bool TEnumTraits<::cpp2::ListUnion::Type>::findValue(char const* name, type* out
 }} // apache::thrift
 namespace cpp2 {
 
-void ListUnion::__clear() {
+void ListUnion::__fbthrift_clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
@@ -305,7 +305,7 @@ bool TEnumTraits<::cpp2::DataUnion::Type>::findValue(char const* name, type* out
 }} // apache::thrift
 namespace cpp2 {
 
-void DataUnion::__clear() {
+void DataUnion::__fbthrift_clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
@@ -424,7 +424,7 @@ Val::Val(apache::thrift::FragileConstructor, ::std::string strVal__arg, ::std::i
 }
 
 
-void Val::__clear() {
+void Val::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_strVal = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_intVal = ::std::int32_t();
@@ -539,7 +539,7 @@ bool TEnumTraits<::cpp2::ValUnion::Type>::findValue(char const* name, type* out)
 }} // apache::thrift
 namespace cpp2 {
 
-void ValUnion::__clear() {
+void ValUnion::__fbthrift_clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
@@ -673,7 +673,7 @@ bool TEnumTraits<::cpp2::VirtualComplexUnion::Type>::findValue(char const* name,
 }} // apache::thrift
 namespace cpp2 {
 
-void VirtualComplexUnion::__clear() {
+void VirtualComplexUnion::__fbthrift_clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
@@ -768,7 +768,7 @@ NonCopyableStruct::NonCopyableStruct(apache::thrift::FragileConstructor, ::std::
 }
 
 
-void NonCopyableStruct::__clear() {
+void NonCopyableStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_num = ::std::int64_t();
   __isset = {};
@@ -859,7 +859,7 @@ bool TEnumTraits<::cpp2::NonCopyableUnion::Type>::findValue(char const* name, ty
 }} // apache::thrift
 namespace cpp2 {
 
-void NonCopyableUnion::__clear() {
+void NonCopyableUnion::__fbthrift_clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {

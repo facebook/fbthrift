@@ -171,7 +171,7 @@ TrivialTypesStruct::TrivialTypesStruct(apache::thrift::FragileConstructor, ::std
 }
 
 
-void TrivialTypesStruct::__clear() {
+void TrivialTypesStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_fieldA = ::std::int32_t();
   this->__fbthrift_field_fieldB = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -358,7 +358,7 @@ ContainerStruct::ContainerStruct(apache::thrift::FragileConstructor, ::std::vect
 }
 
 
-void ContainerStruct::__clear() {
+void ContainerStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_fieldA.clear();
   this->__fbthrift_field_fieldB.clear();
@@ -606,7 +606,7 @@ bool TEnumTraits<::test::fixtures::tablebased::ExampleUnion::Type>::findValue(ch
 }} // apache::thrift
 namespace test { namespace fixtures { namespace tablebased {
 
-void ExampleUnion::__clear() {
+void ExampleUnion::__fbthrift_clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {

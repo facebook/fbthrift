@@ -58,6 +58,8 @@ class IncludedA final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = IncludedA;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -80,7 +82,6 @@ class IncludedA final  {
 
   IncludedA& operator=(IncludedA&&) noexcept;
   IncludedA& operator=(const IncludedA& src);
-  void __clear();
  private:
   ::std::int32_t __fbthrift_field_i32Field;
  private:

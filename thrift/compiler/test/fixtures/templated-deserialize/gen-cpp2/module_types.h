@@ -223,6 +223,8 @@ class SmallStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = SmallStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -247,7 +249,6 @@ class SmallStruct final  {
   SmallStruct& operator=(SmallStruct&&) = default;
 
   SmallStruct& operator=(const SmallStruct&) = default;
-  void __clear();
  private:
   bool __fbthrift_field_small_A;
  private:
@@ -395,6 +396,8 @@ class containerStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = containerStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -415,7 +418,6 @@ class containerStruct final  {
 
   containerStruct& operator=(containerStruct&&) noexcept;
   containerStruct& operator=(const containerStruct& src);
-  void __clear();
 
   ~containerStruct();
 

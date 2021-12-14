@@ -190,6 +190,8 @@ class structured_annotation_inline final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = structured_annotation_inline;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -213,7 +215,6 @@ class structured_annotation_inline final  {
 
   structured_annotation_inline& operator=(structured_annotation_inline&&) noexcept;
   structured_annotation_inline& operator=(const structured_annotation_inline& src);
-  void __clear();
  private:
   ::std::int64_t __fbthrift_field_count;
  private:
@@ -366,6 +367,8 @@ class structured_annotation_with_default final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = structured_annotation_with_default;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -388,7 +391,6 @@ class structured_annotation_with_default final  {
 
   structured_annotation_with_default& operator=(structured_annotation_with_default&&) noexcept;
   structured_annotation_with_default& operator=(const structured_annotation_with_default& src);
-  void __clear();
  private:
   ::std::string __fbthrift_field_name;
  private:
@@ -489,6 +491,8 @@ class structured_annotation_forward final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = structured_annotation_forward;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -512,7 +516,6 @@ class structured_annotation_forward final  {
   structured_annotation_forward& operator=(structured_annotation_forward&&) = default;
 
   structured_annotation_forward& operator=(const structured_annotation_forward&) = default;
-  void __clear();
  private:
   ::std::int64_t __fbthrift_field_count;
  private:
@@ -608,6 +611,8 @@ class structured_annotation_recursive final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = structured_annotation_recursive;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -629,7 +634,6 @@ class structured_annotation_recursive final  {
 
   structured_annotation_recursive& operator=(structured_annotation_recursive&&) noexcept;
   structured_annotation_recursive& operator=(const structured_annotation_recursive& src);
-  void __clear();
  private:
   ::std::string __fbthrift_field_name;
  private:
@@ -832,6 +836,8 @@ class structured_annotation_nested final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = structured_annotation_nested;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -853,7 +859,6 @@ class structured_annotation_nested final  {
 
   structured_annotation_nested& operator=(structured_annotation_nested&&) noexcept;
   structured_annotation_nested& operator=(const structured_annotation_nested& src);
-  void __clear();
  private:
   ::std::string __fbthrift_field_name;
  private:
@@ -1005,6 +1010,8 @@ class MyStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = MyStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1028,7 +1035,6 @@ class MyStruct final  {
 
   MyStruct& operator=(MyStruct&&) noexcept;
   MyStruct& operator=(const MyStruct& src);
-  void __clear();
  private:
   ::std::int64_t __fbthrift_field_annotated_field;
  private:
@@ -1289,6 +1295,8 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+
+  void __fbthrift_clear();
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
   static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
@@ -1317,7 +1325,6 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
 
   MyException& operator=(MyException&&) noexcept;
   MyException& operator=(const MyException& src);
-  void __clear();
 
   ~MyException() override;
 
@@ -1405,6 +1412,8 @@ class MyUnion final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = MyUnion;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1470,7 +1479,7 @@ class MyUnion final  {
 
   MyUnion& operator=(MyUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::first:
@@ -1495,7 +1504,7 @@ class MyUnion final  {
 
   MyUnion& operator=(const MyUnion& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::first:
@@ -1516,7 +1525,6 @@ class MyUnion final  {
     }
     return *this;
   }
-  void __clear();
 
   ~MyUnion() {
     apache::thrift::clear(*this);
@@ -1533,28 +1541,28 @@ class MyUnion final  {
   bool operator<(const MyUnion&) const;
 
   ::cpp2::annotated_inline_string& set_first(::cpp2::annotated_inline_string const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::first;
     ::new (std::addressof(value_.first)) ::cpp2::annotated_inline_string(t);
     return value_.first;
   }
 
   ::cpp2::annotated_inline_string& set_first(::cpp2::annotated_inline_string&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::first;
     ::new (std::addressof(value_.first)) ::cpp2::annotated_inline_string(std::move(t));
     return value_.first;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::annotated_inline_string, T...>> ::cpp2::annotated_inline_string& set_first(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::first;
     ::new (std::addressof(value_.first)) ::cpp2::annotated_inline_string(std::forward<T>(t)...);
     return value_.first;
   }
 
   ::cpp2::annotated_inline_i64& set_second(::cpp2::annotated_inline_i64 t = ::cpp2::annotated_inline_i64()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::second;
     ::new (std::addressof(value_.second)) ::cpp2::annotated_inline_i64(t);
     return value_.second;

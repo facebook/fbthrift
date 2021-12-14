@@ -102,6 +102,8 @@ struct struct_private_access {
   static constexpr ExceptionBlame __fbthrift_cpp2_gen_exception_blame() {
     return T::__fbthrift_cpp2_gen_exception_blame;
   }
+
+  FOLLY_CREATE_MEMBER_INVOKER(clear_fn, __fbthrift_clear);
 };
 
 template <typename T, typename = void>
@@ -120,6 +122,9 @@ struct IsThriftUnion<T, folly::void_t<typename T::__fbthrift_cpp2_type>>
 
 } // namespace st
 } // namespace detail
+
+using clear_fn = detail::st::struct_private_access::clear_fn;
+FOLLY_INLINE_VARIABLE constexpr clear_fn clear{};
 
 template <typename T>
 constexpr bool is_thrift_class_v =
@@ -200,10 +205,6 @@ using safe_overload_t = typename std::enable_if<
     apache::thrift::detail::is_safe_overload<Class, Args...>::type::value>::
     type;
 
-namespace detail {
-FOLLY_CREATE_MEMBER_INVOKER(clear_fn, __clear);
-}
-FOLLY_INLINE_VARIABLE constexpr apache::thrift::detail::clear_fn clear;
 } // namespace thrift
 } // namespace apache
 

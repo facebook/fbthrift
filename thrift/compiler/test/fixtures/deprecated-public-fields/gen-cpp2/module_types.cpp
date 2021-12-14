@@ -44,7 +44,7 @@ Foo::Foo(apache::thrift::FragileConstructor, ::std::int32_t foo__arg, ::std::int
 }
 
 
-void Foo::__clear() {
+void Foo::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_foo = ::std::int32_t();
   this->bar = ::std::int32_t();

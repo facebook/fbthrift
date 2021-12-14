@@ -72,7 +72,7 @@ namespace cpp2 {
 MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
 
 
-void MyDataItem::__clear() {
+void MyDataItem::__fbthrift_clear() {
   // clear all fields
 }
 
@@ -188,7 +188,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField
 }
 
 
-void MyStruct::__clear() {
+void MyStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_MyIntField = ::std::int64_t();
   this->__fbthrift_field_MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -346,7 +346,7 @@ bool TEnumTraits<::cpp2::MyUnion::Type>::findValue(char const* name, type* out) 
 }} // apache::thrift
 namespace cpp2 {
 
-void MyUnion::__clear() {
+void MyUnion::__fbthrift_clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {

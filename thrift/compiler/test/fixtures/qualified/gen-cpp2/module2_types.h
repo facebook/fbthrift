@@ -71,6 +71,8 @@ class Struct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = Struct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -92,7 +94,6 @@ class Struct final  {
 
   Struct& operator=(Struct&&) noexcept;
   Struct& operator=(const Struct& src);
-  void __clear();
  private:
   ::module0::Struct __fbthrift_field_first;
  private:
@@ -238,6 +239,8 @@ class BigStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = BigStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -260,7 +263,6 @@ class BigStruct final  {
 
   BigStruct& operator=(BigStruct&&) noexcept;
   BigStruct& operator=(const BigStruct& src);
-  void __clear();
  private:
   ::module2::Struct __fbthrift_field_s;
  private:

@@ -59,10 +59,10 @@ Struct::Struct(apache::thrift::FragileConstructor, ::module0::Struct first__arg,
 }
 
 
-void Struct::__clear() {
+void Struct::__fbthrift_clear() {
   // clear all fields
-  this->__fbthrift_field_first.__clear();
-  this->__fbthrift_field_second.__clear();
+  apache::thrift::clear(this->__fbthrift_field_first);
+  apache::thrift::clear(this->__fbthrift_field_second);
   __isset = {};
 }
 
@@ -200,9 +200,9 @@ BigStruct::BigStruct(apache::thrift::FragileConstructor, ::module2::Struct s__ar
 }
 
 
-void BigStruct::__clear() {
+void BigStruct::__fbthrift_clear() {
   // clear all fields
-  this->__fbthrift_field_s.__clear();
+  apache::thrift::clear(this->__fbthrift_field_s);
   this->__fbthrift_field_id = ::std::int32_t();
   __isset = {};
 }

@@ -89,6 +89,8 @@ class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:name%> <
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
   static const char* __fbthrift_cpp2_gen_thrift_uri();
   <%/struct:thrift_uri%>
+
+  void __fbthrift_clear();
   <%#struct:exception?%>
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::<%struct:exception_kind%>;
@@ -139,7 +141,6 @@ class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:name%> <
 <% > module_types_h/union_copy_ctor%>
 
 <% > module_types_h/union_assign_overload%>
-  void __clear();
 
   <%#struct:virtual%>virtual <%/struct:virtual%>~<%struct:name%>() {
     apache::thrift::clear(*this);
@@ -241,7 +242,6 @@ class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:name%> <
   <%struct:name%>& operator=(const <%struct:name%>& src);
 <%/struct:nondefault_copy_ctor_and_assignment?%>
 <%/struct:cpp_noncopyable%>
-  void __clear();
 <%^struct:virtual%>
 <%#struct:is_large?%>
 

@@ -248,6 +248,8 @@ class FOLLY_EXPORT SimpleException : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+
+  void __fbthrift_clear();
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
   static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
@@ -276,7 +278,6 @@ class FOLLY_EXPORT SimpleException : public apache::thrift::TException {
 
   SimpleException& operator=(SimpleException&&) noexcept;
   SimpleException& operator=(const SimpleException& src);
-  void __clear();
 
   ~SimpleException() override;
 
@@ -359,6 +360,8 @@ class OptionalRefStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = OptionalRefStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -379,7 +382,6 @@ class OptionalRefStruct final  {
 
   OptionalRefStruct& operator=(OptionalRefStruct&&) noexcept;
   OptionalRefStruct& operator=(const OptionalRefStruct& src);
-  void __clear();
  public:
   ::py3::simple::IOBufPtr optional_blob;
  private:
@@ -461,6 +463,8 @@ class SimpleStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = SimpleStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -490,7 +494,6 @@ class SimpleStruct final  {
 
   SimpleStruct& operator=(SimpleStruct&&) noexcept;
   SimpleStruct& operator=(const SimpleStruct& src);
-  void __clear();
  private:
   bool __fbthrift_field_is_on;
  private:
@@ -950,6 +953,8 @@ class ComplexStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = ComplexStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -971,7 +976,6 @@ class ComplexStruct final  {
 
   ComplexStruct& operator=(ComplexStruct&&) noexcept;
   ComplexStruct& operator=(const ComplexStruct& src);
-  void __clear();
 
   ~ComplexStruct();
 
@@ -1509,6 +1513,8 @@ class BinaryUnion final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = BinaryUnion;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1563,7 +1569,7 @@ class BinaryUnion final  {
 
   BinaryUnion& operator=(BinaryUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::iobuf_val:
@@ -1583,7 +1589,7 @@ class BinaryUnion final  {
 
   BinaryUnion& operator=(const BinaryUnion& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::iobuf_val:
@@ -1599,7 +1605,6 @@ class BinaryUnion final  {
     }
     return *this;
   }
-  void __clear();
 
   ~BinaryUnion() {
     apache::thrift::clear(*this);
@@ -1612,21 +1617,21 @@ class BinaryUnion final  {
   } ;
 
   ::py3::simple::IOBuf& set_iobuf_val(::py3::simple::IOBuf const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::iobuf_val;
     ::new (std::addressof(value_.iobuf_val)) ::py3::simple::IOBuf(t);
     return value_.iobuf_val;
   }
 
   ::py3::simple::IOBuf& set_iobuf_val(::py3::simple::IOBuf&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::iobuf_val;
     ::new (std::addressof(value_.iobuf_val)) ::py3::simple::IOBuf(std::move(t));
     return value_.iobuf_val;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::py3::simple::IOBuf, T...>> ::py3::simple::IOBuf& set_iobuf_val(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::iobuf_val;
     ::new (std::addressof(value_.iobuf_val)) ::py3::simple::IOBuf(std::forward<T>(t)...);
     return value_.iobuf_val;
@@ -1713,6 +1718,8 @@ class BinaryUnionStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = BinaryUnionStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1734,7 +1741,6 @@ class BinaryUnionStruct final  {
 
   BinaryUnionStruct& operator=(BinaryUnionStruct&&) noexcept;
   BinaryUnionStruct& operator=(const BinaryUnionStruct& src);
-  void __clear();
  private:
   ::py3::simple::BinaryUnion __fbthrift_field_u;
  private:

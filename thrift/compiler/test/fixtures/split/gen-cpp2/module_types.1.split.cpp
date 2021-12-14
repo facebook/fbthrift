@@ -39,7 +39,7 @@ namespace cpp2 {
 MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
 
 
-void MyDataItem::__clear() {
+void MyDataItem::__fbthrift_clear() {
   // clear all fields
 }
 

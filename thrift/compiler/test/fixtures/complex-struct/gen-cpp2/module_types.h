@@ -666,6 +666,8 @@ class MyStructFloatFieldThrowExp final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = MyStructFloatFieldThrowExp;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -690,7 +692,6 @@ class MyStructFloatFieldThrowExp final  {
 
   MyStructFloatFieldThrowExp& operator=(MyStructFloatFieldThrowExp&&) noexcept;
   MyStructFloatFieldThrowExp& operator=(const MyStructFloatFieldThrowExp& src);
-  void __clear();
  private:
   ::std::int64_t __fbthrift_field_myLongField;
  private:
@@ -947,6 +948,8 @@ class MyStructMapFloatThrowExp final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = MyStructMapFloatThrowExp;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -969,7 +972,6 @@ class MyStructMapFloatThrowExp final  {
 
   MyStructMapFloatThrowExp& operator=(MyStructMapFloatThrowExp&&) noexcept;
   MyStructMapFloatThrowExp& operator=(const MyStructMapFloatThrowExp& src);
-  void __clear();
  private:
   ::std::int64_t __fbthrift_field_myLongField;
  private:
@@ -1116,6 +1118,8 @@ class MyDataItem final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = MyDataItem;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1138,7 +1142,6 @@ class MyDataItem final  {
   MyDataItem& operator=(MyDataItem&&) = default;
 
   MyDataItem& operator=(const MyDataItem&) = default;
-  void __clear();
 
  public:
 
@@ -1180,6 +1183,8 @@ class MyStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = MyStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1201,7 +1206,6 @@ class MyStruct final  {
 
   MyStruct& operator=(MyStruct&&) noexcept;
   MyStruct& operator=(const MyStruct& src);
-  void __clear();
 
   ~MyStruct();
 
@@ -2689,6 +2693,8 @@ class SimpleStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = SimpleStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -2712,7 +2718,6 @@ class SimpleStruct final  {
 
   SimpleStruct& operator=(SimpleStruct&&) noexcept;
   SimpleStruct& operator=(const SimpleStruct& src);
-  void __clear();
  private:
   ::std::int64_t __fbthrift_field_age;
  private:
@@ -2865,6 +2870,8 @@ class ComplexNestedStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = ComplexNestedStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -2886,7 +2893,6 @@ class ComplexNestedStruct final  {
 
   ComplexNestedStruct& operator=(ComplexNestedStruct&&) noexcept;
   ComplexNestedStruct& operator=(const ComplexNestedStruct& src);
-  void __clear();
 
   ~ComplexNestedStruct();
 
@@ -3851,6 +3857,8 @@ class MyUnion final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = MyUnion;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -3960,7 +3968,7 @@ class MyUnion final  {
 
   MyUnion& operator=(MyUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::myEnum:
@@ -4005,7 +4013,7 @@ class MyUnion final  {
 
   MyUnion& operator=(const MyUnion& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::myEnum:
@@ -4046,7 +4054,6 @@ class MyUnion final  {
     }
     return *this;
   }
-  void __clear();
 
   ~MyUnion() {
     apache::thrift::clear(*this);
@@ -4067,84 +4074,84 @@ class MyUnion final  {
   bool operator<(const MyUnion&) const;
 
   ::cpp2::MyEnum& set_myEnum(::cpp2::MyEnum t = ::cpp2::MyEnum()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::myEnum;
     ::new (std::addressof(value_.myEnum)) ::cpp2::MyEnum(t);
     return value_.myEnum;
   }
 
   ::cpp2::MyStruct& set_myStruct(::cpp2::MyStruct const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::myStruct;
     ::new (std::addressof(value_.myStruct)) ::cpp2::MyStruct(t);
     return value_.myStruct;
   }
 
   ::cpp2::MyStruct& set_myStruct(::cpp2::MyStruct&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::myStruct;
     ::new (std::addressof(value_.myStruct)) ::cpp2::MyStruct(std::move(t));
     return value_.myStruct;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::MyStruct, T...>> ::cpp2::MyStruct& set_myStruct(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::myStruct;
     ::new (std::addressof(value_.myStruct)) ::cpp2::MyStruct(std::forward<T>(t)...);
     return value_.myStruct;
   }
 
   ::cpp2::MyDataItem& set_myDataItem(::cpp2::MyDataItem const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::myDataItem;
     ::new (std::addressof(value_.myDataItem)) ::cpp2::MyDataItem(t);
     return value_.myDataItem;
   }
 
   ::cpp2::MyDataItem& set_myDataItem(::cpp2::MyDataItem&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::myDataItem;
     ::new (std::addressof(value_.myDataItem)) ::cpp2::MyDataItem(std::move(t));
     return value_.myDataItem;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::MyDataItem, T...>> ::cpp2::MyDataItem& set_myDataItem(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::myDataItem;
     ::new (std::addressof(value_.myDataItem)) ::cpp2::MyDataItem(std::forward<T>(t)...);
     return value_.myDataItem;
   }
 
   ::cpp2::ComplexNestedStruct& set_complexNestedStruct(::cpp2::ComplexNestedStruct const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::complexNestedStruct;
     ::new (std::addressof(value_.complexNestedStruct)) ::cpp2::ComplexNestedStruct(t);
     return value_.complexNestedStruct;
   }
 
   ::cpp2::ComplexNestedStruct& set_complexNestedStruct(::cpp2::ComplexNestedStruct&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::complexNestedStruct;
     ::new (std::addressof(value_.complexNestedStruct)) ::cpp2::ComplexNestedStruct(std::move(t));
     return value_.complexNestedStruct;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::ComplexNestedStruct, T...>> ::cpp2::ComplexNestedStruct& set_complexNestedStruct(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::complexNestedStruct;
     ::new (std::addressof(value_.complexNestedStruct)) ::cpp2::ComplexNestedStruct(std::forward<T>(t)...);
     return value_.complexNestedStruct;
   }
 
   ::std::int64_t& set_longValue(::std::int64_t t = ::std::int64_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::longValue;
     ::new (std::addressof(value_.longValue)) ::std::int64_t(t);
     return value_.longValue;
   }
 
   ::std::int32_t& set_intValue(::std::int32_t t = ::std::int32_t()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::intValue;
     ::new (std::addressof(value_.intValue)) ::std::int32_t(t);
     return value_.intValue;
@@ -4411,6 +4418,8 @@ class defaultStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = defaultStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -4432,7 +4441,6 @@ class defaultStruct final  {
 
   defaultStruct& operator=(defaultStruct&&) noexcept;
   defaultStruct& operator=(const defaultStruct& src);
-  void __clear();
 
   ~defaultStruct();
 
@@ -5622,6 +5630,8 @@ class MyStructTypeDef final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = MyStructTypeDef;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -5643,7 +5653,6 @@ class MyStructTypeDef final  {
 
   MyStructTypeDef& operator=(MyStructTypeDef&&) noexcept;
   MyStructTypeDef& operator=(const MyStructTypeDef& src);
-  void __clear();
 
   ~MyStructTypeDef();
 
@@ -6163,6 +6172,8 @@ class MyUnionFloatFieldThrowExp final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = MyUnionFloatFieldThrowExp;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -6250,7 +6261,7 @@ class MyUnionFloatFieldThrowExp final  {
 
   MyUnionFloatFieldThrowExp& operator=(MyUnionFloatFieldThrowExp&& rhs) noexcept {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::myEnum:
@@ -6285,7 +6296,7 @@ class MyUnionFloatFieldThrowExp final  {
 
   MyUnionFloatFieldThrowExp& operator=(const MyUnionFloatFieldThrowExp& rhs) {
     if (this == &rhs) { return *this; }
-    __clear();
+    __fbthrift_clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
       case Type::myEnum:
@@ -6316,7 +6327,6 @@ class MyUnionFloatFieldThrowExp final  {
     }
     return *this;
   }
-  void __clear();
 
   ~MyUnionFloatFieldThrowExp() {
     apache::thrift::clear(*this);
@@ -6335,70 +6345,70 @@ class MyUnionFloatFieldThrowExp final  {
   bool operator<(const MyUnionFloatFieldThrowExp&) const;
 
   ::cpp2::MyEnum& set_myEnum(::cpp2::MyEnum t = ::cpp2::MyEnum()) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::myEnum;
     ::new (std::addressof(value_.myEnum)) ::cpp2::MyEnum(t);
     return value_.myEnum;
   }
 
   ::std::vector<::std::vector<float>>& set_setFloat(::std::vector<::std::vector<float>> const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::setFloat;
     ::new (std::addressof(value_.setFloat)) ::std::vector<::std::vector<float>>(t);
     return value_.setFloat;
   }
 
   ::std::vector<::std::vector<float>>& set_setFloat(::std::vector<::std::vector<float>>&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::setFloat;
     ::new (std::addressof(value_.setFloat)) ::std::vector<::std::vector<float>>(std::move(t));
     return value_.setFloat;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<::std::vector<float>>, T...>> ::std::vector<::std::vector<float>>& set_setFloat(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::setFloat;
     ::new (std::addressof(value_.setFloat)) ::std::vector<::std::vector<float>>(std::forward<T>(t)...);
     return value_.setFloat;
   }
 
   ::cpp2::MyDataItem& set_myDataItem(::cpp2::MyDataItem const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::myDataItem;
     ::new (std::addressof(value_.myDataItem)) ::cpp2::MyDataItem(t);
     return value_.myDataItem;
   }
 
   ::cpp2::MyDataItem& set_myDataItem(::cpp2::MyDataItem&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::myDataItem;
     ::new (std::addressof(value_.myDataItem)) ::cpp2::MyDataItem(std::move(t));
     return value_.myDataItem;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::MyDataItem, T...>> ::cpp2::MyDataItem& set_myDataItem(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::myDataItem;
     ::new (std::addressof(value_.myDataItem)) ::cpp2::MyDataItem(std::forward<T>(t)...);
     return value_.myDataItem;
   }
 
   ::cpp2::ComplexNestedStruct& set_complexNestedStruct(::cpp2::ComplexNestedStruct const &t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::complexNestedStruct;
     ::new (std::addressof(value_.complexNestedStruct)) ::cpp2::ComplexNestedStruct(t);
     return value_.complexNestedStruct;
   }
 
   ::cpp2::ComplexNestedStruct& set_complexNestedStruct(::cpp2::ComplexNestedStruct&& t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::complexNestedStruct;
     ::new (std::addressof(value_.complexNestedStruct)) ::cpp2::ComplexNestedStruct(std::move(t));
     return value_.complexNestedStruct;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::ComplexNestedStruct, T...>> ::cpp2::ComplexNestedStruct& set_complexNestedStruct(T&&... t) {
-    __clear();
+    __fbthrift_clear();
     type_ = Type::complexNestedStruct;
     ::new (std::addressof(value_.complexNestedStruct)) ::cpp2::ComplexNestedStruct(std::forward<T>(t)...);
     return value_.complexNestedStruct;
@@ -6593,6 +6603,8 @@ class TypeRemapped final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = TypeRemapped;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -6615,7 +6627,6 @@ class TypeRemapped final  {
 
   TypeRemapped& operator=(TypeRemapped&&) noexcept;
   TypeRemapped& operator=(const TypeRemapped& src);
-  void __clear();
  private:
   ::std::map<::std::int64_t, ::std::string> __fbthrift_field_lsMap;
  private:
@@ -6869,6 +6880,8 @@ class FOLLY_EXPORT emptyXcep : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+
+  void __fbthrift_clear();
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
   static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
@@ -6897,7 +6910,6 @@ class FOLLY_EXPORT emptyXcep : public apache::thrift::TException {
 
   emptyXcep& operator=(emptyXcep&&) noexcept;
   emptyXcep& operator=(const emptyXcep& src);
-  void __clear();
 
   ~emptyXcep() override;
 
@@ -6945,6 +6957,8 @@ class FOLLY_EXPORT reqXcep : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+
+  void __fbthrift_clear();
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
   static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
@@ -6973,7 +6987,6 @@ class FOLLY_EXPORT reqXcep : public apache::thrift::TException {
 
   reqXcep& operator=(reqXcep&&) noexcept;
   reqXcep& operator=(const reqXcep& src);
-  void __clear();
 
   ~reqXcep() override;
 
@@ -7090,6 +7103,8 @@ class FOLLY_EXPORT optXcep : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+
+  void __fbthrift_clear();
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
   static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
@@ -7118,7 +7133,6 @@ class FOLLY_EXPORT optXcep : public apache::thrift::TException {
 
   optXcep& operator=(optXcep&&) noexcept;
   optXcep& operator=(const optXcep& src);
-  void __clear();
 
   ~optXcep() override;
 
@@ -7243,6 +7257,8 @@ class FOLLY_EXPORT complexException : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+
+  void __fbthrift_clear();
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
   static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
@@ -7271,7 +7287,6 @@ class FOLLY_EXPORT complexException : public apache::thrift::TException {
 
   complexException& operator=(complexException&&) noexcept;
   complexException& operator=(const complexException& src);
-  void __clear();
 
   ~complexException() override;
 

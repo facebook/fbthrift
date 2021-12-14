@@ -114,6 +114,8 @@ class containerStruct2 final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = containerStruct2;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -135,7 +137,6 @@ class containerStruct2 final  {
 
   containerStruct2& operator=(containerStruct2&&) noexcept;
   containerStruct2& operator=(const containerStruct2& src);
-  void __clear();
 
   ~containerStruct2();
 

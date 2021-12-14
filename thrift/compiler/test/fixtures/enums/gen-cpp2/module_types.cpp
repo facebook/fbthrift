@@ -100,7 +100,7 @@ SomeStruct::SomeStruct(apache::thrift::FragileConstructor, ::cpp2::Metasyntactic
 }
 
 
-void SomeStruct::__clear() {
+void SomeStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_reasonable =  ::cpp2::Metasyntactic::FOO;
   this->__fbthrift_field_fine =  ::cpp2::Metasyntactic::BAR;

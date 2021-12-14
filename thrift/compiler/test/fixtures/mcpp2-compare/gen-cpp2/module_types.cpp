@@ -171,7 +171,7 @@ namespace some { namespace valid { namespace ns {
 Empty::Empty(apache::thrift::FragileConstructor) {}
 
 
-void Empty::__clear() {
+void Empty::__fbthrift_clear() {
   // clear all fields
 }
 
@@ -243,7 +243,7 @@ ASimpleStruct::ASimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t 
 }
 
 
-void ASimpleStruct::__clear() {
+void ASimpleStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_boolField = ::std::int64_t();
   __isset = {};
@@ -313,7 +313,7 @@ ASimpleStructNoexcept::ASimpleStructNoexcept(apache::thrift::FragileConstructor,
 }
 
 
-void ASimpleStructNoexcept::__clear() {
+void ASimpleStructNoexcept::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_boolField = ::std::int64_t();
   __isset = {};
@@ -491,7 +491,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, ::
 }
 
 
-void MyStruct::__clear() {
+void MyStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_MyBoolField = bool();
   this->__fbthrift_field_MyIntField = static_cast<::std::int64_t>(12);
@@ -682,7 +682,7 @@ bool TEnumTraits<::some::valid::ns::SimpleUnion::Type>::findValue(char const* na
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
-void SimpleUnion::__clear() {
+void SimpleUnion::__fbthrift_clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
@@ -796,7 +796,7 @@ bool TEnumTraits<::some::valid::ns::ComplexUnion::Type>::findValue(char const* n
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
-void ComplexUnion::__clear() {
+void ComplexUnion::__fbthrift_clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
@@ -1031,28 +1031,28 @@ bool ComplexUnion::operator<(const ComplexUnion& rhs) const {
 }
 
 ::std::unique_ptr<::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field(::some::valid::ns::MyStruct const &t) {
-  __clear();
+  __fbthrift_clear();
   type_ = Type::ref_field;
   ::new (std::addressof(value_.ref_field)) ::std::unique_ptr<::some::valid::ns::MyStruct>(new ::std::unique_ptr<::some::valid::ns::MyStruct>::element_type(t));
   return value_.ref_field;
 }
 
 ::std::unique_ptr<::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field(::some::valid::ns::MyStruct&& t) {
-  __clear();
+  __fbthrift_clear();
   type_ = Type::ref_field;
   ::new (std::addressof(value_.ref_field)) ::std::unique_ptr<::some::valid::ns::MyStruct>(new ::std::unique_ptr<::some::valid::ns::MyStruct>::element_type(std::move(t)));
   return value_.ref_field;
 }
 
 ::std::shared_ptr<const ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field2(::some::valid::ns::MyStruct const &t) {
-  __clear();
+  __fbthrift_clear();
   type_ = Type::ref_field2;
   ::new (std::addressof(value_.ref_field2)) ::std::shared_ptr<const ::some::valid::ns::MyStruct>(new ::std::shared_ptr<const ::some::valid::ns::MyStruct>::element_type(t));
   return value_.ref_field2;
 }
 
 ::std::shared_ptr<const ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field2(::some::valid::ns::MyStruct&& t) {
-  __clear();
+  __fbthrift_clear();
   type_ = Type::ref_field2;
   ::new (std::addressof(value_.ref_field2)) ::std::shared_ptr<const ::some::valid::ns::MyStruct>(new ::std::shared_ptr<const ::some::valid::ns::MyStruct>::element_type(std::move(t)));
   return value_.ref_field2;
@@ -1341,7 +1341,7 @@ AnException::AnException(apache::thrift::FragileConstructor, ::std::int32_t code
 }
 
 
-void AnException::__clear() {
+void AnException::__fbthrift_clear() {
   // clear all fields
   this->code = ::std::int32_t();
   this->req_code = ::std::int32_t();
@@ -1353,7 +1353,7 @@ void AnException::__clear() {
   this->req_exception_map.clear();
   this->enum_field = ::some::valid::ns::MyEnumA();
   this->enum_container.clear();
-  this->a_struct.__clear();
+  apache::thrift::clear(this->a_struct);
   this->a_set_struct.clear();
   this->a_union_list.clear();
   this->union_typedef.clear();
@@ -1705,7 +1705,7 @@ AnotherException::AnotherException(apache::thrift::FragileConstructor, ::std::in
 }
 
 
-void AnotherException::__clear() {
+void AnotherException::__fbthrift_clear() {
   // clear all fields
   this->code = ::std::int32_t();
   this->req_code = ::std::int32_t();
@@ -1938,7 +1938,7 @@ containerStruct::containerStruct(apache::thrift::FragileConstructor, bool fieldA
 }
 
 
-void containerStruct::__clear() {
+void containerStruct::__fbthrift_clear() {
   // clear all fields
   this->fieldA = bool();
   this->req_fieldA = bool();
@@ -1971,13 +1971,13 @@ void containerStruct::__clear() {
   this->fieldS =  ::some::valid::ns::MyEnumA::fieldB;
   this->fieldT.clear();
   this->fieldU.clear();
-  this->fieldV.__clear();
-  this->req_fieldV.__clear();
-  this->opt_fieldV.__clear();
+  apache::thrift::clear(this->fieldV);
+  apache::thrift::clear(this->req_fieldV);
+  apache::thrift::clear(this->opt_fieldV);
   this->fieldW.clear();
-  this->fieldX.__clear();
-  this->req_fieldX.__clear();
-  this->opt_fieldX.__clear();
+  apache::thrift::clear(this->fieldX);
+  apache::thrift::clear(this->req_fieldX);
+  apache::thrift::clear(this->opt_fieldX);
   this->fieldY.clear();
   this->fieldZ.clear();
   this->fieldAA.clear();
@@ -2767,12 +2767,12 @@ MyIncludedStruct::MyIncludedStruct(apache::thrift::FragileConstructor, ::a::diff
 }
 
 
-void MyIncludedStruct::__clear() {
+void MyIncludedStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_MyIncludedInt = static_cast<::a::different::ns::IncludedInt64>(42);
-  this->__fbthrift_field_MyIncludedStruct.__clear();
-  if (this->ARefField) this->ARefField->__clear();
-  this->ARequiredField.__clear();
+  apache::thrift::clear(this->__fbthrift_field_MyIncludedStruct);
+  if (this->ARefField) apache::thrift::clear(*this->ARefField);
+  apache::thrift::clear(this->ARequiredField);
   __isset = {};
 }
 
@@ -3006,22 +3006,22 @@ AnnotatedStruct::AnnotatedStruct(apache::thrift::FragileConstructor, ::some::val
 }
 
 
-void AnnotatedStruct::__clear() {
+void AnnotatedStruct::__fbthrift_clear() {
   // clear all fields
-  this->no_annotation.__clear();
-  if (this->cpp_unique_ref) this->cpp_unique_ref->__clear();
-  if (this->cpp2_unique_ref) this->cpp2_unique_ref->__clear();
+  apache::thrift::clear(this->no_annotation);
+  if (this->cpp_unique_ref) apache::thrift::clear(*this->cpp_unique_ref);
+  if (this->cpp2_unique_ref) apache::thrift::clear(*this->cpp2_unique_ref);
   this->container_with_ref = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>>>();
-  if (this->req_cpp_unique_ref) this->req_cpp_unique_ref->__clear();
-  if (this->req_cpp2_unique_ref) this->req_cpp2_unique_ref->__clear();
+  if (this->req_cpp_unique_ref) apache::thrift::clear(*this->req_cpp_unique_ref);
+  if (this->req_cpp2_unique_ref) apache::thrift::clear(*this->req_cpp2_unique_ref);
   this->req_container_with_ref = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::vector<::std::string>>>();
   this->opt_cpp_unique_ref.reset();
   this->opt_cpp2_unique_ref.reset();
   this->opt_container_with_ref.reset();
-  if (this->ref_type_unique) this->ref_type_unique->__clear();
-  if (this->ref_type_shared) this->ref_type_shared->__clear();
+  if (this->ref_type_unique) apache::thrift::clear(*this->ref_type_unique);
+  if (this->ref_type_shared) apache::thrift::clear(*this->ref_type_shared);
   this->ref_type_const = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>();
-  if (this->req_ref_type_shared) this->req_ref_type_shared->__clear();
+  if (this->req_ref_type_shared) apache::thrift::clear(*this->req_ref_type_shared);
   if (this->req_ref_type_const) this->req_ref_type_const = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::some::valid::ns::containerStruct>>();
   this->req_ref_type_unique = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::vector<::std::string>>>();
   this->opt_ref_type_const.reset();
@@ -3047,7 +3047,7 @@ void AnnotatedStruct::__clear() {
   this->indirection_c.clear();
   this->iobuf_type_val = apache::thrift::StringTraits<folly::IOBuf>::fromStringLiteral("value");
   this->iobuf_ptr_val = apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2");
-  this->struct_struct.__clear();
+  apache::thrift::clear(this->struct_struct);
   __isset = {};
 }
 
@@ -3608,7 +3608,7 @@ ComplexContainerStruct::ComplexContainerStruct(apache::thrift::FragileConstructo
 }
 
 
-void ComplexContainerStruct::__clear() {
+void ComplexContainerStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_map_of_iobufs.clear();
   this->__fbthrift_field_map_of_iobuf_ptrs.clear();
@@ -3714,7 +3714,7 @@ FloatStruct::FloatStruct(apache::thrift::FragileConstructor, float floatField__a
 }
 
 
-void FloatStruct::__clear() {
+void FloatStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_floatField = float();
   this->__fbthrift_field_doubleField = double();
@@ -3817,7 +3817,7 @@ bool TEnumTraits<::some::valid::ns::FloatUnion::Type>::findValue(char const* nam
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
-void FloatUnion::__clear() {
+void FloatUnion::__fbthrift_clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
@@ -3915,7 +3915,7 @@ AllRequiredNoExceptMoveCtrStruct::AllRequiredNoExceptMoveCtrStruct(apache::thrif
 }
 
 
-void AllRequiredNoExceptMoveCtrStruct::__clear() {
+void AllRequiredNoExceptMoveCtrStruct::__fbthrift_clear() {
   // clear all fields
   this->intField = ::std::int64_t();
 }

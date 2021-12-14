@@ -142,7 +142,7 @@ Foo::Foo(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::ada
 }
 
 
-void Foo::__clear() {
+void Foo::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_intField = decltype(this->__fbthrift_field_intField)();
   this->__fbthrift_field_optionalIntField = decltype(this->__fbthrift_field_optionalIntField)();
@@ -289,7 +289,7 @@ bool TEnumTraits<::cpp2::Baz::Type>::findValue(char const* name, type* out) {
 }} // apache::thrift
 namespace cpp2 {
 
-void Baz::__clear() {
+void Baz::__fbthrift_clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
@@ -468,7 +468,7 @@ Bar::Bar(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::ada
 }
 
 
-void Bar::__clear() {
+void Bar::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_structField = decltype(this->__fbthrift_field_structField)();
   this->__fbthrift_field_optionalStructField = decltype(this->__fbthrift_field_optionalStructField)();
@@ -661,7 +661,7 @@ StructWithFieldAdapter::StructWithFieldAdapter(apache::thrift::FragileConstructo
 }
 
 
-void StructWithFieldAdapter::__clear() {
+void StructWithFieldAdapter::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_field = decltype(this->__fbthrift_field_field)();
   __isset = {};

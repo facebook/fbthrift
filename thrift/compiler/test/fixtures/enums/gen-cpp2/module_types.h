@@ -118,6 +118,8 @@ class SomeStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = SomeStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -142,7 +144,6 @@ class SomeStruct final  {
 
   SomeStruct& operator=(SomeStruct&&) noexcept;
   SomeStruct& operator=(const SomeStruct& src);
-  void __clear();
  private:
   ::cpp2::Metasyntactic __fbthrift_field_reasonable;
  private:

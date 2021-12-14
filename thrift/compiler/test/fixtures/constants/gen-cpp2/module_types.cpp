@@ -178,7 +178,7 @@ Internship::Internship(apache::thrift::FragileConstructor, ::std::int32_t weeks_
 }
 
 
-void Internship::__clear() {
+void Internship::__fbthrift_clear() {
   // clear all fields
   this->weeks = ::std::int32_t();
   this->__fbthrift_field_title = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -286,7 +286,7 @@ Range::Range(apache::thrift::FragileConstructor, ::std::int32_t min__arg, ::std:
 }
 
 
-void Range::__clear() {
+void Range::__fbthrift_clear() {
   // clear all fields
   this->min = ::std::int32_t();
   this->max = ::std::int32_t();
@@ -385,7 +385,7 @@ struct1::struct1(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::st
 }
 
 
-void struct1::__clear() {
+void struct1::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_a = static_cast<::std::int32_t>(1234567);
   this->__fbthrift_field_b = apache::thrift::StringTraits<std::string>::fromStringLiteral("<uninitialized>");
@@ -494,11 +494,11 @@ struct2::struct2(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::st
 }
 
 
-void struct2::__clear() {
+void struct2::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_a = ::std::int32_t();
   this->__fbthrift_field_b = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->__fbthrift_field_c.__clear();
+  apache::thrift::clear(this->__fbthrift_field_c);
   this->__fbthrift_field_d.clear();
   __isset = {};
 }
@@ -643,11 +643,11 @@ struct3::struct3(apache::thrift::FragileConstructor, ::std::string a__arg, ::std
 }
 
 
-void struct3::__clear() {
+void struct3::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_a = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_b = ::std::int32_t();
-  this->__fbthrift_field_c.__clear();
+  apache::thrift::clear(this->__fbthrift_field_c);
   __isset = {};
 }
 
@@ -776,7 +776,7 @@ struct4::struct4(apache::thrift::FragileConstructor, ::std::int32_t a__arg, doub
 }
 
 
-void struct4::__clear() {
+void struct4::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_a = ::std::int32_t();
   this->__fbthrift_field_b = double();
@@ -883,7 +883,7 @@ bool TEnumTraits<::cpp2::union1::Type>::findValue(char const* name, type* out) {
 }} // apache::thrift
 namespace cpp2 {
 
-void union1::__clear() {
+void union1::__fbthrift_clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
@@ -993,7 +993,7 @@ bool TEnumTraits<::cpp2::union2::Type>::findValue(char const* name, type* out) {
 }} // apache::thrift
 namespace cpp2 {
 
-void union2::__clear() {
+void union2::__fbthrift_clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {

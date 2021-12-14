@@ -67,7 +67,7 @@ Foo::Foo(apache::thrift::FragileConstructor, ::std::vector<double> field1__arg, 
 }
 
 
-void Foo::__clear() {
+void Foo::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_field1.clear();
   this->__fbthrift_field_field2.clear();
@@ -354,7 +354,7 @@ void LazyFoo::__fbthrift_read_field_field4_slow() const {
 }
 
 
-void LazyFoo::__clear() {
+void LazyFoo::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_field1.clear();
   this->__fbthrift_field_field2.clear();
@@ -506,7 +506,7 @@ OptionalFoo::OptionalFoo(apache::thrift::FragileConstructor, ::std::vector<doubl
 }
 
 
-void OptionalFoo::__clear() {
+void OptionalFoo::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_field1.clear();
   this->__fbthrift_field_field2.clear();
@@ -791,7 +791,7 @@ void OptionalLazyFoo::__fbthrift_read_field_field4_slow() const {
 }
 
 
-void OptionalLazyFoo::__clear() {
+void OptionalLazyFoo::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_field1.clear();
   this->__fbthrift_field_field2.clear();
@@ -1167,7 +1167,7 @@ void LazyCppRef::__fbthrift_read_field_field4_slow() const {
 }
 
 
-void LazyCppRef::__clear() {
+void LazyCppRef::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_field1.reset();
   this->__fbthrift_field_field2.reset();
@@ -1324,7 +1324,7 @@ IndexedFoo::IndexedFoo(apache::thrift::FragileConstructor, double serialized_dat
 }
 
 
-void IndexedFoo::__clear() {
+void IndexedFoo::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_serialized_data_size = double();
   this->__fbthrift_field_field1.clear();
@@ -1520,7 +1520,7 @@ OptionalIndexedFoo::OptionalIndexedFoo(apache::thrift::FragileConstructor, doubl
 }
 
 
-void OptionalIndexedFoo::__clear() {
+void OptionalIndexedFoo::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_serialized_data_size = double();
   this->__fbthrift_field_field1.clear();
@@ -1673,7 +1673,7 @@ namespace apache { namespace thrift { namespace test {
 Empty::Empty(apache::thrift::FragileConstructor) {}
 
 
-void Empty::__clear() {
+void Empty::__fbthrift_clear() {
   // clear all fields
 }
 

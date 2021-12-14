@@ -75,7 +75,7 @@ A::A(apache::thrift::FragileConstructor, ::std::int32_t useless_field__arg) :
 }
 
 
-void A::__clear() {
+void A::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_useless_field = ::std::int32_t();
   __isset = {};
@@ -166,7 +166,7 @@ bool TEnumTraits<::cpp2::U::Type>::findValue(char const* name, type* out) {
 }} // apache::thrift
 namespace cpp2 {
 
-void U::__clear() {
+void U::__fbthrift_clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
@@ -280,7 +280,7 @@ Bang::Bang(apache::thrift::FragileConstructor, ::std::string message__arg) :
 }
 
 
-void Bang::__clear() {
+void Bang::__fbthrift_clear() {
   // clear all fields
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};

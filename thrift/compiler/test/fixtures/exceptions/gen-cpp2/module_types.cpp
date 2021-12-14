@@ -62,7 +62,7 @@ Fiery::Fiery(apache::thrift::FragileConstructor, ::std::string message__arg) :
 }
 
 
-void Fiery::__clear() {
+void Fiery::__fbthrift_clear() {
   // clear all fields
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 }
@@ -159,7 +159,7 @@ Serious::Serious(apache::thrift::FragileConstructor, ::std::string sonnet__arg) 
 }
 
 
-void Serious::__clear() {
+void Serious::__fbthrift_clear() {
   // clear all fields
   this->sonnet = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
@@ -262,7 +262,7 @@ ComplexFieldNames::ComplexFieldNames(apache::thrift::FragileConstructor, ::std::
 }
 
 
-void ComplexFieldNames::__clear() {
+void ComplexFieldNames::__fbthrift_clear() {
   // clear all fields
   this->error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->internal_error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -373,7 +373,7 @@ CustomFieldNames::CustomFieldNames(apache::thrift::FragileConstructor, ::std::st
 }
 
 
-void CustomFieldNames::__clear() {
+void CustomFieldNames::__fbthrift_clear() {
   // clear all fields
   this->error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->internal_error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -485,7 +485,7 @@ ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(apache::thrift::Fragile
 }
 
 
-void ExceptionWithPrimitiveField::__clear() {
+void ExceptionWithPrimitiveField::__fbthrift_clear() {
   // clear all fields
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->error_code = ::std::int32_t();
@@ -579,7 +579,7 @@ Banal& Banal::operator=(FOLLY_MAYBE_UNUSED Banal&& other) noexcept {
 Banal::Banal(apache::thrift::FragileConstructor) {}
 
 
-void Banal::__clear() {
+void Banal::__fbthrift_clear() {
   // clear all fields
 }
 

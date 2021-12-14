@@ -67,7 +67,7 @@ TerseFoo::TerseFoo(apache::thrift::FragileConstructor, ::std::vector<double> fie
 }
 
 
-void TerseFoo::__clear() {
+void TerseFoo::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_field1.clear();
   this->__fbthrift_field_field2.clear();
@@ -352,7 +352,7 @@ void TerseLazyFoo::__fbthrift_read_field_field4_slow() const {
 }
 
 
-void TerseLazyFoo::__clear() {
+void TerseLazyFoo::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_field1.clear();
   this->__fbthrift_field_field2.clear();
@@ -504,7 +504,7 @@ TerseOptionalFoo::TerseOptionalFoo(apache::thrift::FragileConstructor, ::std::ve
 }
 
 
-void TerseOptionalFoo::__clear() {
+void TerseOptionalFoo::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_field1.clear();
   this->__fbthrift_field_field2.clear();
@@ -789,7 +789,7 @@ void TerseOptionalLazyFoo::__fbthrift_read_field_field4_slow() const {
 }
 
 
-void TerseOptionalLazyFoo::__clear() {
+void TerseOptionalLazyFoo::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_field1.clear();
   this->__fbthrift_field_field2.clear();

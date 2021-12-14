@@ -216,6 +216,8 @@ class Foo final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = Foo;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -237,7 +239,6 @@ class Foo final  {
 
   Foo& operator=(Foo&&) noexcept;
   Foo& operator=(const Foo& src);
-  void __clear();
  private:
   ::std::vector<double> __fbthrift_field_field1;
  private:
@@ -485,6 +486,8 @@ class LazyFoo final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = LazyFoo;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -505,7 +508,6 @@ class LazyFoo final  {
 
   LazyFoo& operator=(LazyFoo&&) noexcept;
   LazyFoo& operator=(const LazyFoo& src);
-  void __clear();
  private:
   ::std::vector<double> __fbthrift_field_field1;
  private:
@@ -758,6 +760,8 @@ class OptionalFoo final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = OptionalFoo;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -779,7 +783,6 @@ class OptionalFoo final  {
 
   OptionalFoo& operator=(OptionalFoo&&) noexcept;
   OptionalFoo& operator=(const OptionalFoo& src);
-  void __clear();
  private:
   ::std::vector<double> __fbthrift_field_field1;
  private:
@@ -1031,6 +1034,8 @@ class OptionalLazyFoo final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = OptionalLazyFoo;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1051,7 +1056,6 @@ class OptionalLazyFoo final  {
 
   OptionalLazyFoo& operator=(OptionalLazyFoo&&) noexcept;
   OptionalLazyFoo& operator=(const OptionalLazyFoo& src);
-  void __clear();
  private:
   ::std::vector<double> __fbthrift_field_field1;
  private:
@@ -1306,6 +1310,8 @@ class LazyCppRef final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = LazyCppRef;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1327,7 +1333,6 @@ class LazyCppRef final  {
 
   LazyCppRef& operator=(LazyCppRef&&) noexcept;
   LazyCppRef& operator=(const LazyCppRef& src);
-  void __clear();
  private:
   mutable ::std::unique_ptr<::std::vector<::std::int32_t>> __fbthrift_field_field1;
  private:
@@ -1456,6 +1461,8 @@ class IndexedFoo final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = IndexedFoo;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1477,7 +1484,6 @@ class IndexedFoo final  {
 
   IndexedFoo& operator=(IndexedFoo&&) noexcept;
   IndexedFoo& operator=(const IndexedFoo& src);
-  void __clear();
 
   ~IndexedFoo();
 
@@ -1831,6 +1837,8 @@ class OptionalIndexedFoo final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = OptionalIndexedFoo;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -1852,7 +1860,6 @@ class OptionalIndexedFoo final  {
 
   OptionalIndexedFoo& operator=(OptionalIndexedFoo&&) noexcept;
   OptionalIndexedFoo& operator=(const OptionalIndexedFoo& src);
-  void __clear();
 
   ~OptionalIndexedFoo();
 
@@ -2210,6 +2217,8 @@ class Empty final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
+  void __fbthrift_clear();
+
  public:
   using __fbthrift_cpp2_type = Empty;
   static constexpr bool __fbthrift_cpp2_is_union =
@@ -2232,7 +2241,6 @@ class Empty final  {
   Empty& operator=(Empty&&) = default;
 
   Empty& operator=(const Empty&) = default;
-  void __clear();
 
  public:
 
