@@ -39,4 +39,4 @@ cdef extern from "thrift/lib/cpp/transport/THeader.h" namespace "apache::thrift:
         uint16_t getProtocolId()
         void setTransform(Transform)
         unique_ptr[cIOBuf] addHeader(unique_ptr[cIOBuf], map[string, string])
-        unique_ptr[cIOBuf] removeHeader(cIOBufQueue*, size_t&, map[string, string])
+        unique_ptr[cIOBuf] removeHeader(cIOBufQueue*, size_t&, map[string, string]) except +

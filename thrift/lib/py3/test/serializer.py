@@ -116,6 +116,14 @@ class SerializerTests(unittest.TestCase):
             deserialize(easy, b"\x05AAAAAAAA")
         with self.assertRaises(Error):
             deserialize(easy, b"\x02\xDE\xAD\xBE\xEF", protocol=Protocol.BINARY)
+        with self.assertRaises(BufferError):
+            deserialize_from_header(easy, b"\x02\xDE\xAD\xBE\xEF")
+        with self.assertRaises(Error):
+            control = easy(val=5, val_list=[4, 3, 2, 1])
+            buf = serialize_with_header(control, transform=Transform.ZSTD_TRANSFORM)
+            newBytes = bytearray(buf)
+            newBytes[4] += 1
+            deserialize_from_header(easy, bytes(newBytes))
 
     def thrift_serialization_round_robin(
         self, control: Struct, fixtures: Mapping[Protocol, bytes]

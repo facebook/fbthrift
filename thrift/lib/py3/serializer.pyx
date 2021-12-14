@@ -75,6 +75,12 @@ def deserialize_from_header(structKlass, buf not None):
     cdef cTHeader header
     cdef map[string, string] pheaders
     cdef size_t needed = 0
-    cbuf = header.removeHeader(&queue, needed, pheaders)
+    cdef unique_ptr[cIOBuf] cbuf
+    try:
+        cbuf = header.removeHeader(&queue, needed, pheaders)
+    except Exception as e:
+        raise Error.__new__(Error, *e.args) from None
+    if cbuf == NULL:
+        raise BufferError("Bad data used for deserialize")
     protoid = Protocol(header.getProtocolId())
     return deserialize(structKlass, _fbthrift_iobuf.from_unique_ptr(_fbthrift_iobuf.move(cbuf)), protocol=protoid)
