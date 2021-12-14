@@ -27,6 +27,7 @@
 #include <folly/synchronization/Lock.h>
 #include <thrift/lib/cpp2/Adapt.h>
 #include <thrift/lib/cpp2/FieldRef.h>
+#include <thrift/lib/cpp2/FieldRefTraits.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/TypeClass.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
@@ -98,32 +99,34 @@ struct invoke_setter;
 
 template <typename Tag>
 struct invoke_reffer_thru {
-  // optional field
   template <typename... A>
   FOLLY_ERASE constexpr auto operator()(A&&... a) noexcept(
       noexcept(invoke_reffer<Tag>{}(static_cast<A&&>(a)...).value_unchecked()))
-      -> decltype(
-          invoke_reffer<Tag>{}(static_cast<A&&>(a)...).value_unchecked()) {
+      -> std::enable_if_t<
+          is_optional_field_ref<folly::remove_cvref_t<
+              decltype(invoke_reffer<Tag>{}(static_cast<A&&>(a)...))>>::value,
+          decltype(
+              invoke_reffer<Tag>{}(static_cast<A&&>(a)...).value_unchecked())> {
     return invoke_reffer<Tag>{}(static_cast<A&&>(a)...).value_unchecked();
   }
 
-  // unqualified field
   template <typename... A>
   FOLLY_ERASE constexpr auto operator()(A&&... a) noexcept(
       noexcept(*invoke_reffer<Tag>{}(static_cast<A&&>(a)...)))
-      -> decltype(
-          invoke_reffer<Tag>{}(static_cast<A&&>(a)...).is_set(),
-          *invoke_reffer<Tag>{}(static_cast<A&&>(a)...)) {
+      -> std::enable_if_t<
+          is_field_ref<folly::remove_cvref_t<
+              decltype(invoke_reffer<Tag>{}(static_cast<A&&>(a)...))>>::value,
+          decltype(*invoke_reffer<Tag>{}(static_cast<A&&>(a)...))> {
     return *invoke_reffer<Tag>{}(static_cast<A&&>(a)...);
   }
 
-  // cpp.ref field
   template <typename... A>
   FOLLY_ERASE constexpr auto operator()(A&&... a) noexcept(
       noexcept(invoke_reffer<Tag>{}(static_cast<A&&>(a)...)))
-      -> decltype(
-          invoke_reffer<Tag>{}(static_cast<A&&>(a)...).get(),
-          invoke_reffer<Tag>{}(static_cast<A&&>(a)...)) {
+      -> std::enable_if_t<
+          is_shared_or_unique_ptr<folly::remove_cvref_t<
+              decltype(invoke_reffer<Tag>{}(static_cast<A&&>(a)...))>>::value,
+          decltype(invoke_reffer<Tag>{}(static_cast<A&&>(a)...))> {
     return invoke_reffer<Tag>{}(static_cast<A&&>(a)...);
   }
 };

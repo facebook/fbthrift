@@ -31,6 +31,7 @@
 #include <folly/Utility.h>
 #include <folly/container/View.h>
 #include <thrift/lib/cpp/protocol/TType.h>
+#include <thrift/lib/cpp2/FieldRefTraits.h>
 #include <thrift/lib/cpp2/TypeClass.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/TableBasedForwardTypes.h>
@@ -50,27 +51,13 @@ FOLLY_ERASE constexpr T identity(T t) {
   return t;
 }
 
-template <typename T>
-struct is_unique_ptr : std::false_type {};
-
-template <typename T>
-struct is_unique_ptr<std::unique_ptr<T>> : std::true_type {};
-
-template <typename T>
-struct is_shared_ptr : std::false_type {};
-
-template <typename T>
-struct is_shared_ptr<std::shared_ptr<T>> : std::true_type {};
-
-template <typename T>
-using is_smart_ptr =
-    folly::bool_constant<is_unique_ptr<T>::value || is_shared_ptr<T>::value>;
+template <typename T, typename U = void>
+using enable_if_smart_ptr_t =
+    std::enable_if_t<is_shared_or_unique_ptr<T>::value, U>;
 
 template <typename T, typename U = void>
-using enable_if_smart_ptr_t = std::enable_if_t<is_smart_ptr<T>::value, U>;
-
-template <typename T, typename U = void>
-using enable_if_not_smart_ptr_t = std::enable_if_t<!is_smart_ptr<T>::value, U>;
+using enable_if_not_smart_ptr_t =
+    std::enable_if_t<!is_shared_or_unique_ptr<T>::value, U>;
 
 template <typename T, typename Enable = void>
 struct maybe_get_element_type {
