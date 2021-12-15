@@ -222,8 +222,6 @@ class SerializableDynamic {
     return xfer;
   }
 
-  void __clear() { value_ = nullptr; }
-
  private:
   folly::dynamic value_;
   friend class ::apache::thrift::Cpp2Ops<SerializableDynamic>;
