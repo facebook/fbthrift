@@ -734,8 +734,8 @@ class Baz implements \IThriftStruct, \IThriftUnion<BazEnum>, \IThriftShapishStru
     return $this;
   }
 
-  public function get_intField()[]: \Adapter1::THackType {
-    return $this->getx_intField();
+  public function get_intField()[]: ?\Adapter1::THackType {
+    return $this->intField;
   }
 
   public function getx_intField()[]: \Adapter1::THackType {
@@ -754,8 +754,8 @@ class Baz implements \IThriftStruct, \IThriftUnion<BazEnum>, \IThriftShapishStru
     return $this;
   }
 
-  public function get_setField()[]: \Adapter2::THackType {
-    return $this->getx_setField();
+  public function get_setField()[]: ?\Adapter2::THackType {
+    return $this->setField;
   }
 
   public function getx_setField()[]: \Adapter2::THackType {
@@ -774,8 +774,8 @@ class Baz implements \IThriftStruct, \IThriftUnion<BazEnum>, \IThriftShapishStru
     return $this;
   }
 
-  public function get_mapField()[]: \Adapter3::THackType {
-    return $this->getx_mapField();
+  public function get_mapField()[]: ?\Adapter3::THackType {
+    return $this->mapField;
   }
 
   public function getx_mapField()[]: \Adapter3::THackType {
@@ -794,8 +794,8 @@ class Baz implements \IThriftStruct, \IThriftUnion<BazEnum>, \IThriftShapishStru
     return $this;
   }
 
-  public function get_binaryField()[]: \Adapter1::THackType {
-    return $this->getx_binaryField();
+  public function get_binaryField()[]: ?\Adapter1::THackType {
+    return $this->binaryField;
   }
 
   public function getx_binaryField()[]: \Adapter1::THackType {

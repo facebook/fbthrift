@@ -142,8 +142,8 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
     return $this;
   }
 
-  public function get_intValue()[]: int {
-    return $this->getx_intValue();
+  public function get_intValue()[]: ?int {
+    return $this->intValue;
   }
 
   public function getx_intValue()[]: int {
@@ -162,8 +162,8 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
     return $this;
   }
 
-  public function get_stringValue()[]: string {
-    return $this->getx_stringValue();
+  public function get_stringValue()[]: ?string {
+    return $this->stringValue;
   }
 
   public function getx_stringValue()[]: string {

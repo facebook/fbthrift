@@ -1014,8 +1014,8 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
     return $this;
   }
 
-  public function get_first()[]: string {
-    return $this->getx_first();
+  public function get_first()[]: ?string {
+    return $this->first;
   }
 
   public function getx_first()[]: string {
@@ -1034,8 +1034,8 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
     return $this;
   }
 
-  public function get_second()[]: int {
-    return $this->getx_second();
+  public function get_second()[]: ?int {
+    return $this->second;
   }
 
   public function getx_second()[]: int {

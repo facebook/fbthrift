@@ -407,8 +407,8 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
     return $this;
   }
 
-  public function get_foo()[]: string {
-    return $this->getx_foo();
+  public function get_foo()[]: ?string {
+    return $this->foo;
   }
 
   public function getx_foo()[]: string {
@@ -427,8 +427,8 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
     return $this;
   }
 
-  public function get_bar()[]: int {
-    return $this->getx_bar();
+  public function get_bar()[]: ?int {
+    return $this->bar;
   }
 
   public function getx_bar()[]: int {

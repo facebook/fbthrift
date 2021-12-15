@@ -2993,10 +2993,10 @@ void t_hack_generator::generate_php_union_methods(
     indent_down();
     indent(out) << "}\n\n";
 
-    indent(out) << "public function get_" << fieldName << "()[]: " << typehint
+    indent(out) << "public function get_" << fieldName << "()[]: ?" << typehint
                 << " {\n";
     indent_up();
-    indent(out) << "return $this->getx_" << fieldName << "();\n";
+    indent(out) << "return $this->" << fieldName << ";\n";
     indent_down();
     indent(out) << "}\n\n";
 

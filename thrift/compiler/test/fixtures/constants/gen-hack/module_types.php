@@ -1014,8 +1014,8 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
     return $this;
   }
 
-  public function get_i()[]: int {
-    return $this->getx_i();
+  public function get_i()[]: ?int {
+    return $this->i;
   }
 
   public function getx_i()[]: int {
@@ -1034,8 +1034,8 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
     return $this;
   }
 
-  public function get_d()[]: float {
-    return $this->getx_d();
+  public function get_d()[]: ?float {
+    return $this->d;
   }
 
   public function getx_d()[]: float {
@@ -1234,8 +1234,8 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
     return $this;
   }
 
-  public function get_i()[]: int {
-    return $this->getx_i();
+  public function get_i()[]: ?int {
+    return $this->i;
   }
 
   public function getx_i()[]: int {
@@ -1254,8 +1254,8 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
     return $this;
   }
 
-  public function get_d()[]: float {
-    return $this->getx_d();
+  public function get_d()[]: ?float {
+    return $this->d;
   }
 
   public function getx_d()[]: float {
@@ -1274,8 +1274,8 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
     return $this;
   }
 
-  public function get_s()[]: struct1 {
-    return $this->getx_s();
+  public function get_s()[]: ?struct1 {
+    return $this->s;
   }
 
   public function getx_s()[]: struct1 {
@@ -1294,8 +1294,8 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
     return $this;
   }
 
-  public function get_u()[]: union1 {
-    return $this->getx_u();
+  public function get_u()[]: ?union1 {
+    return $this->u;
   }
 
   public function getx_u()[]: union1 {

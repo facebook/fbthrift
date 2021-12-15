@@ -228,8 +228,8 @@ class U implements \IThriftStruct, \IThriftUnion<UEnum> {
     return $this;
   }
 
-  public function get_i()[]: int {
-    return $this->getx_i();
+  public function get_i()[]: ?int {
+    return $this->i;
   }
 
   public function getx_i()[]: int {
@@ -248,8 +248,8 @@ class U implements \IThriftStruct, \IThriftUnion<UEnum> {
     return $this;
   }
 
-  public function get_s()[]: string {
-    return $this->getx_s();
+  public function get_s()[]: ?string {
+    return $this->s;
   }
 
   public function getx_s()[]: string {

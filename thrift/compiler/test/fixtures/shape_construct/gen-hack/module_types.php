@@ -236,8 +236,8 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
     return $this;
   }
 
-  public function get_int_value()[]: int {
-    return $this->getx_int_value();
+  public function get_int_value()[]: ?int {
+    return $this->int_value;
   }
 
   public function getx_int_value()[]: int {
@@ -256,8 +256,8 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
     return $this;
   }
 
-  public function get_str_value()[]: string {
-    return $this->getx_str_value();
+  public function get_str_value()[]: ?string {
+    return $this->str_value;
   }
 
   public function getx_str_value()[]: string {
@@ -276,8 +276,8 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
     return $this;
   }
 
-  public function get_double_value()[]: float {
-    return $this->getx_double_value();
+  public function get_double_value()[]: ?float {
+    return $this->double_value;
   }
 
   public function getx_double_value()[]: float {
@@ -296,8 +296,8 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
     return $this;
   }
 
-  public function get_list_of_strings()[]: Vector<string> {
-    return $this->getx_list_of_strings();
+  public function get_list_of_strings()[]: ?Vector<string> {
+    return $this->list_of_strings;
   }
 
   public function getx_list_of_strings()[]: Vector<string> {
@@ -316,8 +316,8 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
     return $this;
   }
 
-  public function get_map_of_string_to_ints()[]: Map<string, int> {
-    return $this->getx_map_of_string_to_ints();
+  public function get_map_of_string_to_ints()[]: ?Map<string, int> {
+    return $this->map_of_string_to_ints;
   }
 
   public function getx_map_of_string_to_ints()[]: Map<string, int> {
@@ -336,8 +336,8 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
     return $this;
   }
 
-  public function get_struct_foo()[]: Foo {
-    return $this->getx_struct_foo();
+  public function get_struct_foo()[]: ?Foo {
+    return $this->struct_foo;
   }
 
   public function getx_struct_foo()[]: Foo {

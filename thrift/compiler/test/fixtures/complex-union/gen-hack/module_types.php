@@ -209,8 +209,8 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     return $this;
   }
 
-  public function get_intValue()[]: int {
-    return $this->getx_intValue();
+  public function get_intValue()[]: ?int {
+    return $this->intValue;
   }
 
   public function getx_intValue()[]: int {
@@ -229,8 +229,8 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     return $this;
   }
 
-  public function get_stringValue()[]: string {
-    return $this->getx_stringValue();
+  public function get_stringValue()[]: ?string {
+    return $this->stringValue;
   }
 
   public function getx_stringValue()[]: string {
@@ -249,8 +249,8 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     return $this;
   }
 
-  public function get_intListValue()[]: Vector<int> {
-    return $this->getx_intListValue();
+  public function get_intListValue()[]: ?Vector<int> {
+    return $this->intListValue;
   }
 
   public function getx_intListValue()[]: Vector<int> {
@@ -269,8 +269,8 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     return $this;
   }
 
-  public function get_stringListValue()[]: Vector<string> {
-    return $this->getx_stringListValue();
+  public function get_stringListValue()[]: ?Vector<string> {
+    return $this->stringListValue;
   }
 
   public function getx_stringListValue()[]: Vector<string> {
@@ -289,8 +289,8 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     return $this;
   }
 
-  public function get_typedefValue()[]: Map<int, string> {
-    return $this->getx_typedefValue();
+  public function get_typedefValue()[]: ?Map<int, string> {
+    return $this->typedefValue;
   }
 
   public function getx_typedefValue()[]: Map<int, string> {
@@ -309,8 +309,8 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     return $this;
   }
 
-  public function get_stringRef()[]: string {
-    return $this->getx_stringRef();
+  public function get_stringRef()[]: ?string {
+    return $this->stringRef;
   }
 
   public function getx_stringRef()[]: string {
@@ -612,8 +612,8 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
     return $this;
   }
 
-  public function get_intListValue()[]: Vector<int> {
-    return $this->getx_intListValue();
+  public function get_intListValue()[]: ?Vector<int> {
+    return $this->intListValue;
   }
 
   public function getx_intListValue()[]: Vector<int> {
@@ -632,8 +632,8 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
     return $this;
   }
 
-  public function get_stringListValue()[]: Vector<string> {
-    return $this->getx_stringListValue();
+  public function get_stringListValue()[]: ?Vector<string> {
+    return $this->stringListValue;
   }
 
   public function getx_stringListValue()[]: Vector<string> {
@@ -836,8 +836,8 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
     return $this;
   }
 
-  public function get_binaryData()[]: string {
-    return $this->getx_binaryData();
+  public function get_binaryData()[]: ?string {
+    return $this->binaryData;
   }
 
   public function getx_binaryData()[]: string {
@@ -856,8 +856,8 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
     return $this;
   }
 
-  public function get_stringData()[]: string {
-    return $this->getx_stringData();
+  public function get_stringData()[]: ?string {
+    return $this->stringData;
   }
 
   public function getx_stringData()[]: string {
@@ -1219,8 +1219,8 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
     return $this;
   }
 
-  public function get_v1()[]: Val {
-    return $this->getx_v1();
+  public function get_v1()[]: ?Val {
+    return $this->v1;
   }
 
   public function getx_v1()[]: Val {
@@ -1239,8 +1239,8 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
     return $this;
   }
 
-  public function get_v2()[]: Val {
-    return $this->getx_v2();
+  public function get_v2()[]: ?Val {
+    return $this->v2;
   }
 
   public function getx_v2()[]: Val {
@@ -1427,8 +1427,8 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
     return $this;
   }
 
-  public function get_thingOne()[]: string {
-    return $this->getx_thingOne();
+  public function get_thingOne()[]: ?string {
+    return $this->thingOne;
   }
 
   public function getx_thingOne()[]: string {
@@ -1447,8 +1447,8 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
     return $this;
   }
 
-  public function get_thingTwo()[]: string {
-    return $this->getx_thingTwo();
+  public function get_thingTwo()[]: ?string {
+    return $this->thingTwo;
   }
 
   public function getx_thingTwo()[]: string {
@@ -1691,8 +1691,8 @@ class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnion
     return $this;
   }
 
-  public function get_s()[]: NonCopyableStruct {
-    return $this->getx_s();
+  public function get_s()[]: ?NonCopyableStruct {
+    return $this->s;
   }
 
   public function getx_s()[]: NonCopyableStruct {

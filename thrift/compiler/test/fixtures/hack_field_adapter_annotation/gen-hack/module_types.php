@@ -482,8 +482,8 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     return $this;
   }
 
-  public function get_union_annotated_field()[]: int {
-    return $this->getx_union_annotated_field();
+  public function get_union_annotated_field()[]: ?int {
+    return $this->union_annotated_field;
   }
 
   public function getx_union_annotated_field()[]: int {
@@ -502,8 +502,8 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     return $this;
   }
 
-  public function get_union_adapted_type()[]: \AdapterTestIntToString::THackType {
-    return $this->getx_union_adapted_type();
+  public function get_union_adapted_type()[]: ?\AdapterTestIntToString::THackType {
+    return $this->union_adapted_type;
   }
 
   public function getx_union_adapted_type()[]: \AdapterTestIntToString::THackType {

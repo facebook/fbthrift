@@ -546,8 +546,8 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     return $this;
   }
 
-  public function get_myEnum()[]: MyEnum {
-    return $this->getx_myEnum();
+  public function get_myEnum()[]: ?MyEnum {
+    return $this->myEnum;
   }
 
   public function getx_myEnum()[]: MyEnum {
@@ -566,8 +566,8 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     return $this;
   }
 
-  public function get_myStruct()[]: MyStruct {
-    return $this->getx_myStruct();
+  public function get_myStruct()[]: ?MyStruct {
+    return $this->myStruct;
   }
 
   public function getx_myStruct()[]: MyStruct {
@@ -586,8 +586,8 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     return $this;
   }
 
-  public function get_myDataItem()[]: MyDataItem {
-    return $this->getx_myDataItem();
+  public function get_myDataItem()[]: ?MyDataItem {
+    return $this->myDataItem;
   }
 
   public function getx_myDataItem()[]: MyDataItem {

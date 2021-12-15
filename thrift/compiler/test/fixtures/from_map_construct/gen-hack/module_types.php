@@ -422,8 +422,8 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
     return $this;
   }
 
-  public function get_string_field()[]: string {
-    return $this->getx_string_field();
+  public function get_string_field()[]: ?string {
+    return $this->string_field;
   }
 
   public function getx_string_field()[]: string {
@@ -442,8 +442,8 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
     return $this;
   }
 
-  public function get_int_field()[]: int {
-    return $this->getx_int_field();
+  public function get_int_field()[]: ?int {
+    return $this->int_field;
   }
 
   public function getx_int_field()[]: int {
@@ -462,8 +462,8 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
     return $this;
   }
 
-  public function get_enum_field()[]: TestEnum {
-    return $this->getx_enum_field();
+  public function get_enum_field()[]: ?TestEnum {
+    return $this->enum_field;
   }
 
   public function getx_enum_field()[]: TestEnum {
@@ -482,8 +482,8 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
     return $this;
   }
 
-  public function get_foo_struct()[]: Foo {
-    return $this->getx_foo_struct();
+  public function get_foo_struct()[]: ?Foo {
+    return $this->foo_struct;
   }
 
   public function getx_foo_struct()[]: Foo {

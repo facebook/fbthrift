@@ -3346,8 +3346,8 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
     return $this;
   }
 
-  public function get_string_field()[]: string {
-    return $this->getx_string_field();
+  public function get_string_field()[]: ?string {
+    return $this->string_field;
   }
 
   public function getx_string_field()[]: string {
@@ -3366,8 +3366,8 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
     return $this;
   }
 
-  public function get_i32_field()[]: int {
-    return $this->getx_i32_field();
+  public function get_i32_field()[]: ?int {
+    return $this->i32_field;
   }
 
   public function getx_i32_field()[]: int {
