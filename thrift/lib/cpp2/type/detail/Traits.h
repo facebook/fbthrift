@@ -315,4 +315,11 @@ struct traits<adapted<Adapter, Tag>>
           adapt_detail::adapted_t<Adapter, typename traits<Tag>::native_type>> {
 };
 
+// Traits for cpp_type types.
+//
+// cpp_type types are concrete and have special native_type.
+template <typename T, typename Tag>
+struct traits<cpp_type<T, Tag>>
+    : concrete_type<typename traits<Tag>::standard_type, T> {};
+
 } // namespace apache::thrift::type::detail

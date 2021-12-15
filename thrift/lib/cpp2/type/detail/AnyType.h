@@ -144,9 +144,11 @@ struct AnyTypeHelper<union_t<T>> : NamedTypeHelper<union_c, T> {};
 template <typename T>
 struct AnyTypeHelper<exception_t<T>> : NamedTypeHelper<exception_c, T> {};
 
-// Skip through adapters.
+// Skip through adapters, cpp_type, etc.
 template <typename Adapter, typename Tag>
 struct AnyTypeHelper<adapted<Adapter, Tag>> : AnyTypeHelper<Tag> {};
+template <typename T, typename Tag>
+struct AnyTypeHelper<cpp_type<T, Tag>> : AnyTypeHelper<Tag> {};
 
 } // namespace detail
 } // namespace apache::thrift::type

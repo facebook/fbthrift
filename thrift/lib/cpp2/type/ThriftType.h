@@ -95,6 +95,13 @@ struct map : map_c {};
 template <typename Adapter, typename Tag>
 struct adapted : Tag {};
 
+// A type mapped to a specific c++ type.
+//
+// The given type must be a 'drop in' replacement for the
+// native_type it is overriding.
+template <typename T, typename Tag>
+struct cpp_type : Tag {};
+
 // If a given type tag refers to concrete type and not a class of types.
 //
 // For example:
@@ -209,6 +216,8 @@ struct is_concrete<map<KeyTag, ValTag, MapT>>
 
 template <typename Adapter, typename Tag>
 struct is_concrete<adapted<Adapter, Tag>> : is_concrete<Tag> {};
+template <typename T, typename Tag>
+struct is_concrete<cpp_type<T, Tag>> : is_concrete<Tag> {};
 
 template <>
 struct is_thrift_type_tag<enum_c> : std::true_type {};
@@ -240,5 +249,7 @@ struct is_thrift_type_tag<map<KeyTag, ValTag, MapT>>
 
 template <typename Adapter, typename Tag>
 struct is_thrift_type_tag<adapted<Adapter, Tag>> : is_thrift_type_tag<Tag> {};
+template <typename T, typename Tag>
+struct is_thrift_type_tag<cpp_type<T, Tag>> : is_thrift_type_tag<Tag> {};
 
 } // namespace apache::thrift::type

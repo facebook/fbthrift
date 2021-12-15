@@ -154,6 +154,12 @@ TEST(AnyTypeTest, Adapted) {
       AnyType::create<void_t>());
 }
 
+TEST(AnyTypeTest, CppType) {
+  // CppType is ignored.
+  EXPECT_EQ(
+      (AnyType::create<cpp_type<void, void_t>>()), AnyType::create<void_t>());
+}
+
 TEST(AnyTypeTest, CustomContainer) {
   // Custom container type is ignored.
   EXPECT_EQ(

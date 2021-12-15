@@ -472,6 +472,27 @@ TEST(TraitsTest, Adapted) {
   IsSameType<native_type<tag>, TestValue<int64_t>>();
 }
 
+TEST(TraitsTest, CppType) {
+  using tag = cpp_type<uint64_t, i64_t>;
+  // All traits that operate on the standard type, match the given tag.
+  testContains<integral_types, tag, true>();
+  testContains<floating_point_types, tag, false>();
+  testContains<numeric_types, tag, true>();
+  testContains<string_types, tag, false>();
+  testContains<primitive_types, tag, true>();
+  testContains<structured_types, tag, false>();
+  testContains<singular_types, tag, true>();
+  testContains<container_types, tag, false>();
+  testContains<composite_types, tag, false>();
+  testContains<all_types, tag, true>();
+  EXPECT_EQ(base_type_v<tag>, BaseType::I64);
+  IsSameType<standard_type<tag>, int64_t>();
+
+  // The name and native_type have changed.
+  EXPECT_EQ(getName<tag>(), folly::pretty_name<uint64_t>());
+  IsSameType<native_type<tag>, uint64_t>();
+}
+
 TEST(TraitsTest, AdaptedListElems) {
   using tag_t = list<adapted<TestAdapter, i64_t>>;
   EXPECT_EQ(base_type_v<tag_t>, BaseType::List);

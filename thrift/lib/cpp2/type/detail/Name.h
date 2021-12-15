@@ -109,13 +109,19 @@ template <
 struct GetName<map<KeyTag, ValTag, MapT>>
     : GetNameParamed<map_c, KeyTag, ValTag> {};
 
-template <typename Adapter, typename Tag>
-struct GetName<adapted<Adapter, Tag>> {
+template <typename T>
+struct PrettyName {
   FOLLY_EXPORT const std::string& operator()() const {
-    static const auto* kName = new std::string(
-        folly::pretty_name<native_type<adapted<Adapter, Tag>>>());
+    static const auto* kName = new std::string(folly::pretty_name<T>());
     return *kName;
   }
 };
+
+template <typename Adapter, typename Tag>
+struct GetName<adapted<Adapter, Tag>>
+    : PrettyName<native_type<adapted<Adapter, Tag>>> {};
+
+template <typename T, typename Tag>
+struct GetName<cpp_type<T, Tag>> : PrettyName<T> {};
 
 } // namespace apache::thrift::type::detail

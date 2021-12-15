@@ -161,6 +161,12 @@ static_assert(
 static_assert(same_tag<
               set_c,
               decltype(testOverload(adapted<TestAdapter, set<enum_c>>{}))>);
+// CppType types are convertable to the underlying tag.
+static_assert(
+    same_tag<void_t, decltype(testOverload(cpp_type<TestAdapter, void_t>{}))>);
+static_assert(same_tag<
+              set_c,
+              decltype(testOverload(cpp_type<TestAdapter, set<enum_c>>{}))>);
 
 // is_concrete static asserts.
 static_assert(!is_concrete_v<int>);
@@ -205,6 +211,10 @@ static_assert(!is_concrete_v<adapted<int, int>>);
 static_assert(is_concrete_v<adapted<int, void_t>>);
 static_assert(is_concrete_v<list<adapted<int, void_t>>>);
 
+static_assert(!is_concrete_v<cpp_type<int, int>>);
+static_assert(is_concrete_v<cpp_type<int, void_t>>);
+static_assert(is_concrete_v<list<cpp_type<int, void_t>>>);
+
 // is_thrift_type_tag_v static asserts.
 static_assert(!is_thrift_type_tag_v<int>);
 static_assert(is_thrift_type_tag_v<void_t>);
@@ -247,6 +257,9 @@ static_assert(is_thrift_type_tag_v<map<void_t, void_t, TestTemplate>>);
 static_assert(!is_thrift_type_tag_v<adapted<int, int>>);
 static_assert(is_thrift_type_tag_v<adapted<int, void_t>>);
 static_assert(is_thrift_type_tag_v<list<adapted<int, void_t>>>);
+static_assert(!is_thrift_type_tag_v<cpp_type<int, int>>);
+static_assert(is_thrift_type_tag_v<cpp_type<int, void_t>>);
+static_assert(is_thrift_type_tag_v<list<cpp_type<int, void_t>>>);
 
 // is_not_concrete static asserts.
 static_assert(!is_not_concrete_v<int>);
@@ -330,6 +343,8 @@ static_assert(!isConcrete<map<enum_c, enum_c, std::unordered_map>>());
 // An adapted type is concrete if it's type parameter is concrete.
 static_assert(isConcrete<adapted<TestAdapter, void_t>>());
 static_assert(!isConcrete<adapted<TestAdapter, enum_c>>());
+static_assert(isConcrete<cpp_type<void, void_t>>());
+static_assert(!isConcrete<cpp_type<int, enum_c>>());
 
 } // namespace
 } // namespace apache::thrift::type
