@@ -504,6 +504,7 @@ class RequestParams {
     return threadManager_;
   }
   folly::EventBase* getEventBase() const { return eventBase_; }
+  folly::Executor* getHandlerExecutor() const { return threadManager_; }
 
  private:
   friend class ServerInterface;
