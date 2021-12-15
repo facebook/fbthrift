@@ -496,6 +496,8 @@ class DbMixedStackArgumentsAsyncRpcOptionsClient extends \ThriftClientBase imple
 
 abstract class DbMixedStackArgumentsAsyncProcessorBase extends \ThriftAsyncProcessor {
   abstract const type TThriftIf as DbMixedStackArgumentsAsyncIf;
+  const classname<\IThriftServiceStaticMetadata> SERVICE_METADATA_CLASS = DbMixedStackArgumentsStaticMetadata::class;
+
   protected async function process_getDataByKey0(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
     $handler_ctx = $this->eventHandler_->getHandlerContext('getDataByKey0');
     $reply_type = \TMessageType::REPLY;
@@ -626,6 +628,8 @@ class DbMixedStackArgumentsAsyncProcessor extends DbMixedStackArgumentsAsyncProc
 
 abstract class DbMixedStackArgumentsSyncProcessorBase extends \ThriftSyncProcessor {
   abstract const type TThriftIf as DbMixedStackArgumentsIf;
+  const classname<\IThriftServiceStaticMetadata> SERVICE_METADATA_CLASS = DbMixedStackArgumentsStaticMetadata::class;
+
   protected function process_getDataByKey0(int $seqid, \TProtocol $input, \TProtocol $output): void {
     $handler_ctx = $this->eventHandler_->getHandlerContext('getDataByKey0');
     $reply_type = \TMessageType::REPLY;

@@ -4062,10 +4062,14 @@ void t_hack_generator::generate_service_processor(
   // const type, then branch off at each service with the processor that does
   // define the const type.
 
-  f_service_ << indent() << "abstract class " << long_name << suffix
-             << "ProcessorBase extends " << extends_processor << " {\n"
-             << indent() << "  abstract const type TThriftIf as " << long_name
-             << (async ? "Async" : "") << "If;\n";
+  f_service_
+      << indent() << "abstract class " << long_name << suffix
+      << "ProcessorBase extends " << extends_processor << " {\n"
+      << indent() << "  abstract const type TThriftIf as " << long_name
+      << (async ? "Async" : "") << "If;\n"
+      << indent()
+      << "  const classname<\\IThriftServiceStaticMetadata> SERVICE_METADATA_CLASS = "
+      << long_name << "StaticMetadata::class;\n\n";
 
   indent_up();
 

@@ -1124,6 +1124,8 @@ class NestedContainersAsyncRpcOptionsClient extends \ThriftClientBase implements
 
 abstract class NestedContainersAsyncProcessorBase extends \ThriftAsyncProcessor {
   abstract const type TThriftIf as NestedContainersAsyncIf;
+  const classname<\IThriftServiceStaticMetadata> SERVICE_METADATA_CLASS = NestedContainersStaticMetadata::class;
+
   protected async function process_mapList(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
     $handler_ctx = $this->eventHandler_->getHandlerContext('mapList');
     $reply_type = \TMessageType::REPLY;
@@ -1386,6 +1388,8 @@ class NestedContainersAsyncProcessor extends NestedContainersAsyncProcessorBase 
 
 abstract class NestedContainersSyncProcessorBase extends \ThriftSyncProcessor {
   abstract const type TThriftIf as NestedContainersIf;
+  const classname<\IThriftServiceStaticMetadata> SERVICE_METADATA_CLASS = NestedContainersStaticMetadata::class;
+
   protected function process_mapList(int $seqid, \TProtocol $input, \TProtocol $output): void {
     $handler_ctx = $this->eventHandler_->getHandlerContext('mapList');
     $reply_type = \TMessageType::REPLY;

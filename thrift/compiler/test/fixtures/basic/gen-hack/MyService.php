@@ -1699,6 +1699,8 @@ class MyServiceAsyncRpcOptionsClient extends \ThriftClientBase implements MyServ
 
 abstract class MyServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
   abstract const type TThriftIf as MyServiceAsyncIf;
+  const classname<\IThriftServiceStaticMetadata> SERVICE_METADATA_CLASS = MyServiceStaticMetadata::class;
+
   protected async function process_ping(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
     $handler_ctx = $this->eventHandler_->getHandlerContext('ping');
     $reply_type = \TMessageType::REPLY;
@@ -2075,6 +2077,8 @@ class MyServiceAsyncProcessor extends MyServiceAsyncProcessorBase {
 
 abstract class MyServiceSyncProcessorBase extends \ThriftSyncProcessor {
   abstract const type TThriftIf as MyServiceIf;
+  const classname<\IThriftServiceStaticMetadata> SERVICE_METADATA_CLASS = MyServiceStaticMetadata::class;
+
   protected function process_ping(int $seqid, \TProtocol $input, \TProtocol $output): void {
     $handler_ctx = $this->eventHandler_->getHandlerContext('ping');
     $reply_type = \TMessageType::REPLY;
