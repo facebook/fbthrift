@@ -63,7 +63,7 @@ const int64_t kRocketClientMinVersion = 6;
 THRIFT_FLAG_DEFINE_bool(rocket_client_new_protocol_key, true);
 THRIFT_FLAG_DEFINE_int64(rocket_client_max_version, kRocketClientMaxVersion);
 
-THRIFT_FLAG_DEFINE_bool(rocket_client_upgrade_zlib_to_zstd, true);
+THRIFT_FLAG_DEFINE_bool(rocket_client_upgrade_zlib_to_zstd_v2, true);
 
 using namespace apache::thrift::transport;
 
@@ -472,12 +472,15 @@ class FirstRequestProcessorSink : public SinkClientCallback,
   SinkClientCallback* clientCallback_;
   folly::EventBase* evb_;
 };
+} // namespace
 
-void setCompression(RequestRpcMetadata& metadata, ssize_t payloadSize) {
+void RocketClientChannel::setCompression(
+    RequestRpcMetadata& metadata, ssize_t payloadSize) {
   if (auto compressionConfig = metadata.compressionConfig_ref()) {
     if (auto codecRef = compressionConfig->codecConfig_ref()) {
       if (codecRef->getType() == apache::thrift::CodecConfig::zlibConfig &&
-          THRIFT_FLAG(rocket_client_upgrade_zlib_to_zstd)) {
+          getServerZstdSupported() &&
+          THRIFT_FLAG(rocket_client_upgrade_zlib_to_zstd_v2)) {
         codecRef->set_zstdConfig({});
       }
       if (payloadSize >
@@ -496,7 +499,6 @@ void setCompression(RequestRpcMetadata& metadata, ssize_t payloadSize) {
     }
   }
 }
-} // namespace
 
 class RocketClientChannel::SingleRequestSingleResponseCallback final
     : public rocket::RocketClient::RequestResponseCallback {

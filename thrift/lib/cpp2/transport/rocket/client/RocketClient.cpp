@@ -162,6 +162,8 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
         setServerVersion(std::min(
             serverMeta.setupResponse_ref()->version_ref().value_or(0),
             (int32_t)std::numeric_limits<int16_t>::max()));
+        serverZstdSupported_ =
+            serverMeta.setupResponse_ref()->zstdSupported_ref().value_or(false);
         break;
       }
       case ServerPushMetadata::streamHeadersPush: {

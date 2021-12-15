@@ -395,6 +395,10 @@ struct SetupResponse {
   // that any Rocket protocol version between minVersion and maxVersion MAY be
   // used by the server.
   1: optional i32 version;
+  // Whether ZSTD compression for requests and responses is supported by the
+  // server. SHOULD be set.
+  // If not set (or if false) client SHOULD not use ZSTD compression.
+  2: optional bool zstdSupported;
 }
 
 struct StreamHeadersPush {

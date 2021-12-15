@@ -216,6 +216,7 @@ void ThriftRocketServerHandler::handleSetupFrame(
     ServerPushMetadata serverMeta;
     serverMeta.set_setupResponse();
     serverMeta.setupResponse_ref()->version_ref() = version_;
+    serverMeta.setupResponse_ref()->zstdSupported_ref() = true;
     CompactProtocolWriter compactProtocolWriter;
     folly::IOBufQueue queue;
     compactProtocolWriter.setOutput(&queue);

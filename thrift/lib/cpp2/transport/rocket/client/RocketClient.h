@@ -248,6 +248,8 @@ class RocketClient : public virtual folly::DelayedDestruction,
 
   int32_t getServerVersion() const { return serverVersion_; }
 
+  bool getServerZstdSupported() const { return serverZstdSupported_; }
+
   folly::EventBase* getEventBase() { return evb_; }
 
  private:
@@ -273,6 +275,7 @@ class RocketClient : public virtual folly::DelayedDestruction,
     }
   } clientState_;
   int16_t serverVersion_{-1};
+  bool serverZstdSupported_{false};
   StreamId nextStreamId_{1};
 
   // Client requests + internal requests (requestN, cancel, etc).
