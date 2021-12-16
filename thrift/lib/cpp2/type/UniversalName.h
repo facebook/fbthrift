@@ -21,7 +21,7 @@
 #include <folly/FBString.h>
 #include <folly/Range.h>
 #include <folly/lang/Exception.h>
-#include <thrift/lib/thrift/gen-cpp2/type_types.h>
+#include <thrift/lib/cpp2/type/UniversalHashAlgorithm.h>
 
 namespace apache::thrift::type {
 using hash_size_t = int8_t;

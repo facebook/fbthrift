@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <thrift/lib/cpp2/type/UniversalHashAlgorithm.h>
 #include <thrift/lib/cpp2/type/UniversalName.h>
 
 #include <regex>
@@ -26,7 +27,6 @@
 #include <folly/FBString.h>
 #include <folly/String.h>
 #include <folly/portability/GTest.h>
-#include <thrift/lib/thrift/gen-cpp2/type_constants.h>
 
 namespace apache::thrift::type {
 namespace {
@@ -95,7 +95,7 @@ auto Hash() {
 }
 
 TEST(UniversalNameTest, Constants) {
-  IsSame<hash_size_t, decltype(type_constants::minTypeHashBytes())>();
+  IsSame<hash_size_t, folly::remove_cvref_t<decltype(kMinHashBytes)>>();
 
   auto* ctx = EVP_MD_CTX_new();
   ASSERT_NE(ctx, nullptr);
@@ -127,9 +127,7 @@ TEST(UniversalNameTest, ValidateUniversalName) {
 TEST(UniversalNameTest, ValidateUniversalHash) {
   EXPECT_THROW(
       validateUniversalHash(
-          UniversalHashAlgorithm::Sha2_256,
-          "",
-          type_constants::minTypeHashBytes()),
+          UniversalHashAlgorithm::Sha2_256, "", kMinHashBytes),
       std::invalid_argument);
   for (const auto& bad : kBadIdSizes) {
     SCOPED_TRACE(bad);
@@ -137,7 +135,7 @@ TEST(UniversalNameTest, ValidateUniversalHash) {
         validateUniversalHash(
             UniversalHashAlgorithm::Sha2_256,
             folly::fbstring(bad, 'a'),
-            type_constants::minTypeHashBytes()),
+            kMinHashBytes),
         std::invalid_argument);
   }
 
@@ -147,7 +145,7 @@ TEST(UniversalNameTest, ValidateUniversalHash) {
       validateUniversalHash(
           UniversalHashAlgorithm::Sha2_256,
           folly::fbstring(good, 'a'),
-          type_constants::minTypeHashBytes());
+          kMinHashBytes);
     } catch (const std::exception& ex) {
       GTEST_FAIL() << folly::demangle(typeid(ex)) << ": " << ex.what();
     }
@@ -155,21 +153,19 @@ TEST(UniversalNameTest, ValidateUniversalHash) {
 }
 
 TEST(UniversalNameTest, ValidateUniversalHashBytes) {
-  validateUniversalHashBytes(
-      kDisableUniversalHash, type_constants::minTypeHashBytes());
+  validateUniversalHashBytes(kDisableUniversalHash, kMinHashBytes);
   for (const auto& bad : kBadIdSizes) {
-    if (bad >= type_constants::minTypeHashBytes()) {
+    if (bad >= kMinHashBytes) {
       continue; // Upper bounds is not checked, as it can vary.
     }
     SCOPED_TRACE(bad);
     EXPECT_THROW(
-        validateUniversalHashBytes(bad, type_constants::minTypeHashBytes()),
-        std::invalid_argument);
+        validateUniversalHashBytes(bad, kMinHashBytes), std::invalid_argument);
   }
 
   for (const auto& good : kGoodIdSizes) {
     SCOPED_TRACE(good);
-    validateUniversalHashBytes(good, type_constants::minTypeHashBytes());
+    validateUniversalHashBytes(good, kMinHashBytes);
   }
 }
 

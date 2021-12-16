@@ -24,6 +24,7 @@ namespace go thrift.lib.thrift.type
 namespace py thrift.lib.thrift.type
 
 cpp_include "thrift/lib/cpp2/type/BaseType.h"
+cpp_include "thrift/lib/cpp2/type/UniversalHashAlgorithm.h"
 
 // An enumeration of all base types in thrift.
 //
@@ -81,4 +82,7 @@ const byte defaultTypeHashBytes = 16;
 // The hash algorithms that can be used with type names.
 enum UniversalHashAlgorithm {
   Sha2_256 = 1,
-}
+} (
+  cpp.name = "ThriftUniversalHashAlgorithm",
+  cpp.adapter = "::apache::thrift::StaticCastAdapter<::apache::thrift::type::UniversalHashAlgorithm, ::apache::thrift::type::ThriftUniversalHashAlgorithm>",
+)
