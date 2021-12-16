@@ -1034,6 +1034,11 @@ struct reflected_struct_data_member {
   using type = typename Traits::type;
 
   /**
+   * A tag type representing the name of this member.
+   */
+  using tag = typename Traits::tag;
+
+  /**
    * A `std::integral_constant` of type `field_id_t` representing the Thrift
    * field id for the data member.
    *
@@ -1829,6 +1834,11 @@ struct reflected_variant_member_metadata {
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
   using name = typename Traits::name;
+
+  /**
+   * A tag type representing the name of this member.
+   */
+  using tag = typename Traits::tag;
 
   /**
    * A `std::integral_constant` of type `field_id_t` representing the Thrift
