@@ -18,89 +18,10 @@
 
 #include <type_traits>
 
-// Type tags for describing the 'shape' of thrift types at compile-time.
-//
-// _t indicates a concrete type.
-// _c indicates a class of types.
-// no suffix means it is dependent on the parameters.
-//
-// For example, `type::list_c` represents a list of any type,
-// `type::list<type::enum_c>` represents a list of any enum type, and
-// `type::list<type::enum_t<MyEnum>>` represents a list of MyEnums.
+#include <thrift/lib/cpp2/type/Tag.h>
+
+// Helpers for working with thrift type tags.
 namespace apache::thrift::type {
-
-namespace detail {
-// A place holder for the default template for a container.
-template <typename...>
-struct DefaultT;
-} // namespace detail
-
-// Type tags for types that are always concrete (_t suffix).
-struct void_t {};
-struct bool_t {};
-struct byte_t {};
-struct i16_t {};
-struct i32_t {};
-struct i64_t {};
-struct float_t {};
-struct double_t {};
-struct string_t {};
-struct binary_t {};
-
-// The enum class of types.
-struct enum_c {};
-// A concrete enum type.
-template <typename T>
-struct enum_t : enum_c {};
-
-// The struct class of types.
-struct struct_c {};
-// A concrete struct type.
-template <typename T>
-struct struct_t : struct_c {};
-
-// The union class of types.
-struct union_c {};
-template <typename T>
-struct union_t : union_c {};
-
-// The exception class of types.
-struct exception_c {};
-template <typename T>
-struct exception_t : exception_c {};
-
-// The list class of types.
-struct list_c {};
-template <
-    typename ValTag,
-    template <typename...> typename ListT = detail::DefaultT>
-struct list : list_c {};
-
-// The set class of types.
-struct set_c {};
-template <
-    typename KeyTag,
-    template <typename...> typename SetT = detail::DefaultT>
-struct set : set_c {};
-
-// The map class of types.
-struct map_c {};
-template <
-    typename KeyTag,
-    typename ValTag,
-    template <typename...> typename MapT = detail::DefaultT>
-struct map : map_c {};
-
-// An adapted type.
-template <typename Adapter, typename Tag>
-struct adapted : Tag {};
-
-// A type mapped to a specific c++ type.
-//
-// The given type must be a 'drop in' replacement for the
-// native_type it is overriding.
-template <typename T, typename Tag>
-struct cpp_type : Tag {};
 
 // If a given type tag refers to concrete type and not a class of types.
 //
