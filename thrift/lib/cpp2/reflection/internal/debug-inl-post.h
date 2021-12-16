@@ -88,7 +88,8 @@ T const* debug_equals_get_pointer(T const& what) {
 }
 
 template <typename T>
-T const* debug_equals_get_pointer(boxed_value_ptr<T> const& what) {
+T const* debug_equals_get_pointer(
+    optional_boxed_field_ref<boxed_value_ptr<T> const&> what) {
   return what ? &*what : nullptr;
 }
 
@@ -350,8 +351,8 @@ struct debug_equals_with_pointers {
   template <typename TypeClass, typename Callback, typename U, typename T>
   static bool recurse_into(
       std::string& path,
-      boxed_value_ptr<T> const& lMember,
-      boxed_value_ptr<T> const& rMember,
+      optional_boxed_field_ref<boxed_value_ptr<T> const&> lMember,
+      optional_boxed_field_ref<boxed_value_ptr<T> const&> rMember,
       Callback&& callback,
       U const& lObject,
       U const& rObject) {
@@ -448,7 +449,9 @@ struct debug_equals_impl<type_class::variant> : debug_equals_with_pointers {
 
   template <typename Change, typename TC, typename T, typename Callback>
   static void visit_changed_field(
-      std::string& path, boxed_value_ptr<T> const& field, Callback&& callback) {
+      std::string& path,
+      optional_boxed_field_ref<boxed_value_ptr<T> const&> field,
+      Callback&& callback) {
     Change()(
         TC{},
         std::forward<Callback>(callback),

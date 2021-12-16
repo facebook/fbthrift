@@ -145,7 +145,8 @@ struct pretty_print_structure_with_pointers {
 
   template <typename TypeClass, typename OutputStream, typename T>
   static void recurse_into(
-      OutputStream& out, boxed_value_ptr<T> const& pMember) {
+      OutputStream& out,
+      optional_boxed_field_ref<boxed_value_ptr<T> const&> pMember) {
     return recurse_into_ptr<TypeClass>(out, pMember ? &*pMember : nullptr);
   }
 

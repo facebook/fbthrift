@@ -62,7 +62,8 @@ struct deref {
   using type = T;
 };
 template <typename T>
-struct deref<detail::boxed_value_ptr<T>> : deref<T> {};
+struct deref<optional_boxed_field_ref<T>>
+    : deref<typename folly::remove_cvref_t<T>::element_type> {};
 template <typename T, typename D>
 struct deref<std::unique_ptr<T, D>> : deref<T> {};
 template <typename T>

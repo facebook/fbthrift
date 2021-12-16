@@ -29,18 +29,20 @@ struct merge {
   static void go(T&& src, T& dst) { impl::template go<T>(std::move(src), dst); }
 
   static void go(
-      const detail::boxed_value_ptr<T>& src, detail::boxed_value_ptr<T>& dst) {
+      optional_boxed_field_ref<const detail::boxed_value_ptr<T>&> src,
+      optional_boxed_field_ref<detail::boxed_value_ptr<T>&> dst) {
     if (!dst) {
-      dst = src;
+      dst.copy_from(src);
     } else if (src) {
       go(*src, *dst);
     }
   }
 
   static void go(
-      detail::boxed_value_ptr<T>&& src, detail::boxed_value_ptr<T>& dst) {
+      optional_boxed_field_ref<detail::boxed_value_ptr<T>&&> src,
+      optional_boxed_field_ref<detail::boxed_value_ptr<T>&> dst) {
     if (!dst) {
-      dst = std::move(src);
+      dst.move_from(src);
     } else if (src) {
       go(std::move(*src), *dst);
       src.reset();
@@ -90,7 +92,8 @@ struct merge_impl<type_class::structure> {
     using type = T;
   };
   template <typename T>
-  struct deref<detail::boxed_value_ptr<T>> : deref<T> {};
+  struct deref<optional_boxed_field_ref<T>>
+      : deref<typename folly::remove_cvref_t<T>::element_type> {};
   template <typename T, typename D>
   struct deref<std::unique_ptr<T, D>> : deref<T> {};
   template <typename T>
@@ -107,7 +110,9 @@ struct merge_impl<type_class::structure> {
         fatal::indexed<MemberInfo, Index>, Src<T>& src, T& dst) const {
       using mgetter = typename MemberInfo::getter;
       using mclass = typename MemberInfo::type_class;
-      using mtype = folly::remove_cvref_t<decltype(mgetter{}(src))>;
+      using msrc = fatal::conditional<Move, Src<T>&&, const Src<T>&>;
+      using mtype =
+          folly::remove_cvref_t<decltype(mgetter{}(static_cast<msrc>(src)))>;
       using merge_field = merge<typename deref<mtype>::type, mclass>;
       using mref = fatal::conditional<Move, mtype&&, const mtype&>;
       if (MemberInfo::optional::value == optionality::optional &&
@@ -115,7 +120,8 @@ struct merge_impl<type_class::structure> {
         return;
       }
       MemberInfo::mark_set(dst, true);
-      merge_field::go(static_cast<mref>(mgetter{}(src)), mgetter{}(dst));
+      merge_field::go(
+          static_cast<mref>(mgetter{}(static_cast<msrc>(src))), mgetter{}(dst));
     }
   };
   template <typename T>

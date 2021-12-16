@@ -54,7 +54,7 @@ struct recurse_helper {
   template <typename TC, typename T>
   static void to(
       folly::dynamic& out,
-      boxed_value_ptr<T> const& input,
+      optional_boxed_field_ref<boxed_value_ptr<T> const&> input,
       dynamic_format format) {
     if (!input) {
       out = nullptr;
@@ -65,7 +65,7 @@ struct recurse_helper {
 
   template <typename TC, typename T>
   static void from(
-      boxed_value_ptr<T>& out,
+      optional_boxed_field_ref<boxed_value_ptr<T>&> out,
       folly::dynamic const& input,
       dynamic_format format,
       format_adherence adherence) {
@@ -74,9 +74,7 @@ struct recurse_helper {
       return;
     }
 
-    boxed_value_ptr<T> temp;
-    dynamic_converter_impl<TC>::from(temp.emplace(), input, format, adherence);
-    out = std::move(temp);
+    dynamic_converter_impl<TC>::from(out.emplace(), input, format, adherence);
   }
 
   template <typename TC, typename T>
