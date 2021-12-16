@@ -16,6 +16,8 @@
 
 // IWYU pragma: private, include "thrift/lib/cpp2/frozen/Frozen.h"
 
+#include <thrift/lib/cpp2/FieldRef.h>
+
 namespace apache {
 namespace thrift {
 namespace frozen {
@@ -25,6 +27,11 @@ struct Block {
   uint64_t mask = 0;
   size_t offset = 0;
   static constexpr size_t bits = 64;
+
+  auto mask_ref() { return required_field_ref<uint64_t&>{mask}; }
+  auto mask_ref() const { return required_field_ref<const uint64_t&>{mask}; }
+  auto offset_ref() { return required_field_ref<size_t&>{offset}; }
+  auto offset_ref() const { return required_field_ref<const size_t&>{offset}; }
 };
 
 struct BlockLayout : public LayoutBase {

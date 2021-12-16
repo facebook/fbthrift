@@ -99,7 +99,7 @@
 #define FROZEN_LAYOUT_FIELD_OPT(NAME) \
   pos = root.layoutOptionalField(self, pos, this->NAME##Field, x.NAME##_ref());
 #define FROZEN_LAYOUT_FIELD_REQ(NAME) \
-  pos = root.layoutField(self, pos, this->NAME##Field, x.NAME);
+  pos = root.layoutField(self, pos, this->NAME##Field, *x.NAME##_ref());
 #define FROZEN_LAYOUT_FIELD_REF(NAME) \
   pos = root.layoutField(self, pos, this->NAME##Field, x.NAME##_ref());
 #define FROZEN_LAYOUT(TYPE, ...)                \
@@ -117,7 +117,7 @@
 #define FROZEN_FREEZE_FIELD_OPT(NAME) \
   root.freezeOptionalField(self, this->NAME##Field, x.NAME##_ref());
 #define FROZEN_FREEZE_FIELD_REQ(NAME) \
-  root.freezeField(self, this->NAME##Field, x.NAME);
+  root.freezeField(self, this->NAME##Field, *x.NAME##_ref());
 #define FROZEN_FREEZE_FIELD_REF(NAME) \
   root.freezeField(self, this->NAME##Field, x.NAME##_ref());
 
@@ -137,7 +137,7 @@
 #define FROZEN_THAW_FIELD_OPT(NAME) \
   thawField(self, this->NAME##Field, out.NAME##_ref());
 #define FROZEN_THAW_FIELD_REQ(NAME) \
-  thawField(self, this->NAME##Field, out.NAME);
+  thawField(self, this->NAME##Field, *out.NAME##_ref());
 #define FROZEN_THAW_FIELD_REF(NAME) \
   thawField(self, this->NAME##Field, out.NAME##_ref());
 
