@@ -2909,8 +2909,18 @@ void t_hack_generator::generate_php_union_methods(
   indent(out) << "public function getType()[]: " << enumName << " {\n";
   indent(out) << indent() << "return $this->_type;\n";
   indent(out) << "}\n\n";
-
-  out << indent() << "public function reset()[write_props]: void {\n";
+  bool has_field_with_structured_adapter_annotation = false;
+  for (const auto& field : tstruct->fields()) {
+    const auto* adapter_annotation_with_generic_type =
+        find_structured_adapter_annotation_with_generic_type(field);
+    if (adapter_annotation_with_generic_type) {
+      has_field_with_structured_adapter_annotation = true;
+      break;
+    }
+  }
+  out << indent() << "public function reset()"
+      << (has_field_with_structured_adapter_annotation ? "" : "[write_props]")
+      << ": void {\n";
   indent_up();
   out << indent() << "switch ($this->_type) {\n";
   indent_up();
@@ -2952,7 +2962,7 @@ void t_hack_generator::generate_php_union_methods(
           field_to_typehint(field, /* is_field_nullable*/ true);
       // getWrapped_<fieldName>()
       indent(out) << "public function getWrapped_" << fieldName
-                  << "()[]: " << field_typehint << " {\n";
+                  << "(): " << field_typehint << " {\n";
       indent_up();
       indent(out) << "return $this->" << fieldName << " as nonnull;\n";
       indent_down();
@@ -2960,8 +2970,7 @@ void t_hack_generator::generate_php_union_methods(
 
       // setWrapped_<fieldName>()
       indent(out) << "public function setWrapped_" << fieldName << "("
-                  << field_typehint << " $" << fieldName
-                  << ")[write_props]: this {\n";
+                  << field_typehint << " $" << fieldName << "): this {\n";
       indent_up();
       indent(out) << "$this->reset();\n";
       indent(out) << "$this->_type = " << enumName << "::" << fieldName
@@ -2976,7 +2985,11 @@ void t_hack_generator::generate_php_union_methods(
 
     // set_<fieldName>()
     indent(out) << "public function set_" << fieldName << "(" << typehint
-                << " $" << fieldName << ")[write_props]: this {\n";
+                << " $" << fieldName << ")"
+                << (has_field_with_structured_adapter_annotation
+                        ? ""
+                        : "[write_props]")
+                << ": this {\n";
     indent_up();
     indent(out) << "$this->reset();\n";
     indent(out) << "$this->_type = " << enumName << "::" << fieldName << ";\n";
@@ -2993,15 +3006,24 @@ void t_hack_generator::generate_php_union_methods(
     indent_down();
     indent(out) << "}\n\n";
 
-    indent(out) << "public function get_" << fieldName << "()[]: ?" << typehint
-                << " {\n";
+    indent(out) << "public function get_" << fieldName << "()"
+                << (has_field_with_structured_adapter_annotation ? "" : "[]")
+                << ": ?" << typehint << " {\n";
     indent_up();
-    indent(out) << "return $this->" << fieldName << ";\n";
+    if (adapter_annotation_with_generic_type) {
+      const auto* adapter_name = get_structured_adapter_annotation_name(
+          adapter_annotation_with_generic_type);
+      indent(out) << "return " << *adapter_name << "::toThrift<?" << typehint
+                  << ">($this->" << fieldName << " as nonnull);\n";
+    } else {
+      indent(out) << "return $this->" << fieldName << ";\n";
+    }
     indent_down();
     indent(out) << "}\n\n";
 
-    indent(out) << "public function getx_" << fieldName << "()[]: " << typehint
-                << " {\n";
+    indent(out) << "public function getx_" << fieldName << "()"
+                << (has_field_with_structured_adapter_annotation ? "" : "[]")
+                << ": " << typehint << " {\n";
     indent_up();
     indent(out) << "invariant(\n";
     indent_up();
@@ -3143,7 +3165,7 @@ void t_hack_generator::generate_php_field_adapter_methods(
 
   // getWrapped_<fieldName>()
   indent(out) << "public function getWrapped_" << fieldName
-              << "()[]: " << field_typehint << " {\n";
+              << "(): " << field_typehint << " {\n";
   indent_up();
   indent(out) << "return $this->" << fieldName << " as nonnull;\n";
   indent_down();
@@ -3151,7 +3173,7 @@ void t_hack_generator::generate_php_field_adapter_methods(
 
   // setWrapped_<fieldName>()
   indent(out) << "public function setWrapped_" << fieldName << "("
-              << field_typehint << " $" << fieldName << ")[write_props]: void"
+              << field_typehint << " $" << fieldName << "): void"
               << " {\n";
   indent_up();
 
@@ -3161,7 +3183,7 @@ void t_hack_generator::generate_php_field_adapter_methods(
   indent(out) << "}\n\n";
 
   // get_<fieldName>()
-  indent(out) << "public function get_" << fieldName << "()[]: " << typehint
+  indent(out) << "public function get_" << fieldName << "(): " << typehint
               << " {\n";
   indent_up();
   indent(out) << "return " << *adapter_name << "::toThrift<" << typehint
@@ -3171,7 +3193,7 @@ void t_hack_generator::generate_php_field_adapter_methods(
 
   // set_<fieldName>()
   indent(out) << "public function set_" << fieldName << "(" << typehint << " $"
-              << fieldName << ")[write_props]: void"
+              << fieldName << "): void"
               << " {\n";
   indent_up();
 
