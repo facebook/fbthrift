@@ -318,6 +318,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
 
   friend class Cpp2Connection;
   friend class rocket::ThriftRocketServerHandler;
+  friend class HTTP2RoutingHandler;
 
   /**
    * Platform-independent representation of unix domain socket peer credentials,

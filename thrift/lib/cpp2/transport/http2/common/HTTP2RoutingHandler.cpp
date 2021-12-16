@@ -25,6 +25,7 @@
 #include <proxygen/lib/http/session/HTTPDownstreamSession.h>
 #include <proxygen/lib/http/session/HTTPSession.h>
 #include <proxygen/lib/http/session/SimpleController.h>
+#include <thrift/lib/cpp2/server/LoggingEventHelper.h>
 #include <thrift/lib/cpp2/transport/http2/server/ThriftRequestHandler.h>
 #include <wangle/acceptor/ManagedConnection.h>
 
@@ -163,6 +164,20 @@ void HTTP2RoutingHandler::handleConnection(
     folly::SocketAddress const* peerAddress,
     wangle::TransportInfo const& tinfo,
     std::shared_ptr<Cpp2Worker> worker) {
+  {
+    folly::once_flag logConnectionOnce;
+    Cpp2ConnContext connContext(
+        peerAddress,
+        sock.get(),
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        worker.get());
+    connContext.setTransportType(Cpp2ConnContext::TransportType::HTTP2);
+    logSetupConnectionEventsOnce(logConnectionOnce, connContext);
+  }
+
   // Create the DownstreamSession manager.
   auto sessionManager = new HTTP2RoutingSessionManager(
       processor_, serverConfigs_, std::move(worker));
