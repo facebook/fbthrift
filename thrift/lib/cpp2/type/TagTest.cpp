@@ -25,41 +25,44 @@
 
 namespace apache::thrift::type {
 
-struct General;
-struct Specialized;
+integral_c testOverload(const integral_c&);
+floating_point_c testOverload(const floating_point_c&);
+enum_c testOverload(const enum_c&);
+struct_except_c testOverload(const struct_except_c&);
+struct_c testOverload(const struct_c&);
+union_c testOverload(const union_c&);
+// Intentionally omitted.
+// exception_c testOverload(const exception_c&);
+list_c testOverload(const list_c&);
+set_c testOverload(const set_c&);
+map_c testOverload(const map_c&);
 
 void_t testOverload(const void_t&);
-bool_t testOverload(const bool_t&);
+
+// Intentionally omitted.
+// bool_t testOverload(const bool_t&);
 byte_t testOverload(const byte_t&);
-i16_t testOverload(const i16_t&);
+// Intentionally omitted.
+// i16_t testOverload(const i16_t&);
 i32_t testOverload(const i32_t&);
 i64_t testOverload(const i64_t&);
-float_t testOverload(const float_t&);
+// Intentionally omitted.
+// float_t testOverload(const float_t&);
 double_t testOverload(const double_t&);
 string_t testOverload(const string_t&);
 binary_t testOverload(const binary_t&);
 
-enum_c testOverload(const enum_c&);
+struct General;
+struct Specialized;
 enum_t<Specialized> testOverload(const enum_t<Specialized>&);
-
-struct_c testOverload(const struct_c&);
 struct_t<Specialized> testOverload(const struct_t<Specialized>&);
-
-union_c testOverload(const union_c&);
 union_t<Specialized> testOverload(const union_t<Specialized>&);
-
-exception_c testOverload(const exception_c&);
 exception_t<Specialized> testOverload(const exception_t<Specialized>&);
 
-list_c testOverload(const list_c&);
 template <template <typename...> typename ListT>
 list<Specialized, ListT> testOverload(const list<Specialized, ListT>&);
-
-set_c testOverload(const set_c&);
 set<Specialized, std::unordered_set> testOverload(
     const set<Specialized, std::unordered_set>&);
-
-map_c testOverload(const map_c&);
 map<Specialized, Specialized> testOverload(
     const map<Specialized, Specialized>&);
 
@@ -71,12 +74,12 @@ using test::TestTemplate;
 // Test that type tags can be used to find an overload in ~constant time
 // by the compiler.
 static_assert(same_tag<void_t, decltype(testOverload(void_t{}))>);
-static_assert(same_tag<bool_t, decltype(testOverload(bool_t{}))>);
+static_assert(same_tag<integral_c, decltype(testOverload(bool_t{}))>);
 static_assert(same_tag<byte_t, decltype(testOverload(byte_t{}))>);
-static_assert(same_tag<i16_t, decltype(testOverload(i16_t{}))>);
+static_assert(same_tag<integral_c, decltype(testOverload(i16_t{}))>);
 static_assert(same_tag<i32_t, decltype(testOverload(i32_t{}))>);
 static_assert(same_tag<i64_t, decltype(testOverload(i64_t{}))>);
-static_assert(same_tag<float_t, decltype(testOverload(float_t{}))>);
+static_assert(same_tag<floating_point_c, decltype(testOverload(float_t{}))>);
 static_assert(same_tag<double_t, decltype(testOverload(double_t{}))>);
 static_assert(same_tag<string_t, decltype(testOverload(string_t{}))>);
 static_assert(same_tag<binary_t, decltype(testOverload(binary_t{}))>);
@@ -99,9 +102,9 @@ static_assert(same_tag<
               union_t<Specialized>,
               decltype(testOverload(union_t<Specialized>{}))>);
 
-static_assert(same_tag<exception_c, decltype(testOverload(exception_c{}))>);
+static_assert(same_tag<struct_except_c, decltype(testOverload(exception_c{}))>);
 static_assert(
-    same_tag<exception_c, decltype(testOverload(exception_t<General>{}))>);
+    same_tag<struct_except_c, decltype(testOverload(exception_t<General>{}))>);
 static_assert(same_tag<
               exception_t<Specialized>,
               decltype(testOverload(exception_t<Specialized>{}))>);

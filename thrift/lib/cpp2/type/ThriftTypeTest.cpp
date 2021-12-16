@@ -38,7 +38,10 @@ static_assert(!is_concrete_v<int>);
 static_assert(!is_concrete_v<evil_c>);
 static_assert(!is_concrete_v<evil_t>);
 
+static_assert(!is_concrete_v<integral_c>);
+static_assert(!is_concrete_v<floating_point_c>);
 static_assert(!is_concrete_v<enum_c>);
+static_assert(!is_concrete_v<struct_except_c>);
 static_assert(!is_concrete_v<struct_c>);
 static_assert(!is_concrete_v<union_c>);
 static_assert(!is_concrete_v<exception_c>);
@@ -89,7 +92,10 @@ static_assert(!is_thrift_type_tag_v<int>);
 static_assert(!is_thrift_type_tag_v<evil_c>);
 static_assert(!is_thrift_type_tag_v<evil_t>);
 
+static_assert(is_thrift_type_tag_v<integral_c>);
+static_assert(is_thrift_type_tag_v<floating_point_c>);
 static_assert(is_thrift_type_tag_v<enum_c>);
+static_assert(is_thrift_type_tag_v<struct_except_c>);
 static_assert(is_thrift_type_tag_v<struct_c>);
 static_assert(is_thrift_type_tag_v<union_c>);
 static_assert(is_thrift_type_tag_v<exception_c>);
@@ -139,7 +145,10 @@ static_assert(!is_not_concrete_v<int>);
 static_assert(!is_not_concrete_v<evil_c>);
 static_assert(!is_not_concrete_v<evil_t>);
 
+static_assert(is_not_concrete_v<integral_c>);
+static_assert(is_not_concrete_v<floating_point_c>);
 static_assert(is_not_concrete_v<enum_c>);
+static_assert(is_not_concrete_v<struct_except_c>);
 static_assert(is_not_concrete_v<struct_c>);
 static_assert(is_not_concrete_v<union_c>);
 static_assert(is_not_concrete_v<exception_c>);

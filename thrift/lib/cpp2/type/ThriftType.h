@@ -141,7 +141,13 @@ template <typename T, typename Tag>
 struct is_concrete<cpp_type<T, Tag>> : is_concrete<Tag> {};
 
 template <>
+struct is_thrift_type_tag<integral_c> : std::true_type {};
+template <>
+struct is_thrift_type_tag<floating_point_c> : std::true_type {};
+template <>
 struct is_thrift_type_tag<enum_c> : std::true_type {};
+template <>
+struct is_thrift_type_tag<struct_except_c> : std::true_type {};
 template <>
 struct is_thrift_type_tag<struct_c> : std::true_type {};
 template <>
