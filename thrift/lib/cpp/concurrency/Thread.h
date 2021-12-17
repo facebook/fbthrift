@@ -17,6 +17,7 @@
 #ifndef _THRIFT_CONCURRENCY_THREAD_H_
 #define _THRIFT_CONCURRENCY_THREAD_H_ 1
 
+#include <chrono>
 #include <cstdint>
 #include <memory>
 
@@ -40,7 +41,7 @@ class Runnable {
    * Gets the thread object that is hosting this runnable object  - can return
    * an empty std::shared pointer if no references remain on the thread object
    */
-  virtual std::shared_ptr<Thread> thread() { return thread_.lock(); }
+  virtual std::shared_ptr<Thread> thread() const { return thread_.lock(); }
 
   /**
    * Sets the thread that is executing this object.  This is only meant for
@@ -104,6 +105,14 @@ class Thread {
    * Returns true on success.
    */
   virtual bool setName(const std::string& /*name*/) { return false; }
+
+  /**
+   * Returns the CPU time consumed by the thread. Requires support for
+   * thread-specific clocks. Returns 0 if not supported.
+   */
+  virtual std::chrono::nanoseconds usedCpuTime() const {
+    return std::chrono::nanoseconds(0);
+  }
 
  protected:
   virtual void runnable(std::shared_ptr<Runnable> value) { _runnable = value; }

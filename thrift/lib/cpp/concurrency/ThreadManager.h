@@ -273,6 +273,14 @@ class ThreadManager : public virtual folly::Executor {
     LOG(FATAL) << "Method not implemented";
   }
 
+  /**
+   * Returns the cpu time used by this thread pool. Requires support for
+   * thread-specific clocks.
+   */
+  virtual std::chrono::nanoseconds getUsedCpuTime() const {
+    return std::chrono::nanoseconds(0);
+  }
+
   virtual void enableCodel(bool) = 0;
 
   virtual folly::Codel* getCodel() = 0;
@@ -509,6 +517,7 @@ class SimpleThreadManager : public ThreadManager,
   void setCodelCallback(ExpireCallback expireCallback) override;
   void setThreadInitCallback(InitCallback initCallback) override;
   void addTaskObserver(std::shared_ptr<Observer> observer) override;
+  std::chrono::nanoseconds getUsedCpuTime() const override;
 
   [[nodiscard]] KeepAlive<> getKeepAlive(
       ExecutionScope es, Source source) const override;

@@ -44,7 +44,9 @@ class InitRunnable : public Runnable {
     runnable_->run();
   }
 
-  std::shared_ptr<Thread> thread() override { return runnable_->thread(); }
+  std::shared_ptr<Thread> thread() const override {
+    return runnable_->thread();
+  }
 
   void thread(std::shared_ptr<Thread> value) override {
     runnable_->thread(value);

@@ -109,12 +109,7 @@ class TEventJobQueue {
       apache::thrift::concurrency::Runnable::thread(value);
     }
 
-    /**
-     * Only overridden because the other thread() is overridden.
-     */
-    std::shared_ptr<apache::thrift::concurrency::Thread> thread() override {
-      return apache::thrift::concurrency::Runnable::thread();
-    }
+    using apache::thrift::concurrency::Runnable::thread;
 
    private:
     folly::EventBase eventBase_;

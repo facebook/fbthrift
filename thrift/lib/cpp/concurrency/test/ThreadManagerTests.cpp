@@ -16,6 +16,7 @@
 
 #include <chrono>
 #include <condition_variable>
+#include <ctime>
 #include <deque>
 #include <memory>
 #include <mutex>
@@ -27,9 +28,11 @@
 #include <folly/executors/Codel.h>
 #include <folly/lang/Keep.h>
 #include <folly/portability/GTest.h>
+#include <folly/portability/PThread.h>
 #include <folly/portability/SysResource.h>
 #include <folly/portability/SysTime.h>
 #include <folly/synchronization/Baton.h>
+#include <folly/synchronization/Latch.h>
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
@@ -983,3 +986,171 @@ TEST_F(TMThreadIDCollectorTest, CollectIDBlocksThreadExitTest) {
   EXPECT_EQ(tm->workerCount(), 2);
   tm->join();
 }
+
+//
+// =============================================================================
+// This section validates the cpu time accounting logic in ThreadManager. It
+// requires thread-specific clocks, so only Linux is supported at this time.
+// =============================================================================
+//
+#ifdef __linux__
+
+// Like ASSERT_NEAR, but for chrono duration types
+#define ASSERT_NEAR_NS(a, b, c)  \
+  do {                           \
+    ASSERT_NEAR(                 \
+        nanoseconds(a).count(),  \
+        nanoseconds(b).count(),  \
+        nanoseconds(c).count()); \
+  } while (0)
+
+static std::chrono::nanoseconds thread_clock_now() {
+  timespec tp;
+  clockid_t clockid;
+  CHECK(!pthread_getcpuclockid(pthread_self(), &clockid));
+  CHECK(!clock_gettime(clockid, &tp));
+  return std::chrono::nanoseconds(tp.tv_nsec) + std::chrono::seconds(tp.tv_sec);
+}
+
+// Burn thread cpu cycles
+static void burn(std::chrono::milliseconds ms) {
+  auto expires = thread_clock_now() + ms;
+  while (thread_clock_now() < expires) {
+  }
+}
+
+// Loop without using much cpu time
+static void idle(std::chrono::milliseconds ms) {
+  using clock = std::chrono::high_resolution_clock;
+  auto expires = clock::now() + ms;
+  while (clock::now() < expires) {
+    /* sleep override */
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+  }
+}
+
+TEST_F(ThreadManagerTest, UsedCpuTime_Simple) {
+  using namespace std::chrono;
+  auto tm = ThreadManager::newSimpleThreadManager(3);
+  tm->start();
+
+  const auto t0 = tm->getUsedCpuTime();
+
+  // Schedule 3 threads: two doing busy work, 1 idling
+  {
+    folly::Latch latch(3);
+    tm->add([&] { // + 500ms cpu time
+      burn(500ms);
+      latch.count_down();
+    });
+    tm->add([&] { // + 300ms cpu time
+      burn(300ms);
+      latch.count_down();
+    });
+    tm->add([&] { // + ~0ms cpu time
+      idle(500ms);
+      latch.count_down();
+    });
+    latch.wait();
+    ASSERT_EQ(tm->workerCount(), 3);
+    ASSERT_NEAR_NS(tm->getUsedCpuTime() - t0, 800ms, 20ms); // = 800ms ± 20ms
+  }
+
+  // Remove one thread, cpu time should not change
+  {
+    tm->removeWorker(1);
+    ASSERT_EQ(tm->workerCount(), 2);
+    ASSERT_NEAR_NS(tm->getUsedCpuTime() - t0, 800ms, 20ms); // = 800ms ± 20ms
+  }
+
+  // Do a bit more work, cpu time should add to previous value
+  {
+    folly::Latch latch(1);
+    tm->add([&] { // + 200ms cpu time
+      burn(200ms);
+      latch.count_down();
+    });
+    latch.wait();
+    ASSERT_NEAR_NS(tm->getUsedCpuTime() - t0, 1s, 20ms); // = 1s ± 20ms
+  }
+
+  // Remove all threads, cpu time should be preserved
+  {
+    tm->removeWorker(2);
+    ASSERT_EQ(tm->workerCount(), 0);
+    ASSERT_NEAR_NS(tm->getUsedCpuTime() - t0, 1s, 20ms); // = 1s ± 20ms
+  }
+}
+
+TEST_F(ThreadManagerTest, UsedCpuTime_Priority) {
+  using namespace std::chrono;
+  auto tm = PriorityThreadManager::newPriorityThreadManager({{
+      1 /*HIGH_IMPORTANT*/,
+      1 /*HIGH*/,
+      1 /*IMPORTANT*/,
+      1 /*NORMAL*/,
+      1 /*BEST_EFFORT*/
+  }});
+  tm->start();
+
+  const auto t0 = tm->getUsedCpuTime();
+
+  auto runner = [](std::function<void()>&& fn) {
+    return FunctionRunner::create(std::move(fn));
+  };
+
+  // Schedule 3 threads: 2 doing busy work, 1 idling
+  folly::Latch latch(3);
+  tm->add(HIGH, runner([&] {
+            burn(500ms);
+            latch.count_down();
+          })); // + 500ms cpu time
+  tm->add(NORMAL, runner([&] {
+            burn(300ms);
+            latch.count_down();
+          })); // + 300ms cpu time
+  tm->add(BEST_EFFORT, runner([&] {
+            idle(500ms);
+            latch.count_down();
+          })); // + 0ms cpu time
+  latch.wait();
+  ASSERT_NEAR_NS(tm->getUsedCpuTime() - t0, 800ms, 20ms); // = 800ms ± 20ms
+
+  // Removing a thread should preserve cpu time
+  tm->removeWorker(NORMAL, 1);
+  ASSERT_EQ(tm->workerCount(NORMAL), 0);
+  ASSERT_NEAR_NS(tm->getUsedCpuTime() - t0, 800ms, 20ms); // = 800ms ± 20ms
+}
+
+#else //  __linux__
+
+//
+// On other platforms, just make sure getUsedCpuTime() does not crash and
+// returns 0.
+//
+
+TEST_F(ThreadManagerTest, UsedCpuTime) {
+  using namespace std::chrono;
+
+  auto tm = ThreadManager::newSimpleThreadManager(3);
+  tm->start();
+
+  ASSERT_EQ(tm->getUsedCpuTime().count(), 0);
+
+  auto burn = [](milliseconds ms) {
+    auto expires = steady_clock::now() + ms;
+    while (steady_clock::now() < expires) {
+    }
+  };
+
+  folly::Latch latch(1);
+  tm->add([&] {
+    burn(500ms);
+    latch.count_down();
+  });
+  latch.wait();
+
+  ASSERT_EQ(tm->getUsedCpuTime().count(), 0);
+}
+
+#endif // __linux__

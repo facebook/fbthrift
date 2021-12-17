@@ -32,6 +32,7 @@
 #include <folly/DefaultKeepAliveExecutor.h>
 #include <folly/ExceptionString.h>
 #include <folly/GLog.h>
+#include <folly/IntrusiveList.h>
 #include <folly/Synchronized.h>
 #include <folly/ThreadLocal.h>
 #include <folly/VirtualExecutor.h>
@@ -246,6 +247,9 @@ class ThreadManager::Task {
 
 class ThreadManager::Impl : public ThreadManager,
                             public folly::DefaultKeepAliveExecutor {
+  class WorkerBaseHook
+      : public boost::intrusive::list_base_hook<
+            boost::intrusive::link_mode<boost::intrusive::auto_unlink>> {};
   class Worker;
 
  public:
@@ -372,6 +376,8 @@ class ThreadManager::Impl : public ThreadManager,
 
   void addTaskObserver(std::shared_ptr<Observer> observer) override;
 
+  std::chrono::nanoseconds getUsedCpuTime() const override;
+
  protected:
   void add(
       size_t priority,
@@ -429,6 +435,12 @@ class ThreadManager::Impl : public ThreadManager,
   // deadWorkerCond_ is signaled whenever a worker thread exits
   std::condition_variable deadWorkerCond_;
   std::deque<std::shared_ptr<Thread>> deadWorkers_;
+  std::chrono::nanoseconds deadWorkersCpuTime_{0};
+
+  // workers that are live and well
+  boost::intrusive::
+      list<WorkerBaseHook, boost::intrusive::constant_time_size<false>>
+          liveWorkers_;
 
   folly::ThreadLocal<bool> isThreadManagerThread_{
       [] { return new bool(false); }};
@@ -585,12 +597,16 @@ void SimpleThreadManager::addTaskObserver(
   impl_->addTaskObserver(std::move(observer));
 }
 
+std::chrono::nanoseconds SimpleThreadManager::getUsedCpuTime() const {
+  return impl_->getUsedCpuTime();
+}
+
 folly::Executor::KeepAlive<> SimpleThreadManager::getKeepAlive(
     ExecutionScope es, Source source) const {
   return impl_->getKeepAlive(std::move(es), source);
 }
 
-class ThreadManager::Impl::Worker : public Runnable {
+class ThreadManager::Impl::Worker : public Runnable, public WorkerBaseHook {
  public:
   Worker(ThreadManager::Impl* manager) : manager_(manager) {}
 
@@ -718,6 +734,7 @@ void ThreadManager::Impl::workerStarted(Worker* worker) {
       thread->setName(
           folly::to<std::string>(namePrefix_, "-", ++namePrefixCounter_));
     }
+    liveWorkers_.push_back(*worker);
   }
 
   if (initCallback) {
@@ -734,6 +751,8 @@ void ThreadManager::Impl::workerExiting(Worker* worker) {
   --totalTaskCount_;
   deadWorkers_.push_back(thread);
   deadWorkerCond_.notify_one();
+  deadWorkersCpuTime_ += thread->usedCpuTime();
+  worker->unlink(); // unlink from liveWorkers_ list
 }
 
 void ThreadManager::Impl::start() {
@@ -1314,6 +1333,14 @@ class PriorityThreadManager::PriorityImpl
     return managers_[priority]->getCodel();
   }
 
+  std::chrono::nanoseconds getUsedCpuTime() const override {
+    std::chrono::nanoseconds acc{0};
+    for (auto& m : managers_) {
+      acc += m->getUsedCpuTime();
+    }
+    return acc;
+  }
+
  private:
   void joinKeepAliveOnce() {
     if (!std::exchange(keepAliveJoined_, true)) {
@@ -1644,6 +1671,16 @@ void ThreadManager::setGlobalObserver(
 void ThreadManager::Impl::addTaskObserver(
     std::shared_ptr<ThreadManager::Observer> observer) {
   taskObservers_.push_back(std::move(observer));
+}
+
+std::chrono::nanoseconds ThreadManager::Impl::getUsedCpuTime() const {
+  std::unique_lock<std::mutex> l(mutex_);
+  auto acc = deadWorkersCpuTime_;
+  for (auto const& workerBase : liveWorkers_) {
+    auto const& w = static_cast<const Worker&>(workerBase);
+    acc += w.thread()->usedCpuTime();
+  }
+  return acc;
 }
 
 std::shared_ptr<ThreadManager> ThreadManager::newSimpleThreadManager(

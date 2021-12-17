@@ -17,6 +17,7 @@
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 
 #include <cassert>
+#include <ctime>
 #include <iostream>
 
 #include <glog/logging.h>
@@ -163,6 +164,17 @@ bool PthreadThread::setName(const std::string& name) {
   std::unique_lock<std::mutex> g(stateLock_);
   name_ = name;
   return updateName();
+}
+
+std::chrono::nanoseconds PthreadThread::usedCpuTime() const {
+  timespec tp{};
+#ifdef __linux__
+  clockid_t clockid;
+  if (!pthread_getcpuclockid(pthread_, &clockid)) {
+    clock_gettime(clockid, &tp);
+  }
+#endif
+  return std::chrono::nanoseconds(tp.tv_nsec) + std::chrono::seconds(tp.tv_sec);
 }
 
 void* PthreadThread::threadMain(void* arg) {

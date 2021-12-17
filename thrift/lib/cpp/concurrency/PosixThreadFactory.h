@@ -71,6 +71,7 @@ class PthreadThread : public Thread {
   void runnable(std::shared_ptr<Runnable> value) override;
   void weakRef(std::shared_ptr<PthreadThread> self);
   bool setName(const std::string& name) override;
+  std::chrono::nanoseconds usedCpuTime() const override;
 };
 
 /**
