@@ -32,6 +32,8 @@
 
 THRIFT_FLAG_DEFINE_bool(server_rocket_upgrade_enabled, false);
 THRIFT_FLAG_DEFINE_bool(server_header_reject_http, true);
+THRIFT_FLAG_DEFINE_bool(server_header_reject_framed, false);
+THRIFT_FLAG_DEFINE_bool(server_header_reject_unframed, false);
 
 THRIFT_FLAG_DEFINE_int64(monitoring_over_header_logging_sample_rate, 1'000'000);
 
@@ -355,6 +357,19 @@ void Cpp2Connection::requestReceived(
        hreq->getHeader()->getClientType() == THRIFT_HTTP_CLIENT_TYPE ||
        hreq->getHeader()->getClientType() == THRIFT_HTTP_GET_CLIENT_TYPE)) {
     disconnect("Rejecting HTTP connection over Header");
+    return;
+  }
+  if (THRIFT_FLAG(server_header_reject_framed) &&
+      (hreq->getHeader()->getClientType() == THRIFT_FRAMED_DEPRECATED ||
+       hreq->getHeader()->getClientType() == THRIFT_FRAMED_COMPACT)) {
+    disconnect("Rejecting framed connection over Header");
+    return;
+  }
+  if (THRIFT_FLAG(server_header_reject_unframed) &&
+      (hreq->getHeader()->getClientType() == THRIFT_UNFRAMED_DEPRECATED ||
+       hreq->getHeader()->getClientType() ==
+           THRIFT_UNFRAMED_COMPACT_DEPRECATED)) {
+    disconnect("Rejecting unframed connection over Header");
     return;
   }
 

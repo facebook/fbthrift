@@ -33,6 +33,8 @@
 
 THRIFT_FLAG_DEFINE_bool(raw_client_rocket_upgrade_enabled_v2, true);
 THRIFT_FLAG_DEFINE_int64(raw_client_rocket_upgrade_timeout_ms, 2000);
+THRIFT_FLAG_DEFINE_bool(client_header_coerce_framed_to_header, true);
+THRIFT_FLAG_DEFINE_bool(client_header_coerce_unframed_to_header, true);
 
 using folly::IOBuf;
 using folly::IOBufQueue;
@@ -74,6 +76,28 @@ std::unique_ptr<folly::AsyncTransport, ReleasableDestructor> toReleasable(
   return std::unique_ptr<folly::AsyncTransport, ReleasableDestructor>(
       transport.release());
 }
+
+HeaderClientChannel::Options& processOptions(
+    HeaderClientChannel::Options& options) {
+  if (THRIFT_FLAG(client_header_coerce_framed_to_header) &&
+      (options.clientType == THRIFT_FRAMED_DEPRECATED ||
+       options.clientType == THRIFT_FRAMED_COMPACT)) {
+    options.protocolId = options.clientType == THRIFT_FRAMED_COMPACT
+        ? T_COMPACT_PROTOCOL
+        : T_BINARY_PROTOCOL;
+    options.clientType = THRIFT_HEADER_CLIENT_TYPE;
+  }
+  if (THRIFT_FLAG(client_header_coerce_unframed_to_header) &&
+      (options.clientType == THRIFT_UNFRAMED_DEPRECATED ||
+       options.clientType == THRIFT_UNFRAMED_COMPACT_DEPRECATED)) {
+    options.protocolId =
+        options.clientType == THRIFT_UNFRAMED_COMPACT_DEPRECATED
+        ? T_COMPACT_PROTOCOL
+        : T_BINARY_PROTOCOL;
+    options.clientType = THRIFT_HEADER_CLIENT_TYPE;
+  }
+  return options;
+}
 } // namespace
 
 template class ChannelCallbacks::TwowayCallback<HeaderClientChannel>;
@@ -88,7 +112,7 @@ HeaderClientChannel::HeaderClientChannel(
 
 HeaderClientChannel::HeaderClientChannel(
     std::shared_ptr<Cpp2Channel> cpp2Channel, Options options)
-    : clientType_(options.clientType),
+    : clientType_(processOptions(options).clientType),
       sendSeqId_(0),
       closeCallback_(nullptr),
       timeout_(0),
