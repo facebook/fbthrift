@@ -72,23 +72,23 @@ namespace test_cpp2 {
 namespace simple_cpp_reflection {
 
 void init_struct_1(struct1& a) {
-  a.field0 = 10;
+  *a.field0_ref() = 10;
   a.field1_ref() = "this is a string";
   a.field2_ref() = enum1::field1;
-  a.field3 = {{1, 2, 3}, {4, 5, 6, 7}};
-  a.field4 = {1, 1, 2, 3, 4, 10, 4, 6};
-  a.field5 = {{42, "<answer>"}, {55, "schwifty five"}};
-  a.field6.nfield00_ref() = 5.678;
-  a.field6.nfield01_ref() = 0x42;
+  *a.field3_ref() = {{1, 2, 3}, {4, 5, 6, 7}};
+  *a.field4_ref() = {1, 1, 2, 3, 4, 10, 4, 6};
+  *a.field5_ref() = {{42, "<answer>"}, {55, "schwifty five"}};
+  a.field6_ref()->nfield00_ref() = 5.678;
+  a.field6_ref()->nfield01_ref() = 0x42;
   *a.field7_ref() = 0xCAFEBABEA4DAFACE;
   *a.field8_ref() = "this field isn't set";
 
-  a.field10 = {true, false, true, false, false, true, true};
+  *a.field10_ref() = {true, false, true, false, false, true, true};
 
   apache::thrift::ensure_isset_unsafe(a.field1_ref());
   apache::thrift::ensure_isset_unsafe(a.field2_ref());
-  apache::thrift::ensure_isset_unsafe(a.field6.nfield00_ref());
-  apache::thrift::ensure_isset_unsafe(a.field6.nfield01_ref());
+  apache::thrift::ensure_isset_unsafe(a.field6_ref()->nfield00_ref());
+  apache::thrift::ensure_isset_unsafe(a.field6_ref()->nfield01_ref());
   a.field7_ref().ensure();
 }
 
@@ -97,28 +97,28 @@ TYPED_TEST(MultiProtocolTest, test_serialization) {
   struct1 a, b;
   init_struct_1(a);
 
-  EXPECT_EQ(a.field4, (std::set<int32_t>{1, 2, 3, 4, 6, 10}));
+  EXPECT_EQ(*a.field4_ref(), (std::set<int32_t>{1, 2, 3, 4, 6, 10}));
 
   serializer_write(a, this->writer);
   this->prep_read();
 
   serializer_read(b, this->reader);
 
-  EXPECT_EQ(a.field0, b.field0);
+  EXPECT_EQ(*a.field0_ref(), *b.field0_ref());
   EXPECT_EQ(a.field1_ref(), b.field1_ref());
   EXPECT_EQ(a.field2_ref(), b.field2_ref());
-  EXPECT_EQ(a.field3, b.field3);
-  EXPECT_EQ(a.field4, b.field4);
-  EXPECT_EQ(a.field5, b.field5);
+  EXPECT_EQ(*a.field3_ref(), *b.field3_ref());
+  EXPECT_EQ(*a.field4_ref(), *b.field4_ref());
+  EXPECT_EQ(*a.field5_ref(), *b.field5_ref());
 
   EXPECT_EQ(a.field6_ref()->nfield00_ref(), b.field6_ref()->nfield00_ref());
   EXPECT_EQ(a.field6_ref()->nfield01_ref(), b.field6_ref()->nfield01_ref());
-  EXPECT_EQ(a.field6, b.field6);
+  EXPECT_EQ(*a.field6_ref(), *b.field6_ref());
   EXPECT_EQ(*a.field7_ref(), *b.field7_ref());
   EXPECT_EQ(
       *a.field8_ref(),
       *b.field8_ref()); // default fields are always written out
-  EXPECT_EQ(a.field10, b.field10);
+  EXPECT_EQ(*a.field10_ref(), *b.field10_ref());
 
   EXPECT_TRUE(b.field1_ref().has_value());
   EXPECT_TRUE(b.field2_ref().has_value());
@@ -137,16 +137,16 @@ TYPED_TEST(MultiProtocolTest, test_legacy_serialization) {
   struct1 b;
   b.read(&this->reader);
 
-  EXPECT_EQ(a.field0, b.field0);
+  EXPECT_EQ(*a.field0_ref(), *b.field0_ref());
   EXPECT_EQ(a.field1_ref(), b.field1_ref());
   EXPECT_EQ(a.field2_ref(), b.field2_ref());
-  EXPECT_EQ(a.field3, b.field3);
-  EXPECT_EQ(a.field4, b.field4);
-  EXPECT_EQ(a.field5, b.field5);
+  EXPECT_EQ(*a.field3_ref(), *b.field3_ref());
+  EXPECT_EQ(*a.field4_ref(), *b.field4_ref());
+  EXPECT_EQ(*a.field5_ref(), *b.field5_ref());
 
   EXPECT_EQ(a.field6_ref()->nfield00_ref(), b.field6_ref()->nfield00_ref());
   EXPECT_EQ(a.field6_ref()->nfield01_ref(), b.field6_ref()->nfield01_ref());
-  EXPECT_EQ(a.field6, b.field6);
+  EXPECT_EQ(*a.field6_ref(), *b.field6_ref());
   EXPECT_EQ(*a.field7_ref(), *b.field7_ref());
   EXPECT_EQ(
       *a.field8_ref(),
@@ -295,8 +295,8 @@ TYPED_TEST(CompareProtocolTest, test_larger_containers) {
     large_map.emplace(i, std::string("string"));
   }
 
-  a1.field5 = large_map;
-  a2.field5 = large_map;
+  *a1.field5_ref() = large_map;
+  *a2.field5_ref() = large_map;
 
   EXPECT_EQ(a1, a2);
   EXPECT_EQ(
@@ -537,7 +537,7 @@ TEST_F(SimpleJsonTest, handles_unset_default_member) {
   serializer_read(a, reader);
   EXPECT_FALSE(a.opt_string_ref().has_value()); // gcc bug?
   EXPECT_FALSE(a.def_string_ref().has_value());
-  EXPECT_EQ("required", a.req_string);
+  EXPECT_EQ("required", *a.req_string_ref());
   EXPECT_EQ("", *a.def_string_ref());
 }
 TEST_F(SimpleJsonTest, sets_opt_members) {
@@ -547,7 +547,7 @@ TEST_F(SimpleJsonTest, sets_opt_members) {
   serializer_read(a, reader);
   EXPECT_TRUE(a.opt_string_ref().has_value()); // gcc bug?
   EXPECT_FALSE(a.def_string_ref().has_value());
-  EXPECT_EQ("required", a.req_string);
+  EXPECT_EQ("required", *a.req_string_ref());
   EXPECT_EQ("optional", *a.opt_string_ref());
   EXPECT_EQ("", *a.def_string_ref());
 }
@@ -558,7 +558,7 @@ TEST_F(SimpleJsonTest, sets_def_members) {
   serializer_read(a, reader);
   EXPECT_FALSE(a.opt_string_ref().has_value());
   EXPECT_TRUE(a.def_string_ref().has_value());
-  EXPECT_EQ("required", a.req_string);
+  EXPECT_EQ("required", *a.req_string_ref());
   EXPECT_EQ("default", *a.def_string_ref());
 }
 TEST_F(SimpleJsonTest, doesnt_throws_on_missing_required_ref) {
