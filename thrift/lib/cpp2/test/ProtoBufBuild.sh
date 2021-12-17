@@ -18,7 +18,7 @@ set -e
 # remove --install_dir
 shift 1
 
-protoc --cpp_out="$INSTALL_DIR" "$@"
+${PROTOC} --cpp_out="$INSTALL_DIR" "$@"
 
 # Fix up include path
 sed -i \
