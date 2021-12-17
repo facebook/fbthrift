@@ -134,11 +134,6 @@ class StreamElementEncoderStub final
     return folly::Try<StreamPayload>(
         StreamPayload(folly::IOBuf::create(0), {}));
   }
-
-  folly::Try<StreamPayload> operator()() override {
-    return folly::Try<StreamPayload>(
-        StreamPayload(folly::IOBuf::create(0), {}));
-  }
 };
 static StreamElementEncoderStub encode;
 

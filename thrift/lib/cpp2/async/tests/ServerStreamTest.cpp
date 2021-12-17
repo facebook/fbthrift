@@ -41,10 +41,6 @@ class StreamElementEncoderStub final
   folly::Try<StreamPayload> operator()(folly::exception_wrapper&& e) override {
     return folly::Try<StreamPayload>(e);
   }
-
-  folly::Try<StreamPayload> operator()() override {
-    return folly::Try<StreamPayload>();
-  }
 };
 
 static StreamElementEncoderStub encode;

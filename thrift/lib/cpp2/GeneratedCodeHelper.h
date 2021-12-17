@@ -1129,10 +1129,6 @@ class StreamElementEncoderImpl final
     return folly::Try<StreamPayload>(folly::exception_wrapper(
         encode_stream_exception<Blame, Protocol, PResult, ErrorMapFunc>(e)));
   }
-
-  folly::Try<StreamPayload> operator()() override {
-    return folly::Try<StreamPayload>();
-  }
 };
 
 template <typename Protocol, typename PResult, typename T>

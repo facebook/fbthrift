@@ -239,7 +239,7 @@ class ServerPublisherStream : private StreamServerCallback {
       } else if (payload.hasException()) {
         queue_.push((*encode)(std::move(payload.exception())));
       } else {
-        queue_.push((*encode)());
+        queue_.push({});
       }
     }
 
@@ -306,7 +306,7 @@ class ServerPublisherStream : private StreamServerCallback {
         } else if (message.hasException()) {
           stream->queue_.push((*encode)(std::move(message.exception())));
         } else {
-          stream->queue_.push((*encode)());
+          stream->queue_.push({});
         }
       }
     }

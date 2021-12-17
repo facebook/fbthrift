@@ -102,7 +102,6 @@ class StreamElementEncoder {
   virtual folly::Try<apache::thrift::StreamPayload> operator()(T&&) = 0;
   virtual folly::Try<apache::thrift::StreamPayload> operator()(
       folly::exception_wrapper&&) = 0;
-  virtual folly::Try<apache::thrift::StreamPayload> operator()() = 0;
 
  protected:
   ~StreamElementEncoder() = default;

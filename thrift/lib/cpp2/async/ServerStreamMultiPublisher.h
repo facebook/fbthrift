@@ -98,7 +98,7 @@ class ServerStreamMultiPublisher {
       if (!encode) {
         publishAll(folly::Try<ConditionalPayload>{}, streams);
       } else {
-        publishAll((*encode)(), streams);
+        publishAll(folly::Try<StreamPayload>{}, streams);
       }
     }
   }
