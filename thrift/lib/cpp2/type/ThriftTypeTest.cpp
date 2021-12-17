@@ -33,7 +33,7 @@ using test::TestTemplate;
 struct evil_c : enum_c {};
 struct evil_t : i64_t {};
 
-// is_concrete static asserts.
+// is_concrete_v static asserts.
 static_assert(!is_concrete_v<int>);
 static_assert(!is_concrete_v<evil_c>);
 static_assert(!is_concrete_v<evil_t>);
@@ -140,7 +140,7 @@ static_assert(!is_thrift_type_tag_v<cpp_type<int, int>>);
 static_assert(is_thrift_type_tag_v<cpp_type<int, void_t>>);
 static_assert(is_thrift_type_tag_v<list<cpp_type<int, void_t>>>);
 
-// is_abstract static asserts.
+// is_abstract_v static asserts.
 static_assert(!is_abstract_v<int>);
 static_assert(!is_abstract_v<evil_c>);
 static_assert(!is_abstract_v<evil_t>);

@@ -31,15 +31,7 @@ namespace apache::thrift::type {
 //     is_concrete_v<list<byte_t>> -> true
 //     is_concrete_v<list<struct_c>> -> false
 template <typename Tag>
-struct is_concrete : std::false_type {};
-template <typename Tag>
-constexpr bool is_concrete_v = is_concrete<Tag>::value;
-namespace bound {
-struct is_concrete {
-  template <typename Tag>
-  using apply = type::is_concrete<Tag>;
-};
-} // namespace bound
+constexpr bool is_concrete_v = false;
 
 // If a given Thrift type tag is wellformed.
 //
@@ -51,15 +43,7 @@ struct is_concrete {
 //     is_thrift_type_tag_v<list<byte_t>> -> true
 //     is_thrift_type_tag_v<list<struct_c>> -> true
 template <typename Tag>
-struct is_thrift_type_tag : is_concrete<Tag> {};
-template <typename Tag>
-constexpr bool is_thrift_type_tag_v = is_thrift_type_tag<Tag>::value;
-namespace bound {
-struct is_thrift_type_tag {
-  template <typename Tag>
-  using apply = type::is_thrift_type_tag<Tag>;
-};
-} // namespace bound
+constexpr bool is_thrift_type_tag_v = is_concrete_v<Tag>;
 
 // If a given Thrift type tag is not concrete.
 //
@@ -72,14 +56,6 @@ struct is_thrift_type_tag {
 //     is_abstract_v<list<struct_c>> -> true
 template <typename Tag>
 constexpr bool is_abstract_v = is_thrift_type_tag_v<Tag> && !is_concrete_v<Tag>;
-template <typename Tag>
-using is_abstract = std::bool_constant<is_abstract_v<Tag>>;
-namespace bound {
-struct is_abstract {
-  template <typename Tag>
-  using apply = type::is_abstract<Tag>;
-};
-} // namespace bound
 
 // Helpers to enable/disable declarations based on if a type tag represents
 // a concrete type or not.
@@ -88,94 +64,114 @@ using if_concrete = std::enable_if_t<is_concrete_v<Tag>, R>;
 template <typename Tag, typename R = void, typename...>
 using if_not_concrete = std::enable_if_t<is_abstract_v<Tag>, R>;
 
+// Helpers for applying the conditions.
+namespace bound {
+struct is_concrete {
+  template <typename Tag>
+  using apply = std::bool_constant<type::is_concrete_v<Tag>>;
+};
+struct is_thrift_type_tag {
+  template <typename Tag>
+  using apply = std::bool_constant<type::is_thrift_type_tag_v<Tag>>;
+};
+struct is_abstract {
+  template <typename Tag>
+  using apply = std::bool_constant<type::is_abstract_v<Tag>>;
+};
+} // namespace bound
+
 ////
 // Implemnation details
 
 template <>
-struct is_concrete<void_t> : std::true_type {};
+constexpr inline bool is_concrete_v<void_t> = true;
 template <>
-struct is_concrete<bool_t> : std::true_type {};
+constexpr inline bool is_concrete_v<bool_t> = true;
 template <>
-struct is_concrete<byte_t> : std::true_type {};
+constexpr inline bool is_concrete_v<byte_t> = true;
 template <>
-struct is_concrete<i16_t> : std::true_type {};
+constexpr inline bool is_concrete_v<i16_t> = true;
 template <>
-struct is_concrete<i32_t> : std::true_type {};
+constexpr inline bool is_concrete_v<i32_t> = true;
 template <>
-struct is_concrete<i64_t> : std::true_type {};
+constexpr inline bool is_concrete_v<i64_t> = true;
 template <>
-struct is_concrete<float_t> : std::true_type {};
+constexpr inline bool is_concrete_v<float_t> = true;
 template <>
-struct is_concrete<double_t> : std::true_type {};
+constexpr inline bool is_concrete_v<double_t> = true;
 template <>
-struct is_concrete<string_t> : std::true_type {};
+constexpr inline bool is_concrete_v<string_t> = true;
 template <>
-struct is_concrete<binary_t> : std::true_type {};
+constexpr inline bool is_concrete_v<binary_t> = true;
 
 template <typename T>
-struct is_concrete<enum_t<T>> : std::true_type {};
+constexpr inline bool is_concrete_v<enum_t<T>> = true;
 template <typename T>
-struct is_concrete<struct_t<T>> : std::true_type {};
+constexpr inline bool is_concrete_v<struct_t<T>> = true;
 template <typename T>
-struct is_concrete<union_t<T>> : std::true_type {};
+constexpr inline bool is_concrete_v<union_t<T>> = true;
 template <typename T>
-struct is_concrete<exception_t<T>> : std::true_type {};
+constexpr inline bool is_concrete_v<exception_t<T>> = true;
 
 template <typename ValTag, template <typename...> typename ListT>
-struct is_concrete<list<ValTag, ListT>> : is_concrete<ValTag> {};
+constexpr inline bool is_concrete_v<list<ValTag, ListT>> =
+    is_concrete_v<ValTag>;
 
 template <typename KeyTag, template <typename...> typename SetT>
-struct is_concrete<set<KeyTag, SetT>> : is_concrete<KeyTag> {};
+constexpr inline bool is_concrete_v<set<KeyTag, SetT>> = is_concrete_v<KeyTag>;
 template <
     typename KeyTag,
     typename ValTag,
     template <typename...>
     typename MapT>
-struct is_concrete<map<KeyTag, ValTag, MapT>>
-    : std::bool_constant<is_concrete_v<KeyTag> && is_concrete_v<ValTag>> {};
+constexpr inline bool is_concrete_v<map<KeyTag, ValTag, MapT>> =
+    is_concrete_v<KeyTag>&& is_concrete_v<ValTag>;
 
 template <typename Adapter, typename Tag>
-struct is_concrete<adapted<Adapter, Tag>> : is_concrete<Tag> {};
+constexpr inline bool is_concrete_v<adapted<Adapter, Tag>> = is_concrete_v<Tag>;
 template <typename T, typename Tag>
-struct is_concrete<cpp_type<T, Tag>> : is_concrete<Tag> {};
+constexpr inline bool is_concrete_v<cpp_type<T, Tag>> = is_concrete_v<Tag>;
 
 template <>
-struct is_thrift_type_tag<integral_c> : std::true_type {};
+constexpr inline bool is_thrift_type_tag_v<integral_c> = true;
 template <>
-struct is_thrift_type_tag<floating_point_c> : std::true_type {};
+constexpr inline bool is_thrift_type_tag_v<floating_point_c> = true;
 template <>
-struct is_thrift_type_tag<enum_c> : std::true_type {};
+constexpr inline bool is_thrift_type_tag_v<enum_c> = true;
 template <>
-struct is_thrift_type_tag<struct_except_c> : std::true_type {};
+constexpr inline bool is_thrift_type_tag_v<struct_except_c> = true;
 template <>
-struct is_thrift_type_tag<struct_c> : std::true_type {};
+constexpr inline bool is_thrift_type_tag_v<struct_c> = true;
 template <>
-struct is_thrift_type_tag<union_c> : std::true_type {};
+constexpr inline bool is_thrift_type_tag_v<union_c> = true;
 template <>
-struct is_thrift_type_tag<exception_c> : std::true_type {};
+constexpr inline bool is_thrift_type_tag_v<exception_c> = true;
 template <>
-struct is_thrift_type_tag<list_c> : std::true_type {};
+constexpr inline bool is_thrift_type_tag_v<list_c> = true;
 template <>
-struct is_thrift_type_tag<set_c> : std::true_type {};
+constexpr inline bool is_thrift_type_tag_v<set_c> = true;
 template <>
-struct is_thrift_type_tag<map_c> : std::true_type {};
+constexpr inline bool is_thrift_type_tag_v<map_c> = true;
 
 template <typename ValTag, template <typename...> typename ListT>
-struct is_thrift_type_tag<list<ValTag, ListT>> : is_thrift_type_tag<ValTag> {};
+constexpr inline bool is_thrift_type_tag_v<list<ValTag, ListT>> =
+    is_thrift_type_tag_v<ValTag>;
 template <typename KeyTag, template <typename...> typename SetT>
-struct is_thrift_type_tag<set<KeyTag, SetT>> : is_thrift_type_tag<KeyTag> {};
+constexpr inline bool is_thrift_type_tag_v<set<KeyTag, SetT>> =
+    is_thrift_type_tag_v<KeyTag>;
 template <
     typename KeyTag,
     typename ValTag,
     template <typename...>
     typename MapT>
-struct is_thrift_type_tag<map<KeyTag, ValTag, MapT>>
-    : std::bool_constant<
-          is_thrift_type_tag_v<KeyTag> && is_thrift_type_tag_v<ValTag>> {};
+constexpr inline bool is_thrift_type_tag_v<map<KeyTag, ValTag, MapT>> =
+    is_thrift_type_tag_v<KeyTag>&& is_thrift_type_tag_v<ValTag>;
 
 template <typename Adapter, typename Tag>
-struct is_thrift_type_tag<adapted<Adapter, Tag>> : is_thrift_type_tag<Tag> {};
+constexpr inline bool is_thrift_type_tag_v<adapted<Adapter, Tag>> =
+    is_thrift_type_tag_v<Tag>;
 template <typename T, typename Tag>
-struct is_thrift_type_tag<cpp_type<T, Tag>> : is_thrift_type_tag<Tag> {};
+constexpr inline bool is_thrift_type_tag_v<cpp_type<T, Tag>> =
+    is_thrift_type_tag_v<Tag>;
 
 } // namespace apache::thrift::type
