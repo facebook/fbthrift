@@ -1051,11 +1051,12 @@ folly::Optional<std::string> ThriftServer::checkOverload(
     return kAppOverloadedErrorCode;
   }
 
-  uint32_t maxRequests = getMaxRequests();
-  if (maxRequests > 0 &&
-      (method == nullptr ||
-       getMethodsBypassMaxRequestsLimit().count(*method) == 0)) {
-    if (static_cast<uint32_t>(getActiveRequests()) >= maxRequests) {
+  // only check for request limit if active request tracking is enabled
+  if (!isActiveRequestsTrackingDisabled()) {
+    if (auto maxRequests = getMaxRequests(); maxRequests > 0 &&
+        (method == nullptr ||
+         !getMethodsBypassMaxRequestsLimit().contains(*method)) &&
+        static_cast<uint32_t>(getActiveRequests()) >= maxRequests) {
       return kOverloadedErrorCode;
     }
   }

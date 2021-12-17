@@ -129,13 +129,7 @@ class ServerConfigs {
     }
   }
 
-  int32_t getActiveRequests() const {
-    if (!isActiveRequestsTrackingDisabled()) {
-      return activeRequests_.load(std::memory_order_relaxed);
-    } else {
-      return 0;
-    }
-  }
+  int32_t getActiveRequests() const { return activeRequests_.load(); }
 
   enum class RequestHandlingCapability { NONE, INTERNAL_METHODS_ONLY, ALL };
   /**
@@ -180,7 +174,7 @@ class ServerConfigs {
   }
 
  private:
-  std::atomic<int32_t> activeRequests_{0};
+  folly::relaxed_atomic<int32_t> activeRequests_{0};
 
   bool disableActiveRequestsTracking_{false};
   bool rejectRequestsUntilStarted_{false};
