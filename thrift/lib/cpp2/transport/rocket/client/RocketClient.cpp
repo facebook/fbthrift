@@ -469,11 +469,7 @@ StreamChannelStatusResponse RocketClient::handleCancelFrame(
   }
   constexpr auto kErrorMsg = "Received Cancel frame";
   if constexpr (std::is_same_v<CallbackType, RocketSinkServerCallback>) {
-    // TODO(akramam) change exception type to STREAMING_CONTRACT_VIOLATION
-    serverCallback.onFinalResponseError(folly::make_exception_wrapper<
-                                        transport::TTransportException>(
-        transport::TTransportException::TTransportExceptionType::INTERRUPTED,
-        kErrorMsg));
+    serverCallback.onFinalResponseError(makeContractViolation(kErrorMsg));
   } else {
     serverCallback.onStreamError(makeContractViolation(kErrorMsg));
   }
