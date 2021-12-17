@@ -34,7 +34,7 @@ namespace apache::thrift::type::detail {
 template <typename Tag>
 struct traits {
   // No types to declare for non concrete types.
-  static_assert(is_not_concrete_v<Tag>);
+  static_assert(is_abstract_v<Tag>);
 };
 
 // Resolves the concrete template type when paramaterizing the given template,

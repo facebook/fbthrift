@@ -64,21 +64,20 @@ struct is_thrift_type_tag {
 // If a given Thrift type tag is not concrete.
 //
 // For example:
-//     is_not_concrete_v<int> -> false
-//     is_not_concrete_v<byte_t> -> false
-//     is_not_concrete_v<list_c> -> true
-//     is_not_concrete_v<list<Foo>> -> false
-//     is_not_concrete_v<list<byte_t>> -> false
-//     is_not_concrete_v<list<struct_c>> -> true
+//     is_abstract_v<int> -> false
+//     is_abstract_v<byte_t> -> false
+//     is_abstract_v<list_c> -> true
+//     is_abstract_v<list<Foo>> -> false
+//     is_abstract_v<list<byte_t>> -> false
+//     is_abstract_v<list<struct_c>> -> true
 template <typename Tag>
-constexpr bool is_not_concrete_v =
-    is_thrift_type_tag_v<Tag> && !is_concrete_v<Tag>;
+constexpr bool is_abstract_v = is_thrift_type_tag_v<Tag> && !is_concrete_v<Tag>;
 template <typename Tag>
-using is_not_concrete = std::bool_constant<is_not_concrete_v<Tag>>;
+using is_abstract = std::bool_constant<is_abstract_v<Tag>>;
 namespace bound {
-struct is_not_concrete {
+struct is_abstract {
   template <typename Tag>
-  using apply = type::is_not_concrete<Tag>;
+  using apply = type::is_abstract<Tag>;
 };
 } // namespace bound
 
@@ -87,7 +86,7 @@ struct is_not_concrete {
 template <typename Tag, typename R = void, typename...>
 using if_concrete = std::enable_if_t<is_concrete_v<Tag>, R>;
 template <typename Tag, typename R = void, typename...>
-using if_not_concrete = std::enable_if_t<is_not_concrete_v<Tag>, R>;
+using if_not_concrete = std::enable_if_t<is_abstract_v<Tag>, R>;
 
 ////
 // Implemnation details
