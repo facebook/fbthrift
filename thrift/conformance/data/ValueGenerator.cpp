@@ -93,12 +93,12 @@ NamedValues<Tag> generateValues() {
   using T = type::standard_type<Tag>;
   NamedValues<Tag> values;
 
-  if constexpr (type::base_type_v<Tag> == type::BaseType::Bool) {
+  if constexpr (type::is_a_v<Tag, type::bool_t>) {
     values.emplace_back(true, "true");
     values.emplace_back(false, "false");
-  } else if constexpr (type::string_types::contains<Tag>()) {
+  } else if constexpr (type::is_a_v<Tag, type::string_c>) {
     addStringValues<Tag>(values);
-  } else if constexpr (type::number_types::contains<Tag>()) {
+  } else if constexpr (type::is_a_v<Tag, type::number_c>) {
     addNumberValues<Tag, key>(values);
   } else {
     values.emplace_back(T(), "default");

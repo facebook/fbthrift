@@ -34,14 +34,16 @@ struct DefaultT;
 } // namespace detail
 
 // Classes of types (_c suffix).
-struct integral_c {}; // all integral types, including `bool`, but not `enum`
-struct floating_point_c {}; // all floating point types
-struct enum_c {}; // all `enum` types
+struct number_c {}; // all number types, including 'bool' and 'enum'
+struct integral_c : number_c {}; // all integral types, not `enum`
+struct floating_point_c : number_c {}; // all floating point types
+struct enum_c : number_c {}; // all `enum` types
+struct string_c {}; // `binary` and `string`
 struct struct_except_c {}; // all `struct` and `exception` types
 struct struct_c : struct_except_c {}; // all `struct` types
-struct union_c {}; // all `union` types
 struct exception_c : struct_except_c {}; // all `exception` types
-struct list_c {}; // all `list`  types
+struct union_c {}; // all `union` types
+struct list_c {}; // all `list` types
 struct set_c {}; // all `set` types
 struct map_c {}; // all `map` types
 
@@ -54,8 +56,9 @@ struct i32_t : integral_c {};
 struct i64_t : integral_c {};
 struct float_t : floating_point_c {};
 struct double_t : floating_point_c {};
-struct string_t {};
-struct binary_t {};
+struct string_t : string_c {}; // an utf-8 string
+struct binary_t : string_c {}; // an opaque binary string
+
 template <typename T> // the generated cpp type
 struct enum_t : enum_c {};
 template <typename T> // the generated cpp type

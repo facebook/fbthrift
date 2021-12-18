@@ -54,8 +54,6 @@ void testContains() {
 
 TEST(TraitsTest, Bool) {
   using tag = bool_t;
-  testContains<number_types, tag, true>();
-  testContains<string_types, tag, false>();
   testContains<primitive_types, tag, true>();
   testContains<structured_types, tag, false>();
   testContains<singular_types, tag, true>();
@@ -70,8 +68,6 @@ TEST(TraitsTest, Bool) {
 
 TEST(TraitsTest, Byte) {
   using tag = byte_t;
-  testContains<number_types, tag, true>();
-  testContains<string_types, tag, false>();
   testContains<primitive_types, tag, true>();
   testContains<structured_types, tag, false>();
   testContains<singular_types, tag, true>();
@@ -86,8 +82,6 @@ TEST(TraitsTest, Byte) {
 
 TEST(TraitsTest, I16) {
   using tag = i16_t;
-  testContains<number_types, tag, true>();
-  testContains<string_types, tag, false>();
   testContains<primitive_types, tag, true>();
   testContains<structured_types, tag, false>();
   testContains<singular_types, tag, true>();
@@ -102,8 +96,6 @@ TEST(TraitsTest, I16) {
 
 TEST(TraitsTest, I32) {
   using tag = i32_t;
-  testContains<number_types, tag, true>();
-  testContains<string_types, tag, false>();
   testContains<primitive_types, tag, true>();
   testContains<structured_types, tag, false>();
   testContains<singular_types, tag, true>();
@@ -118,8 +110,6 @@ TEST(TraitsTest, I32) {
 
 TEST(TraitsTest, I64) {
   using tag = i64_t;
-  testContains<number_types, tag, true>();
-  testContains<string_types, tag, false>();
   testContains<primitive_types, tag, true>();
   testContains<structured_types, tag, false>();
   testContains<singular_types, tag, true>();
@@ -134,8 +124,6 @@ TEST(TraitsTest, I64) {
 
 TEST(TraitsTest, Enum) {
   using tag = enum_c;
-  testContains<number_types, tag, true>();
-  testContains<string_types, tag, false>();
   testContains<primitive_types, tag, true>();
   testContains<structured_types, tag, false>();
   testContains<singular_types, tag, true>();
@@ -160,8 +148,6 @@ TEST(TraitsTest, Enum) {
 
 TEST(TraitsTest, Float) {
   using tag = float_t;
-  testContains<number_types, tag, true>();
-  testContains<string_types, tag, false>();
   testContains<primitive_types, tag, true>();
   testContains<structured_types, tag, false>();
   testContains<singular_types, tag, true>();
@@ -176,8 +162,6 @@ TEST(TraitsTest, Float) {
 
 TEST(TraitsTest, Double) {
   using tag = double_t;
-  testContains<number_types, tag, true>();
-  testContains<string_types, tag, false>();
   testContains<primitive_types, tag, true>();
   testContains<structured_types, tag, false>();
   testContains<singular_types, tag, true>();
@@ -192,8 +176,6 @@ TEST(TraitsTest, Double) {
 
 TEST(TraitsTest, String) {
   using tag = string_t;
-  testContains<number_types, tag, false>();
-  testContains<string_types, tag, true>();
   testContains<primitive_types, tag, true>();
   testContains<structured_types, tag, false>();
   testContains<singular_types, tag, true>();
@@ -208,8 +190,6 @@ TEST(TraitsTest, String) {
 
 TEST(TraitsTest, Binary) {
   using tag = binary_t;
-  testContains<number_types, tag, false>();
-  testContains<string_types, tag, true>();
   testContains<primitive_types, tag, true>();
   testContains<structured_types, tag, false>();
   testContains<singular_types, tag, true>();
@@ -224,8 +204,6 @@ TEST(TraitsTest, Binary) {
 
 TEST(TraitsTest, Struct) {
   using tag = struct_c;
-  testContains<number_types, tag, false>();
-  testContains<string_types, tag, false>();
   testContains<primitive_types, tag, false>();
   testContains<structured_types, tag, true>();
   testContains<singular_types, tag, true>();
@@ -244,8 +222,6 @@ TEST(TraitsTest, Struct) {
 
 TEST(TraitsTest, Union) {
   using tag = union_c;
-  testContains<number_types, tag, false>();
-  testContains<string_types, tag, false>();
   testContains<primitive_types, tag, false>();
   testContains<structured_types, tag, true>();
   testContains<singular_types, tag, true>();
@@ -264,8 +240,6 @@ TEST(TraitsTest, Union) {
 
 TEST(TraitsTest, Exception) {
   using tag = exception_c;
-  testContains<number_types, tag, false>();
-  testContains<string_types, tag, false>();
   testContains<primitive_types, tag, false>();
   testContains<structured_types, tag, true>();
   testContains<singular_types, tag, true>();
@@ -280,8 +254,6 @@ TEST(TraitsTest, Exception) {
 
 TEST(TraitsTest, List) {
   using tag = list_c;
-  testContains<number_types, tag, false>();
-  testContains<string_types, tag, false>();
   testContains<primitive_types, tag, false>();
   testContains<structured_types, tag, false>();
   testContains<singular_types, tag, false>();
@@ -310,8 +282,6 @@ TEST(TraitsTest, List) {
 
 TEST(TraitsTest, Set) {
   using tag = set_c;
-  testContains<number_types, tag, false>();
-  testContains<string_types, tag, false>();
   testContains<primitive_types, tag, false>();
   testContains<structured_types, tag, false>();
   testContains<singular_types, tag, false>();
@@ -340,8 +310,6 @@ TEST(TraitsTest, Set) {
 
 TEST(TraitsTest, Map) {
   using tag = map_c;
-  testContains<number_types, tag, false>();
-  testContains<string_types, tag, false>();
   testContains<primitive_types, tag, false>();
   testContains<structured_types, tag, false>();
   testContains<singular_types, tag, false>();
@@ -391,8 +359,6 @@ struct TestAdapter {
 TEST(TraitsTest, Adapted) {
   using tag = adapted<TestAdapter, i64_t>;
   // All traits that operate on the standard type, match the given tag.
-  testContains<number_types, tag, true>();
-  testContains<string_types, tag, false>();
   testContains<primitive_types, tag, true>();
   testContains<structured_types, tag, false>();
   testContains<singular_types, tag, true>();
@@ -409,8 +375,6 @@ TEST(TraitsTest, Adapted) {
 TEST(TraitsTest, CppType) {
   using tag = cpp_type<uint64_t, i64_t>;
   // All traits that operate on the standard type, match the given tag.
-  testContains<number_types, tag, true>();
-  testContains<string_types, tag, false>();
   testContains<primitive_types, tag, true>();
   testContains<structured_types, tag, false>();
   testContains<singular_types, tag, true>();

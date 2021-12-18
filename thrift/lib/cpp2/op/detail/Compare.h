@@ -51,7 +51,7 @@ struct IdenticalTo : EqualTo<Tag> {
   // Identical is the same as equal for integral, enum and string types.
   static_assert(
       type::is_a_v<Tag, type::integral_c> || type::is_a_v<Tag, type::enum_c> ||
-      type::string_types::contains<Tag>() ||
+      type::is_a_v<Tag, type::string_c> ||
       // TODO(afuller): Implement proper specializations for all container
       // types.
       type::container_types::contains<Tag>() ||
