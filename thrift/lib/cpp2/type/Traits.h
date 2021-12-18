@@ -38,14 +38,12 @@ template <typename Tag>
 using native_type = typename detail::traits<Tag>::native_type;
 
 // Useful groupings of primitive types.
-using integral_types =
-    detail::types<bool_t, byte_t, i16_t, i32_t, i64_t, enum_c>;
-using floating_point_types = detail::types<float_t, double_t>;
-using numeric_types = fatal::cat<integral_types, floating_point_types>;
+using number_types = detail::
+    types<bool_t, byte_t, i16_t, i32_t, i64_t, float_t, double_t, enum_c>;
 using string_types = detail::types<string_t, binary_t>;
 
 // All primitive types.
-using primitive_types = fatal::cat<numeric_types, string_types>;
+using primitive_types = fatal::cat<number_types, string_types>;
 
 // All structured types.
 using structured_types = detail::types<struct_c, union_c, exception_c>;
@@ -59,17 +57,11 @@ using singular_types = fatal::cat<primitive_types, structured_types>;
 using container_types = detail::types<list_c, set_c, map_c>;
 // Types that are composites of other types.
 using composite_types = fatal::cat<structured_types, container_types>;
-// All types.
-using all_types = fatal::cat<singular_types, container_types>;
 
 // Types that are only defined if the given type belongs to the
 // given group.
 template <typename T, typename R = void>
-using if_integral = detail::if_contains<integral_types, T, R>;
-template <typename T, typename R = void>
-using if_floating_point = detail::if_contains<floating_point_types, T, R>;
-template <typename T, typename R = void>
-using if_numeric = detail::if_contains<numeric_types, T, R>;
+using if_number = detail::if_contains<number_types, T, R>;
 template <typename T, typename R = void>
 using if_string = detail::if_contains<string_types, T, R>;
 template <typename T, typename R = void>

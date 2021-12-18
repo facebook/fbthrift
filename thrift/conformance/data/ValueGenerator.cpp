@@ -38,7 +38,7 @@ void addStringValues(NamedValues<Tag>& values) {
 }
 
 template <typename Tag, bool key>
-void addNumericValues(NamedValues<Tag>& values) {
+void addNumberValues(NamedValues<Tag>& values) {
   using T = type::standard_type<Tag>;
   using numeric_limits = std::numeric_limits<T>;
 
@@ -98,8 +98,8 @@ NamedValues<Tag> generateValues() {
     values.emplace_back(false, "false");
   } else if constexpr (type::string_types::contains<Tag>()) {
     addStringValues<Tag>(values);
-  } else if constexpr (type::numeric_types::contains<Tag>()) {
-    addNumericValues<Tag, key>(values);
+  } else if constexpr (type::number_types::contains<Tag>()) {
+    addNumberValues<Tag, key>(values);
   } else {
     values.emplace_back(T(), "default");
   }

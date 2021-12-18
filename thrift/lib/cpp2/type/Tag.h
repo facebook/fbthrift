@@ -83,6 +83,8 @@ template <
     template <typename...> typename MapT = detail::DefaultT>
 struct map : map_c {};
 
+// Extra compile-time metadata.
+
 // An adapted type.
 template <
     typename Adapter, // the cpp adpter to use

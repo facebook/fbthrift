@@ -23,6 +23,7 @@
 
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/type/Name.h>
+#include <thrift/lib/cpp2/type/Traits.h>
 
 namespace apache::thrift::conformance::data {
 
@@ -78,14 +79,13 @@ class ValueGeneratorTest : public ::testing::Test {
 template <typename T>
 class FloatingPointGeneratorTest : public ValueGeneratorTest<T> {};
 
-template <typename Ts>
-using gtest_types_t =
-    typename fatal::filter<Ts, type::bound::is_concrete>::template as<
-        ::testing::Types>;
-
-TYPED_TEST_CASE(ValueGeneratorTest, gtest_types_t<type::all_types>);
-TYPED_TEST_CASE(
-    FloatingPointGeneratorTest, gtest_types_t<type::floating_point_types>);
+// TODO(afuller): Expand the set of types tested.
+using ValueGeneratorTestTypes = type::primitive_types::filter<
+    type::bound::is_concrete>::as<::testing::Types>;
+TYPED_TEST_CASE(ValueGeneratorTest, ValueGeneratorTestTypes);
+using FloatingPointTestTypes =
+    type::primitive_types::of<type::floating_point_c>::as<::testing::Types>;
+TYPED_TEST_CASE(FloatingPointGeneratorTest, FloatingPointTestTypes);
 
 TYPED_TEST(ValueGeneratorTest, UniqueKeys) {
   SCOPED_TRACE(type::getName<TypeParam>());

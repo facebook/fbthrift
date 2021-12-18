@@ -57,12 +57,37 @@ constexpr bool is_thrift_type_tag_v = is_concrete_v<Tag>;
 template <typename Tag>
 constexpr bool is_abstract_v = is_thrift_type_tag_v<Tag> && !is_concrete_v<Tag>;
 
-// Helpers to enable/disable declarations based on if a type tag represents
-// a concrete type or not.
+namespace detail {
+template <typename... Tags>
+constexpr void checkTags() {
+  static_assert((is_thrift_type_tag_v<Tags> && ...));
+}
+} // namespace detail
+
+// Is `true` iff `Tag` is in the type class, `CTag`.
+//
+// For example:
+//     is_a_v<void_t, integral_c> -> false
+//     is_a_v<i32_t, integral_c> -> true
+//     is_a_v<i32_t, i32_t> -> true
+//     is_a_v<i32_t, i64_t> -> false
+//     is_a_v<list<i64_t>, list<i64_t>> -> true
+//     is_a_v<list<integral_c>, list_c> -> true
+//     is_a_v<list<i64_t>, list_c> -> true
+//     is_a_v<list<i64_t>, list<integral_c>> -> true
+//     is_a_v<list<i64_t>, list<i64_t>> -> true
+template <typename Tag, typename CTag>
+constexpr bool is_a_v =
+    (detail::checkTags<Tag, CTag>(), std::is_base_of_v<CTag, Tag>);
+
+// Helpers to enable/disable declarations based on if a type tag matches
+// a constraint.
 template <typename Tag, typename R = void, typename...>
 using if_concrete = std::enable_if_t<is_concrete_v<Tag>, R>;
 template <typename Tag, typename R = void, typename...>
 using if_not_concrete = std::enable_if_t<is_abstract_v<Tag>, R>;
+template <typename CTag, typename Tag, typename R = void, typename...>
+using if_is_a = std::enable_if_t<is_a_v<CTag, Tag>, R>;
 
 // Helpers for applying the conditions.
 namespace bound {
@@ -77,6 +102,11 @@ struct is_thrift_type_tag {
 struct is_abstract {
   template <typename Tag>
   using apply = std::bool_constant<type::is_abstract_v<Tag>>;
+};
+template <typename CTag>
+struct is_a {
+  template <typename Tag>
+  using apply = std::bool_constant<type::is_a_v<Tag, CTag>>;
 };
 } // namespace bound
 
@@ -173,5 +203,26 @@ constexpr inline bool is_thrift_type_tag_v<adapted<Adapter, Tag>> =
 template <typename T, typename Tag>
 constexpr inline bool is_thrift_type_tag_v<cpp_type<T, Tag>> =
     is_thrift_type_tag_v<Tag>;
+
+template <typename V1, typename V2>
+constexpr inline bool is_a_v<list<V1>, list<V2>> = is_a_v<V1, V2>;
+template <typename K1, typename K2>
+constexpr inline bool is_a_v<set<K1>, set<K2>> = is_a_v<K1, K2>;
+
+template <typename K1, typename V1, typename K2, typename V2>
+constexpr inline bool is_a_v<map<K1, V1>, map<K2, V2>> =
+    is_a_v<K1, K2>&& is_a_v<V1, V2>;
+
+template <typename A, typename Tag, typename CTag>
+constexpr inline bool is_a_v<adapted<A, Tag>, CTag> = is_a_v<Tag, CTag>;
+template <typename A, typename Tag, typename CTag>
+constexpr inline bool is_a_v<adapted<A, Tag>, adapted<A, CTag>> =
+    is_a_v<Tag, CTag>;
+
+template <typename T, typename Tag, typename CTag>
+constexpr inline bool is_a_v<cpp_type<T, Tag>, CTag> = is_a_v<Tag, CTag>;
+template <typename T, typename Tag, typename CTag>
+constexpr inline bool is_a_v<cpp_type<T, Tag>, cpp_type<T, CTag>> =
+    is_a_v<Tag, CTag>;
 
 } // namespace apache::thrift::type

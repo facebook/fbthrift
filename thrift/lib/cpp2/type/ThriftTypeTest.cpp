@@ -136,6 +136,7 @@ static_assert(is_thrift_type_tag_v<map<void_t, void_t, TestTemplate>>);
 static_assert(!is_thrift_type_tag_v<adapted<int, int>>);
 static_assert(is_thrift_type_tag_v<adapted<int, void_t>>);
 static_assert(is_thrift_type_tag_v<list<adapted<int, void_t>>>);
+
 static_assert(!is_thrift_type_tag_v<cpp_type<int, int>>);
 static_assert(is_thrift_type_tag_v<cpp_type<int, void_t>>);
 static_assert(is_thrift_type_tag_v<list<cpp_type<int, void_t>>>);
@@ -189,6 +190,96 @@ static_assert(!is_abstract_v<map<void_t, void_t, TestTemplate>>);
 static_assert(!is_abstract_v<adapted<int, int>>);
 static_assert(!is_abstract_v<adapted<int, void_t>>);
 static_assert(is_concrete_v<list<adapted<int, void_t>>>);
+
+static_assert(!is_abstract_v<cpp_type<int, int>>);
+static_assert(!is_abstract_v<cpp_type<int, void_t>>);
+static_assert(is_concrete_v<list<cpp_type<int, void_t>>>);
+
+// is_a_v static asserts.
+static_assert(!is_a_v<void_t, integral_c>);
+static_assert(!is_a_v<enum_c, integral_c>);
+static_assert(is_a_v<bool_t, integral_c>);
+static_assert(is_a_v<byte_t, integral_c>);
+static_assert(is_a_v<i16_t, integral_c>);
+static_assert(is_a_v<i32_t, integral_c>);
+static_assert(is_a_v<i64_t, integral_c>);
+
+static_assert(!is_a_v<void_t, floating_point_c>);
+static_assert(is_a_v<float_t, floating_point_c>);
+static_assert(is_a_v<double_t, floating_point_c>);
+
+static_assert(!is_a_v<void_t, struct_except_c>);
+static_assert(!is_a_v<union_c, struct_except_c>);
+static_assert(is_a_v<struct_c, struct_except_c>);
+static_assert(is_a_v<struct_t<int>, struct_except_c>);
+static_assert(is_a_v<exception_c, struct_except_c>);
+static_assert(is_a_v<exception_t<int>, struct_except_c>);
+
+// Uncomment to produce expected compile time errors.
+// static_assert(is_a_v<int, int>);
+// static_assert(is_a_v<int, i32_t>);
+// static_assert(is_a_v<i32_t, int>);
+// static_assert(is_a_v<list<int>, list_c>);
+// static_assert(is_a_v<adapted<int, int>, i32_t>);
+// static_assert(is_a_v<cpp_type<int, int>, i32_t>);
+static_assert(is_a_v<integral_c, integral_c>);
+static_assert(is_a_v<i32_t, i32_t>);
+static_assert(!is_a_v<integral_c, i32_t>);
+
+static_assert(is_a_v<list<integral_c>, list_c>);
+static_assert(is_a_v<list<i64_t>, list_c>);
+static_assert(is_a_v<list<i64_t>, list<integral_c>>);
+static_assert(is_a_v<list<i64_t>, list<i64_t>>);
+static_assert(!is_a_v<list_c, list<integral_c>>);
+static_assert(!is_a_v<list_c, list<i64_t>>);
+static_assert(!is_a_v<list<integral_c>, list<i64_t>>);
+
+static_assert(is_a_v<set<integral_c>, set_c>);
+static_assert(is_a_v<set<i64_t>, set_c>);
+static_assert(is_a_v<set<i64_t>, set<integral_c>>);
+static_assert(is_a_v<set<i64_t>, set<i64_t>>);
+static_assert(!is_a_v<set_c, set<integral_c>>);
+static_assert(!is_a_v<set_c, set<i64_t>>);
+static_assert(!is_a_v<set<integral_c>, set<i64_t>>);
+
+static_assert(is_a_v<map<i64_t, i64_t>, map_c>);
+static_assert(is_a_v<map<i64_t, i64_t>, map<integral_c, integral_c>>);
+static_assert(is_a_v<map<i64_t, i64_t>, map<integral_c, i64_t>>);
+static_assert(!is_a_v<map<i64_t, i64_t>, map<integral_c, i32_t>>);
+static_assert(!is_a_v<map<i64_t, i64_t>, map<enum_c, i64_t>>);
+static_assert(is_a_v<map<i64_t, i64_t>, map<i64_t, i64_t>>);
+static_assert(!is_a_v<map_c, map<i64_t, i64_t>>);
+static_assert(!is_a_v<map<integral_c, integral_c>, map<i64_t, i64_t>>);
+static_assert(!is_a_v<map<integral_c, i64_t>, map<i64_t, i64_t>>);
+static_assert(!is_a_v<map<integral_c, i32_t>, map<i64_t, i64_t>>);
+static_assert(!is_a_v<map<enum_c, i64_t>, map<i64_t, i64_t>>);
+
+static_assert(is_a_v<adapted<int, i32_t>, i32_t>);
+static_assert(is_a_v<adapted<int, i32_t>, integral_c>);
+static_assert(!is_a_v<i32_t, adapted<int, i32_t>>);
+static_assert(!is_a_v<integral_c, adapted<int, i32_t>>);
+static_assert(is_a_v<adapted<int, list<i32_t>>, list<integral_c>>);
+static_assert(!is_a_v<list<i32_t>, adapted<int, list<integral_c>>>);
+static_assert(
+    is_a_v<adapted<int, list<i32_t>>, adapted<int, list<integral_c>>>);
+static_assert(
+    !is_a_v<adapted<int, list<integral_c>>, adapted<int, list<i32_t>>>);
+static_assert(
+    !is_a_v<adapted<int, list<i32_t>>, adapted<uint32_t, list<integral_c>>>);
+
+static_assert(is_a_v<cpp_type<int, i32_t>, integral_c>);
+static_assert(is_a_v<cpp_type<int, i32_t>, i32_t>);
+static_assert(!is_a_v<i32_t, cpp_type<int, i32_t>>);
+static_assert(!is_a_v<integral_c, cpp_type<int, i32_t>>);
+static_assert(is_a_v<cpp_type<int, list<i32_t>>, list<integral_c>>);
+
+static_assert(is_a_v<cpp_type<int, i32_t>, integral_c>);
+static_assert(is_a_v<cpp_type<int, i32_t>, i32_t>);
+static_assert(!is_a_v<cpp_type<int, i32_t>, i16_t>);
+static_assert(is_a_v<cpp_type<int, i32_t>, cpp_type<int, integral_c>>);
+static_assert(is_a_v<cpp_type<int, i32_t>, cpp_type<int, i32_t>>);
+static_assert(!is_a_v<cpp_type<int, i32_t>, cpp_type<int, i16_t>>);
+static_assert(!is_a_v<cpp_type<int, integral_c>, cpp_type<int, i32_t>>);
 
 // Test concrete helpers.
 template <typename Tag>

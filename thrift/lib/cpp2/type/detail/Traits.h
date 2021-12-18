@@ -22,6 +22,7 @@
 #include <vector>
 
 #include <fatal/type/slice.h>
+#include <fatal/type/sort.h>
 #include <folly/Traits.h>
 #include <thrift/lib/cpp2/Adapt.h>
 #include <thrift/lib/cpp2/type/AnyType.h>
@@ -76,6 +77,12 @@ struct types {
   // Converts the type list to a type list of the given types.
   template <template <typename...> typename T>
   using as = T<Tags...>;
+
+  template <typename F>
+  using filter = typename fatal::filter<types, F>;
+
+  template <typename CTag>
+  using of = filter<type::bound::is_a<CTag>>;
 };
 
 template <typename Ts, typename Tag, typename R = void>
