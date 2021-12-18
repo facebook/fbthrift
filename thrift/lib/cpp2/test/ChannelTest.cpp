@@ -560,10 +560,6 @@ class HeaderChannelClosedTest
       FAIL() << "should not recv reply from closed channel";
     }
 
-    void onRequestSent() noexcept override {
-      FAIL() << "should not have sent message on closed channel";
-    }
-
     void onResponseError(folly::exception_wrapper ew) noexcept override {
       EXPECT_TRUE(ew.with_exception([this](const TTransportException& e) {
         EXPECT_EQ(e.getType(), TTransportException::END_OF_FILE);

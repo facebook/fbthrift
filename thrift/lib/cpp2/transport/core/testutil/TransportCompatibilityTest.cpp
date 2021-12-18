@@ -1050,7 +1050,6 @@ void TransportCompatibilityTest::TestBadPayload() {
           return apache::thrift::RequestClientCallback::Ptr(instance.get());
         }
 
-        void onRequestSent() noexcept override { ADD_FAILURE(); }
         void onResponse(
             apache::thrift::ClientReceiveState&&) noexcept override {
           ADD_FAILURE();
