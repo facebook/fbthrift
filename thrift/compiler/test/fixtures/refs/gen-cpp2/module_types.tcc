@@ -2336,7 +2336,7 @@ _readField_a:
   {
     auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::apache::thrift::detail::boxed_value_ptr<::std::string>>();
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, *ptr, _readState);
-    this->a = std::move(ptr);
+    this->__fbthrift_field_a = std::move(ptr);
     
   }
 
@@ -2352,7 +2352,7 @@ _readField_b:
     _readState.beforeSubobject(iprot);
     auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::apache::thrift::detail::boxed_value_ptr<::std::vector<::std::int64_t>>>();
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int64_t>>::readWithContext(*iprot, *ptr, _readState);
-    this->b = std::move(ptr);
+    this->__fbthrift_field_b = std::move(ptr);
     _readState.afterSubobject(iprot);
     
   }
@@ -2369,7 +2369,7 @@ _readField_c:
     _readState.beforeSubobject(iprot);
     auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::apache::thrift::detail::boxed_value_ptr<::cpp2::StructWithRef>>();
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::StructWithRef>::readWithContext(*iprot, *ptr, _readState);
-    this->c = std::move(ptr);
+    this->__fbthrift_field_c = std::move(ptr);
     _readState.afterSubobject(iprot);
     
   }
@@ -2436,17 +2436,17 @@ template <class Protocol_>
 uint32_t StructWithBox::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("StructWithBox");
-  if (this->a) {
+  if (this->__fbthrift_field_a) {
     xfer += prot_->serializedFieldSize("a", apache::thrift::protocol::T_STRING, 1);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, *this->a);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, *this->__fbthrift_field_a);
   }
-  if (this->b) {
+  if (this->__fbthrift_field_b) {
     xfer += prot_->serializedFieldSize("b", apache::thrift::protocol::T_LIST, 2);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int64_t>>::serializedSize<false>(*prot_, *this->b);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int64_t>>::serializedSize<false>(*prot_, *this->__fbthrift_field_b);
   }
-  if (this->c) {
+  if (this->__fbthrift_field_c) {
     xfer += prot_->serializedFieldSize("c", apache::thrift::protocol::T_STRUCT, 3);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::StructWithRef>::serializedSize<false>(*prot_, *this->c);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::StructWithRef>::serializedSize<false>(*prot_, *this->__fbthrift_field_c);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -2456,17 +2456,17 @@ template <class Protocol_>
 uint32_t StructWithBox::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("StructWithBox");
-  if (this->a) {
+  if (this->__fbthrift_field_a) {
     xfer += prot_->serializedFieldSize("a", apache::thrift::protocol::T_STRING, 1);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, *this->a);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, *this->__fbthrift_field_a);
   }
-  if (this->b) {
+  if (this->__fbthrift_field_b) {
     xfer += prot_->serializedFieldSize("b", apache::thrift::protocol::T_LIST, 2);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int64_t>>::serializedSize<false>(*prot_, *this->b);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int64_t>>::serializedSize<false>(*prot_, *this->__fbthrift_field_b);
   }
-  if (this->c) {
+  if (this->__fbthrift_field_c) {
     xfer += prot_->serializedFieldSize("c", apache::thrift::protocol::T_STRUCT, 3);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::StructWithRef>::serializedSize<true>(*prot_, *this->c);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::StructWithRef>::serializedSize<true>(*prot_, *this->__fbthrift_field_c);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -2477,29 +2477,29 @@ uint32_t StructWithBox::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("StructWithBox");
   bool previousFieldHasValue = true;
-  if (this->a) {
+  if (this->__fbthrift_field_a) {
     constexpr int16_t kPrevFieldId = 0;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 1, kPrevFieldId>(*prot_, "a", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, *this->a);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, *this->__fbthrift_field_a);
     xfer += prot_->writeFieldEnd();
   } else {
     previousFieldHasValue = false;
   }
-  if (this->b) {
+  if (this->__fbthrift_field_b) {
     constexpr int16_t kPrevFieldId = 1;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 2, kPrevFieldId>(*prot_, "b", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int64_t>>::write(*prot_, *this->b);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int64_t>>::write(*prot_, *this->__fbthrift_field_b);
     xfer += prot_->writeFieldEnd();
   } else {
     previousFieldHasValue = false;
   }
-  if (this->c) {
+  if (this->__fbthrift_field_c) {
     constexpr int16_t kPrevFieldId = 2;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, kPrevFieldId>(*prot_, "c", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::StructWithRef>::write(*prot_, *this->c);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::StructWithRef>::write(*prot_, *this->__fbthrift_field_c);
     xfer += prot_->writeFieldEnd();
   } else {
     previousFieldHasValue = false;

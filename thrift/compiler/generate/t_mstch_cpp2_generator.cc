@@ -776,9 +776,7 @@ class mstch_cpp2_field : public mstch_field {
     if (cpp2::is_lazy(field_)) {
       // Lazy field has to be private.
     } else if (cpp2::is_ref(field_)) {
-      if (gen::cpp::find_ref_type(*field_) == gen::cpp::reference_type::boxed) {
-        isPrivate = false;
-      } else {
+      if (gen::cpp::find_ref_type(*field_) != gen::cpp::reference_type::boxed) {
         isPrivate = has_option("deprecated_private_fields_for_cpp_ref");
       }
     } else if (req == t_field::e_req::required) {

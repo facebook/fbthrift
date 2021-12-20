@@ -1358,31 +1358,31 @@ namespace cpp2 {
 StructWithBox::StructWithBox(const StructWithBox&) = default;
 StructWithBox& StructWithBox::operator=(const StructWithBox&) = default;
 StructWithBox::StructWithBox(StructWithBox&& other) noexcept  :
-    a(std::move(other.a)),
-    b(std::move(other.b)),
-    c(std::move(other.c)) {
+    __fbthrift_field_a(std::move(other.__fbthrift_field_a)),
+    __fbthrift_field_b(std::move(other.__fbthrift_field_b)),
+    __fbthrift_field_c(std::move(other.__fbthrift_field_c)) {
 }
 
 StructWithBox& StructWithBox::operator=(FOLLY_MAYBE_UNUSED StructWithBox&& other) noexcept {
-    this->a = std::move(other.a);
-    this->b = std::move(other.b);
-    this->c = std::move(other.c);
+    this->__fbthrift_field_a = std::move(other.__fbthrift_field_a);
+    this->__fbthrift_field_b = std::move(other.__fbthrift_field_b);
+    this->__fbthrift_field_c = std::move(other.__fbthrift_field_c);
     return *this;
 }
 
 
 StructWithBox::StructWithBox(apache::thrift::FragileConstructor, ::apache::thrift::detail::boxed_value_ptr<::std::string> a__arg, ::apache::thrift::detail::boxed_value_ptr<::std::vector<::std::int64_t>> b__arg, ::apache::thrift::detail::boxed_value_ptr<::cpp2::StructWithRef> c__arg) :
-    a(std::move(a__arg)),
-    b(std::move(b__arg)),
-    c(std::move(c__arg)) {
+    __fbthrift_field_a(std::move(a__arg)),
+    __fbthrift_field_b(std::move(b__arg)),
+    __fbthrift_field_c(std::move(c__arg)) {
 }
 
 
 void StructWithBox::__fbthrift_clear() {
   // clear all fields
-  this->a.reset();
-  this->b.reset();
-  this->c.reset();
+  this->__fbthrift_field_a.reset();
+  this->__fbthrift_field_b.reset();
+  this->__fbthrift_field_c.reset();
 }
 
 bool StructWithBox::operator==(const StructWithBox& rhs) const {
@@ -1420,9 +1420,9 @@ bool StructWithBox::operator<(const StructWithBox& rhs) const {
 
 void swap(StructWithBox& a, StructWithBox& b) {
   using ::std::swap;
-  swap(a.a, b.a);
-  swap(a.b, b.b);
-  swap(a.c, b.c);
+  swap(a.__fbthrift_field_a, b.__fbthrift_field_a);
+  swap(a.__fbthrift_field_b, b.__fbthrift_field_b);
+  swap(a.__fbthrift_field_c, b.__fbthrift_field_c);
 }
 
 template void StructWithBox::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
