@@ -260,7 +260,7 @@ public class MyStructMapFloatThrowExp implements TBase, java.io.Serializable, Cl
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -269,7 +269,7 @@ public class MyStructMapFloatThrowExp implements TBase, java.io.Serializable, Cl
           if (__field.type == TType.I64) {
             this.myLongField = iprot.readI64();
             setMyLongFieldIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -314,7 +314,7 @@ public class MyStructMapFloatThrowExp implements TBase, java.io.Serializable, Cl
               }
               iprot.readMapEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

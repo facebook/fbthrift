@@ -324,7 +324,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -333,7 +333,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
           if (__field.type == TType.STRUCT) {
             this.opt_ref = new MyField();
             this.opt_ref.read(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -341,7 +341,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
           if (__field.type == TType.STRUCT) {
             this.ref = new MyField();
             this.ref.read(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -349,7 +349,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
           if (__field.type == TType.STRUCT) {
             this.req_ref = new MyField();
             this.req_ref.read(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

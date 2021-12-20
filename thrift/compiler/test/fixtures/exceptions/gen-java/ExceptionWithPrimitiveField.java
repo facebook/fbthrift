@@ -224,7 +224,7 @@ public class ExceptionWithPrimitiveField extends Exception implements TBase, jav
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -232,7 +232,7 @@ public class ExceptionWithPrimitiveField extends Exception implements TBase, jav
         case MESSAGE:
           if (__field.type == TType.STRING) {
             this.message = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -240,7 +240,7 @@ public class ExceptionWithPrimitiveField extends Exception implements TBase, jav
           if (__field.type == TType.I32) {
             this.error_code = iprot.readI32();
             setError_codeIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

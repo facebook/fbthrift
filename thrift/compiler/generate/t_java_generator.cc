@@ -1630,7 +1630,7 @@ void t_java_generator::generate_java_struct_reader(
   indent(out) << "__field = iprot.readFieldBegin();" << endl;
 
   // Check for field STOP marker and break
-  indent(out) << "if (__field.type == TType.STOP) { " << endl;
+  indent(out) << "if (__field.type == TType.STOP) {" << endl;
   indent_up();
   indent(out) << "break;" << endl;
   indent_down();
@@ -1657,7 +1657,7 @@ void t_java_generator::generate_java_struct_reader(
       generate_isset_set(out, *f_iter);
     }
     indent_down();
-    out << indent() << "} else { " << endl
+    out << indent() << "} else {" << endl
         << indent() << "  TProtocolUtil.skip(iprot, __field.type);" << endl
         << indent() << "}" << endl
         << indent() << "break;" << endl;

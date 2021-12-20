@@ -511,7 +511,7 @@ public class Bar implements TBase, java.io.Serializable, Cloneable, Comparable<B
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -520,7 +520,7 @@ public class Bar implements TBase, java.io.Serializable, Cloneable, Comparable<B
           if (__field.type == TType.STRUCT) {
             this.structField = new Foo();
             this.structField.read(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -528,7 +528,7 @@ public class Bar implements TBase, java.io.Serializable, Cloneable, Comparable<B
           if (__field.type == TType.STRUCT) {
             this.optionalStructField = new Foo();
             this.optionalStructField.read(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -548,7 +548,7 @@ public class Bar implements TBase, java.io.Serializable, Cloneable, Comparable<B
               }
               iprot.readListEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -568,7 +568,7 @@ public class Bar implements TBase, java.io.Serializable, Cloneable, Comparable<B
               }
               iprot.readListEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -576,7 +576,7 @@ public class Bar implements TBase, java.io.Serializable, Cloneable, Comparable<B
           if (__field.type == TType.STRUCT) {
             this.unionField = new Baz();
             this.unionField.read(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -584,7 +584,7 @@ public class Bar implements TBase, java.io.Serializable, Cloneable, Comparable<B
           if (__field.type == TType.STRUCT) {
             this.optionalUnionField = new Baz();
             this.optionalUnionField.read(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

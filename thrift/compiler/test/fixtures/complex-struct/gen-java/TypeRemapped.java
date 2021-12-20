@@ -386,7 +386,7 @@ public class TypeRemapped implements TBase, java.io.Serializable, Cloneable, Com
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -408,7 +408,7 @@ public class TypeRemapped implements TBase, java.io.Serializable, Cloneable, Com
               }
               iprot.readMapEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -443,7 +443,7 @@ public class TypeRemapped implements TBase, java.io.Serializable, Cloneable, Com
               }
               iprot.readMapEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -451,14 +451,14 @@ public class TypeRemapped implements TBase, java.io.Serializable, Cloneable, Com
           if (__field.type == TType.I32) {
             this.BigInteger = iprot.readI32();
             setBigIntegerIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case BINARYTESTBUFFER:
           if (__field.type == TType.STRING) {
             this.binaryTestBuffer = iprot.readBinary();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

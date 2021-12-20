@@ -463,7 +463,7 @@ public class complexException extends Exception implements TBase, java.io.Serial
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -471,7 +471,7 @@ public class complexException extends Exception implements TBase, java.io.Serial
         case MESSAGE:
           if (__field.type == TType.STRING) {
             this.message = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -490,14 +490,14 @@ public class complexException extends Exception implements TBase, java.io.Serial
               }
               iprot.readListEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case ERRORENUM:
           if (__field.type == TType.I32) {
             this.errorEnum = MyEnum.findByValue(iprot.readI32());
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -505,7 +505,7 @@ public class complexException extends Exception implements TBase, java.io.Serial
           if (__field.type == TType.STRUCT) {
             this.unionError = new MyUnion();
             this.unionError.read(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -513,7 +513,7 @@ public class complexException extends Exception implements TBase, java.io.Serial
           if (__field.type == TType.STRUCT) {
             this.structError = new MyStruct();
             this.structError.read(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -534,7 +534,7 @@ public class complexException extends Exception implements TBase, java.io.Serial
               }
               iprot.readMapEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

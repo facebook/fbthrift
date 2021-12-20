@@ -656,7 +656,7 @@ public class Raiser {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -789,7 +789,7 @@ public class Raiser {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -921,7 +921,7 @@ public class Raiser {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -1187,7 +1187,7 @@ public class Raiser {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -1196,7 +1196,7 @@ public class Raiser {
             if (__field.type == TType.STRUCT) {
               this.b = new Banal();
               this.b.read(iprot);
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;
@@ -1204,7 +1204,7 @@ public class Raiser {
             if (__field.type == TType.STRUCT) {
               this.f = new Fiery();
               this.f.read(iprot);
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;
@@ -1212,7 +1212,7 @@ public class Raiser {
             if (__field.type == TType.STRUCT) {
               this.s = new Serious();
               this.s.read(iprot);
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;
@@ -1388,7 +1388,7 @@ public class Raiser {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -1583,7 +1583,7 @@ public class Raiser {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -1591,7 +1591,7 @@ public class Raiser {
           case SUCCESS:
             if (__field.type == TType.STRING) {
               this.success = iprot.readString();
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;
@@ -1737,7 +1737,7 @@ public class Raiser {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -2050,7 +2050,7 @@ public class Raiser {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -2058,7 +2058,7 @@ public class Raiser {
           case SUCCESS:
             if (__field.type == TType.STRING) {
               this.success = iprot.readString();
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;
@@ -2066,7 +2066,7 @@ public class Raiser {
             if (__field.type == TType.STRUCT) {
               this.f = new Fiery();
               this.f.read(iprot);
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;
@@ -2074,7 +2074,7 @@ public class Raiser {
             if (__field.type == TType.STRUCT) {
               this.b = new Banal();
               this.b.read(iprot);
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;
@@ -2082,7 +2082,7 @@ public class Raiser {
             if (__field.type == TType.STRUCT) {
               this.s = new Serious();
               this.s.read(iprot);
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;

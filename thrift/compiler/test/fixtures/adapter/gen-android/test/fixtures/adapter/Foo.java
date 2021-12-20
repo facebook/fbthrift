@@ -246,7 +246,7 @@ public class Foo implements TBase, java.io.Serializable, Cloneable {
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -254,21 +254,21 @@ public class Foo implements TBase, java.io.Serializable, Cloneable {
         case INTFIELD:
           if (__field.type == TType.I32) {
             tmp_intField = iprot.readI32();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case OPTIONALINTFIELD:
           if (__field.type == TType.I32) {
             tmp_optionalIntField = iprot.readI32();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case INTFIELDWITHDEFAULT:
           if (__field.type == TType.I32) {
             tmp_intFieldWithDefault = iprot.readI32();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -287,7 +287,7 @@ public class Foo implements TBase, java.io.Serializable, Cloneable {
               }
               iprot.readSetEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -306,7 +306,7 @@ public class Foo implements TBase, java.io.Serializable, Cloneable {
               }
               iprot.readSetEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -339,7 +339,7 @@ public class Foo implements TBase, java.io.Serializable, Cloneable {
               }
               iprot.readMapEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -372,14 +372,14 @@ public class Foo implements TBase, java.io.Serializable, Cloneable {
               }
               iprot.readMapEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case BINARYFIELD:
           if (__field.type == TType.STRING) {
             tmp_binaryField = iprot.readBinary();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

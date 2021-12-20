@@ -294,7 +294,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -302,49 +302,49 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
         case MAJOR:
           if (__field.type == TType.I64) {
             tmp_major = iprot.readI64();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case PACKAGE:
           if (__field.type == TType.STRING) {
             tmp_package = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case ANNOTATION_WITH_QUOTE:
           if (__field.type == TType.STRING) {
             tmp_annotation_with_quote = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case CLASS_:
           if (__field.type == TType.STRING) {
             tmp_class_ = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case ANNOTATION_WITH_TRAILING_COMMA:
           if (__field.type == TType.STRING) {
             tmp_annotation_with_trailing_comma = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case EMPTY_ANNOTATIONS:
           if (__field.type == TType.STRING) {
             tmp_empty_annotations = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MY_ENUM:
           if (__field.type == TType.I32) {
             tmp_my_enum = MyEnum.findByValue(iprot.readI32());
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

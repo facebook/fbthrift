@@ -170,7 +170,7 @@ public class SinkException2 extends Exception implements TBase, java.io.Serializ
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -179,7 +179,7 @@ public class SinkException2 extends Exception implements TBase, java.io.Serializ
           if (__field.type == TType.I64) {
             this.reason = iprot.readI64();
             setReasonIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

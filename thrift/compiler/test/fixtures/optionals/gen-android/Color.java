@@ -156,7 +156,7 @@ public class Color implements TBase, java.io.Serializable, Cloneable {
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -164,28 +164,28 @@ public class Color implements TBase, java.io.Serializable, Cloneable {
         case RED:
           if (__field.type == TType.DOUBLE) {
             tmp_red = iprot.readDouble();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case GREEN:
           if (__field.type == TType.DOUBLE) {
             tmp_green = iprot.readDouble();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case BLUE:
           if (__field.type == TType.DOUBLE) {
             tmp_blue = iprot.readDouble();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case ALPHA:
           if (__field.type == TType.DOUBLE) {
             tmp_alpha = iprot.readDouble();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

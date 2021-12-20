@@ -134,7 +134,7 @@ public class StructWithUnion implements TBase, java.io.Serializable, Cloneable {
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -143,21 +143,21 @@ public class StructWithUnion implements TBase, java.io.Serializable, Cloneable {
           if (__field.type == TType.STRUCT) {
             tmp_u = new MyUnion();
             tmp_u.read(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case ADOUBLE:
           if (__field.type == TType.DOUBLE) {
             tmp_aDouble = iprot.readDouble();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case F:
           if (__field.type == TType.STRUCT) {
             tmp_f = MyField.deserialize(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

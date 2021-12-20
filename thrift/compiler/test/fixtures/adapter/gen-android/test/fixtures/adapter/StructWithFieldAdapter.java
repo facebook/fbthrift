@@ -92,7 +92,7 @@ public class StructWithFieldAdapter implements TBase, java.io.Serializable, Clon
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -100,7 +100,7 @@ public class StructWithFieldAdapter implements TBase, java.io.Serializable, Clon
         case FIELD:
           if (__field.type == TType.I32) {
             tmp_field = iprot.readI32();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

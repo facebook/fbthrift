@@ -259,7 +259,7 @@ public class SimpleStruct implements TBase, java.io.Serializable, Cloneable, Com
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -268,14 +268,14 @@ public class SimpleStruct implements TBase, java.io.Serializable, Cloneable, Com
           if (__field.type == TType.I64) {
             this.age = iprot.readI64();
             setAgeIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case NAME:
           if (__field.type == TType.STRING) {
             this.name = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

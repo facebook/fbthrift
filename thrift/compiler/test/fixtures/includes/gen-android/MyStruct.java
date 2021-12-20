@@ -134,7 +134,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -142,21 +142,21 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
         case MYINCLUDEDFIELD:
           if (__field.type == TType.STRUCT) {
             tmp_MyIncludedField = one.two.three.Included.deserialize(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MYOTHERINCLUDEDFIELD:
           if (__field.type == TType.STRUCT) {
             tmp_MyOtherIncludedField = one.two.three.Included.deserialize(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MYINCLUDEDINT:
           if (__field.type == TType.I64) {
             tmp_MyIncludedInt = iprot.readI64();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

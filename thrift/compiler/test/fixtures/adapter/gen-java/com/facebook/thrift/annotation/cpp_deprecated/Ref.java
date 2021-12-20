@@ -200,7 +200,7 @@ public class Ref implements TBase, java.io.Serializable, Cloneable, Comparable<R
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -208,7 +208,7 @@ public class Ref implements TBase, java.io.Serializable, Cloneable, Comparable<R
         case TYPE:
           if (__field.type == TType.I32) {
             this.type = RefType.findByValue(iprot.readI32());
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

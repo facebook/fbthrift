@@ -324,7 +324,7 @@ public class StructWithSharedConst implements TBase, java.io.Serializable, Clone
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -333,7 +333,7 @@ public class StructWithSharedConst implements TBase, java.io.Serializable, Clone
           if (__field.type == TType.STRUCT) {
             this.opt_shared_const = new MyField();
             this.opt_shared_const.read(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -341,7 +341,7 @@ public class StructWithSharedConst implements TBase, java.io.Serializable, Clone
           if (__field.type == TType.STRUCT) {
             this.shared_const = new MyField();
             this.shared_const.read(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -349,7 +349,7 @@ public class StructWithSharedConst implements TBase, java.io.Serializable, Clone
           if (__field.type == TType.STRUCT) {
             this.req_shared_const = new MyField();
             this.req_shared_const.read(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

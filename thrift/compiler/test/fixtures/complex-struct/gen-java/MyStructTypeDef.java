@@ -702,7 +702,7 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -711,7 +711,7 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
           if (__field.type == TType.I64) {
             this.myLongField = iprot.readI64();
             setMyLongFieldIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -719,21 +719,21 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
           if (__field.type == TType.I64) {
             this.myLongTypeDef = iprot.readI64();
             setMyLongTypeDefIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MYSTRINGFIELD:
           if (__field.type == TType.STRING) {
             this.myStringField = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MYSTRINGTYPEDEF:
           if (__field.type == TType.STRING) {
             this.myStringTypedef = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -754,7 +754,7 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
               }
               iprot.readMapEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -775,7 +775,7 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
               }
               iprot.readMapEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -794,7 +794,7 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
               }
               iprot.readListEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -813,7 +813,7 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
               }
               iprot.readListEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -858,7 +858,7 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
               }
               iprot.readMapEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

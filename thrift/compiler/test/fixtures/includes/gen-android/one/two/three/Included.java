@@ -114,7 +114,7 @@ public class Included implements TBase, java.io.Serializable, Cloneable {
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -122,14 +122,14 @@ public class Included implements TBase, java.io.Serializable, Cloneable {
         case MYINTFIELD:
           if (__field.type == TType.I64) {
             tmp_MyIntField = iprot.readI64();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MYTRANSITIVEFIELD:
           if (__field.type == TType.STRUCT) {
             tmp_MyTransitiveField = Foo.deserialize(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

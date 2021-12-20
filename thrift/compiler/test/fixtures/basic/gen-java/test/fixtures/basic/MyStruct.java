@@ -585,7 +585,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -594,14 +594,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
           if (__field.type == TType.I64) {
             this.MyIntField = iprot.readI64();
             setMyIntFieldIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MYSTRINGFIELD:
           if (__field.type == TType.STRING) {
             this.MyStringField = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -609,14 +609,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
           if (__field.type == TType.STRUCT) {
             this.MyDataField = new MyDataItem();
             this.MyDataField.read(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MYENUM:
           if (__field.type == TType.I32) {
             this.myEnum = MyEnum.findByValue(iprot.readI32());
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -624,7 +624,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
           if (__field.type == TType.BOOL) {
             this.oneway = iprot.readBool();
             setOnewayIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -632,7 +632,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
           if (__field.type == TType.BOOL) {
             this.readonly = iprot.readBool();
             setReadonlyIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -640,7 +640,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
           if (__field.type == TType.BOOL) {
             this.idempotent = iprot.readBool();
             setIdempotentIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

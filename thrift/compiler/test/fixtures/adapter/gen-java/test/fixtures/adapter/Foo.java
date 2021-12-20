@@ -660,7 +660,7 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -669,7 +669,7 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
           if (__field.type == TType.I32) {
             this.intField = iprot.readI32();
             setIntFieldIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -677,7 +677,7 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
           if (__field.type == TType.I32) {
             this.optionalIntField = iprot.readI32();
             setOptionalIntFieldIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -685,7 +685,7 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
           if (__field.type == TType.I32) {
             this.intFieldWithDefault = iprot.readI32();
             setIntFieldWithDefaultIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -704,7 +704,7 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
               }
               iprot.readSetEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -723,7 +723,7 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
               }
               iprot.readSetEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -756,7 +756,7 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
               }
               iprot.readMapEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -789,14 +789,14 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
               }
               iprot.readMapEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case BINARYFIELD:
           if (__field.type == TType.STRING) {
             this.binaryField = iprot.readBinary();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

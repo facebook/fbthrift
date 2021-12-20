@@ -324,7 +324,7 @@ public class StructWithRefTypeSharedConst implements TBase, java.io.Serializable
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -333,7 +333,7 @@ public class StructWithRefTypeSharedConst implements TBase, java.io.Serializable
           if (__field.type == TType.STRUCT) {
             this.def_field = new Empty();
             this.def_field.read(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -341,7 +341,7 @@ public class StructWithRefTypeSharedConst implements TBase, java.io.Serializable
           if (__field.type == TType.STRUCT) {
             this.opt_field = new Empty();
             this.opt_field.read(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -349,7 +349,7 @@ public class StructWithRefTypeSharedConst implements TBase, java.io.Serializable
           if (__field.type == TType.STRUCT) {
             this.req_field = new Empty();
             this.req_field.read(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

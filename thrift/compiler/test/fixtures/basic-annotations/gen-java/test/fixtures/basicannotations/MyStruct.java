@@ -579,7 +579,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -588,49 +588,49 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
           if (__field.type == TType.I64) {
             this.major = iprot.readI64();
             setMajorIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case PACKAGE:
           if (__field.type == TType.STRING) {
             this.package = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case ANNOTATION_WITH_QUOTE:
           if (__field.type == TType.STRING) {
             this.annotation_with_quote = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case CLASS_:
           if (__field.type == TType.STRING) {
             this.class_ = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case ANNOTATION_WITH_TRAILING_COMMA:
           if (__field.type == TType.STRING) {
             this.annotation_with_trailing_comma = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case EMPTY_ANNOTATIONS:
           if (__field.type == TType.STRING) {
             this.empty_annotations = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MY_ENUM:
           if (__field.type == TType.I32) {
             this.my_enum = MyEnum.findByValue(iprot.readI32());
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

@@ -134,7 +134,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -142,21 +142,21 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
         case OPT_REF:
           if (__field.type == TType.STRUCT) {
             tmp_opt_ref = MyField.deserialize(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case REF:
           if (__field.type == TType.STRUCT) {
             tmp_ref = MyField.deserialize(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case REQ_REF:
           if (__field.type == TType.STRUCT) {
             tmp_req_ref = MyField.deserialize(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

@@ -163,7 +163,7 @@ public class Fiery extends Exception implements TBase, java.io.Serializable, Clo
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -171,7 +171,7 @@ public class Fiery extends Exception implements TBase, java.io.Serializable, Clo
         case MESSAGE:
           if (__field.type == TType.STRING) {
             this.message = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

@@ -945,7 +945,7 @@ public class MyService {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -1035,7 +1035,7 @@ public class MyService {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -1124,7 +1124,7 @@ public class MyService {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -1255,7 +1255,7 @@ public class MyService {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -1263,7 +1263,7 @@ public class MyService {
           case SUCCESS:
             if (__field.type == TType.STRING) {
               tmp_success = iprot.readString();
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;
@@ -1398,7 +1398,7 @@ public class MyService {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -1406,7 +1406,7 @@ public class MyService {
           case SINK:
             if (__field.type == TType.I64) {
               tmp_sink = iprot.readI64();
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;
@@ -1501,7 +1501,7 @@ public class MyService {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -1666,7 +1666,7 @@ public class MyService {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -1674,14 +1674,14 @@ public class MyService {
           case ID:
             if (__field.type == TType.I64) {
               tmp_id = iprot.readI64();
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           case DATA:
             if (__field.type == TType.STRING) {
               tmp_data = iprot.readString();
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;
@@ -1782,7 +1782,7 @@ public class MyService {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -1912,7 +1912,7 @@ public class MyService {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -1920,7 +1920,7 @@ public class MyService {
           case ID:
             if (__field.type == TType.I64) {
               tmp_id = iprot.readI64();
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;
@@ -2056,7 +2056,7 @@ public class MyService {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -2064,7 +2064,7 @@ public class MyService {
           case SUCCESS:
             if (__field.type == TType.BOOL) {
               tmp_success = iprot.readBool();
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;
@@ -2199,7 +2199,7 @@ public class MyService {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -2207,7 +2207,7 @@ public class MyService {
           case ID:
             if (__field.type == TType.I64) {
               tmp_id = iprot.readI64();
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;
@@ -2343,7 +2343,7 @@ public class MyService {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -2351,7 +2351,7 @@ public class MyService {
           case SUCCESS:
             if (__field.type == TType.STRING) {
               tmp_success = iprot.readString();
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;
@@ -2486,7 +2486,7 @@ public class MyService {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -2494,7 +2494,7 @@ public class MyService {
           case ID:
             if (__field.type == TType.I64) {
               tmp_id = iprot.readI64();
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;
@@ -2589,7 +2589,7 @@ public class MyService {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -2754,7 +2754,7 @@ public class MyService {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -2762,14 +2762,14 @@ public class MyService {
           case ID:
             if (__field.type == TType.I64) {
               tmp_id = iprot.readI64();
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           case DATA:
             if (__field.type == TType.STRING) {
               tmp_data = iprot.readString();
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;

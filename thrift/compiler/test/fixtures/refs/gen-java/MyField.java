@@ -758,7 +758,7 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -767,7 +767,7 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
           if (__field.type == TType.I64) {
             this.opt_value = iprot.readI64();
             setOpt_valueIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -775,7 +775,7 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
           if (__field.type == TType.I64) {
             this.value = iprot.readI64();
             setValueIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -783,49 +783,49 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
           if (__field.type == TType.I64) {
             this.req_value = iprot.readI64();
             setReq_valueIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case OPT_ENUM_VALUE:
           if (__field.type == TType.I32) {
             this.opt_enum_value = MyEnum.findByValue(iprot.readI32());
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case ENUM_VALUE:
           if (__field.type == TType.I32) {
             this.enum_value = MyEnum.findByValue(iprot.readI32());
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case REQ_ENUM_VALUE:
           if (__field.type == TType.I32) {
             this.req_enum_value = MyEnum.findByValue(iprot.readI32());
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case OPT_STR_VALUE:
           if (__field.type == TType.STRING) {
             this.opt_str_value = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case STR_VALUE:
           if (__field.type == TType.STRING) {
             this.str_value = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case REQ_STR_VALUE:
           if (__field.type == TType.STRING) {
             this.req_str_value = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

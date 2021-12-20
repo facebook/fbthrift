@@ -1679,7 +1679,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -1688,14 +1688,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
           if (__field.type == TType.I64) {
             this.MyIntField = iprot.readI64();
             setMyIntFieldIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MYSTRINGFIELD:
           if (__field.type == TType.STRING) {
             this.MyStringField = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -1703,14 +1703,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
           if (__field.type == TType.STRUCT) {
             this.MyDataField = new MyDataItem();
             this.MyDataField.read(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MYENUM:
           if (__field.type == TType.I32) {
             this.myEnum = MyEnum.findByValue(iprot.readI32());
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -1718,7 +1718,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
           if (__field.type == TType.BOOL) {
             this.MyBoolField = iprot.readBool();
             setMyBoolFieldIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -1726,7 +1726,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
           if (__field.type == TType.BYTE) {
             this.MyByteField = iprot.readByte();
             setMyByteFieldIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -1734,7 +1734,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
           if (__field.type == TType.I16) {
             this.MyShortField = iprot.readI16();
             setMyShortFieldIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -1742,7 +1742,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
           if (__field.type == TType.I64) {
             this.MyLongField = iprot.readI64();
             setMyLongFieldIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -1750,7 +1750,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
           if (__field.type == TType.DOUBLE) {
             this.MyDoubleField = iprot.readDouble();
             setMyDoubleFieldIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -1769,7 +1769,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
               }
               iprot.readListEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -1788,7 +1788,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
               }
               iprot.readListEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -1807,7 +1807,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
               }
               iprot.readListEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -1826,7 +1826,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
               }
               iprot.readListEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -1845,7 +1845,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
               }
               iprot.readListEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -1864,7 +1864,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
               }
               iprot.readListEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -1883,7 +1883,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
               }
               iprot.readListEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -1904,7 +1904,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
               }
               iprot.readMapEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -1925,7 +1925,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
               }
               iprot.readMapEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -1947,7 +1947,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
               }
               iprot.readMapEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -1968,7 +1968,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
               }
               iprot.readMapEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -1989,7 +1989,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
               }
               iprot.readMapEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2010,7 +2010,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
               }
               iprot.readMapEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2029,7 +2029,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
               }
               iprot.readSetEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2049,7 +2049,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
               }
               iprot.readSetEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2068,7 +2068,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
               }
               iprot.readSetEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2087,7 +2087,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
               }
               iprot.readSetEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2106,7 +2106,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
               }
               iprot.readSetEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2151,7 +2151,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
               }
               iprot.readMapEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

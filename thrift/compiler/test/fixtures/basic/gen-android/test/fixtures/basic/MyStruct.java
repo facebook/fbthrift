@@ -232,7 +232,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -240,49 +240,49 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
         case MYINTFIELD:
           if (__field.type == TType.I64) {
             tmp_MyIntField = iprot.readI64();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MYSTRINGFIELD:
           if (__field.type == TType.STRING) {
             tmp_MyStringField = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MYDATAFIELD:
           if (__field.type == TType.STRUCT) {
             tmp_MyDataField = MyDataItem.deserialize(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MYENUM:
           if (__field.type == TType.I32) {
             tmp_myEnum = MyEnum.findByValue(iprot.readI32());
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case ONEWAY:
           if (__field.type == TType.BOOL) {
             tmp_oneway = iprot.readBool();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case READONLY:
           if (__field.type == TType.BOOL) {
             tmp_readonly = iprot.readBool();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case IDEMPOTENT:
           if (__field.type == TType.BOOL) {
             tmp_idempotent = iprot.readBool();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

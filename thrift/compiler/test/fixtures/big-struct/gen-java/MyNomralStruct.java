@@ -2031,7 +2031,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -2039,63 +2039,63 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
         case MSG1:
           if (__field.type == TType.STRING) {
             this.msg1 = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MSG2:
           if (__field.type == TType.STRING) {
             this.msg2 = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MSG3:
           if (__field.type == TType.STRING) {
             this.msg3 = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MSG4:
           if (__field.type == TType.STRING) {
             this.msg4 = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MSG5:
           if (__field.type == TType.STRING) {
             this.msg5 = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MSG6:
           if (__field.type == TType.STRING) {
             this.msg6 = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MSG7:
           if (__field.type == TType.STRING) {
             this.msg7 = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MSG8:
           if (__field.type == TType.STRING) {
             this.msg8 = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MSG9:
           if (__field.type == TType.STRING) {
             this.msg9 = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2103,7 +2103,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
           if (__field.type == TType.I32) {
             this.myIntField10 = iprot.readI32();
             setMyIntField10IsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2111,7 +2111,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
           if (__field.type == TType.I32) {
             this.myIntField11 = iprot.readI32();
             setMyIntField11IsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2119,7 +2119,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
           if (__field.type == TType.I32) {
             this.myIntField12 = iprot.readI32();
             setMyIntField12IsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2127,7 +2127,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
           if (__field.type == TType.I32) {
             this.myIntField13 = iprot.readI32();
             setMyIntField13IsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2135,7 +2135,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
           if (__field.type == TType.I32) {
             this.myIntField14 = iprot.readI32();
             setMyIntField14IsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2143,7 +2143,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
           if (__field.type == TType.I32) {
             this.myIntField15 = iprot.readI32();
             setMyIntField15IsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2151,7 +2151,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
           if (__field.type == TType.I32) {
             this.myIntField16 = iprot.readI32();
             setMyIntField16IsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2159,7 +2159,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
           if (__field.type == TType.I32) {
             this.myIntField17 = iprot.readI32();
             setMyIntField17IsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2167,7 +2167,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
           if (__field.type == TType.I32) {
             this.myIntField18 = iprot.readI32();
             setMyIntField18IsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2175,7 +2175,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
           if (__field.type == TType.I32) {
             this.myIntField19 = iprot.readI32();
             setMyIntField19IsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2183,7 +2183,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
           if (__field.type == TType.I32) {
             this.myIntField20 = iprot.readI32();
             setMyIntField20IsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2191,7 +2191,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
           if (__field.type == TType.DOUBLE) {
             this.myDoubleField21 = iprot.readDouble();
             setMyDoubleField21IsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2199,7 +2199,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
           if (__field.type == TType.DOUBLE) {
             this.myDoubleField22 = iprot.readDouble();
             setMyDoubleField22IsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2207,7 +2207,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
           if (__field.type == TType.DOUBLE) {
             this.myDoubleField23 = iprot.readDouble();
             setMyDoubleField23IsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2215,7 +2215,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
           if (__field.type == TType.DOUBLE) {
             this.myDoubleField24 = iprot.readDouble();
             setMyDoubleField24IsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2223,7 +2223,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
           if (__field.type == TType.DOUBLE) {
             this.myDoubleField25 = iprot.readDouble();
             setMyDoubleField25IsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2231,7 +2231,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
           if (__field.type == TType.DOUBLE) {
             this.myDoubleField26 = iprot.readDouble();
             setMyDoubleField26IsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2239,7 +2239,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
           if (__field.type == TType.DOUBLE) {
             this.myDoubleField27 = iprot.readDouble();
             setMyDoubleField27IsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2247,7 +2247,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
           if (__field.type == TType.DOUBLE) {
             this.myDoubleField28 = iprot.readDouble();
             setMyDoubleField28IsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2255,7 +2255,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
           if (__field.type == TType.DOUBLE) {
             this.myDoubleField29 = iprot.readDouble();
             setMyDoubleField29IsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -2263,7 +2263,7 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
           if (__field.type == TType.DOUBLE) {
             this.myDoubleField30 = iprot.readDouble();
             setMyDoubleField30IsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

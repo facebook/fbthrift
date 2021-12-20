@@ -781,7 +781,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -790,14 +790,14 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
           if (__field.type == TType.I64) {
             this.id = iprot.readI64();
             setIdIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case NAME:
           if (__field.type == TType.STRING) {
             this.name = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -805,14 +805,14 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
           if (__field.type == TType.I16) {
             this.age = iprot.readI16();
             setAgeIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case ADDRESS:
           if (__field.type == TType.STRING) {
             this.address = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -820,7 +820,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
           if (__field.type == TType.STRUCT) {
             this.favoriteColor = new Color();
             this.favoriteColor.read(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -839,7 +839,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
               }
               iprot.readSetEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -847,7 +847,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
           if (__field.type == TType.I64) {
             this.bestFriend = iprot.readI64();
             setBestFriendIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -868,14 +868,14 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
               }
               iprot.readMapEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case AFRAIDOFANIMAL:
           if (__field.type == TType.I32) {
             this.afraidOfAnimal = Animal.findByValue(iprot.readI32());
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -895,7 +895,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
               }
               iprot.readListEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

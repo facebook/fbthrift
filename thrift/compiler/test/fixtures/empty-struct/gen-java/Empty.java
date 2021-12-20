@@ -117,7 +117,7 @@ public class Empty implements TBase, java.io.Serializable, Cloneable, Comparable
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)

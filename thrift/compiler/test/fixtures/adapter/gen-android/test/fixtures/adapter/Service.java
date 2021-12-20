@@ -393,7 +393,7 @@ public class Service {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -401,21 +401,21 @@ public class Service {
           case ARG1:
             if (__field.type == TType.STRING) {
               tmp_arg1 = iprot.readString();
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           case ARG2:
             if (__field.type == TType.STRING) {
               tmp_arg2 = iprot.readString();
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           case ARG3:
             if (__field.type == TType.STRUCT) {
               tmp_arg3 = Foo.deserialize(iprot);
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;
@@ -563,7 +563,7 @@ public class Service {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -571,7 +571,7 @@ public class Service {
           case SUCCESS:
             if (__field.type == TType.I32) {
               tmp_success = iprot.readI32();
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;

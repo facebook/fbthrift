@@ -90,7 +90,7 @@ public class MyStructNestedAnnotation implements TBase, java.io.Serializable, Cl
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -98,7 +98,7 @@ public class MyStructNestedAnnotation implements TBase, java.io.Serializable, Cl
         case NAME:
           if (__field.type == TType.STRING) {
             tmp_name = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

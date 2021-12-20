@@ -178,7 +178,7 @@ public class StructWithString implements TBase, java.io.Serializable, Cloneable 
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -186,35 +186,35 @@ public class StructWithString implements TBase, java.io.Serializable, Cloneable 
         case DEF_UNIQUE_STRING_REF:
           if (__field.type == TType.STRING) {
             tmp_def_unique_string_ref = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case DEF_SHARED_STRING_REF:
           if (__field.type == TType.STRING) {
             tmp_def_shared_string_ref = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case DEF_SHARED_STRING_CONST_REF:
           if (__field.type == TType.STRING) {
             tmp_def_shared_string_const_ref = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case UNIQUE_STRING_REF:
           if (__field.type == TType.STRING) {
             tmp_unique_string_ref = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case SHARED_STRING_REF:
           if (__field.type == TType.STRING) {
             tmp_shared_string_ref = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

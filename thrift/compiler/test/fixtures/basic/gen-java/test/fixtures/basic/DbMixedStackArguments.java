@@ -474,7 +474,7 @@ public class DbMixedStackArguments {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -482,7 +482,7 @@ public class DbMixedStackArguments {
           case KEY:
             if (__field.type == TType.STRING) {
               this.key = iprot.readString();
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;
@@ -691,7 +691,7 @@ public class DbMixedStackArguments {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -699,7 +699,7 @@ public class DbMixedStackArguments {
           case SUCCESS:
             if (__field.type == TType.STRING) {
               this.success = iprot.readBinary();
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;
@@ -912,7 +912,7 @@ public class DbMixedStackArguments {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -920,7 +920,7 @@ public class DbMixedStackArguments {
           case KEY:
             if (__field.type == TType.STRING) {
               this.key = iprot.readString();
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;
@@ -1129,7 +1129,7 @@ public class DbMixedStackArguments {
       while (true)
       {
         __field = iprot.readFieldBegin();
-        if (__field.type == TType.STOP) { 
+        if (__field.type == TType.STOP) {
           break;
         }
         switch (__field.id)
@@ -1137,7 +1137,7 @@ public class DbMixedStackArguments {
           case SUCCESS:
             if (__field.type == TType.STRING) {
               this.success = iprot.readBinary();
-            } else { 
+            } else {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;

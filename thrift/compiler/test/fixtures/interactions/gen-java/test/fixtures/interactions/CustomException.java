@@ -165,7 +165,7 @@ public class CustomException extends Exception implements TBase, java.io.Seriali
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -173,7 +173,7 @@ public class CustomException extends Exception implements TBase, java.io.Seriali
         case MESSAGE:
           if (__field.type == TType.STRING) {
             this.message = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

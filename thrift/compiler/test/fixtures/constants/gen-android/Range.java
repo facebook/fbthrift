@@ -112,7 +112,7 @@ public class Range implements TBase, java.io.Serializable, Cloneable {
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -120,14 +120,14 @@ public class Range implements TBase, java.io.Serializable, Cloneable {
         case MIN:
           if (__field.type == TType.I32) {
             tmp_min = iprot.readI32();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MAX:
           if (__field.type == TType.I32) {
             tmp_max = iprot.readI32();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

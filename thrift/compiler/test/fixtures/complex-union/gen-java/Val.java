@@ -320,7 +320,7 @@ public class Val implements TBase, java.io.Serializable, Cloneable, Comparable<V
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -328,7 +328,7 @@ public class Val implements TBase, java.io.Serializable, Cloneable, Comparable<V
         case STRVAL:
           if (__field.type == TType.STRING) {
             this.strVal = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -336,7 +336,7 @@ public class Val implements TBase, java.io.Serializable, Cloneable, Comparable<V
           if (__field.type == TType.I32) {
             this.intVal = iprot.readI32();
             setIntValIsSet(true);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
@@ -357,7 +357,7 @@ public class Val implements TBase, java.io.Serializable, Cloneable, Comparable<V
               }
               iprot.readMapEnd();
             }
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

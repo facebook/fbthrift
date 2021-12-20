@@ -186,7 +186,7 @@ public class Internship implements TBase, java.io.Serializable, Cloneable {
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -194,35 +194,35 @@ public class Internship implements TBase, java.io.Serializable, Cloneable {
         case WEEKS:
           if (__field.type == TType.I32) {
             tmp_weeks = iprot.readI32();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case TITLE:
           if (__field.type == TType.STRING) {
             tmp_title = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case EMPLOYER:
           if (__field.type == TType.I32) {
             tmp_employer = Company.findByValue(iprot.readI32());
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case COMPENSATION:
           if (__field.type == TType.DOUBLE) {
             tmp_compensation = iprot.readDouble();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case SCHOOL:
           if (__field.type == TType.STRING) {
             tmp_school = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;

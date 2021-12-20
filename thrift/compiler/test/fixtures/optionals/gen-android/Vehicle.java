@@ -178,7 +178,7 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable {
     while (true)
     {
       __field = iprot.readFieldBegin();
-      if (__field.type == TType.STOP) { 
+      if (__field.type == TType.STOP) {
         break;
       }
       switch (__field.id)
@@ -186,35 +186,35 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable {
         case COLOR:
           if (__field.type == TType.STRUCT) {
             tmp_color = Color.deserialize(iprot);
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case LICENSEPLATE:
           if (__field.type == TType.STRING) {
             tmp_licensePlate = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case DESCRIPTION:
           if (__field.type == TType.STRING) {
             tmp_description = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case NAME:
           if (__field.type == TType.STRING) {
             tmp_name = iprot.readString();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case HASAC:
           if (__field.type == TType.BOOL) {
             tmp_hasAC = iprot.readBool();
-          } else { 
+          } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
