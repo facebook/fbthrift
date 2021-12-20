@@ -20,3 +20,13 @@ struct Person {
   1: optional string name;
   2: i32 id;
 }
+
+union Result {
+  1: i32 success;
+  2: string error;
+}
+
+union SameType {
+  1: string a;
+  2: string b;
+}

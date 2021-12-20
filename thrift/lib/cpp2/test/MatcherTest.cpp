@@ -16,6 +16,7 @@
 
 #include <optional>
 #include <thrift/lib/cpp2/test/Matcher.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/Matcher_fatal_union.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/Matcher_types.h>
 
 #include <folly/portability/GTest.h>
@@ -23,13 +24,17 @@
 // portability/GTest must be imported before any other gtest header
 #include <gtest/gtest-spi.h>
 
+using apache::thrift::test::IsThriftUnionWith;
 using apache::thrift::test::Person;
+using apache::thrift::test::Result;
+using apache::thrift::test::SameType;
 using apache::thrift::test::ThriftField;
 using testing::_;
 using testing::A;
 using testing::Eq;
 using testing::HasSubstr;
 using testing::IsNull;
+using testing::Not;
 using testing::Optional;
 
 TEST(MatcherTest, ThriftField) {
@@ -81,4 +86,46 @@ TEST(MatcherTest, FiledRefPrintsCorrectly) {
       "optional_field_ref holding \"Zaphod\"");
   p.id_ref() = 42;
   EXPECT_EQ(testing::PrintToString(p.id_ref()), "field_ref holding 42");
+}
+
+TEST(ThriftMacher_Union, MatchesIfActiveMemberIsCorrectAndInnerMatcherMatches) {
+  namespace field = apache::thrift::tag;
+  auto r = Result();
+
+  int value = 42;
+  r.set_success(value);
+  EXPECT_THAT(r, IsThriftUnionWith<field::success>(value));
+  EXPECT_NONFATAL_FAILURE(
+      EXPECT_THAT(r, IsThriftUnionWith<field::success>(Not(value))), "");
+  EXPECT_NONFATAL_FAILURE(
+      EXPECT_THAT(r, IsThriftUnionWith<field::error>(_)), "");
+
+  std::string error = "error";
+  r.set_error(error);
+  EXPECT_THAT(r, IsThriftUnionWith<field::error>(error));
+  EXPECT_NONFATAL_FAILURE(
+      EXPECT_THAT(r, IsThriftUnionWith<field::error>(Not(error))), "");
+  EXPECT_NONFATAL_FAILURE(
+      EXPECT_THAT(r, IsThriftUnionWith<field::success>(_)), "");
+}
+
+TEST(ThriftMacher_Union, Given_IsUnset_Then_NoTagMatches) {
+  namespace field = apache::thrift::tag;
+
+  auto r = Result();
+  EXPECT_NONFATAL_FAILURE(
+      EXPECT_THAT(r, IsThriftUnionWith<field::success>(_)), "");
+  EXPECT_NONFATAL_FAILURE(
+      EXPECT_THAT(r, IsThriftUnionWith<field::error>(_)), "");
+}
+
+TEST(
+    ThriftMacher_Union,
+    Given_UnionHasSameTypes_And_IsSet_Then_TagForActiveMemberMatches) {
+  namespace field = apache::thrift::tag;
+
+  auto r = SameType();
+  r.set_b("b");
+  EXPECT_THAT(r, IsThriftUnionWith<field::b>(_));
+  EXPECT_NONFATAL_FAILURE(EXPECT_THAT(r, IsThriftUnionWith<field::a>(_)), "");
 }

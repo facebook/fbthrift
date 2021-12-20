@@ -43,7 +43,10 @@ namespace detail {
 template <typename FieldTag, typename InnerMatcher>
 class ThriftFieldMatcher;
 
-}
+template <typename FieldTag, typename InnerMatcher>
+class IsThriftUnionWithMatcher;
+
+} // namespace detail
 
 // A Thrift field matcher.
 //
@@ -92,6 +95,34 @@ auto ThriftField(
 template <typename FieldTag, typename Matcher>
 detail::ThriftFieldMatcher<FieldTag, Matcher> ThriftField(Matcher matcher) {
   return detail::ThriftFieldMatcher<FieldTag, Matcher>(matcher);
+}
+
+// A Thrift union(variant) matcher.
+//
+// Given a Thrift union
+//
+//   union Result {
+//     1: int success;
+//     2: string error;
+//   }
+//
+// the matcher can be used as follows:
+//
+//   auto r = Result();
+//   r.set_success(1);
+//   EXPECT_THAT(p, IsThriftUnionWith<success>(Eq(1)));
+//   EXPECT_THAT(p, Not(IsThriftUnionWith<error>(_)));
+//
+// The `success` and `error` types are declared inside the `apache::thrift::tag`
+// namespace in the `_types.h` generated file.
+// A useful pattern is to define `namespace field = apache::thrift::tag;`, and
+// refer to the fields as `field::field_name`, e.g.
+// `IsThriftUnionWith<field::id>(_)`.
+//
+template <typename FieldTag, typename Matcher>
+detail::IsThriftUnionWithMatcher<FieldTag, Matcher> IsThriftUnionWith(
+    Matcher matcher) {
+  return detail::IsThriftUnionWithMatcher<FieldTag, Matcher>(matcher);
 }
 
 } // namespace test
