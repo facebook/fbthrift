@@ -18,8 +18,8 @@
 #include <thrift/lib/py3lite/types_api.h> // @manual
 
 #include <folly/Indestructible.h>
-#include <folly/Memory.h>
 #include <folly/Range.h>
+#include <folly/lang/New.h>
 
 namespace apache {
 namespace thrift {
@@ -466,8 +466,9 @@ size_t MapTypeInfo::write(
 DynamicStructInfo::DynamicStructInfo(
     const char* name, int16_t numFields, bool isUnion)
     : name_{name} {
-  structInfo_ = static_cast<detail::StructInfo*>(folly::allocateBytes(
-      sizeof(detail::StructInfo) + sizeof(detail::FieldInfo) * numFields));
+  structInfo_ = static_cast<detail::StructInfo*>(folly::operator_new(
+      sizeof(detail::StructInfo) + sizeof(detail::FieldInfo) * numFields,
+      folly::align_val_t{alignof(detail::StructInfo)}));
   // reserve vector as we are assigning const char* from the string in
   // vector
   fieldNames_.reserve(numFields);
@@ -484,10 +485,11 @@ DynamicStructInfo::~DynamicStructInfo() {
   for (auto kv : fieldValues_) {
     Py_DECREF(kv.second);
   }
-  folly::deallocateBytes(
+  folly::operator_delete(
       structInfo_,
       sizeof(detail::StructInfo) +
-          sizeof(detail::FieldInfo) * structInfo_->numFields);
+          sizeof(detail::FieldInfo) * structInfo_->numFields,
+      folly::align_val_t{alignof(detail::StructInfo)});
 }
 
 void DynamicStructInfo::addFieldInfo(
