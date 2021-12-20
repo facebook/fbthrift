@@ -23,11 +23,12 @@ import com.facebook.thrift.protocol.TCompactProtocol;
 import com.facebook.thrift.protocol.TMessage;
 import com.facebook.thrift.protocol.TMessageType;
 import com.facebook.thrift.utils.StandardCharsets;
+import java.io.IOException;
+import java.net.URL;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -120,8 +121,9 @@ public class THeaderTransport extends TFramedTransport {
   private static final String IDENTITY_HEADER = "identity";
   private static final String ID_VERSION_HEADER = "id_version";
   private static final String ID_VERSION = "1";
+  private static final String FBCODE_BUILD_RULE_MANIFEST_ATTR = "Fbcode-Build-Rule";
   private static final String CLIENT_METADATA_HEADER = "client_metadata";
-  private static final String CLIENT_METADATA = "{\"agent\":\"THeaderTransport.java\"}";
+  private static final String CLIENT_METADATA = getClientMetadata();
 
   private String identity;
 
@@ -717,5 +719,29 @@ public class THeaderTransport extends TFramedTransport {
     public TTransport getTransport(TTransport base) {
       return new THeaderTransport(base, clientTypes);
     }
+  }
+
+  private static String getClientMetadata() {
+    return String.format(
+        "{\"agent\":\"nifty.THeaderTransport.java\",\"clientMetadata\":{\"build_rule\":\"%s\"}}",
+        getClientBuildRule());
+  }
+
+  private static String getClientBuildRule() {
+    try {
+      Enumeration<URL> resources =
+          THeaderTransport.class.getClassLoader().getResources("META-INF/MANIFEST.MF");
+      while (resources.hasMoreElements()) {
+        Manifest manifest = new Manifest(resources.nextElement().openStream());
+        Attributes attr = manifest.getMainAttributes();
+        if (attr.containsKey(FBCODE_BUILD_RULE_MANIFEST_ATTR)) {
+          return attr.getValue("Fbcode-Build-Rule");
+        }
+      }
+    } catch (IOException e) {
+      return "<unknown_build_rule>";
+    }
+
+    return "<unknown_build_rule>";
   }
 }
