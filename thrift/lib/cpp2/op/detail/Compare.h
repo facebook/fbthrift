@@ -27,24 +27,22 @@ namespace apache::thrift::op::detail {
 
 template <typename Tag>
 struct EqualTo {
-  constexpr bool operator()(
-      const type::native_type<Tag>& lhs,
-      const type::native_type<Tag>& rhs) const {
-    // Use the native c++ operator by default.
-    return lhs == rhs;
+  static_assert(type::is_concrete_v<Tag>);
+  template <typename T1 = type::native_type<Tag>, typename T2 = T1>
+  constexpr bool operator()(const T1& lhs, const T2& rhs) const {
+    if constexpr (type::is_a_v<Tag, type::string_c>) {
+      return StringTraits<T1>::isEqual(lhs, rhs);
+    } else {
+      // Use the native c++ operator by default.
+      return lhs == rhs;
+    }
   }
 };
 
-struct StringEqualTo {
-  template <typename T>
-  bool operator()(const T& lhs, const T& rhs) const {
-    return StringTraits<T>::isEqual(lhs, rhs);
-  }
+template <typename Adapter, typename Tag>
+struct EqualTo<type::adapted<Adapter, Tag>> {
+  // TODO(afuller): Implement.
 };
-template <>
-struct EqualTo<type::string_t> : StringEqualTo {};
-template <>
-struct EqualTo<type::binary_t> : StringEqualTo {};
 
 template <typename Tag>
 struct IdenticalTo : EqualTo<Tag> {
@@ -58,6 +56,11 @@ struct IdenticalTo : EqualTo<Tag> {
       // TODO(afuller): Implement proper specializations for all structured
       // types.
       type::structured_types::contains<Tag>());
+};
+
+template <typename Adapter, typename Tag>
+struct IdenticalTo<type::adapted<Adapter, Tag>> {
+  // TODO(afuller): Implement.
 };
 
 template <typename F, typename I>
