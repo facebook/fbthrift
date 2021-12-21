@@ -163,6 +163,8 @@ template <typename T, typename Tag>
 constexpr inline bool is_concrete_v<cpp_type<T, Tag>> = is_concrete_v<Tag>;
 
 template <>
+constexpr inline bool is_thrift_type_tag_v<all_c> = true;
+template <>
 constexpr inline bool is_thrift_type_tag_v<number_c> = true;
 template <>
 constexpr inline bool is_thrift_type_tag_v<integral_c> = true;
@@ -173,6 +175,8 @@ constexpr inline bool is_thrift_type_tag_v<enum_c> = true;
 template <>
 constexpr inline bool is_thrift_type_tag_v<string_c> = true;
 template <>
+constexpr inline bool is_thrift_type_tag_v<structured_c> = true;
+template <>
 constexpr inline bool is_thrift_type_tag_v<struct_except_c> = true;
 template <>
 constexpr inline bool is_thrift_type_tag_v<struct_c> = true;
@@ -180,6 +184,8 @@ template <>
 constexpr inline bool is_thrift_type_tag_v<union_c> = true;
 template <>
 constexpr inline bool is_thrift_type_tag_v<exception_c> = true;
+template <>
+constexpr inline bool is_thrift_type_tag_v<container_c> = true;
 template <>
 constexpr inline bool is_thrift_type_tag_v<list_c> = true;
 template <>

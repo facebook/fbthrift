@@ -34,18 +34,21 @@ struct DefaultT;
 } // namespace detail
 
 // Classes of types (_c suffix).
-struct number_c {}; // all number types, including 'bool' and 'enum'
+struct all_c {}; // all thrift types
+struct number_c : all_c {}; // all number types, including 'bool' and 'enum'
 struct integral_c : number_c {}; // all integral types, not `enum`
 struct floating_point_c : number_c {}; // all floating point types
 struct enum_c : number_c {}; // all `enum` types
-struct string_c {}; // `binary` and `string`
-struct struct_except_c {}; // all `struct` and `exception` types
+struct string_c : all_c {}; // `binary` and `string`
+struct structured_c : all_c {}; // all structured types, including 'union'
+struct struct_except_c : structured_c {}; // all `struct` and `exception` types
 struct struct_c : struct_except_c {}; // all `struct` types
 struct exception_c : struct_except_c {}; // all `exception` types
-struct union_c {}; // all `union` types
-struct list_c {}; // all `list` types
-struct set_c {}; // all `set` types
-struct map_c {}; // all `map` types
+struct union_c : structured_c {}; // all `union` types
+struct container_c : all_c {}; // all container types.
+struct list_c : container_c {}; // all `list` types
+struct set_c : container_c {}; // all `set` types
+struct map_c : container_c {}; // all `map` types
 
 // Type tags for types that are always concrete (_t suffix).
 struct void_t {};
