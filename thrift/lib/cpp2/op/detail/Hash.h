@@ -53,14 +53,14 @@ struct HashImpl<type::binary_t> : HashImpl<type::string_t> {};
 
 template <class Accumulator>
 auto makeOrderedHashGuard(Accumulator& accumulator) {
-  accumulator.orderedElementsBegin();
-  return folly::makeGuard([&] { accumulator.orderedElementsEnd(); });
+  accumulator.beginOrdered();
+  return folly::makeGuard([&] { accumulator.endOrdered(); });
 }
 
 template <class Accumulator>
 auto makeUnorderedHashGuard(Accumulator& accumulator) {
-  accumulator.unorderedElementsBegin();
-  return folly::makeGuard([&] { accumulator.unorderedElementsEnd(); });
+  accumulator.beginUnordered();
+  return folly::makeGuard([&] { accumulator.endUnordered(); });
 }
 
 template <typename ValTag>
@@ -110,9 +110,8 @@ struct HashImpl<type::struct_t<StructType>> {
       typename Accumulator,
       typename T = type::native_type<type::struct_t<StructType>>>
   constexpr void operator()(Accumulator& accumulator, const T& value) const {
-    hash::DeterministicProtocol protocol(std::move(accumulator));
+    detail::HashProtocol protocol(accumulator);
     value.write(&protocol);
-    accumulator = std::move(protocol);
   }
 };
 

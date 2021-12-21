@@ -80,7 +80,7 @@ void DeterministicAccumulator<HasherGenerator>::combine(
 }
 
 template <typename HasherGenerator>
-void DeterministicAccumulator<HasherGenerator>::orderedElementsBegin() {
+void DeterministicAccumulator<HasherGenerator>::beginOrdered() {
   if (auto* context = getContext<OrderedContext>()) {
     ++context->count;
   } else {
@@ -89,7 +89,7 @@ void DeterministicAccumulator<HasherGenerator>::orderedElementsBegin() {
 }
 
 template <typename HasherGenerator>
-void DeterministicAccumulator<HasherGenerator>::orderedElementsEnd() {
+void DeterministicAccumulator<HasherGenerator>::endOrdered() {
   if (auto* context = getContext<OrderedContext>()) {
     if (--context->count == 0) {
       exitContext(std::move(*context).hasher);
@@ -102,12 +102,12 @@ void DeterministicAccumulator<HasherGenerator>::orderedElementsEnd() {
 }
 
 template <typename HasherGenerator>
-void DeterministicAccumulator<HasherGenerator>::unorderedElementsBegin() {
+void DeterministicAccumulator<HasherGenerator>::beginUnordered() {
   context_.emplace(UnorderedContext{});
 }
 
 template <typename HasherGenerator>
-void DeterministicAccumulator<HasherGenerator>::unorderedElementsEnd() {
+void DeterministicAccumulator<HasherGenerator>::endUnordered() {
   if (auto* context = getContext<UnorderedContext>()) {
     std::sort(context->begin(), context->end());
     auto result = generator_();

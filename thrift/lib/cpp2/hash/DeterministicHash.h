@@ -20,7 +20,7 @@
 #include <utility>
 
 #include <thrift/lib/cpp2/hash/DeterministicAccumulator.h>
-#include <thrift/lib/cpp2/hash/DeterministicProtocol.h>
+#include <thrift/lib/cpp2/op/detail/HashProtocol.h>
 
 namespace apache {
 namespace thrift {
@@ -59,10 +59,11 @@ auto deterministic_hash(const Struct& data) {
 template <typename Struct, typename HasherGenerator>
 auto deterministic_hash(const Struct& data, HasherGenerator generator) {
   using Accumulator = DeterministicAccumulator<HasherGenerator>;
-  using Protocol = DeterministicProtocol<Accumulator>;
-  Protocol protocol{Accumulator{std::move(generator)}};
+  using Protocol = op::detail::HashProtocol<Accumulator>;
+  Accumulator acc{std::move(generator)};
+  Protocol protocol{acc};
   data.write(&protocol);
-  return std::move(protocol).getResult();
+  return std::move(acc).getResult();
 }
 
 } // namespace hash

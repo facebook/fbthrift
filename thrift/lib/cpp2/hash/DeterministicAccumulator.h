@@ -57,34 +57,34 @@ namespace hash {
  *   }
  *   MyData data;
  *   DeterministicAccumulator<MyHasherGenerator> acc;
- *   acc.unorderedElementsBegin();     // struct data begin
- *    acc.orderedElementsBegin();      // field  f1   begin
+ *   acc.beginUnordered();             // struct data begin
+ *    acc.beginOrdered();              // field  f1   begin
  *     acc.combine(TType::T_LIST);     // field  f1   type
  *     acc.combine(1);                 // field  f1   id
- *     acc.orderedElementsBegin();     // list   f1   begin
+ *     acc.beginOrdered();             // list   f1   begin
  *      acc.combine(TType::T_I64);     // list   f1   type
  *      acc.combine(3);                // list   f1   size
- *      acc.orderedElementsBegin();    // list   f1   data begin
+ *      acc.beginOrdered();            // list   f1   data begin
  *       acc.combine(1);               // f1[0]
  *       acc.combine(2);               // f1[1]
  *       acc.combine(3);               // f1[2]
- *      acc.orderedElementsEnd();      // list   f1   data end
- *     acc.orderedElementsEnd();       // list   f1   end
- *    acc.orderedElementsEnd();        // field  f1   end
- *    acc.orderedElementsBegin();      // field  f2   begin
+ *      acc.endOrdered();              // list   f1   data end
+ *     acc.endOrdered();               // list   f1   end
+ *    acc.endOrdered();                // field  f1   end
+ *    acc.beginOrdered();              // field  f2   begin
  *     acc.combine(TType::T_SET);      // field  f2   type
  *     acc.combine(2);                 // field  f2   id
- *     acc.orderedElementsBegin();     // set    f2   begin
+ *     acc.beginOrdered();             // set    f2   begin
  *      acc.combine(TType::T_STRING);  // set    f2   type
  *      acc.combine(3);                // set    f2   size
- *      acc.unorderedElementsBegin();  // set    f2   data begin
+ *      acc.beginUnordered();          // set    f2   data begin
  *       acc.combine(4);               // f2[0]
  *       acc.combine(5);               // f2[1]
  *       acc.combine(6);               // f2[2]
- *      acc.unorderedElementsEnd();    // set    f2   data end
- *     acc.orderedElementsEnd();       // set    f2   end
- *    acc.orderedElementsEnd();        // field  f2   end
- *   acc.unorderedElementsEnd();       // struct data end
+ *      acc.endUnordered();            // set    f2   data end
+ *     acc.endOrdered();               // set    f2   end
+ *    acc.endOrdered();                // field  f2   end
+ *   acc.endUnordered();               // struct data end
  */
 template <typename HasherGenerator>
 class DeterministicAccumulator {
@@ -106,10 +106,10 @@ class DeterministicAccumulator {
   inline void combine(double value);
   inline void combine(const folly::IOBuf& value);
   inline void combine(folly::ByteRange value);
-  inline void orderedElementsBegin();
-  inline void orderedElementsEnd();
-  inline void unorderedElementsBegin();
-  inline void unorderedElementsEnd();
+  inline void beginOrdered();
+  inline void endOrdered();
+  inline void beginUnordered();
+  inline void endUnordered();
 
  private:
   struct OrderedContext {
