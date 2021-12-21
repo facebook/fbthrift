@@ -75,11 +75,9 @@ class RequestStateMachine {
   // value of false indicates that request processing should be aborted.
   [[nodiscard]] bool tryStartProcessing() {
     if (cancelled_.load(std::memory_order_relaxed) ||
-        startProcessingOrQueueTimeout_.exchange(
-            true, std::memory_order_relaxed)) {
+        startProcessingOrQueueTimeout_.exchange(true)) {
       return false;
     }
-    infoStartedProcessing_.store(true, std::memory_order_relaxed);
     dequeued_.store(
         std::chrono::steady_clock::now(), std::memory_order_relaxed);
     return true;
@@ -90,8 +88,7 @@ class RequestStateMachine {
   // handling can begin. A return value of false indicates that queue timeout
   // handling should be aborted.
   [[nodiscard]] bool tryStopProcessing() {
-    if (!startProcessingOrQueueTimeout_.exchange(
-            true, std::memory_order_relaxed)) {
+    if (!startProcessingOrQueueTimeout_.exchange(true)) {
       dequeued_.store(
           std::chrono::steady_clock::now(), std::memory_order_relaxed);
       return true;
@@ -100,7 +97,8 @@ class RequestStateMachine {
   }
 
   bool getStartedProcessing() const {
-    return infoStartedProcessing_.load(std::memory_order_relaxed);
+    return dequeued_.load(std::memory_order_relaxed) !=
+        std::chrono::steady_clock::time_point::min();
   }
 
   FOLLY_NODISCARD bool includeInRecentRequests() const {
@@ -123,10 +121,9 @@ class RequestStateMachine {
   }
 
  private:
-  std::atomic<bool> startProcessingOrQueueTimeout_{false};
+  folly::relaxed_atomic_bool startProcessingOrQueueTimeout_{false};
   std::atomic<bool> cancelled_{false};
 
-  std::atomic<bool> infoStartedProcessing_{false};
   const bool includeInRecentRequests_;
   const std::chrono::steady_clock::time_point started_{
       std::chrono::steady_clock::now()};
