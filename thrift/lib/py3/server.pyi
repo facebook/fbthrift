@@ -57,9 +57,6 @@ class SSLPolicy(Enum):
     value: int
 
 class AsyncProcessorFactory:
-    pass
-
-class ServiceInterface(AsyncProcessorFactory):
     annotations: ClassVar[Mapping[str, str]] = ...
     # pyre-ignore[3]: it can return anything
     async def __aenter__(self) -> Any: ...
@@ -69,6 +66,9 @@ class ServiceInterface(AsyncProcessorFactory):
         exc_value: Optional[BaseException],
         traceback: Optional[TracebackType],
     ) -> Optional[bool]: ...
+
+class ServiceInterface(AsyncProcessorFactory):
+    pass
 
 hT = TypeVar("hT", bound=AsyncProcessorFactory)
 

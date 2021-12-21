@@ -59,10 +59,6 @@ class SSLPolicy(Enum):
 
 
 cdef class AsyncProcessorFactory:
-    pass
-
-
-cdef class ServiceInterface(AsyncProcessorFactory):
     async def __aenter__(self):
         # Establish async context managers as a way for end users to async initalize
         # internal structures used by Service Handlers.
@@ -79,6 +75,10 @@ cdef class ServiceInterface(AsyncProcessorFactory):
     @staticmethod
     def __get_thrift_name__():
         raise NotImplementedError()
+
+
+cdef class ServiceInterface(AsyncProcessorFactory):
+    pass
 
 
 def getServiceName(ServiceInterface svc not None):
