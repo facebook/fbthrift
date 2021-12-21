@@ -35,14 +35,16 @@ void testClear(
     const type::native_type<Tag>& expected, type::native_type<Tag> unexpected) {
   SCOPED_TRACE(type::getName<Tag>());
 
-  EXPECT_TRUE(isEmpty<Tag>(expected));
+  EXPECT_EQ(
+      isEmpty<Tag>(expected), (!type::is_a_v<Tag, type::struct_except_c>));
   EXPECT_THAT(getIntrinsicDefault<Tag>(), IsIdenticalTo<Tag>(expected));
 
   EXPECT_FALSE(isEmpty<Tag>(unexpected));
   EXPECT_THAT(unexpected, ::testing::Not(IsIdenticalTo<Tag>(expected)));
 
   clear<Tag>(unexpected);
-  EXPECT_TRUE(isEmpty<Tag>(expected));
+  EXPECT_EQ(
+      isEmpty<Tag>(expected), (!type::is_a_v<Tag, type::struct_except_c>));
   EXPECT_THAT(unexpected, IsIdenticalTo<Tag>(expected));
 }
 

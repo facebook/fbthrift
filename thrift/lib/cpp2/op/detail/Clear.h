@@ -20,135 +20,85 @@
 
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/op/Compare.h>
+#include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
 #include <thrift/lib/cpp2/type/Traits.h>
 
 namespace apache::thrift::op::detail {
-template <typename Tag>
-struct Clear; // Forward declare.
 
-template <typename Tag, typename T = type::native_type<Tag>>
-struct DefaultOf {
-  // C++'s intrinsic default for the underlying native type, is the intrisitic
-  // default for for all unstructured types.
-  static_assert(!type::structured_types::contains<Tag>());
-  constexpr static T get() { return {}; }
-};
+// C++'s intrinsic default for the underlying native type, is the intrisitic
+// default for for all unstructured types.
+template <typename T>
+constexpr T getIntrinsicDefault(type::all_c) {
+  return T{};
+}
 
 template <typename T>
-struct StringDefaultOf {
-  constexpr static T get() { return StringTraits<T>::fromStringLiteral(""); }
-};
-template <typename T>
-struct DefaultOf<type::string_t, T> : StringDefaultOf<T> {};
-template <typename T>
-struct DefaultOf<type::binary_t, T> : StringDefaultOf<T> {};
+constexpr T getIntrinsicDefault(type::string_c) {
+  return StringTraits<T>::fromStringLiteral("");
+}
 
-template <typename Tag, typename T>
-struct StructureDefaultOf {
-  FOLLY_EXPORT static const T& get() {
-    const static T* kDefault = []() {
-      auto* value = new T{};
-      // The default construct respects 'custom' defaults on fields, but
-      // clearing any instance of a structured type, sets it to the
-      // 'intrinsic' default.
-      Clear<Tag>()(*value);
-      return value;
-    }();
-    return *kDefault;
-  }
-};
 template <typename T>
-struct DefaultOf<type::struct_t<T>> : StructureDefaultOf<type::struct_t<T>, T> {
-};
-template <typename T>
-struct DefaultOf<type::union_t<T>> : StructureDefaultOf<type::union_t<T>, T> {};
-template <typename T>
-struct DefaultOf<type::exception_t<T>>
-    : StructureDefaultOf<type::exception_t<T>, T> {};
-
-template <typename Tag>
-struct Empty {
-  template <typename T = type::native_type<Tag>>
-  constexpr bool operator()(const T& value) const {
-    // All unstructured values are 'empty' if they are identical to their
-    // intrinsic default.
-    //
-    // TODO(afuller): Implement a specialization for structured types that
-    // can serialize to an empty buffer.
-    // static_assert(!type::structured_types::contains<Tag>());
-    return op::identical<Tag>(value, DefaultOf<Tag, T>::get());
-  }
-};
-
-struct StringEmpty {
-  template <typename T>
-  bool operator()(const T& value) const {
-    return StringTraits<T>::isEmpty(value);
-  }
-};
-template <>
-struct Empty<type::string_t> : StringEmpty {};
-template <>
-struct Empty<type::binary_t> : StringEmpty {};
-
-struct ContainerEmpty {
-  template <typename T>
-  constexpr bool operator()(const T& value) const {
-    return value.empty();
-  }
-};
-template <typename ValTag, template <typename...> typename ListT>
-struct Empty<type::list<ValTag, ListT>> : ContainerEmpty {};
-template <typename KeyTag, template <typename...> typename SetT>
-struct Empty<type::set<KeyTag, SetT>> : ContainerEmpty {};
-template <
-    typename KeyTag,
-    typename ValTag,
-    template <typename...>
-    typename MapT>
-struct Empty<type::map<KeyTag, ValTag, MapT>> : ContainerEmpty {};
+FOLLY_EXPORT const T& getIntrinsicDefault(type::structured_c) noexcept {
+  const static T* kDefault = []() {
+    auto* value = new T{};
+    // The default construct respects 'custom' defaults on fields, but
+    // clearing any instance of a structured type, sets it to the
+    // 'intrinsic' default.
+    apache::thrift::clear(*value);
+    return value;
+  }();
+  return *kDefault;
+}
 
 template <typename Tag>
 struct Clear {
+  static_assert(type::is_concrete_v<Tag>);
+  template <typename T>
+  void operator()(T& value) const {
+    if constexpr (type::is_a_v<Tag, type::structured_c>) {
+      apache::thrift::clear(value);
+    } else if constexpr (type::is_a_v<Tag, type::container_c>) {
+      value.clear();
+    } else {
+      // All unstructured types can be cleared by assigning to the intrinsic
+      // default.
+      value = getIntrinsicDefault<T>(Tag{});
+    }
+  }
+};
+
+template <typename Adapter, typename Tag>
+struct Clear<type::adapted<Adapter, Tag>> {
+  // TODO(afuller): implement.
+};
+
+template <typename Tag>
+struct Empty {
+  static_assert(type::is_concrete_v<Tag>);
   template <typename T = type::native_type<Tag>>
-  constexpr void operator()(T& value) const {
-    // All unstructured types can be cleared by assigning to the intrinsic
-    // default.
-    static_assert(!type::structured_types::contains<Tag>());
-    value = DefaultOf<Tag, T>::get();
+  constexpr bool operator()(const T& value) const {
+    if constexpr (type::is_a_v<Tag, type::string_c>) {
+      return StringTraits<T>::isEmpty(value);
+    } else if constexpr (type::is_a_v<Tag, type::container_c>) {
+      return value.empty();
+    } else if constexpr (type::is_a_v<Tag, type::union_c>) {
+      return value.getType() == T::__EMPTY__;
+    } else if constexpr (type::is_a_v<Tag, type::struct_except_c>) {
+      // TODO(afuller): Implement a specialization for struct and except types
+      // that can serialize to an empty buffer.
+      return false;
+    }
+
+    // All unstructured values are 'empty' if they are identical to their
+    // intrinsic default.
+    return op::identical<Tag>(value, getIntrinsicDefault<T>(Tag{}));
   }
 };
 
-struct StructuredClear {
-  template <typename T>
-  constexpr void operator()(T& value) const {
-    apache::thrift::clear(value);
-  }
+template <typename Adapter, typename Tag>
+struct Empty<type::adapted<Adapter, Tag>> {
+  // TODO(afuller): implement.
 };
-template <typename T>
-struct Clear<type::struct_t<T>> : StructuredClear {};
-template <typename T>
-struct Clear<type::union_t<T>> : StructuredClear {};
-template <typename T>
-struct Clear<type::exception_t<T>> : StructuredClear {};
-
-struct ContainerClear {
-  template <typename T>
-  constexpr void operator()(T& value) const {
-    value.clear();
-  }
-};
-
-template <typename ValTag, template <typename...> typename ListT>
-struct Clear<type::list<ValTag, ListT>> : ContainerClear {};
-template <typename KeyTag, template <typename...> typename SetT>
-struct Clear<type::set<KeyTag, SetT>> : ContainerClear {};
-template <
-    typename KeyTag,
-    typename ValTag,
-    template <typename...>
-    typename MapT>
-struct Clear<type::map<KeyTag, ValTag, MapT>> : ContainerClear {};
 
 } // namespace apache::thrift::op::detail
