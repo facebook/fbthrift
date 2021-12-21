@@ -144,7 +144,6 @@ add_library(
   FieldRef.cpp
   Flags.cpp
   GeneratedCodeHelper.cpp
-  PluggableFunction.cpp
   async/AsyncClient.cpp
   async/AsyncProcessor.cpp
   async/AsyncProcessorHelper.cpp
