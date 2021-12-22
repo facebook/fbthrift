@@ -31,7 +31,6 @@ import org.apache.thrift.InteractionTerminate;
 import com.facebook.thrift.client.ResponseWrapper;
 import com.facebook.thrift.client.RpcOptions;
 
-{{#service:disableReactive?}}// Generation of this class is disabled using (java.swift.disable_reactive){{/service:disableReactive?}}{{^service:disableReactive?}}
 public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} extends {{service:javaPackage}}.{{service:javaCapitalName}}ReactiveClient{{/service:extends}}
   implements {{service:javaCapitalName}}.Reactive {
   private static final AtomicLong _interactionCounter = new AtomicLong(0);
@@ -857,4 +856,3 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
       return headers;
   }
 }
-{{/service:disableReactive?}}

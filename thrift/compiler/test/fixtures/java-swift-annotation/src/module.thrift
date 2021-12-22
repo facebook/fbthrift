@@ -42,7 +42,3 @@ struct MyMapping {
   3: map<string, string (java.swift.binary_string)> binaryMap;
   4: map<string, binary> regularBinary;
 }
-
-service MyAnnotationService {
-  void ping();
-} (java.swift.disable_reactive)

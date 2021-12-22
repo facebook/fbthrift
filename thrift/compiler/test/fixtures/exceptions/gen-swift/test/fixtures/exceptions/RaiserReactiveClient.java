@@ -19,7 +19,6 @@ import org.apache.thrift.InteractionTerminate;
 import com.facebook.thrift.client.ResponseWrapper;
 import com.facebook.thrift.client.RpcOptions;
 
-
 public class RaiserReactiveClient 
   implements Raiser.Reactive {
   private static final AtomicLong _interactionCounter = new AtomicLong(0);
