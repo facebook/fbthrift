@@ -165,16 +165,9 @@ std::shared_ptr<mstch_base> const_generator::generate(
     int32_t index,
     t_const const* current_const,
     t_type const* expected_type,
-    const std::string& field_name) const {
+    t_field const* field) const {
   return std::make_shared<mstch_const>(
-      cnst,
-      current_const,
-      expected_type,
-      generators,
-      cache,
-      pos,
-      index,
-      field_name);
+      cnst, current_const, expected_type, generators, cache, pos, index, field);
 }
 
 std::shared_ptr<mstch_base> program_generator::generate(
@@ -496,8 +489,7 @@ mstch::node mstch_const_value::const_struct_type() {
 
 mstch::node mstch_const_value::const_struct() {
   std::vector<t_const*> constants;
-  std::vector<int32_t> idx;
-  std::vector<std::string> field_names;
+  std::vector<const t_field*> fields;
   mstch::array a;
 
   const auto* type = const_value_->ttype()->deref().get_true_type();
@@ -511,8 +503,7 @@ mstch::node mstch_const_value::const_struct() {
           field->get_type(),
           field->get_name(),
           member.second->clone()));
-      idx.push_back(field->get_key());
-      field_names.push_back(field->get_name());
+      fields.push_back(field);
     }
   }
 
@@ -523,10 +514,10 @@ mstch::node mstch_const_value::const_struct() {
         generators_,
         cache_,
         pos,
-        idx[i],
+        fields[i]->get_key(),
         current_const_,
         constants[i]->get_type(),
-        field_names[i]));
+        fields[i]));
   }
   return a;
 }

@@ -1373,7 +1373,7 @@ class mstch_cpp2_const : public mstch_const {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
-      const std::string& field_name)
+      t_field const* field)
       : mstch_const(
             cnst,
             current_const,
@@ -1382,11 +1382,12 @@ class mstch_cpp2_const : public mstch_const {
             std::move(cache),
             pos,
             index,
-            field_name) {
+            field) {
     register_methods(
         this,
         {
             {"constant:enum_value", &mstch_cpp2_const::enum_value},
+            {"constant:cpp_name", &mstch_cpp2_const::cpp_name},
         });
   }
   mstch::node enum_value() {
@@ -1401,6 +1402,7 @@ class mstch_cpp2_const : public mstch_const {
     }
     return mstch::node();
   }
+  mstch::node cpp_name() { return cpp2::get_name(field_); }
 };
 
 class mstch_cpp2_program : public mstch_program {
@@ -1935,7 +1937,7 @@ class const_cpp2_generator : public const_generator {
       int32_t index,
       t_const const* current_const,
       t_type const* expected_type,
-      const std::string& field_name) const override {
+      t_field const* field) const override {
     return std::make_shared<mstch_cpp2_const>(
         cnst,
         current_const,
@@ -1944,7 +1946,7 @@ class const_cpp2_generator : public const_generator {
         std::move(cache),
         pos,
         index,
-        field_name);
+        field);
   }
 };
 

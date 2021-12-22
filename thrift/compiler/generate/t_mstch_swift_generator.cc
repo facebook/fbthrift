@@ -778,7 +778,7 @@ class mstch_swift_const : public mstch_const {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
-      const std::string& field_name)
+      t_field const* field)
       : mstch_const(
             cnst,
             current_const,
@@ -787,7 +787,7 @@ class mstch_swift_const : public mstch_const {
             cache,
             pos,
             index,
-            field_name) {
+            field) {
     register_methods(
         this,
         {
@@ -801,7 +801,7 @@ class mstch_swift_const : public mstch_const {
     return java::mangle_java_constant_name(cnst_->get_name());
   }
   mstch::node java_field_name() {
-    return java::mangle_java_name(field_name_, true);
+    return java::mangle_java_name(field_->get_name(), true);
   }
   mstch::node java_ignore_constant() {
     // we have to ignore constants if they are enums that we handled as ints, as
@@ -1061,7 +1061,7 @@ class const_swift_generator : public const_generator {
       int32_t index,
       t_const const* current_const,
       t_type const* expected_type,
-      const std::string& field_name) const override {
+      t_field const* field) const override {
     return std::make_shared<mstch_swift_const>(
         cnst,
         current_const,
@@ -1070,7 +1070,7 @@ class const_swift_generator : public const_generator {
         cache,
         pos,
         index,
-        field_name);
+        field);
   }
 };
 

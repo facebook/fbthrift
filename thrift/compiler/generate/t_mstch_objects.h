@@ -235,7 +235,7 @@ class const_generator {
       int32_t index = 0,
       t_const const* current_const = nullptr,
       t_type const* expected_type = nullptr,
-      const std::string& field_name = std::string()) const;
+      t_field const* field = nullptr) const;
 };
 
 class program_generator {
@@ -1301,13 +1301,13 @@ class mstch_const : public mstch_base {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index,
-      const std::string& field_name = std::string())
+      t_field const* field)
       : mstch_base(generators, cache, pos),
         cnst_(cnst),
         current_const_(current_const),
         expected_type_(expected_type),
         index_(index),
-        field_name_(field_name) {
+        field_(field) {
     register_methods(
         this,
         {
@@ -1329,7 +1329,7 @@ class mstch_const : public mstch_base {
   t_const const* current_const_;
   t_type const* expected_type_;
   int32_t index_;
-  const std::string field_name_;
+  t_field const* field_;
 };
 
 class mstch_program : public mstch_base {

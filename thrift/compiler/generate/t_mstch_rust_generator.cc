@@ -1284,7 +1284,7 @@ class mstch_rust_const : public mstch_const {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
-      const std::string& field_name,
+      t_field const* field,
       const rust_codegen_options& options)
       : mstch_const(
             cnst,
@@ -1294,7 +1294,7 @@ class mstch_rust_const : public mstch_const {
             cache,
             pos,
             index,
-            field_name),
+            field),
         options_(options) {
     register_methods(
         this,
@@ -1679,7 +1679,7 @@ class const_rust_generator : public const_generator {
       int32_t index,
       const t_const* current_const,
       const t_type* expected_type,
-      const std::string& field_name) const override {
+      t_field const* field) const override {
     return std::make_shared<mstch_rust_const>(
         cnst,
         current_const,
@@ -1688,7 +1688,7 @@ class const_rust_generator : public const_generator {
         cache,
         pos,
         index,
-        field_name,
+        field,
         options_);
   }
 
