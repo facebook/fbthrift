@@ -459,3 +459,4 @@ cdef class SecretStruct(thrift.py3.types.Struct):
         return needed
 
 
+myStruct = MyStruct._fbthrift_create(constant_shared_ptr(cmyStruct()))

@@ -19,3 +19,9 @@ if sys.version_info[0] >= 3:
 
 from .ttypes import UTF8STRINGS, MyEnum, MyStructNestedAnnotation, MyStruct, SecretStruct
 
+myStruct = MyStruct(**{
+  "major" : 42,
+  "package" : "package",
+  "my_enum" :   2,
+})
+

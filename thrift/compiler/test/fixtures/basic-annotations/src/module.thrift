@@ -40,6 +40,12 @@ struct MyStruct {
   7: MyEnum my_enum;
 } (android.generate_builder, cpp.internal.deprecated._data.method)
 
+const MyStruct myStruct = {
+  "major": 42,
+  "package": "package",
+  "my_enum": MyEnum.DOMAIN,
+};
+
 service MyService {
   void ping();
   string getRandomData();

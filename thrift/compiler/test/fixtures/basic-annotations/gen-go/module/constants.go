@@ -19,7 +19,14 @@ var _ = sync.Mutex{}
 var _ = bytes.Equal
 var _ = context.Background
 
+var MyStruct *MyStruct
 
 func init() {
+MyStruct = &MyStruct{
+  Major: 42,
+  Package: "package",
+  MyEnum: 2,
+}
+
 }
 

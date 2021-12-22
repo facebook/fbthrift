@@ -4,8 +4,23 @@
 #![recursion_limit = "100000000"]
 #![allow(non_camel_case_types, non_snake_case, non_upper_case_globals, unused_crate_dependencies)]
 
+pub use self::consts::*;
 pub use self::errors::*;
 pub use self::types::*;
+
+/// Constant definitions for `module`.
+pub mod consts {
+    pub static myStruct: ::once_cell::sync::Lazy<crate::types::MyStruct> = ::once_cell::sync::Lazy::new(|| crate::types::MyStruct {
+            major: 42,
+            package: "package".to_owned(),
+            annotation_with_quote: ::std::default::Default::default(),
+            class_: ::std::default::Default::default(),
+            annotation_with_trailing_comma: ::std::default::Default::default(),
+            empty_annotations: ::std::default::Default::default(),
+            my_enum: crate::types::MyEnum::DOMAIN,
+            ..::std::default::Default::default()
+        });
+}
 
 /// Thrift type definitions for `module`.
 pub mod types {

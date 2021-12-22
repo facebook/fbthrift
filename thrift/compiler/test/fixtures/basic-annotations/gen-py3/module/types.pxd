@@ -153,3 +153,5 @@ cdef class SecretStruct(thrift.py3.types.Struct):
 
 
 
+cdef extern from "src/gen-cpp2/module_constants.h" namespace "::cpp2":
+    cdef cMyStruct cmyStruct "::cpp2::module_constants::myStruct"()

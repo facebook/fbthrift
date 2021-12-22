@@ -4,3 +4,17 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated @nocommit
  */
+
+#include "thrift/compiler/test/fixtures/basic-annotations/gen-cpp2/module_constants.h"
+
+#include <thrift/lib/cpp2/gen/module_constants_cpp.h>
+
+
+namespace cpp2 {
+
+::cpp2::MyStruct const& module_constants::myStruct() {
+  static folly::Indestructible<::cpp2::MyStruct> const instance(::apache::thrift::detail::make_constant< ::cpp2::MyStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::major>(static_cast<::std::int64_t>(42)), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::package>(apache::thrift::StringTraits<std::string>::fromStringLiteral("package")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::my_enum>(static_cast<::cpp2::YourEnum>( ::cpp2::MyEnum::DOMAIN))));
+  return *instance;
+}
+
+} // cpp2
