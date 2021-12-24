@@ -46,16 +46,29 @@ struct optimal {
   bool b;
 };
 
+template <class Ret, class T>
+size_t thrift_member_offset(Ret (T::*func)() &) {
+  T t;
+  auto& member = *(t.*func)();
+  return reinterpret_cast<char*>(&member) - reinterpret_cast<char*>(&t);
+}
+
 TEST(minimize_padding_test, reorder_nonoptimal) {
   EXPECT_EQ(sizeof(optimal), sizeof(nonoptimal));
   EXPECT_EQ(sizeof(nonoptimal_struct), 12);
-  EXPECT_EQ(offsetof(nonoptimal_struct, big), 0);
+  EXPECT_EQ(thrift_member_offset(&nonoptimal_struct::big_ref<>), 0);
 }
 
 TEST(minimize_padding_test, preserve_order_if_same_sizes) {
-  EXPECT_LT(offsetof(same_sizes, a), offsetof(same_sizes, b));
-  EXPECT_LT(offsetof(same_sizes, b), offsetof(same_sizes, c));
-  EXPECT_LT(offsetof(same_sizes, c), offsetof(same_sizes, d));
+  EXPECT_LT(
+      thrift_member_offset(&same_sizes::a_ref<>),
+      thrift_member_offset(&same_sizes::b_ref<>));
+  EXPECT_LT(
+      thrift_member_offset(&same_sizes::b_ref<>),
+      thrift_member_offset(&same_sizes::c_ref<>));
+  EXPECT_LT(
+      thrift_member_offset(&same_sizes::c_ref<>),
+      thrift_member_offset(&same_sizes::d_ref<>));
 }
 
 struct reordered_ref_type {
