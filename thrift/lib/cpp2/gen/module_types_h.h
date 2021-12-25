@@ -139,6 +139,16 @@ struct invoke_reffer_thru {
           decltype(invoke_reffer<Tag>{}(static_cast<A&&>(a)...))> {
     return invoke_reffer<Tag>{}(static_cast<A&&>(a)...);
   }
+
+  template <typename... A>
+  FOLLY_ERASE constexpr auto operator()(A&&... a) noexcept(
+      noexcept(invoke_reffer<Tag>{}(static_cast<A&&>(a)...)))
+      -> std::enable_if_t<
+          is_required_field_ref<folly::remove_cvref_t<
+              decltype(invoke_reffer<Tag>{}(static_cast<A&&>(a)...))>>::value,
+          decltype(*invoke_reffer<Tag>{}(static_cast<A&&>(a)...))> {
+    return *invoke_reffer<Tag>{}(static_cast<A&&>(a)...);
+  }
 };
 
 template <typename Tag>
