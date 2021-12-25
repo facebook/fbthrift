@@ -780,7 +780,7 @@ class mstch_cpp2_field : public mstch_field {
         isPrivate = has_option("deprecated_private_fields_for_cpp_ref");
       }
     } else if (req == t_field::e_req::required) {
-      isPrivate = false;
+      isPrivate = has_option("deprecated_private_required_fields");
     } else if (req == t_field::e_req::optional) {
       // Optional fields are always private.
     } else if (req == t_field::e_req::opt_in_req_out) {
