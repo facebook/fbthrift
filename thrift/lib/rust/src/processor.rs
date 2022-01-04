@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,17 @@
 
 use crate::application_exception::{ApplicationException, ApplicationExceptionErrorCode};
 use crate::context_stack::ContextStack;
+use crate::exceptions::{ExceptionInfo, ResultInfo};
 use crate::framing::{Framing, FramingDecoded, FramingEncodedFinal};
-use crate::protocol::{Protocol, ProtocolDecoded, ProtocolEncodedFinal, ProtocolReader};
+use crate::protocol::{
+    Protocol, ProtocolDecoded, ProtocolEncodedFinal, ProtocolReader, ProtocolWriter,
+};
 use crate::request_context::RequestContext;
+use crate::serialize::Serialize;
+use crate::ttype::TType;
 use anyhow::Error;
 use async_trait::async_trait;
-use const_cstr::const_cstr;
-use std::ffi::{CStr, CString};
+use std::ffi::CStr;
 use std::marker::PhantomData;
 
 #[async_trait]
@@ -155,34 +159,21 @@ where
         let mut p = P::deserializer(req);
 
         const SERVICE_NAME: &str = "NullService";
-
-        const_cstr! {
-            C_SERVICE_NAME = "NullService";
-            C_METHOD_NAME = "nullmethod";
-        }
-
         let ((name, ae), _, seqid) = p.read_message_begin(|name| {
             let name = String::from_utf8_lossy(name).into_owned();
             let ae = ApplicationException::unimplemented_method(SERVICE_NAME, &name);
             (name, ae)
         })?;
 
-        let method_name =
-            CString::new(format!("{}:{}", SERVICE_NAME, name)).expect("bad method name");
+        p.skip(TType::Struct)?;
+        p.read_message_end()?;
 
-        // get_context_stack needs static lifetime for service and method names
-        let mut ctx_stack =
-            rctxt.get_context_stack(C_SERVICE_NAME.as_cstr(), C_METHOD_NAME.as_cstr())?;
-
-        let res = crate::help::serialize_result_envelope::<P, R, _>(
-            &name,
-            &*method_name,
-            seqid,
-            rctxt,
-            &mut ctx_stack,
-            ae,
-        )?;
-
+        rctxt.set_user_exception_header(ae.exn_name(), &ae.exn_value())?;
+        let res = serialize!(P, |p| {
+            p.write_message_begin(&name, ae.result_type().message_type(), seqid);
+            ae.write(p);
+            p.write_message_end();
+        });
         Ok(res)
     }
 }
