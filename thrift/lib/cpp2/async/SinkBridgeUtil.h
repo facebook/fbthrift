@@ -40,9 +40,9 @@ class ClientSinkConsumer {
 #if FOLLY_HAS_COROUTINES
 class CoroConsumer final : public ClientSinkConsumer {
  public:
-  void consume() { baton_.post(); }
+  void consume() override { baton_.post(); }
 
-  void canceled() { baton_.post(); }
+  void canceled() override { baton_.post(); }
 
   folly::coro::Task<void> wait() { co_await baton_; }
 
