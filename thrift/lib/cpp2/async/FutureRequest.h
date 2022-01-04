@@ -56,7 +56,7 @@ class FutureCallback : public FutureCallbackBase<Result> {
       : FutureCallbackBase<Result>(std::move(promise), std::move(channel)),
         processor_(processor) {}
 
-  void replyReceived(ClientReceiveState&& state) {
+  void replyReceived(ClientReceiveState&& state) override {
     CHECK(!state.isException());
     CHECK(state.hasResponseBuffer());
 
