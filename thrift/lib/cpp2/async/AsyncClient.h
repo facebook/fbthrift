@@ -52,7 +52,7 @@ class InteractionHandle : public GeneratedAsyncClient {
   InteractionHandle(
       std::shared_ptr<RequestChannel> channel, folly::StringPiece methodName);
   InteractionHandle(std::shared_ptr<RequestChannel> channel, InteractionId id);
-  ~InteractionHandle();
+  ~InteractionHandle() override;
   InteractionHandle(InteractionHandle&&) noexcept = default;
   InteractionHandle& operator=(InteractionHandle&&);
 
