@@ -27,6 +27,7 @@ from typing import (
     Union,
 )
 
+from folly.iobuf import IOBuf
 from thrift.py3.server import ThriftServer as ThriftServer_py3
 
 IPAddress = Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
@@ -36,6 +37,9 @@ Path = Union[str, bytes, os.PathLike]
 _T = TypeVar("_T", bound=Callable[..., Awaitable[None]])
 
 def oneway(func: _T) -> _T: ...
+
+class PythonUserException(Exception):
+    def __init__(self, type_: str, reason: str, buf: IOBuf) -> None: ...
 
 class ServiceInterface:
     @staticmethod
