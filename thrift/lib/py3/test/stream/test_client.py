@@ -23,6 +23,7 @@ from thrift.py3.server import (
     ServiceInterface,
     SocketAddress,
     ThriftServer,
+    get_context,
 )
 from thrift.py3.test.included.included.types import Included
 from thrift.py3.test.stream.clients import StreamTestService
@@ -36,6 +37,21 @@ class Handler(StreamTestServiceInterface):
     ) -> AsyncGenerator[int, None]:
         for i in range(i32_from, i32_to):
             yield i
+
+    # Unfortunately, the fact that RequestContext only exists during the lifetime of
+    # the original request means this pattern is necessary
+    async def methodNameStream(self) -> AsyncGenerator[str, None]:
+        method_name: str = get_context().method_name
+
+        async def gen() -> AsyncGenerator[str, None]:
+            for char in method_name:
+                yield char
+
+        return gen()
+
+    async def methodStream(self, name: str) -> AsyncGenerator[str, None]:
+        for char in name:
+            yield char
 
     async def alwaysThrows(self) -> AsyncGenerator[int, None]:
         raise StreamEx()
@@ -108,6 +124,25 @@ class StreamClientTest(unittest.TestCase):
                     stream = await client.returnstream(10, 1024)
                     res = [n async for n in stream]
                     self.assertEqual(res, list(range(10, 1024)))
+
+        loop.run_until_complete(inner_test())
+
+    def test_method_name_stream(self) -> None:
+        loop = asyncio.get_event_loop()
+
+        async def inner_test() -> None:
+            async with TestServer(ip="::1") as sa:
+                ip, port = sa.ip, sa.port
+                assert ip and port
+                async with get_client(
+                    StreamTestService,
+                    host=ip,
+                    port=port,
+                    client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
+                ) as client:
+                    stream = await client.methodNameStream()
+                    res = [n async for n in stream]
+                    self.assertEqual(res, list("methodNameStream"))
 
         loop.run_until_complete(inner_test())
 

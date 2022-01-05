@@ -25,6 +25,7 @@ exception StreamEx {}
 
 service StreamTestService {
   stream<i32> returnstream(1: i32 i32_from, 2: i32 i32_to);
+  stream<string> methodNameStream();
   stream<i32 throws (1: StreamEx e)> streamthrows(1: bool t) throws (
     1: FuncEx e,
   );
