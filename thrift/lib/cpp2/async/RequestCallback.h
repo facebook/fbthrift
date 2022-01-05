@@ -245,25 +245,14 @@ class RequestCallback : public RequestClientCallback {
 
   void onRequestSent() noexcept override {
     CHECK(thriftContext_);
-    {
-      auto work = [&]() noexcept {
-        try {
-          requestSent();
-        } catch (...) {
-          LOG(DFATAL)
-              << "Exception thrown while executing requestSent() callback. "
-              << "Exception: " << folly::exceptionStr(std::current_exception());
-        }
-      };
-      if (thriftContext_->oneWay) {
-        folly::RequestContextScopeGuard rctx(std::move(context_));
-        work();
-      } else {
-        folly::RequestContextScopeGuard rctx(context_);
-        work();
-      }
+    if (!thriftContext_->oneWay) {
+      return;
     }
-    if (unmanaged_ && thriftContext_->oneWay) {
+    {
+      folly::RequestContextScopeGuard rctx(std::move(context_));
+      requestSentHelper();
+    }
+    if (unmanaged_) {
       delete this;
     }
   }
@@ -283,6 +272,7 @@ class RequestCallback : public RequestClientCallback {
         }
       };
       folly::RequestContextScopeGuard rctx(std::move(context_));
+      requestSentHelper();
       work();
     }
     if (unmanaged_) {
@@ -294,6 +284,14 @@ class RequestCallback : public RequestClientCallback {
     CHECK(thriftContext_);
     {
       folly::RequestContextScopeGuard rctx(std::move(context_));
+      bool sendError = false;
+      ex.with_exception([&](transport::TTransportException const& tex) {
+        sendError = tex.getType() ==
+            apache::thrift::transport::TTransportException::NOT_OPEN;
+      });
+      if (!sendError && !thriftContext_->oneWay) {
+        requestSentHelper();
+      }
       try {
         requestError(
             ClientReceiveState(std::move(ex), std::move(thriftContext_->ctx)));
@@ -317,6 +315,16 @@ class RequestCallback : public RequestClientCallback {
   };
 
  private:
+  void requestSentHelper() noexcept {
+    try {
+      requestSent();
+    } catch (...) {
+      LOG(DFATAL) << "Exception thrown while executing requestSent() callback. "
+                  << "Exception: "
+                  << folly::exceptionStr(std::current_exception());
+    }
+  }
+
   friend RequestClientCallback::Ptr toRequestClientCallbackPtr(
       std::unique_ptr<RequestCallback>, RequestCallback::Context);
 

@@ -1937,7 +1937,7 @@ TEST(ThriftServer, ConnectionIdleTimeoutTest) {
 
 TEST(ThriftServer, BadSendTest) {
   class Callback : public RequestCallback {
-    void requestSent() override { ADD_FAILURE(); }
+    void requestSent() override {}
     void replyReceived(ClientReceiveState&&) override { ADD_FAILURE(); }
     void requestError(ClientReceiveState&& state) override {
       EXPECT_TRUE(state.exception());
