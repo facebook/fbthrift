@@ -1508,7 +1508,7 @@ class StructWithFieldAdapter implements \IThriftStruct, \IThriftShapishStruct {
       'fields' => dict[
         'field' => shape(
           'field' => dict[
-            'facebook_thrift_annotation_cpp_ExperimentalAdapter' => facebook_thrift_annotation_cpp_ExperimentalAdapter::fromShape(
+            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
               shape(
                 "name" => "my::Adapter1",
               )

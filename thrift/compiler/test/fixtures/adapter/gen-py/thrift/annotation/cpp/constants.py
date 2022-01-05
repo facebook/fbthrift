@@ -19,5 +19,5 @@ if sys.version_info[0] >= 3:
 import thrift.annotation.scope.ttypes
 
 
-from .ttypes import UTF8STRINGS, RefType, Ref, Lazy, DisableLazyChecksum, Adapter, ExperimentalAdapter, PackIsset
+from .ttypes import UTF8STRINGS, RefType, Ref, Lazy, DisableLazyChecksum, Adapter, PackIsset
 

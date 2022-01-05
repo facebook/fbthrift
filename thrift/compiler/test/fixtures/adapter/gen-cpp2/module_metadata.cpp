@@ -117,7 +117,7 @@ StructMetadata<::cpp2::StructWithFieldAdapter>::gen(ThriftMetadata& metadata) {
   module_StructWithFieldAdapter.is_union_ref() = false;
   static const EncodedThriftField
   module_StructWithFieldAdapter_fields[] = {
-    {1, "field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{*cvStruct("cpp.ExperimentalAdapter", {{"name", cvString(R"(my::Adapter1)")}}).cv_struct_ref(), }},
+    {1, "field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{*cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter1)")}}).cv_struct_ref(), }},
   };
   for (const auto& f : module_StructWithFieldAdapter_fields) {
     ::apache::thrift::metadata::ThriftField field;

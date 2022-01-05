@@ -146,7 +146,7 @@ struct Bar {
 }
 
 struct StructWithFieldAdapter {
-  @cpp.ExperimentalAdapter{name = "my::Adapter1"}
+  @cpp.Adapter{name = "my::Adapter1"}
   1: i32 field;
 }
 
@@ -173,7 +173,7 @@ service Service {
       cpp.adapter = 'my::Adapter2',
       py.adapter = 'my.Adapter2',
     ) arg1,
-    @cpp.ExperimentalAdapter{name = "my::Adapter2"}
+    @cpp.Adapter{name = "my::Adapter2"}
     2: string arg2,
     3: Foo arg3,
   );

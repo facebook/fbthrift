@@ -19,7 +19,6 @@ namespace cpp {
   ::apache::thrift::detail::md::StructMetadata<Lazy>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<DisableLazyChecksum>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Adapter>::gen(metadata);
-  ::apache::thrift::detail::md::StructMetadata<ExperimentalAdapter>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<PackIsset>::gen(metadata);
   return metadata;
 }

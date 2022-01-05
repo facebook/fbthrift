@@ -33,13 +33,8 @@ namespace cpp {
 namespace {
 
 const std::string* find_structured_adapter_annotation(const t_named* node) {
-  const t_const* annotation = node->find_structured_annotation_or_null(
-      "facebook.com/thrift/annotation/cpp/Adapter");
-  if (!annotation) {
-    annotation = node->find_structured_annotation_or_null(
-        "facebook.com/thrift/annotation/cpp/ExperimentalAdapter");
-  }
-  if (annotation) {
+  if (const t_const* annotation = node->find_structured_annotation_or_null(
+          "facebook.com/thrift/annotation/cpp/Adapter")) {
     for (const auto& item : annotation->value()->get_map()) {
       if (item.first->get_string() == "name") {
         return &item.second->get_string();

@@ -62,11 +62,6 @@ struct Adapter {
   1: string name;
 } (thrift.uri = "facebook.com/thrift/annotation/cpp/Adapter")
 
-@scope.Field
-struct ExperimentalAdapter {
-  1: string name;
-} (thrift.uri = "facebook.com/thrift/annotation/cpp/ExperimentalAdapter")
-
 @scope.Struct
 struct PackIsset {} (
   thrift.uri = "facebook.com/thrift/annotation/cpp/PackIsset",
