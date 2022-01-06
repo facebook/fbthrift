@@ -203,10 +203,8 @@ class RocketServerConnection final
   bool incMemoryUsage(uint32_t memSize) {
     if (!ingressMemoryTracker_.increment(memSize)) {
       ingressMemoryTracker_.decrement(memSize);
-      state_ = ConnectionState::DRAINING;
-      drainingErrorCode_ = ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT;
       socket_->setReadCB(nullptr);
-      closeIfNeeded();
+      startDrain(DrainCompleteCode::EXCEEDED_INGRESS_MEM_LIMIT);
       return false;
     } else {
       return true;
@@ -236,6 +234,8 @@ class RocketServerConnection final
   }
 
  private:
+  void startDrain(std::optional<DrainCompleteCode> drainCompleteCode);
+
   // Note that attachEventBase()/detachEventBase() are not supported in server
   // code
   folly::EventBase& evb_;
@@ -286,7 +286,7 @@ class RocketServerConnection final
     CLOSED,
   };
   ConnectionState state_{ConnectionState::ALIVE};
-  std::optional<ErrorCode> drainingErrorCode_;
+  std::optional<DrainCompleteCode> drainCompleteCode_;
 
   using ClientCallbackUniquePtr = std::variant<
       std::unique_ptr<RocketStreamClientCallback>,
