@@ -16,17 +16,9 @@
 
 #pragma once
 
-#include <thrift/lib/cpp2/hash/StdHasher.h>
-#include <thrift/lib/cpp2/op/DeterministicAccumulator.h>
 #include <thrift/lib/cpp2/op/detail/Hash.h>
 
 namespace apache::thrift::op {
-
-namespace detail {
-struct StdHasherGenerator {
-  hash::StdHasher operator()() const { return {}; }
-};
-} // namespace detail
 
 // Hash the given value. Same hash result will be produced for thrift values
 // that are identical to, or equal to each other. Default hash algorithm,
@@ -35,10 +27,7 @@ struct StdHasherGenerator {
 // For example:
 //   hash<i32_t>(myInt) // returns hash of myInt.
 //   hash<set<i32_t>>(myIntSet) // returns hash of myIntSet
-template <
-    typename Tag,
-    typename HashAccumulator =
-        DeterministicAccumulator<detail::StdHasherGenerator>>
-constexpr detail::Hash<Tag, HashAccumulator> hash;
+template <typename Tag>
+constexpr detail::Hash<Tag> hash;
 
 } // namespace apache::thrift::op

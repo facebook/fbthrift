@@ -19,8 +19,10 @@
 #include <cmath>
 
 #include <folly/Range.h>
+#include <thrift/lib/cpp2/hash/StdHasher.h>
+#include <thrift/lib/cpp2/op/DeterministicAccumulator.h>
 #include <thrift/lib/cpp2/op/detail/HashProtocol.h>
-#include <thrift/lib/cpp2/type/ThriftType.h>
+#include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/lib/cpp2/type/Traits.h>
 
 namespace apache::thrift::op::detail {
@@ -101,15 +103,17 @@ struct HashImpl<type::struct_t<StructType>> {
   }
 };
 
-template <typename Tag, typename HashAccumulator>
-struct Hash : HashImpl<Tag> {
+template <typename Tag>
+struct Hash {
+  template <typename T, typename Accumulator>
+  void operator()(const T& value, Accumulator& accumulator) const {
+    auto guard = makeOrderedHashGuard(accumulator);
+    HashImpl<Tag>{}(accumulator, value);
+  }
   template <typename T = type::native_type<Tag>>
-  constexpr auto operator()(const T& value) const {
-    HashAccumulator accumulator;
-    {
-      auto guard = makeOrderedHashGuard(accumulator);
-      HashImpl<Tag>{}(accumulator, value);
-    }
+  auto operator()(const T& value) const {
+    auto accumulator = makeDeterministicAccumulator<hash::StdHasher>();
+    operator()(value, accumulator);
     return std::move(accumulator.result()).getResult();
   }
 };
