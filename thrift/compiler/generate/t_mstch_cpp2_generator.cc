@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,10 +39,6 @@ namespace {
 
 std::string const& get_cpp_template(const t_type* type) {
   return type->get_annotation({"cpp.template", "cpp2.template"});
-}
-
-bool is_cpp_ref_unique_either(const t_field* f) {
-  return cpp2::is_unique_ref(f) || cpp2::is_implicit_ref(f->get_type());
 }
 
 bool is_annotation_blacklisted_in_fatal(const std::string& key) {
@@ -721,14 +717,7 @@ class mstch_cpp2_field : public mstch_field {
         : mstch::node("");
   }
   mstch::node terse_writes() {
-    // Add terse writes for unqualified fields when comparison is cheap:
-    // (e.g. i32/i64, empty strings/list/map)
-    auto t = field_->get_type()->get_true_type();
-    return has_option("terse_writes") &&
-        field_->get_req() != t_field::e_req::optional &&
-        field_->get_req() != t_field::e_req::required &&
-        (is_cpp_ref_unique_either(field_) ||
-         (!t->is_struct() && !t->is_xception()));
+    return has_option("terse_writes") && cpp2::is_terse_writes(field_);
   }
   mstch::node zero_copy_arg() {
     switch (field_->get_type()->get_type_value()) {

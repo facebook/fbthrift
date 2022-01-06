@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -214,6 +214,10 @@ std::string get_gen_type_class(t_type const& type);
 std::string get_gen_type_class_with_indirection(t_type const& type);
 
 std::string sha256_hex(std::string const& in);
+
+bool is_cpp_ref_unique_either(const t_field* f);
+
+bool is_terse_writes(const t_field* field);
 
 } // namespace cpp2
 } // namespace compiler

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -419,6 +419,20 @@ std::string sha256_hex(std::string const& in) {
     out.push_back(alpha[lo]);
   }
   return out;
+}
+
+bool is_cpp_ref_unique_either(const t_field* f) {
+  return cpp2::is_unique_ref(f) || cpp2::is_implicit_ref(f->get_type());
+}
+
+bool is_terse_writes(const t_field* field) {
+  // Add terse writes for unqualified fields when comparison is cheap:
+  // (e.g. i32/i64, empty strings/list/map)
+  auto t = field->get_type()->get_true_type();
+  return field->get_req() != t_field::e_req::optional &&
+      field->get_req() != t_field::e_req::required &&
+      (is_cpp_ref_unique_either(field) ||
+       (!t->is_struct() && !t->is_xception()));
 }
 
 } // namespace cpp2
