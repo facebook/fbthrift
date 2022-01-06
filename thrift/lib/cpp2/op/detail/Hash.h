@@ -46,8 +46,7 @@ template <
     typename T>
 void accumulateHash(
     type::list<ValTag, ListT>, Accumulator& accumulator, const T& value) {
-  auto listGuard = makeOrderedHashGuard(accumulator);
-  accumulateHash(type::i32_t{}, accumulator, value.size());
+  auto listGuard = makeContainerHashGuard(accumulator, value.size());
   for (const auto& i : value) {
     accumulateHash(ValTag{}, accumulator, i);
   }
@@ -61,8 +60,7 @@ template <
     typename T>
 void accumulateHash(
     type::set<KeyTag, SetT>, Accumulator& accumulator, const T& value) {
-  auto setGuard = makeOrderedHashGuard(accumulator);
-  accumulateHash(type::i32_t{}, accumulator, value.size());
+  auto setGuard = makeContainerHashGuard(accumulator, value.size());
   auto valuesGuard = makeUnorderedHashGuard(accumulator);
   for (const auto& i : value) {
     accumulateHash(KeyTag{}, accumulator, i);
@@ -78,8 +76,7 @@ template <
     typename T>
 void accumulateHash(
     type::map<KeyTag, ValTag, MapT>, Accumulator& accumulator, const T& value) {
-  auto mapGuard = makeOrderedHashGuard(accumulator);
-  accumulateHash(type::i32_t{}, accumulator, value.size());
+  auto mapGuard = makeContainerHashGuard(accumulator, value.size());
   auto valuesGuard = makeUnorderedHashGuard(accumulator);
   for (const auto& i : value) {
     auto pairGuard = makeOrderedHashGuard(accumulator);

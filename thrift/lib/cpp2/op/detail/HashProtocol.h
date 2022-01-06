@@ -21,10 +21,10 @@
 #include <memory>
 #include <utility>
 
-#include <thrift/lib/cpp/protocol/TProtocol.h>
-
 #include <folly/Range.h>
+#include <folly/ScopeGuard.h>
 #include <folly/io/IOBuf.h>
+#include <thrift/lib/cpp/protocol/TProtocol.h>
 #include <thrift/lib/cpp/protocol/TType.h>
 
 namespace apache::thrift::op::detail {
@@ -59,6 +59,23 @@ uint32_t combineBuf(
     Accumulator& acc, const std::unique_ptr<folly::IOBuf>& buf) {
   return buf == nullptr ? combineBuf(acc, folly::ByteRange{})
                         : combineBuf(acc, *buf);
+}
+
+template <typename Accumulator>
+void beginContainer(Accumulator& acc, uint32_t size) {
+  acc.beginOrdered();
+  acc.combine(static_cast<int32_t>(size));
+}
+
+template <typename Accumulator>
+uint32_t endContainer(Accumulator& acc) {
+  return (acc.endOrdered(), 0);
+}
+
+template <typename Accumulator>
+FOLLY_NODISCARD auto makeContainerHashGuard(Accumulator& acc, uint32_t size) {
+  beginContainer(acc, size);
+  return folly::makeGuard([&] { endContainer(acc); });
 }
 
 /**
@@ -101,24 +118,25 @@ class HashProtocol {
 
   uint32_t writeStructBegin(const char*) { return (acc_.beginUnordered(), 0); }
   uint32_t writeStructEnd() { return (acc_.endUnordered(), 0); }
-  uint32_t writeFieldBegin(const char*, protocol::TType type, int16_t id);
+  uint32_t writeFieldBegin(const char*, protocol::TType, int16_t id) {
+    return (acc_.beginOrdered(), writeI16(id), 0);
+  }
   uint32_t writeFieldEnd() { return (acc_.endOrdered(), 0); }
   uint32_t writeFieldStop() { return 0; }
-  uint32_t writeMapBegin(
-      protocol::TType keyType, protocol::TType valType, uint32_t size) {
-    return (beginContainer(size, keyType, valType), acc_.beginUnordered(), 0);
+  uint32_t writeMapBegin(protocol::TType, protocol::TType, uint32_t size) {
+    return (beginContainer(acc_, size), acc_.beginUnordered(), 0);
   }
   uint32_t writeMapValueBegin() { return (acc_.beginOrdered(), 0); }
   uint32_t writeMapValueEnd() { return (acc_.endOrdered(), 0); }
-  uint32_t writeMapEnd() { return (acc_.endUnordered(), endContainer()); }
-  uint32_t writeListBegin(protocol::TType elemType, uint32_t size) {
-    return (beginContainer(size, elemType), acc_.beginOrdered(), 0);
+  uint32_t writeMapEnd() { return (acc_.endUnordered(), endContainer(acc_)); }
+  uint32_t writeListBegin(protocol::TType, uint32_t size) {
+    return (beginContainer(acc_, size), acc_.beginOrdered(), 0);
   }
-  uint32_t writeListEnd() { return (acc_.endOrdered(), endContainer()); }
-  uint32_t writeSetBegin(protocol::TType elemType, uint32_t size) {
-    return (beginContainer(size, elemType), acc_.beginUnordered(), 0);
+  uint32_t writeListEnd() { return (acc_.endOrdered(), endContainer(acc_)); }
+  uint32_t writeSetBegin(protocol::TType, uint32_t size) {
+    return (beginContainer(acc_, size), acc_.beginUnordered(), 0);
   }
-  uint32_t writeSetEnd() { return (acc_.endUnordered(), endContainer()); }
+  uint32_t writeSetEnd() { return (acc_.endUnordered(), endContainer(acc_)); }
   uint32_t writeBool(bool val) { return (acc_.combine(val), 0); }
   uint32_t writeByte(int8_t val) { return (acc_.combine(val), 0); }
   uint32_t writeI16(int16_t val) { return (acc_.combine(val), 0); }
@@ -137,25 +155,7 @@ class HashProtocol {
   }
 
  private:
-  template <typename... Types>
-  void beginContainer(uint32_t size, Types... types) {
-    acc_.beginOrdered();
-    (writeByte(static_cast<int8_t>(types)), ...);
-    writeI32(static_cast<int32_t>(size));
-  }
-
-  uint32_t endContainer() { return (acc_.endOrdered(), 0); }
-
   Accumulator& acc_;
 };
-
-template <typename Accumulator>
-uint32_t HashProtocol<Accumulator>::writeFieldBegin(
-    const char*, protocol::TType type, int16_t id) {
-  acc_.beginOrdered();
-  writeByte(static_cast<int8_t>(type));
-  writeI16(id);
-  return 0;
-}
 
 } // namespace apache::thrift::op::detail
