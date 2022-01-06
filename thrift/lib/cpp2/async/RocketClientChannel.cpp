@@ -515,7 +515,7 @@ class RocketClientChannel::SingleRequestSingleResponseCallback final
         requestSerializedSize_(requestSerializedSize),
         requestWireSize_(requestWireSize) {}
 
-  void onWriteSuccess() noexcept override { cb_->onRequestSent(); }
+  void onWriteSuccess() noexcept override {}
 
   void onResponsePayload(
       folly::Try<rocket::Payload>&& payload) noexcept override {

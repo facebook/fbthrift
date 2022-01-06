@@ -353,8 +353,8 @@ HTTPClientChannel::HTTPTransactionCallback::~HTTPTransactionCallback() {
 // MessageChannel::SendCallback methods
 
 void HTTPClientChannel::HTTPTransactionCallback::messageSent() {
-  if (cb_) {
-    (oneway_ ? cb_.release() : cb_.get())->onRequestSent();
+  if (cb_ && oneway_) {
+    cb_.release()->onRequestSent();
   }
 }
 
@@ -453,8 +453,8 @@ void HTTPClientChannel::HTTPTransactionCallback::onError(
 // proxygen::HTTPTransaction::TransportCallback methods
 
 void HTTPClientChannel::HTTPTransactionCallback::lastByteFlushed() noexcept {
-  if (cb_) {
-    (oneway_ ? cb_.release() : cb_.get())->onRequestSent();
+  if (cb_ && oneway_) {
+    cb_.release()->onRequestSent();
   }
 }
 

@@ -162,33 +162,14 @@ void testClientOneInput(const uint8_t* Data, size_t Size) {
   apache::thrift::SerializedRequest request(std::make_unique<folly::IOBuf>());
   auto tHeader = std::make_shared<apache::thrift::transport::THeader>();
   apache::thrift::ClientReceiveState _returnState;
-  class SyncCallback : public apache::thrift::ClientSyncCallback<false> {
-   public:
-    using ClientSyncCallback::ClientSyncCallback;
-    void onRequestSent() noexcept override { sentBaton_.post(); }
-    void waitUntilSent(folly::EventBase* evb) {
-      if (evb) {
-        if (!evb->inRunningEventBaseThread() || !folly::fibers::onFiber()) {
-          while (!sentBaton_.ready()) {
-            evb->drive();
-          }
-        }
-      }
-      sentBaton_.wait();
-    }
-
-   private:
-    folly::fibers::Baton sentBaton_;
-  };
-
-  SyncCallback callback(&_returnState);
+  apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   channel->sendRequestResponse(
       rpcOptions,
       "",
       std::move(request),
       std::move(tHeader),
       apache::thrift::RequestClientCallback::Ptr(&callback));
-  callback.waitUntilSent(&evb);
+  evb.drive();
   int fd = sp.extractFD1();
   write(fd, Data, Size);
   close(fd);

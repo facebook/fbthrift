@@ -81,9 +81,6 @@ class ChannelCallbacks {
     void messageSent() override {
       DestructorGuard dg(this);
       X_CHECK_STATE_EQ(sendState_, QState::QUEUED);
-      if (cb_) {
-        cb_->onRequestSent();
-      }
       sendState_ = QState::DONE;
       maybeDeleteThis();
     }
