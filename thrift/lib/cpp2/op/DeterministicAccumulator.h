@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,16 +19,16 @@
 #include <cstdint>
 #include <optional>
 #include <stack>
+#include <stdexcept>
 #include <utility>
 #include <variant>
 #include <vector>
 
-#include <folly/Range.h>
+#include <folly/ScopeGuard.h>
 #include <folly/io/IOBuf.h>
+#include <folly/lang/Exception.h>
 
-namespace apache {
-namespace thrift {
-namespace hash {
+namespace apache::thrift::op {
 
 /**
  * A deterministic stack-context based accumulator that guarantees the
@@ -92,24 +92,21 @@ class DeterministicAccumulator {
   using Hasher = decltype(std::declval<HasherGenerator>()());
 
  public:
-  inline explicit DeterministicAccumulator(HasherGenerator generator = {});
+  DeterministicAccumulator() = default;
+  explicit DeterministicAccumulator(HasherGenerator generator)
+      : generator_(std::move(generator)) {}
 
-  inline operator Hasher&&() &&;
-  auto getResult() && { return std::move(result_)->getResult(); }
+  Hasher& result() { return result_.value(); }
+  const Hasher& result() const { return result_.value(); }
 
-  inline void combine(bool value);
-  inline void combine(std::int8_t value);
-  inline void combine(std::int16_t value);
-  inline void combine(std::int32_t value);
-  inline void combine(std::int64_t value);
-  inline void combine(float value);
-  inline void combine(double value);
-  inline void combine(const folly::IOBuf& value);
-  inline void combine(folly::ByteRange value);
-  inline void beginOrdered();
-  inline void endOrdered();
-  inline void beginUnordered();
-  inline void endUnordered();
+  template <typename T>
+  void combine(const T& val) {
+    next().combine(val);
+  }
+  void beginOrdered();
+  void endOrdered();
+  void beginUnordered() { context_.emplace(UnorderedContext{}); }
+  void endUnordered();
 
  private:
   struct OrderedContext {
@@ -118,23 +115,101 @@ class DeterministicAccumulator {
     // Each time we open a new ordered context and we elide the creation,
     // this count gets bumped. We decrease it each time we leave an ordered
     // context (finish an ordered collection of elements).
-    std::size_t count;
+    size_t count;
   };
   using UnorderedContext = std::vector<Hasher>;
   using Context = std::variant<OrderedContext, UnorderedContext>;
-
-  template <typename ContextType>
-  inline ContextType* getContext();
-  inline void exitContext(Hasher result);
-  inline auto& lastHasher();
+  enum ContextType { Ordered, Unordered };
 
   HasherGenerator generator_;
   std::optional<Hasher> result_;
   std::stack<Context> context_;
+
+  template <ContextType I>
+  constexpr auto* contextIf() noexcept {
+    return !context_.empty() ? std::get_if<I>(&context_.top()) : nullptr;
+  }
+
+  template <ContextType I>
+  constexpr auto& context() {
+    if (auto* ctx = contextIf<I>()) {
+      return *ctx;
+    }
+    folly::throw_exception<std::logic_error>("ordering context missmatch");
+  }
+
+  // Returns the hasher to use for the next value.
+  Hasher& next();
+  void exitContext(Hasher result);
 };
 
-} // namespace hash
-} // namespace thrift
-} // namespace apache
+// Creates a deterministic accumulator using the provided hasher.
+template <class Hasher>
+FOLLY_NODISCARD auto makeDeterministicAccumulator() {
+  return DeterministicAccumulator([]() { return Hasher{}; });
+}
 
-#include <thrift/lib/cpp2/hash/DeterministicAccumulator-inl.h>
+template <class Accumulator>
+FOLLY_NODISCARD auto makeOrderedHashGuard(Accumulator& accumulator) {
+  accumulator.beginOrdered();
+  return folly::makeGuard([&] { accumulator.endOrdered(); });
+}
+
+template <class Accumulator>
+FOLLY_NODISCARD auto makeUnorderedHashGuard(Accumulator& accumulator) {
+  accumulator.beginUnordered();
+  return folly::makeGuard([&] { accumulator.endUnordered(); });
+}
+
+template <typename HasherGenerator>
+void DeterministicAccumulator<HasherGenerator>::beginOrdered() {
+  if (auto* ctx = contextIf<Ordered>()) {
+    ++ctx->count;
+  } else {
+    context_.emplace(OrderedContext{.hasher = generator_(), .count = 1});
+  }
+}
+
+template <typename HasherGenerator>
+void DeterministicAccumulator<HasherGenerator>::endOrdered() {
+  auto& ctx = context<Ordered>();
+  if (--ctx.count == 0) {
+    exitContext(std::move(ctx).hasher);
+  }
+}
+
+template <typename HasherGenerator>
+void DeterministicAccumulator<HasherGenerator>::endUnordered() {
+  auto& ctx = context<Unordered>();
+  std::sort(ctx.begin(), ctx.end());
+  auto result = generator_();
+  for (const auto& hasher : ctx) {
+    result.combine(hasher);
+  }
+  exitContext(std::move(result));
+}
+
+template <typename HasherGenerator>
+void DeterministicAccumulator<HasherGenerator>::exitContext(Hasher result) {
+  context_.pop();
+  result.finalize();
+  if (auto* ctx = contextIf<Ordered>()) {
+    ctx->hasher.combine(result);
+  } else if (auto* ctx = contextIf<Unordered>()) {
+    ctx->emplace_back(std::move(result));
+  } else {
+    result_.emplace(std::move(result));
+  }
+}
+
+template <typename HasherGenerator>
+auto DeterministicAccumulator<HasherGenerator>::next() -> Hasher& {
+  if (auto* ctx = contextIf<Ordered>()) {
+    return ctx->hasher;
+  }
+  auto& ctx = context<Unordered>();
+  ctx.emplace_back(generator_());
+  return ctx.back();
+}
+
+} // namespace apache::thrift::op

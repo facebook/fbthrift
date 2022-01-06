@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,11 @@
  * limitations under the License.
  */
 
-// Operations supported by all ThriftType values.
 #pragma once
 
-#include <algorithm>
-
-#include <folly/lang/Bits.h>
 #include <thrift/lib/cpp2/hash/StdHasher.h>
+#include <thrift/lib/cpp2/op/DeterministicAccumulator.h>
 #include <thrift/lib/cpp2/op/detail/Hash.h>
-#include <thrift/lib/cpp2/type/ThriftType.h>
-#include <thrift/lib/cpp2/type/Traits.h>
 
 namespace apache::thrift::op {
 
@@ -34,8 +29,8 @@ struct StdHasherGenerator {
 } // namespace detail
 
 // Hash the given value. Same hash result will be produced for thrift values
-// that are identical to, or equal to each other. Default hash algorithm is
-// folly::hash_combine.
+// that are identical to, or equal to each other. Default hash algorithm,
+// StdHasher, uses folly::hash_combine.
 //
 // For example:
 //   hash<i32_t>(myInt) // returns hash of myInt.
@@ -43,7 +38,7 @@ struct StdHasherGenerator {
 template <
     typename Tag,
     typename HashAccumulator =
-        hash::DeterministicAccumulator<detail::StdHasherGenerator>>
+        DeterministicAccumulator<detail::StdHasherGenerator>>
 constexpr detail::Hash<Tag, HashAccumulator> hash;
 
 } // namespace apache::thrift::op

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,8 @@
 
 #include <cmath>
 
-#include <folly/CPortability.h>
-#include <folly/ScopeGuard.h>
-#include <thrift/lib/cpp2/hash/DeterministicHash.h>
-#include <thrift/lib/cpp2/protocol/Protocol.h>
+#include <folly/Range.h>
+#include <thrift/lib/cpp2/op/detail/HashProtocol.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
 #include <thrift/lib/cpp2/type/Traits.h>
 
@@ -50,18 +48,6 @@ struct HashImpl<type::string_t> {
 
 template <>
 struct HashImpl<type::binary_t> : HashImpl<type::string_t> {};
-
-template <class Accumulator>
-auto makeOrderedHashGuard(Accumulator& accumulator) {
-  accumulator.beginOrdered();
-  return folly::makeGuard([&] { accumulator.endOrdered(); });
-}
-
-template <class Accumulator>
-auto makeUnorderedHashGuard(Accumulator& accumulator) {
-  accumulator.beginUnordered();
-  return folly::makeGuard([&] { accumulator.endUnordered(); });
-}
 
 template <typename ValTag>
 struct HashImpl<type::list<ValTag>> {
@@ -124,7 +110,7 @@ struct Hash : HashImpl<Tag> {
       auto guard = makeOrderedHashGuard(accumulator);
       HashImpl<Tag>{}(accumulator, value);
     }
-    return std::move(accumulator).getResult();
+    return std::move(accumulator.result()).getResult();
   }
 };
 

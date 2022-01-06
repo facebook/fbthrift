@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 #include <type_traits>
 #include <utility>
 
-#include <thrift/lib/cpp2/hash/DeterministicAccumulator.h>
+#include <thrift/lib/cpp2/op/DeterministicAccumulator.h>
 #include <thrift/lib/cpp2/op/detail/HashProtocol.h>
 
 namespace apache {
@@ -58,12 +58,10 @@ auto deterministic_hash(const Struct& data) {
  */
 template <typename Struct, typename HasherGenerator>
 auto deterministic_hash(const Struct& data, HasherGenerator generator) {
-  using Accumulator = DeterministicAccumulator<HasherGenerator>;
-  using Protocol = op::detail::HashProtocol<Accumulator>;
-  Accumulator acc{std::move(generator)};
-  Protocol protocol{acc};
+  op::DeterministicAccumulator acc{std::move(generator)};
+  op::detail::HashProtocol protocol{acc};
   data.write(&protocol);
-  return std::move(acc).getResult();
+  return std::move(acc.result()).getResult();
 }
 
 } // namespace hash
