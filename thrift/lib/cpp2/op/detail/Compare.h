@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,10 @@
 #pragma once
 
 #include <cmath>
+#include <unordered_map>
 
 #include <folly/CPortability.h>
+#include <thrift/lib/cpp2/op/Hash.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
 #include <thrift/lib/cpp2/type/Traits.h>
@@ -50,9 +52,6 @@ struct IdenticalTo : EqualTo<Tag> {
   static_assert(
       type::is_a_v<Tag, type::integral_c> || type::is_a_v<Tag, type::enum_c> ||
       type::is_a_v<Tag, type::string_c> ||
-      // TODO(afuller): Implement proper specializations for all container
-      // types.
-      type::container_types::contains<Tag>() ||
       // TODO(afuller): Implement proper specializations for all structured
       // types.
       type::structured_types::contains<Tag>());
@@ -81,14 +80,94 @@ template <typename ValTag, template <typename...> typename ListT>
 struct IdenticalTo<type::list<ValTag, ListT>> {
   template <typename T = type::native_type<type::list<ValTag, ListT>>>
   bool operator()(const T& lhs, const T& rhs) const {
-    if (&lhs == &rhs) {
-      return true;
-    }
     if (lhs.size() != rhs.size()) {
       return false;
     }
     return std::equal(
         lhs.begin(), lhs.end(), rhs.begin(), IdenticalTo<ValTag>());
+  }
+};
+
+template <typename KeyTag, template <typename...> typename SetT>
+struct IdenticalTo<type::set<KeyTag, SetT>> {
+  // Create a multimap from hash(key)->&key
+  template <typename C>
+  static auto createHashMap(const C& set) {
+    std::unordered_multimap<size_t, typename C::const_pointer> hashMap;
+    for (const auto& key : set) {
+      hashMap.emplace(op::hash<KeyTag>(key), &key);
+    }
+    return hashMap;
+  }
+  // Check if an identical key is in the given range.
+  template <typename T, typename R>
+  static bool inRange(const T& key, const R& range) {
+    for (auto itr = range.first; itr != range.second; ++itr) {
+      if (IdenticalTo<KeyTag>()(*itr->second, key)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  template <typename T = type::native_type<type::set<KeyTag, SetT>>>
+  bool operator()(const T& lhs, const T& rhs) const {
+    if (lhs.size() != rhs.size()) {
+      return false;
+    }
+    // Build a map from hash to entry.
+    auto hashMap = createHashMap(lhs);
+    // Check that all entries match.
+    for (const auto& key : rhs) {
+      if (!inRange(key, hashMap.equal_range(op::hash<KeyTag>(key)))) {
+        return false;
+      }
+    }
+    return true;
+  }
+};
+
+template <
+    typename KeyTag,
+    typename ValTag,
+    template <typename...>
+    typename MapT>
+struct IdenticalTo<type::map<KeyTag, ValTag, MapT>> {
+  // Create a multimap from hash(key)->&pair(key, value)
+  template <typename C>
+  static auto createHashMap(const C& map) {
+    std::unordered_multimap<size_t, typename C::const_pointer> hashMap;
+    for (const auto& entry : map) {
+      hashMap.emplace(op::hash<KeyTag>(entry.first), &entry);
+    }
+    return hashMap;
+  }
+  // Check if an identical pair(key, value) exists in the range.
+  template <typename T, typename R>
+  static bool inRange(const T& entry, const R& range) {
+    for (auto itr = range.first; itr != range.second; ++itr) {
+      if (IdenticalTo<KeyTag>()(itr->second->first, entry.first)) {
+        // Found the right key! The values must match.
+        return IdenticalTo<ValTag>()(itr->second->second, entry.second);
+      }
+    }
+    return false;
+  }
+
+  template <typename T = type::native_type<type::map<KeyTag, ValTag, MapT>>>
+  bool operator()(const T& lhs, const T& rhs) const {
+    if (lhs.size() != rhs.size()) {
+      return false;
+    }
+    // Build a map from hash to entry.
+    auto hashMap = createHashMap(lhs);
+    // Check that all entries match.
+    for (const auto& entry : rhs) {
+      if (!inRange(entry, hashMap.equal_range(op::hash<KeyTag>(entry.first)))) {
+        return false;
+      }
+    }
+    return true;
   }
 };
 

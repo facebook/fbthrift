@@ -20,6 +20,9 @@
 
 namespace apache::thrift::op {
 
+template <typename Tag>
+using Hash = detail::Hash<Tag>;
+
 // Hash the given value. Same hash result will be produced for thrift values
 // that are identical to, or equal to each other. Default hash algorithm,
 // StdHasher, uses folly::hash_combine.
@@ -28,6 +31,6 @@ namespace apache::thrift::op {
 //   hash<i32_t>(myInt) // returns hash of myInt.
 //   hash<set<i32_t>>(myIntSet) // returns hash of myIntSet
 template <typename Tag>
-constexpr detail::Hash<Tag> hash;
+constexpr Hash<Tag> hash;
 
 } // namespace apache::thrift::op
