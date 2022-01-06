@@ -467,12 +467,10 @@
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
-                if let {{function:upcamel}}Exn::ApplicationException(aexn) = self {
-                    return aexn.write(p);
-                }
-                p.write_struct_begin("{{function:upcamel}}");
                 match self {
+                    {{function:upcamel}}Exn::ApplicationException(aexn) => aexn.write(p),
                     {{function:upcamel}}Exn::Success(inner) => {
+                        p.write_struct_begin("{{function:upcamel}}");
                         p.write_field_begin(
                             "Success",
                             {{#function:return_type}}{{>lib/ttype}}{{/function:return_type}},
@@ -480,9 +478,12 @@
                         );
                         inner.write(p);
                         p.write_field_end();
-                    }{{!
+                        p.write_field_stop();
+                        p.write_struct_end();
+                    },{{!
                     }}{{#function:exceptions}}
                     {{function:upcamel}}Exn::{{field:rust_name}}(inner) => {
+                        p.write_struct_begin("{{function:upcamel}}");
                         p.write_field_begin(
                             "{{field:name}}",
                             {{#field:type}}{{>lib/ttype}}{{/field:type}},
@@ -490,12 +491,11 @@
                         );
                         inner.write(p);
                         p.write_field_end();
-                    }{{!
+                        p.write_field_stop();
+                        p.write_struct_end();
+                    },{{!
                     }}{{/function:exceptions}}
-                    {{function:upcamel}}Exn::ApplicationException(_aexn) => unreachable!(),
                 }
-                p.write_field_stop();
-                p.write_struct_end();
             }
         }
 
