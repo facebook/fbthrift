@@ -35,8 +35,7 @@ void accumulateHash(type::all_c, Accumulator& accumulator, const T& value) {
 
 template <typename Accumulator, typename T>
 void accumulateHash(type::string_c, Accumulator& accumulator, const T& value) {
-  accumulator.combine(folly::ByteRange(
-      reinterpret_cast<const unsigned char*>(value.data()), value.size()));
+  combineBuf(accumulator, value);
 }
 
 template <

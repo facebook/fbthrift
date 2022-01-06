@@ -139,15 +139,15 @@ TEST(HashTest, HashAccumulation) {
   EXPECT_EQ(
       debugHash<type::list<type::string_t>>(*value.myList()),
       // TODO(afuller): Should be "[3,3foo,3bar,3baz]",
-      "[foobarbaz]");
+      "[3foo,3bar,3baz]");
   EXPECT_EQ(
       debugHash<type::set<type::string_t>>(*value.mySet()),
       // TODO(afuller): Should be "[3,[[3bar],[3baz],[3foo]]]",
-      "[,,]");
+      "[[3bar],[3baz],[3foo]]");
   EXPECT_EQ(
       (debugHash<type::map<type::string_t, type::i64_t>>(*value.myMap())),
       // TODO(afuller): Should be "[3,[[3bar,17],[3baz,19],[3foo,13]]]"
-      "[[bar17],[baz19],[foo13]]");
+      "[[3bar,17],[3baz,19],[3foo,13]]");
 }
 
 template <typename Mode>

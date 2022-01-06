@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,38 @@
 #include <thrift/lib/cpp/protocol/TType.h>
 
 namespace apache::thrift::op::detail {
+
+// Helpers for combining string or binary buffers.
+template <typename Accumulator, typename Buffer>
+uint32_t combineBuf(Accumulator& acc, const Buffer& buffer, size_t size) {
+  uint32_t limit = std::numeric_limits<uint32_t>::max();
+  if (size > limit) {
+    protocol::TProtocolException::throwExceededSizeLimit(size, limit);
+  }
+  acc.beginOrdered();
+  acc.combine(static_cast<int32_t>(size));
+  acc.combine(buffer);
+  acc.endOrdered();
+  return 0;
+}
+template <typename Accumulator, typename Buffer>
+uint32_t combineBuf(Accumulator& acc, const Buffer& buf) {
+  return combineBuf(
+      acc,
+      folly::ByteRange(
+          reinterpret_cast<const unsigned char*>(buf.data()), buf.size()),
+      buf.size());
+}
+template <typename Accumulator>
+uint32_t combineBuf(Accumulator& acc, const folly::IOBuf& buf) {
+  return combineBuf(acc, buf, buf.computeChainDataLength());
+}
+template <typename Accumulator>
+uint32_t combineBuf(
+    Accumulator& acc, const std::unique_ptr<folly::IOBuf>& buf) {
+  return buf == nullptr ? combineBuf(acc, folly::ByteRange{})
+                        : combineBuf(acc, *buf);
+}
 
 /**
  * A deterministic one-way/write-only custom protocol that guarantees the
@@ -94,35 +126,17 @@ class HashProtocol {
   uint32_t writeI64(int64_t val) { return (acc_.combine(val), 0); }
   uint32_t writeDouble(double val) { return (acc_.combine(val), 0); }
   uint32_t writeFloat(float val) { return (acc_.combine(val), 0); }
-  uint32_t writeString(folly::StringPiece val) { return writeBuffer(val); }
-  uint32_t writeBinary(folly::StringPiece val) { return writeBuffer(val); }
-  uint32_t writeBinary(folly::ByteRange val) { return writeBuffer(val); }
+  uint32_t writeString(folly::StringPiece val) { return combineBuf(acc_, val); }
+  uint32_t writeBinary(folly::StringPiece val) { return combineBuf(acc_, val); }
+  uint32_t writeBinary(folly::ByteRange val) { return combineBuf(acc_, val); }
   uint32_t writeBinary(const std::unique_ptr<folly::IOBuf>& val) {
-    return val == nullptr ? writeBinary("") : writeBinary(*val);
+    return combineBuf(acc_, val);
   }
   uint32_t writeBinary(const folly::IOBuf& val) {
-    return writeBuffer(val, val.computeChainDataLength());
+    return combineBuf(acc_, val);
   }
 
  private:
-  template <typename Buffer>
-  uint32_t writeBuffer(const Buffer& buffer) {
-    return writeBuffer(buffer, buffer.size());
-  }
-
-  template <typename Buffer>
-  uint32_t writeBuffer(const Buffer& buffer, size_t size) {
-    uint32_t limit = std::numeric_limits<uint32_t>::max();
-    if (size > limit) {
-      protocol::TProtocolException::throwExceededSizeLimit(size, limit);
-    }
-    acc_.beginOrdered();
-    writeI32(static_cast<int32_t>(size));
-    acc_.combine(buffer);
-    acc_.endOrdered();
-    return 0;
-  }
-
   template <typename... Types>
   void beginContainer(uint32_t size, Types... types) {
     acc_.beginOrdered();
