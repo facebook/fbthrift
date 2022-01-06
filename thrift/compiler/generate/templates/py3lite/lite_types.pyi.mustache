@@ -90,7 +90,9 @@ class {{struct:name}}({{!
     def get_type(self) -> Type:...
     {{/struct:union?}}
     {{^struct:union?}}
-    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, {{ > types/field_value_pep484_union_type}}]]: ...
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[{{^struct:fields_and_mixin_fields}}None{{/struct:fields_and_mixin_fields}}{{!
+        }}{{#struct:fields_and_mixin_fields}}{{^first?}}, {{/first?}}{{#field:type}}{{> types/pep484_type}}{{/field:type}}{{!
+        }}{{/struct:fields_and_mixin_fields}}]]]: ...
     {{/struct:union?}}
 {{/program:structs}}
 {{#program:constants?}}
