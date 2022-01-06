@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,17 @@
 #include <array>
 
 #include <folly/portability/GTest.h>
+#include <thrift/conformance/data/ValueGenerator.h>
 #include <thrift/lib/cpp2/op/Clear.h>
 #include <thrift/lib/cpp2/op/Testing.h>
 
 namespace apache::thrift::op {
+namespace {
+using conformance::data::ValueGenerator;
 using test::IsEmpty;
 using test::IsEqualTo;
 using test::IsIdenticalTo;
 using ::testing::Not;
-namespace {
 
 // A test suite that check ops work correctly for a given test case.
 template <typename OpTestCase>
@@ -170,6 +172,20 @@ TYPED_TEST(TypedOpTest, Clear) {
   EXPECT_THAT(value, IsEmpty<Tag>());
   EXPECT_THAT(value, IsIdenticalTo<Tag>(TypeParam::default_));
   EXPECT_THAT(value, Not(IsIdenticalTo<Tag>(TypeParam::one)));
+}
+
+TYPED_TEST(TypedOpTest, Hash) {
+  using Tag = typename TypeParam::type_tag;
+  EXPECT_NE(op::hash<Tag>(TypeParam::default_), op::hash<Tag>(TypeParam::one));
+}
+
+TYPED_TEST(TypedOpTest, HashQuality) {
+  using Tag = typename TypeParam::type_tag;
+  std::set<size_t> seen;
+  // All the 'interesting' key values should not collide.
+  for (const auto& val : ValueGenerator<Tag>::getKeyValues()) {
+    EXPECT_TRUE(seen.insert(op::hash<Tag>(val.value)).second) << val.name;
+  }
 }
 
 } // namespace
