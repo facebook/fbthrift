@@ -19,8 +19,8 @@
 #include <cmath>
 
 #include <folly/Range.h>
-#include <thrift/lib/cpp2/hash/StdHasher.h>
 #include <thrift/lib/cpp2/op/DeterministicAccumulator.h>
+#include <thrift/lib/cpp2/op/StdHasher.h>
 #include <thrift/lib/cpp2/op/detail/HashProtocol.h>
 #include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/lib/cpp2/type/Traits.h>
@@ -111,7 +111,7 @@ struct Hash {
   }
   template <typename T = type::native_type<Tag>>
   auto operator()(const T& value) const {
-    auto accumulator = makeDeterministicAccumulator<hash::StdHasher>();
+    auto accumulator = makeDeterministicAccumulator<StdHasher>();
     operator()(value, accumulator);
     return std::move(accumulator.result()).getResult();
   }

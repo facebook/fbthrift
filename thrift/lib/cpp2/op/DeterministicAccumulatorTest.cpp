@@ -27,14 +27,14 @@
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 #include <folly/portability/GTest.h>
-#include <thrift/lib/cpp2/hash/StdHasher.h>
 #include <thrift/lib/cpp2/op/Hash.h>
+#include <thrift/lib/cpp2/op/StdHasher.h>
 #include <thrift/lib/cpp2/protocol/test/gen-cpp2/Module_types_custom_protocol.h>
 
 namespace apache::thrift::op {
 namespace {
 
-struct MoveOnlyHahser : hash::StdHasher {
+struct MoveOnlyHahser : StdHasher {
   using StdHasher::StdHasher;
   explicit MoveOnlyHahser() noexcept = default;
   MoveOnlyHahser(const MoveOnlyHahser&) = delete;

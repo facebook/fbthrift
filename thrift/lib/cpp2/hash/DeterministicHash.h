@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
+// TODO(afuller): Migrate all usage and delete this folder, when the 'op'
+// library is public.
 #pragma once
 
 #include <type_traits>
 #include <utility>
 
-#include <thrift/lib/cpp2/op/DeterministicAccumulator.h>
-#include <thrift/lib/cpp2/op/detail/HashProtocol.h>
+#include <thrift/lib/cpp2/op/Hash.h>
+#include <thrift/lib/cpp2/type/Tag.h>
 
 namespace apache {
 namespace thrift {
@@ -43,6 +45,11 @@ auto deterministic_hash(const Struct& data) {
   return deterministic_hash(data, [] { return Hasher{}; });
 }
 
+template <typename Struct>
+auto deterministic_hash(const Struct& data) {
+  return op::hash<type::struct_t<Struct>>(data);
+}
+
 /**
  * Utility to compute deterministic hash using custom Hasher implementation.
  * Hashes are guaranteed to be stable and consistent across different languages
@@ -59,8 +66,7 @@ auto deterministic_hash(const Struct& data) {
 template <typename Struct, typename HasherGenerator>
 auto deterministic_hash(const Struct& data, HasherGenerator generator) {
   op::DeterministicAccumulator acc{std::move(generator)};
-  op::detail::HashProtocol protocol{acc};
-  data.write(&protocol);
+  op::hash<type::struct_t<Struct>>(data, acc);
   return std::move(acc.result()).getResult();
 }
 

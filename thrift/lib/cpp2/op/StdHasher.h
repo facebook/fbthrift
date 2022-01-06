@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,56 +25,37 @@
 
 namespace apache {
 namespace thrift {
-namespace hash {
+namespace op {
 
 class StdHasher {
  public:
-  std::size_t getResult() const { return result_; }
+  size_t getResult() const { return result_; }
 
-  void finalize() {}
-
-  void combine(bool value) { combinePrimitive(value); }
-
-  void combine(std::int8_t value) { combinePrimitive(value); }
-
-  void combine(std::int16_t value) { combinePrimitive(value); }
-
-  void combine(std::int32_t value) { combinePrimitive(value); }
-
-  void combine(std::int64_t value) { combinePrimitive(value); }
-
-  void combine(float value) { combinePrimitive(value); }
-
-  void combine(double value) { combinePrimitive(value); }
-
+  template <typename T>
+  constexpr std::enable_if_t<std::is_arithmetic_v<T>> combine(const T& val) {
+    result_ = folly::hash::hash_combine(val, result_);
+  }
   void combine(const folly::IOBuf& value) {
-    for (const auto buf : value) {
+    for (const auto& buf : value) {
       combine(buf);
     }
   }
-
   void combine(folly::ByteRange value) {
     result_ = folly::hash::hash_combine(
         folly::hash::hash_range(value.begin(), value.end()), result_);
   }
+  void combine(const StdHasher& other) { combine(other.result_); }
 
-  void combine(const StdHasher& other) { combinePrimitive(other.result_); }
+  void finalize() {}
 
   bool operator<(const StdHasher& other) const {
     return result_ < other.result_;
   }
 
  private:
-  template <typename Value>
-  void combinePrimitive(Value value) {
-    static_assert(
-        std::is_arithmetic_v<Value>, "Only for primitive arithmetic types");
-    result_ = folly::hash::hash_combine(value, result_);
-  }
-
-  std::size_t result_ = 0;
+  size_t result_ = 0;
 };
 
-} // namespace hash
+} // namespace op
 } // namespace thrift
 } // namespace apache

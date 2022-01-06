@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
+#include <thrift/lib/cpp2/op/StdHasher.h>
+
 #include <cstdint>
 
 #include <folly/Range.h>
 #include <folly/io/IOBuf.h>
 #include <folly/portability/GTest.h>
-#include <thrift/lib/cpp2/hash/StdHasher.h>
 
 namespace apache {
 namespace thrift {
-namespace hash {
+namespace op {
 
 TEST(StdHasherTest, checkCombineBool) {
   StdHasher hasher;
@@ -170,6 +171,6 @@ TEST(StdHasherTest, checkFinalize) {
   EXPECT_EQ(previousResult, hasher.getResult());
 }
 
-} // namespace hash
+} // namespace op
 } // namespace thrift
 } // namespace apache
