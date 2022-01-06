@@ -100,9 +100,8 @@ class DeterministicAccumulator {
   const Hasher& result() const { return result_.value(); }
 
   template <typename T>
-  void combine(const T& val) {
-    next().combine(val);
-  }
+  void combine(const T& val);
+
   void beginOrdered();
   void endOrdered();
   void beginUnordered() { context_.emplace(UnorderedContext{}); }
@@ -203,13 +202,19 @@ void DeterministicAccumulator<HasherGenerator>::exitContext(Hasher result) {
 }
 
 template <typename HasherGenerator>
-auto DeterministicAccumulator<HasherGenerator>::next() -> Hasher& {
-  if (auto* ctx = contextIf<Ordered>()) {
-    return ctx->hasher;
+template <typename T>
+void DeterministicAccumulator<HasherGenerator>::combine(const T& val) {
+  if (context_.empty()) {
+    result_.emplace(generator_());
+    result_->combine(val);
+    result_->finalize();
+  } else if (auto* octx = std::get_if<Ordered>(&context_.top())) {
+    octx->hasher.combine(val);
+  } else {
+    auto& uctx = std::get<Unordered>(context_.top());
+    uctx.emplace_back(generator_());
+    uctx.back().combine(val);
   }
-  auto& ctx = context<Unordered>();
-  ctx.emplace_back(generator_());
-  return ctx.back();
 }
 
 } // namespace apache::thrift::op

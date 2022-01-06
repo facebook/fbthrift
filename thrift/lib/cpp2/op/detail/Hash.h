@@ -107,7 +107,6 @@ template <typename Tag>
 struct Hash {
   template <typename T, typename Accumulator>
   void operator()(const T& value, Accumulator& accumulator) const {
-    auto guard = makeOrderedHashGuard(accumulator);
     HashImpl<Tag>{}(accumulator, value);
   }
   template <typename T = type::native_type<Tag>>

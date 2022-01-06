@@ -43,6 +43,12 @@ struct MoveOnlyHahser : hash::StdHasher {
   MoveOnlyHahser& operator=(const MoveOnlyHahser&) noexcept = delete;
 };
 
+TEST(DeterministicAccumulatorTest, SimpleHash) {
+  auto accumulator = makeDeterministicAccumulator<MoveOnlyHahser>();
+  accumulator.combine(0);
+  EXPECT_EQ(accumulator.result().getResult(), 0);
+}
+
 TEST(DeterministicAccumulatorTest, Exceptions) {
   auto accumulator = makeDeterministicAccumulator<MoveOnlyHahser>();
 
