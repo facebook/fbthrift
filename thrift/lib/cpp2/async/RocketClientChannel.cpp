@@ -119,17 +119,6 @@ folly::Try<FirstResponsePayload> decodeResponseError(
     case rocket::ErrorCode::INVALID:
     case rocket::ErrorCode::REJECTED:
       break;
-    case rocket::ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT: {
-      ResponseRpcMetadata metadata;
-      metadata.otherMetadata_ref().ensure()["ex"] =
-          kServerIngressMemoryLimitExceededErrorCode;
-
-      return folly::Try<FirstResponsePayload>(FirstResponsePayload(
-          handler.handleException(TApplicationException(
-              TApplicationException::LOADSHEDDING,
-              "Exceeded Ingress Memory Limit")),
-          std::move(metadata)));
-    }
     default:
       return folly::Try<FirstResponsePayload>(
           folly::make_exception_wrapper<TApplicationException>(fmt::format(

@@ -46,6 +46,7 @@
 #include <thrift/lib/cpp2/transport/rocket/client/RequestContext.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Util.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
 namespace thrift {
@@ -192,9 +193,17 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
             serverMeta.drainCompletePush_ref()->drainCompleteCode_ref();
         if (drainCode &&
             *drainCode == DrainCompleteCode::EXCEEDED_INGRESS_MEM_LIMIT) {
-          handleError(RocketException(ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT));
-        } else {
-          handleError(RocketException(ErrorCode::CONNECTION_DRAIN_COMPLETE));
+          ResponseRpcError responseRpcError;
+          responseRpcError.name_utf8_ref() =
+              apache::thrift::TEnumTraits<ResponseRpcErrorCode>::findName(
+                  ResponseRpcErrorCode::OVERLOAD);
+          responseRpcError.what_utf8_ref() = "Exceeded ingress memory limit";
+          responseRpcError.code_ref() = ResponseRpcErrorCode::OVERLOAD;
+          responseRpcError.category_ref() =
+              ResponseRpcErrorCategory::LOADSHEDDING;
+
+          close(RocketException(
+              ErrorCode::REJECTED, packCompact(responseRpcError)));
         }
         return;
       }
@@ -552,16 +561,6 @@ void RocketClient::handleError(RocketException&& rex) {
       ew = transport::TTransportException(
           transport::TTransportException::NOT_OPEN,
           enrichMsg("Connection setup failed", rex));
-      break;
-    }
-    case ErrorCode::CONNECTION_DRAIN_COMPLETE: {
-      ew = transport::TTransportException(
-          transport::TTransportException::NOT_OPEN,
-          enrichMsg("Server shutdown", rex));
-      break;
-    }
-    case ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT: {
-      ew = std::move(rex);
       break;
     }
     default: {
