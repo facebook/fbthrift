@@ -27,92 +27,81 @@
 
 namespace apache::thrift::op::detail {
 
-template <typename Tag>
-struct HashImpl {
- public:
-  template <typename HashAccumulator, typename T = type::native_type<Tag>>
-  constexpr void operator()(
-      HashAccumulator& accumulator, const T& value) const {
-    accumulator.combine(value);
-  }
-};
+// By default, pass the value directly to the accumulator.
+template <typename Accumulator, typename T>
+void accumulateHash(type::all_c, Accumulator& accumulator, const T& value) {
+  accumulator.combine(value);
+}
 
-template <>
-struct HashImpl<type::string_t> {
-  template <
-      typename Accumulator,
-      typename T = type::native_type<type::string_t>>
-  constexpr void operator()(Accumulator& accumulator, const T& value) const {
-    accumulator.combine(folly::ByteRange(
-        reinterpret_cast<const unsigned char*>(value.data()), value.size()));
-  }
-};
+template <typename Accumulator, typename T>
+void accumulateHash(type::string_c, Accumulator& accumulator, const T& value) {
+  accumulator.combine(folly::ByteRange(
+      reinterpret_cast<const unsigned char*>(value.data()), value.size()));
+}
 
-template <>
-struct HashImpl<type::binary_t> : HashImpl<type::string_t> {};
-
-template <typename ValTag>
-struct HashImpl<type::list<ValTag>> {
-  template <
-      typename Accumulator,
-      typename T = type::native_type<type::list<ValTag>>>
-  constexpr void operator()(Accumulator& accumulator, const T& value) const {
-    auto guard = makeOrderedHashGuard(accumulator);
-    for (const auto& i : value) {
-      HashImpl<ValTag>{}(accumulator, i);
-    }
+template <
+    typename ValTag,
+    template <typename...>
+    typename ListT,
+    typename Accumulator,
+    typename T>
+void accumulateHash(
+    type::list<ValTag, ListT>, Accumulator& accumulator, const T& value) {
+  auto guard = makeOrderedHashGuard(accumulator);
+  for (const auto& i : value) {
+    accumulateHash(ValTag{}, accumulator, i);
   }
-};
+}
 
-template <typename ValTag>
-struct HashImpl<type::set<ValTag>> {
-  template <
-      typename Accumulator,
-      typename T = type::native_type<type::set<ValTag>>>
-  constexpr void operator()(Accumulator& accumulator, const T& value) const {
-    auto guard = makeUnorderedHashGuard(accumulator);
-    for (const auto& i : value) {
-      HashImpl<ValTag>{}(accumulator, i);
-    }
+template <
+    typename KeyTag,
+    template <typename...>
+    typename SetT,
+    typename Accumulator,
+    typename T>
+void accumulateHash(
+    type::set<KeyTag, SetT>, Accumulator& accumulator, const T& value) {
+  auto guard = makeUnorderedHashGuard(accumulator);
+  for (const auto& i : value) {
+    accumulateHash(KeyTag{}, accumulator, i);
   }
-};
+}
 
-template <typename KeyTag, typename ValTag>
-struct HashImpl<type::map<KeyTag, ValTag>> {
-  template <
-      typename Accumulator,
-      typename T = type::native_type<type::map<KeyTag, ValTag>>>
-  constexpr void operator()(Accumulator& accumulator, const T& value) const {
-    auto guard = makeUnorderedHashGuard(accumulator);
-    for (const auto& i : value) {
-      auto pairGuard = makeOrderedHashGuard(accumulator);
-      HashImpl<KeyTag>{}(accumulator, i.first);
-      HashImpl<ValTag>{}(accumulator, i.second);
-    }
+template <
+    typename KeyTag,
+    typename ValTag,
+    template <typename...>
+    typename MapT,
+    typename Accumulator,
+    typename T>
+void accumulateHash(
+    type::map<KeyTag, ValTag, MapT>, Accumulator& accumulator, const T& value) {
+  auto guard = makeUnorderedHashGuard(accumulator);
+  for (const auto& i : value) {
+    auto pairGuard = makeOrderedHashGuard(accumulator);
+    accumulateHash(KeyTag{}, accumulator, i.first);
+    accumulateHash(ValTag{}, accumulator, i.second);
   }
-};
+}
 
-template <typename StructType>
-struct HashImpl<type::struct_t<StructType>> {
-  template <
-      typename Accumulator,
-      typename T = type::native_type<type::struct_t<StructType>>>
-  constexpr void operator()(Accumulator& accumulator, const T& value) const {
-    detail::HashProtocol protocol(accumulator);
-    value.write(&protocol);
-  }
-};
+template <typename Accumulator, typename T>
+void accumulateHash(
+    type::structured_c, Accumulator& accumulator, const T& value) {
+  detail::HashProtocol protocol(accumulator);
+  value.write(&protocol);
+}
 
 template <typename Tag>
 struct Hash {
   template <typename T, typename Accumulator>
   void operator()(const T& value, Accumulator& accumulator) const {
-    HashImpl<Tag>{}(accumulator, value);
+    accumulateHash(Tag{}, accumulator, value);
   }
   template <typename T = type::native_type<Tag>>
   auto operator()(const T& value) const {
+    // TODO(afuller): Only use an accumulator for composite types.
     auto accumulator = makeDeterministicAccumulator<StdHasher>();
-    operator()(value, accumulator);
+    accumulateHash(Tag{}, accumulator, value);
     return std::move(accumulator.result()).getResult();
   }
 };

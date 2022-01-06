@@ -23,9 +23,83 @@
 namespace apache::thrift::op {
 namespace {
 
-TEST(TypedOpTest, HashType) {
-  test::OneOfEach value;
+class DebugHasher {
+ public:
+  DebugHasher() {
+    queue_ = std::make_unique<folly::IOBufQueue>();
+    appender_.reset(queue_.get(), 1 << 10);
+    combine("[");
+  }
+
+  DebugHasher(const DebugHasher& other) = delete;
+  DebugHasher& operator=(const DebugHasher& other) = delete;
+
+  DebugHasher(DebugHasher&& other) = default;
+  DebugHasher& operator=(DebugHasher&& other) = default;
+
+  void finalize() {
+    combine("]");
+    auto queue = queue_->move();
+    auto buf = queue->coalesce();
+    result_ = {reinterpret_cast<const char*>(buf.data()), buf.size()};
+  }
+
+  const std::string& getResult() const& { return result_; }
+  std::string&& getResult() && { return std::move(result_); }
+
+  template <typename Value>
+  typename std::enable_if<std::is_arithmetic<Value>::value, void>::type combine(
+      const Value& value) {
+    handlePrefix();
+    combine(folly::to<std::string>(value));
+  }
+
+  void combine(const folly::IOBuf& value) {
+    handlePrefix();
+    for (const auto buf : value) {
+      combine(buf);
+    }
+  }
+
+  void combine(folly::StringPiece value) { combine(folly::ByteRange{value}); }
+  void combine(folly::ByteRange value) { appender_.push(value); }
+  void combine(const DebugHasher& other) {
+    handlePrefix();
+    combine(other.result_);
+  }
+
+  bool operator<(const DebugHasher& other) { return result_ < other.result_; }
+
+ private:
+  void handlePrefix() {
+    if (empty_) {
+      empty_ = false;
+    } else {
+      combine(",");
+    }
+  }
+
+  bool empty_ = true;
+  std::unique_ptr<folly::IOBufQueue> queue_{nullptr};
+  folly::io::QueueAppender appender_{nullptr, 0};
+  std::string result_;
+};
+
+template <typename Struct>
+auto hashStruct(const Struct& input) {
+  return op::hash<type::struct_t<Struct>>(input);
+}
+
+template <typename Tag, typename T = type::native_type<Tag>>
+auto debugHash(const T& input) {
+  auto accumulator = makeDeterministicAccumulator<DebugHasher>();
+  op::hash<Tag>(input, accumulator);
+  return std::move(accumulator.result()).getResult();
+}
+
+TEST(HashTest, HashType) {
   using Tag = type::struct_t<test::OneOfEach>;
+  test::OneOfEach value;
 
   std::unordered_set<std::size_t> s;
   auto check_and_add = [&s](auto tag, const auto& v) {
@@ -52,12 +126,57 @@ TEST(TypedOpTest, HashType) {
   }
 }
 
-TEST(TypedOpTest, HashDouble) {
+TEST(HashTest, HashDouble) {
   EXPECT_EQ(hash<type::double_t>(-0.0), hash<type::double_t>(+0.0));
   EXPECT_EQ(
       hash<type::double_t>(std::numeric_limits<double>::quiet_NaN()),
       hash<type::double_t>(std::numeric_limits<double>::quiet_NaN()));
 }
+
+TEST(HashTest, HashAccumulation) {
+  test::OneOfEach value;
+  EXPECT_EQ(debugHash<type::i32_t>(*value.myI32()), "[100017]");
+  EXPECT_EQ(
+      debugHash<type::list<type::string_t>>(*value.myList()),
+      // TODO(afuller): Should be "[3,3foo,3bar,3baz]",
+      "[foobarbaz]");
+  EXPECT_EQ(
+      debugHash<type::set<type::string_t>>(*value.mySet()),
+      // TODO(afuller): Should be "[3,[[3bar],[3baz],[3foo]]]",
+      "[,,]");
+  EXPECT_EQ(
+      (debugHash<type::map<type::string_t, type::i64_t>>(*value.myMap())),
+      // TODO(afuller): Should be "[3,[[3bar,17],[3baz,19],[3foo,13]]]"
+      "[[bar17],[baz19],[foo13]]");
+}
+
+template <typename Mode>
+class DeterministicProtocolTest : public ::testing::Test {
+ public:
+  template <typename Struct>
+  auto hash(const Struct& input) {
+    return Mode::hash(input);
+  }
+};
+
+struct HasherMode {
+  template <typename Struct>
+  static auto hash(const Struct& input) {
+    return debugHash<type::struct_t<Struct>>(input);
+  }
+};
+
+struct GeneratorMode {
+  template <typename Struct>
+  static auto hash(const Struct& input) {
+    return thrift::hash::deterministic_hash(
+        input, [] { return DebugHasher{}; });
+  }
+};
+
+using Modes = ::testing::Types<HasherMode, GeneratorMode>;
+
+TYPED_TEST_CASE(DeterministicProtocolTest, Modes);
 
 constexpr folly::StringPiece kOneOfEachExpected =
     // struct OneOfEach {
@@ -87,104 +206,6 @@ constexpr folly::StringPiece kOneOfEachExpected =
     // 4: i32 myI32 = 100017;
     "[8,4,100017]"
     "]"; // }
-
-class DebugHasher {
- public:
-  DebugHasher() {
-    queue_ = std::make_unique<folly::IOBufQueue>();
-    appender_.reset(queue_.get(), 1 << 10);
-    combine("[");
-  }
-
-  DebugHasher(const DebugHasher& other) = delete;
-  DebugHasher& operator=(const DebugHasher& other) = delete;
-
-  DebugHasher(DebugHasher&& other) = default;
-  DebugHasher& operator=(DebugHasher&& other) = default;
-
-  void finalize() {
-    combine("]");
-    auto queue = queue_->move();
-    auto buf = queue->coalesce();
-    result_ = {reinterpret_cast<const char*>(buf.data()), buf.size()};
-  }
-
-  std::string getResult() const { return result_.value(); }
-
-  template <typename Value>
-  typename std::enable_if<std::is_arithmetic<Value>::value, void>::type combine(
-      const Value& value) {
-    handlePrefix();
-    combine(folly::to<std::string>(value));
-  }
-
-  void combine(const folly::IOBuf& value) {
-    handlePrefix();
-    for (const auto buf : value) {
-      combine(buf);
-    }
-  }
-
-  void combine(folly::StringPiece value) { combine(folly::ByteRange{value}); }
-  void combine(folly::ByteRange value) { appender_.push(value); }
-  void combine(const DebugHasher& other) {
-    handlePrefix();
-    combine(other.result_.value());
-  }
-
-  bool operator<(const DebugHasher& other) {
-    return result_.value() < other.result_.value();
-  }
-
- private:
-  void handlePrefix() {
-    if (empty_) {
-      empty_ = false;
-    } else {
-      combine(",");
-    }
-  }
-
-  bool empty_ = true;
-  std::unique_ptr<folly::IOBufQueue> queue_{nullptr};
-  folly::io::QueueAppender appender_{nullptr, 0};
-  std::optional<std::string> result_;
-};
-
-template <typename Struct>
-auto hashStruct(const Struct& input) {
-  return op::hash<type::struct_t<Struct>>(input);
-}
-
-template <typename Mode>
-class DeterministicProtocolTest : public ::testing::Test {
- public:
-  template <typename Struct>
-  auto hash(const Struct& input) {
-    return Mode::hash(input);
-  }
-};
-
-struct HasherMode {
-  template <typename Struct>
-  static auto hash(const Struct& input) {
-    auto accumulator = makeDeterministicAccumulator<DebugHasher>();
-    op::hash<type::struct_t<Struct>>(input, accumulator);
-    return std::move(accumulator.result()).getResult();
-  }
-};
-
-struct GeneratorMode {
-  template <typename Struct>
-  static auto hash(const Struct& input) {
-    return thrift::hash::deterministic_hash(
-        input, [] { return DebugHasher{}; });
-  }
-};
-
-using Modes = ::testing::Types<HasherMode, GeneratorMode>;
-
-TYPED_TEST_CASE(DeterministicProtocolTest, Modes);
 
 TYPED_TEST(DeterministicProtocolTest, checkOneOfEach) {
   const test::OneOfEach input;
