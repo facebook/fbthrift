@@ -618,6 +618,7 @@ class mstch_cpp2_field : public mstch_field {
             {"field:eligible_for_storage_name_mangling?",
              &mstch_cpp2_field::eligible_for_storage_name_mangling},
         });
+    register_has_option("field:deprecated_clear?", "deprecated_clear");
   }
   mstch::node name_hash() {
     return "__fbthrift_hash_" + cpp2::sha256_hex(field_->get_name());
