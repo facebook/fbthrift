@@ -34,11 +34,6 @@
 
 #include <algorithm>
 
-// If true, H2ClientConnection::isDetachable() relies on
-// HTTPSession::isDetachable() implementation; otherwise original implementation
-// is used
-THRIFT_FLAG_DEFINE_bool(thrift_http2_detachable_via_httpsession, true);
-
 namespace apache {
 namespace thrift {
 
@@ -190,22 +185,7 @@ void H2ClientConnection::detachEventBase() {
 }
 
 bool H2ClientConnection::isDetachable() {
-  if (THRIFT_FLAG(thrift_http2_detachable_via_httpsession)) {
-    return !httpSession_ || httpSession_->isDetachable(true);
-  }
-
-  // MultiRpcChannel will always have at least one open stream.
-  // This is used to leverage multiple rpcs in one stream. We should
-  // still enable detaching if MultiRpc doesn't have any outstanding
-  // rpcs and the number of streams is <= 1.
-  // SingleRpcChannel should only detach if the number of outgoing
-  // streams == 0. That's how we know there are no pending rpcs to
-  // be fulfilled.
-  auto session_isDetachable =
-      !httpSession_ || httpSession_->getNumOutgoingStreams() == 0;
-  auto transport = getTransport();
-  auto transport_isDetachable = !transport || transport->isDetachable();
-  return transport_isDetachable && session_isDetachable;
+  return !httpSession_ || httpSession_->isDetachable(true);
 }
 
 uint32_t H2ClientConnection::getTimeout() {
