@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,19 +32,19 @@ using namespace apache::thrift::test;
 
 template <typename Tag>
 void testClear(
-    const type::native_type<Tag>& expected, type::native_type<Tag> unexpected) {
+    const type::native_type<Tag>& expected,
+    type::native_type<Tag> unexpected,
+    bool emptiable = true) {
   SCOPED_TRACE(type::getName<Tag>());
 
-  EXPECT_EQ(
-      isEmpty<Tag>(expected), (!type::is_a_v<Tag, type::struct_except_c>));
+  EXPECT_EQ(isEmpty<Tag>(expected), emptiable);
   EXPECT_THAT(getIntrinsicDefault<Tag>(), IsIdenticalTo<Tag>(expected));
 
   EXPECT_FALSE(isEmpty<Tag>(unexpected));
   EXPECT_THAT(unexpected, ::testing::Not(IsIdenticalTo<Tag>(expected)));
 
   clear<Tag>(unexpected);
-  EXPECT_EQ(
-      isEmpty<Tag>(expected), (!type::is_a_v<Tag, type::struct_except_c>));
+  EXPECT_EQ(isEmpty<Tag>(expected), emptiable);
   EXPECT_THAT(unexpected, IsIdenticalTo<Tag>(expected));
 }
 
@@ -70,8 +70,12 @@ TEST(ClearTest, String) {
 
 TEST(ClearTest, Structured) {
   testClear<type::struct_t<testset::struct_i64>>(
+      {}, {apache::thrift::FragileConstructor(), 1}, false);
+  testClear<type::struct_t<testset::struct_optional_i64>>(
       {}, {apache::thrift::FragileConstructor(), 1});
   testClear<type::exception_t<testset::exception_i64>>(
+      {}, {apache::thrift::FragileConstructor(), 1}, false);
+  testClear<type::exception_t<testset::exception_optional_i64>>(
       {}, {apache::thrift::FragileConstructor(), 1});
   testset::union_i64 one;
   one.field_1_ref().ensure() = 1;

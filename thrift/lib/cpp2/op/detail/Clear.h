@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -85,9 +85,7 @@ struct Empty {
     } else if constexpr (type::is_a_v<Tag, type::union_c>) {
       return value.getType() == T::__EMPTY__;
     } else if constexpr (type::is_a_v<Tag, type::struct_except_c>) {
-      // TODO(afuller): Implement a specialization for struct and except types
-      // that can serialize to an empty buffer.
-      return false;
+      return apache::thrift::detail::st::struct_private_access::is_empty(value);
     }
 
     // All unstructured values are 'empty' if they are identical to their
