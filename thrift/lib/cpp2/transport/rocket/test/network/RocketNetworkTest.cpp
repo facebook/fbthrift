@@ -39,6 +39,7 @@
 #include <folly/io/async/ScopedEventBaseThread.h>
 
 #include <folly/io/async/AsyncSocket.h>
+#include <thrift/lib/cpp/transport/TTransport.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/async/ClientSinkBridge.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
@@ -321,6 +322,48 @@ TEST_F(RocketNetworkTest, RequestResponseLargeData) {
     auto dam = splitMetadataAndData(*reply);
     EXPECT_EQ(kMetadata, getRange(*dam.first));
     EXPECT_EQ(expectedData, getRange(*dam.second));
+  });
+}
+
+TEST_F(RocketNetworkTest, RequestResponseSendTimeout) {
+  this->withClient([this](RocketTestClient& client) {
+    // Ensure metadata will be split across multiple frames
+    constexpr size_t kReplyDataSize = 0x2ffffff;
+    constexpr folly::StringPiece kPattern =
+        "abcdefghijklmnopqrstuvwxyz0123456789";
+
+    constexpr folly::StringPiece kMetadata{"metadata"};
+    const auto expectedData = repeatPattern(kPattern, kReplyDataSize);
+    const std::string data = folly::to<std::string>("data_echo:", expectedData);
+
+    // Send a request to make sure the connection is live
+    {
+      auto reply = client.sendRequestResponseSync(
+          Payload::makeFromMetadataAndData(kMetadata, folly::StringPiece{data}),
+          std::chrono::seconds(5));
+      EXPECT_TRUE(reply.hasValue());
+    }
+
+    // Deadlock the server IO thread to trigger send timeouts
+    auto ioBlockBaton = std::make_shared<folly::Baton<>>();
+    this->server_->getEventBase().add([=] { ioBlockBaton->wait(); });
+
+    {
+      // Make sure send timeout is lower than the recv timeout
+      client.getEventBase().runInEventBaseThreadAndWait([&] {
+        client.getRawClient().getTransportWrapper()->setSendTimeout(500);
+      });
+      auto reply = client.sendRequestResponseSync(
+          Payload::makeFromMetadataAndData(kMetadata, folly::StringPiece{data}),
+          std::chrono::seconds(5));
+      EXPECT_TRUE(reply.hasException());
+      EXPECT_TRUE(reply.withException([](const TTransportException& ex) {
+        EXPECT_EQ(TTransportException::NOT_OPEN, ex.getType())
+            << folly::exceptionStr(ex);
+      }));
+    }
+
+    ioBlockBaton->post();
   });
 }
 

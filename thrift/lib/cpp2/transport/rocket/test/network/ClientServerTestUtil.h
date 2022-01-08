@@ -104,6 +104,8 @@ class RocketTestServer {
 
   void setExpectedSetupMetadata(MetadataOpaqueMap<std::string, std::string> md);
 
+  folly::EventBase& getEventBase() const { return evb_; }
+
  private:
   class RocketTestServerHandler;
 

@@ -129,6 +129,13 @@ class RequestContext {
     return std::move(serializedFrame_);
   }
 
+  size_t endOffsetInBatch() const {
+    DCHECK_GT(endOffsetInBatch_, 0);
+    return endOffsetInBatch_;
+  }
+
+  void setEndOffsetInBatch(ssize_t offset) { endOffsetInBatch_ = offset; }
+
   State state() const { return state_; }
 
   StreamId streamId() const { return streamId_; }
@@ -158,6 +165,7 @@ class RequestContext {
   RequestContextQueue& queue_;
   folly::SafeIntrusiveListHook queueHook_;
   std::unique_ptr<folly::IOBuf> serializedFrame_;
+  ssize_t endOffsetInBatch_{};
   StreamId streamId_;
   FrameType frameType_;
   State state_{State::WRITE_NOT_SCHEDULED};

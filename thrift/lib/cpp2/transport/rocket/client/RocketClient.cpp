@@ -1218,14 +1218,15 @@ void RocketClient::writeErr(
   DCHECK(clientState_.connState != ConnectionState::CLOSED);
 
   queue_.markNextSendingBatchAsSent([&](auto& req) {
-    if (bytesWritten == 0) {
+    if (bytesWritten < req.endOffsetInBatch()) {
       queue_.abortSentRequest(
           req,
           transport::TTransportException(
               transport::TTransportException::NOT_OPEN,
               fmt::format(
-                  "Failed to write to remote endpoint. Wrote 0 bytes."
+                  "Failed to write to remote endpoint. Wrote {} bytes."
                   " AsyncSocketException: {}",
+                  bytesWritten,
                   ex.what())));
     }
   });

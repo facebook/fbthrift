@@ -39,6 +39,7 @@ void RequestContextQueue::enqueueScheduledWrite(RequestContext& req) noexcept {
 std::unique_ptr<folly::IOBuf>
 RequestContextQueue::getNextScheduledWritesBatch() noexcept {
   std::unique_ptr<folly::IOBuf> batchBuf;
+  size_t endOffset = 0;
 
   while (!writeScheduledQueue_.empty()) {
     auto& req = writeScheduledQueue_.front();
@@ -56,6 +57,8 @@ RequestContextQueue::getNextScheduledWritesBatch() noexcept {
     }
 
     auto reqBuf = req.serializedChain();
+    endOffset += reqBuf->computeChainDataLength();
+    req.setEndOffsetInBatch(endOffset);
     if (!batchBuf) {
       batchBuf = std::move(reqBuf);
     } else {
