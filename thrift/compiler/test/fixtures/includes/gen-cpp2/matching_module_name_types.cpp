@@ -48,6 +48,10 @@ void MyStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+bool MyStruct::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;

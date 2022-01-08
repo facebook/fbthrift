@@ -76,6 +76,10 @@ void Foo::__fbthrift_clear() {
   __isset = {};
 }
 
+bool Foo::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool Foo::operator==(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -366,6 +370,10 @@ void LazyFoo::__fbthrift_clear() {
   __isset = {};
 }
 
+bool LazyFoo::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool LazyFoo::operator==(const LazyFoo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -513,6 +521,13 @@ void OptionalFoo::__fbthrift_clear() {
   this->__fbthrift_field_field3.clear();
   this->__fbthrift_field_field4.clear();
   __isset = {};
+}
+
+bool OptionalFoo::__fbthrift_is_empty() const {
+  return !(this->__isset.get(0)) &&
+ !(this->__isset.get(1)) &&
+ !(this->__isset.get(2)) &&
+ !(this->__isset.get(3));
 }
 
 bool OptionalFoo::operator==(const OptionalFoo& rhs) const {
@@ -801,6 +816,13 @@ void OptionalLazyFoo::__fbthrift_clear() {
   __fbthrift_isDeserialized_.~__fbthrift_IsDeserialized();
   new (&__fbthrift_isDeserialized_) __fbthrift_IsDeserialized();
   __isset = {};
+}
+
+bool OptionalLazyFoo::__fbthrift_is_empty() const {
+  return !(this->__isset.get(0)) &&
+ !(this->__isset.get(1)) &&
+ !(this->__isset.get(2)) &&
+ !(this->__isset.get(3));
 }
 
 bool OptionalLazyFoo::operator==(const OptionalLazyFoo& rhs) const {
@@ -1178,6 +1200,10 @@ void LazyCppRef::__fbthrift_clear() {
   new (&__fbthrift_isDeserialized_) __fbthrift_IsDeserialized();
 }
 
+bool LazyCppRef::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool LazyCppRef::operator==(const LazyCppRef& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -1333,6 +1359,10 @@ void IndexedFoo::__fbthrift_clear() {
   this->__fbthrift_field_field4.clear();
   this->__fbthrift_field_field_id_to_size.clear();
   __isset = {};
+}
+
+bool IndexedFoo::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool IndexedFoo::operator==(const IndexedFoo& rhs) const {
@@ -1531,6 +1561,10 @@ void OptionalIndexedFoo::__fbthrift_clear() {
   __isset = {};
 }
 
+bool OptionalIndexedFoo::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool OptionalIndexedFoo::operator==(const OptionalIndexedFoo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -1675,6 +1709,10 @@ Empty::Empty(apache::thrift::FragileConstructor) {}
 
 void Empty::__fbthrift_clear() {
   // clear all fields
+}
+
+bool Empty::__fbthrift_is_empty() const {
+  return true;
 }
 
 bool Empty::operator==(const Empty& rhs) const {

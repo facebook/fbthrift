@@ -84,6 +84,10 @@ void SmallStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+bool SmallStruct::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool SmallStruct::operator==(const SmallStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -354,6 +358,10 @@ void containerStruct::__fbthrift_clear() {
   if (this->fieldU) this->fieldU = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::cpp2::SmallStruct>>();
   if (this->fieldX) apache::thrift::clear(*this->fieldX);
   __isset = {};
+}
+
+bool containerStruct::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool containerStruct::operator==(const containerStruct& rhs) const {

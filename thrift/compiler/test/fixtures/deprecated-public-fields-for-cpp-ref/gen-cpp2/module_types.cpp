@@ -71,6 +71,11 @@ void Foo::__fbthrift_clear() {
   this->__fbthrift_field_bar.reset();
 }
 
+bool Foo::__fbthrift_is_empty() const {
+  return !(this->__fbthrift_field_foo) &&
+ !(this->__fbthrift_field_bar);
+}
+
 bool Foo::operator==(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;

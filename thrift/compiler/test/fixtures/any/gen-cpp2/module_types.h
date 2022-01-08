@@ -67,6 +67,7 @@ class MyStruct final  {
   static const char* __fbthrift_cpp2_gen_thrift_uri();
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = MyStruct;
@@ -191,6 +192,7 @@ class MyUnion final  {
   static const char* __fbthrift_cpp2_gen_thrift_uri();
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = MyUnion;
@@ -400,6 +402,7 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
   static const char* __fbthrift_cpp2_gen_thrift_uri();
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
   static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =

@@ -81,6 +81,10 @@ void AStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+bool AStruct::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool AStruct::operator==(const AStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -168,6 +172,10 @@ AStructB::AStructB(apache::thrift::FragileConstructor, ::std::shared_ptr<const :
 void AStructB::__fbthrift_clear() {
   // clear all fields
   if (this->FieldA) this->FieldA = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::a::different::ns::AStruct>>();
+}
+
+bool AStructB::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool AStructB::operator==(const AStructB& rhs) const {

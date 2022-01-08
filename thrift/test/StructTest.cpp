@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,9 @@
 
 using namespace apache::thrift::test;
 
+namespace {
+using apache::thrift::detail::st::struct_private_access;
+
 class StructTest : public testing::Test {};
 
 TEST_F(StructTest, compilation_terse_writes_refs_shared) {
@@ -35,6 +38,7 @@ TEST_F(StructTest, serialization_terse_writes_refs_shared) {
   using apache::thrift::CompactSerializer;
 
   BasicRefsSharedTerseWrites a;
+  EXPECT_FALSE(struct_private_access::is_empty(a));
 
   a.shared_field_ref() = std::make_shared<HasInt>();
   a.shared_field_ref()->field_ref() = 3;
@@ -671,3 +675,61 @@ TEST_F(StructTest, CppDataMethod) {
   EXPECT_EQ(std::as_const(obj)._data().foo_ref(), 20);
   EXPECT_EQ(std::move(obj)._data().foo_ref(), 20);
 }
+
+TEST_F(StructTest, EmptiableOptionalFieldsStruct) {
+  EmptiableOptionalFieldsStruct obj;
+  EXPECT_TRUE(struct_private_access::is_empty(obj));
+
+  obj.int_field() = 1;
+  EXPECT_FALSE(struct_private_access::is_empty(obj));
+
+  apache::thrift::clear(obj);
+  EXPECT_TRUE(struct_private_access::is_empty(obj));
+}
+
+TEST_F(StructTest, NotEmptiableStruct) {
+  NotEmptiableStruct obj;
+  EXPECT_FALSE(struct_private_access::is_empty(obj));
+
+  NotEmptiableTerseFieldsStruct obj2;
+  EXPECT_FALSE(struct_private_access::is_empty(obj2));
+}
+
+TEST_F(StructTest, EmptyTerseStruct) {
+  EmptyTerseStruct obj;
+  EXPECT_TRUE(struct_private_access::is_empty(obj));
+}
+
+TEST_F(StructTest, EmptiableTerseFieldsStruct) {
+  EmptiableTerseFieldsStruct obj;
+  EXPECT_TRUE(struct_private_access::is_empty(obj));
+
+  obj.bool_field() = true;
+  EXPECT_FALSE(struct_private_access::is_empty(obj));
+
+  apache::thrift::clear(obj);
+  EXPECT_TRUE(struct_private_access::is_empty(obj));
+}
+
+TEST_F(StructTest, OptionalFieldsStruct) {
+  OptionalFieldsStruct obj;
+  EXPECT_TRUE(struct_private_access::is_empty(obj));
+
+  obj.boxed_field_ref() = HasInt();
+  EXPECT_FALSE(struct_private_access::is_empty(obj));
+
+  apache::thrift::clear(obj);
+  EXPECT_TRUE(struct_private_access::is_empty(obj));
+}
+
+TEST_F(StructTest, OptionalFieldsTerseStruct) {
+  OptionalFieldsTerseStruct obj;
+  EXPECT_TRUE(struct_private_access::is_empty(obj));
+
+  obj.boxed_field_ref() = HasInt();
+  EXPECT_FALSE(struct_private_access::is_empty(obj));
+
+  apache::thrift::clear(obj);
+  EXPECT_TRUE(struct_private_access::is_empty(obj));
+}
+} // namespace

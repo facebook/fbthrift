@@ -99,6 +99,10 @@ void structured_annotation_inline::__fbthrift_clear() {
   __isset = {};
 }
 
+bool structured_annotation_inline::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool structured_annotation_inline::operator==(const structured_annotation_inline& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -195,6 +199,10 @@ void structured_annotation_with_default::__fbthrift_clear() {
   __isset = {};
 }
 
+bool structured_annotation_with_default::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool structured_annotation_with_default::operator==(const structured_annotation_with_default& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -269,6 +277,10 @@ void structured_annotation_forward::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_count = ::std::int64_t();
   __isset = {};
+}
+
+bool structured_annotation_forward::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool structured_annotation_forward::operator==(const structured_annotation_forward& rhs) const {
@@ -368,6 +380,10 @@ void structured_annotation_recursive::__fbthrift_clear() {
   apache::thrift::clear(this->__fbthrift_field_recurse);
   apache::thrift::clear(this->__fbthrift_field_forward);
   __isset = {};
+}
+
+bool structured_annotation_recursive::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool structured_annotation_recursive::operator==(const structured_annotation_recursive& rhs) const {
@@ -518,6 +534,10 @@ void structured_annotation_nested::__fbthrift_clear() {
   __isset = {};
 }
 
+bool structured_annotation_nested::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool structured_annotation_nested::operator==(const structured_annotation_nested& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -649,6 +669,10 @@ void MyStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+bool MyStruct::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -763,6 +787,10 @@ void MyException::__fbthrift_clear() {
   // clear all fields
   this->context = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
+}
+
+bool MyException::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool MyException::operator==(const MyException& rhs) const {

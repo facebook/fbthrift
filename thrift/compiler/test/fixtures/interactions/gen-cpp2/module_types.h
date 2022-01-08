@@ -54,6 +54,7 @@ class FOLLY_EXPORT CustomException : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
   static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =

@@ -94,6 +94,10 @@ void MyStructNestedAnnotation::__fbthrift_clear() {
   __isset = {};
 }
 
+bool MyStructNestedAnnotation::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool MyStructNestedAnnotation::operator==(const MyStructNestedAnnotation& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -246,6 +250,10 @@ void MyStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+bool MyStruct::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -380,6 +388,10 @@ void SecretStruct::__fbthrift_clear() {
   this->__fbthrift_field_id = ::std::int64_t();
   this->__fbthrift_field_password = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
+}
+
+bool SecretStruct::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool SecretStruct::operator==(const SecretStruct& rhs) const {

@@ -188,6 +188,10 @@ void Internship::__fbthrift_clear() {
   __isset = {};
 }
 
+bool Internship::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool Internship::operator==(const Internship& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -292,6 +296,10 @@ void Range::__fbthrift_clear() {
   this->max = ::std::int32_t();
 }
 
+bool Range::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool Range::operator==(const Range& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -390,6 +398,10 @@ void struct1::__fbthrift_clear() {
   this->__fbthrift_field_a = static_cast<::std::int32_t>(1234567);
   this->__fbthrift_field_b = apache::thrift::StringTraits<std::string>::fromStringLiteral("<uninitialized>");
   __isset = {};
+}
+
+bool struct1::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool struct1::operator==(const struct1& rhs) const {
@@ -501,6 +513,10 @@ void struct2::__fbthrift_clear() {
   apache::thrift::clear(this->__fbthrift_field_c);
   this->__fbthrift_field_d.clear();
   __isset = {};
+}
+
+bool struct2::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool struct2::operator==(const struct2& rhs) const {
@@ -651,6 +667,10 @@ void struct3::__fbthrift_clear() {
   __isset = {};
 }
 
+bool struct3::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool struct3::operator==(const struct3& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -782,6 +802,10 @@ void struct4::__fbthrift_clear() {
   this->__fbthrift_field_b = double();
   this->__fbthrift_field_c = ::std::int8_t();
   __isset = {};
+}
+
+bool struct4::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool struct4::operator==(const struct4& rhs) const {

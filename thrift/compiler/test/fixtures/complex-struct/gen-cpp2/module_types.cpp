@@ -109,6 +109,10 @@ void MyStructFloatFieldThrowExp::__fbthrift_clear() {
   __isset = {};
 }
 
+bool MyStructFloatFieldThrowExp::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool MyStructFloatFieldThrowExp::operator==(const MyStructFloatFieldThrowExp& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -224,6 +228,10 @@ void MyStructMapFloatThrowExp::__fbthrift_clear() {
   __isset = {};
 }
 
+bool MyStructMapFloatThrowExp::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool MyStructMapFloatThrowExp::operator==(const MyStructMapFloatThrowExp& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -308,6 +316,10 @@ MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
 
 void MyDataItem::__fbthrift_clear() {
   // clear all fields
+}
+
+bool MyDataItem::__fbthrift_is_empty() const {
+  return true;
 }
 
 bool MyDataItem::operator==(const MyDataItem& rhs) const {
@@ -538,6 +550,10 @@ void MyStruct::__fbthrift_clear() {
   this->__fbthrift_field_sByte.clear();
   this->__fbthrift_field_mListList.clear();
   __isset = {};
+}
+
+bool MyStruct::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool MyStruct::operator==(const MyStruct& rhs) const {
@@ -995,6 +1011,10 @@ void SimpleStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+bool SimpleStruct::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool SimpleStruct::operator==(const SimpleStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -1180,6 +1200,10 @@ void ComplexNestedStruct::__fbthrift_clear() {
   this->__fbthrift_field_mapKeySetValInt.clear();
   this->__fbthrift_field_mapKeyListValSet.clear();
   __isset = {};
+}
+
+bool ComplexNestedStruct::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool ComplexNestedStruct::operator==(const ComplexNestedStruct& rhs) const {
@@ -1918,6 +1942,10 @@ void defaultStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+bool defaultStruct::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool defaultStruct::operator==(const defaultStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -2338,6 +2366,10 @@ void MyStructTypeDef::__fbthrift_clear() {
   __isset = {};
 }
 
+bool MyStructTypeDef::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool MyStructTypeDef::operator==(const MyStructTypeDef& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -2686,6 +2718,10 @@ void TypeRemapped::__fbthrift_clear() {
   __isset = {};
 }
 
+bool TypeRemapped::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool TypeRemapped::operator==(const TypeRemapped& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -2807,6 +2843,10 @@ void emptyXcep::__fbthrift_clear() {
   // clear all fields
 }
 
+bool emptyXcep::__fbthrift_is_empty() const {
+  return true;
+}
+
 bool emptyXcep::operator==(const emptyXcep& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -2895,6 +2935,10 @@ void reqXcep::__fbthrift_clear() {
   // clear all fields
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->errorCode = ::std::int32_t();
+}
+
+bool reqXcep::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool reqXcep::operator==(const reqXcep& rhs) const {
@@ -3002,6 +3046,11 @@ void optXcep::__fbthrift_clear() {
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->errorCode = ::std::int32_t();
   __isset = {};
+}
+
+bool optXcep::__fbthrift_is_empty() const {
+  return !(this->__isset.get(0)) &&
+ !(this->__isset.get(1));
 }
 
 bool optXcep::operator==(const optXcep& rhs) const {
@@ -3130,6 +3179,10 @@ void complexException::__fbthrift_clear() {
   apache::thrift::clear(this->structError);
   this->lsMap.clear();
   __isset = {};
+}
+
+bool complexException::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool complexException::operator==(const complexException& rhs) const {

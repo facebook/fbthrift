@@ -76,6 +76,13 @@ void Foo::__fbthrift_clear() {
   __isset = {};
 }
 
+bool Foo::__fbthrift_is_empty() const {
+  return !(this->__isset.get(0)) &&
+ !(this->__isset.get(1)) &&
+ !(this->__isset.get(2)) &&
+ !(this->__isset.get(3));
+}
+
 bool Foo::operator==(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;

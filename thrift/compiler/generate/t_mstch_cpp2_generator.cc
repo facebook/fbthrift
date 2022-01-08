@@ -852,6 +852,8 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:cpp_data_method?", &mstch_cpp2_struct::cpp_data_method},
             {"struct:cpp_frozen2_exclude?",
              &mstch_cpp2_struct::cpp_frozen2_exclude},
+            {"struct:has_non_optional_and_non_terse_field?",
+             &mstch_cpp2_struct::has_non_optional_and_non_terse_field},
         });
   }
   mstch::node fields_size() { return std::to_string(strct_->fields().size()); }
@@ -1072,6 +1074,16 @@ class mstch_cpp2_struct : public mstch_struct {
       throw std::runtime_error("not a union struct");
     }
     return std::to_string(strct_->fields().size());
+  }
+  mstch::node has_non_optional_and_non_terse_field() {
+    const auto& fields = strct_->fields();
+    return std::any_of(
+        fields.begin(),
+        fields.end(),
+        [enabled_terse_write = has_option("terse_writes")](auto& field) {
+          return (!enabled_terse_write || !cpp2::is_terse_writes(&field)) &&
+              field.get_req() != t_field::e_req::optional;
+        });
   }
 
  protected:

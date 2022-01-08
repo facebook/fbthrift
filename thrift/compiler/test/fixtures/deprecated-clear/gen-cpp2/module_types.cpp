@@ -173,6 +173,10 @@ void StructWithDefaultStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+bool StructWithDefaultStruct::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool StructWithDefaultStruct::operator==(const StructWithDefaultStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;

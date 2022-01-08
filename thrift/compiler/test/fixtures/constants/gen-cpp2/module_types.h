@@ -301,6 +301,7 @@ class Internship final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = Internship;
@@ -631,6 +632,7 @@ class Range final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = Range;
@@ -762,6 +764,7 @@ class struct1 final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = struct1;
@@ -939,6 +942,7 @@ class struct2 final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = struct2;
@@ -1217,6 +1221,7 @@ class struct3 final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = struct3;
@@ -1444,6 +1449,7 @@ class struct4 final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = struct4;
@@ -1679,6 +1685,7 @@ class union1 final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = union1;
@@ -1938,6 +1945,7 @@ class union2 final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = union2;

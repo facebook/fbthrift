@@ -61,6 +61,10 @@ void InitialResponse::__fbthrift_clear() {
   __isset = {};
 }
 
+bool InitialResponse::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool InitialResponse::operator==(const InitialResponse& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -148,6 +152,10 @@ void FinalResponse::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_content = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
+}
+
+bool FinalResponse::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool FinalResponse::operator==(const FinalResponse& rhs) const {
@@ -239,6 +247,10 @@ void SinkPayload::__fbthrift_clear() {
   __isset = {};
 }
 
+bool SinkPayload::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool SinkPayload::operator==(const SinkPayload& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -326,6 +338,10 @@ void CompatibleWithKeywordSink::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_sink = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
+}
+
+bool CompatibleWithKeywordSink::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool CompatibleWithKeywordSink::operator==(const CompatibleWithKeywordSink& rhs) const {
@@ -423,6 +439,10 @@ void InitialException::__fbthrift_clear() {
   __isset = {};
 }
 
+bool InitialException::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool InitialException::operator==(const InitialException& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -516,6 +536,10 @@ void SinkException1::__fbthrift_clear() {
   // clear all fields
   this->reason = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
+}
+
+bool SinkException1::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool SinkException1::operator==(const SinkException1& rhs) const {
@@ -612,6 +636,10 @@ void SinkException2::__fbthrift_clear() {
   // clear all fields
   this->reason = ::std::int64_t();
   __isset = {};
+}
+
+bool SinkException2::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool SinkException2::operator==(const SinkException2& rhs) const {

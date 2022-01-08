@@ -43,6 +43,10 @@ void Empty::__fbthrift_clear() {
   // clear all fields
 }
 
+bool Empty::__fbthrift_is_empty() const {
+  return true;
+}
+
 bool Empty::operator==(const Empty& rhs) const {
   (void)rhs;
   auto& lhs = *this;

@@ -64,6 +64,7 @@ class Included final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = Included;

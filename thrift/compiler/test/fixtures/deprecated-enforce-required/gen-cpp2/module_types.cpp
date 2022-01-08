@@ -46,6 +46,10 @@ void Foo::__fbthrift_clear() {
   this->bar = ::std::int32_t();
 }
 
+bool Foo::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool Foo::operator==(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;

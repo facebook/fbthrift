@@ -56,6 +56,10 @@ void FooEx::__fbthrift_clear() {
   // clear all fields
 }
 
+bool FooEx::__fbthrift_is_empty() const {
+  return true;
+}
+
 bool FooEx::operator==(const FooEx& rhs) const {
   (void)rhs;
   auto& lhs = *this;

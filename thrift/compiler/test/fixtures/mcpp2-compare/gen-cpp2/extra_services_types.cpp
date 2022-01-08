@@ -141,6 +141,10 @@ void containerStruct2::__fbthrift_clear() {
   __isset = {};
 }
 
+bool containerStruct2::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool containerStruct2::operator==(const containerStruct2& rhs) const {
   (void)rhs;
   auto& lhs = *this;

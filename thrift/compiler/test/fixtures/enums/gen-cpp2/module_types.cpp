@@ -109,6 +109,10 @@ void SomeStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+bool SomeStruct::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool SomeStruct::operator==(const SomeStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;

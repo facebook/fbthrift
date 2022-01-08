@@ -181,6 +181,10 @@ void TrivialTypesStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+bool TrivialTypesStruct::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool TrivialTypesStruct::operator==(const TrivialTypesStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -369,6 +373,10 @@ void ContainerStruct::__fbthrift_clear() {
   this->__fbthrift_field_fieldG.clear();
   this->__fbthrift_field_fieldH.clear();
   __isset = {};
+}
+
+bool ContainerStruct::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool ContainerStruct::operator==(const ContainerStruct& rhs) const {

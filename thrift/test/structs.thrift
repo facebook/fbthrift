@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -78,3 +78,23 @@ struct NoexceptMoveStruct {
 struct CppDataMethod {
   1: i32 foo;
 } (cpp.internal.deprecated._data.method)
+
+struct EmptiableOptionalFieldsStruct {
+  1: optional i32 int_field;
+  2: optional list<i32> int_list_field_ref (thrift.box);
+}
+
+struct NotEmptiableStruct {
+  1: optional i32 int_field;
+  2: optional list<i32> int_list_field_ref (thrift.box);
+  3: i64 long_field;
+}
+
+struct OptionalFieldsStruct {
+  1: optional HasInt def_field (cpp.ref);
+  2: optional HasInt shared_field (cpp.ref_type = "shared");
+  3: optional list<HasInt> shared_fields (cpp.ref_type = "shared");
+  4: optional HasInt shared_field_const (cpp.ref_type = "shared_const");
+  5: optional list<HasInt> shared_fields_const (cpp.ref_type = "shared_const");
+  6: optional HasInt boxed_field (thrift.box);
+}

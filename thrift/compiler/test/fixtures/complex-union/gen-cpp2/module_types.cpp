@@ -432,6 +432,10 @@ void Val::__fbthrift_clear() {
   __isset = {};
 }
 
+bool Val::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool Val::operator==(const Val& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -772,6 +776,10 @@ void NonCopyableStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_num = ::std::int64_t();
   __isset = {};
+}
+
+bool NonCopyableStruct::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool NonCopyableStruct::operator==(const NonCopyableStruct& rhs) const {

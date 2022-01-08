@@ -124,3 +124,21 @@ void <%struct:name%>::__fbthrift_clear() {
   __isset = {};
 <%/struct:isset_fields?%>
 }
+
+bool <%struct:name%>::__fbthrift_is_empty() const {
+<%^struct:has_non_optional_and_non_terse_field?%>
+<%#struct:fields?%>
+  return<%#struct:fields%><%#field:type%><%!
+  %><%#field:optional?%> !(<% > module_types_tcc/optional_has_value%>)<%^last?%> &&<%/last?%><%/field:optional?%><%!
+  %><%#field:terse_writes?%> !(<% > module_types_tcc/terse_has_value %>)<%^last?%> &&<%/last?%><%/field:terse_writes?%><%!
+  %><%#last?%>;<%/last?%>
+<%/field:type%><%/struct:fields%>
+<%/struct:fields?%>
+<%^struct:fields?%>
+  return true;
+<%/struct:fields?%>
+<%/struct:has_non_optional_and_non_terse_field?%>
+<%#struct:has_non_optional_and_non_terse_field?%>
+  return false;
+<%/struct:has_non_optional_and_non_terse_field?%>
+}

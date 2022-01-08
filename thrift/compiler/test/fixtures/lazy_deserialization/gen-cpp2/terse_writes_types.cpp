@@ -76,6 +76,13 @@ void TerseFoo::__fbthrift_clear() {
   __isset = {};
 }
 
+bool TerseFoo::__fbthrift_is_empty() const {
+  return !(!this->__fbthrift_field_field1.empty()) &&
+ !(!this->__fbthrift_field_field2.empty()) &&
+ !(!this->__fbthrift_field_field3.empty()) &&
+ !(!this->__fbthrift_field_field4.empty());
+}
+
 bool TerseFoo::operator==(const TerseFoo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -364,6 +371,13 @@ void TerseLazyFoo::__fbthrift_clear() {
   __isset = {};
 }
 
+bool TerseLazyFoo::__fbthrift_is_empty() const {
+  return !(!this->__fbthrift_field_field1.empty()) &&
+ !(!this->__fbthrift_field_field2.empty()) &&
+ !(!this->__fbthrift_field_field3.empty()) &&
+ !(!this->__fbthrift_field_field4.empty());
+}
+
 bool TerseLazyFoo::operator==(const TerseLazyFoo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -511,6 +525,13 @@ void TerseOptionalFoo::__fbthrift_clear() {
   this->__fbthrift_field_field3.clear();
   this->__fbthrift_field_field4.clear();
   __isset = {};
+}
+
+bool TerseOptionalFoo::__fbthrift_is_empty() const {
+  return !(this->__isset.get(0)) &&
+ !(this->__isset.get(1)) &&
+ !(this->__isset.get(2)) &&
+ !(this->__isset.get(3));
 }
 
 bool TerseOptionalFoo::operator==(const TerseOptionalFoo& rhs) const {
@@ -799,6 +820,13 @@ void TerseOptionalLazyFoo::__fbthrift_clear() {
   __fbthrift_isDeserialized_.~__fbthrift_IsDeserialized();
   new (&__fbthrift_isDeserialized_) __fbthrift_IsDeserialized();
   __isset = {};
+}
+
+bool TerseOptionalLazyFoo::__fbthrift_is_empty() const {
+  return !(this->__isset.get(0)) &&
+ !(this->__isset.get(1)) &&
+ !(this->__isset.get(2)) &&
+ !(this->__isset.get(3));
 }
 
 bool TerseOptionalLazyFoo::operator==(const TerseOptionalLazyFoo& rhs) const {

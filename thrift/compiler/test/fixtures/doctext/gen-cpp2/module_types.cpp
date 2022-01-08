@@ -81,6 +81,10 @@ void A::__fbthrift_clear() {
   __isset = {};
 }
 
+bool A::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool A::operator==(const A& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -284,6 +288,10 @@ void Bang::__fbthrift_clear() {
   // clear all fields
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
+}
+
+bool Bang::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool Bang::operator==(const Bang& rhs) const {

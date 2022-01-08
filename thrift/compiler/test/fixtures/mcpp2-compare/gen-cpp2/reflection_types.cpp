@@ -48,6 +48,10 @@ void ReflectionStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+bool ReflectionStruct::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool ReflectionStruct::operator==(const ReflectionStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;

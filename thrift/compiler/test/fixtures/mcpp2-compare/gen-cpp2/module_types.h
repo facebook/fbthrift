@@ -1119,6 +1119,7 @@ class Empty final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = Empty;
@@ -1184,6 +1185,7 @@ class ASimpleStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = ASimpleStruct;
@@ -1304,6 +1306,7 @@ class ASimpleStructNoexcept final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = ASimpleStructNoexcept;
@@ -1424,6 +1427,7 @@ class MyStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = MyStruct;
@@ -2048,6 +2052,7 @@ class SimpleUnion  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = SimpleUnion;
@@ -2322,6 +2327,7 @@ class ComplexUnion final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = ComplexUnion;
@@ -4545,6 +4551,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
   static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
@@ -5148,6 +5155,7 @@ class FOLLY_EXPORT AnotherException : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
   static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
@@ -5328,6 +5336,7 @@ class containerStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = containerStruct;
@@ -6879,6 +6888,7 @@ class MyIncludedStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = MyIncludedStruct;
@@ -7093,6 +7103,7 @@ class AnnotatedStruct  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = AnnotatedStruct;
@@ -8103,6 +8114,7 @@ class ComplexContainerStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = ComplexContainerStruct;
@@ -8270,6 +8282,7 @@ class FloatStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = FloatStruct;
@@ -8443,6 +8456,7 @@ class FloatUnion final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = FloatUnion;
@@ -8702,6 +8716,7 @@ class AllRequiredNoExceptMoveCtrStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = AllRequiredNoExceptMoveCtrStruct;

@@ -43,6 +43,10 @@ void MyDataItem::__fbthrift_clear() {
   // clear all fields
 }
 
+bool MyDataItem::__fbthrift_is_empty() const {
+  return true;
+}
+
 bool MyDataItem::operator==(const MyDataItem& rhs) const {
   (void)rhs;
   auto& lhs = *this;

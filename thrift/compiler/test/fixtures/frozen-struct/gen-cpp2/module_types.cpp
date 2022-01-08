@@ -126,6 +126,10 @@ void ModuleA::__fbthrift_clear() {
   __isset = {};
 }
 
+bool ModuleA::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool ModuleA::operator==(const ModuleA& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -294,6 +298,10 @@ void ModuleB::__fbthrift_clear() {
   this->__fbthrift_field_i32Field = ::std::int32_t();
   this->__fbthrift_field_inclEnumB = ::some::ns::EnumB();
   __isset = {};
+}
+
+bool ModuleB::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool ModuleB::operator==(const ModuleB& rhs) const {

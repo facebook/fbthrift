@@ -565,6 +565,7 @@ class decorated_struct final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = decorated_struct;
@@ -688,6 +689,7 @@ class ContainerStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = ContainerStruct;
@@ -1165,6 +1167,7 @@ class CppTypeStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = CppTypeStruct;
@@ -1282,6 +1285,7 @@ class VirtualStruct  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = VirtualStruct;
@@ -1404,6 +1408,7 @@ class MyStructWithForwardRefEnum final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = MyStructWithForwardRefEnum;
@@ -1576,6 +1581,7 @@ class TrivialNumeric final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = TrivialNumeric;
@@ -1749,6 +1755,7 @@ class TrivialNestedWithDefault final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = TrivialNestedWithDefault;
@@ -1921,6 +1928,7 @@ class ComplexString final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = ComplexString;
@@ -2095,6 +2103,7 @@ class ComplexNestedWithDefault final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = ComplexNestedWithDefault;
@@ -2271,6 +2280,7 @@ class MinPadding final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = MinPadding;
@@ -2500,6 +2510,7 @@ class MyDataItem final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = MyDataItem;
@@ -2562,6 +2573,7 @@ class MyStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = MyStruct;
@@ -2839,6 +2851,7 @@ class Renaming final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = Renaming;
@@ -2959,6 +2972,7 @@ class AnnotatedTypes final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = AnnotatedTypes;
@@ -3133,6 +3147,7 @@ class ForwardUsageStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = ForwardUsageStruct;
@@ -3251,6 +3266,7 @@ class ForwardUsageRoot final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = ForwardUsageRoot;
@@ -3381,6 +3397,7 @@ class ForwardUsageByRef final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = ForwardUsageByRef;
@@ -3499,6 +3516,7 @@ class NoexceptMoveEmpty final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = NoexceptMoveEmpty;
@@ -3564,6 +3582,7 @@ class NoexceptMoveSimpleStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = NoexceptMoveSimpleStruct;
@@ -3684,6 +3703,7 @@ class NoexceptMoveComplexStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = NoexceptMoveComplexStruct;
@@ -4225,6 +4245,7 @@ class NoExceptMoveUnion final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = NoExceptMoveUnion;
@@ -4498,6 +4519,7 @@ class AllocatorAware final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = AllocatorAware;
@@ -4861,6 +4883,7 @@ class AllocatorAware2 final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = AllocatorAware2;
@@ -5000,6 +5023,7 @@ class TypedefStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = TypedefStruct;
@@ -5225,6 +5249,7 @@ class StructWithDoubleUnderscores final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = StructWithDoubleUnderscores;

@@ -175,6 +175,10 @@ void Empty::__fbthrift_clear() {
   // clear all fields
 }
 
+bool Empty::__fbthrift_is_empty() const {
+  return true;
+}
+
 bool Empty::operator==(const Empty& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -249,6 +253,10 @@ void ASimpleStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+bool ASimpleStruct::__fbthrift_is_empty() const {
+  return !(this->__fbthrift_field_boolField != ::std::int64_t());
+}
+
 bool ASimpleStruct::operator==(const ASimpleStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -317,6 +325,10 @@ void ASimpleStructNoexcept::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_boolField = ::std::int64_t();
   __isset = {};
+}
+
+bool ASimpleStructNoexcept::__fbthrift_is_empty() const {
+  return !(this->__fbthrift_field_boolField != ::std::int64_t());
 }
 
 bool ASimpleStructNoexcept::operator==(const ASimpleStructNoexcept& rhs) const {
@@ -505,6 +517,10 @@ void MyStruct::__fbthrift_clear() {
   this->__fbthrift_field_MyCustomField = decltype(this->__fbthrift_field_MyCustomField)();
   this->__fbthrift_field_MyOptCustomField = decltype(this->__fbthrift_field_MyOptCustomField)();
   __isset = {};
+}
+
+bool MyStruct::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool MyStruct::operator==(const MyStruct& rhs) const {
@@ -1363,6 +1379,10 @@ void AnException::__fbthrift_clear() {
   __isset = {};
 }
 
+bool AnException::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool AnException::operator==(const AnException& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -1713,6 +1733,10 @@ void AnotherException::__fbthrift_clear() {
   __isset = {};
 }
 
+bool AnotherException::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool AnotherException::operator==(const AnotherException& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -1987,6 +2011,10 @@ void containerStruct::__fbthrift_clear() {
   this->fieldAE.clear();
   ::apache::thrift::apply_indirection(this->fieldSD) = apache::thrift::StringTraits<::folly::remove_cvref_t<::folly::invoke_result_t<::apache::thrift::detail::apply_indirection_fn, FooBar const&>>>::fromStringLiteral("");
   __isset = {};
+}
+
+bool containerStruct::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool containerStruct::operator==(const containerStruct& rhs) const {
@@ -2776,6 +2804,10 @@ void MyIncludedStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+bool MyIncludedStruct::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool MyIncludedStruct::operator==(const MyIncludedStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -3049,6 +3081,10 @@ void AnnotatedStruct::__fbthrift_clear() {
   this->iobuf_ptr_val = apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2");
   apache::thrift::clear(this->struct_struct);
   __isset = {};
+}
+
+bool AnnotatedStruct::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
@@ -3615,6 +3651,11 @@ void ComplexContainerStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+bool ComplexContainerStruct::__fbthrift_is_empty() const {
+  return !(!this->__fbthrift_field_map_of_iobufs.empty()) &&
+ !(!this->__fbthrift_field_map_of_iobuf_ptrs.empty());
+}
+
 bool ComplexContainerStruct::operator==(const ComplexContainerStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -3719,6 +3760,11 @@ void FloatStruct::__fbthrift_clear() {
   this->__fbthrift_field_floatField = float();
   this->__fbthrift_field_doubleField = double();
   __isset = {};
+}
+
+bool FloatStruct::__fbthrift_is_empty() const {
+  return !(this->__fbthrift_field_floatField != float()) &&
+ !(this->__fbthrift_field_doubleField != double());
 }
 
 bool FloatStruct::operator==(const FloatStruct& rhs) const {
@@ -3918,6 +3964,10 @@ AllRequiredNoExceptMoveCtrStruct::AllRequiredNoExceptMoveCtrStruct(apache::thrif
 void AllRequiredNoExceptMoveCtrStruct::__fbthrift_clear() {
   // clear all fields
   this->intField = ::std::int64_t();
+}
+
+bool AllRequiredNoExceptMoveCtrStruct::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool AllRequiredNoExceptMoveCtrStruct::operator==(const AllRequiredNoExceptMoveCtrStruct& rhs) const {

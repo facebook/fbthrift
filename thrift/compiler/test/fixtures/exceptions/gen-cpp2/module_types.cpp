@@ -67,6 +67,10 @@ void Fiery::__fbthrift_clear() {
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 }
 
+bool Fiery::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool Fiery::operator==(const Fiery& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -163,6 +167,10 @@ void Serious::__fbthrift_clear() {
   // clear all fields
   this->sonnet = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
+}
+
+bool Serious::__fbthrift_is_empty() const {
+  return !(this->__isset.get(0));
 }
 
 bool Serious::operator==(const Serious& rhs) const {
@@ -267,6 +275,10 @@ void ComplexFieldNames::__fbthrift_clear() {
   this->error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->internal_error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
+}
+
+bool ComplexFieldNames::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool ComplexFieldNames::operator==(const ComplexFieldNames& rhs) const {
@@ -378,6 +390,10 @@ void CustomFieldNames::__fbthrift_clear() {
   this->error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->internal_error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
+}
+
+bool CustomFieldNames::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool CustomFieldNames::operator==(const CustomFieldNames& rhs) const {
@@ -492,6 +508,10 @@ void ExceptionWithPrimitiveField::__fbthrift_clear() {
   __isset = {};
 }
 
+bool ExceptionWithPrimitiveField::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool ExceptionWithPrimitiveField::operator==(const ExceptionWithPrimitiveField& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -581,6 +601,10 @@ Banal::Banal(apache::thrift::FragileConstructor) {}
 
 void Banal::__fbthrift_clear() {
   // clear all fields
+}
+
+bool Banal::__fbthrift_is_empty() const {
+  return true;
 }
 
 bool Banal::operator==(const Banal& rhs) const {

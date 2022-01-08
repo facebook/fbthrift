@@ -90,6 +90,10 @@ void Color::__fbthrift_clear() {
   __isset = {};
 }
 
+bool Color::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool Color::operator==(const Color& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -225,6 +229,10 @@ void Vehicle::__fbthrift_clear() {
   this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_hasAC = static_cast<bool>(false);
   __isset = {};
+}
+
+bool Vehicle::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool Vehicle::operator==(const Vehicle& rhs) const {
@@ -417,6 +425,10 @@ void Person::__fbthrift_clear() {
   this->__fbthrift_field_afraidOfAnimal = ::cpp2::Animal();
   this->__fbthrift_field_vehicles.clear();
   __isset = {};
+}
+
+bool Person::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool Person::operator==(const Person& rhs) const {

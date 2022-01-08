@@ -86,6 +86,10 @@ void MyStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+bool MyStruct::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -290,6 +294,10 @@ void MyException::__fbthrift_clear() {
   // clear all fields
   this->myString = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
+}
+
+bool MyException::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool MyException::operator==(const MyException& rhs) const {

@@ -667,6 +667,7 @@ class MyStructFloatFieldThrowExp final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = MyStructFloatFieldThrowExp;
@@ -949,6 +950,7 @@ class MyStructMapFloatThrowExp final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = MyStructMapFloatThrowExp;
@@ -1119,6 +1121,7 @@ class MyDataItem final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = MyDataItem;
@@ -1184,6 +1187,7 @@ class MyStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = MyStruct;
@@ -2694,6 +2698,7 @@ class SimpleStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = SimpleStruct;
@@ -2871,6 +2876,7 @@ class ComplexNestedStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = ComplexNestedStruct;
@@ -3858,6 +3864,7 @@ class MyUnion final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = MyUnion;
@@ -4419,6 +4426,7 @@ class defaultStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = defaultStruct;
@@ -5631,6 +5639,7 @@ class MyStructTypeDef final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = MyStructTypeDef;
@@ -6173,6 +6182,7 @@ class MyUnionFloatFieldThrowExp final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = MyUnionFloatFieldThrowExp;
@@ -6604,6 +6614,7 @@ class TypeRemapped final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = TypeRemapped;
@@ -6882,6 +6893,7 @@ class FOLLY_EXPORT emptyXcep : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
   static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
@@ -6959,6 +6971,7 @@ class FOLLY_EXPORT reqXcep : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
   static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
@@ -7105,6 +7118,7 @@ class FOLLY_EXPORT optXcep : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
   static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
@@ -7259,6 +7273,7 @@ class FOLLY_EXPORT complexException : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
   static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =

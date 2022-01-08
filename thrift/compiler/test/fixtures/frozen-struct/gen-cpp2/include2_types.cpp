@@ -66,6 +66,10 @@ void IncludedB::__fbthrift_clear() {
   __isset = {};
 }
 
+bool IncludedB::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool IncludedB::operator==(const IncludedB& rhs) const {
   (void)rhs;
   auto& lhs = *this;

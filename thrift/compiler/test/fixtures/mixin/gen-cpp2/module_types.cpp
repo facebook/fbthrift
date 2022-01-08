@@ -61,6 +61,10 @@ void Mixin1::__fbthrift_clear() {
   __isset = {};
 }
 
+bool Mixin1::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool Mixin1::operator==(const Mixin1& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -153,6 +157,10 @@ void Mixin2::__fbthrift_clear() {
   apache::thrift::clear(this->__fbthrift_field_m1);
   this->__fbthrift_field_field2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
+}
+
+bool Mixin2::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool Mixin2::operator==(const Mixin2& rhs) const {
@@ -271,6 +279,10 @@ void Mixin3Base::__fbthrift_clear() {
   __isset = {};
 }
 
+bool Mixin3Base::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool Mixin3Base::operator==(const Mixin3Base& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -368,6 +380,10 @@ void Foo::__fbthrift_clear() {
   apache::thrift::clear(this->__fbthrift_field_m2);
   apache::thrift::clear(this->__fbthrift_field_m3);
   __isset = {};
+}
+
+bool Foo::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool Foo::operator==(const Foo& rhs) const {

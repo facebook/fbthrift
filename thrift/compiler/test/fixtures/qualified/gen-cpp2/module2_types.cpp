@@ -66,6 +66,10 @@ void Struct::__fbthrift_clear() {
   __isset = {};
 }
 
+bool Struct::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool Struct::operator==(const Struct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -205,6 +209,10 @@ void BigStruct::__fbthrift_clear() {
   apache::thrift::clear(this->__fbthrift_field_s);
   this->__fbthrift_field_id = ::std::int32_t();
   __isset = {};
+}
+
+bool BigStruct::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool BigStruct::operator==(const BigStruct& rhs) const {

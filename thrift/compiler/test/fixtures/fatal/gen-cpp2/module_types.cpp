@@ -570,6 +570,10 @@ void structA::__fbthrift_clear() {
   __isset = {};
 }
 
+bool structA::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool structA::operator==(const structA& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -797,6 +801,10 @@ void structB::__fbthrift_clear() {
   this->__fbthrift_field_c = double();
   this->__fbthrift_field_d = bool();
   __isset = {};
+}
+
+bool structB::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool structB::operator==(const structB& rhs) const {
@@ -1049,6 +1057,10 @@ void structC::__fbthrift_clear() {
   this->__fbthrift_field_o2.clear();
   this->__fbthrift_field_o3.clear();
   __isset = {};
+}
+
+bool structC::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool structC::operator==(const structC& rhs) const {
@@ -1699,6 +1711,10 @@ void struct1::__fbthrift_clear() {
   __isset = {};
 }
 
+bool struct1::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool struct1::operator==(const struct1& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -1900,6 +1916,10 @@ void struct2::__fbthrift_clear() {
   apache::thrift::clear(this->__fbthrift_field_fieldF);
   apache::thrift::clear(this->__fbthrift_field_fieldG);
   __isset = {};
+}
+
+bool struct2::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool struct2::operator==(const struct2& rhs) const {
@@ -2185,6 +2205,10 @@ void struct3::__fbthrift_clear() {
   this->__fbthrift_field_fieldQ.clear();
   this->__fbthrift_field_fieldR.clear();
   __isset = {};
+}
+
+bool struct3::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool struct3::operator==(const struct3& rhs) const {
@@ -2630,6 +2654,10 @@ void struct4::__fbthrift_clear() {
   __isset = {};
 }
 
+bool struct4::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool struct4::operator==(const struct4& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -2777,6 +2805,10 @@ void struct5::__fbthrift_clear() {
   apache::thrift::clear(this->__fbthrift_field_field3);
   apache::thrift::clear(this->__fbthrift_field_field4);
   __isset = {};
+}
+
+bool struct5::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool struct5::operator==(const struct5& rhs) const {
@@ -2936,6 +2968,10 @@ void struct_binary::__fbthrift_clear() {
   __isset = {};
 }
 
+bool struct_binary::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool struct_binary::operator==(const struct_binary& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -3016,6 +3052,10 @@ void dep_A_struct::__fbthrift_clear() {
   apache::thrift::clear(this->__fbthrift_field_c);
   this->__fbthrift_field_i_a = ::std::int32_t();
   __isset = {};
+}
+
+bool dep_A_struct::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool dep_A_struct::operator==(const dep_A_struct& rhs) const {
@@ -3154,6 +3194,10 @@ void dep_B_struct::__fbthrift_clear() {
   __isset = {};
 }
 
+bool dep_B_struct::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool dep_B_struct::operator==(const dep_B_struct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -3282,6 +3326,10 @@ void annotated::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_a = ::std::int32_t();
   __isset = {};
+}
+
+bool annotated::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool annotated::operator==(const annotated& rhs) const {
@@ -3733,6 +3781,10 @@ void struct_with_special_names::__fbthrift_clear() {
   __isset = {};
 }
 
+bool struct_with_special_names::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool struct_with_special_names::operator==(const struct_with_special_names& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -4039,6 +4091,10 @@ void struct_with_indirections::__fbthrift_clear() {
   ::apache::thrift::apply_indirection(this->__fbthrift_field_result) = 0;
   ::apache::thrift::apply_indirection(this->__fbthrift_field_phrase) = apache::thrift::StringTraits<::folly::remove_cvref_t<::folly::invoke_result_t<::apache::thrift::detail::apply_indirection_fn, CppHasAPhrase const&>>>::fromStringLiteral("");
   __isset = {};
+}
+
+bool struct_with_indirections::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool struct_with_indirections::operator==(const struct_with_indirections& rhs) const {

@@ -67,6 +67,10 @@ void CustomException::__fbthrift_clear() {
   __isset = {};
 }
 
+bool CustomException::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool CustomException::operator==(const CustomException& rhs) const {
   (void)rhs;
   auto& lhs = *this;

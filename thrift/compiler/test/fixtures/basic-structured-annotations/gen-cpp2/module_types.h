@@ -191,6 +191,7 @@ class structured_annotation_inline final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = structured_annotation_inline;
@@ -368,6 +369,7 @@ class structured_annotation_with_default final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = structured_annotation_with_default;
@@ -492,6 +494,7 @@ class structured_annotation_forward final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = structured_annotation_forward;
@@ -612,6 +615,7 @@ class structured_annotation_recursive final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = structured_annotation_recursive;
@@ -837,6 +841,7 @@ class structured_annotation_nested final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = structured_annotation_nested;
@@ -1011,6 +1016,7 @@ class MyStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = MyStruct;
@@ -1297,6 +1303,7 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;
   static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
@@ -1413,6 +1420,7 @@ class MyUnion final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
 
  public:
   using __fbthrift_cpp2_type = MyUnion;

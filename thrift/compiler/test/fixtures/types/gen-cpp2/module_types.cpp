@@ -193,6 +193,10 @@ void decorated_struct::__fbthrift_clear() {
   __isset = {};
 }
 
+bool decorated_struct::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool decorated_struct::operator==(const decorated_struct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -321,6 +325,10 @@ void ContainerStruct::__fbthrift_clear() {
   this->__fbthrift_field_fieldG.clear();
   this->__fbthrift_field_fieldH.clear();
   __isset = {};
+}
+
+bool ContainerStruct::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool ContainerStruct::operator==(const ContainerStruct& rhs) const {
@@ -494,6 +502,10 @@ void CppTypeStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+bool CppTypeStruct::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool CppTypeStruct::operator==(const CppTypeStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -591,6 +603,10 @@ void VirtualStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+bool VirtualStruct::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool VirtualStruct::operator==(const VirtualStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -685,6 +701,10 @@ void MyStructWithForwardRefEnum::__fbthrift_clear() {
   __isset = {};
 }
 
+bool MyStructWithForwardRefEnum::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool MyStructWithForwardRefEnum::operator==(const MyStructWithForwardRefEnum& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -771,6 +791,10 @@ void TrivialNumeric::__fbthrift_clear() {
   __isset = {};
 }
 
+bool TrivialNumeric::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool TrivialNumeric::operator==(const TrivialNumeric& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -855,6 +879,10 @@ void TrivialNestedWithDefault::__fbthrift_clear() {
   this->__fbthrift_field_z = static_cast<::std::int32_t>(4);
   apache::thrift::clear(this->__fbthrift_field_n);
   __isset = {};
+}
+
+bool TrivialNestedWithDefault::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool TrivialNestedWithDefault::operator==(const TrivialNestedWithDefault& rhs) const {
@@ -978,6 +1006,10 @@ void ComplexString::__fbthrift_clear() {
   __isset = {};
 }
 
+bool ComplexString::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool ComplexString::operator==(const ComplexString& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -1085,6 +1117,10 @@ void ComplexNestedWithDefault::__fbthrift_clear() {
   this->__fbthrift_field_z = apache::thrift::StringTraits<std::string>::fromStringLiteral("4");
   apache::thrift::clear(this->__fbthrift_field_n);
   __isset = {};
+}
+
+bool ComplexNestedWithDefault::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool ComplexNestedWithDefault::operator==(const ComplexNestedWithDefault& rhs) const {
@@ -1215,6 +1251,10 @@ void MinPadding::__fbthrift_clear() {
   this->tiny = ::std::int8_t();
 }
 
+bool MinPadding::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool MinPadding::operator==(const MinPadding& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -1313,6 +1353,10 @@ void MyDataItem::__fbthrift_clear() {
   // clear all fields
 }
 
+bool MyDataItem::__fbthrift_is_empty() const {
+  return true;
+}
+
 
 
 
@@ -1398,6 +1442,10 @@ void MyStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+bool MyStruct::__fbthrift_is_empty() const {
+  return false;
+}
+
 
 
 const ::apache::thrift::fixtures::types::MyDataItem& MyStruct::get_data() const& {
@@ -1477,6 +1525,10 @@ void Renaming::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_bar = ::std::int64_t();
   __isset = {};
+}
+
+bool Renaming::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool Renaming::operator==(const Renaming& rhs) const {
@@ -1573,6 +1625,10 @@ void AnnotatedTypes::__fbthrift_clear() {
   __isset = {};
 }
 
+bool AnnotatedTypes::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool AnnotatedTypes::operator==(const AnnotatedTypes& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -1662,6 +1718,10 @@ void ForwardUsageStruct::__fbthrift_clear() {
   // clear all fields
   apache::thrift::clear(this->__fbthrift_field_foo);
   __isset = {};
+}
+
+bool ForwardUsageStruct::__fbthrift_is_empty() const {
+  return !(this->__isset.get(0));
 }
 
 bool ForwardUsageStruct::operator==(const ForwardUsageStruct& rhs) const {
@@ -1786,6 +1846,11 @@ void ForwardUsageRoot::__fbthrift_clear() {
   apache::thrift::clear(this->__fbthrift_field_ForwardUsageStruct);
   this->ForwardUsageByRef.reset();
   __isset = {};
+}
+
+bool ForwardUsageRoot::__fbthrift_is_empty() const {
+  return !(this->__isset.get(0)) &&
+ !(this->ForwardUsageByRef);
 }
 
 bool ForwardUsageRoot::operator==(const ForwardUsageRoot& rhs) const {
@@ -1916,6 +1981,10 @@ void ForwardUsageByRef::__fbthrift_clear() {
   __isset = {};
 }
 
+bool ForwardUsageByRef::__fbthrift_is_empty() const {
+  return !(this->__isset.get(0));
+}
+
 bool ForwardUsageByRef::operator==(const ForwardUsageByRef& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -2007,6 +2076,10 @@ void NoexceptMoveEmpty::__fbthrift_clear() {
   // clear all fields
 }
 
+bool NoexceptMoveEmpty::__fbthrift_is_empty() const {
+  return true;
+}
+
 bool NoexceptMoveEmpty::operator==(const NoexceptMoveEmpty& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -2075,6 +2148,10 @@ void NoexceptMoveSimpleStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_boolField = ::std::int64_t();
   __isset = {};
+}
+
+bool NoexceptMoveSimpleStruct::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool NoexceptMoveSimpleStruct::operator==(const NoexceptMoveSimpleStruct& rhs) const {
@@ -2214,6 +2291,10 @@ void NoexceptMoveComplexStruct::__fbthrift_clear() {
   this->__fbthrift_field_MyBinaryListField4.clear();
   this->__fbthrift_field_MyMapEnumAndInt.clear();
   __isset = {};
+}
+
+bool NoexceptMoveComplexStruct::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool NoexceptMoveComplexStruct::operator==(const NoexceptMoveComplexStruct& rhs) const {
@@ -2514,6 +2595,10 @@ void AllocatorAware::__fbthrift_clear() {
   __isset = {};
 }
 
+bool AllocatorAware::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool AllocatorAware::operator==(const AllocatorAware& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -2655,6 +2740,10 @@ void AllocatorAware2::__fbthrift_clear() {
   __isset = {};
 }
 
+bool AllocatorAware2::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool AllocatorAware2::operator==(const AllocatorAware2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -2754,6 +2843,10 @@ void TypedefStruct::__fbthrift_clear() {
   __isset = {};
 }
 
+bool TypedefStruct::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool TypedefStruct::operator==(const TypedefStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
@@ -2842,6 +2935,10 @@ void StructWithDoubleUnderscores::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field___field = ::std::int32_t();
   __isset = {};
+}
+
+bool StructWithDoubleUnderscores::__fbthrift_is_empty() const {
+  return false;
 }
 
 bool StructWithDoubleUnderscores::operator==(const StructWithDoubleUnderscores& rhs) const {

@@ -56,6 +56,10 @@ void BasicTypes::__fbthrift_clear() {
   __isset = {};
 }
 
+bool BasicTypes::__fbthrift_is_empty() const {
+  return false;
+}
+
 bool BasicTypes::operator==(const BasicTypes& rhs) const {
   (void)rhs;
   auto& lhs = *this;
