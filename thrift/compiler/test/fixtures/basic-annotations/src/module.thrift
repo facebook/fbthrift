@@ -51,7 +51,11 @@ service MyService {
   string getRandomData();
   bool hasDataById(1: i64 id);
   string getDataById(1: i64 id);
-  void putDataById(1: i64 id, 2: string data);
+  void putDataById(
+    1: i64 id,
+    @MyStructNestedAnnotation{name = "argument"}
+    2: string data,
+  );
   oneway void lobDataById(1: i64 id, 2: string data);
   void doNothing() (cpp.name = 'cppDoNothing');
 }

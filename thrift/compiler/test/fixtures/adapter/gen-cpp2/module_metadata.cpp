@@ -148,6 +148,9 @@ void ServiceMetadata<::cpp2::ServiceSvIf>::gen_func(ThriftMetadata& metadata, Th
   module_Service_func_arg2_2.id_ref() = 2;
   module_Service_func_arg2_2.name_ref() = "arg2";
   module_Service_func_arg2_2.is_optional_ref() = false;
+  module_Service_func_arg2_2.structured_annotations_ref() = {
+      *cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter2)")}}).cv_struct_ref(),
+  };
   auto module_Service_func_arg2_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
   module_Service_func_arg2_2_type->writeAndGenType(*module_Service_func_arg2_2.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_Service_func_arg2_2));

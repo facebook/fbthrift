@@ -644,6 +644,10 @@ TEST_F(ServiceMetadataTest, ServiceTest) {
   EXPECT_EQ(
       *f1.arguments_ref()[0].type_ref()->get_t_typedef().name_ref(),
       "typedef_test.StringMap");
+  EXPECT_EQ(f1.arguments_ref()[0].structured_annotations_ref()->size(), 1);
+  EXPECT_EQ(
+      f1.arguments_ref()[0].structured_annotations_ref()->at(0),
+      *cons("argument").cv_struct_ref());
   EXPECT_EQ(*f1.exceptions_ref()[0].id_ref(), 1);
   EXPECT_EQ(*f1.exceptions_ref()[0].name_ref(), "ex");
   EXPECT_EQ(*f1.exceptions_ref()[0].is_optional_ref(), false);

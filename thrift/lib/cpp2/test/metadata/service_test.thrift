@@ -31,8 +31,9 @@ service ParentService {
 
 service MyTestService extends ParentService {
   list<typedef_test.Types> getAllTypes();
-  typedef_test.Types getType(1: typedef_test.StringMap stringMap) throws (
-    1: CutoffException ex,
-  );
+  typedef_test.Types getType(
+    @simple_structs_test.Nat{data = "argument"}
+    1: typedef_test.StringMap stringMap,
+  ) throws (1: CutoffException ex);
   oneway void noReturn();
 }

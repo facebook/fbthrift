@@ -2878,6 +2878,16 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
     return shape(
       'struct' => dict[],
       'fields' => dict[
+        'data' => shape(
+          'field' => dict[
+            'MyStructNestedAnnotation' => MyStructNestedAnnotation::fromShape(
+              shape(
+                "name" => "argument",
+              )
+            ),
+          ],
+          'type' => dict[],
+        ),
       ],
     );
   }

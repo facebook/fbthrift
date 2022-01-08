@@ -331,6 +331,7 @@ service TestingService {
   i32 complex_action(
     1: string first,
     2: string second,
+    @StructuredAnnotation{second = 42}
     3: i64 third,
     4: string fourth (iv = "4"),
   );

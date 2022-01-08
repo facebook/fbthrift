@@ -281,6 +281,9 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_second(ThriftMetadata& metadata
   module_MyService_second_count_1.id_ref() = 1;
   module_MyService_second_count_1.name_ref() = "count";
   module_MyService_second_count_1.is_optional_ref() = false;
+  module_MyService_second_count_1.structured_annotations_ref() = {
+      *cvStruct("module.structured_annotation_inline", {{"count", cvInteger(4)}}).cv_struct_ref(),
+  };
   auto module_MyService_second_count_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE);
   module_MyService_second_count_1_type->writeAndGenType(*module_MyService_second_count_1.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_MyService_second_count_1));

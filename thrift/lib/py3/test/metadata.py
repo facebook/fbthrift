@@ -192,6 +192,14 @@ class MetadataTests(unittest.TestCase):
             argInstance.type.as_primitive(), ThriftPrimitiveType.THRIFT_I64_TYPE
         )
 
+        annotation = arg.structured_annotations[0]
+        second = annotation.fields["second"]
+        self.assertEqual(len(arg.structured_annotations), 1)
+        self.assertEqual(annotation.type.name, "testing.StructuredAnnotation")
+        self.assertEqual(len(annotation.fields), 1)
+        self.assertEqual(second.type, second.Type.cv_integer)
+        self.assertEqual(second.cv_integer, 42)
+
         serv2 = gen_metadata(TestingServiceChild)
         self.assertEqual(serv2.name, "testing.TestingServiceChild")
         parent = serv2.parent

@@ -197,6 +197,9 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_putDataById(ThriftMetadata& met
   module_MyService_putDataById_data_2.id_ref() = 2;
   module_MyService_putDataById_data_2.name_ref() = "data";
   module_MyService_putDataById_data_2.is_optional_ref() = false;
+  module_MyService_putDataById_data_2.structured_annotations_ref() = {
+      *cvStruct("module.MyStructNestedAnnotation", {{"name", cvString(R"(argument)")}}).cv_struct_ref(),
+  };
   auto module_MyService_putDataById_data_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
   module_MyService_putDataById_data_2_type->writeAndGenType(*module_MyService_putDataById_data_2.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_MyService_putDataById_data_2));
