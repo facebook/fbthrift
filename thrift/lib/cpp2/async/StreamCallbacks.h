@@ -256,7 +256,7 @@ using StreamServerCallbackPtr =
  * The server must calls onFirstResponse or onFirstResponseError.
  * After the first response the client may call onSinkNext repeatedly
  * (as many times as it has tokens).
- * It may always call onSinkError/onStreamCancel, which terminate the contract,
+ * It may always call onSinkError, which terminates the contract,
  * and onSinkComplete, after which the server must call onFinalResponse/Error
  * to terminate the contract.
  * After the first response the server may call onSinkRequestN repeatedly.

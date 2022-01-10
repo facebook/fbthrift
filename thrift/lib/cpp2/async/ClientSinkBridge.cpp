@@ -143,13 +143,10 @@ folly::coro::Task<folly::Try<StreamPayload>> ClientSinkBridge::sink(
       }
     }
 
-    if (clientCancelToken.isCancellationRequested()) {
-      if (!serverCancelSource_.isCancellationRequested()) {
-        clientPush(folly::Try<apache::thrift::StreamPayload>(
-            rocket::RocketException(rocket::ErrorCode::CANCELED)));
-      }
-      co_yield folly::coro::co_cancelled;
-    }
+    // If we got here because the generator is done and the server hasn't
+    // responded yet we'd like to send it a canceled error like we do above, but
+    // the sink contract does not allow it.
+    co_await folly::coro::co_safe_point;
   }
 }
 
