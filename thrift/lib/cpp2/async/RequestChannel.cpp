@@ -220,7 +220,7 @@ SinkClientCallback* createSinkClientCallback(
 
   return apache::thrift::detail::ClientSinkBridge::create(
       new RequestClientCallbackWrapper<
-          apache::thrift::detail::ClientSinkBridge::Ptr>(
+          apache::thrift::detail::ClientSinkBridge::ClientPtr>(
           std::move(requestCallback)));
 }
 

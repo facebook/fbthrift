@@ -96,7 +96,7 @@ class ClientReceiveState {
   ClientReceiveState(
       uint16_t _protocolId,
       std::unique_ptr<folly::IOBuf> _buf,
-      apache::thrift::detail::ClientSinkBridge::Ptr sink,
+      apache::thrift::detail::ClientSinkBridge::ClientPtr sink,
       std::unique_ptr<apache::thrift::transport::THeader> _header,
       std::unique_ptr<apache::thrift::ContextStack> _ctx)
       : protocolId_(_protocolId),
@@ -142,7 +142,7 @@ class ClientReceiveState {
     return std::move(streamBridge_);
   }
 
-  apache::thrift::detail::ClientSinkBridge::Ptr extractSink() {
+  apache::thrift::detail::ClientSinkBridge::ClientPtr extractSink() {
     return std::move(sink_);
   }
 
@@ -186,7 +186,7 @@ class ClientReceiveState {
   static ClientReceiveState create(
       std::unique_ptr<folly::IOBuf> buf,
       std::unique_ptr<apache::thrift::transport::THeader> tHeader,
-      apache::thrift::detail::ClientSinkBridge::Ptr clientSinkBridge,
+      apache::thrift::detail::ClientSinkBridge::ClientPtr clientSinkBridge,
       BufferOptions,
       uint16_t protocolId = static_cast<uint16_t>(-1)) {
     return ClientReceiveState(
@@ -205,7 +205,7 @@ class ClientReceiveState {
   std::unique_ptr<apache::thrift::transport::THeader> header_;
   folly::exception_wrapper excw_;
   apache::thrift::detail::ClientStreamBridge::ClientPtr streamBridge_;
-  apache::thrift::detail::ClientSinkBridge::Ptr sink_;
+  apache::thrift::detail::ClientSinkBridge::ClientPtr sink_;
   BufferOptions bufferOptions_;
   RpcSizeStats rpcSizeStats_;
 

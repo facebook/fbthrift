@@ -49,9 +49,14 @@ class ClientSinkBridge : public TwoWayBridge<
                              ClientSinkBridge>,
                          public SinkClientCallback {
  public:
+  struct ClientDeleter : Deleter {
+    void operator()(ClientSinkBridge* ptr);
+  };
+  using ClientPtr = std::unique_ptr<ClientSinkBridge, ClientDeleter>;
+
   ~ClientSinkBridge() override;
 
-  using FirstResponseCallback = FirstResponseClientCallback<Ptr>;
+  using FirstResponseCallback = FirstResponseClientCallback<ClientPtr>;
 
   static SinkClientCallback* create(FirstResponseCallback* callback);
 
@@ -62,6 +67,8 @@ class ClientSinkBridge : public TwoWayBridge<
   void push(ServerMessage&& value);
 
   ClientQueue getMessages();
+
+  // User (client) thread must call exactly one of sink and cancel
 
 #if FOLLY_HAS_COROUTINES
   folly::coro::Task<folly::Try<StreamPayload>> sink(
@@ -101,6 +108,7 @@ class ClientSinkBridge : public TwoWayBridge<
     FirstResponseCallback* firstResponseCallback_;
     SinkServerCallback* serverCallback_;
   };
+  // Only accessed on client thread after onFirstResponse
   folly::Executor::KeepAlive<folly::EventBase> evb_;
   folly::CancellationSource serverCancelSource_;
 };

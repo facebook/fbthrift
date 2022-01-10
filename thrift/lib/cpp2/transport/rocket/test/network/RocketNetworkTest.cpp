@@ -965,7 +965,7 @@ struct SinkFirstResponse {
 
   folly::coro::Baton baton_;
   folly::Try<FirstResponsePayload> payload_;
-  apache::thrift::detail::ClientSinkBridge::Ptr sinkBridge_;
+  apache::thrift::detail::ClientSinkBridge::ClientPtr sinkBridge_;
 };
 
 struct FirstResponseCallback
@@ -976,7 +976,7 @@ struct FirstResponseCallback
 
   void onFirstResponse(
       apache::thrift::FirstResponsePayload&& firstPayload,
-      apache::thrift::detail::ClientSinkBridge::Ptr sinkBridge) override {
+      apache::thrift::detail::ClientSinkBridge::ClientPtr sinkBridge) override {
     firstResponse_.payload_.emplace(std::move(firstPayload));
     firstResponse_.sinkBridge_ = std::move(sinkBridge);
     firstResponse_.baton_.post();

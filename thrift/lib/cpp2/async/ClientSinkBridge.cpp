@@ -30,10 +30,20 @@ template class TwoWayBridge<
     ServerMessage,
     ClientSinkBridge>;
 
+void ClientSinkBridge::ClientDeleter::operator()(ClientSinkBridge* ptr) {
+  ptr->cancel(folly::Try<StreamPayload>{
+      folly::make_exception_wrapper<TApplicationException>(
+          TApplicationException::TApplicationExceptionType::INTERRUPTION,
+          "never called sink object")});
+  Deleter::operator()(ptr);
+}
+
 ClientSinkBridge::ClientSinkBridge(FirstResponseCallback* callback)
     : firstResponseCallback_(callback) {}
 
-ClientSinkBridge::~ClientSinkBridge() {}
+ClientSinkBridge::~ClientSinkBridge() {
+  DCHECK(!evb_);
+}
 
 SinkClientCallback* ClientSinkBridge::create(FirstResponseCallback* callback) {
   return new ClientSinkBridge(callback);
@@ -42,7 +52,6 @@ SinkClientCallback* ClientSinkBridge::create(FirstResponseCallback* callback) {
 void ClientSinkBridge::close() {
   serverClose();
   serverCallback_ = nullptr;
-  evb_.reset();
   Ptr(this);
 }
 
@@ -74,6 +83,7 @@ folly::coro::Task<folly::Try<StreamPayload>> ClientSinkBridge::sink(
           }
         }};
   };
+  SCOPE_EXIT { evb_.reset(); };
 
   for (uint64_t credits = 0; !serverCancelSource_.isCancellationRequested();
        credits--) {
@@ -154,7 +164,9 @@ folly::coro::Task<folly::Try<StreamPayload>> ClientSinkBridge::sink(
 
 void ClientSinkBridge::cancel(folly::Try<StreamPayload> payload) {
   CHECK(payload.hasException());
+  DCHECK(evb_);
   clientPush(std::move(payload));
+  evb_.reset();
 }
 
 // SinkClientCallback method
@@ -167,13 +179,14 @@ bool ClientSinkBridge::onFirstResponse(
   evb_ = folly::getKeepAliveToken(evb);
   bool scheduledWait = serverWait(this);
   DCHECK(scheduledWait);
-  firstResponseCallback->onFirstResponse(std::move(firstPayload), copy());
+  firstResponseCallback->onFirstResponse(
+      std::move(firstPayload), ClientPtr(copy().release()));
   return true;
 }
 
 void ClientSinkBridge::onFirstResponseError(folly::exception_wrapper ew) {
   firstResponseCallback_->onFirstResponseError(std::move(ew));
-  close();
+  Ptr(this);
 }
 
 void ClientSinkBridge::onFinalResponse(StreamPayload&& payload) {

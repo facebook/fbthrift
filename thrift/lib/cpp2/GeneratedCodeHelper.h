@@ -621,7 +621,7 @@ template <
     typename FinalResponseType,
     typename ErrorMapFunc>
 ClientSink<SinkType, FinalResponseType> createSink(
-    apache::thrift::detail::ClientSinkBridge::Ptr impl) {
+    apache::thrift::detail::ClientSinkBridge::ClientPtr impl) {
   static apache::thrift::detail::ap::StreamElementEncoderImpl<
       ErrorBlame::CLIENT,
       ProtocolWriter,
@@ -650,7 +650,7 @@ template <
 folly::exception_wrapper recv_wrapped(
     ProtocolReader* prot,
     ClientReceiveState& state,
-    apache::thrift::detail::ClientSinkBridge::Ptr impl,
+    apache::thrift::detail::ClientSinkBridge::ClientPtr impl,
     apache::thrift::ResponseAndClientSink<Response, Item, FinalResponse>&
         _return) {
 #if FOLLY_HAS_COROUTINES
@@ -699,7 +699,7 @@ template <
 folly::exception_wrapper recv_wrapped(
     ProtocolReader* prot,
     ClientReceiveState& state,
-    apache::thrift::detail::ClientSinkBridge::Ptr impl,
+    apache::thrift::detail::ClientSinkBridge::ClientPtr impl,
     apache::thrift::ClientSink<Item, FinalResponse>& _return) {
 #if FOLLY_HAS_COROUTINES
   prot->setInput(state.serializedResponse().buffer.get());
