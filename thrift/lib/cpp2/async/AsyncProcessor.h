@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -305,6 +305,148 @@ class AsyncProcessor : public TProcessorBase {
   virtual void destroyAllInteractions(
       Cpp2ConnContext& conn, folly::EventBase&) noexcept;
 };
+
+namespace detail {
+class ServerRequestHelper;
+}
+
+// The ServerRequest is used to hold all the information about a request that we
+// need to save when queueing it in order to execute the request later.
+//
+// In the thrift server this is constructed on the stack on the IO thread and
+// only moved into allocated storage if the resource pool that will execute it
+// has a queue (request pile associated with it).
+//
+// We provide various methods to accommodate read only access as well as moving
+// out portions of the data.
+//
+// We keep the accessible interface of a ServerRequest and a const ServerRequest
+// as narrow as possible as this type is used in several customization points.
+class ServerRequest {
+ public:
+  // Eventually we won't need a default ctor once there is no path that doesn't
+  // use the ServerRequest and resource pools.
+  ServerRequest() : serializedRequest_(std::unique_ptr<folly::IOBuf>{}) {}
+
+  ServerRequest(
+      ResponseChannelRequest::UniquePtr&& request,
+      SerializedCompressedRequest&& serializedRequest,
+      folly::EventBase* eb,
+      Cpp2RequestContext* ctx,
+      protocol::PROTOCOL_TYPES protocol,
+      std::shared_ptr<folly::RequestContext> follyRequestContext,
+      AsyncProcessor* asyncProcessor,
+      AsyncProcessor::MethodMetadata const* methodMetadata)
+      : request_(std::move(request)),
+        serializedRequest_(std::move(serializedRequest)),
+        eb_(eb),
+        ctx_(ctx),
+        protocol_(protocol),
+        follyRequestContext_(follyRequestContext),
+        asyncProcessor_(asyncProcessor),
+        methodMetadata_(methodMetadata) {}
+
+  // The public accessors are available to user code that receives the
+  // ServerRequest through various customization points.
+
+  AsyncProcessor::MethodMetadata const* methodMetadata() const {
+    return methodMetadata_;
+  }
+
+  const Cpp2RequestContext* requestContext() const { return ctx_; }
+
+  Cpp2RequestContext* requestContext() { return ctx_; }
+
+  // TODO: T108089128 We should change this to return a ResponseChannelRequest
+  // once we change downstream code to accept that instead of the
+  // ResponseChannelRequest::UniquePtr&.
+  const ResponseChannelRequest::UniquePtr& request() const { return request_; }
+
+  std::shared_ptr<folly::RequestContext>& follyRequestContext() {
+    return follyRequestContext_;
+  }
+
+ protected:
+  // The protected accessors are for use only by the thrift server
+  // implementation itself. They are accessed using
+  // detail::ServerRequestHelper.
+
+  friend class detail::ServerRequestHelper;
+
+  static AsyncProcessor* asyncProcessor(ServerRequest& sr) {
+    return sr.asyncProcessor_;
+  }
+
+  static SerializedCompressedRequest const& compressedRequest(
+      ServerRequest& sr) {
+    return sr.serializedRequest_;
+  }
+
+  static SerializedCompressedRequest compressedRequest(ServerRequest&& sr) {
+    return std::move(sr.serializedRequest_);
+  }
+
+  static ResponseChannelRequest::UniquePtr request(ServerRequest&& sr) {
+    return std::move(sr.request_);
+  }
+
+  static folly::EventBase* eventBase(ServerRequest& sr) { return sr.eb_; }
+
+  // The executor is only available once the request has been assigned to
+  // a resource pool.
+  static folly::Executor* executor(ServerRequest& sr) { return sr.executor_; }
+
+  static void setExecutor(ServerRequest& sr, folly::Executor* executor) {
+    sr.executor_ = executor;
+  }
+
+  static protocol::PROTOCOL_TYPES protocol(ServerRequest& sr) {
+    return sr.protocol_;
+  }
+
+  // The ServerRequest stores the context stack for modules that
+  // is created on.
+  static void setContextStack(
+      ServerRequest& sr,
+      std::unique_ptr<apache::thrift::ContextStack>&& ctxStack) {
+    sr.ctxStack_ = std::move(ctxStack);
+  }
+
+  static std::unique_ptr<apache::thrift::ContextStack> contextStack(
+      ServerRequest&& sr) {
+    return std::move(sr.ctxStack_);
+  }
+
+ private:
+  ResponseChannelRequest::UniquePtr request_;
+  SerializedCompressedRequest serializedRequest_;
+  folly::EventBase* eb_;
+  folly::Executor* executor_{nullptr};
+  Cpp2RequestContext* ctx_;
+  protocol::PROTOCOL_TYPES protocol_;
+  std::shared_ptr<folly::RequestContext> follyRequestContext_;
+  AsyncProcessor* asyncProcessor_;
+  AsyncProcessor::MethodMetadata const* methodMetadata_;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack_;
+};
+
+namespace detail {
+
+class ServerRequestHelper : public ServerRequest {
+ public:
+  using ServerRequest::asyncProcessor;
+  using ServerRequest::compressedRequest;
+  using ServerRequest::contextStack;
+  using ServerRequest::eventBase;
+  using ServerRequest::executor;
+  using ServerRequest::protocol;
+  using ServerRequest::request;
+  using ServerRequest::requestContext;
+  using ServerRequest::setContextStack;
+  using ServerRequest::setExecutor;
+};
+
+} // namespace detail
 
 class ServerInterface;
 
