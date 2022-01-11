@@ -1009,29 +1009,33 @@ template <> struct TEnumTraits<::some::valid::ns::MyEnumB> {
 namespace some { namespace valid { namespace ns {
 
 using _MyEnumA_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnumA>;
+#ifndef ANDROID
 [[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
 extern const _MyEnumA_EnumMapFactory::ValuesToNamesMapType _MyEnumA_VALUES_TO_NAMES;
 [[deprecated("use apache::thrift::TEnumTraits")]]
 extern const _MyEnumA_EnumMapFactory::NamesToValuesMapType _MyEnumA_NAMES_TO_VALUES;
-
+#endif
 using _AnnotatedEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnnotatedEnum>;
+#ifndef ANDROID
 [[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
 extern const _AnnotatedEnum_EnumMapFactory::ValuesToNamesMapType _AnnotatedEnum_VALUES_TO_NAMES;
 [[deprecated("use apache::thrift::TEnumTraits")]]
 extern const _AnnotatedEnum_EnumMapFactory::NamesToValuesMapType _AnnotatedEnum_NAMES_TO_VALUES;
-
+#endif
 using _AnnotatedEnum2_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnnotatedEnum2>;
+#ifndef ANDROID
 [[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
 extern const _AnnotatedEnum2_EnumMapFactory::ValuesToNamesMapType _AnnotatedEnum2_VALUES_TO_NAMES;
 [[deprecated("use apache::thrift::TEnumTraits")]]
 extern const _AnnotatedEnum2_EnumMapFactory::NamesToValuesMapType _AnnotatedEnum2_NAMES_TO_VALUES;
-
+#endif
 using _MyEnumB_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnumB>;
+#ifndef ANDROID
 [[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
 extern const _MyEnumB_EnumMapFactory::ValuesToNamesMapType _MyEnumB_VALUES_TO_NAMES;
 [[deprecated("use apache::thrift::TEnumTraits")]]
 extern const _MyEnumB_EnumMapFactory::NamesToValuesMapType _MyEnumB_NAMES_TO_VALUES;
-
+#endif
 }}} // some::valid::ns
 
 // END declare_enums

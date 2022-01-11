@@ -84,11 +84,12 @@ template <> struct TEnumTraits<::cpp2::Metasyntactic> {
 namespace cpp2 {
 
 using _Metasyntactic_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<Metasyntactic>;
+#ifndef ANDROID
 [[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
 extern const _Metasyntactic_EnumMapFactory::ValuesToNamesMapType _Metasyntactic_VALUES_TO_NAMES;
 [[deprecated("use apache::thrift::TEnumTraits")]]
 extern const _Metasyntactic_EnumMapFactory::NamesToValuesMapType _Metasyntactic_NAMES_TO_VALUES;
-
+#endif
 } // cpp2
 
 // END declare_enums

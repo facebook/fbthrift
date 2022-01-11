@@ -73,11 +73,12 @@ template <> struct TEnumTraits<<% > common/namespace_cpp2%><%enum:cpp_name%>> {
 
 <%#program:enums%>
 using _<%enum:cpp_name%>_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<<%enum:cpp_name%>>;
+#ifndef ANDROID
 [[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
 extern const _<%enum:cpp_name%>_EnumMapFactory::ValuesToNamesMapType _<%enum:cpp_name%>_VALUES_TO_NAMES;
 [[deprecated("use apache::thrift::TEnumTraits")]]
 extern const _<%enum:cpp_name%>_EnumMapFactory::NamesToValuesMapType _<%enum:cpp_name%>_NAMES_TO_VALUES;
-
+#endif
 <%/program:enums%>
 <% > common/namespace_cpp2_end%>
 

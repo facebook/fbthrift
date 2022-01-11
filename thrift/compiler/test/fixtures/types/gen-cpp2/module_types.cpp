@@ -37,12 +37,13 @@ bool TEnumTraits<::apache::thrift::fixtures::types::has_bitwise_ops>::findValue(
 }} // apache::thrift
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef ANDROID
 FOLLY_PUSH_WARNING
 FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
 const _has_bitwise_ops_EnumMapFactory::ValuesToNamesMapType _has_bitwise_ops_VALUES_TO_NAMES = _has_bitwise_ops_EnumMapFactory::makeValuesToNamesMap();
 const _has_bitwise_ops_EnumMapFactory::NamesToValuesMapType _has_bitwise_ops_NAMES_TO_VALUES = _has_bitwise_ops_EnumMapFactory::makeNamesToValuesMap();
 FOLLY_POP_WARNING
-
+#endif
 }}}} // apache::thrift::fixtures::types
 
 namespace apache { namespace thrift {
@@ -70,12 +71,13 @@ bool TEnumTraits<::apache::thrift::fixtures::types::is_unscoped>::findValue(char
 }} // apache::thrift
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef ANDROID
 FOLLY_PUSH_WARNING
 FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
 const _is_unscoped_EnumMapFactory::ValuesToNamesMapType _is_unscoped_VALUES_TO_NAMES = _is_unscoped_EnumMapFactory::makeValuesToNamesMap();
 const _is_unscoped_EnumMapFactory::NamesToValuesMapType _is_unscoped_NAMES_TO_VALUES = _is_unscoped_EnumMapFactory::makeNamesToValuesMap();
 FOLLY_POP_WARNING
-
+#endif
 }}}} // apache::thrift::fixtures::types
 
 namespace apache { namespace thrift {
@@ -103,12 +105,13 @@ bool TEnumTraits<::apache::thrift::fixtures::types::MyForwardRefEnum>::findValue
 }} // apache::thrift
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef ANDROID
 FOLLY_PUSH_WARNING
 FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
 const _MyForwardRefEnum_EnumMapFactory::ValuesToNamesMapType _MyForwardRefEnum_VALUES_TO_NAMES = _MyForwardRefEnum_EnumMapFactory::makeValuesToNamesMap();
 const _MyForwardRefEnum_EnumMapFactory::NamesToValuesMapType _MyForwardRefEnum_NAMES_TO_VALUES = _MyForwardRefEnum_EnumMapFactory::makeNamesToValuesMap();
 FOLLY_POP_WARNING
-
+#endif
 }}}} // apache::thrift::fixtures::types
 
 namespace apache { namespace thrift {
@@ -136,12 +139,13 @@ bool TEnumTraits<::apache::thrift::fixtures::types::MyEnumA>::findValue(char con
 }} // apache::thrift
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+#ifndef ANDROID
 FOLLY_PUSH_WARNING
 FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
 const _MyEnumA_EnumMapFactory::ValuesToNamesMapType _MyEnumA_VALUES_TO_NAMES = _MyEnumA_EnumMapFactory::makeValuesToNamesMap();
 const _MyEnumA_EnumMapFactory::NamesToValuesMapType _MyEnumA_NAMES_TO_VALUES = _MyEnumA_EnumMapFactory::makeNamesToValuesMap();
 FOLLY_POP_WARNING
-
+#endif
 }}}} // apache::thrift::fixtures::types
 
 namespace apache {

@@ -37,12 +37,13 @@ bool TEnumTraits<::test::fixtures::tablebased::ExampleEnum>::findValue(char cons
 }} // apache::thrift
 
 namespace test { namespace fixtures { namespace tablebased {
+#ifndef ANDROID
 FOLLY_PUSH_WARNING
 FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
 const _ExampleEnum_EnumMapFactory::ValuesToNamesMapType _ExampleEnum_VALUES_TO_NAMES = _ExampleEnum_EnumMapFactory::makeValuesToNamesMap();
 const _ExampleEnum_EnumMapFactory::NamesToValuesMapType _ExampleEnum_NAMES_TO_VALUES = _ExampleEnum_EnumMapFactory::makeNamesToValuesMap();
 FOLLY_POP_WARNING
-
+#endif
 }}} // test::fixtures::tablebased
 namespace apache {
 namespace thrift {

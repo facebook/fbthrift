@@ -37,12 +37,13 @@ bool TEnumTraits<::cpp2::Metasyntactic>::findValue(char const* name, type* out) 
 }} // apache::thrift
 
 namespace cpp2 {
+#ifndef ANDROID
 FOLLY_PUSH_WARNING
 FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
 const _Metasyntactic_EnumMapFactory::ValuesToNamesMapType _Metasyntactic_VALUES_TO_NAMES = _Metasyntactic_EnumMapFactory::makeValuesToNamesMap();
 const _Metasyntactic_EnumMapFactory::NamesToValuesMapType _Metasyntactic_NAMES_TO_VALUES = _Metasyntactic_EnumMapFactory::makeNamesToValuesMap();
 FOLLY_POP_WARNING
-
+#endif
 } // cpp2
 
 namespace apache {
