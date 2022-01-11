@@ -25,7 +25,6 @@ namespace {
 // the server are executed on this channel's EventBase. This EventBase will be
 // passed during the constructor of the channel.
 // This is similar to the implementation in PooledRequestChannel.
-template <bool oneWay>
 class EvbRequestCallback final : public RequestClientCallback {
  public:
   EvbRequestCallback(
@@ -33,42 +32,23 @@ class EvbRequestCallback final : public RequestClientCallback {
       folly::Executor::KeepAlive<folly::EventBase> evb)
       : evb_(std::move(evb)), cb_(std::move(cb)) {}
 
-  void onRequestSent() noexcept override {
-    if (oneWay) {
-      evb_->runInEventBaseThread(
-          [cb = std::move(cb_)]() mutable { cb.release()->onRequestSent(); });
-      delete this;
-    } else {
-      requestSent_ = true;
-    }
-  }
-
   void onResponse(ClientReceiveState&& rs) noexcept override {
-    evb_->runInEventBaseThread([requestSent = requestSent_,
-                                cb = std::move(cb_),
-                                rs = std::move(rs)]() mutable {
-      if (requestSent) {
-        cb->onRequestSent();
-      }
-      cb.release()->onResponse(std::move(rs));
-    });
+    evb_->runInEventBaseThread(
+        [cb = std::move(cb_), rs = std::move(rs)]() mutable {
+          cb.release()->onResponse(std::move(rs));
+        });
     delete this;
   }
 
   void onResponseError(folly::exception_wrapper ex) noexcept override {
-    evb_->runInEventBaseThread([requestSent = requestSent_,
-                                cb = std::move(cb_),
-                                ex = std::move(ex)]() mutable {
-      if (requestSent) {
-        cb->onRequestSent();
-      }
-      cb.release()->onResponseError(std::move(ex));
-    });
+    evb_->runInEventBaseThread(
+        [cb = std::move(cb_), ex = std::move(ex)]() mutable {
+          cb.release()->onResponseError(std::move(ex));
+        });
     delete this;
   }
 
  private:
-  bool requestSent_{false};
   folly::Executor::KeepAlive<folly::EventBase> evb_;
   RequestClientCallback::Ptr cb_;
 };
@@ -243,7 +223,7 @@ void ThreadBoundAdaptorChannel::sendRequestResponse(
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cob) {
-  cob = RequestClientCallback::Ptr(new EvbRequestCallback<false>(
+  cob = RequestClientCallback::Ptr(new EvbRequestCallback(
       std::move(cob), folly::Executor::getKeepAliveToken(evb_)));
 
   threadSafeChannel_->sendRequestResponse(
@@ -260,7 +240,7 @@ void ThreadBoundAdaptorChannel::sendRequestNoResponse(
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cob) {
-  cob = RequestClientCallback::Ptr(new EvbRequestCallback<true>(
+  cob = RequestClientCallback::Ptr(new EvbRequestCallback(
       std::move(cob), folly::Executor::getKeepAliveToken(evb_)));
 
   threadSafeChannel_->sendRequestNoResponse(

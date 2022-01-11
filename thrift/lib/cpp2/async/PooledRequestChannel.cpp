@@ -76,7 +76,6 @@ void PooledRequestChannel::sendRequestImpl(
 }
 
 namespace {
-template <bool oneWay>
 class ExecutorRequestCallback final : public RequestClientCallback {
  public:
   ExecutorRequestCallback(
@@ -86,40 +85,22 @@ class ExecutorRequestCallback final : public RequestClientCallback {
     CHECK(executorKeepAlive_);
   }
 
-  void onRequestSent() noexcept override {
-    if (oneWay) {
-      executorKeepAlive_.get()->add(
-          [cb = std::move(cb_)]() mutable { cb.release()->onRequestSent(); });
-      delete this;
-    } else {
-      requestSent_ = true;
-    }
-  }
   void onResponse(ClientReceiveState&& rs) noexcept override {
-    executorKeepAlive_.get()->add([requestSent = requestSent_,
-                                   cb = std::move(cb_),
-                                   rs = std::move(rs)]() mutable {
-      if (requestSent) {
-        cb->onRequestSent();
-      }
-      cb.release()->onResponse(std::move(rs));
-    });
+    executorKeepAlive_.get()->add(
+        [cb = std::move(cb_), rs = std::move(rs)]() mutable {
+          cb.release()->onResponse(std::move(rs));
+        });
     delete this;
   }
   void onResponseError(folly::exception_wrapper ex) noexcept override {
-    executorKeepAlive_.get()->add([requestSent = requestSent_,
-                                   cb = std::move(cb_),
-                                   ex = std::move(ex)]() mutable {
-      if (requestSent) {
-        cb->onRequestSent();
-      }
-      cb.release()->onResponseError(std::move(ex));
-    });
+    executorKeepAlive_.get()->add(
+        [cb = std::move(cb_), ex = std::move(ex)]() mutable {
+          cb.release()->onResponseError(std::move(ex));
+        });
     delete this;
   }
 
  private:
-  bool requestSent_{false};
   folly::Executor::KeepAlive<> executorKeepAlive_;
   RequestClientCallback::Ptr cb_;
 };
@@ -132,7 +113,7 @@ void PooledRequestChannel::sendRequestResponse(
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cob) {
   if (!cob->isInlineSafe()) {
-    cob = RequestClientCallback::Ptr(new ExecutorRequestCallback<false>(
+    cob = RequestClientCallback::Ptr(new ExecutorRequestCallback(
         std::move(cob), getKeepAliveToken(callbackExecutor_)));
   }
   auto evb = getEvb(options);
@@ -160,7 +141,7 @@ void PooledRequestChannel::sendRequestNoResponse(
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cob) {
   if (!cob->isInlineSafe()) {
-    cob = RequestClientCallback::Ptr(new ExecutorRequestCallback<true>(
+    cob = RequestClientCallback::Ptr(new ExecutorRequestCallback(
         std::move(cob), getKeepAliveToken(callbackExecutor_)));
   }
   auto evb = getEvb(options);

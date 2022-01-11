@@ -297,15 +297,11 @@ class TestRequestCallback : public RequestClientCallback, public CloseCallback {
  public:
   explicit TestRequestCallback(bool oneWay = false) : oneWay_(oneWay) {}
 
-  void onRequestSent() noexcept override {
-    if (oneWay_) {
-      delete this;
-    }
-  }
-
   void onResponse(ClientReceiveState&& state) noexcept override {
-    reply_++;
-    replyBytes_ += lengthWithEnvelope(state);
+    if (!oneWay_) {
+      reply_++;
+      replyBytes_ += lengthWithEnvelope(state);
+    }
     delete this;
   }
 
@@ -328,7 +324,7 @@ class TestRequestCallback : public RequestClientCallback, public CloseCallback {
   static uint32_t replyBytes_;
   static uint32_t replyError_;
 
- private:
+ protected:
   const bool oneWay_;
 };
 
@@ -485,7 +481,9 @@ class HeaderChannelTest
     Callback(HeaderChannelTest* c, bool oneWay)
         : TestRequestCallback(oneWay), c_(c) {}
     void onResponse(ClientReceiveState&& state) noexcept override {
-      c_->channel1_->setCallback(nullptr);
+      if (!oneWay_) {
+        c_->channel1_->setCallback(nullptr);
+      }
       TestRequestCallback::onResponse(std::move(state));
     }
 

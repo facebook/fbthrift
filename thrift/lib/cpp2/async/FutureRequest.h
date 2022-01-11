@@ -354,7 +354,6 @@ makeOneWaySemiFutureCallback(
       std::move(future)};
 }
 
-// Does not call onRequestSent for non-oneway methods.
 template <bool oneWay>
 class CancellableRequestClientCallback : public RequestClientCallback {
   CancellableRequestClientCallback(
@@ -375,18 +374,7 @@ class CancellableRequestClientCallback : public RequestClientCallback {
         folly::make_exception_wrapper<folly::OperationCancelled>());
   }
 
-  void onRequestSent() noexcept override {
-    if (oneWay) {
-      if (auto callback =
-              callback_.exchange(nullptr, std::memory_order_acq_rel)) {
-        callback->onRequestSent();
-      } else {
-        delete this;
-      }
-    }
-  }
   void onResponse(ClientReceiveState&& state) noexcept override {
-    CHECK(!oneWay);
     if (auto callback =
             callback_.exchange(nullptr, std::memory_order_acq_rel)) {
       callback->onResponse(std::move(state));

@@ -28,19 +28,8 @@ namespace {
 class ChannelKeepAlive : public RequestClientCallback {
  public:
   ChannelKeepAlive(
-      ReconnectingRequestChannel::ImplPtr impl,
-      RequestClientCallback::Ptr cob,
-      bool oneWay)
-      : keepAlive_(std::move(impl)), cob_(std::move(cob)), oneWay_(oneWay) {}
-
-  void onRequestSent() noexcept override {
-    if (!oneWay_) {
-      cob_->onRequestSent();
-    } else {
-      cob_.release()->onRequestSent();
-      delete this;
-    }
-  }
+      ReconnectingRequestChannel::ImplPtr impl, RequestClientCallback::Ptr cob)
+      : keepAlive_(std::move(impl)), cob_(std::move(cob)) {}
 
   void onResponse(ClientReceiveState&& state) noexcept override {
     cob_.release()->onResponse(std::move(state));
@@ -55,7 +44,6 @@ class ChannelKeepAlive : public RequestClientCallback {
  private:
   ReconnectingRequestChannel::ImplPtr keepAlive_;
   RequestClientCallback::Ptr cob_;
-  const bool oneWay_;
 };
 
 class ChannelKeepAliveStream : public StreamClientCallback {
@@ -132,8 +120,7 @@ void ReconnectingRequestChannel::sendRequestResponse(
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cob) {
   reconnectIfNeeded();
-  cob = RequestClientCallback::Ptr(
-      new ChannelKeepAlive(impl_, std::move(cob), false));
+  cob = RequestClientCallback::Ptr(new ChannelKeepAlive(impl_, std::move(cob)));
 
   return impl_->sendRequestResponse(
       options,
@@ -150,8 +137,7 @@ void ReconnectingRequestChannel::sendRequestNoResponse(
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cob) {
   reconnectIfNeeded();
-  cob = RequestClientCallback::Ptr(
-      new ChannelKeepAlive(impl_, std::move(cob), true));
+  cob = RequestClientCallback::Ptr(new ChannelKeepAlive(impl_, std::move(cob)));
 
   return impl_->sendRequestNoResponse(
       options,

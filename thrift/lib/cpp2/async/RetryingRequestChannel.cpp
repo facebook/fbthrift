@@ -84,7 +84,6 @@ class RetryingRequestChannel::RequestCallback
 
   void onResponse(
       apache::thrift::ClientReceiveState&& state) noexcept override {
-    cob_->onRequestSent();
     cob_.release()->onResponse(std::move(state));
     delete this;
   }

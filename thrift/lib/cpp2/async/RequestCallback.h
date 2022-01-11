@@ -224,7 +224,7 @@ class RequestClientCallback {
       std::unique_ptr<RequestClientCallback, RequestClientCallbackDeleter>;
 
   virtual ~RequestClientCallback() {}
-  virtual void onRequestSent() noexcept {}
+  virtual void onRequestSent() noexcept final { onResponse({}); }
   virtual void onResponse(ClientReceiveState&&) noexcept = 0;
   virtual void onResponseError(folly::exception_wrapper) noexcept = 0;
 
@@ -243,26 +243,14 @@ class RequestCallback : public RequestClientCallback {
   virtual void replyReceived(ClientReceiveState&&) = 0;
   virtual void requestError(ClientReceiveState&&) = 0;
 
-  void onRequestSent() noexcept override {
-    CHECK(thriftContext_);
-    if (!thriftContext_->oneWay) {
-      return;
-    }
-    {
-      folly::RequestContextScopeGuard rctx(std::move(context_));
-      requestSentHelper();
-    }
-    if (unmanaged_) {
-      delete this;
-    }
-  }
-
   void onResponse(ClientReceiveState&& state) noexcept override {
     CHECK(thriftContext_);
-    state.resetProtocolId(thriftContext_->protocolId);
-    state.resetCtx(std::move(thriftContext_->ctx));
     {
-      auto work = [&]() noexcept {
+      state.resetProtocolId(thriftContext_->protocolId);
+      state.resetCtx(std::move(thriftContext_->ctx));
+      folly::RequestContextScopeGuard rctx(std::move(context_));
+      requestSentHelper();
+      if (!thriftContext_->oneWay) {
         try {
           replyReceived(std::move(state));
         } catch (...) {
@@ -270,10 +258,7 @@ class RequestCallback : public RequestClientCallback {
               << "Exception thrown while executing replyReceived() callback. "
               << "Exception: " << folly::exceptionStr(std::current_exception());
         }
-      };
-      folly::RequestContextScopeGuard rctx(std::move(context_));
-      requestSentHelper();
-      work();
+      }
     }
     if (unmanaged_) {
       delete this;

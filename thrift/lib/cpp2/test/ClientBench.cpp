@@ -51,7 +51,6 @@ class DummyChannel : public apache::thrift::RequestChannel {
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr cb) override {
-    cb->onRequestSent();
     static ClientReceiveState staticState = [&] {
       ClientReceiveState state;
       folly::Baton<> baton;

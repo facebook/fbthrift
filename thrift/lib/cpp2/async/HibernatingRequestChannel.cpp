@@ -27,8 +27,6 @@ class HibernatingRequestChannel::RequestCallback
   RequestCallback(apache::thrift::RequestClientCallback::Ptr cob, ImplPtr impl)
       : impl_(std::move(impl)), cob_(std::move(cob)) {}
 
-  void onRequestSent() noexcept override { cob_->onRequestSent(); }
-
   void onResponse(ClientReceiveState&& state) noexcept override {
     cob_.release()->onResponse(std::move(state));
     delete this;
