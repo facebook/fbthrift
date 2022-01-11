@@ -88,7 +88,7 @@ class IncludedB final  {
  private:
   ::std::string __fbthrift_field_strField;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

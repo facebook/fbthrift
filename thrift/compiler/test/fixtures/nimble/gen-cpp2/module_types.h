@@ -106,7 +106,7 @@ class BasicTypes final  {
  private:
   bool __fbthrift_field_isTrue;
  private:
-  apache::thrift::detail::isset_bitset<3, false> __isset;
+  apache::thrift::detail::isset_bitset<3, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

@@ -249,7 +249,7 @@ class Foo final  {
  private:
   ::std::vector<::std::int32_t> __fbthrift_field_field4;
  private:
-  apache::thrift::detail::isset_bitset<4, false> __isset;
+  apache::thrift::detail::isset_bitset<4, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -519,7 +519,7 @@ class LazyFoo final  {
  private:
   mutable ::std::vector<::std::int32_t> __fbthrift_field_field4;
  private:
-  apache::thrift::detail::isset_bitset<4, false> __isset;
+  apache::thrift::detail::isset_bitset<4, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -795,7 +795,7 @@ class OptionalFoo final  {
  private:
   ::std::vector<::std::int32_t> __fbthrift_field_field4;
  private:
-  apache::thrift::detail::isset_bitset<4, false> __isset;
+  apache::thrift::detail::isset_bitset<4, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -1069,7 +1069,7 @@ class OptionalLazyFoo final  {
  private:
   mutable ::std::vector<::std::int32_t> __fbthrift_field_field4;
  private:
-  apache::thrift::detail::isset_bitset<4, false> __isset;
+  apache::thrift::detail::isset_bitset<4, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -1506,7 +1506,7 @@ class IndexedFoo final  {
  private:
   ::std::map<::std::int16_t, ::std::int64_t> __fbthrift_field_field_id_to_size;
  private:
-  apache::thrift::detail::isset_bitset<6, false> __isset;
+  apache::thrift::detail::isset_bitset<6, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -1883,7 +1883,7 @@ class OptionalIndexedFoo final  {
  private:
   ::std::map<::std::int16_t, ::std::int64_t> __fbthrift_field_field_id_to_size;
  private:
-  apache::thrift::detail::isset_bitset<6, false> __isset;
+  apache::thrift::detail::isset_bitset<6, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

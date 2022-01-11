@@ -142,7 +142,22 @@
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
-
+        "atomic" : {
+          "type_enum" : "BOOL",
+          "spec_args" : null,
+          "required" : true,
+          "default_value" : false,
+          "source_range" : {
+            "begin" : {
+              "line" : 67,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 67,
+              "column" : 26
+            }
+          }
+        }
       },
       "source_range" : {
         "begin" : {
@@ -151,7 +166,7 @@
         },
         "end" : {
           "line" : 68,
-          "column" : 2
+          "column" : 64
         }
       }
     }

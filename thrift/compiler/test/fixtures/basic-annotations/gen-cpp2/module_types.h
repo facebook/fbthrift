@@ -176,7 +176,7 @@ class MyStructNestedAnnotation final  {
  private:
   ::std::string __fbthrift_field_name;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -320,7 +320,7 @@ class MyStruct final  {
  private:
   ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourEnum> __fbthrift_field_my_enum;
  private:
-  apache::thrift::detail::isset_bitset<7, false> __isset;
+  apache::thrift::detail::isset_bitset<7, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -757,7 +757,7 @@ class SecretStruct final  {
  private:
   ::std::string __fbthrift_field_password;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

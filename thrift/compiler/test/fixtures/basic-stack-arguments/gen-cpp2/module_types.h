@@ -136,7 +136,7 @@ class MyStruct final  {
  private:
   ::std::string __fbthrift_field_MyStringField;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

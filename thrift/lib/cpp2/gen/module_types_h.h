@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -243,8 +243,23 @@ template <typename T, std::enable_if_t<st::IsThriftClass<T>{}, int> = 0>
 constexpr bool operator>=(const T& lhs, const T& rhs) {
   return !(lhs < rhs);
 }
-template <size_t NumBits, bool packed = false>
+
+enum class IssetBitsetOption {
+  Unpacked,
+  Packed,
+  PackedWithAtomic,
+};
+
+template <
+    size_t NumBits,
+    IssetBitsetOption kOption = IssetBitsetOption::Unpacked>
 class isset_bitset {
+ private:
+  using IntType = std::conditional_t<
+      kOption == IssetBitsetOption::PackedWithAtomic,
+      std::atomic<uint8_t>,
+      uint8_t>;
+
  public:
   bool get(size_t field_index) const {
     check(field_index);
@@ -256,12 +271,12 @@ class isset_bitset {
     array_isset[field_index / kBits][field_index % kBits] = isset_flag;
   }
 
-  const uint8_t& at(size_t field_index) const {
+  const IntType& at(size_t field_index) const {
     check(field_index);
     return array_isset[field_index / kBits].value();
   }
 
-  uint8_t& at(size_t field_index) {
+  IntType& at(size_t field_index) {
     check(field_index);
     return array_isset[field_index / kBits].value();
   }
@@ -280,9 +295,10 @@ class isset_bitset {
     DCHECK(field_index / kBits < NumBits);
   }
 
-  static constexpr size_t kBits = packed ? 8 : 1;
+  static constexpr size_t kBits =
+      kOption == IssetBitsetOption::Unpacked ? 1 : 8;
   std::array<
-      apache::thrift::detail::BitSet<uint8_t>,
+      apache::thrift::detail::BitSet<IntType>,
       (NumBits + kBits - 1) / kBits>
       array_isset;
 };

@@ -256,7 +256,7 @@ class MyStruct final  {
  private:
   bool __fbthrift_field_idempotent;
  private:
-  apache::thrift::detail::isset_bitset<7, false> __isset;
+  apache::thrift::detail::isset_bitset<7, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

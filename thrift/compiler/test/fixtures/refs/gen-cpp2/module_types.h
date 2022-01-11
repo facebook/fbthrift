@@ -978,7 +978,7 @@ class StructWithUnion final  {
  private:
   ::cpp2::MyField __fbthrift_field_f;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -1118,7 +1118,7 @@ class RecursiveStruct final  {
  private:
   ::std::vector<::cpp2::RecursiveStruct> __fbthrift_field_mes;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

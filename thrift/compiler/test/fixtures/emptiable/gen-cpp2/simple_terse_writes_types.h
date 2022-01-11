@@ -360,7 +360,7 @@ class EmptiableStruct final  {
  private:
   ::apache::thrift::test::MyStruct __fbthrift_field_struct_field;
  private:
-  apache::thrift::detail::isset_bitset<14, false> __isset;
+  apache::thrift::detail::isset_bitset<14, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -1165,7 +1165,7 @@ class NotEmptiableStruct final  {
  private:
   ::apache::thrift::test::MyStruct __fbthrift_field_struct_field;
  private:
-  apache::thrift::detail::isset_bitset<14, false> __isset;
+  apache::thrift::detail::isset_bitset<14, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

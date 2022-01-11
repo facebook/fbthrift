@@ -150,7 +150,7 @@ class A final  {
  private:
   ::std::int32_t __fbthrift_field_useless_field;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -552,7 +552,7 @@ class FOLLY_EXPORT Bang : public apache::thrift::TException {
  private:
   ::std::string message;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

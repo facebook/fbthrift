@@ -154,7 +154,7 @@ class SomeStruct final  {
  private:
   ::std::set<::std::int32_t> __fbthrift_field_tags;
  private:
-  apache::thrift::detail::isset_bitset<4, false> __isset;
+  apache::thrift::detail::isset_bitset<4, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

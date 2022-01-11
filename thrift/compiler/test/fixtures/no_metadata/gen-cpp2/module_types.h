@@ -234,7 +234,7 @@ class MyStruct final  {
  private:
   ::cpp2::MyEnum __fbthrift_field_myEnum;
  private:
-  apache::thrift::detail::isset_bitset<4, false> __isset;
+  apache::thrift::detail::isset_bitset<4, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

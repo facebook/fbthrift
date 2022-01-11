@@ -90,7 +90,7 @@ class Foo final  {
  public:
   ::std::int32_t bar;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

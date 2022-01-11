@@ -116,7 +116,7 @@ class Mixin1 final  {
  private:
   ::std::string __fbthrift_field_field1;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -242,7 +242,7 @@ class Mixin2 final  {
  private:
   ::std::string __fbthrift_field_field2;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -424,7 +424,7 @@ class Mixin3Base final  {
  private:
   ::std::string __fbthrift_field_field3;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -552,7 +552,7 @@ class Foo final  {
  private:
   ::cpp2::Mixin3 __fbthrift_field_m3;
  private:
-  apache::thrift::detail::isset_bitset<3, false> __isset;
+  apache::thrift::detail::isset_bitset<3, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

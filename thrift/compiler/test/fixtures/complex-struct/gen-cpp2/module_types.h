@@ -702,7 +702,7 @@ class MyStructFloatFieldThrowExp final  {
  private:
   float __fbthrift_field_myFloatField;
  private:
-  apache::thrift::detail::isset_bitset<4, false> __isset;
+  apache::thrift::detail::isset_bitset<4, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -979,7 +979,7 @@ class MyStructMapFloatThrowExp final  {
  private:
   ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::floatTypedef>>> __fbthrift_field_mapListOfFloats;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -1270,7 +1270,7 @@ class MyStruct final  {
  private:
   ::std::map<::std::vector<::std::int32_t>, ::std::vector<::std::int32_t>> __fbthrift_field_mListList;
  private:
-  apache::thrift::detail::isset_bitset<28, false> __isset;
+  apache::thrift::detail::isset_bitset<28, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -2728,7 +2728,7 @@ class SimpleStruct final  {
  private:
   ::std::string __fbthrift_field_name;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -2939,7 +2939,7 @@ class ComplexNestedStruct final  {
  private:
   ::std::map<::std::vector<::std::int32_t>, ::std::set<::std::map<double, ::std::string>>> __fbthrift_field_mapKeyListValSet;
  private:
-  apache::thrift::detail::isset_bitset<18, false> __isset;
+  apache::thrift::detail::isset_bitset<18, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -4497,7 +4497,7 @@ class defaultStruct final  {
  private:
   ::std::map<::std::string, ::std::map<::std::int32_t, ::cpp2::MyEnum>> __fbthrift_field_enumMapDFset;
  private:
-  apache::thrift::detail::isset_bitset<22, false> __isset;
+  apache::thrift::detail::isset_bitset<22, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -5684,7 +5684,7 @@ class MyStructTypeDef final  {
  private:
   ::std::map<::std::int16_t, ::std::vector<::cpp2::listTypedef>> __fbthrift_field_myMapListOfTypeDef;
  private:
-  apache::thrift::detail::isset_bitset<9, false> __isset;
+  apache::thrift::detail::isset_bitset<9, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -6647,7 +6647,7 @@ class TypeRemapped final  {
  private:
   ::std::string __fbthrift_field_binaryTestBuffer;
  private:
-  apache::thrift::detail::isset_bitset<4, false> __isset;
+  apache::thrift::detail::isset_bitset<4, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -7155,7 +7155,7 @@ class FOLLY_EXPORT optXcep : public apache::thrift::TException {
  private:
   ::std::int32_t errorCode;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -7318,7 +7318,7 @@ class FOLLY_EXPORT complexException : public apache::thrift::TException {
  private:
   ::std::map<::std::int64_t, ::std::string> lsMap;
  private:
-  apache::thrift::detail::isset_bitset<6, false> __isset;
+  apache::thrift::detail::isset_bitset<6, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

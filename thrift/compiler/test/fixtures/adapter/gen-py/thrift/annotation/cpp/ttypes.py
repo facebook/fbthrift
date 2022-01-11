@@ -388,10 +388,15 @@ class Adapter:
   __hash__ = object.__hash__
 
 class PackIsset:
+  """
+  Attributes:
+   - atomic
+  """
 
   thrift_spec = None
   thrift_field_annotations = None
   thrift_struct_annotations = None
+  __init__ = None
   @staticmethod
   def isUnion():
     return False
@@ -408,6 +413,11 @@ class PackIsset:
       (fname, ftype, fid) = iprot.readFieldBegin()
       if ftype == TType.STOP:
         break
+      if fid == 1:
+        if ftype == TType.BOOL:
+          self.atomic = iprot.readBool()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -421,6 +431,10 @@ class PackIsset:
       oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
       return
     oprot.writeStructBegin('PackIsset')
+    if self.atomic != None:
+      oprot.writeFieldBegin('atomic', TType.BOOL, 1)
+      oprot.writeBool(self.atomic)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -436,10 +450,16 @@ class PackIsset:
     json_obj = json
     if is_text:
       json_obj = loads(json)
+    if 'atomic' in json_obj and json_obj['atomic'] is not None:
+      self.atomic = json_obj['atomic']
 
   def __repr__(self):
     L = []
     padding = ' ' * 4
+    if self.atomic is not None:
+      value = pprint.pformat(self.atomic, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    atomic=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -538,6 +558,8 @@ Adapter.__setstate__ = Adapter__setstate__
 
 all_structs.append(PackIsset)
 PackIsset.thrift_spec = (
+  None, # 0
+  (1, TType.BOOL, 'atomic', None, False, 2, ), # 1
 )
 
 PackIsset.thrift_struct_annotations = {
@@ -545,6 +567,18 @@ PackIsset.thrift_struct_annotations = {
 }
 PackIsset.thrift_field_annotations = {
 }
+
+def PackIsset__init__(self, atomic=PackIsset.thrift_spec[1][4],):
+  self.atomic = atomic
+
+PackIsset.__init__ = PackIsset__init__
+
+def PackIsset__setstate__(self, state):
+  state.setdefault('atomic', False)
+  self.__dict__ = state
+
+PackIsset.__getstate__ = lambda self: self.__dict__.copy()
+PackIsset.__setstate__ = PackIsset__setstate__
 
 fix_spec(all_structs)
 del all_structs

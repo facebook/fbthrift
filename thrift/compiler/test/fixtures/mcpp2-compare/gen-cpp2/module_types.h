@@ -1213,7 +1213,7 @@ class ASimpleStruct final  {
  private:
   ::std::int64_t __fbthrift_field_boolField;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -1334,7 +1334,7 @@ class ASimpleStructNoexcept final  {
  private:
   ::std::int64_t __fbthrift_field_boolField;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -1475,7 +1475,7 @@ class MyStruct final  {
  private:
   ::some::valid::ns::CustomProtocolType __fbthrift_field_MyOptCustomField;
  private:
-  apache::thrift::detail::isset_bitset<10, false> __isset;
+  apache::thrift::detail::isset_bitset<10, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -4618,7 +4618,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
  private:
   ::some::valid::ns::CustomProtocolType MyOptCustomField;
  private:
-  apache::thrift::detail::isset_bitset<14, false> __isset;
+  apache::thrift::detail::isset_bitset<14, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -5194,7 +5194,7 @@ class FOLLY_EXPORT AnotherException : public apache::thrift::TException {
  private:
   ::std::string message;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -5452,7 +5452,7 @@ class containerStruct final  {
  private:
   ::some::valid::ns::IndirectionD fieldSD;
  private:
-  apache::thrift::detail::isset_bitset<39, false> __isset;
+  apache::thrift::detail::isset_bitset<39, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -6921,7 +6921,7 @@ class MyIncludedStruct final  {
  public:
   ::some::valid::ns::AStruct ARequiredField;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -7207,7 +7207,7 @@ class AnnotatedStruct  {
  private:
   ::some::valid::ns::containerStruct struct_struct;
  private:
-  apache::thrift::detail::isset_bitset<22, false> __isset;
+  apache::thrift::detail::isset_bitset<22, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -8141,7 +8141,7 @@ class ComplexContainerStruct final  {
  private:
   ::std::map<::std::string, ::some::valid::ns::IOBufPtr> __fbthrift_field_map_of_iobuf_ptrs;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -8313,7 +8313,7 @@ class FloatStruct final  {
  private:
   double __fbthrift_field_doubleField;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

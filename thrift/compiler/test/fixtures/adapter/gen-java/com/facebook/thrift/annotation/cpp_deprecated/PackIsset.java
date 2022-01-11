@@ -26,11 +26,21 @@ import com.facebook.thrift.protocol.*;
 @SuppressWarnings({ "unused", "serial" })
 public class PackIsset implements TBase, java.io.Serializable, Cloneable, Comparable<PackIsset> {
   private static final TStruct STRUCT_DESC = new TStruct("PackIsset");
+  private static final TField ATOMIC_FIELD_DESC = new TField("atomic", TType.BOOL, (short)1);
+
+  public boolean atomic;
+  public static final int ATOMIC = 1;
+
+  // isset id assignments
+  private static final int __ATOMIC_ISSET_ID = 0;
+  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
+    tmpMetaDataMap.put(ATOMIC, new FieldMetaData("atomic", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.BOOL)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -39,15 +49,36 @@ public class PackIsset implements TBase, java.io.Serializable, Cloneable, Compar
   }
 
   public PackIsset() {
+    this.atomic = false;
+
+  }
+
+  public PackIsset(
+      boolean atomic) {
+    this();
+    this.atomic = atomic;
+    setAtomicIsSet(true);
   }
 
   public static class Builder {
+    private boolean atomic;
+
+    BitSet __optional_isset = new BitSet(1);
 
     public Builder() {
     }
 
+    public Builder setAtomic(final boolean atomic) {
+      this.atomic = atomic;
+      __optional_isset.set(__ATOMIC_ISSET_ID, true);
+      return this;
+    }
+
     public PackIsset build() {
       PackIsset result = new PackIsset();
+      if (__optional_isset.get(__ATOMIC_ISSET_ID)) {
+        result.setAtomic(this.atomic);
+      }
       return result;
     }
   }
@@ -60,14 +91,48 @@ public class PackIsset implements TBase, java.io.Serializable, Cloneable, Compar
    * Performs a deep copy on <i>other</i>.
    */
   public PackIsset(PackIsset other) {
+    __isset_bit_vector.clear();
+    __isset_bit_vector.or(other.__isset_bit_vector);
+    this.atomic = TBaseHelper.deepCopy(other.atomic);
   }
 
   public PackIsset deepCopy() {
     return new PackIsset(this);
   }
 
+  public boolean isAtomic() {
+    return this.atomic;
+  }
+
+  public PackIsset setAtomic(boolean atomic) {
+    this.atomic = atomic;
+    setAtomicIsSet(true);
+    return this;
+  }
+
+  public void unsetAtomic() {
+    __isset_bit_vector.clear(__ATOMIC_ISSET_ID);
+  }
+
+  // Returns true if field atomic is set (has been assigned a value) and false otherwise
+  public boolean isSetAtomic() {
+    return __isset_bit_vector.get(__ATOMIC_ISSET_ID);
+  }
+
+  public void setAtomicIsSet(boolean __value) {
+    __isset_bit_vector.set(__ATOMIC_ISSET_ID, __value);
+  }
+
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
+    case ATOMIC:
+      if (__value == null) {
+        unsetAtomic();
+      } else {
+        setAtomic((Boolean)__value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -75,6 +140,9 @@ public class PackIsset implements TBase, java.io.Serializable, Cloneable, Compar
 
   public Object getFieldValue(int fieldID) {
     switch (fieldID) {
+    case ATOMIC:
+      return new Boolean(isAtomic());
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -90,12 +158,14 @@ public class PackIsset implements TBase, java.io.Serializable, Cloneable, Compar
       return false;
     PackIsset that = (PackIsset)_that;
 
+    if (!TBaseHelper.equalsNobinary(this.atomic, that.atomic)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {});
+    return Arrays.deepHashCode(new Object[] {atomic});
   }
 
   @Override
@@ -110,6 +180,14 @@ public class PackIsset implements TBase, java.io.Serializable, Cloneable, Compar
     }
     int lastComparison = 0;
 
+    lastComparison = Boolean.valueOf(isSetAtomic()).compareTo(other.isSetAtomic());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(atomic, other.atomic);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
     return 0;
   }
 
@@ -124,6 +202,14 @@ public class PackIsset implements TBase, java.io.Serializable, Cloneable, Compar
       }
       switch (__field.id)
       {
+        case ATOMIC:
+          if (__field.type == TType.BOOL) {
+            this.atomic = iprot.readBool();
+            setAtomicIsSet(true);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -141,6 +227,9 @@ public class PackIsset implements TBase, java.io.Serializable, Cloneable, Compar
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
+    oprot.writeFieldBegin(ATOMIC_FIELD_DESC);
+    oprot.writeBool(this.atomic);
+    oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -161,6 +250,12 @@ public class PackIsset implements TBase, java.io.Serializable, Cloneable, Compar
     sb.append(newLine);
     boolean first = true;
 
+    sb.append(indentStr);
+    sb.append("atomic");
+    sb.append(space);
+    sb.append(":").append(space);
+    sb.append(TBaseHelper.toString(this.isAtomic(), indent + 1, prettyPrint));
+    first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
     sb.append(")");
     return sb.toString();

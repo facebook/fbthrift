@@ -218,7 +218,7 @@ class MyStruct final  {
  private:
   ::test::fixtures::enumstrict::MyBigEnum __fbthrift_field_myBigEnum;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

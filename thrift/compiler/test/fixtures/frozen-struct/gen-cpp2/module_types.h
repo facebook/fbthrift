@@ -178,7 +178,7 @@ class ModuleA final  {
  private:
   ::some::ns::IncludedB __fbthrift_field_inclBField;
  private:
-  apache::thrift::detail::isset_bitset<6, false> __isset;
+  apache::thrift::detail::isset_bitset<6, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -553,7 +553,7 @@ class ModuleB final  {
  private:
   ::some::ns::EnumB __fbthrift_field_inclEnumB;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

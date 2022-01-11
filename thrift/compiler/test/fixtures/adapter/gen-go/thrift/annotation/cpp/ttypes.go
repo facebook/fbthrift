@@ -470,13 +470,20 @@ func (p *Adapter) String() string {
   return fmt.Sprintf("Adapter({Name:%s})", nameVal)
 }
 
+// Attributes:
+//  - Atomic
 type PackIsset struct {
+  Atomic bool `thrift:"atomic,1" db:"atomic" json:"atomic"`
 }
 
 func NewPackIsset() *PackIsset {
   return &PackIsset{}
 }
 
+
+func (p *PackIsset) GetAtomic() bool {
+  return p.Atomic
+}
 type PackIssetBuilder struct {
   obj *PackIsset
 }
@@ -489,7 +496,18 @@ func NewPackIssetBuilder() *PackIssetBuilder{
 
 func (p PackIssetBuilder) Emit() *PackIsset{
   return &PackIsset{
+    Atomic: p.obj.Atomic,
   }
+}
+
+func (p *PackIssetBuilder) Atomic(atomic bool) *PackIssetBuilder {
+  p.obj.Atomic = atomic
+  return p
+}
+
+func (p *PackIsset) SetAtomic(atomic bool) *PackIsset {
+  p.Atomic = atomic
+  return p
 }
 
 func (p *PackIsset) Read(iprot thrift.Protocol) error {
@@ -504,8 +522,15 @@ func (p *PackIsset) Read(iprot thrift.Protocol) error {
       return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
     }
     if fieldTypeId == thrift.STOP { break; }
-    if err := iprot.Skip(fieldTypeId); err != nil {
-      return err
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
     }
     if err := iprot.ReadFieldEnd(); err != nil {
       return err
@@ -517,9 +542,19 @@ func (p *PackIsset) Read(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *PackIsset)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadBool(); err != nil {
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Atomic = v
+  }
+  return nil
+}
+
 func (p *PackIsset) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("PackIsset"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -527,11 +562,22 @@ func (p *PackIsset) Write(oprot thrift.Protocol) error {
   return nil
 }
 
+func (p *PackIsset) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("atomic", thrift.BOOL, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:atomic: ", p), err) }
+  if err := oprot.WriteBool(bool(p.Atomic)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.atomic (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:atomic: ", p), err) }
+  return err
+}
+
 func (p *PackIsset) String() string {
   if p == nil {
     return "<nil>"
   }
 
-  return fmt.Sprintf("PackIsset({})")
+  atomicVal := fmt.Sprintf("%v", p.Atomic)
+  return fmt.Sprintf("PackIsset({Atomic:%s})", atomicVal)
 }
 

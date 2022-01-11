@@ -258,7 +258,7 @@ class SomeStruct final  {
  private:
   ::std::int32_t __fbthrift_field_fieldA;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

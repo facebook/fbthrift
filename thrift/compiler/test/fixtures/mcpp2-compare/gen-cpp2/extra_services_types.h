@@ -168,7 +168,7 @@ class containerStruct2 final  {
  private:
   ::std::string __fbthrift_field_opt_fieldE;
  private:
-  apache::thrift::detail::isset_bitset<9, false> __isset;
+  apache::thrift::detail::isset_bitset<9, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

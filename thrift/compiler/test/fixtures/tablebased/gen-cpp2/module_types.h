@@ -213,7 +213,7 @@ class TrivialTypesStruct final  {
  private:
   ::test::fixtures::tablebased::ExampleEnum __fbthrift_field_fieldE;
  private:
-  apache::thrift::detail::isset_bitset<5, false> __isset;
+  apache::thrift::detail::isset_bitset<5, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -554,7 +554,7 @@ class ContainerStruct final  {
  private:
   ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct> __fbthrift_field_fieldH;
  private:
-  apache::thrift::detail::isset_bitset<8, false> __isset;
+  apache::thrift::detail::isset_bitset<8, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

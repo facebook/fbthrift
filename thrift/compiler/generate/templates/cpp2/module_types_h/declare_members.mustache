@@ -20,5 +20,5 @@
 <%/field:type%><%/struct:fields_in_layout_order%>
 <%#struct:isset_fields?%>
  private:
-  apache::thrift::detail::isset_bitset<<%struct:isset_fields_size%>, <%struct:packed_isset%>> __isset;
+  apache::thrift::detail::isset_bitset<<%struct:isset_fields_size%>, <%struct:isset_bitset_option%>> __isset;
 <%/struct:isset_fields?%>

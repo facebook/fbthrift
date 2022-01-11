@@ -82,7 +82,7 @@ class MyStruct final  {
  private:
   ::matching_module_name::OtherStruct __fbthrift_field_OtherStructField;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

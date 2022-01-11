@@ -116,7 +116,7 @@ class InitialResponse final  {
  private:
   ::std::string __fbthrift_field_content;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -240,7 +240,7 @@ class FinalResponse final  {
  private:
   ::std::string __fbthrift_field_content;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -364,7 +364,7 @@ class SinkPayload final  {
  private:
   ::std::string __fbthrift_field_content;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -488,7 +488,7 @@ class CompatibleWithKeywordSink final  {
  private:
   ::std::string __fbthrift_field_sink;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -621,7 +621,7 @@ class FOLLY_EXPORT InitialException : public apache::thrift::TException {
  private:
   ::std::string reason;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -738,7 +738,7 @@ class FOLLY_EXPORT SinkException1 : public apache::thrift::TException {
  private:
   ::std::string reason;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -855,7 +855,7 @@ class FOLLY_EXPORT SinkException2 : public apache::thrift::TException {
  private:
   ::std::int64_t reason;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

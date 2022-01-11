@@ -71,6 +71,9 @@ template<>
 void reset_field<::facebook::thrift::annotation::cpp::PackIsset>(
     ::facebook::thrift::annotation::cpp::PackIsset& obj, uint16_t index) {
   switch (index) {
+    case 0:
+      obj.atomic_ref().copy_from(default_inst<::facebook::thrift::annotation::cpp::PackIsset>().atomic_ref());
+      return;
   }
 }
 

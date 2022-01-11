@@ -833,7 +833,8 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:isset_fields?", &mstch_cpp2_struct::has_isset_fields},
             {"struct:isset_fields", &mstch_cpp2_struct::isset_fields},
             {"struct:isset_fields_size", &mstch_cpp2_struct::isset_fields_size},
-            {"struct:packed_isset", &mstch_cpp2_struct::packed_isset},
+            {"struct:isset_bitset_option",
+             &mstch_cpp2_struct::isset_bitset_option},
             {"struct:lazy_fields?", &mstch_cpp2_struct::has_lazy_fields},
             {"struct:indexing?", &mstch_cpp2_struct::indexing},
             {"struct:write_lazy_field_checksum",
@@ -1033,7 +1034,21 @@ class mstch_cpp2_struct : public mstch_struct {
     }
     return std::to_string(size);
   }
-  mstch::node packed_isset() { return cpp2::packed_isset(*strct_) != nullptr; }
+  mstch::node isset_bitset_option() {
+    static const std::string kPrefix =
+        "apache::thrift::detail::IssetBitsetOption::";
+    if (auto anno = cpp2::packed_isset(*strct_)) {
+      for (const auto& kv : anno->value()->get_map()) {
+        if (kv.first->get_string() == "atomic") {
+          if (kv.second->get_bool()) {
+            return kPrefix + "PackedWithAtomic";
+          }
+        }
+      }
+      return kPrefix + "Packed";
+    }
+    return kPrefix + "Unpacked";
+  }
 
   mstch::node is_large() {
     // Outline constructors and destructors if the struct has

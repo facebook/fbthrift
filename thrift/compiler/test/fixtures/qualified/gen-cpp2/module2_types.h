@@ -100,7 +100,7 @@ class Struct final  {
  private:
   ::module1::Struct __fbthrift_field_second;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -270,7 +270,7 @@ class BigStruct final  {
  private:
   ::std::int32_t __fbthrift_field_id;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

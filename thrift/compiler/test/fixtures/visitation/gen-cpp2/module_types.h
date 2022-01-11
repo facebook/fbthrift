@@ -2293,7 +2293,7 @@ class structA final  {
  private:
   ::std::string __fbthrift_field_b;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -2955,7 +2955,7 @@ class structB final  {
  private:
   bool __fbthrift_field_d;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -3185,7 +3185,7 @@ class structC final  {
  private:
   ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::structB> __fbthrift_field_o3;
  private:
-  apache::thrift::detail::isset_bitset<30, false> __isset;
+  apache::thrift::detail::isset_bitset<30, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -4748,7 +4748,7 @@ class struct1 final  {
  private:
   ::test_cpp2::cpp_reflection::union2 __fbthrift_field_field5;
  private:
-  apache::thrift::detail::isset_bitset<4, false> __isset;
+  apache::thrift::detail::isset_bitset<4, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -5097,7 +5097,7 @@ class struct2 final  {
  private:
   ::test_cpp2::cpp_reflection::struct1 __fbthrift_field_fieldG;
  private:
-  apache::thrift::detail::isset_bitset<7, false> __isset;
+  apache::thrift::detail::isset_bitset<7, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -5555,7 +5555,7 @@ class struct3 final  {
  private:
   ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB> __fbthrift_field_fieldR;
  private:
-  apache::thrift::detail::isset_bitset<18, false> __isset;
+  apache::thrift::detail::isset_bitset<18, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -6523,7 +6523,7 @@ class struct4 final  {
  public:
   ::std::unique_ptr<::test_cpp2::cpp_reflection::structA> field3;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -6750,7 +6750,7 @@ class struct5 final  {
  private:
   ::test_cpp2::cpp_reflection::structB __fbthrift_field_field4;
  private:
-  apache::thrift::detail::isset_bitset<4, false> __isset;
+  apache::thrift::detail::isset_bitset<4, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -7053,7 +7053,7 @@ class struct_binary final  {
  private:
   ::std::string __fbthrift_field_bi;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -7183,7 +7183,7 @@ class dep_A_struct final  {
  private:
   ::std::int32_t __fbthrift_field_i_a;
  private:
-  apache::thrift::detail::isset_bitset<3, false> __isset;
+  apache::thrift::detail::isset_bitset<3, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -7406,7 +7406,7 @@ class dep_B_struct final  {
  private:
   ::std::int32_t __fbthrift_field_i_a;
  private:
-  apache::thrift::detail::isset_bitset<3, false> __isset;
+  apache::thrift::detail::isset_bitset<3, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -7625,7 +7625,7 @@ class annotated final  {
  private:
   ::std::int32_t __fbthrift_field_a;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -9777,7 +9777,7 @@ class struct_with_special_names final  {
  private:
   ::std::int32_t __fbthrift_field_fields;
  private:
-  apache::thrift::detail::isset_bitset<28, false> __isset;
+  apache::thrift::detail::isset_bitset<28, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -11257,7 +11257,7 @@ class struct_with_indirections final  {
  private:
   ::test_cpp2::cpp_reflection::HasAPhrase __fbthrift_field_phrase;
  private:
-  apache::thrift::detail::isset_bitset<5, false> __isset;
+  apache::thrift::detail::isset_bitset<5, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

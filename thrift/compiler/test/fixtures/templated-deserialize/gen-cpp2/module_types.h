@@ -255,7 +255,7 @@ class SmallStruct final  {
  private:
   ::std::int32_t __fbthrift_field_small_B;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -468,7 +468,7 @@ class containerStruct final  {
  public:
   ::std::unique_ptr<::cpp2::SmallStruct> fieldX;
  private:
-  apache::thrift::detail::isset_bitset<17, false> __isset;
+  apache::thrift::detail::isset_bitset<17, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

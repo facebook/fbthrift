@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,14 @@
 #include <gtest/gtest.h>
 #include <thrift/lib/cpp2/gen/module_types_h.h>
 
+using apache::thrift::detail::isset_bitset;
+using apache::thrift::detail::IssetBitsetOption;
+
 TEST(IssetBitsetTest, basic) {
   const int N = 100;
-  apache::thrift::detail::isset_bitset<N, true> packed;
-  apache::thrift::detail::isset_bitset<N, false> unpacked;
+  isset_bitset<N, IssetBitsetOption::PackedWithAtomic> atomic_packed;
+  isset_bitset<N, IssetBitsetOption::Packed> packed;
+  isset_bitset<N, IssetBitsetOption::Unpacked> unpacked;
   std::bitset<8> bits;
   for (int i = 0; i < N; i++) {
     if (i % 8 == 0) {
@@ -30,14 +34,18 @@ TEST(IssetBitsetTest, basic) {
     }
     for (bool b : {true, false, true}) {
       boost::mp11::mp_with_index<N>(i, [&](auto index) {
+        atomic_packed.set(index, b);
         packed.set(index, b);
         unpacked.set(index, b);
+        EXPECT_EQ(atomic_packed.get(index), b);
         EXPECT_EQ(packed.get(index), b);
         EXPECT_EQ(unpacked.get(index), b);
 
         bits.set(index % 8, b);
+        EXPECT_EQ(atomic_packed.at(index), bits.to_ulong());
         EXPECT_EQ(packed.at(index), bits.to_ulong());
         EXPECT_EQ(unpacked.at(index), b ? 1 : 0);
+        EXPECT_EQ(atomic_packed.bit(index), index % 8);
         EXPECT_EQ(packed.bit(index), index % 8);
         EXPECT_EQ(unpacked.bit(index), 0);
       });
@@ -46,9 +54,17 @@ TEST(IssetBitsetTest, basic) {
 }
 
 TEST(IssetBitsetTest, compare_size) {
-  static_assert(sizeof(apache::thrift::detail::isset_bitset<1>) == 1);
-  static_assert(sizeof(apache::thrift::detail::isset_bitset<2>) == 2);
-  static_assert(sizeof(apache::thrift::detail::isset_bitset<7, true>) == 1);
-  static_assert(sizeof(apache::thrift::detail::isset_bitset<8, true>) == 1);
-  static_assert(sizeof(apache::thrift::detail::isset_bitset<9, true>) == 2);
+  static_assert(sizeof(isset_bitset<1, IssetBitsetOption::Unpacked>) == 1);
+  static_assert(sizeof(isset_bitset<2, IssetBitsetOption::Unpacked>) == 2);
+
+  static_assert(sizeof(isset_bitset<7, IssetBitsetOption::Packed>) == 1);
+  static_assert(sizeof(isset_bitset<8, IssetBitsetOption::Packed>) == 1);
+  static_assert(sizeof(isset_bitset<9, IssetBitsetOption::Packed>) == 2);
+
+  static_assert(
+      sizeof(isset_bitset<7, IssetBitsetOption::PackedWithAtomic>) == 1);
+  static_assert(
+      sizeof(isset_bitset<8, IssetBitsetOption::PackedWithAtomic>) == 1);
+  static_assert(
+      sizeof(isset_bitset<9, IssetBitsetOption::PackedWithAtomic>) == 2);
 }

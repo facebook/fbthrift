@@ -95,7 +95,7 @@ class Included final  {
  private:
   ::cpp2::Foo __fbthrift_field_MyTransitiveField;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

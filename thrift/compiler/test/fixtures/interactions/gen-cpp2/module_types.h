@@ -89,7 +89,7 @@ class FOLLY_EXPORT CustomException : public apache::thrift::TException {
  private:
   ::std::string message;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

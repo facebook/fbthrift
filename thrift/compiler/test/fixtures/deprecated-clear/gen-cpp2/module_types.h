@@ -215,7 +215,7 @@ class StructWithDefaultStruct final  {
  private:
   ::std::map<::std::int16_t, ::std::int16_t> __fbthrift_field_map_field;
  private:
-  apache::thrift::detail::isset_bitset<13, false> __isset;
+  apache::thrift::detail::isset_bitset<13, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

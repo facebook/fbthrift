@@ -105,7 +105,7 @@ class Foo final  {
  private:
   double __fbthrift_field_field4;
  private:
-  apache::thrift::detail::isset_bitset<4, true> __isset;
+  apache::thrift::detail::isset_bitset<4, apache::thrift::detail::IssetBitsetOption::Packed> __isset;
 
  public:
 

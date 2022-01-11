@@ -196,7 +196,7 @@ class Foo final  {
  private:
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string> __fbthrift_field_binaryField;
  private:
-  apache::thrift::detail::isset_bitset<8, false> __isset;
+  apache::thrift::detail::isset_bitset<8, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -1029,7 +1029,7 @@ class Bar final  {
  private:
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz> __fbthrift_field_optionalUnionField;
  private:
-  apache::thrift::detail::isset_bitset<6, false> __isset;
+  apache::thrift::detail::isset_bitset<6, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -1358,7 +1358,7 @@ class StructWithFieldAdapter final  {
  private:
   ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 1, ::std::int32_t, __fbthrift_cpp2_type> __fbthrift_field_field;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

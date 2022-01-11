@@ -145,10 +145,15 @@ class PackIsset:
     thrift_struct_annotations: __T.Dict[str, str]
 
     def __init__(
-        self
+        self,
+        atomic: bool = ...
     ) -> None:
         ...
 
+    @__property__
+    def atomic(self) -> bool: ...
+    @atomic.setter
+    def atomic(self, value: bool) -> None: ...
 
 
     def isUnion(self) -> bool: ...

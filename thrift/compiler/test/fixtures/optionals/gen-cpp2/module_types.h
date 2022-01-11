@@ -235,7 +235,7 @@ class Color final  {
  private:
   double __fbthrift_field_alpha;
  private:
-  apache::thrift::detail::isset_bitset<4, false> __isset;
+  apache::thrift::detail::isset_bitset<4, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -515,7 +515,7 @@ class Vehicle final  {
  private:
   bool __fbthrift_field_hasAC;
  private:
-  apache::thrift::detail::isset_bitset<5, false> __isset;
+  apache::thrift::detail::isset_bitset<5, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -877,7 +877,7 @@ class Person final  {
  private:
   ::std::vector<::cpp2::Vehicle> __fbthrift_field_vehicles;
  private:
-  apache::thrift::detail::isset_bitset<10, false> __isset;
+  apache::thrift::detail::isset_bitset<10, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

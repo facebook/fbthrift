@@ -221,7 +221,7 @@ class structured_annotation_inline final  {
  private:
   ::std::string __fbthrift_field_name;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -396,7 +396,7 @@ class structured_annotation_with_default final  {
  private:
   ::std::string __fbthrift_field_name;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -522,7 +522,7 @@ class structured_annotation_forward final  {
  private:
   ::std::int64_t __fbthrift_field_count;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -645,7 +645,7 @@ class structured_annotation_recursive final  {
  private:
   ::cpp2::structured_annotation_forward __fbthrift_field_forward;
  private:
-  apache::thrift::detail::isset_bitset<3, false> __isset;
+  apache::thrift::detail::isset_bitset<3, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -869,7 +869,7 @@ class structured_annotation_nested final  {
  private:
   ::cpp2::structured_annotation_with_default __fbthrift_field_nest;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -1050,7 +1050,7 @@ class MyStruct final  {
  private:
   ::std::int64_t __fbthrift_field_annotated_nested;
  private:
-  apache::thrift::detail::isset_bitset<4, false> __isset;
+  apache::thrift::detail::isset_bitset<4, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -1338,7 +1338,7 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
  private:
   ::std::string context;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

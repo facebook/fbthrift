@@ -164,7 +164,7 @@ class TerseFoo final  {
  private:
   ::std::vector<::std::int32_t> __fbthrift_field_field4;
  private:
-  apache::thrift::detail::isset_bitset<4, false> __isset;
+  apache::thrift::detail::isset_bitset<4, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -434,7 +434,7 @@ class TerseLazyFoo final  {
  private:
   mutable ::std::vector<::std::int32_t> __fbthrift_field_field4;
  private:
-  apache::thrift::detail::isset_bitset<4, false> __isset;
+  apache::thrift::detail::isset_bitset<4, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -710,7 +710,7 @@ class TerseOptionalFoo final  {
  private:
   ::std::vector<::std::int32_t> __fbthrift_field_field4;
  private:
-  apache::thrift::detail::isset_bitset<4, false> __isset;
+  apache::thrift::detail::isset_bitset<4, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -984,7 +984,7 @@ class TerseOptionalLazyFoo final  {
  private:
   mutable ::std::vector<::std::int32_t> __fbthrift_field_field4;
  private:
-  apache::thrift::detail::isset_bitset<4, false> __isset;
+  apache::thrift::detail::isset_bitset<4, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

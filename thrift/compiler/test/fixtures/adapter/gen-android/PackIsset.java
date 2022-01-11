@@ -24,19 +24,38 @@ import com.facebook.thrift.protocol.*;
 @SuppressWarnings({ "unused", "serial" })
 public class PackIsset implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("PackIsset");
+  private static final TField ATOMIC_FIELD_DESC = new TField("atomic", TType.BOOL, (short)1);
 
+  public final Boolean atomic;
+  public static final int ATOMIC = 1;
 
-  public PackIsset() {
+  public PackIsset(
+      Boolean atomic) {
+    this.atomic = atomic;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
   public PackIsset(PackIsset other) {
+    if (other.isSetAtomic()) {
+      this.atomic = TBaseHelper.deepCopy(other.atomic);
+    } else {
+      this.atomic = null;
+    }
   }
 
   public PackIsset deepCopy() {
     return new PackIsset(this);
+  }
+
+  public Boolean isAtomic() {
+    return this.atomic;
+  }
+
+  // Returns true if field atomic is set (has been assigned a value) and false otherwise
+  public boolean isSetAtomic() {
+    return this.atomic != null;
   }
 
   @Override
@@ -49,12 +68,14 @@ public class PackIsset implements TBase, java.io.Serializable, Cloneable {
       return false;
     PackIsset that = (PackIsset)_that;
 
+    if (!TBaseHelper.equalsNobinary(this.isSetAtomic(), that.isSetAtomic(), this.atomic, that.atomic)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {});
+    return Arrays.deepHashCode(new Object[] {atomic});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -63,6 +84,7 @@ public class PackIsset implements TBase, java.io.Serializable, Cloneable {
   }
 
   public static PackIsset deserialize(TProtocol iprot) throws TException {
+    Boolean tmp_atomic = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -73,6 +95,13 @@ public class PackIsset implements TBase, java.io.Serializable, Cloneable {
       }
       switch (__field.id)
       {
+        case ATOMIC:
+          if (__field.type == TType.BOOL) {
+            tmp_atomic = iprot.readBool();
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -83,6 +112,7 @@ public class PackIsset implements TBase, java.io.Serializable, Cloneable {
 
     PackIsset _that;
     _that = new PackIsset(
+      tmp_atomic
     );
     _that.validate();
     return _that;
@@ -92,6 +122,11 @@ public class PackIsset implements TBase, java.io.Serializable, Cloneable {
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
+    if (this.atomic != null) {
+      oprot.writeFieldBegin(ATOMIC_FIELD_DESC);
+      oprot.writeBool(this.atomic);
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }

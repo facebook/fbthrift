@@ -455,18 +455,31 @@ class facebook_thrift_annotation_cpp_PackIsset implements \IThriftStruct, \IThri
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'atomic',
+      'type' => \TType::BOOL,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
+    'atomic' => 1,
   ];
 
   const type TConstructorShape = shape(
+    ?'atomic' => ?bool,
   );
 
   const type TShape = shape(
+    'atomic' => bool,
   );
-  const int STRUCTURAL_ID = 957977401221134810;
+  const int STRUCTURAL_ID = 1587553453134051231;
+  /**
+   * Original thrift field:-
+   * 1: bool atomic
+   */
+  public bool $atomic;
 
-  public function __construct(  )[] {
+  public function __construct(?bool $atomic = null  )[] {
+    $this->atomic = $atomic ?? false;
   }
 
   public static function withDefaultValues()[]: this {
@@ -475,6 +488,7 @@ class facebook_thrift_annotation_cpp_PackIsset implements \IThriftStruct, \IThri
 
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
+      Shapes::idx($shape, 'atomic'),
     );
   }
 
@@ -486,6 +500,19 @@ class facebook_thrift_annotation_cpp_PackIsset implements \IThriftStruct, \IThri
     return tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "cpp.PackIsset",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                )
+              ),
+              "name" => "atomic",
+            )
+          ),
+        ],
         "is_union" => false,
       )
     );
@@ -506,11 +533,13 @@ class facebook_thrift_annotation_cpp_PackIsset implements \IThriftStruct, \IThri
 
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
+      $shape['atomic'],
     );
   }
 
   public function __toShape()[]: self::TShape {
     return shape(
+      'atomic' => $this->atomic,
     );
   }
   public function readFromJson(string $jsonText): void {
@@ -520,6 +549,9 @@ class facebook_thrift_annotation_cpp_PackIsset implements \IThriftStruct, \IThri
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
+    if (idx($parsed, 'atomic') !== null) {
+      $this->atomic = /* HH_FIXME[4110] */ $parsed['atomic'];
+    }    
   }
 
 }

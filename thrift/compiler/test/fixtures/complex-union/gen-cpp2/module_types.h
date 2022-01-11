@@ -1351,7 +1351,7 @@ class Val final  {
  private:
   ::cpp2::containerTypedef __fbthrift_field_typedefValue;
  private:
-  apache::thrift::detail::isset_bitset<3, false> __isset;
+  apache::thrift::detail::isset_bitset<3, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -2149,7 +2149,7 @@ class NonCopyableStruct final  {
  private:
   ::std::int64_t __fbthrift_field_num;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

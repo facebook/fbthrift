@@ -285,7 +285,7 @@ class FOLLY_EXPORT SimpleException : public apache::thrift::TException {
  private:
   ::std::int16_t err_code;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -387,7 +387,7 @@ class OptionalRefStruct final  {
  public:
   ::py3::simple::IOBufPtr optional_blob;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -514,7 +514,7 @@ class SimpleStruct final  {
  private:
   ::std::int16_t __fbthrift_field_hidden_field;
  private:
-  apache::thrift::detail::isset_bitset<8, false> __isset;
+  apache::thrift::detail::isset_bitset<8, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -1002,7 +1002,7 @@ class ComplexStruct final  {
  private:
   ::py3::simple::foo_bar __fbthrift_field_bytes_with_cpp_type;
  private:
-  apache::thrift::detail::isset_bitset<9, false> __isset;
+  apache::thrift::detail::isset_bitset<9, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -1750,7 +1750,7 @@ class BinaryUnionStruct final  {
  private:
   ::py3::simple::BinaryUnion __fbthrift_field_u;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

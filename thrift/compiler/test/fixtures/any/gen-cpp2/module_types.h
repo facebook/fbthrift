@@ -93,7 +93,7 @@ class MyStruct final  {
  private:
   ::std::string __fbthrift_field_myString;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -437,7 +437,7 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
  private:
   ::std::string myString;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

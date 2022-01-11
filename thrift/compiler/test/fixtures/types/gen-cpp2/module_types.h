@@ -591,7 +591,7 @@ class decorated_struct final  {
  private:
   ::std::string __fbthrift_field_field;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -732,7 +732,7 @@ class ContainerStruct final  {
  private:
   ::apache::thrift::fixtures::types::SomeMap __fbthrift_field_fieldH;
  private:
-  apache::thrift::detail::isset_bitset<8, false> __isset;
+  apache::thrift::detail::isset_bitset<8, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -1193,7 +1193,7 @@ class CppTypeStruct final  {
  private:
   std::list<int32_t> __fbthrift_field_fieldA;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -1315,7 +1315,7 @@ class VirtualStruct  {
  private:
   ::std::int64_t __fbthrift_field_MyIntField;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -1438,7 +1438,7 @@ class MyStructWithForwardRefEnum final  {
  private:
   ::apache::thrift::fixtures::types::MyForwardRefEnum __fbthrift_field_b;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -1612,7 +1612,7 @@ class TrivialNumeric final  {
  private:
   bool __fbthrift_field_b;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -1786,7 +1786,7 @@ class TrivialNestedWithDefault final  {
  private:
   ::apache::thrift::fixtures::types::TrivialNumeric __fbthrift_field_n;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -1956,7 +1956,7 @@ class ComplexString final  {
  private:
   ::std::map<::std::string, ::std::int32_t> __fbthrift_field_b;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -2133,7 +2133,7 @@ class ComplexNestedWithDefault final  {
  private:
   ::apache::thrift::fixtures::types::ComplexString __fbthrift_field_n;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -2607,7 +2607,7 @@ class MyStruct final  {
  private:
   ::apache::thrift::fixtures::types::MyDataItem __fbthrift_field_data;
  private:
-  apache::thrift::detail::isset_bitset<4, false> __isset;
+  apache::thrift::detail::isset_bitset<4, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -2879,7 +2879,7 @@ class Renaming final  {
  private:
   ::std::int64_t __fbthrift_field_bar;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -3000,7 +3000,7 @@ class AnnotatedTypes final  {
  private:
   ::apache::thrift::fixtures::types::SomeListOfTypeMap __fbthrift_field_list_field;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -3173,7 +3173,7 @@ class ForwardUsageStruct final  {
  private:
   ::apache::thrift::fixtures::types::ForwardUsageRoot __fbthrift_field_foo;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -3293,7 +3293,7 @@ class ForwardUsageRoot final  {
  public:
   ::std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef> ForwardUsageByRef;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -3423,7 +3423,7 @@ class ForwardUsageByRef final  {
  private:
   ::apache::thrift::fixtures::types::ForwardUsageRoot __fbthrift_field_foo;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -3610,7 +3610,7 @@ class NoexceptMoveSimpleStruct final  {
  private:
   ::std::int64_t __fbthrift_field_boolField;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -3748,7 +3748,7 @@ class NoexceptMoveComplexStruct final  {
  private:
   ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string> __fbthrift_field_MyMapEnumAndInt;
  private:
-  apache::thrift::detail::isset_bitset<8, false> __isset;
+  apache::thrift::detail::isset_bitset<8, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -4588,7 +4588,7 @@ class AllocatorAware final  {
  private:
   ::std::int32_t __fbthrift_field_not_a_container;
  private:
-  apache::thrift::detail::isset_bitset<5, false> __isset;
+  apache::thrift::detail::isset_bitset<5, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -4930,7 +4930,7 @@ class AllocatorAware2 final  {
  private:
   ::std::int32_t __fbthrift_field_not_a_container;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -5056,7 +5056,7 @@ class TypedefStruct final  {
  private:
   std::uint32_t __fbthrift_field_UintTypedef_field;
  private:
-  apache::thrift::detail::isset_bitset<3, false> __isset;
+  apache::thrift::detail::isset_bitset<3, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -5277,7 +5277,7 @@ class StructWithDoubleUnderscores final  {
  private:
   ::std::int32_t __fbthrift_field___field;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

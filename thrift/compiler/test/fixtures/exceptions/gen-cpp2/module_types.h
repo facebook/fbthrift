@@ -246,7 +246,7 @@ class FOLLY_EXPORT Serious : public apache::thrift::TException {
  private:
   ::std::string sonnet;
  private:
-  apache::thrift::detail::isset_bitset<1, false> __isset;
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -367,7 +367,7 @@ class FOLLY_EXPORT ComplexFieldNames : public apache::thrift::TException {
  private:
   ::std::string internal_error_message;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -522,7 +522,7 @@ class FOLLY_EXPORT CustomFieldNames : public apache::thrift::TException {
  private:
   ::std::string internal_error_message;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -677,7 +677,7 @@ class FOLLY_EXPORT ExceptionWithPrimitiveField : public apache::thrift::TExcepti
  private:
   ::std::int32_t error_code;
  private:
-  apache::thrift::detail::isset_bitset<2, false> __isset;
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 

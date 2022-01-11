@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@
 #include <folly/CppAttributes.h>
 #include <folly/Portability.h>
 #include <folly/Traits.h>
+#include <folly/synchronization/AtomicUtil.h>
 #include <thrift/lib/cpp2/BoxedValuePtr.h>
 #include <thrift/lib/cpp2/Thrift.h>
 
@@ -58,7 +59,9 @@ class BitSet {
   friend class BitSet;
 
  public:
-  explicit BitSet(T value = 0) : value_(value) {}
+  BitSet() = default;
+
+  explicit BitSet(T value) : value_(value) {}
 
   template <typename U>
   explicit BitSet(const BitSet<U>& other) noexcept : value_(other.value_) {}
@@ -97,16 +100,29 @@ class BitSet {
   const T& value() const { return value_; }
 
  private:
-  void set(const uint8_t bit) { value_ |= (1 << bit); }
+  void set(const uint8_t bit, std::false_type) { value_ |= (1 << bit); }
+  void set(const uint8_t bit, std::true_type) {
+    folly::atomic_fetch_set(value_, bit);
+  }
+  void set(const uint8_t bit) {
+    set(bit, folly::detail::is_instantiation_of<std::atomic, T>{});
+  }
 
-  void reset(const uint8_t bit) { value_ &= ~(1 << bit); }
+  void reset(const uint8_t bit, std::false_type) { value_ &= ~(1 << bit); }
+  void reset(const uint8_t bit, std::true_type) {
+    folly::atomic_fetch_reset(value_, bit);
+  }
+
+  void reset(const uint8_t bit) {
+    reset(bit, folly::detail::is_instantiation_of<std::atomic, T>{});
+  }
 
   bool get(const uint8_t bit) const {
     assert(bit < NUM_BITS);
     return (value_ >> bit) & 1;
   }
 
-  T value_;
+  T value_{0};
 
   static constexpr int NUM_BITS = sizeof(T) * CHAR_BIT;
 };
