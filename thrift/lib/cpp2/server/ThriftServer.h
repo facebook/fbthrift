@@ -469,6 +469,19 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   }
 
   /**
+   * Add a IOObserverFactory which will be used to construct a
+   * ThreadPoolExecutor::Observer and attached to the ioThreadPool_ in setup().
+   * The same factory will be used to create an observer instance for each
+   * Thrift Server (if there is more than one)
+   *
+   * NOTE: Must be called before setup() in order to take effect
+   */
+  using IOObserverFactory =
+      folly::Function<std::shared_ptr<folly::ThreadPoolExecutor::Observer>(
+          std::string) const>;
+  static void addIOThreadPoolObserver(IOObserverFactory factory);
+
+  /**
    * Set the prefix for naming the worker threads. "Cpp2Worker" by default.
    * must be called before serve() for it to take effect
    *

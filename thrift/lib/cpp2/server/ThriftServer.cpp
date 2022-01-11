@@ -127,6 +127,10 @@ using std::shared_ptr;
 using wangle::TLSCredProcessor;
 
 namespace {
+
+folly::Synchronized<std::vector<ThriftServer::IOObserverFactory>>
+    ioObserverFactories{};
+
 /**
  * Multiplexes the user-service (set via setProcessorFactory) with the
  * monitoring interface (set via setMonitoringInterface).
@@ -451,6 +455,11 @@ void ThriftServer::setup() {
       ioThreadPool_->addObserver(
           folly::IOThreadPoolDeadlockDetectorObserver::create(
               ioThreadPool_->getName()));
+      ioObserverFactories.withRLock([this](auto& factories) {
+        for (auto& f : factories) {
+          ioThreadPool_->addObserver(f(ioThreadPool_->getName()));
+        }
+      });
 
       // Resize the IO pool
       ioThreadPool_->setNumThreads(nWorkers);
@@ -1250,6 +1259,11 @@ folly::observer::CallbackHandle ThriftServer::getSSLCallbackHandle() {
 
 folly::observer::Observer<bool> ThriftServer::alpnAllowMismatch() {
   return THRIFT_FLAG_OBSERVE(alpn_allow_mismatch);
+}
+
+void ThriftServer::addIOThreadPoolObserver(
+    ThriftServer::IOObserverFactory factory) {
+  ioObserverFactories.wlock()->push_back(std::move(factory));
 }
 
 } // namespace thrift
