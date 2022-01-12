@@ -49,6 +49,7 @@
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/IOWorkerContext.h>
+#include <thrift/lib/cpp2/server/ResourcePoolHandle.h>
 #include <thrift/lib/cpp2/util/Checksum.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <thrift/lib/thrift/gen-cpp2/metadata_types.h>
@@ -222,6 +223,26 @@ class AsyncProcessorFactory {
 
   virtual ~AsyncProcessorFactory() = default;
 };
+
+// Returned by resource pool components when a request is rejected.
+class ServerRequestRejection {
+ public:
+  ServerRequestRejection(TApplicationException&& exception)
+      : impl_(std::move(exception)) {}
+
+  TApplicationException const& applicationException() const& { return impl_; }
+
+  TApplicationException applicationException() && { return std::move(impl_); }
+
+ private:
+  TApplicationException impl_;
+};
+
+// Returned to choose a resource pool
+using SelectPoolResult = std::variant<
+    std::reference_wrapper<const ResourcePoolHandle>, // Use this ResourcePool
+    ServerRequestRejection, // Reject the request with this reason
+    std::monostate>; // No opinion (use a reasonable default)
 
 /**
  * A class that is created once per-connection and handles incoming requests.
