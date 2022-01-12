@@ -327,19 +327,20 @@ TEST_F(RocketNetworkTest, RequestResponseLargeData) {
 
 TEST_F(RocketNetworkTest, RequestResponseSendTimeout) {
   this->withClient([this](RocketTestClient& client) {
-    // Ensure metadata will be split across multiple frames
-    constexpr size_t kReplyDataSize = 0x2ffffff;
+    // Ensure data is large enough to fill up the kernel buffer and trigger send
+    // timeout
+    constexpr size_t kDataSize = 0x8000000;
     constexpr folly::StringPiece kPattern =
         "abcdefghijklmnopqrstuvwxyz0123456789";
 
     constexpr folly::StringPiece kMetadata{"metadata"};
-    const auto expectedData = repeatPattern(kPattern, kReplyDataSize);
-    const std::string data = folly::to<std::string>("data_echo:", expectedData);
+    constexpr folly::StringPiece kSmallData{"data"};
+    const auto kLargeData = repeatPattern(kPattern, kDataSize);
 
     // Send a request to make sure the connection is live
     {
       auto reply = client.sendRequestResponseSync(
-          Payload::makeFromMetadataAndData(kMetadata, folly::StringPiece{data}),
+          Payload::makeFromMetadataAndData(kMetadata, kSmallData),
           std::chrono::seconds(5));
       EXPECT_TRUE(reply.hasValue());
     }
@@ -354,7 +355,8 @@ TEST_F(RocketNetworkTest, RequestResponseSendTimeout) {
         client.getRawClient().getTransportWrapper()->setSendTimeout(500);
       });
       auto reply = client.sendRequestResponseSync(
-          Payload::makeFromMetadataAndData(kMetadata, folly::StringPiece{data}),
+          Payload::makeFromMetadataAndData(
+              kMetadata, folly::StringPiece{kLargeData}),
           std::chrono::seconds(5));
       EXPECT_TRUE(reply.hasException());
       EXPECT_TRUE(reply.withException([](const TTransportException& ex) {
