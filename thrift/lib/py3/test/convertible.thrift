@@ -46,8 +46,8 @@ union Union {
 }
 
 struct OptionalDefaultsStruct {
-  // @lint-ignore FBTHRIFTSANITY
+  // @lint-ignore THRIFTCHECKS
   1: optional string sillyString = "default string";
-  // @lint-ignore FBTHRIFTSANITY
+  // @lint-ignore THRIFTCHECKS
   2: optional Color sillyColor = Color.RED;
 }
