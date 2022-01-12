@@ -105,6 +105,7 @@ class EventTask : public concurrency::Runnable, public InteractionTask {
 
 class AsyncProcessor;
 class ServiceHandler;
+class ServerRequest;
 
 /**
  * Descriptor of a Thrift service - its methods and how they should be handled.
@@ -325,6 +326,28 @@ class AsyncProcessor : public TProcessorBase {
       int64_t id, Cpp2ConnContext& conn, folly::EventBase&) noexcept;
   virtual void destroyAllInteractions(
       Cpp2ConnContext& conn, folly::EventBase&) noexcept;
+
+  // This is temporary during transition. Eventually the answer to
+  // useResourcePools will always be true and we can remove this.
+  virtual bool useResourcePools(
+      AsyncProcessorFactory::MethodMetadata const* methodMetadata =
+          nullptr) const;
+
+  // Allow the AsyncProcessor implementation to choose the resource pool to use
+  // for a request.
+  virtual SelectPoolResult selectPool(
+      ServerRequest const& request,
+      const AsyncProcessorFactory::MethodMetadata& methodMetadata) const;
+
+  // This is the main interface we are migrating to. Eventually it should
+  // replace all the processSerialized... methods.
+  //
+  // An AsyncProcessor implementation should call the handler for this request
+  // on the thread it this method is called on. It does not need to call any
+  // hooks for modules before executing the request.
+  virtual void executeRequest(
+      ServerRequest&& request,
+      const AsyncProcessorFactory::MethodMetadata& methodMetadata);
 };
 
 namespace detail {

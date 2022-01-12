@@ -104,6 +104,21 @@ void AsyncProcessor::processSerializedCompressedRequestWithMetadata(
          "Therefore, this method must be overridden alongside processSerializedRequest.";
 }
 
+bool AsyncProcessor::useResourcePools(
+    AsyncProcessorFactory::MethodMetadata const*) const {
+  return false;
+}
+
+SelectPoolResult AsyncProcessor::selectPool(
+    ServerRequest const&, const AsyncProcessorFactory::MethodMetadata&) const {
+  LOG(FATAL) << "Unimplemented selectPool called";
+}
+
+void AsyncProcessor::executeRequest(
+    ServerRequest&&, const AsyncProcessorFactory::MethodMetadata&) {
+  LOG(FATAL) << "Unimplemented executeRequest called";
+}
+
 bool GeneratedAsyncProcessor::createInteraction(
     const ResponseChannelRequest::UniquePtr& req,
     int64_t id,
