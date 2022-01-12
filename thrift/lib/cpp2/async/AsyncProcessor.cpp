@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -105,7 +105,7 @@ void AsyncProcessor::processSerializedCompressedRequestWithMetadata(
 }
 
 bool GeneratedAsyncProcessor::createInteraction(
-    ResponseChannelRequest::UniquePtr& req,
+    const ResponseChannelRequest::UniquePtr& req,
     int64_t id,
     std::string&& name,
     Cpp2RequestContext& ctx,
@@ -208,7 +208,7 @@ void GeneratedAsyncProcessor::destroyAllInteractions(
 }
 
 bool GeneratedAsyncProcessor::validateRpcKind(
-    ResponseChannelRequest::UniquePtr& req, RpcKind kind) {
+    const ResponseChannelRequest::UniquePtr& req, RpcKind kind) {
   switch (kind) {
     case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
       switch (req->rpcKind()) {
@@ -246,7 +246,7 @@ bool GeneratedAsyncProcessor::validateRpcKind(
 }
 
 bool GeneratedAsyncProcessor::setUpRequestProcessing(
-    ResponseChannelRequest::UniquePtr& req,
+    const ResponseChannelRequest::UniquePtr& req,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
     concurrency::ThreadManager* tm,

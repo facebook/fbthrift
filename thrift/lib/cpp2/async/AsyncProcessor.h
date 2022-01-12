@@ -362,7 +362,7 @@ class ServerRequest {
   // ResponseChannelRequest::UniquePtr&.
   const ResponseChannelRequest::UniquePtr& request() const { return request_; }
 
-  std::shared_ptr<folly::RequestContext>& follyRequestContext() {
+  const std::shared_ptr<folly::RequestContext>& follyRequestContext() const {
     return follyRequestContext_;
   }
 
@@ -533,13 +533,13 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
 
   // Sends an error response if validation fails.
   static bool validateRpcKind(
-      ResponseChannelRequest::UniquePtr& req, RpcKind kind);
+      const ResponseChannelRequest::UniquePtr& req, RpcKind kind);
 
   // Returns true if setup succeeded and sends an error response otherwise.
   // Always runs in eb thread.
   // tm is null if the method is annotated with thread='eb'.
   bool setUpRequestProcessing(
-      ResponseChannelRequest::UniquePtr& req,
+      const ResponseChannelRequest::UniquePtr& req,
       Cpp2RequestContext* ctx,
       folly::EventBase* eb,
       concurrency::ThreadManager* tm,
@@ -573,7 +573,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
 
   // Returns false if interaction id is duplicated.
   bool createInteraction(
-      ResponseChannelRequest::UniquePtr& req,
+      const ResponseChannelRequest::UniquePtr& req,
       int64_t id,
       std::string&& name,
       Cpp2RequestContext& ctx,
