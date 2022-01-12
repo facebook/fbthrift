@@ -1037,7 +1037,7 @@ class mstch_cpp2_struct : public mstch_struct {
   mstch::node isset_bitset_option() {
     static const std::string kPrefix =
         "apache::thrift::detail::IssetBitsetOption::";
-    if (auto anno = cpp2::packed_isset(*strct_)) {
+    if (const auto* anno = cpp2::packed_isset(*strct_)) {
       for (const auto& kv : anno->value()->get_map()) {
         if (kv.first->get_string() == "atomic") {
           if (kv.second->get_bool()) {
