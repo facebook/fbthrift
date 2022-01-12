@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,18 @@ namespace apache::thrift {
       folly::make_exception_wrapper<TApplicationException>(
           TApplicationException::UNKNOWN_METHOD, std::move(message)),
       kMethodUnknownErrorCode);
+}
+
+/* static */ void AsyncProcessorHelper::executeRequest(
+    ServerRequest&& serverRequest) {
+  auto ap = detail::ServerRequestHelper::asyncProcessor(serverRequest);
+  AsyncProcessorFactory::MethodMetadata const& metadata =
+      *serverRequest.methodMetadata();
+  folly::RequestContextScopeGuard rctx(serverRequest.follyRequestContext());
+  // In future changes this is where we will call the
+  // TProcessorEventHandler methods and do other generic processing. For
+  // not just calling executeRequest is sufficient for testing.
+  ap->executeRequest(std::move(serverRequest), metadata);
 }
 
 } // namespace apache::thrift

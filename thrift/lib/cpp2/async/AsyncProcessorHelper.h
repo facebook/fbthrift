@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,6 +63,10 @@ class AsyncProcessorHelper {
     }
     return isWildcard;
   }
+
+  // Helper code to bridge from a ServerRequest to calling the
+  // AsyncProcessor::execute method.
+  static void executeRequest(ServerRequest&& request);
 };
 
 } // namespace apache::thrift
