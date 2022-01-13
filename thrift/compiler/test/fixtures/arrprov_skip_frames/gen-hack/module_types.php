@@ -99,7 +99,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__ProvenanceSkipFrame>>
   public function __construct(?varray<string> $a = null, ?darray<string, varray<darray<int, bool>>> $b = null, ?int $c = null, ?bool $d = null  )[] {
-    $this->a = $a ?? varray[];
+    $this->a = $a ?? vec[];
     $this->b = $b;
     $this->c = $c ?? 7;
     $this->d = $d;

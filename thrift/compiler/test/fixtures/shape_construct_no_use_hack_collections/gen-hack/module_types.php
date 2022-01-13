@@ -603,7 +603,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
   public string $str_value;
 
   public function __construct(?varray<string> $a = null, ?darray<string, varray<dict<int, bool>>> $b = null, ?int $c = null, ?bool $d = null, ?string $str_value = null  )[] {
-    $this->a = $a ?? varray[];
+    $this->a = $a ?? vec[];
     $this->b = $b;
     $this->c = $c ?? 7;
     $this->d = $d ?? false;
@@ -882,9 +882,9 @@ class TestStruct implements \IThriftStruct, \IThriftShapishStruct {
     $this->foo_struct = $foo_struct;
     $this->union_value = $union_value;
     $this->struct_of_self = $struct_of_self;
-    $this->list_of_struct_foo = $list_of_struct_foo ?? varray[];
-    $this->map_of_string_to_struct_foo = $map_of_string_to_struct_foo ?? darray[];
-    $this->list_of_struct_self = $list_of_struct_self ?? varray[];
+    $this->list_of_struct_foo = $list_of_struct_foo ?? vec[];
+    $this->map_of_string_to_struct_foo = $map_of_string_to_struct_foo ?? dict[];
+    $this->list_of_struct_self = $list_of_struct_self ?? vec[];
   }
 
   public static function withDefaultValues()[]: this {
@@ -1072,19 +1072,19 @@ class TestStruct implements \IThriftStruct, \IThriftShapishStruct {
           $$,
           $_val0 ==> $_val0
             |> Foo::__fromShape($$),
-        ) |> varray($$),
+        ) |> vec($$),
       $shape['map_of_string_to_struct_foo']
         |> Dict\map(
           $$,
           $_val1 ==> $_val1
             |> Foo::__fromShape($$),
-        ) |> darray($$),
+        ) |> dict($$),
       $shape['list_of_struct_self']
         |> Vec\map(
           $$,
           $_val2 ==> $_val2
             |> TestStruct::__fromShape($$),
-        ) |> varray($$),
+        ) |> vec($$),
     );
   }
 
@@ -1098,21 +1098,21 @@ class TestStruct implements \IThriftStruct, \IThriftShapishStruct {
           Vec\map(
             $$,
             ($_val0) ==> $_val0->__toShape(),
-          ) |> varray($$)
+          ) |> vec($$)
         ),
       'map_of_string_to_struct_foo' => $this->map_of_string_to_struct_foo
         |> (
           Dict\map(
             $$,
             ($_val0) ==> $_val0->__toShape(),
-          ) |> darray($$)
+          ) |> dict($$)
         ),
       'list_of_struct_self' => $this->list_of_struct_self
         |> (
           Vec\map(
             $$,
             ($_val0) ==> $_val0->__toShape(),
-          ) |> varray($$)
+          ) |> vec($$)
         ),
     );
   }

@@ -455,14 +455,14 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
   public function __toShape()[]: self::TShape {
     return shape(
       'just_int' => $this->just_int,
-      'list_of_strings' => varray($this->list_of_strings),
+      'list_of_strings' => vec($this->list_of_strings),
       'set_of_ints' => $this->set_of_ints,
       'map_of_list_of_strings' => $this->map_of_list_of_strings->map(
-        ($_val0) ==> varray($_val0),
+        ($_val0) ==> vec($_val0),
       )
         |> ThriftUtil::toDArray($$, static::class),
       'map_of_set_of_strings' => $this->map_of_set_of_strings->map(
-        ($_val0) ==> darray($_val0),
+        ($_val0) ==> dict($_val0),
       )
         |> ThriftUtil::toDArray($$, static::class),
       'map_of_strings_to_map_of_string_ints' => $this->map_of_strings_to_map_of_string_ints->map(
@@ -471,7 +471,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
         |> ThriftUtil::toDArray($$, static::class),
       'optional_map_of_map_of_sets' => $this->optional_map_of_map_of_sets?->map(
         ($_val0) ==> $_val0->map(
-          ($_val1) ==> darray($_val1),
+          ($_val1) ==> dict($_val1),
         )
           |> ThriftUtil::toDArray($$, static::class),
       )

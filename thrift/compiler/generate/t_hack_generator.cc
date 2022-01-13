@@ -667,10 +667,8 @@ class t_hack_generator : public t_oop_generator {
     if (!t->is_container()) {
       throw std::logic_error("not a container");
     }
-    if (array_migration_) {
-      return t->is_list()
-          ? "varray(" + array + ")"
-          : "ThriftUtil::toDArray(" + array + ", static::class)";
+    if (array_migration_ && !t->is_list()) {
+      return "ThriftUtil::toDArray(" + array + ", static::class)";
     } else {
       return t->is_list() ? "vec(" + array + ")" : "dict(" + array + ")";
     }
@@ -960,18 +958,14 @@ void t_hack_generator::generate_json_container(
 
   indent(out) << json << " = " << prefix_json << ";\n";
   if (ttype->is_map()) {
-    if (arrays_) {
+    if (arrays_ || no_use_hack_collections_) {
       indent(out) << container << " = dict[];\n";
-    } else if (no_use_hack_collections_) {
-      indent(out) << container << " = darray[];\n";
     } else {
       indent(out) << container << " = Map {};\n";
     }
   } else if (ttype->is_list()) {
-    if (arrays_) {
+    if (arrays_ || no_use_hack_collections_) {
       indent(out) << container << " = vec[];\n";
-    } else if (no_use_hack_collections_) {
-      indent(out) << container << " = varray[];\n";
     } else {
       indent(out) << container << " = Vector {};\n";
     }
@@ -1573,18 +1567,14 @@ std::string t_hack_generator::render_default_value(const t_type* type) {
       dval = "null";
     }
   } else if (type->is_map()) {
-    if (arrays_) {
+    if (arrays_ || no_use_hack_collections_) {
       dval = "dict[]";
-    } else if (no_use_hack_collections_) {
-      dval = "darray[]";
     } else {
       dval = "Map {}";
     }
   } else if (type->is_list()) {
-    if (arrays_) {
+    if (arrays_ || no_use_hack_collections_) {
       dval = "vec[]";
-    } else if (no_use_hack_collections_) {
-      dval = "varray[]";
     } else {
       dval = "Vector {}";
     }
@@ -2376,7 +2366,7 @@ void t_hack_generator::generate_php_struct_shape_collection_value_lambda(
     out << "$" << tmp << "->__toShape(),\n";
   } else if (t->is_set()) {
     if (arraysets_ || no_use_hack_collections_) {
-      out << "darray($" << tmp << "),\n";
+      out << "dict($" << tmp << "),\n";
     } else {
       out << "ThriftUtil::toDArray(Dict\\fill_keys($" << tmp
           << ", true), static::class),\n";
@@ -2448,9 +2438,9 @@ void t_hack_generator::generate_hack_array_from_shape_lambda(
   indent(out) << ")";
   if (no_use_hack_collections_) {
     if (t->is_map()) {
-      out << " |> darray($$)";
+      out << " |> dict($$)";
     } else {
-      out << " |> varray($$)";
+      out << " |> vec($$)";
     }
   }
 }
@@ -2499,9 +2489,9 @@ void t_hack_generator::generate_shape_from_hack_array_lambda(
   indent_down();
   if (no_use_hack_collections_) {
     if (t->is_map()) {
-      indent(out) << ") |> darray($$)\n";
+      indent(out) << ") |> dict($$)\n";
     } else {
-      indent(out) << ") |> varray($$)\n";
+      indent(out) << ") |> vec($$)\n";
     }
     indent_down();
   }
@@ -2559,12 +2549,8 @@ void t_hack_generator::generate_php_struct_shape_methods(
                 << arg_return_type << "<arraykey, T> $m)[]: " << arg_return_type
                 << "<string, T> {\n";
     indent_up();
-    if (arrays_) {
+    if (arrays_ || no_use_hack_collections_) {
       indent(out) << "return Dict\\map_keys($m, $key ==> (string)$key);\n";
-    } else if (no_use_hack_collections_) {
-      // There doesn't seem to be an eqivalent for map_keys.
-      indent(out)
-          << "return darray(Dict\\map_keys($m, $key ==> (string)$key));\n";
     } else {
       indent(out) << "$new = dict[];\n";
       indent(out) << "foreach ($m as $k => $v) {\n";
@@ -5966,18 +5952,14 @@ void t_hack_generator::_generate_sendImpl_arg(
   val_type = val_type->get_true_type();
   if (val_type->is_container() && !val_type->is_set()) {
     if (t->is_map()) {
-      if (arrays_) {
+      if (arrays_ || no_use_hack_collections_) {
         out << "Dict\\map(" << var << ", ";
-      } else if (no_use_hack_collections_) {
-        out << "darray(Dict\\map(" << var << ", ";
       } else {
         out << "(new Map(" << var << "))->map(";
       }
     } else if (t->is_list()) {
-      if (arrays_) {
+      if (arrays_ || no_use_hack_collections_) {
         out << "Vec\\map(" << var << ", ";
-      } else if (no_use_hack_collections_) {
-        out << "varray(Vec\\map(" << var << ", ";
       } else {
         out << "(new Vector(" << var << "))->map(";
       }
@@ -5995,26 +5977,19 @@ void t_hack_generator::_generate_sendImpl_arg(
     this->_generate_sendImpl_arg(out, namer, new_var, val_type);
     indent_down();
     out << "\n" << indent();
-    if (no_use_hack_collections_) {
-      out << ")";
-    }
     out << ")";
   } else {
     // the parens around the collections are unnecessary but I'm leaving them
     // so that I don't end up changing literally all files
     if (t->is_map()) {
-      if (arrays_) {
+      if (arrays_ || no_use_hack_collections_) {
         out << "dict(" << var << ")";
-      } else if (no_use_hack_collections_) {
-        out << "darray(" << var << ")";
       } else {
         out << "new Map(" << var << ")";
       }
     } else if (t->is_list()) {
-      if (arrays_) {
+      if (arrays_ || no_use_hack_collections_) {
         out << "vec(" << var << ")";
-      } else if (no_use_hack_collections_) {
-        out << "varray(" << var << ")";
       } else {
         out << "new Vector(" << var << ")";
       }
@@ -6512,18 +6487,14 @@ std::string t_hack_generator::declare_field(
     } else if (type->is_enum()) {
       result += " = null";
     } else if (type->is_map()) {
-      if (arrays_) {
+      if (arrays_ || no_use_hack_collections_) {
         result += " = dict[]";
-      } else if (no_use_hack_collections_) {
-        result += " = darray[]";
       } else {
         result += " = Map {}";
       }
     } else if (type->is_list()) {
-      if (arrays_) {
+      if (arrays_ || no_use_hack_collections_) {
         result += " = vec[]";
-      } else if (no_use_hack_collections_) {
-        result += " = varray[]";
       } else {
         result += " = Vector {}";
       }

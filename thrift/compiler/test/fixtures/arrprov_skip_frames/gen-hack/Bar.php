@@ -92,12 +92,12 @@ trait BarClientBase {
     $currentseqid = $this->getNextSequenceID();
     $args = Bar_baz_args::fromShape(shape(
       'a' => $a,
-      'b' => varray(Vec\map($b, 
-        $_val0 ==> darray($_val0)
-      )),
+      'b' => Vec\map($b, 
+        $_val0 ==> dict($_val0)
+      ),
       'd' => $d,
       'e' => $e,
-      'f' => varray($f),
+      'f' => vec($f),
     ));
     try {
       $this->eventHandler_->preSend('baz', $args, $currentseqid);
@@ -504,10 +504,10 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
   <<__ProvenanceSkipFrame>>
   public function __construct(?darray<int, bool> $a = null, ?varray<darray<int, darray<string, bool>>> $b = null, ?Foo $d = null, ?int $e = null, ?varray<Foo> $f = null  )[] {
     $this->a = $a ?? darray[];
-    $this->b = $b ?? varray[];
+    $this->b = $b ?? vec[];
     $this->d = $d;
     $this->e = $e ?? 4;
-    $this->f = $f ?? varray[];
+    $this->f = $f ?? vec[];
   }
 
   <<__ProvenanceSkipFrame>>
@@ -669,7 +669,7 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
           $$,
           $_val0 ==> $_val0
             |> Foo::__fromShape($$),
-        ) |> varray($$),
+        ) |> vec($$),
     );
   }
 
@@ -685,7 +685,7 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
           Vec\map(
             $$,
             <<__ProvenanceSkipFrame>> ($_val0) ==> $_val0->__toShape(),
-          ) |> varray($$)
+          ) |> vec($$)
         ),
     );
   }

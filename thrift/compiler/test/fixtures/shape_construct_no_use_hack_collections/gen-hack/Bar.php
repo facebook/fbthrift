@@ -92,9 +92,9 @@ trait BarClientBase {
     $currentseqid = $this->getNextSequenceID();
     $args = Bar_baz_args::fromShape(shape(
       'a' => $a,
-      'b' => varray(Vec\map($b, 
-        $_val0 ==> darray($_val0)
-      )),
+      'b' => Vec\map($b, 
+        $_val0 ==> dict($_val0)
+      ),
       'c' => $c,
       'd' => $d,
       'e' => $e,
@@ -489,7 +489,7 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
 
   public function __construct(?dict<int, bool> $a = null, ?varray<darray<int, dict<string, bool>>> $b = null, ?int $c = null, ?Foo $d = null, ?int $e = null  )[] {
     $this->a = $a ?? dict[];
-    $this->b = $b ?? varray[];
+    $this->b = $b ?? vec[];
     $this->c = $c ?? 0;
     $this->d = $d;
     $this->e = $e ?? 4;

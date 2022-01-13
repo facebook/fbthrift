@@ -92,9 +92,9 @@ trait BarClientBase {
     $currentseqid = $this->getNextSequenceID();
     $args = Bar_baz_args::fromShape(shape(
       'a' => $a === null ? null : $a,
-      'b' => $b === null ? null : varray(Vec\map($b, 
-        $_val0 ==> darray($_val0)
-      )),
+      'b' => $b === null ? null : Vec\map($b, 
+        $_val0 ==> dict($_val0)
+      ),
       'c' => $c === null ? null : $c,
       'd' => $d === null ? null : $d,
       'e' => $e === null ? null : $e,
