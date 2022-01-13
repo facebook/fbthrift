@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,8 +49,8 @@ T* raw_any_cast(const any_ref* operand) noexcept;
 //     int i;
 //     any_ref ri = i;
 //     ri.assign_value(1); // i is now 1;
-//     ri.assign_value(1.5f); // Thows a bad_any_cast exception because i is not
-//                            // a double.
+//     ri.assign_value(1.5f); // Throws a bad_any_cast exception because i is
+//                            // not a double.
 //
 // Can be used to accept a type-erased value by reference:
 //
@@ -125,7 +125,7 @@ class any_ref final {
 
   // Disable assignment with other types.
   //
-  // This effectivly disables implicit rebinding.
+  // This effectively disables implicit rebinding.
   template <typename T, typename = disable_self<T>>
   any_ref& operator=(T&& value) = delete;
 

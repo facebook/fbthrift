@@ -22,7 +22,7 @@
 
 namespace apache::thrift::op {
 
-// Returns true iff the given value is 'empty', and is not serialized in a
+// Returns true iff the given value is 'empty', and not serialized in a
 // 'terse' context.
 //
 // Some types cannot represent an 'empty' value. For example,
