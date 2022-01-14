@@ -1633,7 +1633,6 @@ pub mod services {
 
 /// Client implementation for each service in `module`.
 pub mod client {
-
     pub struct MyServiceImpl<P, T, S = ::fbthrift::NoopSpawner> {
         transport: T,
         _phantom: ::std::marker::PhantomData<fn() -> (P, S)>,
@@ -2339,6 +2338,7 @@ pub mod client {
             <dyn MyService>::with_spawner(protocol, transport, spawner)
         }
     }
+
     pub struct DbMixedStackArgumentsImpl<P, T, S = ::fbthrift::NoopSpawner> {
         transport: T,
         _phantom: ::std::marker::PhantomData<fn() -> (P, S)>,
@@ -2594,7 +2594,6 @@ pub mod client {
             <dyn DbMixedStackArguments>::with_spawner(protocol, transport, spawner)
         }
     }
-
 
 }
 
@@ -3694,6 +3693,7 @@ pub mod server {
             }
         }
     }
+
     #[::async_trait::async_trait]
     pub trait DbMixedStackArguments: ::std::marker::Send + ::std::marker::Sync + 'static {
         async fn getDataByKey0(

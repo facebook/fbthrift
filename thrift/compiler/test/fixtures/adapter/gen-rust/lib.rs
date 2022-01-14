@@ -636,7 +636,6 @@ pub mod services {
 
 /// Client implementation for each service in `module`.
 pub mod client {
-
     pub struct ServiceImpl<P, T, S = ::fbthrift::NoopSpawner> {
         transport: T,
         _phantom: ::std::marker::PhantomData<fn() -> (P, S)>,
@@ -835,7 +834,6 @@ pub mod client {
             <dyn Service>::with_spawner(protocol, transport, spawner)
         }
     }
-
 
 }
 
