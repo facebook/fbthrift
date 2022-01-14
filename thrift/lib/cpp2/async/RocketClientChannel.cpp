@@ -577,7 +577,7 @@ class RocketClientChannel::SingleRequestNoResponseCallback final
     if (writeResult.hasException()) {
       cbPtr->onResponseError(std::move(writeResult).exception());
     } else {
-      cbPtr->onRequestSent();
+      cbPtr->onResponse({});
     }
   }
 

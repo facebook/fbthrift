@@ -354,7 +354,7 @@ HTTPClientChannel::HTTPTransactionCallback::~HTTPTransactionCallback() {
 
 void HTTPClientChannel::HTTPTransactionCallback::messageSent() {
   if (cb_ && oneway_) {
-    cb_.release()->onRequestSent();
+    cb_.release()->onResponse({});
   }
 }
 
@@ -454,7 +454,7 @@ void HTTPClientChannel::HTTPTransactionCallback::onError(
 
 void HTTPClientChannel::HTTPTransactionCallback::lastByteFlushed() noexcept {
   if (cb_ && oneway_) {
-    cb_.release()->onRequestSent();
+    cb_.release()->onResponse({});
   }
 }
 

@@ -224,7 +224,6 @@ class RequestClientCallback {
       std::unique_ptr<RequestClientCallback, RequestClientCallbackDeleter>;
 
   virtual ~RequestClientCallback() {}
-  virtual void onRequestSent() noexcept final { onResponse({}); }
   virtual void onResponse(ClientReceiveState&&) noexcept = 0;
   virtual void onResponseError(folly::exception_wrapper) noexcept = 0;
 

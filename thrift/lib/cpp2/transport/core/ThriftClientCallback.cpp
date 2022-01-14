@@ -53,7 +53,7 @@ void ThriftClientCallback::onThriftRequestSent() {
   DCHECK(!evb_ || evb_->isInEventBaseThread());
   if (active_) {
     if (oneWay_) {
-      cb_.release()->onRequestSent();
+      cb_.release()->onResponse({});
     }
 
     if (timeout_.count() > 0) {

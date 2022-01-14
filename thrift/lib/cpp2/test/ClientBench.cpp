@@ -75,7 +75,7 @@ class DummyChannel : public apache::thrift::RequestChannel {
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr cb) override {
-    cb.release()->onRequestSent();
+    cb.release()->onResponse({});
   }
 
   void setCloseCallback(CloseCallback*) override { std::terminate(); }

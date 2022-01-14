@@ -179,7 +179,7 @@ class ChannelCallbacks {
     void messageSent() override {
       DestructorGuard dg(this);
       CHECK(cb_);
-      cb_.release()->onRequestSent();
+      cb_.release()->onResponse({});
       destroy();
     }
     void messageSendError(folly::exception_wrapper&& ex) override {
