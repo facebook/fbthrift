@@ -43,7 +43,14 @@ DEFINE_int32(
     "Connections that stall during handshakes may still be timed out "
     "with --idle_timeout");
 DEFINE_int32(max_connections, 0, "DEPRECATED (REMOVE ME)");
-DEFINE_int32(max_requests, 0, "max active requests");
+DEFINE_int32(
+    max_requests,
+    0,
+    "max active requests, ignored if disable_active_requests_tracking is true");
+DEFINE_bool(
+    disable_active_requests_tracking,
+    false,
+    "Disable active request tracking to improve performance");
 DEFINE_string(cert, "", "server SSL certificate file");
 DEFINE_string(key, "", "server SSL private key file");
 DEFINE_string(client_ca_list, "", "file pointing to a client CA or list");
@@ -63,6 +70,9 @@ void setTunables(ThriftServer* server) {
   if (FLAGS_handshake_timeout > 0) {
     server->setSSLHandshakeTimeout(
         std::chrono::milliseconds(FLAGS_handshake_timeout));
+  }
+  if (FLAGS_disable_active_requests_tracking) {
+    server->disableActiveRequestsTracking();
   }
 }
 
