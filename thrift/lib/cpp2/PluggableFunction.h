@@ -59,7 +59,6 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-template <typename Ret, typename... Args>
 class PluggableFunctionSetter;
 
 template <typename Ret, typename... Args>
@@ -82,7 +81,7 @@ class PluggableFunction {
   }
 
  private:
-  friend class PluggableFunctionSetter<Ret, Args...>;
+  friend class PluggableFunctionSetter;
 
   FOLLY_NOINLINE signature& choose_slow() const {
     auto impl = impl_.load();
@@ -109,13 +108,11 @@ class PluggableFunction {
   signature& init_;
 };
 
-template <typename Ret, typename... Args>
 class PluggableFunctionSetter {
  public:
-  using signature = Ret(Args...);
-
+  template <typename R, typename... A>
   PluggableFunctionSetter(
-      PluggableFunction<Ret, Args...> const& plug, signature& next) noexcept {
+      PluggableFunction<R, A...> const& plug, R (&next)(A...)) noexcept {
     plug = next;
   }
 };
@@ -128,16 +125,6 @@ struct pluggable_function_type_<Ret (*)(Args...)> {
 };
 template <typename F>
 using pluggable_function_type_t = typename pluggable_function_type_<F>::type;
-
-template <typename>
-struct pluggable_function_setter_type_;
-template <typename Ret, typename... Args>
-struct pluggable_function_setter_type_<Ret (*)(Args...)> {
-  using type = PluggableFunctionSetter<Ret, Args...>;
-};
-template <typename F>
-using pluggable_function_setter_type_t =
-    typename pluggable_function_setter_type_<F>::type;
 
 } // namespace detail
 } // namespace thrift
@@ -157,10 +144,9 @@ using pluggable_function_setter_type_t =
           _name{THRIFT__PLUGGABLE_FUNC_DEFAULT_##_name};             \
   _ret THRIFT__PLUGGABLE_FUNC_DEFAULT_##_name(__VA_ARGS__)
 
-#define THRIFT_PLUGGABLE_FUNC_SET(_ret, _name, ...)                  \
-  _ret THRIFT__PLUGGABLE_FUNC_IMPL_##_name(__VA_ARGS__);             \
-  static ::apache::thrift::detail::pluggable_function_setter_type_t< \
-      THRIFT__PLUGGABLE_FUNC_TYPE_##_name>                           \
-      THRIFT__PLUGGABLE_FUNC_SETTER_##_name{                         \
-          _name, THRIFT__PLUGGABLE_FUNC_IMPL_##_name};               \
+#define THRIFT_PLUGGABLE_FUNC_SET(_ret, _name, ...)        \
+  _ret THRIFT__PLUGGABLE_FUNC_IMPL_##_name(__VA_ARGS__);   \
+  static ::apache::thrift::detail::PluggableFunctionSetter \
+      THRIFT__PLUGGABLE_FUNC_SETTER_##_name{               \
+          _name, THRIFT__PLUGGABLE_FUNC_IMPL_##_name};     \
   _ret THRIFT__PLUGGABLE_FUNC_IMPL_##_name(__VA_ARGS__)
