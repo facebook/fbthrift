@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -299,6 +299,60 @@ std::string type_resolver::gen_adapted_type(
        std::to_string(*field_id),
        standard_type,
        "__fbthrift_cpp2_type"});
+}
+
+// TODO(ytj): Support type::adapted, type::cpp_type, and cpp.template
+std::string type_resolver::gen_type_tag(t_type const& original_type) {
+  static const std::string ns = "::apache::thrift::type::";
+  auto const& type = *original_type.get_true_type();
+  if (type.is_void()) {
+    return ns + "void_t";
+  } else if (type.is_bool()) {
+    return ns + "bool_t";
+  } else if (type.is_byte()) {
+    return ns + "byte_t";
+  } else if (type.is_i16()) {
+    return ns + "i16_t";
+  } else if (type.is_i32()) {
+    return ns + "i32_t";
+  } else if (type.is_i64()) {
+    return ns + "i64_t";
+  } else if (type.is_float()) {
+    return ns + "float_t";
+  } else if (type.is_double()) {
+    return ns + "double_t";
+  } else if (type.is_enum()) {
+    return ns + "enum_t<" + get_type_name(&type) + ">";
+  } else if (type.is_string()) {
+    return ns + "string_t";
+  } else if (type.is_binary()) {
+    return ns + "binary_t";
+  } else if (type.is_list()) {
+    auto& list = dynamic_cast<t_list const&>(type);
+    auto& elem = *list.get_elem_type();
+    auto elem_tag = gen_type_tag(elem);
+    return ns + "list<" + elem_tag + ">";
+  } else if (type.is_set()) {
+    auto& set = dynamic_cast<t_set const&>(type);
+    auto& elem = *set.get_elem_type();
+    auto elem_tag = gen_type_tag(elem);
+    return ns + "set<" + elem_tag + ">";
+  } else if (type.is_map()) {
+    auto& map = dynamic_cast<t_map const&>(type);
+    auto& key = *map.get_key_type();
+    auto& val = *map.get_val_type();
+    auto key_tag = gen_type_tag(key);
+    auto val_tag = gen_type_tag(val);
+    return ns + "map<" + key_tag + ", " + val_tag + ">";
+  } else if (type.is_union()) {
+    return ns + "union_t<" + get_type_name(&type) + ">";
+  } else if (type.is_struct()) {
+    return ns + "struct_t<" + get_type_name(&type) + ">";
+  } else if (type.is_exception()) {
+    return ns + "exception_t<" + get_type_name(&type) + ">";
+  } else {
+    throw std::runtime_error("unknown type for: " + type.get_full_name());
+  }
 }
 
 } // namespace cpp

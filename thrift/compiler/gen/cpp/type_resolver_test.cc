@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,6 +52,10 @@ class TypeResolverTest : public ::testing::Test {
     return resolver_.get_storage_type_name(&node);
   }
 
+  std::string gen_type_tag(const t_type& type) {
+    return resolver_.gen_type_tag(type);
+  }
+
  protected:
   type_resolver resolver_;
   t_program program_;
@@ -79,6 +83,28 @@ TEST_F(TypeResolverTest, BaseTypes) {
   EXPECT_TRUE(can_resolve_to_scalar(t_base_type::t_double()));
   EXPECT_FALSE(can_resolve_to_scalar(t_base_type::t_string()));
   EXPECT_FALSE(can_resolve_to_scalar(t_base_type::t_binary()));
+
+  EXPECT_EQ(
+      gen_type_tag(t_base_type::t_void()), "::apache::thrift::type::void_t");
+  EXPECT_EQ(
+      gen_type_tag(t_base_type::t_byte()), "::apache::thrift::type::byte_t");
+  EXPECT_EQ(
+      gen_type_tag(t_base_type::t_string()),
+      "::apache::thrift::type::string_t");
+  EXPECT_EQ(
+      gen_type_tag(t_base_type::t_binary()),
+      "::apache::thrift::type::binary_t");
+  EXPECT_EQ(
+      gen_type_tag(t_base_type::t_i16()), "::apache::thrift::type::i16_t");
+  EXPECT_EQ(
+      gen_type_tag(t_base_type::t_i32()), "::apache::thrift::type::i32_t");
+  EXPECT_EQ(
+      gen_type_tag(t_base_type::t_i64()), "::apache::thrift::type::i64_t");
+  EXPECT_EQ(
+      gen_type_tag(t_base_type::t_float()), "::apache::thrift::type::float_t");
+  EXPECT_EQ(
+      gen_type_tag(t_base_type::t_double()),
+      "::apache::thrift::type::double_t");
 }
 
 TEST_F(TypeResolverTest, BaseTypes_Adapter) {
@@ -596,6 +622,37 @@ TEST_F(TypeResolverTest, TransitivelyAdaptedFieldType) {
       get_storage_type_name(field2),
       "::apache::thrift::adapt_detail::adapted_field_t<"
       "MyAdapter, 42, ::std::int64_t, __fbthrift_cpp2_type>");
+}
+
+TEST_F(TypeResolverTest, GenTypeTagContainer) {
+  auto i16 = t_base_type::t_i16();
+  auto i32 = t_base_type::t_i32();
+  t_list i32_list(i32);
+  t_set i32_set(i32);
+  t_map i32_i16_map(i32, i16);
+  EXPECT_EQ(
+      gen_type_tag(i32_list),
+      "::apache::thrift::type::list<::apache::thrift::type::i32_t>");
+  EXPECT_EQ(
+      gen_type_tag(i32_set),
+      "::apache::thrift::type::set<::apache::thrift::type::i32_t>");
+  EXPECT_EQ(
+      gen_type_tag(i32_i16_map),
+      "::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::i16_t>");
+}
+
+TEST_F(TypeResolverTest, GenTypeTagStruct) {
+  t_program p("path/to/program.thrift");
+  t_struct s(&p, "struct_name");
+  t_union u(&p, "union_name");
+  t_exception e(&p, "exception_name");
+  EXPECT_EQ(
+      gen_type_tag(s), "::apache::thrift::type::struct_t<::cpp2::struct_name>");
+  EXPECT_EQ(
+      gen_type_tag(u), "::apache::thrift::type::union_t<::cpp2::union_name>");
+  EXPECT_EQ(
+      gen_type_tag(e),
+      "::apache::thrift::type::exception_t<::cpp2::exception_name>");
 }
 
 } // namespace

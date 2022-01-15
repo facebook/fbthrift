@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,6 +57,9 @@ class type_resolver {
     return detail::get_or_gen(
         standard_type_cache_, node, [&]() { return gen_standard_type(node); });
   }
+
+  // Returns C++ type tag of given thrift type
+  std::string gen_type_tag(t_type const&);
 
   // Checks whether a t_type could resolve to a scalar.
   //
