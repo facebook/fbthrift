@@ -340,11 +340,11 @@ void containerStruct::__fbthrift_clear() {
   this->__fbthrift_field_fieldB.clear();
   this->__fbthrift_field_fieldC.clear();
   this->__fbthrift_field_fieldD = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->__fbthrift_field_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
+  this->__fbthrift_field_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_fieldF.clear();
   this->__fbthrift_field_fieldG.clear();
   this->__fbthrift_field_fieldH.clear();
-  this->__fbthrift_field_fieldI = static_cast<bool>(true);
+  this->__fbthrift_field_fieldI = bool();
   this->__fbthrift_field_fieldJ.clear();
   this->__fbthrift_field_fieldK.clear();
   this->__fbthrift_field_fieldL.clear();

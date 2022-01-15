@@ -96,7 +96,7 @@ structured_annotation_inline::structured_annotation_inline(apache::thrift::Fragi
 void structured_annotation_inline::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_count = ::std::int64_t();
-  this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("abacaba");
+  this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 
@@ -196,7 +196,7 @@ structured_annotation_with_default::structured_annotation_with_default(apache::t
 
 void structured_annotation_with_default::__fbthrift_clear() {
   // clear all fields
-  this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("abacabadabacaba");
+  this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 

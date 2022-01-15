@@ -1007,8 +1007,8 @@ SimpleStruct::SimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t ag
 
 void SimpleStruct::__fbthrift_clear() {
   // clear all fields
-  this->__fbthrift_field_age = static_cast<::std::int64_t>(60);
-  this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("Batman");
+  this->__fbthrift_field_age = ::std::int64_t();
+  this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 
@@ -1918,16 +1918,16 @@ defaultStruct::defaultStruct(apache::thrift::FragileConstructor, ::std::int64_t 
 
 void defaultStruct::__fbthrift_clear() {
   // clear all fields
-  this->__fbthrift_field_myLongDFset = static_cast<::std::int64_t>(10);
+  this->__fbthrift_field_myLongDFset = ::std::int64_t();
   this->__fbthrift_field_myLongDF = ::std::int64_t();
-  this->__fbthrift_field_portDFset = static_cast<::std::int32_t>(3456);
+  this->__fbthrift_field_portDFset = ::std::int32_t();
   this->__fbthrift_field_portNum = ::std::int32_t();
-  this->__fbthrift_field_myBinaryDFset = apache::thrift::StringTraits<std::string>::fromStringLiteral("abc");
+  this->__fbthrift_field_myBinaryDFset = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_myBinary = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->__fbthrift_field_myByteDFSet = static_cast<::std::int8_t>(17);
+  this->__fbthrift_field_myByteDFSet = ::std::int8_t();
   this->__fbthrift_field_myByte = ::std::int8_t();
-  this->__fbthrift_field_myDoubleDFset = static_cast<double>(99.7678);
-  this->__fbthrift_field_myDoubleDFZero = static_cast<double>(0);
+  this->__fbthrift_field_myDoubleDFset = double();
+  this->__fbthrift_field_myDoubleDFZero = double();
   this->__fbthrift_field_myDouble = double();
   this->__fbthrift_field_field3.clear();
   this->__fbthrift_field_myList.clear();

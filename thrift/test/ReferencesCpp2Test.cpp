@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -133,7 +133,7 @@ TEST(References, ref_struct_fields_clear) {
   EXPECT_EQ(a.opt_shared_const_field_ref()->field_ref(), 12);
   EXPECT_EQ(a.opt_box_field_ref()->field_ref(), 13);
 
-  a = {};
+  apache::thrift::clear(a);
 
   EXPECT_EQ(a.def_field_ref()->field_ref(), 0);
   EXPECT_EQ(a.req_field_ref()->field_ref(), 0);
@@ -202,7 +202,7 @@ TEST(References, ref_struct_base_fields_clear) {
   EXPECT_EQ(*a.opt_shared_const_field_ref(), 12);
   EXPECT_EQ(*a.opt_box_field_ref(), "13");
 
-  a = {};
+  apache::thrift::clear(a);
 
   EXPECT_EQ(*a.def_field_ref(), 0);
   EXPECT_EQ(*a.req_field_ref(), 0);
@@ -271,7 +271,7 @@ TEST(References, ref_struct_string_fields_clear) {
   EXPECT_EQ(*a.opt_shared_const_field_ref(), "12");
   EXPECT_EQ(*a.opt_box_field_ref(), "13");
 
-  a = {};
+  apache::thrift::clear(a);
 
   EXPECT_EQ(*a.def_field_ref(), "");
   EXPECT_EQ(*a.req_field_ref(), "");
@@ -377,7 +377,7 @@ TEST(References, ref_container_fields_clear) {
   EXPECT_EQ(a.opt_box_set_ref_ref()->count(20), 1);
   EXPECT_EQ(a.opt_box_map_ref_ref()->at(21), 21);
 
-  a = {};
+  apache::thrift::clear(a);
 
   EXPECT_EQ(a.def_list_ref_ref()->size(), 0);
   EXPECT_EQ(a.def_set_ref_ref()->size(), 0);

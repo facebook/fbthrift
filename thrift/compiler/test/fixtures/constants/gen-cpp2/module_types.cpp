@@ -398,8 +398,8 @@ struct1::struct1(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::st
 
 void struct1::__fbthrift_clear() {
   // clear all fields
-  this->__fbthrift_field_a = static_cast<::std::int32_t>(1234567);
-  this->__fbthrift_field_b = apache::thrift::StringTraits<std::string>::fromStringLiteral("<uninitialized>");
+  this->__fbthrift_field_a = ::std::int32_t();
+  this->__fbthrift_field_b = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 

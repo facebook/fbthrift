@@ -510,8 +510,8 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, ::
 void MyStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_MyBoolField = bool();
-  this->__fbthrift_field_MyIntField = static_cast<::std::int64_t>(12);
-  this->__fbthrift_field_MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("test");
+  this->__fbthrift_field_MyIntField = ::std::int64_t();
+  this->__fbthrift_field_MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_MyStringField2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_MyBinaryField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_MyBinaryField2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -1978,13 +1978,13 @@ void containerStruct::__fbthrift_clear() {
   this->req_fieldC.clear();
   this->opt_fieldC.clear();
   this->fieldD = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
-  this->req_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
-  this->opt_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
+  this->fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->req_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->opt_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->fieldF.clear();
   this->fieldG.clear();
   this->fieldH.clear();
-  this->fieldI = static_cast<bool>(true);
+  this->fieldI = bool();
   this->fieldJ.clear();
   this->fieldK.clear();
   this->fieldL.clear();
@@ -1993,10 +1993,10 @@ void containerStruct::__fbthrift_clear() {
   this->fieldO.clear();
   this->fieldP.clear();
   this->fieldQ = ::some::valid::ns::MyEnumA();
-  this->fieldR =  ::some::valid::ns::MyEnumA::fieldB;
-  this->req_fieldR =  ::some::valid::ns::MyEnumA::fieldB;
-  this->opt_fieldR =  ::some::valid::ns::MyEnumA::fieldB;
-  this->fieldS =  ::some::valid::ns::MyEnumA::fieldB;
+  this->fieldR = ::some::valid::ns::MyEnumA();
+  this->req_fieldR = ::some::valid::ns::MyEnumA();
+  this->opt_fieldR = ::some::valid::ns::MyEnumA();
+  this->fieldS = ::some::valid::ns::MyEnumA();
   this->fieldT.clear();
   this->fieldU.clear();
   apache::thrift::clear(this->fieldV);
@@ -2801,7 +2801,7 @@ MyIncludedStruct::MyIncludedStruct(apache::thrift::FragileConstructor, ::a::diff
 
 void MyIncludedStruct::__fbthrift_clear() {
   // clear all fields
-  this->__fbthrift_field_MyIncludedInt = static_cast<::a::different::ns::IncludedInt64>(42);
+  this->__fbthrift_field_MyIncludedInt = ::a::different::ns::IncludedInt64();
   apache::thrift::clear(this->__fbthrift_field_MyIncludedStruct);
   if (this->ARefField) apache::thrift::clear(*this->ARefField);
   apache::thrift::clear(this->ARequiredField);
@@ -3081,8 +3081,8 @@ void AnnotatedStruct::__fbthrift_clear() {
   ::apache::thrift::apply_indirection(this->indirection_a) = 0;
   this->indirection_b.clear();
   this->indirection_c.clear();
-  this->iobuf_type_val = apache::thrift::StringTraits<folly::IOBuf>::fromStringLiteral("value");
-  this->iobuf_ptr_val = apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2");
+  this->iobuf_type_val = apache::thrift::StringTraits<folly::IOBuf>::fromStringLiteral("");
+  this->iobuf_ptr_val = apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::fromStringLiteral("");
   apache::thrift::clear(this->struct_struct);
   __isset = {};
 }

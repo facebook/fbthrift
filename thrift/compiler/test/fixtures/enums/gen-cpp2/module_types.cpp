@@ -103,9 +103,9 @@ SomeStruct::SomeStruct(apache::thrift::FragileConstructor, ::cpp2::Metasyntactic
 
 void SomeStruct::__fbthrift_clear() {
   // clear all fields
-  this->__fbthrift_field_reasonable =  ::cpp2::Metasyntactic::FOO;
-  this->__fbthrift_field_fine =  ::cpp2::Metasyntactic::BAR;
-  this->__fbthrift_field_questionable = static_cast< ::cpp2::Metasyntactic>(-1);
+  this->__fbthrift_field_reasonable = ::cpp2::Metasyntactic();
+  this->__fbthrift_field_fine = ::cpp2::Metasyntactic();
+  this->__fbthrift_field_questionable = ::cpp2::Metasyntactic();
   this->__fbthrift_field_tags.clear();
   __isset = {};
 }

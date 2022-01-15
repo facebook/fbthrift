@@ -149,7 +149,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::test::fixtures::enumstr
 void MyStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_myEnum = ::test::fixtures::enumstrict::MyEnum();
-  this->__fbthrift_field_myBigEnum =  ::test::fixtures::enumstrict::MyBigEnum::ONE;
+  this->__fbthrift_field_myBigEnum = ::test::fixtures::enumstrict::MyBigEnum();
   __isset = {};
 }
 

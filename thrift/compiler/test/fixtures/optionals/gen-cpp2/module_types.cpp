@@ -228,7 +228,7 @@ void Vehicle::__fbthrift_clear() {
   this->__fbthrift_field_licensePlate = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_description = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->__fbthrift_field_hasAC = static_cast<bool>(false);
+  this->__fbthrift_field_hasAC = bool();
   __isset = {};
 }
 

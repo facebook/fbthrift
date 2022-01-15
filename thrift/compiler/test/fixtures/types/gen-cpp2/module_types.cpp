@@ -700,8 +700,8 @@ MyStructWithForwardRefEnum::MyStructWithForwardRefEnum(apache::thrift::FragileCo
 
 void MyStructWithForwardRefEnum::__fbthrift_clear() {
   // clear all fields
-  this->__fbthrift_field_a =  ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO;
-  this->__fbthrift_field_b =  ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO;
+  this->__fbthrift_field_a = ::apache::thrift::fixtures::types::MyForwardRefEnum();
+  this->__fbthrift_field_b = ::apache::thrift::fixtures::types::MyForwardRefEnum();
   __isset = {};
 }
 
@@ -880,7 +880,7 @@ TrivialNestedWithDefault::TrivialNestedWithDefault(apache::thrift::FragileConstr
 
 void TrivialNestedWithDefault::__fbthrift_clear() {
   // clear all fields
-  this->__fbthrift_field_z = static_cast<::std::int32_t>(4);
+  this->__fbthrift_field_z = ::std::int32_t();
   apache::thrift::clear(this->__fbthrift_field_n);
   __isset = {};
 }
@@ -1118,7 +1118,7 @@ ComplexNestedWithDefault::ComplexNestedWithDefault(apache::thrift::FragileConstr
 
 void ComplexNestedWithDefault::__fbthrift_clear() {
   // clear all fields
-  this->__fbthrift_field_z = apache::thrift::StringTraits<std::string>::fromStringLiteral("4");
+  this->__fbthrift_field_z = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   apache::thrift::clear(this->__fbthrift_field_n);
   __isset = {};
 }
@@ -2286,8 +2286,8 @@ NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(apache::thrift::FragileCons
 void NoexceptMoveComplexStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_MyBoolField = bool();
-  this->__fbthrift_field_MyIntField = static_cast<::std::int64_t>(12);
-  this->__fbthrift_field_MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("test");
+  this->__fbthrift_field_MyIntField = ::std::int64_t();
+  this->__fbthrift_field_MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_MyStringField2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_MyBinaryField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_MyBinaryField2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");

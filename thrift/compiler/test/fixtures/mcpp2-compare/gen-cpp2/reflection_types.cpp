@@ -44,7 +44,7 @@ ReflectionStruct::ReflectionStruct(apache::thrift::FragileConstructor, ::std::in
 
 void ReflectionStruct::__fbthrift_clear() {
   // clear all fields
-  this->__fbthrift_field_fieldA = static_cast<::std::int32_t>(5);
+  this->__fbthrift_field_fieldA = ::std::int32_t();
   __isset = {};
 }
 

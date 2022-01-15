@@ -135,9 +135,9 @@ void containerStruct2::__fbthrift_clear() {
   this->req_fieldC.clear();
   this->__fbthrift_field_opt_fieldC.clear();
   this->__fbthrift_field_fieldD = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->__fbthrift_field_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
-  this->req_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
-  this->__fbthrift_field_opt_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
+  this->__fbthrift_field_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->req_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_opt_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 

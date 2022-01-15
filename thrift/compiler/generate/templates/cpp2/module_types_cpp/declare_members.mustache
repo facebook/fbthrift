@@ -65,7 +65,10 @@ void <%struct:name%>::__fbthrift_clear() {
   TODO(dokwon): Replace special cases after replacing StringTraits and cpp.indirection with cpp.adapter.
     %>  <% > types/apply_indirection_pre%><% > field/member%><% > types/apply_indirection_post%> = <%!
     %><%#field:cpp_adapter%>decltype(<% > field/member%>)()<%/field:cpp_adapter%><%!
-    %><%^field:cpp_adapter%><% > field/default%><%/field:cpp_adapter%>;<%!
+    %><%^field:cpp_adapter%><%!
+      %><%#field:deprecated_clear?%><% > field/default%><%/field:deprecated_clear?%><%!
+      %><%^field:deprecated_clear?%><% > field/intrinsic_default%><%/field:deprecated_clear?%><%!
+    %><%/field:cpp_adapter%>;<%!
   %><%/field:cpp_ref?%><%!
   %><%#field:cpp_ref?%><%!
     %><%^field:optional?%><%!
