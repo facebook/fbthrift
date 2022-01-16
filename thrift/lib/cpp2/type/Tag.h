@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Meta Platforms, Inc. and affiliates.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -75,18 +75,18 @@ struct exception_t : exception_c {};
 template <
     typename ValTag,
     // the cpp template type
-    template <typename...> class ListT = detail::DefaultT>
+    template <typename...> typename ListT = detail::DefaultT>
 struct list : list_c {};
 template <
     typename KeyTag,
     // the cpp template type
-    template <typename...> class SetT = detail::DefaultT>
+    template <typename...> typename SetT = detail::DefaultT>
 struct set : set_c {};
 template <
     typename KeyTag,
     typename ValTag,
     // the cpp template type
-    template <typename...> class MapT = detail::DefaultT>
+    template <typename...> typename MapT = detail::DefaultT>
 struct map : map_c {};
 
 // Extra compile-time metadata.

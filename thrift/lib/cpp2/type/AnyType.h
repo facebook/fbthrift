@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Meta Platforms, Inc. and affiliates.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ class AnyType {
  public:
   constexpr AnyType() noexcept = default; // The 'void' type.
 
-  AnyType(const AnyType&) = default;
+  AnyType(const AnyType&) noexcept = default;
   AnyType(AnyType&&) noexcept = default;
 
   template <typename Tag, typename = std::enable_if_t<is_concrete_v<Tag>>>
@@ -91,7 +91,7 @@ class AnyType {
     return static_cast<BaseType>(type_.index());
   }
 
-  AnyType& operator=(const AnyType&) = default;
+  AnyType& operator=(const AnyType&) noexcept = default;
   AnyType& operator=(AnyType&&) noexcept = default;
 
  private:
