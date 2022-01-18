@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,12 +57,21 @@ int32_t TestStreamServiceMock::echo(int32_t value) {
 }
 
 ServerStream<int32_t> TestStreamServiceMock::range(int32_t from, int32_t to) {
+#if FOLLY_HAS_COROUTINES
+  return folly::coro::co_invoke(
+      [from, to]() mutable -> folly::coro::AsyncGenerator<int32_t&&> {
+        for (; from < to; ++from) {
+          co_yield int(from);
+        }
+      });
+#else
   auto [stream, publisher] = ServerStream<int32_t>::createPublisher();
   for (; from < to; ++from) {
     publisher.next(from);
   }
   std::move(publisher).complete();
   return std::move(stream);
+#endif
 }
 
 ServerStream<std::string> TestStreamServiceMock::buffers(int32_t count) {
