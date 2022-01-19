@@ -25,7 +25,9 @@
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
 
-namespace apache::thrift::type {
+namespace apache {
+namespace thrift {
+namespace type {
 class AnyType;
 
 namespace detail {
@@ -151,4 +153,6 @@ template <typename T, typename Tag>
 struct AnyTypeHelper<cpp_type<T, Tag>> : AnyTypeHelper<Tag> {};
 
 } // namespace detail
-} // namespace apache::thrift::type
+} // namespace type
+} // namespace thrift
+} // namespace apache

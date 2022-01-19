@@ -18,7 +18,9 @@
 
 #include <thrift/lib/cpp2/op/detail/Hash.h>
 
-namespace apache::thrift::op {
+namespace apache {
+namespace thrift {
+namespace op {
 
 template <typename Tag>
 using Hash = detail::Hash<Tag>;
@@ -33,4 +35,6 @@ using Hash = detail::Hash<Tag>;
 template <typename Tag>
 constexpr Hash<Tag> hash;
 
-} // namespace apache::thrift::op
+} // namespace op
+} // namespace thrift
+} // namespace apache

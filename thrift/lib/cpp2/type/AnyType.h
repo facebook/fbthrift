@@ -22,7 +22,9 @@
 #include <thrift/lib/cpp2/type/ThriftType.h>
 #include <thrift/lib/cpp2/type/detail/AnyType.h>
 
-namespace apache::thrift::type {
+namespace apache {
+namespace thrift {
+namespace type {
 
 // A class that can represent any concrete Thrift type.
 //
@@ -145,4 +147,6 @@ struct AnyTypeHelper<map<KeyTag, ValTag, MapT>> {
 };
 
 } // namespace detail
-} // namespace apache::thrift::type
+} // namespace type
+} // namespace thrift
+} // namespace apache

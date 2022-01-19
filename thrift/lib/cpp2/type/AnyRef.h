@@ -28,7 +28,9 @@
 #include <thrift/lib/cpp2/type/Traits.h>
 #include <thrift/lib/cpp2/type/detail/ThriftTypeInfo.h>
 
-namespace apache::thrift::type {
+namespace apache {
+namespace thrift {
+namespace type {
 
 // A light weight (pass-by-value), non-owning reference to a Thrift value.
 //
@@ -126,4 +128,6 @@ inline const detail::ThriftTypeInfo& AnyRef::ensureMutable() {
   return info_->type;
 }
 
-} // namespace apache::thrift::type
+} // namespace type
+} // namespace thrift
+} // namespace apache

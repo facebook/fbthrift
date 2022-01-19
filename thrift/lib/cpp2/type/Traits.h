@@ -22,7 +22,9 @@
 #include <fatal/type/cat.h>
 #include <thrift/lib/cpp2/type/detail/Traits.h>
 
-namespace apache::thrift::type {
+namespace apache {
+namespace thrift {
+namespace type {
 
 // The default standard type associated with the given concrete ThriftType.
 //
@@ -78,4 +80,6 @@ using if_container = detail::if_contains<container_types, T, R>;
 template <typename T, typename R = void>
 using if_composite = detail::if_contains<composite_types, T, R>;
 
-} // namespace apache::thrift::type
+} // namespace type
+} // namespace thrift
+} // namespace apache

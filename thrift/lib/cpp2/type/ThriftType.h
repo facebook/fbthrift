@@ -21,7 +21,9 @@
 #include <thrift/lib/cpp2/type/Tag.h>
 
 // Helpers for working with thrift type tags.
-namespace apache::thrift::type {
+namespace apache {
+namespace thrift {
+namespace type {
 
 // If a given type tag refers to concrete type and not a class of types.
 //
@@ -235,4 +237,6 @@ template <typename T, typename Tag, typename CTag>
 constexpr inline bool is_a_v<cpp_type<T, Tag>, cpp_type<T, CTag>> =
     is_a_v<Tag, CTag>;
 
-} // namespace apache::thrift::type
+} // namespace type
+} // namespace thrift
+} // namespace apache

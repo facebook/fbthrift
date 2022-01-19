@@ -25,7 +25,9 @@
 // For example, `type::list_c` represents a list of any type,
 // `type::list<type::enum_c>` represents a list of any enum type, and
 // `type::list<type::enum_t<MyEnum>>` represents a list of MyEnums.
-namespace apache::thrift::type {
+namespace apache {
+namespace thrift {
+namespace type {
 
 namespace detail {
 // A place holder for the default template for a container.
@@ -106,4 +108,6 @@ template <
     typename Tag> // the thrift type being overridden
 struct cpp_type : Tag {};
 
-} // namespace apache::thrift::type
+} // namespace type
+} // namespace thrift
+} // namespace apache

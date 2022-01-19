@@ -19,7 +19,9 @@
 
 #include <thrift/lib/cpp2/op/detail/Compare.h>
 
-namespace apache::thrift::op {
+namespace apache {
+namespace thrift {
+namespace op {
 
 // A binary operator that returns true iff the given Thrift values are equal to
 // each other.
@@ -47,4 +49,6 @@ struct IdenticalTo : detail::IdenticalTo<Tag> {};
 template <typename Tag>
 constexpr IdenticalTo<Tag> identical;
 
-} // namespace apache::thrift::op
+} // namespace op
+} // namespace thrift
+} // namespace apache

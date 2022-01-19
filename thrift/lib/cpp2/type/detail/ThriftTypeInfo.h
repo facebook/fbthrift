@@ -25,7 +25,10 @@
 #include <thrift/lib/cpp2/op/Compare.h>
 #include <thrift/lib/cpp2/type/Traits.h>
 
-namespace apache::thrift::type::detail {
+namespace apache {
+namespace thrift {
+namespace type {
+namespace detail {
 
 // Runtime type information for a Thrift type.
 struct ThriftTypeInfo {
@@ -104,4 +107,7 @@ const ThriftTypeInfo& getTypeInfo() {
   return getTypeInfoImpl<Tag, std::decay_t<T>>();
 }
 
-} // namespace apache::thrift::type::detail
+} // namespace detail
+} // namespace type
+} // namespace thrift
+} // namespace apache

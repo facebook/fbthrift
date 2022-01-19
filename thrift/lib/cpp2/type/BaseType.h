@@ -24,7 +24,9 @@
 #include <thrift/lib/cpp/protocol/TType.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
 
-namespace apache::thrift::type {
+namespace apache {
+namespace thrift {
+namespace type {
 
 enum class BaseType {
   Void = 0,
@@ -203,4 +205,6 @@ constexpr BaseType toBaseType(protocol::TType type) {
   }
 }
 
-} // namespace apache::thrift::type
+} // namespace type
+} // namespace thrift
+} // namespace apache

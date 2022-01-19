@@ -23,7 +23,10 @@
 #include <thrift/lib/cpp2/type/ThriftType.h>
 #include <thrift/lib/cpp2/type/Traits.h>
 
-namespace apache::thrift::type::detail {
+namespace apache {
+namespace thrift {
+namespace type {
+namespace detail {
 
 // Helper to get human readable name for the type tag.
 template <typename Tag>
@@ -124,4 +127,7 @@ struct GetName<adapted<Adapter, Tag>>
 template <typename T, typename Tag>
 struct GetName<cpp_type<T, Tag>> : PrettyName<T> {};
 
-} // namespace apache::thrift::type::detail
+} // namespace detail
+} // namespace type
+} // namespace thrift
+} // namespace apache

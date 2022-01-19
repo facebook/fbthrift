@@ -25,7 +25,10 @@
 #include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/lib/cpp2/type/Traits.h>
 
-namespace apache::thrift::op::detail {
+namespace apache {
+namespace thrift {
+namespace op {
+namespace detail {
 
 // By default, pass the value directly to the accumulator.
 template <typename Accumulator, typename T>
@@ -107,4 +110,7 @@ struct Hash {
   }
 };
 
-} // namespace apache::thrift::op::detail
+} // namespace detail
+} // namespace op
+} // namespace thrift
+} // namespace apache

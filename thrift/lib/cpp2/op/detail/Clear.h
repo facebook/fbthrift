@@ -24,7 +24,10 @@
 #include <thrift/lib/cpp2/type/ThriftType.h>
 #include <thrift/lib/cpp2/type/Traits.h>
 
-namespace apache::thrift::op::detail {
+namespace apache {
+namespace thrift {
+namespace op {
+namespace detail {
 
 // C++'s intrinsic default for the underlying native type, is the intrisitic
 // default for for all unstructured types.
@@ -99,4 +102,7 @@ struct Empty<type::adapted<Adapter, Tag>> {
   // TODO(afuller): implement.
 };
 
-} // namespace apache::thrift::op::detail
+} // namespace detail
+} // namespace op
+} // namespace thrift
+} // namespace apache

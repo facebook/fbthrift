@@ -29,7 +29,10 @@
 #include <thrift/lib/cpp2/type/BaseType.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
 
-namespace apache::thrift::type::detail {
+namespace apache {
+namespace thrift {
+namespace type {
+namespace detail {
 
 // All the traits for the given tag.
 template <typename Tag>
@@ -329,4 +332,7 @@ template <typename T, typename Tag>
 struct traits<cpp_type<T, Tag>>
     : concrete_type<typename traits<Tag>::standard_type, T> {};
 
-} // namespace apache::thrift::type::detail
+} // namespace detail
+} // namespace type
+} // namespace thrift
+} // namespace apache

@@ -23,7 +23,9 @@
 #include <folly/lang/Exception.h>
 #include <thrift/lib/cpp2/type/UniversalHashAlgorithm.h>
 
-namespace apache::thrift::type {
+namespace apache {
+namespace thrift {
+namespace type {
 using hash_size_t = int8_t;
 inline constexpr hash_size_t kDisableUniversalHash = 0;
 
@@ -97,4 +99,6 @@ auto findByUniversalHash(C& sortedMap, const K& universalHashPrefix) {
   return itr;
 }
 
-} // namespace apache::thrift::type
+} // namespace type
+} // namespace thrift
+} // namespace apache

@@ -25,7 +25,10 @@
 #include <thrift/lib/cpp2/type/ThriftType.h>
 #include <thrift/lib/cpp2/type/Traits.h>
 
-namespace apache::thrift::op::detail {
+namespace apache {
+namespace thrift {
+namespace op {
+namespace detail {
 
 template <typename Tag>
 struct EqualTo {
@@ -171,4 +174,7 @@ struct IdenticalTo<type::map<KeyTag, ValTag, MapT>> {
   }
 };
 
-} // namespace apache::thrift::op::detail
+} // namespace detail
+} // namespace op
+} // namespace thrift
+} // namespace apache

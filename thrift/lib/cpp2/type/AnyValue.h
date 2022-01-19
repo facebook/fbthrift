@@ -20,7 +20,9 @@
 #include <thrift/lib/cpp2/type/Traits.h>
 #include <thrift/lib/cpp2/type/detail/AnyData.h>
 
-namespace apache::thrift::type {
+namespace apache {
+namespace thrift {
+namespace type {
 
 // A type-erased Thrift value.
 class AnyValue : public detail::AnyValueBase {
@@ -91,4 +93,6 @@ class AnyValue : public detail::AnyValueBase {
   using Base::Base;
 };
 
-} // namespace apache::thrift::type
+} // namespace type
+} // namespace thrift
+} // namespace apache

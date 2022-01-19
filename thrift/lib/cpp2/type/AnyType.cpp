@@ -18,11 +18,15 @@
 
 #include <thrift/lib/cpp2/type/UniversalName.h>
 
-namespace apache::thrift::type {
+namespace apache {
+namespace thrift {
+namespace type {
 
 std::string&& AnyType::checkName(std::string&& name) {
   validateUniversalName(name);
   return std::move(name);
 }
 
-} // namespace apache::thrift::type
+} // namespace type
+} // namespace thrift
+} // namespace apache

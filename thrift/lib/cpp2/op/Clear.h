@@ -20,7 +20,9 @@
 #include <thrift/lib/cpp2/op/detail/Clear.h>
 #include <thrift/lib/cpp2/type/Traits.h>
 
-namespace apache::thrift::op {
+namespace apache {
+namespace thrift {
+namespace op {
 
 // Returns true iff the given value is 'empty', and not serialized in a
 // 'terse' context.
@@ -60,4 +62,6 @@ constexpr decltype(auto) getIntrinsicDefault() {
 template <typename Tag>
 constexpr detail::Clear<Tag> clear;
 
-} // namespace apache::thrift::op
+} // namespace op
+} // namespace thrift
+} // namespace apache

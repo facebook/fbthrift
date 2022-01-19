@@ -24,7 +24,10 @@
 #include <thrift/lib/cpp2/op/Compare.h>
 #include <thrift/lib/cpp2/type/Traits.h>
 
-namespace apache::thrift::type::detail {
+namespace apache {
+namespace thrift {
+namespace type {
+namespace detail {
 
 // The interface every data holder implements.
 struct IAnyData {
@@ -174,4 +177,7 @@ using AnyValueBase = AnyBase<IAnyData>;
 // TODO(afuller): Implement AnyRef.
 // using AnyaRefBase = AnyBase<IAnyData&>;
 
-} // namespace apache::thrift::type::detail
+} // namespace detail
+} // namespace type
+} // namespace thrift
+} // namespace apache
