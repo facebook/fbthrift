@@ -33,7 +33,7 @@ void EnumMetadata<::apache::thrift::fixtures::types::has_bitwise_ops>::gen(Thrif
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name_ref() = "module.has_bitwise_ops";
   using EnumTraits = TEnumTraits<::apache::thrift::fixtures::types::has_bitwise_ops>;
-  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+  for (std::size_t i = 0; i != EnumTraits::size; ++i) {
     enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
@@ -45,7 +45,7 @@ void EnumMetadata<::apache::thrift::fixtures::types::is_unscoped>::gen(ThriftMet
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name_ref() = "module.is_unscoped";
   using EnumTraits = TEnumTraits<::apache::thrift::fixtures::types::is_unscoped>;
-  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+  for (std::size_t i = 0; i != EnumTraits::size; ++i) {
     enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
@@ -57,7 +57,7 @@ void EnumMetadata<::apache::thrift::fixtures::types::MyForwardRefEnum>::gen(Thri
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name_ref() = "module.MyForwardRefEnum";
   using EnumTraits = TEnumTraits<::apache::thrift::fixtures::types::MyForwardRefEnum>;
-  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+  for (std::size_t i = 0; i != EnumTraits::size; ++i) {
     enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
@@ -69,7 +69,7 @@ void EnumMetadata<::apache::thrift::fixtures::types::MyEnumA>::gen(ThriftMetadat
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name_ref() = "module.MyEnumA";
   using EnumTraits = TEnumTraits<::apache::thrift::fixtures::types::MyEnumA>;
-  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+  for (std::size_t i = 0; i != EnumTraits::size; ++i) {
     enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }

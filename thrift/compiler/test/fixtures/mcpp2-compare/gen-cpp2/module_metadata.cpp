@@ -33,7 +33,7 @@ void EnumMetadata<::some::valid::ns::MyEnumA>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name_ref() = "module.MyEnumA";
   using EnumTraits = TEnumTraits<::some::valid::ns::MyEnumA>;
-  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+  for (std::size_t i = 0; i != EnumTraits::size; ++i) {
     enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
@@ -45,7 +45,7 @@ void EnumMetadata<::some::valid::ns::AnnotatedEnum>::gen(ThriftMetadata& metadat
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name_ref() = "module.AnnotatedEnum";
   using EnumTraits = TEnumTraits<::some::valid::ns::AnnotatedEnum>;
-  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+  for (std::size_t i = 0; i != EnumTraits::size; ++i) {
     enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
@@ -57,7 +57,7 @@ void EnumMetadata<::some::valid::ns::AnnotatedEnum2>::gen(ThriftMetadata& metada
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name_ref() = "module.AnnotatedEnum2";
   using EnumTraits = TEnumTraits<::some::valid::ns::AnnotatedEnum2>;
-  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+  for (std::size_t i = 0; i != EnumTraits::size; ++i) {
     enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
@@ -69,7 +69,7 @@ void EnumMetadata<::some::valid::ns::MyEnumB>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name_ref() = "module.MyEnumB";
   using EnumTraits = TEnumTraits<::some::valid::ns::MyEnumB>;
-  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+  for (std::size_t i = 0; i != EnumTraits::size; ++i) {
     enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }

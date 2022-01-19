@@ -33,7 +33,7 @@ void EnumMetadata<::py3::simple::AnEnum>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name_ref() = "module.AnEnum";
   using EnumTraits = TEnumTraits<::py3::simple::AnEnum>;
-  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+  for (std::size_t i = 0; i != EnumTraits::size; ++i) {
     enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
@@ -45,7 +45,7 @@ void EnumMetadata<::py3::simple::Flags>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name_ref() = "module.Flags";
   using EnumTraits = TEnumTraits<::py3::simple::Flags>;
-  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+  for (std::size_t i = 0; i != EnumTraits::size; ++i) {
     enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }

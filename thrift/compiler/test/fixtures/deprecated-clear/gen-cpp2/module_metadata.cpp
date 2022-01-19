@@ -33,7 +33,7 @@ void EnumMetadata<::apache::thrift::test::MyEnum>::gen(ThriftMetadata& metadata)
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name_ref() = "module.MyEnum";
   using EnumTraits = TEnumTraits<::apache::thrift::test::MyEnum>;
-  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+  for (std::size_t i = 0; i != EnumTraits::size; ++i) {
     enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }

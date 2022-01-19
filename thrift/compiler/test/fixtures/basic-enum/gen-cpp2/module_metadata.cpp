@@ -33,7 +33,7 @@ void EnumMetadata<::test::fixtures::enumstrict::EmptyEnum>::gen(ThriftMetadata& 
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name_ref() = "module.EmptyEnum";
   using EnumTraits = TEnumTraits<::test::fixtures::enumstrict::EmptyEnum>;
-  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+  for (std::size_t i = 0; i != EnumTraits::size; ++i) {
     enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
@@ -45,7 +45,7 @@ void EnumMetadata<::test::fixtures::enumstrict::MyEnum>::gen(ThriftMetadata& met
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name_ref() = "module.MyEnum";
   using EnumTraits = TEnumTraits<::test::fixtures::enumstrict::MyEnum>;
-  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+  for (std::size_t i = 0; i != EnumTraits::size; ++i) {
     enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
@@ -57,7 +57,7 @@ void EnumMetadata<::test::fixtures::enumstrict::MyBigEnum>::gen(ThriftMetadata& 
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name_ref() = "module.MyBigEnum";
   using EnumTraits = TEnumTraits<::test::fixtures::enumstrict::MyBigEnum>;
-  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+  for (std::size_t i = 0; i != EnumTraits::size; ++i) {
     enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }

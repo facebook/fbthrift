@@ -33,7 +33,7 @@ void EnumMetadata<::cpp2::MyEnum>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name_ref() = "module.MyEnum";
   using EnumTraits = TEnumTraits<::cpp2::MyEnum>;
-  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+  for (std::size_t i = 0; i != EnumTraits::size; ++i) {
     enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
   enum_metadata.structured_annotations_ref()->push_back(*cvStruct("module.structured_annotation_inline", {{"count", cvInteger(4)}}).cv_struct_ref());

@@ -33,7 +33,7 @@ void EnumMetadata<::test::fixtures::tablebased::ExampleEnum>::gen(ThriftMetadata
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name_ref() = "module.ExampleEnum";
   using EnumTraits = TEnumTraits<::test::fixtures::tablebased::ExampleEnum>;
-  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+  for (std::size_t i = 0; i != EnumTraits::size; ++i) {
     enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }

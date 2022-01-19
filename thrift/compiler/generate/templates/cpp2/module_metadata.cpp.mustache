@@ -45,7 +45,7 @@ void EnumMetadata<<% > common/namespace_cpp2%><%enum:cpp_name%>>::gen(ThriftMeta
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name_ref() = "<%program:name%>.<%enum:name%>";
   using EnumTraits = TEnumTraits<<% > common/namespace_cpp2%><%enum:cpp_name%>>;
-  for (std::size_t i = 0; i < EnumTraits::size; ++i) {
+  for (std::size_t i = 0; i != EnumTraits::size; ++i) {
     enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 <%#enum:structured_annotations%>
