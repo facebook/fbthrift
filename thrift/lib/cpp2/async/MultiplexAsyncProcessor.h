@@ -48,7 +48,7 @@ namespace apache::thrift {
  * (WildcardMethodMetadataMap, <any>)
  *    All methods routed to A. B is unused.
  *
- * For a list of services, the semantics are the same as as left-folding using
+ * For a list of services, the semantics are the same as left-folding using
  * the logic above.
  *
  * Notice that these semantics imply that an AsyncProcessorFactory that returns
