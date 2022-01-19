@@ -75,6 +75,11 @@ Foo::Foo() :
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_intField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(__fbthrift_field_optionalIntField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 3>(__fbthrift_field_intFieldWithDefault, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter2, 4>(__fbthrift_field_setField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter2, 5>(__fbthrift_field_optionalSetField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter3, 6>(__fbthrift_field_mapField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter3, 7>(__fbthrift_field_optionalMapField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 8>(__fbthrift_field_binaryField, *this);
 }
 
 
@@ -421,6 +426,10 @@ Bar& Bar::operator=(const Bar& src) {
 }
 
 Bar::Bar() {
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_structField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(__fbthrift_field_optionalStructField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 5>(__fbthrift_field_unionField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 6>(__fbthrift_field_optionalUnionField, *this);
 }
 
 

@@ -441,6 +441,8 @@ MyStruct::MyStruct() :
       __fbthrift_field_MyMapEnumAndInt(static_cast<::std::map<::some::valid::ns::MyEnumA, ::std::string>>(std::initializer_list<std::pair<const ::some::valid::ns::MyEnumA, ::std::string>>{{ ::some::valid::ns::MyEnumA::fieldA, apache::thrift::StringTraits<std::string>::fromStringLiteral("fieldA")},
   { ::some::valid::ns::MyEnumA::fieldC, apache::thrift::StringTraits<std::string>::fromStringLiteral("fieldC")},
   {static_cast< ::some::valid::ns::MyEnumA>(9), apache::thrift::StringTraits<std::string>::fromStringLiteral("nothing")}})) {
+  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 10>(__fbthrift_field_MyCustomField, *this);
+  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 11>(__fbthrift_field_MyOptCustomField, *this);
 }
 
 
@@ -1269,6 +1271,8 @@ AnException::AnException() :
   2,
   3})),
       enum_field() {
+  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 20>(MyCustomField, *this);
+  ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 21>(MyOptCustomField, *this);
 }
 
 AnException::AnException(std::string __message) : AnException() {

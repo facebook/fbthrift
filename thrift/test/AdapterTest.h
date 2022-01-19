@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -123,34 +123,38 @@ struct IndirectionAdapter {
   }
 };
 
+template <typename T>
 struct AdaptedWithContext {
-  int64_t value = 0;
+  T value = {};
   int16_t fieldId = 0;
   std::string* meta = nullptr;
 };
 
+template <typename T>
 inline bool operator==(
-    const AdaptedWithContext& lhs, const AdaptedWithContext& rhs) {
+    const AdaptedWithContext<T>& lhs, const AdaptedWithContext<T>& rhs) {
   return lhs.value == rhs.value;
 }
 
+template <typename T>
 inline bool operator<(
-    const AdaptedWithContext& lhs, const AdaptedWithContext& rhs) {
+    const AdaptedWithContext<T>& lhs, const AdaptedWithContext<T>& rhs) {
   return lhs.value < rhs.value;
 }
 
 struct AdapterWithContext {
-  template <typename Context>
-  static void construct(AdaptedWithContext& field, Context&& ctx) {
+  template <typename T, typename Context>
+  static void construct(AdaptedWithContext<T>& field, Context&& ctx) {
     field.meta = &*ctx.object.meta_ref();
   }
 
-  template <typename Context>
-  static AdaptedWithContext fromThriftField(int64_t value, Context&& ctx) {
+  template <typename T, typename Context>
+  static AdaptedWithContext<T> fromThriftField(T value, Context&& ctx) {
     return {value, Context::kFieldId, &*ctx.object.meta_ref()};
   }
 
-  static int64_t toThrift(const AdaptedWithContext& adapted) {
+  template <typename T>
+  static T toThrift(const AdaptedWithContext<T>& adapted) {
     return adapted.value;
   }
 };

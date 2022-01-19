@@ -27,7 +27,7 @@
     %><%/field:type%><%!
   %><%/struct:explicitly_constructed_fields%><%!
 %> {
-  <%#struct:explicitly_constructed_fields%><%#field:cpp_adapter%>
+  <%#struct:fields%><%#field:cpp_adapter%>
   ::apache::thrift::adapt_detail::construct<<%field:cpp_adapter%>, <%field:key%>>(<%field:cpp_storage_name%>, *this);
-  <%/field:cpp_adapter%><%/struct:explicitly_constructed_fields%>
+  <%/field:cpp_adapter%><%/struct:fields%>
 }

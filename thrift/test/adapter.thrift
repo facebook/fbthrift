@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,6 +72,8 @@ struct AdaptTestStruct {
   4: i64 data;
   5: string meta;
   6: IndirectionString indirectionString;
+  @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
+  7: string string_data;
 }
 
 enum AdaptedEnum {

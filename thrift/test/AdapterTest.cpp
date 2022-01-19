@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -611,23 +611,32 @@ TEST(AdaptTest, AdapterWithContext) {
                 basic::AdaptTestStruct>);
 
   auto obj = basic::AdaptTestStruct();
-  EXPECT_EQ(obj.data_ref()->meta, &*obj.meta_ref());
+  EXPECT_EQ(obj.string_data()->meta, &*obj.meta_ref());
+  EXPECT_EQ(obj.string_data()->meta, &*obj.meta_ref());
 
   auto copy = basic::AdaptTestStruct(obj);
-  EXPECT_EQ(copy.data_ref()->meta, &*copy.meta_ref());
+  EXPECT_EQ(copy.string_data()->meta, &*copy.meta_ref());
+  EXPECT_EQ(copy.string_data()->meta, &*copy.meta_ref());
 
   auto move = basic::AdaptTestStruct(std::move(copy));
-  EXPECT_EQ(move.data_ref()->meta, &*move.meta_ref());
+  EXPECT_EQ(move.string_data()->meta, &*move.meta_ref());
+  EXPECT_EQ(move.string_data()->meta, &*move.meta_ref());
 
   obj.data_ref() = {};
   obj.data_ref()->value = 42;
   obj.meta_ref() = "foo";
+  obj.string_data()->value = "42";
+
   auto serialized = CompactSerializer::serialize<std::string>(obj);
   auto obj2 = basic::AdaptTestStruct();
   CompactSerializer::deserialize(serialized, obj2);
+
   EXPECT_EQ(obj2.data_ref()->value, 42);
   EXPECT_EQ(obj2.data_ref()->fieldId, 4);
   EXPECT_EQ(*obj2.data_ref()->meta, "foo");
+  EXPECT_EQ(obj2.string_data()->value, "42");
+  EXPECT_EQ(obj2.string_data()->fieldId, 7);
+  EXPECT_EQ(*obj2.string_data()->meta, "foo");
 }
 
 } // namespace apache::thrift::test
