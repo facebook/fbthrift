@@ -92,14 +92,26 @@ struct AdaptTemplatedTestStruct {
   5: AdaptedLong adaptedLong;
   6: AdaptedDouble adaptedDouble;
   7: AdaptedString adaptedString;
-  8: AdaptedBool adaptedBoolDefault = true;
-  9: AdaptedByte adaptedByteDefault = 1;
-  10: AdaptedShort adaptedShortDefault = 2;
-  11: AdaptedInteger adaptedIntegerDefault = 3;
-  12: AdaptedLong adaptedLongDefault = 4;
-  13: AdaptedDouble adaptedDoubleDefault = 5;
-  14: AdaptedString adaptedStringDefault = "6";
-  15: AdaptedEnum adaptedEnum = AdaptedEnum.One;
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+  8: list<i64> adaptedList;
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+  9: set<i64> adaptedSet;
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+  10: map<i64, i64> adaptedMap;
+  11: AdaptedBool adaptedBoolDefault = true;
+  12: AdaptedByte adaptedByteDefault = 1;
+  13: AdaptedShort adaptedShortDefault = 2;
+  14: AdaptedInteger adaptedIntegerDefault = 3;
+  15: AdaptedLong adaptedLongDefault = 4;
+  16: AdaptedDouble adaptedDoubleDefault = 5;
+  17: AdaptedString adaptedStringDefault = "6";
+  18: AdaptedEnum adaptedEnum = AdaptedEnum.One;
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+  19: list<i64> adaptedListDefault = [1];
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+  20: set<i64> adaptedSetDefault = [1];
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+  21: map<i64, i64> adaptedMapDefault = {1: 1};
 }
 
 struct AdaptTemplatedNestedTestStruct {

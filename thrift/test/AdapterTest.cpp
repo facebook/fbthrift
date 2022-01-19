@@ -17,7 +17,11 @@
 #include <thrift/test/AdapterTest.h>
 
 #include <chrono>
+#include <cstdint>
 #include <limits>
+#include <map>
+#include <set>
+#include <vector>
 
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/Adapt.h>
@@ -361,6 +365,7 @@ TEST_F(AdapterTest, UnionCodeGen_Custom) {
 
 TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedTestStruct) {
   auto obj = AdaptTemplatedTestStruct();
+  auto int_map = std::map<int64_t, int64_t>{{1, 1}};
   EXPECT_EQ(obj.adaptedBoolDefault_ref()->value, true);
   EXPECT_EQ(obj.adaptedByteDefault_ref()->value, 1);
   EXPECT_EQ(obj.adaptedShortDefault_ref()->value, 2);
@@ -368,6 +373,9 @@ TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedTestStruct) {
   EXPECT_EQ(obj.adaptedLongDefault_ref()->value, 4);
   EXPECT_EQ(obj.adaptedDoubleDefault_ref()->value, 5);
   EXPECT_EQ(obj.adaptedStringDefault_ref()->value, "6");
+  EXPECT_EQ(obj.adaptedListDefault()->value, std::vector<int64_t>{1});
+  EXPECT_EQ(obj.adaptedSetDefault()->value, std::set<int64_t>{1});
+  EXPECT_EQ(obj.adaptedMapDefault()->value, int_map);
 
   obj.adaptedBool_ref() = Wrapper<bool>{true};
   obj.adaptedByte_ref() = Wrapper<int8_t>{1};
@@ -376,6 +384,10 @@ TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedTestStruct) {
   obj.adaptedLong_ref() = Wrapper<int64_t>{1};
   obj.adaptedDouble_ref() = Wrapper<double>{2};
   obj.adaptedString_ref() = Wrapper<std::string>{"3"};
+  obj.adaptedList() = Wrapper<std::vector<int64_t>>{{1}};
+  obj.adaptedSet() = Wrapper<std::set<int64_t>>{{1}};
+  obj.adaptedMap() = Wrapper<std::map<int64_t, int64_t>>{{{1, 1}}};
+
   EXPECT_EQ(obj.adaptedBool_ref()->value, true);
   EXPECT_EQ(obj.adaptedByte_ref()->value, 1);
   EXPECT_EQ(obj.adaptedShort_ref()->value, 2);
@@ -383,6 +395,9 @@ TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedTestStruct) {
   EXPECT_EQ(obj.adaptedLong_ref()->value, 1);
   EXPECT_EQ(obj.adaptedDouble_ref()->value, 2);
   EXPECT_EQ(obj.adaptedString_ref()->value, "3");
+  EXPECT_EQ(obj.adaptedList()->value, std::vector<int64_t>{1});
+  EXPECT_EQ(obj.adaptedSet()->value, std::set<int64_t>{1});
+  EXPECT_EQ(obj.adaptedMap()->value, int_map);
 
   auto objs = CompactSerializer::serialize<std::string>(obj);
   AdaptTemplatedTestStruct objd;
@@ -394,6 +409,9 @@ TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedTestStruct) {
   EXPECT_EQ(objd.adaptedLong_ref()->value, 1);
   EXPECT_EQ(objd.adaptedDouble_ref()->value, 2);
   EXPECT_EQ(objd.adaptedString_ref()->value, "3");
+  EXPECT_EQ(obj.adaptedList()->value, std::vector<int64_t>{1});
+  EXPECT_EQ(obj.adaptedSet()->value, std::set<int64_t>{1});
+  EXPECT_EQ(obj.adaptedMap()->value, int_map);
   EXPECT_EQ(obj, objd);
 
   // Adapted fields reset to the intrinsic default.
@@ -405,10 +423,14 @@ TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedTestStruct) {
   EXPECT_EQ(obj.adaptedLongDefault_ref()->value, 0);
   EXPECT_EQ(obj.adaptedDoubleDefault_ref()->value, 0);
   EXPECT_EQ(obj.adaptedStringDefault_ref()->value, "");
+  EXPECT_TRUE(obj.adaptedListDefault()->value.empty());
+  EXPECT_TRUE(obj.adaptedSetDefault()->value.empty());
+  EXPECT_TRUE(obj.adaptedMapDefault()->value.empty());
 }
 
 TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedNestedTestStruct) {
   auto obj = AdaptTemplatedNestedTestStruct();
+  auto int_map = std::map<int64_t, int64_t>{{1, 1}};
   EXPECT_EQ(obj.adaptedStruct_ref()->adaptedBoolDefault_ref()->value, true);
   EXPECT_EQ(obj.adaptedStruct_ref()->adaptedByteDefault_ref()->value, 1);
   EXPECT_EQ(obj.adaptedStruct_ref()->adaptedShortDefault_ref()->value, 2);
@@ -416,6 +438,12 @@ TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedNestedTestStruct) {
   EXPECT_EQ(obj.adaptedStruct_ref()->adaptedLongDefault_ref()->value, 4);
   EXPECT_EQ(obj.adaptedStruct_ref()->adaptedDoubleDefault_ref()->value, 5);
   EXPECT_EQ(obj.adaptedStruct_ref()->adaptedStringDefault_ref()->value, "6");
+  EXPECT_EQ(
+      obj.adaptedStruct()->adaptedListDefault()->value,
+      std::vector<int64_t>{1});
+  EXPECT_EQ(
+      obj.adaptedStruct()->adaptedSetDefault()->value, std::set<int64_t>{1});
+  EXPECT_EQ(obj.adaptedStruct()->adaptedMapDefault()->value, int_map);
 
   obj.adaptedStruct_ref()->adaptedBool_ref() = Wrapper<bool>{true};
   obj.adaptedStruct_ref()->adaptedByte_ref() = Wrapper<int8_t>{1};
@@ -424,6 +452,10 @@ TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedNestedTestStruct) {
   obj.adaptedStruct_ref()->adaptedLong_ref() = Wrapper<int64_t>{1};
   obj.adaptedStruct_ref()->adaptedDouble_ref() = Wrapper<double>{2};
   obj.adaptedStruct_ref()->adaptedString_ref() = Wrapper<std::string>{"3"};
+  obj.adaptedStruct()->adaptedList() = Wrapper<std::vector<int64_t>>{{1}};
+  obj.adaptedStruct()->adaptedSet() = Wrapper<std::set<int64_t>>{{1}};
+  obj.adaptedStruct()->adaptedMap() =
+      Wrapper<std::map<int64_t, int64_t>>{{{1, 1}}};
 
   EXPECT_EQ(obj.adaptedStruct_ref()->adaptedBool_ref()->value, true);
   EXPECT_EQ(obj.adaptedStruct_ref()->adaptedByte_ref()->value, 1);
@@ -432,6 +464,9 @@ TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedNestedTestStruct) {
   EXPECT_EQ(obj.adaptedStruct_ref()->adaptedLong_ref()->value, 1);
   EXPECT_EQ(obj.adaptedStruct_ref()->adaptedDouble_ref()->value, 2);
   EXPECT_EQ(obj.adaptedStruct_ref()->adaptedString_ref()->value, "3");
+  EXPECT_EQ(obj.adaptedStruct()->adaptedList()->value, std::vector<int64_t>{1});
+  EXPECT_EQ(obj.adaptedStruct()->adaptedSet()->value, std::set<int64_t>{1});
+  EXPECT_EQ(obj.adaptedStruct()->adaptedMap()->value, int_map);
 
   auto objs = CompactSerializer::serialize<std::string>(obj);
   AdaptTemplatedNestedTestStruct objd;
@@ -444,6 +479,12 @@ TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedNestedTestStruct) {
   EXPECT_EQ(objd.adaptedStruct_ref()->adaptedLongDefault_ref()->value, 4);
   EXPECT_EQ(objd.adaptedStruct_ref()->adaptedDoubleDefault_ref()->value, 5);
   EXPECT_EQ(objd.adaptedStruct_ref()->adaptedStringDefault_ref()->value, "6");
+  EXPECT_EQ(
+      obj.adaptedStruct()->adaptedListDefault()->value,
+      std::vector<int64_t>{1});
+  EXPECT_EQ(
+      obj.adaptedStruct()->adaptedSetDefault()->value, std::set<int64_t>{1});
+  EXPECT_EQ(obj.adaptedStruct()->adaptedMapDefault()->value, int_map);
 
   EXPECT_EQ(objd.adaptedStruct_ref()->adaptedBool_ref()->value, true);
   EXPECT_EQ(objd.adaptedStruct_ref()->adaptedByte_ref()->value, 1);
@@ -452,6 +493,9 @@ TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedNestedTestStruct) {
   EXPECT_EQ(objd.adaptedStruct_ref()->adaptedLong_ref()->value, 1);
   EXPECT_EQ(objd.adaptedStruct_ref()->adaptedDouble_ref()->value, 2);
   EXPECT_EQ(objd.adaptedStruct_ref()->adaptedString_ref()->value, "3");
+  EXPECT_EQ(obj.adaptedStruct()->adaptedList()->value, std::vector<int64_t>{1});
+  EXPECT_EQ(obj.adaptedStruct()->adaptedSet()->value, std::set<int64_t>{1});
+  EXPECT_EQ(obj.adaptedStruct()->adaptedMap()->value, int_map);
   EXPECT_EQ(obj, objd);
 
   // Adapted fields reset to the intrinsic default.
@@ -463,6 +507,9 @@ TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedNestedTestStruct) {
   EXPECT_EQ(obj.adaptedStruct_ref()->adaptedLongDefault_ref()->value, 0);
   EXPECT_EQ(obj.adaptedStruct_ref()->adaptedDoubleDefault_ref()->value, 0);
   EXPECT_EQ(obj.adaptedStruct_ref()->adaptedStringDefault_ref()->value, "");
+  EXPECT_TRUE(obj.adaptedStruct()->adaptedListDefault()->value.empty());
+  EXPECT_TRUE(obj.adaptedStruct()->adaptedSetDefault()->value.empty());
+  EXPECT_TRUE(obj.adaptedStruct()->adaptedMapDefault()->value.empty());
 }
 
 TEST_F(AdapterTest, StructFieldAdaptedStruct) {

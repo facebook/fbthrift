@@ -118,7 +118,6 @@ _readField_setField:
   {
     _readState.beforeSubobject(iprot);
     ::std::set<::std::string> tvalue;
-    this->__fbthrift_field_setField = ::cpp2::SetWithAdapter();
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::std::set<::std::string>>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_setField = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter2, 4>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
@@ -137,7 +136,6 @@ _readField_optionalSetField:
   {
     _readState.beforeSubobject(iprot);
     ::std::set<::std::string> tvalue;
-    this->__fbthrift_field_optionalSetField = ::cpp2::SetWithAdapter();
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::std::set<::std::string>>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_optionalSetField = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter2, 5>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
@@ -156,7 +154,6 @@ _readField_mapField:
   {
     _readState.beforeSubobject(iprot);
     ::std::map<::std::string, ::cpp2::ListWithElemAdapter> tvalue;
-    this->__fbthrift_field_mapField = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>();
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::map<::std::string, ::cpp2::ListWithElemAdapter>>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_mapField = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter3, 6>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
@@ -175,7 +172,6 @@ _readField_optionalMapField:
   {
     _readState.beforeSubobject(iprot);
     ::std::map<::std::string, ::cpp2::ListWithElemAdapter> tvalue;
-    this->__fbthrift_field_optionalMapField = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>();
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::map<::std::string, ::cpp2::ListWithElemAdapter>>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_optionalMapField = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter3, 7>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
@@ -495,7 +491,6 @@ void Baz::readNoXfer(Protocol_* iprot) {
           this->set_setField();
           _readState.beforeSubobject(iprot);
           ::std::set<::std::string> tvalue;
-          value_.setField = ::cpp2::SetWithAdapter();
           ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::std::set<::std::string>>::readWithContext(*iprot, tvalue, _readState);
           value_.setField = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter2, 4>(::std::move(tvalue), *this);
           _readState.afterSubobject(iprot);
@@ -511,7 +506,6 @@ void Baz::readNoXfer(Protocol_* iprot) {
           this->set_mapField();
           _readState.beforeSubobject(iprot);
           ::std::map<::std::string, ::cpp2::ListWithElemAdapter> tvalue;
-          value_.mapField = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>();
           ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::map<::std::string, ::cpp2::ListWithElemAdapter>>::readWithContext(*iprot, tvalue, _readState);
           value_.mapField = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter3, 6>(::std::move(tvalue), *this);
           _readState.afterSubobject(iprot);

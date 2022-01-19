@@ -152,10 +152,10 @@ void Foo::__fbthrift_clear() {
   this->__fbthrift_field_intField = decltype(this->__fbthrift_field_intField)();
   this->__fbthrift_field_optionalIntField = decltype(this->__fbthrift_field_optionalIntField)();
   this->__fbthrift_field_intFieldWithDefault = decltype(this->__fbthrift_field_intFieldWithDefault)();
-  this->__fbthrift_field_setField.clear();
-  this->__fbthrift_field_optionalSetField.clear();
-  this->__fbthrift_field_mapField.clear();
-  this->__fbthrift_field_optionalMapField.clear();
+  this->__fbthrift_field_setField = decltype(this->__fbthrift_field_setField)();
+  this->__fbthrift_field_optionalSetField = decltype(this->__fbthrift_field_optionalSetField)();
+  this->__fbthrift_field_mapField = decltype(this->__fbthrift_field_mapField)();
+  this->__fbthrift_field_optionalMapField = decltype(this->__fbthrift_field_optionalMapField)();
   this->__fbthrift_field_binaryField = decltype(this->__fbthrift_field_binaryField)();
   __isset = {};
 }
