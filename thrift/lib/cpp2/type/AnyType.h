@@ -48,7 +48,7 @@ class AnyType {
  public:
   constexpr AnyType() noexcept = default; // The 'void' type.
 
-  AnyType(const AnyType&) noexcept = default;
+  AnyType(const AnyType&) = default;
   AnyType(AnyType&&) noexcept = default;
 
   template <typename Tag, typename = std::enable_if_t<is_concrete_v<Tag>>>
@@ -93,7 +93,7 @@ class AnyType {
     return static_cast<BaseType>(type_.index());
   }
 
-  AnyType& operator=(const AnyType&) noexcept = default;
+  AnyType& operator=(const AnyType&) = default;
   AnyType& operator=(AnyType&&) noexcept = default;
 
  private:

@@ -77,18 +77,18 @@ struct exception_t : exception_c {};
 template <
     typename ValTag,
     // the cpp template type
-    template <typename...> typename ListT = detail::DefaultT>
+    template <typename...> class ListT = detail::DefaultT>
 struct list : list_c {};
 template <
     typename KeyTag,
     // the cpp template type
-    template <typename...> typename SetT = detail::DefaultT>
+    template <typename...> class SetT = detail::DefaultT>
 struct set : set_c {};
 template <
     typename KeyTag,
     typename ValTag,
     // the cpp template type
-    template <typename...> typename MapT = detail::DefaultT>
+    template <typename...> class MapT = detail::DefaultT>
 struct map : map_c {};
 
 // Extra compile-time metadata.
