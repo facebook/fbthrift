@@ -157,7 +157,7 @@ class RocketClientChannel final : public ClientChannel,
   RocketClientChannel(const RocketClientChannel&) = delete;
   RocketClientChannel& operator=(const RocketClientChannel&) = delete;
 
-  virtual ~RocketClientChannel();
+  ~RocketClientChannel() override;
 
   void sendThriftRequest(
       const RpcOptions& rpcOptions,

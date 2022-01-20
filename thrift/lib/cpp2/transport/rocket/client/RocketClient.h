@@ -75,7 +75,6 @@ class RocketClient : public virtual folly::DelayedDestruction,
   using WriteSuccessCallback = RequestContext::WriteSuccessCallback;
   class RequestResponseCallback : public WriteSuccessCallback {
    public:
-    virtual ~RequestResponseCallback() = default;
     virtual void onResponsePayload(folly::Try<Payload>&& response) noexcept = 0;
   };
 
