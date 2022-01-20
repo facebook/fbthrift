@@ -59,8 +59,6 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-class PluggableFunctionSetter;
-
 template <typename Ret, typename... Args>
 class PluggableFunction {
  public:
@@ -69,6 +67,16 @@ class PluggableFunction {
   constexpr explicit PluggableFunction(signature& init) noexcept
       : init_{init} {}
 
+  PluggableFunction const& operator=(signature& next) const noexcept {
+    if (auto prev = impl_.exchange(&next)) {
+      auto msg = prev == &init_
+          ? "pluggable function: override after invocation"
+          : "pluggable function: override after override";
+      folly::terminate_with<std::logic_error>(msg);
+    }
+    return *this;
+  }
+
   template <typename... A>
   FOLLY_ERASE auto operator()(A&&... a) const
       -> decltype(FOLLY_DECLVAL(signature&)(static_cast<A&&>(a)...)) {
@@ -76,8 +84,6 @@ class PluggableFunction {
   }
 
  private:
-  friend class PluggableFunctionSetter;
-
   FOLLY_ERASE signature* choose() const {
     auto const impl = impl_.load();
     return FOLLY_LIKELY(!!impl) ? impl : choose_slow();
@@ -93,28 +99,9 @@ class PluggableFunction {
     return impl;
   }
 
-  PluggableFunction const& operator=(signature& next) const noexcept {
-    if (auto prev = impl_.exchange(&next)) {
-      auto msg = prev == &init_
-          ? "pluggable function: override after invocation"
-          : "pluggable function: override after override";
-      folly::terminate_with<std::logic_error>(msg);
-    }
-    return *this;
-  }
-
   //  impl_ should be first to avoid extra arithmetic in the fast path
   mutable folly::relaxed_atomic<signature*> impl_{nullptr};
   signature& init_;
-};
-
-class PluggableFunctionSetter {
- public:
-  template <typename R, typename... A>
-  PluggableFunctionSetter(
-      PluggableFunction<R, A...> const& plug, R (&next)(A...)) noexcept {
-    plug = next;
-  }
 };
 
 template <typename>
@@ -144,9 +131,8 @@ using pluggable_function_type_t = typename pluggable_function_type_<F>::type;
           _name{THRIFT__PLUGGABLE_FUNC_DEFAULT_##_name};             \
   _ret THRIFT__PLUGGABLE_FUNC_DEFAULT_##_name(__VA_ARGS__)
 
-#define THRIFT_PLUGGABLE_FUNC_SET(_ret, _name, ...)        \
-  _ret THRIFT__PLUGGABLE_FUNC_IMPL_##_name(__VA_ARGS__);   \
-  static ::apache::thrift::detail::PluggableFunctionSetter \
-      THRIFT__PLUGGABLE_FUNC_SETTER_##_name{               \
-          _name, THRIFT__PLUGGABLE_FUNC_IMPL_##_name};     \
+#define THRIFT_PLUGGABLE_FUNC_SET(_ret, _name, ...)      \
+  _ret THRIFT__PLUGGABLE_FUNC_IMPL_##_name(__VA_ARGS__); \
+  static bool THRIFT__PLUGGABLE_FUNC_SETTER_##_name =    \
+      (_name = THRIFT__PLUGGABLE_FUNC_IMPL_##_name, 0);  \
   _ret THRIFT__PLUGGABLE_FUNC_IMPL_##_name(__VA_ARGS__)
