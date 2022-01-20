@@ -753,18 +753,6 @@ multi line string.
 
   /**
    * Original thrift constant:-
-   * double underflowDub1
-   */
-  const float underflowDub1 = 0.0;
-
-  /**
-   * Original thrift constant:-
-   * double underflowDub2
-   */
-  const float underflowDub2 = 0.0;
-
-  /**
-   * Original thrift constant:-
    * i64 maxPIntDec
    */
   const int maxPIntDec = 9223372036854775807;

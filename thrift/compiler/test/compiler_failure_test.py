@@ -1,4 +1,4 @@
-# Copyright (c) Facebook, Inc. and its affiliates.
+# Copyright (c) Meta Platforms, Inc. and affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -346,6 +346,96 @@ class CompilerFailureTest(unittest.TestCase):
             "[WARNING:foo.thrift:8] type error: const `color` was declared as enum `Color` with "
             "a value not of that enum.\n",
         )
+
+    def test_integer_overflow(self):
+        for value in [
+            "9223372036854775808",  # max int64 +1
+            "18446744073709551615",  # max uint64
+            "18446744073709551616",  # max uint64 + 1
+        ]:
+            write_file(
+                "foo.thrift",
+                textwrap.dedent(
+                    f"""\
+                    const i64 overflowInt = {value};
+                    """
+                ),
+            )
+            ret, out, err = self.run_thrift("foo.thrift")
+            self.assertEqual(ret, 1)
+            self.assertEqual(
+                err, f"[FAILURE:foo.thrift:1] This integer is too big: {value}\n\n"
+            )
+
+    def test_double_overflow(self):
+        def test_num(value):
+            write_file(
+                "foo.thrift",
+                textwrap.dedent(
+                    f"""\
+                    const double overflowDub = {value};
+                    """
+                ),
+            )
+            return self.run_thrift("foo.thrift")
+
+        for value in [
+            "1.7976931348623159e+308",
+            "1.7976931348623158e+309",
+        ]:
+            ret, out, err = test_num(value)
+            self.assertEqual(ret, 1)
+            self.assertEqual(
+                err, f"[FAILURE:foo.thrift:1] This number is too big: {value}\n\n"
+            )
+            ret, out, err = test_num("-" + value)
+            self.assertEqual(ret, 1)
+            self.assertEqual(
+                err, f"[FAILURE:foo.thrift:1] This number is too small: -{value}\n\n"
+            )
+
+    def test_integer_underflow(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                const i64 underflowInt = -9223372036854775809;
+                """
+            ),
+        )
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift:1] This integer is too big: -9223372036854775809\n\n",
+        )
+
+    def test_double_underflow(self):
+        def test_num(value):
+            write_file(
+                "foo.thrift",
+                textwrap.dedent(
+                    f"""\
+                    const double underflowDub = {value};
+                    """
+                ),
+            )
+            return self.run_thrift("foo.thrift")
+
+        for value in [
+            "4.9406564584124654e-325",
+            "1e-324",
+        ]:
+            ret, out, err = test_num(value)
+            self.assertEqual(ret, 1)
+            self.assertEqual(
+                err, f"[FAILURE:foo.thrift:1] This number is too infinitesimal: {value}\n\n"
+            )
+            ret, out, err = test_num("-" + value)
+            self.assertEqual(ret, 1)
+            self.assertEqual(
+                err, f"[FAILURE:foo.thrift:1] This number is too infinitesimal: -{value}\n\n"
+            )
 
     def test_const_wrong_type(self):
         # tests initializing const with value of wrong type

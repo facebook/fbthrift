@@ -389,10 +389,6 @@ minDub = float(2.2250738585072e-308)
 
 minSDub = float(4.94065645841247e-324)
 
-underflowDub1 = float(0)
-
-underflowDub2 = float(0)
-
 maxPIntDec = 9223372036854775807
 
 maxPDub = float(1.79769313486232e+308)

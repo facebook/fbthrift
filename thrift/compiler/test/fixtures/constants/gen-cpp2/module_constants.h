@@ -303,18 +303,6 @@ multi line string.
     return minSDub_;
   }
 
-  static constexpr double const underflowDub1_ = static_cast<double>(0);
-
-  static constexpr double underflowDub1() {
-    return underflowDub1_;
-  }
-
-  static constexpr double const underflowDub2_ = static_cast<double>(0);
-
-  static constexpr double underflowDub2() {
-    return underflowDub2_;
-  }
-
   static constexpr ::std::int64_t const maxPIntDec_ = static_cast<::std::int64_t>(9223372036854775807);
 
   static constexpr ::std::int64_t maxPIntDec() {

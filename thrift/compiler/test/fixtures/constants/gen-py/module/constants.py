@@ -323,10 +323,6 @@ minDub = 2.22507e-308
 
 minSDub = 4.94066e-324
 
-underflowDub1 = 0.00000
-
-underflowDub2 = 0.00000
-
 maxPIntDec = 9223372036854775807
 
 maxPDub = 1.79769e+308

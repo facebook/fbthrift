@@ -73,8 +73,6 @@ maxIntHex: int
 maxDub: float
 minDub: float
 minSDub: float
-underflowDub1: float
-underflowDub2: float
 maxPIntDec: int
 maxPDub: float
 minPDub: float

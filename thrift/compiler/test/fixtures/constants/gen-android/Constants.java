@@ -381,10 +381,6 @@ multi line string.
 
   public static final Double minSDub = 4.94066e-324;
 
-  public static final Double underflowDub1 = 0;
-
-  public static final Double underflowDub2 = 0;
-
   public static final Long maxPIntDec = 9223372036854775807L;
 
   public static final Double maxPDub = 1.79769e+308;

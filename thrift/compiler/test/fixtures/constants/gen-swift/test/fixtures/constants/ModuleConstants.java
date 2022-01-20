@@ -216,10 +216,6 @@ multi line string.
 
     public static final double MIN_SDUB = (double)4.94065645841247e-324;
 
-    public static final double UNDERFLOW_DUB1 = (double)0;
-
-    public static final double UNDERFLOW_DUB2 = (double)0;
-
     public static final long MAX_PINT_DEC = 9223372036854775807L;
 
     public static final double MAX_PDUB = (double)1.79769313486232e+308;

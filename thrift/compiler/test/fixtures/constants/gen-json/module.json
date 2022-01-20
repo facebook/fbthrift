@@ -1042,162 +1042,130 @@
         }
       }
     },
-    "underflowDub1" : {
-      "lineno" : 246,
-      "value" : 0,
-      "type_enum" : "DOUBLE",
-      "spec_args" : null,
-      "source_range" : {
-        "begin" : {
-          "line" : 246,
-          "column" : 1
-        },
-        "end" : {
-          "line" : 246,
-          "column" : 54
-        }
-      }
-    },
-    "underflowDub2" : {
-      "lineno" : 247,
-      "value" : 0,
-      "type_enum" : "DOUBLE",
-      "spec_args" : null,
-      "source_range" : {
-        "begin" : {
-          "line" : 247,
-          "column" : 1
-        },
-        "end" : {
-          "line" : 247,
-          "column" : 37
-        }
-      }
-    },
     "maxPIntDec" : {
-      "lineno" : 249,
+      "lineno" : 247,
       "value" : 9223372036854775807,
       "type_enum" : "I64",
       "spec_args" : null,
       "source_range" : {
         "begin" : {
-          "line" : 249,
+          "line" : 247,
           "column" : 1
         },
         "end" : {
-          "line" : 249,
+          "line" : 247,
           "column" : 45
         }
       }
     },
     "maxPDub" : {
-      "lineno" : 250,
+      "lineno" : 248,
       "value" : 1.79769e+308,
       "type_enum" : "DOUBLE",
       "spec_args" : null,
       "source_range" : {
         "begin" : {
-          "line" : 250,
+          "line" : 248,
           "column" : 1
         },
         "end" : {
-          "line" : 250,
+          "line" : 248,
           "column" : 49
         }
       }
     },
     "minPDub" : {
-      "lineno" : 251,
+      "lineno" : 249,
       "value" : 2.22507e-308,
       "type_enum" : "DOUBLE",
       "spec_args" : null,
       "source_range" : {
         "begin" : {
-          "line" : 251,
+          "line" : 249,
           "column" : 1
         },
         "end" : {
-          "line" : 251,
+          "line" : 249,
           "column" : 49
         }
       }
     },
     "minPSDub" : {
-      "lineno" : 252,
+      "lineno" : 250,
       "value" : 4.94066e-324,
       "type_enum" : "DOUBLE",
       "spec_args" : null,
       "source_range" : {
         "begin" : {
-          "line" : 252,
+          "line" : 250,
           "column" : 1
         },
         "end" : {
-          "line" : 252,
+          "line" : 250,
           "column" : 50
         }
       }
     },
     "minIntDec" : {
-      "lineno" : 254,
+      "lineno" : 252,
       "value" : -9223372036854775808,
       "type_enum" : "I64",
       "spec_args" : null,
       "source_range" : {
         "begin" : {
-          "line" : 254,
+          "line" : 252,
           "column" : 1
         },
         "end" : {
-          "line" : 254,
+          "line" : 252,
           "column" : 44
         }
       }
     },
     "maxNDub" : {
-      "lineno" : 255,
+      "lineno" : 253,
       "value" : -1.79769e+308,
       "type_enum" : "DOUBLE",
       "spec_args" : null,
       "source_range" : {
         "begin" : {
-          "line" : 255,
+          "line" : 253,
           "column" : 1
         },
         "end" : {
-          "line" : 255,
+          "line" : 253,
           "column" : 49
         }
       }
     },
     "minNDub" : {
-      "lineno" : 256,
+      "lineno" : 254,
       "value" : -2.22507e-308,
       "type_enum" : "DOUBLE",
       "spec_args" : null,
       "source_range" : {
         "begin" : {
-          "line" : 256,
+          "line" : 254,
           "column" : 1
         },
         "end" : {
-          "line" : 256,
+          "line" : 254,
           "column" : 49
         }
       }
     },
     "minNSDub" : {
-      "lineno" : 257,
+      "lineno" : 255,
       "value" : -4.94066e-324,
       "type_enum" : "DOUBLE",
       "spec_args" : null,
       "source_range" : {
         "begin" : {
-          "line" : 257,
+          "line" : 255,
           "column" : 1
         },
         "end" : {
-          "line" : 257,
+          "line" : 255,
           "column" : 50
         }
       }

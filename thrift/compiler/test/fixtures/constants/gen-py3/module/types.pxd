@@ -483,8 +483,6 @@ cdef extern from "src/gen-cpp2/module_constants.h" namespace "::cpp2":
     cdef double cmaxDub "::cpp2::module_constants::maxDub"
     cdef double cminDub "::cpp2::module_constants::minDub"
     cdef double cminSDub "::cpp2::module_constants::minSDub"
-    cdef double cunderflowDub1 "::cpp2::module_constants::underflowDub1"
-    cdef double cunderflowDub2 "::cpp2::module_constants::underflowDub2"
     cdef cint64_t cmaxPIntDec "::cpp2::module_constants::maxPIntDec"
     cdef double cmaxPDub "::cpp2::module_constants::maxPDub"
     cdef double cminPDub "::cpp2::module_constants::minPDub"

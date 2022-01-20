@@ -329,10 +329,6 @@ pub mod consts {
 
     pub const minSDub: ::std::primitive::f64 = 4.94065645841247e-324;
 
-    pub const underflowDub1: ::std::primitive::f64 = 0.0;
-
-    pub const underflowDub2: ::std::primitive::f64 = 0.0;
-
     pub const maxPIntDec: ::std::primitive::i64 = 9223372036854775807;
 
     pub const maxPDub: ::std::primitive::f64 = 1.79769313486232e+308;

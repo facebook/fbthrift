@@ -243,8 +243,6 @@ const i64 maxIntHex = 0x7FFFFFFFFFFFFFFF;
 const double maxDub = 1.7976931348623157e308;
 const double minDub = 2.2250738585072014e-308;
 const double minSDub = 4.9406564584124654e-324;
-const double underflowDub1 = 4.9406564584124654e-325;
-const double underflowDub2 = 1e-324;
 
 const i64 maxPIntDec = +9223372036854775807;
 const double maxPDub = +1.7976931348623157e+308;

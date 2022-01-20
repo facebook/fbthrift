@@ -281,10 +281,6 @@ constexpr double const module_constants::minDub_;
 
 constexpr double const module_constants::minSDub_;
 
-constexpr double const module_constants::underflowDub1_;
-
-constexpr double const module_constants::underflowDub2_;
-
 constexpr ::std::int64_t const module_constants::maxPIntDec_;
 
 constexpr double const module_constants::maxPDub_;

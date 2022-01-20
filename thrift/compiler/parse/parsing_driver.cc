@@ -18,6 +18,7 @@
 
 #include <errno.h>
 #include <stdlib.h>
+#include <cmath>
 #include <cstdarg>
 #include <limits>
 #include <memory>
@@ -778,8 +779,23 @@ int64_t parsing_driver::parse_integer(const char* text, int offset, int base) {
 }
 
 double parsing_driver::parse_double(const char* text) {
-  // TODO(afuller): Switch to strtod and check for errors.
-  return atof(text);
+  errno = 0;
+  double val = strtod(text, nullptr);
+  if (errno == ERANGE) {
+    if (val == 0) {
+      failure([&](auto& o) {
+        o << "This number is too infinitesimal: " << text << "\n";
+      });
+    } else if (val == HUGE_VAL) {
+      failure(
+          [&](auto& o) { o << "This number is too big: " << text << "\n"; });
+    } else if (val == -HUGE_VAL) {
+      failure(
+          [&](auto& o) { o << "This number is too small: " << text << "\n"; });
+    }
+    // Allow subnormals.
+  }
+  return val;
 }
 
 void parsing_driver::parse_doctext(const char* text, int lineno) {
