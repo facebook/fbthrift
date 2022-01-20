@@ -72,25 +72,25 @@ class PluggableFunction {
   template <typename... A>
   FOLLY_ERASE auto operator()(A&&... a) const
       -> decltype(FOLLY_DECLVAL(signature&)(static_cast<A&&>(a)...)) {
-    auto impl = impl_.load();
-    // MSVC 2017 dislikes the terse ternary form
-    if (FOLLY_UNLIKELY(!impl)) {
-      impl = &choose_slow();
-    }
-    return impl(static_cast<A&&>(a)...);
+    return choose()(static_cast<A&&>(a)...);
   }
 
  private:
   friend class PluggableFunctionSetter;
 
-  FOLLY_NOINLINE signature& choose_slow() const {
+  FOLLY_ERASE signature* choose() const {
+    auto const impl = impl_.load();
+    return FOLLY_LIKELY(!!impl) ? impl : choose_slow();
+  }
+
+  FOLLY_NOINLINE signature* choose_slow() const {
     auto impl = impl_.load();
     while (!impl) {
       if (impl_.compare_exchange_weak(impl, &init_)) {
-        return init_;
+        return &init_;
       }
     }
-    return *impl;
+    return impl;
   }
 
   PluggableFunction const& operator=(signature& next) const noexcept {
