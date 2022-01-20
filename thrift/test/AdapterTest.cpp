@@ -656,31 +656,42 @@ TEST(AdaptTest, AdapterWithContext) {
                 AdapterWithContext,
                 int64_t,
                 basic::AdaptTestStruct>);
+  static_assert(folly::is_detected_v<
+                adapt_detail::ConstructType,
+                AdapterWithContext,
+                AdaptedWithContext<int64_t>,
+                FieldAdapterContext<basic::AdaptTestStruct, 0>>);
 
   auto obj = basic::AdaptTestStruct();
-  EXPECT_EQ(obj.string_data()->meta, &*obj.meta_ref());
-  EXPECT_EQ(obj.string_data()->meta, &*obj.meta_ref());
+  EXPECT_EQ(obj.data()->meta, &*obj.meta());
+  EXPECT_EQ(obj.string_data()->meta, &*obj.meta());
 
   auto copy = basic::AdaptTestStruct(obj);
-  EXPECT_EQ(copy.string_data()->meta, &*copy.meta_ref());
-  EXPECT_EQ(copy.string_data()->meta, &*copy.meta_ref());
+  EXPECT_EQ(copy.data()->meta, &*copy.meta());
+  EXPECT_EQ(copy.string_data()->meta, &*copy.meta());
 
   auto move = basic::AdaptTestStruct(std::move(copy));
-  EXPECT_EQ(move.string_data()->meta, &*move.meta_ref());
-  EXPECT_EQ(move.string_data()->meta, &*move.meta_ref());
+  EXPECT_EQ(move.data()->meta, &*move.meta());
+  EXPECT_EQ(move.string_data()->meta, &*move.meta());
 
-  obj.data_ref() = {};
-  obj.data_ref()->value = 42;
-  obj.meta_ref() = "foo";
+  obj.data()->value = 42;
+  obj.meta() = "foo";
   obj.string_data()->value = "42";
+
+  EXPECT_EQ(obj.data()->value, 42);
+  EXPECT_EQ(obj.data()->fieldId, 4);
+  EXPECT_EQ(*obj.data()->meta, "foo");
+  EXPECT_EQ(obj.string_data()->value, "42");
+  EXPECT_EQ(obj.string_data()->fieldId, 7);
+  EXPECT_EQ(*obj.string_data()->meta, "foo");
 
   auto serialized = CompactSerializer::serialize<std::string>(obj);
   auto obj2 = basic::AdaptTestStruct();
   CompactSerializer::deserialize(serialized, obj2);
 
-  EXPECT_EQ(obj2.data_ref()->value, 42);
-  EXPECT_EQ(obj2.data_ref()->fieldId, 4);
-  EXPECT_EQ(*obj2.data_ref()->meta, "foo");
+  EXPECT_EQ(obj2.data()->value, 42);
+  EXPECT_EQ(obj2.data()->fieldId, 4);
+  EXPECT_EQ(*obj2.data()->meta, "foo");
   EXPECT_EQ(obj2.string_data()->value, "42");
   EXPECT_EQ(obj2.string_data()->fieldId, 7);
   EXPECT_EQ(*obj2.string_data()->meta, "foo");

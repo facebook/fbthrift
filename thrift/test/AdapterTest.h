@@ -145,6 +145,7 @@ inline bool operator<(
 struct AdapterWithContext {
   template <typename T, typename Context>
   static void construct(AdaptedWithContext<T>& field, Context&& ctx) {
+    field.fieldId = Context::kFieldId;
     field.meta = &*ctx.object.meta_ref();
   }
 
