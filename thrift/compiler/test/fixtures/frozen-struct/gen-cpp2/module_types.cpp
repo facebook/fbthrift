@@ -122,8 +122,8 @@ void ModuleA::__fbthrift_clear() {
   this->__fbthrift_field_strField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_listField.clear();
   this->__fbthrift_field_mapField.clear();
-  apache::thrift::clear(this->__fbthrift_field_inclAField);
-  apache::thrift::clear(this->__fbthrift_field_inclBField);
+    apache::thrift::clear(this->__fbthrift_field_inclAField);
+    apache::thrift::clear(this->__fbthrift_field_inclBField);
   __isset = {};
 }
 

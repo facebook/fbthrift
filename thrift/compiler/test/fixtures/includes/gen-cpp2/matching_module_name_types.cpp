@@ -44,7 +44,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::matching_module_name::O
 
 void MyStruct::__fbthrift_clear() {
   // clear all fields
-  apache::thrift::clear(this->__fbthrift_field_OtherStructField);
+    apache::thrift::clear(this->__fbthrift_field_OtherStructField);
   __isset = {};
 }
 

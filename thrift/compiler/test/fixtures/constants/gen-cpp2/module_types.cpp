@@ -513,7 +513,7 @@ void struct2::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_a = ::std::int32_t();
   this->__fbthrift_field_b = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  apache::thrift::clear(this->__fbthrift_field_c);
+    apache::thrift::clear(this->__fbthrift_field_c);
   this->__fbthrift_field_d.clear();
   __isset = {};
 }
@@ -666,7 +666,7 @@ void struct3::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_a = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_b = ::std::int32_t();
-  apache::thrift::clear(this->__fbthrift_field_c);
+    apache::thrift::clear(this->__fbthrift_field_c);
   __isset = {};
 }
 

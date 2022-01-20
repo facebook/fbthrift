@@ -545,8 +545,8 @@ ComplexStruct::ComplexStruct(apache::thrift::FragileConstructor, ::py3::simple::
 
 void ComplexStruct::__fbthrift_clear() {
   // clear all fields
-  apache::thrift::clear(this->__fbthrift_field_structOne);
-  apache::thrift::clear(this->__fbthrift_field_structTwo);
+    apache::thrift::clear(this->__fbthrift_field_structOne);
+    apache::thrift::clear(this->__fbthrift_field_structTwo);
   this->__fbthrift_field_an_integer = ::std::int32_t();
   this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_an_enum = ::py3::simple::AnEnum();
@@ -821,7 +821,7 @@ BinaryUnionStruct::BinaryUnionStruct(apache::thrift::FragileConstructor, ::py3::
 
 void BinaryUnionStruct::__fbthrift_clear() {
   // clear all fields
-  apache::thrift::clear(this->__fbthrift_field_u);
+    apache::thrift::clear(this->__fbthrift_field_u);
   __isset = {};
 }
 

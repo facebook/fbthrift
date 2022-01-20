@@ -247,7 +247,7 @@ void MyStruct::__fbthrift_clear() {
   this->__fbthrift_field_class_ = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_annotation_with_trailing_comma = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_empty_annotations = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->__fbthrift_field_my_enum = decltype(this->__fbthrift_field_my_enum)();
+  ::apache::thrift::adapt_detail::clear<StaticCast, 7>(__fbthrift_field_my_enum, *this);
   __isset = {};
 }
 

@@ -16,6 +16,10 @@
 
 namespace cpp2 apache.thrift.test
 
+include "thrift/annotation/cpp.thrift"
+
+cpp_include "thrift/test/AdapterTest.h"
+
 enum MyEnum {
   ME0 = 0,
   ME1 = 1,
@@ -61,4 +65,16 @@ struct StructWithDefaultStruct {
   12: set<i16> set_field = [1];
   13: map<i16, i16> map_field = {1: 1};
   14: DefaultMyStruct struct_field;
+}
+
+struct ThriftClearTestStruct {
+  @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
+  1: i64 data;
+  2: string meta;
+}
+
+struct AdapterClearTestStruct {
+  @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContextAndClear"}
+  1: i64 data;
+  2: string meta;
 }

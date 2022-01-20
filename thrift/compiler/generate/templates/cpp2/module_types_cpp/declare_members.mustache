@@ -62,13 +62,15 @@ void <%struct:name%>::__fbthrift_clear() {
 <%#struct:fields%><%#field:type%><%!
 %><%#type:resolves_to_base_or_enum?%><%!
   %><%^field:cpp_ref?%><%!
-  TODO(dokwon): Replace special cases after replacing StringTraits and cpp.indirection with cpp.adapter.
-    %>  <% > types/apply_indirection_pre%><% > field/member%><% > types/apply_indirection_post%> = <%!
-    %><%#field:cpp_adapter%>decltype(<% > field/member%>)()<%/field:cpp_adapter%><%!
+    %><%#field:cpp_adapter%><%!
+      %>  ::apache::thrift::adapt_detail::clear<<%field:cpp_adapter%>, <%field:key%>>(<%field:cpp_storage_name%>, *this);<%!
+    %><%/field:cpp_adapter%><%!
     %><%^field:cpp_adapter%><%!
-      %><%#field:deprecated_clear?%><% > field/default%><%/field:deprecated_clear?%><%!
-      %><%^field:deprecated_clear?%><% > field/intrinsic_default%><%/field:deprecated_clear?%><%!
-    %><%/field:cpp_adapter%>;<%!
+      TODO(dokwon): Replace special cases after replacing StringTraits and cpp.indirection with cpp.adapter.
+      %>  <% > types/apply_indirection_pre%><% > field/member%><% > types/apply_indirection_post%> = <%!
+      %><%#field:deprecated_clear?%><% > field/default%>;<%/field:deprecated_clear?%><%!
+      %><%^field:deprecated_clear?%><% > field/intrinsic_default%>;<%/field:deprecated_clear?%><%!
+    %><%/field:cpp_adapter%><%!
   %><%/field:cpp_ref?%><%!
   %><%#field:cpp_ref?%><%!
     %><%^field:optional?%><%!
@@ -81,7 +83,7 @@ void <%struct:name%>::__fbthrift_clear() {
 <%/type:resolves_to_base_or_enum?%>
 <%#type:resolves_to_container?%>
 <%#field:cpp_adapter%>
-  <% > field/member%> = decltype(<% > field/member%>)();
+  ::apache::thrift::adapt_detail::clear<<%field:cpp_adapter%>, <%field:key%>>(<%field:cpp_storage_name%>, *this);
 <%/field:cpp_adapter%>
 <%^field:cpp_adapter%>
 <%#field:cpp_ref?%>
@@ -98,9 +100,10 @@ void <%struct:name%>::__fbthrift_clear() {
 <%/field:cpp_adapter%>
 <%/type:resolves_to_container?%>
 <%#type:non_empty_struct?%>
-<%^field:cpp_ref?%>
-  <%#field:cpp_adapter%><% > field/member%> = decltype(<% > field/member%>)();<%/field:cpp_adapter%><%^field:cpp_adapter%>apache::thrift::clear(<% > field/member%>);<%/field:cpp_adapter%>
-<%/field:cpp_ref?%>
+<%^field:cpp_ref?%><%!
+  %>  <%#field:cpp_adapter%>::apache::thrift::adapt_detail::clear<<%field:cpp_adapter%>, <%field:key%>>(<%field:cpp_storage_name%>, *this);<%/field:cpp_adapter%><%!
+  %>  <%^field:cpp_adapter%>apache::thrift::clear(<% > field/member%>);<%/field:cpp_adapter%><%!
+%><%/field:cpp_ref?%>
 <%#field:cpp_ref_unique?%>
 <%^field:optional?%>
   if (<% > field/member%>) apache::thrift::clear(*<% > field/member%>);

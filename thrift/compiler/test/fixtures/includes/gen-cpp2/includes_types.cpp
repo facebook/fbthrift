@@ -47,7 +47,7 @@ Included::Included(apache::thrift::FragileConstructor, ::std::int64_t MyIntField
 void Included::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_MyIntField = ::std::int64_t();
-  apache::thrift::clear(this->__fbthrift_field_MyTransitiveField);
+    apache::thrift::clear(this->__fbthrift_field_MyTransitiveField);
   __isset = {};
 }
 

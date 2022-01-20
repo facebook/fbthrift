@@ -1932,9 +1932,9 @@ void defaultStruct::__fbthrift_clear() {
   this->__fbthrift_field_field3.clear();
   this->__fbthrift_field_myList.clear();
   this->__fbthrift_field_mySet.clear();
-  apache::thrift::clear(this->__fbthrift_field_simpleStruct);
+    apache::thrift::clear(this->__fbthrift_field_simpleStruct);
   this->__fbthrift_field_listStructDFset.clear();
-  apache::thrift::clear(this->__fbthrift_field_myUnion);
+    apache::thrift::clear(this->__fbthrift_field_myUnion);
   this->__fbthrift_field_listUnionDFset.clear();
   this->__fbthrift_field_mapNestlistStructDfSet.clear();
   this->__fbthrift_field_mapJavaTypeDFset.clear();
@@ -3176,8 +3176,8 @@ void complexException::__fbthrift_clear() {
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->listStrings.clear();
   this->errorEnum = ::cpp2::MyEnum();
-  apache::thrift::clear(this->unionError);
-  apache::thrift::clear(this->structError);
+    apache::thrift::clear(this->unionError);
+    apache::thrift::clear(this->structError);
   this->lsMap.clear();
   __isset = {};
 }

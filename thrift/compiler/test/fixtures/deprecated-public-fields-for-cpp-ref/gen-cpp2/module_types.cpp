@@ -67,7 +67,9 @@ Foo::Foo(apache::thrift::FragileConstructor, ::std::unique_ptr<::cpp2::Foo> foo_
 
 void Foo::__fbthrift_clear() {
   // clear all fields
+
   this->__fbthrift_field_foo.reset();
+
   this->__fbthrift_field_bar.reset();
 }
 

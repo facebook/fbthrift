@@ -55,6 +55,9 @@ template <typename Adapter, typename AdaptedT, typename Context>
 using ConstructType = decltype(Adapter::construct(
     std::declval<AdaptedT&>(), std::declval<Context>()));
 
+template <typename Adapter, typename AdaptedT>
+using ClearType = decltype(Adapter::clear(std::declval<AdaptedT&>()));
+
 // Converts a Thrift field value into an adapted type via Adapter.
 // This overload passes additional context containing the reference to the
 // Thrift object containing the field and the field ID as a second argument
@@ -144,6 +147,30 @@ template <
             FieldAdapterContext<Struct, FieldId>>,
         int> = 0>
 constexpr void construct(AdaptedT&, Struct&) {}
+
+// Clear op based on the adapter, with a fallback to calling the default
+// constructor and Adapter::construct for context population.
+template <
+    typename Adapter,
+    int16_t FieldId,
+    typename AdaptedT,
+    typename Struct,
+    std::enable_if_t<folly::is_detected_v<ClearType, Adapter, AdaptedT>, int> =
+        0>
+constexpr void clear(AdaptedT& field, Struct&) {
+  Adapter::clear(field);
+}
+template <
+    typename Adapter,
+    int16_t FieldId,
+    typename AdaptedT,
+    typename Struct,
+    std::enable_if_t<!folly::is_detected_v<ClearType, Adapter, AdaptedT>, int> =
+        0>
+constexpr void clear(AdaptedT& field, Struct& object) {
+  field = AdaptedT();
+  construct<Adapter, FieldId>(field, object);
+}
 
 // Equal op based on the thrift types.
 template <typename Adapter, typename AdaptedT>

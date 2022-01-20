@@ -378,8 +378,8 @@ structured_annotation_recursive::structured_annotation_recursive(apache::thrift:
 void structured_annotation_recursive::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  apache::thrift::clear(this->__fbthrift_field_recurse);
-  apache::thrift::clear(this->__fbthrift_field_forward);
+    apache::thrift::clear(this->__fbthrift_field_recurse);
+    apache::thrift::clear(this->__fbthrift_field_forward);
   __isset = {};
 }
 
@@ -531,7 +531,7 @@ structured_annotation_nested::structured_annotation_nested(apache::thrift::Fragi
 void structured_annotation_nested::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  apache::thrift::clear(this->__fbthrift_field_nest);
+    apache::thrift::clear(this->__fbthrift_field_nest);
   __isset = {};
 }
 

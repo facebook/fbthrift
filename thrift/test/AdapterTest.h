@@ -160,4 +160,27 @@ struct AdapterWithContext {
   }
 };
 
+struct AdapterWithContextAndClear {
+  template <typename T, typename Context>
+  static void construct(AdaptedWithContext<T>& field, Context&& ctx) {
+    field.fieldId = Context::kFieldId;
+    field.meta = &*ctx.object.meta_ref();
+  }
+
+  template <typename T, typename Context>
+  static AdaptedWithContext<T> fromThriftField(T value, Context&& ctx) {
+    return {value, Context::kFieldId, &*ctx.object.meta_ref()};
+  }
+
+  template <typename T>
+  static T toThrift(const AdaptedWithContext<T>& adapted) {
+    return adapted.value;
+  }
+
+  template <typename T>
+  static void clear(AdaptedWithContext<T>& field) {
+    field.value = {};
+  }
+};
+
 } // namespace apache::thrift::test

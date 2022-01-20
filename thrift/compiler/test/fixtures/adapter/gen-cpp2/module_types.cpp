@@ -149,14 +149,14 @@ Foo::Foo(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::ada
 
 void Foo::__fbthrift_clear() {
   // clear all fields
-  this->__fbthrift_field_intField = decltype(this->__fbthrift_field_intField)();
-  this->__fbthrift_field_optionalIntField = decltype(this->__fbthrift_field_optionalIntField)();
-  this->__fbthrift_field_intFieldWithDefault = decltype(this->__fbthrift_field_intFieldWithDefault)();
-  this->__fbthrift_field_setField = decltype(this->__fbthrift_field_setField)();
-  this->__fbthrift_field_optionalSetField = decltype(this->__fbthrift_field_optionalSetField)();
-  this->__fbthrift_field_mapField = decltype(this->__fbthrift_field_mapField)();
-  this->__fbthrift_field_optionalMapField = decltype(this->__fbthrift_field_optionalMapField)();
-  this->__fbthrift_field_binaryField = decltype(this->__fbthrift_field_binaryField)();
+  ::apache::thrift::adapt_detail::clear<my::Adapter1, 1>(__fbthrift_field_intField, *this);
+  ::apache::thrift::adapt_detail::clear<my::Adapter1, 2>(__fbthrift_field_optionalIntField, *this);
+  ::apache::thrift::adapt_detail::clear<my::Adapter1, 3>(__fbthrift_field_intFieldWithDefault, *this);
+  ::apache::thrift::adapt_detail::clear<my::Adapter2, 4>(__fbthrift_field_setField, *this);
+  ::apache::thrift::adapt_detail::clear<my::Adapter2, 5>(__fbthrift_field_optionalSetField, *this);
+  ::apache::thrift::adapt_detail::clear<my::Adapter3, 6>(__fbthrift_field_mapField, *this);
+  ::apache::thrift::adapt_detail::clear<my::Adapter3, 7>(__fbthrift_field_optionalMapField, *this);
+  ::apache::thrift::adapt_detail::clear<my::Adapter1, 8>(__fbthrift_field_binaryField, *this);
   __isset = {};
 }
 
@@ -483,12 +483,12 @@ Bar::Bar(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::ada
 
 void Bar::__fbthrift_clear() {
   // clear all fields
-  this->__fbthrift_field_structField = decltype(this->__fbthrift_field_structField)();
-  this->__fbthrift_field_optionalStructField = decltype(this->__fbthrift_field_optionalStructField)();
+  ::apache::thrift::adapt_detail::clear<my::Adapter1, 1>(__fbthrift_field_structField, *this);  
+  ::apache::thrift::adapt_detail::clear<my::Adapter1, 2>(__fbthrift_field_optionalStructField, *this);  
   this->__fbthrift_field_structListField.clear();
   this->__fbthrift_field_optionalStructListField.clear();
-  this->__fbthrift_field_unionField = decltype(this->__fbthrift_field_unionField)();
-  this->__fbthrift_field_optionalUnionField = decltype(this->__fbthrift_field_optionalUnionField)();
+  ::apache::thrift::adapt_detail::clear<my::Adapter1, 5>(__fbthrift_field_unionField, *this);  
+  ::apache::thrift::adapt_detail::clear<my::Adapter1, 6>(__fbthrift_field_optionalUnionField, *this);  
   __isset = {};
 }
 
@@ -680,7 +680,7 @@ StructWithFieldAdapter::StructWithFieldAdapter(apache::thrift::FragileConstructo
 
 void StructWithFieldAdapter::__fbthrift_clear() {
   // clear all fields
-  this->__fbthrift_field_field = decltype(this->__fbthrift_field_field)();
+  ::apache::thrift::adapt_detail::clear<my::Adapter1, 1>(__fbthrift_field_field, *this);
   __isset = {};
 }
 

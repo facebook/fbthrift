@@ -49,5 +49,49 @@ TEST(ClearTest, StructWithDefaultStruct) {
   checkIsDefault(obj);
 }
 
+TEST(AdaptTest, ThriftClearTestStruct) {
+  static_assert(!folly::is_detected_v<
+                adapt_detail::ClearType,
+                AdapterWithContext,
+                AdaptedWithContext<int64_t>>);
+
+  auto obj = ThriftClearTestStruct();
+
+  obj.data()->value = 42;
+  obj.meta() = "foo";
+
+  EXPECT_EQ(obj.data()->value, 42);
+  EXPECT_EQ(obj.data()->fieldId, 1);
+  EXPECT_EQ(*obj.data()->meta, "foo");
+
+  apache::thrift::clear(obj);
+
+  EXPECT_EQ(obj.data()->value, 0);
+  EXPECT_EQ(obj.data()->fieldId, 1);
+  EXPECT_EQ(*obj.data()->meta, "");
+}
+
+TEST(AdaptTest, AdapterClearTestStruct) {
+  static_assert(folly::is_detected_v<
+                adapt_detail::ClearType,
+                AdapterWithContextAndClear,
+                AdaptedWithContext<int64_t>>);
+
+  auto obj = AdapterClearTestStruct();
+
+  obj.data()->value = 42;
+  obj.meta() = "foo";
+
+  EXPECT_EQ(obj.data()->value, 42);
+  EXPECT_EQ(obj.data()->fieldId, 1);
+  EXPECT_EQ(*obj.data()->meta, "foo");
+
+  apache::thrift::clear(obj);
+
+  EXPECT_EQ(obj.data()->value, 0);
+  EXPECT_EQ(obj.data()->fieldId, 1);
+  EXPECT_EQ(*obj.data()->meta, "");
+}
+
 } // namespace
 } // namespace apache::thrift::test
