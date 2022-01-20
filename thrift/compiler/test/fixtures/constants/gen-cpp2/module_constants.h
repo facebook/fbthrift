@@ -267,6 +267,102 @@ multi line string.
 
   static ::std::map<::std::string, ::std::string> const& empty_string_string_map();
 
+  static constexpr ::std::int64_t const maxIntDec_ = static_cast<::std::int64_t>(9223372036854775807);
+
+  static constexpr ::std::int64_t maxIntDec() {
+    return maxIntDec_;
+  }
+
+  static constexpr ::std::int64_t const maxIntOct_ = static_cast<::std::int64_t>(9223372036854775807);
+
+  static constexpr ::std::int64_t maxIntOct() {
+    return maxIntOct_;
+  }
+
+  static constexpr ::std::int64_t const maxIntHex_ = static_cast<::std::int64_t>(9223372036854775807);
+
+  static constexpr ::std::int64_t maxIntHex() {
+    return maxIntHex_;
+  }
+
+  static constexpr double const maxDub_ = static_cast<double>(1.79769313486232e+308);
+
+  static constexpr double maxDub() {
+    return maxDub_;
+  }
+
+  static constexpr double const minDub_ = static_cast<double>(2.2250738585072e-308);
+
+  static constexpr double minDub() {
+    return minDub_;
+  }
+
+  static constexpr double const minSDub_ = static_cast<double>(4.94065645841247e-324);
+
+  static constexpr double minSDub() {
+    return minSDub_;
+  }
+
+  static constexpr double const underflowDub1_ = static_cast<double>(0);
+
+  static constexpr double underflowDub1() {
+    return underflowDub1_;
+  }
+
+  static constexpr double const underflowDub2_ = static_cast<double>(0);
+
+  static constexpr double underflowDub2() {
+    return underflowDub2_;
+  }
+
+  static constexpr ::std::int64_t const maxPIntDec_ = static_cast<::std::int64_t>(9223372036854775807);
+
+  static constexpr ::std::int64_t maxPIntDec() {
+    return maxPIntDec_;
+  }
+
+  static constexpr double const maxPDub_ = static_cast<double>(1.79769313486232e+308);
+
+  static constexpr double maxPDub() {
+    return maxPDub_;
+  }
+
+  static constexpr double const minPDub_ = static_cast<double>(2.2250738585072e-308);
+
+  static constexpr double minPDub() {
+    return minPDub_;
+  }
+
+  static constexpr double const minPSDub_ = static_cast<double>(4.94065645841247e-324);
+
+  static constexpr double minPSDub() {
+    return minPSDub_;
+  }
+
+  static constexpr ::std::int64_t const minIntDec_ = static_cast<::std::int64_t>(-9223372036854775808);
+
+  static constexpr ::std::int64_t minIntDec() {
+    return minIntDec_;
+  }
+
+  static constexpr double const maxNDub_ = static_cast<double>(-1.79769313486232e+308);
+
+  static constexpr double maxNDub() {
+    return maxNDub_;
+  }
+
+  static constexpr double const minNDub_ = static_cast<double>(-2.2250738585072e-308);
+
+  static constexpr double minNDub() {
+    return minNDub_;
+  }
+
+  static constexpr double const minNSDub_ = static_cast<double>(-4.94065645841247e-324);
+
+  static constexpr double minNSDub() {
+    return minNSDub_;
+  }
+
 };
 
 } // cpp2

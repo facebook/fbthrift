@@ -107,8 +107,7 @@ class t_container_type;
  */
 %token<std::string>     tok_identifier
 %token<std::string>     tok_literal
-%token<t_doc>
-                        tok_doctext
+%token<t_doc>           tok_doctext
 
 /**
  * Constant values
@@ -596,8 +595,7 @@ EnumValue:
       $$->set_value($3);
       $$->set_lineno(driver.scanner->get_lineno());
     }
-|
-  Identifier
+| Identifier
     {
       driver.debug("EnumValue -> Identifier");
       $$ = new t_enum_value(std::move($1));
@@ -737,8 +735,7 @@ ConstMap:
       driver.debug("ConstMap => { ConstMapContents CommaOrSemicolonOptional }");
       $$ = $2;
     }
-|
-  "{" "}"
+| "{" "}"
     {
       driver.debug("ConstMap => { }");
       $$ = new t_const_value();
@@ -895,13 +892,11 @@ ErrorKind:
     {
       $$ = t_error_kind::transient;
     }
-|
-  tok_stateful
+| tok_stateful
     {
       $$ = t_error_kind::stateful;
     }
-|
-  tok_permanent
+| tok_permanent
     {
       $$ = t_error_kind::permanent;
     }
@@ -915,8 +910,7 @@ ErrorBlame:
     {
       $$ = t_error_blame::client;
     }
-|
-  tok_server
+| tok_server
     {
       $$ = t_error_blame::server;
     }
@@ -1110,7 +1104,8 @@ MaybeThrows:
       driver.debug("MaybeThrows -> tok_throws ( FieldList )");
       $$ = driver.new_throws(own($3)).release();
     }
-|   {
+|
+    {
       driver.debug("MaybeThrows -> ");
       $$ = nullptr;
 		}
@@ -1538,16 +1533,14 @@ IntOrLiteral:
       driver.debug("IntOrLiteral -> tok_literal");
       $$ = $1;
     }
-|
-  tok_bool_constant
+| tok_bool_constant
     {
       char buf[21];  // max len of int64_t as string + null terminator
       driver.debug("IntOrLiteral -> tok_bool_constant");
       sprintf(buf, "%" PRIi64, $1);
       $$ = buf;
     }
-|
-  tok_int_constant
+| tok_int_constant
     {
       char buf[21];  // max len of int64_t as string + null terminator
       driver.debug("IntOrLiteral -> tok_int_constant");

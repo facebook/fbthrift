@@ -16,6 +16,8 @@
 
 #include <thrift/compiler/parse/parsing_driver.h>
 
+#include <errno.h>
+#include <stdlib.h>
 #include <cstdarg>
 #include <limits>
 #include <memory>
@@ -185,8 +187,7 @@ void parsing_driver::parse_file() {
 
 // TODO: This doesn't really need to be a member function. Move it somewhere
 // else (e.g. `util.{h|cc}`) once everything gets consolidated into `parse/`.
-/* static */ std::string parsing_driver::directory_name(
-    const std::string& filename) {
+std::string parsing_driver::directory_name(const std::string& filename) {
   boost::filesystem::path fullpath = filename;
   auto parent_path = fullpath.parent_path();
   auto result = parent_path.string();
@@ -767,14 +768,46 @@ void parsing_driver::reserve_field_id(t_field_id id) {
   }
 }
 
+int64_t parsing_driver::parse_integer(const char* text, int offset, int base) {
+  errno = 0;
+  int64_t val = strtoll(text + offset, nullptr, base);
+  if (errno == ERANGE) {
+    failure([&](auto& o) { o << "This integer is too big: " << text << "\n"; });
+  }
+  return val;
+}
+
+double parsing_driver::parse_double(const char* text) {
+  // TODO(afuller): Switch to strtod and check for errors.
+  return atof(text);
+}
+
+void parsing_driver::parse_doctext(const char* text, int lineno) {
+  if (mode != apache::thrift::compiler::parsing_mode::PROGRAM) {
+    return;
+  }
+
+  // Deal with prefix/suffix.
+  std::string str{text};
+  if (str.compare(0, 3, "/**") == 0) {
+    str = str.substr(3, str.length() - 3 - 2);
+  } else if (str.compare(0, 3, "///") == 0) {
+    str = str.substr(3, str.length() - 3);
+  }
+
+  clear_doctext();
+  doctext = clean_up_doctext(str);
+  doctext_lineno = lineno;
+}
+
 void parsing_driver::compute_location_impl(
     YYLTYPE& yylloc, YYSTYPE& yylval, const char* text) {
   int i = 0;
 
-  /* Updating current begin to previous end. */
+  // Updating current begin to previous end.
   yylloc.begin = yylloc.end;
 
-  /* Getting rid of useless whitespaces on begin position. */
+  // Getting rid of useless whitespaces on begin position.
   for (; is_white_space(text[i]); i++) {
     yylval++;
     if (text[i] == '\n') {
@@ -786,10 +819,10 @@ void parsing_driver::compute_location_impl(
     }
   }
 
-  /* Avoid scanning whitespaces twice. */
+  // Avoid scanning whitespaces twice.
   yylloc.end = yylloc.begin;
 
-  /* Updating current end position. */
+  // Updating current end position.
   for (; text[i] != '\0'; i++) {
     yylval++;
     if (text[i] == '\n') {

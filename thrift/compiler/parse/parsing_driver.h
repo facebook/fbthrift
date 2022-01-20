@@ -321,6 +321,11 @@ class parsing_driver {
     end_parsing();
   }
 
+  [[noreturn]] void unexpected_token(const char* text) {
+    failure(
+        [&](auto& o) { o << "Unexpected token in input: " << text << "\n"; });
+  }
+
   [[noreturn]] void end_parsing();
 
   /**
@@ -477,6 +482,13 @@ class parsing_driver {
   t_field_id next_field_id() const { return next_field_id_; }
   t_field_id allocate_field_id(const std::string& name);
   void reserve_field_id(t_field_id id);
+
+  // Reports a failure if the parsed value cannot fit in the widest supported
+  // representation, i.e. int64_t and double.
+  int64_t parse_integer(const char* text, int offset, int base);
+  double parse_double(const char* text);
+
+  void parse_doctext(const char* text, int lineno);
 
  private:
   class deleter {

@@ -67,3 +67,19 @@ empty_int_int_map: __T.Dict[int, int]
 empty_int_string_map: __T.Dict[int, str]
 empty_string_int_map: __T.Dict[str, int]
 empty_string_string_map: __T.Dict[str, str]
+maxIntDec: int
+maxIntOct: int
+maxIntHex: int
+maxDub: float
+minDub: float
+minSDub: float
+underflowDub1: float
+underflowDub2: float
+maxPIntDec: int
+maxPDub: float
+minPDub: float
+minPSDub: float
+minIntDec: int
+maxNDub: float
+minNDub: float
+minNSDub: float

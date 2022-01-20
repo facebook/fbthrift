@@ -311,3 +311,35 @@ empty_string_int_map = {
 empty_string_string_map = {
 }
 
+maxIntDec = 9223372036854775807
+
+maxIntOct = 9223372036854775807
+
+maxIntHex = 9223372036854775807
+
+maxDub = 1.79769e+308
+
+minDub = 2.22507e-308
+
+minSDub = 4.94066e-324
+
+underflowDub1 = 0.00000
+
+underflowDub2 = 0.00000
+
+maxPIntDec = 9223372036854775807
+
+maxPDub = 1.79769e+308
+
+minPDub = 2.22507e-308
+
+minPSDub = 4.94066e-324
+
+minIntDec = -9223372036854775808
+
+maxNDub = -1.79769e+308
+
+minNDub = -2.22507e-308
+
+minNSDub = -4.94066e-324
+

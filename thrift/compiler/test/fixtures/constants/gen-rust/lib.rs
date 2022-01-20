@@ -316,6 +316,38 @@ pub mod consts {
     pub static empty_string_int_map: ::once_cell::sync::Lazy<::std::collections::BTreeMap<::std::string::String, ::std::primitive::i32>> = ::once_cell::sync::Lazy::new(|| ::std::collections::BTreeMap::new());
 
     pub static empty_string_string_map: ::once_cell::sync::Lazy<::std::collections::BTreeMap<::std::string::String, ::std::string::String>> = ::once_cell::sync::Lazy::new(|| ::std::collections::BTreeMap::new());
+
+    pub const maxIntDec: ::std::primitive::i64 = 9223372036854775807;
+
+    pub const maxIntOct: ::std::primitive::i64 = 9223372036854775807;
+
+    pub const maxIntHex: ::std::primitive::i64 = 9223372036854775807;
+
+    pub const maxDub: ::std::primitive::f64 = 1.79769313486232e+308;
+
+    pub const minDub: ::std::primitive::f64 = 2.2250738585072e-308;
+
+    pub const minSDub: ::std::primitive::f64 = 4.94065645841247e-324;
+
+    pub const underflowDub1: ::std::primitive::f64 = 0.0;
+
+    pub const underflowDub2: ::std::primitive::f64 = 0.0;
+
+    pub const maxPIntDec: ::std::primitive::i64 = 9223372036854775807;
+
+    pub const maxPDub: ::std::primitive::f64 = 1.79769313486232e+308;
+
+    pub const minPDub: ::std::primitive::f64 = 2.2250738585072e-308;
+
+    pub const minPSDub: ::std::primitive::f64 = 4.94065645841247e-324;
+
+    pub const minIntDec: ::std::primitive::i64 = -9223372036854775808;
+
+    pub const maxNDub: ::std::primitive::f64 = -1.79769313486232e+308;
+
+    pub const minNDub: ::std::primitive::f64 = -2.2250738585072e-308;
+
+    pub const minNSDub: ::std::primitive::f64 = -4.94065645841247e-324;
 }
 
 /// Thrift type definitions for `module`.

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -236,3 +236,22 @@ const map<i32, i32> empty_int_int_map = {};
 const map<i32, string> empty_int_string_map = {};
 const map<string, i32> empty_string_int_map = {};
 const map<string, string> empty_string_string_map = {};
+
+const i64 maxIntDec = 9223372036854775807;
+const i64 maxIntOct = 0777777777777777777777;
+const i64 maxIntHex = 0x7FFFFFFFFFFFFFFF;
+const double maxDub = 1.7976931348623157e308;
+const double minDub = 2.2250738585072014e-308;
+const double minSDub = 4.9406564584124654e-324;
+const double underflowDub1 = 4.9406564584124654e-325;
+const double underflowDub2 = 1e-324;
+
+const i64 maxPIntDec = +9223372036854775807;
+const double maxPDub = +1.7976931348623157e+308;
+const double minPDub = +2.2250738585072014e-308;
+const double minPSDub = +4.9406564584124654e-324;
+
+const i64 minIntDec = -9223372036854775808;
+const double maxNDub = -1.7976931348623157e+308;
+const double minNDub = -2.2250738585072014e-308;
+const double minNSDub = -4.9406564584124654e-324;

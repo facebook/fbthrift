@@ -78,6 +78,22 @@ var EmptyIntIntMap map[int32]int32
 var EmptyIntStringMap map[int32]string
 var EmptyStringIntMap map[string]int32
 var EmptyStringStringMap map[string]string
+const MaxIntDec = 9223372036854775807
+const MaxIntOct = 9223372036854775807
+const MaxIntHex = 9223372036854775807
+const MaxDub = 1.79769e+308
+const MinDub = 2.22507e-308
+const MinSDub = 4.94066e-324
+const UnderflowDub1 = 0
+const UnderflowDub2 = 0
+const MaxPIntDec = 9223372036854775807
+const MaxPDub = 1.79769e+308
+const MinPDub = 2.22507e-308
+const MinPSDub = 4.94066e-324
+const MinIntDec = -9223372036854775808
+const MaxNDub = -1.79769e+308
+const MinNDub = -2.22507e-308
+const MinNSDub = -4.94066e-324
 var const_lit_Instagram_employer Company = 3
 var const_lit_Instagram_compensation float64 = 1200
 var const_lit_Instagram_school string = "Monters University"

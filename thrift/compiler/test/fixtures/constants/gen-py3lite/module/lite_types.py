@@ -377,6 +377,38 @@ empty_string_int_map = _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typei
 
 empty_string_string_map = _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_string, {})
 
+maxIntDec = 9223372036854775807
+
+maxIntOct = 9223372036854775807
+
+maxIntHex = 9223372036854775807
+
+maxDub = float(1.79769313486232e+308)
+
+minDub = float(2.2250738585072e-308)
+
+minSDub = float(4.94065645841247e-324)
+
+underflowDub1 = float(0)
+
+underflowDub2 = float(0)
+
+maxPIntDec = 9223372036854775807
+
+maxPDub = float(1.79769313486232e+308)
+
+minPDub = float(2.2250738585072e-308)
+
+minPSDub = float(4.94065645841247e-324)
+
+minIntDec = -9223372036854775808
+
+maxNDub = float(-1.79769313486232e+308)
+
+minNDub = float(-2.2250738585072e-308)
+
+minNSDub = float(-4.94065645841247e-324)
+
 MyCompany = Company
 MyStringIdentifier = str
 MyIntIdentifier = int

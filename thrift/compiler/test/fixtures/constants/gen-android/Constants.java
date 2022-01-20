@@ -369,4 +369,36 @@ multi line string.
   static {
   }
 
+  public static final Long maxIntDec = 9223372036854775807L;
+
+  public static final Long maxIntOct = 9223372036854775807L;
+
+  public static final Long maxIntHex = 9223372036854775807L;
+
+  public static final Double maxDub = 1.79769e+308;
+
+  public static final Double minDub = 2.22507e-308;
+
+  public static final Double minSDub = 4.94066e-324;
+
+  public static final Double underflowDub1 = 0;
+
+  public static final Double underflowDub2 = 0;
+
+  public static final Long maxPIntDec = 9223372036854775807L;
+
+  public static final Double maxPDub = 1.79769e+308;
+
+  public static final Double minPDub = 2.22507e-308;
+
+  public static final Double minPSDub = 4.94066e-324;
+
+  public static final Long minIntDec = -9223372036854775808L;
+
+  public static final Double maxNDub = -1.79769e+308;
+
+  public static final Double minNDub = -2.22507e-308;
+
+  public static final Double minNSDub = -4.94066e-324;
+
 }

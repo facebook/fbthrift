@@ -269,4 +269,36 @@ constexpr char const * const module_constants::empty_string_;
   return *instance;
 }
 
+constexpr ::std::int64_t const module_constants::maxIntDec_;
+
+constexpr ::std::int64_t const module_constants::maxIntOct_;
+
+constexpr ::std::int64_t const module_constants::maxIntHex_;
+
+constexpr double const module_constants::maxDub_;
+
+constexpr double const module_constants::minDub_;
+
+constexpr double const module_constants::minSDub_;
+
+constexpr double const module_constants::underflowDub1_;
+
+constexpr double const module_constants::underflowDub2_;
+
+constexpr ::std::int64_t const module_constants::maxPIntDec_;
+
+constexpr double const module_constants::maxPDub_;
+
+constexpr double const module_constants::minPDub_;
+
+constexpr double const module_constants::minPSDub_;
+
+constexpr ::std::int64_t const module_constants::minIntDec_;
+
+constexpr double const module_constants::maxNDub_;
+
+constexpr double const module_constants::minNDub_;
+
+constexpr double const module_constants::minNSDub_;
+
 } // cpp2

@@ -715,6 +715,102 @@ multi line string.
     };
   }
 
+  /**
+   * Original thrift constant:-
+   * i64 maxIntDec
+   */
+  const int maxIntDec = 9223372036854775807;
+
+  /**
+   * Original thrift constant:-
+   * i64 maxIntOct
+   */
+  const int maxIntOct = 9223372036854775807;
+
+  /**
+   * Original thrift constant:-
+   * i64 maxIntHex
+   */
+  const int maxIntHex = 9223372036854775807;
+
+  /**
+   * Original thrift constant:-
+   * double maxDub
+   */
+  const float maxDub = 1.79769e+308;
+
+  /**
+   * Original thrift constant:-
+   * double minDub
+   */
+  const float minDub = 2.22507e-308;
+
+  /**
+   * Original thrift constant:-
+   * double minSDub
+   */
+  const float minSDub = 4.94066e-324;
+
+  /**
+   * Original thrift constant:-
+   * double underflowDub1
+   */
+  const float underflowDub1 = 0.0;
+
+  /**
+   * Original thrift constant:-
+   * double underflowDub2
+   */
+  const float underflowDub2 = 0.0;
+
+  /**
+   * Original thrift constant:-
+   * i64 maxPIntDec
+   */
+  const int maxPIntDec = 9223372036854775807;
+
+  /**
+   * Original thrift constant:-
+   * double maxPDub
+   */
+  const float maxPDub = 1.79769e+308;
+
+  /**
+   * Original thrift constant:-
+   * double minPDub
+   */
+  const float minPDub = 2.22507e-308;
+
+  /**
+   * Original thrift constant:-
+   * double minPSDub
+   */
+  const float minPSDub = 4.94066e-324;
+
+  /**
+   * Original thrift constant:-
+   * i64 minIntDec
+   */
+  const int minIntDec = -9223372036854775808;
+
+  /**
+   * Original thrift constant:-
+   * double maxNDub
+   */
+  const float maxNDub = -1.79769e+308;
+
+  /**
+   * Original thrift constant:-
+   * double minNDub
+   */
+  const float minNDub = -2.22507e-308;
+
+  /**
+   * Original thrift constant:-
+   * double minNSDub
+   */
+  const float minNSDub = -4.94066e-324;
+
 
   public static function getAllStructuredAnnotations()[]: dict<string, dict<string, \IThriftStruct>> {
     return dict[

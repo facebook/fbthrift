@@ -477,3 +477,19 @@ cdef extern from "src/gen-cpp2/module_constants.h" namespace "::cpp2":
     cdef cmap[cint32_t,string] cempty_int_string_map "::cpp2::module_constants::empty_int_string_map"()
     cdef cmap[string,cint32_t] cempty_string_int_map "::cpp2::module_constants::empty_string_int_map"()
     cdef cmap[string,string] cempty_string_string_map "::cpp2::module_constants::empty_string_string_map"()
+    cdef cint64_t cmaxIntDec "::cpp2::module_constants::maxIntDec"
+    cdef cint64_t cmaxIntOct "::cpp2::module_constants::maxIntOct"
+    cdef cint64_t cmaxIntHex "::cpp2::module_constants::maxIntHex"
+    cdef double cmaxDub "::cpp2::module_constants::maxDub"
+    cdef double cminDub "::cpp2::module_constants::minDub"
+    cdef double cminSDub "::cpp2::module_constants::minSDub"
+    cdef double cunderflowDub1 "::cpp2::module_constants::underflowDub1"
+    cdef double cunderflowDub2 "::cpp2::module_constants::underflowDub2"
+    cdef cint64_t cmaxPIntDec "::cpp2::module_constants::maxPIntDec"
+    cdef double cmaxPDub "::cpp2::module_constants::maxPDub"
+    cdef double cminPDub "::cpp2::module_constants::minPDub"
+    cdef double cminPSDub "::cpp2::module_constants::minPSDub"
+    cdef cint64_t cminIntDec "::cpp2::module_constants::minIntDec"
+    cdef double cmaxNDub "::cpp2::module_constants::maxNDub"
+    cdef double cminNDub "::cpp2::module_constants::minNDub"
+    cdef double cminNSDub "::cpp2::module_constants::minNSDub"
