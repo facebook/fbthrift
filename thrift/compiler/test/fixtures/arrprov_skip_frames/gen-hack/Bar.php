@@ -503,7 +503,7 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__ProvenanceSkipFrame>>
   public function __construct(?darray<int, bool> $a = null, ?varray<darray<int, darray<string, bool>>> $b = null, ?Foo $d = null, ?int $e = null, ?varray<Foo> $f = null  )[] {
-    $this->a = $a ?? darray[];
+    $this->a = $a ?? dict[];
     $this->b = $b ?? vec[];
     $this->d = $d;
     $this->e = $e ?? 4;

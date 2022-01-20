@@ -319,7 +319,7 @@ class Baz extends \TException implements \IThriftStruct {
     parent::__construct();
     $this->message = $message ?? '';
     $this->some_field = $some_field;
-    $this->some_container = $some_container ?? darray[];
+    $this->some_container = $some_container ?? dict[];
     $this->code = $code ?? 0;
   }
 

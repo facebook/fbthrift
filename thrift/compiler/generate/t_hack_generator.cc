@@ -973,7 +973,7 @@ void t_hack_generator::generate_json_container(
     if (arrays_) {
       indent(out) << container << " = keyset[];\n";
     } else if (arraysets_) {
-      indent(out) << container << " = " << array_keyword_ << "[];\n";
+      indent(out) << container << " = dict[];\n";
     } else {
       indent(out) << container << " = Set {};\n";
     }
@@ -1507,7 +1507,7 @@ std::string t_hack_generator::render_const_value(
       indent_down();
       indent(out) << "]";
     } else if (arraysets_) {
-      out << array_keyword_ << "[\n";
+      out << "dict[\n";
       for (const auto* val : vals) {
         out << indent();
         out << render_const_value(etype, val, immutable_collections);
@@ -1582,7 +1582,7 @@ std::string t_hack_generator::render_default_value(const t_type* type) {
     if (arrays_) {
       dval = "keyset[]";
     } else if (arraysets_) {
-      dval = array_keyword_ + "[]";
+      dval = "dict[]";
     } else {
       dval = "Set {}";
     }
@@ -4214,7 +4214,7 @@ void t_hack_generator::generate_process_function(
              << indent() << "$reply_type = \\TMessageType::REPLY;\n"
              << "\n"
              << indent() << "$this->eventHandler_->preRead($handler_ctx, '"
-             << fn_name << "', " << array_keyword_ << "[]);\n"
+             << fn_name << "', dict[]);\n"
              << "\n"
              << indent() << "if ($input is \\TBinaryProtocolAccelerated) {\n"
              << indent() << "  $args = \\thrift_protocol_read_binary_struct("
@@ -6502,7 +6502,7 @@ std::string t_hack_generator::declare_field(
       if (arrays_) {
         result += " = keyset[]";
       } else if (arraysets_) {
-        result += " = " + array_keyword_ + "[]";
+        result += " = dict[]";
       } else {
         result += " = Set {}";
       }

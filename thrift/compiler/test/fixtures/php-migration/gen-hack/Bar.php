@@ -413,7 +413,7 @@ abstract class BarAsyncProcessorBase extends \ThriftAsyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('baz');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'baz', darray[]);
+    $this->eventHandler_->preRead($handler_ctx, 'baz', dict[]);
 
     if ($input is \TBinaryProtocolAccelerated) {
       $args = \thrift_protocol_read_binary_struct($input, 'Bar_baz_args');
@@ -501,7 +501,7 @@ abstract class BarSyncProcessorBase extends \ThriftSyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('baz');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'baz', darray[]);
+    $this->eventHandler_->preRead($handler_ctx, 'baz', dict[]);
 
     if ($input is \TBinaryProtocolAccelerated) {
       $args = \thrift_protocol_read_binary_struct($input, 'Bar_baz_args');
