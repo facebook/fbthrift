@@ -478,17 +478,18 @@ class parsing_driver {
   t_ref<t_exception> add_def(std::unique_ptr<t_exception> node);
   t_ref<t_enum> add_def(std::unique_ptr<t_enum> node);
 
-  t_field_id as_field_id(int64_t int_const);
+  t_field_id to_field_id(int64_t int_const);
   t_field_id next_field_id() const { return next_field_id_; }
   t_field_id allocate_field_id(const std::string& name);
   void reserve_field_id(t_field_id id);
 
   // Reports a failure if the parsed value cannot fit in the widest supported
   // representation, i.e. int64_t and double.
-  int64_t parse_integer(const char* text, int offset, int base);
+  uint64_t parse_integer(const char* text, int offset, int base);
   double parse_double(const char* text);
 
   void parse_doctext(const char* text, int lineno);
+  int64_t to_int(uint64_t val, bool negative = false);
 
  private:
   class deleter {

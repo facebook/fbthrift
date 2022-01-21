@@ -735,6 +735,12 @@ multi line string.
 
   /**
    * Original thrift constant:-
+   * i64 maxIntBin
+   */
+  const int maxIntBin = 9223372036854775807;
+
+  /**
+   * Original thrift constant:-
    * double maxDub
    */
   const float maxDub = 1.79769e+308;
@@ -759,6 +765,24 @@ multi line string.
 
   /**
    * Original thrift constant:-
+   * i64 maxPIntOct
+   */
+  const int maxPIntOct = 9223372036854775807;
+
+  /**
+   * Original thrift constant:-
+   * i64 maxPIntHex
+   */
+  const int maxPIntHex = 9223372036854775807;
+
+  /**
+   * Original thrift constant:-
+   * i64 maxPIntBin
+   */
+  const int maxPIntBin = 9223372036854775807;
+
+  /**
+   * Original thrift constant:-
    * double maxPDub
    */
   const float maxPDub = 1.79769e+308;
@@ -780,6 +804,24 @@ multi line string.
    * i64 minIntDec
    */
   const int minIntDec = -9223372036854775808;
+
+  /**
+   * Original thrift constant:-
+   * i64 minIntOct
+   */
+  const int minIntOct = -9223372036854775808;
+
+  /**
+   * Original thrift constant:-
+   * i64 minIntHex
+   */
+  const int minIntHex = -9223372036854775808;
+
+  /**
+   * Original thrift constant:-
+   * i64 minIntBin
+   */
+  const int minIntBin = -9223372036854775808;
 
   /**
    * Original thrift constant:-

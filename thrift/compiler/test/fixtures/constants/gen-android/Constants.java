@@ -375,6 +375,8 @@ multi line string.
 
   public static final Long maxIntHex = 9223372036854775807L;
 
+  public static final Long maxIntBin = 9223372036854775807L;
+
   public static final Double maxDub = 1.79769e+308;
 
   public static final Double minDub = 2.22507e-308;
@@ -383,6 +385,12 @@ multi line string.
 
   public static final Long maxPIntDec = 9223372036854775807L;
 
+  public static final Long maxPIntOct = 9223372036854775807L;
+
+  public static final Long maxPIntHex = 9223372036854775807L;
+
+  public static final Long maxPIntBin = 9223372036854775807L;
+
   public static final Double maxPDub = 1.79769e+308;
 
   public static final Double minPDub = 2.22507e-308;
@@ -390,6 +398,12 @@ multi line string.
   public static final Double minPSDub = 4.94066e-324;
 
   public static final Long minIntDec = -9223372036854775808L;
+
+  public static final Long minIntOct = -9223372036854775808L;
+
+  public static final Long minIntHex = -9223372036854775808L;
+
+  public static final Long minIntBin = -9223372036854775808L;
 
   public static final Double maxNDub = -1.79769e+308;
 

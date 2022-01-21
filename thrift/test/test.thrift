@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -110,3 +110,24 @@ const union2 u_2_4 = {"u": {"i": 43}};
 const union2 u_2_5 = {"u": {"d": 9.8}};
 
 const union2 u_2_6 = {"u": {}};
+
+const i64 maxIntDec = 9223372036854775807;
+const i64 maxIntOct = 0777777777777777777777;
+const i64 maxIntHex = 0x7FFFFFFFFFFFFFFF;
+// Truncated to avoid bug in double<->string logic in c++
+// TODO(afuller): Update logic to detect this case and output a
+// valid float literal for this case.
+const double maxDub = 1.79769313486231E308;
+const double minDub = 2.2250738585072014e-308;
+const double minSDub = 4.9406564584124654e-324;
+
+const i64 maxPIntDec = +9223372036854775807;
+const double maxPDub = +1.79769313486231e+308;
+const double minPDub = +2.2250738585072014E-308;
+const double minPSDub = +4.9406564584124654e-324;
+
+// Causes a problematic (arguably invalid) warning in c++.
+//const i64 minIntDec = -9223372036854775808;
+const double maxNDub = -1.79769313486231e+308;
+const double minNDub = -2.2250738585072014e-308;
+const double minNSDub = -4.9406564584124654e-324;

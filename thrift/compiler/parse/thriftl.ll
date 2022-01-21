@@ -66,9 +66,10 @@ std::string trim_quotes(const char* text) {
  */
 
 octconstant   ("0"[0-7]*)
-decconstant   ([+-]?[1-9][0-9]*)
-hexconstant   ("0x"[0-9A-Fa-f]+)
-dubconstant   ([+-]?[0-9]*(\.[0-9]+)?([eE][+-]?[0-9]+)?)
+decconstant   ([1-9][0-9]*)
+hexconstant   ("0"[xX][0-9A-Fa-f]+)
+binconstant   ("0"[bB][01]+)
+dubconstant   ([0-9]*(\.[0-9]+)?([eE][+-]?[0-9]+)?)
 identifier    ([a-zA-Z_][\.a-zA-Z_0-9]*)
 whitespace    ([ \t\r\n]*)
 sillycomm     ("/*""*"*"*/")
@@ -100,9 +101,11 @@ sliteral      ("'"[^']*"'")
 "<"                  { return yyparser::make_tok_char_bracket_angle_l(*yylloc); }
 ">"                  { return yyparser::make_tok_char_bracket_angle_r(*yylloc); }
 "@"                  { return yyparser::make_tok_char_at_sign(*yylloc); }
+"-"                  { return yyparser::make_tok_char_minus(*yylloc); }
+"+"                  { return yyparser::make_tok_char_plus(*yylloc); }
 
-"false"              { return yyparser::make_tok_bool_constant(0, *yylloc); }
-"true"               { return yyparser::make_tok_bool_constant(1, *yylloc); }
+"false"              { return yyparser::make_tok_bool_constant(false, *yylloc); }
+"true"               { return yyparser::make_tok_bool_constant(true, *yylloc); }
 
 "namespace"          { return yyparser::make_tok_namespace(*yylloc); }
 "cpp_include"        { return yyparser::make_tok_cpp_include(*yylloc); }
@@ -149,6 +152,7 @@ sliteral      ("'"[^']*"'")
 {octconstant}        { return yyparser::make_tok_int_constant(driver.parse_integer(yytext, 1, 8), *yylloc); }
 {decconstant}        { return yyparser::make_tok_int_constant(driver.parse_integer(yytext, 0, 10), *yylloc); }
 {hexconstant}        { return yyparser::make_tok_int_constant(driver.parse_integer(yytext, 2, 16), *yylloc); }
+{binconstant}        { return yyparser::make_tok_int_constant(driver.parse_integer(yytext, 2, 2), *yylloc); }
 {dubconstant}        { return yyparser::make_tok_dub_constant(driver.parse_double(yytext), *yylloc); }
 {dliteral}           { return yyparser::make_tok_literal(trim_quotes(yytext), *yylloc); }
 {sliteral}           { return yyparser::make_tok_literal(trim_quotes(yytext), *yylloc); }

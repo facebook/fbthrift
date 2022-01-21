@@ -323,6 +323,8 @@ pub mod consts {
 
     pub const maxIntHex: ::std::primitive::i64 = 9223372036854775807;
 
+    pub const maxIntBin: ::std::primitive::i64 = 9223372036854775807;
+
     pub const maxDub: ::std::primitive::f64 = 1.79769313486232e+308;
 
     pub const minDub: ::std::primitive::f64 = 2.2250738585072e-308;
@@ -331,6 +333,12 @@ pub mod consts {
 
     pub const maxPIntDec: ::std::primitive::i64 = 9223372036854775807;
 
+    pub const maxPIntOct: ::std::primitive::i64 = 9223372036854775807;
+
+    pub const maxPIntHex: ::std::primitive::i64 = 9223372036854775807;
+
+    pub const maxPIntBin: ::std::primitive::i64 = 9223372036854775807;
+
     pub const maxPDub: ::std::primitive::f64 = 1.79769313486232e+308;
 
     pub const minPDub: ::std::primitive::f64 = 2.2250738585072e-308;
@@ -338,6 +346,12 @@ pub mod consts {
     pub const minPSDub: ::std::primitive::f64 = 4.94065645841247e-324;
 
     pub const minIntDec: ::std::primitive::i64 = -9223372036854775808;
+
+    pub const minIntOct: ::std::primitive::i64 = -9223372036854775808;
+
+    pub const minIntHex: ::std::primitive::i64 = -9223372036854775808;
+
+    pub const minIntBin: ::std::primitive::i64 = -9223372036854775808;
 
     pub const maxNDub: ::std::primitive::f64 = -1.79769313486232e+308;
 

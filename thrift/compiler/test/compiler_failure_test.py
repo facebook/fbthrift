@@ -391,7 +391,7 @@ class CompilerFailureTest(unittest.TestCase):
             ret, out, err = test_num("-" + value)
             self.assertEqual(ret, 1)
             self.assertEqual(
-                err, f"[FAILURE:foo.thrift:1] This number is too small: -{value}\n\n"
+                err, f"[FAILURE:foo.thrift:1] This number is too big: {value}\n\n"
             )
 
     def test_integer_underflow(self):
@@ -407,7 +407,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:1] This integer is too big: -9223372036854775809\n\n",
+            "[FAILURE:foo.thrift:1] This integer is too small: -9223372036854775809\n\n",
         )
 
     def test_double_underflow(self):
@@ -434,7 +434,7 @@ class CompilerFailureTest(unittest.TestCase):
             ret, out, err = test_num("-" + value)
             self.assertEqual(ret, 1)
             self.assertEqual(
-                err, f"[FAILURE:foo.thrift:1] This number is too infinitesimal: -{value}\n\n"
+                err, f"[FAILURE:foo.thrift:1] This number is too infinitesimal: {value}\n\n"
             )
 
     def test_const_wrong_type(self):

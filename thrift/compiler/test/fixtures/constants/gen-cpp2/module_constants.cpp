@@ -275,6 +275,8 @@ constexpr ::std::int64_t const module_constants::maxIntOct_;
 
 constexpr ::std::int64_t const module_constants::maxIntHex_;
 
+constexpr ::std::int64_t const module_constants::maxIntBin_;
+
 constexpr double const module_constants::maxDub_;
 
 constexpr double const module_constants::minDub_;
@@ -283,6 +285,12 @@ constexpr double const module_constants::minSDub_;
 
 constexpr ::std::int64_t const module_constants::maxPIntDec_;
 
+constexpr ::std::int64_t const module_constants::maxPIntOct_;
+
+constexpr ::std::int64_t const module_constants::maxPIntHex_;
+
+constexpr ::std::int64_t const module_constants::maxPIntBin_;
+
 constexpr double const module_constants::maxPDub_;
 
 constexpr double const module_constants::minPDub_;
@@ -290,6 +298,12 @@ constexpr double const module_constants::minPDub_;
 constexpr double const module_constants::minPSDub_;
 
 constexpr ::std::int64_t const module_constants::minIntDec_;
+
+constexpr ::std::int64_t const module_constants::minIntOct_;
+
+constexpr ::std::int64_t const module_constants::minIntHex_;
+
+constexpr ::std::int64_t const module_constants::minIntBin_;
 
 constexpr double const module_constants::maxNDub_;
 

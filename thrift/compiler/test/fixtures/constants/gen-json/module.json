@@ -994,178 +994,290 @@
         }
       }
     },
-    "maxDub" : {
+    "maxIntBin" : {
       "lineno" : 243,
-      "value" : 1.79769e+308,
-      "type_enum" : "DOUBLE",
-      "spec_args" : null,
-      "source_range" : {
-        "begin" : {
-          "line" : 243,
-          "column" : 1
-        },
-        "end" : {
-          "line" : 243,
-          "column" : 46
-        }
-      }
-    },
-    "minDub" : {
-      "lineno" : 244,
-      "value" : 2.22507e-308,
-      "type_enum" : "DOUBLE",
-      "spec_args" : null,
-      "source_range" : {
-        "begin" : {
-          "line" : 244,
-          "column" : 1
-        },
-        "end" : {
-          "line" : 244,
-          "column" : 47
-        }
-      }
-    },
-    "minSDub" : {
-      "lineno" : 245,
-      "value" : 4.94066e-324,
-      "type_enum" : "DOUBLE",
-      "spec_args" : null,
-      "source_range" : {
-        "begin" : {
-          "line" : 245,
-          "column" : 1
-        },
-        "end" : {
-          "line" : 245,
-          "column" : 48
-        }
-      }
-    },
-    "maxPIntDec" : {
-      "lineno" : 247,
       "value" : 9223372036854775807,
       "type_enum" : "I64",
       "spec_args" : null,
       "source_range" : {
         "begin" : {
-          "line" : 247,
+          "line" : 243,
           "column" : 1
         },
         "end" : {
-          "line" : 247,
-          "column" : 45
+          "line" : 243,
+          "column" : 89
         }
       }
     },
-    "maxPDub" : {
-      "lineno" : 248,
+    "maxDub" : {
+      "lineno" : 244,
       "value" : 1.79769e+308,
       "type_enum" : "DOUBLE",
       "spec_args" : null,
       "source_range" : {
         "begin" : {
-          "line" : 248,
+          "line" : 244,
           "column" : 1
         },
         "end" : {
-          "line" : 248,
-          "column" : 49
+          "line" : 244,
+          "column" : 46
         }
       }
     },
-    "minPDub" : {
-      "lineno" : 249,
+    "minDub" : {
+      "lineno" : 245,
       "value" : 2.22507e-308,
       "type_enum" : "DOUBLE",
       "spec_args" : null,
       "source_range" : {
         "begin" : {
-          "line" : 249,
+          "line" : 245,
           "column" : 1
         },
         "end" : {
-          "line" : 249,
-          "column" : 49
+          "line" : 245,
+          "column" : 47
         }
       }
     },
-    "minPSDub" : {
-      "lineno" : 250,
+    "minSDub" : {
+      "lineno" : 246,
       "value" : 4.94066e-324,
       "type_enum" : "DOUBLE",
       "spec_args" : null,
       "source_range" : {
         "begin" : {
+          "line" : 246,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 246,
+          "column" : 48
+        }
+      }
+    },
+    "maxPIntDec" : {
+      "lineno" : 248,
+      "value" : 9223372036854775807,
+      "type_enum" : "I64",
+      "spec_args" : null,
+      "source_range" : {
+        "begin" : {
+          "line" : 248,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 248,
+          "column" : 45
+        }
+      }
+    },
+    "maxPIntOct" : {
+      "lineno" : 249,
+      "value" : 9223372036854775807,
+      "type_enum" : "I64",
+      "spec_args" : null,
+      "source_range" : {
+        "begin" : {
+          "line" : 249,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 249,
+          "column" : 48
+        }
+      }
+    },
+    "maxPIntHex" : {
+      "lineno" : 250,
+      "value" : 9223372036854775807,
+      "type_enum" : "I64",
+      "spec_args" : null,
+      "source_range" : {
+        "begin" : {
           "line" : 250,
           "column" : 1
         },
         "end" : {
           "line" : 250,
+          "column" : 44
+        }
+      }
+    },
+    "maxPIntBin" : {
+      "lineno" : 251,
+      "value" : 9223372036854775807,
+      "type_enum" : "I64",
+      "spec_args" : null,
+      "source_range" : {
+        "begin" : {
+          "line" : 251,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 251,
+          "column" : 91
+        }
+      }
+    },
+    "maxPDub" : {
+      "lineno" : 252,
+      "value" : 1.79769e+308,
+      "type_enum" : "DOUBLE",
+      "spec_args" : null,
+      "source_range" : {
+        "begin" : {
+          "line" : 252,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 252,
+          "column" : 49
+        }
+      }
+    },
+    "minPDub" : {
+      "lineno" : 253,
+      "value" : 2.22507e-308,
+      "type_enum" : "DOUBLE",
+      "spec_args" : null,
+      "source_range" : {
+        "begin" : {
+          "line" : 253,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 253,
+          "column" : 49
+        }
+      }
+    },
+    "minPSDub" : {
+      "lineno" : 254,
+      "value" : 4.94066e-324,
+      "type_enum" : "DOUBLE",
+      "spec_args" : null,
+      "source_range" : {
+        "begin" : {
+          "line" : 254,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 254,
           "column" : 50
         }
       }
     },
     "minIntDec" : {
-      "lineno" : 252,
+      "lineno" : 256,
       "value" : -9223372036854775808,
       "type_enum" : "I64",
       "spec_args" : null,
       "source_range" : {
         "begin" : {
-          "line" : 252,
+          "line" : 256,
           "column" : 1
         },
         "end" : {
-          "line" : 252,
+          "line" : 256,
           "column" : 44
         }
       }
     },
+    "minIntOct" : {
+      "lineno" : 257,
+      "value" : -9223372036854775808,
+      "type_enum" : "I64",
+      "spec_args" : null,
+      "source_range" : {
+        "begin" : {
+          "line" : 257,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 257,
+          "column" : 48
+        }
+      }
+    },
+    "minIntHex" : {
+      "lineno" : 258,
+      "value" : -9223372036854775808,
+      "type_enum" : "I64",
+      "spec_args" : null,
+      "source_range" : {
+        "begin" : {
+          "line" : 258,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 258,
+          "column" : 43
+        }
+      }
+    },
+    "minIntBin" : {
+      "lineno" : 259,
+      "value" : -9223372036854775808,
+      "type_enum" : "I64",
+      "spec_args" : null,
+      "source_range" : {
+        "begin" : {
+          "line" : 259,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 259,
+          "column" : 91
+        }
+      }
+    },
     "maxNDub" : {
-      "lineno" : 253,
+      "lineno" : 260,
       "value" : -1.79769e+308,
       "type_enum" : "DOUBLE",
       "spec_args" : null,
       "source_range" : {
         "begin" : {
-          "line" : 253,
+          "line" : 260,
           "column" : 1
         },
         "end" : {
-          "line" : 253,
+          "line" : 260,
           "column" : 49
         }
       }
     },
     "minNDub" : {
-      "lineno" : 254,
+      "lineno" : 261,
       "value" : -2.22507e-308,
       "type_enum" : "DOUBLE",
       "spec_args" : null,
       "source_range" : {
         "begin" : {
-          "line" : 254,
+          "line" : 261,
           "column" : 1
         },
         "end" : {
-          "line" : 254,
+          "line" : 261,
           "column" : 49
         }
       }
     },
     "minNSDub" : {
-      "lineno" : 255,
+      "lineno" : 262,
       "value" : -4.94066e-324,
       "type_enum" : "DOUBLE",
       "spec_args" : null,
       "source_range" : {
         "begin" : {
-          "line" : 255,
+          "line" : 262,
           "column" : 1
         },
         "end" : {
-          "line" : 255,
+          "line" : 262,
           "column" : 50
         }
       }

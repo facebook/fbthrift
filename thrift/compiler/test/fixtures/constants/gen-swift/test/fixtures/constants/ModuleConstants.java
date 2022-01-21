@@ -210,6 +210,8 @@ multi line string.
 
     public static final long MAX_INT_HEX = 9223372036854775807L;
 
+    public static final long MAX_INT_BIN = 9223372036854775807L;
+
     public static final double MAX_DUB = (double)1.79769313486232e+308;
 
     public static final double MIN_DUB = (double)2.2250738585072e-308;
@@ -218,6 +220,12 @@ multi line string.
 
     public static final long MAX_PINT_DEC = 9223372036854775807L;
 
+    public static final long MAX_PINT_OCT = 9223372036854775807L;
+
+    public static final long MAX_PINT_HEX = 9223372036854775807L;
+
+    public static final long MAX_PINT_BIN = 9223372036854775807L;
+
     public static final double MAX_PDUB = (double)1.79769313486232e+308;
 
     public static final double MIN_PDUB = (double)2.2250738585072e-308;
@@ -225,6 +233,12 @@ multi line string.
     public static final double MIN_PSDUB = (double)4.94065645841247e-324;
 
     public static final long MIN_INT_DEC = -9223372036854775808L;
+
+    public static final long MIN_INT_OCT = -9223372036854775808L;
+
+    public static final long MIN_INT_HEX = -9223372036854775808L;
+
+    public static final long MIN_INT_BIN = -9223372036854775808L;
 
     public static final double MAX_NDUB = (double)-1.79769313486232e+308;
 

@@ -734,7 +734,7 @@ t_ref<t_enum> parsing_driver::add_def(std::unique_ptr<t_enum> node) {
   return result;
 }
 
-t_field_id parsing_driver::as_field_id(int64_t int_const) {
+t_field_id parsing_driver::to_field_id(int64_t int_const) {
   using limits = std::numeric_limits<t_field_id>;
   if (int_const < limits::min() || int_const > limits::max()) {
     // Not representable as a field id.
@@ -769,11 +769,26 @@ void parsing_driver::reserve_field_id(t_field_id id) {
   }
 }
 
-int64_t parsing_driver::parse_integer(const char* text, int offset, int base) {
+uint64_t parsing_driver::parse_integer(const char* text, int offset, int base) {
   errno = 0;
-  int64_t val = strtoll(text + offset, nullptr, base);
+  uint64_t val = strtoull(text + offset, nullptr, base);
   if (errno == ERANGE) {
     failure([&](auto& o) { o << "This integer is too big: " << text << "\n"; });
+  }
+  return val;
+}
+
+int64_t parsing_driver::to_int(uint64_t val, bool negative) {
+  constexpr uint64_t i64max = std::numeric_limits<int64_t>::max();
+  if (negative) {
+    if (val > i64max + 1) { // Can store one more negative number.
+      failure(
+          [&](auto& o) { o << "This integer is too small: -" << val << "\n"; });
+    }
+    return -val;
+  }
+  if (val > i64max) {
+    failure([&](auto& o) { o << "This integer is too big: " << val << "\n"; });
   }
   return val;
 }

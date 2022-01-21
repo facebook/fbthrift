@@ -112,8 +112,8 @@ class t_container_type;
 /**
  * Constant values
  */
-%token<int64_t>   tok_bool_constant
-%token<int64_t>   tok_int_constant
+%token<bool>  tok_bool_constant
+%token<uint64_t>  tok_int_constant
 %token<double>    tok_dub_constant
 
 /**
@@ -132,6 +132,8 @@ class t_container_type;
 %token tok_char_bracket_angle_l     "<"
 %token tok_char_bracket_angle_r     ">"
 %token tok_char_at_sign             "@"
+%token tok_char_plus                "+"
+%token tok_char_minus               "-"
 
 /**
  * Header keywords
@@ -241,6 +243,9 @@ class t_container_type;
 %type<t_typethrowspair>            SinkFieldType
 %type<t_const_value*>              FieldValue
 %type<t_field_list*>               FieldList
+
+%type<int64_t>                     Integer
+%type<double>                      Double
 
 %type<t_enum*>                     Enum
 %type<t_enum_value_list*>          EnumValueList
@@ -533,6 +538,41 @@ CommaOrSemicolonOptional:
       $$ = false;
     }
 
+Integer:
+  tok_int_constant
+    {
+      driver.debug("Integer -> tok_int_constant");
+      $$ = driver.to_int($1);
+    }
+| tok_char_plus tok_int_constant
+    {
+      driver.debug("Integer -> + tok_int_constant");
+      $$ = driver.to_int($2);
+    }
+| tok_char_minus tok_int_constant
+    {
+      driver.debug("Integer -> - tok_int_constant");
+      $$ = driver.to_int($2, true);
+    }
+
+Double:
+  tok_dub_constant
+    {
+      driver.debug("Double -> tok_dub_constant");
+      $$ = $1;
+    }
+| tok_char_plus tok_dub_constant
+    {
+      driver.debug("Double -> + tok_dub_constant");
+      $$ = $2;
+    }
+| tok_char_minus tok_dub_constant
+    {
+      driver.debug("Double -> - tok_dub_constant");
+      $$ = -$2;
+    }
+
+
 Enum:
   DefinitionAttrs tok_enum Identifier
     {
@@ -578,9 +618,9 @@ EnumValueDef:
     }
 
 EnumValue:
-  Identifier "=" tok_int_constant
+  Identifier "=" Integer
     {
-      driver.debug("EnumValue -> Identifier = tok_int_constant");
+      driver.debug("EnumValue -> Identifier = Integer");
       if ($3 < INT32_MIN || $3 > INT32_MAX) {
         // Note: this used to be just a warning.  However, since thrift always
         // treats enums as i32 values, I'm changing it to a fatal error.
@@ -627,13 +667,13 @@ Const:
 ConstValue:
   tok_bool_constant
     {
-      driver.debug("ConstValue => tok_int_constant");
+      driver.debug("ConstValue => tok_bool_constant");
       $$ = new t_const_value();
       $$->set_bool($1);
     }
-| tok_int_constant
+| Integer
     {
-      driver.debug("ConstValue => tok_int_constant");
+      driver.debug("ConstValue => Integer");
       $$ = new t_const_value();
       $$->set_integer($1);
       if (driver.mode == parsing_mode::PROGRAM) {
@@ -644,9 +684,9 @@ ConstValue:
         }
       }
     }
-| tok_dub_constant
+| Double
     {
-      driver.debug("ConstValue => tok_dub_constant");
+      driver.debug("ConstValue => Double");
       $$ = new t_const_value();
       $$->set_double($1);
     }
@@ -1128,7 +1168,7 @@ Field:
     {
       driver.start_node(LineType::Field);
     }
-   FieldValue TypeAnnotations CommaOrSemicolonOptional
+  FieldValue TypeAnnotations CommaOrSemicolonOptional
     {
       driver.debug("Field => DefinitionAttrs FieldIdentifier FieldQualifier "
         "FieldType Identifier FieldValue TypeAnnotations CommaOrSemicolonOptional");
@@ -1184,9 +1224,9 @@ Field:
     }
 
 FieldIdentifier:
-  tok_int_constant ":"
+  Integer ":"
     {
-      $$ = driver.as_field_id($1);
+      $$ = driver.to_field_id($1);
     }
 |
     {
@@ -1537,13 +1577,13 @@ IntOrLiteral:
     {
       char buf[21];  // max len of int64_t as string + null terminator
       driver.debug("IntOrLiteral -> tok_bool_constant");
-      sprintf(buf, "%" PRIi64, $1);
+      sprintf(buf, "%" PRIi32, $1 ? 1 : 0);
       $$ = buf;
     }
-| tok_int_constant
+| Integer
     {
       char buf[21];  // max len of int64_t as string + null terminator
-      driver.debug("IntOrLiteral -> tok_int_constant");
+      driver.debug("IntOrLiteral -> Integer");
       sprintf(buf, "%" PRIi64, $1);
       $$ = buf;
     }

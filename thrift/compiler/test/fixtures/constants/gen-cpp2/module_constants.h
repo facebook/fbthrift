@@ -285,6 +285,12 @@ multi line string.
     return maxIntHex_;
   }
 
+  static constexpr ::std::int64_t const maxIntBin_ = static_cast<::std::int64_t>(9223372036854775807);
+
+  static constexpr ::std::int64_t maxIntBin() {
+    return maxIntBin_;
+  }
+
   static constexpr double const maxDub_ = static_cast<double>(1.79769313486232e+308);
 
   static constexpr double maxDub() {
@@ -309,6 +315,24 @@ multi line string.
     return maxPIntDec_;
   }
 
+  static constexpr ::std::int64_t const maxPIntOct_ = static_cast<::std::int64_t>(9223372036854775807);
+
+  static constexpr ::std::int64_t maxPIntOct() {
+    return maxPIntOct_;
+  }
+
+  static constexpr ::std::int64_t const maxPIntHex_ = static_cast<::std::int64_t>(9223372036854775807);
+
+  static constexpr ::std::int64_t maxPIntHex() {
+    return maxPIntHex_;
+  }
+
+  static constexpr ::std::int64_t const maxPIntBin_ = static_cast<::std::int64_t>(9223372036854775807);
+
+  static constexpr ::std::int64_t maxPIntBin() {
+    return maxPIntBin_;
+  }
+
   static constexpr double const maxPDub_ = static_cast<double>(1.79769313486232e+308);
 
   static constexpr double maxPDub() {
@@ -331,6 +355,24 @@ multi line string.
 
   static constexpr ::std::int64_t minIntDec() {
     return minIntDec_;
+  }
+
+  static constexpr ::std::int64_t const minIntOct_ = static_cast<::std::int64_t>(-9223372036854775808);
+
+  static constexpr ::std::int64_t minIntOct() {
+    return minIntOct_;
+  }
+
+  static constexpr ::std::int64_t const minIntHex_ = static_cast<::std::int64_t>(-9223372036854775808);
+
+  static constexpr ::std::int64_t minIntHex() {
+    return minIntHex_;
+  }
+
+  static constexpr ::std::int64_t const minIntBin_ = static_cast<::std::int64_t>(-9223372036854775808);
+
+  static constexpr ::std::int64_t minIntBin() {
+    return minIntBin_;
   }
 
   static constexpr double const maxNDub_ = static_cast<double>(-1.79769313486232e+308);
