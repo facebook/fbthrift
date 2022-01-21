@@ -96,12 +96,12 @@ class CoroutineServiceHandlerCoro : virtual public CoroutineSvIf {
   folly::coro::Task<int32_t> co_takesRequestParams(
       RequestParams params) override {
     Cpp2RequestContext* requestContext = params.getRequestContext();
-    ThreadManager* threadManager = params.getThreadManager();
+    folly::Executor* handlerExecutor = params.getHandlerExecutor();
     EventBase* eventBase = params.getEventBase();
     // It's hard to check that these pointers are what we expect them to be; we
     // can at least make sure that they point to valid memory, though.
     *(volatile char*)requestContext;
-    *(volatile char*)threadManager;
+    *(volatile char*)handlerExecutor;
     *(volatile char*)eventBase;
     co_return 0;
   }
