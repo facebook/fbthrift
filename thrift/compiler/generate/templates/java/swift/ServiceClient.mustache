@@ -35,27 +35,27 @@ import reactor.core.publisher.Mono;
 public class {{service:javaCapitalName}}ClientImpl extends {{^service:extends}}AbstractThriftClient{{/service:extends}}{{#service:extends}}{{service:javaPackage}}.{{service:javaCapitalName}}ClientImpl{{/service:extends}} implements {{service:javaCapitalName}} {
 
     // Method Handlers
-    {{#service:supportedFunctions}}
+    {{#service:singleRequestFunctions}}
     private ThriftMethodHandler {{function:javaName}}MethodHandler;
-    {{/service:supportedFunctions}}
+    {{/service:singleRequestFunctions}}
     {{#service:interactions}}
     // Interaction Handlers
-    {{#service:supportedFunctions}}
+    {{#service:singleRequestFunctions}}
     private ThriftMethodHandler {{function:javaName}}IMethodHandler;
-    {{/service:supportedFunctions}}
+    {{/service:singleRequestFunctions}}
     {{/service:interactions}}
 
     // Method Exceptions
-    {{#service:supportedFunctions}}
+    {{#service:singleRequestFunctions}}
     private static final Class[] {{function:javaName}}Exceptions = new Class[] {
         {{#function:exceptions}}{{#field:type}}{{> BoxedType}}.class{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException.class};
-    {{/service:supportedFunctions}}
+    {{/service:singleRequestFunctions}}
     {{#service:interactions}}
     // Interaction Exceptions
-    {{#service:supportedFunctions}}
+    {{#service:singleRequestFunctions}}
     private static final Class[] {{function:javaName}}IExceptions = new Class[] {
         {{#function:exceptions}}{{#field:type}}{{> BoxedType}}.class{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException.class};
-    {{/service:supportedFunctions}}
+    {{/service:singleRequestFunctions}}
     {{/service:interactions}}
 
     public {{service:javaCapitalName}}ClientImpl(
@@ -73,14 +73,14 @@ public class {{service:javaCapitalName}}ClientImpl extends {{^service:extends}}A
           });
 
       // Set method handlers
-      {{#service:supportedFunctions}}
+      {{#service:singleRequestFunctions}}
       {{function:javaName}}MethodHandler = methodHandlerMap.get("{{function:javaName}}");
-      {{/service:supportedFunctions}}
+      {{/service:singleRequestFunctions}}
       {{#service:interactions}}
       // Set interaction handlers
-      {{#service:supportedFunctions}}
+      {{#service:singleRequestFunctions}}
       {{function:javaName}}IMethodHandler = methodHandlerMap.get("{{function:javaName}}");
-      {{/service:supportedFunctions}}
+      {{/service:singleRequestFunctions}}
       {{/service:interactions}}
     }
 
@@ -101,14 +101,14 @@ public class {{service:javaCapitalName}}ClientImpl extends {{^service:extends}}A
           });
 
       // Set method handlers
-      {{#service:supportedFunctions}}
+      {{#service:singleRequestFunctions}}
       {{function:javaName}}MethodHandler = methodHandlerMap.get("{{function:javaName}}");
-      {{/service:supportedFunctions}}
+      {{/service:singleRequestFunctions}}
       {{#service:interactions}}
       // Set interaction handlers
-      {{#service:supportedFunctions}}
+      {{#service:singleRequestFunctions}}
       {{function:javaName}}IMethodHandler = methodHandlerMap.get("{{function:javaName}}");
-      {{/service:supportedFunctions}}
+      {{/service:singleRequestFunctions}}
       {{/service:interactions}}
     }
 
@@ -117,7 +117,7 @@ public class {{service:javaCapitalName}}ClientImpl extends {{^service:extends}}A
         super.close();
     }
 
-    {{#service:supportedFunctions}}
+    {{#service:singleRequestFunctions}}
 
     @java.lang.Override
     public {{#function:return_type}}{{> Type}}{{/function:return_type}} {{function:javaName}}({{#function:args}}
@@ -156,7 +156,7 @@ public class {{service:javaCapitalName}}ClientImpl extends {{^service:extends}}A
         throw new org.apache.thrift.TException(t);
       }
     }
-    {{/service:supportedFunctions}}
+    {{/service:singleRequestFunctions}}
     {{#service:interactions}}
 
     public class {{service:name}}Impl implements {{service:name}} {
@@ -166,7 +166,7 @@ public class {{service:javaCapitalName}}ClientImpl extends {{^service:extends}}A
         this.interactionId = interactionId;
       }
 
-      {{#service:supportedFunctions}}
+      {{#service:singleRequestFunctions}}
 
       public {{#function:return_type}}{{> Type}}{{/function:return_type}} {{function:javaName}}({{#function:args}}
       final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
@@ -202,7 +202,7 @@ public class {{service:javaCapitalName}}ClientImpl extends {{^service:extends}}A
         }
       }
 
-      {{/service:supportedFunctions}}
+      {{/service:singleRequestFunctions}}
       @java.lang.Override
       public void close() {
         activeInteractions.remove(interactionId);

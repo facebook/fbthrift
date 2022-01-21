@@ -34,7 +34,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
     public interface Async extends java.io.Closeable{{#service:extends}}, {{service:javaPackage}}.{{service:javaCapitalName}}.Async{{/service:extends}} {
         @java.lang.Override void close();
 
-        {{#service:supportedFunctions}}
+        {{#service:singleRequestFunctions}}
         @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
                       oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#first?}},
                       exception = { {{/first?}}
@@ -57,11 +57,11 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
         {{^last?}}
 
         {{/last?}}
-        {{/service:supportedFunctions}}
+        {{/service:singleRequestFunctions}}
         {{#service:interactions}}
         @com.facebook.swift.service.ThriftInteraction("{{service:name}}")
         public interface {{service:name}} extends java.io.Closeable {
-            {{#service:supportedFunctions}}
+            {{#service:singleRequestFunctions}}
             @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
                 oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#first?}},
                 exception = { {{/first?}}
@@ -76,7 +76,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
             ListenableFuture<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:javaName}}Wrapper({{#function:args}}
                 @com.facebook.swift.codec.ThriftField(value={{field:key}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
                 RpcOptions rpcOptions);
-            {{/service:supportedFunctions}}
+            {{/service:singleRequestFunctions}}
 
             @java.lang.Override
             void close();
@@ -89,7 +89,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
         {{/service:interactions}}
     }
     @java.lang.Override void close();
-    {{#service:supportedFunctions}}
+    {{#service:singleRequestFunctions}}
 
     @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
                   oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#first?}},
@@ -116,11 +116,11 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
         }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
-    {{/service:supportedFunctions}}
+    {{/service:singleRequestFunctions}}
 
     @com.facebook.swift.service.ThriftService("{{service:javaCapitalName}}")
     interface Reactive extends reactor.core.Disposable{{#service:extends}}, {{service:javaPackage}}.{{service:javaCapitalName}}.Reactive{{/service:extends}} {
-        {{#service:supportedFunctions}}
+        {{#service:singleRequestFunctions}}
         @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
                   oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#first?}},
                   exception = { {{/first?}}
@@ -136,7 +136,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
             throw new UnsupportedOperationException();
         }
 
-        {{/service:supportedFunctions}}
+        {{/service:singleRequestFunctions}}
         {{#service:streamingFunctions}}
         reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
 
@@ -164,7 +164,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
         {{#service:interactions}}
         @com.facebook.swift.service.ThriftInteraction("{{service:name}}")
         public interface {{service:name}} extends reactor.core.Disposable {
-            {{#service:supportedFunctions}}
+            {{#service:singleRequestFunctions}}
             @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
                 oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#first?}},
                 exception = { {{/first?}}
@@ -176,7 +176,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
 
             reactor.core.publisher.Mono<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:javaName}}Wrapper({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions);
 
-            {{/service:supportedFunctions}}
+            {{/service:singleRequestFunctions}}
             {{#service:streamingFunctions}}
             reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
 
@@ -202,7 +202,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
     {{#service:interactions}}
     @com.facebook.swift.service.ThriftInteraction("{{service:name}}")
     public interface {{service:name}} extends java.io.Closeable {
-        {{#service:supportedFunctions}}
+        {{#service:singleRequestFunctions}}
         @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
                       oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#first?}},
                       exception = { {{/first?}}
@@ -222,7 +222,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
             RpcOptions rpcOptions){{!
             Exceptions
             }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException;
-        {{/service:supportedFunctions}}
+        {{/service:singleRequestFunctions}}
 
         @java.lang.Override
         void close();

@@ -39,7 +39,7 @@ public class {{service:javaCapitalName}}ReactiveBlockingWrapper {{#service:exten
     _delegate.dispose();
   }
 
-  {{#service:supportedFunctions}}
+  {{#service:singleRequestFunctions}}
   @java.lang.Override
   public {{#function:return_type}}{{> Type}}{{/function:return_type}} {{function:javaName}}({{#function:args}} final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}){{!
           Exceptions
@@ -74,7 +74,7 @@ public class {{service:javaCapitalName}}ReactiveBlockingWrapper {{#service:exten
     }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
       return _delegate.{{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}rpcOptions).block();
   }
-  {{/service:supportedFunctions}}
+  {{/service:singleRequestFunctions}}
 
   {{#service:interactions}}
   public {{service:name}} create{{service:name}}() {

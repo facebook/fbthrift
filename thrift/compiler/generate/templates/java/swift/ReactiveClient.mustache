@@ -41,7 +41,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
   private final Map<String, String> _persistentHeaders;
   private final Set<Long> _activeInteractions;
 
-  {{#service:supportedFunctions}}
+  {{#service:singleRequestFunctions}}
   {{#function:args}}
   private static final TField _{{function:javaName}}_{{field:javaTFieldName}} = new TField("{{field:name}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});
   {{/function:args}}
@@ -61,7 +61,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
           };
 
   {{/function:exceptions}}
-  {{/service:supportedFunctions}}
+  {{/service:singleRequestFunctions}}
   {{#service:streamingFunctions}}
   {{#function:args}}
   private static final TField _{{function:javaName}}_{{field:javaTFieldName}} = new TField("{{field:name}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});
@@ -140,7 +140,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
   {{/function:sink_final_response_exceptions}}
   {{/service:sinkFunctions}}
   {{#service:interactions}}
-  {{#service:supportedFunctions}}
+  {{#service:singleRequestFunctions}}
   {{#function:args}}
   private static final TField _{{function:javaName}}_{{field:javaTFieldName}}_INT = new TField("{{field:name}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});
   {{/function:args}}
@@ -160,7 +160,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
           };
 
   {{/function:exceptions}}
-  {{/service:supportedFunctions}}
+  {{/service:singleRequestFunctions}}
   {{#service:streamingFunctions}}
   {{#function:args}}
   private static final TField _{{function:javaName}}_{{field:javaTFieldName}}_INT = new TField("{{field:name}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});
@@ -201,9 +201,9 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
   {{/service:interactions}}
 
   static {
-    {{#service:supportedFunctions}}{{#function:exceptions}}
+    {{#service:singleRequestFunctions}}{{#function:exceptions}}
     _{{function:javaName}}_EXCEPTION_READERS.put((short){{field:key}}, _{{function:javaName}}_EXCEPTION_READER{{field:index}});
-    {{/function:exceptions}}{{/service:supportedFunctions}}
+    {{/function:exceptions}}{{/service:singleRequestFunctions}}
     {{#service:streamingFunctions}}{{#function:exceptions}}
     _{{function:javaName}}_EXCEPTION_READERS.put((short){{field:key}}, _{{function:javaName}}_EXCEPTION_READER{{field:index}});
     {{/function:exceptions}}{{#function:stream_exceptions}}
@@ -241,7 +241,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
   @java.lang.Override
   public void dispose() {}
 
-  {{#service:supportedFunctions}}
+  {{#service:singleRequestFunctions}}
   private com.facebook.thrift.payload.Writer _create{{function:javaName}}Writer({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
     return oprot -> {
       try {
@@ -325,7 +325,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
     return {{function:javaName}}({{#function:args}}{{field:javaName}}, {{/function:args}} com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
-  {{/service:supportedFunctions}}
+  {{/service:singleRequestFunctions}}
   {{#service:streamingFunctions}}
   private com.facebook.thrift.payload.Writer _create{{function:javaName}}Writer({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
     return oprot -> {
@@ -579,7 +579,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
       this.interactionId = interactionId;
     }
 
-    {{#service:supportedFunctions}}
+    {{#service:singleRequestFunctions}}
     private final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:javaName}}_EXCEPTION_READERS = {{#function:exceptions?}}new HashMap<>();{{/function:exceptions?}}{{^function:exceptions?}}java.util.Collections.emptyMap();{{/function:exceptions?}}
     {{#function:exceptions}}
     private final com.facebook.thrift.payload.Reader _{{function:javaName}}_EXCEPTION_READER_INT{{field:index}} =
@@ -596,9 +596,9 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
             };
 
     {{/function:exceptions}}
-    {{/service:supportedFunctions}}
+    {{/service:singleRequestFunctions}}
 
-    {{#service:supportedFunctions}}
+    {{#service:singleRequestFunctions}}
     private com.facebook.thrift.payload.Writer _create{{function:javaName}}Writer({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
       return oprot -> {
         try {
@@ -698,7 +698,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
         });
     }
 
-    {{/service:supportedFunctions}}
+    {{/service:singleRequestFunctions}}
     {{#service:streamingFunctions}}
     private com.facebook.thrift.payload.Writer _create{{function:javaName}}Writer({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
       return oprot -> {

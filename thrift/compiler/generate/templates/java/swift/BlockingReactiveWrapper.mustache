@@ -36,7 +36,7 @@ public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#service:exten
         _delegate.close();
     }
 
-    {{#service:supportedFunctions}}
+    {{#service:singleRequestFunctions}}
     @java.lang.Override
     public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
         {{#function:voidType}}
@@ -59,7 +59,7 @@ public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#service:exten
         {{/function:voidType}}
     }
 
-    {{/service:supportedFunctions}}
+    {{/service:singleRequestFunctions}}
     {{#service:streamingFunctions}}
     @java.lang.Override
     public reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
@@ -82,7 +82,7 @@ public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#service:exten
             this._delegateInteraction = delegateInteraction;
         }
 
-        {{#service:supportedFunctions}}
+        {{#service:singleRequestFunctions}}
         @java.lang.Override
         public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
             {{#function:voidType}}
@@ -117,7 +117,7 @@ public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#service:exten
             throw new UnsupportedOperationException();
         }
 
-        {{/service:supportedFunctions}}
+        {{/service:singleRequestFunctions}}
         {{#service:streamingFunctions}}
         @java.lang.Override
         public reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {

@@ -29,9 +29,9 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
 
   private final {{service:javaCapitalName}}.Reactive _delegate;
 
-  {{#service:supportedFunctions}}
+  {{#service:singleRequestFunctions}}
   private final java.util.List<com.facebook.thrift.payload.Reader> _{{function:javaName}}Readers;
-  {{/service:supportedFunctions}}
+  {{/service:singleRequestFunctions}}
 
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
@@ -52,11 +52,11 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
     this._delegate = _delegate;
     this._eventHandlers = _eventHandlers;
 
-    {{#service:supportedFunctions}}
+    {{#service:singleRequestFunctions}}
     _methodMap.put("{{function:javaName}}", this);
     _{{function:javaName}}Readers = _create_{{function:javaName}}_request_readers();
 
-    {{/service:supportedFunctions}}
+    {{/service:singleRequestFunctions}}
   }
 
   {{#service:requestResponseFunctions}}

@@ -39,7 +39,7 @@ public class {{service:javaCapitalName}}ReactiveAsyncWrapper {{#service:extends}
     _delegate.dispose();
   }
 
-  {{#service:supportedFunctions}}
+  {{#service:singleRequestFunctions}}
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
       return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}));
@@ -59,10 +59,10 @@ public class {{service:javaCapitalName}}ReactiveAsyncWrapper {{#service:extends}
     return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.{{function:javaName}}Wrapper({{#function:args}}{{field:javaName}},{{/function:args}} rpcOptions));
   }
 
-  {{/service:supportedFunctions}}
+  {{/service:singleRequestFunctions}}
   {{#service:interactions}}
   public class {{service:name}}Impl implements {{service:name}} {
-    {{#service:supportedFunctions}}
+    {{#service:singleRequestFunctions}}
     @java.lang.Override
     public com.google.common.util.concurrent.ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
         throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveAsyncWrapper Interfaces!");
@@ -82,7 +82,7 @@ public class {{service:javaCapitalName}}ReactiveAsyncWrapper {{#service:extends}
       throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveAsyncWrapper Interfaces!");
     }
 
-    {{/service:supportedFunctions}}
+    {{/service:singleRequestFunctions}}
     @java.lang.Override
     public void close() {}
   }

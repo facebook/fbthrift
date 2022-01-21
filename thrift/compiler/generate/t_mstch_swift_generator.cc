@@ -416,8 +416,8 @@ class mstch_swift_service : public mstch_service {
              &mstch_swift_service::get_oneway_functions},
             {"service:requestResponseFunctions",
              &mstch_swift_service::get_request_response_functions},
-            {"service:supportedFunctions",
-             &mstch_swift_service::get_supported_functions},
+            {"service:singleRequestFunctions",
+             &mstch_swift_service::get_single_request_functions},
             {"service:streamingFunctions",
              &mstch_swift_service::get_streaming_functions},
             {"service:sinkFunctions", &mstch_swift_service::get_sink_functions},
@@ -448,7 +448,7 @@ class mstch_swift_service : public mstch_service {
     }
     return generate_functions(funcs);
   }
-  mstch::node get_supported_functions() {
+  mstch::node get_single_request_functions() {
     std::vector<t_function*> funcs;
     for (auto func : service_->get_functions()) {
       if (!func->returns_stream() && !func->returns_sink() &&
