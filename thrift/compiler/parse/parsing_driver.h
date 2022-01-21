@@ -85,8 +85,8 @@ namespace yy {
 class parser;
 }
 
-// Define an enum class for all types that have lineno embedded.
-enum class LineType {
+// Different types of thrift definition.
+enum class DefType {
   Unspecified = 0,
   Typedef,
   Enum,
@@ -376,33 +376,8 @@ class parsing_driver {
     deleters_.push_back(deleter{ptr});
   }
 
-  // Record the line number for the start of the node.
-  void start_node(LineType lineType);
-
   // Returns the source range object containing the location information.
   source_range get_source_range(const YYLTYPE& loc);
-
-  // Configures the node and set the starting line number.
-  void finish_node(
-      t_named* node,
-      LineType lineType,
-      const YYLTYPE& loc,
-      std::unique_ptr<t_def_attrs> attrs,
-      std::unique_ptr<t_annotations> annotations);
-  void finish_node(
-      t_structured* node,
-      LineType lineType,
-      const YYLTYPE& loc,
-      std::unique_ptr<t_def_attrs> attrs,
-      std::unique_ptr<t_field_list> fields,
-      std::unique_ptr<t_annotations> annotations);
-  void finish_node(
-      t_interface* node,
-      LineType lineType,
-      const YYLTYPE& loc,
-      std::unique_ptr<t_def_attrs> attrs,
-      std::unique_ptr<t_function_list> functions,
-      std::unique_ptr<t_annotations> annotations);
 
   void reset_locations() {
     yylloc_.begin.line = 1;
@@ -468,6 +443,28 @@ class parsing_driver {
       std::unique_ptr<t_annotations> annotations,
       bool is_const = false);
 
+  // Start parsing a definition.
+  void start_def(DefType type);
+
+  // Finish parsing a definition.
+  void finish_def(
+      t_named* node,
+      const YYLTYPE& loc,
+      std::unique_ptr<t_def_attrs> attrs,
+      std::unique_ptr<t_annotations> annotations);
+  void finish_def(
+      t_structured* node,
+      const YYLTYPE& loc,
+      std::unique_ptr<t_def_attrs> attrs,
+      std::unique_ptr<t_field_list> fields,
+      std::unique_ptr<t_annotations> annotations);
+  void finish_def(
+      t_interface* node,
+      const YYLTYPE& loc,
+      std::unique_ptr<t_def_attrs> attrs,
+      std::unique_ptr<t_function_list> functions,
+      std::unique_ptr<t_annotations> annotations);
+
   // Adds a definition to the program.
   t_ref<t_const> add_def(std::unique_ptr<t_const> node);
   t_ref<t_interaction> add_def(std::unique_ptr<t_interaction> node);
@@ -479,7 +476,14 @@ class parsing_driver {
   t_ref<t_enum> add_def(std::unique_ptr<t_enum> node);
 
   t_field_id to_field_id(int64_t int_const);
-  t_field_id next_field_id() const { return next_field_id_; }
+
+  // Automatic numbering for field ids.
+  //
+  // Field id are assigned starting from -1 and working their way down.
+  //
+  // TODO(afuller): Move auto field ids to a post parse phase (or remove the
+  // feature entirely).
+  t_field_id next_field_id() const { return next_id_stack_.top(); }
   t_field_id allocate_field_id(const std::string& name);
   void reserve_field_id(t_field_id id);
 
@@ -524,6 +528,11 @@ class parsing_driver {
     void (*delete_)(const void*);
   };
 
+  struct DefState {
+    DefType type;
+    int lineno;
+  };
+
   void compute_location_impl(
       YYLTYPE& yylloc, YYSTYPE& yylval, const char* text);
 
@@ -533,16 +542,10 @@ class parsing_driver {
   std::unique_ptr<yy::parser> parser_;
 
   std::vector<deleter> deleters_;
-  std::stack<std::pair<LineType, int>> lineno_stack_;
   diagnostic_context& ctx_;
 
-  /**
-   * This variable is used for automatic numbering of field indices etc.
-   * when parsing the members of a struct. Field values are automatically
-   * assigned starting from -1 and working their way down.
-   **/
-  // TODO(afuller): Move auto field ids to a post parse phase.
-  int next_field_id_ = 0; // Zero indicates not in field context.
+  std::stack<DefState> def_stack_;
+  std::stack<int> next_id_stack_;
 
   // Populate the attributes on the given node.
   static void set_attributes(
@@ -554,9 +557,6 @@ class parsing_driver {
    * Parse a single .thrift file. The file to parse is stored in params.program.
    */
   void parse_file();
-
-  // Returns the starting line number.
-  int pop_node(LineType lineType);
 
   void append_fields(t_structured& tstruct, t_field_list&& fields);
 

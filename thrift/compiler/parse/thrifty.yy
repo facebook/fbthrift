@@ -510,7 +510,7 @@ Definition:
 Typedef:
   DefinitionAttrs tok_typedef FieldType Identifier
     {
-      driver.start_node(LineType::Typedef);
+      driver.start_def(DefType::Typedef);
     }
    TypeAnnotations
     {
@@ -518,8 +518,7 @@ Typedef:
           "Identifier TypeAnnotations");
       $$ = new t_typedef(driver.program, std::move($4), std::move($3));
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.finish_node(
-          $$, LineType::Typedef, @$, own($1), own($6));
+      driver.finish_def($$, @$, own($1), own($6));
     }
 
 CommaOrSemicolon:
@@ -576,7 +575,7 @@ Double:
 Enum:
   DefinitionAttrs tok_enum Identifier
     {
-      driver.start_node(LineType::Enum);
+      driver.start_def(DefType::Enum);
     }
   "{" EnumValueList "}" TypeAnnotations
     {
@@ -585,8 +584,7 @@ Enum:
       auto values = own($6);
       $$->set_values(std::move(*values));
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.finish_node(
-          $$, LineType::Enum, @$, own($1), own($8));
+      driver.finish_def($$, @$, own($1), own($8));
     }
 
 EnumValueList:
@@ -605,15 +603,14 @@ EnumValueList:
 EnumValueDef:
   DefinitionAttrs EnumValue
     {
-      driver.start_node(LineType::EnumValue);
+      driver.start_def(DefType::EnumValue);
     }
   TypeAnnotations CommaOrSemicolonOptional
     {
       driver.debug("EnumValueDef => DefinitionAttrs EnumValue "
         "TypeAnnotations CommaOrSemicolonOptional");
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.finish_node(
-          $2, LineType::EnumValue, @$, own($1), own($4));
+      driver.finish_def($2, @$, own($1), own($4));
       $$ = $2;
     }
 
@@ -645,7 +642,7 @@ EnumValue:
 Const:
   DefinitionAttrs tok_const FieldType Identifier
     {
-      driver.start_node(LineType::Const);
+      driver.start_def(DefType::Const);
     }
   "=" ConstValue TypeAnnotations CommaOrSemicolonOptional
     {
@@ -653,10 +650,9 @@ Const:
       if (driver.mode == parsing_mode::PROGRAM) {
         $$ = new t_const(driver.program, std::move($3), std::move($4), own($7));
         driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-        driver.finish_node(
-            $$, LineType::Const, @$, own($1), own($8));
+        driver.finish_def($$, @$, own($1), own($8));
       } else {
-        // TODO(afuller): Looks like a bug where driver.finish_node is never called in this case.
+        // TODO(afuller): Looks like a bug where driver.finish_def is never called in this case.
         delete $1;
         delete $7;
         delete $8;
@@ -837,7 +833,7 @@ ConstStructContents:
 Struct:
   DefinitionAttrs tok_struct Identifier
     {
-      driver.start_node(LineType::Struct);
+      driver.start_def(DefType::Struct);
     }
   "{" FieldList "}" TypeAnnotations
     {
@@ -845,14 +841,13 @@ Struct:
         "{ FieldList } TypeAnnotations");
       $$ = new t_struct(driver.program, std::move($3));
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.finish_node(
-          $$, LineType::Struct, @$, own($1), own($6), own($8));
+      driver.finish_def($$, @$, own($1), own($6), own($8));
     }
 
 Union:
   DefinitionAttrs tok_union Identifier
     {
-      driver.start_node(LineType::Union);
+      driver.start_def(DefType::Union);
     }
   "{" FieldList "}" TypeAnnotations
     {
@@ -860,15 +855,14 @@ Union:
         "{ FieldList } TypeAnnotations");
       $$ = new t_union(driver.program, std::move($3));
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.finish_node(
-          $$, LineType::Union, @$, own($1), own($6), own($8));
+      driver.finish_def($$, @$, own($1), own($6), own($8));
     }
 
 Exception:
   // TODO(afuller): Either make the qualifiers order agnostic or produce a better error message.
   DefinitionAttrs ErrorSafety ErrorKind ErrorBlame tok_exception Identifier
     {
-      driver.start_node(LineType::Exception);
+      driver.start_def(DefType::Exception);
     }
   "{" FieldList "}" TypeAnnotations
     {
@@ -879,8 +873,7 @@ Exception:
       $$->set_kind($3);
       $$->set_blame($4);
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.finish_node(
-          $$, LineType::Exception, @$, own($1), own($9), own($11));
+      driver.finish_def($$, @$, own($1), own($9), own($11));
 
       const char* annotations[] = {"message", "code"};
       for (auto& annotation: annotations) {
@@ -963,7 +956,7 @@ ErrorBlame:
 Service:
   DefinitionAttrs tok_service Identifier
     {
-      driver.start_node(LineType::Service);
+      driver.start_def(DefType::Service);
     }
   Extends "{" FlagArgs FunctionList UnflagArgs "}" FunctionAnnotations
     {
@@ -972,8 +965,7 @@ Service:
         "FunctionAnnotations");
       $$ = new t_service(driver.program, std::move($3), $5);
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.finish_node(
-          $$, LineType::Service, @$, own($1), own($8), own($11));
+      driver.finish_def($$, @$, own($1), own($8), own($11));
     }
 
 FlagArgs:
@@ -1011,15 +1003,14 @@ Extends:
 Interaction:
   DefinitionAttrs tok_interaction Identifier
     {
-      driver.start_node(LineType::Interaction);
+      driver.start_def(DefType::Interaction);
     }
   "{" FlagArgs FunctionList UnflagArgs "}" TypeAnnotations
     {
       driver.debug("Interaction -> tok_interaction Identifier { FunctionList }");
       $$ = new t_interaction(driver.program, std::move($3));
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.finish_node(
-          $$, LineType::Interaction, @$, own($1), own($7), own($10));
+      driver.finish_def($$, @$, own($1), own($7), own($10));
 
       // TODO(afuller): Move this to a post parse phase.
       for (auto* func : $$->get_functions()) {
@@ -1055,7 +1046,7 @@ FunctionList:
 Function:
   DefinitionAttrs FunctionQualifier FunctionType Identifier
     {
-      driver.start_node(LineType::Function);
+      driver.start_def(DefType::Function);
     }
   "(" ParamList ")" MaybeThrows FunctionAnnotations CommaOrSemicolonOptional
     {
@@ -1069,8 +1060,7 @@ Function:
 
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
       driver.avoid_next_token_loc($10 == nullptr, @$, @9);
-      driver.finish_node(
-          func.get(), LineType::Function, @$, own($1), own($10));
+      driver.finish_def(func.get(), @$, own($1), own($10));
       $$ = func.release();
     }
   | tok_performs FieldType ";"
@@ -1166,7 +1156,7 @@ FieldList:
 Field:
   DefinitionAttrs FieldIdentifier FieldQualifier FieldType Identifier
     {
-      driver.start_node(LineType::Field);
+      driver.start_def(DefType::Field);
     }
   FieldValue TypeAnnotations CommaOrSemicolonOptional
     {
@@ -1219,8 +1209,7 @@ Field:
         $$->set_default_value(own($7));
       }
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.finish_node(
-          $$, LineType::Field, @$, own($1), own($8));
+      driver.finish_def($$, @$, own($1), own($8));
     }
 
 FieldIdentifier:

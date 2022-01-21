@@ -49,6 +49,19 @@ bool is_white_space(char c) {
   return c == ' ' || c == '\t' || c == '\r' || c == '\n';
 }
 
+// If the given defintion defines a new scope for field ids.
+bool is_field_scope(DefType type) {
+  switch (type) {
+    case DefType::Function:
+    case DefType::Struct:
+    case DefType::Union:
+    case DefType::Exception:
+      return true;
+    default:
+      return false;
+  }
+}
+
 } // namespace
 
 parsing_driver::parsing_driver(
@@ -431,81 +444,9 @@ void parsing_driver::set_attributes(
   set_annotations(node, std::move(annotations));
 }
 
-void parsing_driver::start_node(LineType lineType) {
-  switch (lineType) {
-    case LineType::Function:
-    case LineType::Struct:
-    case LineType::Union:
-    case LineType::Exception:
-      // Should always be true because structs/functions can't be nested.
-      assert(next_field_id_ == 0);
-      next_field_id_ = -1;
-      break;
-    default:
-      break;
-  }
-  lineno_stack_.emplace(lineType, scanner->get_lineno());
-}
-
-int parsing_driver::pop_node(LineType lineType) {
-  if (lineType != lineno_stack_.top().first) {
-    throw std::logic_error("Popping wrong type from line number stack");
-  }
-  int lineno = lineno_stack_.top().second;
-  lineno_stack_.pop();
-  return lineno;
-}
-
 source_range parsing_driver::get_source_range(const YYLTYPE& loc) {
   return source_range(
       *program, loc.begin.line, loc.begin.column, loc.end.line, loc.end.column);
-}
-
-void parsing_driver::finish_node(
-    t_named* node,
-    LineType lineType,
-    const YYLTYPE& loc,
-    std::unique_ptr<t_def_attrs> attrs,
-    std::unique_ptr<t_annotations> annotations) {
-  node->set_lineno(pop_node(lineType));
-  set_attributes(node, std::move(attrs), std::move(annotations));
-  switch (lineType) {
-    case LineType::Function:
-    case LineType::Struct:
-    case LineType::Union:
-    case LineType::Exception:
-      // Should always be true because structs/functions can't be nested.
-      assert(next_field_id_ < 0);
-      next_field_id_ = 0;
-      break;
-    default:
-      break;
-  }
-  node->set_src_range(get_source_range(loc));
-}
-
-void parsing_driver::finish_node(
-    t_structured* node,
-    LineType lineType,
-    const YYLTYPE& loc,
-    std::unique_ptr<t_def_attrs> attrs,
-    std::unique_ptr<t_field_list> fields,
-    std::unique_ptr<t_annotations> annotations) {
-  append_fields(*node, std::move(*fields));
-  finish_node(node, lineType, loc, std::move(attrs), std::move(annotations));
-}
-
-void parsing_driver::finish_node(
-    t_interface* node,
-    LineType lineType,
-    const YYLTYPE& loc,
-    std::unique_ptr<t_def_attrs> attrs,
-    std::unique_ptr<t_function_list> functions,
-    std::unique_ptr<t_annotations> annotations) {
-  if (functions != nullptr) {
-    node->set_functions(std::move(*functions));
-  }
-  finish_node(node, lineType, loc, std::move(attrs), std::move(annotations));
 }
 
 std::unique_ptr<t_const> parsing_driver::new_struct_annotation(
@@ -641,22 +582,47 @@ t_type_ref parsing_driver::new_type_ref(
       std::move(annotations)));
 }
 
-const t_type* parsing_driver::add_unnamed_typedef(
-    std::unique_ptr<t_typedef> node,
-    std::unique_ptr<t_annotations> annotations) {
-  const t_type* result(node.get());
-  set_annotations(node.get(), std::move(annotations));
-  program->add_unnamed_typedef(std::move(node));
-  return result;
+void parsing_driver::start_def(DefType type) {
+  def_stack_.push({type, scanner->get_lineno()});
+  if (is_field_scope(type)) {
+    next_id_stack_.push(-1);
+  }
 }
 
-const t_type* parsing_driver::add_placeholder_typedef(
-    std::unique_ptr<t_placeholder_typedef> node,
+void parsing_driver::finish_def(
+    t_named* node,
+    const YYLTYPE& loc,
+    std::unique_ptr<t_def_attrs> attrs,
     std::unique_ptr<t_annotations> annotations) {
-  const t_type* result(node.get());
-  set_annotations(node.get(), std::move(annotations));
-  program->add_placeholder_typedef(std::move(node));
-  return result;
+  node->set_lineno(def_stack_.top().lineno);
+  set_attributes(node, std::move(attrs), std::move(annotations));
+  node->set_src_range(get_source_range(loc));
+  if (is_field_scope(def_stack_.top().type)) {
+    next_id_stack_.pop();
+  }
+  def_stack_.pop();
+}
+
+void parsing_driver::finish_def(
+    t_structured* node,
+    const YYLTYPE& loc,
+    std::unique_ptr<t_def_attrs> attrs,
+    std::unique_ptr<t_field_list> fields,
+    std::unique_ptr<t_annotations> annotations) {
+  append_fields(*node, std::move(*fields));
+  finish_def(node, loc, std::move(attrs), std::move(annotations));
+}
+
+void parsing_driver::finish_def(
+    t_interface* node,
+    const YYLTYPE& loc,
+    std::unique_ptr<t_def_attrs> attrs,
+    std::unique_ptr<t_function_list> functions,
+    std::unique_ptr<t_annotations> annotations) {
+  if (functions != nullptr) {
+    node->set_functions(std::move(*functions));
+  }
+  finish_def(node, loc, std::move(attrs), std::move(annotations));
 }
 
 t_ref<t_const> parsing_driver::add_def(std::unique_ptr<t_const> node) {
@@ -734,6 +700,24 @@ t_ref<t_enum> parsing_driver::add_def(std::unique_ptr<t_enum> node) {
   return result;
 }
 
+const t_type* parsing_driver::add_unnamed_typedef(
+    std::unique_ptr<t_typedef> node,
+    std::unique_ptr<t_annotations> annotations) {
+  const t_type* result(node.get());
+  set_annotations(node.get(), std::move(annotations));
+  program->add_unnamed_typedef(std::move(node));
+  return result;
+}
+
+const t_type* parsing_driver::add_placeholder_typedef(
+    std::unique_ptr<t_placeholder_typedef> node,
+    std::unique_ptr<t_annotations> annotations) {
+  const t_type* result(node.get());
+  set_annotations(node.get(), std::move(annotations));
+  program->add_placeholder_typedef(std::move(node));
+  return result;
+}
+
 t_field_id parsing_driver::to_field_id(int64_t int_const) {
   using limits = std::numeric_limits<t_field_id>;
   if (int_const < limits::min() || int_const > limits::max()) {
@@ -748,24 +732,26 @@ t_field_id parsing_driver::to_field_id(int64_t int_const) {
 }
 
 t_field_id parsing_driver::allocate_field_id(const std::string& name) {
+  assert(!next_id_stack_.empty());
   if (params.strict >= 192) {
     failure("Implicit field keys are deprecated and not allowed with -strict");
   }
-  if (next_field_id_ < t_field::min_id) {
+  if (next_id_stack_.top() < t_field::min_id) {
     failure(
         "Cannot allocate an id for `" + name +
         "`. Automatic field ids are exhausted.");
   }
-  return next_field_id_--;
+  return next_id_stack_.top()--;
 }
 
 void parsing_driver::reserve_field_id(t_field_id id) {
+  assert(!next_id_stack_.empty());
   if (id < 0) {
     /*
      * Update next field id to be one less than the value.
      * The FieldList parsing will catch any duplicate id values.
      */
-    next_field_id_ = id - 1;
+    next_id_stack_.top() = id - 1;
   }
 }
 
