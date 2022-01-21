@@ -163,6 +163,17 @@ struct FOLLY_EXPORT EncodedStreamError : std::exception {
   EncodedStreamError(EncodedStreamError&&) = default;
   EncodedStreamError& operator=(EncodedStreamError&&) = default;
 
+  const char* what() const noexcept override {
+    if (encoded.metadata.payloadMetadata_ref().has_value()) {
+      auto& md = *encoded.metadata.payloadMetadata_ref();
+      if (md.getType() == PayloadMetadata::exceptionMetadata &&
+          md.exceptionMetadata_ref()->what_utf8_ref().has_value()) {
+        return md.exceptionMetadata_ref()->what_utf8_ref()->c_str();
+      }
+    }
+    return "";
+  }
+
   StreamPayload encoded;
 };
 
