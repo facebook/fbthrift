@@ -6,10 +6,16 @@ Keywords used by this document conform to the meanings in [RFC 2119](https://too
 
 ## Versioning
 
-Rocket follows a versioning scheme consisting of a single numeric version. This document describes protocol versions 6 through 8.
+Rocket follows a versioning scheme consisting of a single numeric version. This document describes protocol versions 6 through 9.
 
-## Connection setup
+## Connection setup (Rocket protocol version 9+)
+RSocket setup frame MUST use application/x-rocket-metadata+compact as Metadata Encoding MIME Type and application/x-rocket-payload as Data Encoding MIME Type.
 
+RSocket setup payload MUST consist of a compact-serialized RequestSetupMetadata struct. Such compact-serialized RequestSetupMetadata MAY be prefixed by a 32-bit kRocketProtocolKey if Rocket client wants to remain compatible with Rocket server using Rocket protocol version 6-8.
+
+If connection establishment was successful, the server MUST respond with a SetupResponse control message.
+
+## Connection setup (Rocket protocol version 6-8)
 RSocket setup payload MUST consist of a 32-bit kRocketProtocolKey followed by a compact-serialized RequestSetupMetadata struct.
 
 If connection establishment was successful, the server MUST respond with a SetupResponse control message.

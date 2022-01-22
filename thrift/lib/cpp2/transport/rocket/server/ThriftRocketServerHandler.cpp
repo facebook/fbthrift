@@ -50,7 +50,7 @@
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_constants.h>
 
 namespace {
-const int64_t kRocketServerMaxVersion = 8;
+const int64_t kRocketServerMaxVersion = 9;
 const int64_t kRocketServerMinVersion = 6;
 } // namespace
 
@@ -133,8 +133,14 @@ void ThriftRocketServerHandler::handleSetupFrame(
       ((!THRIFT_FLAG(rocket_server_legacy_protocol_key) ||
         protocolKey != kLegacyRocketProtocolKey) &&
        protocolKey != RpcMetadata_constants::kRocketProtocolKey())) {
-    return connection.close(folly::make_exception_wrapper<RocketException>(
-        ErrorCode::INVALID_SETUP, "Incompatible Thrift version"));
+    if (!frame.rocketMimeTypes()) {
+      return connection.close(folly::make_exception_wrapper<RocketException>(
+          ErrorCode::INVALID_SETUP, "Incompatible Thrift version"));
+    }
+    // If Rocket MIME types are used the protocol key is optional.
+    if (success) {
+      cursor.retreat(4);
+    }
   }
 
   try {
@@ -168,6 +174,12 @@ void ThriftRocketServerHandler::handleSetupFrame(
           ErrorCode::INVALID_SETUP, "Incompatible Rocket version"));
     }
     version_ = std::min(version_, maxVersion);
+
+    if (version_ >= 9 && !frame.rocketMimeTypes()) {
+      return connection.close(folly::make_exception_wrapper<RocketException>(
+          ErrorCode::INVALID_SETUP, "Unsupported MIME types"));
+    }
+
     eventBase_ = connContext_.getTransport()->getEventBase();
     for (const auto& h : setupFrameHandlers_) {
       auto processorInfo = h->tryHandle(meta);

@@ -33,12 +33,15 @@
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
 
+#include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/async/ClientBufferedStream.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/async/ServerStream.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/transport/rocket/test/util/TestUtil.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
+
+THRIFT_FLAG_DECLARE_bool(rocket_client_rocket_skip_protocol_key);
 
 using namespace apache::thrift;
 
@@ -120,6 +123,16 @@ class RocketClientChannelTest : public testing::Test {
   ScopedServerInterfaceThread runner_{handler_};
 };
 } // namespace
+
+TEST_F(RocketClientChannelTest, RocketSkipProtocolKey) {
+  THRIFT_FLAG_SET_MOCK(rocket_client_rocket_skip_protocol_key, true);
+  folly::EventBase evb;
+  auto client = makeClient(evb);
+
+  std::string response;
+  client.sync_sendResponse(response, 123);
+  EXPECT_EQ("123", response);
+}
 
 TEST_F(RocketClientChannelTest, SyncThread) {
   folly::EventBase evb;

@@ -228,13 +228,20 @@ void SetupFrame::serialize(Serializer& writer) && {
     nwritten += writer.write(resumeIdentificationToken_);
   }
 
+  const auto& metadataMimeType =
+      rocketMimeTypes_ ? kRocketMetadataMimeType : kLegacyMimeType;
+  const auto& payloadMimeType =
+      rocketMimeTypes_ ? kRocketPayloadMimeType : kLegacyMimeType;
+
   // Length of metadata MIME type
-  nwritten += writer.writeBE<uint8_t>(static_cast<uint8_t>(kMimeType.size()));
-  nwritten += writer.write(kMimeType);
+  nwritten +=
+      writer.writeBE<uint8_t>(static_cast<uint8_t>(metadataMimeType.size()));
+  nwritten += writer.write(metadataMimeType);
 
   // Length of data MIME type
-  nwritten += writer.writeBE<uint8_t>(static_cast<uint8_t>(kMimeType.size()));
-  nwritten += writer.write(kMimeType);
+  nwritten +=
+      writer.writeBE<uint8_t>(static_cast<uint8_t>(payloadMimeType.size()));
+  nwritten += writer.write(payloadMimeType);
 
   // Setup metadata and data
   nwritten += writer.writePayload(std::move(payload()));
@@ -695,11 +702,13 @@ SetupFrame::SetupFrame(std::unique_ptr<folly::IOBuf> frame) {
     cursor.skip(tokenLength);
   }
 
-  // MIME types are currently not used, but we still handle the bytes properly.
   const auto metadataMimeLength = cursor.read<uint8_t>();
-  cursor.skip(metadataMimeLength);
+  auto metadataMimeType = cursor.readFixedString(metadataMimeLength);
   const auto dataMimeLength = cursor.read<uint8_t>();
-  cursor.skip(dataMimeLength);
+  auto dataMimeType = cursor.readFixedString(dataMimeLength);
+
+  rocketMimeTypes_ = (metadataMimeType == kRocketMetadataMimeType) &&
+      (dataMimeType == kRocketPayloadMimeType);
 
   payload_ = readPayload(flags_.metadata(), cursor, std::move(frame));
 }
@@ -938,7 +947,9 @@ ExtFrame::ExtFrame(
 }
 
 // Static member definition
-constexpr folly::StringPiece SetupFrame::kMimeType;
+constexpr folly::StringPiece SetupFrame::kLegacyMimeType;
+constexpr folly::StringPiece SetupFrame::kRocketMetadataMimeType;
+constexpr folly::StringPiece SetupFrame::kRocketPayloadMimeType;
 
 } // namespace rocket
 } // namespace thrift

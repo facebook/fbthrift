@@ -134,7 +134,7 @@ rocket::SetupFrame RocketTestClient::makeTestSetupFrame(
   // Append serialized setup parameters to setup frame metadata
   appender.insert(paramQueue.move());
   return rocket::SetupFrame(
-      rocket::Payload::makeFromMetadataAndData(queue.move(), {}));
+      rocket::Payload::makeFromMetadataAndData(queue.move(), {}), false);
 }
 
 RocketTestClient::RocketTestClient(const folly::SocketAddress& serverAddr)
@@ -372,7 +372,12 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
     EXPECT_TRUE(success);
     EXPECT_TRUE(
         protocolKey == 1 ||
-        protocolKey == RpcMetadata_constants::kRocketProtocolKey());
+        protocolKey == RpcMetadata_constants::kRocketProtocolKey() ||
+        frame.rocketMimeTypes());
+    if (protocolKey != 1 &&
+        protocolKey != RpcMetadata_constants::kRocketProtocolKey()) {
+      cursor.retreat(4);
+    }
     // Validate RequestSetupMetadata
     CompactProtocolReader reader;
     reader.setInput(cursor);

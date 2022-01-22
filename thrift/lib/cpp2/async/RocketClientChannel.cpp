@@ -56,12 +56,13 @@
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace {
-const int64_t kRocketClientMaxVersion = 8;
+const int64_t kRocketClientMaxVersion = 9;
 const int64_t kRocketClientMinVersion = 6;
 } // namespace
 
 THRIFT_FLAG_DEFINE_bool(rocket_client_new_protocol_key, true);
 THRIFT_FLAG_DEFINE_int64(rocket_client_max_version, kRocketClientMaxVersion);
+THRIFT_FLAG_DEFINE_bool(rocket_client_rocket_skip_protocol_key, false);
 
 THRIFT_FLAG_DEFINE_bool(rocket_client_upgrade_zlib_to_zstd_v2, true);
 
@@ -611,15 +612,19 @@ rocket::SetupFrame RocketClientChannel::makeSetupFrame(
   folly::IOBufQueue queue;
   queue.append(std::move(buf));
   folly::io::QueueAppender appender(&queue, /* do not grow */ 0);
-  const uint32_t protocolKey = THRIFT_FLAG(rocket_client_new_protocol_key)
-      ? RpcMetadata_constants::kRocketProtocolKey()
-      : 1;
-  appender.writeBE<uint32_t>(protocolKey); // Rocket protocol key
+  if (!THRIFT_FLAG(rocket_client_rocket_skip_protocol_key)) {
+    const uint32_t protocolKey = THRIFT_FLAG(rocket_client_new_protocol_key)
+        ? RpcMetadata_constants::kRocketProtocolKey()
+        : 1;
+
+    appender.writeBE<uint32_t>(protocolKey); // Rocket protocol key
+  }
   // Append serialized setup parameters to setup frame metadata
   appender.insert(paramQueue.move());
 
   return rocket::SetupFrame(
-      rocket::Payload::makeFromMetadataAndData(queue.move(), {}));
+      rocket::Payload::makeFromMetadataAndData(queue.move(), {}),
+      /* rocketMimeTypes = */ true);
 }
 
 RocketClientChannel::RocketClientChannel(

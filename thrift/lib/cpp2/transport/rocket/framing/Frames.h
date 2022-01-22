@@ -42,12 +42,16 @@ class SetupFrame {
  public:
   explicit SetupFrame(std::unique_ptr<folly::IOBuf> frame);
 
-  explicit SetupFrame(Payload&& payload) : payload_(std::move(payload)) {}
+  explicit SetupFrame(Payload&& payload, bool rocketMimeTypes)
+      : payload_(std::move(payload)), rocketMimeTypes_(rocketMimeTypes) {}
 
   static constexpr FrameType frameType() { return FrameType::SETUP; }
 
   size_t frameHeaderSize() const {
-    size_t frameSize = 20 + 2 * kMimeType.size();
+    size_t frameSize = 20 +
+        (rocketMimeTypes_
+             ? kRocketMetadataMimeType.size() + kRocketPayloadMimeType.size()
+             : 2 * kLegacyMimeType.size());
     if (hasResumeIdentificationToken()) {
       frameSize +=
           2 /* bytes for token length */ + resumeIdentificationToken_.size();
@@ -64,16 +68,23 @@ class SetupFrame {
   const Payload& payload() const noexcept { return payload_; }
   Payload& payload() noexcept { return payload_; }
 
+  bool rocketMimeTypes() const { return rocketMimeTypes_; }
+
   std::unique_ptr<folly::IOBuf> serialize() &&;
   void serialize(Serializer& writer) &&;
 
  private:
-  static constexpr folly::StringPiece kMimeType{"text/plain"};
+  static constexpr folly::StringPiece kLegacyMimeType{"text/plain"};
+  static constexpr folly::StringPiece kRocketMetadataMimeType{
+      "application/x-rocket-metadata+compact"};
+  static constexpr folly::StringPiece kRocketPayloadMimeType{
+      "application/x-rocket-payload"};
 
   // Resume ID token and Lease flags are not currently supported/used.
   Flags flags_;
   std::string resumeIdentificationToken_;
   Payload payload_;
+  bool rocketMimeTypes_;
 };
 
 class RequestResponseFrame {
