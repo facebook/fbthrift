@@ -223,10 +223,9 @@ class t_container_type;
 
 %type<t_typedef*>                  Typedef
 
-%type<t_annotation*>               TypeAnnotation
-%type<t_annotations*>              TypeAnnotations
-%type<t_annotations*>              TypeAnnotationList
-%type<t_annotations*>              FunctionAnnotations
+%type<t_annotation*>               Annotation
+%type<t_annotations*>              Annotations
+%type<t_annotations*>              AnnotationList
 
 %type<t_const*>                    StructuredAnnotation
 %type<t_struct_annotations*>       StructuredAnnotations
@@ -512,10 +511,10 @@ Typedef:
     {
       driver.start_def(DefType::Typedef);
     }
-   TypeAnnotations
+   Annotations
     {
       driver.debug("TypeDef => DefinitionAttrs tok_typedef FieldType "
-          "Identifier TypeAnnotations");
+          "Identifier Annotations");
       $$ = new t_typedef(driver.program, std::move($4), std::move($3));
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
       driver.finish_def($$, @$, own($1), own($6));
@@ -577,9 +576,9 @@ Enum:
     {
       driver.start_def(DefType::Enum);
     }
-  "{" EnumValueList "}" TypeAnnotations
+  "{" EnumValueList "}" Annotations
     {
-      driver.debug("Enum => DefinitionAttrs tok_enum Identifier { EnumValueList } TypeAnnotations");
+      driver.debug("Enum => DefinitionAttrs tok_enum Identifier { EnumValueList } Annotations");
       $$ = new t_enum(driver.program, std::move($3));
       auto values = own($6);
       $$->set_values(std::move(*values));
@@ -605,10 +604,10 @@ EnumValueDef:
     {
       driver.start_def(DefType::EnumValue);
     }
-  TypeAnnotations CommaOrSemicolonOptional
+  Annotations CommaOrSemicolonOptional
     {
       driver.debug("EnumValueDef => DefinitionAttrs EnumValue "
-        "TypeAnnotations CommaOrSemicolonOptional");
+        "Annotations CommaOrSemicolonOptional");
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
       driver.finish_def($2, @$, own($1), own($4));
       $$ = $2;
@@ -644,9 +643,9 @@ Const:
     {
       driver.start_def(DefType::Const);
     }
-  "=" ConstValue TypeAnnotations CommaOrSemicolonOptional
+  "=" ConstValue Annotations CommaOrSemicolonOptional
     {
-      driver.debug("DefinitionAttrs Const => tok_const FieldType Identifier = ConstValue");
+      driver.debug("DefinitionAttrs Const => tok_const FieldType Identifier = ConstValue Annotations");
       if (driver.mode == parsing_mode::PROGRAM) {
         $$ = new t_const(driver.program, std::move($3), std::move($4), own($7));
         driver.avoid_last_token_loc($1 == nullptr, @$, @2);
@@ -835,10 +834,10 @@ Struct:
     {
       driver.start_def(DefType::Struct);
     }
-  "{" FieldList "}" TypeAnnotations
+  "{" FieldList "}" Annotations
     {
       driver.debug("Struct => DefinitionAttrs tok_struct Identifier "
-        "{ FieldList } TypeAnnotations");
+        "{ FieldList } Annotations");
       $$ = new t_struct(driver.program, std::move($3));
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
       driver.finish_def($$, @$, own($1), own($6), own($8));
@@ -849,10 +848,10 @@ Union:
     {
       driver.start_def(DefType::Union);
     }
-  "{" FieldList "}" TypeAnnotations
+  "{" FieldList "}" Annotations
     {
       driver.debug("Union => DefinitionAttrs tok_union Identifier "
-        "{ FieldList } TypeAnnotations");
+        "{ FieldList } Annotations");
       $$ = new t_union(driver.program, std::move($3));
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
       driver.finish_def($$, @$, own($1), own($6), own($8));
@@ -864,10 +863,10 @@ Exception:
     {
       driver.start_def(DefType::Exception);
     }
-  "{" FieldList "}" TypeAnnotations
+  "{" FieldList "}" Annotations
     {
       driver.debug("Exception => DefinitionAttrs tok_exception "
-        "Identifier { FieldList } TypeAnnotations");
+        "Identifier { FieldList } Annotations");
       $$ = new t_exception(driver.program, std::move($6));
       $$->set_safety($2);
       $$->set_kind($3);
@@ -958,11 +957,11 @@ Service:
     {
       driver.start_def(DefType::Service);
     }
-  Extends "{" FlagArgs FunctionList UnflagArgs "}" FunctionAnnotations
+  Extends "{" FlagArgs FunctionList UnflagArgs "}" Annotations
     {
       driver.debug("Service => DefinitionAttrs tok_service "
         "Identifier Extends { FlagArgs FunctionList UnflagArgs } "
-        "FunctionAnnotations");
+        "Annotations");
       $$ = new t_service(driver.program, std::move($3), $5);
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
       driver.finish_def($$, @$, own($1), own($8), own($11));
@@ -1005,7 +1004,7 @@ Interaction:
     {
       driver.start_def(DefType::Interaction);
     }
-  "{" FlagArgs FunctionList UnflagArgs "}" TypeAnnotations
+  "{" FlagArgs FunctionList UnflagArgs "}" Annotations
     {
       driver.debug("Interaction -> tok_interaction Identifier { FunctionList }");
       $$ = new t_interaction(driver.program, std::move($3));
@@ -1048,11 +1047,11 @@ Function:
     {
       driver.start_def(DefType::Function);
     }
-  "(" ParamList ")" MaybeThrows FunctionAnnotations CommaOrSemicolonOptional
+  "(" ParamList ")" MaybeThrows Annotations CommaOrSemicolonOptional
     {
       driver.debug("Function => DefinitionAttrs FunctionQualifier "
         "FunctionType Identifier ( ParamList ) MaybeThrows "
-        "FunctionAnnotations CommaOrSemicolonOptional");
+        "Annotations CommaOrSemicolonOptional");
       // TODO(afuller): Leave the param list unnamed.
       $7->set_name(std::string($4) + "_args");
       auto func = std::make_unique<t_function>(std::move($3), std::move($4), own($7), $2);
@@ -1158,10 +1157,10 @@ Field:
     {
       driver.start_def(DefType::Field);
     }
-  FieldValue TypeAnnotations CommaOrSemicolonOptional
+  FieldValue Annotations CommaOrSemicolonOptional
     {
       driver.debug("Field => DefinitionAttrs FieldIdentifier FieldQualifier "
-        "FieldType Identifier FieldValue TypeAnnotations CommaOrSemicolonOptional");
+        "FieldType Identifier FieldValue Annotations CommaOrSemicolonOptional");
       t_field_id id;
       if ($2 == boost::none) {
         // Auto assign an id.
@@ -1339,17 +1338,17 @@ SinkFieldType:
     }
 
 FieldType:
-  Identifier TypeAnnotations
+  Identifier Annotations
     {
-      driver.debug("FieldType => Identifier TypeAnnotations");
+      driver.debug("FieldType => Identifier Annotations");
       $$ = driver.new_type_ref(std::move($1), own($2));
     }
-| BaseType TypeAnnotations
+| BaseType Annotations
     {
       driver.debug("FieldType -> BaseType");
       $$ = driver.new_type_ref(*$1, own($2));
     }
-| ContainerType TypeAnnotations
+| ContainerType Annotations
     {
       driver.debug("FieldType -> ContainerType");
       $$ = driver.new_type_ref(own($1), own($2));
@@ -1440,49 +1439,49 @@ ListType:
       $$ = new t_list(std::move($3));
     }
 
-TypeAnnotations:
-  "(" TypeAnnotationList CommaOrSemicolonOptional ")"
+Annotations:
+  "(" AnnotationList CommaOrSemicolonOptional ")"
     {
-      driver.debug("TypeAnnotations => ( TypeAnnotationList CommaOrSemicolonOptional)");
+      driver.debug("Annotations => ( AnnotationList CommaOrSemicolonOptional)");
       $$ = $2;
     }
 | "(" ")"
     {
-      driver.debug("TypeAnnotations => ( )");
+      driver.debug("Annotations => ( )");
       $$ = nullptr;
     }
 |
     {
-      driver.debug("TypeAnnotations =>");
+      driver.debug("Annotations =>");
       $$ = nullptr;
     }
 
-TypeAnnotationList:
-  TypeAnnotationList CommaOrSemicolon TypeAnnotation
+AnnotationList:
+  AnnotationList CommaOrSemicolon Annotation
     {
-      driver.debug("TypeAnnotationList => TypeAnnotationList CommaOrSemicolon TypeAnnotation");
+      driver.debug("NodeAnnotationList => NodeAnnotationList CommaOrSemicolon Annotation");
       $$ = $1;
       $$->strings[$3->first] = std::move($3->second);
       delete $3;
     }
-| TypeAnnotation
+| Annotation
     {
-      driver.debug("TypeAnnotationList => TypeAnnotation");
+      driver.debug("AnnotationList => Annotation");
       /* Just use a dummy structure to hold the annotations. */
       $$ = new t_annotations();
       $$->strings[$1->first] = std::move($1->second);
       delete $1;
     }
 
-TypeAnnotation:
+Annotation:
   Identifier "=" IntOrLiteral
     {
-      driver.debug("TypeAnnotation -> Identifier = IntOrLiteral");
+      driver.debug("Annotation -> Identifier = IntOrLiteral");
       $$ = new t_annotation{$1, {driver.get_source_range(@$), $3}};
     }
   | Identifier
     {
-      driver.debug("TypeAnnotation -> Identifier");
+      driver.debug("Annotation -> Identifier");
       $$ = new t_annotation{$1, {driver.get_source_range(@$), "1"}};
     }
 
@@ -1525,35 +1524,6 @@ StructuredAnnotation:
       value->set_map();
       value->set_ttype(std::move($2));
       $$ = driver.new_struct_annotation(std::move(value)).release();
-    }
-
-FunctionAnnotations:
-  TypeAnnotations
-    {
-      driver.debug("FunctionAnnotations => TypeAnnotations");
-      if (!$1) {
-        $$ = nullptr;
-        break;
-      }
-      $$ = $1;
-      auto priority = $$->strings.find("priority");
-      if (priority == $$->strings.end()) {
-        break;
-      }
-      const std::string& prio = priority->second.value;
-      const std::string prio_list[] = {"HIGH_IMPORTANT", "HIGH", "IMPORTANT",
-                                       "NORMAL", "BEST_EFFORT"};
-      const auto end = prio_list + sizeof(prio_list)/sizeof(prio_list[0]);
-      if (std::find(prio_list, end, prio) == end) {
-        std::string s;
-        for (const auto& prio : prio_list) {
-          s += prio + "','";
-        }
-        s.erase(s.length() - 3);
-        driver.failure([&](auto& o) {
-          o << "Bad priority '" << prio << "'. Choose one of '" << s << "'.";
-        });
-      }
     }
 
 IntOrLiteral:

@@ -533,7 +533,7 @@ void validate_ref_unique_and_box_annotation(
           << node.name() << "`.";
       });
     }
-    if (node.find_annotation_or_null({"cpp.ref_type", "cpp2.ref_type"})) {
+    if (node.has_annotation({"cpp.ref_type", "cpp2.ref_type"})) {
       ctx.warning([&](auto& o) {
         o << "cpp.ref_type = `unique`, cpp2.ref_type = `unique` "
           << "are deprecated. Please use thrift.box annotation instead in `"
@@ -541,7 +541,7 @@ void validate_ref_unique_and_box_annotation(
       });
     }
     if (node.find_structured_annotation_or_null(
-            "facebook.com/thrift/annotation/cpp/Ref")) {
+            "facebook.com/thrift/annotation/cpp/Ref") != nullptr) {
       ctx.warning([&](auto& o) {
         o << "@cpp.Ref{type = cpp.RefType.Unique} "
           << "is deprecated. Please use thrift.box annotation instead in `"
@@ -550,14 +550,37 @@ void validate_ref_unique_and_box_annotation(
     }
   }
 }
+
+void validate_function_priority_annotation(
+    diagnostic_context& ctx, const t_node& node) {
+  if (auto* priority = node.find_annotation_or_null("priority")) {
+    std::string choices[] = {
+        "HIGH_IMPORTANT", "HIGH", "IMPORTANT", "NORMAL", "BEST_EFFORT"};
+    auto* end = choices + sizeof(choices) / sizeof(choices[0]);
+    if (std::find(choices, end, *priority) == end) {
+      ctx.failure([&](auto& o) {
+        o << "Bad priority '" << *priority << "'. Choose one of '";
+        auto delim = "";
+        for (const auto& choice : choices) {
+          o << delim << choice;
+          delim = "','";
+        }
+        o << "'.";
+      });
+    }
+  }
+}
+
 } // namespace
 
 ast_validator standard_validator() {
   ast_validator validator;
   validator.add_interface_visitor(&validate_interface_function_name_uniqueness);
+  validator.add_interface_visitor(&validate_function_priority_annotation);
   validator.add_service_visitor(
       &validate_extends_service_function_name_uniqueness);
   validator.add_throws_visitor(&validate_throws_exceptions);
+  validator.add_function_visitor(&validate_function_priority_annotation);
 
   validator.add_structured_definition_visitor(&validate_field_names_uniqueness);
   validator.add_structured_definition_visitor(

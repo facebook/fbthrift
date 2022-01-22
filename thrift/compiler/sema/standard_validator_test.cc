@@ -107,6 +107,53 @@ TEST_F(StandardValidatorTest, InterfaceNamesUniqueNoError) {
   EXPECT_THAT(validate(), ::testing::IsEmpty());
 }
 
+TEST_F(StandardValidatorTest, BadPriority) {
+  {
+    auto service = std::make_unique<t_service>(&program_, "Service");
+    service->set_lineno(1);
+    service->set_annotation("priority", "bad1");
+    auto fn = std::make_unique<t_function>(
+        &t_base_type::t_void(),
+        "foo",
+        std::make_unique<t_paramlist>(&program_));
+    fn->set_annotation("priority", "bad2");
+    fn->set_lineno(2);
+    service->add_function(std::move(fn));
+    program_.add_service(std::move(service));
+  }
+
+  {
+    auto interaction =
+        std::make_unique<t_interaction>(&program_, "Interaction");
+    interaction->set_lineno(3);
+    interaction->set_annotation("priority", "bad3");
+    auto fn = std::make_unique<t_function>(
+        &t_base_type::t_void(),
+        "foo",
+        std::make_unique<t_paramlist>(&program_));
+    fn->set_annotation("priority", "bad4");
+    fn->set_lineno(4);
+    interaction->add_function(std::move(fn));
+    program_.add_interaction(std::move(interaction));
+  }
+
+  EXPECT_THAT(
+      validate(),
+      ::testing::UnorderedElementsAre(
+          failure(
+              1,
+              "Bad priority 'bad1'. Choose one of 'HIGH_IMPORTANT','HIGH','IMPORTANT','NORMAL','BEST_EFFORT'."),
+          failure(
+              2,
+              "Bad priority 'bad2'. Choose one of 'HIGH_IMPORTANT','HIGH','IMPORTANT','NORMAL','BEST_EFFORT'."),
+          failure(
+              3,
+              "Bad priority 'bad3'. Choose one of 'HIGH_IMPORTANT','HIGH','IMPORTANT','NORMAL','BEST_EFFORT'."),
+          failure(
+              4,
+              "Bad priority 'bad4'. Choose one of 'HIGH_IMPORTANT','HIGH','IMPORTANT','NORMAL','BEST_EFFORT'.")));
+}
+
 TEST_F(StandardValidatorTest, ReapeatedNamesInService) {
   // Create interfaces with overlapping functions.
   {
