@@ -497,6 +497,9 @@ class parsing_driver {
   int64_t to_int(uint64_t val, bool negative = false);
 
   const t_service* find_service(const std::string& name);
+  const t_const* find_const(const std::string& name);
+
+  std::unique_ptr<t_const_value> copy_const_value(const std::string& name);
 
  private:
   class deleter {

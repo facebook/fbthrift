@@ -680,32 +680,7 @@ ConstValue:
 | Identifier
     {
       driver.debug("ConstValue => Identifier");
-      const t_const* constant = driver.scope_cache->find_constant($1);
-      driver.validate_not_ambiguous_enum($1);
-      if (constant == nullptr) {
-        auto name_with_program_name = driver.program->name() + "." + $1;
-        constant = driver.scope_cache->find_constant(name_with_program_name);
-        driver.validate_not_ambiguous_enum(name_with_program_name);
-      }
-      if (constant != nullptr) {
-        // Copy const_value to perform isolated mutations
-        t_const_value* const_value = constant->get_value();
-        $$ = const_value->clone().release();
-
-        // We only want to clone the value, while discarding all real type
-        // information.
-        $$->set_ttype(boost::none);
-        $$->set_is_enum(false);
-        $$->set_enum(nullptr);
-        $$->set_enum_value(nullptr);
-      } else {
-        if (driver.mode == parsing_mode::PROGRAM) {
-          driver.warning([&](auto& o) {
-            o << "Constant strings should be quoted: " << $1;
-          });
-        }
-        $$ = new t_const_value($1);
-      }
+      $$ = driver.copy_const_value($1).release();
     }
 | ConstList
     {

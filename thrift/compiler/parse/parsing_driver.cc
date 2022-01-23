@@ -851,6 +851,40 @@ const t_service* parsing_driver::find_service(const std::string& name) {
   });
 }
 
+const t_const* parsing_driver::find_const(const std::string& name) {
+  validate_not_ambiguous_enum(name);
+  if (const t_const* constant = scope_cache->find_constant(name)) {
+    return constant;
+  }
+  if (const t_const* constant = scope_cache->find_constant(scoped_name(name))) {
+    validate_not_ambiguous_enum(scoped_name(name));
+    return constant;
+  }
+  return nullptr;
+}
+
+std::unique_ptr<t_const_value> parsing_driver::copy_const_value(
+    const std::string& name) {
+  if (const t_const* constant = find_const(name)) {
+    // Copy const_value to perform isolated mutations
+    auto result = constant->get_value()->clone();
+    // We only want to clone the value, while discarding all real type
+    // information.
+    result->set_ttype(boost::none);
+    result->set_is_enum(false);
+    result->set_enum(nullptr);
+    result->set_enum_value(nullptr);
+    return result;
+  }
+
+  // TODO(afuller): Make this an error.
+  if (mode == parsing_mode::PROGRAM) {
+    warning(
+        [&](auto& o) { o << "Constant strings should be quoted: " << name; });
+  }
+  return std::make_unique<t_const_value>(name);
+}
+
 void parsing_driver::compute_location_impl(
     YYLTYPE& yylloc, YYSTYPE& yylval, const char* text) {
   int i = 0;
