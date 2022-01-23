@@ -22,7 +22,7 @@ namespace apache::thrift {
  * An AsyncProcessorFactory implementation that handles no methods. This can be
  * useful for testing.
  */
-class EmptyAsyncProcessorFactory final : public AsyncProcessorFactory {
+class EmptyAsyncProcessorFactory : public AsyncProcessorFactory {
   std::unique_ptr<AsyncProcessor> getProcessor() override;
 
   CreateMethodMetadataResult createMethodMetadata() override {
