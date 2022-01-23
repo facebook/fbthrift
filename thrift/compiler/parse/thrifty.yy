@@ -934,18 +934,7 @@ Extends:
   tok_extends Identifier
     {
       driver.debug("Extends -> tok_extends Identifier");
-      $$ = nullptr;
-      if (driver.mode == parsing_mode::PROGRAM) {
-        $$ = driver.scope_cache->find_service($2);
-        if (!$$) {
-          $$ = driver.scope_cache->find_service(driver.program->name() + "." + $2);
-        }
-        if (!$$) {
-          driver.failure([&](auto& o) {
-            o << "Service \"" << $2 << "\" has not been defined.";
-          });
-        }
-      }
+      $$ = driver.find_service($2);
     }
 |
     {

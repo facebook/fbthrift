@@ -836,6 +836,21 @@ void parsing_driver::parse_doctext(const char* text, int lineno) {
   doctext_lineno = lineno;
 }
 
+const t_service* parsing_driver::find_service(const std::string& name) {
+  if (mode != parsing_mode::PROGRAM) {
+    return nullptr;
+  }
+  if (auto* result = scope_cache->find_service(name)) {
+    return result;
+  }
+  if (auto* result = scope_cache->find_service(scoped_name(name))) {
+    return result;
+  }
+  failure([&](auto& o) {
+    o << "Service \"" << name << "\" has not been defined.";
+  });
+}
+
 void parsing_driver::compute_location_impl(
     YYLTYPE& yylloc, YYSTYPE& yylval, const char* text) {
   int i = 0;

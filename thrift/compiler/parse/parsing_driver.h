@@ -496,6 +496,8 @@ class parsing_driver {
   void parse_doctext(const char* text, int lineno);
   int64_t to_int(uint64_t val, bool negative = false);
 
+  const t_service* find_service(const std::string& name);
+
  private:
   class deleter {
    public:
@@ -600,7 +602,10 @@ class parsing_driver {
       std::unique_ptr<t_annotations> annotations);
 
   std::string scoped_name(const t_named& node) {
-    return program->name() + "." + node.get_name();
+    return scoped_name(node.name());
+  }
+  std::string scoped_name(const std::string& name) {
+    return program->name() + "." + name;
   }
   std::string scoped_name(const t_named& owner, const t_named& node) {
     return program->name() + "." + owner.get_name() + "." + node.get_name();
