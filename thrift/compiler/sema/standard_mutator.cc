@@ -20,9 +20,33 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
+// TODO(afuller): Instead of mutating the AST, readers should look for
+// the interaction level annotation and the validation logic should be moved to
+// a standard validator.
+void propagate_process_in_event_base_annotation(
+    diagnostic_context& ctx, mutator_context&, t_interaction& node) {
+  for (auto* func : node.get_functions()) {
+    func->set_is_interaction_member();
+    if (func->has_annotation("thread")) {
+      ctx.failure(
+          "Interaction methods cannot be individually annotated with "
+          "thread='eb'. Use process_in_event_base on the interaction instead.");
+    }
+  }
+  if (node.has_annotation("process_in_event_base")) {
+    if (node.has_annotation("serial")) {
+      ctx.failure("EB interactions are already serial");
+    }
+    for (auto* func : node.get_functions()) {
+      func->set_annotation("thread", "eb");
+    }
+  }
+}
+
 ast_mutator standard_mutator() {
   ast_mutator mutator;
   // TODO(afuller): Move all mutation logic to here.
+  mutator.add_interaction_visitor(&propagate_process_in_event_base_annotation);
   return mutator;
 }
 

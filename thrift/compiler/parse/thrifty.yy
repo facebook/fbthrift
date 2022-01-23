@@ -963,23 +963,6 @@ Interaction:
       $$ = new t_interaction(driver.program, std::move($3));
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
       driver.finish_def($$, @$, own($1), own($7), own($10));
-
-      // TODO(afuller): Move this to a post parse phase.
-      for (auto* func : $$->get_functions()) {
-        func->set_is_interaction_member();
-        if (func->has_annotation("thread")) {
-          driver.failure("Interaction methods cannot be individually annotated with "
-            "thread='eb'. Use process_in_event_base on the interaction instead.");
-        }
-      }
-      if ($$->has_annotation("process_in_event_base")) {
-        if ($$->has_annotation("serial")) {
-          driver.failure("EB interactions are already serial");
-        }
-        for (auto* func : $$->get_functions()) {
-          func->set_annotation("thread", "eb");
-        }
-      }
     }
 
 FunctionList:
