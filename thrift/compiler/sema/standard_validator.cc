@@ -571,6 +571,41 @@ void validate_function_priority_annotation(
   }
 }
 
+void validate_exception_php_annotations(
+    diagnostic_context& ctx, const t_exception& node) {
+  constexpr const char* annotations[] = {"message", "code"};
+
+  for (const auto& annotation : annotations) {
+    if (node.get_field_by_name(annotation) != nullptr &&
+        strcmp(annotation, node.get_annotation(annotation).c_str()) != 0) {
+      ctx.warning([&](auto& o) {
+        o << "Some generators (e.g. PHP) will ignore annotation '" << annotation
+          << "' as it is also used as field";
+      });
+    }
+  }
+
+  // Check that value of "message" annotation is
+  // - a valid member of struct
+  // - of type STRING
+  if (node.has_annotation("message")) {
+    const std::string& v = node.get_annotation("message");
+    const auto* field = node.get_field_by_name(v);
+    if (field == nullptr) {
+      ctx.failure([&](auto& o) {
+        o << "member specified as exception 'message' should be a valid"
+          << " struct member, '" << v << "' in '" << node.name() << "' is not";
+      });
+    }
+
+    if (!field->get_type()->is_string_or_binary()) {
+      ctx.failure([&](auto& o) {
+        o << "member specified as exception 'message' should be of type "
+          << "STRING, '" << v << "' in '" << node.name() << "' is not";
+      });
+    }
+  }
+}
 } // namespace
 
 ast_validator standard_validator() {
@@ -588,6 +623,7 @@ ast_validator standard_validator() {
   validator.add_structured_definition_visitor(
       &validate_box_annotation_in_struct);
   validator.add_union_visitor(&validate_union_field_attributes);
+  validator.add_exception_visitor(&validate_exception_php_annotations);
   validator.add_field_visitor(&validate_field_id);
   validator.add_field_visitor(&validate_mixin_field_attributes);
   validator.add_field_visitor(&validate_boxed_field_attributes);

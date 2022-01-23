@@ -860,40 +860,6 @@ Exception:
       $$->set_blame($4);
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
       driver.finish_def($$, @$, own($1), own($9), own($11));
-
-      const char* annotations[] = {"message", "code"};
-      for (auto& annotation: annotations) {
-        if (driver.mode == parsing_mode::PROGRAM
-            && $$->get_field_by_name(annotation) != nullptr
-            && $$->has_annotation(annotation)
-            && strcmp(annotation, $$->get_annotation(annotation).c_str()) != 0) {
-          driver.warning([&](auto& o) {
-            o << "Some generators (e.g. PHP) will ignore annotation '"
-              << annotation << "' as it is also used as field";
-          });
-        }
-      }
-
-      // Check that value of "message" annotation is
-      // - a valid member of struct
-      // - of type STRING
-      if (driver.mode == parsing_mode::PROGRAM && $$->has_annotation("message")) {
-        const std::string& v = $$->get_annotation("message");
-        const auto* field = $$->get_field_by_name(v);
-        if (field == nullptr) {
-          driver.failure([&](auto& o) {
-            o << "member specified as exception 'message' should be a valid"
-              << " struct member, '" << v << "' in '" << $$->name() << "' is not";
-          });
-        }
-
-        if (!field->get_type()->is_string_or_binary()) {
-          driver.failure([&](auto& o) {
-            o << "member specified as exception 'message' should be of type "
-              << "STRING, '" << v << "' in '" << $$->name() << "' is not";
-          });
-        }
-      }
     }
 
 ErrorSafety:
