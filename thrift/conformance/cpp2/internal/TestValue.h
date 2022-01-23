@@ -19,6 +19,7 @@
 #include <stdexcept>
 
 #include <fmt/core.h>
+#include <folly/Utility.h>
 #include <folly/io/IOBuf.h>
 #include <folly/lang/Exception.h>
 #include <thrift/conformance/if/gen-cpp2/test_value_types.h>
@@ -44,7 +45,7 @@ uint32_t invoke(WriteToken token, W& writer) {
       return writer.writeSetEnd();
     default:
       folly::throw_exception<std::runtime_error>(
-          fmt::format("Unknown write token: {}", token));
+          fmt::format("Unknown write token: {}", folly::to_underlying(token)));
   }
 }
 

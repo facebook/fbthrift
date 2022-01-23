@@ -199,7 +199,8 @@ folly::SemiFuture<OmniClientResponseWithHeaders> OmniClient::semifuture_send(
                   TApplicationException::TApplicationExceptionType::
                       INVALID_MESSAGE_TYPE,
                   fmt::format(
-                      "Invalid message type: {}", state.messageType())));
+                      "Invalid message type: {}",
+                      folly::to_underlying(state.messageType()))));
         }
         resp.headers = state.header()->releaseHeaders();
         state.resetCtx(nullptr);
