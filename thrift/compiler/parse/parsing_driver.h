@@ -329,17 +329,17 @@ class parsing_driver {
   [[noreturn]] void end_parsing();
 
   /**
-   * Gets the directory path of a filename
+   * Gets the directory path of a filename.
    */
   static std::string directory_name(const std::string& filename);
 
   /**
-   * Finds the appropriate file path for the given filename
+   * Finds the appropriate file path for the given include filename.
    */
-  std::string include_file(const std::string& filename);
+  std::string find_include_file(const std::string& filename);
 
   /**
-   * Check the type of the parsed const information against its declared type
+   * Check the type of the parsed const information against its declared type.
    */
   void validate_const_type(t_const* c);
 
@@ -357,7 +357,7 @@ class parsing_driver {
   void clear_doctext();
 
   /**
-   * Cleans up text commonly found in doxygen-like comments
+   * Cleans up text commonly found in doxygen-like comments.
    *
    * Warning: if you mix tabs and spaces in a non-uniform way,
    * you will get what you deserve.
@@ -474,6 +474,7 @@ class parsing_driver {
   t_ref<t_union> add_def(std::unique_ptr<t_union> node);
   t_ref<t_exception> add_def(std::unique_ptr<t_exception> node);
   t_ref<t_enum> add_def(std::unique_ptr<t_enum> node);
+  void add_include(std::string name);
 
   t_field_id to_field_id(int64_t int_const);
 

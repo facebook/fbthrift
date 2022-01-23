@@ -212,39 +212,38 @@ std::string parsing_driver::directory_name(const std::string& filename) {
   return result;
 }
 
-std::string parsing_driver::include_file(const std::string& filename) {
+std::string parsing_driver::find_include_file(const std::string& filename) {
   // Absolute path? Just try that
   boost::filesystem::path path{filename};
   if (path.has_root_directory()) {
     try {
-      auto abspath = boost::filesystem::canonical(path);
-      return abspath.string();
+      return boost::filesystem::canonical(path).string();
     } catch (const boost::filesystem::filesystem_error& e) {
       failure([&](auto& o) {
         o << "Could not find file: " << filename << ". Error: " << e.what();
       });
     }
-  } else { // relative path, start searching
-    // new search path with current dir global
-    std::vector<std::string> sp = params.incl_searchpath;
-    sp.insert(sp.begin(), directory_name(program->path()));
-    // iterate through paths
-    std::vector<std::string>::iterator it;
-    for (it = sp.begin(); it != sp.end(); it++) {
-      boost::filesystem::path sfilename = filename;
-      if ((*it) != "." && (*it) != "") {
-        sfilename = boost::filesystem::path(*(it)) / filename;
-      }
-      if (boost::filesystem::exists(sfilename)) {
-        return sfilename.string();
-      } else {
-        debug([&](auto& o) { o << "Could not find: " << filename << "."; });
-      }
-    }
-
-    // File was not found
-    failure([&](auto& o) { o << "Could not find include file " << filename; });
   }
+
+  // relative path, start searching
+  // new search path with current dir global
+  std::vector<std::string> sp = params.incl_searchpath;
+  sp.insert(sp.begin(), directory_name(program->path()));
+  // iterate through paths
+  std::vector<std::string>::iterator it;
+  for (it = sp.begin(); it != sp.end(); it++) {
+    boost::filesystem::path sfilename = filename;
+    if ((*it) != "." && (*it) != "") {
+      sfilename = boost::filesystem::path(*(it)) / filename;
+    }
+    if (boost::filesystem::exists(sfilename)) {
+      return sfilename.string();
+    } else {
+      debug([&](auto& o) { o << "Could not find: " << filename << "."; });
+    }
+  }
+  // File was not found
+  failure([&](auto& o) { o << "Could not find include file " << filename; });
 }
 
 void parsing_driver::validate_not_ambiguous_enum(const std::string& name) {
@@ -698,6 +697,26 @@ t_ref<t_enum> parsing_driver::add_def(std::unique_ptr<t_enum> node) {
     program->add_enum(std::move(node));
   }
   return result;
+}
+
+void parsing_driver::add_include(std::string name) {
+  if (mode != parsing_mode::INCLUDES) {
+    return;
+  }
+
+  std::string path = find_include_file(name);
+  assert(!path.empty()); // Should have throw an exception if not found.
+
+  if (program_cache.find(path) == program_cache.end()) {
+    auto included_program =
+        program->add_include(path, name, scanner->get_lineno());
+    program_cache[path] = included_program.get();
+    program_bundle->add_program(std::move(included_program));
+  } else {
+    auto include = std::make_unique<t_include>(program_cache[path]);
+    include->set_lineno(scanner->get_lineno());
+    program->add_include(std::move(include));
+  }
 }
 
 const t_type* parsing_driver::add_unnamed_typedef(

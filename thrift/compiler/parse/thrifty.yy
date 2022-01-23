@@ -426,20 +426,7 @@ Include:
   tok_include tok_literal
     {
       driver.debug("Include -> tok_include tok_literal");
-      if (driver.mode == parsing_mode::INCLUDES) {
-        std::string path = driver.include_file(std::string($2));
-        if (!path.empty()) {
-          if (driver.program_cache.find(path) == driver.program_cache.end()) {
-            auto included_program = driver.program->add_include(path, std::string($2), driver.scanner->get_lineno());
-            driver.program_cache[path] = included_program.get();
-            driver.program_bundle->add_program(std::move(included_program));
-          } else {
-            auto include = std::make_unique<t_include>(driver.program_cache[path]);
-            include->set_lineno(driver.scanner->get_lineno());
-            driver.program->add_include(std::move(include));
-          }
-        }
-      }
+      driver.add_include(std::move($2));
     }
 
 DefinitionAttrs:
