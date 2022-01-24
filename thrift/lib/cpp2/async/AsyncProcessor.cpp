@@ -381,6 +381,7 @@ folly::Executor::KeepAlive<> HandlerCallbackBase::getInternalKeepAlive() {
 }
 
 HandlerCallbackBase::~HandlerCallbackBase() {
+  maybeNotifyComplete();
   // req must be deleted in the eb
   if (req_) {
     if (req_->isActive() && ewp_) {
@@ -574,7 +575,38 @@ HandlerCallback<void>::HandlerCallback(
   this->protoSeqId_ = protoSeqId;
 }
 
+HandlerCallback<void>::HandlerCallback(
+    ResponseChannelRequest::UniquePtr req,
+    std::unique_ptr<ContextStack> ctx,
+    cob_ptr cp,
+    exnw_ptr ewp,
+    int32_t protoSeqId,
+    folly::EventBase* eb,
+    folly::Executor* executor,
+    Cpp2RequestContext* reqCtx,
+    RequestPileInterface* notifyRequestPile,
+    RequestPileInterface::UserData notifyRequestPileUserData,
+    ConcurrencyControllerInterface* notifyConcurrencyController,
+    ConcurrencyControllerInterface::UserData notifyConcurrencyControllerData,
+    TilePtr&& interaction)
+    : HandlerCallbackBase(
+          std::move(req),
+          std::move(ctx),
+          ewp,
+          eb,
+          executor,
+          reqCtx,
+          notifyRequestPile,
+          notifyRequestPileUserData,
+          notifyConcurrencyController,
+          notifyConcurrencyControllerData,
+          std::move(interaction)),
+      cp_(cp) {
+  this->protoSeqId_ = protoSeqId;
+}
+
 void HandlerCallback<void>::complete(folly::Try<folly::Unit>&& r) {
+  maybeNotifyComplete();
   if (r.hasException()) {
     exception(std::move(r.exception()));
   } else {
