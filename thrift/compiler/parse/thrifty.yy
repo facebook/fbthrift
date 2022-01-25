@@ -275,10 +275,7 @@ class t_container_type;
 %type<t_function*>                 Function
 %type<t_type_ref>                  FunctionType
 %type<t_function_list*>            FunctionList
-
 %type<t_paramlist*>                ParamList
-%type<t_paramlist*>                EmptyParamList
-%type<t_field*>                    Param
 
 %type<t_throws*>                   MaybeThrows
 %type<t_ref<t_service>>            Extends
@@ -303,80 +300,27 @@ Program:
   HeaderList DefinitionList
     {
       driver.debug("Program -> Headers DefinitionList");
-      /*
-      TODO(dreiss): Decide whether full-program doctext is worth the trouble.
-      if ($1) {
-        driver.program->set_doc($1);
-      }
-      */
       driver.clear_doctext();
     }
 
 Identifier:
-  tok_identifier
-    {
-      $$ = $1;
-    }
+  tok_identifier { $$ = std::move($1); }
 /* context sensitive keywords that should be allowed in identifiers. */
-| tok_sink
-    {
-      $$ = "sink";
-    }
-| tok_oneway
-    {
-      $$ = "oneway";
-    }
-| tok_readonly
-    {
-      $$ = "readonly";
-    }
-| tok_idempotent
-    {
-      $$ = "idempotent";
-    }
-| tok_safe
-    {
-      $$ = "safe";
-    }
-| tok_transient
-    {
-      $$ = "transient";
-    }
-| tok_stateful
-    {
-      $$ = "stateful";
-    }
-| tok_permanent
-    {
-      $$ = "permanent";
-    }
-| tok_server
-    {
-      $$ = "server";
-    }
-| tok_client
-    {
-      $$ = "client";
-    }
+| tok_sink       { $$ = "sink"; }
+| tok_oneway     { $$ = "oneway"; }
+| tok_readonly   { $$ = "readonly"; }
+| tok_idempotent { $$ = "idempotent"; }
+| tok_safe       { $$ = "safe"; }
+| tok_transient  { $$ = "transient"; }
+| tok_stateful   { $$ = "stateful"; }
+| tok_permanent  { $$ = "permanent"; }
+| tok_server     { $$ = "server"; }
+| tok_client     { $$ = "client"; }
 
-
-CaptureDocText:
-    {
-      if (driver.mode == parsing_mode::PROGRAM) {
-        $$ = driver.doctext;
-        driver.doctext = boost::none;
-      } else {
-        $$ = boost::none;
-      }
-    }
+CaptureDocText: { $$ = driver.capture_doctext(); }
 
 /* TODO(dreiss): Try to DestroyDocText in all sorts or random places. */
-DestroyDocText:
-    {
-      if (driver.mode == parsing_mode::PROGRAM) {
-        driver.clear_doctext();
-      }
-    }
+DestroyDocText: { driver.clear_doctext(); }
 
 /* We have to DestroyDocText here, otherwise it catches the doctext
    on the first real element. */
@@ -385,28 +329,26 @@ HeaderList:
     {
       driver.debug("HeaderList -> HeaderList Header");
     }
-|
-    {
-      driver.debug("HeaderList -> ");
-    }
+|   { driver.debug("HeaderList -> "); }
 
 Header:
-  Include
+  tok_include tok_literal
     {
-      driver.debug("Header -> Include");
+      driver.debug("Header -> tok_include tok_literal");
+      driver.add_include(std::move($2));
     }
 | tok_namespace Identifier Identifier
     {
       driver.debug("Header -> tok_namespace Identifier Identifier");
       if (driver.mode == parsing_mode::PROGRAM) {
-        driver.program->set_namespace($2, $3);
+        driver.program->set_namespace(std::move($2), std::move($3));
       }
     }
 | tok_namespace Identifier tok_literal
     {
       driver.debug("Header -> tok_namespace Identifier tok_literal");
       if (driver.mode == parsing_mode::PROGRAM) {
-        driver.program->set_namespace($2, $3);
+        driver.program->set_namespace(std::move($2), std::move($3));
       }
     }
 | tok_cpp_include tok_literal
@@ -420,13 +362,6 @@ Header:
     {
       driver.debug("Header -> tok_hs_include tok_literal");
       // Do nothing. This syntax is handled by the hs compiler
-    }
-
-Include:
-  tok_include tok_literal
-    {
-      driver.debug("Include -> tok_include tok_literal");
-      driver.add_include(std::move($2));
     }
 
 DefinitionAttrs:
@@ -446,10 +381,7 @@ DefinitionList:
     {
       driver.debug("DefinitionList -> DefinitionList Definition");
     }
-|
-    {
-      driver.debug("DefinitionList -> ");
-    }
+|   { driver.debug("DefinitionList -> "); }
 
 Definition:
   Const
@@ -508,20 +440,12 @@ Typedef:
     }
 
 CommaOrSemicolon:
-  ","
-    {}
-| ";"
-    {}
+  "," {}
+| ";" {}
 
 CommaOrSemicolonOptional:
-  CommaOrSemicolon
-    {
-      $$ = true;
-    }
-|
-    {
-      $$ = false;
-    }
+  CommaOrSemicolon { $$ = true; }
+|                  { $$ = false;}
 
 Integer:
   tok_int_constant
@@ -838,46 +762,19 @@ Exception:
     }
 
 ErrorSafety:
-  tok_safe
-    {
-      $$ = t_error_safety::safe;
-    }
-|
-    {
-      $$ = {};
-    }
+  tok_safe { $$ = t_error_safety::safe;}
+|          { $$ = {}; }
 
 ErrorKind:
-  tok_transient
-    {
-      $$ = t_error_kind::transient;
-    }
-| tok_stateful
-    {
-      $$ = t_error_kind::stateful;
-    }
-| tok_permanent
-    {
-      $$ = t_error_kind::permanent;
-    }
-|
-    {
-      $$ = {};
-    }
+  tok_transient { $$ = t_error_kind::transient; }
+| tok_stateful  { $$ = t_error_kind::stateful; }
+| tok_permanent { $$ = t_error_kind::permanent; }
+|               { $$ = {}; }
 
 ErrorBlame:
-  tok_client
-    {
-      $$ = t_error_blame::client;
-    }
-| tok_server
-    {
-      $$ = t_error_blame::server;
-    }
-|
-    {
-      $$ = {};
-    }
+  tok_client { $$ = t_error_blame::client; }
+| tok_server { $$ = t_error_blame::server; }
+|            { $$ = {}; }
 
 
 Service:
@@ -895,15 +792,9 @@ Service:
       driver.finish_def($$, @$, own($1), own($8), own($11));
     }
 
-FlagArgs:
-    {
-       g_arglist = 1;
-    }
+FlagArgs: { g_arglist = 1; }
 
-UnflagArgs:
-    {
-       g_arglist = 0;
-    }
+UnflagArgs: { g_arglist = 0; }
 
 Extends:
   tok_extends Identifier
@@ -911,10 +802,7 @@ Extends:
       driver.debug("Extends -> tok_extends Identifier");
       $$ = driver.find_service($2);
     }
-|
-    {
-      $$ = nullptr;
-    }
+|   { $$ = nullptr; }
 
 Interaction:
   DefinitionAttrs tok_interaction Identifier
@@ -979,9 +867,9 @@ Function:
     }
 
 ParamList:
-  ParamList Param
+  ParamList Field
     {
-      driver.debug("ParamList -> ParamList , Param");
+      driver.debug("ParamList -> ParamList Field");
       $$ = $1;
       auto param = own($2);
       if (!$$->try_append_field(std::move(param))) {
@@ -991,41 +879,17 @@ ParamList:
         });
       }
     }
-| EmptyParamList
+|
     {
-      $$ = $1;
-    }
-
-EmptyParamList:
-    {
-      driver.debug("EmptyParamList -> nil");
+      driver.debug("ParamList -> ");
       $$ = new t_paramlist(driver.program);
     }
 
-Param:
-  Field
-    {
-      driver.debug("Param -> Field");
-      $$ = $1;
-    }
-
 FunctionQualifier:
-  tok_oneway
-    {
-      $$ = t_function_qualifier::one_way;
-    }
-| tok_idempotent
-    {
-      $$ = t_function_qualifier::idempotent;
-    }
-| tok_readonly
-    {
-      $$ = t_function_qualifier::read_only;
-    }
-|
-    {
-      $$ = {};
-    }
+  tok_oneway     { $$ = t_function_qualifier::one_way; }
+| tok_idempotent { $$ = t_function_qualifier::idempotent; }
+| tok_readonly   { $$ = t_function_qualifier::read_only; }
+|                { $$ = {}; }
 
 MaybeThrows:
   tok_throws "(" FieldList ")"
@@ -1033,11 +897,7 @@ MaybeThrows:
       driver.debug("MaybeThrows -> tok_throws ( FieldList )");
       $$ = driver.new_throws(own($3)).release();
     }
-|
-    {
-      driver.debug("MaybeThrows -> ");
-      $$ = nullptr;
-		}
+|   { $$ = nullptr; }
 
 FieldList:
   FieldList Field
@@ -1112,18 +972,13 @@ Field:
     }
 
 FieldIdentifier:
-  Integer ":"
-    {
-      $$ = driver.to_field_id($1);
-    }
-|
-    {
-      $$ = boost::none;
-    }
+  Integer ":" { $$ = driver.to_field_id($1); }
+|             { $$ = boost::none; }
 
 FieldQualifier:
   tok_required
     {
+      // TODO(afuller): Move this to a mutator
       if (g_arglist) {
         if (driver.mode == parsing_mode::PROGRAM) {
           driver.warning("required keyword is ignored in argument lists.");
@@ -1135,6 +990,7 @@ FieldQualifier:
     }
 | tok_optional
     {
+      // TODO(afuller): Move this to a mutator
       if (g_arglist) {
         if (driver.mode == parsing_mode::PROGRAM) {
           driver.warning("optional keyword is ignored in argument lists.");
@@ -1144,10 +1000,7 @@ FieldQualifier:
         $$ = t_field_qualifier::optional;
       }
     }
-|
-    {
-      $$ = {};
-    }
+|   { $$ = {}; }
 
 FieldValue:
   "=" ConstValue
@@ -1159,10 +1012,7 @@ FieldValue:
         $$ = nullptr;
       }
     }
-|
-    {
-      $$ = nullptr;
-    }
+|   { $$ = nullptr; }
 
 FunctionType:
   ResponseAndStreamReturnType
@@ -1234,6 +1084,7 @@ SinkReturnType:
 SinkFieldType:
   FieldType MaybeThrows
     {
+      driver.debug("SinkFieldType => FieldType MaybeThrows");
       $$ = std::make_pair($1, $2);
     }
 
@@ -1302,21 +1153,9 @@ BaseType:
     }
 
 ContainerType:
-  MapType
-    {
-      driver.debug("ContainerType -> MapType");
-      $$ = $1;
-    }
-| SetType
-    {
-      driver.debug("ContainerType -> SetType");
-      $$ = $1;
-    }
-| ListType
-    {
-      driver.debug("ContainerType -> ListType");
-      $$ = $1;
-    }
+  MapType  { $$ = $1; }
+| SetType  { $$ = $1; }
+| ListType { $$ = $1; }
 
 MapType:
   tok_map "<" FieldType "," FieldType ">"
@@ -1350,11 +1189,7 @@ Annotations:
       driver.debug("Annotations => ( )");
       $$ = nullptr;
     }
-|
-    {
-      driver.debug("Annotations =>");
-      $$ = nullptr;
-    }
+|   { $$ = nullptr; }
 
 AnnotationList:
   AnnotationList CommaOrSemicolon Annotation
@@ -1391,11 +1226,7 @@ StructuredAnnotations:
       driver.debug("StructuredAnnotations -> NonEmptyStructuredAnnotationList");
       $$ = $1;
     }
-|
-    {
-      driver.debug("StructuredAnnotations ->");
-      $$ = nullptr;
-    }
+|   { $$ = nullptr; }
 
 NonEmptyStructuredAnnotationList:
   NonEmptyStructuredAnnotationList StructuredAnnotation

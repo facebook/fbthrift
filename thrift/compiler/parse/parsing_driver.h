@@ -355,6 +355,7 @@ class parsing_driver {
    * Also prints a warning if we are discarding information.
    */
   void clear_doctext();
+  t_doc capture_doctext();
 
   /**
    * Cleans up text commonly found in doxygen-like comments.
@@ -379,20 +380,8 @@ class parsing_driver {
   // Returns the source range object containing the location information.
   source_range get_source_range(const YYLTYPE& loc);
 
-  void reset_locations() {
-    yylloc_.begin.line = 1;
-    yylloc_.begin.column = 1;
-    yylloc_.end.line = 1;
-    yylloc_.end.column = 1;
-    yylval_ = 0;
-  }
-
-  void compute_location(YYLTYPE& yylloc, YYSTYPE& yylval, const char* text) {
-    /* Only computing locations during second pass. */
-    if (mode == parsing_mode::PROGRAM) {
-      compute_location_impl(yylloc, yylval, text);
-    }
-  }
+  void reset_locations();
+  void compute_location(YYLTYPE& yylloc, YYSTYPE& yylval, const char* text);
 
   /*
    * To fix Bison's default location

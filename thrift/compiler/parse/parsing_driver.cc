@@ -260,13 +260,20 @@ void parsing_driver::validate_not_ambiguous_enum(const std::string& name) {
   }
 }
 void parsing_driver::clear_doctext() {
-  if (doctext) {
+  if (doctext && mode == parsing_mode::PROGRAM) {
     warning_strict([&](auto& o) {
       o << "Uncaptured doctext at on line " << doctext_lineno << ".";
     });
   }
 
   doctext = boost::none;
+}
+
+t_doc parsing_driver::capture_doctext() {
+  if (mode != parsing_mode::PROGRAM) {
+    return boost::none;
+  }
+  return std::exchange(doctext, boost::none);
 }
 
 t_doc parsing_driver::clean_up_doctext(std::string docstring) {
@@ -446,6 +453,54 @@ void parsing_driver::set_attributes(
 source_range parsing_driver::get_source_range(const YYLTYPE& loc) {
   return source_range(
       *program, loc.begin.line, loc.begin.column, loc.end.line, loc.end.column);
+}
+
+void parsing_driver::reset_locations() {
+  yylloc_.begin.line = 1;
+  yylloc_.begin.column = 1;
+  yylloc_.end.line = 1;
+  yylloc_.end.column = 1;
+  yylval_ = 0;
+}
+
+void parsing_driver::compute_location(
+    YYLTYPE& yylloc, YYSTYPE& yylval, const char* text) {
+  /* Only computing locations during second pass. */
+  if (mode != parsing_mode::PROGRAM) {
+    return;
+  }
+
+  int i = 0;
+
+  // Updating current begin to previous end.
+  yylloc.begin = yylloc.end;
+
+  // Getting rid of useless whitespaces on begin position.
+  for (; is_white_space(text[i]); i++) {
+    yylval++;
+    if (text[i] == '\n') {
+      yylloc.begin.line++;
+      yylloc.begin.column = 1;
+      program->add_line_offset(yylval);
+    } else {
+      yylloc.begin.column++;
+    }
+  }
+
+  // Avoid scanning whitespaces twice.
+  yylloc.end = yylloc.begin;
+
+  // Updating current end position.
+  for (; text[i] != '\0'; i++) {
+    yylval++;
+    if (text[i] == '\n') {
+      yylloc.end.line++;
+      yylloc.end.column = 1;
+      program->add_line_offset(yylval);
+    } else {
+      yylloc.end.column++;
+    }
+  }
 }
 
 std::unique_ptr<t_const> parsing_driver::new_struct_annotation(
@@ -883,41 +938,6 @@ std::unique_ptr<t_const_value> parsing_driver::copy_const_value(
         [&](auto& o) { o << "Constant strings should be quoted: " << name; });
   }
   return std::make_unique<t_const_value>(name);
-}
-
-void parsing_driver::compute_location_impl(
-    YYLTYPE& yylloc, YYSTYPE& yylval, const char* text) {
-  int i = 0;
-
-  // Updating current begin to previous end.
-  yylloc.begin = yylloc.end;
-
-  // Getting rid of useless whitespaces on begin position.
-  for (; is_white_space(text[i]); i++) {
-    yylval++;
-    if (text[i] == '\n') {
-      yylloc.begin.line++;
-      yylloc.begin.column = 1;
-      program->add_line_offset(yylval);
-    } else {
-      yylloc.begin.column++;
-    }
-  }
-
-  // Avoid scanning whitespaces twice.
-  yylloc.end = yylloc.begin;
-
-  // Updating current end position.
-  for (; text[i] != '\0'; i++) {
-    yylval++;
-    if (text[i] == '\n') {
-      yylloc.end.line++;
-      yylloc.end.column = 1;
-      program->add_line_offset(yylval);
-    } else {
-      yylloc.end.column++;
-    }
-  }
 }
 
 } // namespace compiler
