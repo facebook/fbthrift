@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -118,6 +118,7 @@ IndexedStruct genIndexedStruct(Serializer ser) {
   obj.serialized_data_size_ref() =
       tokens[2].size() + tokens[3].size() + tokens[4].size() + tokens[5].size();
   detail::Xxh3Hasher hasher;
+  hasher.init();
   if (!cheapToSkipListOfDouble(ser)) {
     // Only add index field if list<double> is not cheap to skip
     obj.field_id_to_size_ref() = {

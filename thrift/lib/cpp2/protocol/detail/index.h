@@ -104,13 +104,14 @@ constexpr int16_t kXxh3ChecksumFieldId =
 
 class Xxh3Hasher {
  public:
-  Xxh3Hasher();
   ~Xxh3Hasher();
   void update(folly::io::Cursor);
+  void init();
+  bool is_initialized() const { return state != nullptr; }
   operator int64_t();
 
  private:
-  void* state;
+  void* state = nullptr;
 };
 
 [[noreturn]] void throwChecksumMismatch(int64_t expected, int64_t actual);
@@ -134,10 +135,9 @@ class IndexWriterImpl {
  public:
   IndexWriterImpl(
       Protocol* prot, uint32_t& writtenBytes, bool writeValidationFields)
-      : prot_(prot),
-        writtenBytes_(writtenBytes),
-        writeValidationFields_(writeValidationFields) {
-    if (writeValidationFields_) {
+      : prot_(prot), writtenBytes_(writtenBytes) {
+    if (writeValidationFields) {
+      hasher_.init();
       writeRandomNumberField();
     }
     writeIndexOffsetField();
@@ -154,14 +154,14 @@ class IndexWriterImpl {
             folly::remove_cvref_t<Type>>) {
       const auto fieldSize = writtenBytes_ - fieldStart_;
       fieldIdAndSize_.push_back({id, fieldSize});
-      if (writeValidationFields_) {
+      if (hasher_.is_initialized()) {
         hasher_.update(prot_->tail(fieldSize));
       }
     }
   }
 
   void finalize() {
-    if (writeValidationFields_) {
+    if (hasher_.is_initialized()) {
       fieldIdAndSize_.push_back(
           {kXxh3ChecksumFieldId, static_cast<int64_t>(hasher_)});
     }
@@ -211,7 +211,6 @@ class IndexWriterImpl {
 
   Protocol* prot_;
   uint32_t& writtenBytes_;
-  bool writeValidationFields_;
   uint32_t indexOffsetLocation_ = 0;
   uint32_t sizeFieldEnd_ = 0;
   uint32_t fieldStart_ = 0;
@@ -273,13 +272,13 @@ class ProtocolReaderStructReadStateWithIndexImpl
 
   void readStructEnd(Protocol* iprot) {
     Base::readStructEnd(iprot);
-    if (!checksum_) {
+    if (!hasher_.is_initialized()) {
       return;
     }
 
     auto actual = static_cast<int64_t>(hasher_);
-    if (*checksum_ != actual) {
-      throwChecksumMismatch(*checksum_, actual);
+    if (checksum_ != actual) {
+      throwChecksumMismatch(checksum_, actual);
     }
   }
 
@@ -313,7 +312,10 @@ class ProtocolReaderStructReadStateWithIndexImpl
 
     indexReader.skipBytes(*indexOffset_);
     readIndexField(indexReader);
-    checksum_ = folly::get_optional(fieldIdToSize_, kXxh3ChecksumFieldId);
+    if (auto p = folly::get_ptr(fieldIdToSize_, kXxh3ChecksumFieldId)) {
+      hasher_.init();
+      checksum_ = *p;
+    }
   }
 
   bool readHeadField(Protocol& p) {
@@ -369,7 +371,7 @@ class ProtocolReaderStructReadStateWithIndexImpl
   }
 
   void tryUpdateChecksum(Protocol* iprot, int16_t id) {
-    if (!checksum_) {
+    if (!hasher_.is_initialized()) {
       return;
     }
 
@@ -381,7 +383,7 @@ class ProtocolReaderStructReadStateWithIndexImpl
   FieldIdToSize fieldIdToSize_;
   folly::Optional<int64_t> indexOffset_;
   folly::Optional<int64_t> randomNumber_;
-  folly::Optional<int64_t> checksum_;
+  int64_t checksum_;
   Xxh3Hasher hasher_;
 };
 

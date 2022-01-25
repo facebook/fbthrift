@@ -25,6 +25,7 @@ using folly::io::Cursor;
 
 int64_t xxh3_64bits(Cursor cursor) {
   Xxh3Hasher hasher;
+  hasher.init();
   hasher.update(cursor);
   return static_cast<int64_t>(hasher);
 }
@@ -86,6 +87,7 @@ TEST(xxh3_64bits, test) {
     Cursor cursor2{buf2.get()};
     Cursor cursor3{buf3.get()};
     Xxh3Hasher hasher;
+    hasher.init();
     hasher.update(Cursor{cursor1 + 1, 2});
     hasher.update(Cursor{cursor2, 2});
     hasher.update(Cursor{cursor3, 2});

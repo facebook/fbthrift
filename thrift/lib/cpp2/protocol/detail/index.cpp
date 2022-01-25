@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp2/protocol/detail/index.h>
 
+#include <cassert>
 #include <limits>
 #include <memory>
 #include <random>
@@ -26,16 +27,19 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-Xxh3Hasher::Xxh3Hasher() {
+void Xxh3Hasher::init() {
   state = static_cast<void*>(XXH3_createState());
   XXH3_64bits_reset(static_cast<XXH3_state_t*>(state));
 }
 
 Xxh3Hasher::~Xxh3Hasher() {
-  XXH3_freeState(static_cast<XXH3_state_t*>(state));
+  if (is_initialized()) {
+    XXH3_freeState(static_cast<XXH3_state_t*>(state));
+  }
 }
 
 void Xxh3Hasher::update(folly::io::Cursor cursor) {
+  assert(is_initialized());
   while (!cursor.isAtEnd()) {
     const auto buf = cursor.peekBytes();
     XXH3_64bits_update(
@@ -45,6 +49,7 @@ void Xxh3Hasher::update(folly::io::Cursor cursor) {
 }
 
 Xxh3Hasher::operator int64_t() {
+  assert(is_initialized());
   return XXH3_64bits_digest(static_cast<XXH3_state_t*>(state));
 }
 
