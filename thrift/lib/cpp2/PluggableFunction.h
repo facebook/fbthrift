@@ -59,8 +59,11 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
+template <typename Sig>
+class PluggableFunction;
+
 template <typename Ret, typename... Args>
-class PluggableFunction {
+class PluggableFunction<Ret(Args...)> {
  public:
   using signature = Ret(Args...);
 
@@ -104,31 +107,19 @@ class PluggableFunction {
   signature& init_;
 };
 
-template <typename>
-struct pluggable_function_type_;
-template <typename Ret, typename... Args>
-struct pluggable_function_type_<Ret (*)(Args...)> {
-  using type = PluggableFunction<Ret, Args...>;
-};
-template <typename F>
-using pluggable_function_type_t = typename pluggable_function_type_<F>::type;
-
 } // namespace detail
 } // namespace thrift
 } // namespace apache
 
-#define THRIFT_PLUGGABLE_FUNC_DECLARE(_ret, _name, ...)             \
-  _ret THRIFT__PLUGGABLE_FUNC_DEFAULT_##_name(__VA_ARGS__);         \
-  using THRIFT__PLUGGABLE_FUNC_TYPE_##_name =                       \
-      decltype(&THRIFT__PLUGGABLE_FUNC_DEFAULT_##_name);            \
-  extern const ::apache::thrift::detail::pluggable_function_type_t< \
-      THRIFT__PLUGGABLE_FUNC_TYPE_##_name>                          \
+#define THRIFT_PLUGGABLE_FUNC_DECLARE(_ret, _name, ...)                       \
+  _ret THRIFT__PLUGGABLE_FUNC_DEFAULT_##_name(__VA_ARGS__);                   \
+  extern const ::apache::thrift::detail::PluggableFunction<_ret(__VA_ARGS__)> \
       _name
 
-#define THRIFT_PLUGGABLE_FUNC_REGISTER(_ret, _name, ...)             \
-  FOLLY_STORAGE_CONSTEXPR const ::apache::thrift::detail::           \
-      pluggable_function_type_t<THRIFT__PLUGGABLE_FUNC_TYPE_##_name> \
-          _name{THRIFT__PLUGGABLE_FUNC_DEFAULT_##_name};             \
+#define THRIFT_PLUGGABLE_FUNC_REGISTER(_ret, _name, ...)                     \
+  FOLLY_STORAGE_CONSTEXPR const ::apache::thrift::detail::PluggableFunction< \
+      _ret(__VA_ARGS__)>                                                     \
+      _name{THRIFT__PLUGGABLE_FUNC_DEFAULT_##_name};                         \
   _ret THRIFT__PLUGGABLE_FUNC_DEFAULT_##_name(__VA_ARGS__)
 
 #define THRIFT_PLUGGABLE_FUNC_SET(_ret, _name, ...)      \
