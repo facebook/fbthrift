@@ -8,9 +8,11 @@
 package test.fixtures.swift.enumstrict;
 
 import com.facebook.swift.codec.*;
+import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TProtocol;
 
 @SwiftGenerated
-public enum MyBigEnum {
+public enum MyBigEnum implements com.facebook.thrift.payload.ThriftSerializable {
     UNKNOWN(0),
     ONE(1),
     TWO(2),
@@ -89,4 +91,18 @@ public enum MyBigEnum {
             return null;
         }
     }
+
+    public static com.facebook.thrift.payload.Reader<MyBigEnum> asReader() {
+        return MyBigEnum::read0;
+    }
+
+    public static MyBigEnum read0(TProtocol iprot) throws TException {
+        return MyBigEnum.fromInteger(iprot.readI32());
+    }
+
+    public void write0(TProtocol oprot) throws TException {
+        oprot.writeI32(getValue());
+    }
+
+
 }

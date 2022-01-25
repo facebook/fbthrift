@@ -8,9 +8,11 @@
 package test.fixtures.constants;
 
 import com.facebook.swift.codec.*;
+import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TProtocol;
 
 @SwiftGenerated
-public enum Company {
+public enum Company implements com.facebook.thrift.payload.ThriftSerializable {
     FACEBOOK(0),
     WHATSAPP(1),
     OCULUS(2),
@@ -41,4 +43,18 @@ public enum Company {
             return null;
         }
     }
+
+    public static com.facebook.thrift.payload.Reader<Company> asReader() {
+        return Company::read0;
+    }
+
+    public static Company read0(TProtocol iprot) throws TException {
+        return Company.fromInteger(iprot.readI32());
+    }
+
+    public void write0(TProtocol oprot) throws TException {
+        oprot.writeI32(getValue());
+    }
+
+
 }

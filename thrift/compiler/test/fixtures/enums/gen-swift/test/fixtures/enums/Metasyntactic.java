@@ -8,9 +8,11 @@
 package test.fixtures.enums;
 
 import com.facebook.swift.codec.*;
+import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TProtocol;
 
 @SwiftGenerated
-public enum Metasyntactic {
+public enum Metasyntactic implements com.facebook.thrift.payload.ThriftSerializable {
     FOO(1),
     BAR(2),
     BAZ(3),
@@ -41,4 +43,18 @@ public enum Metasyntactic {
             return null;
         }
     }
+
+    public static com.facebook.thrift.payload.Reader<Metasyntactic> asReader() {
+        return Metasyntactic::read0;
+    }
+
+    public static Metasyntactic read0(TProtocol iprot) throws TException {
+        return Metasyntactic.fromInteger(iprot.readI32());
+    }
+
+    public void write0(TProtocol oprot) throws TException {
+        oprot.writeI32(getValue());
+    }
+
+
 }

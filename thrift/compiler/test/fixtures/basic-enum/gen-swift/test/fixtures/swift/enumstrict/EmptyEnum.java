@@ -8,9 +8,11 @@
 package test.fixtures.swift.enumstrict;
 
 import com.facebook.swift.codec.*;
+import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TProtocol;
 
 @SwiftGenerated
-public enum EmptyEnum {
+public enum EmptyEnum implements com.facebook.thrift.payload.ThriftSerializable {
     ;
 
     private final int value;
@@ -30,4 +32,18 @@ public enum EmptyEnum {
             return null;
         }
     }
+
+    public static com.facebook.thrift.payload.Reader<EmptyEnum> asReader() {
+        return EmptyEnum::read0;
+    }
+
+    public static EmptyEnum read0(TProtocol iprot) throws TException {
+        return EmptyEnum.fromInteger(iprot.readI32());
+    }
+
+    public void write0(TProtocol oprot) throws TException {
+        oprot.writeI32(getValue());
+    }
+
+
 }

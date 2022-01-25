@@ -8,9 +8,11 @@
 package test.fixtures.refs;
 
 import com.facebook.swift.codec.*;
+import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TProtocol;
 
 @SwiftGenerated
-public enum TypedEnum {
+public enum TypedEnum implements com.facebook.thrift.payload.ThriftSerializable {
     VAL1(0),
     VAL2(1);
 
@@ -35,4 +37,18 @@ public enum TypedEnum {
             return null;
         }
     }
+
+    public static com.facebook.thrift.payload.Reader<TypedEnum> asReader() {
+        return TypedEnum::read0;
+    }
+
+    public static TypedEnum read0(TProtocol iprot) throws TException {
+        return TypedEnum.fromInteger(iprot.readI32());
+    }
+
+    public void write0(TProtocol oprot) throws TException {
+        oprot.writeI32(getValue());
+    }
+
+
 }

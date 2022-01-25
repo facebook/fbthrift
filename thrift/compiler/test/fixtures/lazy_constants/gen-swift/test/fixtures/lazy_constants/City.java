@@ -8,9 +8,11 @@
 package test.fixtures.lazy_constants;
 
 import com.facebook.swift.codec.*;
+import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TProtocol;
 
 @SwiftGenerated
-public enum City {
+public enum City implements com.facebook.thrift.payload.ThriftSerializable {
     NYC(0),
     MPK(1),
     SEA(2),
@@ -41,4 +43,18 @@ public enum City {
             return null;
         }
     }
+
+    public static com.facebook.thrift.payload.Reader<City> asReader() {
+        return City::read0;
+    }
+
+    public static City read0(TProtocol iprot) throws TException {
+        return City.fromInteger(iprot.readI32());
+    }
+
+    public void write0(TProtocol oprot) throws TException {
+        oprot.writeI32(getValue());
+    }
+
+
 }

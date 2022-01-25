@@ -8,9 +8,11 @@
 package test.fixtures.swift.toobigenum;
 
 import com.facebook.swift.codec.*;
+import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TProtocol;
 
 @SwiftGenerated
-public class TooBigEnum extends IntEnum {
+public class TooBigEnum extends IntEnum implements com.facebook.thrift.payload.ThriftSerializable {
 
     private final int value;
 
@@ -28,6 +30,19 @@ public class TooBigEnum extends IntEnum {
     public static TooBigEnum fromInteger(int n) {
         return new TooBigEnum(n);
     }
+
+    public static com.facebook.thrift.payload.Reader<TooBigEnum> asReader() {
+        return TooBigEnum::read0;
+    }
+
+    public static TooBigEnum read0(TProtocol iprot) throws TException {
+        return TooBigEnum.fromInteger(iprot.readI32());
+    }
+
+    public void write0(TProtocol oprot) throws TException {
+        oprot.writeI32(getValue());
+    }
+
 
     @java.lang.Override
     public boolean equals(Object o) {
@@ -47,4 +62,5 @@ public class TooBigEnum extends IntEnum {
     public int hashCode() {
         return value;
     }
+
 }

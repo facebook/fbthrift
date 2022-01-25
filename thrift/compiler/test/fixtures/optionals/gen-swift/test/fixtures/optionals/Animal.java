@@ -8,9 +8,11 @@
 package test.fixtures.optionals;
 
 import com.facebook.swift.codec.*;
+import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TProtocol;
 
 @SwiftGenerated
-public enum Animal {
+public enum Animal implements com.facebook.thrift.payload.ThriftSerializable {
     DOG(1),
     CAT(2),
     TARANTULA(3);
@@ -38,4 +40,18 @@ public enum Animal {
             return null;
         }
     }
+
+    public static com.facebook.thrift.payload.Reader<Animal> asReader() {
+        return Animal::read0;
+    }
+
+    public static Animal read0(TProtocol iprot) throws TException {
+        return Animal.fromInteger(iprot.readI32());
+    }
+
+    public void write0(TProtocol oprot) throws TException {
+        oprot.writeI32(getValue());
+    }
+
+
 }
