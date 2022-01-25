@@ -142,37 +142,6 @@ auto& getThreadManagerObserverSingleton() {
   return observer;
 }
 
-class ThreadIdCollector : public folly::WorkerProvider {
- public:
-  ThreadIdCollector() {}
-
-  IdsWithKeepAlive collectThreadIds() override final {
-    auto keepAlive = std::make_unique<WorkerKeepAlive>(
-        folly::SharedMutex::ReadHolder{&threadsExitMutex_});
-    auto locked = osThreadIds_.rlock();
-    return {std::move(keepAlive), {locked->begin(), locked->end()}};
-  }
-
-  folly::Synchronized<std::unordered_set<pid_t>> osThreadIds_;
-  folly::SharedMutex threadsExitMutex_;
-
- protected:
-  class WorkerKeepAlive : public folly::WorkerProvider::KeepAlive {
-   public:
-    explicit WorkerKeepAlive(folly::SharedMutex::ReadHolder idsLock)
-        : threadsExitLock_(std::move(idsLock)) {}
-    ~WorkerKeepAlive() override {}
-
-   private:
-    folly::SharedMutex::ReadHolder threadsExitLock_;
-  };
-};
-
-inline ThreadIdCollector* upcast(
-    std::unique_ptr<folly::WorkerProvider>& wpPtr) {
-  return static_cast<ThreadIdCollector*>(wpPtr.get());
-}
-
 } // namespace
 
 /**
@@ -389,11 +358,10 @@ class ThreadManager::Impl : public ThreadManager,
   // returns a string to attach to namePrefix when recording
   // stats
   virtual std::string statContext(PRIORITY = PRIORITY::NORMAL) { return ""; }
-  // Creates a WorkerProvider instance which can be used to collect stack traces
+  // A WorkerProvider instance which can be used to collect stack traces
   // from threads consuming from lagging queues.
-  std::unique_ptr<folly::WorkerProvider> createWorkerProvider();
-  std::unique_ptr<folly::WorkerProvider> threadIdCollector_{
-      createWorkerProvider()};
+  std::unique_ptr<folly::ThreadIdWorkerProvider> threadIdCollector_{
+      std::make_unique<folly::ThreadIdWorkerProvider>()};
 
  private:
   void stopImpl(bool joinArg);
@@ -623,16 +591,15 @@ class ThreadManager::Impl::Worker : public Runnable, public WorkerBaseHook {
     manager_->workerStarted(this);
 
     // Capture the current threads ID in the ThreadManager's tracking list.
-    auto collectorPtr = upcast(manager_->threadIdCollector_);
-    collectorPtr->osThreadIds_.wlock()->insert(folly::getOSThreadID());
+    auto collectorPtr = manager_->threadIdCollector_.get();
+    collectorPtr->addTid(folly::getOSThreadID());
     // On exit, we should remove the thread ID from the collector's tracking
     // list.e
     auto threadIdsGuard = folly::makeGuard([collectorPtr]() {
       // The observer could be capturing a stack trace from this thread
       // so it should block until the collection finishes to exit.
       if (collectorPtr) {
-        collectorPtr->osThreadIds_.wlock()->erase(folly::getOSThreadID());
-        folly::SharedMutex::WriteHolder w{collectorPtr->threadsExitMutex_};
+        collectorPtr->removeTid(folly::getOSThreadID());
       }
     });
 
@@ -1078,11 +1045,6 @@ void ThreadManager::Impl::setupQueueObservers() {
       queueObservers_->at(pri) = factory->create(pri);
     }
   }
-}
-
-std::unique_ptr<folly::WorkerProvider>
-ThreadManager::Impl::createWorkerProvider() {
-  return std::make_unique<ThreadIdCollector>();
 }
 
 class PriorityThreadManager::PriorityImpl
