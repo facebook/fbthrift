@@ -188,8 +188,8 @@ func (p *MyStructNestedAnnotation) String() string {
 //  - EmptyAnnotations
 //  - MyEnum
 type MyStruct struct {
-  Major int64 `thrift:"major,1" db:"major" json:"major"`
-  Package string `thrift:"package,2" db:"package" json:"package"`
+  Package string `thrift:"package,1" db:"package" json:"package"`
+  Major int64 `thrift:"major,2" db:"major" json:"major"`
   AnnotationWithQuote string `thrift:"annotation_with_quote,3" tag:"somevalue"`
   Class_ string `thrift:"class_,4" db:"class_" json:"class_"`
   AnnotationWithTrailingComma string `thrift:"annotation_with_trailing_comma,5" db:"annotation_with_trailing_comma" json:"annotation_with_trailing_comma"`
@@ -334,12 +334,12 @@ func (p *MyStruct) Read(iprot thrift.Protocol) error {
     }
     if fieldTypeId == thrift.STOP { break; }
     switch fieldId {
-    case 1:
-      if err := p.ReadField1(iprot); err != nil {
-        return err
-      }
     case 2:
       if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
         return err
       }
     case 3:
@@ -377,18 +377,18 @@ func (p *MyStruct) Read(iprot thrift.Protocol) error {
   return nil
 }
 
-func (p *MyStruct)  ReadField1(iprot thrift.Protocol) error {
+func (p *MyStruct)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-    return thrift.PrependError("error reading field 1: ", err)
+    return thrift.PrependError("error reading field 2: ", err)
   } else {
     p.Major = v
   }
   return nil
 }
 
-func (p *MyStruct)  ReadField2(iprot thrift.Protocol) error {
+func (p *MyStruct)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-    return thrift.PrependError("error reading field 2: ", err)
+    return thrift.PrependError("error reading field 1: ", err)
   } else {
     p.Package = v
   }
@@ -459,22 +459,22 @@ func (p *MyStruct) Write(oprot thrift.Protocol) error {
 }
 
 func (p *MyStruct) writeField1(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("major", thrift.I64, 1); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:major: ", p), err) }
-  if err := oprot.WriteI64(int64(p.Major)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.major (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldBegin("package", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:package: ", p), err) }
+  if err := oprot.WriteString(string(p.Package)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.package (1) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:major: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:package: ", p), err) }
   return err
 }
 
 func (p *MyStruct) writeField2(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("package", thrift.STRING, 2); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:package: ", p), err) }
-  if err := oprot.WriteString(string(p.Package)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.package (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldBegin("major", thrift.I64, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:major: ", p), err) }
+  if err := oprot.WriteI64(int64(p.Major)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.major (2) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:package: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:major: ", p), err) }
   return err
 }
 
@@ -533,14 +533,14 @@ func (p *MyStruct) String() string {
     return "<nil>"
   }
 
-  majorVal := fmt.Sprintf("%v", p.Major)
   packageVal := fmt.Sprintf("%v", p.Package)
+  majorVal := fmt.Sprintf("%v", p.Major)
   annotationWithQuoteVal := fmt.Sprintf("%v", p.AnnotationWithQuote)
   class_Val := fmt.Sprintf("%v", p.Class_)
   annotationWithTrailingCommaVal := fmt.Sprintf("%v", p.AnnotationWithTrailingComma)
   emptyAnnotationsVal := fmt.Sprintf("%v", p.EmptyAnnotations)
   myEnumVal := fmt.Sprintf("%v", p.MyEnum)
-  return fmt.Sprintf("MyStruct({Major:%s Package:%s AnnotationWithQuote:%s Class_:%s AnnotationWithTrailingComma:%s EmptyAnnotations:%s MyEnum:%s})", majorVal, packageVal, annotationWithQuoteVal, class_Val, annotationWithTrailingCommaVal, emptyAnnotationsVal, myEnumVal)
+  return fmt.Sprintf("MyStruct({Package:%s Major:%s AnnotationWithQuote:%s Class_:%s AnnotationWithTrailingComma:%s EmptyAnnotations:%s MyEnum:%s})", packageVal, majorVal, annotationWithQuoteVal, class_Val, annotationWithTrailingCommaVal, emptyAnnotationsVal, myEnumVal)
 }
 
 // Attributes:

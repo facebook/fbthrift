@@ -62,7 +62,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=1,
+            id=2,
             name="major",
             type=int,
             kind=__NumberType.I64,
@@ -74,7 +74,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=2,
+            id=1,
             name="package",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,

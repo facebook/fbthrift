@@ -24,8 +24,8 @@ import com.facebook.thrift.protocol.*;
 @SuppressWarnings({ "unused", "serial" })
 public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
-  private static final TField MAJOR_FIELD_DESC = new TField("major", TType.I64, (short)1);
-  private static final TField PACKAGE_FIELD_DESC = new TField("package", TType.STRING, (short)2);
+  private static final TField MAJOR_FIELD_DESC = new TField("major", TType.I64, (short)2);
+  private static final TField PACKAGE_FIELD_DESC = new TField("package", TType.STRING, (short)1);
   private static final TField ANNOTATION_WITH_QUOTE_FIELD_DESC = new TField("annotation_with_quote", TType.STRING, (short)3);
   private static final TField CLASS__FIELD_DESC = new TField("class_", TType.STRING, (short)4);
   private static final TField ANNOTATION_WITH_TRAILING_COMMA_FIELD_DESC = new TField("annotation_with_trailing_comma", TType.STRING, (short)5);
@@ -43,8 +43,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
    * @see MyEnum
    */
   public final MyEnum my_enum;
-  public static final int MAJOR = 1;
-  public static final int PACKAGE = 2;
+  public static final int MAJOR = 2;
+  public static final int PACKAGE = 1;
   public static final int ANNOTATION_WITH_QUOTE = 3;
   public static final int CLASS_ = 4;
   public static final int ANNOTATION_WITH_TRAILING_COMMA = 5;
@@ -374,14 +374,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.major != null) {
-      oprot.writeFieldBegin(MAJOR_FIELD_DESC);
-      oprot.writeI64(this.major);
-      oprot.writeFieldEnd();
-    }
     if (this.package != null) {
       oprot.writeFieldBegin(PACKAGE_FIELD_DESC);
       oprot.writeString(this.package);
+      oprot.writeFieldEnd();
+    }
+    if (this.major != null) {
+      oprot.writeFieldBegin(MAJOR_FIELD_DESC);
+      oprot.writeI64(this.major);
       oprot.writeFieldEnd();
     }
     if (this.annotation_with_quote != null) {

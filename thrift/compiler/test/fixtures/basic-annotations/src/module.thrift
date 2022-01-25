@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,11 +27,12 @@ struct MyStructNestedAnnotation {
   1: string name;
 }
 
+# We intentionally keep field IDs out of order to check whether this case is handled correctly
 struct MyStruct {
   # glibc has macros with this name, Thrift should be able to prevent collisions
-  1: i64 major (cpp.name = 'majorVer');
+  2: i64 major (cpp.name = 'majorVer');
   # package is a reserved keyword in Java, Thrift should be able to handle this
-  2: string package (java.swift.name = '_package');
+  1: string package (java.swift.name = '_package');
   # should generate valid code even with double quotes in an annotation
   3: string annotation_with_quote (go.tag = 'tag:"somevalue"');
   4: string class_ (java.swift.name = 'class_');

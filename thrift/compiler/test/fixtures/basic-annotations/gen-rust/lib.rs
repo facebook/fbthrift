@@ -293,10 +293,10 @@ pub mod types {
     {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("MyStruct");
-            p.write_field_begin("major", ::fbthrift::TType::I64, 1);
+            p.write_field_begin("major", ::fbthrift::TType::I64, 2);
             ::fbthrift::Serialize::write(&self.major, p);
             p.write_field_end();
-            p.write_field_begin("package", ::fbthrift::TType::String, 2);
+            p.write_field_begin("package", ::fbthrift::TType::String, 1);
             ::fbthrift::Serialize::write(&self.package, p);
             p.write_field_end();
             p.write_field_begin("annotation_with_quote", ::fbthrift::TType::String, 3);
@@ -329,9 +329,9 @@ pub mod types {
                 ::fbthrift::Field::new("annotation_with_trailing_comma", ::fbthrift::TType::String, 5),
                 ::fbthrift::Field::new("class_", ::fbthrift::TType::String, 4),
                 ::fbthrift::Field::new("empty_annotations", ::fbthrift::TType::String, 6),
-                ::fbthrift::Field::new("major", ::fbthrift::TType::I64, 1),
+                ::fbthrift::Field::new("major", ::fbthrift::TType::I64, 2),
                 ::fbthrift::Field::new("my_enum", ::fbthrift::TType::I32, 7),
-                ::fbthrift::Field::new("package", ::fbthrift::TType::String, 2),
+                ::fbthrift::Field::new("package", ::fbthrift::TType::String, 1),
             ];
             let mut field_major = ::std::option::Option::None;
             let mut field_package = ::std::option::Option::None;
@@ -345,8 +345,8 @@ pub mod types {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
                 match (fty, fid as ::std::primitive::i32) {
                     (::fbthrift::TType::Stop, _) => break,
-                    (::fbthrift::TType::I64, 1) => field_major = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::String, 2) => field_package = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I64, 2) => field_major = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 1) => field_package = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::String, 3) => field_annotation_with_quote = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::String, 4) => field_class_ = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::String, 5) => field_annotation_with_trailing_comma = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),

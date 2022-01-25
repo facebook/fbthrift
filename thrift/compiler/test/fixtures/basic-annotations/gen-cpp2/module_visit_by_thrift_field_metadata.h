@@ -31,9 +31,9 @@ struct VisitByFieldId<::cpp2::MyStruct> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
     switch (fieldId) {
-    case 1:
-      return f(0, static_cast<T&&>(t).majorVer_ref());
     case 2:
+      return f(0, static_cast<T&&>(t).majorVer_ref());
+    case 1:
       return f(1, static_cast<T&&>(t).package_ref());
     case 3:
       return f(2, static_cast<T&&>(t).annotation_with_quote_ref());

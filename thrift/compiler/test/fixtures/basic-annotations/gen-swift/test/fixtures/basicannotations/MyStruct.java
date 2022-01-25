@@ -28,8 +28,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
 
     @ThriftConstructor
     public MyStruct(
-        @com.facebook.swift.codec.ThriftField(value=1, name="major", requiredness=Requiredness.NONE) final long major,
-        @com.facebook.swift.codec.ThriftField(value=2, name="package", requiredness=Requiredness.NONE) final String _package,
+        @com.facebook.swift.codec.ThriftField(value=2, name="major", requiredness=Requiredness.NONE) final long major,
+        @com.facebook.swift.codec.ThriftField(value=1, name="package", requiredness=Requiredness.NONE) final String _package,
         @com.facebook.swift.codec.ThriftField(value=3, name="annotation_with_quote", requiredness=Requiredness.NONE) final String annotationWithQuote,
         @com.facebook.swift.codec.ThriftField(value=4, name="class_", requiredness=Requiredness.NONE) final String class_,
         @com.facebook.swift.codec.ThriftField(value=5, name="annotation_with_trailing_comma", requiredness=Requiredness.NONE) final String annotationWithTrailingComma,
@@ -66,7 +66,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         private String emptyAnnotations = null;
         private test.fixtures.basicannotations.MyEnum myEnum = test.fixtures.basicannotations.MyEnum.fromInteger(0);
     
-        @com.facebook.swift.codec.ThriftField(value=1, name="major", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=2, name="major", requiredness=Requiredness.NONE)
         public Builder setMajor(long major) {
             this.major = major;
             return this;
@@ -74,7 +74,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     
         public long getMajor() { return major; }
     
-            @com.facebook.swift.codec.ThriftField(value=2, name="package", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=1, name="package", requiredness=Requiredness.NONE)
         public Builder setPackage(String _package) {
             this._package = _package;
             return this;
@@ -152,11 +152,11 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
     private final long major;
-    public static final int _MAJOR = 1;
-    private static final TField MAJOR_FIELD_DESC = new TField("major", TType.I64, (short)1);
+    public static final int _MAJOR = 2;
+    private static final TField MAJOR_FIELD_DESC = new TField("major", TType.I64, (short)2);
         private final String _package;
-    public static final int _PACKAGE = 2;
-    private static final TField PACKAGE_FIELD_DESC = new TField("package", TType.STRING, (short)2);
+    public static final int _PACKAGE = 1;
+    private static final TField PACKAGE_FIELD_DESC = new TField("package", TType.STRING, (short)1);
         private final String annotationWithQuote;
     public static final int _ANNOTATION_WITH_QUOTE = 3;
     private static final TField ANNOTATION_WITH_QUOTE_FIELD_DESC = new TField("annotation_with_quote", TType.STRING, (short)3);
@@ -173,10 +173,10 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public static final int _MY_ENUM = 7;
     private static final TField MY_ENUM_FIELD_DESC = new TField("my_enum", TType.I32, (short)7);
     static {
-      NAMES_TO_IDS.put("major", 1);
-      FIELD_METADATA.put(1, MAJOR_FIELD_DESC);
-      NAMES_TO_IDS.put("_package", 2);
-      FIELD_METADATA.put(2, PACKAGE_FIELD_DESC);
+      NAMES_TO_IDS.put("major", 2);
+      FIELD_METADATA.put(2, MAJOR_FIELD_DESC);
+      NAMES_TO_IDS.put("_package", 1);
+      FIELD_METADATA.put(1, PACKAGE_FIELD_DESC);
       NAMES_TO_IDS.put("annotationWithQuote", 3);
       FIELD_METADATA.put(3, ANNOTATION_WITH_QUOTE_FIELD_DESC);
       NAMES_TO_IDS.put("class_", 4);
@@ -189,11 +189,11 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       FIELD_METADATA.put(7, MY_ENUM_FIELD_DESC);
     }
     
-    @com.facebook.swift.codec.ThriftField(value=1, name="major", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="major", requiredness=Requiredness.NONE)
     public long getMajor() { return major; }
     
     
-    @com.facebook.swift.codec.ThriftField(value=2, name="package", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="package", requiredness=Requiredness.NONE)
     public String getPackage() { return _package; }
     
     

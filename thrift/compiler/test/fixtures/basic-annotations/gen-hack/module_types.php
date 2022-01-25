@@ -152,11 +152,11 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
-    1 => shape(
+    2 => shape(
       'var' => 'major',
       'type' => \TType::I64,
     ),
-    2 => shape(
+    1 => shape(
       'var' => 'package',
       'type' => \TType::STRING,
     ),
@@ -183,8 +183,8 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
-    'major' => 1,
-    'package' => 2,
+    'major' => 2,
+    'package' => 1,
     'annotation_with_quote' => 3,
     'class_' => 4,
     'annotation_with_trailing_comma' => 5,
@@ -212,15 +212,15 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     ?'my_enum' => ?MyEnum,
     ...
   );
-  const int STRUCTURAL_ID = 5541816595703942275;
+  const int STRUCTURAL_ID = 4307952594195002251;
   /**
    * Original thrift field:-
-   * 1: i64 major
+   * 2: i64 major
    */
   public int $major;
   /**
    * Original thrift field:-
-   * 2: string package
+   * 1: string package
    */
   public string $package;
   /**
@@ -286,7 +286,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
         "fields" => vec[
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 1,
+              "id" => 2,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
@@ -297,7 +297,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 2,
+              "id" => 1,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,

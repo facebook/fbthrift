@@ -170,12 +170,12 @@ class MyStruct:
       (fname, ftype, fid) = iprot.readFieldBegin()
       if ftype == TType.STOP:
         break
-      if fid == 1:
+      if fid == 2:
         if ftype == TType.I64:
           self.major = iprot.readI64()
         else:
           iprot.skip(ftype)
-      elif fid == 2:
+      elif fid == 1:
         if ftype == TType.STRING:
           self.package = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
         else:
@@ -218,13 +218,13 @@ class MyStruct:
       oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
       return
     oprot.writeStructBegin('MyStruct')
-    if self.major != None:
-      oprot.writeFieldBegin('major', TType.I64, 1)
-      oprot.writeI64(self.major)
-      oprot.writeFieldEnd()
     if self.package != None:
-      oprot.writeFieldBegin('package', TType.STRING, 2)
+      oprot.writeFieldBegin('package', TType.STRING, 1)
       oprot.writeString(self.package.encode('utf-8')) if UTF8STRINGS and not isinstance(self.package, bytes) else oprot.writeString(self.package)
+      oprot.writeFieldEnd()
+    if self.major != None:
+      oprot.writeFieldBegin('major', TType.I64, 2)
+      oprot.writeI64(self.major)
       oprot.writeFieldEnd()
     if self.annotation_with_quote != None:
       oprot.writeFieldBegin('annotation_with_quote', TType.STRING, 3)
@@ -456,8 +456,8 @@ MyStructNestedAnnotation.__setstate__ = MyStructNestedAnnotation__setstate__
 all_structs.append(MyStruct)
 MyStruct.thrift_spec = (
   None, # 0
-  (1, TType.I64, 'major', None, None, 2, ), # 1
-  (2, TType.STRING, 'package', True, None, 2, ), # 2
+  (1, TType.STRING, 'package', True, None, 2, ), # 1
+  (2, TType.I64, 'major', None, None, 2, ), # 2
   (3, TType.STRING, 'annotation_with_quote', True, None, 2, ), # 3
   (4, TType.STRING, 'class_', True, None, 2, ), # 4
   (5, TType.STRING, 'annotation_with_trailing_comma', True, None, 2, ), # 5
@@ -471,10 +471,10 @@ MyStruct.thrift_struct_annotations = {
 }
 MyStruct.thrift_field_annotations = {
   1: {
-    "cpp.name": "majorVer",
+    "java.swift.name": "_package",
   },
   2: {
-    "java.swift.name": "_package",
+    "cpp.name": "majorVer",
   },
   3: {
     "go.tag": "tag:\"somevalue\"",

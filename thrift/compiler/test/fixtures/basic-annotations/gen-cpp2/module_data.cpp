@@ -43,8 +43,8 @@ const std::array<folly::StringPiece, 7> TStructDataStorage<::cpp2::MyStruct>::fi
   "my_enum",
 }};
 const std::array<int16_t, 7> TStructDataStorage<::cpp2::MyStruct>::fields_ids = {{
-  1,
   2,
+  1,
   3,
   4,
   5,
