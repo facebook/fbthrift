@@ -171,6 +171,14 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   struct DynamicAttributeTag {};
 
+  /**
+   * The type of thread manager to create for the server.
+   */
+  enum class ThreadManagerType : int {
+    PRIORITY = 0, //! Use a PriorityThreadManager
+    SIMPLE = 1 //! Use a SimpleThreadManager
+  };
+
  private:
   //! Default number of worker threads (should be # of processor cores).
   static const size_t T_ASYNC_DEFAULT_WORKER_THREADS;
@@ -398,6 +406,9 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   //! The server's listening port
   uint16_t port_ = 0;
 
+  //! The type of thread manager to create.
+  ThreadManagerType threadManagerType_{ThreadManagerType::PRIORITY};
+
   /**
    * The thread manager used for sync calls.
    */
@@ -532,6 +543,15 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     CHECK(configMutable());
     CHECK(!threadManager_);
     threadFactory_ = std::move(threadFactory);
+  }
+
+  /**
+   * Set the type of ThreadManager to use for this server.
+   */
+  void setThreadManagerType(ThreadManagerType threadManagerType) {
+    CHECK(configMutable());
+    CHECK(!threadManager_);
+    threadManagerType_ = threadManagerType;
   }
 
   /**
