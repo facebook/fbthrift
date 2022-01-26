@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -311,6 +311,7 @@ enum ResponseRpcErrorCode {
   APP_OVERLOAD = 13,
   UNKNOWN_INTERACTION_ID = 14,
   INTERACTION_CONSTRUCTOR_ERROR = 15,
+  UNIMPLEMENTED_METHOD = 16,
 }
 
 struct ResponseRpcError {

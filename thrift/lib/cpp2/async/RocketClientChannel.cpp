@@ -195,6 +195,10 @@ folly::Try<FirstResponsePayload> decodeResponseError(
     case ResponseRpcErrorCode::INTERACTION_CONSTRUCTOR_ERROR:
       exCode = kInteractionConstructorErrorErrorCode;
       break;
+    case ResponseRpcErrorCode::UNIMPLEMENTED_METHOD:
+      exCode = kUnimplementedMethodErrorCode;
+      exType = TApplicationException::UNKNOWN_METHOD;
+      break;
     default:
       exCode = kUnknownErrorCode;
       break;

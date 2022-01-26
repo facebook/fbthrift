@@ -279,7 +279,9 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
                        {kRequestParsingErrorCode,
                         ResponseRpcErrorCode::REQUEST_PARSING_FAILURE},
                        {kChecksumMismatchErrorCode,
-                        ResponseRpcErrorCode::CHECKSUM_MISMATCH}});
+                        ResponseRpcErrorCode::CHECKSUM_MISMATCH},
+                       {kUnimplementedMethodErrorCode,
+                        ResponseRpcErrorCode::UNIMPLEMENTED_METHOD}});
                   if (auto errorCode = folly::get_ptr(errorCodeMap, *exPtr)) {
                     return *errorCode;
                   }
