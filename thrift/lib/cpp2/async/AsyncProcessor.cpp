@@ -417,6 +417,11 @@ concurrency::ThreadManager* HandlerCallbackBase::getThreadManager() {
   return tm_;
 }
 
+folly::Executor* HandlerCallbackBase::getHandlerExecutor() {
+  assert(tm_ != nullptr);
+  return tm_;
+}
+
 void HandlerCallbackBase::forward(const HandlerCallbackBase& other) {
   eb_ = other.eb_;
   tm_ = other.tm_;

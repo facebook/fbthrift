@@ -721,27 +721,34 @@ class RequestParams {
   RequestParams(
       Cpp2RequestContext* requestContext,
       concurrency::ThreadManager* threadManager,
-      folly::EventBase* eventBase)
+      folly::EventBase* eventBase,
+      folly::Executor* handlerExecutor = nullptr)
       : requestContext_(requestContext),
         threadManager_(threadManager),
+        handlerExecutor_(handlerExecutor),
         eventBase_(eventBase) {}
-  RequestParams() : RequestParams(nullptr, nullptr, nullptr) {}
-  RequestParams(const RequestParams&) = default;
-  RequestParams& operator=(const RequestParams&) = default;
+  RequestParams() = default;
 
   Cpp2RequestContext* getRequestContext() const { return requestContext_; }
   concurrency::ThreadManager* getThreadManager() const {
     return threadManager_;
   }
   folly::EventBase* getEventBase() const { return eventBase_; }
-  folly::Executor* getHandlerExecutor() const { return threadManager_; }
+  folly::Executor* getHandlerExecutor() const {
+    if (threadManager_) {
+      return threadManager_;
+    } else {
+      return handlerExecutor_;
+    }
+  }
 
  private:
   friend class ServerInterface;
 
-  Cpp2RequestContext* requestContext_;
-  concurrency::ThreadManager* threadManager_;
-  folly::EventBase* eventBase_;
+  Cpp2RequestContext* requestContext_{nullptr};
+  concurrency::ThreadManager* threadManager_{nullptr};
+  folly::Executor* handlerExecutor_{nullptr};
+  folly::EventBase* eventBase_{nullptr};
 };
 
 /**
@@ -859,6 +866,14 @@ class ServerInterface : public virtual AsyncProcessorFactory,
 
   concurrency::ThreadManager* getThreadManager() {
     return requestParams_.threadManager_;
+  }
+
+  void setHandlerExecutor(folly::Executor* executor) {
+    requestParams_.handlerExecutor_ = executor;
+  }
+
+  folly::Executor* getHandlerExecutor() {
+    return requestParams_.getHandlerExecutor();
   }
 
   folly::Executor::KeepAlive<> getBlockingThreadManager() {
@@ -1075,6 +1090,8 @@ class HandlerCallbackBase {
   folly::EventBase* getEventBase();
 
   concurrency::ThreadManager* getThreadManager();
+
+  folly::Executor* getHandlerExecutor();
 
   [[deprecated("Replaced by getRequestContext")]] Cpp2RequestContext*
   getConnectionContext() {

@@ -1374,6 +1374,7 @@ class AsyncTmPrep {
   AsyncTmPrep(ServerInterface* si, CallbackBase* callback) : si_{si} {
     si->setEventBase(callback->getEventBase());
     si->setThreadManager(callback->getThreadManager());
+    si->setHandlerExecutor(callback->getHandlerExecutor());
     si->setRequestContext(callback->getRequestContext());
   }
 
