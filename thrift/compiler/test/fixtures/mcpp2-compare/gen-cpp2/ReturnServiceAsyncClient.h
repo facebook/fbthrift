@@ -46,6 +46,7 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_noReturn(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<void> co_noReturn() {
     return co_noReturn<false>(nullptr);
@@ -54,6 +55,14 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<void> co_noReturn(apache::thrift::RpcOptions& rpcOptions) {
     return co_noReturn<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<void> co_noReturn() {
+    co_await folly::coro::detachOnCancel(semifuture_noReturn());
+  }
+  folly::coro::Task<void> co_noReturn(apache::thrift::RpcOptions& rpcOptions) {
+    co_await folly::coro::detachOnCancel(semifuture_noReturn(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<void> co_noReturn(apache::thrift::RpcOptions* rpcOptions) {
@@ -130,6 +139,7 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_boolReturn(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<bool> co_boolReturn() {
     return co_boolReturn<false>(nullptr);
@@ -138,6 +148,14 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<bool> co_boolReturn(apache::thrift::RpcOptions& rpcOptions) {
     return co_boolReturn<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<bool> co_boolReturn() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_boolReturn());
+  }
+  folly::coro::Task<bool> co_boolReturn(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_boolReturn(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<bool> co_boolReturn(apache::thrift::RpcOptions* rpcOptions) {
@@ -216,6 +234,7 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::std::int16_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_i16Return(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::std::int16_t> co_i16Return() {
     return co_i16Return<false>(nullptr);
@@ -224,6 +243,14 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::std::int16_t> co_i16Return(apache::thrift::RpcOptions& rpcOptions) {
     return co_i16Return<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<::std::int16_t> co_i16Return() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_i16Return());
+  }
+  folly::coro::Task<::std::int16_t> co_i16Return(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_i16Return(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::std::int16_t> co_i16Return(apache::thrift::RpcOptions* rpcOptions) {
@@ -302,6 +329,7 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_i32Return(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::std::int32_t> co_i32Return() {
     return co_i32Return<false>(nullptr);
@@ -310,6 +338,14 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::std::int32_t> co_i32Return(apache::thrift::RpcOptions& rpcOptions) {
     return co_i32Return<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<::std::int32_t> co_i32Return() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_i32Return());
+  }
+  folly::coro::Task<::std::int32_t> co_i32Return(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_i32Return(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::std::int32_t> co_i32Return(apache::thrift::RpcOptions* rpcOptions) {
@@ -388,6 +424,7 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::std::int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_i64Return(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::std::int64_t> co_i64Return() {
     return co_i64Return<false>(nullptr);
@@ -396,6 +433,14 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::std::int64_t> co_i64Return(apache::thrift::RpcOptions& rpcOptions) {
     return co_i64Return<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<::std::int64_t> co_i64Return() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_i64Return());
+  }
+  folly::coro::Task<::std::int64_t> co_i64Return(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_i64Return(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::std::int64_t> co_i64Return(apache::thrift::RpcOptions* rpcOptions) {
@@ -474,6 +519,7 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<float, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_floatReturn(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<float> co_floatReturn() {
     return co_floatReturn<false>(nullptr);
@@ -482,6 +528,14 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<float> co_floatReturn(apache::thrift::RpcOptions& rpcOptions) {
     return co_floatReturn<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<float> co_floatReturn() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_floatReturn());
+  }
+  folly::coro::Task<float> co_floatReturn(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_floatReturn(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<float> co_floatReturn(apache::thrift::RpcOptions* rpcOptions) {
@@ -560,6 +614,7 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<double, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_doubleReturn(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<double> co_doubleReturn() {
     return co_doubleReturn<false>(nullptr);
@@ -568,6 +623,14 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<double> co_doubleReturn(apache::thrift::RpcOptions& rpcOptions) {
     return co_doubleReturn<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<double> co_doubleReturn() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_doubleReturn());
+  }
+  folly::coro::Task<double> co_doubleReturn(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_doubleReturn(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<double> co_doubleReturn(apache::thrift::RpcOptions* rpcOptions) {
@@ -646,6 +709,7 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_stringReturn(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::std::string> co_stringReturn() {
     return co_stringReturn<false>(nullptr);
@@ -654,6 +718,14 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::std::string> co_stringReturn(apache::thrift::RpcOptions& rpcOptions) {
     return co_stringReturn<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<::std::string> co_stringReturn() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_stringReturn());
+  }
+  folly::coro::Task<::std::string> co_stringReturn(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_stringReturn(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::std::string> co_stringReturn(apache::thrift::RpcOptions* rpcOptions) {
@@ -732,6 +804,7 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_binaryReturn(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::std::string> co_binaryReturn() {
     return co_binaryReturn<false>(nullptr);
@@ -740,6 +813,14 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::std::string> co_binaryReturn(apache::thrift::RpcOptions& rpcOptions) {
     return co_binaryReturn<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<::std::string> co_binaryReturn() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_binaryReturn());
+  }
+  folly::coro::Task<::std::string> co_binaryReturn(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_binaryReturn(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::std::string> co_binaryReturn(apache::thrift::RpcOptions* rpcOptions) {
@@ -818,6 +899,7 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::std::map<::std::string, ::std::int64_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_mapReturn(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::std::map<::std::string, ::std::int64_t>> co_mapReturn() {
     return co_mapReturn<false>(nullptr);
@@ -826,6 +908,14 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::std::map<::std::string, ::std::int64_t>> co_mapReturn(apache::thrift::RpcOptions& rpcOptions) {
     return co_mapReturn<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<::std::map<::std::string, ::std::int64_t>> co_mapReturn() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_mapReturn());
+  }
+  folly::coro::Task<::std::map<::std::string, ::std::int64_t>> co_mapReturn(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_mapReturn(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::std::map<::std::string, ::std::int64_t>> co_mapReturn(apache::thrift::RpcOptions* rpcOptions) {
@@ -904,6 +994,7 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::some::valid::ns::simpleTypeDef, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_simpleTypedefReturn(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::some::valid::ns::simpleTypeDef> co_simpleTypedefReturn() {
     return co_simpleTypedefReturn<false>(nullptr);
@@ -912,6 +1003,14 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::some::valid::ns::simpleTypeDef> co_simpleTypedefReturn(apache::thrift::RpcOptions& rpcOptions) {
     return co_simpleTypedefReturn<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<::some::valid::ns::simpleTypeDef> co_simpleTypedefReturn() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_simpleTypedefReturn());
+  }
+  folly::coro::Task<::some::valid::ns::simpleTypeDef> co_simpleTypedefReturn(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_simpleTypedefReturn(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::some::valid::ns::simpleTypeDef> co_simpleTypedefReturn(apache::thrift::RpcOptions* rpcOptions) {
@@ -990,6 +1089,7 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::some::valid::ns::complexStructTypeDef, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_complexTypedefReturn(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::some::valid::ns::complexStructTypeDef> co_complexTypedefReturn() {
     return co_complexTypedefReturn<false>(nullptr);
@@ -998,6 +1098,14 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::some::valid::ns::complexStructTypeDef> co_complexTypedefReturn(apache::thrift::RpcOptions& rpcOptions) {
     return co_complexTypedefReturn<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<::some::valid::ns::complexStructTypeDef> co_complexTypedefReturn() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_complexTypedefReturn());
+  }
+  folly::coro::Task<::some::valid::ns::complexStructTypeDef> co_complexTypedefReturn(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_complexTypedefReturn(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::some::valid::ns::complexStructTypeDef> co_complexTypedefReturn(apache::thrift::RpcOptions* rpcOptions) {
@@ -1076,6 +1184,7 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::std::vector<::some::valid::ns::mostComplexTypeDef>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_list_mostComplexTypedefReturn(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::std::vector<::some::valid::ns::mostComplexTypeDef>> co_list_mostComplexTypedefReturn() {
     return co_list_mostComplexTypedefReturn<false>(nullptr);
@@ -1084,6 +1193,14 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::std::vector<::some::valid::ns::mostComplexTypeDef>> co_list_mostComplexTypedefReturn(apache::thrift::RpcOptions& rpcOptions) {
     return co_list_mostComplexTypedefReturn<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<::std::vector<::some::valid::ns::mostComplexTypeDef>> co_list_mostComplexTypedefReturn() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_list_mostComplexTypedefReturn());
+  }
+  folly::coro::Task<::std::vector<::some::valid::ns::mostComplexTypeDef>> co_list_mostComplexTypedefReturn(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_list_mostComplexTypedefReturn(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::std::vector<::some::valid::ns::mostComplexTypeDef>> co_list_mostComplexTypedefReturn(apache::thrift::RpcOptions* rpcOptions) {
@@ -1162,6 +1279,7 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::some::valid::ns::MyEnumA, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_enumReturn(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::some::valid::ns::MyEnumA> co_enumReturn() {
     return co_enumReturn<false>(nullptr);
@@ -1170,6 +1288,14 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::some::valid::ns::MyEnumA> co_enumReturn(apache::thrift::RpcOptions& rpcOptions) {
     return co_enumReturn<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<::some::valid::ns::MyEnumA> co_enumReturn() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_enumReturn());
+  }
+  folly::coro::Task<::some::valid::ns::MyEnumA> co_enumReturn(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_enumReturn(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::some::valid::ns::MyEnumA> co_enumReturn(apache::thrift::RpcOptions* rpcOptions) {
@@ -1248,6 +1374,7 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::std::vector<::some::valid::ns::MyEnumA>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_list_EnumReturn(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::std::vector<::some::valid::ns::MyEnumA>> co_list_EnumReturn() {
     return co_list_EnumReturn<false>(nullptr);
@@ -1256,6 +1383,14 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::std::vector<::some::valid::ns::MyEnumA>> co_list_EnumReturn(apache::thrift::RpcOptions& rpcOptions) {
     return co_list_EnumReturn<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<::std::vector<::some::valid::ns::MyEnumA>> co_list_EnumReturn() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_list_EnumReturn());
+  }
+  folly::coro::Task<::std::vector<::some::valid::ns::MyEnumA>> co_list_EnumReturn(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_list_EnumReturn(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::std::vector<::some::valid::ns::MyEnumA>> co_list_EnumReturn(apache::thrift::RpcOptions* rpcOptions) {
@@ -1334,6 +1469,7 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::some::valid::ns::MyStruct, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_structReturn(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::some::valid::ns::MyStruct> co_structReturn() {
     return co_structReturn<false>(nullptr);
@@ -1342,6 +1478,14 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::some::valid::ns::MyStruct> co_structReturn(apache::thrift::RpcOptions& rpcOptions) {
     return co_structReturn<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<::some::valid::ns::MyStruct> co_structReturn() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_structReturn());
+  }
+  folly::coro::Task<::some::valid::ns::MyStruct> co_structReturn(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_structReturn(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::some::valid::ns::MyStruct> co_structReturn(apache::thrift::RpcOptions* rpcOptions) {
@@ -1420,6 +1564,7 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::std::set<::some::valid::ns::MyStruct>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_set_StructReturn(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::std::set<::some::valid::ns::MyStruct>> co_set_StructReturn() {
     return co_set_StructReturn<false>(nullptr);
@@ -1428,6 +1573,14 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::std::set<::some::valid::ns::MyStruct>> co_set_StructReturn(apache::thrift::RpcOptions& rpcOptions) {
     return co_set_StructReturn<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<::std::set<::some::valid::ns::MyStruct>> co_set_StructReturn() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_set_StructReturn());
+  }
+  folly::coro::Task<::std::set<::some::valid::ns::MyStruct>> co_set_StructReturn(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_set_StructReturn(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::std::set<::some::valid::ns::MyStruct>> co_set_StructReturn(apache::thrift::RpcOptions* rpcOptions) {
@@ -1506,6 +1659,7 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::some::valid::ns::ComplexUnion, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_unionReturn(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::some::valid::ns::ComplexUnion> co_unionReturn() {
     return co_unionReturn<false>(nullptr);
@@ -1514,6 +1668,14 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::some::valid::ns::ComplexUnion> co_unionReturn(apache::thrift::RpcOptions& rpcOptions) {
     return co_unionReturn<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<::some::valid::ns::ComplexUnion> co_unionReturn() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_unionReturn());
+  }
+  folly::coro::Task<::some::valid::ns::ComplexUnion> co_unionReturn(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_unionReturn(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::some::valid::ns::ComplexUnion> co_unionReturn(apache::thrift::RpcOptions* rpcOptions) {
@@ -1592,6 +1754,7 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::std::vector<::some::valid::ns::ComplexUnion>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_list_UnionReturn(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::std::vector<::some::valid::ns::ComplexUnion>> co_list_UnionReturn() {
     return co_list_UnionReturn<false>(nullptr);
@@ -1600,6 +1763,14 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::std::vector<::some::valid::ns::ComplexUnion>> co_list_UnionReturn(apache::thrift::RpcOptions& rpcOptions) {
     return co_list_UnionReturn<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<::std::vector<::some::valid::ns::ComplexUnion>> co_list_UnionReturn() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_list_UnionReturn());
+  }
+  folly::coro::Task<::std::vector<::some::valid::ns::ComplexUnion>> co_list_UnionReturn(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_list_UnionReturn(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::std::vector<::some::valid::ns::ComplexUnion>> co_list_UnionReturn(apache::thrift::RpcOptions* rpcOptions) {
@@ -1678,6 +1849,7 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::some::valid::ns::IOBuf, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_readDataEb(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_size);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::some::valid::ns::IOBuf> co_readDataEb(::std::int64_t p_size) {
     return co_readDataEb<false>(nullptr, p_size);
@@ -1686,6 +1858,14 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::some::valid::ns::IOBuf> co_readDataEb(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_size) {
     return co_readDataEb<true>(&rpcOptions, p_size);
   }
+#else
+  folly::coro::Task<::some::valid::ns::IOBuf> co_readDataEb(::std::int64_t p_size) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_readDataEb(p_size));
+  }
+  folly::coro::Task<::some::valid::ns::IOBuf> co_readDataEb(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_size) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_readDataEb(rpcOptions, p_size));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::some::valid::ns::IOBuf> co_readDataEb(apache::thrift::RpcOptions* rpcOptions, ::std::int64_t p_size) {
@@ -1764,6 +1944,7 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::some::valid::ns::IOBufPtr, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_readData(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_size);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::some::valid::ns::IOBufPtr> co_readData(::std::int64_t p_size) {
     return co_readData<false>(nullptr, p_size);
@@ -1772,6 +1953,14 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::some::valid::ns::IOBufPtr> co_readData(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_size) {
     return co_readData<true>(&rpcOptions, p_size);
   }
+#else
+  folly::coro::Task<::some::valid::ns::IOBufPtr> co_readData(::std::int64_t p_size) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_readData(p_size));
+  }
+  folly::coro::Task<::some::valid::ns::IOBufPtr> co_readData(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_size) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_readData(rpcOptions, p_size));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::some::valid::ns::IOBufPtr> co_readData(apache::thrift::RpcOptions* rpcOptions, ::std::int64_t p_size) {

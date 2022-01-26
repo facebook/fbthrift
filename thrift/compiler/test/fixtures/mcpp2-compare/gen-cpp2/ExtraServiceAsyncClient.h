@@ -46,6 +46,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   virtual folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_simple_function(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<bool> co_simple_function() {
     return co_simple_function<false>(nullptr);
@@ -54,6 +55,14 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   folly::coro::Task<bool> co_simple_function(apache::thrift::RpcOptions& rpcOptions) {
     return co_simple_function<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<bool> co_simple_function() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_simple_function());
+  }
+  folly::coro::Task<bool> co_simple_function(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_simple_function(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<bool> co_simple_function(apache::thrift::RpcOptions* rpcOptions) {
@@ -132,6 +141,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_throws_function(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<void> co_throws_function() {
     return co_throws_function<false>(nullptr);
@@ -140,6 +150,14 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   folly::coro::Task<void> co_throws_function(apache::thrift::RpcOptions& rpcOptions) {
     return co_throws_function<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<void> co_throws_function() {
+    co_await folly::coro::detachOnCancel(semifuture_throws_function());
+  }
+  folly::coro::Task<void> co_throws_function(apache::thrift::RpcOptions& rpcOptions) {
+    co_await folly::coro::detachOnCancel(semifuture_throws_function(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<void> co_throws_function(apache::thrift::RpcOptions* rpcOptions) {
@@ -216,6 +234,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   virtual folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_throws_function2(apache::thrift::RpcOptions& rpcOptions, bool p_param1);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<bool> co_throws_function2(bool p_param1) {
     return co_throws_function2<false>(nullptr, p_param1);
@@ -224,6 +243,14 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   folly::coro::Task<bool> co_throws_function2(apache::thrift::RpcOptions& rpcOptions, bool p_param1) {
     return co_throws_function2<true>(&rpcOptions, p_param1);
   }
+#else
+  folly::coro::Task<bool> co_throws_function2(bool p_param1) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_throws_function2(p_param1));
+  }
+  folly::coro::Task<bool> co_throws_function2(apache::thrift::RpcOptions& rpcOptions, bool p_param1) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_throws_function2(rpcOptions, p_param1));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<bool> co_throws_function2(apache::thrift::RpcOptions* rpcOptions, bool p_param1) {
@@ -302,6 +329,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   virtual folly::SemiFuture<std::pair<::std::map<::std::int32_t, ::std::string>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_throws_function3(apache::thrift::RpcOptions& rpcOptions, bool p_param1, const ::std::string& p_param2);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::std::map<::std::int32_t, ::std::string>> co_throws_function3(bool p_param1, const ::std::string& p_param2) {
     return co_throws_function3<false>(nullptr, p_param1, p_param2);
@@ -310,6 +338,14 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   folly::coro::Task<::std::map<::std::int32_t, ::std::string>> co_throws_function3(apache::thrift::RpcOptions& rpcOptions, bool p_param1, const ::std::string& p_param2) {
     return co_throws_function3<true>(&rpcOptions, p_param1, p_param2);
   }
+#else
+  folly::coro::Task<::std::map<::std::int32_t, ::std::string>> co_throws_function3(bool p_param1, const ::std::string& p_param2) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_throws_function3(p_param1, p_param2));
+  }
+  folly::coro::Task<::std::map<::std::int32_t, ::std::string>> co_throws_function3(apache::thrift::RpcOptions& rpcOptions, bool p_param1, const ::std::string& p_param2) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_throws_function3(rpcOptions, p_param1, p_param2));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::std::map<::std::int32_t, ::std::string>> co_throws_function3(apache::thrift::RpcOptions* rpcOptions, bool p_param1, const ::std::string& p_param2) {
@@ -386,6 +422,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   virtual folly::SemiFuture<folly::Unit> semifuture_oneway_void_ret(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<void> co_oneway_void_ret() {
     return co_oneway_void_ret<false>(nullptr);
@@ -394,6 +431,14 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   folly::coro::Task<void> co_oneway_void_ret(apache::thrift::RpcOptions& rpcOptions) {
     return co_oneway_void_ret<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<void> co_oneway_void_ret() {
+    co_await folly::coro::detachOnCancel(semifuture_oneway_void_ret());
+  }
+  folly::coro::Task<void> co_oneway_void_ret(apache::thrift::RpcOptions& rpcOptions) {
+    co_await folly::coro::detachOnCancel(semifuture_oneway_void_ret(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<void> co_oneway_void_ret(apache::thrift::RpcOptions* rpcOptions) {
@@ -448,6 +493,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   virtual folly::SemiFuture<folly::Unit> semifuture_oneway_void_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1, ::std::int32_t p_param2, ::std::int32_t p_param3, ::std::int32_t p_param4, ::std::int32_t p_param5);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<void> co_oneway_void_ret_i32_i32_i32_i32_i32_param(::std::int32_t p_param1, ::std::int32_t p_param2, ::std::int32_t p_param3, ::std::int32_t p_param4, ::std::int32_t p_param5) {
     return co_oneway_void_ret_i32_i32_i32_i32_i32_param<false>(nullptr, p_param1, p_param2, p_param3, p_param4, p_param5);
@@ -456,6 +502,14 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   folly::coro::Task<void> co_oneway_void_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1, ::std::int32_t p_param2, ::std::int32_t p_param3, ::std::int32_t p_param4, ::std::int32_t p_param5) {
     return co_oneway_void_ret_i32_i32_i32_i32_i32_param<true>(&rpcOptions, p_param1, p_param2, p_param3, p_param4, p_param5);
   }
+#else
+  folly::coro::Task<void> co_oneway_void_ret_i32_i32_i32_i32_i32_param(::std::int32_t p_param1, ::std::int32_t p_param2, ::std::int32_t p_param3, ::std::int32_t p_param4, ::std::int32_t p_param5) {
+    co_await folly::coro::detachOnCancel(semifuture_oneway_void_ret_i32_i32_i32_i32_i32_param(p_param1, p_param2, p_param3, p_param4, p_param5));
+  }
+  folly::coro::Task<void> co_oneway_void_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_param1, ::std::int32_t p_param2, ::std::int32_t p_param3, ::std::int32_t p_param4, ::std::int32_t p_param5) {
+    co_await folly::coro::detachOnCancel(semifuture_oneway_void_ret_i32_i32_i32_i32_i32_param(rpcOptions, p_param1, p_param2, p_param3, p_param4, p_param5));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<void> co_oneway_void_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions* rpcOptions, ::std::int32_t p_param1, ::std::int32_t p_param2, ::std::int32_t p_param3, ::std::int32_t p_param4, ::std::int32_t p_param5) {
@@ -510,6 +564,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   virtual folly::SemiFuture<folly::Unit> semifuture_oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<void> co_oneway_void_ret_map_setlist_param(const ::std::map<::std::string, ::std::int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2) {
     return co_oneway_void_ret_map_setlist_param<false>(nullptr, p_param1, p_param2);
@@ -518,6 +573,14 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   folly::coro::Task<void> co_oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2) {
     return co_oneway_void_ret_map_setlist_param<true>(&rpcOptions, p_param1, p_param2);
   }
+#else
+  folly::coro::Task<void> co_oneway_void_ret_map_setlist_param(const ::std::map<::std::string, ::std::int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2) {
+    co_await folly::coro::detachOnCancel(semifuture_oneway_void_ret_map_setlist_param(p_param1, p_param2));
+  }
+  folly::coro::Task<void> co_oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2) {
+    co_await folly::coro::detachOnCancel(semifuture_oneway_void_ret_map_setlist_param(rpcOptions, p_param1, p_param2));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<void> co_oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions* rpcOptions, const ::std::map<::std::string, ::std::int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2) {
@@ -572,6 +635,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   virtual folly::SemiFuture<folly::Unit> semifuture_oneway_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, const ::some::valid::ns::MyStruct& p_param1);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<void> co_oneway_void_ret_struct_param(const ::some::valid::ns::MyStruct& p_param1) {
     return co_oneway_void_ret_struct_param<false>(nullptr, p_param1);
@@ -580,6 +644,14 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   folly::coro::Task<void> co_oneway_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, const ::some::valid::ns::MyStruct& p_param1) {
     return co_oneway_void_ret_struct_param<true>(&rpcOptions, p_param1);
   }
+#else
+  folly::coro::Task<void> co_oneway_void_ret_struct_param(const ::some::valid::ns::MyStruct& p_param1) {
+    co_await folly::coro::detachOnCancel(semifuture_oneway_void_ret_struct_param(p_param1));
+  }
+  folly::coro::Task<void> co_oneway_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, const ::some::valid::ns::MyStruct& p_param1) {
+    co_await folly::coro::detachOnCancel(semifuture_oneway_void_ret_struct_param(rpcOptions, p_param1));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<void> co_oneway_void_ret_struct_param(apache::thrift::RpcOptions* rpcOptions, const ::some::valid::ns::MyStruct& p_param1) {
@@ -634,6 +706,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   virtual folly::SemiFuture<folly::Unit> semifuture_oneway_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<void> co_oneway_void_ret_listunion_param(const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1) {
     return co_oneway_void_ret_listunion_param<false>(nullptr, p_param1);
@@ -642,6 +715,14 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   folly::coro::Task<void> co_oneway_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1) {
     return co_oneway_void_ret_listunion_param<true>(&rpcOptions, p_param1);
   }
+#else
+  folly::coro::Task<void> co_oneway_void_ret_listunion_param(const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1) {
+    co_await folly::coro::detachOnCancel(semifuture_oneway_void_ret_listunion_param(p_param1));
+  }
+  folly::coro::Task<void> co_oneway_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1) {
+    co_await folly::coro::detachOnCancel(semifuture_oneway_void_ret_listunion_param(rpcOptions, p_param1));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<void> co_oneway_void_ret_listunion_param(apache::thrift::RpcOptions* rpcOptions, const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1) {

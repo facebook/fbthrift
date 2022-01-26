@@ -46,6 +46,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
       apache::thrift::RpcOptions&& rpcOptions,  ::std::int64_t p_id);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<bool> co_hasDataById(::std::int64_t p_id) {
     return co_hasDataById<false>(nullptr, p_id);
@@ -54,6 +55,14 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<bool> co_hasDataById(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_id) {
     return co_hasDataById<true>(&rpcOptions, p_id);
   }
+#else
+  folly::coro::Task<bool> co_hasDataById(::std::int64_t p_id) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_hasDataById(p_id));
+  }
+  folly::coro::Task<bool> co_hasDataById(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_id) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_hasDataById(rpcOptions, p_id));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<bool> co_hasDataById(apache::thrift::RpcOptions* rpcOptions, ::std::int64_t p_id) {
@@ -134,6 +143,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
       apache::thrift::RpcOptions&& rpcOptions,  ::std::int64_t p_id);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::std::string> co_getDataById(::std::int64_t p_id) {
     return co_getDataById<false>(nullptr, p_id);
@@ -142,6 +152,14 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::std::string> co_getDataById(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_id) {
     return co_getDataById<true>(&rpcOptions, p_id);
   }
+#else
+  folly::coro::Task<::std::string> co_getDataById(::std::int64_t p_id) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_getDataById(p_id));
+  }
+  folly::coro::Task<::std::string> co_getDataById(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_id) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_getDataById(rpcOptions, p_id));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::std::string> co_getDataById(apache::thrift::RpcOptions* rpcOptions, ::std::int64_t p_id) {
@@ -222,6 +240,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
       apache::thrift::RpcOptions&& rpcOptions,  ::std::int64_t p_id, const ::std::string& p_data);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<void> co_putDataById(::std::int64_t p_id, const ::std::string& p_data) {
     return co_putDataById<false>(nullptr, p_id, p_data);
@@ -230,6 +249,14 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<void> co_putDataById(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_id, const ::std::string& p_data) {
     return co_putDataById<true>(&rpcOptions, p_id, p_data);
   }
+#else
+  folly::coro::Task<void> co_putDataById(::std::int64_t p_id, const ::std::string& p_data) {
+    co_await folly::coro::detachOnCancel(semifuture_putDataById(p_id, p_data));
+  }
+  folly::coro::Task<void> co_putDataById(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_id, const ::std::string& p_data) {
+    co_await folly::coro::detachOnCancel(semifuture_putDataById(rpcOptions, p_id, p_data));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<void> co_putDataById(apache::thrift::RpcOptions* rpcOptions, ::std::int64_t p_id, const ::std::string& p_data) {
@@ -304,6 +331,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<folly::Unit> semifuture_lobDataById(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_id, const ::std::string& p_data);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<void> co_lobDataById(::std::int64_t p_id, const ::std::string& p_data) {
     return co_lobDataById<false>(nullptr, p_id, p_data);
@@ -312,6 +340,14 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<void> co_lobDataById(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_id, const ::std::string& p_data) {
     return co_lobDataById<true>(&rpcOptions, p_id, p_data);
   }
+#else
+  folly::coro::Task<void> co_lobDataById(::std::int64_t p_id, const ::std::string& p_data) {
+    co_await folly::coro::detachOnCancel(semifuture_lobDataById(p_id, p_data));
+  }
+  folly::coro::Task<void> co_lobDataById(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_id, const ::std::string& p_data) {
+    co_await folly::coro::detachOnCancel(semifuture_lobDataById(rpcOptions, p_id, p_data));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<void> co_lobDataById(apache::thrift::RpcOptions* rpcOptions, ::std::int64_t p_id, const ::std::string& p_data) {

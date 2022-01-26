@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/experimental/coro/DetachOnCancel.h>
 #include <folly/experimental/coro/Result.h>
 #include <folly/experimental/coro/Task.h>
 #include <folly/fibers/FiberManager.h>

@@ -45,6 +45,7 @@ class DerivedServiceAsyncClient : public ::py3::simple::SimpleServiceAsyncClient
   virtual folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_get_six(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::std::int32_t> co_get_six() {
     return co_get_six<false>(nullptr);
@@ -53,6 +54,14 @@ class DerivedServiceAsyncClient : public ::py3::simple::SimpleServiceAsyncClient
   folly::coro::Task<::std::int32_t> co_get_six(apache::thrift::RpcOptions& rpcOptions) {
     return co_get_six<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<::std::int32_t> co_get_six() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_get_six());
+  }
+  folly::coro::Task<::std::int32_t> co_get_six(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_get_six(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::std::int32_t> co_get_six(apache::thrift::RpcOptions* rpcOptions) {

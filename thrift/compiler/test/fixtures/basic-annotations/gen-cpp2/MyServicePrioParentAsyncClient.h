@@ -44,6 +44,7 @@ class MyServicePrioParentAsyncClient : public apache::thrift::GeneratedAsyncClie
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_ping(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<void> co_ping() {
     return co_ping<false>(nullptr);
@@ -52,6 +53,14 @@ class MyServicePrioParentAsyncClient : public apache::thrift::GeneratedAsyncClie
   folly::coro::Task<void> co_ping(apache::thrift::RpcOptions& rpcOptions) {
     return co_ping<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<void> co_ping() {
+    co_await folly::coro::detachOnCancel(semifuture_ping());
+  }
+  folly::coro::Task<void> co_ping(apache::thrift::RpcOptions& rpcOptions) {
+    co_await folly::coro::detachOnCancel(semifuture_ping(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<void> co_ping(apache::thrift::RpcOptions* rpcOptions) {
@@ -128,6 +137,7 @@ class MyServicePrioParentAsyncClient : public apache::thrift::GeneratedAsyncClie
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_pong(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<void> co_pong() {
     return co_pong<false>(nullptr);
@@ -136,6 +146,14 @@ class MyServicePrioParentAsyncClient : public apache::thrift::GeneratedAsyncClie
   folly::coro::Task<void> co_pong(apache::thrift::RpcOptions& rpcOptions) {
     return co_pong<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<void> co_pong() {
+    co_await folly::coro::detachOnCancel(semifuture_pong());
+  }
+  folly::coro::Task<void> co_pong(apache::thrift::RpcOptions& rpcOptions) {
+    co_await folly::coro::detachOnCancel(semifuture_pong(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<void> co_pong(apache::thrift::RpcOptions* rpcOptions) {

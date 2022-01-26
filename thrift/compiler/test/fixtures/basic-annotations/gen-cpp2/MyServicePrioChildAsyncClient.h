@@ -45,6 +45,7 @@ class MyServicePrioChildAsyncClient : public ::cpp2::MyServicePrioParentAsyncCli
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_pang(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<void> co_pang() {
     return co_pang<false>(nullptr);
@@ -53,6 +54,14 @@ class MyServicePrioChildAsyncClient : public ::cpp2::MyServicePrioParentAsyncCli
   folly::coro::Task<void> co_pang(apache::thrift::RpcOptions& rpcOptions) {
     return co_pang<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<void> co_pang() {
+    co_await folly::coro::detachOnCancel(semifuture_pang());
+  }
+  folly::coro::Task<void> co_pang(apache::thrift::RpcOptions& rpcOptions) {
+    co_await folly::coro::detachOnCancel(semifuture_pang(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<void> co_pang(apache::thrift::RpcOptions* rpcOptions) {

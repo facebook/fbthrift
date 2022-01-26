@@ -45,6 +45,7 @@ class ServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_func(apache::thrift::RpcOptions& rpcOptions, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::std::string& p_arg2, const ::cpp2::Foo& p_arg3);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>> co_func(const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::std::string& p_arg2, const ::cpp2::Foo& p_arg3) {
     return co_func<false>(nullptr, p_arg1, p_arg2, p_arg3);
@@ -53,6 +54,14 @@ class ServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>> co_func(apache::thrift::RpcOptions& rpcOptions, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::std::string& p_arg2, const ::cpp2::Foo& p_arg3) {
     return co_func<true>(&rpcOptions, p_arg1, p_arg2, p_arg3);
   }
+#else
+  folly::coro::Task<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>> co_func(const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::std::string& p_arg2, const ::cpp2::Foo& p_arg3) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_func(p_arg1, p_arg2, p_arg3));
+  }
+  folly::coro::Task<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>> co_func(apache::thrift::RpcOptions& rpcOptions, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::std::string& p_arg2, const ::cpp2::Foo& p_arg3) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_func(rpcOptions, p_arg1, p_arg2, p_arg3));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>> co_func(apache::thrift::RpcOptions* rpcOptions, const ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>& p_arg1, const ::std::string& p_arg2, const ::cpp2::Foo& p_arg3) {

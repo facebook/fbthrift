@@ -45,6 +45,7 @@ class CAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_f(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<void> co_f() {
     return co_f<false>(nullptr);
@@ -53,6 +54,14 @@ class CAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<void> co_f(apache::thrift::RpcOptions& rpcOptions) {
     return co_f<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<void> co_f() {
+    co_await folly::coro::detachOnCancel(semifuture_f());
+  }
+  folly::coro::Task<void> co_f(apache::thrift::RpcOptions& rpcOptions) {
+    co_await folly::coro::detachOnCancel(semifuture_f(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<void> co_f(apache::thrift::RpcOptions* rpcOptions) {
@@ -126,6 +135,7 @@ class CAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<::cpp2::number>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_numbers(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<apache::thrift::ClientBufferedStream<::cpp2::number>> co_numbers() {
     return co_numbers<false>(nullptr);
@@ -134,6 +144,14 @@ class CAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<apache::thrift::ClientBufferedStream<::cpp2::number>> co_numbers(apache::thrift::RpcOptions& rpcOptions) {
     return co_numbers<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<apache::thrift::ClientBufferedStream<::cpp2::number>> co_numbers() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_numbers());
+  }
+  folly::coro::Task<apache::thrift::ClientBufferedStream<::cpp2::number>> co_numbers(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_numbers(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<apache::thrift::ClientBufferedStream<::cpp2::number>> co_numbers(apache::thrift::RpcOptions* rpcOptions) {
@@ -213,6 +231,7 @@ class CAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_thing(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_a, const ::std::string& p_b, const ::std::set<::std::int32_t>& p_c);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::std::string> co_thing(::std::int32_t p_a, const ::std::string& p_b, const ::std::set<::std::int32_t>& p_c) {
     return co_thing<false>(nullptr, p_a, p_b, p_c);
@@ -221,6 +240,14 @@ class CAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::std::string> co_thing(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_a, const ::std::string& p_b, const ::std::set<::std::int32_t>& p_c) {
     return co_thing<true>(&rpcOptions, p_a, p_b, p_c);
   }
+#else
+  folly::coro::Task<::std::string> co_thing(::std::int32_t p_a, const ::std::string& p_b, const ::std::set<::std::int32_t>& p_c) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_thing(p_a, p_b, p_c));
+  }
+  folly::coro::Task<::std::string> co_thing(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_a, const ::std::string& p_b, const ::std::set<::std::int32_t>& p_c) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_thing(rpcOptions, p_a, p_b, p_c));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::std::string> co_thing(apache::thrift::RpcOptions* rpcOptions, ::std::int32_t p_a, const ::std::string& p_b, const ::std::set<::std::int32_t>& p_c) {

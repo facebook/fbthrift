@@ -42,6 +42,7 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   virtual folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_returnstream(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_returnstream(::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
     return co_returnstream<false>(nullptr, p_i32_from, p_i32_to);
@@ -50,6 +51,14 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_returnstream(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
     return co_returnstream<true>(&rpcOptions, p_i32_from, p_i32_to);
   }
+#else
+  folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_returnstream(::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_returnstream(p_i32_from, p_i32_to));
+  }
+  folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_returnstream(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_returnstream(rpcOptions, p_i32_from, p_i32_to));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_returnstream(apache::thrift::RpcOptions* rpcOptions, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
@@ -126,6 +135,7 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   virtual folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_streamthrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_streamthrows(::std::int32_t p_foo) {
     return co_streamthrows<false>(nullptr, p_foo);
@@ -134,6 +144,14 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_streamthrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo) {
     return co_streamthrows<true>(&rpcOptions, p_foo);
   }
+#else
+  folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_streamthrows(::std::int32_t p_foo) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_streamthrows(p_foo));
+  }
+  folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_streamthrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_streamthrows(rpcOptions, p_foo));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_streamthrows(apache::thrift::RpcOptions* rpcOptions, ::std::int32_t p_foo) {
@@ -210,6 +228,7 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   virtual folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_boththrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_boththrows(::std::int32_t p_foo) {
     return co_boththrows<false>(nullptr, p_foo);
@@ -218,6 +237,14 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_boththrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo) {
     return co_boththrows<true>(&rpcOptions, p_foo);
   }
+#else
+  folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_boththrows(::std::int32_t p_foo) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_boththrows(p_foo));
+  }
+  folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_boththrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_boththrows(rpcOptions, p_foo));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_boththrows(apache::thrift::RpcOptions* rpcOptions, ::std::int32_t p_foo) {
@@ -294,6 +321,7 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   virtual folly::SemiFuture<std::pair<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> co_responseandstreamthrows(::std::int32_t p_foo) {
     return co_responseandstreamthrows<false>(nullptr, p_foo);
@@ -302,6 +330,14 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   folly::coro::Task<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> co_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo) {
     return co_responseandstreamthrows<true>(&rpcOptions, p_foo);
   }
+#else
+  folly::coro::Task<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> co_responseandstreamthrows(::std::int32_t p_foo) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_responseandstreamthrows(p_foo));
+  }
+  folly::coro::Task<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> co_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_foo) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_responseandstreamthrows(rpcOptions, p_foo));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> co_responseandstreamthrows(apache::thrift::RpcOptions* rpcOptions, ::std::int32_t p_foo) {
@@ -378,6 +414,7 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   virtual folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_returnstreamFast(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_returnstreamFast(::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
     return co_returnstreamFast<false>(nullptr, p_i32_from, p_i32_to);
@@ -386,6 +423,14 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_returnstreamFast(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
     return co_returnstreamFast<true>(&rpcOptions, p_i32_from, p_i32_to);
   }
+#else
+  folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_returnstreamFast(::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_returnstreamFast(p_i32_from, p_i32_to));
+  }
+  folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_returnstreamFast(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_returnstreamFast(rpcOptions, p_i32_from, p_i32_to));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<apache::thrift::ClientBufferedStream<::std::int32_t>> co_returnstreamFast(apache::thrift::RpcOptions* rpcOptions, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {

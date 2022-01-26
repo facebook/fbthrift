@@ -45,6 +45,7 @@ class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::apache::thrift::fixtures::types::SomeMap, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_bounce_map(apache::thrift::RpcOptions& rpcOptions, const ::apache::thrift::fixtures::types::SomeMap& p_m);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::apache::thrift::fixtures::types::SomeMap> co_bounce_map(const ::apache::thrift::fixtures::types::SomeMap& p_m) {
     return co_bounce_map<false>(nullptr, p_m);
@@ -53,6 +54,14 @@ class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::apache::thrift::fixtures::types::SomeMap> co_bounce_map(apache::thrift::RpcOptions& rpcOptions, const ::apache::thrift::fixtures::types::SomeMap& p_m) {
     return co_bounce_map<true>(&rpcOptions, p_m);
   }
+#else
+  folly::coro::Task<::apache::thrift::fixtures::types::SomeMap> co_bounce_map(const ::apache::thrift::fixtures::types::SomeMap& p_m) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_bounce_map(p_m));
+  }
+  folly::coro::Task<::apache::thrift::fixtures::types::SomeMap> co_bounce_map(apache::thrift::RpcOptions& rpcOptions, const ::apache::thrift::fixtures::types::SomeMap& p_m) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_bounce_map(rpcOptions, p_m));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::apache::thrift::fixtures::types::SomeMap> co_bounce_map(apache::thrift::RpcOptions* rpcOptions, const ::apache::thrift::fixtures::types::SomeMap& p_m) {
@@ -131,6 +140,7 @@ class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::std::map<::apache::thrift::fixtures::types::TBinary, ::std::int64_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int64_t>& p_r);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::std::map<::apache::thrift::fixtures::types::TBinary, ::std::int64_t>> co_binary_keyed_map(const ::std::vector<::std::int64_t>& p_r) {
     return co_binary_keyed_map<false>(nullptr, p_r);
@@ -139,6 +149,14 @@ class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::std::map<::apache::thrift::fixtures::types::TBinary, ::std::int64_t>> co_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int64_t>& p_r) {
     return co_binary_keyed_map<true>(&rpcOptions, p_r);
   }
+#else
+  folly::coro::Task<::std::map<::apache::thrift::fixtures::types::TBinary, ::std::int64_t>> co_binary_keyed_map(const ::std::vector<::std::int64_t>& p_r) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_binary_keyed_map(p_r));
+  }
+  folly::coro::Task<::std::map<::apache::thrift::fixtures::types::TBinary, ::std::int64_t>> co_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int64_t>& p_r) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_binary_keyed_map(rpcOptions, p_r));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::std::map<::apache::thrift::fixtures::types::TBinary, ::std::int64_t>> co_binary_keyed_map(apache::thrift::RpcOptions* rpcOptions, const ::std::vector<::std::int64_t>& p_r) {

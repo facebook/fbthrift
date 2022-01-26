@@ -46,6 +46,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::cpp2::annotated_inline_string, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_first(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::cpp2::annotated_inline_string> co_first() {
     return co_first<false>(nullptr);
@@ -54,6 +55,14 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::cpp2::annotated_inline_string> co_first(apache::thrift::RpcOptions& rpcOptions) {
     return co_first<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<::cpp2::annotated_inline_string> co_first() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_first());
+  }
+  folly::coro::Task<::cpp2::annotated_inline_string> co_first(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_first(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::cpp2::annotated_inline_string> co_first(apache::thrift::RpcOptions* rpcOptions) {
@@ -132,6 +141,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_second(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_count);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<bool> co_second(::std::int64_t p_count) {
     return co_second<false>(nullptr, p_count);
@@ -140,6 +150,14 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<bool> co_second(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_count) {
     return co_second<true>(&rpcOptions, p_count);
   }
+#else
+  folly::coro::Task<bool> co_second(::std::int64_t p_count) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_second(p_count));
+  }
+  folly::coro::Task<bool> co_second(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_count) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_second(rpcOptions, p_count));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<bool> co_second(apache::thrift::RpcOptions* rpcOptions, ::std::int64_t p_count) {

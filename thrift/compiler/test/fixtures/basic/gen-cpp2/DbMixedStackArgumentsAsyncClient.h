@@ -44,6 +44,7 @@ class DbMixedStackArgumentsAsyncClient : public apache::thrift::GeneratedAsyncCl
   virtual folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_getDataByKey0(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_key);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::std::string> co_getDataByKey0(const ::std::string& p_key) {
     return co_getDataByKey0<false>(nullptr, p_key);
@@ -52,6 +53,14 @@ class DbMixedStackArgumentsAsyncClient : public apache::thrift::GeneratedAsyncCl
   folly::coro::Task<::std::string> co_getDataByKey0(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_key) {
     return co_getDataByKey0<true>(&rpcOptions, p_key);
   }
+#else
+  folly::coro::Task<::std::string> co_getDataByKey0(const ::std::string& p_key) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_getDataByKey0(p_key));
+  }
+  folly::coro::Task<::std::string> co_getDataByKey0(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_key) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_getDataByKey0(rpcOptions, p_key));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::std::string> co_getDataByKey0(apache::thrift::RpcOptions* rpcOptions, const ::std::string& p_key) {
@@ -130,6 +139,7 @@ class DbMixedStackArgumentsAsyncClient : public apache::thrift::GeneratedAsyncCl
   virtual folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_getDataByKey1(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_key);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::std::string> co_getDataByKey1(const ::std::string& p_key) {
     return co_getDataByKey1<false>(nullptr, p_key);
@@ -138,6 +148,14 @@ class DbMixedStackArgumentsAsyncClient : public apache::thrift::GeneratedAsyncCl
   folly::coro::Task<::std::string> co_getDataByKey1(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_key) {
     return co_getDataByKey1<true>(&rpcOptions, p_key);
   }
+#else
+  folly::coro::Task<::std::string> co_getDataByKey1(const ::std::string& p_key) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_getDataByKey1(p_key));
+  }
+  folly::coro::Task<::std::string> co_getDataByKey1(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_key) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_getDataByKey1(rpcOptions, p_key));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::std::string> co_getDataByKey1(apache::thrift::RpcOptions* rpcOptions, const ::std::string& p_key) {

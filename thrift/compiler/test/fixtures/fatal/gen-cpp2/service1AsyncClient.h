@@ -47,6 +47,7 @@ class service1AsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_method1(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<void> co_method1() {
     return co_method1<false>(nullptr);
@@ -55,6 +56,14 @@ class service1AsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<void> co_method1(apache::thrift::RpcOptions& rpcOptions) {
     return co_method1<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<void> co_method1() {
+    co_await folly::coro::detachOnCancel(semifuture_method1());
+  }
+  folly::coro::Task<void> co_method1(apache::thrift::RpcOptions& rpcOptions) {
+    co_await folly::coro::detachOnCancel(semifuture_method1(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<void> co_method1(apache::thrift::RpcOptions* rpcOptions) {
@@ -131,6 +140,7 @@ class service1AsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_method2(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_x, const ::test_cpp2::cpp_reflection::struct1& p_y, double p_z);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<void> co_method2(::std::int32_t p_x, const ::test_cpp2::cpp_reflection::struct1& p_y, double p_z) {
     return co_method2<false>(nullptr, p_x, p_y, p_z);
@@ -139,6 +149,14 @@ class service1AsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<void> co_method2(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_x, const ::test_cpp2::cpp_reflection::struct1& p_y, double p_z) {
     return co_method2<true>(&rpcOptions, p_x, p_y, p_z);
   }
+#else
+  folly::coro::Task<void> co_method2(::std::int32_t p_x, const ::test_cpp2::cpp_reflection::struct1& p_y, double p_z) {
+    co_await folly::coro::detachOnCancel(semifuture_method2(p_x, p_y, p_z));
+  }
+  folly::coro::Task<void> co_method2(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_x, const ::test_cpp2::cpp_reflection::struct1& p_y, double p_z) {
+    co_await folly::coro::detachOnCancel(semifuture_method2(rpcOptions, p_x, p_y, p_z));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<void> co_method2(apache::thrift::RpcOptions* rpcOptions, ::std::int32_t p_x, const ::test_cpp2::cpp_reflection::struct1& p_y, double p_z) {
@@ -215,6 +233,7 @@ class service1AsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_method3(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::std::int32_t> co_method3() {
     return co_method3<false>(nullptr);
@@ -223,6 +242,14 @@ class service1AsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::std::int32_t> co_method3(apache::thrift::RpcOptions& rpcOptions) {
     return co_method3<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<::std::int32_t> co_method3() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_method3());
+  }
+  folly::coro::Task<::std::int32_t> co_method3(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_method3(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::std::int32_t> co_method3(apache::thrift::RpcOptions* rpcOptions) {
@@ -301,6 +328,7 @@ class service1AsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_method4(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_i, const ::test_cpp2::cpp_reflection::struct1& p_j, double p_k);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::std::int32_t> co_method4(::std::int32_t p_i, const ::test_cpp2::cpp_reflection::struct1& p_j, double p_k) {
     return co_method4<false>(nullptr, p_i, p_j, p_k);
@@ -309,6 +337,14 @@ class service1AsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::std::int32_t> co_method4(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_i, const ::test_cpp2::cpp_reflection::struct1& p_j, double p_k) {
     return co_method4<true>(&rpcOptions, p_i, p_j, p_k);
   }
+#else
+  folly::coro::Task<::std::int32_t> co_method4(::std::int32_t p_i, const ::test_cpp2::cpp_reflection::struct1& p_j, double p_k) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_method4(p_i, p_j, p_k));
+  }
+  folly::coro::Task<::std::int32_t> co_method4(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_i, const ::test_cpp2::cpp_reflection::struct1& p_j, double p_k) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_method4(rpcOptions, p_i, p_j, p_k));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::std::int32_t> co_method4(apache::thrift::RpcOptions* rpcOptions, ::std::int32_t p_i, const ::test_cpp2::cpp_reflection::struct1& p_j, double p_k) {
@@ -387,6 +423,7 @@ class service1AsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::test_cpp2::cpp_reflection::struct2, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_method5(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::test_cpp2::cpp_reflection::struct2> co_method5() {
     return co_method5<false>(nullptr);
@@ -395,6 +432,14 @@ class service1AsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::test_cpp2::cpp_reflection::struct2> co_method5(apache::thrift::RpcOptions& rpcOptions) {
     return co_method5<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<::test_cpp2::cpp_reflection::struct2> co_method5() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_method5());
+  }
+  folly::coro::Task<::test_cpp2::cpp_reflection::struct2> co_method5(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_method5(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::test_cpp2::cpp_reflection::struct2> co_method5(apache::thrift::RpcOptions* rpcOptions) {
@@ -473,6 +518,7 @@ class service1AsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::test_cpp2::cpp_reflection::struct2, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_method6(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_l, const ::test_cpp2::cpp_reflection::struct1& p_m, double p_n);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::test_cpp2::cpp_reflection::struct2> co_method6(::std::int32_t p_l, const ::test_cpp2::cpp_reflection::struct1& p_m, double p_n) {
     return co_method6<false>(nullptr, p_l, p_m, p_n);
@@ -481,6 +527,14 @@ class service1AsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::test_cpp2::cpp_reflection::struct2> co_method6(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_l, const ::test_cpp2::cpp_reflection::struct1& p_m, double p_n) {
     return co_method6<true>(&rpcOptions, p_l, p_m, p_n);
   }
+#else
+  folly::coro::Task<::test_cpp2::cpp_reflection::struct2> co_method6(::std::int32_t p_l, const ::test_cpp2::cpp_reflection::struct1& p_m, double p_n) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_method6(p_l, p_m, p_n));
+  }
+  folly::coro::Task<::test_cpp2::cpp_reflection::struct2> co_method6(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_l, const ::test_cpp2::cpp_reflection::struct1& p_m, double p_n) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_method6(rpcOptions, p_l, p_m, p_n));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::test_cpp2::cpp_reflection::struct2> co_method6(apache::thrift::RpcOptions* rpcOptions, ::std::int32_t p_l, const ::test_cpp2::cpp_reflection::struct1& p_m, double p_n) {

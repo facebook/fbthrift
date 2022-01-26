@@ -45,6 +45,7 @@ class MyNodeAsyncClient : public ::cpp2::MyRootAsyncClient {
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_do_mid(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<void> co_do_mid() {
     return co_do_mid<false>(nullptr);
@@ -53,6 +54,14 @@ class MyNodeAsyncClient : public ::cpp2::MyRootAsyncClient {
   folly::coro::Task<void> co_do_mid(apache::thrift::RpcOptions& rpcOptions) {
     return co_do_mid<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<void> co_do_mid() {
+    co_await folly::coro::detachOnCancel(semifuture_do_mid());
+  }
+  folly::coro::Task<void> co_do_mid(apache::thrift::RpcOptions& rpcOptions) {
+    co_await folly::coro::detachOnCancel(semifuture_do_mid(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<void> co_do_mid(apache::thrift::RpcOptions* rpcOptions) {

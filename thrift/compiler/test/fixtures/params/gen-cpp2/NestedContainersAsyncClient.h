@@ -44,6 +44,7 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_mapList(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<void> co_mapList(const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo) {
     return co_mapList<false>(nullptr, p_foo);
@@ -52,6 +53,14 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
   folly::coro::Task<void> co_mapList(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo) {
     return co_mapList<true>(&rpcOptions, p_foo);
   }
+#else
+  folly::coro::Task<void> co_mapList(const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo) {
+    co_await folly::coro::detachOnCancel(semifuture_mapList(p_foo));
+  }
+  folly::coro::Task<void> co_mapList(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo) {
+    co_await folly::coro::detachOnCancel(semifuture_mapList(rpcOptions, p_foo));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<void> co_mapList(apache::thrift::RpcOptions* rpcOptions, const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo) {
@@ -128,6 +137,7 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_mapSet(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<void> co_mapSet(const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo) {
     return co_mapSet<false>(nullptr, p_foo);
@@ -136,6 +146,14 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
   folly::coro::Task<void> co_mapSet(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo) {
     return co_mapSet<true>(&rpcOptions, p_foo);
   }
+#else
+  folly::coro::Task<void> co_mapSet(const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo) {
+    co_await folly::coro::detachOnCancel(semifuture_mapSet(p_foo));
+  }
+  folly::coro::Task<void> co_mapSet(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo) {
+    co_await folly::coro::detachOnCancel(semifuture_mapSet(rpcOptions, p_foo));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<void> co_mapSet(apache::thrift::RpcOptions* rpcOptions, const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo) {
@@ -212,6 +230,7 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_listMap(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<void> co_listMap(const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo) {
     return co_listMap<false>(nullptr, p_foo);
@@ -220,6 +239,14 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
   folly::coro::Task<void> co_listMap(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo) {
     return co_listMap<true>(&rpcOptions, p_foo);
   }
+#else
+  folly::coro::Task<void> co_listMap(const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo) {
+    co_await folly::coro::detachOnCancel(semifuture_listMap(p_foo));
+  }
+  folly::coro::Task<void> co_listMap(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo) {
+    co_await folly::coro::detachOnCancel(semifuture_listMap(rpcOptions, p_foo));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<void> co_listMap(apache::thrift::RpcOptions* rpcOptions, const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo) {
@@ -296,6 +323,7 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_listSet(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<::std::int32_t>>& p_foo);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<void> co_listSet(const ::std::vector<::std::set<::std::int32_t>>& p_foo) {
     return co_listSet<false>(nullptr, p_foo);
@@ -304,6 +332,14 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
   folly::coro::Task<void> co_listSet(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<::std::int32_t>>& p_foo) {
     return co_listSet<true>(&rpcOptions, p_foo);
   }
+#else
+  folly::coro::Task<void> co_listSet(const ::std::vector<::std::set<::std::int32_t>>& p_foo) {
+    co_await folly::coro::detachOnCancel(semifuture_listSet(p_foo));
+  }
+  folly::coro::Task<void> co_listSet(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<::std::int32_t>>& p_foo) {
+    co_await folly::coro::detachOnCancel(semifuture_listSet(rpcOptions, p_foo));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<void> co_listSet(apache::thrift::RpcOptions* rpcOptions, const ::std::vector<::std::set<::std::int32_t>>& p_foo) {
@@ -380,6 +416,7 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_turtles(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<void> co_turtles(const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo) {
     return co_turtles<false>(nullptr, p_foo);
@@ -388,6 +425,14 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
   folly::coro::Task<void> co_turtles(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo) {
     return co_turtles<true>(&rpcOptions, p_foo);
   }
+#else
+  folly::coro::Task<void> co_turtles(const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo) {
+    co_await folly::coro::detachOnCancel(semifuture_turtles(p_foo));
+  }
+  folly::coro::Task<void> co_turtles(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo) {
+    co_await folly::coro::detachOnCancel(semifuture_turtles(rpcOptions, p_foo));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<void> co_turtles(apache::thrift::RpcOptions* rpcOptions, const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo) {

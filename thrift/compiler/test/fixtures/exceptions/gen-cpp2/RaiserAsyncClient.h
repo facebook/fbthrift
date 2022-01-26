@@ -44,6 +44,7 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_doBland(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<void> co_doBland() {
     return co_doBland<false>(nullptr);
@@ -52,6 +53,14 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<void> co_doBland(apache::thrift::RpcOptions& rpcOptions) {
     return co_doBland<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<void> co_doBland() {
+    co_await folly::coro::detachOnCancel(semifuture_doBland());
+  }
+  folly::coro::Task<void> co_doBland(apache::thrift::RpcOptions& rpcOptions) {
+    co_await folly::coro::detachOnCancel(semifuture_doBland(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<void> co_doBland(apache::thrift::RpcOptions* rpcOptions) {
@@ -128,6 +137,7 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_doRaise(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<void> co_doRaise() {
     return co_doRaise<false>(nullptr);
@@ -136,6 +146,14 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<void> co_doRaise(apache::thrift::RpcOptions& rpcOptions) {
     return co_doRaise<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<void> co_doRaise() {
+    co_await folly::coro::detachOnCancel(semifuture_doRaise());
+  }
+  folly::coro::Task<void> co_doRaise(apache::thrift::RpcOptions& rpcOptions) {
+    co_await folly::coro::detachOnCancel(semifuture_doRaise(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<void> co_doRaise(apache::thrift::RpcOptions* rpcOptions) {
@@ -212,6 +230,7 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_get200(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::std::string> co_get200() {
     return co_get200<false>(nullptr);
@@ -220,6 +239,14 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::std::string> co_get200(apache::thrift::RpcOptions& rpcOptions) {
     return co_get200<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<::std::string> co_get200() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_get200());
+  }
+  folly::coro::Task<::std::string> co_get200(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_get200(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::std::string> co_get200(apache::thrift::RpcOptions* rpcOptions) {
@@ -298,6 +325,7 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_get500(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
+#if __clang__
   template <int = 0>
   folly::coro::Task<::std::string> co_get500() {
     return co_get500<false>(nullptr);
@@ -306,6 +334,14 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::std::string> co_get500(apache::thrift::RpcOptions& rpcOptions) {
     return co_get500<true>(&rpcOptions);
   }
+#else
+  folly::coro::Task<::std::string> co_get500() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_get500());
+  }
+  folly::coro::Task<::std::string> co_get500(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_get500(rpcOptions));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<::std::string> co_get500(apache::thrift::RpcOptions* rpcOptions) {

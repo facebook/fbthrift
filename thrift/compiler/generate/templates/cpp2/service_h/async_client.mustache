@@ -74,9 +74,11 @@
 <%/function:oneway?%>
 
 #if FOLLY_HAS_COROUTINES
-  template <int = 0><%!
+  <%!
   Coroutine functions are inline templates to prevent compile time and binary size regression
   %>
+#if __clang__
+  template <int = 0>
   folly::coro::Task<<% > types/semi_type%>> co_<%function:cpp_name%>(<% > service_common/function_param_list_const%>) {
     return co_<%function:cpp_name%><false>(nullptr<%function:comma%><% > service_common/param_list%>);
   }
@@ -84,6 +86,18 @@
   folly::coro::Task<<% > types/semi_type%>> co_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
     return co_<%function:cpp_name%><true>(&rpcOptions<%function:comma%><% > service_common/param_list%>);
   }
+#else
+  <%!
+  GCC coroutines implementation is less stable and results in ICE compiling the code below.
+  Use semifuture_ implementation instead.
+  %>
+  folly::coro::Task<<% > types/semi_type%>> co_<%function:cpp_name%>(<% > service_common/function_param_list_const%>) {
+    <%^type:void?%>co_return <%/type:void?%>co_await folly::coro::detachOnCancel(semifuture_<%function:cpp_name%>(<% > service_common/param_list%>));
+  }
+  folly::coro::Task<<% > types/semi_type%>> co_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
+    <%^type:void?%>co_return <%/type:void?%>co_await folly::coro::detachOnCancel(semifuture_<%function:cpp_name%>(rpcOptions<%function:comma%><% > service_common/param_list%>));
+  }
+#endif
  private:
   template <bool hasRpcOptions>
   folly::coro::Task<<% > types/semi_type%>> co_<%function:cpp_name%>(apache::thrift::RpcOptions* rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
