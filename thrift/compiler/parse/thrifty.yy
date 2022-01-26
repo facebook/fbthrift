@@ -59,8 +59,6 @@ namespace thrift {
 namespace compiler {
 namespace {
 
-int g_arglist = 0;
-
 // Assume ownership of a pointer.
 template <typename T>
 std::unique_ptr<T> own(T* ptr) {
@@ -776,25 +774,19 @@ ErrorBlame:
 | tok_server { $$ = t_error_blame::server; }
 |            { $$ = {}; }
 
-
 Service:
   DefinitionAttrs tok_service Identifier
     {
       driver.start_def(DefType::Service);
     }
-  Extends "{" FlagArgs FunctionList UnflagArgs "}" Annotations
+  Extends "{" FunctionList "}" Annotations
     {
       driver.debug("Service => DefinitionAttrs tok_service "
-        "Identifier Extends { FlagArgs FunctionList UnflagArgs } "
-        "Annotations");
+        "Identifier Extends { FunctionList } Annotations");
       $$ = new t_service(driver.program, std::move($3), $5);
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.finish_def($$, @$, own($1), own($8), own($11));
+      driver.finish_def($$, @$, own($1), own($7), own($9));
     }
-
-FlagArgs: { g_arglist = 1; }
-
-UnflagArgs: { g_arglist = 0; }
 
 Extends:
   tok_extends Identifier
@@ -809,12 +801,12 @@ Interaction:
     {
       driver.start_def(DefType::Interaction);
     }
-  "{" FlagArgs FunctionList UnflagArgs "}" Annotations
+  "{" FunctionList "}" Annotations
     {
       driver.debug("Interaction -> tok_interaction Identifier { FunctionList }");
       $$ = new t_interaction(driver.program, std::move($3));
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.finish_def($$, @$, own($1), own($7), own($10));
+      driver.finish_def($$, @$, own($1), own($6), own($8));
     }
 
 FunctionList:
@@ -976,31 +968,9 @@ FieldIdentifier:
 |             { $$ = boost::none; }
 
 FieldQualifier:
-  tok_required
-    {
-      // TODO(afuller): Move this to a mutator
-      if (g_arglist) {
-        if (driver.mode == parsing_mode::PROGRAM) {
-          driver.warning("required keyword is ignored in argument lists.");
-        }
-        $$ = {};
-      } else {
-        $$ = t_field_qualifier::required;
-      }
-    }
-| tok_optional
-    {
-      // TODO(afuller): Move this to a mutator
-      if (g_arglist) {
-        if (driver.mode == parsing_mode::PROGRAM) {
-          driver.warning("optional keyword is ignored in argument lists.");
-        }
-        $$ = {};
-      } else {
-        $$ = t_field_qualifier::optional;
-      }
-    }
-|   { $$ = {}; }
+  tok_required { $$ = t_field_qualifier::required; }
+| tok_optional { $$ = t_field_qualifier::optional; }
+|              { $$ = {}; }
 
 FieldValue:
   "=" ConstValue

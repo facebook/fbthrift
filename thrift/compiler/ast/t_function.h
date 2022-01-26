@@ -56,7 +56,8 @@ class t_function final : public t_named {
       t_function_qualifier qualifier = {});
 
   const t_type_ref& return_type() const { return return_type_; }
-  const t_paramlist* params() const { return paramlist_.get(); }
+  t_paramlist& params() { return *paramlist_; }
+  const t_paramlist& params() const { return *paramlist_; }
 
   // The qualifier of the function, if any.
   t_function_qualifier qualifier() const { return qualifier_; }

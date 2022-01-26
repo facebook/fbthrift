@@ -3559,7 +3559,7 @@ std::string t_hack_generator::render_service_metadata_response(
 
       for (const auto& function : tservice->functions()) {
         queue.push(function.get_returntype());
-        queue.push(function.params());
+        queue.push(&function.params());
         queue.push(function.exceptions());
       }
     } else if (const auto* tenum = dynamic_cast<const t_enum*>(type)) {

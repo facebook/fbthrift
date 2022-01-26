@@ -46,6 +46,10 @@ t_function::t_function(
     sink_final_response_exceptions_ = tsink->final_response_exceptions();
   }
 
+  if (paramlist_ == nullptr) {
+    throw std::runtime_error("Param list is required");
+  }
+
   // Validate function
   // TODO(afuller): Move this to a post parse step.
   if (is_oneway() &&

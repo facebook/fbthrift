@@ -73,8 +73,8 @@ TEST_F(ValidatorTest, NestedInteractions) {
   t_program program("/path/to/file.thrift");
 
   auto interaction = std::make_unique<t_interaction>(&program, "foo");
-  auto func =
-      std::make_unique<t_function>(interaction.get(), "frobnicate", nullptr);
+  auto func = std::make_unique<t_function>(
+      interaction.get(), "frobnicate", std::make_unique<t_paramlist>(&program));
   func->set_lineno(42);
   interaction->add_function(std::move(func));
   program.add_interaction(std::move(interaction));
@@ -91,13 +91,14 @@ TEST_F(ValidatorTest, DuplicateInteractions) {
 
   auto interaction = std::make_unique<t_interaction>(&program, "Clyde");
   auto service = create_fake_service("foo");
-  auto func =
-      std::make_unique<t_function>(service.get(), "frobnicate", nullptr);
+  auto func = std::make_unique<t_function>(
+      service.get(), "frobnicate", std::make_unique<t_paramlist>(&program));
   func->set_lineno(1);
   func->set_is_interaction_constructor();
   service->add_function(std::move(func));
 
-  func = std::make_unique<t_function>(interaction.get(), "interact", nullptr);
+  func = std::make_unique<t_function>(
+      interaction.get(), "interact", std::make_unique<t_paramlist>(&program));
   func->set_lineno(2);
   func->set_is_interaction_constructor();
   service->add_function(std::move(func));
@@ -112,7 +113,9 @@ TEST_F(ValidatorTest, DuplicateInteractions) {
   service->add_function(std::move(func));
 
   func = std::make_unique<t_function>(
-      interaction.get(), "functionInteract", nullptr);
+      interaction.get(),
+      "functionInteract",
+      std::make_unique<t_paramlist>(&program));
   func->set_lineno(4);
   service->add_function(std::move(func));
 

@@ -43,10 +43,27 @@ void propagate_process_in_event_base_annotation(
   }
 }
 
+void remove_param_list_field_qualifiers(
+    diagnostic_context& ctx, mutator_context&, t_function& node) {
+  for (auto& field : node.params().fields()) {
+    switch (field.qualifier()) {
+      case t_field_qualifier::unspecified:
+        continue;
+      case t_field_qualifier::required:
+        ctx.warning("optional keyword is ignored in argument lists.");
+        break;
+      case t_field_qualifier::optional:
+        ctx.warning("required keyword is ignored in argument lists.");
+        break;
+    }
+    field.set_qualifier(t_field_qualifier::unspecified);
+  }
+}
+
 ast_mutator standard_mutator() {
   ast_mutator mutator;
-  // TODO(afuller): Move all mutation logic to here.
   mutator.add_interaction_visitor(&propagate_process_in_event_base_annotation);
+  mutator.add_function_visitor(&remove_param_list_field_qualifiers);
   return mutator;
 }
 
