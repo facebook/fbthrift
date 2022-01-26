@@ -33,6 +33,7 @@
 #include <folly/experimental/coro/Invoke.h>
 #include <folly/io/GlobalShutdownSocketSet.h>
 #include <folly/portability/Sockets.h>
+#include <folly/system/Pid.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
@@ -1242,7 +1243,23 @@ folly::observer::Observer<bool> ThriftServer::enableStopTLS() {
 }
 
 folly::observer::CallbackHandle ThriftServer::getSSLCallbackHandle() {
-  return sslContextObserver_->addCallback([&](auto ssl) {
+  auto originalPid = folly::get_cached_pid();
+
+  return sslContextObserver_->addCallback([&, originalPid](auto ssl) {
+    // Because we are posting to an EventBase, we need to ensure that this
+    // observer callback is not executing on a fork()'d child.
+    //
+    // The scenario this can happen is if:
+    //  1) The FlagsBackend observer implementation persists in the child. (e.g.
+    //     a custom atfork handler reinitializes and resubscribes to updates)
+    //  2) A thrift handler fork()s (e.g. Python thrift server which
+    //     uses concurrent.futures.ProcessPoolExecutor)
+    //  3) A flag is changed that causes an update to sslContextObserver
+    if (folly::get_cached_pid() != originalPid) {
+      LOG(WARNING)
+          << "Ignoring SSLContext update triggered by observer in forked process.";
+      return;
+    }
     if (sharedSSLContextManager_) {
       sharedSSLContextManager_->updateSSLConfigAndReloadContexts(*ssl);
     } else {
