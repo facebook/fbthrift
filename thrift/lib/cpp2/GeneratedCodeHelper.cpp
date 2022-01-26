@@ -18,6 +18,7 @@
 #include <folly/Portability.h>
 
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
+#include <thrift/lib/cpp2/TrustedServerException.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
@@ -207,16 +208,21 @@ MessageBegin deserializeMessageBegin(
 
 namespace detail {
 namespace si {
-std::string formatUnimplementedMethodException(std::string_view methodName) {
-  return fmt::format("Function {} is unimplemented", methodName);
+namespace {
+TrustedServerException createUnimplementedMethodException(
+    std::string_view methodName) {
+  return TrustedServerException::unimplementedMethodError(
+      fmt::format("Function {} is unimplemented", methodName).c_str());
 }
+} // namespace
 
-TApplicationException create_app_exn_unimplemented(const char* name) {
-  return TApplicationException(formatUnimplementedMethodException(name));
+folly::exception_wrapper create_app_exn_unimplemented(const char* name) {
+  return folly::make_exception_wrapper<TrustedServerException>(
+      createUnimplementedMethodException(name));
 }
 
 [[noreturn]] void throw_app_exn_unimplemented(char const* const name) {
-  throw create_app_exn_unimplemented(name);
+  throw createUnimplementedMethodException(name);
 }
 } // namespace si
 } // namespace detail

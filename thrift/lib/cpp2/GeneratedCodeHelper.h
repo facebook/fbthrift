@@ -1453,8 +1453,7 @@ void async_tm_coro(CallbackPtr<T> callback, folly::coro::Task<T>&& task) {
 }
 #endif
 
-std::string formatUnimplementedMethodException(std::string_view methodName);
-TApplicationException create_app_exn_unimplemented(const char* name);
+folly::exception_wrapper create_app_exn_unimplemented(const char* name);
 [[noreturn]] void throw_app_exn_unimplemented(char const* name);
 
 } // namespace si

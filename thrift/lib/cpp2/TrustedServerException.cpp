@@ -26,4 +26,12 @@ namespace apache::thrift {
       TApplicationException::PROTOCOL_ERROR, message, kRequestParsingErrorCode};
 }
 
+/* static */ TrustedServerException
+TrustedServerException::unimplementedMethodError(const char* message) {
+  return TrustedServerException{
+      TApplicationException::UNKNOWN_METHOD,
+      message,
+      kUnimplementedMethodErrorCode};
+}
+
 } // namespace apache::thrift
