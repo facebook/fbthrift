@@ -33,6 +33,7 @@
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
+#include <thrift/lib/cpp2/TrustedServerException.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/detail/protocol_methods.h>
@@ -129,6 +130,14 @@ void process_throw_wrapped_handler_error(
     ContextStack* const stack,
     char const* const method) {
   LOG(ERROR) << ew << " in function " << method;
+  if (auto trustedServerEx =
+          dynamic_cast<const TrustedServerException*>(ew.get_exception())) {
+    req->sendErrorWrapped(
+        folly::make_exception_wrapper<TApplicationException>(
+            trustedServerEx->toApplicationException()),
+        std::string(trustedServerEx->errorCode()));
+    return;
+  }
   if (stack) {
     stack->userExceptionWrapped(false, ew);
     stack->handlerErrorWrapped(ew);
