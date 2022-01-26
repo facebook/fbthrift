@@ -40,6 +40,7 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/SerializationSwitch.h>
 #include <thrift/lib/cpp2/Thrift.h>
+#include <thrift/lib/cpp2/TrustedServerException.h>
 #include <thrift/lib/cpp2/async/Interaction.h>
 #include <thrift/lib/cpp2/async/ReplyInfo.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
@@ -1284,10 +1285,10 @@ void GeneratedAsyncProcessor::deserializeRequest(
     bytes = apache::thrift::detail::deserializeRequestBody(&iprot, &args);
     iprot.readMessageEnd();
   } catch (const std::exception& ex) {
-    throw RequestParsingError(ex.what());
+    throw TrustedServerException::requestParsingError(ex.what());
   } catch (...) {
-    throw RequestParsingError(
-        folly::exceptionStr(std::current_exception()).toStdString());
+    throw TrustedServerException::requestParsingError(
+        folly::exceptionStr(std::current_exception()).c_str());
   }
   if (c) {
     c->postRead(nullptr, bytes);

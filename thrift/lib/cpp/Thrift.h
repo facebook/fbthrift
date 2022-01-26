@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -241,12 +241,6 @@ class FOLLY_EXPORT AppClientError : public AppBaseError {
   using AppBaseError::AppBaseError;
 
   bool isClientError() const noexcept override { return true; }
-};
-
-class FOLLY_EXPORT RequestParsingError : public std::runtime_error {
- public:
-  explicit RequestParsingError(const std::string& what)
-      : std::runtime_error(what) {}
 };
 
 } // namespace thrift

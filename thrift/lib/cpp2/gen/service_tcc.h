@@ -99,15 +99,15 @@ void process_handle_exn_deserialization(
     Cpp2RequestContext* const ctx,
     folly::EventBase* const eb,
     char const* const method) {
-  if (auto rpe = dynamic_cast<const RequestParsingError*>(ew.get_exception())) {
-    eb->runInEventBaseThread([request = std::move(req),
-                              msg = std::string(rpe->what())]() {
-      request->sendErrorWrapped(
-          folly::make_exception_wrapper<TApplicationException>(
-              TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR,
-              msg),
-          kRequestParsingErrorCode);
-    });
+  if (auto trustedServerEx =
+          dynamic_cast<const TrustedServerException*>(ew.get_exception())) {
+    eb->runInEventBaseThread(
+        [request = std::move(req), ex = *trustedServerEx]() {
+          request->sendErrorWrapped(
+              folly::make_exception_wrapper<TApplicationException>(
+                  ex.toApplicationException()),
+              std::string(ex.errorCode()));
+        });
     return;
   }
   ::apache::thrift::util::appendExceptionToHeader(ew, *ctx);
