@@ -391,11 +391,8 @@ impl<B: Buf> SimpleJsonProtocolDeserializer<B> {
             self.advance(1);
         }
     }
-
-    // strip whitespace before and after
-    fn eat(&mut self, val: &[u8]) -> Result<()> {
-        self.strip_whitespace();
-
+    // Validates that next chars is `val`
+    fn eat_only(&mut self, val: &[u8]) -> Result<()> {
         if self.remaining < val.len() {
             bail!("Expected {:?}, not enough remaining", val)
         }
@@ -408,6 +405,13 @@ impl<B: Buf> SimpleJsonProtocolDeserializer<B> {
             }
             self.advance(1);
         }
+        Ok(())
+    }
+
+    // Validates that next chars is `val`. Strip whitespace before and after
+    fn eat(&mut self, val: &[u8]) -> Result<()> {
+        self.strip_whitespace();
+        self.eat_only(val)?;
         self.strip_whitespace();
         Ok(())
     }
@@ -831,7 +835,8 @@ impl<B: Buf> ProtocolReader for SimpleJsonProtocolDeserializer<B> {
     }
 
     fn read_string(&mut self) -> Result<String> {
-        self.eat(b"\"")?;
+        self.strip_whitespace();
+        self.eat_only(b"\"")?;
         let mut ret = Vec::new();
         ret.push(b'"');
         loop {

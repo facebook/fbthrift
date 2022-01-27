@@ -312,7 +312,7 @@ fn infinite_spaces() -> Result<()> {
     let r = MainStruct {
         foo: "foo".to_string(),
         m,
-        bar: "test".to_string(),
+        bar: " test ".to_string(),
         s: sub,
         l: vec![
             Small {
@@ -322,7 +322,6 @@ fn infinite_spaces() -> Result<()> {
             },
             Small {
                 num: 2,
-                two: 3,
                 ..Default::default()
             },
         ],
@@ -336,7 +335,7 @@ fn infinite_spaces() -> Result<()> {
     let input = r#"{
          "foo"  :  "foo" ,
           "m" : { "m1" :  1   , "m2" : 2 }  ,
-        "bar":"test",
+        "bar":" test ",
         "s":{"optDef":  "IAMOPT"  ,"req_def":  "IAMREQ","bin": ""  },
         "l":[{"num":1,"two":2},{"num"  :2 ," two" : 3 } ],
         "u":{"un1":{"one":  1  } },

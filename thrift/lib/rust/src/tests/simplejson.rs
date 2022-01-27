@@ -182,6 +182,7 @@ fn read_json_value() {
         "bool" : true ,
         "double" : 1.0 ,
         "utf8" : "..." ,
+        "spaces" : " spaces ",
         "list" : [ null , 1 ] ,
         "struct" : { "" : null , "x" : false }
     } "#;
@@ -192,6 +193,7 @@ fn read_json_value() {
         "bool": true,
         "double": 1.0,
         "utf8": "...",
+        "spaces": " spaces ",
         "list": [null, 1],
         "struct": {"": null, "x": false},
     });
