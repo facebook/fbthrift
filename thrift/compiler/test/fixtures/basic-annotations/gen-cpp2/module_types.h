@@ -8,6 +8,7 @@
 
 #include <thrift/lib/cpp2/gen/module_types_h.h>
 
+#include <thrift/lib/cpp2/type/Tag.h>
 
 
 namespace apache {
@@ -272,7 +273,17 @@ class MyStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
-  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
+  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  using __fbthrift_fields = ::apache::thrift::type::fields<
+    ::apache::thrift::type::field_t<2, ::apache::thrift::type::i64_t>,
+    ::apache::thrift::type::field_t<1, ::apache::thrift::type::string_t>,
+    ::apache::thrift::type::field_t<3, ::apache::thrift::type::string_t>,
+    ::apache::thrift::type::field_t<4, ::apache::thrift::type::string_t>,
+    ::apache::thrift::type::field_t<5, ::apache::thrift::type::string_t>,
+    ::apache::thrift::type::field_t<6, ::apache::thrift::type::string_t>,
+    ::apache::thrift::type::field_t<7, ::apache::thrift::type::enum_t<::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourEnum>>>
+  >;
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;

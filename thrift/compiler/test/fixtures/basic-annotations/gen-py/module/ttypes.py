@@ -468,6 +468,7 @@ MyStruct.thrift_spec = (
 MyStruct.thrift_struct_annotations = {
   "android.generate_builder": "1",
   "cpp.internal.deprecated._data.method": "1",
+  "thrift.uri": "facebook.com/thrift/compiler/test/fixtures/basic-annotations/src/module/MyStruct",
 }
 MyStruct.thrift_field_annotations = {
   1: {

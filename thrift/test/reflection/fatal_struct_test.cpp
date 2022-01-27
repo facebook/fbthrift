@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -319,6 +319,11 @@ FATAL_S(structB_annotation2v, "this is its value");
 FATAL_S(structB_annotation3k, "some.other.annotation");
 FATAL_S(structB_annotation3v, "this is its other value");
 
+FATAL_S(struct3_annotation1k, "thrift.uri");
+FATAL_S(
+    struct3_annotation1v,
+    "facebook.com/thrift/test/reflection/reflection/struct3");
+
 TEST(fatal_struct, annotations) {
   EXPECT_SAME<
       fatal::list<>,
@@ -329,7 +334,8 @@ TEST(fatal_struct, annotations) {
       apache::thrift::reflect_struct<struct2>::annotations::map>();
 
   EXPECT_SAME<
-      fatal::list<>,
+      fatal::list<apache::thrift::
+                      annotation<struct3_annotation1k, struct3_annotation1v>>,
       apache::thrift::reflect_struct<struct3>::annotations::map>();
 
   EXPECT_SAME<

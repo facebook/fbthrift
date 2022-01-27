@@ -418,6 +418,7 @@ class mstch_cpp2_type : public mstch_type {
             {"type:cpp_declare_equal_to",
              &mstch_cpp2_type::cpp_declare_equal_to},
             {"type:type_class", &mstch_cpp2_type::type_class},
+            {"type:type_tag", &mstch_cpp2_type::type_tag},
             {"type:type_class_with_indirection",
              &mstch_cpp2_type::type_class_with_indirection},
             {"type:program_name", &mstch_cpp2_type::program_name},
@@ -538,6 +539,7 @@ class mstch_cpp2_type : public mstch_type {
     return t_mstch_cpp2_generator::get_namespace_array(type_->program());
   }
   mstch::node type_class() { return cpp2::get_gen_type_class(*resolved_type_); }
+  mstch::node type_tag() { return context_->resolver().gen_type_tag(*type_); }
   mstch::node type_class_with_indirection() {
     return cpp2::get_gen_type_class_with_indirection(*resolved_type_);
   }
@@ -856,6 +858,7 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:has_non_optional_and_non_terse_field?",
              &mstch_cpp2_struct::has_non_optional_and_non_terse_field},
         });
+    register_has_option("struct:include_tag_header?", "include_tag_header");
   }
   mstch::node fields_size() { return std::to_string(strct_->fields().size()); }
   mstch::node explicitly_constructed_fields() {
@@ -1457,6 +1460,7 @@ class mstch_cpp2_program : public mstch_program {
     register_has_option("program:no_metadata?", "no_metadata");
     register_has_option(
         "program:enforce_required?", "deprecated_enforce_required");
+    register_has_option("program:include_tag_header?", "include_tag_header");
   }
   std::string get_program_namespace(t_program const* program) override {
     return t_mstch_cpp2_generator::get_cpp2_namespace(program);

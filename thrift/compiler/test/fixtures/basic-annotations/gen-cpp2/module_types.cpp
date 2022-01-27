@@ -162,6 +162,10 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 
 namespace cpp2 {
 
+const char* MyStruct::__fbthrift_cpp2_gen_thrift_uri() {
+  return "facebook.com/thrift/compiler/test/fixtures/basic-annotations/src/module/MyStruct";
+}
+
 MyStruct::MyStruct(const MyStruct& srcObj) {
   __fbthrift_field_majorVer = srcObj.__fbthrift_field_majorVer;
   __isset.set(0,srcObj.__isset.get(0));

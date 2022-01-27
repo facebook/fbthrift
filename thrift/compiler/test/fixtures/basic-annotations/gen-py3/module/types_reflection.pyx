@@ -58,7 +58,7 @@ cdef __StructSpec get_reflection__MyStruct():
         name="MyStruct",
         kind=__StructType.STRUCT,
         annotations={
-            """android.generate_builder""": """1""",            """cpp.internal.deprecated._data.method""": """1""",        },
+            """android.generate_builder""": """1""",            """cpp.internal.deprecated._data.method""": """1""",            """thrift.uri""": """facebook.com/thrift/compiler/test/fixtures/basic-annotations/src/module/MyStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(

@@ -3,17 +3,17 @@
   "thrift_module" : "module",
   "constants" : {
     "myStruct" : {
-      "lineno" : 44,
+      "lineno" : 48,
       "value" : { "major" : 42, "package" : "package", "my_enum" : 2 },
       "type_enum" : "STRUCT",
       "spec_args" : "MyStruct",
       "source_range" : {
         "begin" : {
-          "line" : 44,
+          "line" : 48,
           "column" : 1
         },
         "end" : {
-          "line" : 48,
+          "line" : 52,
           "column" : 3
         }
       }
@@ -110,12 +110,12 @@
           "value" : "1",
           "source_range" : {
             "begin" : {
-              "line" : 42,
-              "column" : 4
+              "line" : 43,
+              "column" : 3
             },
             "end" : {
-              "line" : 42,
-              "column" : 28
+              "line" : 43,
+              "column" : 27
             }
           }
         }
@@ -124,12 +124,26 @@
           "value" : "1",
           "source_range" : {
             "begin" : {
-              "line" : 42,
-              "column" : 30
+              "line" : 44,
+              "column" : 3
             },
             "end" : {
-              "line" : 42,
-              "column" : 66
+              "line" : 44,
+              "column" : 39
+            }
+          }
+        }
+,
+        "thrift.uri" : {
+          "value" : "facebook.com/thrift/compiler/test/fixtures/basic-annotations/src/module/MyStruct",
+          "source_range" : {
+            "begin" : {
+              "line" : 45,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 45,
+              "column" : 98
             }
           }
         }
@@ -322,13 +336,13 @@
           "column" : 1
         },
         "end" : {
-          "line" : 42,
-          "column" : 67
+          "line" : 46,
+          "column" : 2
         }
       }
     },
     "SecretStruct" : {
-      "lineno" : 73,
+      "lineno" : 77,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -338,11 +352,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 74,
+              "line" : 78,
               "column" : 3
             },
             "end" : {
-              "line" : 74,
+              "line" : 78,
               "column" : 13
             }
           }
@@ -356,11 +370,11 @@
               "value" : "1",
               "source_range" : {
                 "begin" : {
-                  "line" : 75,
+                  "line" : 79,
                   "column" : 23
                 },
                 "end" : {
-                  "line" : 75,
+                  "line" : 79,
                   "column" : 37
                 }
               }
@@ -368,11 +382,11 @@
           },
           "source_range" : {
             "begin" : {
-              "line" : 75,
+              "line" : 79,
               "column" : 3
             },
             "end" : {
-              "line" : 75,
+              "line" : 79,
               "column" : 39
             }
           }
@@ -380,11 +394,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 73,
+          "line" : 77,
           "column" : 1
         },
         "end" : {
-          "line" : 76,
+          "line" : 80,
           "column" : 2
         }
       }
@@ -392,7 +406,7 @@
   },
   "services" : {
     "MyService" : {
-      "lineno" : 50,
+      "lineno" : 54,
       "functions" : {
         "MyService.ping" : {
           "return_type" : {
@@ -403,11 +417,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 50,
+              "line" : 54,
               "column" : 20
             },
             "end" : {
-              "line" : 51,
+              "line" : 55,
               "column" : 14
             }
           }
@@ -421,11 +435,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 51,
+              "line" : 55,
               "column" : 14
             },
             "end" : {
-              "line" : 52,
+              "line" : 56,
               "column" : 25
             }
           }
@@ -444,11 +458,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 52,
+              "line" : 56,
               "column" : 25
             },
             "end" : {
-              "line" : 53,
+              "line" : 57,
               "column" : 30
             }
           }
@@ -467,11 +481,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 53,
+              "line" : 57,
               "column" : 30
             },
             "end" : {
-              "line" : 54,
+              "line" : 58,
               "column" : 32
             }
           }
@@ -497,11 +511,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 54,
+              "line" : 58,
               "column" : 32
             },
             "end" : {
-              "line" : 59,
+              "line" : 63,
               "column" : 4
             }
           }
@@ -524,11 +538,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 60,
+              "line" : 64,
               "column" : 3
             },
             "end" : {
-              "line" : 60,
+              "line" : 64,
               "column" : 53
             }
           }
@@ -545,11 +559,11 @@
               "value" : "cppDoNothing",
               "source_range" : {
                 "begin" : {
-                  "line" : 61,
+                  "line" : 65,
                   "column" : 21
                 },
                 "end" : {
-                  "line" : 61,
+                  "line" : 65,
                   "column" : 46
                 }
               }
@@ -557,11 +571,11 @@
           },
           "source_range" : {
             "begin" : {
-              "line" : 60,
+              "line" : 64,
               "column" : 53
             },
             "end" : {
-              "line" : 61,
+              "line" : 65,
               "column" : 48
             }
           }
@@ -569,28 +583,28 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 50,
+          "line" : 54,
           "column" : 1
         },
         "end" : {
-          "line" : 62,
+          "line" : 66,
           "column" : 2
         }
       }
 
     },
     "MyServicePrioParent" : {
-      "lineno" : 64,
+      "lineno" : 68,
       "annotations" : {
         "priority" : {
           "value" : "HIGH",
           "source_range" : {
             "begin" : {
-              "line" : 67,
+              "line" : 71,
               "column" : 4
             },
             "end" : {
-              "line" : 67,
+              "line" : 71,
               "column" : 21
             }
           }
@@ -609,11 +623,11 @@
               "value" : "IMPORTANT",
               "source_range" : {
                 "begin" : {
-                  "line" : 65,
+                  "line" : 69,
                   "column" : 16
                 },
                 "end" : {
-                  "line" : 65,
+                  "line" : 69,
                   "column" : 38
                 }
               }
@@ -621,11 +635,11 @@
           },
           "source_range" : {
             "begin" : {
-              "line" : 64,
+              "line" : 68,
               "column" : 30
             },
             "end" : {
-              "line" : 65,
+              "line" : 69,
               "column" : 40
             }
           }
@@ -642,11 +656,11 @@
               "value" : "HIGH_IMPORTANT",
               "source_range" : {
                 "begin" : {
-                  "line" : 66,
+                  "line" : 70,
                   "column" : 16
                 },
                 "end" : {
-                  "line" : 66,
+                  "line" : 70,
                   "column" : 43
                 }
               }
@@ -654,11 +668,11 @@
           },
           "source_range" : {
             "begin" : {
-              "line" : 65,
+              "line" : 69,
               "column" : 40
             },
             "end" : {
-              "line" : 66,
+              "line" : 70,
               "column" : 45
             }
           }
@@ -666,11 +680,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 64,
+          "line" : 68,
           "column" : 1
         },
         "end" : {
-          "line" : 67,
+          "line" : 71,
           "column" : 22
         }
       }
@@ -681,7 +695,7 @@
         "type_enum" : "SERVICE",
         "spec_args" : "MyServicePrioParent"
       },
-      "lineno" : 69,
+      "lineno" : 73,
       "functions" : {
         "MyServicePrioChild.pang" : {
           "return_type" : {
@@ -695,11 +709,11 @@
               "value" : "BEST_EFFORT",
               "source_range" : {
                 "begin" : {
-                  "line" : 70,
+                  "line" : 74,
                   "column" : 16
                 },
                 "end" : {
-                  "line" : 70,
+                  "line" : 74,
                   "column" : 40
                 }
               }
@@ -707,11 +721,11 @@
           },
           "source_range" : {
             "begin" : {
-              "line" : 69,
+              "line" : 73,
               "column" : 57
             },
             "end" : {
-              "line" : 70,
+              "line" : 74,
               "column" : 42
             }
           }
@@ -719,11 +733,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 69,
+          "line" : 73,
           "column" : 1
         },
         "end" : {
-          "line" : 71,
+          "line" : 75,
           "column" : 2
         }
       }

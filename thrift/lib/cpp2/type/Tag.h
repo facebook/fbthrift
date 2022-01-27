@@ -108,6 +108,13 @@ template <
     typename Tag> // the thrift type being overridden
 struct cpp_type : Tag {};
 
+template <int Id, typename Tag>
+struct field_t {};
+
+// TODO(ytj): ensure all arguments are field_t
+template <class... Tags>
+struct fields {};
+
 } // namespace type
 } // namespace thrift
 } // namespace apache

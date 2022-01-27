@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -164,8 +164,8 @@ struct struct2 {
 }
 
 struct struct3 {
-  1: i32 fieldA;
-  2: string fieldB;
+  2: i32 fieldA;
+  1: string fieldB;
   3: enum1 fieldC;
   4: enum2 fieldD;
   5: union1 fieldE;
@@ -183,7 +183,7 @@ struct struct3 {
   17: map<string, structA> fieldQ;
   18: map<string, structB> (cpp.template = 'std::unordered_map') fieldR;
   19: map<binary, binary> fieldS;
-}
+} (thrift.uri = "facebook.com/thrift/test/reflection/reflection/struct3")
 
 struct struct4 {
   1: required i32 field0;
