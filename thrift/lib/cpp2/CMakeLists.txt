@@ -144,6 +144,7 @@ add_library(
   FieldRef.cpp
   Flags.cpp
   GeneratedCodeHelper.cpp
+  TrustedServerException.cpp
   async/AsyncClient.cpp
   async/AsyncProcessor.cpp
   async/AsyncProcessorHelper.cpp
