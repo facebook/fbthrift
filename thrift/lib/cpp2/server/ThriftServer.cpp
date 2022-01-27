@@ -858,7 +858,7 @@ void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
           }
         }
 
-        auto msgTemplate =
+        constexpr auto msgTemplate =
             "Could not drain active requests within allotted deadline. "
             "Deadline value: {} secs. {} because undefined behavior is possible. "
             "Underlying reasons could be either requests that have never "

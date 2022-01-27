@@ -130,8 +130,8 @@ class DebugProtocolWriter {
   }
 
   template <class... Args>
-  void writePlain(const Args&... args) {
-    writeRaw(fmt::format(args...));
+  void writePlain(fmt::string_view fmt, const Args&... args) {
+    writeRaw(fmt::vformat(fmt, {fmt::make_format_args(args...)}));
   }
 
   void writeIndent() { writeRaw(indent_); }
