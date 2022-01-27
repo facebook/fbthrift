@@ -75,6 +75,8 @@ THRIFT_FLAG_DEFINE_bool(dump_snapshot_on_long_shutdown, true);
 
 THRIFT_FLAG_DEFINE_bool(server_check_unimplemented_extra_interfaces, true);
 
+THRIFT_FLAG_DEFINE_bool(enable_on_stop_serving, true);
+
 namespace apache::thrift::detail {
 THRIFT_PLUGGABLE_FUNC_REGISTER(
     apache::thrift::ThriftServer::DumpSnapshotOnLongShutdownResult,
@@ -925,13 +927,19 @@ void ThriftServer::callOnStopServing() {
   std::vector<folly::SemiFuture<folly::Unit>> futures;
   futures.reserve(handlerList.size());
   for (auto handler : handlerList) {
-    futures.emplace_back(handler->semifuture_onStopServing());
+    futures.emplace_back(
+        THRIFT_FLAG(enable_on_stop_serving)
+            ? folly::makeSemiFuture().deferValue([handler](folly::Unit) {
+                return handler->semifuture_onStopServing();
+              })
+            : handler->semifuture_onStopServing());
   }
-  auto result =
-      folly::collectAll(futures).via(getThreadManager().get()).getTry();
-  if (result.hasException()) {
-    LOG(FATAL) << "Exception thrown by onStopServing(): "
-               << folly::exceptionStr(result.exception());
+  auto results = folly::collectAll(futures).via(getThreadManager().get()).get();
+  for (auto& result : results) {
+    if (result.hasException()) {
+      LOG(FATAL) << "Exception thrown by onStopServing(): "
+                 << folly::exceptionStr(result.exception());
+    }
   }
 }
 
