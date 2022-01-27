@@ -806,7 +806,7 @@ class ServiceHandler {
    * attached to.
    *
    * This function is idempotent for the duration of a server lifecycle -- so
-   * it's safe to call multiple times (e.g. from signal handlers).
+   * it's safe to call multiple times (e.g. from folly::AsyncSignalHandler).
    */
   void shutdownServer();
 
