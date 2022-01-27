@@ -32,8 +32,8 @@
 
 THRIFT_FLAG_DEFINE_bool(server_rocket_upgrade_enabled, false);
 THRIFT_FLAG_DEFINE_bool(server_header_reject_http, true);
-THRIFT_FLAG_DEFINE_bool(server_header_reject_framed, false);
-THRIFT_FLAG_DEFINE_bool(server_header_reject_unframed, false);
+THRIFT_FLAG_DEFINE_bool(server_header_reject_framed, true);
+THRIFT_FLAG_DEFINE_bool(server_header_reject_unframed, true);
 
 THRIFT_FLAG_DEFINE_int64(monitoring_over_header_logging_sample_rate, 1'000'000);
 

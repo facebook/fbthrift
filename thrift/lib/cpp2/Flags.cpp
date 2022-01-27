@@ -16,6 +16,10 @@
 
 #include <thrift/lib/cpp2/Flags.h>
 
+#include <map>
+
+#include <folly/MapUtil.h>
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -24,9 +28,15 @@ namespace {
 class FlagsBackendDummy : public apache::thrift::detail::FlagsBackend {
  public:
   folly::observer::Observer<folly::Optional<bool>> getFlagObserverBool(
-      folly::StringPiece) override {
+      folly::StringPiece name) override {
+    static const folly::Indestructible<std::map<std::string, bool>>
+        oss_defaults = std::map<std::string, bool>{
+            {"server_header_reject_framed", false},
+            {"server_header_reject_unframed", false}};
     return folly::observer::makeObserver(
-        []() -> folly::Optional<bool> { return folly::none; });
+        [name = std::string(name)]() -> folly::Optional<bool> {
+          return folly::get_optional(*oss_defaults, name);
+        });
   }
   folly::observer::Observer<folly::Optional<int64_t>> getFlagObserverInt64(
       folly::StringPiece) override {
