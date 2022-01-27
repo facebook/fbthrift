@@ -124,6 +124,14 @@ void usage() {
   }
 }
 
+bool isPathSeparator(const char& c) {
+#ifdef _WIN32
+  return c == ';';
+#else
+  return c == ':';
+#endif
+}
+
 bool isComma(const char& c) {
   return c == ',';
 }
@@ -271,6 +279,13 @@ std::string parseArgs(
       usage();
       return {};
     }
+  }
+
+  if (const char* env_p = std::getenv("THRIFT_INCLUDE_PATH")) {
+    std::vector<std::string> components;
+    boost::algorithm::split(components, env_p, isPathSeparator);
+    pparams.incl_searchpath.insert(
+        pparams.incl_searchpath.end(), components.begin(), components.end());
   }
 
   // You gotta generate something!
