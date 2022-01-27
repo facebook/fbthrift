@@ -127,7 +127,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
       cancelTimeout();
       auto metadata = makeResponseRpcMetadata(header_.extractAllWriteHeaders());
       if (crc32c) {
-        metadata.crc32c_ref() = *crc32c;
+        metadata.crc32c() = *crc32c;
       }
       auto alive = sendReplyInternal(
           std::move(metadata), std::move(response).buffer(), std::move(stream));
@@ -148,7 +148,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
       cancelTimeout();
       auto metadata = makeResponseRpcMetadata(header_.extractAllWriteHeaders());
       if (crc32c) {
-        metadata.crc32c_ref() = *crc32c;
+        metadata.crc32c() = *crc32c;
       }
       sendReplyInternal(
           std::move(metadata), std::move(response).buffer(), std::move(stream));
@@ -168,7 +168,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
       cancelTimeout();
       auto metadata = makeResponseRpcMetadata(header_.extractAllWriteHeaders());
       if (crc32c) {
-        metadata.crc32c_ref() = *crc32c;
+        metadata.crc32c() = *crc32c;
       }
       sendReplyInternal(
           std::move(metadata),
@@ -189,7 +189,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
       cancelTimeout();
       auto metadata = makeResponseRpcMetadata(header_.extractAllWriteHeaders());
       if (crc32c) {
-        metadata.crc32c_ref() = *crc32c;
+        metadata.crc32c() = *crc32c;
       }
       auto alive = sendReplyInternal(
           std::move(metadata),

@@ -121,7 +121,7 @@ inline T unpackPayload(rocket::Payload&& payload) {
   }
   if constexpr (uncompressPayload) {
     auto data = std::move(payload).data();
-    if (auto compression = t.metadata.compression_ref()) {
+    if (auto compression = t.metadata.compression()) {
       data = uncompressBuffer(std::move(data), *compression);
     }
     unpackCompact(t.payload, std::move(data));

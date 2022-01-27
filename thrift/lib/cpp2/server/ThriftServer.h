@@ -1066,11 +1066,11 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
       auto requestPayload = rocket::unpack<RequestPayload>(stub.clonePayload());
       payload_ = std::move(*requestPayload->payload);
       auto& metadata = requestPayload->metadata;
-      if (metadata.otherMetadata_ref()) {
-        headers_ = std::move(*requestPayload->metadata.otherMetadata_ref());
+      if (metadata.otherMetadata()) {
+        headers_ = std::move(*requestPayload->metadata.otherMetadata());
       }
-      clientId_ = metadata.clientId_ref().to_optional();
-      serviceTraceMeta_ = metadata.serviceTraceMeta_ref().to_optional();
+      clientId_ = metadata.clientId().to_optional();
+      serviceTraceMeta_ = metadata.serviceTraceMeta().to_optional();
       auto req = stub.getRequest();
       DCHECK(
           req != nullptr || finishedTimestamp_.time_since_epoch().count() != 0);

@@ -125,7 +125,7 @@ class Enum : public MetadataTypeInterface {
   void writeAndGenType(ThriftType& ty, ThriftMetadata& metadata) override {
     EnumMetadata<E>::gen(metadata);
     ::apache::thrift::metadata::ThriftEnumType tyEnum;
-    tyEnum.name_ref() = name_;
+    tyEnum.name() = name_;
     ty.t_enum_ref() = ::std::move(tyEnum);
   }
 
@@ -140,7 +140,7 @@ class Struct : public MetadataTypeInterface {
   void writeAndGenType(ThriftType& ty, ThriftMetadata& metadata) override {
     StructMetadata<S>::gen(metadata);
     ::apache::thrift::metadata::ThriftStructType tyStruct;
-    tyStruct.name_ref() = name_;
+    tyStruct.name() = name_;
     ty.t_struct_ref() = ::std::move(tyStruct);
   }
 
@@ -155,7 +155,7 @@ class Union : public MetadataTypeInterface {
   void writeAndGenType(ThriftType& ty, ThriftMetadata& metadata) override {
     StructMetadata<U>::gen(metadata);
     ::apache::thrift::metadata::ThriftUnionType tyUnion;
-    tyUnion.name_ref() = name_;
+    tyUnion.name() = name_;
     ty.t_union_ref() = ::std::move(tyUnion);
   }
 
@@ -174,9 +174,9 @@ class Typedef : public MetadataTypeInterface {
         structured_annotations_(::std::move(structured_annotations)) {}
   void writeAndGenType(ThriftType& ty, ThriftMetadata& metadata) override {
     ::apache::thrift::metadata::ThriftTypedefType tyTypedef;
-    tyTypedef.name_ref() = name_;
+    tyTypedef.name() = name_;
     tyTypedef.underlyingType_ref() = ::std::make_unique<ThriftType>();
-    tyTypedef.structured_annotations_ref() = structured_annotations_;
+    tyTypedef.structured_annotations() = structured_annotations_;
     underlyingType_->writeAndGenType(*tyTypedef.underlyingType_ref(), metadata);
     ty.t_typedef_ref() = ::std::move(tyTypedef);
   }
