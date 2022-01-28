@@ -555,17 +555,9 @@ Const:
   "=" ConstValue Annotations CommaOrSemicolonOptional
     {
       driver.debug("DefinitionAttrs Const => tok_const FieldType Identifier = ConstValue Annotations");
-      if (driver.mode == parsing_mode::PROGRAM) {
-        $$ = new t_const(driver.program, std::move($3), std::move($4), own($7));
-        driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-        driver.finish_def($$, @$, own($1), own($8));
-      } else {
-        // TODO(afuller): Looks like a bug where driver.finish_def is never called in this case.
-        delete $1;
-        delete $7;
-        delete $8;
-        $$ = nullptr;
-      }
+      $$ = new t_const(driver.program, std::move($3), std::move($4), own($7));
+      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
+      driver.finish_def($$, @$, own($1), own($8));
     }
 
 ConstValue:
