@@ -1137,6 +1137,11 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     bool startedProcessing_;
   };
 
+  struct ServerIOMemory {
+    size_t ingress;
+    size_t egress;
+  };
+
   struct ConnectionSnapshot {
     size_t numActiveRequests{0};
     size_t numPendingWrites{0};
@@ -1149,6 +1154,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     RecentRequestCounter::Values recentCounters;
     RequestSnapshots requests;
     ConnectionSnapshots connections;
+    ServerIOMemory memory;
   };
   struct SnapshotOptions {
     std::chrono::microseconds connectionsAgeMax;

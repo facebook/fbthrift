@@ -1168,10 +1168,16 @@ folly::SemiFuture<ThriftServer::ServerSnapshot> ThriftServer::getServerSnapshot(
               }
             });
           }
+
+          ServerIOMemory serverIOMemory;
+          serverIOMemory.ingress = worker->getIngressMemoryTracker().getUsage();
+          serverIOMemory.egress = worker->getEgressMemoryTracker().getUsage();
+
           return WorkerSnapshot{
               worker->getRequestsRegistry()->getRequestCounter().get(),
               std::move(requestSnapshots),
-              std::move(connectionSnapshots)};
+              std::move(connectionSnapshots),
+              std::move(serverIOMemory)};
         });
     tasks.emplace_back(std::move(fut));
   });
@@ -1181,7 +1187,7 @@ folly::SemiFuture<ThriftServer::ServerSnapshot> ThriftServer::getServerSnapshot(
           [](std::vector<WorkerSnapshot> workerSnapshots) -> ServerSnapshot {
             ServerSnapshot ret{};
 
-            // Sum all request and connection counts
+            // Sum all request and connection counts and memory usages
             size_t numRequests = 0;
             size_t numConnections = 0;
             for (const auto& workerSnapshot : workerSnapshots) {
@@ -1193,10 +1199,12 @@ folly::SemiFuture<ThriftServer::ServerSnapshot> ThriftServer::getServerSnapshot(
               }
               numRequests += workerSnapshot.requests.size();
               numConnections += workerSnapshot.connections.size();
+              ret.memory.ingress += workerSnapshot.memory.ingress;
+              ret.memory.egress += workerSnapshot.memory.egress;
             }
 
-            // Move all RequestSnapshots and ConnectionSnapshots to
-            // ServerSnapshot
+            // Move all RequestSnapshots, ServerIOMemory and ConnectionSnapshots
+            // to ServerSnapshot
             ret.requests.reserve(numRequests);
             ret.connections.reserve(numConnections);
             for (auto& workerSnapshot : workerSnapshots) {
