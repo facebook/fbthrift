@@ -56,9 +56,9 @@ class H2ClientConnection : public ClientConnectionIf,
   struct FlowControlSettings {
    private:
     // Stream and initial receive control window are 10MB
-    static constexpr size_t kStreamWindow = 10 * (1 << 20);
+    static constexpr size_t kStreamWindow = 10U * (1U << 20);
     // Session (i.e connection) window is larger at 15MB
-    static constexpr size_t kSessionWindow = 1.5 * 10 * (1 << 20);
+    static constexpr size_t kSessionWindow = 15U * (1U << 20);
 
    public:
     FlowControlSettings()
