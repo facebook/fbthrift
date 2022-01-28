@@ -455,14 +455,8 @@ class parsing_driver {
       std::unique_ptr<t_annotations> annotations);
 
   // Adds a definition to the program.
-  t_ref<t_const> add_def(std::unique_ptr<t_const> node);
-  t_ref<t_interaction> add_def(std::unique_ptr<t_interaction> node);
-  t_ref<t_service> add_def(std::unique_ptr<t_service> node);
-  t_ref<t_typedef> add_def(std::unique_ptr<t_typedef> node);
-  t_ref<t_struct> add_def(std::unique_ptr<t_struct> node);
-  t_ref<t_union> add_def(std::unique_ptr<t_union> node);
-  t_ref<t_exception> add_def(std::unique_ptr<t_exception> node);
-  t_ref<t_enum> add_def(std::unique_ptr<t_enum> node);
+  t_ref<t_named> add_def(std::unique_ptr<t_named> node);
+
   void add_include(std::string name);
 
   t_field_id to_field_id(int64_t int_const);
@@ -565,18 +559,6 @@ class parsing_driver {
       return false;
     }
     return true;
-  }
-
-  // Updates the scope cache and returns true
-  // if the node should be added to the program. Otherwise,
-  // the driver itself takes ownership of node.
-  template <typename T>
-  bool should_add_type(std::unique_ptr<T>& node) {
-    if (should_add_node(node)) {
-      scope_cache->add_type(scoped_name(*node), node.get());
-      return true;
-    }
-    return false;
   }
 
   // Adds an unnamed typedef to the program

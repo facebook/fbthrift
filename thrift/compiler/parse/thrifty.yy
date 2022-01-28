@@ -217,7 +217,7 @@ class t_container_type;
 
 %type<std::string>                 Identifier
 %type<t_def_attrs*>                DefinitionAttrs
-%type<t_ref<t_node>>               Definition
+%type<t_named*>                    Definition
 
 %type<t_typedef*>                  Typedef
 
@@ -323,11 +323,8 @@ DestroyDocText: { driver.clear_doctext(); }
 /* We have to DestroyDocText here, otherwise it catches the doctext
    on the first real element. */
 HeaderList:
-  HeaderList DestroyDocText Header
-    {
-      driver.debug("HeaderList -> HeaderList Header");
-    }
-|   { driver.debug("HeaderList -> "); }
+  HeaderList DestroyDocText Header { driver.debug("HeaderList -> HeaderList Header"); }
+|                                  { driver.debug("HeaderList -> "); }
 
 Header:
   tok_include tok_literal
@@ -378,50 +375,19 @@ DefinitionList:
   DefinitionList Definition
     {
       driver.debug("DefinitionList -> DefinitionList Definition");
+      driver.add_def(own($2));
     }
 |   { driver.debug("DefinitionList -> "); }
 
 Definition:
-  Const
-    {
-      driver.debug("Definition -> Const");
-      $$ = driver.add_def(own($1));
-    }
-| Typedef
-    {
-      driver.debug("Definition -> Typedef");
-      $$ = driver.add_def(own($1));
-    }
-| Enum
-    {
-      driver.debug("Definition -> Enum");
-      $$ = driver.add_def(own($1));
-    }
-| Struct
-    {
-      driver.debug("Definition -> Struct");
-      $$ = driver.add_def(own($1));
-    }
-| Union
-    {
-      driver.debug("Definition -> Union");
-      $$ = driver.add_def(own($1));
-    }
-| Exception
-    {
-      driver.debug("Definition -> Exception");
-      $$ = driver.add_def(own($1));
-    }
-| Service
-    {
-      driver.debug("Definition -> Service");
-      $$ = driver.add_def(own($1));
-    }
-| Interaction
-    {
-      driver.debug("Definition -> Interaction");
-      $$ = driver.add_def(own($1));
-    }
+  Const       { $$ = $1; }
+| Typedef     { $$ = $1; }
+| Enum        { $$ = $1; }
+| Struct      { $$ = $1; }
+| Union       { $$ = $1; }
+| Exception   { $$ = $1; }
+| Service     { $$ = $1; }
+| Interaction { $$ = $1; }
 
 Typedef:
   DefinitionAttrs tok_typedef FieldType Identifier

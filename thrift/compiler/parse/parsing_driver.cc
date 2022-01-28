@@ -680,77 +680,32 @@ void parsing_driver::finish_def(
   finish_def(node, loc, std::move(attrs), std::move(annotations));
 }
 
-t_ref<t_const> parsing_driver::add_def(std::unique_ptr<t_const> node) {
-  t_ref<t_const> result(node.get());
+t_ref<t_named> parsing_driver::add_def(std::unique_ptr<t_named> node) {
+  t_ref<t_named> result(node.get());
   if (should_add_node(node)) {
-    scope_cache->add_constant(scoped_name(*node), node.get());
-    program->add_const(std::move(node));
-  }
-  return result;
-}
-t_ref<t_interaction> parsing_driver::add_def(
-    std::unique_ptr<t_interaction> node) {
-  t_ref<t_interaction> result(node.get());
-  if (should_add_node(node)) {
-    scope_cache->add_interaction(scoped_name(*node), node.get());
-    program->add_interaction(std::move(node));
-  }
-  return result;
-}
-
-t_ref<t_service> parsing_driver::add_def(std::unique_ptr<t_service> node) {
-  t_ref<t_service> result(node.get());
-  assert(!node->is_interaction());
-  if (should_add_node(node)) {
-    scope_cache->add_service(scoped_name(*node), node.get());
-    program->add_service(std::move(node));
-  }
-  return result;
-}
-
-t_ref<t_typedef> parsing_driver::add_def(std::unique_ptr<t_typedef> node) {
-  t_ref<t_typedef> result(node.get());
-  if (should_add_type(node)) {
-    program->add_typedef(std::move(node));
-  }
-  return result;
-}
-
-t_ref<t_struct> parsing_driver::add_def(std::unique_ptr<t_struct> node) {
-  t_ref<t_struct> result(node.get());
-  if (should_add_type(node)) {
-    program->add_struct(std::move(node));
-  }
-  return result;
-}
-
-t_ref<t_union> parsing_driver::add_def(std::unique_ptr<t_union> node) {
-  t_ref<t_union> result(node.get());
-  if (should_add_type(node)) {
-    program->add_struct(std::move(node));
-  }
-  return result;
-}
-
-t_ref<t_exception> parsing_driver::add_def(std::unique_ptr<t_exception> node) {
-  t_ref<t_exception> result(node.get());
-  if (should_add_type(node)) {
-    program->add_xception(std::move(node));
-  }
-  return result;
-}
-
-t_ref<t_enum> parsing_driver::add_def(std::unique_ptr<t_enum> node) {
-  t_ref<t_enum> result(node.get());
-
-  if (should_add_type(node)) {
-    // Register enum value names in scope.
-    for (const auto& value : node->consts()) {
-      // TODO(afuller): Remove ability to access unscoped enum values.
-      scope_cache->add_constant(scoped_name(value), &value);
-      scope_cache->add_constant(scoped_name(*node, value), &value);
+    // Add to scope.
+    // TODO(afuller): Move program level scope management to t_program.
+    if (auto* tnode = dynamic_cast<t_interaction*>(node.get())) {
+      scope_cache->add_interaction(scoped_name(*node), tnode);
+    } else if (auto* tnode = dynamic_cast<t_service*>(node.get())) {
+      scope_cache->add_service(scoped_name(*node), tnode);
+    } else if (auto* tnode = dynamic_cast<t_const*>(node.get())) {
+      scope_cache->add_constant(scoped_name(*node), tnode);
+    } else if (auto* tnode = dynamic_cast<t_enum*>(node.get())) {
+      scope_cache->add_type(scoped_name(*node), tnode);
+      // Register enum value names in scope.
+      for (const auto& value : tnode->consts()) {
+        // TODO(afuller): Remove ability to access unscoped enum values.
+        scope_cache->add_constant(scoped_name(value), &value);
+        scope_cache->add_constant(scoped_name(*node, value), &value);
+      }
+    } else if (auto* tnode = dynamic_cast<t_type*>(node.get())) {
+      scope_cache->add_type(scoped_name(*node), tnode);
+    } else {
+      throw std::logic_error("Unsupported declaration.");
     }
-    program->add_enum(std::move(node));
+    // Add to program.
+    program->add_definition(std::move(node));
   }
   return result;
 }
