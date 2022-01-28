@@ -392,7 +392,7 @@ Definition:
 Typedef:
   DefinitionAttrs tok_typedef FieldType Identifier
     {
-      driver.start_def(DefType::Typedef);
+      driver.begin_def(DefType::Typedef);
     }
    Annotations
     {
@@ -400,7 +400,8 @@ Typedef:
           "Identifier Annotations");
       $$ = new t_typedef(driver.program, std::move($4), std::move($3));
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.finish_def($$, @$, own($1), own($6));
+      driver.end_def(*$$);
+      driver.set_attributes(*$$, @$, own($1), own($6));
     }
 
 CommaOrSemicolon:
@@ -449,7 +450,7 @@ Double:
 Enum:
   DefinitionAttrs tok_enum Identifier
     {
-      driver.start_def(DefType::Enum);
+      driver.begin_def(DefType::Enum);
     }
   "{" EnumValueList "}" Annotations
     {
@@ -458,7 +459,8 @@ Enum:
       auto values = own($6);
       $$->set_values(std::move(*values));
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.finish_def($$, @$, own($1), own($8));
+      driver.end_def(*$$);
+      driver.set_attributes(*$$, @$, own($1), own($8));
     }
 
 EnumValueList:
@@ -477,15 +479,16 @@ EnumValueList:
 EnumValueDef:
   DefinitionAttrs EnumValue
     {
-      driver.start_def(DefType::EnumValue);
+      driver.begin_def(DefType::EnumValue);
     }
   Annotations CommaOrSemicolonOptional
     {
       driver.debug("EnumValueDef => DefinitionAttrs EnumValue "
         "Annotations CommaOrSemicolonOptional");
-      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.finish_def($2, @$, own($1), own($4));
       $$ = $2;
+      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
+      driver.end_def(*$$);
+      driver.set_attributes(*$$, @$, own($1), own($4));
     }
 
 EnumValue:
@@ -516,14 +519,15 @@ EnumValue:
 Const:
   DefinitionAttrs tok_const FieldType Identifier
     {
-      driver.start_def(DefType::Const);
+      driver.begin_def(DefType::Const);
     }
   "=" ConstValue Annotations CommaOrSemicolonOptional
     {
       driver.debug("DefinitionAttrs Const => tok_const FieldType Identifier = ConstValue Annotations");
       $$ = new t_const(driver.program, std::move($3), std::move($4), own($7));
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.finish_def($$, @$, own($1), own($8));
+      driver.end_def(*$$);
+      driver.set_attributes(*$$, @$, own($1), own($8));
     }
 
 ConstValue:
@@ -674,7 +678,7 @@ ConstStructContents:
 Struct:
   DefinitionAttrs tok_struct Identifier
     {
-      driver.start_def(DefType::Struct);
+      driver.begin_def(DefType::Struct);
     }
   "{" FieldList "}" Annotations
     {
@@ -682,13 +686,14 @@ Struct:
         "{ FieldList } Annotations");
       $$ = new t_struct(driver.program, std::move($3));
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.finish_def($$, @$, own($1), own($6), own($8));
+      driver.end_def(*$$, own($6));
+      driver.set_attributes(*$$, @$, own($1), own($8));
     }
 
 Union:
   DefinitionAttrs tok_union Identifier
     {
-      driver.start_def(DefType::Union);
+      driver.begin_def(DefType::Union);
     }
   "{" FieldList "}" Annotations
     {
@@ -696,14 +701,15 @@ Union:
         "{ FieldList } Annotations");
       $$ = new t_union(driver.program, std::move($3));
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.finish_def($$, @$, own($1), own($6), own($8));
+      driver.end_def(*$$, own($6));
+      driver.set_attributes(*$$, @$, own($1), own($8));
     }
 
 Exception:
   // TODO(afuller): Either make the qualifiers order agnostic or produce a better error message.
   DefinitionAttrs ErrorSafety ErrorKind ErrorBlame tok_exception Identifier
     {
-      driver.start_def(DefType::Exception);
+      driver.begin_def(DefType::Exception);
     }
   "{" FieldList "}" Annotations
     {
@@ -714,7 +720,8 @@ Exception:
       $$->set_kind($3);
       $$->set_blame($4);
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.finish_def($$, @$, own($1), own($9), own($11));
+      driver.end_def(*$$, own($9));
+      driver.set_attributes(*$$, @$, own($1), own($11));
     }
 
 ErrorSafety:
@@ -735,7 +742,7 @@ ErrorBlame:
 Service:
   DefinitionAttrs tok_service Identifier
     {
-      driver.start_def(DefType::Service);
+      driver.begin_def(DefType::Service);
     }
   Extends "{" FunctionList "}" Annotations
     {
@@ -743,7 +750,8 @@ Service:
         "Identifier Extends { FunctionList } Annotations");
       $$ = new t_service(driver.program, std::move($3), $5);
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.finish_def($$, @$, own($1), own($7), own($9));
+      driver.end_def(*$$, own($7));
+      driver.set_attributes(*$$, @$, own($1), own($9));
     }
 
 Extends:
@@ -757,14 +765,15 @@ Extends:
 Interaction:
   DefinitionAttrs tok_interaction Identifier
     {
-      driver.start_def(DefType::Interaction);
+      driver.begin_def(DefType::Interaction);
     }
   "{" FunctionList "}" Annotations
     {
       driver.debug("Interaction -> tok_interaction Identifier { FunctionList }");
       $$ = new t_interaction(driver.program, std::move($3));
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.finish_def($$, @$, own($1), own($6), own($8));
+      driver.end_def(*$$, own($6));
+      driver.set_attributes(*$$, @$, own($1), own($8));
     }
 
 FunctionList:
@@ -783,7 +792,7 @@ FunctionList:
 Function:
   DefinitionAttrs FunctionQualifier FunctionType Identifier
     {
-      driver.start_def(DefType::Function);
+      driver.begin_def(DefType::Function);
     }
   "(" ParamList ")" MaybeThrows Annotations CommaOrSemicolonOptional
     {
@@ -797,7 +806,8 @@ Function:
 
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
       driver.avoid_next_token_loc($10 == nullptr, @$, @9);
-      driver.finish_def(func.get(), @$, own($1), own($10));
+      driver.end_def(*func);
+      driver.set_attributes(*func, @$, own($1), own($10));
       $$ = func.release();
     }
   | tok_performs FieldType ";"
@@ -865,7 +875,7 @@ FieldList:
 Field:
   DefinitionAttrs FieldIdentifier FieldQualifier FieldType Identifier
     {
-      driver.start_def(DefType::Field);
+      driver.begin_def(DefType::Field);
     }
   FieldValue Annotations CommaOrSemicolonOptional
     {
@@ -918,7 +928,8 @@ Field:
         $$->set_default_value(own($7));
       }
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.finish_def($$, @$, own($1), own($8));
+      driver.end_def(*$$);
+      driver.set_attributes(*$$, @$, own($1), own($8));
     }
 
 FieldIdentifier:

@@ -435,23 +435,25 @@ void parsing_driver::set_annotations(
 }
 
 void parsing_driver::set_attributes(
-    t_named* node,
+    t_named& node,
+    const YYLTYPE& loc,
     std::unique_ptr<t_def_attrs> attrs,
-    std::unique_ptr<t_annotations> annotations) {
+    std::unique_ptr<t_annotations> annotations) const {
+  node.set_src_range(get_source_range(loc));
   if (attrs != nullptr) {
     if (attrs->doc) {
-      node->set_doc(std::move(*attrs->doc));
+      node.set_doc(std::move(*attrs->doc));
     }
     if (attrs->struct_annotations != nullptr) {
       for (auto& an : *attrs->struct_annotations) {
-        node->add_structured_annotation(std::move(an));
+        node.add_structured_annotation(std::move(an));
       }
     }
   }
-  set_annotations(node, std::move(annotations));
+  set_annotations(&node, std::move(annotations));
 }
 
-source_range parsing_driver::get_source_range(const YYLTYPE& loc) {
+source_range parsing_driver::get_source_range(const YYLTYPE& loc) const {
   return source_range(
       *program, loc.begin.line, loc.begin.column, loc.end.line, loc.end.column);
 }
@@ -637,47 +639,33 @@ t_type_ref parsing_driver::new_type_ref(
       std::move(annotations)));
 }
 
-void parsing_driver::start_def(DefType type) {
+void parsing_driver::begin_def(DefType type) {
   def_stack_.push({type, scanner->get_lineno()});
   if (is_field_scope(type)) {
     next_id_stack_.push(-1);
   }
 }
 
-void parsing_driver::finish_def(
-    t_named* node,
-    const YYLTYPE& loc,
-    std::unique_ptr<t_def_attrs> attrs,
-    std::unique_ptr<t_annotations> annotations) {
-  node->set_lineno(def_stack_.top().lineno);
-  set_attributes(node, std::move(attrs), std::move(annotations));
-  node->set_src_range(get_source_range(loc));
+void parsing_driver::end_def(t_named& node) {
+  node.set_lineno(def_stack_.top().lineno);
   if (is_field_scope(def_stack_.top().type)) {
     next_id_stack_.pop();
   }
   def_stack_.pop();
 }
 
-void parsing_driver::finish_def(
-    t_structured* node,
-    const YYLTYPE& loc,
-    std::unique_ptr<t_def_attrs> attrs,
-    std::unique_ptr<t_field_list> fields,
-    std::unique_ptr<t_annotations> annotations) {
-  append_fields(*node, std::move(*fields));
-  finish_def(node, loc, std::move(attrs), std::move(annotations));
+void parsing_driver::end_def(
+    t_structured& node, std::unique_ptr<t_field_list> fields) {
+  append_fields(node, std::move(*fields));
+  end_def(node);
 }
 
-void parsing_driver::finish_def(
-    t_interface* node,
-    const YYLTYPE& loc,
-    std::unique_ptr<t_def_attrs> attrs,
-    std::unique_ptr<t_function_list> functions,
-    std::unique_ptr<t_annotations> annotations) {
+void parsing_driver::end_def(
+    t_interface& node, std::unique_ptr<t_function_list> functions) {
   if (functions != nullptr) {
-    node->set_functions(std::move(*functions));
+    node.set_functions(std::move(*functions));
   }
-  finish_def(node, loc, std::move(attrs), std::move(annotations));
+  end_def(node);
 }
 
 t_ref<t_named> parsing_driver::add_def(std::unique_ptr<t_named> node) {

@@ -378,7 +378,7 @@ class parsing_driver {
   }
 
   // Returns the source range object containing the location information.
-  source_range get_source_range(const YYLTYPE& loc);
+  source_range get_source_range(const YYLTYPE& loc) const;
 
   void reset_locations();
   void compute_location(YYLTYPE& yylloc, YYSTYPE& yylval, const char* text);
@@ -432,27 +432,20 @@ class parsing_driver {
       std::unique_ptr<t_annotations> annotations,
       bool is_const = false);
 
-  // Start parsing a definition.
-  void start_def(DefType type);
+  // Record all the stated needed to begin parsing a defintion.
+  void begin_def(DefType type);
 
-  // Finish parsing a definition.
-  void finish_def(
-      t_named* node,
+  // Fix up the definition if needed, and destroy any assciated
+  void end_def(t_named& node);
+  void end_def(t_structured& node, std::unique_ptr<t_field_list> fields);
+  void end_def(t_interface& node, std::unique_ptr<t_function_list> functions);
+
+  // Populate the attributes on the given node.
+  void set_attributes(
+      t_named& node,
       const YYLTYPE& loc,
       std::unique_ptr<t_def_attrs> attrs,
-      std::unique_ptr<t_annotations> annotations);
-  void finish_def(
-      t_structured* node,
-      const YYLTYPE& loc,
-      std::unique_ptr<t_def_attrs> attrs,
-      std::unique_ptr<t_field_list> fields,
-      std::unique_ptr<t_annotations> annotations);
-  void finish_def(
-      t_interface* node,
-      const YYLTYPE& loc,
-      std::unique_ptr<t_def_attrs> attrs,
-      std::unique_ptr<t_function_list> functions,
-      std::unique_ptr<t_annotations> annotations);
+      std::unique_ptr<t_annotations> annotations) const;
 
   // Adds a definition to the program.
   t_ref<t_named> add_def(std::unique_ptr<t_named> node);
@@ -535,12 +528,6 @@ class parsing_driver {
 
   std::stack<DefState> def_stack_;
   std::stack<int> next_id_stack_;
-
-  // Populate the attributes on the given node.
-  static void set_attributes(
-      t_named* node,
-      std::unique_ptr<t_def_attrs> attrs,
-      std::unique_ptr<t_annotations> annotations);
 
   /**
    * Parse a single .thrift file. The file to parse is stored in params.program.
