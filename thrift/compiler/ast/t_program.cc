@@ -26,6 +26,31 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
+void t_program::add_definition(std::unique_ptr<t_named> definition) {
+  assert(definition != nullptr);
+  // Index the node.
+  if (auto* node = dynamic_cast<t_exception*>(definition.get())) {
+    objects_.push_back(node);
+    exceptions_.push_back(node);
+  } else if (auto* node = dynamic_cast<t_struct*>(definition.get())) {
+    objects_.push_back(node);
+    structs_.push_back(node);
+  } else if (auto* node = dynamic_cast<t_interaction*>(definition.get())) {
+    interactions_.push_back(node);
+  } else if (auto* node = dynamic_cast<t_service*>(definition.get())) {
+    services_.push_back(node);
+  } else if (auto* node = dynamic_cast<t_enum*>(definition.get())) {
+    enums_.push_back(node);
+  } else if (auto* node = dynamic_cast<t_typedef*>(definition.get())) {
+    typedefs_.push_back(node);
+  } else if (auto* node = dynamic_cast<t_const*>(definition.get())) {
+    consts_.push_back(node);
+  }
+
+  // Transfer ownership of the definition.
+  definitions_.push_back(std::move(definition));
+}
+
 const std::string& t_program::get_namespace(const std::string& language) const {
   auto pos = namespaces_.find(language);
   static const auto& kEmpty = *new std::string();

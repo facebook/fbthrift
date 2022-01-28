@@ -73,57 +73,25 @@ class t_program : public t_node {
    */
   explicit t_program(std::string path) : path_(std::move(path)) {}
 
-  /**
-   * Set program elements
-   */
-  void add_typedef(std::unique_ptr<t_typedef> td) {
-    assert(td != nullptr);
-    typedefs_.push_back(td.get());
-    nodes_.push_back(std::move(td));
+  // Defintions, in the order they were added.
+  node_list_view<t_named> definitions() { return definitions_; }
+  node_list_view<const t_named> definitions() const { return definitions_; }
+  void add_definition(std::unique_ptr<t_named> definition);
+
+  // Concrete instantiation of a templated type.
+  node_list_view<t_templated_type> type_instantiations() { return type_insts_; }
+  node_list_view<const t_templated_type> type_instantiations() const {
+    return type_insts_;
   }
-  void add_enum(std::unique_ptr<t_enum> te) {
-    assert(te != nullptr);
-    enums_.push_back(te.get());
-    nodes_.push_back(std::move(te));
-  }
-  void add_const(std::unique_ptr<t_const> tc) {
-    assert(tc != nullptr);
-    consts_.push_back(tc.get());
-    nodes_.push_back(std::move(tc));
-  }
-  void add_struct(std::unique_ptr<t_struct> ts) {
-    assert(ts != nullptr);
-    objects_.push_back(ts.get());
-    structs_.push_back(ts.get());
-    nodes_.push_back(std::move(ts));
-  }
-  void add_exception(std::unique_ptr<t_exception> tx) {
-    assert(tx != nullptr);
-    objects_.push_back(tx.get());
-    exceptions_.push_back(tx.get());
-    nodes_.push_back(std::move(tx));
-  }
-  void add_service(std::unique_ptr<t_service> ts) {
-    assert(ts != nullptr);
-    services_.push_back(ts.get());
-    nodes_.push_back(std::move(ts));
-  }
-  void add_interaction(std::unique_ptr<t_interaction> ti) {
-    assert(ti != nullptr);
-    interactions_.push_back(ti.get());
-    nodes_.push_back(std::move(ti));
+  void add_type_instantiation(std::unique_ptr<t_templated_type> type_inst) {
+    assert(type_inst != nullptr);
+    type_insts_.emplace_back(std::move(type_inst));
   }
 
   void add_placeholder_typedef(std::unique_ptr<t_placeholder_typedef> ptd) {
     assert(ptd != nullptr);
     placeholder_typedefs_.push_back(ptd.get());
     nodes_.push_back(std::move(ptd));
-  }
-
-  // Adds a concrete instantiation of a templated type.
-  void add_type_instantiation(std::unique_ptr<t_templated_type> type_inst) {
-    assert(type_inst != nullptr);
-    type_insts_.emplace_back(std::move(type_inst));
   }
 
   void add_unnamed_typedef(std::unique_ptr<t_typedef> td) {
@@ -143,7 +111,7 @@ class t_program : public t_node {
   }
 
   /**
-   * Get program elements
+   * Get program elements by kind.
    */
   const std::vector<t_typedef*>& typedefs() const { return typedefs_; }
   const std::vector<t_enum*>& enums() const { return enums_; }
@@ -157,10 +125,6 @@ class t_program : public t_node {
   }
   const std::vector<t_interaction*>& interactions() const {
     return interactions_;
-  }
-  node_list_view<t_templated_type> type_instantiations() { return type_insts_; }
-  node_list_view<const t_templated_type> type_instantiations() const {
-    return type_insts_;
   }
 
   /**
@@ -279,6 +243,7 @@ class t_program : public t_node {
  private:
   // All the elements owned by this program.
   node_list<t_node> nodes_;
+  node_list<t_named> definitions_;
   node_list<t_templated_type> type_insts_;
 
   /**
@@ -306,6 +271,27 @@ class t_program : public t_node {
   // TODO(afuller): Remove everything below this comment. It is only provided
   // for backwards compatibility.
  public:
+  void add_typedef(std::unique_ptr<t_typedef> node) {
+    add_definition(std::move(node));
+  }
+  void add_enum(std::unique_ptr<t_enum> node) {
+    add_definition(std::move(node));
+  }
+  void add_const(std::unique_ptr<t_const> node) {
+    add_definition(std::move(node));
+  }
+  void add_struct(std::unique_ptr<t_struct> node) {
+    add_definition(std::move(node));
+  }
+  void add_exception(std::unique_ptr<t_exception> node) {
+    add_definition(std::move(node));
+  }
+  void add_service(std::unique_ptr<t_service> node) {
+    add_definition(std::move(node));
+  }
+  void add_interaction(std::unique_ptr<t_interaction> node) {
+    add_definition(std::move(node));
+  }
   void add_xception(std::unique_ptr<t_exception> tx) {
     add_exception(std::move(tx));
   }

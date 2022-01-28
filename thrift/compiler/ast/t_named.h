@@ -37,6 +37,8 @@ class t_const;
  */
 class t_named : public t_node {
  public:
+  ~t_named() override;
+
   void set_name(const std::string& name) { name_ = name; }
   const std::string& name() const { return name_; }
 
@@ -53,7 +55,6 @@ class t_named : public t_node {
   // t_named is abstract.
   t_named() = default;
   explicit t_named(std::string name) : name_(std::move(name)) {}
-  ~t_named();
 
   // TODO(afuller): make private.
   std::string name_;
