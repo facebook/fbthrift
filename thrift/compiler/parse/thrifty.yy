@@ -881,47 +881,7 @@ Field:
     {
       driver.debug("Field => DefinitionAttrs FieldIdentifier FieldQualifier "
         "FieldType Identifier FieldValue Annotations CommaOrSemicolonOptional");
-      t_field_id id;
-      if ($2 == boost::none) {
-        // Auto assign an id.
-        id = driver.allocate_field_id($5);
-      } else {
-        id = *$2;
-        if (id <= 0) {
-          // TODO(afuller): Move this validation to ast_validator.
-          if (driver.params.allow_neg_field_keys) {
-            /*
-              * allow_neg_field_keys exists to allow users to add explicitly
-              * specified id values to old .thrift files without breaking
-              * protocol compatibility.
-              */
-            if (id != driver.next_field_id()) {
-              /*
-                * warn if the user-specified negative value isn't what
-                * thrift would have auto-assigned.
-                */
-              driver.warning([&](auto& o) {
-                o << "Nonpositive field id (" << id << ") differs from what would "
-                  << "be auto-assigned by thrift (" << driver.next_field_id() << ").";
-              });
-            }
-          } else if (id == driver.next_field_id()) {
-            driver.warning([&](auto& o) {
-              o << "Nonpositive value (" << id << ") not allowed as a field id.";
-            });
-          } else {
-            // TODO(afuller): Make ignoring the user provided value a failure.
-            driver.warning([&](auto& o) {
-              o << "Nonpositive field id (" << id<< ") differs from what is auto-"
-                  "assigned by thrift. The id must positive or " << driver.next_field_id() << ".";
-            });
-            // Ignore user provided value and auto assign an id.
-            id = driver.allocate_field_id($5);
-            $2 = boost::none;
-          }
-          driver.reserve_field_id(id);
-        }
-      }
+      t_field_id id = driver.maybe_allocate_field_id($2, $5);
       $$ = new t_field(std::move($4), std::move($5), id, $2 != boost::none);
       $$->set_qualifier($3);
       if ($7 != nullptr) {

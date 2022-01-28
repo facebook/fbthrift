@@ -773,6 +773,53 @@ void parsing_driver::reserve_field_id(t_field_id id) {
   }
 }
 
+t_field_id parsing_driver::maybe_allocate_field_id(
+    boost::optional<t_field_id>& idlId, const std::string& name) {
+  if (idlId == boost::none) {
+    // Auto assign an id.
+    return allocate_field_id(name);
+  }
+
+  t_field_id id = *idlId;
+  if (id <= 0) {
+    // TODO(afuller): Move this validation to ast_validator.
+    if (params.allow_neg_field_keys) {
+      /*
+       * allow_neg_field_keys exists to allow users to add explicitly
+       * specified id values to old .thrift files without breaking
+       * protocol compatibility.
+       */
+      if (id != next_field_id()) {
+        /*
+         * warn if the user-specified negative value isn't what
+         * thrift would have auto-assigned.
+         */
+        warning([&](auto& o) {
+          o << "Nonpositive field id (" << id << ") differs from what would "
+            << "be auto-assigned by thrift (" << next_field_id() << ").";
+        });
+      }
+    } else if (id == next_field_id()) {
+      warning([&](auto& o) {
+        o << "Nonpositive value (" << id << ") not allowed as a field id.";
+      });
+    } else {
+      // TODO(afuller): Make ignoring the user provided value a failure.
+      warning([&](auto& o) {
+        o << "Nonpositive field id (" << id
+          << ") differs from what is auto-"
+             "assigned by thrift. The id must positive or "
+          << next_field_id() << ".";
+      });
+      // Ignore user provided value and auto assign an id.
+      id = allocate_field_id(name);
+      idlId = boost::none;
+    }
+    reserve_field_id(id);
+  }
+  return id;
+}
+
 uint64_t parsing_driver::parse_integer(const char* text, int offset, int base) {
   errno = 0;
   uint64_t val = strtoull(text + offset, nullptr, base);

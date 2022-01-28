@@ -463,6 +463,8 @@ class parsing_driver {
   t_field_id next_field_id() const { return next_id_stack_.top(); }
   t_field_id allocate_field_id(const std::string& name);
   void reserve_field_id(t_field_id id);
+  t_field_id maybe_allocate_field_id(
+      boost::optional<t_field_id>& idlId, const std::string& name);
 
   // Reports a failure if the parsed value cannot fit in the widest supported
   // representation, i.e. int64_t and double.
