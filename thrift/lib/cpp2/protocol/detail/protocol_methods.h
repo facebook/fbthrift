@@ -81,30 +81,20 @@ namespace thrift {
 namespace detail {
 namespace pm {
 
-// This macro backports "if constexpr" into C++-pre-17. The idea is, we form a
-// tuple of two lambdas (one for when the condition is true, and one for when
-// it's false), and use get<> to select the lambda to actually invoke, by
-// passing the condition as the index.
-// There's a wrinkle; the body of the lambda still has to parse without errors,
-// which it won't do if we call a method that doesn't exist within its body that
-// doesn't depend on a template parameter. So we make the lambdas take an auto
-// argument, and the types of anything we need to by making them depend on that
-// argument. This is TypeHider.
-//
-// This is a fairly ugly hack. To get rid of it, we need to either:
-// - Drop support for earlier versions of C++.
-// - Teach all protocols, and dependent code, about context-taking methods.
-// Neither of these is ideal in the short term. Eventually, we should probably
-// do both.
-#define THRIFT_PROTOCOL_METHODS_UNPAREN(...) __VA_ARGS__
-#define THRIFT_PROTOCOL_METHODS_IF_THEN_ELSE_CONSTEXPR(cond, T, E) \
-  std::get<(cond) ? 0 : 1>(std::forward_as_tuple(                  \
-      [&](auto _) { THRIFT_PROTOCOL_METHODS_UNPAREN T },           \
-      [&](auto _) { THRIFT_PROTOCOL_METHODS_UNPAREN E }))(TypeHider{})
-struct TypeHider {
-  template <typename T>
-  T& operator()(T& t) {
-    return t;
+// Simulate if constexpr in C++14
+template <bool cond>
+struct IfConstexpr {
+  template <class F, class G>
+  auto operator()(F f, G) {
+    return f;
+  }
+};
+
+template <>
+struct IfConstexpr<false> {
+  template <class F, class G>
+  auto operator()(F, G g) {
+    return g;
   }
 };
 
@@ -318,10 +308,9 @@ struct protocol_methods;
   }                                                                          \
   template <typename Protocol, typename Context>                             \
   static void readWithContext(Protocol& protocol, Type& out, Context& ctx) { \
-    THRIFT_PROTOCOL_METHODS_IF_THEN_ELSE_CONSTEXPR(                          \
-        Context::kAcceptsContext,                                            \
-        (_(protocol).read##Method##WithContext(out, ctx);),                  \
-        (_(protocol).read##Method(out);));                                   \
+    IfConstexpr<Context::kAcceptsContext>{}(                                 \
+        [&](auto& p) { p.read##Method##WithContext(out, ctx); },             \
+        [&](auto& p) { p.read##Method(out); })(protocol);                    \
   }                                                                          \
   template <typename Protocol>                                               \
   static std::size_t write(Protocol& protocol, Type const& in) {             \
@@ -365,10 +354,9 @@ THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(integral, std::int64_t, I64);
   template <typename Protocol, typename Context>                             \
   static void readWithContext(Protocol& protocol, Type& out, Context& ctx) { \
     SignedType tmp;                                                          \
-    THRIFT_PROTOCOL_METHODS_IF_THEN_ELSE_CONSTEXPR(                          \
-        Context::kAcceptsContext,                                            \
-        (_(protocol).read##Method##WithContext(tmp, ctx);),                  \
-        (_(protocol).read##Method(tmp);));                                   \
+    IfConstexpr<Context::kAcceptsContext>{}(                                 \
+        [&](auto& p) { p.read##Method##WithContext(tmp, ctx); },             \
+        [&](auto& p) { p.read##Method(tmp); })(protocol);                    \
     out = folly::to_unsigned(tmp);                                           \
   }                                                                          \
   template <typename Protocol>                                               \
@@ -444,8 +432,6 @@ struct protocol_methods<type_class::binary, Type> {
 
 #undef THRIFT_PROTOCOL_METHODS_REGISTER_SS_COMMON
 #undef THRIFT_PROTOCOL_METHODS_REGISTER_RW_COMMON
-#undef THRIFT_PROTOCOL_METHODS_IF_THEN_ELSE_CONSTEXPR
-#undef THRIFT_PROTOCOL_METHODS_UNPAREN
 
 /*
  * Enum Specialization
