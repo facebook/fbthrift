@@ -539,7 +539,7 @@ class mstch_cpp2_type : public mstch_type {
     return t_mstch_cpp2_generator::get_namespace_array(type_->program());
   }
   mstch::node type_class() { return cpp2::get_gen_type_class(*resolved_type_); }
-  mstch::node type_tag() { return context_->resolver().gen_type_tag(*type_); }
+  mstch::node type_tag() { return context_->resolver().get_type_tag(*type_); }
   mstch::node type_class_with_indirection() {
     return cpp2::get_gen_type_class_with_indirection(*resolved_type_);
   }

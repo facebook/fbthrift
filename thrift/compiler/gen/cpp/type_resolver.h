@@ -59,7 +59,10 @@ class type_resolver {
   }
 
   // Returns C++ type tag of given thrift type
-  std::string gen_type_tag(t_type const&);
+  const std::string& get_type_tag(t_type const& node) {
+    return detail::get_or_gen(
+        type_tag_cache_, &node, [&] { return gen_type_tag(node); });
+  }
 
   // Checks whether a t_type could resolve to a scalar.
   //
@@ -115,6 +118,7 @@ class type_resolver {
   std::map<std::pair<const t_type*, reference_type>, std::string>
       storage_type_cache_;
   std::unordered_map<const t_field*, std::string> adapter_storage_type_cache_;
+  std::unordered_map<const t_type*, std::string> type_tag_cache_;
 
   static const std::string& default_type(t_base_type::type btype);
   static const std::string& default_template(t_container::type ctype);
@@ -141,6 +145,8 @@ class type_resolver {
       const std::string& adapter,
       const std::string& standard_type,
       boost::optional<int16_t> field_id);
+
+  std::string gen_type_tag(t_type const&);
 
   const std::string& resolve(type_resolve_fn resolve_fn, const t_type* node) {
     return (this->*resolve_fn)(node);
