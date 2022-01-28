@@ -276,13 +276,13 @@ class MyStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
   static const char* __fbthrift_cpp2_gen_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<2, ::apache::thrift::type::i64_t>,
-    ::apache::thrift::type::field_t<1, ::apache::thrift::type::string_t>,
-    ::apache::thrift::type::field_t<3, ::apache::thrift::type::string_t>,
-    ::apache::thrift::type::field_t<4, ::apache::thrift::type::string_t>,
-    ::apache::thrift::type::field_t<5, ::apache::thrift::type::string_t>,
-    ::apache::thrift::type::field_t<6, ::apache::thrift::type::string_t>,
-    ::apache::thrift::type::field_t<7, ::apache::thrift::type::enum_t<::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourEnum>>>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::i64_t>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::string_t>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::string_t>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::string_t>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::string_t>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{6}, ::apache::thrift::type::string_t>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{7}, ::apache::thrift::type::enum_t<::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourEnum>>>
   >;
 
   void __fbthrift_clear();

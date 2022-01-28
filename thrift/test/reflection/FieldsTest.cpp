@@ -29,72 +29,68 @@ static_assert(
     std::is_same_v<
         struct_private_access::fields<test_cpp2::cpp_reflection::struct3>,
         fields<
-            field_t<2, i32_t>,
-            field_t<1, string_t>,
-            field_t<3, enum_t<::test_cpp2::cpp_reflection::enum1>>,
-            field_t<4, enum_t<::test_cpp2::cpp_reflection::enum2>>,
-            field_t<5, union_t<::test_cpp2::cpp_reflection::union1>>,
-            field_t<6, union_t<::test_cpp2::cpp_reflection::union2>>,
-            field_t<7, struct_t<::test_cpp2::cpp_reflection::struct1>>,
-            field_t<8, union_t<::test_cpp2::cpp_reflection::union2>>,
-            field_t<9, list<i32_t>>,
-            field_t<10, list<string_t>>,
-            field_t<11, list<string_t>>,
-            field_t<12, list<struct_t<::test_cpp2::cpp_reflection::structA>>>,
-            field_t<13, set<i32_t>>,
-            field_t<14, set<string_t>>,
-            field_t<15, set<string_t>>,
-            field_t<16, set<struct_t<::test_cpp2::cpp_reflection::structB>>>,
+            field_t<FieldId{2}, i32_t>,
+            field_t<FieldId{1}, string_t>,
+            field_t<FieldId{3}, enum_t<::test_cpp2::cpp_reflection::enum1>>,
+            field_t<FieldId{4}, enum_t<::test_cpp2::cpp_reflection::enum2>>,
+            field_t<FieldId{5}, union_t<::test_cpp2::cpp_reflection::union1>>,
+            field_t<FieldId{6}, union_t<::test_cpp2::cpp_reflection::union2>>,
+            field_t<FieldId{7}, struct_t<::test_cpp2::cpp_reflection::struct1>>,
+            field_t<FieldId{8}, union_t<::test_cpp2::cpp_reflection::union2>>,
+            field_t<FieldId{9}, list<i32_t>>,
+            field_t<FieldId{10}, list<string_t>>,
+            field_t<FieldId{11}, list<string_t>>,
             field_t<
-                17,
+                FieldId{12},
+                list<struct_t<::test_cpp2::cpp_reflection::structA>>>,
+            field_t<FieldId{13}, set<i32_t>>,
+            field_t<FieldId{14}, set<string_t>>,
+            field_t<FieldId{15}, set<string_t>>,
+            field_t<
+                FieldId{16},
+                set<struct_t<::test_cpp2::cpp_reflection::structB>>>,
+            field_t<
+                FieldId{17},
                 map<string_t, struct_t<::test_cpp2::cpp_reflection::structA>>>,
             field_t<
-                18,
+                FieldId{18},
                 map<string_t, struct_t<::test_cpp2::cpp_reflection::structB>>>,
-            field_t<19, map<binary_t, binary_t>>>>);
+            field_t<FieldId{19}, map<binary_t, binary_t>>>>);
 
 struct ExtractFieldsInfo {
   std::vector<int> ids;
   std::vector<std::type_index> tags;
 
-  template <int Id, class Tag>
+  template <FieldId Id, class Tag>
   void operator()(field_t<Id, Tag>) {
-    ids.push_back(Id);
+    ids.push_back(int(Id));
     tags.emplace_back(typeid(Tag));
   }
 };
 
 TEST(Fields, for_each) {
-  std::vector<int> expectedIds = {
+  const std::vector<int> expectedIds = {
       2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19};
-  std::vector<std::type_index> expectedTags;
-  expectedTags.emplace_back(typeid(i32_t));
-  expectedTags.emplace_back(typeid(string_t));
-  expectedTags.emplace_back(typeid(enum_t<::test_cpp2::cpp_reflection::enum1>));
-  expectedTags.emplace_back(typeid(enum_t<::test_cpp2::cpp_reflection::enum2>));
-  expectedTags.emplace_back(
-      typeid(union_t<::test_cpp2::cpp_reflection::union1>));
-  expectedTags.emplace_back(
-      typeid(union_t<::test_cpp2::cpp_reflection::union2>));
-  expectedTags.emplace_back(
-      typeid(struct_t<::test_cpp2::cpp_reflection::struct1>));
-  expectedTags.emplace_back(
-      typeid(union_t<::test_cpp2::cpp_reflection::union2>));
-  expectedTags.emplace_back(typeid(list<i32_t>));
-  expectedTags.emplace_back(typeid(list<string_t>));
-  expectedTags.emplace_back(typeid(list<string_t>));
-  expectedTags.emplace_back(
-      typeid(list<struct_t<::test_cpp2::cpp_reflection::structA>>));
-  expectedTags.emplace_back(typeid(set<i32_t>));
-  expectedTags.emplace_back(typeid(set<string_t>));
-  expectedTags.emplace_back(typeid(set<string_t>));
-  expectedTags.emplace_back(
-      typeid(set<struct_t<::test_cpp2::cpp_reflection::structB>>));
-  expectedTags.emplace_back(
-      typeid(map<string_t, struct_t<::test_cpp2::cpp_reflection::structA>>));
-  expectedTags.emplace_back(
-      typeid(map<string_t, struct_t<::test_cpp2::cpp_reflection::structB>>));
-  expectedTags.emplace_back(typeid(map<binary_t, binary_t>));
+  const std::vector<std::type_index> expectedTags = {
+      typeid(i32_t),
+      typeid(string_t),
+      typeid(enum_t<::test_cpp2::cpp_reflection::enum1>),
+      typeid(enum_t<::test_cpp2::cpp_reflection::enum2>),
+      typeid(union_t<::test_cpp2::cpp_reflection::union1>),
+      typeid(union_t<::test_cpp2::cpp_reflection::union2>),
+      typeid(struct_t<::test_cpp2::cpp_reflection::struct1>),
+      typeid(union_t<::test_cpp2::cpp_reflection::union2>),
+      typeid(list<i32_t>),
+      typeid(list<string_t>),
+      typeid(list<string_t>),
+      typeid(list<struct_t<::test_cpp2::cpp_reflection::structA>>),
+      typeid(set<i32_t>),
+      typeid(set<string_t>),
+      typeid(set<string_t>),
+      typeid(set<struct_t<::test_cpp2::cpp_reflection::structB>>),
+      typeid(map<string_t, struct_t<::test_cpp2::cpp_reflection::structA>>),
+      typeid(map<string_t, struct_t<::test_cpp2::cpp_reflection::structB>>),
+      typeid(map<binary_t, binary_t>)};
 
   ExtractFieldsInfo info;
   boost::mp11::mp_for_each<

@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <thrift/lib/cpp/FieldId.h>
+
 // Type tags for describing the 'shape' of thrift types at compile-time.
 //
 // _t indicates a concrete type.
@@ -108,7 +110,7 @@ template <
     typename Tag> // the thrift type being overridden
 struct cpp_type : Tag {};
 
-template <int Id, typename Tag>
+template <FieldId Id, typename Tag>
 struct field_t {};
 
 // TODO(ytj): ensure all arguments are field_t

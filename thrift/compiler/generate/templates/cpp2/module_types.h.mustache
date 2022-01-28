@@ -94,7 +94,7 @@ class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:name%> <
   <%#struct:include_tag_header?%>
   using __fbthrift_fields = ::apache::thrift::type::fields<
   <%#struct:fields%><%#field:type%>
-    ::apache::thrift::type::field_t<<%field:key%>, <%type:type_tag%>><%^last?%>,<%/last?%>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{<%field:key%>}, <%type:type_tag%>><%^last?%>,<%/last?%>
   <%/field:type%><%/struct:fields%>
   >;
   <%/struct:include_tag_header?%>
