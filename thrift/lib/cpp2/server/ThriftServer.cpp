@@ -77,6 +77,8 @@ THRIFT_FLAG_DEFINE_bool(server_check_unimplemented_extra_interfaces, true);
 
 THRIFT_FLAG_DEFINE_bool(enable_on_stop_serving, true);
 
+THRIFT_FLAG_DEFINE_bool(enable_io_queue_lag_detection, true);
+
 namespace apache::thrift::detail {
 THRIFT_PLUGGABLE_FUNC_REGISTER(
     apache::thrift::ThriftServer::DumpSnapshotOnLongShutdownResult,
@@ -460,7 +462,8 @@ void ThriftServer::setup() {
               ioThreadPool_->getName()));
       ioObserverFactories.withRLock([this](auto& factories) {
         for (auto& f : factories) {
-          ioThreadPool_->addObserver(f(ioThreadPool_->getName()));
+          ioThreadPool_->addObserver(f(
+              ioThreadPool_->getName(), ioThreadPool_->getThreadIdCollector()));
         }
       });
 
@@ -1297,6 +1300,16 @@ folly::observer::Observer<bool> ThriftServer::alpnAllowMismatch() {
 void ThriftServer::addIOThreadPoolObserver(
     ThriftServer::IOObserverFactory factory) {
   ioObserverFactories.wlock()->push_back(std::move(factory));
+}
+
+/* static */ std::shared_ptr<folly::IOThreadPoolExecutor>
+ThriftServer::createIOThreadPool() {
+  return std::make_shared<folly::IOThreadPoolExecutor>(
+      0,
+      std::make_shared<folly::NamedThreadFactory>("ThriftIO"),
+      folly::EventBaseManager::get(),
+      folly::IOThreadPoolExecutor::Options().setEnableThreadIdCollection(
+          THRIFT_FLAG(enable_io_queue_lag_detection)));
 }
 
 } // namespace thrift

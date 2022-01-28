@@ -72,6 +72,7 @@ DECLARE_string(service_identity);
 THRIFT_FLAG_DECLARE_bool(dump_snapshot_on_long_shutdown);
 THRIFT_FLAG_DECLARE_bool(alpn_allow_mismatch);
 THRIFT_FLAG_DECLARE_bool(server_check_unimplemented_extra_interfaces);
+THRIFT_FLAG_DECLARE_bool(enable_io_queue_lag_detection);
 
 namespace apache {
 namespace thrift {
@@ -205,10 +206,12 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   //! Manager of per-thread EventBase objects.
   folly::EventBaseManager* eventBaseManager_ = folly::EventBaseManager::get();
 
+  // Creates the default ThriftIO IOThreadPoolExecutor
+  static std::shared_ptr<folly::IOThreadPoolExecutor> createIOThreadPool();
+
   //! IO thread pool. Drives Cpp2Workers.
   std::shared_ptr<folly::IOThreadPoolExecutor> ioThreadPool_ =
-      std::make_shared<folly::IOThreadPoolExecutor>(
-          0, std::make_shared<folly::NamedThreadFactory>("ThriftIO"));
+      createIOThreadPool();
 
   /**
    * The speed for adjusting connection accept rate.
@@ -478,7 +481,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    */
   using IOObserverFactory =
       folly::Function<std::shared_ptr<folly::ThreadPoolExecutor::Observer>(
-          std::string) const>;
+          std::string, folly::WorkerProvider*) const>;
   static void addIOThreadPoolObserver(IOObserverFactory factory);
 
   /**
