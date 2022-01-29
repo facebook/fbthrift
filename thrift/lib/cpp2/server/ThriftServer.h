@@ -1141,6 +1141,11 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     size_t ingress;
     size_t egress;
   };
+  /**
+   * Returns structure highlighting the ingress and egress memory usage in
+   * thrift server
+   */
+  folly::SemiFuture<ServerIOMemory> getUsedIOMemory();
 
   struct ConnectionSnapshot {
     size_t numActiveRequests{0};

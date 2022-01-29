@@ -672,6 +672,7 @@ TEST(ThriftServer, EnforceEgressMemoryLimit) {
   auto handler = std::make_shared<TestServiceHandler>();
   auto runner = std::make_shared<ScopedServerInterfaceThread>(handler);
   auto& server = runner->getThriftServer();
+  auto& thriftServer = dynamic_cast<ThriftServer&>(server);
   auto const kChunkSize = 1ul << 20; // (1 MiB)
   server.setEgressMemoryLimit(kChunkSize * 4); // (4 MiB)
   server.setWriteBatchingInterval(std::chrono::milliseconds::zero());
@@ -728,6 +729,8 @@ TEST(ThriftServer, EnforceEgressMemoryLimit) {
 
   // The client socket should still be open
   ASSERT_TRUE(isClientChannelGood(std::chrono::seconds(5)));
+
+  ASSERT_GT(thriftServer.getUsedIOMemory().get().egress, 0);
 
   // The next response should put us over the egress limit
   std::string data(kChunkSize, 'a');

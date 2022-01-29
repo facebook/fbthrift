@@ -1117,6 +1117,39 @@ void ThriftServer::replaceShutdownSocketSet(
   wShutdownSocketSet_ = newSSS;
 }
 
+folly::SemiFuture<ThriftServer::ServerIOMemory>
+ThriftServer::getUsedIOMemory() {
+  // WorkerIOMemory looks the same as the server, except they are unaggregated
+  using WorkerIOMemory = ServerIOMemory;
+  std::vector<folly::SemiFuture<WorkerIOMemory>> tasks;
+
+  forEachWorker([&tasks](wangle::Acceptor* acceptor) {
+    auto worker = dynamic_cast<Cpp2Worker*>(acceptor);
+    if (!worker) {
+      return;
+    }
+    auto fut = folly::via(worker->getEventBase(), [worker]() {
+      auto& ingressMemTracker = worker->getIngressMemoryTracker();
+      auto& egressMemTracker = worker->getEgressMemoryTracker();
+      return WorkerIOMemory{
+          ingressMemTracker.getUsage(), egressMemTracker.getUsage()};
+    });
+    tasks.emplace_back(std::move(fut));
+  });
+
+  return folly::collect(tasks.begin(), tasks.end())
+      .deferValue(
+          [](std::vector<WorkerIOMemory> workerIOMems) -> ServerIOMemory {
+            ServerIOMemory ret{0, 0};
+            // Sum all ingress and egress usages
+            for (const auto& workerIOMem : workerIOMems) {
+              ret.ingress += workerIOMem.ingress;
+              ret.egress += workerIOMem.egress;
+            }
+            return ret;
+          });
+}
+
 folly::SemiFuture<ThriftServer::ServerSnapshot> ThriftServer::getServerSnapshot(
     const SnapshotOptions& options) {
   // WorkerSnapshots look the same as the server, except they are unaggregated
