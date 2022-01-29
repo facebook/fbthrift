@@ -15,6 +15,7 @@
  */
 
 #include <folly/Random.h>
+#include <folly/ScopeGuard.h>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/protocol/detail/index.h>
 #include <thrift/lib/cpp2/reflection/testing.h>
@@ -410,6 +411,11 @@ TYPED_TEST(LazyDeserialization, MismatchedChecksumInIndexField) {
       detail::kSizeField.type, detail::kSizeField.id, Serializer{});
   tokens.rbegin()->header = genFieldHeader(
       detail::kIndexField.type, detail::kIndexField.id, Serializer{});
+
+  auto& flag = apache::thrift::detail::
+      gLazyDeserializationIsDisabledDueToChecksumMismatch;
+  auto gResetFlag =
+      folly::makeGuard([&, value = flag.load()] { flag = value; });
 
   EXPECT_FALSE(lazyDeserializationIsDisabledDueToChecksumMismatch());
   EXPECT_THROW(
