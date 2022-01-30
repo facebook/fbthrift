@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@
 #include <folly/container/Array.h>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/BadFieldAccess.h>
+#include <thrift/lib/cpp2/FieldRefTraits.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/protocol/detail/index.h>
 #include <thrift/test/lazy_deserialization/gen-cpp2/simple_types.h>
@@ -51,9 +52,8 @@ void randomTestWithSeed(int seed) {
   Struct foo;
   LazyStruct lazyFoo;
 
-  constexpr bool kIsOptional = folly::detail::is_instantiation_of_v<
-      optional_field_ref,
-      std::remove_reference_t<decltype(foo.field4_ref())>>;
+  constexpr bool kIsOptional = apache::thrift::detail::is_optional_field_ref<
+      std::remove_reference_t<decltype(foo.field4_ref())>>::value;
 
   auto create = [](const std::vector<int32_t>& field4) {
     std::pair<Struct, LazyStruct> ret;
