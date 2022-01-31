@@ -1,4 +1,4 @@
-# Copyright (c) Facebook, Inc. and its affiliates.
+# Copyright (c) Meta Platforms, Inc. and affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -70,6 +70,11 @@ cdef extern from "thrift/lib/cpp2/server/TransportRoutingHandler.h" \
     cdef cppclass cTransportRoutingHandler "apache::thrift::TransportRoutingHandler":
         pass
 
+cdef extern from "thrift/lib/cpp2/server/StatusServerInterface.h" \
+        namespace "apache::thrift":
+    cdef cppclass cStatusServerInterface "apache::thrift::StatusServerInterface"(cAsyncProcessorFactory):
+        pass
+
 cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         namespace "apache::thrift":
 
@@ -91,6 +96,7 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         void setAddress(cfollySocketAddress& addr) nogil
         void setAddress(string ip, uint16_t port) nogil
         void setInterface(shared_ptr[cServerInterface]) nogil
+        void setStatusInterface(shared_ptr[cStatusServerInterface]) nogil
         void setProcessorFactory(shared_ptr[cAsyncProcessorFactory]) nogil
         void serve() nogil except +
         void stop() nogil except +
@@ -219,6 +225,11 @@ cdef class WriteHeaders(Headers):
     cdef RequestContext _parent
     @staticmethod
     cdef _fbthrift_create(RequestContext ctx)
+
+
+cdef class StatusServerInterface:
+    cdef shared_ptr[cStatusServerInterface] _cpp_obj
+
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[cTransportRoutingHandler] move(unique_ptr[cTransportRoutingHandler])

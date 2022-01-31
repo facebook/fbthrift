@@ -1,4 +1,4 @@
-# Copyright (c) Facebook, Inc. and its affiliates.
+# Copyright (c) Meta Platforms, Inc. and affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -81,6 +81,10 @@ cdef class ServiceInterface(AsyncProcessorFactory):
     pass
 
 
+cdef class StatusServerInterface:
+    pass
+
+
 def getServiceName(ServiceInterface svc not None):
     processor = deref(svc._cpp_obj).getProcessor()
     gen_proc = dynamic_cast_gen(processor.get())
@@ -154,6 +158,9 @@ cdef class ThriftServer:
             if not self.address_future.done():
                 self.address_future.set_exception(e)
             raise
+
+    def set_status_interface(self, StatusServerInterface iface not None):
+        self.server.get().setStatusInterface(iface._cpp_obj)
 
     def get_address(self):
         return asyncio.shield(self.address_future)
