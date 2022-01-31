@@ -13,16 +13,16 @@
         "constants" : {
           "MyValue1" : {
             "name" : "MyValue1",
-            "lineno" : 22,
+            "lineno" : 24,
             "value" : 0
           },
           "MyValue2" : {
             "name" : "MyValue2",
-            "lineno" : 23,
+            "lineno" : 25,
             "value" : 1
           }
         },
-        "lineno" : 21
+        "lineno" : 23
       }
       },
   "structs" :
@@ -33,21 +33,21 @@
           "MyIntField" : {
             "name" : "MyIntField",
             "key" : 1,
-            "lineno" : 27,
+            "lineno" : 29,
             "required" : "opt-in-req-out",
             "type" : "i64"
           },
           "MyStringField" : {
             "name" : "MyStringField",
             "key" : 2,
-            "lineno" : 28,
+            "lineno" : 30,
             "required" : "opt-in-req-out",
             "type" : "string"
           },
           "MyDataField" : {
             "name" : "MyDataField",
             "key" : 3,
-            "lineno" : 30,
+            "lineno" : 32,
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "struct",
@@ -57,7 +57,7 @@
           "myEnum" : {
             "name" : "myEnum",
             "key" : 4,
-            "lineno" : 31,
+            "lineno" : 33,
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "enum",
@@ -67,34 +67,34 @@
           "oneway" : {
             "name" : "oneway",
             "key" : 5,
-            "lineno" : 32,
+            "lineno" : 34,
             "required" : "opt-in-req-out",
             "type" : "bool"
           },
           "readonly" : {
             "name" : "readonly",
             "key" : 6,
-            "lineno" : 33,
+            "lineno" : 35,
             "required" : "opt-in-req-out",
             "type" : "bool"
           },
           "idempotent" : {
             "name" : "idempotent",
             "key" : 7,
-            "lineno" : 34,
+            "lineno" : 36,
             "required" : "opt-in-req-out",
             "type" : "bool"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 26
+        "lineno" : 28
       },
       "MyDataItem" : {
         "name" : "MyDataItem",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 37
+        "lineno" : 39
       },
       "MyUnion" : {
         "name" : "MyUnion",
@@ -102,7 +102,7 @@
           "myEnum" : {
             "name" : "myEnum",
             "key" : 1,
-            "lineno" : 40,
+            "lineno" : 42,
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "enum",
@@ -112,7 +112,7 @@
           "myStruct" : {
             "name" : "myStruct",
             "key" : 2,
-            "lineno" : 41,
+            "lineno" : 43,
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "struct",
@@ -122,7 +122,7 @@
           "myDataItem" : {
             "name" : "myDataItem",
             "key" : 3,
-            "lineno" : 42,
+            "lineno" : 44,
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "struct",
@@ -132,24 +132,24 @@
         },
         "is_exception" : false,
         "is_union" : true,
-        "lineno" : 39
+        "lineno" : 41
       }
       },
   "services" :
   {
       "MyService" : {
         "name" : "MyService",
-        "lineno" : 45,
+        "lineno" : 47,
         "functions" : {
           "ping" : {
             "name" : "ping",
             "returnType" : "void",
-            "lineno" : 46
+            "lineno" : 48
           },
           "getRandomData" : {
             "name" : "getRandomData",
             "returnType" : "string",
-            "lineno" : 47
+            "lineno" : 49
           },
           "sink" : {
             "name" : "sink",
@@ -158,12 +158,12 @@
                 "name" : "sink",
                 "type" : "i64",
                 "key" : 1,
-                "lineno" : 48,
+                "lineno" : 50,
                 "required" : "opt-in-req-out"
               }
             },
             "returnType" : "void",
-            "lineno" : 48
+            "lineno" : 50
           },
           "putDataById" : {
             "name" : "putDataById",
@@ -172,50 +172,22 @@
                 "name" : "id",
                 "type" : "i64",
                 "key" : 1,
-                "lineno" : 50,
+                "lineno" : 52,
                 "required" : "opt-in-req-out"
               },
               "data": {
                 "name" : "data",
                 "type" : "string",
                 "key" : 2,
-                "lineno" : 50,
-                "required" : "opt-in-req-out"
-              }
-            },
-            "returnType" : "void",
-            "lineno" : 50
-          },
-          "hasDataById" : {
-            "name" : "hasDataById",
-            "args" : {
-              "id": {
-                "name" : "id",
-                "type" : "i64",
-                "key" : 1,
-                "lineno" : 51,
-                "required" : "opt-in-req-out"
-              }
-            },
-            "returnType" : "bool",
-            "lineno" : 51
-          },
-          "getDataById" : {
-            "name" : "getDataById",
-            "args" : {
-              "id": {
-                "name" : "id",
-                "type" : "i64",
-                "key" : 1,
                 "lineno" : 52,
                 "required" : "opt-in-req-out"
               }
             },
-            "returnType" : "string",
+            "returnType" : "void",
             "lineno" : 52
           },
-          "deleteDataById" : {
-            "name" : "deleteDataById",
+          "hasDataById" : {
+            "name" : "hasDataById",
             "args" : {
               "id": {
                 "name" : "id",
@@ -225,8 +197,36 @@
                 "required" : "opt-in-req-out"
               }
             },
-            "returnType" : "void",
+            "returnType" : "bool",
             "lineno" : 53
+          },
+          "getDataById" : {
+            "name" : "getDataById",
+            "args" : {
+              "id": {
+                "name" : "id",
+                "type" : "i64",
+                "key" : 1,
+                "lineno" : 54,
+                "required" : "opt-in-req-out"
+              }
+            },
+            "returnType" : "string",
+            "lineno" : 54
+          },
+          "deleteDataById" : {
+            "name" : "deleteDataById",
+            "args" : {
+              "id": {
+                "name" : "id",
+                "type" : "i64",
+                "key" : 1,
+                "lineno" : 55,
+                "required" : "opt-in-req-out"
+              }
+            },
+            "returnType" : "void",
+            "lineno" : 55
           },
           "lobDataById" : {
             "name" : "lobDataById",
@@ -235,25 +235,25 @@
                 "name" : "id",
                 "type" : "i64",
                 "key" : 1,
-                "lineno" : 54,
+                "lineno" : 56,
                 "required" : "opt-in-req-out"
               },
               "data": {
                 "name" : "data",
                 "type" : "string",
                 "key" : 2,
-                "lineno" : 54,
+                "lineno" : 56,
                 "required" : "opt-in-req-out"
               }
             },
             "returnType" : "void",
-            "lineno" : 54
+            "lineno" : 56
           }
         }
       },
       "DbMixedStackArguments" : {
         "name" : "DbMixedStackArguments",
-        "lineno" : 57,
+        "lineno" : 59,
         "functions" : {
           "getDataByKey0" : {
             "name" : "getDataByKey0",
@@ -262,12 +262,12 @@
                 "name" : "key",
                 "type" : "string",
                 "key" : 1,
-                "lineno" : 58,
+                "lineno" : 60,
                 "required" : "opt-in-req-out"
               }
             },
             "returnType" : "binary",
-            "lineno" : 58
+            "lineno" : 60
           },
           "getDataByKey1" : {
             "name" : "getDataByKey1",
@@ -276,12 +276,12 @@
                 "name" : "key",
                 "type" : "string",
                 "key" : 1,
-                "lineno" : 59,
+                "lineno" : 61,
                 "required" : "opt-in-req-out"
               }
             },
             "returnType" : "binary",
-            "lineno" : 59
+            "lineno" : 61
           }
         }
       }

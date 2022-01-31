@@ -137,9 +137,10 @@ class t_container_type;
  * Header keywords
  */
 %token tok_include
-%token tok_namespace
 %token tok_cpp_include
 %token tok_hs_include
+%token tok_package
+%token tok_namespace
 
 /**
  * Base datatype keywords
@@ -304,6 +305,7 @@ Program:
 Identifier:
   tok_identifier { $$ = std::move($1); }
 /* context sensitive keywords that should be allowed in identifiers. */
+| tok_package    { $$ = "package"; }
 | tok_sink       { $$ = "sink"; }
 | tok_oneway     { $$ = "oneway"; }
 | tok_readonly   { $$ = "readonly"; }
@@ -327,7 +329,14 @@ HeaderList:
 |                                  { driver.debug("HeaderList -> "); }
 
 Header:
-  tok_include tok_literal
+  tok_package tok_literal
+    {
+      driver.debug("Header -> tok_package tok_literal");
+      // TODO(afuller): Add validation/parsing for the package name,
+      // update the linter, then remove this guard.
+      driver.require_experimental_feature("package");
+    }
+| tok_include tok_literal
     {
       driver.debug("Header -> tok_include tok_literal");
       driver.add_include(std::move($2));

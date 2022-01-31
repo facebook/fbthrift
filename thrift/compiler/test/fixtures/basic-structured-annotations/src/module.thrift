@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,10 @@
 
 include "included.thrift"
 include "namespaced.thrift"
+
+// TODO(afuller): Support structured annotations on package.
+// @included.structured_annotation_included{name = 'aba'}
+package "test.dev/fixtures/basic-structured-annotations"
 
 struct structured_annotation_inline {
   1: i64 count;

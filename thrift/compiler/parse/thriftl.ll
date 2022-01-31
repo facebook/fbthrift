@@ -107,10 +107,11 @@ sliteral      ("'"[^']*"'")
 "false"              { return yyparser::make_tok_bool_constant(false, *yylloc); }
 "true"               { return yyparser::make_tok_bool_constant(true, *yylloc); }
 
-"namespace"          { return yyparser::make_tok_namespace(*yylloc); }
+"include"            { return yyparser::make_tok_include(*yylloc); }
 "cpp_include"        { return yyparser::make_tok_cpp_include(*yylloc); }
 "hs_include"         { return yyparser::make_tok_hs_include(*yylloc); }
-"include"            { return yyparser::make_tok_include(*yylloc); }
+"package"            { return yyparser::make_tok_package(*yylloc); }
+"namespace"          { return yyparser::make_tok_namespace(*yylloc); }
 "void"               { return yyparser::make_tok_void(*yylloc); }
 "bool"               { return yyparser::make_tok_bool(*yylloc); }
 "byte"               { return yyparser::make_tok_byte(*yylloc); }
