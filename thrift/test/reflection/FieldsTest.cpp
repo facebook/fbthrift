@@ -98,4 +98,38 @@ TEST(Fields, for_each) {
   EXPECT_EQ(info.ids, expectedIds);
   EXPECT_EQ(info.tags, expectedTags);
 }
+
+struct Emplacer {
+  test_cpp2::cpp_reflection::struct3& s;
+
+  template <FieldId Id, class Tag>
+  void operator()(field_t<Id, Tag>) {
+    op::get<Id>(s).emplace();
+  }
+};
+
+TEST(Fields, get) {
+  test_cpp2::cpp_reflection::struct3 s;
+
+  s.fieldA() = 10;
+  EXPECT_EQ(op::get<FieldId{2}>(s), 10);
+  op::get<FieldId{2}>(s) = 20;
+  EXPECT_EQ(*s.fieldA(), 20);
+  EXPECT_TRUE(
+      (std::is_same_v<decltype(s.fieldA()), decltype(op::get<FieldId{2}>(s))>));
+
+  s.fieldE()->ui_ref() = 10;
+  EXPECT_EQ(op::get<FieldId{5}>(s)->ui_ref(), 10);
+  op::get<FieldId{5}>(s)->us_ref() = "20";
+  EXPECT_EQ(s.fieldE()->us_ref(), "20");
+  EXPECT_TRUE(
+      (std::is_same_v<decltype(s.fieldE()), decltype(op::get<FieldId{5}>(s))>));
+
+  boost::mp11::mp_for_each<
+      struct_private_access::fields<test_cpp2::cpp_reflection::struct3>>(
+      Emplacer{s});
+
+  EXPECT_EQ(*s.fieldA(), 0);
+  EXPECT_FALSE(s.fieldE()->us_ref());
+}
 } // namespace apache::thrift::type

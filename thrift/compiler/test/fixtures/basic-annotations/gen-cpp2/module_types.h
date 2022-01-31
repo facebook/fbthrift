@@ -618,6 +618,41 @@ class MyStruct final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> my_enum() && {
     return {static_cast<T&&>(this->__fbthrift_field_my_enum), __isset.at(6), __isset.bit(6)};
   }
+ private:
+  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &;
+  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&;
+  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &&;
+  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &       { return majorVer_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&  { return majorVer_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &&      { return std::move(*this).majorVer_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&& { return std::move(*this).majorVer_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &       { return package_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&  { return package_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &&      { return std::move(*this).package_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&& { return std::move(*this).package_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() &       { return annotation_with_quote_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() const&  { return annotation_with_quote_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() &&      { return std::move(*this).annotation_with_quote_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() const&& { return std::move(*this).annotation_with_quote_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &       { return class__ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&  { return class__ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &&      { return std::move(*this).class__ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&& { return std::move(*this).class__ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() &       { return annotation_with_trailing_comma_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() const&  { return annotation_with_trailing_comma_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() &&      { return std::move(*this).annotation_with_trailing_comma_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() const&& { return std::move(*this).annotation_with_trailing_comma_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{6}>() &       { return empty_annotations_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{6}>() const&  { return empty_annotations_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{6}>() &&      { return std::move(*this).empty_annotations_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{6}>() const&& { return std::move(*this).empty_annotations_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() &       { return my_enum_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() const&  { return my_enum_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() &&      { return std::move(*this).my_enum_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() const&& { return std::move(*this).my_enum_ref(); }
+
+ public:
 
   ::std::int64_t get_majorVer() const {
     return __fbthrift_field_majorVer;

@@ -17,6 +17,7 @@
 #ifndef THRIFT_CPP2_H_
 #define THRIFT_CPP2_H_
 
+#include <thrift/lib/cpp/FieldId.h>
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp2/TypeClass.h>
 
@@ -113,6 +114,14 @@ struct struct_private_access {
   FOLLY_CREATE_MEMBER_INVOKER(empty_fn, __fbthrift_is_empty);
 
   FOLLY_INLINE_VARIABLE static constexpr empty_fn is_empty{};
+
+  template <FieldId Id>
+  struct get_fn {
+    template <typename T>
+    decltype(auto) operator()(T&& t) const {
+      return static_cast<T&&>(t).template __fbthrift_get<Id>();
+    }
+  };
 };
 
 template <typename T, typename = void>
@@ -334,6 +343,14 @@ enum LazyDeserializationState : uint8_t { // Bitfield.
 };
 
 } // namespace detail
+
+namespace op {
+
+template <FieldId Id>
+FOLLY_INLINE_VARIABLE constexpr detail::st::struct_private_access::get_fn<Id>
+    get{};
+
+} // namespace op
 
 } // namespace thrift
 } // namespace apache
