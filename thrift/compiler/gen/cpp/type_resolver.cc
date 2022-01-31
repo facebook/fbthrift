@@ -59,8 +59,10 @@ const std::string& type_resolver::get_storage_type_name(const t_field* node) {
     // The storage type is just the type name.
     return get_type_name(node->get_type());
   }
-
-  auto key = std::make_pair(node->get_type(), ref_type);
+  auto key = std::make_tuple(
+      node->get_type(),
+      ref_type,
+      node->find_annotation_or_null("cpp.template"));
   return detail::get_or_gen(
       storage_type_cache_, key, [&]() { return gen_storage_type(key); });
 }
@@ -185,11 +187,16 @@ std::string type_resolver::gen_standard_type(const t_type* node) {
 }
 
 std::string type_resolver::gen_storage_type(
-    const std::pair<const t_type*, reference_type>& ref_type) {
-  const std::string& type_name = get_type_name(ref_type.first);
-  switch (ref_type.second) {
+    const std::tuple<const t_type*, reference_type, const std::string*>&
+        ref_type) {
+  const std::string& type_name = get_type_name(std::get<0>(ref_type));
+  switch (std::get<1>(ref_type)) {
     case reference_type::unique:
-      return detail::gen_template_type("::std::unique_ptr", {type_name});
+      if (std::get<2>(ref_type) != nullptr) {
+        return detail::gen_template_type(*std::get<2>(ref_type), {type_name});
+      } else {
+        return detail::gen_template_type("::std::unique_ptr", {type_name});
+      }
     case reference_type::shared_mutable:
       return detail::gen_template_type("::std::shared_ptr", {type_name});
     case reference_type::shared_const:

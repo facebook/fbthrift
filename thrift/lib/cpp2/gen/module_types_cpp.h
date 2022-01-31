@@ -21,6 +21,7 @@
 #include <type_traits>
 
 #include <folly/Indestructible.h>
+#include <folly/Memory.h>
 #include <folly/Portability.h>
 #include <folly/Range.h>
 #include <folly/Traits.h>
@@ -100,6 +101,14 @@ struct copy_field_fn : copy_field_rec<TypeClass> {
   template <typename T>
   std::unique_ptr<T> operator()(std::unique_ptr<T> const& t) const {
     return !t ? nullptr : std::make_unique<T>((*this)(*t));
+  }
+
+  template <typename T, typename Alloc>
+  std::unique_ptr<T, folly::allocator_delete<Alloc>> operator()(
+      std::unique_ptr<T, folly::allocator_delete<Alloc>> const& t) const {
+    return !t ? nullptr
+              : folly::allocate_unique<T>(
+                    t.get_deleter().get_allocator(), (*this)(*t));
   }
 };
 

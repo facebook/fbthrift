@@ -19,6 +19,7 @@
 #include <cstdint>
 #include <memory>
 
+#include <folly/Memory.h>
 #include <folly/Range.h>
 #include <folly/Traits.h>
 
@@ -53,6 +54,16 @@ auto make_mutable_smart_ptr(folly::tag_t<std::unique_ptr<T>>) {
   return std::make_unique<T>();
 }
 
+template <typename..., class T, class Alloc>
+auto make_mutable_smart_ptr(
+    folly::tag_t<std::unique_ptr<
+        T,
+        folly::allocator_delete<
+            typename std::allocator_traits<Alloc>::template rebind_alloc<T>>>>,
+    const Alloc& alloc) {
+  return folly::allocate_unique<T>(alloc);
+}
+
 template <typename..., class T>
 auto make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<T>>) {
   return std::make_shared<T>();
@@ -63,6 +74,18 @@ auto make_mutable_smart_ptr(folly::tag_t<std::shared_ptr<T const>>) {
   return std::make_shared<T>();
 }
 
+template <typename..., class T, class Alloc>
+auto make_mutable_smart_ptr(
+    folly::tag_t<std::shared_ptr<T>>, const Alloc& alloc) {
+  return std::allocate_shared<T>(alloc);
+}
+
+template <typename..., class T, class Alloc>
+auto make_mutable_smart_ptr(
+    folly::tag_t<std::shared_ptr<T const>>, const Alloc& alloc) {
+  return std::allocate_shared<T>(alloc);
+}
+
 template <typename..., class T>
 auto make_mutable_smart_ptr(folly::tag_t<boxed_value_ptr<T>>) {
   // Make sure we invoke a constructor that allocates the unique_ptr so that
@@ -70,9 +93,9 @@ auto make_mutable_smart_ptr(folly::tag_t<boxed_value_ptr<T>>) {
   return boxed_value_ptr<T>(T());
 }
 
-template <class T>
-auto make_mutable_smart_ptr() {
-  return make_mutable_smart_ptr(folly::tag_t<T>());
+template <class T, class... Args>
+auto make_mutable_smart_ptr(Args&&... args) {
+  return make_mutable_smart_ptr(folly::tag_t<T>(), std::forward<Args>(args)...);
 }
 
 // We introduced new version of writeFieldBegin that accepts previous id as

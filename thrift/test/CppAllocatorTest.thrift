@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -122,4 +122,42 @@ struct CountingParent {
     cpp.template = "::CountingVector",
   ) aa_child_list;
   2: list<CountingChild> not_aa_child_list;
+} (cpp.allocator = "::ScopedCountingAlloc")
+
+struct AlwaysThrowCppRefChild {
+  1: i32 value1;
+  2: i64 value2;
+} (cpp.allocator = "::ScopedAlwaysThrowAlloc")
+
+struct AlwaysThrowCppRefParent {
+  1: AlwaysThrowCppRefChild (cpp.use_allocator) uniqueChild (
+    cpp.ref_type = "unique",
+    cpp.template = "::AlwaysThrowUniquePtr",
+  );
+  2: AlwaysThrowCppRefChild (cpp.use_allocator) sharedChild (
+    cpp.ref_type = "shared",
+  );
+  3: i32 no_alloc;
+} (cpp.allocator = "::ScopedAlwaysThrowAlloc")
+
+struct CountingCppRefChild {
+  1: i32 value1;
+  2: i64 value2;
+} (cpp.allocator = "::ScopedCountingAlloc")
+
+struct CountingCppRefParent {
+  1: CountingCppRefChild (cpp.use_allocator) uniqueChild (
+    cpp.ref_type = "unique",
+    cpp.template = "::CountingUniquePtr",
+  );
+  2: CountingCppRefChild (cpp.use_allocator) sharedChild (
+    cpp.ref_type = "shared",
+  );
+  3: CountingCppRefChild noAllocUniqueChild (cpp.ref_type = "unique");
+  4: CountingCppRefChild noAllocSharedChild (cpp.ref_type = "shared");
+  5: i32 no_alloc;
+  6: list<i32> (
+    cpp.use_allocator,
+    cpp.template = "::CountingVector",
+  ) allocVector (cpp.ref_type = "shared");
 } (cpp.allocator = "::ScopedCountingAlloc")

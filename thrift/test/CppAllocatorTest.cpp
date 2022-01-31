@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -185,4 +185,19 @@ TEST(CppAllocatorTest, CountingAllocator) {
   EXPECT_NO_ALLOC(not_aa_child.not_aa_set_ref()->emplace(42));
   EXPECT_NO_ALLOC(not_aa_child.not_aa_map_ref()->emplace(42, 42));
   EXPECT_NO_ALLOC(not_aa_child.not_aa_string_ref()->assign(kTooLong));
+}
+
+TEST(CppAllocatorTest, AlwaysThrowAllocatorCppRef) {
+  ScopedAlwaysThrowAlloc alloc;
+  // this is just death instead of a throw since it is throwing an exception on
+  // constuctor somehow which results in calling std::terminate
+  EXPECT_DEATH({ AlwaysThrowCppRefParent parent(alloc); }, "");
+}
+
+TEST(CppAllocatorTest, AlwaysThrowAllocatorCppRefCount) {
+  ScopedCountingAlloc alloc;
+  EXPECT_ALLOC({ CountingCppRefParent parent(alloc); });
+  CountingCppRefParent parent(alloc);
+  // check propagation of allocator for containers with shared_ptr
+  EXPECT_ALLOC(parent.allocVector_ref()->emplace_back(1));
 }

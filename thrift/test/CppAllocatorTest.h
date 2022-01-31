@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@
 #include <string>
 #include <vector>
 
+#include <folly/Memory.h>
 #include <folly/sorted_vector_types.h>
 
 template <class T>
@@ -68,6 +69,12 @@ using AlwaysThrowMap = std::map<K, V, std::less<K>, ScopedAlwaysThrowAlloc>;
 
 using AlwaysThrowString =
     std::basic_string<char, std::char_traits<char>, ScopedAlwaysThrowAlloc>;
+
+template <class T>
+using AlwaysThrowUniquePtr = std::unique_ptr<
+    T,
+    folly::allocator_delete<
+        std::scoped_allocator_adaptor<AlwaysThrowAllocator<T>>>>;
 
 template <class T>
 struct StatefulAlloc : private std::allocator<T> {
@@ -172,3 +179,8 @@ using CountingMap = std::map<K, V, std::less<K>, ScopedCountingAlloc>;
 
 using CountingString =
     std::basic_string<char, std::char_traits<char>, ScopedCountingAlloc>;
+
+template <class T>
+using CountingUniquePtr = std::unique_ptr<
+    T,
+    folly::allocator_delete<std::scoped_allocator_adaptor<CountingAlloc<T>>>>;
