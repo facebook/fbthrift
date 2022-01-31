@@ -16,6 +16,9 @@
 
 #pragma once
 
+#include <algorithm>
+#include <array>
+
 #include <folly/GLog.h>
 #include <folly/Portability.h>
 #include <folly/experimental/coro/AsyncGenerator.h>
@@ -280,7 +283,17 @@ class ClientBufferedStream {
     }
 
     int32_t outstanding = chunkBufferSize;
-    size_t maxPayloadSize = 0, bufferMemSize = 0;
+    size_t bufferMemSize = 0;
+
+    // Use a circular buffer with the latest payload sizes to estimate the
+    // recent average payload size.
+    constexpr size_t kEstimationWindowSize = 128;
+    std::array<size_t, kEstimationWindowSize> payloadSizesWindow;
+    std::fill(payloadSizesWindow.begin(), payloadSizesWindow.end(), 0);
+
+    size_t windowSum = 0;
+    size_t numReceivedPayloads = 0;
+    size_t maxPayloadSize = 0;
 
     apache::thrift::detail::ClientStreamBridge::ClientQueueWithTailPtr queue;
     class ReadyCallback : public apache::thrift::detail::ClientStreamConsumer {
@@ -341,8 +354,13 @@ class ClientBufferedStream {
               continue;
             }
           } else {
-            maxPayloadSize = std::max(
-                maxPayloadSize, payload->payload->computeChainDataLength());
+            size_t payloadSize = payload->payload->computeChainDataLength();
+            windowSum -= std::exchange(
+                payloadSizesWindow[numReceivedPayloads % kEstimationWindowSize],
+                payloadSize);
+            windowSum += payloadSize;
+            numReceivedPayloads += 1;
+            maxPayloadSize = std::max(maxPayloadSize, payloadSize);
           }
         }
         if constexpr (WithHeader) {
@@ -375,24 +393,31 @@ class ClientBufferedStream {
 
         DCHECK_LT(0, outstanding);
         --outstanding;
-        // Assuming all outstanding payloads come back with largest seen size.
-        size_t outstandingSize = bufferMemSize + outstanding * maxPayloadSize;
+        // If enough payloads have been received estimate the recent average
+        // payload size, otherwise conservatively use the largest received size.
+        size_t estPayloadSize = std::max<size_t>(
+            numReceivedPayloads < kEstimationWindowSize
+                ? maxPayloadSize
+                : (windowSum + kEstimationWindowSize - 1) /
+                    kEstimationWindowSize,
+            1);
+        size_t outstandingSize = bufferMemSize + outstanding * estPayloadSize;
         size_t spaceAvailable =
             std::max<ssize_t>(memBufferTarget - outstandingSize, 0);
         // Issue more credits when available space is at least half of the
         // buffer, or 16kB if that's less than the payload size.
-        size_t threshold = (maxPayloadSize <= kRequestCreditPayloadSize)
+        size_t threshold = (estPayloadSize <= kRequestCreditPayloadSize)
             ? std::min(memBufferTarget / 2, kRequestCreditPayloadSize)
             : memBufferTarget / 2;
 
         if (spaceAvailable >= threshold) {
-          // Convert to credits, again assuming largest size for new payloads,
-          // but cap credits and outstanding requests to maxChunkBufferSize if
-          // this was requested in BufferOptions
+          // Convert to credits using the size estimate, but cap credits and
+          // outstanding requests to maxChunkBufferSize if this was requested in
+          // BufferOptions.
           DCHECK_LE(outstanding, maxChunkBufferSize);
           const int32_t remainingCredits = maxChunkBufferSize - outstanding;
           int32_t request =
-              (spaceAvailable + maxPayloadSize - 1) / maxPayloadSize;
+              (spaceAvailable + estPayloadSize - 1) / estPayloadSize;
           request = std::min(remainingCredits, request);
           streamBridge->requestN(request);
           outstanding += request;
