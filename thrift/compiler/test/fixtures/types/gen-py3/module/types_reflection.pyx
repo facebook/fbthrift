@@ -952,6 +952,30 @@ cdef __StructSpec get_reflection__AllocatorAware():
             },
         ),
     )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=6,
+            name="aa_unique",
+            type=int,
+            kind=__NumberType.I32,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+                """cpp.ref_type""": """unique""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=7,
+            name="aa_shared",
+            type=int,
+            kind=__NumberType.I32,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+                """cpp.ref_type""": """shared""",            },
+        ),
+    )
     return spec
 cdef __StructSpec get_reflection__AllocatorAware2():
     cdef _module_types.AllocatorAware2 defaults = _module_types.AllocatorAware2._fbthrift_create(

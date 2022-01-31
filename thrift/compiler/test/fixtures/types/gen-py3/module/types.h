@@ -373,6 +373,12 @@ void reset_field<::apache::thrift::fixtures::types::AllocatorAware>(
     case 4:
       obj.not_a_container_ref().copy_from(default_inst<::apache::thrift::fixtures::types::AllocatorAware>().not_a_container_ref());
       return;
+    case 5:
+      obj.aa_unique_ref().reset();
+      return;
+    case 6:
+      obj.aa_shared_ref().reset();
+      return;
   }
 }
 

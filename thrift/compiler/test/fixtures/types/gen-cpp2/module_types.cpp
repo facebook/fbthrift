@@ -2547,10 +2547,32 @@ void TccStructTraits<::apache::thrift::fixtures::types::AllocatorAware>::transla
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
-AllocatorAware::AllocatorAware(const AllocatorAware&) = default;
-AllocatorAware& AllocatorAware::operator=(const AllocatorAware&) = default;
+AllocatorAware::AllocatorAware(const AllocatorAware& srcObj) {
+  __fbthrift_field_aa_list = srcObj.__fbthrift_field_aa_list;
+  __isset.set(0,srcObj.__isset.get(0));
+  __fbthrift_field_aa_set = srcObj.__fbthrift_field_aa_set;
+  __isset.set(1,srcObj.__isset.get(1));
+  __fbthrift_field_aa_map = srcObj.__fbthrift_field_aa_map;
+  __isset.set(2,srcObj.__isset.get(2));
+  __fbthrift_field_aa_string = srcObj.__fbthrift_field_aa_string;
+  __isset.set(3,srcObj.__isset.get(3));
+  __fbthrift_field_not_a_container = srcObj.__fbthrift_field_not_a_container;
+  __isset.set(4,srcObj.__isset.get(4));
+  aa_unique = ::apache::thrift::detail::st::copy_field<
+        ::apache::thrift::type_class::integral>(srcObj.aa_unique);
+  aa_shared = srcObj.aa_shared;
+}
+
+AllocatorAware& AllocatorAware::operator=(const AllocatorAware& src) {
+  AllocatorAware tmp(src);
+  swap(*this, tmp);
+  return *this;
+}
+
 AllocatorAware::AllocatorAware() :
-      __fbthrift_field_not_a_container() {
+      __fbthrift_field_not_a_container(),
+      aa_unique(folly::allocate_unique<::std::int32_t>(__fbthrift_alloc)),
+      aa_shared(std::allocate_shared<::std::int32_t>(__fbthrift_alloc)) {
 }
 
 
@@ -2562,6 +2584,8 @@ AllocatorAware::AllocatorAware(AllocatorAware&& other) noexcept  :
     __fbthrift_field_aa_map(std::move(other.__fbthrift_field_aa_map)),
     __fbthrift_field_aa_string(std::move(other.__fbthrift_field_aa_string)),
     __fbthrift_field_not_a_container(std::move(other.__fbthrift_field_not_a_container)),
+    aa_unique(std::move(other.aa_unique)),
+    aa_shared(std::move(other.aa_shared)),
     __isset(other.__isset) {
 }
 
@@ -2571,17 +2595,21 @@ AllocatorAware& AllocatorAware::operator=(FOLLY_MAYBE_UNUSED AllocatorAware&& ot
     this->__fbthrift_field_aa_map = std::move(other.__fbthrift_field_aa_map);
     this->__fbthrift_field_aa_string = std::move(other.__fbthrift_field_aa_string);
     this->__fbthrift_field_not_a_container = std::move(other.__fbthrift_field_not_a_container);
+    this->aa_unique = std::move(other.aa_unique);
+    this->aa_shared = std::move(other.aa_shared);
     __isset = other.__isset;
     return *this;
 }
 
 
-AllocatorAware::AllocatorAware(apache::thrift::FragileConstructor, ::std::vector<::std::int32_t> aa_list__arg, ::std::set<::std::int32_t> aa_set__arg, ::std::map<::std::int32_t, ::std::int32_t> aa_map__arg, ::std::string aa_string__arg, ::std::int32_t not_a_container__arg) :
+AllocatorAware::AllocatorAware(apache::thrift::FragileConstructor, ::std::vector<::std::int32_t> aa_list__arg, ::std::set<::std::int32_t> aa_set__arg, ::std::map<::std::int32_t, ::std::int32_t> aa_map__arg, ::std::string aa_string__arg, ::std::int32_t not_a_container__arg, ::std::unique_ptr<::std::int32_t> aa_unique__arg, ::std::shared_ptr<::std::int32_t> aa_shared__arg) :
     __fbthrift_field_aa_list(std::move(aa_list__arg)),
     __fbthrift_field_aa_set(std::move(aa_set__arg)),
     __fbthrift_field_aa_map(std::move(aa_map__arg)),
     __fbthrift_field_aa_string(std::move(aa_string__arg)),
-    __fbthrift_field_not_a_container(std::move(not_a_container__arg)) {
+    __fbthrift_field_not_a_container(std::move(not_a_container__arg)),
+    aa_unique(std::move(aa_unique__arg)),
+    aa_shared(std::move(aa_shared__arg)) {
   __isset.set(folly::index_constant<0>(), true);
   __isset.set(folly::index_constant<1>(), true);
   __isset.set(folly::index_constant<2>(), true);
@@ -2597,6 +2625,8 @@ void AllocatorAware::__fbthrift_clear() {
   this->__fbthrift_field_aa_map.clear();
   this->__fbthrift_field_aa_string = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_not_a_container = ::std::int32_t();
+  this->aa_unique = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::int32_t>>(this->get_allocator());
+  this->aa_shared = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<::std::int32_t>>(this->get_allocator());
   __isset = {};
 }
 
@@ -2623,6 +2653,12 @@ bool AllocatorAware::operator==(const AllocatorAware& rhs) const {
   if (!(lhs.not_a_container_ref() == rhs.not_a_container_ref())) {
     return false;
   }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.aa_unique_ref(), rhs.aa_unique_ref()))) {
+    return false;
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.aa_shared_ref(), rhs.aa_shared_ref()))) {
+    return false;
+  }
   return true;
 }
 
@@ -2644,6 +2680,12 @@ bool AllocatorAware::operator<(const AllocatorAware& rhs) const {
   }
   if (!(lhs.not_a_container_ref() == rhs.not_a_container_ref())) {
     return lhs.not_a_container_ref() < rhs.not_a_container_ref();
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.aa_unique_ref(), rhs.aa_unique_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.aa_unique_ref(), rhs.aa_unique_ref());
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.aa_shared_ref(), rhs.aa_shared_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.aa_shared_ref(), rhs.aa_shared_ref());
   }
   return false;
 }
@@ -2680,6 +2722,8 @@ void swap(AllocatorAware& a, AllocatorAware& b) {
   swap(a.aa_map_ref().value(), b.aa_map_ref().value());
   swap(a.aa_string_ref().value(), b.aa_string_ref().value());
   swap(a.not_a_container_ref().value(), b.not_a_container_ref().value());
+  swap(a.aa_unique, b.aa_unique);
+  swap(a.aa_shared, b.aa_shared);
   swap(a.__isset, b.__isset);
 }
 

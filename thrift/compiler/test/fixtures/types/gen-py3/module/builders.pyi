@@ -176,6 +176,8 @@ class AllocatorAware_Builder(thrift.py3.builder.StructBuilder):
     aa_map: _typing.Optional[dict]
     aa_string: _typing.Optional[str]
     not_a_container: _typing.Optional[int]
+    aa_unique: _typing.Optional[int]
+    aa_shared: _typing.Optional[int]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

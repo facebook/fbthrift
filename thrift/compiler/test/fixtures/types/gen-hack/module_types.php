@@ -3492,6 +3492,14 @@ class AllocatorAware implements \IThriftStruct {
       'var' => 'not_a_container',
       'type' => \TType::I32,
     ),
+    6 => shape(
+      'var' => 'aa_unique',
+      'type' => \TType::I32,
+    ),
+    7 => shape(
+      'var' => 'aa_shared',
+      'type' => \TType::I32,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'aa_list' => 1,
@@ -3499,6 +3507,8 @@ class AllocatorAware implements \IThriftStruct {
     'aa_map' => 3,
     'aa_string' => 4,
     'not_a_container' => 5,
+    'aa_unique' => 6,
+    'aa_shared' => 7,
   ];
 
   const type TConstructorShape = shape(
@@ -3507,9 +3517,11 @@ class AllocatorAware implements \IThriftStruct {
     ?'aa_map' => ?Map<int, int>,
     ?'aa_string' => ?string,
     ?'not_a_container' => ?int,
+    ?'aa_unique' => ?int,
+    ?'aa_shared' => ?int,
   );
 
-  const int STRUCTURAL_ID = 5875128050373741032;
+  const int STRUCTURAL_ID = 6797195997786481852;
   /**
    * Original thrift field:-
    * 1: list<i32> aa_list
@@ -3535,13 +3547,25 @@ class AllocatorAware implements \IThriftStruct {
    * 5: i32 not_a_container
    */
   public int $not_a_container;
+  /**
+   * Original thrift field:-
+   * 6: i32 aa_unique
+   */
+  public int $aa_unique;
+  /**
+   * Original thrift field:-
+   * 7: i32 aa_shared
+   */
+  public int $aa_shared;
 
-  public function __construct(?Vector<int> $aa_list = null, ?Set<int> $aa_set = null, ?Map<int, int> $aa_map = null, ?string $aa_string = null, ?int $not_a_container = null  )[] {
+  public function __construct(?Vector<int> $aa_list = null, ?Set<int> $aa_set = null, ?Map<int, int> $aa_map = null, ?string $aa_string = null, ?int $not_a_container = null, ?int $aa_unique = null, ?int $aa_shared = null  )[] {
     $this->aa_list = $aa_list ?? Vector {};
     $this->aa_set = $aa_set ?? Set {};
     $this->aa_map = $aa_map ?? Map {};
     $this->aa_string = $aa_string ?? '';
     $this->not_a_container = $not_a_container ?? 0;
+    $this->aa_unique = $aa_unique ?? 0;
+    $this->aa_shared = $aa_shared ?? 0;
   }
 
   public static function withDefaultValues()[]: this {
@@ -3555,6 +3579,8 @@ class AllocatorAware implements \IThriftStruct {
       Shapes::idx($shape, 'aa_map'),
       Shapes::idx($shape, 'aa_string'),
       Shapes::idx($shape, 'not_a_container'),
+      Shapes::idx($shape, 'aa_unique'),
+      Shapes::idx($shape, 'aa_shared'),
     );
   }
 
@@ -3651,6 +3677,28 @@ class AllocatorAware implements \IThriftStruct {
               "name" => "not_a_container",
             )
           ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 6,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "aa_unique",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 7,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "aa_shared",
+            )
+          ),
         ],
         "is_union" => false,
       )
@@ -3726,6 +3774,22 @@ class AllocatorAware implements \IThriftStruct {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
         $this->not_a_container = (int)$_tmp21;
+      }
+    }    
+    if (idx($parsed, 'aa_unique') !== null) {
+      $_tmp22 = (int)/* HH_FIXME[4110] */ $parsed['aa_unique'];
+      if ($_tmp22 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->aa_unique = (int)$_tmp22;
+      }
+    }    
+    if (idx($parsed, 'aa_shared') !== null) {
+      $_tmp23 = (int)/* HH_FIXME[4110] */ $parsed['aa_shared'];
+      if ($_tmp23 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->aa_shared = (int)$_tmp23;
       }
     }    
   }

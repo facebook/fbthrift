@@ -218,6 +218,8 @@ struct ForEachField<::apache::thrift::fixtures::types::AllocatorAware> {
     f(2, static_cast<T&&>(t).aa_map_ref()...);
     f(3, static_cast<T&&>(t).aa_string_ref()...);
     f(4, static_cast<T&&>(t).not_a_container_ref()...);
+    f(5, static_cast<T&&>(t).aa_unique_ref()...);
+    f(6, static_cast<T&&>(t).aa_shared_ref()...);
   }
 };
 

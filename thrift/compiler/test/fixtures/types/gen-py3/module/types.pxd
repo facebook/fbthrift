@@ -675,6 +675,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         __field_ref[cmap[cint32_t,cint32_t]] aa_map_ref()
         __field_ref[string] aa_string_ref()
         __field_ref[cint32_t] not_a_container_ref()
+        unique_ptr[cint32_t] aa_unique_ref()
+        shared_ptr[cint32_t] aa_shared_ref()
 
 
     cdef cppclass cAllocatorAware2 "::apache::thrift::fixtures::types::AllocatorAware2":
@@ -996,6 +998,8 @@ cdef class AllocatorAware(thrift.py3.types.Struct):
     cdef inline object aa_map_impl(self)
     cdef inline object aa_string_impl(self)
     cdef inline object not_a_container_impl(self)
+    cdef inline object aa_unique_impl(self)
+    cdef inline object aa_shared_impl(self)
     cdef List__i32 __fbthrift_cached_aa_list
     cdef Set__i32 __fbthrift_cached_aa_set
     cdef Map__i32_i32 __fbthrift_cached_aa_map

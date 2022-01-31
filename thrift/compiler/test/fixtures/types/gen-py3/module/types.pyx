@@ -2722,6 +2722,30 @@ cdef class AllocatorAware(thrift.py3.types.Struct):
     def not_a_container(self):
         return self.not_a_container_impl()
 
+    cdef inline aa_unique_impl(self):
+
+        if self.__fbthrift_cached_aa_unique is None:
+            if not deref(self._cpp_obj).aa_unique_ref():
+                return None
+            self.__fbthrift_cached_aa_unique = cint32_t._fbthrift_create(__reference_shared_ptr(deref(deref(self._cpp_obj).aa_unique_ref()), self._cpp_obj))
+        return self.__fbthrift_cached_aa_unique
+
+    @property
+    def aa_unique(self):
+        return self.aa_unique_impl()
+
+    cdef inline aa_shared_impl(self):
+
+        if self.__fbthrift_cached_aa_shared is None:
+            if not deref(self._cpp_obj).aa_shared_ref():
+                return None
+            self.__fbthrift_cached_aa_shared = cint32_t._fbthrift_create(__reference_shared_ptr(deref(deref(self._cpp_obj).aa_shared_ref()), self._cpp_obj))
+        return self.__fbthrift_cached_aa_shared
+
+    @property
+    def aa_shared(self):
+        return self.aa_shared_impl()
+
 
     def __hash__(AllocatorAware self):
         return super().__hash__()
@@ -2765,7 +2789,7 @@ cdef class AllocatorAware(thrift.py3.types.Struct):
         return __get_field_name_by_index[cAllocatorAware](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 5
+        self._fbthrift_struct_size = 7
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(AllocatorAware self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data

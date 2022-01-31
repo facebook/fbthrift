@@ -135,6 +135,8 @@ cdef class AllocatorAware_Builder(thrift.py3.builder.StructBuilder):
     cdef public dict aa_map
     cdef public str aa_string
     cdef public pint not_a_container
+    cdef public pint aa_unique
+    cdef public pint aa_shared
 
 
 cdef class AllocatorAware2_Builder(thrift.py3.builder.StructBuilder):

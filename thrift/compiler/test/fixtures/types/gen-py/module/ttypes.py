@@ -2248,6 +2248,8 @@ class AllocatorAware:
    - aa_map
    - aa_string
    - not_a_container
+   - aa_unique
+   - aa_shared
   """
 
   thrift_spec = None
@@ -2327,6 +2329,16 @@ class AllocatorAware:
           self.not_a_container = iprot.readI32()
         else:
           iprot.skip(ftype)
+      elif fid == 6:
+        if ftype == TType.I32:
+          self.aa_unique = iprot.readI32()
+        else:
+          iprot.skip(ftype)
+      elif fid == 7:
+        if ftype == TType.I32:
+          self.aa_shared = iprot.readI32()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -2370,6 +2382,14 @@ class AllocatorAware:
       oprot.writeFieldBegin('not_a_container', TType.I32, 5)
       oprot.writeI32(self.not_a_container)
       oprot.writeFieldEnd()
+    if self.aa_unique != None:
+      oprot.writeFieldBegin('aa_unique', TType.I32, 6)
+      oprot.writeI32(self.aa_unique)
+      oprot.writeFieldEnd()
+    if self.aa_shared != None:
+      oprot.writeFieldBegin('aa_shared', TType.I32, 7)
+      oprot.writeI32(self.aa_shared)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -2396,6 +2416,14 @@ class AllocatorAware:
       value = pprint.pformat(self.not_a_container, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    not_a_container=%s' % (value))
+    if self.aa_unique is not None:
+      value = pprint.pformat(self.aa_unique, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    aa_unique=%s' % (value))
+    if self.aa_shared is not None:
+      value = pprint.pformat(self.aa_shared, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    aa_shared=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -3269,20 +3297,30 @@ AllocatorAware.thrift_spec = (
   (3, TType.MAP, 'aa_map', (TType.I32,None,TType.I32,None), None, 2, ), # 3
   (4, TType.STRING, 'aa_string', True, None, 2, ), # 4
   (5, TType.I32, 'not_a_container', None, None, 2, ), # 5
+  (6, TType.I32, 'aa_unique', None, None, 2, ), # 6
+  (7, TType.I32, 'aa_shared', None, None, 2, ), # 7
 )
 
 AllocatorAware.thrift_struct_annotations = {
   "cpp.allocator": "some_allocator",
 }
 AllocatorAware.thrift_field_annotations = {
+  6: {
+    "cpp.ref_type": "unique",
+  },
+  7: {
+    "cpp.ref_type": "shared",
+  },
 }
 
-def AllocatorAware__init__(self, aa_list=None, aa_set=None, aa_map=None, aa_string=None, not_a_container=None,):
+def AllocatorAware__init__(self, aa_list=None, aa_set=None, aa_map=None, aa_string=None, not_a_container=None, aa_unique=None, aa_shared=None,):
   self.aa_list = aa_list
   self.aa_set = aa_set
   self.aa_map = aa_map
   self.aa_string = aa_string
   self.not_a_container = not_a_container
+  self.aa_unique = aa_unique
+  self.aa_shared = aa_shared
 
 AllocatorAware.__init__ = AllocatorAware__init__
 
@@ -3292,6 +3330,8 @@ def AllocatorAware__setstate__(self, state):
   state.setdefault('aa_map', None)
   state.setdefault('aa_string', None)
   state.setdefault('not_a_container', None)
+  state.setdefault('aa_unique', None)
+  state.setdefault('aa_shared', None)
   self.__dict__ = state
 
 AllocatorAware.__getstate__ = lambda self: self.__dict__.copy()

@@ -766,13 +766,19 @@ class AllocatorAware(thrift.py3.types.Struct, _typing.Hashable):
 
     not_a_container: Final[int] = ...
 
+    aa_unique: Final[_typing.Optional[int]] = ...
+
+    aa_shared: Final[_typing.Optional[int]] = ...
+
     def __init__(
         self, *,
         aa_list: _typing.Optional[_typing.Sequence[int]]=None,
         aa_set: _typing.Optional[_typing.AbstractSet[int]]=None,
         aa_map: _typing.Optional[_typing.Mapping[int, int]]=None,
         aa_string: _typing.Optional[str]=None,
-        not_a_container: _typing.Optional[int]=None
+        not_a_container: _typing.Optional[int]=None,
+        aa_unique: _typing.Optional[int]=None,
+        aa_shared: _typing.Optional[int]=None
     ) -> None: ...
 
     def __call__(
@@ -781,7 +787,9 @@ class AllocatorAware(thrift.py3.types.Struct, _typing.Hashable):
         aa_set: _typing.Union[_typing.AbstractSet[int], __NotSet, None]=NOTSET,
         aa_map: _typing.Union[_typing.Mapping[int, int], __NotSet, None]=NOTSET,
         aa_string: _typing.Union[str, __NotSet, None]=NOTSET,
-        not_a_container: _typing.Union[int, __NotSet, None]=NOTSET
+        not_a_container: _typing.Union[int, __NotSet, None]=NOTSET,
+        aa_unique: _typing.Union[int, __NotSet, None]=NOTSET,
+        aa_shared: _typing.Union[int, __NotSet, None]=NOTSET
     ) -> AllocatorAware: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['AllocatorAware'], bytes]]: ...

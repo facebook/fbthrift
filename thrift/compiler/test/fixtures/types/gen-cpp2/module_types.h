@@ -68,6 +68,8 @@ struct aa_set;
 struct aa_map;
 struct aa_string;
 struct not_a_container;
+struct aa_unique;
+struct aa_shared;
 struct not_a_container;
 struct i32_field;
 struct IntTypedef_field;
@@ -290,6 +292,14 @@ APACHE_THRIFT_DEFINE_ACCESSOR(aa_string);
 #ifndef APACHE_THRIFT_ACCESSOR_not_a_container
 #define APACHE_THRIFT_ACCESSOR_not_a_container
 APACHE_THRIFT_DEFINE_ACCESSOR(not_a_container);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_aa_unique
+#define APACHE_THRIFT_ACCESSOR_aa_unique
+APACHE_THRIFT_DEFINE_ACCESSOR(aa_unique);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_aa_shared
+#define APACHE_THRIFT_ACCESSOR_aa_shared
+APACHE_THRIFT_DEFINE_ACCESSOR(aa_shared);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_not_a_container
 #define APACHE_THRIFT_ACCESSOR_not_a_container
@@ -4544,10 +4554,9 @@ class AllocatorAware final  {
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  AllocatorAware(apache::thrift::FragileConstructor, ::std::vector<::std::int32_t> aa_list__arg, ::std::set<::std::int32_t> aa_set__arg, ::std::map<::std::int32_t, ::std::int32_t> aa_map__arg, ::std::string aa_string__arg, ::std::int32_t not_a_container__arg);
+  AllocatorAware(apache::thrift::FragileConstructor, ::std::vector<::std::int32_t> aa_list__arg, ::std::set<::std::int32_t> aa_set__arg, ::std::map<::std::int32_t, ::std::int32_t> aa_map__arg, ::std::string aa_string__arg, ::std::int32_t not_a_container__arg, ::std::unique_ptr<::std::int32_t> aa_unique__arg, ::std::shared_ptr<::std::int32_t> aa_shared__arg);
 
   AllocatorAware(AllocatorAware&&) noexcept;
-
   AllocatorAware(const AllocatorAware& src);
 
   explicit AllocatorAware(const allocator_type& alloc) noexcept :
@@ -4556,7 +4565,9 @@ class AllocatorAware final  {
     __fbthrift_field_aa_set(alloc),
     __fbthrift_field_aa_map(alloc),
     __fbthrift_field_aa_string(alloc),
-    __fbthrift_field_not_a_container() {}
+    __fbthrift_field_not_a_container(),
+    aa_unique(folly::allocate_unique<::std::int32_t>(alloc)),
+    aa_shared(std::allocate_shared<::std::int32_t>(alloc)) {}
 
   explicit AllocatorAware(const AllocatorAware& other, const allocator_type& alloc) :
     __fbthrift_alloc(alloc),
@@ -4565,6 +4576,8 @@ class AllocatorAware final  {
     __fbthrift_field_aa_map(other.__fbthrift_field_aa_map, alloc),
     __fbthrift_field_aa_string(other.__fbthrift_field_aa_string, alloc),
     __fbthrift_field_not_a_container(other.__fbthrift_field_not_a_container),
+    aa_unique(folly::allocate_unique<::std::int32_t>(alloc, *other.aa_unique)),
+    aa_shared(std::allocate_shared<::std::int32_t>(alloc, *other.aa_shared)),
     __isset(other.__isset) {}
 
   explicit AllocatorAware(AllocatorAware&& other, const allocator_type& alloc) :
@@ -4574,6 +4587,8 @@ class AllocatorAware final  {
     __fbthrift_field_aa_map(std::move(other.__fbthrift_field_aa_map), alloc),
     __fbthrift_field_aa_string(std::move(other.__fbthrift_field_aa_string), alloc),
     __fbthrift_field_not_a_container(std::move(other.__fbthrift_field_not_a_container)),
+    aa_unique(folly::allocate_unique<::std::int32_t>(alloc, std::move(*other.aa_unique))),
+    aa_shared(std::allocate_shared<::std::int32_t>(alloc, std::move(*other.aa_shared))),
     __isset(other.__isset) {}
 
   AllocatorAware& operator=(AllocatorAware&&) noexcept;
@@ -4591,6 +4606,10 @@ class AllocatorAware final  {
   ::std::string __fbthrift_field_aa_string;
  private:
   ::std::int32_t __fbthrift_field_not_a_container;
+ public:
+  ::std::unique_ptr<::std::int32_t> aa_unique;
+ public:
+  ::std::shared_ptr<::std::int32_t> aa_shared;
  private:
   apache::thrift::detail::isset_bitset<5, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
@@ -4798,6 +4817,28 @@ class AllocatorAware final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> not_a_container() && {
     return {static_cast<T&&>(this->__fbthrift_field_not_a_container), __isset.at(4), __isset.bit(4)};
   }
+  template <typename ..., typename T = ::std::unique_ptr<::std::int32_t>>
+  FOLLY_ERASE T& aa_unique_ref() & { return aa_unique; }
+
+  template <typename ..., typename T = ::std::unique_ptr<::std::int32_t>>
+  FOLLY_ERASE const T& aa_unique_ref() const& { return aa_unique; }
+
+  template <typename ..., typename T = ::std::unique_ptr<::std::int32_t>>
+  FOLLY_ERASE T&& aa_unique_ref() && { return static_cast<T&&>(aa_unique); }
+
+  template <typename ..., typename T = ::std::unique_ptr<::std::int32_t>>
+  FOLLY_ERASE const T&& aa_unique_ref() const&& { return static_cast<const T&&>(aa_unique); }
+  template <typename ..., typename T = ::std::shared_ptr<::std::int32_t>>
+  FOLLY_ERASE T& aa_shared_ref() & { return aa_shared; }
+
+  template <typename ..., typename T = ::std::shared_ptr<::std::int32_t>>
+  FOLLY_ERASE const T& aa_shared_ref() const& { return aa_shared; }
+
+  template <typename ..., typename T = ::std::shared_ptr<::std::int32_t>>
+  FOLLY_ERASE T&& aa_shared_ref() && { return static_cast<T&&>(aa_shared); }
+
+  template <typename ..., typename T = ::std::shared_ptr<::std::int32_t>>
+  FOLLY_ERASE const T&& aa_shared_ref() const&& { return static_cast<const T&&>(aa_shared); }
   const ::std::vector<::std::int32_t>& get_aa_list() const&;
   ::std::vector<::std::int32_t> get_aa_list() &&;
 

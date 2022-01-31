@@ -1342,6 +1342,8 @@ class AllocatorAware_struct_traits {
       using aa_map = __fbthrift_refl_impl::reflected_no_annotations;
       using aa_string = __fbthrift_refl_impl::reflected_no_annotations;
       using not_a_container = __fbthrift_refl_impl::reflected_no_annotations;
+      using aa_unique = __fbthrift_refl_impl::reflected_no_annotations;
+      using aa_shared = __fbthrift_refl_impl::reflected_no_annotations;
     };
 
     struct __fbthrift_keys {
@@ -1421,6 +1423,30 @@ class AllocatorAware_struct_traits {
     using type_class = ::apache::thrift::type_class::integral;
     using annotations = ::apache::thrift::reflected_annotations<__fbthrift_annotations::members::not_a_container>;
   };
+  struct __fbthrift_member_aa_unique {
+    using owner = ::apache::thrift::fixtures::types::AllocatorAware;
+    using name = __fbthrift_strings_module::__fbthrift_hash_55c08bd2971fde106159fb69085c6e57b77b291d5ac214f1479c0b4f41107cf1;
+    using type = ::std::int32_t;
+    using tag = ::apache::thrift::tag::aa_unique;
+    static constexpr ::apache::thrift::field_id_t id = 6;
+    static constexpr auto optional = ::apache::thrift::optionality::required_of_writer;
+    using getter = __fbthrift_refl_impl::data_member_accessor<::apache::thrift::tag::aa_unique>;
+    using field_ref_getter = ::apache::thrift::detail::invoke_reffer<::apache::thrift::tag::aa_unique>;
+    using type_class = ::apache::thrift::type_class::integral;
+    using annotations = ::apache::thrift::reflected_annotations<__fbthrift_annotations::members::aa_unique>;
+  };
+  struct __fbthrift_member_aa_shared {
+    using owner = ::apache::thrift::fixtures::types::AllocatorAware;
+    using name = __fbthrift_strings_module::__fbthrift_hash_c9fa85c7498e0de702c747ccbfa86a6946006c87e0d3a64b9156945848027d08;
+    using type = ::std::int32_t;
+    using tag = ::apache::thrift::tag::aa_shared;
+    static constexpr ::apache::thrift::field_id_t id = 7;
+    static constexpr auto optional = ::apache::thrift::optionality::required_of_writer;
+    using getter = __fbthrift_refl_impl::data_member_accessor<::apache::thrift::tag::aa_shared>;
+    using field_ref_getter = ::apache::thrift::detail::invoke_reffer<::apache::thrift::tag::aa_shared>;
+    using type_class = ::apache::thrift::type_class::integral;
+    using annotations = ::apache::thrift::reflected_annotations<__fbthrift_annotations::members::aa_shared>;
+  };
 
   struct __fbthrift_member {
     using aa_list = ::apache::thrift::reflected_struct_data_member<__fbthrift_member_aa_list>;
@@ -1428,6 +1454,8 @@ class AllocatorAware_struct_traits {
     using aa_map = ::apache::thrift::reflected_struct_data_member<__fbthrift_member_aa_map>;
     using aa_string = ::apache::thrift::reflected_struct_data_member<__fbthrift_member_aa_string>;
     using not_a_container = ::apache::thrift::reflected_struct_data_member<__fbthrift_member_not_a_container>;
+    using aa_unique = ::apache::thrift::reflected_struct_data_member<__fbthrift_member_aa_unique>;
+    using aa_shared = ::apache::thrift::reflected_struct_data_member<__fbthrift_member_aa_shared>;
   };
  public:
   using type = ::apache::thrift::fixtures::types::AllocatorAware;
@@ -1438,7 +1466,9 @@ class AllocatorAware_struct_traits {
       member::aa_set,
       member::aa_map,
       member::aa_string,
-      member::not_a_container
+      member::not_a_container,
+      member::aa_unique,
+      member::aa_shared
   >;
   using members_annotations = __fbthrift_annotations::members;
   using metadata = ::apache::thrift::detail::type_common_metadata_impl<

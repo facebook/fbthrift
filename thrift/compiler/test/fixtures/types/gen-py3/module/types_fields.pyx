@@ -827,6 +827,8 @@ cdef class __AllocatorAware_FieldsSetter(__StructFieldsSetter):
         __fbthrift_inst._setters[__cstring_view(<const char*>"aa_map")] = __AllocatorAware_FieldsSetter._set_field_2
         __fbthrift_inst._setters[__cstring_view(<const char*>"aa_string")] = __AllocatorAware_FieldsSetter._set_field_3
         __fbthrift_inst._setters[__cstring_view(<const char*>"not_a_container")] = __AllocatorAware_FieldsSetter._set_field_4
+        __fbthrift_inst._setters[__cstring_view(<const char*>"aa_unique")] = __AllocatorAware_FieldsSetter._set_field_5
+        __fbthrift_inst._setters[__cstring_view(<const char*>"aa_shared")] = __AllocatorAware_FieldsSetter._set_field_6
         return __fbthrift_inst
 
     cdef void set_field(__AllocatorAware_FieldsSetter self, const char* name, object value) except *:
@@ -875,6 +877,26 @@ cdef class __AllocatorAware_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'not_a_container is not a { int !r}.')
         _fbthrift_value = <cint32_t> _fbthrift_value
         deref(self._struct_cpp_obj).not_a_container_ref().assign(_fbthrift_value)
+
+    cdef void _set_field_5(self, _fbthrift_value) except *:
+        # for field aa_unique
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cAllocatorAware](deref(self._struct_cpp_obj), 5)
+            return
+        if not isinstance(_fbthrift_value, int):
+            raise TypeError(f'aa_unique is not a { int !r}.')
+        _fbthrift_value = <cint32_t> _fbthrift_value
+        assign_unique_ptr[cint32_t](deref(self._struct_cpp_obj).aa_unique_ref(), make_unique[cint32_t](deref((<cint32_t?>_fbthrift_value)._cpp_obj)))
+
+    cdef void _set_field_6(self, _fbthrift_value) except *:
+        # for field aa_shared
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cAllocatorAware](deref(self._struct_cpp_obj), 6)
+            return
+        if not isinstance(_fbthrift_value, int):
+            raise TypeError(f'aa_shared is not a { int !r}.')
+        _fbthrift_value = <cint32_t> _fbthrift_value
+        assign_shared_ptr[cint32_t](deref(self._struct_cpp_obj).aa_shared_ref(), (<cint32_t?>_fbthrift_value)._cpp_obj)
 
 
 @__cython.auto_pickle(False)

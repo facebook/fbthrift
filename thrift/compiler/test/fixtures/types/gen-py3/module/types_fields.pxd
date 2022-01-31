@@ -304,6 +304,8 @@ cdef class __AllocatorAware_FieldsSetter(__StructFieldsSetter):
     cdef void _set_field_2(self, _fbthrift_value) except *
     cdef void _set_field_3(self, _fbthrift_value) except *
     cdef void _set_field_4(self, _fbthrift_value) except *
+    cdef void _set_field_5(self, _fbthrift_value) except *
+    cdef void _set_field_6(self, _fbthrift_value) except *
 
 
 ctypedef void (*__AllocatorAware2_FieldsSetterFunc)(__AllocatorAware2_FieldsSetter, object) except *

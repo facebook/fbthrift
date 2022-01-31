@@ -84,6 +84,7 @@ struct __fbthrift_strings_module {
   using __fbthrift_hash_4c4f1be7384da0ab8e9483a59b7018f4671e228da38fa30ee8eabe777bc24cda = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'G'>;
   using __fbthrift_hash_52947f27873dfc0055cd1c77444997c1984e68f1fc59d8ce37d03289b07a590e = ::fatal::sequence<char, 'M', 'y', 'B', 'i', 'n', 'a', 'r', 'y', 'F', 'i', 'e', 'l', 'd', '2'>;
   using __fbthrift_hash_53940ac400998db00c671404e5a93276d9bcd94cf10d533bc9a3c72712e1ca76 = ::fatal::sequence<char, 'M', 'y', 'S', 't', 'r', 'u', 'c', 't'>;
+  using __fbthrift_hash_55c08bd2971fde106159fb69085c6e57b77b291d5ac214f1479c0b4f41107cf1 = ::fatal::sequence<char, 'a', 'a', '_', 'u', 'n', 'i', 'q', 'u', 'e'>;
   using __fbthrift_hash_594e519ae499312b29433b7dd8a97ff068defcba9755b6d5d00e84c524d67b06 = ::fatal::sequence<char, 'z'>;
   using __fbthrift_hash_5ab816af8034a41718cabc63bd821ab7283b905d4770d0a2952ce8e00bb38520 = ::fatal::sequence<char, 'U', 'i', 'n', 't', 'T', 'y', 'p', 'e', 'd', 'e', 'f', '_', 'f', 'i', 'e', 'l', 'd'>;
   using __fbthrift_hash_65365ccb0e1bf324ebefd47a47192f708359172a1ca2add5e66a111816756bdf = ::fatal::sequence<char, 'N', 'o', 'e', 'x', 'c', 'e', 'p', 't', 'M', 'o', 'v', 'e', 'C', 'o', 'm', 'p', 'l', 'e', 'x', 'S', 't', 'r', 'u', 'c', 't'>;
@@ -126,6 +127,7 @@ struct __fbthrift_strings_module {
   using __fbthrift_hash_c0d2856b74d0df05b9d4456b177950351bd88e98b77f12574dfb7a911acee0d0 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd'>;
   using __fbthrift_hash_c71ece60df4b15681a48d377f2c27b4e9c2e95e74f09dbfa070a7175138895c6 = ::fatal::sequence<char, 'M', 'y', 'S', 't', 'r', 'i', 'n', 'g', 'F', 'i', 'e', 'l', 'd', '2'>;
   using __fbthrift_hash_c7e10d053d5c1a0a0743c1dfc0a38c439cd181cc30829f18cc684e286d0baf27 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'B'>;
+  using __fbthrift_hash_c9fa85c7498e0de702c747ccbfa86a6946006c87e0d3a64b9156945848027d08 = ::fatal::sequence<char, 'a', 'a', '_', 's', 'h', 'a', 'r', 'e', 'd'>;
   using __fbthrift_hash_ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb = ::fatal::sequence<char, 'a'>;
   using __fbthrift_hash_ce341f28cce92dd4aef1789ba556e94d03c552eb381fa789efc112a2a7b95913 = ::fatal::sequence<char, 'N', 'O', 'N', 'Z', 'E', 'R', 'O'>;
   using __fbthrift_hash_d7c1fe391a8c7ceef0c2058b8163eae35e230e7ecf528cd41a09100a7aaa4fce = ::fatal::sequence<char, 's', 't', 'r', 'i', 'n', 'g', '_', 'f', 'i', 'e', 'l', 'd'>;
@@ -145,7 +147,9 @@ struct __fbthrift_strings_module {
   using aa_list = ::fatal::sequence<char, 'a', 'a', '_', 'l', 'i', 's', 't'>;
   using aa_map = ::fatal::sequence<char, 'a', 'a', '_', 'm', 'a', 'p'>;
   using aa_set = ::fatal::sequence<char, 'a', 'a', '_', 's', 'e', 't'>;
+  using aa_shared = ::fatal::sequence<char, 'a', 'a', '_', 's', 'h', 'a', 'r', 'e', 'd'>;
   using aa_string = ::fatal::sequence<char, 'a', 'a', '_', 's', 't', 'r', 'i', 'n', 'g'>;
+  using aa_unique = ::fatal::sequence<char, 'a', 'a', '_', 'u', 'n', 'i', 'q', 'u', 'e'>;
   using apache__thrift__fixtures__types = ::fatal::sequence<char, 'a', 'p', 'a', 'c', 'h', 'e', ':', ':', 't', 'h', 'r', 'i', 'f', 't', ':', ':', 'f', 'i', 'x', 't', 'u', 'r', 'e', 's', ':', ':', 't', 'y', 'p', 'e', 's'>;
   using b = ::fatal::sequence<char, 'b'>;
   using bar = ::fatal::sequence<char, 'b', 'a', 'r'>;

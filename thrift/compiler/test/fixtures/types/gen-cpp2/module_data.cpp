@@ -359,25 +359,31 @@ const std::array<protocol::TType, 2> TStructDataStorage<::apache::thrift::fixtur
   TType::T_I32,
 }};
 
-const std::array<folly::StringPiece, 5> TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware>::fields_names = {{
+const std::array<folly::StringPiece, 7> TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware>::fields_names = {{
   "aa_list",
   "aa_set",
   "aa_map",
   "aa_string",
   "not_a_container",
+  "aa_unique",
+  "aa_shared",
 }};
-const std::array<int16_t, 5> TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware>::fields_ids = {{
+const std::array<int16_t, 7> TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware>::fields_ids = {{
   1,
   2,
   3,
   4,
   5,
+  6,
+  7,
 }};
-const std::array<protocol::TType, 5> TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware>::fields_types = {{
+const std::array<protocol::TType, 7> TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware>::fields_types = {{
   TType::T_LIST,
   TType::T_SET,
   TType::T_MAP,
   TType::T_STRING,
+  TType::T_I32,
+  TType::T_I32,
   TType::T_I32,
 }};
 

@@ -357,6 +357,10 @@ struct VisitByFieldId<::apache::thrift::fixtures::types::AllocatorAware> {
       return f(3, static_cast<T&&>(t).aa_string_ref());
     case 5:
       return f(4, static_cast<T&&>(t).not_a_container_ref());
+    case 6:
+      return f(5, static_cast<T&&>(t).aa_unique_ref());
+    case 7:
+      return f(6, static_cast<T&&>(t).aa_shared_ref());
     default:
       throwInvalidThriftId(fieldId, "::apache::thrift::fixtures::types::AllocatorAware");
     }

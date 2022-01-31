@@ -279,6 +279,8 @@ pub mod types {
         pub aa_map: ::std::collections::BTreeMap<::std::primitive::i32, ::std::primitive::i32>,
         pub aa_string: ::std::string::String,
         pub not_a_container: ::std::primitive::i32,
+        pub aa_unique: ::std::primitive::i32,
+        pub aa_shared: ::std::primitive::i32,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
         // the definition in Thrift. If you don't want this, add the annotation
@@ -2501,6 +2503,8 @@ pub mod types {
                 aa_map: ::std::default::Default::default(),
                 aa_string: ::std::default::Default::default(),
                 not_a_container: ::std::default::Default::default(),
+                aa_unique: ::std::default::Default::default(),
+                aa_shared: ::std::default::Default::default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
         }
@@ -2515,6 +2519,8 @@ pub mod types {
                 .field("aa_map", &self.aa_map)
                 .field("aa_string", &self.aa_string)
                 .field("not_a_container", &self.not_a_container)
+                .field("aa_unique", &self.aa_unique)
+                .field("aa_shared", &self.aa_shared)
                 .finish()
         }
     }
@@ -2547,6 +2553,12 @@ pub mod types {
             p.write_field_begin("not_a_container", ::fbthrift::TType::I32, 5);
             ::fbthrift::Serialize::write(&self.not_a_container, p);
             p.write_field_end();
+            p.write_field_begin("aa_unique", ::fbthrift::TType::I32, 6);
+            ::fbthrift::Serialize::write(&self.aa_unique, p);
+            p.write_field_end();
+            p.write_field_begin("aa_shared", ::fbthrift::TType::I32, 7);
+            ::fbthrift::Serialize::write(&self.aa_shared, p);
+            p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -2561,7 +2573,9 @@ pub mod types {
                 ::fbthrift::Field::new("aa_list", ::fbthrift::TType::List, 1),
                 ::fbthrift::Field::new("aa_map", ::fbthrift::TType::Map, 3),
                 ::fbthrift::Field::new("aa_set", ::fbthrift::TType::Set, 2),
+                ::fbthrift::Field::new("aa_shared", ::fbthrift::TType::I32, 7),
                 ::fbthrift::Field::new("aa_string", ::fbthrift::TType::String, 4),
+                ::fbthrift::Field::new("aa_unique", ::fbthrift::TType::I32, 6),
                 ::fbthrift::Field::new("not_a_container", ::fbthrift::TType::I32, 5),
             ];
             let mut field_aa_list = ::std::option::Option::None;
@@ -2569,6 +2583,8 @@ pub mod types {
             let mut field_aa_map = ::std::option::Option::None;
             let mut field_aa_string = ::std::option::Option::None;
             let mut field_not_a_container = ::std::option::Option::None;
+            let mut field_aa_unique = ::std::option::Option::None;
+            let mut field_aa_shared = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -2579,6 +2595,8 @@ pub mod types {
                     (::fbthrift::TType::Map, 3) => field_aa_map = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::String, 4) => field_aa_string = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::I32, 5) => field_not_a_container = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I32, 6) => field_aa_unique = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I32, 7) => field_aa_shared = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -2590,6 +2608,8 @@ pub mod types {
                 aa_map: field_aa_map.unwrap_or_default(),
                 aa_string: field_aa_string.unwrap_or_default(),
                 not_a_container: field_not_a_container.unwrap_or_default(),
+                aa_unique: field_aa_unique.unwrap_or_default(),
+                aa_shared: field_aa_shared.unwrap_or_default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }

@@ -169,6 +169,8 @@ cdef class AllocatorAware_Builder(thrift.py3.builder.StructBuilder):
         yield "aa_map", self.aa_map
         yield "aa_string", self.aa_string
         yield "not_a_container", self.not_a_container
+        yield "aa_unique", self.aa_unique
+        yield "aa_shared", self.aa_shared
 
 cdef class AllocatorAware2_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.AllocatorAware2
