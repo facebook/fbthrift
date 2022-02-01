@@ -933,11 +933,11 @@ TEST(ThriftServerDeathTest, LongShutdown_DumpSnapshotTimeout) {
       "Could not drain active requests within allotted deadline");
 }
 
-TEST(ThriftServerDeathTest, OnStopServingException) {
+TEST(ThriftServerDeathTest, OnStopRequestedException) {
   class ThrowExceptionInterface : public TestServiceSvIf {
    public:
-    folly::coro::Task<void> co_onStopServing() override {
-      throw std::runtime_error("onStopServing");
+    folly::coro::Task<void> co_onStopRequested() override {
+      throw std::runtime_error("onStopRequested");
     }
   };
 
@@ -946,7 +946,7 @@ TEST(ThriftServerDeathTest, OnStopServingException) {
         ScopedServerInterfaceThread runner(
             std::make_shared<ThrowExceptionInterface>());
       }),
-      "onStopServing");
+      "onStopRequested");
 }
 
 namespace {
@@ -1554,7 +1554,7 @@ TEST_P(HeaderOrRocket, QueueTimeoutOnServerShutdown) {
       count++;
     }
 
-    folly::coro::Task<void> co_onStopServing() override {
+    folly::coro::Task<void> co_onStopRequested() override {
       stopEnter.post();
       stopExit.wait();
       co_return;
@@ -1575,12 +1575,12 @@ TEST_P(HeaderOrRocket, QueueTimeoutOnServerShutdown) {
 
   server.stop();
 
-  // We need to send requests after onStopServing() has started executing as our
+  // We need to send requests after onStopRequested() has started executing as our
   // request will block the threadmanager
   EXPECT_TRUE(blockIf->stopEnter.try_wait_for(2s));
 
   // In this test, we send 2 requests, so that one request starts executing when
-  // onStopServing completes and the other request gets cancelled.
+  // onStopRequested completes and the other request gets cancelled.
   auto first = client->semifuture_voidResponse();
 
   // Wait for the first request to reach the server
@@ -1605,7 +1605,7 @@ TEST_P(HeaderOrRocket, QueueTimeoutOnServerShutdown) {
   }
   EXPECT_EQ(server.getActiveRequests(), 2);
 
-  // Resume onStopServing()
+  // Resume onStopRequested()
   blockIf->stopExit.post();
 
   // First request should complete normally
@@ -3315,7 +3315,7 @@ TEST_P(HeaderOrRocket, OnStartStopServingTest) {
       co_return;
     }
 
-    folly::coro::Task<void> co_onStopServing() override {
+    folly::coro::Task<void> co_onStopRequested() override {
       stopEnter.post();
       co_await stopExit;
       co_return;
@@ -3418,7 +3418,7 @@ TEST_P(HeaderOrRocket, OnStartStopServingTest) {
   folly::getGlobalIOExecutor()->getEventBase()->runInEventBaseThread(
       [&runner]() { runner.reset(); });
 
-  // Wait for onStopServing()
+  // Wait for onStopRequested()
   EXPECT_TRUE(testIf->stopEnter.try_wait_for(2s));
   client.semifuture_voidResponse().get();
   testIf->stopExit.post();
@@ -3438,7 +3438,7 @@ TEST_P(HeaderOrRocket, StatusOnStartingAndStopping) {
   };
   auto preStartHandler = std::make_shared<TestEventHandler>();
 
-  // Block on onStartServing and onStopServing to allow testing
+  // Block on onStartServing and onStopRequested to allow testing
   class Handler : public TestServiceSvIf {
    public:
     folly::SemiFuture<folly::Unit> semifuture_onStartServing() override {
@@ -3448,8 +3448,8 @@ TEST_P(HeaderOrRocket, StatusOnStartingAndStopping) {
       });
     }
 
-    folly::SemiFuture<folly::Unit> semifuture_onStopServing() override {
-      onStopServingCalled.post();
+    folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override {
+      onStopRequestedCalled.post();
       return folly::makeSemiFuture().deferValue([&](auto&&) {
         EXPECT_TRUE(stopping.try_wait_for(2s));
         return folly::unit;
@@ -3458,7 +3458,7 @@ TEST_P(HeaderOrRocket, StatusOnStartingAndStopping) {
 
     folly::Baton<> starting;
     folly::Baton<> stopping;
-    folly::Baton<> onStopServingCalled;
+    folly::Baton<> onStopRequestedCalled;
   };
   auto handler = std::make_shared<Handler>();
 
@@ -3504,7 +3504,7 @@ TEST_P(HeaderOrRocket, StatusOnStartingAndStopping) {
       static_cast<std::int64_t>(ThriftServer::ServerStatus::RUNNING));
 
   runner->getThriftServer().stop();
-  EXPECT_TRUE(handler->onStopServingCalled.try_wait_for(2s));
+  EXPECT_TRUE(handler->onStopRequestedCalled.try_wait_for(2s));
   EXPECT_EQ(
       client.semifuture_getStatus().get(),
       static_cast<std::int64_t>(ThriftServer::ServerStatus::STOPPING));

@@ -768,7 +768,7 @@ class ServiceHandler {
  public:
 #if FOLLY_HAS_COROUTINES
   virtual folly::coro::Task<void> co_onStartServing() { co_return; }
-  virtual folly::coro::Task<void> co_onStopServing() {
+  virtual folly::coro::Task<void> co_onStopRequested() {
     throw MethodNotImplemented();
   }
 #endif
@@ -782,14 +782,15 @@ class ServiceHandler {
     return folly::makeSemiFuture();
   }
 
-  virtual folly::SemiFuture<folly::Unit> semifuture_onStopServing() {
+  virtual folly::SemiFuture<folly::Unit> semifuture_onStopRequested() {
 #if FOLLY_HAS_COROUTINES
     if constexpr (folly::kIsLinux) {
-      // TODO: onStopServing should be implemented similar to onStartServing
+      // TODO(srir): onStopRequested should be implemented similar to
+      // onStartServing
       try {
-        return co_onStopServing().semi();
+        return co_onStopRequested().semi();
       } catch (MethodNotImplemented&) {
-        // If co_onStopServing() is not implemented we just return
+        // If co_onStopRequested() is not implemented we just return
       }
     }
 #endif

@@ -258,7 +258,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   void stopAcceptingAndJoinOutstandingRequests();
 
   void callOnStartServing();
-  void callOnStopServing();
+  void callOnStopRequested();
 
   void ensureDecoratedProcessorFactoryInitialized();
 
@@ -323,12 +323,12 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
      */
     PRE_STOPPING,
     /**
-     * The server is about to stop and ServiceHandler::semifuture_onStopServing
-     * hooks are still executing.
+     * The server is about to stop and
+     * ServiceHandler::semifuture_onStopRequested hooks are still executing.
      */
     STOPPING,
     /**
-     * ServiceHandler::semifuture_onStopServing hooks have finished executing.
+     * ServiceHandler::semifuture_onStopRequested hooks have finished executing.
      * Outstanding requests are being joined. New requests are rejected.
      */
     DRAINING_UNTIL_STOPPED,

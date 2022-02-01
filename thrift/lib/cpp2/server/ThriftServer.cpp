@@ -802,7 +802,7 @@ void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
     }
   }
 
-  callOnStopServing();
+  callOnStopRequested();
 
   internalStatus_.store(
       ServerStatus::DRAINING_UNTIL_STOPPED, std::memory_order_release);
@@ -925,7 +925,7 @@ void ThriftServer::callOnStartServing() {
   folly::collectAll(futures).via(getThreadManager().get()).get();
 }
 
-void ThriftServer::callOnStopServing() {
+void ThriftServer::callOnStopRequested() {
   auto handlerList = collectServiceHandlers();
   std::vector<folly::SemiFuture<folly::Unit>> futures;
   futures.reserve(handlerList.size());
@@ -933,14 +933,14 @@ void ThriftServer::callOnStopServing() {
     futures.emplace_back(
         THRIFT_FLAG(enable_on_stop_serving)
             ? folly::makeSemiFuture().deferValue([handler](folly::Unit) {
-                return handler->semifuture_onStopServing();
+                return handler->semifuture_onStopRequested();
               })
-            : handler->semifuture_onStopServing());
+            : handler->semifuture_onStopRequested());
   }
   auto results = folly::collectAll(futures).via(getThreadManager().get()).get();
   for (auto& result : results) {
     if (result.hasException()) {
-      LOG(FATAL) << "Exception thrown by onStopServing(): "
+      LOG(FATAL) << "Exception thrown by onStopRequested(): "
                  << folly::exceptionStr(result.exception());
     }
   }
