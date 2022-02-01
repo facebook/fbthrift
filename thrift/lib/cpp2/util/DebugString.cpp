@@ -526,7 +526,7 @@ void parseField(
       if (tok != "{") {
         throw TProtocolException(
             TProtocolException::INVALID_DATA,
-            fmt::format("Expected struct '{' at {}", tok));
+            fmt::format("Expected struct '{{' at {}", tok));
       }
       if (outProtoWriter) {
         outProtoWriter->writeStructBegin("");
