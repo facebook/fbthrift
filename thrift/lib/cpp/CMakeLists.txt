@@ -89,7 +89,6 @@ add_library(
   async/TFramedAsyncChannel.cpp
   async/THttpAsyncChannel.cpp
   async/TUnframedAsyncChannel.cpp
-  async/TZlibAsyncChannel.cpp
   server/TServerObserver.cpp
 )
 target_link_libraries(
