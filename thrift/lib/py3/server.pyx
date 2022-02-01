@@ -105,15 +105,18 @@ cdef class ThriftServer:
     def __init__(self, AsyncProcessorFactory handler, int port=0, ip=None, path=None):
         self.loop = asyncio.get_event_loop()
         self.factory = handler
-        self.server.get().setThreadManagerFromExecutor(get_executor(), b'python_executor')
-
-        if handler._cpp_obj:
-            self.server.get().setProcessorFactory(handler._cpp_obj)
+        if handler is not None:
+            self.server.get().setThreadManagerFromExecutor(get_executor(), b'python_executor')
+            if handler._cpp_obj:
+                self.server.get().setProcessorFactory(handler._cpp_obj)
+            else:
+                raise RuntimeError(
+                    'The handler is not valid, it has no C++ handler. Maybe its not a '
+                    'generated ServiceInterface?'
+                )
         else:
-            raise RuntimeError(
-                'The handler is not valid, it has no C++ handler. Maybe its not a '
-                'generated ServiceInterface?'
-            )
+            # This thrift server is only for monitoring/status/control
+            self.server.get().setProcessorFactory(make_shared[EmptyAsyncProcessorFactory]())
         if path:
             fspath = os.fsencode(path)
             self.server.get().setAddress(

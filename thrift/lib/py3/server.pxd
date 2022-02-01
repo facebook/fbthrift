@@ -75,6 +75,11 @@ cdef extern from "thrift/lib/cpp2/server/StatusServerInterface.h" \
     cdef cppclass cStatusServerInterface "apache::thrift::StatusServerInterface"(cAsyncProcessorFactory):
         pass
 
+cdef extern from "thrift/lib/cpp2/util/EmptyAsyncProcessor.h":
+    # This is a little wonky, but makes using it much easier from cython.
+    # without having to use a static_pointer_cast to make cython happy.
+    ctypedef cAsyncProcessorFactory EmptyAsyncProcessorFactory "apache::thrift::EmptyAsyncProcessorFactory"
+
 cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         namespace "apache::thrift":
 
