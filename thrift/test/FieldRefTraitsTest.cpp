@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,69 +32,69 @@ using Unique = std::remove_reference_t<decltype(
 using Shared = std::remove_reference_t<decltype(
     struct_optional_list_i32_shared_cpp_ref{}.field_1_ref())>;
 
-static_assert(is_field_ref<Unqualified>::value);
-static_assert(!is_field_ref<Optional>::value);
-static_assert(!is_field_ref<Required>::value);
-static_assert(!is_field_ref<Box>::value);
-static_assert(!is_field_ref<Union>::value);
-static_assert(!is_field_ref<Unique>::value);
-static_assert(!is_field_ref<Shared>::value);
+static_assert(is_field_ref_v<Unqualified>);
+static_assert(!is_field_ref_v<Optional>);
+static_assert(!is_field_ref_v<Required>);
+static_assert(!is_field_ref_v<Box>);
+static_assert(!is_field_ref_v<Union>);
+static_assert(!is_field_ref_v<Unique>);
+static_assert(!is_field_ref_v<Shared>);
 
-static_assert(!is_optional_field_ref<Unqualified>::value);
-static_assert(is_optional_field_ref<Optional>::value);
-static_assert(!is_optional_field_ref<Required>::value);
-static_assert(!is_optional_field_ref<Box>::value);
-static_assert(!is_optional_field_ref<Union>::value);
-static_assert(!is_optional_field_ref<Unique>::value);
-static_assert(!is_optional_field_ref<Shared>::value);
+static_assert(!is_optional_field_ref_v<Unqualified>);
+static_assert(is_optional_field_ref_v<Optional>);
+static_assert(!is_optional_field_ref_v<Required>);
+static_assert(!is_optional_field_ref_v<Box>);
+static_assert(!is_optional_field_ref_v<Union>);
+static_assert(!is_optional_field_ref_v<Unique>);
+static_assert(!is_optional_field_ref_v<Shared>);
 
-static_assert(!is_required_field_ref<Unqualified>::value);
-static_assert(!is_required_field_ref<Optional>::value);
-static_assert(is_required_field_ref<Required>::value);
-static_assert(!is_required_field_ref<Box>::value);
-static_assert(!is_required_field_ref<Union>::value);
-static_assert(!is_required_field_ref<Unique>::value);
-static_assert(!is_required_field_ref<Shared>::value);
+static_assert(!is_required_field_ref_v<Unqualified>);
+static_assert(!is_required_field_ref_v<Optional>);
+static_assert(is_required_field_ref_v<Required>);
+static_assert(!is_required_field_ref_v<Box>);
+static_assert(!is_required_field_ref_v<Union>);
+static_assert(!is_required_field_ref_v<Unique>);
+static_assert(!is_required_field_ref_v<Shared>);
 
-static_assert(!is_optional_boxed_field_ref<Unqualified>::value);
-static_assert(!is_optional_boxed_field_ref<Optional>::value);
-static_assert(!is_optional_boxed_field_ref<Required>::value);
-static_assert(is_optional_boxed_field_ref<Box>::value);
-static_assert(!is_optional_boxed_field_ref<Union>::value);
-static_assert(!is_optional_boxed_field_ref<Unique>::value);
-static_assert(!is_optional_boxed_field_ref<Shared>::value);
+static_assert(!is_optional_boxed_field_ref_v<Unqualified>);
+static_assert(!is_optional_boxed_field_ref_v<Optional>);
+static_assert(!is_optional_boxed_field_ref_v<Required>);
+static_assert(is_optional_boxed_field_ref_v<Box>);
+static_assert(!is_optional_boxed_field_ref_v<Union>);
+static_assert(!is_optional_boxed_field_ref_v<Unique>);
+static_assert(!is_optional_boxed_field_ref_v<Shared>);
 
-static_assert(!is_union_field_ref<Unqualified>::value);
-static_assert(!is_union_field_ref<Optional>::value);
-static_assert(!is_union_field_ref<Required>::value);
-static_assert(!is_union_field_ref<Box>::value);
-static_assert(is_union_field_ref<Union>::value);
-static_assert(!is_union_field_ref<Unique>::value);
-static_assert(!is_union_field_ref<Shared>::value);
+static_assert(!is_union_field_ref_v<Unqualified>);
+static_assert(!is_union_field_ref_v<Optional>);
+static_assert(!is_union_field_ref_v<Required>);
+static_assert(!is_union_field_ref_v<Box>);
+static_assert(is_union_field_ref_v<Union>);
+static_assert(!is_union_field_ref_v<Unique>);
+static_assert(!is_union_field_ref_v<Shared>);
 
-static_assert(!is_unique_ptr<Unqualified>::value);
-static_assert(!is_unique_ptr<Optional>::value);
-static_assert(!is_unique_ptr<Required>::value);
-static_assert(!is_unique_ptr<Box>::value);
-static_assert(!is_unique_ptr<Union>::value);
-static_assert(is_unique_ptr<Unique>::value);
-static_assert(!is_unique_ptr<Shared>::value);
+static_assert(!is_unique_ptr_v<Unqualified>);
+static_assert(!is_unique_ptr_v<Optional>);
+static_assert(!is_unique_ptr_v<Required>);
+static_assert(!is_unique_ptr_v<Box>);
+static_assert(!is_unique_ptr_v<Union>);
+static_assert(is_unique_ptr_v<Unique>);
+static_assert(!is_unique_ptr_v<Shared>);
 
-static_assert(!is_shared_ptr<Unqualified>::value);
-static_assert(!is_shared_ptr<Optional>::value);
-static_assert(!is_shared_ptr<Required>::value);
-static_assert(!is_shared_ptr<Box>::value);
-static_assert(!is_shared_ptr<Union>::value);
-static_assert(!is_shared_ptr<Unique>::value);
-static_assert(is_shared_ptr<Shared>::value);
+static_assert(!is_shared_ptr_v<Unqualified>);
+static_assert(!is_shared_ptr_v<Optional>);
+static_assert(!is_shared_ptr_v<Required>);
+static_assert(!is_shared_ptr_v<Box>);
+static_assert(!is_shared_ptr_v<Union>);
+static_assert(!is_shared_ptr_v<Unique>);
+static_assert(is_shared_ptr_v<Shared>);
 
-static_assert(!is_shared_or_unique_ptr<Unqualified>::value);
-static_assert(!is_shared_or_unique_ptr<Optional>::value);
-static_assert(!is_shared_or_unique_ptr<Required>::value);
-static_assert(!is_shared_or_unique_ptr<Box>::value);
-static_assert(!is_shared_or_unique_ptr<Union>::value);
-static_assert(is_shared_or_unique_ptr<Unique>::value);
-static_assert(is_shared_or_unique_ptr<Shared>::value);
+static_assert(!is_shared_or_unique_ptr_v<Unqualified>);
+static_assert(!is_shared_or_unique_ptr_v<Optional>);
+static_assert(!is_shared_or_unique_ptr_v<Required>);
+static_assert(!is_shared_or_unique_ptr_v<Box>);
+static_assert(!is_shared_or_unique_ptr_v<Union>);
+static_assert(is_shared_or_unique_ptr_v<Unique>);
+static_assert(is_shared_or_unique_ptr_v<Shared>);
 
 } // namespace
 } // namespace apache::thrift::test::testset

@@ -52,12 +52,11 @@ FOLLY_ERASE constexpr T identity(T t) {
 }
 
 template <typename T, typename U = void>
-using enable_if_smart_ptr_t =
-    std::enable_if_t<is_shared_or_unique_ptr<T>::value, U>;
+using enable_if_smart_ptr_t = std::enable_if_t<is_shared_or_unique_ptr_v<T>, U>;
 
 template <typename T, typename U = void>
 using enable_if_not_smart_ptr_t =
-    std::enable_if_t<!is_shared_or_unique_ptr<T>::value, U>;
+    std::enable_if_t<!is_shared_or_unique_ptr_v<T>, U>;
 
 template <typename T, typename Enable = void>
 struct maybe_get_element_type {
@@ -283,7 +282,7 @@ enable_if_not_smart_ptr_t<ObjectType, void*> set(void* object) {
 }
 
 template <typename PtrType>
-std::enable_if_t<is_shared_ptr<PtrType>::value, void*> set(void* object) {
+std::enable_if_t<is_shared_ptr_v<PtrType>, void*> set(void* object) {
   using Element = typename PtrType::element_type;
   auto& ptr = *static_cast<PtrType*>(object);
   ptr = std::make_shared<Element>();
@@ -291,7 +290,7 @@ std::enable_if_t<is_shared_ptr<PtrType>::value, void*> set(void* object) {
 }
 
 template <typename PtrType>
-std::enable_if_t<is_unique_ptr<PtrType>::value, void*> set(void* object) {
+std::enable_if_t<is_unique_ptr_v<PtrType>, void*> set(void* object) {
   using Element = typename PtrType::element_type;
   auto& ptr = *static_cast<PtrType*>(object);
   ptr = std::make_unique<Element>();
@@ -304,7 +303,7 @@ enable_if_not_smart_ptr_t<ObjectType> set(void* object, PrimitiveType val) {
 }
 
 template <typename PtrType, typename PrimitiveType>
-std::enable_if_t<is_unique_ptr<PtrType>::value> set(
+std::enable_if_t<is_unique_ptr_v<PtrType>> set(
     void* object, PrimitiveType val) {
   using Element = typename PtrType::element_type;
   *static_cast<PtrType*>(object) =
@@ -312,7 +311,7 @@ std::enable_if_t<is_unique_ptr<PtrType>::value> set(
 }
 
 template <typename PtrType, typename PrimitiveType>
-std::enable_if_t<is_shared_ptr<PtrType>::value> set(
+std::enable_if_t<is_shared_ptr_v<PtrType>> set(
     void* object, PrimitiveType val) {
   using Element = typename PtrType::element_type;
   *static_cast<PtrType*>(object) =

@@ -66,6 +66,24 @@ template <class T>
 struct is_shared_or_unique_ptr
     : folly::bool_constant<is_unique_ptr<T>::value || is_shared_ptr<T>::value> {
 };
+
+template <class T>
+constexpr bool is_field_ref_v = is_field_ref<T>::value;
+template <class T>
+constexpr bool is_optional_field_ref_v = is_optional_field_ref<T>::value;
+template <class T>
+constexpr bool is_required_field_ref_v = is_required_field_ref<T>::value;
+template <class T>
+constexpr bool is_optional_boxed_field_ref_v =
+    is_optional_boxed_field_ref<T>::value;
+template <class T>
+constexpr bool is_union_field_ref_v = is_union_field_ref<T>::value;
+template <class T>
+constexpr bool is_unique_ptr_v = is_unique_ptr<T>::value;
+template <class T>
+constexpr bool is_shared_ptr_v = is_shared_ptr<T>::value;
+template <class T>
+constexpr bool is_shared_or_unique_ptr_v = is_shared_or_unique_ptr<T>::value;
 } // namespace detail
 } // namespace thrift
 } // namespace apache
