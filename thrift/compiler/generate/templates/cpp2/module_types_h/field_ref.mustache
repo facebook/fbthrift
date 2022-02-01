@@ -218,7 +218,7 @@
   FOLLY_ERASE auto <%mixin:field_name%>() &&          { return std::move(*this).<%mixin:field_name%>_ref(); }
   FOLLY_ERASE auto <%mixin:field_name%>() const&&     { return std::move(*this).<%mixin:field_name%>_ref(); }
 <%/struct:mixin_fields%>
-<%#struct:include_tag_header?%><%#struct:thrift_uri%>
+<%^struct:deprecated_tag_incompatible?%><%#struct:thrift_uri%>
  private:
   template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &;
   template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&;
@@ -232,4 +232,4 @@
   <%/struct:fields%>
 
  public:
-<%/struct:thrift_uri%><%/struct:include_tag_header?%>
+<%/struct:thrift_uri%><%/struct:deprecated_tag_incompatible?%>

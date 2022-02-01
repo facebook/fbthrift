@@ -8,6 +8,7 @@
 
 #include <thrift/lib/cpp2/gen/module_types_h.h>
 
+#include <thrift/lib/cpp2/type/Tag.h>
 
 
 namespace apache {
@@ -65,6 +66,9 @@ class MyStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
   static const char* __fbthrift_cpp2_gen_thrift_uri();
+  using __fbthrift_fields = ::apache::thrift::type::fields<
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::string_t>
+  >;
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -139,6 +143,17 @@ class MyStruct final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myString() && {
     return {static_cast<T&&>(this->__fbthrift_field_myString), __isset.at(0), __isset.bit(0)};
   }
+ private:
+  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &;
+  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&;
+  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &&;
+  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &       { return myString_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&  { return myString_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &&      { return std::move(*this).myString_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&& { return std::move(*this).myString_ref(); }
+
+ public:
 
   const ::std::string& get_myString() const& {
     return __fbthrift_field_myString;
@@ -190,6 +205,9 @@ class MyUnion final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
   static const char* __fbthrift_cpp2_gen_thrift_uri();
+  using __fbthrift_fields = ::apache::thrift::type::fields<
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::string_t>
+  >;
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -400,6 +418,9 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
   static const char* __fbthrift_cpp2_gen_thrift_uri();
+  using __fbthrift_fields = ::apache::thrift::type::fields<
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::string_t>
+  >;
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -463,6 +484,17 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myString_ref() && {
     return {static_cast<T&&>(this->myString), __isset.at(0), __isset.bit(0)};
   }
+ private:
+  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &;
+  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&;
+  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &&;
+  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &       { return myString_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&  { return myString_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &&      { return std::move(*this).myString_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&& { return std::move(*this).myString_ref(); }
+
+ public:
 
   const ::std::string& get_myString() const& {
     return myString;

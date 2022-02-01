@@ -8,6 +8,7 @@
 
 #include <thrift/lib/cpp2/gen/module_types_h.h>
 
+#include <thrift/lib/cpp2/type/Tag.h>
 
 #include "folly/sorted_vector_types.h"
 
