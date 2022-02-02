@@ -436,25 +436,6 @@ void parsing_driver::set_annotations(
 
 void parsing_driver::set_attributes(
     t_named& node,
-    const YYLTYPE& loc,
-    std::unique_ptr<t_def_attrs> attrs,
-    std::unique_ptr<t_annotations> annotations) const {
-  node.set_src_range(get_source_range(loc));
-  if (attrs != nullptr) {
-    if (attrs->doc) {
-      node.set_doc(std::move(*attrs->doc));
-    }
-    if (attrs->struct_annotations != nullptr) {
-      for (auto& an : *attrs->struct_annotations) {
-        node.add_structured_annotation(std::move(an));
-      }
-    }
-  }
-  set_annotations(&node, std::move(annotations));
-}
-
-void parsing_driver::set_attributes(
-    t_named& node,
     YYLTYPE& loc,
     std::unique_ptr<t_def_attrs> attrs,
     const YYLTYPE& attrs_loc,
@@ -468,7 +449,18 @@ void parsing_driver::set_attributes(
   if (annots != nullptr) {
     loc.end = annots_loc.end;
   }
-  set_attributes(node, loc, std::move(attrs), std::move(annots));
+  node.set_src_range(get_source_range(loc));
+  if (attrs != nullptr) {
+    if (attrs->doc) {
+      node.set_doc(std::move(*attrs->doc));
+    }
+    if (attrs->struct_annotations != nullptr) {
+      for (auto& an : *attrs->struct_annotations) {
+        node.add_structured_annotation(std::move(an));
+      }
+    }
+  }
+  set_annotations(&node, std::move(annots));
 }
 
 source_range parsing_driver::get_source_range(const YYLTYPE& loc) const {

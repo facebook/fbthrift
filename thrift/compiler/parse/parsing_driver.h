@@ -445,11 +445,6 @@ class parsing_driver {
   // Populate the attributes on the given node.
   void set_attributes(
       t_named& node,
-      const YYLTYPE& loc,
-      std::unique_ptr<t_def_attrs> attrs,
-      std::unique_ptr<t_annotations> annots) const;
-  void set_attributes(
-      t_named& node,
       YYLTYPE& loc,
       std::unique_ptr<t_def_attrs> attrs,
       const YYLTYPE& attrs_loc,

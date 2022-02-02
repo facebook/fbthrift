@@ -387,10 +387,11 @@ DefinitionAttrs:
     }
 
 DefinitionList:
-  DefinitionList Definition CommaOrSemicolonOptional
+  DefinitionList DefinitionAttrs Definition Annotations CommaOrSemicolonOptional
     {
       driver.debug("DefinitionList -> DefinitionList Definition CommaOrSemicolonOptional");
-      driver.add_def(own($2));
+      driver.set_attributes(*$3, @3, own($2), @2, own($4), @4);
+      driver.add_def(own($3));
     }
 |   { driver.debug("DefinitionList -> "); }
 
@@ -405,18 +406,12 @@ Definition:
 | Interaction { $$ = $1; }
 
 Typedef:
-  DefinitionAttrs tok_typedef FieldType Identifier
+  tok_typedef FieldType Identifier
     {
+      driver.debug("TypeDef => tok_typedef FieldType Identifier");
       driver.begin_def(DefType::Typedef);
-    }
-   Annotations
-    {
-      driver.debug("TypeDef => DefinitionAttrs tok_typedef FieldType "
-          "Identifier Annotations");
-      $$ = new t_typedef(driver.program, std::move($4), std::move($3));
-      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
+      $$ = new t_typedef(driver.program, std::move($3), std::move($2));
       driver.end_def(*$$);
-      driver.set_attributes(*$$, @$, own($1), own($6));
     }
 
 Integer:
@@ -455,20 +450,17 @@ Double:
 
 
 Enum:
-  DefinitionAttrs tok_enum Identifier
+  tok_enum Identifier
     {
       driver.begin_def(DefType::Enum);
     }
-  "{" EnumValueList "}" Annotations
+  "{" EnumValueList "}"
     {
-      driver.debug("Enum => DefinitionAttrs tok_enum Identifier { EnumValueList } Annotations");
-      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.avoid_next_token_loc($8 == nullptr, @$, @7);
-      $$ = new t_enum(driver.program, std::move($3));
-      auto values = own($6);
+      driver.debug("Enum => tok_enum Identifier { EnumValueList }");
+      $$ = new t_enum(driver.program, std::move($2));
+      auto values = own($5);
       $$->set_values(std::move(*values));
       driver.end_def(*$$);
-      driver.set_attributes(*$$, @$, own($1), own($8));
     }
 
 EnumValueList:
@@ -518,17 +510,15 @@ EnumValue:
     }
 
 Const:
-  DefinitionAttrs tok_const FieldType Identifier
+  tok_const FieldType Identifier
     {
       driver.begin_def(DefType::Const);
     }
-  "=" ConstValue Annotations
+  "=" ConstValue
     {
-      driver.debug("DefinitionAttrs Const => tok_const FieldType Identifier = ConstValue Annotations");
-      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      $$ = new t_const(driver.program, std::move($3), std::move($4), own($7));
+      driver.debug("Const => tok_const FieldType Identifier = ConstValue");
+      $$ = new t_const(driver.program, std::move($2), std::move($3), own($6));
       driver.end_def(*$$);
-      driver.set_attributes(*$$, @$, own($1), own($8));
     }
 
 ConstValue:
@@ -677,55 +667,48 @@ ConstStructContents:
     }
 
 Struct:
-  DefinitionAttrs tok_struct Identifier
+  tok_struct Identifier
     {
       driver.begin_def(DefType::Struct);
     }
-  "{" FieldList "}" Annotations
+  "{" FieldList "}"
     {
-      driver.debug("Struct => DefinitionAttrs tok_struct Identifier "
-        "{ FieldList } Annotations");
-      $$ = new t_struct(driver.program, std::move($3));
-      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.append_fields(*$$, std::move(*own($6)));
+      driver.debug("Struct => tok_struct Identifier { FieldList }");
+      $$ = new t_struct(driver.program, std::move($2));
+      driver.append_fields(*$$, std::move(*own($5)));
       driver.end_def(*$$);
-      driver.set_attributes(*$$, @$, own($1), own($8));
     }
 
 Union:
-  DefinitionAttrs tok_union Identifier
+  tok_union Identifier
     {
       driver.begin_def(DefType::Union);
     }
-  "{" FieldList "}" Annotations
+  "{" FieldList "}"
     {
-      driver.debug("Union => DefinitionAttrs tok_union Identifier "
-        "{ FieldList } Annotations");
-      $$ = new t_union(driver.program, std::move($3));
-      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.append_fields(*$$, std::move(*own($6)));
+      driver.debug("Union => tok_union Identifier { FieldList }");
+      $$ = new t_union(driver.program, std::move($2));
+      driver.append_fields(*$$, std::move(*own($5)));
       driver.end_def(*$$);
-      driver.set_attributes(*$$, @$, own($1), own($8));
     }
 
 Exception:
   // TODO(afuller): Either make the qualifiers order agnostic or produce a better error message.
-  DefinitionAttrs ErrorSafety ErrorKind ErrorBlame tok_exception Identifier
+  ErrorSafety ErrorKind ErrorBlame tok_exception Identifier
     {
       driver.begin_def(DefType::Exception);
     }
-  "{" FieldList "}" Annotations
+  "{" FieldList "}"
     {
-      driver.debug("Exception => DefinitionAttrs tok_exception "
-        "Identifier { FieldList } Annotations");
-      $$ = new t_exception(driver.program, std::move($6));
-      $$->set_safety($2);
-      $$->set_kind($3);
-      $$->set_blame($4);
-      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.append_fields(*$$, std::move(*own($9)));
+      driver.debug("Exception => ErrorSafety ErrorKind ErrorBlame tok_exception "
+        "Identifier { FieldList }");
+      // TODO(afuller): Correct resulting source_loc.begin when qualifiers are omitted.
+      $$ = new t_exception(driver.program, std::move($5));
+      $$->set_safety($1);
+      $$->set_kind($2);
+      $$->set_blame($3);
+      driver.append_fields(*$$, std::move(*own($8)));
       driver.end_def(*$$);
-      driver.set_attributes(*$$, @$, own($1), own($11));
     }
 
 ErrorSafety:
@@ -744,18 +727,15 @@ ErrorBlame:
 |            { $$ = {}; }
 
 Service:
-  DefinitionAttrs tok_service Identifier
+  tok_service Identifier
     {
       driver.begin_def(DefType::Service);
     }
-  Extends "{" FunctionList "}" Annotations
+  Extends "{" FunctionList "}"
     {
-      driver.debug("Service => DefinitionAttrs tok_service "
-        "Identifier Extends { FunctionList } Annotations");
-      $$ = new t_service(driver.program, std::move($3), $5);
-      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.end_def(*$$, own($7));
-      driver.set_attributes(*$$, @$, own($1), own($9));
+      driver.debug("Service => tok_service Identifier Extends { FunctionList }");
+      $$ = new t_service(driver.program, std::move($2), $4);
+      driver.end_def(*$$, own($6));
     }
 
 Extends:
@@ -767,17 +747,15 @@ Extends:
 |   { $$ = nullptr; }
 
 Interaction:
-  DefinitionAttrs tok_interaction Identifier
+  tok_interaction Identifier
     {
       driver.begin_def(DefType::Interaction);
     }
-  "{" FunctionList "}" Annotations
+  "{" FunctionList "}"
     {
       driver.debug("Interaction -> tok_interaction Identifier { FunctionList }");
-      $$ = new t_interaction(driver.program, std::move($3));
-      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.end_def(*$$, own($6));
-      driver.set_attributes(*$$, @$, own($1), own($8));
+      $$ = new t_interaction(driver.program, std::move($2));
+      driver.end_def(*$$, own($5));
     }
 
 FunctionList:
