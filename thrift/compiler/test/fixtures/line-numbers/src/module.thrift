@@ -14,25 +14,27 @@
  * limitations under the License.
  */
 
-// Definitions intentionally spans mutliple lines to test for corner cases
+struct MyAnnot {}
+
 const i64 fortyTwo = 42;
 
 typedef map<i64, string> MyMapTypedef
 
 struct MyStruct {
   1: i64 MyIntField;
-  2: string MyStringField;
+  @MyAnnot
+  2: string MyStringField (annotation);
 }
 
 enum MyEnum {
   VALUE1 = 1,
-  @MyStruct
+  @MyAnnot
   VALUE2 = 2 (annotation),
 }
 
 service MyService {
   void ping();
 
-  @MyStruct
+  @MyAnnot
   void pong() (annotation);
 }

@@ -3,17 +3,17 @@
   "thrift_module" : "module",
   "constants" : {
     "fortyTwo" : {
-      "lineno" : 18,
+      "lineno" : 19,
       "value" : 42,
       "type_enum" : "I64",
       "spec_args" : null,
       "source_range" : {
         "begin" : {
-          "line" : 18,
+          "line" : 19,
           "column" : 1
         },
         "end" : {
-          "line" : 18,
+          "line" : 19,
           "column" : 25
         }
       }
@@ -21,18 +21,18 @@
   },
   "enumerations" : {
     "MyEnum" : {
-      "lineno" : 27,
+      "lineno" : 29,
       "constants" : {
         "VALUE1" : 1,
         "VALUE2" : 2
       },
       "source_range" : {
         "begin" : {
-          "line" : 27,
+          "line" : 29,
           "column" : 1
         },
         "end" : {
-          "line" : 31,
+          "line" : 33,
           "column" : 2
         }
       }
@@ -40,24 +40,42 @@
   },
   "typedefs" : {
     "MyMapTypedef" : {
-      "lineno" : 20,
+      "lineno" : 21,
       "type_enum" : "MAP",
       "spec_args" : { "key_type" : { "type_enum" : "I64", "spec_args" : null }, "val_type" : { "type_enum" : "STRING", "spec_args" : null} } ,
       "source_range" : {
         "begin" : {
-          "line" : 20,
+          "line" : 21,
           "column" : 1
         },
         "end" : {
-          "line" : 20,
+          "line" : 21,
           "column" : 38
         }
       }
     }
   },
   "structs" : {
+    "MyAnnot" : {
+      "lineno" : 17,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 17,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 17,
+          "column" : 18
+        }
+      }
+    },
     "MyStruct" : {
-      "lineno" : 22,
+      "lineno" : 23,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -67,12 +85,12 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 23,
+              "line" : 24,
               "column" : 3
             },
             "end" : {
-              "line" : 23,
-              "column" : 21
+              "line" : 24,
+              "column" : 20
             }
           }
         },
@@ -82,23 +100,23 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 24,
+              "line" : 25,
               "column" : 3
             },
             "end" : {
-              "line" : 24,
-              "column" : 27
+              "line" : 26,
+              "column" : 39
             }
           }
         }
       },
       "source_range" : {
         "begin" : {
-          "line" : 22,
+          "line" : 23,
           "column" : 1
         },
         "end" : {
-          "line" : 25,
+          "line" : 27,
           "column" : 2
         }
       }
@@ -106,7 +124,7 @@
   },
   "services" : {
     "MyService" : {
-      "lineno" : 33,
+      "lineno" : 35,
       "functions" : {
         "MyService.ping" : {
           "return_type" : {
@@ -117,11 +135,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 34,
+              "line" : 36,
               "column" : 3
             },
             "end" : {
-              "line" : 34,
+              "line" : 36,
               "column" : 14
             }
           }
@@ -135,11 +153,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 36,
+              "line" : 38,
               "column" : 3
             },
             "end" : {
-              "line" : 37,
+              "line" : 39,
               "column" : 27
             }
           }
@@ -147,11 +165,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 33,
+          "line" : 35,
           "column" : 1
         },
         "end" : {
-          "line" : 38,
+          "line" : 40,
           "column" : 2
         }
       }

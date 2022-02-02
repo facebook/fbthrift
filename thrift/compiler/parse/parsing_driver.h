@@ -437,8 +437,10 @@ class parsing_driver {
 
   // Fix up the definition if needed, and destroy any assciated
   void end_def(t_named& node);
-  void end_def(t_structured& node, std::unique_ptr<t_field_list> fields);
   void end_def(t_interface& node, std::unique_ptr<t_function_list> functions);
+
+  // Tries to append the given fields, reporting a failure on a collsion.
+  void append_fields(t_structured& tstruct, t_field_list&& fields);
 
   // Populate the attributes on the given node.
   void set_attributes(
@@ -542,8 +544,6 @@ class parsing_driver {
    * Parse a single .thrift file. The file to parse is stored in params.program.
    */
   void parse_file();
-
-  void append_fields(t_structured& tstruct, t_field_list&& fields);
 
   // Returns true if the node should be
   // added to the program. Otherwise, the driver itself

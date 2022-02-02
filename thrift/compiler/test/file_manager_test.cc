@@ -133,7 +133,7 @@ TEST(FileManagerTest, correct_location_after_include_test) {
   EXPECT_EQ(field_src_range.begin().line(), 3);
   EXPECT_EQ(field_src_range.begin().column(), 3);
   EXPECT_EQ(field_src_range.end().line(), 3);
-  EXPECT_EQ(field_src_range.end().column(), 15);
+  EXPECT_EQ(field_src_range.end().column(), 14);
 }
 
 } // namespace apache::thrift::compiler

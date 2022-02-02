@@ -1,5 +1,5 @@
 #!/usr/bin/env/ python3
-# Copyright (c) Facebook, Inc. and its affiliates.
+# Copyright (c) Meta Platforms, Inc. and affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -177,7 +177,7 @@ class JsonCompilerTest(unittest.TestCase):
                                     },
                                     "end": {
                                         "line": 4,
-                                        "column": 22,
+                                        "column": 21,
                                     },
                                 },
                             },
@@ -257,7 +257,7 @@ class JsonCompilerTest(unittest.TestCase):
                                     },
                                     "end": {
                                         "line": 4,
-                                        "column": 35,
+                                        "column": 34,
                                     },
                                 },
                             },
@@ -330,7 +330,7 @@ class JsonCompilerTest(unittest.TestCase):
                                     },
                                     "end": {
                                         "line": 2,
-                                        "column": 22,
+                                        "column": 21,
                                     },
                                 },
                             },
@@ -389,7 +389,7 @@ class JsonCompilerTest(unittest.TestCase):
                                     },
                                     "end": {
                                         "line": 2,
-                                        "column": 18,
+                                        "column": 17,
                                     },
                                 },
                             },

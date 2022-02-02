@@ -231,7 +231,7 @@ class t_container_type;
 %type<t_struct_annotations*>       NonEmptyStructuredAnnotationList
 
 %type<t_field*>                    Field
-%type<boost::optional<t_field_id>> FieldIdentifier
+%type<boost::optional<t_field_id>> FieldId
 %type<t_field_qualifier>           FieldQualifier
 %type<t_type_ref>                  FieldType
 %type<t_stream_response*>          ResponseAndStreamReturnType
@@ -273,7 +273,6 @@ class t_container_type;
 %type<t_function*>                 Function
 %type<t_type_ref>                  FunctionType
 %type<t_function_list*>            FunctionList
-%type<t_paramlist*>                ParamList
 
 %type<t_throws*>                   MaybeThrows
 %type<t_ref<t_service>>            Extends
@@ -688,7 +687,8 @@ Struct:
         "{ FieldList } Annotations");
       $$ = new t_struct(driver.program, std::move($3));
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.end_def(*$$, own($6));
+      driver.append_fields(*$$, std::move(*own($6)));
+      driver.end_def(*$$);
       driver.set_attributes(*$$, @$, own($1), own($8));
     }
 
@@ -703,7 +703,8 @@ Union:
         "{ FieldList } Annotations");
       $$ = new t_union(driver.program, std::move($3));
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.end_def(*$$, own($6));
+      driver.append_fields(*$$, std::move(*own($6)));
+      driver.end_def(*$$);
       driver.set_attributes(*$$, @$, own($1), own($8));
     }
 
@@ -722,7 +723,8 @@ Exception:
       $$->set_kind($3);
       $$->set_blame($4);
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.end_def(*$$, own($9));
+      driver.append_fields(*$$, std::move(*own($9)));
+      driver.end_def(*$$);
       driver.set_attributes(*$$, @$, own($1), own($11));
     }
 
@@ -798,15 +800,17 @@ Function:
     {
       driver.begin_def(DefType::Function);
     }
-  "(" ParamList ")" MaybeThrows
+  "(" FieldList ")" MaybeThrows
     {
-      driver.debug("Function => FunctionQualifier FunctionType Identifier ( ParamList ) MaybeThrows");
+      driver.debug("Function => FunctionQualifier FunctionType Identifier ( FieldList ) MaybeThrows");
       driver.avoid_last_token_loc($1 == t_function_qualifier::unspecified, @$, @2);
       driver.avoid_next_token_loc($8 == nullptr, @$, @7);
+      auto params = std::make_unique<t_paramlist>(driver.program);
+      driver.append_fields(*params, std::move(*own($6)));
       // TODO(afuller): Leave the param list unnamed.
-      $6->set_name(std::string($3) + "_args");
+      params->set_name(std::string($3) + "_args");
       // TODO(afuller): Assign the params though an accessor instead of the constructor.
-      auto func = std::make_unique<t_function>(std::move($2), std::move($3), own($6), $1);
+      auto func = std::make_unique<t_function>(std::move($2), std::move($3), std::move(params), $1);
       func->set_exceptions(own($8));
       driver.end_def(*func);
       $$ = func.release();
@@ -827,25 +831,6 @@ Function:
       $$->set_is_interaction_constructor();
     }
 
-ParamList:
-  ParamList Field
-    {
-      driver.debug("ParamList -> ParamList Field");
-      $$ = $1;
-      auto param = own($2);
-      if (!$$->try_append_field(std::move(param))) {
-        driver.failure([&](auto& o) {
-          o << "Parameter identifier " << param->get_key() << " for \""
-          << param->get_name() << "\" has already been used";
-        });
-      }
-    }
-|
-    {
-      driver.debug("ParamList -> ");
-      $$ = new t_paramlist(driver.program);
-    }
-
 FunctionQualifier:
   tok_oneway     { $$ = t_function_qualifier::one_way; }
 | tok_idempotent { $$ = t_function_qualifier::idempotent; }
@@ -861,11 +846,12 @@ MaybeThrows:
 |   { $$ = nullptr; }
 
 FieldList:
-  FieldList Field
+  FieldList DefinitionAttrs Field Annotations CommaOrSemicolonOptional
     {
-      driver.debug("FieldList -> FieldList Field");
+      driver.debug("FieldList -> DefinitionAttrs Field Annotations CommaOrSemicolonOptional");
       $$ = $1;
-      $$->emplace_back($2);
+      driver.set_attributes(*$3, @3, own($2), @2, own($4), @4);
+      $$->emplace_back($3);
     }
 |
     {
@@ -874,26 +860,24 @@ FieldList:
     }
 
 Field:
-  DefinitionAttrs FieldIdentifier FieldQualifier FieldType Identifier
+  FieldId FieldQualifier FieldType Identifier
     {
       driver.begin_def(DefType::Field);
     }
-  FieldValue Annotations CommaOrSemicolonOptional
+  FieldValue
     {
-      driver.debug("Field => DefinitionAttrs FieldIdentifier FieldQualifier "
-        "FieldType Identifier FieldValue Annotations CommaOrSemicolonOptional");
-      t_field_id id = driver.maybe_allocate_field_id($2, $5);
-      $$ = new t_field(std::move($4), std::move($5), id, $2 != boost::none);
-      $$->set_qualifier($3);
-      if ($7 != nullptr) {
-        $$->set_default_value(own($7));
+      driver.debug("Field => FieldId FieldQualifier FieldType Identifier FieldValue");
+      driver.avoid_next_token_loc($6 == nullptr, @$, @5);
+      t_field_id id = driver.maybe_allocate_field_id($1, $4);
+      $$ = new t_field(std::move($3), std::move($4), id, $1 != boost::none);
+      $$->set_qualifier($2);
+      if ($6 != nullptr) {
+        $$->set_default_value(own($6));
       }
-      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
       driver.end_def(*$$);
-      driver.set_attributes(*$$, @$, own($1), own($8));
     }
 
-FieldIdentifier:
+FieldId:
   Integer ":" { $$ = driver.to_field_id($1); }
 |             { $$ = boost::none; }
 

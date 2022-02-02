@@ -85,7 +85,7 @@
             },
             "end" : {
               "line" : 23,
-              "column" : 25
+              "column" : 24
             }
           }
         },
@@ -101,7 +101,7 @@
             },
             "end" : {
               "line" : 24,
-              "column" : 63
+              "column" : 62
             }
           }
         }

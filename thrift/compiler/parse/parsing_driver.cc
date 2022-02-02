@@ -673,12 +673,6 @@ void parsing_driver::end_def(t_named& node) {
 }
 
 void parsing_driver::end_def(
-    t_structured& node, std::unique_ptr<t_field_list> fields) {
-  append_fields(node, std::move(*fields));
-  end_def(node);
-}
-
-void parsing_driver::end_def(
     t_interface& node, std::unique_ptr<t_function_list> functions) {
   if (functions != nullptr) {
     node.set_functions(std::move(*functions));
