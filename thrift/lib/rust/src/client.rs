@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ pub trait ClientFactory {
         S: Spawner;
 }
 
-pub trait Transport: Framing + Send + 'static {
+pub trait Transport: Framing + Send + Sized + 'static {
     fn call(
         &self,
         service_name: &'static CStr,
@@ -80,5 +80,10 @@ pub trait Transport: Framing + Send + 'static {
             "Streaming is not supported by this transport",
         ))
         .boxed()
+    }
+
+
+    fn create_interaction(&self, _method_name: &'static CStr) -> Result<Self, anyhow::Error> {
+        anyhow::bail!("Interactions are not supported by this transport");
     }
 }
