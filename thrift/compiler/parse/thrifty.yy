@@ -315,6 +315,14 @@ Identifier:
 | tok_server     { $$ = "server"; }
 | tok_client     { $$ = "client"; }
 
+CommaOrSemicolon:
+  "," {}
+| ";" {}
+
+CommaOrSemicolonOptional:
+  CommaOrSemicolon { $$ = true; }
+|                  { $$ = false; }
+
 CaptureDocText: { $$ = driver.capture_doctext(); }
 
 /* TODO(dreiss): Try to DestroyDocText in all sorts or random places. */
@@ -379,9 +387,9 @@ DefinitionAttrs:
     }
 
 DefinitionList:
-  DefinitionList Definition
+  DefinitionList Definition CommaOrSemicolonOptional
     {
-      driver.debug("DefinitionList -> DefinitionList Definition");
+      driver.debug("DefinitionList -> DefinitionList Definition CommaOrSemicolonOptional");
       driver.add_def(own($2));
     }
 |   { driver.debug("DefinitionList -> "); }
@@ -410,14 +418,6 @@ Typedef:
       driver.end_def(*$$);
       driver.set_attributes(*$$, @$, own($1), own($6));
     }
-
-CommaOrSemicolon:
-  "," {}
-| ";" {}
-
-CommaOrSemicolonOptional:
-  CommaOrSemicolon { $$ = true; }
-|                  { $$ = false;}
 
 Integer:
   tok_int_constant
@@ -522,7 +522,7 @@ Const:
     {
       driver.begin_def(DefType::Const);
     }
-  "=" ConstValue Annotations CommaOrSemicolonOptional
+  "=" ConstValue Annotations
     {
       driver.debug("DefinitionAttrs Const => tok_const FieldType Identifier = ConstValue Annotations");
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
