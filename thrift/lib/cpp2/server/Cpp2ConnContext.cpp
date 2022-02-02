@@ -18,7 +18,7 @@
 
 #include <folly/String.h>
 
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__FreeBSD__)
 #include <sys/ucred.h> // @manual
 #endif
 
@@ -51,9 +51,8 @@ Cpp2ConnContext::PeerCred Cpp2ConnContext::PeerCred::queryFromSocket(
   } else {
     return PeerCred{cred.pid, cred.uid, cred.gid};
   }
-#elif defined(LOCAL_PEERCRED) // macOS
+#elif defined(LOCAL_PEERCRED) // macOS and FreeBSD
   struct xucred cred = {};
-  pid_t epid = 0;
   socklen_t len;
   if (getsockopt(
           socket.toFd(),
@@ -62,15 +61,22 @@ Cpp2ConnContext::PeerCred Cpp2ConnContext::PeerCred::queryFromSocket(
           &cred,
           &(len = sizeof(cred)))) {
     return PeerCred{ErrorRetrieving, errnoToUid(errno), 0};
-  } else if (getsockopt(
-                 socket.toFd(),
-                 SOL_LOCAL,
-                 LOCAL_PEEREPID,
-                 &epid,
-                 &(len = sizeof(epid)))) {
-    return PeerCred{ErrorRetrieving, errnoToUid(errno), 0};
   } else {
-    return PeerCred{epid, cred.cr_uid, cred.cr_gid};
+#ifdef __APPLE__
+    pid_t epid = 0;
+    if (getsockopt(
+            socket.toFd(),
+            SOL_LOCAL,
+            LOCAL_PEEREPID,
+            &epid,
+            &(len = sizeof(epid)))) {
+      return PeerCred{ErrorRetrieving, errnoToUid(errno), 0};
+    } else {
+      return PeerCred{epid, cred.cr_uid, cred.cr_gid};
+    }
+#else
+    return PeerCred{cred.cr_pid, cred.cr_uid, cred.cr_gid};
+#endif
   }
 #else
   (void)socket;
