@@ -16,6 +16,8 @@
 
 }}
 
+    {{#service:interactions}}{{>lib/service}}
+    {{/service:interactions}}
     pub mod {{service:snake}} {{>lib/block}}{{!
         }}{{#service:docs?}}
         #![doc = {{service:docs}}]

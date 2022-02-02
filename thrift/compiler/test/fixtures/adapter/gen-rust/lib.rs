@@ -856,6 +856,25 @@ pub mod server {
         }
     }
 
+    #[::async_trait::async_trait]
+    impl<T> Service for ::std::boxed::Box<T>
+    where
+        T: Service + Send + Sync + ?Sized,
+    {
+        async fn func(
+            &self,
+            arg1: ::std::string::String,
+            arg2: ::std::string::String,
+            arg3: crate::types::Foo,
+        ) -> ::std::result::Result<::std::primitive::i32, crate::services::service::FuncExn> {
+            (**self).func(
+                arg1, 
+                arg2, 
+                arg3, 
+            ).await
+        }
+    }
+
     /// Processor for Service's methods.
     #[derive(Clone, Debug)]
     pub struct ServiceProcessor<P, H, R> {
@@ -991,6 +1010,7 @@ pub mod server {
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
         P::Deserializer: ::std::marker::Send,
         H: Service,
+        P::Frame: ::std::marker::Send + 'static,
         R: ::fbthrift::RequestContext<Name = ::std::ffi::CStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
         <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack<Name = R::Name, Buffer = ::fbthrift::ProtocolDecoded<P>>
             + ::std::marker::Send + ::std::marker::Sync + 'static
@@ -1041,6 +1061,28 @@ pub mod server {
                 ),
             }
         }
+
+        #[inline]
+        fn create_interaction_idx(&self, name: &str) -> ::anyhow::Result<::std::primitive::usize> {
+            match name {
+                _ => ::anyhow::bail!("Unknown interaction"),
+            }
+        }
+
+        fn handle_create_interaction(
+            &self,
+            idx: ::std::primitive::usize,
+        ) -> ::anyhow::Result<
+            ::std::sync::Arc<dyn ::fbthrift::ThriftService<P::Frame, Handler = (), RequestContext = Self::RequestContext> + ::std::marker::Send + 'static>
+        > {
+            match idx {
+                bad => panic!(
+                    "{}: unexpected method idx {}",
+                    "ServiceProcessor",
+                    bad
+                ),
+            }
+        }
     }
 
     #[::async_trait::async_trait]
@@ -1083,6 +1125,23 @@ pub mod server {
             p.read_message_end()?;
 
             Ok(res)
+        }
+
+        fn create_interaction(
+            &self,
+            name: &str,
+        ) -> ::anyhow::Result<
+            ::std::sync::Arc<dyn ::fbthrift::ThriftService<P::Frame, Handler = (), RequestContext = R> + ::std::marker::Send + 'static>
+        > {
+            use ::fbthrift::{ServiceProcessor as _};
+            let idx = self.create_interaction_idx(name);
+            let idx = match idx {
+                ::anyhow::Result::Ok(idx) => idx,
+                ::anyhow::Result::Err(_) => {
+                    return self.supa.create_interaction(name);
+                }
+            };
+            self.handle_create_interaction(idx)
         }
     }
 

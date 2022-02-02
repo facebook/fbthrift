@@ -3383,6 +3383,29 @@ pub mod server {
         }
     }
 
+    #[::async_trait::async_trait]
+    impl<T> SomeService for ::std::boxed::Box<T>
+    where
+        T: SomeService + Send + Sync + ?Sized,
+    {
+        async fn bounce_map(
+            &self,
+            m: include::types::SomeMap,
+        ) -> ::std::result::Result<include::types::SomeMap, crate::services::some_service::BounceMapExn> {
+            (**self).bounce_map(
+                m, 
+            ).await
+        }
+        async fn binary_keyed_map(
+            &self,
+            r: ::std::vec::Vec<::std::primitive::i64>,
+        ) -> ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::services::some_service::BinaryKeyedMapExn> {
+            (**self).binary_keyed_map(
+                r, 
+            ).await
+        }
+    }
+
     /// Processor for SomeService's methods.
     #[derive(Clone, Debug)]
     pub struct SomeServiceProcessor<P, H, R> {
@@ -3592,6 +3615,7 @@ pub mod server {
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
         P::Deserializer: ::std::marker::Send,
         H: SomeService,
+        P::Frame: ::std::marker::Send + 'static,
         R: ::fbthrift::RequestContext<Name = ::std::ffi::CStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
         <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack<Name = R::Name, Buffer = ::fbthrift::ProtocolDecoded<P>>
             + ::std::marker::Send + ::std::marker::Sync + 'static
@@ -3664,6 +3688,28 @@ pub mod server {
                 ),
             }
         }
+
+        #[inline]
+        fn create_interaction_idx(&self, name: &str) -> ::anyhow::Result<::std::primitive::usize> {
+            match name {
+                _ => ::anyhow::bail!("Unknown interaction"),
+            }
+        }
+
+        fn handle_create_interaction(
+            &self,
+            idx: ::std::primitive::usize,
+        ) -> ::anyhow::Result<
+            ::std::sync::Arc<dyn ::fbthrift::ThriftService<P::Frame, Handler = (), RequestContext = Self::RequestContext> + ::std::marker::Send + 'static>
+        > {
+            match idx {
+                bad => panic!(
+                    "{}: unexpected method idx {}",
+                    "SomeServiceProcessor",
+                    bad
+                ),
+            }
+        }
     }
 
     #[::async_trait::async_trait]
@@ -3706,6 +3752,23 @@ pub mod server {
             p.read_message_end()?;
 
             Ok(res)
+        }
+
+        fn create_interaction(
+            &self,
+            name: &str,
+        ) -> ::anyhow::Result<
+            ::std::sync::Arc<dyn ::fbthrift::ThriftService<P::Frame, Handler = (), RequestContext = R> + ::std::marker::Send + 'static>
+        > {
+            use ::fbthrift::{ServiceProcessor as _};
+            let idx = self.create_interaction_idx(name);
+            let idx = match idx {
+                ::anyhow::Result::Ok(idx) => idx,
+                ::anyhow::Result::Err(_) => {
+                    return self.supa.create_interaction(name);
+                }
+            };
+            self.handle_create_interaction(idx)
         }
     }
 

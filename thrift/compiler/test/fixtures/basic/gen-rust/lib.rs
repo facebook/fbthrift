@@ -2691,6 +2691,77 @@ pub mod server {
         }
     }
 
+    #[::async_trait::async_trait]
+    impl<T> MyService for ::std::boxed::Box<T>
+    where
+        T: MyService + Send + Sync + ?Sized,
+    {
+        async fn ping(
+            &self,
+        ) -> ::std::result::Result<(), crate::services::my_service::PingExn> {
+            (**self).ping(
+            ).await
+        }
+        async fn getRandomData(
+            &self,
+        ) -> ::std::result::Result<::std::string::String, crate::services::my_service::GetRandomDataExn> {
+            (**self).getRandomData(
+            ).await
+        }
+        async fn sink(
+            &self,
+            sink: ::std::primitive::i64,
+        ) -> ::std::result::Result<(), crate::services::my_service::SinkExn> {
+            (**self).sink(
+                sink, 
+            ).await
+        }
+        async fn putDataById(
+            &self,
+            id: ::std::primitive::i64,
+            data: ::std::string::String,
+        ) -> ::std::result::Result<(), crate::services::my_service::PutDataByIdExn> {
+            (**self).putDataById(
+                id, 
+                data, 
+            ).await
+        }
+        async fn hasDataById(
+            &self,
+            id: ::std::primitive::i64,
+        ) -> ::std::result::Result<::std::primitive::bool, crate::services::my_service::HasDataByIdExn> {
+            (**self).hasDataById(
+                id, 
+            ).await
+        }
+        async fn getDataById(
+            &self,
+            id: ::std::primitive::i64,
+        ) -> ::std::result::Result<::std::string::String, crate::services::my_service::GetDataByIdExn> {
+            (**self).getDataById(
+                id, 
+            ).await
+        }
+        async fn deleteDataById(
+            &self,
+            id: ::std::primitive::i64,
+        ) -> ::std::result::Result<(), crate::services::my_service::DeleteDataByIdExn> {
+            (**self).deleteDataById(
+                id, 
+            ).await
+        }
+        async fn lobDataById(
+            &self,
+            id: ::std::primitive::i64,
+            data: ::std::string::String,
+        ) -> ::std::result::Result<(), crate::services::my_service::LobDataByIdExn> {
+            (**self).lobDataById(
+                id, 
+                data, 
+            ).await
+        }
+    }
+
     /// Processor for MyService's methods.
     #[derive(Clone, Debug)]
     pub struct MyServiceProcessor<P, H, R> {
@@ -3416,6 +3487,7 @@ pub mod server {
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
         P::Deserializer: ::std::marker::Send,
         H: MyService,
+        P::Frame: ::std::marker::Send + 'static,
         R: ::fbthrift::RequestContext<Name = ::std::ffi::CStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
         <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack<Name = R::Name, Buffer = ::fbthrift::ProtocolDecoded<P>>
             + ::std::marker::Send + ::std::marker::Sync + 'static
@@ -3620,6 +3692,28 @@ pub mod server {
                 ),
             }
         }
+
+        #[inline]
+        fn create_interaction_idx(&self, name: &str) -> ::anyhow::Result<::std::primitive::usize> {
+            match name {
+                _ => ::anyhow::bail!("Unknown interaction"),
+            }
+        }
+
+        fn handle_create_interaction(
+            &self,
+            idx: ::std::primitive::usize,
+        ) -> ::anyhow::Result<
+            ::std::sync::Arc<dyn ::fbthrift::ThriftService<P::Frame, Handler = (), RequestContext = Self::RequestContext> + ::std::marker::Send + 'static>
+        > {
+            match idx {
+                bad => panic!(
+                    "{}: unexpected method idx {}",
+                    "MyServiceProcessor",
+                    bad
+                ),
+            }
+        }
     }
 
     #[::async_trait::async_trait]
@@ -3662,6 +3756,23 @@ pub mod server {
             p.read_message_end()?;
 
             Ok(res)
+        }
+
+        fn create_interaction(
+            &self,
+            name: &str,
+        ) -> ::anyhow::Result<
+            ::std::sync::Arc<dyn ::fbthrift::ThriftService<P::Frame, Handler = (), RequestContext = R> + ::std::marker::Send + 'static>
+        > {
+            use ::fbthrift::{ServiceProcessor as _};
+            let idx = self.create_interaction_idx(name);
+            let idx = match idx {
+                ::anyhow::Result::Ok(idx) => idx,
+                ::anyhow::Result::Err(_) => {
+                    return self.supa.create_interaction(name);
+                }
+            };
+            self.handle_create_interaction(idx)
         }
     }
 
@@ -3717,6 +3828,29 @@ pub mod server {
                     "getDataByKey1",
                 ),
             ))
+        }
+    }
+
+    #[::async_trait::async_trait]
+    impl<T> DbMixedStackArguments for ::std::boxed::Box<T>
+    where
+        T: DbMixedStackArguments + Send + Sync + ?Sized,
+    {
+        async fn getDataByKey0(
+            &self,
+            key: ::std::string::String,
+        ) -> ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::services::db_mixed_stack_arguments::GetDataByKey0Exn> {
+            (**self).getDataByKey0(
+                key, 
+            ).await
+        }
+        async fn getDataByKey1(
+            &self,
+            key: ::std::string::String,
+        ) -> ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::services::db_mixed_stack_arguments::GetDataByKey1Exn> {
+            (**self).getDataByKey1(
+                key, 
+            ).await
         }
     }
 
@@ -3929,6 +4063,7 @@ pub mod server {
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
         P::Deserializer: ::std::marker::Send,
         H: DbMixedStackArguments,
+        P::Frame: ::std::marker::Send + 'static,
         R: ::fbthrift::RequestContext<Name = ::std::ffi::CStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
         <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack<Name = R::Name, Buffer = ::fbthrift::ProtocolDecoded<P>>
             + ::std::marker::Send + ::std::marker::Sync + 'static
@@ -4001,6 +4136,28 @@ pub mod server {
                 ),
             }
         }
+
+        #[inline]
+        fn create_interaction_idx(&self, name: &str) -> ::anyhow::Result<::std::primitive::usize> {
+            match name {
+                _ => ::anyhow::bail!("Unknown interaction"),
+            }
+        }
+
+        fn handle_create_interaction(
+            &self,
+            idx: ::std::primitive::usize,
+        ) -> ::anyhow::Result<
+            ::std::sync::Arc<dyn ::fbthrift::ThriftService<P::Frame, Handler = (), RequestContext = Self::RequestContext> + ::std::marker::Send + 'static>
+        > {
+            match idx {
+                bad => panic!(
+                    "{}: unexpected method idx {}",
+                    "DbMixedStackArgumentsProcessor",
+                    bad
+                ),
+            }
+        }
     }
 
     #[::async_trait::async_trait]
@@ -4043,6 +4200,23 @@ pub mod server {
             p.read_message_end()?;
 
             Ok(res)
+        }
+
+        fn create_interaction(
+            &self,
+            name: &str,
+        ) -> ::anyhow::Result<
+            ::std::sync::Arc<dyn ::fbthrift::ThriftService<P::Frame, Handler = (), RequestContext = R> + ::std::marker::Send + 'static>
+        > {
+            use ::fbthrift::{ServiceProcessor as _};
+            let idx = self.create_interaction_idx(name);
+            let idx = match idx {
+                ::anyhow::Result::Ok(idx) => idx,
+                ::anyhow::Result::Err(_) => {
+                    return self.supa.create_interaction(name);
+                }
+            };
+            self.handle_create_interaction(idx)
         }
     }
 

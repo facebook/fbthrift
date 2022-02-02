@@ -1141,6 +1141,53 @@ pub mod server {
         }
     }
 
+    #[::async_trait::async_trait]
+    impl<T> NestedContainers for ::std::boxed::Box<T>
+    where
+        T: NestedContainers + Send + Sync + ?Sized,
+    {
+        async fn mapList(
+            &self,
+            foo: ::std::collections::BTreeMap<::std::primitive::i32, ::std::vec::Vec<::std::primitive::i32>>,
+        ) -> ::std::result::Result<(), crate::services::nested_containers::MapListExn> {
+            (**self).mapList(
+                foo, 
+            ).await
+        }
+        async fn mapSet(
+            &self,
+            foo: ::std::collections::BTreeMap<::std::primitive::i32, ::std::collections::BTreeSet<::std::primitive::i32>>,
+        ) -> ::std::result::Result<(), crate::services::nested_containers::MapSetExn> {
+            (**self).mapSet(
+                foo, 
+            ).await
+        }
+        async fn listMap(
+            &self,
+            foo: ::std::vec::Vec<::std::collections::BTreeMap<::std::primitive::i32, ::std::primitive::i32>>,
+        ) -> ::std::result::Result<(), crate::services::nested_containers::ListMapExn> {
+            (**self).listMap(
+                foo, 
+            ).await
+        }
+        async fn listSet(
+            &self,
+            foo: ::std::vec::Vec<::std::collections::BTreeSet<::std::primitive::i32>>,
+        ) -> ::std::result::Result<(), crate::services::nested_containers::ListSetExn> {
+            (**self).listSet(
+                foo, 
+            ).await
+        }
+        async fn turtles(
+            &self,
+            foo: ::std::vec::Vec<::std::vec::Vec<::std::collections::BTreeMap<::std::primitive::i32, ::std::collections::BTreeMap<::std::primitive::i32, ::std::collections::BTreeSet<::std::primitive::i32>>>>>,
+        ) -> ::std::result::Result<(), crate::services::nested_containers::TurtlesExn> {
+            (**self).turtles(
+                foo, 
+            ).await
+        }
+    }
+
     /// Processor for NestedContainers's methods.
     #[derive(Clone, Debug)]
     pub struct NestedContainersProcessor<P, H, R> {
@@ -1608,6 +1655,7 @@ pub mod server {
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
         P::Deserializer: ::std::marker::Send,
         H: NestedContainers,
+        P::Frame: ::std::marker::Send + 'static,
         R: ::fbthrift::RequestContext<Name = ::std::ffi::CStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
         <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack<Name = R::Name, Buffer = ::fbthrift::ProtocolDecoded<P>>
             + ::std::marker::Send + ::std::marker::Sync + 'static
@@ -1746,6 +1794,28 @@ pub mod server {
                 ),
             }
         }
+
+        #[inline]
+        fn create_interaction_idx(&self, name: &str) -> ::anyhow::Result<::std::primitive::usize> {
+            match name {
+                _ => ::anyhow::bail!("Unknown interaction"),
+            }
+        }
+
+        fn handle_create_interaction(
+            &self,
+            idx: ::std::primitive::usize,
+        ) -> ::anyhow::Result<
+            ::std::sync::Arc<dyn ::fbthrift::ThriftService<P::Frame, Handler = (), RequestContext = Self::RequestContext> + ::std::marker::Send + 'static>
+        > {
+            match idx {
+                bad => panic!(
+                    "{}: unexpected method idx {}",
+                    "NestedContainersProcessor",
+                    bad
+                ),
+            }
+        }
     }
 
     #[::async_trait::async_trait]
@@ -1788,6 +1858,23 @@ pub mod server {
             p.read_message_end()?;
 
             Ok(res)
+        }
+
+        fn create_interaction(
+            &self,
+            name: &str,
+        ) -> ::anyhow::Result<
+            ::std::sync::Arc<dyn ::fbthrift::ThriftService<P::Frame, Handler = (), RequestContext = R> + ::std::marker::Send + 'static>
+        > {
+            use ::fbthrift::{ServiceProcessor as _};
+            let idx = self.create_interaction_idx(name);
+            let idx = match idx {
+                ::anyhow::Result::Ok(idx) => idx,
+                ::anyhow::Result::Err(_) => {
+                    return self.supa.create_interaction(name);
+                }
+            };
+            self.handle_create_interaction(idx)
         }
     }
 

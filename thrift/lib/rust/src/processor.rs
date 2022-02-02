@@ -24,10 +24,11 @@ use crate::protocol::{
 use crate::request_context::RequestContext;
 use crate::serialize::Serialize;
 use crate::ttype::TType;
-use anyhow::Error;
+use anyhow::{bail, Error};
 use async_trait::async_trait;
 use std::ffi::CStr;
 use std::marker::PhantomData;
+use std::sync::Arc;
 
 #[async_trait]
 pub trait ThriftService<F>: Send + Sync + 'static
@@ -42,6 +43,19 @@ where
         req: FramingDecoded<F>,
         req_ctxt: &Self::RequestContext,
     ) -> Result<FramingEncodedFinal<F>, Error>;
+
+    fn create_interaction(
+        &self,
+        _name: &str,
+    ) -> ::anyhow::Result<
+        Arc<
+            dyn ThriftService<F, Handler = (), RequestContext = Self::RequestContext>
+                + ::std::marker::Send
+                + 'static,
+        >,
+    > {
+        bail!("Thrift server does not support interactions");
+    }
 }
 
 #[async_trait]
@@ -60,6 +74,19 @@ where
         req_ctxt: &Self::RequestContext,
     ) -> Result<FramingEncodedFinal<F>, Error> {
         (**self).call(req, &req_ctxt).await
+    }
+
+    fn create_interaction(
+        &self,
+        name: &str,
+    ) -> ::anyhow::Result<
+        Arc<
+            dyn ThriftService<F, Handler = (), RequestContext = Self::RequestContext>
+                + ::std::marker::Send
+                + 'static,
+        >,
+    > {
+        (**self).create_interaction(name)
     }
 }
 
@@ -87,6 +114,26 @@ where
         req_ctxt: &Self::RequestContext,
         seqid: u32,
     ) -> Result<ProtocolEncodedFinal<P>, Error>;
+
+
+    /// Given a method name, return a reference to the interaction creation fn for that index
+    fn create_interaction_idx(&self, _name: &str) -> ::anyhow::Result<::std::primitive::usize> {
+        bail!("Processor does not support interactions");
+    }
+
+    /// Given a creation method index, it produces a fresh interaction processor
+    fn handle_create_interaction(
+        &self,
+        _idx: ::std::primitive::usize,
+    ) -> ::anyhow::Result<
+        Arc<
+            dyn ThriftService<P::Frame, Handler = (), RequestContext = Self::RequestContext>
+                + ::std::marker::Send
+                + 'static,
+        >,
+    > {
+        bail!("Processor does not support interactions");
+    }
 }
 
 /// Null processor which implements no methods - it acts as the super for any service
@@ -138,6 +185,23 @@ where
         // Should never be called since method_idx() always returns an error
         unimplemented!("NullServiceProcessor implements no methods")
     }
+
+    fn create_interaction_idx(&self, name: &str) -> ::anyhow::Result<::std::primitive::usize> {
+        bail!("Unknown interaction {}", name);
+    }
+
+    fn handle_create_interaction(
+        &self,
+        _idx: ::std::primitive::usize,
+    ) -> ::anyhow::Result<
+        Arc<
+            dyn ThriftService<P::Frame, Handler = (), RequestContext = Self::RequestContext>
+                + ::std::marker::Send
+                + 'static,
+        >,
+    > {
+        unimplemented!("NullServiceProcessor implements no interactions")
+    }
 }
 
 #[async_trait]
@@ -175,5 +239,21 @@ where
             p.write_message_end();
         });
         Ok(res)
+    }
+
+    fn create_interaction(
+        &self,
+        name: &str,
+    ) -> ::anyhow::Result<
+        Arc<
+            dyn ThriftService<
+                    P::Frame,
+                    Handler = Self::Handler,
+                    RequestContext = Self::RequestContext,
+                > + ::std::marker::Send
+                + 'static,
+        >,
+    > {
+        bail!("Unimplemented interaction {}", name);
     }
 }

@@ -15,6 +15,8 @@
   limitations under the License.
 
 }}
+    {{#service:interactions}}{{>lib/server}}
+    {{/service:interactions}}
 
     {{#service:docs?}}
     #[doc = {{service:docs}}]
@@ -49,7 +51,59 @@
         }
     {{/function:returns_streams?}}{{#function:returns_streams?}}
         // {{function:rust_name}}: server-side streaming not yet implemented
-    {{/function:returns_streams?}}{{/function:starts_interaction?}}{{/service:rustFunctions}}
+    {{/function:returns_streams?}}
+    {{/function:starts_interaction?}}{{#function:starts_interaction?}}
+        {{#function:docs?}}
+        #[doc = {{function:docs}}]
+        {{/function:docs?}}
+        fn {{function:rust_name}}(
+            &self,
+        ) -> ::anyhow::Result<::std::boxed::Box<dyn {{function:interaction_name}}>> {
+            ::anyhow::bail!("{{service:name}}.{{function:name}} not implemented");
+        }
+    {{/function:starts_interaction?}}{{/service:rustFunctions}}
+    }
+
+    #[::async_trait::async_trait]
+    impl<T> {{service:name}} for ::std::boxed::Box<T>
+    where
+        T: {{service:name}} + Send + Sync + ?Sized,
+    {{>lib/block}}
+    {{#service:requestContext?}}
+        type RequestContext = T::RequestContext;{{!
+    }}{{/service:requestContext?}}
+    {{#service:rustFunctions}}{{^function:starts_interaction?}}{{^function:returns_streams?}}
+        async fn {{function:rust_name}}(
+            &self,{{!
+            }}{{#service:requestContext?}}
+            request_context: &Self::RequestContext,{{!
+            }}{{/service:requestContext?}}{{!
+            }}{{#function:args}}
+            {{field:rust_name}}: {{#field:type}}{{>lib/type}}{{/field:type}},{{!
+            }}{{/function:args}}
+        ) -> ::std::result::Result<{{!
+            }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
+            }}{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn{{!
+        }}> {
+            (**self).{{function:rust_name}}({{!
+                }}{{#service:requestContext?}}
+                request_context, {{!
+                }}{{/service:requestContext?}}{{!
+                }}{{#function:args}}
+                {{field:rust_name}}, {{!
+                }}{{/function:args}}
+            ).await
+        }
+    {{/function:returns_streams?}}{{#function:returns_streams?}}
+        // {{function:rust_name}}: server-side streaming not yet implemented
+    {{/function:returns_streams?}}
+    {{/function:starts_interaction?}}{{#function:starts_interaction?}}
+        fn {{function:rust_name}}(
+            &self,
+        ) -> ::anyhow::Result<::std::boxed::Box<dyn {{function:interaction_name}}>> {
+            (**self).{{function:rust_name}}()
+        }
+    {{/function:starts_interaction?}}{{/service:rustFunctions}}
     }
 
     /// Processor for {{service:name}}'s methods.
@@ -210,7 +264,15 @@
 
             ::std::result::Result::Ok(res)
         }{{!
-        }}{{/function:returns_streams?}}{{/function:starts_interaction?}}{{/service:rustFunctions}}
+        }}{{/function:returns_streams?}}{{/function:starts_interaction?}}{{#function:starts_interaction?}}
+
+        fn handle_{{function:name}}(
+            &self,
+        ) -> ::anyhow::Result<::std::boxed::Box<dyn {{function:interaction_name}}>> {
+            self.service.{{function:rust_name}}()
+        }{{!
+        }}{{/function:starts_interaction?}}{{!
+        }}{{/service:rustFunctions}}
     }
 
     #[::async_trait::async_trait]
@@ -226,9 +288,9 @@
         }}{{#service:requestContext?}}<RequestContext = R>{{/service:requestContext?}},{{!
         }}{{#service:extends?}}
         SS: ::fbthrift::ThriftService<P::Frame>,
-        SS::Handler: {{>lib/super}},
-        P::Frame: ::std::marker::Send + 'static,{{!
+        SS::Handler: {{>lib/super}},{{!
         }}{{/service:extends?}}
+        P::Frame: ::std::marker::Send + 'static,
         R: ::fbthrift::RequestContext<Name = ::std::ffi::CStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
         <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack<Name = R::Name, Buffer = ::fbthrift::ProtocolDecoded<P>>
             + ::std::marker::Send + ::std::marker::Sync + 'static
@@ -239,7 +301,7 @@
         fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
             match name {{>lib/block}}{{!
                 }}{{#service:rustFunctions}}{{^function:starts_interaction?}}{{^function:returns_streams?}}
-                b"{{function:name}}" => ::std::result::Result::Ok({{function:index}}usize),{{!
+                b"{{#service:interaction?}}{{service:name}}.{{/service:interaction?}}{{function:name}}" => ::std::result::Result::Ok({{function:index}}usize),{{!
                 }}{{/function:returns_streams?}}{{/function:starts_interaction?}}{{/service:rustFunctions}}
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
@@ -283,6 +345,38 @@
                 ),
             }
         }
+
+        #[inline]
+        fn create_interaction_idx(&self, name: &str) -> ::anyhow::Result<::std::primitive::usize> {
+            match name {{>lib/block}}{{!
+                }}{{#service:rustFunctions}}{{#function:starts_interaction?}}
+                "{{function:interaction_name}}" => ::std::result::Result::Ok({{function:index}}usize),{{!
+                }}{{/function:starts_interaction?}}{{/service:rustFunctions}}
+                _ => ::anyhow::bail!("Unknown interaction"),
+            }
+        }
+
+        fn handle_create_interaction(
+            &self,
+            idx: ::std::primitive::usize,
+        ) -> ::anyhow::Result<
+            ::std::sync::Arc<dyn ::fbthrift::ThriftService<P::Frame, Handler = (), RequestContext = Self::RequestContext> + ::std::marker::Send + 'static>
+        > {
+            match idx {{>lib/block}}{{!
+                }}{{#service:rustFunctions}}{{#function:starts_interaction?}}
+                {{function:index}}usize => {
+                    let handler = self.handle_{{function:name}}()?;
+                    let server = ::std::sync::Arc::new({{function:interaction_name}}Processor::<P, ::std::boxed::Box<dyn {{function:interaction_name}}>, R>::new(handler));
+                    Ok(server)
+                }{{!
+                }}{{/function:starts_interaction?}}{{/service:rustFunctions}}
+                bad => panic!(
+                    "{}: unexpected method idx {}",
+                    "{{service:name}}Processor",
+                    bad
+                ),
+            }
+        }
     }
 
     #[::async_trait::async_trait]
@@ -306,7 +400,13 @@
         <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack<Name = R::Name, Buffer = ::fbthrift::ProtocolDecoded<P>>
             + ::std::marker::Send + ::std::marker::Sync + 'static
     {
+        {{#service:interaction?}}
+        // Interactions have () as their handler associated type
+        // to make `create_interaction` have a common return type.
+        type Handler = ();
+        {{/service:interaction?}}{{^service:interaction?}}
         type Handler = H;
+        {{/service:interaction?}}
         type RequestContext = R;
 
         #[tracing::instrument(level="trace", skip_all, fields(service = "{{service:name}}"))]
@@ -336,8 +436,26 @@
 
             Ok(res)
         }
+
+        fn create_interaction(
+            &self,
+            name: &str,
+        ) -> ::anyhow::Result<
+            ::std::sync::Arc<dyn ::fbthrift::ThriftService<P::Frame, Handler = (), RequestContext = R> + ::std::marker::Send + 'static>
+        > {
+            use ::fbthrift::{ServiceProcessor as _};
+            let idx = self.create_interaction_idx(name);
+            let idx = match idx {
+                ::anyhow::Result::Ok(idx) => idx,
+                ::anyhow::Result::Err(_) => {
+                    return self.supa.create_interaction(name);
+                }
+            };
+            self.handle_create_interaction(idx)
+        }
     }
 
+    {{^service:interaction?}}
     /// Construct a new instance of a {{service:name}} service.
     ///
     /// This is called when a new instance of a Thrift service Processor
@@ -385,4 +503,5 @@
             }
         }
     }
+    {{/service:interaction?}}
 {{!newline}}

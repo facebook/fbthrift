@@ -669,6 +669,8 @@ class mstch_rust_function : public mstch_function {
              &mstch_rust_function::rust_returns_by_name},
             {"function:docs?", &mstch_rust_function::rust_has_doc},
             {"function:docs", &mstch_rust_function::rust_doc},
+            {"function:interaction_name",
+             &mstch_rust_function::rust_interaction_name},
         });
   }
   mstch::node rust_name() {
@@ -733,6 +735,9 @@ class mstch_rust_function : public mstch_function {
   }
   mstch::node rust_has_doc() { return function_->has_doc(); }
   mstch::node rust_doc() { return quoted_rust_doc(function_); }
+  mstch::node rust_interaction_name() {
+    return function_->get_returntype()->get_name();
+  }
 
  private:
   int32_t index_;
