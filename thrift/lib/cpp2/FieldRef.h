@@ -684,7 +684,8 @@ class optional_boxed_field_ref {
   using value_type = detail::copy_const_t<T, element_type>;
   using reference_type = detail::copy_reference_t<T, value_type>;
 
-  FOLLY_ERASE optional_boxed_field_ref(T value) noexcept : value_(value) {}
+  FOLLY_ERASE explicit optional_boxed_field_ref(T value) noexcept
+      : value_(value) {}
 
   template <
       typename U,

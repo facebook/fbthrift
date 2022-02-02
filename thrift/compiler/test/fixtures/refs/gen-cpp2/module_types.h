@@ -1670,122 +1670,125 @@ class StructWithBox final  {
 
   bool operator==(const StructWithBox&) const;
   bool operator<(const StructWithBox&) const;
+
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::std::string>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&> a_ref() const& {
-    return {this->__fbthrift_field_a};
+    return ::apache::thrift::optional_boxed_field_ref<const T&>{this->__fbthrift_field_a};
   }
 
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::std::string>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&&> a_ref() const&& {
-    return {static_cast<const T&&>(this->__fbthrift_field_a)};
+    return ::apache::thrift::optional_boxed_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_a)};
   }
 
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::std::string>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&> a_ref() & {
-    return {this->__fbthrift_field_a};
+    return ::apache::thrift::optional_boxed_field_ref<T&>{this->__fbthrift_field_a};
   }
 
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::std::string>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&&> a_ref() && {
-    return {static_cast<T&&>(this->__fbthrift_field_a)};
+    return ::apache::thrift::optional_boxed_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_a)};
   }
 
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::std::string>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&> a() const& {
-    return {this->__fbthrift_field_a};
+    return ::apache::thrift::optional_boxed_field_ref<const T&>{this->__fbthrift_field_a};
   }
 
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::std::string>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&&> a() const&& {
-    return {static_cast<const T&&>(this->__fbthrift_field_a)};
+    return ::apache::thrift::optional_boxed_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_a)};
   }
 
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::std::string>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&> a() & {
-    return {this->__fbthrift_field_a};
+    return ::apache::thrift::optional_boxed_field_ref<T&>{this->__fbthrift_field_a};
   }
 
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::std::string>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&&> a() && {
-    return {static_cast<T&&>(this->__fbthrift_field_a)};
+    return ::apache::thrift::optional_boxed_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_a)};
   }
+
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::std::vector<::std::int64_t>>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&> b_ref() const& {
-    return {this->__fbthrift_field_b};
+    return ::apache::thrift::optional_boxed_field_ref<const T&>{this->__fbthrift_field_b};
   }
 
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::std::vector<::std::int64_t>>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&&> b_ref() const&& {
-    return {static_cast<const T&&>(this->__fbthrift_field_b)};
+    return ::apache::thrift::optional_boxed_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_b)};
   }
 
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::std::vector<::std::int64_t>>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&> b_ref() & {
-    return {this->__fbthrift_field_b};
+    return ::apache::thrift::optional_boxed_field_ref<T&>{this->__fbthrift_field_b};
   }
 
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::std::vector<::std::int64_t>>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&&> b_ref() && {
-    return {static_cast<T&&>(this->__fbthrift_field_b)};
+    return ::apache::thrift::optional_boxed_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_b)};
   }
 
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::std::vector<::std::int64_t>>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&> b() const& {
-    return {this->__fbthrift_field_b};
+    return ::apache::thrift::optional_boxed_field_ref<const T&>{this->__fbthrift_field_b};
   }
 
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::std::vector<::std::int64_t>>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&&> b() const&& {
-    return {static_cast<const T&&>(this->__fbthrift_field_b)};
+    return ::apache::thrift::optional_boxed_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_b)};
   }
 
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::std::vector<::std::int64_t>>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&> b() & {
-    return {this->__fbthrift_field_b};
+    return ::apache::thrift::optional_boxed_field_ref<T&>{this->__fbthrift_field_b};
   }
 
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::std::vector<::std::int64_t>>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&&> b() && {
-    return {static_cast<T&&>(this->__fbthrift_field_b)};
+    return ::apache::thrift::optional_boxed_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_b)};
   }
+
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::cpp2::StructWithRef>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&> c_ref() const& {
-    return {this->__fbthrift_field_c};
+    return ::apache::thrift::optional_boxed_field_ref<const T&>{this->__fbthrift_field_c};
   }
 
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::cpp2::StructWithRef>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&&> c_ref() const&& {
-    return {static_cast<const T&&>(this->__fbthrift_field_c)};
+    return ::apache::thrift::optional_boxed_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_c)};
   }
 
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::cpp2::StructWithRef>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&> c_ref() & {
-    return {this->__fbthrift_field_c};
+    return ::apache::thrift::optional_boxed_field_ref<T&>{this->__fbthrift_field_c};
   }
 
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::cpp2::StructWithRef>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&&> c_ref() && {
-    return {static_cast<T&&>(this->__fbthrift_field_c)};
+    return ::apache::thrift::optional_boxed_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_c)};
   }
 
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::cpp2::StructWithRef>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&> c() const& {
-    return {this->__fbthrift_field_c};
+    return ::apache::thrift::optional_boxed_field_ref<const T&>{this->__fbthrift_field_c};
   }
 
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::cpp2::StructWithRef>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&&> c() const&& {
-    return {static_cast<const T&&>(this->__fbthrift_field_c)};
+    return ::apache::thrift::optional_boxed_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_c)};
   }
 
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::cpp2::StructWithRef>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&> c() & {
-    return {this->__fbthrift_field_c};
+    return ::apache::thrift::optional_boxed_field_ref<T&>{this->__fbthrift_field_c};
   }
 
   template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::cpp2::StructWithRef>>
   FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&&> c() && {
-    return {static_cast<T&&>(this->__fbthrift_field_c)};
+    return ::apache::thrift::optional_boxed_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_c)};
   }
 
   template <class Protocol_>

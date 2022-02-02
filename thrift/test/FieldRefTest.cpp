@@ -142,48 +142,50 @@ class TestStruct {
 
 class TestStructBoxedValuePtr {
  public:
-  optional_boxed_field_ref<boxed_value_ptr<std::string>&> opt_name() & {
-    return {name_};
+  auto opt_name() & {
+    return optional_boxed_field_ref<boxed_value_ptr<std::string>&>{name_};
   }
 
-  optional_boxed_field_ref<boxed_value_ptr<std::string>&&> opt_name() && {
-    return {std::move(name_)};
+  auto opt_name() && {
+    return optional_boxed_field_ref<boxed_value_ptr<std::string>&&>{
+        std::move(name_)};
   }
 
-  optional_boxed_field_ref<const boxed_value_ptr<std::string>&> opt_name()
-      const& {
-    return {name_};
+  auto opt_name() const& {
+    return optional_boxed_field_ref<const boxed_value_ptr<std::string>&>{name_};
   }
 
-  optional_boxed_field_ref<const boxed_value_ptr<std::string>&&> opt_name()
-      const&& {
-    return {std::move(name_)};
+  auto opt_name() const&& {
+    return optional_boxed_field_ref<const boxed_value_ptr<std::string>&&>{
+        std::move(name_)};
   }
 
-  optional_boxed_field_ref<boxed_value_ptr<IntAssignable>&> opt_int_assign() {
-    return {int_assign_};
+  auto opt_int_assign() {
+    return optional_boxed_field_ref<boxed_value_ptr<IntAssignable>&>{
+        int_assign_};
   }
 
-  optional_boxed_field_ref<boxed_value_ptr<std::shared_ptr<int>>&> ptr_ref() {
-    return {ptr_};
+  auto ptr_ref() {
+    return optional_boxed_field_ref<boxed_value_ptr<std::shared_ptr<int>>&>{
+        ptr_};
   }
 
-  optional_boxed_field_ref<boxed_value_ptr<int>&> opt_int_val() {
-    return {int_val_};
+  auto opt_int_val() {
+    return optional_boxed_field_ref<boxed_value_ptr<int>&>{int_val_};
   }
 
-  optional_boxed_field_ref<boxed_value_ptr<std::unique_ptr<int>>&>
-  opt_uptr() & {
-    return {uptr_};
+  auto opt_uptr() & {
+    return optional_boxed_field_ref<boxed_value_ptr<std::unique_ptr<int>>&>{
+        uptr_};
   }
 
-  optional_boxed_field_ref<boxed_value_ptr<std::unique_ptr<int>>&&>
-  opt_uptr() && {
-    return {std::move(uptr_)};
+  auto opt_uptr() && {
+    return optional_boxed_field_ref<boxed_value_ptr<std::unique_ptr<int>>&&>{
+        std::move(uptr_)};
   }
 
-  optional_boxed_field_ref<boxed_value_ptr<Nested>&> opt_nested() & {
-    return {nested_};
+  auto opt_nested() & {
+    return optional_boxed_field_ref<boxed_value_ptr<Nested>&>{nested_};
   }
 
  private:
