@@ -1746,6 +1746,179 @@ pub mod services {
 
 /// Client implementation for each service in `module`.
 pub mod client {
+
+    pub struct MyInteractionImpl<P, T, S = ::fbthrift::NoopSpawner> {
+        transport: T,
+        _phantom: ::std::marker::PhantomData<fn() -> (P, S)>,
+    }
+
+    impl<P, T, S> MyInteractionImpl<P, T, S> {
+        pub fn new(
+            transport: T,
+        ) -> Self {
+            Self {
+                transport,
+                _phantom: ::std::marker::PhantomData,
+            }
+        }
+
+        pub fn transport(&self) -> &T {
+            &self.transport
+        }
+    }
+
+    pub trait MyInteraction: ::std::marker::Send {
+        fn ping(
+            &self,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_interaction::PingError>> + ::std::marker::Send + 'static>>;
+    }
+
+    struct Args_MyInteraction_ping<'a> {
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_MyInteraction_ping<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "MyInteraction.ping"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P, T, S> MyInteraction for MyInteractionImpl<P, T, S>
+    where
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
+        P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
+    {
+        fn ping(
+            &self,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_interaction::PingError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
+            use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
+            const_cstr! {
+                SERVICE_NAME = "MyInteraction";
+                METHOD_NAME = "MyInteraction.ping";
+            }
+            let args = self::Args_MyInteraction_ping {
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            // need to do call setup outside of async block because T: Transport isn't Send
+            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("MyInteraction.ping", &args) {
+                ::std::result::Result::Ok(res) => res,
+                ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+            };
+
+            let call = self.transport()
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
+                .instrument(::tracing::trace_span!("call", function = "MyInteraction.ping"));
+
+            async move {
+                let reply_env = call.await?;
+
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::my_interaction::PingExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
+
+                match res {
+                    ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
+                    ::std::result::Result::Err(aexn) =>
+                        ::std::result::Result::Err(crate::errors::my_interaction::PingError::ApplicationException(aexn))
+                }
+            }
+            .instrument(::tracing::info_span!("MyInteraction.ping"))
+            .boxed()
+        }
+    }
+
+    impl<'a, T> MyInteraction for T
+    where
+        T: ::std::convert::AsRef<dyn MyInteraction + 'a>,
+        T: ::std::marker::Send,
+    {
+        fn ping(
+            &self,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_interaction::PingError>> + ::std::marker::Send + 'static>> {
+            self.as_ref().ping(
+            )
+        }
+    }
+
+    #[derive(Clone)]
+    pub struct make_MyInteraction;
+
+    /// To be called by user directly setting up a client. Avoids
+    /// needing ClientFactory trait in scope, avoids unidiomatic
+    /// make_Trait name.
+    ///
+    /// ```
+    /// # const _: &str = stringify! {
+    /// use bgs::client::BuckGraphService;
+    ///
+    /// let protocol = BinaryProtocol::new();
+    /// let transport = HttpClient::new();
+    /// let client = <dyn BuckGraphService>::new(protocol, transport);
+    /// # };
+    /// ```
+    impl dyn MyInteraction {
+        pub fn new<P, T>(
+            protocol: P,
+            transport: T,
+        ) -> ::std::sync::Arc<impl MyInteraction + ::std::marker::Send + 'static>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport,
+            P::Deserializer: ::std::marker::Send,
+        {
+            let spawner = ::fbthrift::help::NoopSpawner;
+            Self::with_spawner(protocol, transport, spawner)
+        }
+
+        pub fn with_spawner<P, T, S>(
+            protocol: P,
+            transport: T,
+            spawner: S,
+        ) -> ::std::sync::Arc<impl MyInteraction + ::std::marker::Send + 'static>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport,
+            P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
+        {
+            let _ = protocol;
+            let _ = spawner;
+            ::std::sync::Arc::new(MyInteractionImpl::<P, T, S>::new(transport))
+        }
+    }
+
+    pub type MyInteractionDynClient = <make_MyInteraction as ::fbthrift::ClientFactory>::Api;
+    pub type MyInteractionClient = ::std::sync::Arc<MyInteractionDynClient>;
+
+    /// The same thing, but to be called from generic contexts where we are
+    /// working with a type parameter `C: ClientFactory` to produce clients.
+    impl ::fbthrift::ClientFactory for make_MyInteraction {
+        type Api = dyn MyInteraction + ::std::marker::Send + ::std::marker::Sync + 'static;
+
+        fn with_spawner<P, T, S>(protocol: P, transport: T, spawner: S) -> ::std::sync::Arc<Self::Api>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport + ::std::marker::Sync,
+            P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
+        {
+            <dyn MyInteraction>::with_spawner(protocol, transport, spawner)
+        }
+    }
+
+
     pub struct MyServiceImpl<P, T, S = ::fbthrift::NoopSpawner> {
         transport: T,
         _phantom: ::std::marker::PhantomData<fn() -> (P, S)>,
@@ -1770,40 +1943,51 @@ pub mod client {
         fn ping(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PingError>> + ::std::marker::Send + 'static>>;
+
         fn getRandomData(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> + ::std::marker::Send + 'static>>;
+
         fn hasDataById(
             &self,
             arg_id: ::std::primitive::i64,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>> + ::std::marker::Send + 'static>>;
+
         fn getDataById(
             &self,
             arg_id: ::std::primitive::i64,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>> + ::std::marker::Send + 'static>>;
+
         fn putDataById(
             &self,
             arg_id: ::std::primitive::i64,
             arg_data: &::std::primitive::str,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + ::std::marker::Send + 'static>>;
+
         fn lobDataById(
             &self,
             arg_id: ::std::primitive::i64,
             arg_data: &::std::primitive::str,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + ::std::marker::Send + 'static>>;
+
         fn streamById(
             &self,
             arg_id: ::std::primitive::i64,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_service::StreamByIdError>> + ::std::marker::Send + 'static>>;
+
         fn streamByIdWithException(
             &self,
             arg_id: ::std::primitive::i64,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithExceptionStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_service::StreamByIdWithExceptionError>> + ::std::marker::Send + 'static>>;
+
         fn streamByIdWithResponse(
             &self,
             arg_id: ::std::primitive::i64,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(crate::types::MyDataItem, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithResponseStreamError>> + ::std::marker::Send + 'static >>), crate::errors::my_service::StreamByIdWithResponseError>> + ::std::marker::Send + 'static>>;
 
+        fn createMyInteraction(
+            &self,
+        ) -> ::std::result::Result<::std::sync::Arc<dyn MyInteraction + ::std::marker::Send + 'static>, ::anyhow::Error>;
     }
 
     struct Args_MyService_ping<'a> {
@@ -2019,7 +2203,6 @@ pub mod client {
             .boxed()
         }
 
-
         fn getRandomData(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> + ::std::marker::Send + 'static>> {
@@ -2061,7 +2244,6 @@ pub mod client {
             .instrument(::tracing::info_span!("MyService.getRandomData"))
             .boxed()
         }
-
 
         fn hasDataById(
             &self,
@@ -2107,7 +2289,6 @@ pub mod client {
             .boxed()
         }
 
-
         fn getDataById(
             &self,
             arg_id: ::std::primitive::i64,
@@ -2151,7 +2332,6 @@ pub mod client {
             .instrument(::tracing::info_span!("MyService.getDataById"))
             .boxed()
         }
-
 
         fn putDataById(
             &self,
@@ -2199,7 +2379,6 @@ pub mod client {
             .boxed()
         }
 
-
         fn lobDataById(
             &self,
             arg_id: ::std::primitive::i64,
@@ -2245,8 +2424,6 @@ pub mod client {
             .instrument(::tracing::info_span!("MyService.lobDataById"))
             .boxed()
         }
-
-
 
         fn streamById(
             &self,
@@ -2305,7 +2482,6 @@ pub mod client {
             .boxed()
         }
 
-
         fn streamByIdWithException(
             &self,
             arg_id: ::std::primitive::i64,
@@ -2362,7 +2538,6 @@ pub mod client {
             .instrument(::tracing::info_span!("MyService.streamByIdWithException"))
             .boxed()
         }
-
 
         fn streamByIdWithResponse(
             &self,
@@ -2425,6 +2600,22 @@ pub mod client {
             }
             .instrument(::tracing::info_span!("MyService.streamByIdWithResponse"))
             .boxed()
+        }
+
+        fn createMyInteraction(
+            &self,
+        ) -> ::std::result::Result<::std::sync::Arc<dyn MyInteraction + ::std::marker::Send + 'static>, ::anyhow::Error> {
+            use ::const_cstr::const_cstr;
+            const_cstr! {
+                INTERACTION_NAME = "MyInteraction";
+            }
+            Ok(
+                ::std::sync::Arc::new(
+                    MyInteractionImpl::<P, T, S>::new(
+                        self.transport().create_interaction(INTERACTION_NAME.as_cstr())?
+                    )
+                )
+            )
         }
     }
 
@@ -2504,6 +2695,11 @@ pub mod client {
             self.as_ref().streamByIdWithResponse(
                 arg_id,
             )
+        }
+        fn createMyInteraction(
+            &self,
+        ) -> ::std::result::Result<::std::sync::Arc<dyn MyInteraction + ::std::marker::Send + 'static>, ::anyhow::Error> {
+            self.as_ref().createMyInteraction()
         }
     }
 
@@ -4064,6 +4260,11 @@ pub mod mock {
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_id.clone())))
         }
 
+        fn createMyInteraction(
+            &self,
+        ) -> ::std::result::Result<::std::sync::Arc<dyn crate::client::MyInteraction + ::std::marker::Send + 'static>, ::anyhow::Error> {
+            unimplemented!("Mocking interactions is not yet implemented");
+        }
     }
 
     mod r#impl {

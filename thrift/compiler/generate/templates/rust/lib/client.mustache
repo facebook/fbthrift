@@ -15,6 +15,9 @@
   limitations under the License.
 
 }}
+    {{#service:interactions}}{{>lib/client}}
+    {{/service:interactions}}
+
     pub struct {{service:name}}Impl<P, T, S = ::fbthrift::NoopSpawner> {
         {{#service:extends}}
         parent: {{service:package}}::client::{{service:name}}Impl<P, T, S>,
@@ -84,10 +87,10 @@
         }}::std::marker::Send {{>lib/block}}{{!
 
         }}{{#service:rustFunctions}}
-        {{^function:starts_interaction?}}
         {{#function:docs?}}
         #[doc = {{function:docs}}]
         {{/function:docs?}}
+        {{^function:starts_interaction?}}
         fn {{function:rust_name}}(
             &self,
             {{#function:args}}
@@ -96,9 +99,14 @@
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<{{!
             }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
             }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
-        }}>> + ::std::marker::Send + 'static>>;{{!
-        }}{{/function:starts_interaction?}}{{!
-        }}{{/service:rustFunctions}}
+        }}>> + ::std::marker::Send + 'static>>;
+        {{/function:starts_interaction?}}{{#function:starts_interaction?}}
+        fn {{function:rust_name}}(
+            &self,
+        ) -> ::std::result::Result<{{!
+        }}::std::sync::Arc<dyn {{function:interaction_name}} + ::std::marker::Send + 'static>, {{!
+        }}::anyhow::Error>;
+        {{/function:starts_interaction?}}{{/service:rustFunctions}}
     }
     {{#service:rustFunctions}}{{^function:starts_interaction?}}
 
@@ -140,9 +148,8 @@
         S: ::fbthrift::help::Spawner,
     {{>lib/block}}{{!
         }}{{#service:rustFunctions}}
-        {{^function:starts_interaction?}}
+        {{^function:starts_interaction?}}{{^function:returns_streams?}}
 
-        {{^function:returns_streams?}}
         fn {{function:rust_name}}(
             &self,{{!
             }}{{#function:args}}
@@ -168,7 +175,7 @@
             };
 
             // need to do call setup outside of async block because T: Transport isn't Send
-            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("{{function:name}}", &args) {
+            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("{{#service:interaction?}}{{service:name}}.{{/service:interaction?}}{{function:name}}", &args) {
                 ::std::result::Result::Ok(res) => res,
                 ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
             };
@@ -193,9 +200,8 @@
             .instrument(::tracing::info_span!("{{service:name}}.{{function:name}}"))
             .boxed()
         }
-        {{/function:returns_streams?}}
+        {{/function:returns_streams?}}{{#function:returns_streams?}}
 
-        {{#function:returns_streams?}}
         fn {{function:rust_name}}(
             &self,{{!
             }}{{#function:args}}
@@ -222,7 +228,7 @@
                 _phantom: ::std::marker::PhantomData,
             };
 
-            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("{{function:name}}", &args) {
+            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("{{#service:interaction?}}{{service:name}}.{{/service:interaction?}}{{function:name}}", &args) {
                 ::std::result::Result::Ok(res) => res,
                 ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
             };
@@ -273,9 +279,26 @@
             .instrument(::tracing::info_span!("{{service:name}}.{{function:name}}"))
             .boxed()
         }
-        {{/function:returns_streams?}}
-        {{/function:starts_interaction?}}
-        {{/service:rustFunctions}}
+        {{/function:returns_streams?}}{{/function:starts_interaction?}}{{#function:starts_interaction?}}
+
+        fn {{function:name}}(
+            &self,
+        ) -> ::std::result::Result<{{!
+        }}::std::sync::Arc<dyn {{function:interaction_name}} + ::std::marker::Send + 'static>, {{!
+        }}::anyhow::Error> {
+            use ::const_cstr::const_cstr;
+            const_cstr! {
+                INTERACTION_NAME = "{{function:interaction_name}}";
+            }
+            Ok(
+                ::std::sync::Arc::new(
+                    {{function:interaction_name}}Impl::<P, T, S>::new(
+                        self.transport().create_interaction(INTERACTION_NAME.as_cstr())?
+                    )
+                )
+            )
+        }
+        {{/function:starts_interaction?}}{{/service:rustFunctions}}
     }
 
     impl<'a, T> {{service:name}} for T
@@ -305,8 +328,15 @@
                 {{/function:args}}
             )
         }
-        {{/function:starts_interaction?}}
-        {{/service:rustFunctions}}
+        {{/function:starts_interaction?}}{{#function:starts_interaction?}}
+        fn {{function:rust_name}}(
+            &self,
+        ) -> ::std::result::Result<{{!
+        }}::std::sync::Arc<dyn {{function:interaction_name}} + ::std::marker::Send + 'static>, {{!
+        }}::anyhow::Error> {
+            self.as_ref().{{function:rust_name}}()
+        }
+        {{/function:starts_interaction?}}{{/service:rustFunctions}}
     }
 
     #[derive(Clone)]

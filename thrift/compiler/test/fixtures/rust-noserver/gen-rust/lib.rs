@@ -1124,6 +1124,7 @@ pub mod services {
 
 /// Client implementation for each service in `module`.
 pub mod client {
+
     pub struct MyServiceImpl<P, T, S = ::fbthrift::NoopSpawner> {
         transport: T,
         _phantom: ::std::marker::PhantomData<fn() -> (P, S)>,
@@ -1148,22 +1149,27 @@ pub mod client {
         fn ping(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PingError>> + ::std::marker::Send + 'static>>;
+
         fn getRandomData(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> + ::std::marker::Send + 'static>>;
+
         fn hasDataById(
             &self,
             arg_id: ::std::primitive::i64,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>> + ::std::marker::Send + 'static>>;
+
         fn getDataById(
             &self,
             arg_id: ::std::primitive::i64,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>> + ::std::marker::Send + 'static>>;
+
         fn putDataById(
             &self,
             arg_id: ::std::primitive::i64,
             arg_data: &::std::primitive::str,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + ::std::marker::Send + 'static>>;
+
         fn lobDataById(
             &self,
             arg_id: ::std::primitive::i64,
@@ -1330,7 +1336,6 @@ pub mod client {
             .boxed()
         }
 
-
         fn getRandomData(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> + ::std::marker::Send + 'static>> {
@@ -1372,7 +1377,6 @@ pub mod client {
             .instrument(::tracing::info_span!("MyService.getRandomData"))
             .boxed()
         }
-
 
         fn hasDataById(
             &self,
@@ -1418,7 +1422,6 @@ pub mod client {
             .boxed()
         }
 
-
         fn getDataById(
             &self,
             arg_id: ::std::primitive::i64,
@@ -1462,7 +1465,6 @@ pub mod client {
             .instrument(::tracing::info_span!("MyService.getDataById"))
             .boxed()
         }
-
 
         fn putDataById(
             &self,
@@ -1510,7 +1512,6 @@ pub mod client {
             .boxed()
         }
 
-
         fn lobDataById(
             &self,
             arg_id: ::std::primitive::i64,
@@ -1556,7 +1557,6 @@ pub mod client {
             .instrument(::tracing::info_span!("MyService.lobDataById"))
             .boxed()
         }
-
     }
 
     impl<'a, T> MyService for T

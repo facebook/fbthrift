@@ -1247,6 +1247,7 @@ pub mod services {
 
 /// Client implementation for each service in `module`.
 pub mod client {
+
     pub struct RaiserImpl<P, T, S = ::fbthrift::NoopSpawner> {
         transport: T,
         _phantom: ::std::marker::PhantomData<fn() -> (P, S)>,
@@ -1271,12 +1272,15 @@ pub mod client {
         fn doBland(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::raiser::DoBlandError>> + ::std::marker::Send + 'static>>;
+
         fn doRaise(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::raiser::DoRaiseError>> + ::std::marker::Send + 'static>>;
+
         fn get200(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::raiser::Get200Error>> + ::std::marker::Send + 'static>>;
+
         fn get500(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::raiser::Get500Error>> + ::std::marker::Send + 'static>>;
@@ -1389,7 +1393,6 @@ pub mod client {
             .boxed()
         }
 
-
         fn doRaise(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::raiser::DoRaiseError>> + ::std::marker::Send + 'static>> {
@@ -1431,7 +1434,6 @@ pub mod client {
             .instrument(::tracing::info_span!("Raiser.doRaise"))
             .boxed()
         }
-
 
         fn get200(
             &self,
@@ -1475,7 +1477,6 @@ pub mod client {
             .boxed()
         }
 
-
         fn get500(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::raiser::Get500Error>> + ::std::marker::Send + 'static>> {
@@ -1517,7 +1518,6 @@ pub mod client {
             .instrument(::tracing::info_span!("Raiser.get500"))
             .boxed()
         }
-
     }
 
     impl<'a, T> Raiser for T

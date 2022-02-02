@@ -371,6 +371,7 @@ pub mod services {
 
 /// Client implementation for each service in `module`.
 pub mod client {
+
     pub struct MyRootImpl<P, T, S = ::fbthrift::NoopSpawner> {
         transport: T,
         _phantom: ::std::marker::PhantomData<fn() -> (P, S)>,
@@ -461,7 +462,6 @@ pub mod client {
             .instrument(::tracing::info_span!("MyRoot.do_root"))
             .boxed()
         }
-
     }
 
     impl<'a, T> MyRoot for T
@@ -542,6 +542,7 @@ pub mod client {
             <dyn MyRoot>::with_spawner(protocol, transport, spawner)
         }
     }
+
 
     pub struct MyNodeImpl<P, T, S = ::fbthrift::NoopSpawner> {
         parent: crate::client::MyRootImpl<P, T, S>,
@@ -645,7 +646,6 @@ pub mod client {
             .instrument(::tracing::info_span!("MyNode.do_mid"))
             .boxed()
         }
-
     }
 
     impl<'a, T> MyNode for T
@@ -727,6 +727,7 @@ pub mod client {
             <dyn MyNode>::with_spawner(protocol, transport, spawner)
         }
     }
+
 
     pub struct MyLeafImpl<P, T, S = ::fbthrift::NoopSpawner> {
         parent: crate::client::MyNodeImpl<P, T, S>,
@@ -845,7 +846,6 @@ pub mod client {
             .instrument(::tracing::info_span!("MyLeaf.do_leaf"))
             .boxed()
         }
-
     }
 
     impl<'a, T> MyLeaf for T

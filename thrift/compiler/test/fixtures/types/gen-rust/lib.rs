@@ -3097,6 +3097,7 @@ pub mod services {
 
 /// Client implementation for each service in `module`.
 pub mod client {
+
     pub struct SomeServiceImpl<P, T, S = ::fbthrift::NoopSpawner> {
         transport: T,
         _phantom: ::std::marker::PhantomData<fn() -> (P, S)>,
@@ -3122,6 +3123,7 @@ pub mod client {
             &self,
             arg_m: &include::types::SomeMap,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> + ::std::marker::Send + 'static>>;
+
         fn binary_keyed_map(
             &self,
             arg_r: &[::std::primitive::i64],
@@ -3217,7 +3219,6 @@ pub mod client {
             .boxed()
         }
 
-
         fn binary_keyed_map(
             &self,
             arg_r: &[::std::primitive::i64],
@@ -3261,7 +3262,6 @@ pub mod client {
             .instrument(::tracing::info_span!("SomeService.binary_keyed_map"))
             .boxed()
         }
-
     }
 
     impl<'a, T> SomeService for T

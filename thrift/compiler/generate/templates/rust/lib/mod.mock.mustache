@@ -77,8 +77,15 @@
                 }}{{/function:args}}{{!
             }})))
         }{{!
-        }}{{/function:starts_interaction?}}{{!
-        }}{{/service:rustFunctions}}
+        }}{{/function:starts_interaction?}}{{#function:starts_interaction?}}
+        fn {{function:rust_name}}(
+            &self,
+        ) -> ::std::result::Result<{{!
+        }}::std::sync::Arc<dyn {{service:package}}::client::{{function:interaction_name}} + ::std::marker::Send + 'static>, {{!
+        }}::anyhow::Error> {
+            unimplemented!("Mocking interactions is not yet implemented");
+        }{{!
+        }}{{/function:starts_interaction?}}{{/service:rustFunctions}}
     }
 
     {{#service:extendedServices}}

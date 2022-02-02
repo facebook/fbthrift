@@ -349,6 +349,7 @@ pub mod services {
 
 /// Client implementation for each service in `mod`.
 pub mod client {
+
     pub struct FooImpl<P, T, S = ::fbthrift::NoopSpawner> {
         transport: T,
         _phantom: ::std::marker::PhantomData<fn() -> (P, S)>,
@@ -374,6 +375,7 @@ pub mod client {
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::ReturnError>> + ::std::marker::Send + 'static>>;
+
         fn super_(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
@@ -469,7 +471,6 @@ pub mod client {
             .boxed()
         }
 
-
         fn super_(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
@@ -513,7 +514,6 @@ pub mod client {
             .instrument(::tracing::info_span!("Foo.super"))
             .boxed()
         }
-
     }
 
     impl<'a, T> Foo for T
