@@ -359,7 +359,7 @@ zero64 = 0
 
 zero_dot_zero = float(0)
 
-empty_string = 
+empty_string = ""
 
 empty_int_list = _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.typeinfo_i32, ())
 

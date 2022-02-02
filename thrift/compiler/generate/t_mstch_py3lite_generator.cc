@@ -216,9 +216,6 @@ class mstch_py3lite_const_value : public mstch_const_value {
       return mstch::node();
     }
     std::string string_val = const_value_->get_string();
-    if (string_val.empty()) {
-      return string_val;
-    }
     if (string_val.find('\n') == std::string::npos) {
       if (string_val.find('"') == std::string::npos) {
         return "\"" + string_val + "\"";
