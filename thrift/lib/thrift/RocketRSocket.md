@@ -4,6 +4,17 @@ This document describes the mapping of the Rocket Thrift protocol over [RSocket]
 
 Keywords used by this document conform to the meanings in [RFC 2119](https://tools.ietf.org/html/rfc2119).
 
+## Thrift Protocol Negotiation
+### Rocket/RSocket over TLS
+If ALPN is supported by both client and server - "rs" MUST be used as a RSocket protocol identifier.
+
+### Other transport (e.g. THeader) to Rocket/RSocket upgrade
+Once a non-Rocket Thrift connection is established - an upgrade to Rocket/RSocket SHOULD be attempted by the client.
+
+To perform an upgrade a client MUST use the [RocketUpgrade](RocketUpgrade.thrift) interface immediatelly after opening the connection.
+
+If the upgrade was successful - both server and client MUST treat the connection as a newly established RSocket connection.
+
 ## Versioning
 
 Rocket follows a versioning scheme consisting of a single numeric version. This document describes protocol versions 6 through 9.
