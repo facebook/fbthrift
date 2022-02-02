@@ -237,8 +237,8 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 47,
-              "column" : 20
+              "line" : 48,
+              "column" : 3
             },
             "end" : {
               "line" : 48,
@@ -255,8 +255,8 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 48,
-              "column" : 14
+              "line" : 49,
+              "column" : 3
             },
             "end" : {
               "line" : 49,
@@ -278,8 +278,8 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 49,
-              "column" : 25
+              "line" : 50,
+              "column" : 3
             },
             "end" : {
               "line" : 50,
@@ -305,8 +305,8 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 50,
-              "column" : 25
+              "line" : 52,
+              "column" : 3
             },
             "end" : {
               "line" : 52,
@@ -440,8 +440,8 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 59,
-              "column" : 32
+              "line" : 60,
+              "column" : 3
             },
             "end" : {
               "line" : 60,
@@ -463,8 +463,8 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 60,
-              "column" : 38
+              "line" : 61,
+              "column" : 3
             },
             "end" : {
               "line" : 61,

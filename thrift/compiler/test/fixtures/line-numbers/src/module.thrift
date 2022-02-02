@@ -32,4 +32,7 @@ enum MyEnum {
 
 service MyService {
   void ping();
+
+  @MyStruct
+  void pong() (annotation);
 }

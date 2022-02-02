@@ -82,8 +82,8 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 24,
-              "column" : 59
+              "line" : 25,
+              "column" : 3
             },
             "end" : {
               "line" : 28,

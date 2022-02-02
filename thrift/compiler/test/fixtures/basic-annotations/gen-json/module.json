@@ -417,8 +417,8 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 54,
-              "column" : 20
+              "line" : 55,
+              "column" : 3
             },
             "end" : {
               "line" : 55,
@@ -435,8 +435,8 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 55,
-              "column" : 14
+              "line" : 56,
+              "column" : 3
             },
             "end" : {
               "line" : 56,
@@ -458,8 +458,8 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 56,
-              "column" : 25
+              "line" : 57,
+              "column" : 3
             },
             "end" : {
               "line" : 57,
@@ -481,8 +481,8 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 57,
-              "column" : 30
+              "line" : 58,
+              "column" : 3
             },
             "end" : {
               "line" : 58,
@@ -511,8 +511,8 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 58,
-              "column" : 32
+              "line" : 59,
+              "column" : 3
             },
             "end" : {
               "line" : 63,
@@ -571,12 +571,12 @@
           },
           "source_range" : {
             "begin" : {
-              "line" : 64,
-              "column" : 53
+              "line" : 65,
+              "column" : 3
             },
             "end" : {
               "line" : 65,
-              "column" : 48
+              "column" : 47
             }
           }
         }
@@ -635,12 +635,12 @@
           },
           "source_range" : {
             "begin" : {
-              "line" : 68,
-              "column" : 30
+              "line" : 69,
+              "column" : 3
             },
             "end" : {
               "line" : 69,
-              "column" : 40
+              "column" : 39
             }
           }
         },
@@ -668,12 +668,12 @@
           },
           "source_range" : {
             "begin" : {
-              "line" : 69,
-              "column" : 40
+              "line" : 70,
+              "column" : 3
             },
             "end" : {
               "line" : 70,
-              "column" : 45
+              "column" : 44
             }
           }
         }
@@ -721,12 +721,12 @@
           },
           "source_range" : {
             "begin" : {
-              "line" : 73,
-              "column" : 57
+              "line" : 74,
+              "column" : 3
             },
             "end" : {
               "line" : 74,
-              "column" : 42
+              "column" : 41
             }
           }
         }

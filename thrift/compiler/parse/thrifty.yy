@@ -779,10 +779,12 @@ Interaction:
     }
 
 FunctionList:
-  FunctionList Function
+  FunctionList DefinitionAttrs Function Annotations CommaOrSemicolonOptional
     {
-      driver.debug("FunctionList -> FunctionList Function");
-      $1->emplace_back(own($2));
+      driver.debug("FunctionList -> FunctionList DefinitionAttrs Function "
+          "Annotations CommaOrSemicolonOptional");
+      driver.set_attributes(*$3, @3, own($2), @2, own($4), @4);
+      $1->emplace_back(own($3));
       $$ = $1;
     }
 |
@@ -792,27 +794,24 @@ FunctionList:
     }
 
 Function:
-  DefinitionAttrs FunctionQualifier FunctionType Identifier
+  FunctionQualifier FunctionType Identifier
     {
       driver.begin_def(DefType::Function);
     }
-  "(" ParamList ")" MaybeThrows Annotations CommaOrSemicolonOptional
+  "(" ParamList ")" MaybeThrows
     {
-      driver.debug("Function => DefinitionAttrs FunctionQualifier "
-        "FunctionType Identifier ( ParamList ) MaybeThrows "
-        "Annotations CommaOrSemicolonOptional");
+      driver.debug("Function => FunctionQualifier FunctionType Identifier ( ParamList ) MaybeThrows");
+      driver.avoid_last_token_loc($1 == t_function_qualifier::unspecified, @$, @2);
+      driver.avoid_next_token_loc($8 == nullptr, @$, @7);
       // TODO(afuller): Leave the param list unnamed.
-      $7->set_name(std::string($4) + "_args");
-      auto func = std::make_unique<t_function>(std::move($3), std::move($4), own($7), $2);
-      func->set_exceptions(own($9));
-
-      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.avoid_next_token_loc($10 == nullptr, @$, @9);
+      $6->set_name(std::string($3) + "_args");
+      // TODO(afuller): Assign the params though an accessor instead of the constructor.
+      auto func = std::make_unique<t_function>(std::move($2), std::move($3), own($6), $1);
+      func->set_exceptions(own($8));
       driver.end_def(*func);
-      driver.set_attributes(*func, @$, own($1), own($10));
       $$ = func.release();
     }
-  | tok_performs FieldType ";"
+  | tok_performs FieldType
     {
       driver.debug("Function => tok_performs FieldType");
       auto& ret = $2;
