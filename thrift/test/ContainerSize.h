@@ -34,8 +34,12 @@ struct MockSize : Base {
   std::optional<size_t> mockedSize;
 };
 
-constexpr int64_t kMaxSize = std::numeric_limits<int32_t>::max() - 10;
-constexpr int64_t kExceededSize = std::numeric_limits<int32_t>::max() + 1LL;
+// `off_t` is 32-bit on Windows
+constexpr int64_t kPlatformMaxSize =
+    std::numeric_limits<int32_t>::max() / (folly::kIsWindows ? 2 : 1);
+
+constexpr int64_t kMaxSize = kPlatformMaxSize - 10;
+constexpr int64_t kExceededSize = kPlatformMaxSize + 1LL;
 
 // Allocated memory size = string size + thrift struct serialization overhead
 constexpr size_t kMemSize = kExceededSize + 100;
