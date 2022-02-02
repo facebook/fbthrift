@@ -615,6 +615,8 @@ class mstch_cpp2_field : public mstch_field {
             {"field:lazy?", &mstch_cpp2_field::lazy},
             {"field:lazy_ref?", &mstch_cpp2_field::lazy_ref},
             {"field:boxed_ref?", &mstch_cpp2_field::boxed_ref},
+            {"field:use_field_ref?", &mstch_cpp2_field::use_field_ref},
+            {"field:field_ref_type", &mstch_cpp2_field::field_ref_type},
             {"field:transitively_refers_to_unique?",
              &mstch_cpp2_field::transitively_refers_to_unique},
             {"field:eligible_for_storage_name_mangling?",
@@ -666,6 +668,28 @@ class mstch_cpp2_field : public mstch_field {
   mstch::node lazy_ref() { return cpp2::is_lazy_ref(field_); }
   mstch::node boxed_ref() {
     return gen::cpp::find_ref_type(*field_) == gen::cpp::reference_type::boxed;
+  }
+  mstch::node use_field_ref() {
+    return !cpp2::is_explicit_ref(field_) ||
+        gen::cpp::find_ref_type(*field_) == gen::cpp::reference_type::boxed;
+  }
+  mstch::node field_ref_type() {
+    static const std::string ns = "::apache::thrift::";
+
+    if (gen::cpp::find_ref_type(*field_) == gen::cpp::reference_type::boxed) {
+      return ns + "optional_boxed_field_ref";
+    }
+
+    switch (field_->get_req()) {
+      case t_field::e_req::required:
+        return ns + "required_field_ref";
+      case t_field::e_req::optional:
+        return ns + "optional_field_ref";
+      case t_field::e_req::opt_in_req_out:
+        return ns + "field_ref";
+      default:
+        throw std::runtime_error("unknown qualifier");
+    }
   }
   mstch::node transitively_refers_to_unique() {
     return cpp2::field_transitively_refers_to_unique(field_);
