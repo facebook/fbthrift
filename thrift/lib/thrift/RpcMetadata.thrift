@@ -294,23 +294,48 @@ enum ResponseRpcErrorCategory {
   SHUTDOWN = 3,
 }
 
+// Each ResponseRpcErrorCode belongs to exactly one ResponseRpcErrorCategory.
+// Default category is INTERNAL_ERROR unless specified otherwise.
 enum ResponseRpcErrorCode {
   UNKNOWN = 0,
+  // Server rejected the request because it is overloaded.
+  // ResponseRpcErrorCategory::LOADSHEDDING
   OVERLOAD = 1,
+  // Task timeout was hit before the server finished processing the request.
   TASK_EXPIRED = 2,
+  // Server rejected the request because the queue was full.
+  // ResponseRpcErrorCategory::LOADSHEDDING
   QUEUE_OVERLOADED = 3,
+  // Server rejected the request because it was starting/shutting down.
+  // ResponseRpcErrorCategory::SHUTDOWN
   SHUTDOWN = 4,
   INJECTED_FAILURE = 5,
+  // ResponseRpcErrorCategory::INVALID_REQUEST
   REQUEST_PARSING_FAILURE = 6,
+  // Server rejected the request because it spent too much time in the queue.
+  // ResponseRpcErrorCategory::LOADSHEDDING
   QUEUE_TIMEOUT = 7,
   RESPONSE_TOO_BIG = 8,
+  // Server rejected the request because the RPC kind for a given method name
+  // didn't match the RPC kind of the method supported by the server.
+  // ResponseRpcErrorCategory::INVALID_REQUEST
   WRONG_RPC_KIND = 9,
+  // Server rejected the request because the requested method name is not known
+  // to the server.
+  // ResponseRpcErrorCategory::INVALID_REQUEST
   UNKNOWN_METHOD = 10,
+  // ResponseRpcErrorCategory::INVALID_REQUEST
   CHECKSUM_MISMATCH = 11,
   INTERRUPTION = 12,
+  // Server rejected the request because it is overloaded based on the
+  // application defined dynamic overload criteria.
+  // ResponseRpcErrorCategory::LOADSHEDDING
   APP_OVERLOAD = 13,
   UNKNOWN_INTERACTION_ID = 14,
   INTERACTION_CONSTRUCTOR_ERROR = 15,
+  // Server rejected the request because the requested method name is not
+  // implemented in the application handler.
+  // ResponseRpcErrorCategory::INVALID_REQUEST
   UNIMPLEMENTED_METHOD = 16,
 }
 

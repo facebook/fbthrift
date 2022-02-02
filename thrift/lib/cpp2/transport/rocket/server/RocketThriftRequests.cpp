@@ -61,6 +61,7 @@ RocketException makeResponseRpcError(
       case ResponseRpcErrorCode::UNKNOWN_METHOD:
       case ResponseRpcErrorCode::CHECKSUM_MISMATCH:
       case ResponseRpcErrorCode::UNKNOWN_INTERACTION_ID:
+      case ResponseRpcErrorCode::UNIMPLEMENTED_METHOD:
         return ResponseRpcErrorCategory::INVALID_REQUEST;
       case ResponseRpcErrorCode::OVERLOAD:
       case ResponseRpcErrorCode::QUEUE_OVERLOADED:
