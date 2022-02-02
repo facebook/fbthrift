@@ -1575,8 +1575,8 @@ TEST_P(HeaderOrRocket, QueueTimeoutOnServerShutdown) {
 
   server.stop();
 
-  // We need to send requests after onStopRequested() has started executing as our
-  // request will block the threadmanager
+  // We need to send requests after onStopRequested() has started executing as
+  // our request will block the threadmanager
   EXPECT_TRUE(blockIf->stopEnter.try_wait_for(2s));
 
   // In this test, we send 2 requests, so that one request starts executing when
