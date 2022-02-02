@@ -73,7 +73,39 @@ where
         req: FramingDecoded<F>,
         req_ctxt: &Self::RequestContext,
     ) -> Result<FramingEncodedFinal<F>, Error> {
-        (**self).call(req, &req_ctxt).await
+        (**self).call(req, req_ctxt).await
+    }
+
+    fn create_interaction(
+        &self,
+        name: &str,
+    ) -> ::anyhow::Result<
+        Arc<
+            dyn ThriftService<F, Handler = (), RequestContext = Self::RequestContext>
+                + ::std::marker::Send
+                + 'static,
+        >,
+    > {
+        (**self).create_interaction(name)
+    }
+}
+
+#[async_trait]
+impl<F, T> ThriftService<F> for Arc<T>
+where
+    T: ThriftService<F> + Send + Sync + ?Sized,
+    F: Framing + Send + 'static,
+    T::RequestContext: Send + Sync + 'static,
+{
+    type Handler = T::Handler;
+    type RequestContext = T::RequestContext;
+
+    async fn call(
+        &self,
+        req: FramingDecoded<F>,
+        req_ctxt: &Self::RequestContext,
+    ) -> Result<FramingEncodedFinal<F>, Error> {
+        (**self).call(req, req_ctxt).await
     }
 
     fn create_interaction(
