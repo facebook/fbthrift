@@ -247,7 +247,6 @@ class t_container_type;
 
 %type<t_enum*>                     Enum
 %type<t_enum_value_list*>          EnumValueList
-%type<t_enum_value*>               EnumValueDef
 %type<t_enum_value*>               EnumValue
 
 %type<t_const*>                    Const
@@ -464,20 +463,22 @@ Enum:
   "{" EnumValueList "}" Annotations
     {
       driver.debug("Enum => DefinitionAttrs tok_enum Identifier { EnumValueList } Annotations");
+      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
+      driver.avoid_next_token_loc($8 == nullptr, @$, @7);
       $$ = new t_enum(driver.program, std::move($3));
       auto values = own($6);
       $$->set_values(std::move(*values));
-      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
       driver.end_def(*$$);
       driver.set_attributes(*$$, @$, own($1), own($8));
     }
 
 EnumValueList:
-  EnumValueList EnumValueDef
+  EnumValueList DefinitionAttrs EnumValue Annotations CommaOrSemicolonOptional
     {
-      driver.debug("EnumValueList -> EnumValueList EnumValueDef");
+      driver.debug("EnumValueList DefinitionAttrs EnumValue Annotations CommaOrSemicolonOptional");
       $$ = $1;
-      $$->emplace_back(own($2));
+      driver.set_attributes(*$3, @3, own($2), @2, own($4), @4);
+      $$->emplace_back(own($3));
     }
 |
     {
@@ -485,44 +486,36 @@ EnumValueList:
       $$ = new t_enum_value_list;
     }
 
-EnumValueDef:
-  DefinitionAttrs EnumValue
+EnumValue:
+  Identifier
     {
       driver.begin_def(DefType::EnumValue);
     }
-  Annotations CommaOrSemicolonOptional
-    {
-      driver.debug("EnumValueDef => DefinitionAttrs EnumValue "
-        "Annotations CommaOrSemicolonOptional");
-      $$ = $2;
-      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
-      driver.end_def(*$$);
-      driver.set_attributes(*$$, @$, own($1), own($4));
-    }
-
-EnumValue:
-  Identifier "=" Integer
+  "=" Integer
     {
       driver.debug("EnumValue -> Identifier = Integer");
-      if ($3 < INT32_MIN || $3 > INT32_MAX) {
+      if ($4 < INT32_MIN || $4 > INT32_MAX) {
         // Note: this used to be just a warning.  However, since thrift always
         // treats enums as i32 values, I'm changing it to a fatal error.
         // I doubt this will affect many people, but users who run into this
         // will have to update their thrift files to manually specify the
         // truncated i32 value that thrift has always been using anyway.
         driver.failure([&](auto& o) {
-          o << "64-bit value supplied for enum " << $1 << " will be truncated.";
+          o << "Value supplied for enum " << $1 << " will be truncated.";
         });
       }
       $$ = new t_enum_value(std::move($1));
-      $$->set_value($3);
+      $$->set_value($4);
       $$->set_lineno(driver.scanner->get_lineno());
+      driver.end_def(*$$);
     }
 | Identifier
     {
       driver.debug("EnumValue -> Identifier");
+      driver.begin_def(DefType::EnumValue);
       $$ = new t_enum_value(std::move($1));
       $$->set_lineno(driver.scanner->get_lineno());
+      driver.end_def(*$$);
     }
 
 Const:
@@ -533,8 +526,8 @@ Const:
   "=" ConstValue Annotations CommaOrSemicolonOptional
     {
       driver.debug("DefinitionAttrs Const => tok_const FieldType Identifier = ConstValue Annotations");
-      $$ = new t_const(driver.program, std::move($3), std::move($4), own($7));
       driver.avoid_last_token_loc($1 == nullptr, @$, @2);
+      $$ = new t_const(driver.program, std::move($3), std::move($4), own($7));
       driver.end_def(*$$);
       driver.set_attributes(*$$, @$, own($1), own($8));
     }

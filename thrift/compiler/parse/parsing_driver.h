@@ -445,7 +445,14 @@ class parsing_driver {
       t_named& node,
       const YYLTYPE& loc,
       std::unique_ptr<t_def_attrs> attrs,
-      std::unique_ptr<t_annotations> annotations) const;
+      std::unique_ptr<t_annotations> annots) const;
+  void set_attributes(
+      t_named& node,
+      YYLTYPE& loc,
+      std::unique_ptr<t_def_attrs> attrs,
+      const YYLTYPE& attrs_loc,
+      std::unique_ptr<t_annotations> annots,
+      const YYLTYPE& annots_loc) const;
 
   // Adds a definition to the program.
   t_ref<t_named> add_def(std::unique_ptr<t_named> node);

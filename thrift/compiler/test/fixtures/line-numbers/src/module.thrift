@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,8 @@ struct MyStruct {
 
 enum MyEnum {
   VALUE1 = 1,
-  VALUE2 = 2,
+  @MyStruct
+  VALUE2 = 2 (annotation),
 }
 
 service MyService {
