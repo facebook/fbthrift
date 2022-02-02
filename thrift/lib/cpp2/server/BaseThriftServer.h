@@ -194,9 +194,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   static constexpr std::chrono::milliseconds DEFAULT_STREAM_EXPIRE_TIME =
       std::chrono::milliseconds(60000);
 
-  static constexpr std::chrono::milliseconds DEFAULT_QUEUE_TIMEOUT =
-      std::chrono::milliseconds(0);
-
   static constexpr std::chrono::milliseconds DEFAULT_SOCKET_WRITE_TIMEOUT =
       std::chrono::milliseconds(60000);
 
