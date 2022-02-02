@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,7 +69,8 @@ template <typename T>
 const ThriftTypeInfo& getGeneratedThriftTypeInfo() {
   using ::apache::thrift::detail::st::struct_private_access;
   static_assert(
-      struct_private_access::__fbthrift_cpp2_gen_has_thrift_uri<T>,
+      decltype(struct_private_access::__fbthrift_cpp2_gen_has_thrift_uri<
+               T>())::value,
       "missing the `thrift.uri` annotation");
   static const ThriftTypeInfo kInfo = createThriftTypeInfo(
       {struct_private_access::__fbthrift_cpp2_gen_thrift_uri<T>()});
