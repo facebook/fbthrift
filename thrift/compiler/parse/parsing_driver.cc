@@ -86,7 +86,6 @@ std::unique_ptr<t_program_bundle> parsing_driver::parse() {
   try {
     parse_file();
     result = std::move(program_bundle);
-    assert(def_stack_.empty());
   } catch (const parsing_terminator&) {
     // No need to do anything here. The purpose of the exception is simply to
     // end the parsing process by unwinding to here.
@@ -521,6 +520,9 @@ std::unique_ptr<t_throws> parsing_driver::new_throws(
 }
 
 void parsing_driver::set_fields(t_structured& tstruct, t_field_list&& fields) {
+  if (mode != parsing_mode::PROGRAM) {
+    return;
+  }
   assert(tstruct.fields().empty());
   if (mode != parsing_mode::PROGRAM) {
     return;
@@ -641,21 +643,11 @@ t_type_ref parsing_driver::new_type_ref(
       std::move(annotations)));
 }
 
-void parsing_driver::begin_def(DefType type) {
-  def_stack_.push({type, scanner->get_lineno()});
-}
-
-void parsing_driver::end_def(t_named& node) {
-  node.set_lineno(def_stack_.top().lineno);
-  def_stack_.pop();
-}
-
-void parsing_driver::end_def(
+void parsing_driver::set_functions(
     t_interface& node, std::unique_ptr<t_function_list> functions) {
   if (functions != nullptr) {
     node.set_functions(std::move(*functions));
   }
-  end_def(node);
 }
 
 t_ref<t_named> parsing_driver::add_def(std::unique_ptr<t_named> node) {

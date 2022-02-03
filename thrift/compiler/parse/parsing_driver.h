@@ -85,22 +85,6 @@ namespace yy {
 class parser;
 }
 
-// Different types of thrift definition.
-enum class DefType {
-  Unspecified = 0,
-  Typedef,
-  Enum,
-  EnumValue,
-  Const,
-  Struct,
-  Service,
-  Interaction,
-  Function,
-  Field,
-  Exception,
-  Union,
-};
-
 // Parsing only representations.
 using t_struct_annotations = node_list<t_const>;
 struct t_annotations {
@@ -432,16 +416,12 @@ class parsing_driver {
       std::unique_ptr<t_annotations> annotations,
       bool is_const = false);
 
-  // Record all the stated needed to begin parsing a defintion.
-  void begin_def(DefType type);
-
-  // Fix up the definition if needed, and destroy any assciated
-  void end_def(t_named& node);
-  void end_def(t_interface& node, std::unique_ptr<t_function_list> functions);
-
   // Tries to set the given fields, reporting a failure on a collsion.
   // TODO(afuller): Disallow auto-id allocation.
   void set_fields(t_structured& tstruct, t_field_list&& fields);
+
+  void set_functions(
+      t_interface& node, std::unique_ptr<t_function_list> functions);
 
   // Populate the attributes on the given node.
   void set_attributes(
@@ -505,11 +485,6 @@ class parsing_driver {
     void (*delete_)(const void*);
   };
 
-  struct DefState {
-    DefType type;
-    int lineno;
-  };
-
   void compute_location_impl(
       YYLTYPE& yylloc, YYSTYPE& yylval, const char* text);
 
@@ -520,8 +495,6 @@ class parsing_driver {
 
   std::vector<deleter> deleters_;
   diagnostic_context& ctx_;
-
-  std::stack<DefState> def_stack_;
 
   /**
    * Parse a single .thrift file. The file to parse is stored in params.program.

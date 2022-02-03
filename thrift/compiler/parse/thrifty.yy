@@ -409,9 +409,8 @@ Typedef:
   tok_typedef FieldType Identifier
     {
       driver.debug("TypeDef => tok_typedef FieldType Identifier");
-      driver.begin_def(DefType::Typedef);
       $$ = new t_typedef(driver.program, std::move($3), std::move($2));
-      driver.end_def(*$$);
+      $$->set_lineno(@3.end.line);
     }
 
 Integer:
@@ -450,17 +449,12 @@ Double:
 
 
 Enum:
-  tok_enum Identifier
-    {
-      driver.begin_def(DefType::Enum);
-    }
-  "{" EnumValueList "}"
+  tok_enum Identifier "{" EnumValueList "}"
     {
       driver.debug("Enum => tok_enum Identifier { EnumValueList }");
       $$ = new t_enum(driver.program, std::move($2));
-      auto values = own($5);
-      $$->set_values(std::move(*values));
-      driver.end_def(*$$);
+      $$->set_values(std::move(*own($4)));
+      $$->set_lineno(@2.end.line);
     }
 
 EnumValueList:
@@ -478,14 +472,10 @@ EnumValueList:
     }
 
 EnumValue:
-  Identifier
-    {
-      driver.begin_def(DefType::EnumValue);
-    }
-  "=" Integer
+  Identifier "=" Integer
     {
       driver.debug("EnumValue -> Identifier = Integer");
-      if ($4 < INT32_MIN || $4 > INT32_MAX) {
+      if ($3 < INT32_MIN || $3 > INT32_MAX) {
         // Note: this used to be just a warning.  However, since thrift always
         // treats enums as i32 values, I'm changing it to a fatal error.
         // I doubt this will affect many people, but users who run into this
@@ -496,29 +486,22 @@ EnumValue:
         });
       }
       $$ = new t_enum_value(std::move($1));
-      $$->set_value($4);
-      $$->set_lineno(driver.scanner->get_lineno());
-      driver.end_def(*$$);
+      $$->set_value($3);
+      $$->set_lineno(@1.end.line);
     }
 | Identifier
     {
       driver.debug("EnumValue -> Identifier");
-      driver.begin_def(DefType::EnumValue);
       $$ = new t_enum_value(std::move($1));
-      $$->set_lineno(driver.scanner->get_lineno());
-      driver.end_def(*$$);
+      $$->set_lineno(@1.end.line);
     }
 
 Const:
-  tok_const FieldType Identifier
-    {
-      driver.begin_def(DefType::Const);
-    }
-  "=" ConstValue
+  tok_const FieldType Identifier "=" ConstValue
     {
       driver.debug("Const => tok_const FieldType Identifier = ConstValue");
-      $$ = new t_const(driver.program, std::move($2), std::move($3), own($6));
-      driver.end_def(*$$);
+      $$ = new t_const(driver.program, std::move($2), std::move($3), own($5));
+      $$->set_lineno(@3.end.line);
     }
 
 ConstValue:
@@ -667,48 +650,36 @@ ConstStructContents:
     }
 
 Struct:
-  tok_struct Identifier
-    {
-      driver.begin_def(DefType::Struct);
-    }
-  "{" FieldList "}"
+  tok_struct Identifier "{" FieldList "}"
     {
       driver.debug("Struct => tok_struct Identifier { FieldList }");
       $$ = new t_struct(driver.program, std::move($2));
-      driver.set_fields(*$$, std::move(*own($5)));
-      driver.end_def(*$$);
+      driver.set_fields(*$$, std::move(*own($4)));
+      $$->set_lineno(@2.end.line);
     }
 
 Union:
-  tok_union Identifier
-    {
-      driver.begin_def(DefType::Union);
-    }
-  "{" FieldList "}"
+  tok_union Identifier "{" FieldList "}"
     {
       driver.debug("Union => tok_union Identifier { FieldList }");
       $$ = new t_union(driver.program, std::move($2));
-      driver.set_fields(*$$, std::move(*own($5)));
-      driver.end_def(*$$);
+      driver.set_fields(*$$, std::move(*own($4)));
+      $$->set_lineno(@2.end.line);
     }
 
 Exception:
   // TODO(afuller): Either make the qualifiers order agnostic or produce a better error message.
-  ErrorSafety ErrorKind ErrorBlame tok_exception Identifier
-    {
-      driver.begin_def(DefType::Exception);
-    }
-  "{" FieldList "}"
+  ErrorSafety ErrorKind ErrorBlame tok_exception Identifier "{" FieldList "}"
     {
       driver.debug("Exception => ErrorSafety ErrorKind ErrorBlame tok_exception "
         "Identifier { FieldList }");
-      // TODO(afuller): Correct resulting source_loc.begin when qualifiers are omitted.
+      // TODO(afuller): Correct resulting source_loc.begin when safety qualifier is omitted.
       $$ = new t_exception(driver.program, std::move($5));
       $$->set_safety($1);
       $$->set_kind($2);
       $$->set_blame($3);
-      driver.set_fields(*$$, std::move(*own($8)));
-      driver.end_def(*$$);
+      driver.set_fields(*$$, std::move(*own($7)));
+      $$->set_lineno(@5.end.line);
     }
 
 ErrorSafety:
@@ -727,15 +698,12 @@ ErrorBlame:
 |            { $$ = {}; }
 
 Service:
-  tok_service Identifier
-    {
-      driver.begin_def(DefType::Service);
-    }
-  Extends "{" FunctionList "}"
+  tok_service Identifier Extends "{" FunctionList "}"
     {
       driver.debug("Service => tok_service Identifier Extends { FunctionList }");
-      $$ = new t_service(driver.program, std::move($2), $4);
-      driver.end_def(*$$, own($6));
+      $$ = new t_service(driver.program, std::move($2), $3);
+      driver.set_functions(*$$, own($5));
+      $$->set_lineno(@2.end.line);
     }
 
 Extends:
@@ -747,15 +715,12 @@ Extends:
 |   { $$ = nullptr; }
 
 Interaction:
-  tok_interaction Identifier
-    {
-      driver.begin_def(DefType::Interaction);
-    }
-  "{" FunctionList "}"
+  tok_interaction Identifier "{" FunctionList "}"
     {
       driver.debug("Interaction -> tok_interaction Identifier { FunctionList }");
       $$ = new t_interaction(driver.program, std::move($2));
-      driver.end_def(*$$, own($5));
+      driver.set_functions(*$$, own($4));
+      $$->set_lineno(@2.end.line);
     }
 
 FunctionList:
@@ -774,23 +739,19 @@ FunctionList:
     }
 
 Function:
-  FunctionQualifier FunctionType Identifier
-    {
-      driver.begin_def(DefType::Function);
-    }
-  "(" FieldList ")" MaybeThrows
+  FunctionQualifier FunctionType Identifier "(" FieldList ")" MaybeThrows
     {
       driver.debug("Function => FunctionQualifier FunctionType Identifier ( FieldList ) MaybeThrows");
       driver.avoid_last_token_loc($1 == t_function_qualifier::unspecified, @$, @2);
-      driver.avoid_next_token_loc($8 == nullptr, @$, @7);
+      driver.avoid_next_token_loc($7 == nullptr, @$, @6);
       auto params = std::make_unique<t_paramlist>(driver.program);
-      driver.set_fields(*params, std::move(*own($6)));
+      driver.set_fields(*params, std::move(*own($5)));
       // TODO(afuller): Leave the param list unnamed.
       params->set_name(std::string($3) + "_args");
       // TODO(afuller): Assign the params though an accessor instead of the constructor.
       auto func = std::make_unique<t_function>(std::move($2), std::move($3), std::move(params), $1);
-      func->set_exceptions(own($8));
-      driver.end_def(*func);
+      func->set_exceptions(own($7));
+      func->set_lineno(@3.end.line);
       $$ = func.release();
     }
   | tok_performs FieldType
@@ -838,18 +799,14 @@ FieldList:
     }
 
 Field:
-  FieldId FieldQualifier FieldType Identifier
-    {
-      driver.begin_def(DefType::Field);
-    }
-  FieldValue
+  FieldId FieldQualifier FieldType Identifier FieldValue
     {
       driver.debug("Field => FieldId FieldQualifier FieldType Identifier FieldValue");
-      driver.avoid_next_token_loc($6 == nullptr, @$, @5);
+      driver.avoid_next_token_loc($5 == nullptr, @$, @4);
       $$ = new t_field(std::move($3), std::move($4), $1.value_or(0), $1 != boost::none);
       $$->set_qualifier($2);
-      $$->set_default_value(own($6));
-      driver.end_def(*$$);
+      $$->set_default_value(own($5));
+      $$->set_lineno(@4.end.line);
     }
 
 FieldId:
