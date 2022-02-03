@@ -718,19 +718,6 @@ const t_type* parsing_driver::add_placeholder_typedef(
   return result;
 }
 
-t_field_id parsing_driver::to_field_id(int64_t int_const) {
-  using limits = std::numeric_limits<t_field_id>;
-  if (int_const < limits::min() || int_const > limits::max()) {
-    // Not representable as a field id.
-    failure([&](auto& o) {
-      o << "Integer constant (" << int_const
-        << ") outside the range of field ids ([" << limits::min() << ", "
-        << limits::max() << "]).";
-    });
-  }
-  return int_const;
-}
-
 void parsing_driver::allocate_field_id(t_field_id& next_id, t_field& field) {
   if (params.strict >= 192) {
     ctx_.failure(

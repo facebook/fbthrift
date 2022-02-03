@@ -336,6 +336,44 @@ class CompilerFailureTest(unittest.TestCase):
             "a value not of that enum.\n",
         )
 
+    def test_enum_overflow(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                    enum Foo {
+                        Bar = 2147483647
+                        Baz = 2147483648
+                    }
+                    """
+            ),
+        )
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift:3] Integer constant (2147483648) outside the range of enum values ([-2147483648, 2147483647]).\n",
+        )
+
+    def test_enum_underflow(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                    enum Foo {
+                        Bar = -2147483648
+                        Baz = -2147483649
+                    }
+                    """
+            ),
+        )
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift:3] Integer constant (-2147483649) outside the range of enum values ([-2147483648, 2147483647]).\n",
+        )
+
     def test_integer_overflow(self):
         for value in [
             "9223372036854775808",  # max int64 +1

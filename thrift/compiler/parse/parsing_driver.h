@@ -437,7 +437,12 @@ class parsing_driver {
 
   void add_include(std::string name);
 
-  t_field_id to_field_id(int64_t int_const);
+  t_field_id to_field_id(int64_t int_const) {
+    return narrow_int<t_field_id>(int_const, "field ids");
+  }
+  int32_t to_enum_value(int64_t int_const) {
+    return narrow_int<int32_t>(int_const, "enum values");
+  }
 
   // Reports a failure if the parsed value cannot fit in the widest supported
   // representation, i.e. int64_t and double.
@@ -545,6 +550,18 @@ class parsing_driver {
   // feature entirely).
   void allocate_field_id(t_field_id& next_id, t_field& field);
   void maybe_allocate_field_id(t_field_id& next_id, t_field& field);
+
+  template <typename T>
+  T narrow_int(int64_t int_const, const char* name) {
+    using limits = std::numeric_limits<T>;
+    if (int_const < limits::min() || int_const > limits::max()) {
+      failure([&](auto& o) {
+        o << "Integer constant (" << int_const << ") outside the range of "
+          << name << " ([" << limits::min() << ", " << limits::max() << "]).";
+      });
+    }
+    return int_const;
+  }
 };
 
 } // namespace compiler

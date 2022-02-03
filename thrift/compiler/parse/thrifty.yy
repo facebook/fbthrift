@@ -447,7 +447,6 @@ Double:
       $$ = -$2;
     }
 
-
 Enum:
   tok_enum Identifier "{" EnumValueList "}"
     {
@@ -475,18 +474,8 @@ EnumValue:
   Identifier "=" Integer
     {
       driver.debug("EnumValue -> Identifier = Integer");
-      if ($3 < INT32_MIN || $3 > INT32_MAX) {
-        // Note: this used to be just a warning.  However, since thrift always
-        // treats enums as i32 values, I'm changing it to a fatal error.
-        // I doubt this will affect many people, but users who run into this
-        // will have to update their thrift files to manually specify the
-        // truncated i32 value that thrift has always been using anyway.
-        driver.failure([&](auto& o) {
-          o << "Value supplied for enum " << $1 << " will be truncated.";
-        });
-      }
       $$ = new t_enum_value(std::move($1));
-      $$->set_value($3);
+      $$->set_value(driver.to_enum_value($3));
       $$->set_lineno(@1.end.line);
     }
 | Identifier
