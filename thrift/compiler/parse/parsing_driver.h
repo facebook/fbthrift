@@ -443,6 +443,7 @@ class parsing_driver {
   int32_t to_enum_value(int64_t int_const) {
     return narrow_int<int32_t>(int_const, "enum values");
   }
+  std::unique_ptr<t_const_value> to_const_value(int64_t int_const);
 
   // Reports a failure if the parsed value cannot fit in the widest supported
   // representation, i.e. int64_t and double.

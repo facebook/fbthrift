@@ -503,15 +503,7 @@ ConstValue:
 | Integer
     {
       driver.debug("ConstValue => Integer");
-      $$ = new t_const_value();
-      $$->set_integer($1);
-      if (driver.mode == parsing_mode::PROGRAM) {
-        if (!driver.params.allow_64bit_consts && ($1 < INT32_MIN || $1 > INT32_MAX)) {
-          driver.warning([&](auto& o) {
-            o << "64-bit constant \"" << $1 << "\" may not work in all languages.";
-          });
-        }
-      }
+      $$ = driver.to_const_value($1).release();
     }
 | Double
     {

@@ -788,6 +788,21 @@ void parsing_driver::maybe_allocate_field_id(
   }
 }
 
+std::unique_ptr<t_const_value> parsing_driver::to_const_value(
+    int64_t int_const) {
+  if (mode == parsing_mode::PROGRAM && !params.allow_64bit_consts &&
+      (int_const < INT32_MIN || int_const > INT32_MAX)) {
+    warning([&](auto& o) {
+      o << "64-bit constant \"" << int_const
+        << "\" may not work in all languages.";
+    });
+  }
+
+  auto node = std::make_unique<t_const_value>();
+  node->set_integer(int_const);
+  return node;
+}
+
 uint64_t parsing_driver::parse_integer(const char* text, int offset, int base) {
   errno = 0;
   uint64_t val = strtoull(text + offset, nullptr, base);
