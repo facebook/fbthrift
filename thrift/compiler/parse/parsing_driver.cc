@@ -522,6 +522,9 @@ std::unique_ptr<t_throws> parsing_driver::new_throws(
 
 void parsing_driver::set_fields(t_structured& tstruct, t_field_list&& fields) {
   assert(tstruct.fields().empty());
+  if (mode != parsing_mode::PROGRAM) {
+    return;
+  }
   t_field_id next_id = -1;
   for (auto& field : fields) {
     maybe_allocate_field_id(next_id, *field);

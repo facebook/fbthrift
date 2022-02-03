@@ -110,8 +110,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             "[WARNING:foo.thrift:2] Nonpositive field id (0) differs from what is auto-assigned by thrift. The id must positive or -1.\n"
-            * 2
-            + "[WARNING:foo.thrift:2] No field id specified for `field`, resulting protocol may have conflicts or not be backwards compatible!\n",
+            "[WARNING:foo.thrift:2] No field id specified for `field`, resulting protocol may have conflicts or not be backwards compatible!\n",
         )
         self.assertEqual(ret, 0)
 
@@ -119,8 +118,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             "[WARNING:foo.thrift:2] Nonpositive field id (0) differs from what would be auto-assigned by thrift (-1).\n"
-            * 2
-            + "[FAILURE:foo.thrift:2] Zero value (0) not allowed as a field id for `field`\n",
+            "[FAILURE:foo.thrift:2] Zero value (0) not allowed as a field id for `field`\n",
         )
         self.assertEqual(ret, 1)
 
@@ -140,16 +138,14 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             "[WARNING:foo.thrift:2] Nonpositive field id (0) differs from what is auto-assigned by thrift. The id must positive or -1.\n"
-            * 2
-            + "[WARNING:foo.thrift:2] No field id specified for `field`, resulting protocol may have conflicts or not be backwards compatible!\n",
+            "[WARNING:foo.thrift:2] No field id specified for `field`, resulting protocol may have conflicts or not be backwards compatible!\n",
         )
         self.assertEqual(ret, 0)
 
         ret, out, err = self.run_thrift("--allow-neg-keys", "foo.thrift")
         self.assertEqual(
             err,
-            "[WARNING:foo.thrift:2] Nonpositive field id (0) differs from what would be auto-assigned by thrift (-1).\n"
-            * 2,
+            "[WARNING:foo.thrift:2] Nonpositive field id (0) differs from what would be auto-assigned by thrift (-1).\n",
         )
         self.assertEqual(ret, 0)
 
@@ -173,8 +169,7 @@ class CompilerFailureTest(unittest.TestCase):
             "[WARNING:foo.thrift:3] Nonpositive value (-2) not allowed as a field id.\n"
             "[WARNING:foo.thrift:4] Nonpositive field id (-16384) differs from what is auto-assigned by thrift. The id must positive or -3.\n"
             "[WARNING:foo.thrift:5] Nonpositive field id (-16385) differs from what is auto-assigned by thrift. The id must positive or -4.\n"
-            * 2
-            + "[WARNING:foo.thrift:2] No field id specified for `f1`, resulting protocol may have conflicts or not be backwards compatible!\n"
+            "[WARNING:foo.thrift:2] No field id specified for `f1`, resulting protocol may have conflicts or not be backwards compatible!\n"
             "[WARNING:foo.thrift:4] No field id specified for `f3`, resulting protocol may have conflicts or not be backwards compatible!\n"
             "[WARNING:foo.thrift:5] No field id specified for `f4`, resulting protocol may have conflicts or not be backwards compatible!\n",
         )
@@ -184,8 +179,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             "[WARNING:foo.thrift:4] Nonpositive field id (-16384) differs from what would be auto-assigned by thrift (-3).\n"
-            * 2
-            + "[WARNING:foo.thrift:2] No field id specified for `f1`, resulting protocol may have conflicts or not be backwards compatible!\n"
+            "[WARNING:foo.thrift:2] No field id specified for `f1`, resulting protocol may have conflicts or not be backwards compatible!\n"
             "[FAILURE:foo.thrift:5] Reserved field id (-16385) cannot be used for `f4`.\n",
         )
         self.assertEqual(ret, 1)
@@ -206,8 +200,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             "[WARNING:foo.thrift:2] Nonpositive field id (-16384) differs from what is auto-assigned by thrift. The id must positive or -1.\n"
-            * 2
-            + "[WARNING:foo.thrift:2] No field id specified for `f1`, resulting protocol may have conflicts or not be backwards compatible!\n"
+            "[WARNING:foo.thrift:2] No field id specified for `f1`, resulting protocol may have conflicts or not be backwards compatible!\n"
             "[WARNING:foo.thrift:3] No field id specified for `f2`, resulting protocol may have conflicts or not be backwards compatible!\n",
         )
         self.assertEqual(ret, 0)
@@ -215,8 +208,8 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("--allow-neg-keys", "foo.thrift")
         self.assertEqual(
             err,
-            ("[WARNING:foo.thrift:2] Nonpositive field id (-16384) differs from what would be auto-assigned by thrift (-1).\n"
-            "[FAILURE:foo.thrift:3] Cannot allocate an id for `f2`. Automatic field ids are exhausted.\n") * 2,
+            "[WARNING:foo.thrift:2] Nonpositive field id (-16384) differs from what would be auto-assigned by thrift (-1).\n"
+            "[FAILURE:foo.thrift:3] Cannot allocate an id for `f2`. Automatic field ids are exhausted.\n",
         )
         self.assertEqual(ret, 1)
 
@@ -228,11 +221,12 @@ class CompilerFailureTest(unittest.TestCase):
         lines = ["struct Foo {"] + [f"i32 field_{i}" for i in range(id_count)] + ["}"]
         write_file("foo.thrift", "\n".join(lines))
 
-        expected_error = f"[FAILURE:foo.thrift:{id_count + 1}] Cannot allocate an id for `field_{id_count - 1}`. Automatic field ids are exhausted.\n"
-
         ret, out, err = self.run_thrift("foo.thrift")
         self.assertEqual(ret, 1)
-        self.assertEqual(err, expected_error * 2)
+        self.assertEqual(
+            err,
+            f"[FAILURE:foo.thrift:{id_count + 1}] Cannot allocate an id for `field_{id_count - 1}`. Automatic field ids are exhausted.\n",
+        )
 
     def test_out_of_range_field_ids(self):
         write_file(
@@ -424,12 +418,14 @@ class CompilerFailureTest(unittest.TestCase):
             ret, out, err = test_num(value)
             self.assertEqual(ret, 1)
             self.assertEqual(
-                err, f"[FAILURE:foo.thrift:1] This number is too infinitesimal: {value}\n\n"
+                err,
+                f"[FAILURE:foo.thrift:1] This number is too infinitesimal: {value}\n\n",
             )
             ret, out, err = test_num("-" + value)
             self.assertEqual(ret, 1)
             self.assertEqual(
-                err, f"[FAILURE:foo.thrift:1] This number is too infinitesimal: {value}\n\n"
+                err,
+                f"[FAILURE:foo.thrift:1] This number is too infinitesimal: {value}\n\n",
             )
 
     def test_const_wrong_type(self):
@@ -463,7 +459,7 @@ class CompilerFailureTest(unittest.TestCase):
             "[FAILURE:foo.thrift:7] type error: const `badValList<elem>` was declared as string.\n"
             "[FAILURE:foo.thrift:8] type error: const `badValSet<elem>` was declared as string.\n"
             "[FAILURE:foo.thrift:9] type error: const `badValMap<key>` was declared as string.\n"
-            "[FAILURE:foo.thrift:9] type error: const `badValMap<val>` was declared as i32.\n"
+            "[FAILURE:foo.thrift:9] type error: const `badValMap<val>` was declared as i32.\n",
         )
 
     def test_struct_fields_wrong_type(self):
@@ -490,7 +486,7 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             "[FAILURE:foo.thrift:6] type error: const `.val` was declared as i32.\n"
             "[WARNING:foo.thrift:6] type error: const `.otherVal` was declared as list. This will become an error in future versions of thrift.\n"
-            "[FAILURE:foo.thrift:8] type error: const `badInt` was declared as i32.\n"
+            "[FAILURE:foo.thrift:8] type error: const `badInt` was declared as i32.\n",
         )
 
     def test_duplicate_method_name(self):
@@ -746,7 +742,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             "[WARNING:foo.thrift:2] `cpp.ref` field `rec` must be optional if it is recursive.\n"
-            "[WARNING:foo.thrift:2] cpp.ref, cpp2.ref are deprecated. Please use thrift.box annotation instead in `rec`.\n"
+            "[WARNING:foo.thrift:2] cpp.ref, cpp2.ref are deprecated. Please use thrift.box annotation instead in `rec`.\n",
         )
 
     def test_structured_ref(self):
@@ -789,8 +785,9 @@ class CompilerFailureTest(unittest.TestCase):
 
         self.assertEqual(ret, 1)
         self.assertEqual(
-            '\n' + err,
-            textwrap.dedent("""
+            "\n" + err,
+            textwrap.dedent(
+                """
                 [WARNING:foo.thrift:4] cpp.ref, cpp2.ref are deprecated. Please use thrift.box annotation instead in `field1`.
                 [WARNING:foo.thrift:7] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. Please use thrift.box annotation instead in `field2`.
                 [FAILURE:foo.thrift:10] The @cpp.Ref annotation cannot be combined with the `cpp.ref` or `cpp.ref_type` annotations. Remove one of the annotations from `field3`.
@@ -798,7 +795,8 @@ class CompilerFailureTest(unittest.TestCase):
                 [WARNING:foo.thrift:10] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. Please use thrift.box annotation instead in `field3`.
                 [WARNING:foo.thrift:14] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. Please use thrift.box annotation instead in `field4`.
                 [FAILURE:foo.thrift:13] Structured annotation `Ref` is already defined for `field4`.
-            """)
+            """
+            ),
         )
 
     def test_adapter(self):
@@ -928,7 +926,7 @@ class CompilerFailureTest(unittest.TestCase):
             ),
         )
 
-        ret, out, err = self.run_thrift("foo.thrift",gen="mstch_cpp2:json,tablebased")
+        ret, out, err = self.run_thrift("foo.thrift", gen="mstch_cpp2:json,tablebased")
 
         self.assertEqual(ret, 1)
         self.assertEqual(
