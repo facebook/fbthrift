@@ -105,7 +105,9 @@ class t_field final : public t_named {
 
  private:
   t_type_ref type_;
-  const t_field_id id_;
+  // TODO(afuller): Make this const, once we remove support for auto assigned
+  // ids.
+  t_field_id id_;
   bool has_explicit_id_;
 
   t_field_qualifier qual_ = {};
@@ -161,6 +163,10 @@ class t_field final : public t_named {
 
   const t_type* get_type() const { return type().get_type(); }
   int32_t get_key() const { return id(); }
+  void set_implicit_id(t_field_id id) {
+    id_ = id;
+    has_explicit_id_ = false;
+  }
 };
 
 using t_field_list = node_list<t_field>;

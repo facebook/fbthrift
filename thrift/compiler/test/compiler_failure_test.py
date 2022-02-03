@@ -215,8 +215,8 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("--allow-neg-keys", "foo.thrift")
         self.assertEqual(
             err,
-            "[WARNING:foo.thrift:2] Nonpositive field id (-16384) differs from what would be auto-assigned by thrift (-1).\n"
-            "[FAILURE:foo.thrift:3] Cannot allocate an id for `f2`. Automatic field ids are exhausted.\n",
+            ("[WARNING:foo.thrift:2] Nonpositive field id (-16384) differs from what would be auto-assigned by thrift (-1).\n"
+            "[FAILURE:foo.thrift:3] Cannot allocate an id for `f2`. Automatic field ids are exhausted.\n") * 2,
         )
         self.assertEqual(ret, 1)
 
@@ -228,14 +228,11 @@ class CompilerFailureTest(unittest.TestCase):
         lines = ["struct Foo {"] + [f"i32 field_{i}" for i in range(id_count)] + ["}"]
         write_file("foo.thrift", "\n".join(lines))
 
-        expected_error = [
-            f"[FAILURE:foo.thrift:{id_count + 2}] Cannot allocate an id for `field_{id_count - 1}`. Automatic field ids are exhausted."
-        ]
-        expected_error = "\n".join(expected_error) + "\n"
+        expected_error = f"[FAILURE:foo.thrift:{id_count + 1}] Cannot allocate an id for `field_{id_count - 1}`. Automatic field ids are exhausted.\n"
 
         ret, out, err = self.run_thrift("foo.thrift")
         self.assertEqual(ret, 1)
-        self.assertEqual(err, expected_error)
+        self.assertEqual(err, expected_error * 2)
 
     def test_out_of_range_field_ids(self):
         write_file(
@@ -265,14 +262,12 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("overflow.thrift")
         self.assertEqual(
             err,
-            "[WARNING:overflow.thrift:2] Nonpositive field id (-32768) differs from what is auto-assigned by thrift. The id must positive or -1.\n"
             "[FAILURE:overflow.thrift:4] Integer constant (32768) outside the range of field ids ([-32768, 32767]).\n",
         )
         self.assertEqual(ret, 1)
         ret, out, err = self.run_thrift("underflow.thrift")
         self.assertEqual(
             err,
-            "[WARNING:underflow.thrift:2] Nonpositive field id (-32768) differs from what is auto-assigned by thrift. The id must positive or -1.\n"
             "[FAILURE:underflow.thrift:4] Integer constant (-32769) outside the range of field ids ([-32768, 32767]).\n",
         )
         self.assertEqual(ret, 1)

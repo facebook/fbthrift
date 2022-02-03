@@ -675,7 +675,7 @@ Struct:
     {
       driver.debug("Struct => tok_struct Identifier { FieldList }");
       $$ = new t_struct(driver.program, std::move($2));
-      driver.append_fields(*$$, std::move(*own($5)));
+      driver.set_fields(*$$, std::move(*own($5)));
       driver.end_def(*$$);
     }
 
@@ -688,7 +688,7 @@ Union:
     {
       driver.debug("Union => tok_union Identifier { FieldList }");
       $$ = new t_union(driver.program, std::move($2));
-      driver.append_fields(*$$, std::move(*own($5)));
+      driver.set_fields(*$$, std::move(*own($5)));
       driver.end_def(*$$);
     }
 
@@ -707,7 +707,7 @@ Exception:
       $$->set_safety($1);
       $$->set_kind($2);
       $$->set_blame($3);
-      driver.append_fields(*$$, std::move(*own($8)));
+      driver.set_fields(*$$, std::move(*own($8)));
       driver.end_def(*$$);
     }
 
@@ -784,7 +784,7 @@ Function:
       driver.avoid_last_token_loc($1 == t_function_qualifier::unspecified, @$, @2);
       driver.avoid_next_token_loc($8 == nullptr, @$, @7);
       auto params = std::make_unique<t_paramlist>(driver.program);
-      driver.append_fields(*params, std::move(*own($6)));
+      driver.set_fields(*params, std::move(*own($6)));
       // TODO(afuller): Leave the param list unnamed.
       params->set_name(std::string($3) + "_args");
       // TODO(afuller): Assign the params though an accessor instead of the constructor.
@@ -846,12 +846,9 @@ Field:
     {
       driver.debug("Field => FieldId FieldQualifier FieldType Identifier FieldValue");
       driver.avoid_next_token_loc($6 == nullptr, @$, @5);
-      t_field_id id = driver.maybe_allocate_field_id($1, $4);
-      $$ = new t_field(std::move($3), std::move($4), id, $1 != boost::none);
+      $$ = new t_field(std::move($3), std::move($4), $1.value_or(0), $1 != boost::none);
       $$->set_qualifier($2);
-      if ($6 != nullptr) {
-        $$->set_default_value(own($6));
-      }
+      $$->set_default_value(own($6));
       driver.end_def(*$$);
     }
 

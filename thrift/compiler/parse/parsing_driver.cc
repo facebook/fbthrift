@@ -49,19 +49,6 @@ bool is_white_space(char c) {
   return c == ' ' || c == '\t' || c == '\r' || c == '\n';
 }
 
-// If the given defintion defines a new scope for field ids.
-bool is_field_scope(DefType type) {
-  switch (type) {
-    case DefType::Function:
-    case DefType::Struct:
-    case DefType::Union:
-    case DefType::Exception:
-      return true;
-    default:
-      return false;
-  }
-}
-
 } // namespace
 
 parsing_driver::parsing_driver(
@@ -529,13 +516,15 @@ std::unique_ptr<t_throws> parsing_driver::new_throws(
     std::unique_ptr<t_field_list> exceptions) {
   assert(exceptions != nullptr);
   auto result = std::make_unique<t_throws>();
-  append_fields(*result, std::move(*exceptions));
+  set_fields(*result, std::move(*exceptions));
   return result;
 }
 
-void parsing_driver::append_fields(
-    t_structured& tstruct, t_field_list&& fields) {
+void parsing_driver::set_fields(t_structured& tstruct, t_field_list&& fields) {
+  assert(tstruct.fields().empty());
+  t_field_id next_id = -1;
   for (auto& field : fields) {
+    maybe_allocate_field_id(next_id, *field);
     if (!tstruct.try_append_field(std::move(field))) {
       // Since we process root_program twice, we need to check parsing mode to
       // avoid double reporting
@@ -651,16 +640,10 @@ t_type_ref parsing_driver::new_type_ref(
 
 void parsing_driver::begin_def(DefType type) {
   def_stack_.push({type, scanner->get_lineno()});
-  if (is_field_scope(type)) {
-    next_id_stack_.push(-1);
-  }
 }
 
 void parsing_driver::end_def(t_named& node) {
   node.set_lineno(def_stack_.top().lineno);
-  if (is_field_scope(def_stack_.top().type)) {
-    next_id_stack_.pop();
-  }
   def_stack_.pop();
 }
 
@@ -753,39 +736,31 @@ t_field_id parsing_driver::to_field_id(int64_t int_const) {
   return int_const;
 }
 
-t_field_id parsing_driver::allocate_field_id(const std::string& name) {
-  assert(!next_id_stack_.empty());
+void parsing_driver::allocate_field_id(t_field_id& next_id, t_field& field) {
   if (params.strict >= 192) {
-    failure("Implicit field keys are deprecated and not allowed with -strict");
+    ctx_.failure(
+        field,
+        "Implicit field keys are deprecated and not allowed with -strict");
   }
-  if (next_id_stack_.top() < t_field::min_id) {
-    failure(
-        "Cannot allocate an id for `" + name +
-        "`. Automatic field ids are exhausted.");
+  if (next_id < t_field::min_id) {
+    ctx_.failure(
+        field,
+        "Cannot allocate an id for `" + field.name() +
+            "`. Automatic field ids are exhausted.");
   }
-  return next_id_stack_.top()--;
+  field.set_implicit_id(next_id--);
 }
 
-void parsing_driver::reserve_field_id(t_field_id id) {
-  assert(!next_id_stack_.empty());
-  if (id < 0) {
-    /*
-     * Update next field id to be one less than the value.
-     * The FieldList parsing will catch any duplicate id values.
-     */
-    next_id_stack_.top() = id - 1;
-  }
-}
-
-t_field_id parsing_driver::maybe_allocate_field_id(
-    boost::optional<t_field_id>& idlId, const std::string& name) {
-  if (idlId == boost::none) {
+void parsing_driver::maybe_allocate_field_id(
+    t_field_id& next_id, t_field& field) {
+  if (!field.has_explicit_id()) {
     // Auto assign an id.
-    return allocate_field_id(name);
+    allocate_field_id(next_id, field);
+    return;
   }
 
-  t_field_id id = *idlId;
-  if (id <= 0) {
+  // Check the explicitly provided id.
+  if (field.id() <= 0) {
     // TODO(afuller): Move this validation to ast_validator.
     if (params.allow_neg_field_keys) {
       /*
@@ -793,35 +768,42 @@ t_field_id parsing_driver::maybe_allocate_field_id(
        * specified id values to old .thrift files without breaking
        * protocol compatibility.
        */
-      if (id != next_field_id()) {
+      if (field.id() != next_id) {
         /*
          * warn if the user-specified negative value isn't what
          * thrift would have auto-assigned.
          */
-        warning([&](auto& o) {
-          o << "Nonpositive field id (" << id << ") differs from what would "
-            << "be auto-assigned by thrift (" << next_field_id() << ").";
+        ctx_.warning(field, [&](auto& o) {
+          o << "Nonpositive field id (" << field.id()
+            << ") differs from what would "
+            << "be auto-assigned by thrift (" << next_id << ").";
         });
       }
-    } else if (id == next_field_id()) {
-      warning([&](auto& o) {
-        o << "Nonpositive value (" << id << ") not allowed as a field id.";
+    } else if (field.id() == next_id) {
+      ctx_.warning(field, [&](auto& o) {
+        o << "Nonpositive value (" << field.id()
+          << ") not allowed as a field id.";
       });
     } else {
       // TODO(afuller): Make ignoring the user provided value a failure.
-      warning([&](auto& o) {
-        o << "Nonpositive field id (" << id
+      ctx_.warning(field, [&](auto& o) {
+        o << "Nonpositive field id (" << field.id()
           << ") differs from what is auto-"
              "assigned by thrift. The id must positive or "
-          << next_field_id() << ".";
+          << next_id << ".";
       });
       // Ignore user provided value and auto assign an id.
-      id = allocate_field_id(name);
-      idlId = boost::none;
+      allocate_field_id(next_id, field);
     }
-    reserve_field_id(id);
+    // Skip past any negative, manually assigned ids.
+    if (field.id() < 0) {
+      /*
+       * Update next field id to be one less than the value.
+       * The FieldList parsing will catch any duplicate id values.
+       */
+      next_id = field.id() - 1;
+    }
   }
-  return id;
 }
 
 uint64_t parsing_driver::parse_integer(const char* text, int offset, int base) {

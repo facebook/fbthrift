@@ -439,8 +439,9 @@ class parsing_driver {
   void end_def(t_named& node);
   void end_def(t_interface& node, std::unique_ptr<t_function_list> functions);
 
-  // Tries to append the given fields, reporting a failure on a collsion.
-  void append_fields(t_structured& tstruct, t_field_list&& fields);
+  // Tries to set the given fields, reporting a failure on a collsion.
+  // TODO(afuller): Disallow auto-id allocation.
+  void set_fields(t_structured& tstruct, t_field_list&& fields);
 
   // Populate the attributes on the given node.
   void set_attributes(
@@ -457,18 +458,6 @@ class parsing_driver {
   void add_include(std::string name);
 
   t_field_id to_field_id(int64_t int_const);
-
-  // Automatic numbering for field ids.
-  //
-  // Field id are assigned starting from -1 and working their way down.
-  //
-  // TODO(afuller): Move auto field ids to a post parse phase (or remove the
-  // feature entirely).
-  t_field_id next_field_id() const { return next_id_stack_.top(); }
-  t_field_id allocate_field_id(const std::string& name);
-  void reserve_field_id(t_field_id id);
-  t_field_id maybe_allocate_field_id(
-      boost::optional<t_field_id>& idlId, const std::string& name);
 
   // Reports a failure if the parsed value cannot fit in the widest supported
   // representation, i.e. int64_t and double.
@@ -533,7 +522,6 @@ class parsing_driver {
   diagnostic_context& ctx_;
 
   std::stack<DefState> def_stack_;
-  std::stack<int> next_id_stack_;
 
   /**
    * Parse a single .thrift file. The file to parse is stored in params.program.
@@ -575,6 +563,15 @@ class parsing_driver {
   std::string scoped_name(const t_named& owner, const t_named& node) {
     return program->name() + "." + owner.get_name() + "." + node.get_name();
   }
+
+  // Automatic numbering for field ids.
+  //
+  // Field id are assigned starting from -1 and working their way down.
+  //
+  // TODO(afuller): Move auto field ids to a post parse phase (or remove the
+  // feature entirely).
+  void allocate_field_id(t_field_id& next_id, t_field& field);
+  void maybe_allocate_field_id(t_field_id& next_id, t_field& field);
 };
 
 } // namespace compiler
