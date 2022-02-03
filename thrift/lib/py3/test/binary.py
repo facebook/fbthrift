@@ -48,9 +48,8 @@ class BinaryTests(unittest.TestCase):
 
 
 class BinaryHandler(BinaryServiceInterface):
-    # pyre-fixme[3]: Return type must be annotated.
     # pyre-fixme[2]: Parameter must be annotated.
-    def __init__(self, unit_test):
+    def __init__(self, unit_test) -> None:
         # pyre-fixme[4]: Attribute must be annotated.
         self.unit_test = unit_test
 
