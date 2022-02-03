@@ -31,7 +31,7 @@ import logging
 import hashlib
 
 
-def _detect_legacy_ssl():
+def _detect_legacy_ssl() -> bool:
     """
     Checks whether or not we have the newer Python >= 2.7.9,3.2+ attributes
     necessary to properly configure TLS settings

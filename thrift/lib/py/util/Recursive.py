@@ -21,7 +21,7 @@ from __future__ import unicode_literals
 
 from thrift.Thrift import TType
 
-def fix_spec(all_structs):
+def fix_spec(all_structs) -> None:
     for s in all_structs:
         spec = s.thrift_spec
         for t in spec:
@@ -34,7 +34,7 @@ def fix_spec(all_structs):
             elif t[1] == TType.MAP:
                 _fix_map(t[3])
 
-def _fix_list_or_set(element_type):
+def _fix_list_or_set(element_type) -> None:
     if element_type[0] == TType.STRUCT:
         element_type[1][1] = element_type[1][0].thrift_spec
     elif element_type[0] in (TType.LIST, TType.SET):
@@ -42,7 +42,7 @@ def _fix_list_or_set(element_type):
     elif element_type[0] == TType.MAP:
         _fix_map(element_type[1])
 
-def _fix_map(element_type):
+def _fix_map(element_type) -> None:
     if element_type[0] == TType.STRUCT:
         element_type[1][1] = element_type[1][0].thrift_spec
     elif element_type[0] in (TType.LIST, TType.SET):

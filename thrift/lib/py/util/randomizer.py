@@ -40,7 +40,7 @@ INFINITY = float('inf')
 if sys.version_info[0] >= 3:
     unicode = None
 
-def deep_dict_update(base, update):
+def deep_dict_update(base, update) -> None:
     """Similar to dict.update(base, update), but if any values in base are
     dictionaries, they are updated too instead of replaced.
 
@@ -908,7 +908,7 @@ class StructRandomizer(BaseRandomizer):
 
 _ttype_to_randomizer = {}
 
-def _init_types():
+def _init_types() -> None:
     # Find classes that subclass BaseRandomizer
     global_names = globals().keys()
 

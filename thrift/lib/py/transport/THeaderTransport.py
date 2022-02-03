@@ -116,7 +116,7 @@ class INFO:
 T_BINARY_PROTOCOL = 0
 T_COMPACT_PROTOCOL = 2
 HEADER_MAGIC = 0x0FFF0000
-PACKED_HEADER_MAGIC = pack(b'!H', HEADER_MAGIC >> 16)
+PACKED_HEADER_MAGIC: bytes = pack(b'!H', HEADER_MAGIC >> 16)
 HEADER_MASK = 0xFFFF0000
 FLAGS_MASK = 0x0000FFFF
 HTTP_SERVER_MAGIC = 0x504F5354  # POST
@@ -579,7 +579,7 @@ def _serialize_string(str_):
     return getVarint(len(str_)) + str_
 
 
-def _flush_info_headers(info_data, write_headers, type):
+def _flush_info_headers(info_data, write_headers, type) -> None:
     if (len(write_headers) > 0):
         info_data.write(getVarint(type))
         info_data.write(getVarint(len(write_headers)))
@@ -598,7 +598,7 @@ def _read_string(bufio, buflimit):
     return bufio.read(str_sz)
 
 
-def _read_info_headers(data, end_header, read_headers):
+def _read_info_headers(data, end_header, read_headers) -> None:
     num_keys = readVarint(data)
     for _ in xrange(num_keys):
         str_key = _read_string(data, end_header)
@@ -606,7 +606,7 @@ def _read_info_headers(data, end_header, read_headers):
         read_headers[str_key] = str_value
 
 
-def _frame_size_check(sz, set_max_size, header=True):
+def _frame_size_check(sz, set_max_size, header: bool=True) -> None:
     if sz > set_max_size or (not header and sz > MAX_FRAME_SIZE):
         raise TTransportException(
             TTransportException.INVALID_FRAME_SIZE,

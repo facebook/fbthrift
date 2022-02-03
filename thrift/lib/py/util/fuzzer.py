@@ -61,7 +61,7 @@ else:
         return imp.load_source(name, pathname)
 
 
-def positive_int(s):
+def positive_int(s) -> int:
     """Typechecker for positive integers"""
     try:
         n = int(s)
@@ -74,7 +74,7 @@ def positive_int(s):
             "Cannot convert %s to an integer." % s)
 
 
-def prob_float(s):
+def prob_float(s) -> float:
     """Typechecker for probability values"""
     try:
         x = float(s)
@@ -1020,12 +1020,12 @@ class FuzzTester(object):
         self.timer.summarize()
 
 
-def run_fuzzer(config):
+def run_fuzzer(config) -> None:
     fuzzer = FuzzTester(config)
     fuzzer.run()
 
 
-def fuzz_service(service, ttypes, constants):
+def fuzz_service(service: Service, ttypes, constants) -> None:
     """Run the tester with required modules input programmatically"""
     service = Service(ttypes, constants, service)
     config = FuzzerConfiguration(service)

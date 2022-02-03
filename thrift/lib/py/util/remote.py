@@ -64,7 +64,7 @@ class Function(object):
         self.args = args
 
 
-def print_functions(functions, service_names, out, local_only=False):
+def print_functions(functions, service_names, out, local_only: bool=False) -> None:
     """Print all the functions available from this thrift service"""
     fns_by_service_name = {svc_name: {} for svc_name in service_names}
     for fn in functions.values():
@@ -95,7 +95,7 @@ format_to_help_message = {
 }
 
 
-def add_format(name, format_type, help_msg=None):
+def add_format(name, format_type: str, help_msg=None):
     """
     Decorate function to set it as a handler for the specified format and format_type
 
@@ -114,7 +114,7 @@ def add_format(name, format_type, help_msg=None):
     return builder
 
 
-def get_helper_for_format(name, format_type):
+def get_helper_for_format(name, format_type: str):
     helper = format_to_helper[format_type].get(name)
     if name == "help":
         full_help_message = '\nDetailed help messages:\n\n' + '\n\n'.join(
@@ -139,7 +139,7 @@ def get_helper_for_format(name, format_type):
 
 
 @add_format("python", "output")
-def __python_output_handler(ret):
+def __python_output_handler(ret: object) -> None:
     if isinstance(ret, string_types):
         print(ret)
     else:
@@ -154,7 +154,7 @@ def __thrift_to_json(x):
 
 
 @add_format("json", "output")
-def __json_output_handler(ret):
+def __json_output_handler(ret) -> None:
     """
     Python object
     {
@@ -316,7 +316,7 @@ def __json_stdin_input_handler(fn, args, ctx):
     return __json_natural_input_handler(fn, [sys.stdin.read()], ctx)
 
 
-def __is_thrift_struct(obj):
+def __is_thrift_struct(obj) -> bool:
     try:
         json.dumps(obj)
         return False
@@ -445,7 +445,7 @@ class RemoteClient(object):
         self._exit(status=0)
 
 
-def ssl_parsed_bool(arg):
+def ssl_parsed_bool(arg) -> bool:
     if isinstance(arg, bool):
         return arg
     if arg in ('true', '1'):

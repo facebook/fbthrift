@@ -75,7 +75,7 @@ def parse_struct_spec(struct):
         yield StructField._make(field)
 
 
-def struct_to_dict(struct, defaults=False):
+def struct_to_dict(struct, defaults: bool=False):
     """
     Given a Thrift Struct convert it into a dict
     :param struct: a thrift struct
@@ -120,7 +120,7 @@ def struct_to_dict(struct, defaults=False):
     return adict
 
 
-def __list_to_dict(alist, type_args, defaults=False):
+def __list_to_dict(alist, type_args, defaults: bool=False):
     """
     Given a python list-like collection, potentially containing Thrift Structs,
     convert it into a dict
@@ -147,7 +147,7 @@ def __list_to_dict(alist, type_args, defaults=False):
         return alist
 
 
-def __set_to_dict(aset, type_args, defaults=False):
+def __set_to_dict(aset, type_args, defaults: bool=False):
     """
     Given a python set-like collection, potentially containing Thrift Structs
     and recursively parsing the elements
@@ -174,7 +174,7 @@ def __set_to_dict(aset, type_args, defaults=False):
         return aset
 
 
-def __map_to_dict(amap, type_args, defaults=False):
+def __map_to_dict(amap, type_args, defaults: bool=False):
     """
     Given a python dictionary, potentially containing Thrift Structs, convert it
     into a dict
