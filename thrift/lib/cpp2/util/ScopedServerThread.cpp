@@ -46,8 +46,6 @@ class ScopedServerThread::Helper : public Runnable, public TServerEventHandler {
  public:
   Helper() : state_(STATE_NOT_STARTED) {}
 
-  ~Helper() override;
-
   void init(
       shared_ptr<BaseThriftServer> server,
       shared_ptr<Helper> self,
@@ -138,10 +136,6 @@ class ScopedServerThread::Helper : public Runnable, public TServerEventHandler {
 
   template <typename ExceptionT>
   void handleServeError(const ExceptionT& x) {
-    if (eventHandler_ && *eventHandler_) {
-      (*eventHandler_)->handleServeError(x);
-    }
-
     std::unique_lock<std::mutex> l(stateMutex_);
 
     if (state_ == STATE_NOT_STARTED) {
@@ -166,18 +160,9 @@ class ScopedServerThread::Helper : public Runnable, public TServerEventHandler {
 
   shared_ptr<BaseThriftServer> server_;
   Func onExit_;
-  // If the server event handler has been intercepted, then this field will be
-  // set to the replaced event handler, which could be nullptr.
-  folly::Optional<shared_ptr<TServerEventHandler>> eventHandler_;
   shared_ptr<SavedException> savedError_;
   folly::SocketAddress address_;
 };
-
-ScopedServerThread::Helper::~Helper() {
-  if (eventHandler_) {
-    server_->setServerEventHandler(*eventHandler_);
-  }
-}
 
 void ScopedServerThread::Helper::init(
     shared_ptr<BaseThriftServer> server, shared_ptr<Helper> self, Func onExit) {
@@ -186,12 +171,10 @@ void ScopedServerThread::Helper::init(
 
   // Install ourself as the server event handler, so that our preServe() method
   // will be called once we've successfully bound to the port and are about to
-  // start listening. If there is already an installed event handler, uninstall
-  // it, but remember it so we can re-install it once the server starts.
-  eventHandler_ = server_->getEventHandler();
+  // start listening.
   // This function takes self as an argument since we need a shared_ptr to
   // ourselves.
-  server_->setServerEventHandler(std::make_shared<EventHandler>(self));
+  server_->addServerEventHandler(std::make_shared<EventHandler>(self));
 }
 
 void ScopedServerThread::Helper::run() {
@@ -235,19 +218,6 @@ void ScopedServerThread::Helper::preServe(const folly::SocketAddress* address) {
   // Save a copy of the address
   address_ = *address;
 
-  // The eventHandler_ should have been assigned in init, even if it is only
-  // set to an empty shared_ptr.
-  CHECK(eventHandler_);
-  auto eventHandler = *eventHandler_;
-  // Re-install the old eventHandler_.
-  server_->setServerEventHandler(eventHandler);
-  eventHandler_ = folly::none;
-  if (eventHandler) {
-    // Invoke preServe() on eventHandler,
-    // since we intercepted the real preServe() call.
-    eventHandler->preServe(address);
-  }
-
   // Inform the main thread that the server has started
   std::unique_lock<std::mutex> l(stateMutex_);
   assert(state_ == STATE_NOT_STARTED);
@@ -258,8 +228,9 @@ void ScopedServerThread::Helper::preServe(const folly::SocketAddress* address) {
 void ScopedServerThread::Helper::EventHandler::preServe(
     const folly::SocketAddress* address) {
   auto outer = outer_.lock();
-  CHECK(outer);
-  outer->preServe(address);
+  if (outer) {
+    outer->preServe(address);
+  }
 }
 
 /*
