@@ -606,6 +606,40 @@ void validate_exception_php_annotations(
     }
   }
 }
+
+void validate_oneway_function(diagnostic_context& ctx, const t_function& node) {
+  if (!node.is_oneway()) {
+    return;
+  }
+
+  if (node.return_type().get_type() == nullptr ||
+      !node.return_type().get_type()->is_void()) {
+    ctx.failure([&](auto& o) {
+      o << "Oneway methods must have void return type: " << node.name();
+    });
+  }
+
+  if (!t_throws::is_null_or_empty(node.exceptions())) {
+    ctx.failure([&](auto& o) {
+      o << "Oneway methods can't throw exceptions: " << node.name();
+    });
+  }
+}
+
+void validate_stream_exceptions_return_type(
+    diagnostic_context& ctx, const t_function& node) {
+  if (t_throws::is_null_or_empty(node.get_stream_xceptions())) {
+    return;
+  }
+
+  if (node.return_type().get_type() == nullptr ||
+      !node.return_type().get_type()->is_streamresponse()) {
+    ctx.failure([&](auto& o) {
+      o << "`stream throws` only valid on stream methods: " << node.name();
+    });
+  }
+}
+
 } // namespace
 
 ast_validator standard_validator() {
@@ -615,6 +649,8 @@ ast_validator standard_validator() {
   validator.add_service_visitor(
       &validate_extends_service_function_name_uniqueness);
   validator.add_throws_visitor(&validate_throws_exceptions);
+  validator.add_function_visitor(&validate_oneway_function);
+  validator.add_function_visitor(&validate_stream_exceptions_return_type);
   validator.add_function_visitor(&validate_function_priority_annotation);
 
   validator.add_structured_definition_visitor(&validate_field_names_uniqueness);

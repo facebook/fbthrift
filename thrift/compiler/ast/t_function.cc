@@ -49,32 +49,6 @@ t_function::t_function(
   if (paramlist_ == nullptr) {
     throw std::runtime_error("Param list is required");
   }
-
-  // Validate function
-  // TODO(afuller): Move this to a post parse step.
-  if (is_oneway() &&
-      (return_type_.get_type() == nullptr ||
-       !return_type_.get_type()->is_void())) {
-    throw std::runtime_error(
-        "Oneway methods must have void return type: " + name_);
-  }
-
-  // TODO(afuller): Move this to a post parse step.
-  if (!t_throws::is_null_or_empty(stream_exceptions_) &&
-      (return_type_.get_type() == nullptr ||
-       !return_type_.get_type()->is_streamresponse())) {
-    throw std::runtime_error(
-        "`stream throws` only valid on stream methods: " + name_);
-  }
-}
-
-void t_function::set_exceptions(std::unique_ptr<t_throws> exceptions) {
-  exceptions_ = std::move(exceptions);
-  // TODO(afuller): Move this to a post parse step.
-  if (is_oneway() && !t_throws::is_null_or_empty(exceptions_.get())) {
-    throw std::runtime_error(
-        "Oneway methods can't throw exceptions: " + name());
-  }
 }
 
 } // namespace compiler

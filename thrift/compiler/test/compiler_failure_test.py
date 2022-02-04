@@ -282,10 +282,9 @@ class CompilerFailureTest(unittest.TestCase):
         # TODO(afuller): Report a diagnostic instead.
         self.assertEqual(
             err,
-            "terminate called after throwing an instance of 'std::runtime_error'\n"
-            "  what():  Oneway methods must have void return type: bar\n",
+            "[FAILURE:foo.thrift:3] Oneway methods must have void return type: bar\n",
         )
-        self.assertEqual(ret, -6)
+        self.assertEqual(ret, 1)
 
     def test_oneway_exception(self):
         write_file(
@@ -305,10 +304,9 @@ class CompilerFailureTest(unittest.TestCase):
         # TODO(afuller): Report a diagnostic instead.
         self.assertEqual(
             err,
-            "terminate called after throwing an instance of 'std::runtime_error'\n"
-            "  what():  Oneway methods can't throw exceptions: baz\n",
+            "[FAILURE:foo.thrift:5] Oneway methods can't throw exceptions: baz\n",
         )
-        self.assertEqual(ret, -6)
+        self.assertEqual(ret, 1)
 
     def test_enum_wrong_default_value(self):
         # tests initializing enum with default value of wrong type

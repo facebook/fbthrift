@@ -68,7 +68,9 @@ class t_function final : public t_named {
   t_throws* exceptions() { return exceptions_.get(); }
   const t_throws* exceptions() const { return exceptions_.get(); }
   // Use nullptr to indicate an absent throws clause.
-  void set_exceptions(std::unique_ptr<t_throws> exceptions);
+  void set_exceptions(std::unique_ptr<t_throws> exceptions) {
+    exceptions_ = std::move(exceptions);
+  }
 
   bool is_interaction_constructor() const { return isInteractionConstructor_; }
   void set_is_interaction_constructor() { isInteractionConstructor_ = true; }
