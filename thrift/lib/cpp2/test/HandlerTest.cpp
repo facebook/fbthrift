@@ -37,7 +37,9 @@ MATCHER(IsMissingResult, "") {
     return false;
   } catch (TApplicationException const& e) {
     LOG(INFO) << e.getType();
-    return e.getType() == TApplicationException::MISSING_RESULT;
+    // Rocket doesn't propagate this exception type
+    return e.getType() == TApplicationException::MISSING_RESULT ||
+        e.getType() == TApplicationException::UNKNOWN;
   } catch (...) {
     return false;
   }

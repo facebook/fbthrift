@@ -30,7 +30,7 @@
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
 
-THRIFT_FLAG_DEFINE_bool(server_rocket_upgrade_enabled, false);
+THRIFT_FLAG_DEFINE_bool(server_rocket_upgrade_enabled, true);
 THRIFT_FLAG_DEFINE_bool(server_header_reject_http, true);
 THRIFT_FLAG_DEFINE_bool(server_header_reject_framed, true);
 THRIFT_FLAG_DEFINE_bool(server_header_reject_unframed, true);
@@ -426,6 +426,11 @@ void Cpp2Connection::requestReceived(
           "Rocket upgrade disabled");
       return;
     }
+  }
+
+  if (worker_->getServer()->isHeaderDisabled()) {
+    disconnect("Rejecting Header connection");
+    return;
   }
 
   using PerServiceMetadata = Cpp2Worker::PerServiceMetadata;
