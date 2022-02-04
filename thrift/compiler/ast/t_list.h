@@ -25,7 +25,6 @@ namespace compiler {
 
 /**
  * A list is a lightweight container type that just wraps another data type.
- *
  */
 class t_list final : public t_container {
  public:

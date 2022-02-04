@@ -25,7 +25,6 @@ namespace compiler {
 /**
  * A map is a lightweight container type that just wraps another two data
  * types.
- *
  */
 class t_map final : public t_container {
  public:

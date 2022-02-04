@@ -110,7 +110,7 @@ class t_container_type;
 /**
  * Constant values
  */
-%token<bool>  tok_bool_constant
+%token<bool>      tok_bool_constant
 %token<uint64_t>  tok_int_constant
 %token<double>    tok_dub_constant
 
@@ -378,11 +378,10 @@ DefinitionAttrs:
   CaptureDocText StructuredAnnotations
     {
       driver.debug("DefinitionAttrs -> CaptureDocText StructuredAnnotations");
+      $$ = nullptr;
       if ($1 || $2 != nullptr) {
-        $$ = new t_def_attrs{std::move($1), own($2)};
         driver.avoid_last_token_loc(!$1, @$, @2);
-      } else {
-        $$ = nullptr;
+        $$ = new t_def_attrs{std::move($1), own($2)};
       }
     }
 
@@ -396,22 +395,14 @@ DefinitionList:
 |   { driver.debug("DefinitionList -> "); }
 
 Definition:
-  Const       { $$ = $1; }
-| Typedef     { $$ = $1; }
+  Typedef     { $$ = $1; }
 | Enum        { $$ = $1; }
+| Const       { $$ = $1; }
 | Struct      { $$ = $1; }
 | Union       { $$ = $1; }
 | Exception   { $$ = $1; }
 | Service     { $$ = $1; }
 | Interaction { $$ = $1; }
-
-Typedef:
-  tok_typedef FieldType Identifier
-    {
-      driver.debug("TypeDef => tok_typedef FieldType Identifier");
-      $$ = new t_typedef(driver.program, std::move($3), std::move($2));
-      $$->set_lineno(@3.end.line);
-    }
 
 Integer:
   tok_int_constant
@@ -445,6 +436,14 @@ Double:
     {
       driver.debug("Double -> - tok_dub_constant");
       $$ = -$2;
+    }
+
+Typedef:
+  tok_typedef FieldType Identifier
+    {
+      driver.debug("TypeDef => tok_typedef FieldType Identifier");
+      $$ = new t_typedef(driver.program, std::move($3), std::move($2));
+      $$->set_lineno(@3.end.line);
     }
 
 Enum:
@@ -725,15 +724,13 @@ Function:
       driver.debug("Function => FunctionQualifier FunctionType Identifier ( FieldList ) MaybeThrows");
       driver.avoid_last_token_loc($1 == t_function_qualifier::unspecified, @$, @2);
       driver.avoid_next_token_loc($7 == nullptr, @$, @6);
-      auto params = std::make_unique<t_paramlist>(driver.program);
-      driver.set_fields(*params, std::move(*own($5)));
+      $$ = new t_function(driver.program, std::move($2), std::move($3));
+      $$->set_qualifier($1);
+      driver.set_fields($$->params(), std::move(*own($5)));
+      $$->set_exceptions(own($7));
+      $$->set_lineno(@3.end.line);
       // TODO(afuller): Leave the param list unnamed.
-      params->set_name(std::string($3) + "_args");
-      // TODO(afuller): Assign the params though an accessor instead of the constructor.
-      auto func = std::make_unique<t_function>(std::move($2), std::move($3), std::move(params), $1);
-      func->set_exceptions(own($7));
-      func->set_lineno(@3.end.line);
-      $$ = func.release();
+      $$->params().set_name($$->name() + "_args");
     }
   | tok_performs FieldType
     {
