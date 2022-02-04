@@ -63,7 +63,7 @@ There are several key goals for these components:
 
 ### Dependencies
 
-If on Linux you can install system dependencies to save building them:
+If on Linux or MacOS (with homebrew installed) you can install system dependencies to save building them:
 
     # Clone the repo
     git clone https://github.com/facebook/fbthrift
