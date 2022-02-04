@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <iterator>
