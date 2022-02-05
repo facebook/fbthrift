@@ -303,11 +303,10 @@ class RequestInstrumentationTest : public testing::Test {
     return results;
   }
 
-  template <typename Tag = HeaderClientChannel::WithRocketUpgrade>
   auto makeHeaderClient() {
     return server().newClient<InstrumentationTestServiceAsyncClient>(
         nullptr, [&](auto socket) mutable {
-          return HeaderClientChannel::newChannel(Tag{}, std::move(socket));
+          return HeaderClientChannel::newChannel(std::move(socket));
         });
   }
   auto makeRocketClient() {
@@ -338,12 +337,7 @@ class RequestInstrumentationTest : public testing::Test {
     eventBase->runInEventBaseThreadAndWait([&] {
       auto socket =
           folly::AsyncSocket::newSocket(eventBase, server().getAddress());
-      if constexpr (!std::is_same_v<ClientChannelT, HeaderClientChannel>) {
-        channel = ClientChannelT::newChannel(std::move(socket));
-      } else {
-        channel = HeaderClientChannel::newChannel(
-            HeaderClientChannel::WithoutRocketUpgrade{}, std::move(socket));
-      }
+      channel = ClientChannelT::newChannel(std::move(socket));
     });
     return std::
         unique_ptr<InstrumentationTestServiceAsyncClient, ViaEventBaseDeleter>{
@@ -658,7 +652,7 @@ TEST_F(RequestInstrumentationTest, rocketSnapshotContainsMetadataHeadersTest) {
 TEST_F(
     RequestInstrumentationTest,
     headerSnapshotDoesNotContainMetadataHeadersTest) {
-  auto client = makeHeaderClient<HeaderClientChannel::WithoutRocketUpgrade>();
+  auto client = makeHeaderClient();
   RpcOptions rpcOptions;
   rpcOptions.setWriteHeader("header", "value");
   client->header_semifuture_sendRequest(rpcOptions);

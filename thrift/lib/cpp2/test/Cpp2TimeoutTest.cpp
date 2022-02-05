@@ -92,8 +92,7 @@ TEST(ThriftServer, IdleTimeoutAfterTest) {
 
   auto socket = folly::AsyncSocket::newSocket(&base, *sst.getAddress());
 
-  auto client_channel = HeaderClientChannel::newChannel(
-      HeaderClientChannel::WithoutRocketUpgrade{}, std::move(socket));
+  auto client_channel = HeaderClientChannel::newChannel(std::move(socket));
   auto client_channelp = client_channel.get();
   CloseChecker checker;
 

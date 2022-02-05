@@ -31,15 +31,16 @@
 
 #include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
 
+#include <thrift/lib/cpp2/test/util/TestHTTPClientChannelFactory.h>
+#include <thrift/lib/cpp2/test/util/TestHeaderClientChannelFactory.h>
+
 #include <folly/CancellationToken.h>
 #include <folly/Optional.h>
 #include <folly/Synchronized.h>
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/fibers/FiberManagerMap.h>
 #include <folly/io/async/AsyncServerSocket.h>
-#include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/EventBase.h>
-#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 
 #include <boost/cast.hpp>
 #include <boost/lexical_cast.hpp>
@@ -65,33 +66,6 @@ enum ClientChannelTypes {
   HTTP2,
 };
 
-struct TestHeaderClientChannelFactory {
- public:
-  apache::thrift::ClientChannel::Ptr create(
-      folly::AsyncTransport::UniquePtr socket) {
-    auto channel = apache::thrift::HeaderClientChannel::newChannel(
-        apache::thrift::HeaderClientChannel::WithoutRocketUpgrade{},
-        std::move(socket),
-        apache::thrift::HeaderClientChannel::Options().setProtocolId(
-            protocol_));
-
-    channel->setTimeout(timeout_);
-
-    return channel;
-  }
-
-  void setProtocolId(apache::thrift::protocol::PROTOCOL_TYPES protocol) {
-    protocol_ = protocol;
-  }
-
-  void setTimeout(uint32_t timeout) { timeout_ = timeout; }
-
- private:
-  apache::thrift::protocol::PROTOCOL_TYPES protocol_{
-      apache::thrift::protocol::T_COMPACT_PROTOCOL};
-  uint32_t timeout_{5000};
-};
-
 class SharedServerTests
     : public testing::TestWithParam<
           std::tuple<ThriftServerTypes, ClientChannelTypes, PROTOCOL_TYPES>> {
@@ -114,6 +88,12 @@ class SharedServerTests
     switch (std::get<1>(GetParam())) {
       case HEADER: {
         auto c = std::make_unique<TestHeaderClientChannelFactory>();
+        c->setProtocolId(protocolId);
+        channelFactory = std::move(c);
+        break;
+      }
+      case HTTP2: {
+        auto c = std::make_unique<TestHTTPClientChannelFactory>();
         c->setProtocolId(protocolId);
         channelFactory = std::move(c);
         break;
@@ -176,7 +156,7 @@ class SharedServerTests
  protected:
   std::unique_ptr<folly::EventBase> base;
   std::unique_ptr<TestServerFactory> serverFactory{nullptr};
-  std::shared_ptr<TestHeaderClientChannelFactory> channelFactory{nullptr};
+  std::shared_ptr<TestClientChannelFactory> channelFactory{nullptr};
 
   std::shared_ptr<BaseThriftServer> server{nullptr};
   std::unique_ptr<ScopedServerThread> sst{nullptr};

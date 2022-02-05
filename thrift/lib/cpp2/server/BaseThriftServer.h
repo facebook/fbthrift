@@ -54,8 +54,6 @@ THRIFT_FLAG_DECLARE_int64(server_polled_service_health_liveness_ms);
 THRIFT_FLAG_DECLARE_int64(
     server_ingress_memory_limit_enforcement_payload_size_min_bytes);
 
-THRIFT_FLAG_DECLARE_bool(server_reject_header_connections);
-
 namespace wangle {
 class ConnectionManager;
 }
@@ -394,11 +392,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
             return std::chrono::milliseconds(**livenessMs);
           })};
 
-  /**
-   * Enable to reject all header-backed connections
-   */
-  ServerAttributeDynamic<bool> disableHeaderTransport_{
-      THRIFT_FLAG_OBSERVE(server_reject_header_connections)};
   std::shared_ptr<server::TServerEventHandler> eventHandler_;
   std::vector<std::shared_ptr<server::TServerEventHandler>> eventHandlers_;
   AdaptiveConcurrencyController adaptiveConcurrencyController_;
@@ -1409,15 +1402,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   const auto& adaptiveConcurrencyController() const {
     return adaptiveConcurrencyController_;
   }
-
-  // Rejects all header-backed connections to this server
-  void disableLegacyTransports(
-      bool value = true,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      DynamicAttributeTag = DynamicAttributeTag{}) {
-    disableHeaderTransport_.set(value, source);
-  }
-  bool isHeaderDisabled() const { return disableHeaderTransport_.get(); }
 };
 } // namespace thrift
 } // namespace apache

@@ -68,6 +68,7 @@
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/DummyStatus.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
+#include <thrift/lib/cpp2/test/util/TestHeaderClientChannelFactory.h>
 #include <thrift/lib/cpp2/test/util/TestInterface.h>
 #include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
 #include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
@@ -256,8 +257,8 @@ TEST(ThriftServer, HeaderTest) {
   folly::EventBase base;
   auto socket = folly::AsyncSocket::newSocket(&base, *sst.getAddress());
 
-  TestServiceAsyncClient client(HeaderClientChannel::newChannel(
-      HeaderClientChannel::WithoutRocketUpgrade{}, std::move(socket)));
+  TestServiceAsyncClient client(
+      HeaderClientChannel::newChannel(std::move(socket)));
 
   RpcOptions options;
   // Set it as a header directly so the client channel won't set a
@@ -389,8 +390,7 @@ void doLoadHeaderTest(bool isRocket) {
     if (!isRocket) {
       return runner.template newStickyClient<TestServiceAsyncClient>(
           folly::getGlobalCPUExecutor().get(), [](auto socket) mutable {
-            return HeaderClientChannel::newChannel(
-                HeaderClientChannel::WithoutRocketUpgrade{}, std::move(socket));
+            return HeaderClientChannel::newChannel(std::move(socket));
           });
     } else {
       return runner.template newStickyClient<TestServiceAsyncClient>(
@@ -976,8 +976,7 @@ class HeaderOrRocketTest : public testing::Test {
   ClientChannel::Ptr makeChannel(folly::AsyncTransport::UniquePtr socket) {
     auto channel = [&]() -> ClientChannel::Ptr {
       if (transport == TransportType::Header) {
-        return HeaderClientChannel::newChannel(
-            HeaderClientChannel::WithoutRocketUpgrade{}, std::move(socket));
+        return HeaderClientChannel::newChannel(std::move(socket));
       } else {
         return RocketClientChannel::newChannel(std::move(socket));
       }
@@ -1728,8 +1727,7 @@ TEST(ThriftServer, LatencyHeader_ClientTimeout) {
       });
   auto client =
       runner.newClient<TestServiceAsyncClient>(nullptr, [](auto socket) {
-        return HeaderClientChannel::newChannel(
-            HeaderClientChannel::WithoutRocketUpgrade{}, std::move(socket));
+        return HeaderClientChannel::newChannel(std::move(socket));
       });
 
   RpcOptions rpcOptions;
@@ -1748,8 +1746,7 @@ TEST(ThriftServer, LatencyHeader_RequestSuccess) {
   ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
   auto client =
       runner.newClient<TestServiceAsyncClient>(nullptr, [](auto socket) {
-        return HeaderClientChannel::newChannel(
-            HeaderClientChannel::WithoutRocketUpgrade{}, std::move(socket));
+        return HeaderClientChannel::newChannel(std::move(socket));
       });
 
   RpcOptions rpcOptions;
@@ -1763,8 +1760,7 @@ TEST(ThriftServer, LatencyHeader_RequestFailed) {
   ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
   auto client =
       runner.newClient<TestServiceAsyncClient>(nullptr, [](auto socket) {
-        return HeaderClientChannel::newChannel(
-            HeaderClientChannel::WithoutRocketUpgrade{}, std::move(socket));
+        return HeaderClientChannel::newChannel(std::move(socket));
       });
 
   RpcOptions rpcOptions;
@@ -1780,8 +1776,7 @@ TEST(ThriftServer, LatencyHeader_TaskExpiry) {
   ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
   auto client =
       runner.newClient<TestServiceAsyncClient>(nullptr, [](auto socket) {
-        return HeaderClientChannel::newChannel(
-            HeaderClientChannel::WithoutRocketUpgrade{}, std::move(socket));
+        return HeaderClientChannel::newChannel(std::move(socket));
       });
 
   // setup task expire timeout.
@@ -1802,8 +1797,7 @@ TEST(ThriftServer, LatencyHeader_QueueTimeout) {
   ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
   auto client =
       runner.newStickyClient<TestServiceAsyncClient>(nullptr, [](auto socket) {
-        return HeaderClientChannel::newChannel(
-            HeaderClientChannel::WithoutRocketUpgrade{}, std::move(socket));
+        return HeaderClientChannel::newChannel(std::move(socket));
       });
 
   // setup timeout
@@ -3211,43 +3205,6 @@ TEST(ThriftServer, SocketQueueTimeout) {
   baseServer->setSocketQueueTimeout(folly::none, AttributeSource::BASELINE);
   folly::observer_detail::ObserverManager::waitForAllUpdates();
   checkSocketQueueTimeout(kDefaultTimeout);
-}
-
-TEST(ThriftServer, RocketOnly) {
-  TestThriftServerFactory<TestInterface> factory;
-  auto serv = factory.create();
-  ScopedServerThread sst(serv);
-  serv->disableLegacyTransports();
-  folly::EventBase base;
-
-  // Header rejected
-  try {
-    TestServiceAsyncClient client(HeaderClientChannel::newChannel(
-        HeaderClientChannel::WithoutRocketUpgrade{},
-        folly::AsyncSocket::newSocket(&base, *sst.getAddress())));
-    client.sync_voidResponse();
-    ADD_FAILURE() << "should reject";
-  } catch (const TTransportException&) {
-  }
-
-  // Rocket via upgrade accepted
-  try {
-    TestServiceAsyncClient client(HeaderClientChannel::newChannel(
-        HeaderClientChannel::WithRocketUpgrade{},
-        folly::AsyncSocket::newSocket(&base, *sst.getAddress())));
-    client.sync_voidResponse();
-  } catch (const TTransportException&) {
-    ADD_FAILURE() << "should accept";
-  }
-
-  // Rocket accepted
-  try {
-    TestServiceAsyncClient client(RocketClientChannel::newChannel(
-        folly::AsyncSocket::newSocket(&base, *sst.getAddress())));
-    client.sync_voidResponse();
-  } catch (const TTransportException&) {
-    ADD_FAILURE() << "should accept";
-  }
 }
 
 TEST_P(HeaderOrRocket, setMaxReuqestsToOne) {

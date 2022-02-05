@@ -237,7 +237,8 @@ class ConnectionEventLogTest
 TEST_P(ConnectionEventLogTest, connectionTest) {
   expectConnectionEventCall(kNonTls, 1);
   expectConnectionEventCall(kNewConnection, 1);
-  expectConnectionEventCall(kNewConnectionRocket, 1);
+  expectConnectionEventCall(kNewConnectionRocket, isRocket() ? 1 : 0);
+  expectConnectionEventCall(kNewConnectionHeader, isRocket() ? 0 : 1);
   expectConnectionEventCall(kRocketSetup, isRocket() ? 1 : 0);
   auto handler = std::make_shared<TestServiceHandler>();
   ScopedServerInterfaceThread runner(handler);
