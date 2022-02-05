@@ -20,6 +20,7 @@
 #include <chrono>
 #include <cstdint>
 #include <memory>
+#include <string>
 
 namespace apache {
 namespace thrift {
