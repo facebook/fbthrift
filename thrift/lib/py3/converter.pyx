@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from enum import Enum
 from typing import Any, Type
 
 from thrift.py3.reflection import inspect
@@ -19,6 +20,7 @@ from thrift.py3.reflection import inspect
 from libcpp cimport bool
 from thrift.py3.reflection cimport FieldSpec, MapSpec, Qualifier, StructType
 from thrift.py3.types cimport CompiledEnum, Container, Struct
+from thrift.py3lite.types cimport Struct as lite_Struct, Union as lite_Union
 
 def to_py3_struct(cls, obj):
     return _to_py3_struct(cls, obj)
@@ -42,7 +44,7 @@ cdef object _to_py3_struct(object cls, object obj):
                 value = _get_src_union_field(obj, field_spec)
                 field = _to_py3_field(field_spec.type, value)
                 return cls(**{_py3_field_name(field_spec): field})
-            except AssertionError:
+            except (AssertionError, AttributeError):
                 pass
         return cls()
     else:
@@ -50,10 +52,14 @@ cdef object _to_py3_struct(object cls, object obj):
 
 
 cdef object _get_src_field(object obj, FieldSpec field_spec):
+    if isinstance(obj, lite_Struct):
+        return getattr(obj, _py3_field_name(field_spec))
     return getattr(obj, field_spec.name)
 
 
 cdef object _get_src_union_field(object obj, FieldSpec field_spec):
+    if isinstance(obj, lite_Union):
+        return getattr(obj, _py3_field_name(field_spec))
     return getattr(obj, "get_" + field_spec.name)()
 
 
@@ -89,6 +95,6 @@ cdef object _to_py3_field(object cls, object obj):
         else:
             return [_to_py3_field(container_spec.value, elem) for elem in obj]
     elif issubclass(cls, CompiledEnum):
-        return cls(obj)
+        return cls(obj.value) if isinstance(obj, Enum) else cls(obj)
     else:
         return obj
