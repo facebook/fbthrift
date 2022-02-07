@@ -428,6 +428,11 @@ void Cpp2Connection::requestReceived(
     }
   }
 
+  if (worker_->getServer()->isHeaderDisabled()) {
+    disconnect("Rejecting Header connection");
+    return;
+  }
+
   using PerServiceMetadata = Cpp2Worker::PerServiceMetadata;
   const PerServiceMetadata::FindMethodResult methodMetadataResult =
       serviceMetadata_.findMethod(methodName);

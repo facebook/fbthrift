@@ -54,6 +54,7 @@
 #include <proxygen/httpserver/HTTPServerOptions.h>
 #include <thrift/lib/cpp/server/TServerEventHandler.h>
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
@@ -89,6 +90,7 @@ using namespace apache::thrift::concurrency;
 using namespace std::literals;
 using std::string;
 
+THRIFT_FLAG_DECLARE_bool(server_rocket_upgrade_enabled);
 DECLARE_int32(thrift_cpp2_protocol_reader_string_limit);
 
 std::unique_ptr<HTTP2RoutingHandler> createHTTP2RoutingHandler(
@@ -3205,6 +3207,44 @@ TEST(ThriftServer, SocketQueueTimeout) {
   baseServer->setSocketQueueTimeout(folly::none, AttributeSource::BASELINE);
   folly::observer_detail::ObserverManager::waitForAllUpdates();
   checkSocketQueueTimeout(kDefaultTimeout);
+}
+
+TEST(ThriftServer, RocketOnly) {
+  THRIFT_FLAG_SET_MOCK(server_rocket_upgrade_enabled, true);
+  TestThriftServerFactory<TestInterface> factory;
+  auto serv = factory.create();
+  ScopedServerThread sst(serv);
+  serv->disableLegacyTransports();
+  folly::EventBase base;
+
+  // Header rejected
+  try {
+    TestServiceAsyncClient client(HeaderClientChannel::newChannel(
+        HeaderClientChannel::WithoutRocketUpgrade{},
+        folly::AsyncSocket::newSocket(&base, *sst.getAddress())));
+    client.sync_voidResponse();
+    ADD_FAILURE() << "should reject";
+  } catch (const TTransportException&) {
+  }
+
+  // Rocket via upgrade accepted
+  try {
+    TestServiceAsyncClient client(HeaderClientChannel::newChannel(
+        HeaderClientChannel::WithRocketUpgrade{},
+        folly::AsyncSocket::newSocket(&base, *sst.getAddress())));
+    client.sync_voidResponse();
+  } catch (const TTransportException&) {
+    ADD_FAILURE() << "should accept";
+  }
+
+  // Rocket accepted
+  try {
+    TestServiceAsyncClient client(RocketClientChannel::newChannel(
+        folly::AsyncSocket::newSocket(&base, *sst.getAddress())));
+    client.sync_voidResponse();
+  } catch (const TTransportException&) {
+    ADD_FAILURE() << "should accept";
+  }
 }
 
 TEST_P(HeaderOrRocket, setMaxReuqestsToOne) {
