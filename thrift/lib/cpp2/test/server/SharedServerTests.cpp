@@ -14,25 +14,9 @@
  * limitations under the License.
  */
 
-#include <folly/portability/GTest.h>
-#include <folly/synchronization/Baton.h>
-
-#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
-#include <thrift/lib/cpp2/async/RequestChannel.h>
-#include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
-
-#include <folly/io/async/AsyncSocket.h>
-#include <folly/io/async/AsyncTransport.h>
-#include <thrift/lib/cpp/transport/THeader.h>
-#include <thrift/lib/cpp2/util/ScopedServerThread.h>
-
-#include <thrift/lib/cpp2/test/util/TestInterface.h>
-
-#include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
-
-#include <thrift/lib/cpp2/test/util/TestHTTPClientChannelFactory.h>
-#include <thrift/lib/cpp2/test/util/TestHeaderClientChannelFactory.h>
+#include <boost/cast.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/thread.hpp>
 
 #include <folly/CancellationToken.h>
 #include <folly/Optional.h>
@@ -40,11 +24,19 @@
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/fibers/FiberManagerMap.h>
 #include <folly/io/async/AsyncServerSocket.h>
+#include <folly/io/async/AsyncSocket.h>
+#include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/EventBase.h>
-
-#include <boost/cast.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/thread.hpp>
+#include <folly/portability/GTest.h>
+#include <folly/synchronization/Baton.h>
+#include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
+#include <thrift/lib/cpp2/test/util/TestInterface.h>
+#include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
+#include <thrift/lib/cpp2/util/ScopedServerThread.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::test;
@@ -64,6 +56,32 @@ enum ThriftServerTypes {
 enum ClientChannelTypes {
   HEADER,
   HTTP2,
+};
+
+struct TestHeaderClientChannelFactory {
+ public:
+  apache::thrift::ClientChannel::Ptr create(
+      folly::AsyncTransport::UniquePtr socket) {
+    auto channel = apache::thrift::HeaderClientChannel::newChannel(
+        std::move(socket),
+        apache::thrift::HeaderClientChannel::Options().setProtocolId(
+            protocol_));
+
+    channel->setTimeout(timeout_);
+
+    return channel;
+  }
+
+  void setProtocolId(apache::thrift::protocol::PROTOCOL_TYPES protocol) {
+    protocol_ = protocol;
+  }
+
+  void setTimeout(uint32_t timeout) { timeout_ = timeout; }
+
+ private:
+  apache::thrift::protocol::PROTOCOL_TYPES protocol_{
+      apache::thrift::protocol::T_COMPACT_PROTOCOL};
+  uint32_t timeout_{5000};
 };
 
 class SharedServerTests
@@ -88,12 +106,6 @@ class SharedServerTests
     switch (std::get<1>(GetParam())) {
       case HEADER: {
         auto c = std::make_unique<TestHeaderClientChannelFactory>();
-        c->setProtocolId(protocolId);
-        channelFactory = std::move(c);
-        break;
-      }
-      case HTTP2: {
-        auto c = std::make_unique<TestHTTPClientChannelFactory>();
         c->setProtocolId(protocolId);
         channelFactory = std::move(c);
         break;
@@ -156,7 +168,7 @@ class SharedServerTests
  protected:
   std::unique_ptr<folly::EventBase> base;
   std::unique_ptr<TestServerFactory> serverFactory{nullptr};
-  std::shared_ptr<TestClientChannelFactory> channelFactory{nullptr};
+  std::shared_ptr<TestHeaderClientChannelFactory> channelFactory{nullptr};
 
   std::shared_ptr<BaseThriftServer> server{nullptr};
   std::unique_ptr<ScopedServerThread> sst{nullptr};

@@ -24,9 +24,8 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/thread.hpp>
 #include <fmt/core.h>
-#include <folly/portability/GMock.h>
-#include <folly/portability/GTest.h>
 
+#include <fizz/client/AsyncFizzClient.h>
 #include <folly/Conv.h>
 #include <folly/ExceptionWrapper.h>
 #include <folly/Memory.h>
@@ -46,11 +45,10 @@
 #include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/test/TestSSLServer.h>
+#include <folly/portability/GMock.h>
+#include <folly/portability/GTest.h>
 #include <folly/synchronization/test/Barrier.h>
 #include <folly/system/ThreadName.h>
-#include <wangle/acceptor/ServerSocketConfig.h>
-
-#include <folly/io/async/AsyncSocket.h>
 #include <proxygen/httpserver/HTTPServerOptions.h>
 #include <thrift/lib/cpp/server/TServerEventHandler.h>
 #include <thrift/lib/cpp/transport/THeader.h>
@@ -69,16 +67,12 @@
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/DummyStatus.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
-#include <thrift/lib/cpp2/test/util/TestHeaderClientChannelFactory.h>
 #include <thrift/lib/cpp2/test/util/TestInterface.h>
 #include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
 #include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 #include <thrift/lib/cpp2/util/ScopedServerThread.h>
-
-#include <fizz/client/AsyncFizzClient.h>
-
-#include <common/logging/logging.h>
+#include <wangle/acceptor/ServerSocketConfig.h>
 
 using namespace fizz::client;
 using namespace apache::thrift;
