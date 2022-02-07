@@ -63,7 +63,7 @@ cdef class StructSpec:
         if fields:
             for field in fields:
                 Py_INCREF(field)
-                self._fields.push_back(<PyObject*>fields)
+                self._fields.push_back(<PyObject*>field)
         self.kind = StructType(kind)
         self.annotations = MappingProxyType(annotations)
 
