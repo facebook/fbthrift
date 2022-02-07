@@ -431,8 +431,9 @@ TEST_F(RequestInstrumentationTest, PendingTaskCount) {
     ti->getThreadManager()->add([] {});
     ti->getThreadManager()->add([] {});
     ti->getThreadManager()->add([] {});
+    auto& baton2_ = baton2; // avoid data-race on lambda storage in wait below
     baton.post();
-    baton2.wait();
+    baton2_.wait();
   });
   auto firstReq = client->semifuture_runCallback();
   baton.wait();
@@ -753,8 +754,9 @@ TEST_F(
 
   // "started processing" request
   handler()->setCallback([&](TestInterface*) {
+    auto& baton3_ = baton3; // avoid data-race on lambda storage in wait below
     baton2.post();
-    baton3.wait();
+    baton3_.wait();
   });
   auto req2 = client->semifuture_runCallback();
   baton2.wait();
