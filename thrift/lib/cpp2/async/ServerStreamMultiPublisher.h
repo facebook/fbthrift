@@ -114,7 +114,7 @@ class ServerStreamMultiPublisher {
     auto cb = [streamIndex,
                userCb = std::move(onStreamCompleteOrCancel),
                encodeToStreamsWeak =
-                   std::weak_ptr(encodeToStreams_)]() mutable {
+                   folly::to_weak_ptr(encodeToStreams_)]() mutable {
       removeStream(std::move(encodeToStreamsWeak), streamIndex);
       userCb();
     };
@@ -123,7 +123,7 @@ class ServerStreamMultiPublisher {
     addStreamToMap(streamIndex, stream->copy());
     return ServerStream<T>(
         [streamIndex,
-         encodeToStreamsWeak = std::weak_ptr(encodeToStreams_),
+         encodeToStreamsWeak = folly::to_weak_ptr(encodeToStreams_),
          stream = std::unique_ptr<
              detail::ServerPublisherStream<T, WithHeader>,
              typename detail::ServerPublisherStream<T, WithHeader>::
