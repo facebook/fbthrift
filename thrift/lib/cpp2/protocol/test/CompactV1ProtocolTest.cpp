@@ -21,7 +21,6 @@
 #include <thrift/lib/cpp2/protocol/test/gen-cpp2/Module_types_custom_protocol.h>
 
 using namespace std;
-using namespace folly;
 using namespace apache::thrift;
 using namespace apache::thrift::test;
 

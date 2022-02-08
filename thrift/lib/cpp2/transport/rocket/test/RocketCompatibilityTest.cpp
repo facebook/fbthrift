@@ -32,7 +32,6 @@ DECLARE_string(transport); // ConnectionManager depends on this flag.
 namespace apache {
 namespace thrift {
 
-using namespace testutil::testservice;
 using namespace apache::thrift::transport;
 
 class RocketCompatibilityTest : public testing::Test {

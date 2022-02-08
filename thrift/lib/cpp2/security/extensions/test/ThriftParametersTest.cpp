@@ -21,11 +21,6 @@
 #include <fizz/record/test/ExtensionTestsBase.h>
 #include <thrift/lib/cpp2/security/extensions/Types.h>
 
-using namespace folly;
-using namespace folly::io;
-
-using testing::_;
-using namespace testing;
 using namespace fizz::test;
 
 namespace apache {

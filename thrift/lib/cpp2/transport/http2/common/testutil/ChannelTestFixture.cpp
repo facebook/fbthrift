@@ -25,9 +25,7 @@
 namespace apache {
 namespace thrift {
 
-using folly::EventBase;
 using folly::EventBaseManager;
-using folly::IOBuf;
 using proxygen::HTTPMessage;
 using std::string;
 using std::unordered_map;

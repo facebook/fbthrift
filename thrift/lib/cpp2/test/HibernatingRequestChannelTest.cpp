@@ -28,7 +28,6 @@
 using namespace testing;
 using namespace apache::thrift;
 using namespace apache::thrift::test;
-using apache::thrift::transport::TTransportException;
 using folly::AsyncSocket;
 
 class TestServiceServerMock : public TestServiceSvIf {

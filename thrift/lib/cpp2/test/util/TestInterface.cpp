@@ -40,7 +40,6 @@ void TestInterface::echoRequest(
   _return = *req + kEchoSuffix;
 }
 
-typedef apache::thrift::HandlerCallback<std::unique_ptr<std::string>> StringCob;
 void TestInterface::async_tm_serializationTest(
     std::unique_ptr<StringCob> callback, bool) {
   std::unique_ptr<std::string> sp(new std::string("hello world"));

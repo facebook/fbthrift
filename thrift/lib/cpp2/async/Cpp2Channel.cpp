@@ -24,14 +24,8 @@
 #include <thrift/lib/cpp/concurrency/Util.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 
-using folly::IOBuf;
-using folly::IOBufQueue;
-using std::pair;
-using std::unique_ptr;
-using namespace folly::io;
 using namespace apache::thrift::transport;
 using folly::EventBase;
-using namespace apache::thrift::concurrency;
 
 namespace apache {
 namespace thrift {

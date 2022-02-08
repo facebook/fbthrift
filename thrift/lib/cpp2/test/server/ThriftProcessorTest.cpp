@@ -27,9 +27,6 @@
 namespace apache {
 namespace thrift {
 
-using namespace testing;
-using namespace testutil::testservice;
-
 TEST_F(CoreTestFixture, SumTwoNumbers) {
   int32_t x = 5;
   int32_t y = 10;

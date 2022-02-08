@@ -30,10 +30,7 @@ using apache::thrift::test::Result;
 using apache::thrift::test::SameType;
 using apache::thrift::test::ThriftField;
 using testing::_;
-using testing::A;
 using testing::Eq;
-using testing::HasSubstr;
-using testing::IsNull;
 using testing::Not;
 using testing::Optional;
 

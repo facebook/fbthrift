@@ -43,7 +43,6 @@ using namespace apache::thrift::test;
 using namespace apache::thrift::util;
 using namespace apache::thrift::transport;
 using apache::thrift::protocol::PROTOCOL_TYPES;
-using namespace std::literals;
 
 DECLARE_int32(thrift_cpp2_protocol_reader_string_limit);
 

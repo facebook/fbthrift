@@ -42,11 +42,9 @@
 using namespace apache::thrift;
 using namespace apache::thrift::async;
 using namespace apache::thrift::transport;
-using apache::thrift::ContextStack;
 using folly::IOBuf;
 using folly::IOBufQueue;
 using std::make_unique;
-using std::shared_ptr;
 using std::unique_ptr;
 
 unique_ptr<IOBuf> makeTestBufImpl(size_t len) {

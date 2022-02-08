@@ -42,12 +42,6 @@
 namespace apache {
 namespace thrift {
 
-using namespace apache::thrift::server;
-using namespace apache::thrift::transport;
-using namespace apache::thrift::async;
-using apache::thrift::concurrency::Util;
-using std::shared_ptr;
-
 namespace {
 folly::LeakySingleton<folly::EventBaseLocal<RequestsRegistry>> registry;
 } // namespace
@@ -407,7 +401,6 @@ std::shared_ptr<folly::RequestContext>
 Cpp2Worker::PerServiceMetadata::getBaseContextForRequest(
     const Cpp2Worker::PerServiceMetadata::FindMethodResult& findMethodResult)
     const {
-  using Result = std::shared_ptr<folly::RequestContext>;
   if (const auto* found =
           std::get_if<PerServiceMetadata::MetadataFound>(&findMethodResult)) {
     return processorFactory_.getBaseContextForRequest(found->metadata);

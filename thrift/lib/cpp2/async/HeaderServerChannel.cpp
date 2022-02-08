@@ -25,17 +25,11 @@
 #include <thrift/lib/cpp2/async/HeaderChannelTrait.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 
-using folly::IOBuf;
-using folly::IOBufQueue;
 using std::make_unique;
-using std::pair;
 using std::unique_ptr;
 using namespace apache::thrift::transport;
-using namespace apache::thrift;
-using apache::thrift::TApplicationException;
 using apache::thrift::protocol::PROTOCOL_TYPES;
 using apache::thrift::server::TServerObserver;
-using folly::EventBase;
 
 namespace apache {
 namespace thrift {

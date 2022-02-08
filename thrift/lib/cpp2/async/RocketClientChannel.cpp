@@ -22,7 +22,6 @@
 #include <fmt/core.h>
 #include <folly/ExceptionString.h>
 #include <folly/GLog.h>
-#include <folly/Likely.h>
 #include <folly/Memory.h>
 #include <folly/Range.h>
 #include <folly/Try.h>

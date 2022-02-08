@@ -20,7 +20,6 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 
 using namespace apache::thrift;
-using namespace apache::thrift::protocol;
 
 FOLLY_DISABLE_UNDEFINED_BEHAVIOR_SANITIZER("undefined")
 bool makeInvalidBool() {

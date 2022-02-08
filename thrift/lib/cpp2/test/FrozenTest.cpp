@@ -143,7 +143,6 @@ TEST(Frozen, IntHashMap) {
   thaw(fmap, tmap);
   EXPECT_EQ(umap, tmap);
   auto e = fmap.end();
-  using std::make_pair;
   EXPECT_TRUE(fmap.find(0) == e);
   EXPECT_TRUE(fmap.find(4) == e);
   EXPECT_TRUE(fmap.find(9) == e);
@@ -180,7 +179,6 @@ TEST(Frozen, StringHashMap) {
   thaw(fmap, tmap);
   EXPECT_EQ(umap, tmap);
   auto e = fmap.end();
-  using std::make_pair;
   EXPECT_TRUE(fmap.find("0") == e);
   EXPECT_TRUE(fmap.find("4") == e);
   EXPECT_TRUE(fmap.find("9") == e);
@@ -347,7 +345,6 @@ TEST(Frozen, VectorInt) {
   auto& fvect = *pfvect;
   auto b = fvect.begin();
   auto e = fvect.end();
-  using std::make_pair;
   EXPECT_EQ(fvect.front(), 1);
   EXPECT_EQ(fvect.back(), 5);
   EXPECT_EQ(fvect.size(), 4);

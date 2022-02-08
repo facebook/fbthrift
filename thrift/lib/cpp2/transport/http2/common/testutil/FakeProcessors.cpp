@@ -21,9 +21,6 @@
 namespace apache {
 namespace thrift {
 
-using folly::EventBase;
-using folly::IOBuf;
-
 void EchoProcessor::onThriftRequest(
     RequestRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> payload,

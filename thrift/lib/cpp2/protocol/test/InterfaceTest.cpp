@@ -26,7 +26,6 @@
 
 using namespace std;
 using namespace folly;
-using namespace folly::io;
 using namespace apache::thrift;
 
 namespace {

@@ -42,9 +42,7 @@ proxygen::HTTPException makeHTTPException(proxygen::ProxygenError err) {
 namespace apache {
 namespace thrift {
 
-using folly::EventBase;
 using folly::EventBaseManager;
-using folly::IOBuf;
 using proxygen::HTTPMessage;
 
 class ThriftRequestHandlerTest : public testing::Test {

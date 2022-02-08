@@ -19,7 +19,6 @@
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 
-using namespace ::testing;
 using namespace apache::thrift;
 
 namespace {

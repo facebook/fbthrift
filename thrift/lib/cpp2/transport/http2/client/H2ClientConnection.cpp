@@ -19,7 +19,6 @@
 #include <glog/logging.h>
 #include <folly/portability/GFlags.h>
 
-#include <folly/Likely.h>
 #include <proxygen/lib/http/codec/HTTP1xCodec.h>
 #include <proxygen/lib/http/codec/HTTP2Codec.h>
 #include <proxygen/lib/http/codec/TransportDirection.h>
@@ -42,9 +41,7 @@ using folly::EventBase;
 using proxygen::HTTPSessionBase;
 using proxygen::HTTPTransaction;
 using proxygen::HTTPUpstreamSession;
-using proxygen::SettingsList;
 using proxygen::WheelTimerInstance;
-using std::string;
 
 std::unique_ptr<ClientConnectionIf> H2ClientConnection::newHTTP2Connection(
     folly::AsyncTransport::UniquePtr transport,

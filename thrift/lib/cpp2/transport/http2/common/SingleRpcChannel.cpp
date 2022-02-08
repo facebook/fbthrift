@@ -40,18 +40,15 @@
 namespace apache {
 namespace thrift {
 
-using apache::thrift::protocol::TProtocolException;
 using apache::thrift::transport::TTransportException;
 using folly::EventBase;
 using folly::EventBaseManager;
-using folly::IOBuf;
 using proxygen::HTTPHeaderCode;
 using proxygen::HTTPMessage;
 using proxygen::HTTPMethod;
 using proxygen::HTTPTransaction;
 using proxygen::IOBufPrinter;
 using proxygen::ProxygenError;
-using std::map;
 using std::string;
 
 static constexpr folly::StringPiece kThriftContentType = "application/x-thrift";

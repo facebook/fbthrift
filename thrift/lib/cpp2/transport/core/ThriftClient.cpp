@@ -30,12 +30,9 @@
 namespace apache {
 namespace thrift {
 
-using apache::thrift::protocol::PROTOCOL_TYPES;
 using apache::thrift::transport::THeader;
 using apache::thrift::transport::TTransportException;
 using folly::EventBase;
-using folly::IOBuf;
-using folly::RequestContext;
 
 const std::chrono::milliseconds ThriftClient::kDefaultRpcTimeout =
     std::chrono::milliseconds(500);

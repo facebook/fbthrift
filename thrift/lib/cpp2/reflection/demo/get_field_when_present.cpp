@@ -22,7 +22,6 @@
 #include <thrift/lib/cpp2/reflection/demo/gen-cpp2/operations_fatal_types.h>
 #include <thrift/lib/cpp2/reflection/reflection.h>
 
-using namespace apache::thrift;
 using namespace static_reflection::demo;
 
 void print() {

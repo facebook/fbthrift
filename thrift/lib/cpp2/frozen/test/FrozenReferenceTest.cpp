@@ -21,11 +21,8 @@
 #include <thrift/lib/cpp2/frozen/FrozenUtil.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp2/Reference_layouts.h>
 
-using namespace apache::thrift;
 using namespace apache::thrift::frozen;
 using namespace apache::thrift::test;
-using namespace apache::thrift::util;
-using namespace testing;
 
 std::unique_ptr<Person> makePerson(const std::string& name) {
   auto p = std::make_unique<Person>();

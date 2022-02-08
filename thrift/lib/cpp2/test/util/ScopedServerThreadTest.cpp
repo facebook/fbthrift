@@ -30,9 +30,7 @@
 using namespace apache::thrift;
 using namespace apache::thrift::util;
 using namespace facebook::fb303;
-using namespace google;
 using namespace std;
-using namespace testing;
 
 class DummyServiceHandler
     : virtual public ::facebook::fb303::FacebookBase2DeprecationMigration {

@@ -20,7 +20,6 @@
 #include <thrift/lib/cpp2/test/gen-cpp2/HandlerGeneric.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
-using namespace ::testing;
 using namespace apache::thrift;
 
 TEST(ClientTest, ReadHeaderAvailableToEventProcessor) {

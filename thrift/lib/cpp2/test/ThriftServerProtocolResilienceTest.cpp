@@ -22,11 +22,9 @@
 #include <folly/portability/GTest.h>
 
 using namespace std;
-using namespace std::chrono;
 using namespace folly;
 using namespace apache::thrift;
 using namespace apache::thrift::test;
-using namespace apache::thrift::transport;
 
 THRIFT_FLAG_DECLARE_bool(server_header_reject_http);
 

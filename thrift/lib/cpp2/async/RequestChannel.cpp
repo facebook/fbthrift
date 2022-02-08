@@ -16,9 +16,6 @@
 
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 
-#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
-#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-
 namespace apache {
 namespace thrift {
 void RequestChannel::sendRequestResponse(

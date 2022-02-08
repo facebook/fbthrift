@@ -18,7 +18,6 @@
 
 #include <gtest/gtest.h>
 
-using namespace ::testing;
 using namespace apache::thrift;
 
 TEST(ManagedStringViewTest, Basic) {

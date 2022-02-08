@@ -22,8 +22,6 @@
 
 using namespace apache::thrift;
 using namespace apache::thrift::test;
-using folly::fbstring;
-using folly::StringPiece;
 using std::string;
 using std::vector;
 

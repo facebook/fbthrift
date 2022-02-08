@@ -18,12 +18,7 @@
 
 #include <folly/io/Cursor.h>
 
-using apache::thrift::transport::THeader;
-using folly::IOBuf;
-using folly::IOBufQueue;
-using folly::io::Cursor;
 using folly::io::RWPrivateCursor;
-using std::make_shared;
 using std::make_unique;
 using std::shared_ptr;
 using std::unique_ptr;

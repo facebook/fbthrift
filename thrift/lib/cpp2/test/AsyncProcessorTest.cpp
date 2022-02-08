@@ -49,9 +49,6 @@ namespace apache::thrift::test {
 
 using MethodMetadata = AsyncProcessorFactory::MethodMetadata;
 using MethodMetadataMap = AsyncProcessorFactory::MethodMetadataMap;
-using WildcardMethodMetadata = AsyncProcessorFactory::WildcardMethodMetadata;
-using WildcardMethodMetadataMap =
-    AsyncProcessorFactory::WildcardMethodMetadataMap;
 using CreateMethodMetadataResult =
     AsyncProcessorFactory::CreateMethodMetadataResult;
 

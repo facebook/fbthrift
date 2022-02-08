@@ -53,11 +53,7 @@ THRIFT_PLUGGABLE_FUNC_REGISTER(
 
 } // namespace detail
 
-using namespace apache::thrift::protocol;
-using namespace apache::thrift::server;
-using namespace apache::thrift::transport;
 using namespace std;
-using std::shared_ptr;
 
 const size_t BaseThriftServer::T_ASYNC_DEFAULT_WORKER_THREADS =
     std::thread::hardware_concurrency();

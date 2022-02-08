@@ -24,14 +24,10 @@
 #include <thrift/lib/cpp2/protocol/test/gen-cpp2/Module_types.h>
 
 using namespace std;
-using namespace folly;
 using namespace apache::thrift;
 using namespace apache::thrift::test;
 
 namespace {
-
-using CompactSerializer =
-    Serializer<CompactProtocolReader, CompactProtocolWriter>;
 
 class F14RoundTripTest : public testing::Test {};
 

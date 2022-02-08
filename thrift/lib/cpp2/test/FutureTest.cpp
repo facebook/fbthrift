@@ -210,8 +210,6 @@ TEST(ThriftServer, FutureClientTest) {
 }
 
 TEST(ThriftServer, SemiFutureClientTest) {
-  using std::chrono::steady_clock;
-
   auto handler = std::make_shared<TestInterface>();
   apache::thrift::ScopedServerInterfaceThread runner(handler);
 

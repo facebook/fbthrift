@@ -43,7 +43,6 @@ using namespace ::testing;
 using MethodMetadata = AsyncProcessorFactory::MethodMetadata;
 using MethodMetadataMap = AsyncProcessorFactory::MethodMetadataMap;
 using MetadataNotImplemented = AsyncProcessorFactory::MetadataNotImplemented;
-using WildcardMethodMetadata = AsyncProcessorFactory::WildcardMethodMetadata;
 using WildcardMethodMetadataMap =
     AsyncProcessorFactory::WildcardMethodMetadataMap;
 using CreateMethodMetadataResult =

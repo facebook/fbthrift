@@ -27,7 +27,6 @@ namespace {
 using namespace apache::thrift;
 using namespace apache::thrift::frozen;
 using namespace apache::thrift::test;
-using namespace apache::thrift::util;
 using namespace testing;
 using Fixed8 = apache::thrift::frozen::FixedSizeString<8>;
 using Fixed2 = apache::thrift::frozen::FixedSizeString<2>;
@@ -498,7 +497,6 @@ TEST(Frozen, RangeTrivialRange) {
 }
 
 TEST(Frozen, PaddingLayout) {
-  using std::pair;
   using std::vector;
   // The 'distance' field of the vector<double> is small and sensitive to
   // padding adjustments. If actual distances are returned in

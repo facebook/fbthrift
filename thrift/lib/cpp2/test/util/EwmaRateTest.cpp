@@ -22,8 +22,6 @@
 
 #include <thrift/lib/cpp2/test/util/FakeClock.h>
 
-using namespace apache::thrift;
-
 namespace apache {
 namespace thrift {
 

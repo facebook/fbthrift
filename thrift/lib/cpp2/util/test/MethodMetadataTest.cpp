@@ -17,7 +17,6 @@
 #include <gtest/gtest.h>
 #include <thrift/lib/cpp2/util/MethodMetadata.h>
 
-using namespace ::testing;
 using namespace apache::thrift;
 
 TEST(MethodMetadataTest, Operations) {

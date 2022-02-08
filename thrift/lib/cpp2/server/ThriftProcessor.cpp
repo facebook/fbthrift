@@ -35,9 +35,6 @@
 namespace apache {
 namespace thrift {
 
-using apache::thrift::concurrency::ThreadManager;
-using folly::IOBuf;
-
 ThriftProcessor::ThriftProcessor(ThriftServer& server) : server_(server) {}
 
 void ThriftProcessor::onThriftRequest(

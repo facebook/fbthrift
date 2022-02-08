@@ -28,19 +28,11 @@
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <wangle/ssl/SSLContextConfig.h>
 
-using folly::IOBuf;
-using folly::IOBufQueue;
-using folly::RequestContext;
-using std::make_unique;
-using std::pair;
-using std::unique_ptr;
-using namespace apache::thrift::transport;
 using apache::thrift::transport::THeader;
-using folly::EventBase;
-using HResClock = std::chrono::high_resolution_clock;
-using Us = std::chrono::microseconds;
 using apache::thrift::transport::TTransportException;
+using folly::EventBase;
 using proxygen::WheelTimerInstance;
+using std::unique_ptr;
 
 namespace apache {
 namespace thrift {

@@ -24,10 +24,8 @@
 
 DEFINE_bool(write_test_cases, false, "Write files, too");
 
-using namespace apache::thrift;
 using namespace apache::thrift::frozen;
 using namespace apache::thrift::test;
-using namespace apache::thrift::util;
 
 class CompatibilityTest : public ::testing::TestWithParam<Case> {
  public:

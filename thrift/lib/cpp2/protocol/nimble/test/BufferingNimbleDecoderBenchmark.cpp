@@ -22,7 +22,6 @@
 #include <thrift/lib/cpp2/protocol/nimble/test/BufferingEncoderDecoderBenchmarksCommon.h>
 
 using folly::BenchmarkSuspender;
-using folly::runBenchmarks;
 
 namespace apache {
 namespace thrift {

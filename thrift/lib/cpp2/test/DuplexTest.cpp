@@ -41,7 +41,6 @@ using namespace apache::thrift;
 using namespace apache::thrift::test;
 using namespace apache::thrift::util;
 using namespace folly;
-using std::make_shared;
 using std::shared_ptr;
 using std::unique_ptr;
 

@@ -49,7 +49,6 @@ using namespace apache::thrift;
 using namespace apache::thrift::concurrency;
 using namespace apache::thrift::test;
 using namespace std::literals::chrono_literals;
-using namespace ::testing;
 
 class InstrumentationRequestPayload : public folly::RequestData {
  public:

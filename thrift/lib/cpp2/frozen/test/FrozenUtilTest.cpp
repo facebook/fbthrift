@@ -22,7 +22,6 @@
 
 using namespace apache::thrift;
 using namespace frozen;
-using namespace util;
 
 TEST(FrozenUtil, FreezeAndUse) {
   auto file = freezeToTempFile(std::string("hello"));

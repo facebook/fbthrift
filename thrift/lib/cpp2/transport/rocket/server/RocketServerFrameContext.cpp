@@ -18,7 +18,6 @@
 
 #include <utility>
 
-#include <folly/Likely.h>
 #include <folly/io/async/EventBase.h>
 
 #include <thrift/lib/cpp2/transport/rocket/Types.h>

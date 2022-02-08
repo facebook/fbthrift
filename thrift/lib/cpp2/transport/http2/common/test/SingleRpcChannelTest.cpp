@@ -34,7 +34,6 @@
 namespace apache {
 namespace thrift {
 
-using folly::IOBuf;
 using std::string;
 using std::unordered_map;
 

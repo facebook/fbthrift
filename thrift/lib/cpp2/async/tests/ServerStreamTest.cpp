@@ -28,8 +28,6 @@
 namespace apache {
 namespace thrift {
 
-using namespace ::testing;
-
 class StreamElementEncoderStub final
     : public apache::thrift::detail::StreamElementEncoder<int> {
   folly::Try<StreamPayload> operator()(int&& i) override {

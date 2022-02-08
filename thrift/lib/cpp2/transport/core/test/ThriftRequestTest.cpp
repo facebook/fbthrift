@@ -22,7 +22,6 @@
 #include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>
 
 using namespace apache::thrift;
-using namespace apache::thrift::detail;
 
 namespace apache::thrift::detail {
 THRIFT_PLUGGABLE_FUNC_SET(

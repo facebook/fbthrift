@@ -40,13 +40,7 @@ THRIFT_FLAG_DEFINE_int64(monitoring_over_header_logging_sample_rate, 1'000'000);
 namespace apache {
 namespace thrift {
 
-using namespace apache::thrift::protocol;
-using namespace apache::thrift::server;
-using namespace apache::thrift::transport;
-using namespace apache::thrift::concurrency;
-using namespace apache::thrift::async;
 using namespace std;
-using apache::thrift::TApplicationException;
 
 namespace {
 // This is a SendCallback used for transport upgrade from header to rocket

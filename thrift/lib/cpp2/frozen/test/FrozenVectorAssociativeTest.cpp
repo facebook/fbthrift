@@ -25,7 +25,6 @@
 using namespace apache::thrift;
 using namespace apache::thrift::frozen;
 using namespace apache::thrift::test;
-using namespace apache::thrift::util;
 
 TEST(FrozenVectorTypes, VectorAsMap) {
   VectorAsMap<int, int> dm;

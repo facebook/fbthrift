@@ -25,7 +25,6 @@
 using namespace cpp2;
 using namespace apache::thrift;
 using namespace apache::thrift::util;
-using apache::thrift::transport::TTransportException;
 
 class PresultServiceInterface : public PresultServiceSvIf {
  public:

@@ -115,20 +115,11 @@ namespace {
 namespace apache {
 namespace thrift {
 
-using namespace apache::thrift::protocol;
 using namespace apache::thrift::server;
-using namespace apache::thrift::transport;
-using namespace apache::thrift::async;
 using namespace std;
-using apache::thrift::concurrency::PosixThreadFactory;
 using apache::thrift::concurrency::PriorityThreadManager;
 using apache::thrift::concurrency::Runnable;
-using apache::thrift::concurrency::ThreadFactory;
 using apache::thrift::concurrency::ThreadManager;
-using folly::IOThreadPoolExecutor;
-using folly::NamedThreadFactory;
-using RequestSnapshot = ThriftServer::RequestSnapshot;
-using std::shared_ptr;
 using wangle::TLSCredProcessor;
 
 namespace {

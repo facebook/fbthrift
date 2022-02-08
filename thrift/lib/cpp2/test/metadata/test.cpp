@@ -33,8 +33,6 @@ namespace {
 using apache::thrift::metadata::ThriftConstStruct;
 using apache::thrift::metadata::ThriftConstValue;
 using apache::thrift::metadata::ThriftConstValuePair;
-using apache::thrift::metadata::ThriftEnum;
-using apache::thrift::metadata::ThriftField;
 using apache::thrift::metadata::ThriftMetadata;
 using apache::thrift::metadata::ThriftPrimitiveType;
 using apache::thrift::metadata::ThriftServiceMetadataResponse;

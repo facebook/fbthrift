@@ -21,7 +21,6 @@
 namespace apache {
 namespace thrift {
 
-using folly::IOBuf;
 using proxygen::HTTPMessage;
 using proxygen::ProxygenError;
 using proxygen::UpgradeProtocol;

@@ -36,17 +36,10 @@ THRIFT_FLAG_DEFINE_int64(raw_client_rocket_upgrade_timeout_ms, 2000);
 THRIFT_FLAG_DEFINE_bool(client_header_coerce_framed_to_header, true);
 THRIFT_FLAG_DEFINE_bool(client_header_coerce_unframed_to_header, true);
 
-using folly::IOBuf;
-using folly::IOBufQueue;
 using std::make_unique;
-using std::pair;
 using std::unique_ptr;
-using namespace std::chrono_literals;
 using namespace apache::thrift::transport;
 using folly::EventBase;
-using folly::RequestContext;
-using HResClock = std::chrono::high_resolution_clock;
-using Us = std::chrono::microseconds;
 
 namespace apache {
 namespace thrift {

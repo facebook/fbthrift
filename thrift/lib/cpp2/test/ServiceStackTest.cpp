@@ -22,7 +22,6 @@
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
 using namespace std;
-using namespace folly;
 using namespace apache::thrift;
 using namespace apache::thrift::test;
 

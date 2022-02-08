@@ -21,7 +21,6 @@
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/async/tests/util/Util.h>
 
-using namespace testutil::testservice;
 using namespace apache::thrift;
 
 template <typename Service>

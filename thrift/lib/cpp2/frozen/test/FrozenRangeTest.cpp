@@ -23,7 +23,6 @@
 namespace apache {
 namespace thrift {
 using namespace frozen;
-using namespace util;
 
 template <class T>
 class FrozenRange : public ::testing::Test {};

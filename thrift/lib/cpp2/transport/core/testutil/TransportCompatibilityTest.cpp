@@ -59,7 +59,6 @@ namespace thrift {
 
 using namespace async;
 using namespace testing;
-using namespace apache::thrift;
 using namespace apache::thrift::transport;
 using namespace testutil::testservice;
 
