@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import com.google.common.collect.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -588,114 +589,142 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       FIELD_METADATA.put(28, M_LIST_LIST_FIELD_DESC);
     }
     
+    
     @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
     public String getMyStringField() { return myStringField; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
     public test.fixtures.complex_struct.MyDataItem getMyDataField() { return myDataField; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="myEnum", requiredness=Requiredness.NONE)
     public test.fixtures.complex_struct.MyEnum getMyEnum() { return myEnum; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=5, name="MyBoolField", requiredness=Requiredness.NONE)
     public boolean isMyBoolField() { return myBoolField; }
     
     
+    
     @com.facebook.swift.codec.ThriftField(value=6, name="MyByteField", requiredness=Requiredness.NONE)
     public byte getMyByteField() { return myByteField; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=7, name="MyShortField", requiredness=Requiredness.NONE)
     public short getMyShortField() { return myShortField; }
     
     
+    
     @com.facebook.swift.codec.ThriftField(value=8, name="MyLongField", requiredness=Requiredness.NONE)
     public long getMyLongField() { return myLongField; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=9, name="MyDoubleField", requiredness=Requiredness.NONE)
     public double getMyDoubleField() { return myDoubleField; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=10, name="lDouble", requiredness=Requiredness.NONE)
     public List<Double> getLDouble() { return lDouble; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=11, name="lShort", requiredness=Requiredness.NONE)
     public List<Short> getLShort() { return lShort; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=12, name="lInteger", requiredness=Requiredness.NONE)
     public List<Integer> getLInteger() { return lInteger; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=13, name="lLong", requiredness=Requiredness.NONE)
     public List<Long> getLLong() { return lLong; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=14, name="lString", requiredness=Requiredness.NONE)
     public List<String> getLString() { return lString; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=15, name="lBool", requiredness=Requiredness.NONE)
     public List<Boolean> getLBool() { return lBool; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=16, name="lByte", requiredness=Requiredness.NONE)
     public List<Byte> getLByte() { return lByte; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=17, name="mShortString", requiredness=Requiredness.NONE)
     public Map<Short, String> getMShortString() { return mShortString; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=18, name="mIntegerString", requiredness=Requiredness.NONE)
     public Map<Integer, String> getMIntegerString() { return mIntegerString; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=19, name="mStringMyStruct", requiredness=Requiredness.NONE)
     public Map<String, test.fixtures.complex_struct.MyStruct> getMStringMyStruct() { return mStringMyStruct; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=20, name="mStringBool", requiredness=Requiredness.NONE)
     public Map<String, Boolean> getMStringBool() { return mStringBool; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=21, name="mIntegerInteger", requiredness=Requiredness.NONE)
     public Map<Integer, Integer> getMIntegerInteger() { return mIntegerInteger; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=22, name="mIntegerBool", requiredness=Requiredness.NONE)
     public Map<Integer, Boolean> getMIntegerBool() { return mIntegerBool; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=23, name="sShort", requiredness=Requiredness.NONE)
     public Set<Short> getSShort() { return sShort; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=24, name="sMyStruct", requiredness=Requiredness.NONE)
     public Set<test.fixtures.complex_struct.MyStruct> getSMyStruct() { return sMyStruct; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=25, name="sLong", requiredness=Requiredness.NONE)
     public Set<Long> getSLong() { return sLong; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=26, name="sString", requiredness=Requiredness.NONE)
     public Set<String> getSString() { return sString; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=27, name="sByte", requiredness=Requiredness.NONE)
     public Set<Byte> getSByte() { return sByte; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=28, name="mListList", requiredness=Requiredness.NONE)
     public Map<List<Integer>, List<Integer>> getMListList() { return mListList; }
     

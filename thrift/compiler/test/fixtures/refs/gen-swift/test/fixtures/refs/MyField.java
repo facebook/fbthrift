@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import com.google.common.collect.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -227,36 +228,45 @@ public final class MyField implements com.facebook.thrift.payload.ThriftSerializ
       FIELD_METADATA.put(9, REQ_STR_VALUE_FIELD_DESC);
     }
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="opt_value", requiredness=Requiredness.OPTIONAL)
     public Long getOptValue() { return optValue; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=2, name="value", requiredness=Requiredness.NONE)
     public long getValue() { return value; }
     
     
+    
     @com.facebook.swift.codec.ThriftField(value=3, name="req_value", requiredness=Requiredness.REQUIRED)
     public long getReqValue() { return reqValue; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="opt_enum_value", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.refs.MyEnum getOptEnumValue() { return optEnumValue; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="enum_value", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyEnum getEnumValue() { return enumValue; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=6, name="req_enum_value", requiredness=Requiredness.REQUIRED)
     public test.fixtures.refs.MyEnum getReqEnumValue() { return reqEnumValue; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=7, name="opt_str_value", requiredness=Requiredness.OPTIONAL)
     public String getOptStrValue() { return optStrValue; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=8, name="str_value", requiredness=Requiredness.NONE)
     public String getStrValue() { return strValue; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=9, name="req_str_value", requiredness=Requiredness.REQUIRED)

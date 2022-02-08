@@ -11,6 +11,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -90,9 +91,11 @@ public final class CustomFieldNames extends org.apache.thrift.TBaseException imp
     }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="error_message", requiredness=Requiredness.NONE)
     public String getErrorMessage() { return errorMessage; }
         
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="internal_error_message", requiredness=Requiredness.NONE)
     public String getInternalGreatMessage() { return internalGreatMessage; }
         

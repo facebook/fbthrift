@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import com.google.common.collect.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -132,18 +133,22 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
       FIELD_METADATA.put(4, REGULAR_BINARY_FIELD_DESC);
     }
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
     public com.foo.FastLongStringMap getLsMap() { return lsMap; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
     public com.foo.FastIntObjectMap<com.foo.FastIntLongMap> getIoMap() { return ioMap; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="binaryMap", requiredness=Requiredness.NONE)
     public Map<String, byte[]> getBinaryMap() { return binaryMap; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="regularBinary", requiredness=Requiredness.NONE)
     public Map<String, byte[]> getRegularBinary() { return regularBinary; }
     

@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import com.google.common.collect.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -172,26 +173,32 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       FIELD_METADATA.put(6, PASSWORD_FIELD_DESC);
     }
     
+    
     @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
     public long getIntField() { return intField; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
     public String getStringField() { return stringField; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE)
     public String getDetailField() { return detailField; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE)
     public com.foo.FastIntLongMap getDetailMap() { return detailMap; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="titi", requiredness=Requiredness.NONE)
     public String getToto() { return toto; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=6, name="password", requiredness=Requiredness.NONE)
     public String getPassword() { return password; }
     

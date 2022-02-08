@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import com.google.common.collect.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -132,16 +133,20 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       FIELD_METADATA.put(4, MY_NUMBERS_FIELD_DESC);
     }
     
+    
     @com.facebook.swift.codec.ThriftField(value=1, name="myInteger", requiredness=Requiredness.REQUIRED)
     public int getMyInteger() { return myInteger; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="myString", requiredness=Requiredness.OPTIONAL)
     public String getMyString() { return myString; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="myBools", requiredness=Requiredness.NONE)
     public List<Boolean> getMyBools() { return myBools; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=4, name="myNumbers", requiredness=Requiredness.REQUIRED)

@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import com.google.common.collect.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -113,14 +114,17 @@ public final class StructWithUnion implements com.facebook.thrift.payload.Thrift
       FIELD_METADATA.put(3, F_FIELD_DESC);
     }
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="u", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyUnion getU() { return u; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=2, name="aDouble", requiredness=Requiredness.NONE)
     public double getADouble() { return aDouble; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="f", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyField getF() { return f; }
     

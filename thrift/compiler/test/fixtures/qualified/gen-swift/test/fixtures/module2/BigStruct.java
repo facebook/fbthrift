@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import com.google.common.collect.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -94,8 +95,10 @@ public final class BigStruct implements com.facebook.thrift.payload.ThriftSerial
       FIELD_METADATA.put(2, ID_FIELD_DESC);
     }
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="s", requiredness=Requiredness.NONE)
     public test.fixtures.module2.Struct getS() { return s; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=2, name="id", requiredness=Requiredness.NONE)

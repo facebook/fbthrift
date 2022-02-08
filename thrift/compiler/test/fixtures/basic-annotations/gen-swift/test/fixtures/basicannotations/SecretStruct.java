@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import com.google.common.collect.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -96,10 +97,12 @@ public final class SecretStruct implements com.facebook.thrift.payload.ThriftSer
       FIELD_METADATA.put(2, PASSWORD_FIELD_DESC);
     }
     
+    
     @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE)
     public long getId() { return id; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="password", requiredness=Requiredness.NONE)
     public String getPassword() { return password; }
     

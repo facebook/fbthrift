@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import com.google.common.collect.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -290,6 +291,7 @@ static {
       FIELD_METADATA.put(12, MY_EMPTY_MAP_LIST_FIELD_DESC);
     }
     
+    
     @com.facebook.swift.codec.ThriftField(value=1, name="myInt16", requiredness=Requiredness.NONE)
     public short getMyInt16() { return myInt16; }
     
@@ -298,6 +300,7 @@ static {
         this.myInt16 = myInt16;
         return this;
     }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=2, name="myInt32", requiredness=Requiredness.NONE)
@@ -310,6 +313,7 @@ static {
     }
     
     
+    
     @com.facebook.swift.codec.ThriftField(value=3, name="myInt64", requiredness=Requiredness.NONE)
     public long getMyInt64() { return myInt64; }
     
@@ -320,6 +324,7 @@ static {
     }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="myString", requiredness=Requiredness.NONE)
     public String getMyString() { return myString; }
     
@@ -328,6 +333,7 @@ static {
         this.myString = myString;
         return this;
     }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=5, name="myBool", requiredness=Requiredness.NONE)
@@ -340,6 +346,7 @@ static {
     }
     
     
+    
     @com.facebook.swift.codec.ThriftField(value=6, name="myDouble", requiredness=Requiredness.NONE)
     public double getMyDouble() { return myDouble; }
     
@@ -350,6 +357,7 @@ static {
     }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=7, name="mySet", requiredness=Requiredness.NONE)
     public Set<String> getMySet() { return mySet; }
     
@@ -360,6 +368,7 @@ static {
     }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=8, name="MyDataItem", requiredness=Requiredness.NONE)
     public test.fixtures.basic_swift_bean.MyDataItem getMyDataItem() { return myDataItem; }
     
@@ -370,6 +379,7 @@ static {
     }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=9, name="myList", requiredness=Requiredness.NONE)
     public List<test.fixtures.basic_swift_bean.MyDataItem> getMyList() { return myList; }
     
@@ -380,6 +390,7 @@ static {
     }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=10, name="myMapList", requiredness=Requiredness.NONE)
     public Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> getMyMapList() { return myMapList; }
     
@@ -390,6 +401,7 @@ static {
     }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=11, name="myEmptyList", requiredness=Requiredness.NONE)
     public List<test.fixtures.basic_swift_bean.MyDataItem> getMyEmptyList() { return myEmptyList; }
     
@@ -400,6 +412,7 @@ static {
     }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=12, name="myEmptyMapList", requiredness=Requiredness.NONE)
     public Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> getMyEmptyMapList() { return myEmptyMapList; }
     

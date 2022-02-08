@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import com.google.common.collect.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -246,42 +247,52 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
       FIELD_METADATA.put(10, VEHICLES_FIELD_DESC);
     }
     
+    
     @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE)
     public long getId() { return id; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
     public String getName() { return name; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="age", requiredness=Requiredness.OPTIONAL)
     public Short getAge() { return age; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="address", requiredness=Requiredness.OPTIONAL)
     public String getAddress() { return address; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="favoriteColor", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.optionals.Color getFavoriteColor() { return favoriteColor; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=6, name="friends", requiredness=Requiredness.OPTIONAL)
     public Set<Long> getFriends() { return friends; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=7, name="bestFriend", requiredness=Requiredness.OPTIONAL)
     public Long getBestFriend() { return bestFriend; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=8, name="petNames", requiredness=Requiredness.OPTIONAL)
     public Map<test.fixtures.optionals.Animal, String> getPetNames() { return petNames; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=9, name="afraidOfAnimal", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.optionals.Animal getAfraidOfAnimal() { return afraidOfAnimal; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=10, name="vehicles", requiredness=Requiredness.OPTIONAL)
     public List<test.fixtures.optionals.Vehicle> getVehicles() { return vehicles; }
     

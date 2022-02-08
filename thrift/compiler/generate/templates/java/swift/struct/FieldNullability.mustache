@@ -14,11 +14,4 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}
-
-{{> struct/FieldNullability}}
-
-{{> ThriftFieldAnnotation}}
-
-public {{> FieldType}} {{> GetterName}}() { return {{field:javaName}}; }
-{{! terminate with newline }}
+}}{{#field:optional?}}@Nullable{{/field:optional?}}{{^field:optional?}}{{^field:required?}}{{^field:isPrimitive?}}@Nullable{{/field:isPrimitive?}}{{/field:required?}}{{/field:optional?}}

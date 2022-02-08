@@ -11,6 +11,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -90,9 +91,11 @@ public final class ReqXcep extends org.apache.thrift.TBaseException implements c
     }
     
     
+    
     @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED)
     public String getMessage() { return message; }
         
+    
     @com.facebook.swift.codec.ThriftField(value=2, name="errorCode", requiredness=Requiredness.REQUIRED)
     public int getErrorCode() { return errorCode; }
     

@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import com.google.common.collect.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -84,6 +85,7 @@ static {
       FIELD_METADATA.put(2, STRING_FIELD_FIELD_DESC);
     }
     
+    
     @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
     public long getIntField() { return intField; }
     
@@ -94,6 +96,7 @@ static {
     }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
     public String getStringField() { return stringField; }
     

@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import com.google.common.collect.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -134,18 +135,22 @@ public final class SomeStruct implements com.facebook.thrift.payload.ThriftSeria
       FIELD_METADATA.put(4, TAGS_FIELD_DESC);
     }
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="reasonable", requiredness=Requiredness.NONE)
     public test.fixtures.enums.Metasyntactic getReasonable() { return reasonable; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="fine", requiredness=Requiredness.NONE)
     public test.fixtures.enums.Metasyntactic getFine() { return fine; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="questionable", requiredness=Requiredness.NONE)
     public test.fixtures.enums.Metasyntactic getQuestionable() { return questionable; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="tags", requiredness=Requiredness.NONE)
     public Set<Integer> getTags() { return tags; }
     

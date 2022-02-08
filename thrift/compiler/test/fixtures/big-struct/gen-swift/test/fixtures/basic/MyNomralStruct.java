@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import com.google.common.collect.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -626,120 +627,150 @@ public final class MyNomralStruct implements com.facebook.thrift.payload.ThriftS
       FIELD_METADATA.put(30, MY_DOUBLE_FIELD30_FIELD_DESC);
     }
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="msg1", requiredness=Requiredness.NONE)
     public String getMsg1() { return msg1; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="msg2", requiredness=Requiredness.NONE)
     public String getMsg2() { return msg2; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="msg3", requiredness=Requiredness.NONE)
     public String getMsg3() { return msg3; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="msg4", requiredness=Requiredness.NONE)
     public String getMsg4() { return msg4; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="msg5", requiredness=Requiredness.NONE)
     public String getMsg5() { return msg5; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=6, name="msg6", requiredness=Requiredness.NONE)
     public String getMsg6() { return msg6; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=7, name="msg7", requiredness=Requiredness.NONE)
     public String getMsg7() { return msg7; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=8, name="msg8", requiredness=Requiredness.NONE)
     public String getMsg8() { return msg8; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=9, name="msg9", requiredness=Requiredness.NONE)
     public String getMsg9() { return msg9; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=10, name="myIntField10", requiredness=Requiredness.NONE)
     public int getMyIntField10() { return myIntField10; }
     
     
+    
     @com.facebook.swift.codec.ThriftField(value=11, name="myIntField11", requiredness=Requiredness.NONE)
     public int getMyIntField11() { return myIntField11; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=12, name="myIntField12", requiredness=Requiredness.NONE)
     public int getMyIntField12() { return myIntField12; }
     
     
+    
     @com.facebook.swift.codec.ThriftField(value=13, name="myIntField13", requiredness=Requiredness.NONE)
     public int getMyIntField13() { return myIntField13; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=14, name="myIntField14", requiredness=Requiredness.NONE)
     public int getMyIntField14() { return myIntField14; }
     
     
+    
     @com.facebook.swift.codec.ThriftField(value=15, name="myIntField15", requiredness=Requiredness.NONE)
     public int getMyIntField15() { return myIntField15; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=16, name="myIntField16", requiredness=Requiredness.NONE)
     public int getMyIntField16() { return myIntField16; }
     
     
+    
     @com.facebook.swift.codec.ThriftField(value=17, name="myIntField17", requiredness=Requiredness.NONE)
     public int getMyIntField17() { return myIntField17; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=18, name="myIntField18", requiredness=Requiredness.NONE)
     public int getMyIntField18() { return myIntField18; }
     
     
+    
     @com.facebook.swift.codec.ThriftField(value=19, name="myIntField19", requiredness=Requiredness.NONE)
     public int getMyIntField19() { return myIntField19; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=20, name="myIntField20", requiredness=Requiredness.NONE)
     public int getMyIntField20() { return myIntField20; }
     
     
+    
     @com.facebook.swift.codec.ThriftField(value=21, name="myDoubleField21", requiredness=Requiredness.NONE)
     public double getMyDoubleField21() { return myDoubleField21; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=22, name="myDoubleField22", requiredness=Requiredness.NONE)
     public double getMyDoubleField22() { return myDoubleField22; }
     
     
+    
     @com.facebook.swift.codec.ThriftField(value=23, name="myDoubleField23", requiredness=Requiredness.NONE)
     public double getMyDoubleField23() { return myDoubleField23; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=24, name="myDoubleField24", requiredness=Requiredness.NONE)
     public double getMyDoubleField24() { return myDoubleField24; }
     
     
+    
     @com.facebook.swift.codec.ThriftField(value=25, name="myDoubleField25", requiredness=Requiredness.NONE)
     public double getMyDoubleField25() { return myDoubleField25; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=26, name="myDoubleField26", requiredness=Requiredness.NONE)
     public double getMyDoubleField26() { return myDoubleField26; }
     
     
+    
     @com.facebook.swift.codec.ThriftField(value=27, name="myDoubleField27", requiredness=Requiredness.NONE)
     public double getMyDoubleField27() { return myDoubleField27; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=28, name="myDoubleField28", requiredness=Requiredness.NONE)
     public double getMyDoubleField28() { return myDoubleField28; }
     
     
+    
     @com.facebook.swift.codec.ThriftField(value=29, name="myDoubleField29", requiredness=Requiredness.NONE)
     public double getMyDoubleField29() { return myDoubleField29; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=30, name="myDoubleField30", requiredness=Requiredness.NONE)

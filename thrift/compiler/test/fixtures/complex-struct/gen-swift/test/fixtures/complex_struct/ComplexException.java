@@ -11,6 +11,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -158,21 +159,27 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
     }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.NONE)
     public String getMessage() { return message; }
         
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="listStrings", requiredness=Requiredness.NONE)
     public List<String> getListStrings() { return listStrings; }
         
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="errorEnum", requiredness=Requiredness.NONE)
     public test.fixtures.complex_struct.MyEnum getErrorEnum() { return errorEnum; }
         
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="unionError", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.complex_struct.MyUnion getUnionError() { return unionError; }
         
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="structError", requiredness=Requiredness.NONE)
     public test.fixtures.complex_struct.MyStruct getStructError() { return structError; }
         
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=6, name="lsMap", requiredness=Requiredness.NONE)
     public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getLsMap() { return lsMap; }
     

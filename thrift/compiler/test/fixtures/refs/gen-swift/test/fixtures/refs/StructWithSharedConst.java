@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import com.google.common.collect.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -113,12 +114,15 @@ public final class StructWithSharedConst implements com.facebook.thrift.payload.
       FIELD_METADATA.put(3, REQ_SHARED_CONST_FIELD_DESC);
     }
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="opt_shared_const", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.refs.MyField getOptSharedConst() { return optSharedConst; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="shared_const", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyField getSharedConst() { return sharedConst; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED)

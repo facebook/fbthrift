@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import com.google.common.collect.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -113,12 +114,15 @@ public final class StructWithRefTypeShared implements com.facebook.thrift.payloa
       FIELD_METADATA.put(3, REQ_FIELD_FIELD_DESC);
     }
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
     public test.fixtures.refs.Empty getDefField() { return defField; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="opt_field", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.refs.Empty getOptField() { return optField; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=3, name="req_field", requiredness=Requiredness.REQUIRED)

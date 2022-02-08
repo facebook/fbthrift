@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import com.google.common.collect.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -189,30 +190,37 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       FIELD_METADATA.put(7, MY_ENUM_FIELD_DESC);
     }
     
+    
     @com.facebook.swift.codec.ThriftField(value=2, name="major", requiredness=Requiredness.NONE)
     public long getMajor() { return major; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="package", requiredness=Requiredness.NONE)
     public String getPackage() { return _package; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="annotation_with_quote", requiredness=Requiredness.NONE)
     public String getAnnotationWithQuote() { return annotationWithQuote; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="class_", requiredness=Requiredness.NONE)
     public String getClass_() { return class_; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="annotation_with_trailing_comma", requiredness=Requiredness.NONE)
     public String getAnnotationWithTrailingComma() { return annotationWithTrailingComma; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=6, name="empty_annotations", requiredness=Requiredness.NONE)
     public String getEmptyAnnotations() { return emptyAnnotations; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=7, name="my_enum", requiredness=Requiredness.NONE)
     public test.fixtures.basicannotations.MyEnum getMyEnum() { return myEnum; }
     

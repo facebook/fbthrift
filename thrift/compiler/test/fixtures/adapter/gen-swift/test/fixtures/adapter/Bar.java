@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import com.google.common.collect.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -170,26 +171,32 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
       FIELD_METADATA.put(6, OPTIONAL_UNION_FIELD_FIELD_DESC);
     }
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="structField", requiredness=Requiredness.NONE)
     public test.fixtures.adapter.Foo getStructField() { return structField; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="optionalStructField", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.adapter.Foo getOptionalStructField() { return optionalStructField; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="structListField", requiredness=Requiredness.NONE)
     public List<test.fixtures.adapter.Foo> getStructListField() { return structListField; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="optionalStructListField", requiredness=Requiredness.OPTIONAL)
     public List<test.fixtures.adapter.Foo> getOptionalStructListField() { return optionalStructListField; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="unionField", requiredness=Requiredness.NONE)
     public test.fixtures.adapter.Baz getUnionField() { return unionField; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=6, name="optionalUnionField", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.adapter.Baz getOptionalUnionField() { return optionalUnionField; }
     

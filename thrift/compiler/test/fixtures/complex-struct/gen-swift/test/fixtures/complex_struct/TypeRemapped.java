@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import com.google.common.collect.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -132,18 +133,22 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
       FIELD_METADATA.put(4, BINARY_TEST_BUFFER_FIELD_DESC);
     }
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
     public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getLsMap() { return lsMap; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
     public it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> getIoMap() { return ioMap; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=3, name="BigInteger", requiredness=Requiredness.NONE)
     public java.math.BigInteger getBigInteger() { return bigInteger; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="binaryTestBuffer", requiredness=Requiredness.NONE)
     public java.nio.ByteBuffer getBinaryTestBuffer() { return binaryTestBuffer; }
     

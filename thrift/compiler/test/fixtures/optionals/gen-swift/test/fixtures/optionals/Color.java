@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import com.google.common.collect.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -132,16 +133,20 @@ public final class Color implements com.facebook.thrift.payload.ThriftSerializab
       FIELD_METADATA.put(4, ALPHA_FIELD_DESC);
     }
     
+    
     @com.facebook.swift.codec.ThriftField(value=1, name="red", requiredness=Requiredness.NONE)
     public double getRed() { return red; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=2, name="green", requiredness=Requiredness.NONE)
     public double getGreen() { return green; }
     
     
+    
     @com.facebook.swift.codec.ThriftField(value=3, name="blue", requiredness=Requiredness.NONE)
     public double getBlue() { return blue; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=4, name="alpha", requiredness=Requiredness.NONE)

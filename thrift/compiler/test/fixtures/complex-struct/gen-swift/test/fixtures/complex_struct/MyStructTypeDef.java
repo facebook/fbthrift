@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import com.google.common.collect.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -227,38 +228,47 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
       FIELD_METADATA.put(9, MY_MAP_LIST_OF_TYPE_DEF_FIELD_DESC);
     }
     
+    
     @com.facebook.swift.codec.ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
     public long getMyLongField() { return myLongField; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=2, name="myLongTypeDef", requiredness=Requiredness.NONE)
     public long getMyLongTypeDef() { return myLongTypeDef; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="myStringField", requiredness=Requiredness.NONE)
     public String getMyStringField() { return myStringField; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="myStringTypedef", requiredness=Requiredness.NONE)
     public String getMyStringTypedef() { return myStringTypedef; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="myMapField", requiredness=Requiredness.NONE)
     public Map<Short, String> getMyMapField() { return myMapField; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=6, name="myMapTypedef", requiredness=Requiredness.NONE)
     public Map<Short, String> getMyMapTypedef() { return myMapTypedef; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=7, name="myListField", requiredness=Requiredness.NONE)
     public List<Double> getMyListField() { return myListField; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=8, name="myListTypedef", requiredness=Requiredness.NONE)
     public List<Double> getMyListTypedef() { return myListTypedef; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=9, name="myMapListOfTypeDef", requiredness=Requiredness.NONE)
     public Map<Short, List<List<Double>>> getMyMapListOfTypeDef() { return myMapListOfTypeDef; }
     

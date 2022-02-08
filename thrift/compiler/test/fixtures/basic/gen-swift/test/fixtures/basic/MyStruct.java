@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import com.google.common.collect.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -189,28 +190,35 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       FIELD_METADATA.put(7, IDEMPOTENT_FIELD_DESC);
     }
     
+    
     @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
     public String getMyStringField() { return myStringField; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
     public test.fixtures.basic.MyDataItem getMyDataField() { return myDataField; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="myEnum", requiredness=Requiredness.NONE)
     public test.fixtures.basic.MyEnum getMyEnum() { return myEnum; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=5, name="oneway", requiredness=Requiredness.NONE)
     public boolean isOneway() { return oneway; }
     
     
+    
     @com.facebook.swift.codec.ThriftField(value=6, name="readonly", requiredness=Requiredness.NONE)
     public boolean isReadonly() { return readonly; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=7, name="idempotent", requiredness=Requiredness.NONE)

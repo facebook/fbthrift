@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import com.google.common.collect.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -170,26 +171,32 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
       FIELD_METADATA.put(6, LIST_REF_SHARED_CONST_FIELD_DESC);
     }
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="list_ref", requiredness=Requiredness.NONE)
     public List<Integer> getListRef() { return listRef; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="set_ref", requiredness=Requiredness.NONE)
     public Set<Integer> getSetRef() { return setRef; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="map_ref", requiredness=Requiredness.NONE)
     public Map<Integer, Integer> getMapRef() { return mapRef; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="list_ref_unique", requiredness=Requiredness.NONE)
     public List<Integer> getListRefUnique() { return listRefUnique; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="set_ref_shared", requiredness=Requiredness.NONE)
     public Set<Integer> getSetRefShared() { return setRefShared; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=6, name="list_ref_shared_const", requiredness=Requiredness.NONE)
     public List<Integer> getListRefSharedConst() { return listRefSharedConst; }
     

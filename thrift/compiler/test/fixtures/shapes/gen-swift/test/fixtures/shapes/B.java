@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import com.google.common.collect.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -820,154 +821,192 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       FIELD_METADATA.put(88, MAP_OF_STRING_TO_LIST_OF_I32_WITH_DEFAULT_VALUE_FIELD_DESC);
     }
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="just_an_A", requiredness=Requiredness.NONE)
     public test.fixtures.shapes.A getJustAnA() { return justAnA; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="set_of_i32", requiredness=Requiredness.NONE)
     public Set<Integer> getSetOfI32() { return setOfI32; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="list_of_i32", requiredness=Requiredness.NONE)
     public List<Integer> getListOfI32() { return listOfI32; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="list_of_string", requiredness=Requiredness.NONE)
     public List<String> getListOfString() { return listOfString; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="map_of_string_to_i32", requiredness=Requiredness.NONE)
     public Map<String, Integer> getMapOfStringToI32() { return mapOfStringToI32; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=6, name="map_of_string_to_A", requiredness=Requiredness.NONE)
     public Map<String, test.fixtures.shapes.A> getMapOfStringToA() { return mapOfStringToA; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=7, name="map_of_string_to_list_of_i32", requiredness=Requiredness.NONE)
     public Map<String, List<Integer>> getMapOfStringToListOfI32() { return mapOfStringToListOfI32; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=8, name="map_of_string_to_list_of_A", requiredness=Requiredness.NONE)
     public Map<String, List<test.fixtures.shapes.A>> getMapOfStringToListOfA() { return mapOfStringToListOfA; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=9, name="map_of_string_to_set_of_i32", requiredness=Requiredness.NONE)
     public Map<String, Set<Integer>> getMapOfStringToSetOfI32() { return mapOfStringToSetOfI32; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=10, name="map_of_string_to_map_of_string_to_i32", requiredness=Requiredness.NONE)
     public Map<String, Map<String, Integer>> getMapOfStringToMapOfStringToI32() { return mapOfStringToMapOfStringToI32; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=11, name="map_of_string_to_map_of_string_to_A", requiredness=Requiredness.NONE)
     public Map<String, Map<String, test.fixtures.shapes.A>> getMapOfStringToMapOfStringToA() { return mapOfStringToMapOfStringToA; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=12, name="list_of_set_of_i32", requiredness=Requiredness.NONE)
     public List<Set<Integer>> getListOfSetOfI32() { return listOfSetOfI32; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=13, name="list_of_map_of_string_to_list_of_A", requiredness=Requiredness.NONE)
     public List<Map<String, List<test.fixtures.shapes.A>>> getListOfMapOfStringToListOfA() { return listOfMapOfStringToListOfA; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=14, name="list_of_map_of_string_to_A", requiredness=Requiredness.NONE)
     public List<Map<String, test.fixtures.shapes.A>> getListOfMapOfStringToA() { return listOfMapOfStringToA; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=15, name="list_of_self", requiredness=Requiredness.NONE)
     public List<test.fixtures.shapes.B> getListOfSelf() { return listOfSelf; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=16, name="map_of_string_to_self", requiredness=Requiredness.NONE)
     public Map<String, test.fixtures.shapes.B> getMapOfStringToSelf() { return mapOfStringToSelf; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=17, name="just_an_enum", requiredness=Requiredness.NONE)
     public test.fixtures.shapes.Enum getJustAnEnum() { return justAnEnum; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=18, name="just_a_union", requiredness=Requiredness.NONE)
     public test.fixtures.shapes.Union getJustAUnion() { return justAUnion; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=51, name="optional_just_an_A", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.shapes.A getOptionalJustAnA() { return optionalJustAnA; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=52, name="optional_set_of_i32", requiredness=Requiredness.OPTIONAL)
     public Set<Integer> getOptionalSetOfI32() { return optionalSetOfI32; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=53, name="optional_list_of_i32", requiredness=Requiredness.OPTIONAL)
     public List<Integer> getOptionalListOfI32() { return optionalListOfI32; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=54, name="optional_list_of_string", requiredness=Requiredness.OPTIONAL)
     public List<String> getOptionalListOfString() { return optionalListOfString; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=55, name="optional_map_of_string_to_i32", requiredness=Requiredness.OPTIONAL)
     public Map<String, Integer> getOptionalMapOfStringToI32() { return optionalMapOfStringToI32; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=56, name="optional_map_of_string_to_A", requiredness=Requiredness.OPTIONAL)
     public Map<String, test.fixtures.shapes.A> getOptionalMapOfStringToA() { return optionalMapOfStringToA; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=57, name="optional_map_of_string_to_list_of_i32", requiredness=Requiredness.OPTIONAL)
     public Map<String, List<Integer>> getOptionalMapOfStringToListOfI32() { return optionalMapOfStringToListOfI32; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=58, name="optional_map_of_string_to_list_of_A", requiredness=Requiredness.OPTIONAL)
     public Map<String, List<test.fixtures.shapes.A>> getOptionalMapOfStringToListOfA() { return optionalMapOfStringToListOfA; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=59, name="optional_map_of_string_to_set_of_i32", requiredness=Requiredness.OPTIONAL)
     public Map<String, Set<Integer>> getOptionalMapOfStringToSetOfI32() { return optionalMapOfStringToSetOfI32; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=60, name="optional_enum", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.shapes.Enum getOptionalEnum() { return optionalEnum; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=70, name="required_enum_with_default", requiredness=Requiredness.REQUIRED)
     public test.fixtures.shapes.Enum getRequiredEnumWithDefault() { return requiredEnumWithDefault; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=80, name="string_with_default_value", requiredness=Requiredness.NONE)
     public String getStringWithDefaultValue() { return stringWithDefaultValue; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=81, name="i32_with_default_value", requiredness=Requiredness.NONE)
     public int getI32WithDefaultValue() { return i32WithDefaultValue; }
     
     
+    
     @com.facebook.swift.codec.ThriftField(value=82, name="double_with_default_value", requiredness=Requiredness.NONE)
     public double getDoubleWithDefaultValue() { return doubleWithDefaultValue; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=83, name="enum_with_default_value", requiredness=Requiredness.NONE)
     public test.fixtures.shapes.Enum getEnumWithDefaultValue() { return enumWithDefaultValue; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=84, name="A_with_default_value", requiredness=Requiredness.NONE)
     public test.fixtures.shapes.A getAWithDefaultValue() { return aWithDefaultValue; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=85, name="set_of_i32_with_default_value", requiredness=Requiredness.NONE)
     public Set<Integer> getSetOfI32WithDefaultValue() { return setOfI32WithDefaultValue; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=86, name="map_of_i32_to_string_with_default_value", requiredness=Requiredness.NONE)
     public Map<Integer, String> getMapOfI32ToStringWithDefaultValue() { return mapOfI32ToStringWithDefaultValue; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=87, name="list_of_string_with_default_value", requiredness=Requiredness.NONE)
     public List<String> getListOfStringWithDefaultValue() { return listOfStringWithDefaultValue; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=88, name="map_of_string_to_list_of_i32_with_default_value", requiredness=Requiredness.NONE)
     public Map<String, List<Integer>> getMapOfStringToListOfI32WithDefaultValue() { return mapOfStringToListOfI32WithDefaultValue; }
     

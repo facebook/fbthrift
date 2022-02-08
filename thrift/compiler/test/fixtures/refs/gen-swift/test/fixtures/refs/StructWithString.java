@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import com.google.common.collect.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -151,22 +152,27 @@ public final class StructWithString implements com.facebook.thrift.payload.Thrif
       FIELD_METADATA.put(5, SHARED_STRING_REF_FIELD_DESC);
     }
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="def_unique_string_ref", requiredness=Requiredness.NONE)
     public String getDefUniqueStringRef() { return defUniqueStringRef; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="def_shared_string_ref", requiredness=Requiredness.NONE)
     public String getDefSharedStringRef() { return defSharedStringRef; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="def_shared_string_const_ref", requiredness=Requiredness.NONE)
     public String getDefSharedStringConstRef() { return defSharedStringConstRef; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="unique_string_ref", requiredness=Requiredness.NONE)
     public String getUniqueStringRef() { return uniqueStringRef; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="shared_string_ref", requiredness=Requiredness.NONE)
     public String getSharedStringRef() { return sharedStringRef; }
     

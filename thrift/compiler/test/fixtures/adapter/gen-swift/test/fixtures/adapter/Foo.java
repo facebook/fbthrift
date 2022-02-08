@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import com.google.common.collect.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.*;
@@ -208,34 +209,42 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       FIELD_METADATA.put(8, BINARY_FIELD_FIELD_DESC);
     }
     
+    
     @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
     public int getIntField() { return intField; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="optionalIntField", requiredness=Requiredness.OPTIONAL)
     public Integer getOptionalIntField() { return optionalIntField; }
+    
     
     
     @com.facebook.swift.codec.ThriftField(value=3, name="intFieldWithDefault", requiredness=Requiredness.NONE)
     public int getIntFieldWithDefault() { return intFieldWithDefault; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="setField", requiredness=Requiredness.NONE)
     public Set<String> getSetField() { return setField; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="optionalSetField", requiredness=Requiredness.OPTIONAL)
     public Set<String> getOptionalSetField() { return optionalSetField; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=6, name="mapField", requiredness=Requiredness.NONE)
     public Map<String, List<String>> getMapField() { return mapField; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=7, name="optionalMapField", requiredness=Requiredness.OPTIONAL)
     public Map<String, List<String>> getOptionalMapField() { return optionalMapField; }
     
     
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=8, name="binaryField", requiredness=Requiredness.NONE)
     public byte[] getBinaryField() { return binaryField; }
     
