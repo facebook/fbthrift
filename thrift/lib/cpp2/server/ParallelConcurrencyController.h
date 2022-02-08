@@ -48,6 +48,7 @@ class ParallelConcurrencyController : public ConcurrencyControllerInterface {
 
  private:
   struct Counters {
+    constexpr Counters() noexcept = default;
     // Number of requests that are being executed
     // by the executor
     uint32_t requestInExecution{0};
