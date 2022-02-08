@@ -18,6 +18,7 @@ import org.apache.thrift.InteractionCreate;
 import org.apache.thrift.InteractionTerminate;
 import com.facebook.thrift.client.ResponseWrapper;
 import com.facebook.thrift.client.RpcOptions;
+import com.facebook.thrift.util.Readers;
 
 public class MyServicePrioChildReactiveClient  extends test.fixtures.basicannotations.MyServicePrioParentReactiveClient
   implements MyServicePrioChild.Reactive {
@@ -69,17 +70,7 @@ public class MyServicePrioChildReactiveClient  extends test.fixtures.basicannota
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _pang_READER =
-    oprot -> {
-              try {
-
-                return null;
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _pang_READER = Readers.voidReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Void>> pangWrapper( final com.facebook.thrift.client.RpcOptions rpcOptions) {

@@ -18,6 +18,7 @@ import org.apache.thrift.InteractionCreate;
 import org.apache.thrift.InteractionTerminate;
 import com.facebook.thrift.client.ResponseWrapper;
 import com.facebook.thrift.client.RpcOptions;
+import com.facebook.thrift.util.Readers;
 
 public class DbMixedStackArgumentsReactiveClient 
   implements DbMixedStackArguments.Reactive {
@@ -81,18 +82,7 @@ public class DbMixedStackArgumentsReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _getDataByKey0_READER =
-    oprot -> {
-              try {
-                byte[] _r = oprot.readBinary().array();
-                return _r;
-
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _getDataByKey0_READER = Readers.binaryReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<byte[]>> getDataByKey0Wrapper(final String key,  final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -147,18 +137,7 @@ public class DbMixedStackArgumentsReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _getDataByKey1_READER =
-    oprot -> {
-              try {
-                byte[] _r = oprot.readBinary().array();
-                return _r;
-
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _getDataByKey1_READER = Readers.binaryReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<byte[]>> getDataByKey1Wrapper(final String key,  final com.facebook.thrift.client.RpcOptions rpcOptions) {

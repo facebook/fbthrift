@@ -18,6 +18,7 @@ import org.apache.thrift.InteractionCreate;
 import org.apache.thrift.InteractionTerminate;
 import com.facebook.thrift.client.ResponseWrapper;
 import com.facebook.thrift.client.RpcOptions;
+import com.facebook.thrift.util.Readers;
 
 public class RaiserReactiveClient 
   implements Raiser.Reactive {
@@ -31,68 +32,14 @@ public class RaiserReactiveClient
 
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _doBland_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _doRaise_EXCEPTION_READERS = new HashMap<>();
-  private static final com.facebook.thrift.payload.Reader _doRaise_EXCEPTION_READER0 =
-  oprot -> {
-            try {
-              test.fixtures.exceptions.Banal _r = test.fixtures.exceptions.Banal.read0(oprot);
-              return _r;
-            } catch (Throwable _e) {
-              throw reactor.core.Exceptions.propagate(_e);
-            }
-          };
-
-  private static final com.facebook.thrift.payload.Reader _doRaise_EXCEPTION_READER1 =
-  oprot -> {
-            try {
-              test.fixtures.exceptions.Fiery _r = test.fixtures.exceptions.Fiery.read0(oprot);
-              return _r;
-            } catch (Throwable _e) {
-              throw reactor.core.Exceptions.propagate(_e);
-            }
-          };
-
-  private static final com.facebook.thrift.payload.Reader _doRaise_EXCEPTION_READER2 =
-  oprot -> {
-            try {
-              test.fixtures.exceptions.Serious _r = test.fixtures.exceptions.Serious.read0(oprot);
-              return _r;
-            } catch (Throwable _e) {
-              throw reactor.core.Exceptions.propagate(_e);
-            }
-          };
-
+  private static final com.facebook.thrift.payload.Reader _doRaise_EXCEPTION_READER0 = Readers.wrap(test.fixtures.exceptions.Banal.asReader());
+  private static final com.facebook.thrift.payload.Reader _doRaise_EXCEPTION_READER1 = Readers.wrap(test.fixtures.exceptions.Fiery.asReader());
+  private static final com.facebook.thrift.payload.Reader _doRaise_EXCEPTION_READER2 = Readers.wrap(test.fixtures.exceptions.Serious.asReader());
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _get200_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _get500_EXCEPTION_READERS = new HashMap<>();
-  private static final com.facebook.thrift.payload.Reader _get500_EXCEPTION_READER0 =
-  oprot -> {
-            try {
-              test.fixtures.exceptions.Fiery _r = test.fixtures.exceptions.Fiery.read0(oprot);
-              return _r;
-            } catch (Throwable _e) {
-              throw reactor.core.Exceptions.propagate(_e);
-            }
-          };
-
-  private static final com.facebook.thrift.payload.Reader _get500_EXCEPTION_READER1 =
-  oprot -> {
-            try {
-              test.fixtures.exceptions.Banal _r = test.fixtures.exceptions.Banal.read0(oprot);
-              return _r;
-            } catch (Throwable _e) {
-              throw reactor.core.Exceptions.propagate(_e);
-            }
-          };
-
-  private static final com.facebook.thrift.payload.Reader _get500_EXCEPTION_READER2 =
-  oprot -> {
-            try {
-              test.fixtures.exceptions.Serious _r = test.fixtures.exceptions.Serious.read0(oprot);
-              return _r;
-            } catch (Throwable _e) {
-              throw reactor.core.Exceptions.propagate(_e);
-            }
-          };
-
+  private static final com.facebook.thrift.payload.Reader _get500_EXCEPTION_READER0 = Readers.wrap(test.fixtures.exceptions.Fiery.asReader());
+  private static final com.facebook.thrift.payload.Reader _get500_EXCEPTION_READER1 = Readers.wrap(test.fixtures.exceptions.Banal.asReader());
+  private static final com.facebook.thrift.payload.Reader _get500_EXCEPTION_READER2 = Readers.wrap(test.fixtures.exceptions.Serious.asReader());
 
   static {
     _doRaise_EXCEPTION_READERS.put((short)1, _doRaise_EXCEPTION_READER0);
@@ -138,17 +85,7 @@ public class RaiserReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _doBland_READER =
-    oprot -> {
-              try {
-
-                return null;
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _doBland_READER = Readers.voidReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Void>> doBlandWrapper( final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -194,17 +131,7 @@ public class RaiserReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _doRaise_READER =
-    oprot -> {
-              try {
-
-                return null;
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _doRaise_READER = Readers.voidReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Void>> doRaiseWrapper( final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -250,18 +177,7 @@ public class RaiserReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _get200_READER =
-    oprot -> {
-              try {
-                String _r = oprot.readString();
-                return _r;
-
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _get200_READER = Readers.stringReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<String>> get200Wrapper( final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -307,18 +223,7 @@ public class RaiserReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _get500_READER =
-    oprot -> {
-              try {
-                String _r = oprot.readString();
-                return _r;
-
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _get500_READER = Readers.stringReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<String>> get500Wrapper( final com.facebook.thrift.client.RpcOptions rpcOptions) {

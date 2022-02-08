@@ -9,6 +9,7 @@ package test.fixtures.basic;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.thrift.util.Readers;
 
 public class MyServiceRpcServerHandler 
   implements com.facebook.thrift.server.RpcServerHandler {
@@ -244,15 +245,7 @@ oprot.writeString(_iter0);
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
-    _readerList.add(oprot -> {
-      try {
-        long _r = oprot.readI64();
-        return _r;
-
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add(Readers.i64Reader());
 
     return _readerList;
   }
@@ -338,25 +331,9 @@ oprot.writeString(_iter0);
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
-    _readerList.add(oprot -> {
-      try {
-        long _r = oprot.readI64();
-        return _r;
-
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add(Readers.i64Reader());
     
-    _readerList.add(oprot -> {
-      try {
-        String _r = oprot.readString();
-        return _r;
-
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add(Readers.stringReader());
 
     return _readerList;
   }
@@ -443,15 +420,7 @@ oprot.writeString(_iter0);
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
-    _readerList.add(oprot -> {
-      try {
-        long _r = oprot.readI64();
-        return _r;
-
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add(Readers.i64Reader());
 
     return _readerList;
   }
@@ -540,15 +509,7 @@ oprot.writeBool(_iter0);
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
-    _readerList.add(oprot -> {
-      try {
-        long _r = oprot.readI64();
-        return _r;
-
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add(Readers.i64Reader());
 
     return _readerList;
   }
@@ -637,15 +598,7 @@ oprot.writeString(_iter0);
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
-    _readerList.add(oprot -> {
-      try {
-        long _r = oprot.readI64();
-        return _r;
-
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add(Readers.i64Reader());
 
     return _readerList;
   }
@@ -732,25 +685,9 @@ oprot.writeString(_iter0);
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
-    _readerList.add(oprot -> {
-      try {
-        long _r = oprot.readI64();
-        return _r;
-
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add(Readers.i64Reader());
     
-    _readerList.add(oprot -> {
-      try {
-        String _r = oprot.readString();
-        return _r;
-
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add(Readers.stringReader());
 
     return _readerList;
   }

@@ -18,6 +18,7 @@ import org.apache.thrift.InteractionCreate;
 import org.apache.thrift.InteractionTerminate;
 import com.facebook.thrift.client.ResponseWrapper;
 import com.facebook.thrift.client.RpcOptions;
+import com.facebook.thrift.util.Readers;
 
 public class MyNodeReactiveClient  extends test.fixtures.inheritance.MyRootReactiveClient
   implements MyNode.Reactive {
@@ -69,17 +70,7 @@ public class MyNodeReactiveClient  extends test.fixtures.inheritance.MyRootReact
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _doMid_READER =
-    oprot -> {
-              try {
-
-                return null;
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _doMid_READER = Readers.voidReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Void>> doMidWrapper( final com.facebook.thrift.client.RpcOptions rpcOptions) {

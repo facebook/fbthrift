@@ -9,6 +9,7 @@ package test.fixtures.basicannotations;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.thrift.util.Readers;
 
 public class MyServicePrioChildRpcServerHandler  extends test.fixtures.basicannotations.MyServicePrioParentRpcServerHandler
   implements com.facebook.thrift.server.RpcServerHandler {

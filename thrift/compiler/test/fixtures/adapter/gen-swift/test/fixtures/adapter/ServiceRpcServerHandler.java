@@ -9,6 +9,7 @@ package test.fixtures.adapter;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.thrift.util.Readers;
 
 public class ServiceRpcServerHandler 
   implements com.facebook.thrift.server.RpcServerHandler {
@@ -47,35 +48,11 @@ public class ServiceRpcServerHandler
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
-    _readerList.add(oprot -> {
-      try {
-        String _r = oprot.readString();
-        return _r;
-
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add(Readers.stringReader());
     
-    _readerList.add(oprot -> {
-      try {
-        String _r = oprot.readString();
-        return _r;
-
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add(Readers.stringReader());
     
-    _readerList.add(oprot -> {
-      try {
-        test.fixtures.adapter.Foo _r = test.fixtures.adapter.Foo.read0(oprot);
-        return _r;
-
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add(Readers.wrap(test.fixtures.adapter.Foo.asReader()));
 
     return _readerList;
   }

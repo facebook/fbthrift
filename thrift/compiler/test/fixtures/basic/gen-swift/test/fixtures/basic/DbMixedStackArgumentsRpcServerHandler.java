@@ -9,6 +9,7 @@ package test.fixtures.basic;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.thrift.util.Readers;
 
 public class DbMixedStackArgumentsRpcServerHandler 
   implements com.facebook.thrift.server.RpcServerHandler {
@@ -51,15 +52,7 @@ public class DbMixedStackArgumentsRpcServerHandler
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
-    _readerList.add(oprot -> {
-      try {
-        String _r = oprot.readString();
-        return _r;
-
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add(Readers.stringReader());
 
     return _readerList;
   }
@@ -148,15 +141,7 @@ oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
-    _readerList.add(oprot -> {
-      try {
-        String _r = oprot.readString();
-        return _r;
-
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add(Readers.stringReader());
 
     return _readerList;
   }

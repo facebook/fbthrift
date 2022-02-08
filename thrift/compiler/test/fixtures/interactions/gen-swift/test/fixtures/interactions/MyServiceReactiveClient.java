@@ -18,6 +18,7 @@ import org.apache.thrift.InteractionCreate;
 import org.apache.thrift.InteractionTerminate;
 import com.facebook.thrift.client.ResponseWrapper;
 import com.facebook.thrift.client.RpcOptions;
+import com.facebook.thrift.util.Readers;
 
 public class MyServiceReactiveClient 
   implements MyService.Reactive {
@@ -31,16 +32,7 @@ public class MyServiceReactiveClient
 
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _foo_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _frobnicate_EXCEPTION_READERS_INT = new HashMap<>();
-  private static final com.facebook.thrift.payload.Reader _frobnicate_EXCEPTION_READER_INT0 =
-  oprot -> {
-            try {
-              test.fixtures.interactions.CustomException _r = test.fixtures.interactions.CustomException.read0(oprot);
-              return _r;
-            } catch (Throwable _e) {
-              throw reactor.core.Exceptions.propagate(_e);
-            }
-          };
-
+  private static final com.facebook.thrift.payload.Reader _frobnicate_EXCEPTION_READER_INT0 = Readers.wrap(test.fixtures.interactions.CustomException.asReader());
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _ping_EXCEPTION_READERS_INT = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _truthify_EXCEPTION_READERS_INT = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _truthify_STREAM_EXCEPTION_READERS_INT = java.util.Collections.emptyMap();
@@ -88,17 +80,7 @@ public class MyServiceReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _foo_READER =
-    oprot -> {
-              try {
-
-                return null;
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _foo_READER = Readers.voidReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Void>> fooWrapper( final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -143,15 +125,7 @@ public class MyServiceReactiveClient
     }
 
     private final java.util.Map<Short, com.facebook.thrift.payload.Reader> _frobnicate_EXCEPTION_READERS = new HashMap<>();
-    private final com.facebook.thrift.payload.Reader _frobnicate_EXCEPTION_READER_INT0 =
-    oprot -> {
-              try {
-                test.fixtures.interactions.CustomException _r = test.fixtures.interactions.CustomException.read0(oprot);
-                return _r;
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
+    private final com.facebook.thrift.payload.Reader _frobnicate_EXCEPTION_READER_INT0 = Readers.wrap(test.fixtures.interactions.CustomException.asReader());
 
     private final java.util.Map<Short, com.facebook.thrift.payload.Reader> _ping_EXCEPTION_READERS = java.util.Collections.emptyMap();
 
@@ -165,17 +139,7 @@ public class MyServiceReactiveClient
       };
     }
 
-    private final com.facebook.thrift.payload.Reader _frobnicate_READER =
-      oprot -> {
-                try {
-                  int _r = oprot.readI32();
-                  return _r;
-
-
-                } catch (Throwable _e) {
-                  throw reactor.core.Exceptions.propagate(_e);
-                }
-              };
+    private final com.facebook.thrift.payload.Reader _frobnicate_READER = Readers.i32Reader();
 
     public reactor.core.publisher.Mono<Integer> frobnicate() {
       return frobnicateWrapper( com.facebook.thrift.client.RpcOptions.EMPTY).map(_p -> _p.getData());
@@ -235,16 +199,7 @@ public class MyServiceReactiveClient
       };
     }
 
-    private final com.facebook.thrift.payload.Reader _ping_READER =
-      oprot -> {
-                try {
-
-                  return null;
-
-                } catch (Throwable _e) {
-                  throw reactor.core.Exceptions.propagate(_e);
-                }
-              };
+    private final com.facebook.thrift.payload.Reader _ping_READER = Readers.voidReader();
 
     public reactor.core.publisher.Mono<Void> ping() {
       return pingWrapper( com.facebook.thrift.client.RpcOptions.EMPTY).then();
@@ -304,17 +259,8 @@ public class MyServiceReactiveClient
       };
     }
 
-    private final com.facebook.thrift.payload.Reader _truthify_READER =
-      oprot -> {
-                try {
-                  boolean _r = oprot.readBool();
-                  return _r;
+    private final com.facebook.thrift.payload.Reader _truthify_READER = Readers.booleanReader();
 
-
-                } catch (Throwable _e) {
-                  throw reactor.core.Exceptions.propagate(_e);
-                }
-              };
 
     @java.lang.Override
     public reactor.core.publisher.Flux<com.facebook.thrift.client.ResponseWrapper<Boolean>> truthifyWrapper( final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -405,17 +351,7 @@ public class MyServiceReactiveClient
       };
     }
 
-    private final com.facebook.thrift.payload.Reader _frobnicate_READER =
-      oprot -> {
-                try {
-                  int _r = oprot.readI32();
-                  return _r;
-
-
-                } catch (Throwable _e) {
-                  throw reactor.core.Exceptions.propagate(_e);
-                }
-              };
+    private final com.facebook.thrift.payload.Reader _frobnicate_READER = Readers.i32Reader();
 
     public reactor.core.publisher.Mono<Integer> frobnicate() {
       return frobnicateWrapper( com.facebook.thrift.client.RpcOptions.EMPTY).map(_p -> _p.getData());
@@ -475,16 +411,7 @@ public class MyServiceReactiveClient
       };
     }
 
-    private final com.facebook.thrift.payload.Reader _ping_READER =
-      oprot -> {
-                try {
-
-                  return null;
-
-                } catch (Throwable _e) {
-                  throw reactor.core.Exceptions.propagate(_e);
-                }
-              };
+    private final com.facebook.thrift.payload.Reader _ping_READER = Readers.voidReader();
 
     public reactor.core.publisher.Mono<Void> ping() {
       return pingWrapper( com.facebook.thrift.client.RpcOptions.EMPTY).then();
@@ -544,17 +471,8 @@ public class MyServiceReactiveClient
       };
     }
 
-    private final com.facebook.thrift.payload.Reader _truthify_READER =
-      oprot -> {
-                try {
-                  boolean _r = oprot.readBool();
-                  return _r;
+    private final com.facebook.thrift.payload.Reader _truthify_READER = Readers.booleanReader();
 
-
-                } catch (Throwable _e) {
-                  throw reactor.core.Exceptions.propagate(_e);
-                }
-              };
 
     @java.lang.Override
     public reactor.core.publisher.Flux<com.facebook.thrift.client.ResponseWrapper<Boolean>> truthifyWrapper( final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -644,16 +562,7 @@ public class MyServiceReactiveClient
       };
     }
 
-    private final com.facebook.thrift.payload.Reader _frobnicate_READER =
-      oprot -> {
-                try {
-
-                  return null;
-
-                } catch (Throwable _e) {
-                  throw reactor.core.Exceptions.propagate(_e);
-                }
-              };
+    private final com.facebook.thrift.payload.Reader _frobnicate_READER = Readers.voidReader();
 
     public reactor.core.publisher.Mono<Void> frobnicate() {
       return frobnicateWrapper( com.facebook.thrift.client.RpcOptions.EMPTY).then();

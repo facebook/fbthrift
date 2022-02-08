@@ -9,6 +9,7 @@ package test.fixtures.interactions;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.thrift.util.Readers;
 
 public class MyServiceRpcServerHandler 
   implements com.facebook.thrift.server.RpcServerHandler {

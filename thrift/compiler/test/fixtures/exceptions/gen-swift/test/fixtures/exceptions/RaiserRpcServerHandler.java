@@ -9,6 +9,7 @@ package test.fixtures.exceptions;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.thrift.util.Readers;
 
 public class RaiserRpcServerHandler 
   implements com.facebook.thrift.server.RpcServerHandler {

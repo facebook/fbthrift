@@ -18,6 +18,7 @@ import org.apache.thrift.InteractionCreate;
 import org.apache.thrift.InteractionTerminate;
 import com.facebook.thrift.client.ResponseWrapper;
 import com.facebook.thrift.client.RpcOptions;
+import com.facebook.thrift.util.Readers;
 
 public class SinkServiceReactiveClient 
   implements SinkService.Reactive {
@@ -38,45 +39,18 @@ public class SinkServiceReactiveClient
   private static final TField _methodThrow_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)0);
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _methodThrow_EXCEPTION_READERS = new HashMap<>();
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _methodThrow_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
-  private static final com.facebook.thrift.payload.Reader _methodThrow_EXCEPTION_READER0 =
-  oprot -> {
-            try {
-              test.fixtures.sink.InitialException _r = test.fixtures.sink.InitialException.read0(oprot);
-              return _r;
-            } catch (Throwable _e) {
-              throw reactor.core.Exceptions.propagate(_e);
-            }
-          };
-
+  private static final com.facebook.thrift.payload.Reader _methodThrow_EXCEPTION_READER0 = Readers.wrap(test.fixtures.sink.InitialException.asReader());
   private static final TField _methodSinkThrow_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)0);
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _methodSinkThrow_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _methodSinkThrow_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final TField _methodFinalThrow_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)0);
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _methodFinalThrow_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _methodFinalThrow_STREAM_EXCEPTION_READERS = new HashMap<>();
-  private static final com.facebook.thrift.payload.Reader _methodFinalThrow_STREAM_EXCEPTION_READER0 =
-  oprot -> {
-            try {
-              test.fixtures.sink.SinkException2 _r = test.fixtures.sink.SinkException2.read0(oprot);
-              return _r;
-            } catch (Throwable _e) {
-              throw reactor.core.Exceptions.propagate(_e);
-            }
-          };
-
+  private static final com.facebook.thrift.payload.Reader _methodFinalThrow_STREAM_EXCEPTION_READER0 = Readers.wrap(test.fixtures.sink.SinkException2.asReader());
   private static final TField _methodBothThrow_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)0);
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _methodBothThrow_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _methodBothThrow_STREAM_EXCEPTION_READERS = new HashMap<>();
-  private static final com.facebook.thrift.payload.Reader _methodBothThrow_STREAM_EXCEPTION_READER0 =
-  oprot -> {
-            try {
-              test.fixtures.sink.SinkException2 _r = test.fixtures.sink.SinkException2.read0(oprot);
-              return _r;
-            } catch (Throwable _e) {
-              throw reactor.core.Exceptions.propagate(_e);
-            }
-          };
-
+  private static final com.facebook.thrift.payload.Reader _methodBothThrow_STREAM_EXCEPTION_READER0 = Readers.wrap(test.fixtures.sink.SinkException2.asReader());
   private static final TField _methodFast_SINK_TFIELD = new TField("payload", TType.STRUCT, (short)0);
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _methodFast_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _methodFast_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
@@ -136,17 +110,8 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _method_READER =
-    oprot -> {
-              try {
-                test.fixtures.sink.FinalResponse _r = test.fixtures.sink.FinalResponse.read0(oprot);
-                return _r;
+  private static final com.facebook.thrift.payload.Reader _method_READER = Readers.wrap(test.fixtures.sink.FinalResponse.asReader());
 
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
 
   @java.lang.Override
   public reactor.core.publisher.Mono<ResponseWrapper<test.fixtures.sink.FinalResponse>> methodWrapper( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -220,29 +185,9 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _methodAndReponse_READER =
-    oprot -> {
-              try {
-                test.fixtures.sink.FinalResponse _r = test.fixtures.sink.FinalResponse.read0(oprot);
-                return _r;
+  private static final com.facebook.thrift.payload.Reader _methodAndReponse_READER = Readers.wrap(test.fixtures.sink.FinalResponse.asReader());
 
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
-    private static final com.facebook.thrift.payload.Reader _methodAndReponse_FIRST_READER =
-    oprot -> {
-              try {
-                test.fixtures.sink.InitialResponse _r = test.fixtures.sink.InitialResponse.read0(oprot);
-                return _r;
-
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
+  private static final com.facebook.thrift.payload.Reader _methodAndReponse_FIRST_READER = Readers.wrap(test.fixtures.sink.InitialResponse.asReader());
 
   @java.lang.Override
   public reactor.core.publisher.Flux<ResponseWrapper<com.facebook.thrift.model.StreamResponse<test.fixtures.sink.InitialResponse,test.fixtures.sink.FinalResponse>>> methodAndReponseWrapper( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -317,17 +262,8 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _methodThrow_READER =
-    oprot -> {
-              try {
-                test.fixtures.sink.FinalResponse _r = test.fixtures.sink.FinalResponse.read0(oprot);
-                return _r;
+  private static final com.facebook.thrift.payload.Reader _methodThrow_READER = Readers.wrap(test.fixtures.sink.FinalResponse.asReader());
 
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
 
   @java.lang.Override
   public reactor.core.publisher.Mono<ResponseWrapper<test.fixtures.sink.FinalResponse>> methodThrowWrapper( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -401,17 +337,8 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _methodSinkThrow_READER =
-    oprot -> {
-              try {
-                test.fixtures.sink.FinalResponse _r = test.fixtures.sink.FinalResponse.read0(oprot);
-                return _r;
+  private static final com.facebook.thrift.payload.Reader _methodSinkThrow_READER = Readers.wrap(test.fixtures.sink.FinalResponse.asReader());
 
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
 
   @java.lang.Override
   public reactor.core.publisher.Mono<ResponseWrapper<test.fixtures.sink.FinalResponse>> methodSinkThrowWrapper( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -485,17 +412,8 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _methodFinalThrow_READER =
-    oprot -> {
-              try {
-                test.fixtures.sink.FinalResponse _r = test.fixtures.sink.FinalResponse.read0(oprot);
-                return _r;
+  private static final com.facebook.thrift.payload.Reader _methodFinalThrow_READER = Readers.wrap(test.fixtures.sink.FinalResponse.asReader());
 
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
 
   @java.lang.Override
   public reactor.core.publisher.Mono<ResponseWrapper<test.fixtures.sink.FinalResponse>> methodFinalThrowWrapper( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -569,17 +487,8 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _methodBothThrow_READER =
-    oprot -> {
-              try {
-                test.fixtures.sink.FinalResponse _r = test.fixtures.sink.FinalResponse.read0(oprot);
-                return _r;
+  private static final com.facebook.thrift.payload.Reader _methodBothThrow_READER = Readers.wrap(test.fixtures.sink.FinalResponse.asReader());
 
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
 
   @java.lang.Override
   public reactor.core.publisher.Mono<ResponseWrapper<test.fixtures.sink.FinalResponse>> methodBothThrowWrapper( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -653,17 +562,8 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _methodFast_READER =
-    oprot -> {
-              try {
-                test.fixtures.sink.FinalResponse _r = test.fixtures.sink.FinalResponse.read0(oprot);
-                return _r;
+  private static final com.facebook.thrift.payload.Reader _methodFast_READER = Readers.wrap(test.fixtures.sink.FinalResponse.asReader());
 
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
 
   @java.lang.Override
   public reactor.core.publisher.Mono<ResponseWrapper<test.fixtures.sink.FinalResponse>> methodFastWrapper( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {

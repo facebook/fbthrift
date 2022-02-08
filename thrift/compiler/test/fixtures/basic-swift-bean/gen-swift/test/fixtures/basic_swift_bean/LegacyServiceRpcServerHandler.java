@@ -9,6 +9,7 @@ package test.fixtures.basic_swift_bean;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.thrift.util.Readers;
 
 public class LegacyServiceRpcServerHandler 
   implements com.facebook.thrift.server.RpcServerHandler {
@@ -47,35 +48,9 @@ public class LegacyServiceRpcServerHandler
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
-    _readerList.add(oprot -> {
-      try {
-        Set<String> _r;
-            {
-            TSet _set = oprot.readSetBegin();
-            _r = new HashSet<String>(Math.max(0, _set.size));
-            for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
-                
-                String _value1 = oprot.readString();
-                _r.add(_value1);
-            }
-            oprot.readSetEnd();
-            }
-        return _r;
-
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add(Readers.setReader(Readers.stringReader()));
     
-    _readerList.add(oprot -> {
-      try {
-        long _r = oprot.readI64();
-        return _r;
-
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add(Readers.i64Reader());
 
     return _readerList;
   }

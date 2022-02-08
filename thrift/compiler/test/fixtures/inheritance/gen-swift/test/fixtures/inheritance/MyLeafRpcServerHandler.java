@@ -9,6 +9,7 @@ package test.fixtures.inheritance;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.thrift.util.Readers;
 
 public class MyLeafRpcServerHandler  extends test.fixtures.inheritance.MyNodeRpcServerHandler
   implements com.facebook.thrift.server.RpcServerHandler {

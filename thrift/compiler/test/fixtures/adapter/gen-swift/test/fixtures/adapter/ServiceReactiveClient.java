@@ -18,6 +18,7 @@ import org.apache.thrift.InteractionCreate;
 import org.apache.thrift.InteractionTerminate;
 import com.facebook.thrift.client.ResponseWrapper;
 import com.facebook.thrift.client.RpcOptions;
+import com.facebook.thrift.util.Readers;
 
 public class ServiceReactiveClient 
   implements Service.Reactive {
@@ -99,18 +100,7 @@ public class ServiceReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _func_READER =
-    oprot -> {
-              try {
-                int _r = oprot.readI32();
-                return _r;
-
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _func_READER = Readers.i32Reader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Integer>> funcWrapper(final String arg1, final String arg2, final test.fixtures.adapter.Foo arg3,  final com.facebook.thrift.client.RpcOptions rpcOptions) {

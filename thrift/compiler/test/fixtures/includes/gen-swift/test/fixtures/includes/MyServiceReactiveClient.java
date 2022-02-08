@@ -18,6 +18,7 @@ import org.apache.thrift.InteractionCreate;
 import org.apache.thrift.InteractionTerminate;
 import com.facebook.thrift.client.ResponseWrapper;
 import com.facebook.thrift.client.RpcOptions;
+import com.facebook.thrift.util.Readers;
 
 public class MyServiceReactiveClient 
   implements MyService.Reactive {
@@ -92,17 +93,7 @@ public class MyServiceReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _query_READER =
-    oprot -> {
-              try {
-
-                return null;
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _query_READER = Readers.voidReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Void>> queryWrapper(final test.fixtures.includes.MyStruct s, final test.fixtures.includes.includes.Included i,  final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -166,17 +157,7 @@ public class MyServiceReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _hasArgDocs_READER =
-    oprot -> {
-              try {
-
-                return null;
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _hasArgDocs_READER = Readers.voidReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Void>> hasArgDocsWrapper(final test.fixtures.includes.MyStruct s, final test.fixtures.includes.includes.Included i,  final com.facebook.thrift.client.RpcOptions rpcOptions) {

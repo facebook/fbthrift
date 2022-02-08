@@ -21,6 +21,7 @@ package {{service:javaPackage}};
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.thrift.util.Readers;
 
 public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} extends {{service:javaPackage}}.{{service:javaCapitalName}}RpcServerHandler{{/service:extends}}
   implements com.facebook.thrift.server.RpcServerHandler {
@@ -65,18 +66,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
 
     {{#function:args}}
     {{function:unsetIsNested}}
-    _readerList.add(oprot -> {
-      try {
-        {{#field:type}}
-        {{> ReadReturnType }}
-
-        return _r;
-
-        {{/field:type}}
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add({{#field:type}}{{> TypeReader }}{{/field:type}});
     {{/function:args}}
 
     return _readerList;
@@ -227,18 +217,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
 
     {{#function:args}}
     {{function:unsetIsNested}}
-    _readerList.add(oprot -> {
-      try {
-        {{#field:type}}
-        {{> ReadReturnType }}
-
-        return _r;
-
-        {{/field:type}}
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add({{#field:type}}{{> TypeReader }}{{/field:type}});
     {{/function:args}}
 
     return _readerList;

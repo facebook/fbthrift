@@ -9,6 +9,7 @@ package test.fixtures.includes;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.thrift.util.Readers;
 
 public class MyServiceRpcServerHandler 
   implements com.facebook.thrift.server.RpcServerHandler {
@@ -51,25 +52,9 @@ public class MyServiceRpcServerHandler
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
-    _readerList.add(oprot -> {
-      try {
-        test.fixtures.includes.MyStruct _r = test.fixtures.includes.MyStruct.read0(oprot);
-        return _r;
-
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add(Readers.wrap(test.fixtures.includes.MyStruct.asReader()));
     
-    _readerList.add(oprot -> {
-      try {
-        test.fixtures.includes.includes.Included _r = test.fixtures.includes.includes.Included.read0(oprot);
-        return _r;
-
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add(Readers.wrap(test.fixtures.includes.includes.Included.asReader()));
 
     return _readerList;
   }
@@ -156,25 +141,9 @@ public class MyServiceRpcServerHandler
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
-    _readerList.add(oprot -> {
-      try {
-        test.fixtures.includes.MyStruct _r = test.fixtures.includes.MyStruct.read0(oprot);
-        return _r;
-
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add(Readers.wrap(test.fixtures.includes.MyStruct.asReader()));
     
-    _readerList.add(oprot -> {
-      try {
-        test.fixtures.includes.includes.Included _r = test.fixtures.includes.includes.Included.read0(oprot);
-        return _r;
-
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add(Readers.wrap(test.fixtures.includes.includes.Included.asReader()));
 
     return _readerList;
   }

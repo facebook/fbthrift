@@ -18,6 +18,7 @@ import org.apache.thrift.InteractionCreate;
 import org.apache.thrift.InteractionTerminate;
 import com.facebook.thrift.client.ResponseWrapper;
 import com.facebook.thrift.client.RpcOptions;
+import com.facebook.thrift.util.Readers;
 
 public class PubSubStreamingServiceReactiveClient 
   implements PubSubStreamingService.Reactive {
@@ -36,62 +37,17 @@ public class PubSubStreamingServiceReactiveClient
   private static final TField _streamthrows_FOO_FIELD_DESC = new TField("foo", TType.I32, (short)1);
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _streamthrows_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _streamthrows_STREAM_EXCEPTION_READERS = new HashMap<>();
-  private static final com.facebook.thrift.payload.Reader _streamthrows_STREAM_EXCEPTION_READER0 =
-  oprot -> {
-            try {
-              test.fixtures.stream.FooEx _r = test.fixtures.stream.FooEx.read0(oprot);
-              return _r;
-            } catch (Throwable _e) {
-              throw reactor.core.Exceptions.propagate(_e);
-            }
-          };
-
+  private static final com.facebook.thrift.payload.Reader _streamthrows_STREAM_EXCEPTION_READER0 = Readers.wrap(test.fixtures.stream.FooEx.asReader());
   private static final TField _boththrows_FOO_FIELD_DESC = new TField("foo", TType.I32, (short)1);
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _boththrows_EXCEPTION_READERS = new HashMap<>();
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _boththrows_STREAM_EXCEPTION_READERS = new HashMap<>();
-  private static final com.facebook.thrift.payload.Reader _boththrows_EXCEPTION_READER0 =
-  oprot -> {
-            try {
-              test.fixtures.stream.FooEx _r = test.fixtures.stream.FooEx.read0(oprot);
-              return _r;
-            } catch (Throwable _e) {
-              throw reactor.core.Exceptions.propagate(_e);
-            }
-          };
-
-  private static final com.facebook.thrift.payload.Reader _boththrows_STREAM_EXCEPTION_READER0 =
-  oprot -> {
-            try {
-              test.fixtures.stream.FooEx _r = test.fixtures.stream.FooEx.read0(oprot);
-              return _r;
-            } catch (Throwable _e) {
-              throw reactor.core.Exceptions.propagate(_e);
-            }
-          };
-
+  private static final com.facebook.thrift.payload.Reader _boththrows_EXCEPTION_READER0 = Readers.wrap(test.fixtures.stream.FooEx.asReader());
+  private static final com.facebook.thrift.payload.Reader _boththrows_STREAM_EXCEPTION_READER0 = Readers.wrap(test.fixtures.stream.FooEx.asReader());
   private static final TField _responseandstreamthrows_FOO_FIELD_DESC = new TField("foo", TType.I32, (short)1);
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _responseandstreamthrows_EXCEPTION_READERS = new HashMap<>();
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _responseandstreamthrows_STREAM_EXCEPTION_READERS = new HashMap<>();
-  private static final com.facebook.thrift.payload.Reader _responseandstreamthrows_EXCEPTION_READER0 =
-  oprot -> {
-            try {
-              test.fixtures.stream.FooEx _r = test.fixtures.stream.FooEx.read0(oprot);
-              return _r;
-            } catch (Throwable _e) {
-              throw reactor.core.Exceptions.propagate(_e);
-            }
-          };
-
-  private static final com.facebook.thrift.payload.Reader _responseandstreamthrows_STREAM_EXCEPTION_READER0 =
-  oprot -> {
-            try {
-              test.fixtures.stream.FooEx _r = test.fixtures.stream.FooEx.read0(oprot);
-              return _r;
-            } catch (Throwable _e) {
-              throw reactor.core.Exceptions.propagate(_e);
-            }
-          };
-
+  private static final com.facebook.thrift.payload.Reader _responseandstreamthrows_EXCEPTION_READER0 = Readers.wrap(test.fixtures.stream.FooEx.asReader());
+  private static final com.facebook.thrift.payload.Reader _responseandstreamthrows_STREAM_EXCEPTION_READER0 = Readers.wrap(test.fixtures.stream.FooEx.asReader());
   private static final TField _returnstreamFast_I32_FROM_FIELD_DESC = new TField("i32_from", TType.I32, (short)1);
   private static final TField _returnstreamFast_I32_TO_FIELD_DESC = new TField("i32_to", TType.I32, (short)2);
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _returnstreamFast_EXCEPTION_READERS = java.util.Collections.emptyMap();
@@ -158,17 +114,8 @@ public class PubSubStreamingServiceReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _returnstream_READER =
-    oprot -> {
-              try {
-                int _r = oprot.readI32();
-                return _r;
+  private static final com.facebook.thrift.payload.Reader _returnstream_READER = Readers.i32Reader();
 
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
 
   @java.lang.Override
   public reactor.core.publisher.Flux<com.facebook.thrift.client.ResponseWrapper<Integer>> returnstreamWrapper(final int i32From, final int i32To,  final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -227,17 +174,8 @@ public class PubSubStreamingServiceReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _streamthrows_READER =
-    oprot -> {
-              try {
-                int _r = oprot.readI32();
-                return _r;
+  private static final com.facebook.thrift.payload.Reader _streamthrows_READER = Readers.i32Reader();
 
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
 
   @java.lang.Override
   public reactor.core.publisher.Flux<com.facebook.thrift.client.ResponseWrapper<Integer>> streamthrowsWrapper(final int foo,  final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -296,17 +234,8 @@ public class PubSubStreamingServiceReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _boththrows_READER =
-    oprot -> {
-              try {
-                int _r = oprot.readI32();
-                return _r;
+  private static final com.facebook.thrift.payload.Reader _boththrows_READER = Readers.i32Reader();
 
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
 
   @java.lang.Override
   public reactor.core.publisher.Flux<com.facebook.thrift.client.ResponseWrapper<Integer>> boththrowsWrapper(final int foo,  final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -365,29 +294,9 @@ public class PubSubStreamingServiceReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _responseandstreamthrows_READER =
-    oprot -> {
-              try {
-                int _r = oprot.readI32();
-                return _r;
+  private static final com.facebook.thrift.payload.Reader _responseandstreamthrows_READER = Readers.i32Reader();
 
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
-    private static final com.facebook.thrift.payload.Reader _responseandstreamthrows_FIRST_READER =
-    oprot -> {
-              try {
-                int _r = oprot.readI32();
-                return _r;
-
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
+  private static final com.facebook.thrift.payload.Reader _responseandstreamthrows_FIRST_READER = Readers.i32Reader();
 
   @java.lang.Override
   public reactor.core.publisher.Flux<com.facebook.thrift.client.ResponseWrapper<com.facebook.thrift.model.StreamResponse<Integer,Integer>>> responseandstreamthrowsWrapper(final int foo,  final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -455,17 +364,8 @@ public class PubSubStreamingServiceReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _returnstreamFast_READER =
-    oprot -> {
-              try {
-                int _r = oprot.readI32();
-                return _r;
+  private static final com.facebook.thrift.payload.Reader _returnstreamFast_READER = Readers.i32Reader();
 
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
 
   @java.lang.Override
   public reactor.core.publisher.Flux<com.facebook.thrift.client.ResponseWrapper<Integer>> returnstreamFastWrapper(final int i32From, final int i32To,  final com.facebook.thrift.client.RpcOptions rpcOptions) {

@@ -9,6 +9,7 @@ package test.fixtures.params;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.thrift.util.Readers;
 
 public class NestedContainersRpcServerHandler 
   implements com.facebook.thrift.server.RpcServerHandler {
@@ -63,41 +64,7 @@ public class NestedContainersRpcServerHandler
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
-    _readerList.add(oprot -> {
-      try {
-        Map<Integer, List<Integer>> _r;
-            {
-            TMap _map = oprot.readMapBegin();
-            _r = new HashMap<Integer, List<Integer>>(Math.max(0, _map.size));
-            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
-                
-                int _key1 = oprot.readI32();
-                List<Integer> _value1;
-            {
-            TList _list1 = oprot.readListBegin();
-            _value1 = new ArrayList<Integer>(Math.max(0, _list1.size));
-            for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                
-                
-                int _value2 = oprot.readI32();
-                
-                
-                _value1.add(_value2);
-                
-            }
-            oprot.readListEnd();
-            }
-
-                _r.put(_key1, _value1);
-            }
-            }
-            oprot.readMapEnd();
-        return _r;
-
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add(Readers.mapReader(Readers.i32Reader(),Readers.listReader(Readers.i32Reader())));
 
     return _readerList;
   }
@@ -183,41 +150,7 @@ public class NestedContainersRpcServerHandler
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
-    _readerList.add(oprot -> {
-      try {
-        Map<Integer, Set<Integer>> _r;
-            {
-            TMap _map = oprot.readMapBegin();
-            _r = new HashMap<Integer, Set<Integer>>(Math.max(0, _map.size));
-            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
-                
-                int _key1 = oprot.readI32();
-                Set<Integer> _value1;
-            {
-            TSet _set1 = oprot.readSetBegin();
-            _value1 = new HashSet<Integer>(Math.max(0, _set1.size));
-            for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                
-                
-                int _value2 = oprot.readI32();
-                
-                
-                _value1.add(_value2);
-                
-            }
-            oprot.readSetEnd();
-            }
-
-                _r.put(_key1, _value1);
-            }
-            }
-            oprot.readMapEnd();
-        return _r;
-
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add(Readers.mapReader(Readers.i32Reader(),Readers.setReader(Readers.i32Reader())));
 
     return _readerList;
   }
@@ -303,44 +236,7 @@ public class NestedContainersRpcServerHandler
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
-    _readerList.add(oprot -> {
-      try {
-        List<Map<Integer, Integer>> _r;
-            {
-            TList _list = oprot.readListBegin();
-            _r = new ArrayList<Map<Integer, Integer>>(Math.max(0, _list.size));
-            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
-                
-                Map<Integer, Integer> _value1;
-            {
-            TMap _map1 = oprot.readMapBegin();
-            _value1 = new HashMap<Integer, Integer>(Math.max(0, _map1.size));
-            for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                
-                
-                int _key2 = oprot.readI32();
-                
-
-                
-                int _value2 = oprot.readI32();
-                
-                
-                _value1.put(_key2, _value2);
-                
-            }
-            }
-            oprot.readMapEnd();
-
-_r.add(_value1);
-            }
-            oprot.readListEnd();
-            }
-        return _r;
-
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add(Readers.listReader(Readers.mapReader(Readers.i32Reader(),Readers.i32Reader())));
 
     return _readerList;
   }
@@ -426,40 +322,7 @@ _r.add(_value1);
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
-    _readerList.add(oprot -> {
-      try {
-        List<Set<Integer>> _r;
-            {
-            TList _list = oprot.readListBegin();
-            _r = new ArrayList<Set<Integer>>(Math.max(0, _list.size));
-            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
-                
-                Set<Integer> _value1;
-            {
-            TSet _set1 = oprot.readSetBegin();
-            _value1 = new HashSet<Integer>(Math.max(0, _set1.size));
-            for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                
-                
-                int _value2 = oprot.readI32();
-                
-                
-                _value1.add(_value2);
-                
-            }
-            oprot.readSetEnd();
-            }
-
-_r.add(_value1);
-            }
-            oprot.readListEnd();
-            }
-        return _r;
-
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add(Readers.listReader(Readers.setReader(Readers.i32Reader())));
 
     return _readerList;
   }
@@ -545,87 +408,7 @@ _r.add(_value1);
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
-    _readerList.add(oprot -> {
-      try {
-        List<List<Map<Integer, Map<Integer, Set<Integer>>>>> _r;
-            {
-            TList _list = oprot.readListBegin();
-            _r = new ArrayList<List<Map<Integer, Map<Integer, Set<Integer>>>>>(Math.max(0, _list.size));
-            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
-                
-                List<Map<Integer, Map<Integer, Set<Integer>>>> _value1;
-            {
-            TList _list1 = oprot.readListBegin();
-            _value1 = new ArrayList<Map<Integer, Map<Integer, Set<Integer>>>>(Math.max(0, _list1.size));
-            for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                
-                Map<Integer, Map<Integer, Set<Integer>>> _value2;
-            {
-            TMap _map2 = oprot.readMapBegin();
-            _value2 = new HashMap<Integer, Map<Integer, Set<Integer>>>(Math.max(0, _map2.size));
-            for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
-                
-                
-                int _key3 = oprot.readI32();
-                
-
-                Map<Integer, Set<Integer>> _value3;
-            {
-            TMap _map3 = oprot.readMapBegin();
-            _value3 = new HashMap<Integer, Set<Integer>>(Math.max(0, _map3.size));
-            for (int _i3 = 0; (_map3.size < 0) ? oprot.peekMap() : (_i3 < _map3.size); _i3++) {
-                
-                
-                int _key4 = oprot.readI32();
-                
-
-                Set<Integer> _value4;
-            {
-            TSet _set4 = oprot.readSetBegin();
-            _value4 = new HashSet<Integer>(Math.max(0, _set4.size));
-            for (int _i4 = 0; (_set4.size < 0) ? oprot.peekSet() : (_i4 < _set4.size); _i4++) {
-                
-                
-                int _value5 = oprot.readI32();
-                
-                
-                _value4.add(_value5);
-                
-            }
-            oprot.readSetEnd();
-            }
-
-                
-                _value3.put(_key4, _value4);
-                
-            }
-            }
-            oprot.readMapEnd();
-
-                
-                _value2.put(_key3, _value3);
-                
-            }
-            }
-            oprot.readMapEnd();
-
-                
-                _value1.add(_value2);
-                
-            }
-            oprot.readListEnd();
-            }
-
-_r.add(_value1);
-            }
-            oprot.readListEnd();
-            }
-        return _r;
-
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
+    _readerList.add(Readers.listReader(Readers.listReader(Readers.mapReader(Readers.i32Reader(),Readers.mapReader(Readers.i32Reader(),Readers.setReader(Readers.i32Reader()))))));
 
     return _readerList;
   }

@@ -30,6 +30,7 @@ import org.apache.thrift.InteractionCreate;
 import org.apache.thrift.InteractionTerminate;
 import com.facebook.thrift.client.ResponseWrapper;
 import com.facebook.thrift.client.RpcOptions;
+import com.facebook.thrift.util.Readers;
 
 public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} extends {{service:javaPackage}}.{{service:javaCapitalName}}ReactiveClient{{/service:extends}}
   implements {{service:javaCapitalName}}.Reactive {
@@ -47,19 +48,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
   {{/function:args}}
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:javaName}}_EXCEPTION_READERS = {{#function:exceptions?}}new HashMap<>();{{/function:exceptions?}}{{^function:exceptions?}}java.util.Collections.emptyMap();{{/function:exceptions?}}
   {{#function:exceptions}}
-  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_EXCEPTION_READER{{field:index}} =
-  oprot -> {
-            try {
-              {{#field:type}}
-              {{> ReadReturnType }}
-
-              return _r;
-              {{/field:type}}
-            } catch (Throwable _e) {
-              throw reactor.core.Exceptions.propagate(_e);
-            }
-          };
-
+  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_EXCEPTION_READER{{field:index}} = Readers.wrap({{#field:type}}{{> BoxedType}}.asReader());{{/field:type}}
   {{/function:exceptions}}
   {{/service:singleRequestFunctions}}
   {{#service:streamingFunctions}}
@@ -69,34 +58,10 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:javaName}}_EXCEPTION_READERS = {{#function:exceptions?}}new HashMap<>();{{/function:exceptions?}}{{^function:exceptions?}}java.util.Collections.emptyMap();{{/function:exceptions?}}
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:javaName}}_STREAM_EXCEPTION_READERS = {{#function:stream_exceptions?}}new HashMap<>();{{/function:stream_exceptions?}}{{^function:stream_exceptions?}}java.util.Collections.emptyMap();{{/function:stream_exceptions?}}
   {{#function:exceptions}}
-  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_EXCEPTION_READER{{field:index}} =
-  oprot -> {
-            try {
-              {{#field:type}}
-              {{> ReadReturnType }}
-
-              return _r;
-              {{/field:type}}
-            } catch (Throwable _e) {
-              throw reactor.core.Exceptions.propagate(_e);
-            }
-          };
-
+  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_EXCEPTION_READER{{field:index}} = Readers.wrap({{#field:type}}{{> BoxedType}}.asReader());{{/field:type}}
   {{/function:exceptions}}
   {{#function:stream_exceptions}}
-  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_STREAM_EXCEPTION_READER{{field:index}} =
-  oprot -> {
-            try {
-              {{#field:type}}
-              {{> ReadReturnType }}
-
-              return _r;
-              {{/field:type}}
-            } catch (Throwable _e) {
-              throw reactor.core.Exceptions.propagate(_e);
-            }
-          };
-
+  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_STREAM_EXCEPTION_READER{{field:index}} = Readers.wrap({{#field:type}}{{> BoxedType}}.asReader());{{/field:type}}
   {{/function:stream_exceptions}}
   {{/service:streamingFunctions}}
   {{#service:sinkFunctions}}
@@ -109,34 +74,10 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:javaName}}_EXCEPTION_READERS = {{#function:exceptions?}}new HashMap<>();{{/function:exceptions?}}{{^function:exceptions?}}java.util.Collections.emptyMap();{{/function:exceptions?}}
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:javaName}}_STREAM_EXCEPTION_READERS = {{#function:sink_final_response_exceptions?}}new HashMap<>();{{/function:sink_final_response_exceptions?}}{{^function:sink_final_response_exceptions?}}java.util.Collections.emptyMap();{{/function:sink_final_response_exceptions?}}
   {{#function:exceptions}}
-  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_EXCEPTION_READER{{field:index}} =
-  oprot -> {
-            try {
-              {{#field:type}}
-              {{> ReadReturnType }}
-
-              return _r;
-              {{/field:type}}
-            } catch (Throwable _e) {
-              throw reactor.core.Exceptions.propagate(_e);
-            }
-          };
-
+  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_EXCEPTION_READER{{field:index}} = Readers.wrap({{#field:type}}{{> BoxedType}}.asReader());{{/field:type}}
   {{/function:exceptions}}
   {{#function:sink_final_response_exceptions}}
-  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_STREAM_EXCEPTION_READER{{field:index}} =
-  oprot -> {
-            try {
-              {{#field:type}}
-              {{> ReadReturnType }}
-
-              return _r;
-              {{/field:type}}
-            } catch (Throwable _e) {
-              throw reactor.core.Exceptions.propagate(_e);
-            }
-          };
-
+  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_STREAM_EXCEPTION_READER{{field:index}} = Readers.wrap({{#field:type}}{{> BoxedType}}.asReader());{{/field:type}}
   {{/function:sink_final_response_exceptions}}
   {{/service:sinkFunctions}}
   {{#service:interactions}}
@@ -146,19 +87,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
   {{/function:args}}
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:javaName}}_EXCEPTION_READERS_INT = {{#function:exceptions?}}new HashMap<>();{{/function:exceptions?}}{{^function:exceptions?}}java.util.Collections.emptyMap();{{/function:exceptions?}}
   {{#function:exceptions}}
-  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_EXCEPTION_READER_INT{{field:index}} =
-  oprot -> {
-            try {
-              {{#field:type}}
-              {{> ReadReturnType }}
-
-              return _r;
-              {{/field:type}}
-            } catch (Throwable _e) {
-              throw reactor.core.Exceptions.propagate(_e);
-            }
-          };
-
+  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_EXCEPTION_READER_INT{{field:index}} = Readers.wrap({{#field:type}}{{> BoxedType}}.asReader());{{/field:type}}
   {{/function:exceptions}}
   {{/service:singleRequestFunctions}}
   {{#service:streamingFunctions}}
@@ -168,34 +97,10 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:javaName}}_EXCEPTION_READERS_INT = {{#function:exceptions?}}new HashMap<>();{{/function:exceptions?}}{{^function:exceptions?}}java.util.Collections.emptyMap();{{/function:exceptions?}}
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:javaName}}_STREAM_EXCEPTION_READERS_INT = {{#function:stream_exceptions?}}new HashMap<>();{{/function:stream_exceptions?}}{{^function:stream_exceptions?}}java.util.Collections.emptyMap();{{/function:stream_exceptions?}}
   {{#function:exceptions}}
-  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_EXCEPTION_READER_INT{{field:index}} =
-  oprot -> {
-            try {
-              {{#field:type}}
-              {{> ReadReturnType }}
-
-              return _r;
-              {{/field:type}}
-            } catch (Throwable _e) {
-              throw reactor.core.Exceptions.propagate(_e);
-            }
-          };
-
+  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_EXCEPTION_READER_INT{{field:index}} = Readers.wrap({{#field:type}}{{> BoxedType}}.asReader());{{/field:type}}
   {{/function:exceptions}}
   {{#function:stream_exceptions}}
-  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_STREAM_EXCEPTION_READER_INT{{field:index}} =
-  oprot -> {
-            try {
-              {{#field:type}}
-              {{> ReadReturnType }}
-
-              return _r;
-              {{/field:type}}
-            } catch (Throwable _e) {
-              throw reactor.core.Exceptions.propagate(_e);
-            }
-          };
-
+  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_STREAM_EXCEPTION_READER_INT{{field:index}} = Readers.wrap({{#field:type}}{{> BoxedType}}.asReader());{{/field:type}}
   {{/function:stream_exceptions}}
   {{/service:streamingFunctions}}
   {{/service:interactions}}
@@ -267,26 +172,9 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_READER =
-    oprot -> {
-              try {
-                {{^function:voidType}}
-                {{#function:return_type}}
-                {{> ReadReturnType }}
-
-                return _r;
-                {{/function:return_type}}
-                {{/function:voidType}}
-
-                {{#function:voidType}}
-                return null;
-                {{/function:voidType}}
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_READER = {{!
+    }}{{#function:voidType}}Readers.voidReader(){{/function:voidType}}{{!
+    }}{{^function:voidType}}{{#function:return_type}}{{> TypeReader }}{{/function:return_type}}{{/function:voidType}};
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:javaName}}Wrapper({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -352,46 +240,14 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_READER =
-    oprot -> {
-              try {
-                {{^function:voidType}}
-                {{#function:return_type}}{{#type:stream_elem_type}}
-                {{> ReadReturnType }}
+  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_READER = {{!
+    }}{{#function:voidType}}Readers.voidReader(){{/function:voidType}}{{!
+    }}{{^function:voidType}}{{#function:return_type}}{{#type:stream_elem_type}}{{> TypeReader }}{{/type:stream_elem_type}}{{/function:return_type}}{{/function:voidType}};
 
-                return _r;
-                {{/type:stream_elem_type}}{{/function:return_type}}
-                {{/function:voidType}}
-
-                {{#function:voidType}}
-                return null;
-                {{/function:voidType}}
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-    {{#function:return_type}}{{#type:stream_has_first_response?}}
-
-    private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_FIRST_READER =
-    oprot -> {
-              try {
-                {{^function:voidType}}
-                {{#function:return_type}}{{#type:stream_first_response_type}}
-                {{> ReadReturnType }}
-
-                return _r;
-                {{/type:stream_first_response_type}}{{/function:return_type}}
-                {{/function:voidType}}
-
-                {{#function:voidType}}
-                return null;
-                {{/function:voidType}}
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
+  {{#function:return_type}}{{#type:stream_has_first_response?}}
+  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_FIRST_READER = {{!
+    }}{{#function:voidType}}Readers.voidReader(){{/function:voidType}}{{!
+    }}{{^function:voidType}}{{#function:return_type}}{{#type:stream_first_response_type}}{{> TypeReader }}{{/type:stream_first_response_type}}{{/function:return_type}}{{/function:voidType}};
   {{/type:stream_has_first_response?}}{{/function:return_type}}
 
   @java.lang.Override
@@ -477,46 +333,14 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_READER =
-    oprot -> {
-              try {
-                {{^function:voidType}}
-                {{#function:return_type}}{{#type:sink_final_response_type}}
-                {{> ReadReturnType }}
+  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_READER = {{!
+    }}{{#function:voidType}}Readers.voidReader(){{/function:voidType}}{{!
+    }}{{^function:voidType}}{{#function:return_type}}{{#type:sink_final_response_type}}{{> TypeReader }}{{/type:sink_final_response_type}}{{/function:return_type}}{{/function:voidType}};
 
-                return _r;
-                {{/type:sink_final_response_type}}{{/function:return_type}}
-                {{/function:voidType}}
-
-                {{#function:voidType}}
-                return null;
-                {{/function:voidType}}
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-    {{#function:return_type}}{{#type:sink_has_first_response?}}
-
-    private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_FIRST_READER =
-    oprot -> {
-              try {
-                {{^function:voidType}}
-                {{#function:return_type}}{{#type:sink_first_response_type}}
-                {{> ReadReturnType }}
-
-                return _r;
-                {{/type:sink_first_response_type}}{{/function:return_type}}
-                {{/function:voidType}}
-
-                {{#function:voidType}}
-                return null;
-                {{/function:voidType}}
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
+  {{#function:return_type}}{{#type:sink_has_first_response?}}
+  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_FIRST_READER = {{!
+    }}{{#function:voidType}}Readers.voidReader(){{/function:voidType}}{{!
+    }}{{^function:voidType}}{{#function:return_type}}{{#type:sink_first_response_type}}{{> TypeReader }}{{/type:sink_first_response_type}}{{/function:return_type}}{{/function:voidType}};
   {{/type:sink_has_first_response?}}{{/function:return_type}}
 
   @java.lang.Override
@@ -582,18 +406,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
     {{#service:singleRequestFunctions}}
     private final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:javaName}}_EXCEPTION_READERS = {{#function:exceptions?}}new HashMap<>();{{/function:exceptions?}}{{^function:exceptions?}}java.util.Collections.emptyMap();{{/function:exceptions?}}
     {{#function:exceptions}}
-    private final com.facebook.thrift.payload.Reader _{{function:javaName}}_EXCEPTION_READER_INT{{field:index}} =
-    oprot -> {
-              try {
-                {{#field:type}}
-                {{> ReadReturnType }}
-
-                return _r;
-                {{/field:type}}
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
+    private final com.facebook.thrift.payload.Reader _{{function:javaName}}_EXCEPTION_READER_INT{{field:index}} = Readers.wrap({{#field:type}}{{> BoxedType}}.asReader());{{/field:type}}
 
     {{/function:exceptions}}
     {{/service:singleRequestFunctions}}
@@ -624,25 +437,9 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
       };
     }
 
-    private final com.facebook.thrift.payload.Reader _{{function:javaName}}_READER =
-      oprot -> {
-                try {
-                  {{^function:voidType}}
-                  {{#function:return_type}}
-                  {{> ReadReturnType }}
-
-                  return _r;
-                  {{/function:return_type}}
-                  {{/function:voidType}}
-
-                  {{#function:voidType}}
-                  return null;
-                  {{/function:voidType}}
-
-                } catch (Throwable _e) {
-                  throw reactor.core.Exceptions.propagate(_e);
-                }
-              };
+    private final com.facebook.thrift.payload.Reader _{{function:javaName}}_READER = {{!
+      }}{{#function:voidType}}Readers.voidReader(){{/function:voidType}}{{!
+      }}{{^function:voidType}}{{#function:return_type}}{{> TypeReader }}{{/function:return_type}}{{/function:voidType}};
 
     public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
     final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
@@ -725,46 +522,14 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
       };
     }
 
-    private final com.facebook.thrift.payload.Reader _{{function:javaName}}_READER =
-      oprot -> {
-                try {
-                  {{^function:voidType}}
-                  {{#function:return_type}}{{#type:stream_elem_type}}
-                  {{> ReadReturnType }}
+    private final com.facebook.thrift.payload.Reader _{{function:javaName}}_READER = {{!
+      }}{{#function:voidType}}Readers.voidReader(){{/function:voidType}}{{!
+      }}{{^function:voidType}}{{#function:return_type}}{{#type:stream_elem_type}}{{> TypeReader }}{{/type:stream_elem_type}}{{/function:return_type}}{{/function:voidType}};
 
-                  return _r;
-                  {{/type:stream_elem_type}}{{/function:return_type}}
-                  {{/function:voidType}}
-
-                  {{#function:voidType}}
-                  return null;
-                  {{/function:voidType}}
-
-                } catch (Throwable _e) {
-                  throw reactor.core.Exceptions.propagate(_e);
-                }
-              };
-      {{#function:return_type}}{{#type:stream_has_first_response?}}
-
-      private final com.facebook.thrift.payload.Reader _{{function:javaName}}_FIRST_READER =
-      oprot -> {
-                try {
-                  {{^function:voidType}}
-                  {{#function:return_type}}{{#type:stream_first_response_type}}
-                  {{> ReadReturnType }}
-
-                  return _r;
-                  {{/type:stream_first_response_type}}{{/function:return_type}}
-                  {{/function:voidType}}
-
-                  {{#function:voidType}}
-                  return null;
-                  {{/function:voidType}}
-
-                } catch (Throwable _e) {
-                  throw reactor.core.Exceptions.propagate(_e);
-                }
-              };
+    {{#function:return_type}}{{#type:stream_has_first_response?}}
+    private final com.facebook.thrift.payload.Reader _{{function:javaName}}_FIRST_READER = {{!
+      }}{{#function:voidType}}Readers.voidReader(){{/function:voidType}}{{!
+      }}{{^function:voidType}}{{#function:return_type}}{{#type:stream_first_response_type}}{{> TypeReader }}{{/type:stream_first_response_type}}{{/function:return_type}}{{/function:voidType}};
     {{/type:stream_has_first_response?}}{{/function:return_type}}
 
     @java.lang.Override

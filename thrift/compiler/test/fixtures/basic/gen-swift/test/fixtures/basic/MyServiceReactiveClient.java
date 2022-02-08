@@ -18,6 +18,7 @@ import org.apache.thrift.InteractionCreate;
 import org.apache.thrift.InteractionTerminate;
 import com.facebook.thrift.client.ResponseWrapper;
 import com.facebook.thrift.client.RpcOptions;
+import com.facebook.thrift.util.Readers;
 
 public class MyServiceReactiveClient 
   implements MyService.Reactive {
@@ -84,17 +85,7 @@ public class MyServiceReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _ping_READER =
-    oprot -> {
-              try {
-
-                return null;
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _ping_READER = Readers.voidReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Void>> pingWrapper( final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -140,18 +131,7 @@ public class MyServiceReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _getRandomData_READER =
-    oprot -> {
-              try {
-                String _r = oprot.readString();
-                return _r;
-
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _getRandomData_READER = Readers.stringReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<String>> getRandomDataWrapper( final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -206,17 +186,7 @@ public class MyServiceReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _sink_READER =
-    oprot -> {
-              try {
-
-                return null;
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _sink_READER = Readers.voidReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Void>> sinkWrapper(final long sink,  final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -280,17 +250,7 @@ public class MyServiceReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _putDataById_READER =
-    oprot -> {
-              try {
-
-                return null;
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _putDataById_READER = Readers.voidReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Void>> putDataByIdWrapper(final long id, final String data,  final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -345,18 +305,7 @@ public class MyServiceReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _hasDataById_READER =
-    oprot -> {
-              try {
-                boolean _r = oprot.readBool();
-                return _r;
-
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _hasDataById_READER = Readers.booleanReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Boolean>> hasDataByIdWrapper(final long id,  final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -411,18 +360,7 @@ public class MyServiceReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _getDataById_READER =
-    oprot -> {
-              try {
-                String _r = oprot.readString();
-                return _r;
-
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _getDataById_READER = Readers.stringReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<String>> getDataByIdWrapper(final long id,  final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -477,17 +415,7 @@ public class MyServiceReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _deleteDataById_READER =
-    oprot -> {
-              try {
-
-                return null;
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _deleteDataById_READER = Readers.voidReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Void>> deleteDataByIdWrapper(final long id,  final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -551,17 +479,7 @@ public class MyServiceReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _lobDataById_READER =
-    oprot -> {
-              try {
-
-                return null;
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _lobDataById_READER = Readers.voidReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Void>> lobDataByIdWrapper(final long id, final String data,  final com.facebook.thrift.client.RpcOptions rpcOptions) {

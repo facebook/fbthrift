@@ -18,6 +18,7 @@ import org.apache.thrift.InteractionCreate;
 import org.apache.thrift.InteractionTerminate;
 import com.facebook.thrift.client.ResponseWrapper;
 import com.facebook.thrift.client.RpcOptions;
+import com.facebook.thrift.util.Readers;
 
 public class MyServicePrioParentReactiveClient 
   implements MyServicePrioParent.Reactive {
@@ -70,17 +71,7 @@ public class MyServicePrioParentReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _ping_READER =
-    oprot -> {
-              try {
-
-                return null;
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _ping_READER = Readers.voidReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Void>> pingWrapper( final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -126,17 +117,7 @@ public class MyServicePrioParentReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _pong_READER =
-    oprot -> {
-              try {
-
-                return null;
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _pong_READER = Readers.voidReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Void>> pongWrapper( final com.facebook.thrift.client.RpcOptions rpcOptions) {

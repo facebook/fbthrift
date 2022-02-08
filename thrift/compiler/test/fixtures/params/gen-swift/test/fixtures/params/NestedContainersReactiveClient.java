@@ -18,6 +18,7 @@ import org.apache.thrift.InteractionCreate;
 import org.apache.thrift.InteractionTerminate;
 import com.facebook.thrift.client.ResponseWrapper;
 import com.facebook.thrift.client.RpcOptions;
+import com.facebook.thrift.util.Readers;
 
 public class NestedContainersReactiveClient 
   implements NestedContainers.Reactive {
@@ -97,17 +98,7 @@ public class NestedContainersReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _mapList_READER =
-    oprot -> {
-              try {
-
-                return null;
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _mapList_READER = Readers.voidReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Void>> mapListWrapper(final Map<Integer, List<Integer>> foo,  final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -172,17 +163,7 @@ public class NestedContainersReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _mapSet_READER =
-    oprot -> {
-              try {
-
-                return null;
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _mapSet_READER = Readers.voidReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Void>> mapSetWrapper(final Map<Integer, Set<Integer>> foo,  final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -246,17 +227,7 @@ public class NestedContainersReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _listMap_READER =
-    oprot -> {
-              try {
-
-                return null;
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _listMap_READER = Readers.voidReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Void>> listMapWrapper(final List<Map<Integer, Integer>> foo,  final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -319,17 +290,7 @@ public class NestedContainersReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _listSet_READER =
-    oprot -> {
-              try {
-
-                return null;
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _listSet_READER = Readers.voidReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Void>> listSetWrapper(final List<Set<Integer>> foo,  final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -408,17 +369,7 @@ public class NestedContainersReactiveClient
     };
   }
 
-  private static final com.facebook.thrift.payload.Reader _turtles_READER =
-    oprot -> {
-              try {
-
-                return null;
-
-              } catch (Throwable _e) {
-                throw reactor.core.Exceptions.propagate(_e);
-              }
-            };
-
+  private static final com.facebook.thrift.payload.Reader _turtles_READER = Readers.voidReader();
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Void>> turtlesWrapper(final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo,  final com.facebook.thrift.client.RpcOptions rpcOptions) {
