@@ -177,7 +177,7 @@ class field_ref {
 
   // Workaround for https://bugs.llvm.org/show_bug.cgi?id=49442
   FOLLY_ERASE field_ref& operator=(value_type&& value) noexcept(
-      std::is_nothrow_assignable<value_type&, value_type&&>::value) {
+      std::is_nothrow_move_assignable<value_type>::value) {
     value_ = static_cast<value_type&&>(value);
     is_set_[bit_] = true;
     return *this;
@@ -399,7 +399,7 @@ class optional_field_ref {
 
   // Workaround for https://bugs.llvm.org/show_bug.cgi?id=49442
   FOLLY_ERASE optional_field_ref& operator=(value_type&& value) noexcept(
-      std::is_nothrow_assignable<value_type&, value_type&&>::value) {
+      std::is_nothrow_move_assignable<value_type>::value) {
     value_ = static_cast<value_type&&>(value);
     is_set_[bit_] = true;
     return *this;
@@ -467,7 +467,8 @@ class optional_field_ref {
 
   FOLLY_ERASE explicit operator bool() const noexcept { return is_set_[bit_]; }
 
-  FOLLY_ERASE void reset() noexcept {
+  FOLLY_ERASE void reset() noexcept(
+      std::is_nothrow_move_assignable<value_type>::value) {
     value_ = value_type();
     is_set_[bit_] = false;
   }
@@ -499,7 +500,8 @@ class optional_field_ref {
     return &value_;
   }
 
-  FOLLY_ERASE reference_type ensure() noexcept {
+  FOLLY_ERASE reference_type
+  ensure() noexcept(std::is_nothrow_move_assignable<value_type>::value) {
     if (!is_set_[bit_]) {
       emplace();
     }
@@ -1085,7 +1087,7 @@ class required_field_ref {
 
   // Workaround for https://bugs.llvm.org/show_bug.cgi?id=49442
   FOLLY_ERASE required_field_ref& operator=(value_type&& value) noexcept(
-      std::is_nothrow_assignable<value_type&, value_type&&>::value) {
+      std::is_nothrow_move_assignable<value_type>::value) {
     value_ = static_cast<value_type&&>(value);
     return *this;
     value.~value_type(); // Force emit destructor...
