@@ -217,6 +217,7 @@ class t_container_type;
 %type<t_container*>                ListType
 
 %type<std::string>                 Identifier
+%type<std::string>                 FieldTypeIdentifier
 %type<t_def_attrs*>                DefinitionAttrs
 %type<t_named*>                    Definition
 
@@ -300,8 +301,19 @@ Program:
       driver.clear_doctext();
     }
 
-Identifier:
+/**
+ * This rule is to avoid keywords as exceptions in field type identifiers.
+ * This allows to avoid shift-reduce conflicts due to a previous ambuguity
+ * in the resolution of the FunctionQualifier FunctionType part of the
+ * Function rule, when one of the tok_oneway, tok_idempotent or tok_readonly
+ * is encountered. It could either resolve the token as FunctionQualifier or
+ * resolve "" as FunctionQualifier and resolve the token as FunctionType.
+ */
+FieldTypeIdentifier:
   tok_identifier { $$ = std::move($1); }
+
+Identifier:
+  FieldTypeIdentifier { $$ = std::move($1); }
 /* context sensitive keywords that should be allowed in identifiers. */
 | tok_package    { $$ = "package"; }
 | tok_sink       { $$ = "sink"; }
@@ -883,7 +895,7 @@ SinkFieldType:
     }
 
 FieldType:
-  Identifier Annotations
+  FieldTypeIdentifier Annotations
     {
       driver.debug("FieldType => Identifier Annotations");
       $$ = driver.new_type_ref(std::move($1), own($2));
