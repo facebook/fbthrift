@@ -100,22 +100,28 @@ class BitSet {
   const T& value() const { return value_; }
 
  private:
-  void set(const uint8_t bit, std::false_type) { value_ |= (1 << bit); }
-  void set(const uint8_t bit, std::true_type) {
-    folly::atomic_fetch_set(value_, bit);
-  }
-  void set(const uint8_t bit) {
-    set(bit, folly::detail::is_instantiation_of<std::atomic, T>{});
+  template <class U>
+  static void set(U& u, std::size_t bit) {
+    u |= (1 << bit);
   }
 
-  void reset(const uint8_t bit, std::false_type) { value_ &= ~(1 << bit); }
-  void reset(const uint8_t bit, std::true_type) {
-    folly::atomic_fetch_reset(value_, bit);
+  template <class U>
+  static void reset(U& u, std::size_t bit) {
+    u &= ~(1 << bit);
   }
 
-  void reset(const uint8_t bit) {
-    reset(bit, folly::detail::is_instantiation_of<std::atomic, T>{});
+  template <class U>
+  static void set(std::atomic<U>& u, std::size_t bit) {
+    folly::atomic_fetch_set(u, bit, std::memory_order_relaxed);
   }
+
+  template <class U>
+  static void reset(std::atomic<U>& u, std::size_t bit) {
+    folly::atomic_fetch_reset(u, bit, std::memory_order_relaxed);
+  }
+
+  void set(std::size_t bit) { set(value_, bit); }
+  void reset(std::size_t bit) { reset(value_, bit); }
 
   bool get(const uint8_t bit) const {
     assert(bit < NUM_BITS);
