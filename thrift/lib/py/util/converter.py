@@ -15,18 +15,31 @@
 
 # pyre-unsafe
 
-from typing import Any, Type, TypeVar
+from typing import Any, Type, TypeVar, Union
 
+from thrift.protocol.TBinaryProtocol import TBinaryProtocolFactory
 from thrift.py3.reflection import inspect
 from thrift.py3.types import Enum, Struct
+from thrift.py3lite.serializer import (
+    serialize as lite_serialize,
+    Protocol as lite_Protocol,
+)
+from thrift.py3lite.types import Struct as lite_Struct, Union as lite_Union
 from thrift.Thrift import TType
 from thrift.util import parse_struct_spec
+from thrift.util.Serializer import deserialize
 
 
 T = TypeVar("T")
 
 
-def to_py_struct(cls: Type[T], obj: Struct) -> T:
+def to_py_struct(cls: Type[T], obj: Union[Struct, lite_Struct, lite_Union]) -> T:
+    if isinstance(obj, lite_Struct) or isinstance(obj, lite_Union):
+        return deserialize(
+            TBinaryProtocolFactory(),
+            lite_serialize(obj, protocol=lite_Protocol.BINARY),
+            cls(),
+        )
     return _to_py_struct(cls, obj)
 
 

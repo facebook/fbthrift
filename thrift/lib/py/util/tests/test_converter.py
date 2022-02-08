@@ -15,12 +15,13 @@
 
 import unittest
 
+import convertible.lite_types as lite_types
 import convertible.ttypes as ttypes
 import convertible.types as types
 from thrift.util.converter import to_py_struct
 
 
-class ConverterTest(unittest.TestCase):
+class Py3ToPyConverterTest(unittest.TestCase):
     def test_simple(self) -> None:
         simple = to_py_struct(
             ttypes.Simple,
@@ -110,6 +111,106 @@ class ConverterTest(unittest.TestCase):
                     strSet={"hello", "world"},
                     strToIntMap={"one": 1, "two": 2},
                     color=types.Color.NONE,
+                    name_="renamed",
+                )
+            ),
+        )
+        self.assertEqual(complex_union.get_simpleField().intField, 42)
+        self.assertEqual(complex_union.get_simpleField().name, "renamed")
+
+
+class Py3liteToPyConverterTest(unittest.TestCase):
+    def test_simple(self) -> None:
+        simple = to_py_struct(
+            ttypes.Simple,
+            lite_types.Simple(
+                intField=42,
+                strField="simple",
+                intList=[1, 2, 3],
+                strSet={"hello", "world"},
+                strToIntMap={"one": 1, "two": 2},
+                color=lite_types.Color.GREEN,
+                name_="renamed",
+            ),
+        )
+        self.assertEqual(simple.intField, 42)
+        self.assertEqual(simple.strField, "simple")
+        self.assertEqual(simple.intList, [1, 2, 3])
+        self.assertEqual(simple.strSet, {"hello", "world"})
+        self.assertEqual(simple.strToIntMap, {"one": 1, "two": 2})
+        self.assertEqual(simple.color, ttypes.Color.GREEN)
+        self.assertEqual(simple.name, "renamed")
+
+    def test_nested(self) -> None:
+        nested = to_py_struct(
+            ttypes.Nested,
+            lite_types.Nested(
+                simpleField=lite_types.Simple(
+                    intField=42,
+                    strField="simple",
+                    intList=[1, 2, 3],
+                    strSet={"hello", "world"},
+                    strToIntMap={"one": 1, "two": 2},
+                    color=lite_types.Color.NONE,
+                ),
+                simpleList=[
+                    lite_types.Simple(
+                        intField=200,
+                        strField="face",
+                        intList=[4, 5, 6],
+                        strSet={"keep", "calm"},
+                        strToIntMap={"three": 3, "four": 4},
+                        color=lite_types.Color.RED,
+                    ),
+                    lite_types.Simple(
+                        intField=404,
+                        strField="b00k",
+                        intList=[7, 8, 9],
+                        strSet={"carry", "on"},
+                        strToIntMap={"five": 5, "six": 6},
+                        color=lite_types.Color.GREEN,
+                    ),
+                ],
+                colorToSimpleMap={
+                    lite_types.Color.BLUE: lite_types.Simple(
+                        intField=500,
+                        strField="internal",
+                        intList=[10],
+                        strSet={"server", "error"},
+                        strToIntMap={"seven": 7, "eight": 8, "nine": 9},
+                        color=lite_types.Color.BLUE,
+                    )
+                },
+            ),
+        )
+        self.assertEqual(nested.simpleField.intField, 42)
+        self.assertEqual(nested.simpleList[0].intList, [4, 5, 6])
+        self.assertEqual(nested.simpleList[1].strSet, {"carry", "on"})
+        self.assertEqual(
+            nested.colorToSimpleMap[ttypes.Color.BLUE].color, ttypes.Color.BLUE
+        )
+
+    def test_simple_union(self) -> None:
+        simple_union = to_py_struct(ttypes.Union, lite_types.Union(intField=42))
+        self.assertEqual(simple_union.get_intField(), 42)
+
+    def test_union_with_containers(self) -> None:
+        union_with_list = to_py_struct(
+            ttypes.Union, lite_types.Union(intList=[1, 2, 3])
+        )
+        self.assertEqual(union_with_list.get_intList(), [1, 2, 3])
+
+    def test_complex_union(self) -> None:
+        complex_union = to_py_struct(
+            ttypes.Union,
+            lite_types.Union(
+                simple_=lite_types.Simple(
+                    intField=42,
+                    strField="simple",
+                    intList=[1, 2, 3],
+                    strSet={"hello", "world"},
+                    strToIntMap={"one": 1, "two": 2},
+                    color=lite_types.Color.NONE,
                     name_="renamed",
                 )
             ),
