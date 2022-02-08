@@ -16,7 +16,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Export boost environment
-      run: "echo BOOST_ROOT=%BOOST_ROOT_1_69_0% >> %GITHUB_ENV%"
+      run: "echo BOOST_ROOT=%BOOST_ROOT_1_78_0% >> %GITHUB_ENV%"
       shell: cmd
     - name: Fix Git config
       run: git config --system core.longpaths true
@@ -64,16 +64,6 @@ jobs:
       run: python build/fbcode_builder/getdeps.py fetch --no-tests fizz
     - name: Fetch wangle
       run: python build/fbcode_builder/getdeps.py fetch --no-tests wangle
-    - name: Fetch autoconf
-      run: python build/fbcode_builder/getdeps.py fetch --no-tests autoconf
-    - name: Fetch automake
-      run: python build/fbcode_builder/getdeps.py fetch --no-tests automake
-    - name: Fetch libtool
-      run: python build/fbcode_builder/getdeps.py fetch --no-tests libtool
-    - name: Fetch libffi
-      run: python build/fbcode_builder/getdeps.py fetch --no-tests libffi
-    - name: Fetch python
-      run: python build/fbcode_builder/getdeps.py fetch --no-tests python
     - name: Build bison
       run: python build/fbcode_builder/getdeps.py build --no-tests bison
     - name: Build flex
@@ -118,16 +108,6 @@ jobs:
       run: python build/fbcode_builder/getdeps.py build --no-tests fizz
     - name: Build wangle
       run: python build/fbcode_builder/getdeps.py build --no-tests wangle
-    - name: Build autoconf
-      run: python build/fbcode_builder/getdeps.py build --no-tests autoconf
-    - name: Build automake
-      run: python build/fbcode_builder/getdeps.py build --no-tests automake
-    - name: Build libtool
-      run: python build/fbcode_builder/getdeps.py build --no-tests libtool
-    - name: Build libffi
-      run: python build/fbcode_builder/getdeps.py build --no-tests libffi
-    - name: Build python
-      run: python build/fbcode_builder/getdeps.py build --no-tests python
     - name: Build fbthrift
       run: python build/fbcode_builder/getdeps.py build --src-dir=. fbthrift 
     - name: Copy artifacts

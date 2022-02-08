@@ -41,8 +41,6 @@ jobs:
       run: python3 build/fbcode_builder/getdeps.py fetch --no-tests lz4
     - name: Fetch snappy
       run: python3 build/fbcode_builder/getdeps.py fetch --no-tests snappy
-    - name: Fetch folly
-      run: python3 build/fbcode_builder/getdeps.py fetch --no-tests folly
     - name: Fetch python-six
       run: python3 build/fbcode_builder/getdeps.py fetch --no-tests python-six
     - name: Fetch autoconf
@@ -55,6 +53,8 @@ jobs:
       run: python3 build/fbcode_builder/getdeps.py fetch --no-tests bison
     - name: Fetch libsodium
       run: python3 build/fbcode_builder/getdeps.py fetch --no-tests libsodium
+    - name: Fetch folly
+      run: python3 build/fbcode_builder/getdeps.py fetch --no-tests folly
     - name: Fetch fizz
       run: python3 build/fbcode_builder/getdeps.py fetch --no-tests fizz
     - name: Fetch flex
@@ -91,8 +91,6 @@ jobs:
       run: python3 build/fbcode_builder/getdeps.py build --no-tests lz4
     - name: Build snappy
       run: python3 build/fbcode_builder/getdeps.py build --no-tests snappy
-    - name: Build folly
-      run: python3 build/fbcode_builder/getdeps.py build --no-tests folly
     - name: Build python-six
       run: python3 build/fbcode_builder/getdeps.py build --no-tests python-six
     - name: Build autoconf
@@ -105,6 +103,8 @@ jobs:
       run: python3 build/fbcode_builder/getdeps.py build --no-tests bison
     - name: Build libsodium
       run: python3 build/fbcode_builder/getdeps.py build --no-tests libsodium
+    - name: Build folly
+      run: python3 build/fbcode_builder/getdeps.py build --no-tests folly
     - name: Build fizz
       run: python3 build/fbcode_builder/getdeps.py build --no-tests fizz
     - name: Build flex
