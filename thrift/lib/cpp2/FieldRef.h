@@ -53,6 +53,36 @@ struct ensure_isset_unsafe_fn;
 struct unset_unsafe_fn;
 struct alias_isset_fn;
 
+// IntWrapper is a wrapper of integer that's always copy/move assignable
+// even if integer is atomic
+template <typename T>
+struct IntWrapper {
+  IntWrapper() = default;
+  explicit IntWrapper(T t) : value(t) {}
+
+  T value{0};
+};
+
+template <typename U>
+struct IntWrapper<std::atomic<U>> {
+  IntWrapper() = default;
+
+  IntWrapper(const IntWrapper& other) noexcept : value(other.value.load()) {}
+  IntWrapper(IntWrapper&& other) noexcept : value(other.value.load()) {}
+
+  IntWrapper& operator=(const IntWrapper& other) noexcept {
+    value = other.value.load();
+    return *this;
+  }
+
+  IntWrapper& operator=(IntWrapper&& other) noexcept {
+    value = other.value.load();
+    return *this;
+  }
+
+  std::atomic<U> value{0};
+};
+
 template <typename T>
 class BitSet {
   template <typename U>
@@ -61,10 +91,12 @@ class BitSet {
  public:
   BitSet() = default;
 
-  explicit BitSet(T value) : value_(value) {}
+  explicit BitSet(T value) : int_(value) {}
 
   template <typename U>
-  explicit BitSet(const BitSet<U>& other) noexcept : value_(other.value_) {}
+  explicit BitSet(const BitSet<U>& other) noexcept : int_(other.int_.value) {}
+
+  BitSet(const BitSet&) = default;
 
   class reference {
    public:
@@ -95,9 +127,9 @@ class BitSet {
     return reference(*this, bit);
   }
 
-  T& value() { return value_; }
+  T& value() { return int_.value; }
 
-  const T& value() const { return value_; }
+  const T& value() const { return int_.value; }
 
  private:
   template <class U>
@@ -120,15 +152,15 @@ class BitSet {
     folly::atomic_fetch_reset(u, bit, std::memory_order_relaxed);
   }
 
-  void set(std::size_t bit) { set(value_, bit); }
-  void reset(std::size_t bit) { reset(value_, bit); }
+  void set(std::size_t bit) { set(int_.value, bit); }
+  void reset(std::size_t bit) { reset(int_.value, bit); }
 
   bool get(const uint8_t bit) const {
     assert(bit < NUM_BITS);
-    return (value_ >> bit) & 1;
+    return (int_.value >> bit) & 1;
   }
 
-  T value_{0};
+  IntWrapper<T> int_;
 
   static constexpr int NUM_BITS = sizeof(T) * CHAR_BIT;
 };

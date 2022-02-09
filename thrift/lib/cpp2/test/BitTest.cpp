@@ -37,6 +37,21 @@ using Ints = ::testing::
     Types<uint8_t, uint8_t&, std::atomic<uint8_t>, std::atomic<uint8_t>&>;
 TYPED_TEST_SUITE(IntTest, Ints);
 
+TYPED_TEST(IntTest, Traits) {
+  static_assert(std::is_copy_constructible_v<BitSet<TypeParam>>);
+  static_assert(std::is_nothrow_move_constructible_v<BitSet<TypeParam>>);
+  static_assert(std::is_trivially_destructible_v<BitSet<TypeParam>>);
+  if constexpr (std::is_reference_v<TypeParam>) {
+    static_assert(std::is_trivially_copy_constructible_v<BitSet<TypeParam>>);
+    static_assert(std::is_trivially_move_constructible_v<BitSet<TypeParam>>);
+  } else {
+    // In this case `BitSet<TypeParam>` will be data member in thrift struct. We
+    // need to make sure thrift struct is copy/move assignable.
+    static_assert(std::is_copy_assignable_v<BitSet<TypeParam>>);
+    static_assert(std::is_move_assignable_v<BitSet<TypeParam>>);
+  }
+}
+
 TYPED_TEST(IntTest, Basic) {
   std::remove_reference_t<TypeParam> storage{0};
   auto b = makeBitSet<TypeParam>(storage);
