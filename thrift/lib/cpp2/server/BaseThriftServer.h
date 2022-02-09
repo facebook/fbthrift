@@ -895,21 +895,14 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   bool getEnableCodel() { return enableCodel_.get(); }
 
   /**
-   * Set the processor factory as the one built into the
-   * ServerInterface.
-   *
-   * setInterface() can take both unique_ptr and shared_ptr to handler
-   * interface.
-   *
-   * @param handler interface shared_ptr
+   * Sets the main server interface that exposes user-defined methods.
    */
-  void setInterface(std::shared_ptr<ServerInterface> iface) {
+  void setInterface(std::shared_ptr<AsyncProcessorFactory> iface) {
     setProcessorFactory(std::move(iface));
   }
 
   /**
-   * Sets an explicit AsyncProcessorFactory
-   *
+   * DEPRECATED! Use setInterface instead.
    */
   virtual void setProcessorFactory(
       std::shared_ptr<AsyncProcessorFactory> pFac) {
