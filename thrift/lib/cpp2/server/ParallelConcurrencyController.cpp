@@ -20,7 +20,7 @@
 namespace apache::thrift {
 
 void ParallelConcurrencyController::setExecutionLimitRequests(uint64_t limit) {
-  executionLimit_.store(limit, std::memory_order_relaxed);
+  executionLimit_.store(limit);
   // When the limit is changed, we call trySchedule() to fill the gap
   // of new limit and the old (if new > old)
   while (trySchedule()) {
@@ -41,7 +41,7 @@ void ParallelConcurrencyController::onEnqueued() {
 void ParallelConcurrencyController::onExecuteFinish(bool dequeueSuccess) {
   if (dequeueSuccess) {
     for (;;) {
-      auto countersOld = counters_.load(std::memory_order_relaxed);
+      auto countersOld = counters_.load();
       auto counters = countersOld;
       --counters.requestInExecution;
       if (!counters_.compare_exchange_weak(countersOld, counters)) {
@@ -52,7 +52,7 @@ void ParallelConcurrencyController::onExecuteFinish(bool dequeueSuccess) {
     trySchedule();
   } else {
     for (;;) {
-      auto countersOld = counters_.load(std::memory_order_relaxed);
+      auto countersOld = counters_.load();
       auto counters = countersOld;
       --counters.requestInExecution;
       ++counters.pendingDequeCalls;
@@ -81,12 +81,12 @@ void ParallelConcurrencyController::onRequestFinished(intptr_t /*requestTag*/) {
 // }
 bool ParallelConcurrencyController::trySchedule(bool onEnqueued) {
   for (;;) {
-    auto countersOld = counters_.load(std::memory_order_relaxed);
+    auto countersOld = counters_.load();
     auto counters = countersOld;
     // It's possible that executionLimit gets changed during the call
     // but since it is pretty rare we don't compare test it in this
     // implementation
-    auto currentLimit = executionLimit_.load(std::memory_order_relaxed);
+    auto currentLimit = executionLimit_.load();
 
     // Only when the caller is onEnqueue() will we increment pendingDequeCalls
     // to indicate that we have more coming sitting in the queue

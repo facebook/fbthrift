@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#include <atomic>
 #include <limits>
 
 #include <folly/Executor.h>
 #include <folly/lang/Align.h>
+#include <folly/synchronization/RelaxedAtomic.h>
 
 #include <thrift/lib/cpp2/server/ConcurrencyControllerInterface.h>
 #include <thrift/lib/cpp2/server/RequestPileInterface.h>
@@ -33,11 +33,11 @@ class ParallelConcurrencyController : public ConcurrencyControllerInterface {
   void setExecutionLimitRequests(uint64_t limit) override;
 
   uint64_t getExecutionLimitRequests() const override {
-    return executionLimit_.load(std::memory_order_relaxed);
+    return executionLimit_.load();
   }
 
   uint64_t requestCount() const override {
-    return counters_.load(std::memory_order_relaxed).requestInExecution;
+    return counters_.load().requestInExecution;
   }
 
   void onEnqueued() override;
@@ -58,8 +58,9 @@ class ParallelConcurrencyController : public ConcurrencyControllerInterface {
   };
   static_assert(std::atomic<Counters>::is_always_lock_free);
 
-  std::atomic<Counters> counters_{};
-  std::atomic<uint64_t> executionLimit_{std::numeric_limits<uint64_t>::max()};
+  folly::relaxed_atomic<Counters> counters_{};
+  folly::relaxed_atomic<uint64_t> executionLimit_{
+      std::numeric_limits<uint64_t>::max()};
 
   RequestPileInterface& pile_;
   folly::Executor& executor_;
