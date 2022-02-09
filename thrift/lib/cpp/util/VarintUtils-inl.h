@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -191,8 +191,8 @@ uint8_t writeVarintBMI2(Cursor& c, T valueS) {
     return 1;
   }
 
-  if (sizeof(T) == 1) {
-    c.template write<uint16_t>(value | 0x100);
+  if /* constexpr */ (sizeof(T) == 1) {
+    c.template write<uint16_t>(static_cast<uint16_t>(value | 0x100));
     return 2;
   }
 
@@ -200,7 +200,7 @@ uint8_t writeVarintBMI2(Cursor& c, T valueS) {
   static constexpr std::array<uint8_t, 64> kShift = []() {
     std::array<uint8_t, 64> v = {};
     for (size_t i = 0; i < 64; i++) {
-      uint8_t byteShift = i == 0 ? 0 : (8 - ((63 - i) / 7));
+      uint8_t byteShift = folly::to_narrow(i == 0 ? 0 : (8 - ((63 - i) / 7)));
       v[i] = byteShift * 8;
     }
     return v;
@@ -208,7 +208,7 @@ uint8_t writeVarintBMI2(Cursor& c, T valueS) {
   static constexpr std::array<uint8_t, 64> kSize = []() {
     std::array<uint8_t, 64> v = {};
     for (size_t i = 0; i < 64; i++) {
-      v[i] = ((63 - i) / 7) + 1;
+      v[i] = folly::to_narrow(((63 - i) / 7) + 1);
     }
     return v;
   }();
@@ -218,7 +218,7 @@ uint8_t writeVarintBMI2(Cursor& c, T valueS) {
   uint64_t v = _pdep_u64(value, ~kMask) | (kMask >> kShift[clzll]);
   uint8_t size = kSize[clzll];
 
-  if (sizeof(T) < sizeof(uint64_t)) {
+  if /* constexpr */ (sizeof(T) < sizeof(uint64_t)) {
     c.template write<uint64_t>(v, size);
   } else {
     // Ensure max encoding space for u64 varint (10 bytes).
