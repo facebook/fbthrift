@@ -68,6 +68,12 @@ TEST(ClearTest, String) {
   testClear<type::binary_t>("", "bye");
 }
 
+TEST(ClearTest, Container) {
+  testClear<type::list<type::string_t>>({}, {"hi"});
+  testClear<type::set<type::string_t>>({}, {"hi"});
+  testClear<type::map<type::string_t, type::string_t>>({}, {{"hi", "bye"}});
+}
+
 TEST(ClearTest, Structured) {
   testClear<type::struct_t<testset::struct_i64>>(
       {}, {apache::thrift::FragileConstructor(), 1}, false);
