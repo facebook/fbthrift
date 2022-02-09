@@ -263,10 +263,10 @@ class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:name%> <
 <%#struct:virtual%>
 
 <%^struct:is_large?%>
-  virtual ~<%struct:name%>() {}
+  <%^struct:exception?%>virtual<%/struct:exception?%> ~<%struct:name%>() <%#struct:exception?%> override<%/struct:exception?%>{}
 <%/struct:is_large?%>
 <%#struct:is_large?%>
-  virtual ~<%struct:name%>();
+  <%^struct:exception?%>virtual<%/struct:exception?%> ~<%struct:name%>() <%#struct:exception?%> override<%/struct:exception?%>;
 <%/struct:is_large?%>
 
 <%/struct:virtual%>

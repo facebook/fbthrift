@@ -5190,7 +5190,7 @@ class FOLLY_EXPORT AnotherException : public apache::thrift::TException {
   AnotherException& operator=(AnotherException&&) noexcept;
   AnotherException& operator=(const AnotherException& src);
 
-  virtual ~AnotherException();
+   ~AnotherException()  override;
 
  private:
   ::std::int32_t code;
@@ -7129,7 +7129,7 @@ class AnnotatedStruct  {
 
   AnnotatedStruct& operator=(AnnotatedStruct&&) = default;
 
-  virtual ~AnnotatedStruct();
+  virtual ~AnnotatedStruct() ;
 
  private:
   ::some::valid::ns::containerStruct no_annotation;
