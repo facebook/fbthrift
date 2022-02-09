@@ -39,30 +39,17 @@ void ParallelConcurrencyController::onEnqueued() {
 // And if the dequeue failed for some reason, we still decremented the
 // pendingCounter, so we are adding it back in here as well
 void ParallelConcurrencyController::onExecuteFinish(bool dequeueSuccess) {
-  if (dequeueSuccess) {
-    for (;;) {
-      auto countersOld = counters_.load();
-      auto counters = countersOld;
-      --counters.requestInExecution;
-      if (!counters_.compare_exchange_weak(countersOld, counters)) {
-        continue;
-      }
-      break;
+  for (;;) {
+    auto countersOld = counters_.load();
+    auto counters = countersOld;
+    --counters.requestInExecution;
+    counters.pendingDequeCalls += dequeueSuccess ? 0 : 1;
+    if (!counters_.compare_exchange_weak(countersOld, counters)) {
+      continue;
     }
-    trySchedule();
-  } else {
-    for (;;) {
-      auto countersOld = counters_.load();
-      auto counters = countersOld;
-      --counters.requestInExecution;
-      ++counters.pendingDequeCalls;
-      if (!counters_.compare_exchange_weak(countersOld, counters)) {
-        continue;
-      }
-      break;
-    }
-    trySchedule();
+    break;
   }
+  trySchedule();
 }
 
 void ParallelConcurrencyController::onRequestFinished(intptr_t /*requestTag*/) {
