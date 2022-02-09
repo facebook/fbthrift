@@ -24,10 +24,10 @@ from thrift.protocol.TProtocol import *
 from struct import pack, unpack
 
 __all__ = [
-    'TCompactProtocol',
-    'TCompactProtocolFactory',
-    'TCompactProtocolAccelerated',
-    'TCompactProtocolAcceleratedFactory',
+    "TCompactProtocol",
+    "TCompactProtocolFactory",
+    "TCompactProtocolAccelerated",
+    "TCompactProtocolAcceleratedFactory",
 ]
 
 CLEAR = 0
@@ -40,39 +40,48 @@ CONTAINER_READ = 6
 VALUE_READ = 7
 BOOL_READ = 8
 
+
 def make_helper(v_from, container):
     def helper(func):
         def nested(self, *args, **kwargs):
-            assert self.state in (v_from, container), \
-                    (self.state, v_from, container)
+            assert self.state in (v_from, container), (self.state, v_from, container)
             return func(self, *args, **kwargs)
+
         return nested
+
     return helper
+
+
 writer = make_helper(VALUE_WRITE, CONTAINER_WRITE)
 reader = make_helper(VALUE_READ, CONTAINER_READ)
+
 
 def makeZigZag(n, bits):
     return (n << 1) ^ (n >> (bits - 1))
 
+
 def fromZigZag(n):
     return (n >> 1) ^ -(n & 1)
+
 
 def getVarint(n):
     out = []
     while True:
-        if n & ~0x7f == 0:
+        if n & ~0x7F == 0:
             out.append(n)
             break
         else:
-            out.append((n & 0xff) | 0x80)
+            out.append((n & 0xFF) | 0x80)
             n = n >> 7
     if sys.version_info[0] >= 3:
         return bytes(out)
     else:
-        return b''.join(map(chr, out))
+        return b"".join(map(chr, out))
+
 
 def writeVarint(trans, n):
     trans.write(getVarint(n))
+
 
 def readVarint(trans):
     result = 0
@@ -80,10 +89,11 @@ def readVarint(trans):
     while True:
         x = trans.read(1)
         byte = ord(x)
-        result |= (byte & 0x7f) << shift
+        result |= (byte & 0x7F) << shift
         if byte >> 7 == 0:
             return result
         shift += 7
+
 
 class CompactType:
     STOP = 0x00
@@ -101,20 +111,22 @@ class CompactType:
     STRUCT = 0x0C
     FLOAT = 0x0D
 
-CTYPES = {TType.STOP: CompactType.STOP,
-          TType.BOOL: CompactType.TRUE, # used for collection
-          TType.BYTE: CompactType.BYTE,
-          TType.I16: CompactType.I16,
-          TType.I32: CompactType.I32,
-          TType.I64: CompactType.I64,
-          TType.DOUBLE: CompactType.DOUBLE,
-          TType.FLOAT: CompactType.FLOAT,
-          TType.STRING: CompactType.BINARY,
-          TType.STRUCT: CompactType.STRUCT,
-          TType.LIST: CompactType.LIST,
-          TType.SET: CompactType.SET,
-          TType.MAP: CompactType.MAP
-          }
+
+CTYPES = {
+    TType.STOP: CompactType.STOP,
+    TType.BOOL: CompactType.TRUE,  # used for collection
+    TType.BYTE: CompactType.BYTE,
+    TType.I16: CompactType.I16,
+    TType.I32: CompactType.I32,
+    TType.I64: CompactType.I64,
+    TType.DOUBLE: CompactType.DOUBLE,
+    TType.FLOAT: CompactType.FLOAT,
+    TType.STRING: CompactType.BINARY,
+    TType.STRUCT: CompactType.STRUCT,
+    TType.LIST: CompactType.LIST,
+    TType.SET: CompactType.SET,
+    TType.MAP: CompactType.MAP,
+}
 
 TTYPES = {}
 for k, v in CTYPES.items():
@@ -123,6 +135,7 @@ TTYPES[CompactType.FALSE] = TType.BOOL
 del k
 del v
 
+
 class TCompactProtocol(TProtocolBase):
     "Compact implementation of the Thrift protocol driver."
 
@@ -130,8 +143,8 @@ class TCompactProtocol(TProtocolBase):
     VERSION = 2
     VERSION_LOW = 1
     VERSION_DOUBLE_BE = 2
-    VERSION_MASK = 0x1f
-    TYPE_MASK = 0xe0
+    VERSION_MASK = 0x1F
+    TYPE_MASK = 0xE0
     TYPE_SHIFT_AMOUNT = 5
 
     def __init__(self, trans):
@@ -195,10 +208,10 @@ class TCompactProtocol(TProtocolBase):
         self.state = FIELD_WRITE
 
     def __writeUByte(self, byte):
-        self.trans.write(pack(b'!B', byte))
+        self.trans.write(pack(b"!B", byte))
 
     def __writeByte(self, byte):
-        self.trans.write(pack(b'!b', byte))
+        self.trans.write(pack(b"!b", byte))
 
     def __writeI16(self, i16):
         i16 = int(i16)
@@ -212,10 +225,11 @@ class TCompactProtocol(TProtocolBase):
         if size <= 14:
             self.__writeUByte(size << 4 | CTYPES[etype])
         else:
-            self.__writeUByte(0xf0 | CTYPES[etype])
+            self.__writeUByte(0xF0 | CTYPES[etype])
             self.__writeSize(size)
         self.__containers.append(self.state)
         self.state = CONTAINER_WRITE
+
     writeSetBegin = writeCollectionBegin
     writeListBegin = writeCollectionBegin
 
@@ -232,6 +246,7 @@ class TCompactProtocol(TProtocolBase):
     def writeCollectionEnd(self):
         assert self.state == CONTAINER_WRITE, self.state
         self.state = self.__containers.pop()
+
     writeMapEnd = writeCollectionEnd
     writeSetEnd = writeCollectionEnd
     writeListEnd = writeCollectionEnd
@@ -267,25 +282,26 @@ class TCompactProtocol(TProtocolBase):
     @writer
     def writeDouble(self, dub):
         if self.__version >= self.VERSION_DOUBLE_BE:
-            self.trans.write(pack(b'!d', dub))
+            self.trans.write(pack(b"!d", dub))
         else:
-            self.trans.write(pack(b'd', dub))
+            self.trans.write(pack(b"d", dub))
 
     @writer
     def writeFloat(self, flt):
-        self.trans.write(pack(b'!f', flt))
+        self.trans.write(pack(b"!f", flt))
 
     def __writeString(self, s):
         if sys.version_info[0] >= 3 and not isinstance(s, bytes):
-            s = s.encode('utf-8')
+            s = s.encode("utf-8")
         self.__writeSize(len(s))
         self.trans.write(s)
+
     writeString = writer(__writeString)
 
     def readFieldBegin(self):
         assert self.state == FIELD_READ, self.state
         type = self.__readUByte()
-        if type & 0x0f == TType.STOP:
+        if type & 0x0F == TType.STOP:
             return (None, 0, 0)
         delta = type >> 4
         if delta == 0:
@@ -293,7 +309,7 @@ class TCompactProtocol(TProtocolBase):
         else:
             fid = self.__last_fid + delta
         self.__last_fid = fid
-        type = type & 0x0f
+        type = type & 0x0F
         if type == CompactType.TRUE:
             self.state = BOOL_READ
             self.__bool_value = True
@@ -309,11 +325,11 @@ class TCompactProtocol(TProtocolBase):
         self.state = FIELD_READ
 
     def __readUByte(self):
-        result, = unpack(b'!B', self.trans.readAll(1))
+        (result,) = unpack(b"!B", self.trans.readAll(1))
         return result
 
     def __readByte(self):
-        result, = unpack(b'!b', self.trans.readAll(1))
+        (result,) = unpack(b"!b", self.trans.readAll(1))
         return result
 
     def __readVarint(self):
@@ -332,15 +348,19 @@ class TCompactProtocol(TProtocolBase):
         assert self.state == CLEAR
         proto_id = self.__readUByte()
         if proto_id != self.PROTOCOL_ID:
-            raise TProtocolException(TProtocolException.BAD_VERSION,
-                'Bad protocol id in the message: %d' % proto_id)
+            raise TProtocolException(
+                TProtocolException.BAD_VERSION,
+                "Bad protocol id in the message: %d" % proto_id,
+            )
         ver_type = self.__readUByte()
         type = (ver_type & self.TYPE_MASK) >> self.TYPE_SHIFT_AMOUNT
         self.__version = ver_type & self.VERSION_MASK
-        if not (self.__version <= self.VERSION and
-                self.__version >= self.VERSION_LOW):
-            raise TProtocolException(TProtocolException.BAD_VERSION,
-                'Bad version: %d (expect %d)' % (self.__version, self.VERSION))
+        if not (self.__version <= self.VERSION
+                and self.__version >= self.VERSION_LOW):
+            raise TProtocolException(
+                TProtocolException.BAD_VERSION,
+                "Bad version: %d (expect %d)" % (self.__version, self.VERSION),
+            )
         seqid = self.__readVarint()
         name = self.__readString()
         return (name, type, seqid)
@@ -369,6 +389,7 @@ class TCompactProtocol(TProtocolBase):
         self.__containers.append(self.state)
         self.state = CONTAINER_READ
         return type, size
+
     readSetBegin = readCollectionBegin
     readListBegin = readCollectionBegin
 
@@ -387,6 +408,7 @@ class TCompactProtocol(TProtocolBase):
     def readCollectionEnd(self):
         assert self.state == CONTAINER_READ, self.state
         self.state = self.__containers.pop()
+
     readSetEnd = readCollectionEnd
     readListEnd = readCollectionEnd
     readMapEnd = readCollectionEnd
@@ -397,8 +419,7 @@ class TCompactProtocol(TProtocolBase):
         elif self.state == CONTAINER_READ:
             return self.__readByte() == CompactType.TRUE
         else:
-            raise AssertionError(
-                    "Invalid state in compact protocol: %d" % self.state)
+            raise AssertionError("Invalid state in compact protocol: %d" % self.state)
 
     readByte = reader(__readByte)
     __readI16 = __readZigZag
@@ -410,36 +431,38 @@ class TCompactProtocol(TProtocolBase):
     def readDouble(self):
         buff = self.trans.readAll(8)
         if self.__version >= self.VERSION_DOUBLE_BE:
-            val, = unpack(b'!d', buff)
+            (val,) = unpack(b"!d", buff)
         else:
-            val, = unpack(b'd', buff)
+            (val,) = unpack(b"d", buff)
         return val
 
     @reader
     def readFloat(self):
         buff = self.trans.readAll(4)
-        val, = unpack(b'!f', buff)
+        (val,) = unpack(b"!f", buff)
         return val
 
     def __readString(self):
         len = self.__readSize()
         return self.trans.readAll(len)
+
     readString = reader(__readString)
 
     def __getTType(self, byte):
-        return TTYPES[byte & 0x0f]
+        return TTYPES[byte & 0x0F]
 
 
 class TCompactProtocolFactory:
-    def __init__(self):
-        # type: () -> None
+    def __init__(self) -> None:
         pass
 
     def getProtocol(self, trans):
         return TCompactProtocol(trans)
 
+
 class TCompactProtocolAccelerated(TCompactProtocol):
     pass
+
 
 class TCompactProtocolAcceleratedFactory(TCompactProtocolFactory):
     def getProtocol(self, trans):

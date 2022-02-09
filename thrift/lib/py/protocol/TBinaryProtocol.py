@@ -22,6 +22,7 @@ from __future__ import unicode_literals
 from thrift.protocol.TProtocol import *
 from struct import pack, unpack
 
+
 class TBinaryProtocol(TProtocolBase):
 
     """Binary implementation of the Thrift protocol driver."""
@@ -39,7 +40,7 @@ class TBinaryProtocol(TProtocolBase):
     # VERSION_1 = 0x80010000
     VERSION_1 = -2147418112
 
-    TYPE_MASK = 0x000000ff
+    TYPE_MASK = 0x000000FF
 
     def __init__(self, trans, strictRead=False, strictWrite=True):
         TProtocolBase.__init__(self, trans)
@@ -129,7 +130,7 @@ class TBinaryProtocol(TProtocolBase):
 
     def writeString(self, str):
         if sys.version_info[0] >= 3 and not isinstance(str, bytes):
-            str = str.encode('utf-8')
+            str = str.encode("utf-8")
         self.writeI32(len(str))
         self.trans.write(str)
 
@@ -138,15 +139,18 @@ class TBinaryProtocol(TProtocolBase):
         if sz < 0:
             version = sz & TBinaryProtocol.VERSION_MASK
             if version != TBinaryProtocol.VERSION_1:
-                raise TProtocolException(TProtocolException.BAD_VERSION,
-                        'Bad version in readMessageBegin: %d' % (sz))
+                raise TProtocolException(
+                    TProtocolException.BAD_VERSION,
+                    "Bad version in readMessageBegin: %d" % (sz),
+                )
             type = sz & TBinaryProtocol.TYPE_MASK
             name = self.readString()
             seqid = self.readI32()
         else:
             if self.strictRead:
-                raise TProtocolException(TProtocolException.BAD_VERSION,
-                        'No protocol version header')
+                raise TProtocolException(
+                    TProtocolException.BAD_VERSION, "No protocol version header"
+                )
             name = self.trans.readAll(sz)
             type = self.readByte()
             seqid = self.readI32()
@@ -204,32 +208,32 @@ class TBinaryProtocol(TProtocolBase):
 
     def readByte(self):
         buff = self.trans.readAll(1)
-        val, = unpack(b'!b', buff)
+        (val,) = unpack(b"!b", buff)
         return val
 
     def readI16(self):
         buff = self.trans.readAll(2)
-        val, = unpack(b'!h', buff)
+        (val,) = unpack(b"!h", buff)
         return val
 
     def readI32(self):
         buff = self.trans.readAll(4)
-        val, = unpack(b'!i', buff)
+        (val,) = unpack(b"!i", buff)
         return val
 
     def readI64(self):
         buff = self.trans.readAll(8)
-        val, = unpack(b'!q', buff)
+        (val,) = unpack(b"!q", buff)
         return val
 
     def readDouble(self):
         buff = self.trans.readAll(8)
-        val, = unpack(b'!d', buff)
+        (val,) = unpack(b"!d", buff)
         return val
 
     def readFloat(self):
         buff = self.trans.readAll(4)
-        val, = unpack(b'!f', buff)
+        (val,) = unpack(b"!f", buff)
         return val
 
     def readString(self):
@@ -239,8 +243,7 @@ class TBinaryProtocol(TProtocolBase):
 
 
 class TBinaryProtocolFactory:
-    def __init__(self, strictRead=False, strictWrite=True):
-        # type: (bool, bool) -> None
+    def __init__(self, strictRead: bool = False, strictWrite: bool = True) -> None:
         self.strictRead = strictRead
         self.strictWrite = strictWrite
 
@@ -275,5 +278,4 @@ class TBinaryProtocolAccelerated(TBinaryProtocol):
 
 class TBinaryProtocolAcceleratedFactory(TBinaryProtocolFactory):
     def getProtocol(self, trans):
-        return TBinaryProtocolAccelerated(trans, self.strictRead,
-                self.strictWrite)
+        return TBinaryProtocolAccelerated(trans, self.strictRead, self.strictWrite)

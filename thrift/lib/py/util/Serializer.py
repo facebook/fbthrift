@@ -19,7 +19,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from typing import Any, AnyStr, TypeVar  # noqa: F401
+from typing import Any, AnyStr, TypeVar
 
 from thrift.transport import TTransport
 from thrift.protocol import THeaderProtocol
@@ -27,8 +27,7 @@ from thrift.protocol import THeaderProtocol
 
 # pyre-fixme[34]: `Variable[AnyStr <: [str, bytes]]` isn't present in the function's
 #  parameters.
-def serialize(protocol_factory, thr):
-    # type: (Any, Any) -> AnyStr
+def serialize(protocol_factory: Any, thr: Any) -> AnyStr:
     """Convenience method for serializing objects using the given
     protocol factory and a TMemoryBuffer."""
     transport = TTransport.TMemoryBuffer()
@@ -39,18 +38,19 @@ def serialize(protocol_factory, thr):
     return transport.getvalue()
 
 
-T = TypeVar("T")  # noqa: F401
+T = TypeVar("T")
 
 
-def deserialize(protocol_factory, data, thr_out):
-    # type: (Any, AnyStr, T) -> T
+def deserialize(protocol_factory: Any, data: AnyStr, thr_out: T) -> T:
     """Convenience method for deserializing objects using the given
     protocol factory and a TMemoryBuffer.  returns its thr_out
     argument."""
     transport = TTransport.TMemoryBuffer(data)
     try:
-        # pyre-fixme[16]: `T` has no attribute `thrift_spec`.
-        protocol = protocol_factory.getProtocol(transport, thr_out.thrift_spec)  # noqa: T484
+        protocol = protocol_factory.getProtocol(
+            # pyre-fixme[16]: `T` has no attribute `thrift_spec`.
+            transport, thr_out.thrift_spec
+        )  # noqa: T484
     except TypeError:
         protocol = protocol_factory.getProtocol(transport)
     if isinstance(protocol, THeaderProtocol.THeaderProtocol):
