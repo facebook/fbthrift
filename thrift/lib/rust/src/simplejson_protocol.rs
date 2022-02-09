@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ use crate::serialize::Serialize;
 use crate::thrift_protocol::{MessageType, ProtocolID};
 use crate::ttype::TType;
 use crate::Result;
-use anyhow::{anyhow, bail};
+use anyhow::{anyhow, bail, Context};
 use bufsize::SizeCounter;
 use bytes::{buf::Writer, Buf, BufMut, Bytes, BytesMut};
 use ghost::phantom;
@@ -892,7 +892,8 @@ impl<B: Buf> ProtocolReader for SimpleJsonProtocolDeserializer<B> {
                 None => bail!("Expected some char"),
             }
         }
-        let bin = base64::decode_config(&ret, base64::STANDARD_NO_PAD)?;
+        let bin = base64::decode_config(&ret, base64::STANDARD_NO_PAD)
+            .context("the `binary` data in JSON string does not contain valid base64")?;
         Ok(V::from_vec(bin))
     }
 
