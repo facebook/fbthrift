@@ -333,8 +333,6 @@ class mstch_swift_struct : public mstch_struct {
              &mstch_swift_struct::needs_exception_message},
             {"struct:enableIsSet?", &mstch_swift_struct::enable_is_set},
         });
-    register_has_option(
-        "struct:extendRuntimeException?", "legacy_extend_runtime_exception");
   }
   mstch::node java_package() {
     return get_namespace_or_default(*(strct_->program()));
