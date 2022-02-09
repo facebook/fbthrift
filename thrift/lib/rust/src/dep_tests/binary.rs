@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+use crate::proptest::gen_main_struct;
 use anyhow::Result;
 use fbthrift::binary_protocol::{deserialize, serialize};
 use fbthrift::ttype::TType;
 use fbthrift_test_if::Un;
+use proptest::prelude::*;
 
 #[test]
 fn test_unknown_union() -> Result<()> {
@@ -40,4 +42,12 @@ fn test_unknown_union() -> Result<()> {
     assert_eq!(&[TType::Stop as u8], s2.as_ref());
 
     Ok(())
+}
+
+proptest! {
+#[test]
+fn test_prop_serialize_deserialize(s in gen_main_struct()) {
+    let processed = deserialize(serialize(&s)).unwrap();
+    prop_assert_eq!(s, processed);
+}
 }

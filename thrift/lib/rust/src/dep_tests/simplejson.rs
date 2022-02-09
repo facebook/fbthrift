@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
+use crate::proptest::gen_main_struct;
 use anyhow::Result;
 use fbthrift::simplejson_protocol::{deserialize, serialize};
 use fbthrift::{simplejson_protocol::SimpleJsonProtocolDeserializer, Deserialize};
 use fbthrift_test_if::{
     Basic, Containers, En, MainStruct, MainStructNoBinary, Small, SubStruct, Un, UnOne,
 };
+use proptest::prelude::*;
 use std::collections::BTreeMap;
 use std::io::Cursor;
 
@@ -509,4 +511,12 @@ fn test_unknown_union() -> Result<()> {
     assert_eq!(u, deserialize(old_output).unwrap());
 
     Ok(())
+}
+
+proptest! {
+#[test]
+fn test_prop_serialize_deserialize(s in gen_main_struct()) {
+    let processed = deserialize(serialize(&s)).unwrap();
+    prop_assert_eq!(s, processed);
+}
 }
