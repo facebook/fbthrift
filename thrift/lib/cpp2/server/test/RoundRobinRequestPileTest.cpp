@@ -79,7 +79,7 @@ TEST(RoundRobinRequestPileTest, NormalCases) {
   RoundRobinRequestPile::Options opts;
   opts.setNumPriorities(5);
   for (int i = 0; i < 5; ++i) {
-    opts.setBucketSizeForPriority(i, 10);
+    opts.setNumBucketsPerPriority(i, 10);
   }
   opts.pileSelectionFunction = scopeFunc;
   RoundRobinRequestPile pile(opts);

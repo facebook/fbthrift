@@ -31,7 +31,7 @@ class RoundRobinRequestPile : public RequestPileInterface {
       std::function<std::pair<unsigned, unsigned>(const ServerRequest&)>;
 
   struct Options {
-    inline constexpr static unsigned kDefaultNumPriorities = 5;
+    inline constexpr static unsigned kDefaultNumPriorities = 1;
     inline constexpr static unsigned kDefaultNumBuckets = 1;
 
     // numBucket = numBuckets_[priority]
@@ -40,16 +40,8 @@ class RoundRobinRequestPile : public RequestPileInterface {
     // 0 means no limit
     uint64_t numMaxRequests{0};
 
-    // default implementation
-    PileSelectionFunction pileSelectionFunction{
-        [](const ServerRequest& request) -> std::pair<unsigned, unsigned> {
-          auto ctx = request.requestContext();
-          auto callPriority = ctx->getCallPriority();
-          auto res = callPriority == concurrency::N_PRIORITIES
-              ? concurrency::NORMAL
-              : callPriority;
-          return std::make_pair(static_cast<uint64_t>(res), 0);
-        }};
+    // Function to route requests to priority/bucket
+    PileSelectionFunction pileSelectionFunction;
 
     Options() {
       numBucketsPerPriority.reserve(kDefaultNumPriorities);
@@ -62,8 +54,8 @@ class RoundRobinRequestPile : public RequestPileInterface {
       numBucketsPerPriority.resize(numPri);
     }
 
-    void setBucketSizeForPriority(unsigned numPri, unsigned numBucket) {
-      numBucketsPerPriority[numPri] = numBucket;
+    void setNumBucketsPerPriority(unsigned priority, unsigned numBucket) {
+      numBucketsPerPriority.at(priority) = numBucket;
     }
 
     // This function sets the shape of the RequestPile

@@ -64,10 +64,12 @@ ServerRequest RoundRobinRequestPile::dequeueImpl(
 
 std::optional<ServerRequestRejection> RoundRobinRequestPile::enqueue(
     ServerRequest&& request) {
-  unsigned pri, bucket;
-  auto scope = opts_.pileSelectionFunction(request);
-  pri = scope.first;
-  bucket = scope.second;
+  unsigned pri = 0, bucket = 0;
+  if (opts_.pileSelectionFunction) {
+    std::tie(pri, bucket) = opts_.pileSelectionFunction(request);
+  }
+  DCHECK_LT(pri, opts_.numBucketsPerPriority.size());
+  DCHECK_LT(bucket, opts_.numBucketsPerPriority[pri]);
 
   if (opts_.numMaxRequests != 0) {
     auto res = requestQueues_[pri][bucket].tryPush(
