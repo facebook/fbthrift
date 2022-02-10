@@ -120,7 +120,7 @@ class MemoryLayoutBase {
 
   inline int32_t getSize() const { return size; }
 
-  inline void setBits(int32_t b) { bits = b; }
+  inline void setBits(int16_t b) { bits = b; }
 
   inline int16_t getBits() const { return bits; }
 

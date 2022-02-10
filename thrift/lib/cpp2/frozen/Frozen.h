@@ -263,7 +263,8 @@ struct LayoutBase {
       typename SchemaInfo::Layout& layout,
       typename SchemaInfo::Helper&) const {
     layout.setSize(size);
-    layout.setBits(bits);
+    // TODO: declare bits as int16_t instead of casting it
+    layout.setBits(folly::to_narrow(folly::to_signed(bits)));
   }
 
   /**
@@ -324,14 +325,14 @@ struct FieldBase {
   /**
    * Thrift field key of this field
    */
-  const int32_t key;
+  const int16_t key;
   /**
    * Offset of this field within the parent struct
    */
   FieldPosition pos;
   const char* name;
 
-  explicit FieldBase(int32_t _key, const char* _name)
+  explicit FieldBase(int16_t _key, const char* _name)
       : key(_key), name(_name) {}
   virtual ~FieldBase() {}
 
@@ -342,7 +343,7 @@ template <class T, class Layout = Layout<typename std::decay<T>::type>>
 struct Field final : public FieldBase {
   Layout layout;
 
-  explicit Field(int32_t _key, const char* _name) : FieldBase(_key, _name) {}
+  explicit Field(int16_t _key, const char* _name) : FieldBase(_key, _name) {}
 
   /**
    * Prints a description of this layout to the given stream, recursively.
@@ -398,10 +399,11 @@ struct Field final : public FieldBase {
 
     typename SchemaInfo::Field field;
     field.setId(key);
+    // TODO: declare offset as int16_t instead of using folly::to_narrow
     if (pos.bitOffset) {
-      field.setOffset(-pos.bitOffset);
+      field.setOffset(folly::to_narrow(-pos.bitOffset));
     } else {
-      field.setOffset(pos.offset);
+      field.setOffset(folly::to_narrow(pos.offset));
     }
 
     typename SchemaInfo::Layout myLayout;
@@ -551,7 +553,7 @@ class FieldCycleHolder {
  public:
   template <class T, class D>
   Field<T>* pushCycle(
-      std::unique_ptr<Field<T>, D>& owned, int32_t key, const char* name) {
+      std::unique_ptr<Field<T>, D>& owned, int16_t key, const char* name) {
     auto& slot = cyclicFields_[typeid(T)];
     if (slot.refCount++ == 0) {
       if (!owned) {
@@ -577,7 +579,7 @@ class FieldCycleHolder {
 
   template <class T>
   Field<T>* pushCycle(
-      std::shared_ptr<Field<T>>& owned, int32_t key, const char* name) {
+      std::shared_ptr<Field<T>>& owned, int16_t key, const char* name) {
     auto& slot = cyclicFields_[typeid(T)];
     if (slot.refCount++ == 0) {
       if (!owned) {
