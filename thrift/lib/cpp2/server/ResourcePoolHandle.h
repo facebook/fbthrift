@@ -39,6 +39,7 @@ class ResourcePoolHandle {
 
   static constexpr std::size_t kDefaultSync = 0;
   static constexpr std::size_t kDefaultAsync = 1;
+  static constexpr std::size_t kMaxReservedHandle = kDefaultAsync;
 
   static constexpr OwnerId kNoOwner = 0;
 

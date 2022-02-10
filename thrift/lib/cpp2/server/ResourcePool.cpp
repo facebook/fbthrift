@@ -100,6 +100,9 @@ ResourcePoolHandle ResourcePoolSet::addResourcePool(
       executor,
       std::move(concurrencyController),
       poolName}};
+  // Ensure that any default slots have been initialized (with empty unique_ptr
+  // if necessary).
+  rp->resize(std::max(rp->size(), ResourcePoolHandle::kMaxReservedHandle + 1));
   rp->emplace_back(std::move(pool));
   return ResourcePoolHandle::makeHandle(poolName, rp->size() - 1);
 }
