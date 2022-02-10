@@ -908,8 +908,10 @@ std::unique_ptr<t_const_value> parsing_driver::copy_const_value(
 
   // TODO(afuller): Make this an error.
   if (mode == parsing_mode::PROGRAM) {
-    warning(
-        [&](auto& o) { o << "Constant strings should be quoted: " << name; });
+    warning([&](auto& o) {
+      o << "The identifier '" << name << "' is not defined yet. Constansts and "
+        << "enums should be defined before using them as default values.";
+    });
   }
   return std::make_unique<t_const_value>(name);
 }
