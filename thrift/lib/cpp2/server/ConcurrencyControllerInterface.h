@@ -17,6 +17,8 @@
 #pragma once
 
 #include <cstdint>
+#include <memory>
+#include <string_view>
 
 namespace apache::thrift {
 

@@ -43,6 +43,7 @@
 #include <thrift/lib/cpp2/server/AdaptiveConcurrency.h>
 #include <thrift/lib/cpp2/server/ControlServerInterface.h>
 #include <thrift/lib/cpp2/server/MonitoringServerInterface.h>
+#include <thrift/lib/cpp2/server/ResourcePool.h>
 #include <thrift/lib/cpp2/server/ServerAttribute.h>
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
 #include <thrift/lib/cpp2/server/StatusServerInterface.h>
@@ -412,6 +413,10 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   //! The type of thread manager to create.
   ThreadManagerType threadManagerType_{ThreadManagerType::PRIORITY};
+
+  //! The ResourcePoolsSet used by this ThriftServer (if in ResourcePools are
+  //! enabled).
+  ResourcePoolSet resourcePoolSet_;
 
   /**
    * The thread manager used for sync calls.
@@ -1411,6 +1416,20 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     disableHeaderTransport_.set(value, source);
   }
   bool isHeaderDisabled() const { return disableHeaderTransport_.get(); }
+
+  /**
+   * Get the ResourcePoolSet used by this ThriftServer. There is always one, but
+   * it may be empty if ResourcePools are not in use.
+   */
+  const ResourcePoolSet& resourcePoolSet() const override {
+    return resourcePoolSet_;
+  }
+
+  /**
+   * Get the ResourcePoolSet used by this ThriftServer. There is always one, but
+   * it may be empty if ResourcePools are not in use.
+   */
+  ResourcePoolSet& resourcePoolSet() override { return resourcePoolSet_; }
 };
 } // namespace thrift
 } // namespace apache

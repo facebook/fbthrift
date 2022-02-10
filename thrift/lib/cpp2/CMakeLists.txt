@@ -1,4 +1,4 @@
-# Copyright (c) Facebook, Inc. and its affiliates.
+# Copyright (c) Meta Platforms, Inc. and affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -191,6 +191,8 @@ add_library(
   server/MonitoringMethodNames.cpp
   server/RequestDebugLog.cpp
   server/RequestsRegistry.cpp
+  server/ResourcePool.cpp
+  server/ResourcePoolHandle.cpp
   server/ServerInstrumentation.cpp
   server/ServiceHealthPoller.cpp
   server/ThriftProcessor.cpp

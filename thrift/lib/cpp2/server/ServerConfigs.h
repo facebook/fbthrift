@@ -39,6 +39,7 @@ using PreprocessResult = std::variant<
 
 class Cpp2ConnContext;
 class AdaptiveConcurrencyController;
+class ResourcePoolSet;
 
 namespace server {
 
@@ -99,6 +100,16 @@ class ServerConfigs {
 
   // @see ThriftServer::getListenerTos function.
   virtual uint32_t getListenerTos() const = 0;
+
+  // @see BaseThriftServer::resourcePoolSet function.
+  virtual const ResourcePoolSet& resourcePoolSet() const {
+    LOG(FATAL) << "Unimplemented resourcePoolSet const";
+  }
+
+  // @see BaseThriftServer::resourcePoolSet function.
+  virtual ResourcePoolSet& resourcePoolSet() {
+    LOG(FATAL) << "Unimplemented resourcePoolSet";
+  }
 
   /**
    * Disables tracking of number of active requests in the server.
