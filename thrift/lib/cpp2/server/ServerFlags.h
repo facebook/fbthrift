@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#pragma once
+
 #include <folly/portability/GFlags.h>
 #include <thrift/lib/cpp2/Flags.h>
 
@@ -26,5 +28,12 @@ FOLLY_ALWAYS_INLINE bool useResourcePoolsFlagsSet() {
   return THRIFT_FLAG(experimental_use_resource_pools) ||
       FLAGS_thrift_experimental_use_resource_pools;
 }
+
+#define OMIT_TEST_WITH_RESOURCE_POOLS()               \
+  do {                                                \
+    if (apache::thrift::useResourcePoolsFlagsSet()) { \
+      return;                                         \
+    }                                                 \
+  } while (false)
 
 } // namespace apache::thrift
