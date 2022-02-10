@@ -535,7 +535,8 @@ class optional_field_ref {
   FOLLY_ERASE reference_type
   ensure() noexcept(std::is_nothrow_move_assignable<value_type>::value) {
     if (!is_set_[bit_]) {
-      emplace();
+      value_ = value_type();
+      is_set_[bit_] = true;
     }
     return static_cast<reference_type>(value_);
   }
