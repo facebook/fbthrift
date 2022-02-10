@@ -345,6 +345,9 @@ class ClientBufferedStream {
         if (!payload.hasValue() && !payload.hasException()) {
           break;
         }
+        const size_t payloadSize = payload.hasValue() && payload->payload
+            ? payload->payload->computeChainDataLength()
+            : 0;
         if (payload.hasValue()) {
           if (!payload->payload) {
             if constexpr (!WithHeader) {
@@ -354,7 +357,6 @@ class ClientBufferedStream {
               continue;
             }
           } else {
-            size_t payloadSize = payload->payload->computeChainDataLength();
             windowSum -= std::exchange(
                 payloadSizesWindow[numReceivedPayloads % kEstimationWindowSize],
                 payloadSize);
@@ -369,7 +371,7 @@ class ClientBufferedStream {
             bool usedCredit = false;
             ret.metadata = std::move(payload->metadata);
             if (payload->payload) {
-              bufferMemSize -= payload->payload->computeChainDataLength();
+              bufferMemSize -= payloadSize;
               ret.payload = *decode(std::move(payload));
               usedCredit = true;
             }
@@ -384,7 +386,7 @@ class ClientBufferedStream {
           }
         } else {
           if (payload.hasValue() && payload->payload) {
-            bufferMemSize -= payload->payload->computeChainDataLength();
+            bufferMemSize -= payloadSize;
           }
           auto value = decode(std::move(payload));
           queue.pop();
@@ -404,16 +406,16 @@ class ClientBufferedStream {
         size_t outstandingSize = bufferMemSize + outstanding * estPayloadSize;
         size_t spaceAvailable =
             std::max<ssize_t>(memBufferTarget - outstandingSize, 0);
-        // Issue more credits when available space is at least half of the
-        // buffer, or 16kB if that's less than the payload size.
-        size_t threshold = (estPayloadSize <= kRequestCreditPayloadSize)
-            ? std::min(memBufferTarget / 2, kRequestCreditPayloadSize)
-            : memBufferTarget / 2;
 
-        if (spaceAvailable >= threshold) {
+        // Issue more credits when available space is at least 16kB (to amortize
+        // the request over 16kB worth of received payloads) or half of the
+        // buffer (to ensure there are enough outstanding credits in the small
+        // buffer / small payloads regime).
+        if (spaceAvailable >= kRequestCreditPayloadSize ||
+            spaceAvailable >= memBufferTarget / 2) {
           // Convert to credits using the size estimate, but cap credits and
-          // outstanding requests to maxChunkBufferSize if this was requested in
-          // BufferOptions.
+          // outstanding requests to maxChunkBufferSize if this was requested
+          // in BufferOptions.
           DCHECK_LE(outstanding, maxChunkBufferSize);
           const int32_t remainingCredits = maxChunkBufferSize - outstanding;
           int32_t request =
