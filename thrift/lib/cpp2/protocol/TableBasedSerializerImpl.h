@@ -110,9 +110,10 @@ inline void setActiveId(void* object, const StructInfo& info, int value) {
   auto setActiveIdFunc = info.unionExt->setActiveId;
   if (setActiveIdFunc != nullptr) {
     setActiveIdFunc(object, value);
+  } else {
+    *reinterpret_cast<int*>(
+        static_cast<char*>(object) + info.unionExt->unionTypeOffset) = value;
   }
-  *reinterpret_cast<int*>(
-      static_cast<char*>(object) + info.unionExt->unionTypeOffset) = value;
 }
 
 inline bool isFieldSet(

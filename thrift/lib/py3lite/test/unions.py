@@ -52,6 +52,10 @@ class UnionTests(unittest.TestCase):
         x = deserialize(Integers, serialize_iobuf(Integers()))
         self.assertEqual(x.type, Integers.Type.EMPTY)
 
+    def test_deserialize_nonempty(self) -> None:
+        x = deserialize(Integers, serialize_iobuf(Integers(tiny=42)))
+        self.assertEqual(x.type, Integers.Type.tiny)
+
     def test_union_usage(self) -> None:
         value = hash("i64")
         x = Integers(large=value)
