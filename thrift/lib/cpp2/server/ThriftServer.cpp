@@ -913,7 +913,7 @@ void ThriftServer::callOnStartServing() {
           return handler->semifuture_onStartServing();
         }));
   }
-  folly::collectAll(futures).via(getThreadManager().get()).get();
+  folly::collectAll(futures).via(getExecutor()).get();
 }
 
 void ThriftServer::callOnStopRequested() {
@@ -928,7 +928,7 @@ void ThriftServer::callOnStopRequested() {
               })
             : handler->semifuture_onStopRequested());
   }
-  auto results = folly::collectAll(futures).via(getThreadManager().get()).get();
+  auto results = folly::collectAll(futures).via(getExecutor()).get();
   for (auto& result : results) {
     if (result.hasException()) {
       LOG(FATAL) << "Exception thrown by onStopRequested(): "

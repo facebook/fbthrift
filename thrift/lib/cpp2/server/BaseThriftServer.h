@@ -46,6 +46,7 @@
 #include <thrift/lib/cpp2/server/ResourcePool.h>
 #include <thrift/lib/cpp2/server/ServerAttribute.h>
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
+#include <thrift/lib/cpp2/server/ServerFlags.h>
 #include <thrift/lib/cpp2/server/StatusServerInterface.h>
 
 THRIFT_FLAG_DECLARE_int64(server_default_socket_queue_timeout_ms);
@@ -622,6 +623,23 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   std::shared_ptr<concurrency::ThreadManager> getThreadManager() const {
     std::lock_guard<std::mutex> lock(threadManagerMutex_);
     return threadManager_;
+  }
+
+  /**
+   * Get the executor for the general pool of async CPUWorkerThreads.
+   *
+   * @return a pointer to the executor
+   */
+
+  folly::Executor* getExecutor() const {
+    if (useResourcePoolsFlagsSet()) {
+      return resourcePoolSet()
+          .resourcePool(ResourcePoolHandle::defaultAsync())
+          .executor()
+          .value();
+    }
+    std::lock_guard<std::mutex> lock(threadManagerMutex_);
+    return threadManager_.get();
   }
 
   /**
