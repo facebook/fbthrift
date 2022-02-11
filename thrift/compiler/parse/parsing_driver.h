@@ -437,6 +437,7 @@ class parsing_driver {
   t_ref<t_named> add_def(std::unique_ptr<t_named> node);
 
   void add_include(std::string name);
+  void set_package(std::string name);
 
   t_field_id to_field_id(int64_t int_const) {
     return narrow_int<t_field_id>(int_const, "field ids");

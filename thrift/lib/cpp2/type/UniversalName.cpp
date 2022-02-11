@@ -55,6 +55,7 @@ void checkResult(int evp_result) {
     folly::throw_exception<std::runtime_error>("EVP failure");
   }
 }
+
 void check(bool cond, const char* err) {
   if (!cond) {
     folly::throw_exception<std::invalid_argument>(err);

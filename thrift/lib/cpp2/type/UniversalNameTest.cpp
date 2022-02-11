@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/type/UniversalHashAlgorithm.h>
 #include <thrift/lib/cpp2/type/UniversalName.h>
 
 #include <regex>
@@ -27,6 +26,8 @@
 #include <folly/FBString.h>
 #include <folly/String.h>
 #include <folly/portability/GTest.h>
+#include <thrift/conformance/data/Constants.h>
+#include <thrift/lib/cpp2/type/UniversalHashAlgorithm.h>
 
 namespace apache::thrift::type {
 namespace {
@@ -35,56 +36,6 @@ template <typename LHS, typename RHS>
 struct IsSame;
 template <typename T>
 struct IsSame<T, T> {};
-
-constexpr auto kGoodNames = {
-    "foo.com/my/type",
-    "foo.com/my/Type",
-    "foo.com/my/other-type",
-    "foo.com/my/other_type",
-    "foo.com/m_y/type",
-    "foo.com/m-y/type",
-    "foo-bar.com/my/type",
-    "foo.com/my/type/type",
-    "1.2/3/4",
-};
-
-auto kBadNames = {
-    "my",
-    "my/type",
-    "foo/my/type",
-    "foo.com/my",
-    "Foo.com/my/type",
-    "foo.Com/my/type",
-    "foo.com/My/type",
-    "foo.com:42/my/type",
-    "foo%20.com/my/type",
-    "foo.com/m%20y/type",
-    "foo.com/my/ty%20pe",
-    "@foo.com/my/type",
-    ":@foo.com/my/type",
-    ":foo.com/my/type",
-    "user@foo.com/my/type",
-    "user:pass@foo.com/my/type",
-    "fbthrift://foo.com/my/type",
-    ".com/my/type",
-    "foo./my/type",
-    "./my/type",
-    "/my/type/type",
-    "foo.com//type",
-    "foo.com/my/",
-    "foo.com/my//type",
-    "foo.com/my/type?",
-    "foo.com/my/type?a=",
-    "foo.com/my/type?a=b",
-    "foo.com/my/type#",
-    "foo.com/my/type#1",
-    "foo.com/m#y/type",
-    "foo.com/my/type@",
-    "foo.com/my/type@1",
-    "foo.com/m@y/type",
-    "foo.com/my/ty@pe/type",
-    "foo_bar.com/my/type",
-};
 
 constexpr auto kGoodIdSizes = {8, 16, 24, 32};
 
@@ -107,18 +58,19 @@ TEST(UniversalNameTest, Constants) {
 }
 
 TEST(UniversalNameTest, ValidateUniversalName) {
+  // @lint-ignore-every CLANGTIDY facebook-hte-StdRegexIsAwful
   std::regex pattern(fmt::format(
       "{0}(\\.{0})+\\/{1}(\\/{1})*(\\/{2})",
       "[a-z0-9-]+",
       "[a-z0-9_-]+",
       "[a-zA-Z0-9_-]+"));
-  for (const auto& good : kGoodNames) {
+  for (const auto& good : conformance::data::genGoodDefUris()) {
     SCOPED_TRACE(good);
     EXPECT_TRUE(std::regex_match(good, pattern));
     validateUniversalName(good);
   }
 
-  for (const auto& bad : kBadNames) {
+  for (const auto& bad : conformance::data::genBadDefUris()) {
     SCOPED_TRACE(bad);
     EXPECT_FALSE(std::regex_match(bad, pattern));
     EXPECT_THROW(validateUniversalName(bad), std::invalid_argument);

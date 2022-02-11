@@ -72,6 +72,23 @@ class CompilerFailureTest(unittest.TestCase):
         err = err.replace("{}/".format(self.tmp), "")
         return p.returncode, out, err
 
+    def test_double_package(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                package "test.dev/test"
+                package "test.dev/test"
+                """
+            ),
+        )
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift:2] Package already specified.\n",
+        )
+        self.assertEqual(ret, 1)
+
     def test_neg_enum_value(self):
         write_file(
             "foo.thrift",

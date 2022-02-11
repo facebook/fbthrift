@@ -700,6 +700,19 @@ void parsing_driver::add_include(std::string name) {
   }
 }
 
+void parsing_driver::set_package(std::string name) {
+  if (mode != parsing_mode::PROGRAM) {
+    return;
+  }
+  if (!program->package().empty()) {
+    failure("Package already specified.");
+  }
+  try {
+    program->set_package(t_package{name});
+  } catch (const std::invalid_argument& e) {
+    failure(e.what());
+  }
+}
 const t_type* parsing_driver::add_unnamed_typedef(
     std::unique_ptr<t_typedef> node,
     std::unique_ptr<t_annotations> annotations) {

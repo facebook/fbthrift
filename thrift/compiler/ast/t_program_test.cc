@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
+#include <thrift/compiler/ast/t_program.h>
+
 #include <stdexcept>
 #include <string>
 #include <vector>
 
+#include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
-#include <thrift/compiler/ast/t_program.h>
+#include <thrift/conformance/data/Constants.h>
 
 namespace apache::thrift::compiler {
 namespace {
@@ -32,6 +35,42 @@ void addOffsets(t_program& program, const std::string& content) {
     if (c == '\n') {
       program.add_line_offset(offset);
     }
+  }
+}
+
+TEST(PackageTest, Empty) {
+  t_package pkg;
+  EXPECT_TRUE(pkg.empty());
+  EXPECT_THAT(pkg.domain(), ::testing::IsEmpty());
+  EXPECT_THAT(pkg.path(), ::testing::IsEmpty());
+  EXPECT_THAT(pkg.get_uri("hi"), "");
+}
+
+TEST(PackageTest, Simple) {
+  t_package pkg("test.dev/foo/bar");
+  EXPECT_FALSE(pkg.empty());
+  EXPECT_THAT(pkg.domain(), ::testing::ElementsAre("test", "dev"));
+  EXPECT_THAT(pkg.path(), ::testing::ElementsAre("foo", "bar"));
+  EXPECT_THAT(pkg.get_uri("hi"), "test.dev/foo/bar/hi");
+
+  t_package other(pkg.domain(), pkg.path());
+  EXPECT_THAT(other.domain(), ::testing::ElementsAre("test", "dev"));
+  EXPECT_THAT(other.path(), ::testing::ElementsAre("foo", "bar"));
+  EXPECT_THAT(other.get_uri("hi"), "test.dev/foo/bar/hi");
+}
+
+TEST(PackageTest, Validation) {
+  for (const auto& good : conformance::data::kGoodPackageNames) {
+    SCOPED_TRACE(good);
+    t_package actual(good);
+    EXPECT_EQ(actual, t_package(actual.domain(), actual.path()));
+    EXPECT_THROW(t_package({"bad!"}, actual.path()), std::invalid_argument);
+    EXPECT_THROW(t_package(actual.domain(), {"bad!"}), std::invalid_argument);
+  }
+
+  for (const auto& bad : conformance::data::kBadPackageNames) {
+    SCOPED_TRACE(bad);
+    EXPECT_THROW(t_package{bad}, std::invalid_argument);
   }
 }
 

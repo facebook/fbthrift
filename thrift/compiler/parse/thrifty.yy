@@ -347,17 +347,15 @@ HeaderList:
 |                                  { driver.debug("HeaderList -> "); }
 
 Header:
-  tok_package tok_literal
-    {
-      driver.debug("Header -> tok_package tok_literal");
-      // TODO(afuller): Add validation/parsing for the package name,
-      // update the linter, then remove this guard.
-      driver.require_experimental_feature("package");
-    }
-| tok_include tok_literal
+  tok_include tok_literal
     {
       driver.debug("Header -> tok_include tok_literal");
       driver.add_include(std::move($2));
+    }
+| tok_package tok_literal
+    {
+      driver.debug("Header -> tok_package tok_literal");
+      driver.set_package(std::move($2));
     }
 | tok_namespace Identifier Identifier
     {

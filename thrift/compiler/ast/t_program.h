@@ -46,20 +46,39 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
+// The Thrift package that scopes IDL definitions.
+class t_package {
+ public:
+  t_package() = default;
+  // Throws std::invalid_argument if an invalid package name is provided.
+  explicit t_package(std::string name);
+  // Throws std::invalid_argument if an invalid package domain/path is provided.
+  t_package(std::vector<std::string> domain, std::vector<std::string> path);
+
+  // The domain 'labels'.
+  const std::vector<std::string>& domain() const { return domain_; }
+  // The path 'segments'
+  const std::vector<std::string>& path() const { return path_; }
+
+  // Returns the (scheme-less) uri for the given definition name, scoped by this
+  // package.
+  std::string get_uri(const std::string& name) const;
+
+  // If the package has been set.
+  bool empty() const { return uriPrefix_.empty(); }
+
+ private:
+  std::string uriPrefix_;
+  std::vector<std::string> domain_;
+  std::vector<std::string> path_;
+
+  friend bool operator==(const t_package& lhs, const t_package& rhs) {
+    return lhs.uriPrefix_ == rhs.uriPrefix_;
+  }
+};
+
 /**
- * class t_program
- *
- * Top level class representing an entire thrift program. A program consists
- * fundamentally of the following:
- *
- *   Typedefs
- *   Enumerations
- *   Constants
- *   Structs
- *   Exceptions
- *   Services
- *
- * The program module also contains the definitions of the base types.
+ * Top level class representing an entire thrift program.
  */
 class t_program : public t_node {
  public:
@@ -72,6 +91,9 @@ class t_program : public t_node {
    * @param path - A *.thrift file path.
    */
   explicit t_program(std::string path) : path_(std::move(path)) {}
+
+  void set_package(t_package package) { package_ = std::move(package); }
+  const t_package package() const { return package_; }
 
   // Defintions, in the order they were added.
   node_list_view<t_named> definitions() { return definitions_; }
@@ -127,9 +149,6 @@ class t_program : public t_node {
     return interactions_;
   }
 
-  /**
-   * t_program setters
-   */
   void add_cpp_include(std::string path) {
     cpp_includes_.push_back(std::move(path));
   }
@@ -241,6 +260,8 @@ class t_program : public t_node {
   size_t get_byte_offset(size_t line, size_t line_offset = 0) const noexcept;
 
  private:
+  t_package package_;
+
   // All the elements owned by this program.
   node_list<t_node> nodes_;
   node_list<t_named> definitions_;
