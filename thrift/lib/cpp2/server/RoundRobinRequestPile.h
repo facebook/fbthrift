@@ -89,8 +89,11 @@ class RoundRobinRequestPile : public RequestPileInterface {
   void onRequestFinished(intptr_t /* userData */) override {}
 
  private:
-  using RetrievalIndexQueue =
-      folly::UMPMCQueue<unsigned, /* MayBlock  */ false>;
+  // we choose 1KB as segment size to minimize allocations
+  using RetrievalIndexQueue = folly::UMPMCQueue<
+      unsigned,
+      /* MayBlock  */ false,
+      /* SegmentSize - 1024 */ 10>;
 
   // The reason why we chose AtomicNotificationQueue instead of two UMPMCQueue
   // is that UMPMCQueue does not provide an enqueue() interface that indicates
