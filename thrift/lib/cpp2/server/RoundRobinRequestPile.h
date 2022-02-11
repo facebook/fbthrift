@@ -114,7 +114,9 @@ class RoundRobinRequestPile : public RequestPileInterface {
   // the queues are not movable / move constructable
   // which is necessary for standard container
   std::unique_ptr<std::unique_ptr<RequestQueue[]>[]> requestQueues_;
-  std::unique_ptr<RetrievalIndexQueue[]> retrievalIndexQueues_;
+  // we use std::nullopt to signal that a certain priority is
+  // using only one bucket - in that case we don't need retrieval queue
+  std::unique_ptr<std::optional<RetrievalIndexQueue>[]> retrievalIndexQueues_;
 
   ServerRequest dequeueImpl(unsigned pri, unsigned bucket);
 };
