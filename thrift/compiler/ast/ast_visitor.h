@@ -102,20 +102,23 @@ class basic_ast_visitor {
     add_exception_visitor(std::forward<V>(visitor));
   }
 
+  // Adds a visitor for root IDL definition node types.
+  template <typename V>
+  void add_root_definition_visitor(V&& visitor) {
+    add_interface_visitor(visitor);
+    add_structured_definition_visitor(visitor);
+    add_enum_visitor(visitor);
+    add_const_visitor(visitor);
+    add_typedef_visitor(std::forward<V>(visitor));
+  }
+
   // Adds a visitor for all IDL definition node types.
   template <typename V>
   void add_definition_visitor(V&& visitor) {
-    add_interface_visitor(visitor);
+    add_root_definition_visitor(visitor);
     add_function_visitor(visitor);
-
-    add_structured_definition_visitor(visitor);
     add_field_visitor(visitor);
-
-    add_enum_visitor(visitor);
     add_enum_value_visitor(visitor);
-    add_const_visitor(visitor);
-
-    add_typedef_visitor(std::forward<V>(visitor));
   }
 
   template <typename V>

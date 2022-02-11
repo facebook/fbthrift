@@ -31,6 +31,7 @@ class MockAstVisitor {
  public:
   MOCK_METHOD(void, visit_interface, (const t_interface*));
   MOCK_METHOD(void, visit_structured_definition, (const t_structured*));
+  MOCK_METHOD(void, visit_root_definition, (const t_named*));
   MOCK_METHOD(void, visit_definition, (const t_named*));
   MOCK_METHOD(void, visit_container, (const t_container*));
   MOCK_METHOD(void, visit_type_instantiation, (const t_templated_type*));
@@ -65,6 +66,8 @@ class MockAstVisitor {
     visitor.add_structured_definition_visitor([this](const t_structured& node) {
       visit_structured_definition(&node);
     });
+    visitor.add_root_definition_visitor(
+        [this](const t_named& node) { visit_root_definition(&node); });
     visitor.add_definition_visitor(
         [this](const t_named& node) { visit_definition(&node); });
     visitor.add_container_visitor(
@@ -163,6 +166,7 @@ class AstVisitorTest : public ::testing::Test {
     // verify the correct overloads are used.
     visitor_.add_interface_visitor(overload_visitor_);
     visitor_.add_structured_definition_visitor(overload_visitor_);
+    visitor_.add_root_definition_visitor(overload_visitor_);
     visitor_.add_definition_visitor(overload_visitor_);
     visitor_.add_container_visitor(overload_visitor_);
     visitor_.add_type_instantiation_visitor(overload_visitor_);
@@ -214,11 +218,12 @@ TYPED_TEST(AstVisitorTest, Interaction) {
   interaction->add_function(std::move(func2));
 
   EXPECT_CALL(this->mock_, visit_interaction(interaction.get()));
-  // Matches: interface, definition.
+  // Matches: interface, root definition, definition.
   EXPECT_CALL(this->mock_, visit_interface(interaction.get()));
+  EXPECT_CALL(this->mock_, visit_root_definition(interaction.get()));
   EXPECT_CALL(this->mock_, visit_definition(interaction.get()));
   EXPECT_CALL(this->overload_mock_, visit_interaction(interaction.get()))
-      .Times(2);
+      .Times(3);
   this->program_.add_interaction(std::move(interaction));
 }
 
@@ -246,10 +251,11 @@ TYPED_TEST(AstVisitorTest, Service) {
   service->add_function(std::move(func2));
 
   EXPECT_CALL(this->mock_, visit_service(service.get()));
-  // Matches: interface, definition.
+  // Matches: interface, root definition, definition.
   EXPECT_CALL(this->mock_, visit_interface(service.get()));
+  EXPECT_CALL(this->mock_, visit_root_definition(service.get()));
   EXPECT_CALL(this->mock_, visit_definition(service.get()));
-  EXPECT_CALL(this->overload_mock_, visit_service(service.get())).Times(2);
+  EXPECT_CALL(this->overload_mock_, visit_service(service.get())).Times(3);
   this->program_.add_service(std::move(service));
 }
 
@@ -264,10 +270,11 @@ TYPED_TEST(AstVisitorTest, Struct) {
   tstruct->append(std::move(field));
 
   EXPECT_CALL(this->mock_, visit_struct(tstruct.get()));
-  // Matches: structured_definition, definition.
+  // Matches: structured_definition, root definition, definition.
   EXPECT_CALL(this->mock_, visit_structured_definition(tstruct.get()));
+  EXPECT_CALL(this->mock_, visit_root_definition(tstruct.get()));
   EXPECT_CALL(this->mock_, visit_definition(tstruct.get()));
-  EXPECT_CALL(this->overload_mock_, visit_struct(tstruct.get())).Times(2);
+  EXPECT_CALL(this->overload_mock_, visit_struct(tstruct.get())).Times(3);
   this->program_.add_struct(std::move(tstruct));
 }
 
@@ -282,10 +289,11 @@ TYPED_TEST(AstVisitorTest, Union) {
   tunion->append(std::move(field));
 
   EXPECT_CALL(this->mock_, visit_union(tunion.get()));
-  // Matches: structured_definition, definition.
+  // Matches: structured_definition, root definition, definition.
   EXPECT_CALL(this->mock_, visit_structured_definition(tunion.get()));
+  EXPECT_CALL(this->mock_, visit_root_definition(tunion.get()));
   EXPECT_CALL(this->mock_, visit_definition(tunion.get()));
-  EXPECT_CALL(this->overload_mock_, visit_union(tunion.get())).Times(2);
+  EXPECT_CALL(this->overload_mock_, visit_union(tunion.get())).Times(3);
   this->program_.add_struct(std::move(tunion));
 }
 
@@ -300,10 +308,11 @@ TYPED_TEST(AstVisitorTest, Exception) {
   except->append(std::move(field));
 
   EXPECT_CALL(this->mock_, visit_exception(except.get()));
-  // Matches: structured_definition, definition.
+  // Matches: structured_definition, root definition, definition.
   EXPECT_CALL(this->mock_, visit_structured_definition(except.get()));
+  EXPECT_CALL(this->mock_, visit_root_definition(except.get()));
   EXPECT_CALL(this->mock_, visit_definition(except.get()));
-  EXPECT_CALL(this->overload_mock_, visit_exception(except.get())).Times(2);
+  EXPECT_CALL(this->overload_mock_, visit_exception(except.get())).Times(3);
   this->program_.add_exception(std::move(except));
 }
 
@@ -317,9 +326,10 @@ TYPED_TEST(AstVisitorTest, Enum) {
   tenum->append(std::move(tenum_value));
 
   EXPECT_CALL(this->mock_, visit_enum(tenum.get()));
-  // Matches: definition.
+  // Matches: root definition, definition.
+  EXPECT_CALL(this->mock_, visit_root_definition(tenum.get()));
   EXPECT_CALL(this->mock_, visit_definition(tenum.get()));
-  EXPECT_CALL(this->overload_mock_, visit_enum(tenum.get()));
+  EXPECT_CALL(this->overload_mock_, visit_enum(tenum.get())).Times(2);
   this->program_.add_enum(std::move(tenum));
 }
 
@@ -327,9 +337,10 @@ TYPED_TEST(AstVisitorTest, Const) {
   auto tconst = std::make_unique<t_const>(
       &this->program_, &t_base_type::t_i32(), "Const", nullptr);
   EXPECT_CALL(this->mock_, visit_const(tconst.get()));
-  // Matches: definition.
+  // Matches: root definition, definition.
+  EXPECT_CALL(this->mock_, visit_root_definition(tconst.get()));
   EXPECT_CALL(this->mock_, visit_definition(tconst.get()));
-  EXPECT_CALL(this->overload_mock_, visit_const(tconst.get()));
+  EXPECT_CALL(this->overload_mock_, visit_const(tconst.get())).Times(2);
   this->program_.add_const(std::move(tconst));
 }
 
@@ -337,9 +348,10 @@ TYPED_TEST(AstVisitorTest, Typedef) {
   auto ttypedef = std::make_unique<t_typedef>(
       &this->program_, &t_base_type::t_i32(), "Typedef", nullptr);
   EXPECT_CALL(this->mock_, visit_typedef(ttypedef.get()));
-  // Matches: definition.
+  // Matches: root definition, definition.
+  EXPECT_CALL(this->mock_, visit_root_definition(ttypedef.get()));
   EXPECT_CALL(this->mock_, visit_definition(ttypedef.get()));
-  EXPECT_CALL(this->overload_mock_, visit_typedef(ttypedef.get()));
+  EXPECT_CALL(this->overload_mock_, visit_typedef(ttypedef.get())).Times(2);
   this->program_.add_typedef(std::move(ttypedef));
 }
 
