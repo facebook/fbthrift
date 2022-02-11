@@ -193,6 +193,7 @@ add_library(
   server/RequestsRegistry.cpp
   server/ResourcePool.cpp
   server/ResourcePoolHandle.cpp
+  server/ServerFlags.cpp
   server/ServerInstrumentation.cpp
   server/ServiceHealthPoller.cpp
   server/ThriftProcessor.cpp
