@@ -140,47 +140,6 @@ interface NestedContainersClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * NestedContainers
  */
-interface NestedContainersAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
-  /**
-   * Original thrift definition:-
-   * void
-   *   mapList(1: map<i32, list<i32>> foo);
-   */
-  public function mapList(\RpcOptions $rpc_options, KeyedContainer<int, KeyedContainer<int, int>> $foo): Awaitable<void>;
-
-  /**
-   * Original thrift definition:-
-   * void
-   *   mapSet(1: map<i32, set<i32>> foo);
-   */
-  public function mapSet(\RpcOptions $rpc_options, KeyedContainer<int, Set<int>> $foo): Awaitable<void>;
-
-  /**
-   * Original thrift definition:-
-   * void
-   *   listMap(1: list<map<i32, i32>> foo);
-   */
-  public function listMap(\RpcOptions $rpc_options, KeyedContainer<int, KeyedContainer<int, int>> $foo): Awaitable<void>;
-
-  /**
-   * Original thrift definition:-
-   * void
-   *   listSet(1: list<set<i32>> foo);
-   */
-  public function listSet(\RpcOptions $rpc_options, KeyedContainer<int, Set<int>> $foo): Awaitable<void>;
-
-  /**
-   * Original thrift definition:-
-   * void
-   *   turtles(1: list<list<map<i32, map<i32, set<i32>>>>> foo);
-   */
-  public function turtles(\RpcOptions $rpc_options, KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, Set<int>>>>> $foo): Awaitable<void>;
-}
-
-/**
- * Original thrift service:-
- * NestedContainers
- */
 trait NestedContainersClientBase {
   require extends \ThriftClientBase;
 
@@ -684,6 +643,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("NestedContainers", "mapList");
     $currentseqid = $this->sendImpl_mapList($foo);
     $channel = $this->channel_;
@@ -692,7 +652,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -711,6 +671,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("NestedContainers", "mapSet");
     $currentseqid = $this->sendImpl_mapSet($foo);
     $channel = $this->channel_;
@@ -719,7 +680,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -738,6 +699,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("NestedContainers", "listMap");
     $currentseqid = $this->sendImpl_listMap($foo);
     $channel = $this->channel_;
@@ -746,7 +708,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -765,6 +727,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("NestedContainers", "listSet");
     $currentseqid = $this->sendImpl_listSet($foo);
     $channel = $this->channel_;
@@ -773,7 +736,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -792,6 +755,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("NestedContainers", "turtles");
     $currentseqid = $this->sendImpl_turtles($foo);
     $channel = $this->channel_;
@@ -800,7 +764,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -824,6 +788,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("NestedContainers", "mapList");
     $currentseqid = $this->sendImpl_mapList($foo);
     $channel = $this->channel_;
@@ -832,7 +797,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -851,6 +816,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("NestedContainers", "mapSet");
     $currentseqid = $this->sendImpl_mapSet($foo);
     $channel = $this->channel_;
@@ -859,7 +825,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -878,6 +844,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("NestedContainers", "listMap");
     $currentseqid = $this->sendImpl_listMap($foo);
     $channel = $this->channel_;
@@ -886,7 +853,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -905,6 +872,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("NestedContainers", "listSet");
     $currentseqid = $this->sendImpl_listSet($foo);
     $channel = $this->channel_;
@@ -913,7 +881,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -932,6 +900,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("NestedContainers", "turtles");
     $currentseqid = $this->sendImpl_turtles($foo);
     $channel = $this->channel_;
@@ -940,7 +909,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -980,146 +949,6 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
   public function recv_turtles(?int $expectedsequenceid = null): void {
     $this->recvImpl_turtles($expectedsequenceid);
   }
-}
-
-class NestedContainersAsyncRpcOptionsClient extends \ThriftClientBase implements NestedContainersAsyncRpcOptionsIf {
-  use NestedContainersClientBase;
-
-  /**
-   * Original thrift definition:-
-   * void
-   *   mapList(1: map<i32, list<i32>> foo);
-   */
-  public async function mapList(\RpcOptions $rpc_options, KeyedContainer<int, KeyedContainer<int, int>> $foo): Awaitable<void> {
-    $hh_frame_metadata = $this->getHHFrameMetadata();
-    if ($hh_frame_metadata !== null) {
-      \HH\set_frame_metadata($hh_frame_metadata);
-    }
-    await $this->asyncHandler_->genBefore("NestedContainers", "mapList");
-    $currentseqid = $this->sendImpl_mapList($foo);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImpl_mapList($currentseqid);
-  }
-
-  /**
-   * Original thrift definition:-
-   * void
-   *   mapSet(1: map<i32, set<i32>> foo);
-   */
-  public async function mapSet(\RpcOptions $rpc_options, KeyedContainer<int, Set<int>> $foo): Awaitable<void> {
-    $hh_frame_metadata = $this->getHHFrameMetadata();
-    if ($hh_frame_metadata !== null) {
-      \HH\set_frame_metadata($hh_frame_metadata);
-    }
-    await $this->asyncHandler_->genBefore("NestedContainers", "mapSet");
-    $currentseqid = $this->sendImpl_mapSet($foo);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImpl_mapSet($currentseqid);
-  }
-
-  /**
-   * Original thrift definition:-
-   * void
-   *   listMap(1: list<map<i32, i32>> foo);
-   */
-  public async function listMap(\RpcOptions $rpc_options, KeyedContainer<int, KeyedContainer<int, int>> $foo): Awaitable<void> {
-    $hh_frame_metadata = $this->getHHFrameMetadata();
-    if ($hh_frame_metadata !== null) {
-      \HH\set_frame_metadata($hh_frame_metadata);
-    }
-    await $this->asyncHandler_->genBefore("NestedContainers", "listMap");
-    $currentseqid = $this->sendImpl_listMap($foo);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImpl_listMap($currentseqid);
-  }
-
-  /**
-   * Original thrift definition:-
-   * void
-   *   listSet(1: list<set<i32>> foo);
-   */
-  public async function listSet(\RpcOptions $rpc_options, KeyedContainer<int, Set<int>> $foo): Awaitable<void> {
-    $hh_frame_metadata = $this->getHHFrameMetadata();
-    if ($hh_frame_metadata !== null) {
-      \HH\set_frame_metadata($hh_frame_metadata);
-    }
-    await $this->asyncHandler_->genBefore("NestedContainers", "listSet");
-    $currentseqid = $this->sendImpl_listSet($foo);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImpl_listSet($currentseqid);
-  }
-
-  /**
-   * Original thrift definition:-
-   * void
-   *   turtles(1: list<list<map<i32, map<i32, set<i32>>>>> foo);
-   */
-  public async function turtles(\RpcOptions $rpc_options, KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, Set<int>>>>> $foo): Awaitable<void> {
-    $hh_frame_metadata = $this->getHHFrameMetadata();
-    if ($hh_frame_metadata !== null) {
-      \HH\set_frame_metadata($hh_frame_metadata);
-    }
-    await $this->asyncHandler_->genBefore("NestedContainers", "turtles");
-    $currentseqid = $this->sendImpl_turtles($foo);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImpl_turtles($currentseqid);
-  }
-
 }
 
 abstract class NestedContainersAsyncProcessorBase extends \ThriftAsyncProcessor {

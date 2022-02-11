@@ -56,19 +56,6 @@ interface MyServiceClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * MyService
  */
-interface MyServiceAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
-  /**
-   * Original thrift definition:-
-   * void
-   *   foo();
-   */
-  public function foo(\RpcOptions $rpc_options): Awaitable<void>;
-}
-
-/**
- * Original thrift service:-
- * MyService
- */
 trait MyServiceClientBase {
   require extends \ThriftClientBase;
 
@@ -199,6 +186,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "foo");
     $currentseqid = $this->sendImpl_foo();
     $channel = $this->channel_;
@@ -207,7 +195,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -231,45 +219,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
-    await $this->asyncHandler_->genBefore("MyService", "foo");
-    $currentseqid = $this->sendImpl_foo();
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImpl_foo($currentseqid);
-  }
-
-  /* send and recv functions */
-  public function send_foo(): int {
-    return $this->sendImpl_foo();
-  }
-  public function recv_foo(?int $expectedsequenceid = null): void {
-    $this->recvImpl_foo($expectedsequenceid);
-  }
-}
-
-class MyServiceAsyncRpcOptionsClient extends \ThriftClientBase implements MyServiceAsyncRpcOptionsIf {
-  use MyServiceClientBase;
-
-  /**
-   * Original thrift definition:-
-   * void
-   *   foo();
-   */
-  public async function foo(\RpcOptions $rpc_options): Awaitable<void> {
-    $hh_frame_metadata = $this->getHHFrameMetadata();
-    if ($hh_frame_metadata !== null) {
-      \HH\set_frame_metadata($hh_frame_metadata);
-    }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "foo");
     $currentseqid = $this->sendImpl_foo();
     $channel = $this->channel_;
@@ -287,6 +237,13 @@ class MyServiceAsyncRpcOptionsClient extends \ThriftClientBase implements MyServ
     $this->recvImpl_foo($currentseqid);
   }
 
+  /* send and recv functions */
+  public function send_foo(): int {
+    return $this->sendImpl_foo();
+  }
+  public function recv_foo(?int $expectedsequenceid = null): void {
+    $this->recvImpl_foo($expectedsequenceid);
+  }
 }
 
 // INTERACTION HANDLERS
@@ -309,11 +266,12 @@ class MyService_MyInteraction extends \ThriftClientBase {
    *   frobnicate()
    *   throws (1: CustomException ex);
    */
-  public async function frobnicate(\RpcOptions $rpc_options): Awaitable<int> {
+  public async function frobnicate(): Awaitable<int> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? new RpcOptions();
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     await $this->asyncHandler_->genBefore("MyService", "MyInteraction.frobnicate");
     $currentseqid = $this->sendImpl_frobnicate();
@@ -441,11 +399,12 @@ class MyService_MyInteraction extends \ThriftClientBase {
    * oneway void
    *   ping();
    */
-  public async function ping(\RpcOptions $rpc_options): Awaitable<void> {
+  public async function ping(): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? new RpcOptions();
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     await $this->asyncHandler_->genBefore("MyService", "MyInteraction.ping");
     $currentseqid = $this->sendImpl_ping();
@@ -502,11 +461,12 @@ class MyService_MyInteraction extends \ThriftClientBase {
    * void, stream<bool>
    *   truthify();
    */
-  public async function truthify(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientStream<void, bool>> {
+  public async function truthify(): Awaitable<\ResponseAndClientStream<void, bool>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? new RpcOptions();
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
@@ -659,12 +619,13 @@ class MyService_MyInteraction extends \ThriftClientBase {
    * set<i32>, sink<string, binary>
    *   encode();
    */
-  public async function encode(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<Set<int>, string, string>> {
+  public async function encode(): Awaitable<\ResponseAndClientSink<Set<int>, string, string>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
-    $rpc_options = $rpc_options->setInteractionId($this->interactionId);
+    $rpc_options = $this->getAndResetOptions() ?? new RpcOptions();
+$rpc_options->setInteractionId($this->interactionId);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -886,11 +847,12 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
    * i32
    *   frobnicate();
    */
-  public async function frobnicate(\RpcOptions $rpc_options): Awaitable<int> {
+  public async function frobnicate(): Awaitable<int> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? new RpcOptions();
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     await $this->asyncHandler_->genBefore("MyService", "MyInteractionFast.frobnicate");
     $currentseqid = $this->sendImpl_frobnicate();
@@ -1013,11 +975,12 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
    * oneway void
    *   ping();
    */
-  public async function ping(\RpcOptions $rpc_options): Awaitable<void> {
+  public async function ping(): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? new RpcOptions();
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     await $this->asyncHandler_->genBefore("MyService", "MyInteractionFast.ping");
     $currentseqid = $this->sendImpl_ping();
@@ -1074,11 +1037,12 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
    * void, stream<bool>
    *   truthify();
    */
-  public async function truthify(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientStream<void, bool>> {
+  public async function truthify(): Awaitable<\ResponseAndClientStream<void, bool>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? new RpcOptions();
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
@@ -1231,12 +1195,13 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
    * set<i32>, sink<string, binary>
    *   encode();
    */
-  public async function encode(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientSink<Set<int>, string, string>> {
+  public async function encode(): Awaitable<\ResponseAndClientSink<Set<int>, string, string>> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
-    $rpc_options = $rpc_options->setInteractionId($this->interactionId);
+    $rpc_options = $this->getAndResetOptions() ?? new RpcOptions();
+$rpc_options->setInteractionId($this->interactionId);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -1458,11 +1423,12 @@ class MyService_SerialInteraction extends \ThriftClientBase {
    * void
    *   frobnicate();
    */
-  public async function frobnicate(\RpcOptions $rpc_options): Awaitable<void> {
+  public async function frobnicate(): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? new RpcOptions();
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     await $this->asyncHandler_->genBefore("MyService", "SerialInteraction.frobnicate");
     $currentseqid = $this->sendImpl_frobnicate();

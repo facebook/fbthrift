@@ -114,13 +114,6 @@ interface PubSubStreamingServiceClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * PubSubStreamingService
  */
-interface PubSubStreamingServiceAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
-}
-
-/**
- * Original thrift service:-
- * PubSubStreamingService
- */
 trait PubSubStreamingServiceClientBase {
   require extends \ThriftClientBase;
 
@@ -802,6 +795,7 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -814,7 +808,7 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
     $currentseqid = $this->sendImpl_returnstream($i32_from, $i32_to);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
-    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse(new \RpcOptions(), $msg);
+    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
 
     $stream_gen = $stream->gen<int>($this->recvImpl_returnstream_StreamDecode());
     $in_transport->resetBuffer();
@@ -833,6 +827,7 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -845,7 +840,7 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
     $currentseqid = $this->sendImpl_streamthrows($foo);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
-    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse(new \RpcOptions(), $msg);
+    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
 
     $stream_gen = $stream->gen<int>($this->recvImpl_streamthrows_StreamDecode());
     $in_transport->resetBuffer();
@@ -865,6 +860,7 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -877,7 +873,7 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
     $currentseqid = $this->sendImpl_boththrows($foo);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
-    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse(new \RpcOptions(), $msg);
+    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
 
     $stream_gen = $stream->gen<int>($this->recvImpl_boththrows_StreamDecode());
     $in_transport->resetBuffer();
@@ -897,6 +893,7 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -909,7 +906,7 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
     $currentseqid = $this->sendImpl_responseandstreamthrows($foo);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
-    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse(new \RpcOptions(), $msg);
+    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
 
     $stream_gen = $stream->gen<int>($this->recvImpl_responseandstreamthrows_StreamDecode());
     $in_transport->resetBuffer();
@@ -929,6 +926,7 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -941,7 +939,7 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
     $currentseqid = $this->sendImpl_returnstreamFast($i32_from, $i32_to);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
-    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse(new \RpcOptions(), $msg);
+    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
 
     $stream_gen = $stream->gen<int>($this->recvImpl_returnstreamFast_StreamDecode());
     $in_transport->resetBuffer();
@@ -966,6 +964,7 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -978,7 +977,7 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
     $currentseqid = $this->sendImpl_returnstream($i32_from, $i32_to);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
-    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse(new \RpcOptions(), $msg);
+    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
 
     $stream_gen = $stream->gen<int>($this->recvImpl_returnstream_StreamDecode());
     $in_transport->resetBuffer();
@@ -997,6 +996,7 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -1009,7 +1009,7 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
     $currentseqid = $this->sendImpl_streamthrows($foo);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
-    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse(new \RpcOptions(), $msg);
+    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
 
     $stream_gen = $stream->gen<int>($this->recvImpl_streamthrows_StreamDecode());
     $in_transport->resetBuffer();
@@ -1029,6 +1029,7 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -1041,7 +1042,7 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
     $currentseqid = $this->sendImpl_boththrows($foo);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
-    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse(new \RpcOptions(), $msg);
+    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
 
     $stream_gen = $stream->gen<int>($this->recvImpl_boththrows_StreamDecode());
     $in_transport->resetBuffer();
@@ -1061,6 +1062,7 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -1073,7 +1075,7 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
     $currentseqid = $this->sendImpl_responseandstreamthrows($foo);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
-    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse(new \RpcOptions(), $msg);
+    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
 
     $stream_gen = $stream->gen<int>($this->recvImpl_responseandstreamthrows_StreamDecode());
     $in_transport->resetBuffer();
@@ -1093,6 +1095,7 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -1105,7 +1108,7 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
     $currentseqid = $this->sendImpl_returnstreamFast($i32_from, $i32_to);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
-    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse(new \RpcOptions(), $msg);
+    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
 
     $stream_gen = $stream->gen<int>($this->recvImpl_returnstreamFast_StreamDecode());
     $in_transport->resetBuffer();
@@ -1115,170 +1118,6 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
   }
 
   /* send and recv functions */
-}
-
-class PubSubStreamingServiceAsyncRpcOptionsClient extends \ThriftClientBase implements PubSubStreamingServiceAsyncRpcOptionsIf {
-  use PubSubStreamingServiceClientBase;
-
-  /**
-   * Original thrift definition:-
-   * void, stream<i32>
-   *   returnstream(1: i32 i32_from,
-   *                2: i32 i32_to);
-   */
-  public async function returnstream(\RpcOptions $rpc_options, int $i32_from, int $i32_to): Awaitable<\ResponseAndClientStream<void, int>> {
-    $hh_frame_metadata = $this->getHHFrameMetadata();
-    if ($hh_frame_metadata !== null) {
-      \HH\set_frame_metadata($hh_frame_metadata);
-    }
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    invariant(
-      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
-      "Stream methods require nonnull channel and TMemoryBuffer transport"
-    );
-
-    await $this->asyncHandler_->genBefore("PubSubStreamingService", "returnstream");
-    $currentseqid = $this->sendImpl_returnstream($i32_from, $i32_to);
-    $msg = $out_transport->getBuffer();
-    $out_transport->resetBuffer();
-    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
-
-    $stream_gen = $stream->gen<int>($this->recvImpl_returnstream_StreamDecode());
-    $in_transport->resetBuffer();
-    $in_transport->write($result_msg);
-    $this->recvImpl_returnstream_FirstResponse($currentseqid);
-    return new \ResponseAndClientStream<void, int>(null, $stream_gen);
-  }
-
-  /**
-   * Original thrift definition:-
-   * void, stream<i32, throws (1: FooEx e)>
-   *   streamthrows(1: i32 foo);
-   */
-  public async function streamthrows(\RpcOptions $rpc_options, int $foo): Awaitable<\ResponseAndClientStream<void, int>> {
-    $hh_frame_metadata = $this->getHHFrameMetadata();
-    if ($hh_frame_metadata !== null) {
-      \HH\set_frame_metadata($hh_frame_metadata);
-    }
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    invariant(
-      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
-      "Stream methods require nonnull channel and TMemoryBuffer transport"
-    );
-
-    await $this->asyncHandler_->genBefore("PubSubStreamingService", "streamthrows");
-    $currentseqid = $this->sendImpl_streamthrows($foo);
-    $msg = $out_transport->getBuffer();
-    $out_transport->resetBuffer();
-    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
-
-    $stream_gen = $stream->gen<int>($this->recvImpl_streamthrows_StreamDecode());
-    $in_transport->resetBuffer();
-    $in_transport->write($result_msg);
-    $this->recvImpl_streamthrows_FirstResponse($currentseqid);
-    return new \ResponseAndClientStream<void, int>(null, $stream_gen);
-  }
-
-  /**
-   * Original thrift definition:-
-   * void, stream<i32, throws (1: FooEx e)>
-   *   boththrows(1: i32 foo)
-   *   throws (1: FooEx e);
-   */
-  public async function boththrows(\RpcOptions $rpc_options, int $foo): Awaitable<\ResponseAndClientStream<void, int>> {
-    $hh_frame_metadata = $this->getHHFrameMetadata();
-    if ($hh_frame_metadata !== null) {
-      \HH\set_frame_metadata($hh_frame_metadata);
-    }
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    invariant(
-      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
-      "Stream methods require nonnull channel and TMemoryBuffer transport"
-    );
-
-    await $this->asyncHandler_->genBefore("PubSubStreamingService", "boththrows");
-    $currentseqid = $this->sendImpl_boththrows($foo);
-    $msg = $out_transport->getBuffer();
-    $out_transport->resetBuffer();
-    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
-
-    $stream_gen = $stream->gen<int>($this->recvImpl_boththrows_StreamDecode());
-    $in_transport->resetBuffer();
-    $in_transport->write($result_msg);
-    $this->recvImpl_boththrows_FirstResponse($currentseqid);
-    return new \ResponseAndClientStream<void, int>(null, $stream_gen);
-  }
-
-  /**
-   * Original thrift definition:-
-   * i32, stream<i32, throws (1: FooEx e)>
-   *   responseandstreamthrows(1: i32 foo)
-   *   throws (1: FooEx e);
-   */
-  public async function responseandstreamthrows(\RpcOptions $rpc_options, int $foo): Awaitable<\ResponseAndClientStream<int, int>> {
-    $hh_frame_metadata = $this->getHHFrameMetadata();
-    if ($hh_frame_metadata !== null) {
-      \HH\set_frame_metadata($hh_frame_metadata);
-    }
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    invariant(
-      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
-      "Stream methods require nonnull channel and TMemoryBuffer transport"
-    );
-
-    await $this->asyncHandler_->genBefore("PubSubStreamingService", "responseandstreamthrows");
-    $currentseqid = $this->sendImpl_responseandstreamthrows($foo);
-    $msg = $out_transport->getBuffer();
-    $out_transport->resetBuffer();
-    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
-
-    $stream_gen = $stream->gen<int>($this->recvImpl_responseandstreamthrows_StreamDecode());
-    $in_transport->resetBuffer();
-    $in_transport->write($result_msg);
-    $first_response = $this->recvImpl_responseandstreamthrows_FirstResponse($currentseqid);
-    return new \ResponseAndClientStream<int, int>($first_response, $stream_gen);
-  }
-
-  /**
-   * Original thrift definition:-
-   * void, stream<i32>
-   *   returnstreamFast(1: i32 i32_from,
-   *                    2: i32 i32_to);
-   */
-  public async function returnstreamFast(\RpcOptions $rpc_options, int $i32_from, int $i32_to): Awaitable<\ResponseAndClientStream<void, int>> {
-    $hh_frame_metadata = $this->getHHFrameMetadata();
-    if ($hh_frame_metadata !== null) {
-      \HH\set_frame_metadata($hh_frame_metadata);
-    }
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    invariant(
-      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
-      "Stream methods require nonnull channel and TMemoryBuffer transport"
-    );
-
-    await $this->asyncHandler_->genBefore("PubSubStreamingService", "returnstreamFast");
-    $currentseqid = $this->sendImpl_returnstreamFast($i32_from, $i32_to);
-    $msg = $out_transport->getBuffer();
-    $out_transport->resetBuffer();
-    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
-
-    $stream_gen = $stream->gen<int>($this->recvImpl_returnstreamFast_StreamDecode());
-    $in_transport->resetBuffer();
-    $in_transport->write($result_msg);
-    $this->recvImpl_returnstreamFast_FirstResponse($currentseqid);
-    return new \ResponseAndClientStream<void, int>(null, $stream_gen);
-  }
-
 }
 
 // HELPER FUNCTIONS AND STRUCTURES

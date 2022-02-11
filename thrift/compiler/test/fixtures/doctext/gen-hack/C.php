@@ -122,34 +122,6 @@ interface CClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * C
  */
-interface CAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
-  /**
-   * Function doctext.
-   * 
-   * Original thrift definition:-
-   * void
-   *   f();
-   */
-  public function f(\RpcOptions $rpc_options): Awaitable<void>;
-
-  /**
-   * 
-   * Original thrift definition:-
-   * string
-   *   thing(1: i32 a,
-   *         2: string b,
-   *         3: set<i32> c)
-   *   throws (1: Bang bang);
-   */
-  public function thing(\RpcOptions $rpc_options, int $a, string $b, Set<int> $c): Awaitable<string>;
-}
-
-/**
- * Detailed overview of service
- * 
- * Original thrift service:-
- * C
- */
 trait CClientBase {
   require extends \ThriftClientBase;
 
@@ -496,6 +468,7 @@ class CAsyncClient extends \ThriftClientBase implements CAsyncClientIf {
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("C", "f");
     $currentseqid = $this->sendImpl_f();
     $channel = $this->channel_;
@@ -504,7 +477,7 @@ class CAsyncClient extends \ThriftClientBase implements CAsyncClientIf {
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -527,6 +500,7 @@ class CAsyncClient extends \ThriftClientBase implements CAsyncClientIf {
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("C", "thing");
     $currentseqid = $this->sendImpl_thing($a, $b, $c);
     $channel = $this->channel_;
@@ -535,7 +509,7 @@ class CAsyncClient extends \ThriftClientBase implements CAsyncClientIf {
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -556,6 +530,7 @@ class CAsyncClient extends \ThriftClientBase implements CAsyncClientIf {
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -568,7 +543,7 @@ class CAsyncClient extends \ThriftClientBase implements CAsyncClientIf {
     $currentseqid = $this->sendImpl_numbers();
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
-    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse(new \RpcOptions(), $msg);
+    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
 
     $stream_gen = $stream->gen<int>($this->recvImpl_numbers_StreamDecode());
     $in_transport->resetBuffer();
@@ -594,6 +569,7 @@ class CClient extends \ThriftClientBase implements CClientIf {
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("C", "f");
     $currentseqid = $this->sendImpl_f();
     $channel = $this->channel_;
@@ -602,7 +578,7 @@ class CClient extends \ThriftClientBase implements CClientIf {
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -625,6 +601,7 @@ class CClient extends \ThriftClientBase implements CClientIf {
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("C", "thing");
     $currentseqid = $this->sendImpl_thing($a, $b, $c);
     $channel = $this->channel_;
@@ -633,7 +610,7 @@ class CClient extends \ThriftClientBase implements CClientIf {
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -654,117 +631,7 @@ class CClient extends \ThriftClientBase implements CClientIf {
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    invariant(
-      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
-      "Stream methods require nonnull channel and TMemoryBuffer transport"
-    );
-
-    await $this->asyncHandler_->genBefore("C", "numbers");
-    $currentseqid = $this->sendImpl_numbers();
-    $msg = $out_transport->getBuffer();
-    $out_transport->resetBuffer();
-    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse(new \RpcOptions(), $msg);
-
-    $stream_gen = $stream->gen<int>($this->recvImpl_numbers_StreamDecode());
-    $in_transport->resetBuffer();
-    $in_transport->write($result_msg);
-    $this->recvImpl_numbers_FirstResponse($currentseqid);
-    return new \ResponseAndClientStream<void, int>(null, $stream_gen);
-  }
-
-  /* send and recv functions */
-  public function send_f(): int {
-    return $this->sendImpl_f();
-  }
-  public function recv_f(?int $expectedsequenceid = null): void {
-    $this->recvImpl_f($expectedsequenceid);
-  }
-  public function send_thing(int $a, string $b, Set<int> $c): int {
-    return $this->sendImpl_thing($a, $b, $c);
-  }
-  public function recv_thing(?int $expectedsequenceid = null): string {
-    return $this->recvImpl_thing($expectedsequenceid);
-  }
-}
-
-class CAsyncRpcOptionsClient extends \ThriftClientBase implements CAsyncRpcOptionsIf {
-  use CClientBase;
-
-  /**
-   * Function doctext.
-   * 
-   * Original thrift definition:-
-   * void
-   *   f();
-   */
-  public async function f(\RpcOptions $rpc_options): Awaitable<void> {
-    $hh_frame_metadata = $this->getHHFrameMetadata();
-    if ($hh_frame_metadata !== null) {
-      \HH\set_frame_metadata($hh_frame_metadata);
-    }
-    await $this->asyncHandler_->genBefore("C", "f");
-    $currentseqid = $this->sendImpl_f();
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $this->recvImpl_f($currentseqid);
-  }
-
-  /**
-   * 
-   * Original thrift definition:-
-   * string
-   *   thing(1: i32 a,
-   *         2: string b,
-   *         3: set<i32> c)
-   *   throws (1: Bang bang);
-   */
-  public async function thing(\RpcOptions $rpc_options, int $a, string $b, Set<int> $c): Awaitable<string> {
-    $hh_frame_metadata = $this->getHHFrameMetadata();
-    if ($hh_frame_metadata !== null) {
-      \HH\set_frame_metadata($hh_frame_metadata);
-    }
-    await $this->asyncHandler_->genBefore("C", "thing");
-    $currentseqid = $this->sendImpl_thing($a, $b, $c);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    return $this->recvImpl_thing($currentseqid);
-  }
-
-  /**
-   * Streaming function
-   * 
-   * Original thrift definition:-
-   * void, stream<number>
-   *   numbers();
-   */
-  public async function numbers(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientStream<void, int>> {
-    $hh_frame_metadata = $this->getHHFrameMetadata();
-    if ($hh_frame_metadata !== null) {
-      \HH\set_frame_metadata($hh_frame_metadata);
-    }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -786,6 +653,19 @@ class CAsyncRpcOptionsClient extends \ThriftClientBase implements CAsyncRpcOptio
     return new \ResponseAndClientStream<void, int>(null, $stream_gen);
   }
 
+  /* send and recv functions */
+  public function send_f(): int {
+    return $this->sendImpl_f();
+  }
+  public function recv_f(?int $expectedsequenceid = null): void {
+    $this->recvImpl_f($expectedsequenceid);
+  }
+  public function send_thing(int $a, string $b, Set<int> $c): int {
+    return $this->sendImpl_thing($a, $b, $c);
+  }
+  public function recv_thing(?int $expectedsequenceid = null): string {
+    return $this->recvImpl_thing($expectedsequenceid);
+  }
 }
 
 // HELPER FUNCTIONS AND STRUCTURES

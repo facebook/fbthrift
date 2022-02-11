@@ -77,26 +77,6 @@ interface DbMixedStackArgumentsClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * DbMixedStackArguments
  */
-interface DbMixedStackArgumentsAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
-  /**
-   * Original thrift definition:-
-   * binary
-   *   getDataByKey0(1: string key);
-   */
-  public function getDataByKey0(\RpcOptions $rpc_options, string $key): Awaitable<string>;
-
-  /**
-   * Original thrift definition:-
-   * binary
-   *   getDataByKey1(1: string key);
-   */
-  public function getDataByKey1(\RpcOptions $rpc_options, string $key): Awaitable<string>;
-}
-
-/**
- * Original thrift service:-
- * DbMixedStackArguments
- */
 trait DbMixedStackArgumentsClientBase {
   require extends \ThriftClientBase;
 
@@ -317,6 +297,7 @@ class DbMixedStackArgumentsAsyncClient extends \ThriftClientBase implements DbMi
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("DbMixedStackArguments", "getDataByKey0");
     $currentseqid = $this->sendImpl_getDataByKey0($key);
     $channel = $this->channel_;
@@ -325,7 +306,7 @@ class DbMixedStackArgumentsAsyncClient extends \ThriftClientBase implements DbMi
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -344,6 +325,7 @@ class DbMixedStackArgumentsAsyncClient extends \ThriftClientBase implements DbMi
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("DbMixedStackArguments", "getDataByKey1");
     $currentseqid = $this->sendImpl_getDataByKey1($key);
     $channel = $this->channel_;
@@ -352,7 +334,7 @@ class DbMixedStackArgumentsAsyncClient extends \ThriftClientBase implements DbMi
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -376,6 +358,7 @@ class DbMixedStackArgumentsClient extends \ThriftClientBase implements DbMixedSt
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("DbMixedStackArguments", "getDataByKey0");
     $currentseqid = $this->sendImpl_getDataByKey0($key);
     $channel = $this->channel_;
@@ -384,7 +367,7 @@ class DbMixedStackArgumentsClient extends \ThriftClientBase implements DbMixedSt
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -403,6 +386,7 @@ class DbMixedStackArgumentsClient extends \ThriftClientBase implements DbMixedSt
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("DbMixedStackArguments", "getDataByKey1");
     $currentseqid = $this->sendImpl_getDataByKey1($key);
     $channel = $this->channel_;
@@ -411,7 +395,7 @@ class DbMixedStackArgumentsClient extends \ThriftClientBase implements DbMixedSt
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -433,65 +417,6 @@ class DbMixedStackArgumentsClient extends \ThriftClientBase implements DbMixedSt
   public function recv_getDataByKey1(?int $expectedsequenceid = null): string {
     return $this->recvImpl_getDataByKey1($expectedsequenceid);
   }
-}
-
-class DbMixedStackArgumentsAsyncRpcOptionsClient extends \ThriftClientBase implements DbMixedStackArgumentsAsyncRpcOptionsIf {
-  use DbMixedStackArgumentsClientBase;
-
-  /**
-   * Original thrift definition:-
-   * binary
-   *   getDataByKey0(1: string key);
-   */
-  public async function getDataByKey0(\RpcOptions $rpc_options, string $key): Awaitable<string> {
-    $hh_frame_metadata = $this->getHHFrameMetadata();
-    if ($hh_frame_metadata !== null) {
-      \HH\set_frame_metadata($hh_frame_metadata);
-    }
-    await $this->asyncHandler_->genBefore("DbMixedStackArguments", "getDataByKey0");
-    $currentseqid = $this->sendImpl_getDataByKey0($key);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    return $this->recvImpl_getDataByKey0($currentseqid);
-  }
-
-  /**
-   * Original thrift definition:-
-   * binary
-   *   getDataByKey1(1: string key);
-   */
-  public async function getDataByKey1(\RpcOptions $rpc_options, string $key): Awaitable<string> {
-    $hh_frame_metadata = $this->getHHFrameMetadata();
-    if ($hh_frame_metadata !== null) {
-      \HH\set_frame_metadata($hh_frame_metadata);
-    }
-    await $this->asyncHandler_->genBefore("DbMixedStackArguments", "getDataByKey1");
-    $currentseqid = $this->sendImpl_getDataByKey1($key);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    return $this->recvImpl_getDataByKey1($currentseqid);
-  }
-
 }
 
 abstract class DbMixedStackArgumentsAsyncProcessorBase extends \ThriftAsyncProcessor {

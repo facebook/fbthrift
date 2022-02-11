@@ -77,26 +77,6 @@ interface MyServiceClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * MyService
  */
-interface MyServiceAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
-  /**
-   * Original thrift definition:-
-   * annotated_inline_string
-   *   first();
-   */
-  public function first(\RpcOptions $rpc_options): Awaitable<string>;
-
-  /**
-   * Original thrift definition:-
-   * bool
-   *   second(1: i64 count);
-   */
-  public function second(\RpcOptions $rpc_options, int $count): Awaitable<bool>;
-}
-
-/**
- * Original thrift service:-
- * MyService
- */
 trait MyServiceClientBase {
   require extends \ThriftClientBase;
 
@@ -315,6 +295,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "first");
     $currentseqid = $this->sendImpl_first();
     $channel = $this->channel_;
@@ -323,7 +304,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -342,6 +323,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "second");
     $currentseqid = $this->sendImpl_second($count);
     $channel = $this->channel_;
@@ -350,7 +332,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -374,6 +356,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "first");
     $currentseqid = $this->sendImpl_first();
     $channel = $this->channel_;
@@ -382,7 +365,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -401,6 +384,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "second");
     $currentseqid = $this->sendImpl_second($count);
     $channel = $this->channel_;
@@ -409,7 +393,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -431,65 +415,6 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
   public function recv_second(?int $expectedsequenceid = null): bool {
     return $this->recvImpl_second($expectedsequenceid);
   }
-}
-
-class MyServiceAsyncRpcOptionsClient extends \ThriftClientBase implements MyServiceAsyncRpcOptionsIf {
-  use MyServiceClientBase;
-
-  /**
-   * Original thrift definition:-
-   * annotated_inline_string
-   *   first();
-   */
-  public async function first(\RpcOptions $rpc_options): Awaitable<string> {
-    $hh_frame_metadata = $this->getHHFrameMetadata();
-    if ($hh_frame_metadata !== null) {
-      \HH\set_frame_metadata($hh_frame_metadata);
-    }
-    await $this->asyncHandler_->genBefore("MyService", "first");
-    $currentseqid = $this->sendImpl_first();
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    return $this->recvImpl_first($currentseqid);
-  }
-
-  /**
-   * Original thrift definition:-
-   * bool
-   *   second(1: i64 count);
-   */
-  public async function second(\RpcOptions $rpc_options, int $count): Awaitable<bool> {
-    $hh_frame_metadata = $this->getHHFrameMetadata();
-    if ($hh_frame_metadata !== null) {
-      \HH\set_frame_metadata($hh_frame_metadata);
-    }
-    await $this->asyncHandler_->genBefore("MyService", "second");
-    $currentseqid = $this->sendImpl_second($count);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    return $this->recvImpl_second($currentseqid);
-  }
-
 }
 
 // HELPER FUNCTIONS AND STRUCTURES

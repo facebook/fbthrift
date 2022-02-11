@@ -62,21 +62,6 @@ interface ServiceClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * Service
  */
-interface ServiceAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
-  /**
-   * Original thrift definition:-
-   * i32
-   *   func(1: string arg1,
-   *        2: string arg2,
-   *        3: Foo arg3);
-   */
-  public function func(\RpcOptions $rpc_options, \Adapter2::THackType $arg1, string $arg2, ?Foo $arg3): Awaitable<\Adapter1::THackType>;
-}
-
-/**
- * Original thrift service:-
- * Service
- */
 trait ServiceClientBase {
   require extends \ThriftClientBase;
 
@@ -200,6 +185,7 @@ class ServiceAsyncClient extends \ThriftClientBase implements ServiceAsyncClient
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("Service", "func");
     $currentseqid = $this->sendImpl_func($arg1, $arg2, $arg3);
     $channel = $this->channel_;
@@ -208,7 +194,7 @@ class ServiceAsyncClient extends \ThriftClientBase implements ServiceAsyncClient
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -234,47 +220,7 @@ class ServiceClient extends \ThriftClientBase implements ServiceClientIf {
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
-    await $this->asyncHandler_->genBefore("Service", "func");
-    $currentseqid = $this->sendImpl_func($arg1, $arg2, $arg3);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    return $this->recvImpl_func($currentseqid);
-  }
-
-  /* send and recv functions */
-  public function send_func(\Adapter2::THackType $arg1, string $arg2, ?Foo $arg3): int {
-    return $this->sendImpl_func($arg1, $arg2, $arg3);
-  }
-  public function recv_func(?int $expectedsequenceid = null): \Adapter1::THackType {
-    return $this->recvImpl_func($expectedsequenceid);
-  }
-}
-
-class ServiceAsyncRpcOptionsClient extends \ThriftClientBase implements ServiceAsyncRpcOptionsIf {
-  use ServiceClientBase;
-
-  /**
-   * Original thrift definition:-
-   * i32
-   *   func(1: string arg1,
-   *        2: string arg2,
-   *        3: Foo arg3);
-   */
-  public async function func(\RpcOptions $rpc_options, \Adapter2::THackType $arg1, string $arg2, ?Foo $arg3): Awaitable<\Adapter1::THackType> {
-    $hh_frame_metadata = $this->getHHFrameMetadata();
-    if ($hh_frame_metadata !== null) {
-      \HH\set_frame_metadata($hh_frame_metadata);
-    }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("Service", "func");
     $currentseqid = $this->sendImpl_func($arg1, $arg2, $arg3);
     $channel = $this->channel_;
@@ -292,6 +238,13 @@ class ServiceAsyncRpcOptionsClient extends \ThriftClientBase implements ServiceA
     return $this->recvImpl_func($currentseqid);
   }
 
+  /* send and recv functions */
+  public function send_func(\Adapter2::THackType $arg1, string $arg2, ?Foo $arg3): int {
+    return $this->sendImpl_func($arg1, $arg2, $arg3);
+  }
+  public function recv_func(?int $expectedsequenceid = null): \Adapter1::THackType {
+    return $this->recvImpl_func($expectedsequenceid);
+  }
 }
 
 // HELPER FUNCTIONS AND STRUCTURES

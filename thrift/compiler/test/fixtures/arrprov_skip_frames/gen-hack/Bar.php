@@ -68,23 +68,6 @@ interface BarClientIf extends \IThriftSyncIf {
  * Original thrift service:-
  * Bar
  */
-interface BarAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
-  /**
-   * Original thrift definition:-
-   * list<Foo>
-   *   baz(1: set<i32> a,
-   *       2: list<map<i32, set<string>>> b,
-   *       3: Foo d,
-   *       4: i64 e,
-   *       5: list<Foo> f);
-   */
-  public function baz(\RpcOptions $rpc_options, darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<varray<Foo>>;
-}
-
-/**
- * Original thrift service:-
- * Bar
- */
 trait BarClientBase {
   require extends \ThriftClientBase;
 
@@ -216,6 +199,7 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncClientIf {
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b, $d, $e, $f);
     $channel = $this->channel_;
@@ -224,7 +208,7 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncClientIf {
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -248,6 +232,7 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncClientIf {
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b, $d, $e, $f);
     $channel = $this->channel_;
@@ -256,7 +241,7 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncClientIf {
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -285,6 +270,7 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b, $d, $e, $f);
     $channel = $this->channel_;
@@ -293,7 +279,7 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -317,6 +303,7 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b, $d, $e, $f);
     $channel = $this->channel_;
@@ -325,7 +312,7 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
     if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
       $msg = $out_transport->getBuffer();
       $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
       $in_transport->resetBuffer();
       $in_transport->write($result_msg);
     } else {
@@ -342,75 +329,6 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
   public function recv_baz(?int $expectedsequenceid = null): varray<Foo> {
     return $this->recvImpl_baz($expectedsequenceid);
   }
-}
-
-class BarAsyncRpcOptionsClient extends \ThriftClientBase implements BarAsyncRpcOptionsIf {
-  use BarClientBase;
-
-  /**
-   * Original thrift definition:-
-   * list<Foo>
-   *   baz(1: set<i32> a,
-   *       2: list<map<i32, set<string>>> b,
-   *       3: Foo d,
-   *       4: i64 e,
-   *       5: list<Foo> f);
-   */
-  <<__ProvenanceSkipFrame>>
-  public async function baz(\RpcOptions $rpc_options, darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<varray<Foo>> {
-    $hh_frame_metadata = $this->getHHFrameMetadata();
-    if ($hh_frame_metadata !== null) {
-      \HH\set_frame_metadata($hh_frame_metadata);
-    }
-    await $this->asyncHandler_->genBefore("Bar", "baz");
-    $currentseqid = $this->sendImpl_baz($a, $b, $d, $e, $f);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    return $this->recvImpl_baz($currentseqid);
-  }
-
-  /**
-   * Original thrift definition:-
-   * list<Foo>
-   *   baz(1: set<i32> a,
-   *       2: list<map<i32, set<string>>> b,
-   *       3: Foo d,
-   *       4: i64 e,
-   *       5: list<Foo> f);
-   */
-  <<__ProvenanceSkipFrame>>
-  public async function baz__LEGACY_ARRAYS(\RpcOptions $rpc_options, darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<varray<Foo>> {
-    $hh_frame_metadata = $this->getHHFrameMetadata();
-    if ($hh_frame_metadata !== null) {
-      \HH\set_frame_metadata($hh_frame_metadata);
-    }
-    await $this->asyncHandler_->genBefore("Bar", "baz");
-    $currentseqid = $this->sendImpl_baz($a, $b, $d, $e, $f);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    return $this->recvImpl_baz($currentseqid, shape('read_options' => THRIFT_MARK_LEGACY_ARRAYS));
-  }
-
 }
 
 // HELPER FUNCTIONS AND STRUCTURES
