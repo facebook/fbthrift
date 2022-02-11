@@ -20,6 +20,7 @@
 #include <chrono>
 #include <folly/Function.h>
 #include <folly/experimental/observer/Observer.h>
+#include <thrift/lib/cpp2/PluggableFunction.h>
 
 namespace apache {
 namespace thrift {
@@ -158,6 +159,14 @@ class AdaptiveConcurrencyController {
   std::atomic<size_t> concurrencyLimit_{0};
   std::atomic<size_t> maxRequests_{0};
 };
+
+namespace detail {
+
+THRIFT_PLUGGABLE_FUNC_DECLARE(
+    folly::observer::Observer<AdaptiveConcurrencyController::Config>,
+    makeAdaptiveConcurrencyConfig);
+
+} // namespace detail
 
 } // namespace thrift
 } // namespace apache
