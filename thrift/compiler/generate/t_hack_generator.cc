@@ -6118,7 +6118,7 @@ void t_hack_generator::_generate_service_client_child_fn(
     scope_down(out);
     out << indent();
     if (!tfunction->get_returntype()->is_void()) {
-      out << "return ";
+      out << "$response = ";
     }
     out << "$this->recvImpl_" << tfunction->name() << "("
         << "$currentseqid";
@@ -6126,6 +6126,10 @@ void t_hack_generator::_generate_service_client_child_fn(
       out << ", shape('read_options' => THRIFT_MARK_LEGACY_ARRAYS)";
     }
     out << ");\n";
+    indent(out) << "await $this->asyncHandler_->genAfter();\n";
+    if (!tfunction->get_returntype()->is_void()) {
+      indent(out) << "return $response;\n";
+    }
   } else {
     out << indent() << "$channel = $this->channel_;\n"
         << indent() << "$out_transport = $this->output_->getTransport();\n"
@@ -6236,6 +6240,7 @@ void t_hack_generator::_generate_service_client_stream_child_fn(
     out << ", shape('read_options' => THRIFT_MARK_LEGACY_ARRAYS)";
   }
   out << ");\n";
+  indent(out) << "await $this->asyncHandler_->genAfter();\n";
 
   if (tstream->has_first_response()) {
     auto first_response_typehint =
@@ -6360,6 +6365,7 @@ void t_hack_generator::_generate_service_client_sink_child_fn(
     out << ", shape('read_options' => THRIFT_MARK_LEGACY_ARRAYS)";
   }
   out << ");\n\n";
+  indent(out) << "await $this->asyncHandler_->genAfter();\n";
 
   if (tsink->sink_has_first_response()) {
     auto first_response_typehint =

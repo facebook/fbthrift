@@ -192,7 +192,9 @@ class TestServiceAsyncClient extends \FooHackServiceAsyncClient implements TestS
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_ping($currentseqid);
+    $response = $this->recvImpl_ping($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
 }
@@ -225,7 +227,9 @@ class TestServiceClient extends \FooHackServiceClient implements TestServiceClie
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_ping($currentseqid);
+    $response = $this->recvImpl_ping($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
   /* send and recv functions */

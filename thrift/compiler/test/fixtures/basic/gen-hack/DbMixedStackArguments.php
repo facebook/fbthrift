@@ -312,7 +312,9 @@ class DbMixedStackArgumentsAsyncClient extends \ThriftClientBase implements DbMi
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_getDataByKey0($currentseqid);
+    $response = $this->recvImpl_getDataByKey0($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
   /**
@@ -340,7 +342,9 @@ class DbMixedStackArgumentsAsyncClient extends \ThriftClientBase implements DbMi
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_getDataByKey1($currentseqid);
+    $response = $this->recvImpl_getDataByKey1($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
 }
@@ -373,7 +377,9 @@ class DbMixedStackArgumentsClient extends \ThriftClientBase implements DbMixedSt
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_getDataByKey0($currentseqid);
+    $response = $this->recvImpl_getDataByKey0($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
   /**
@@ -401,7 +407,9 @@ class DbMixedStackArgumentsClient extends \ThriftClientBase implements DbMixedSt
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_getDataByKey1($currentseqid);
+    $response = $this->recvImpl_getDataByKey1($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
   /* send and recv functions */

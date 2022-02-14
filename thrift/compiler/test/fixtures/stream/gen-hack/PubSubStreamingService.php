@@ -814,6 +814,7 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
     $in_transport->resetBuffer();
     $in_transport->write($result_msg);
     $this->recvImpl_returnstream_FirstResponse($currentseqid);
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientStream<void, int>(null, $stream_gen);
   }
 
@@ -846,6 +847,7 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
     $in_transport->resetBuffer();
     $in_transport->write($result_msg);
     $this->recvImpl_streamthrows_FirstResponse($currentseqid);
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientStream<void, int>(null, $stream_gen);
   }
 
@@ -879,6 +881,7 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
     $in_transport->resetBuffer();
     $in_transport->write($result_msg);
     $this->recvImpl_boththrows_FirstResponse($currentseqid);
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientStream<void, int>(null, $stream_gen);
   }
 
@@ -912,6 +915,7 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
     $in_transport->resetBuffer();
     $in_transport->write($result_msg);
     $first_response = $this->recvImpl_responseandstreamthrows_FirstResponse($currentseqid);
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientStream<int, int>($first_response, $stream_gen);
   }
 
@@ -945,6 +949,7 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
     $in_transport->resetBuffer();
     $in_transport->write($result_msg);
     $this->recvImpl_returnstreamFast_FirstResponse($currentseqid);
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientStream<void, int>(null, $stream_gen);
   }
 
@@ -983,6 +988,7 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
     $in_transport->resetBuffer();
     $in_transport->write($result_msg);
     $this->recvImpl_returnstream_FirstResponse($currentseqid);
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientStream<void, int>(null, $stream_gen);
   }
 
@@ -1015,6 +1021,7 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
     $in_transport->resetBuffer();
     $in_transport->write($result_msg);
     $this->recvImpl_streamthrows_FirstResponse($currentseqid);
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientStream<void, int>(null, $stream_gen);
   }
 
@@ -1048,6 +1055,7 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
     $in_transport->resetBuffer();
     $in_transport->write($result_msg);
     $this->recvImpl_boththrows_FirstResponse($currentseqid);
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientStream<void, int>(null, $stream_gen);
   }
 
@@ -1081,6 +1089,7 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
     $in_transport->resetBuffer();
     $in_transport->write($result_msg);
     $first_response = $this->recvImpl_responseandstreamthrows_FirstResponse($currentseqid);
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientStream<int, int>($first_response, $stream_gen);
   }
 
@@ -1114,6 +1123,7 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
     $in_transport->resetBuffer();
     $in_transport->write($result_msg);
     $this->recvImpl_returnstreamFast_FirstResponse($currentseqid);
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientStream<void, int>(null, $stream_gen);
   }
 

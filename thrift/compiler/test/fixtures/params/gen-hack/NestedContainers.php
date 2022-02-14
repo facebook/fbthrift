@@ -659,6 +659,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_mapList($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   /**
@@ -687,6 +688,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_mapSet($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   /**
@@ -715,6 +717,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_listMap($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   /**
@@ -743,6 +746,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_listSet($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   /**
@@ -771,6 +775,7 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_turtles($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
 }
@@ -804,6 +809,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_mapList($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   /**
@@ -832,6 +838,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_mapSet($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   /**
@@ -860,6 +867,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_listMap($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   /**
@@ -888,6 +896,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_listSet($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   /**
@@ -916,6 +925,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_turtles($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   /* send and recv functions */

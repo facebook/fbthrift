@@ -1351,6 +1351,7 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
     $in_transport->write($result_msg);
     $this->recvImpl_method_FirstResponse($currentseqid);
 
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
@@ -1395,6 +1396,7 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
     $in_transport->write($result_msg);
     $first_response = $this->recvImpl_methodAndReponse_FirstResponse($currentseqid);
 
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientSink<InitialResponse, SinkPayload, FinalResponse>($first_response, $client_sink_func);
   }
 
@@ -1440,6 +1442,7 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
     $in_transport->write($result_msg);
     $this->recvImpl_methodThrow_FirstResponse($currentseqid);
 
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
@@ -1484,6 +1487,7 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
     $in_transport->write($result_msg);
     $this->recvImpl_methodSinkThrow_FirstResponse($currentseqid);
 
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
@@ -1528,6 +1532,7 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
     $in_transport->write($result_msg);
     $this->recvImpl_methodFinalThrow_FirstResponse($currentseqid);
 
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
@@ -1572,6 +1577,7 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
     $in_transport->write($result_msg);
     $this->recvImpl_methodBothThrow_FirstResponse($currentseqid);
 
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
@@ -1616,6 +1622,7 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
     $in_transport->write($result_msg);
     $this->recvImpl_methodFast_FirstResponse($currentseqid);
 
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
@@ -1665,6 +1672,7 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
     $in_transport->write($result_msg);
     $this->recvImpl_method_FirstResponse($currentseqid);
 
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
@@ -1709,6 +1717,7 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
     $in_transport->write($result_msg);
     $first_response = $this->recvImpl_methodAndReponse_FirstResponse($currentseqid);
 
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientSink<InitialResponse, SinkPayload, FinalResponse>($first_response, $client_sink_func);
   }
 
@@ -1754,6 +1763,7 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
     $in_transport->write($result_msg);
     $this->recvImpl_methodThrow_FirstResponse($currentseqid);
 
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
@@ -1798,6 +1808,7 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
     $in_transport->write($result_msg);
     $this->recvImpl_methodSinkThrow_FirstResponse($currentseqid);
 
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
@@ -1842,6 +1853,7 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
     $in_transport->write($result_msg);
     $this->recvImpl_methodFinalThrow_FirstResponse($currentseqid);
 
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
@@ -1886,6 +1898,7 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
     $in_transport->write($result_msg);
     $this->recvImpl_methodBothThrow_FirstResponse($currentseqid);
 
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 
@@ -1930,6 +1943,7 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
     $in_transport->write($result_msg);
     $this->recvImpl_methodFast_FirstResponse($currentseqid);
 
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientSink<void, SinkPayload, FinalResponse>(null, $client_sink_func);
   }
 

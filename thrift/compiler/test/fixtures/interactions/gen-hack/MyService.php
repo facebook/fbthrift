@@ -202,6 +202,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_foo($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
 }
@@ -235,6 +236,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_foo($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   /* send and recv functions */
@@ -287,7 +289,9 @@ class MyService_MyInteraction extends \ThriftClientBase {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_frobnicate($currentseqid);
+    $response = $this->recvImpl_frobnicate($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
   protected function sendImpl_frobnicate(): int {
@@ -486,6 +490,7 @@ class MyService_MyInteraction extends \ThriftClientBase {
     $in_transport->resetBuffer();
     $in_transport->write($result_msg);
     $this->recvImpl_truthify_FirstResponse($currentseqid);
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientStream<void, bool>(null, $stream_gen);
   }
 
@@ -656,6 +661,7 @@ $rpc_options->setInteractionId($this->interactionId);
     $in_transport->write($result_msg);
     $first_response = $this->recvImpl_encode_FirstResponse($currentseqid);
 
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientSink<Set<int>, string, string>($first_response, $client_sink_func);
   }
 
@@ -868,7 +874,9 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_frobnicate($currentseqid);
+    $response = $this->recvImpl_frobnicate($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
   protected function sendImpl_frobnicate(): int {
@@ -1062,6 +1070,7 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     $in_transport->resetBuffer();
     $in_transport->write($result_msg);
     $this->recvImpl_truthify_FirstResponse($currentseqid);
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientStream<void, bool>(null, $stream_gen);
   }
 
@@ -1232,6 +1241,7 @@ $rpc_options->setInteractionId($this->interactionId);
     $in_transport->write($result_msg);
     $first_response = $this->recvImpl_encode_FirstResponse($currentseqid);
 
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientSink<Set<int>, string, string>($first_response, $client_sink_func);
   }
 
@@ -1445,6 +1455,7 @@ class MyService_SerialInteraction extends \ThriftClientBase {
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_frobnicate($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   protected function sendImpl_frobnicate(): int {

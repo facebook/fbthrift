@@ -297,6 +297,7 @@ class MyServicePrioParentAsyncClient extends \ThriftClientBase implements MyServ
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_ping($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   /**
@@ -325,6 +326,7 @@ class MyServicePrioParentAsyncClient extends \ThriftClientBase implements MyServ
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_pong($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
 }
@@ -358,6 +360,7 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_ping($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   /**
@@ -386,6 +389,7 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_pong($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   /* send and recv functions */

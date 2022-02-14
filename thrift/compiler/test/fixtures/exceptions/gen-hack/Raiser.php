@@ -585,6 +585,7 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncClientIf
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_doBland($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   /**
@@ -616,6 +617,7 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncClientIf
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_doRaise($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   /**
@@ -643,7 +645,9 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncClientIf
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_get200($currentseqid);
+    $response = $this->recvImpl_get200($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
   /**
@@ -674,7 +678,9 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncClientIf
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_get500($currentseqid);
+    $response = $this->recvImpl_get500($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
 }
@@ -708,6 +714,7 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_doBland($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   /**
@@ -739,6 +746,7 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_doRaise($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   /**
@@ -766,7 +774,9 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_get200($currentseqid);
+    $response = $this->recvImpl_get200($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
   /**
@@ -797,7 +807,9 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_get500($currentseqid);
+    $response = $this->recvImpl_get500($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
   /* send and recv functions */

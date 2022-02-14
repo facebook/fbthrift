@@ -312,7 +312,9 @@ class SomeServiceAsyncClient extends \ThriftClientBase implements SomeServiceAsy
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_bounce_map($currentseqid);
+    $response = $this->recvImpl_bounce_map($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
   /**
@@ -340,7 +342,9 @@ class SomeServiceAsyncClient extends \ThriftClientBase implements SomeServiceAsy
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_binary_keyed_map($currentseqid);
+    $response = $this->recvImpl_binary_keyed_map($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
 }
@@ -373,7 +377,9 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceClientIf
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_bounce_map($currentseqid);
+    $response = $this->recvImpl_bounce_map($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
   /**
@@ -401,7 +407,9 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceClientIf
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_binary_keyed_map($currentseqid);
+    $response = $this->recvImpl_binary_keyed_map($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
   /* send and recv functions */

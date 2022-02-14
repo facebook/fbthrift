@@ -847,6 +847,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_ping($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   /**
@@ -874,7 +875,9 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_getRandomData($currentseqid);
+    $response = $this->recvImpl_getRandomData($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
   /**
@@ -902,7 +905,9 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_hasDataById($currentseqid);
+    $response = $this->recvImpl_hasDataById($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
   /**
@@ -930,7 +935,9 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_getDataById($currentseqid);
+    $response = $this->recvImpl_getDataById($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
   /**
@@ -960,6 +967,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_putDataById($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   /**
@@ -1011,6 +1019,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_doNothing($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
 }
@@ -1044,6 +1053,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_ping($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   /**
@@ -1071,7 +1081,9 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_getRandomData($currentseqid);
+    $response = $this->recvImpl_getRandomData($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
   /**
@@ -1099,7 +1111,9 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_hasDataById($currentseqid);
+    $response = $this->recvImpl_hasDataById($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
   /**
@@ -1127,7 +1141,9 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_getDataById($currentseqid);
+    $response = $this->recvImpl_getDataById($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
   /**
@@ -1157,6 +1173,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_putDataById($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   /**
@@ -1208,6 +1225,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_doNothing($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   /* send and recv functions */

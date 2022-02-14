@@ -484,6 +484,7 @@ class CAsyncClient extends \ThriftClientBase implements CAsyncClientIf {
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_f($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   /**
@@ -515,7 +516,9 @@ class CAsyncClient extends \ThriftClientBase implements CAsyncClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_thing($currentseqid);
+    $response = $this->recvImpl_thing($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
   /**
@@ -549,6 +552,7 @@ class CAsyncClient extends \ThriftClientBase implements CAsyncClientIf {
     $in_transport->resetBuffer();
     $in_transport->write($result_msg);
     $this->recvImpl_numbers_FirstResponse($currentseqid);
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientStream<void, int>(null, $stream_gen);
   }
 
@@ -585,6 +589,7 @@ class CClient extends \ThriftClientBase implements CClientIf {
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_f($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   /**
@@ -616,7 +621,9 @@ class CClient extends \ThriftClientBase implements CClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_thing($currentseqid);
+    $response = $this->recvImpl_thing($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
   /**
@@ -650,6 +657,7 @@ class CClient extends \ThriftClientBase implements CClientIf {
     $in_transport->resetBuffer();
     $in_transport->write($result_msg);
     $this->recvImpl_numbers_FirstResponse($currentseqid);
+    await $this->asyncHandler_->genAfter();
     return new \ResponseAndClientStream<void, int>(null, $stream_gen);
   }
 

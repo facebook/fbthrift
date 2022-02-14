@@ -183,6 +183,7 @@ class MyServicePrioChildAsyncClient extends MyServicePrioParentAsyncClient imple
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_pang($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
 }
@@ -216,6 +217,7 @@ class MyServicePrioChildClient extends MyServicePrioParentClient implements MySe
       await $this->asyncHandler_->genWait($currentseqid);
     }
     $this->recvImpl_pang($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
   /* send and recv functions */

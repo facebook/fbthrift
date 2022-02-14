@@ -214,7 +214,9 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_baz($currentseqid);
+    $response = $this->recvImpl_baz($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
   /**
@@ -247,7 +249,9 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_baz($currentseqid, shape('read_options' => THRIFT_MARK_LEGACY_ARRAYS));
+    $response = $this->recvImpl_baz($currentseqid, shape('read_options' => THRIFT_MARK_LEGACY_ARRAYS));
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
 }
@@ -285,7 +289,9 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_baz($currentseqid);
+    $response = $this->recvImpl_baz($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
   /**
@@ -318,7 +324,9 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    return $this->recvImpl_baz($currentseqid, shape('read_options' => THRIFT_MARK_LEGACY_ARRAYS));
+    $response = $this->recvImpl_baz($currentseqid, shape('read_options' => THRIFT_MARK_LEGACY_ARRAYS));
+    await $this->asyncHandler_->genAfter();
+    return $response;
   }
 
   /* send and recv functions */
