@@ -21,7 +21,7 @@
         }}Clone, PartialEq{{!
         }}{{#struct:ord?}}, Eq, PartialOrd, Ord, Hash{{/struct:ord?}}{{!
         }}{{#struct:union?}}, Debug{{/struct:union?}}{{!
-        }}{{#program:serde?}}, ::serde_derive::Serialize, ::serde_derive::Deserialize{{/program:serde?}}{{!
+        }}{{#struct:serde?}}, ::serde_derive::Serialize, ::serde_derive::Deserialize{{/struct:serde?}}{{!
         }}{{#struct:exception?}}{{#struct:union?}}, ::thiserror::Error{{/struct:union?}}{{/struct:exception?}}{{!
         }}{{#struct:derive}}, {{.}}{{/struct:derive}}{{!
     }})]
@@ -31,15 +31,15 @@
 }}{{^struct:union?}}
     pub struct {{struct:rust_name}} {{>lib/block}}{{!
     }}{{#struct:fields}}{{!
-        }}{{#program:serde?}}{{#field:rename?}}
+        }}{{#struct:serde?}}{{#field:rename?}}
         #[serde(rename = "{{field:name}}")]{{!
         }}{{/field:rename?}}{{^field:optional?}}
         #[serde(default)]{{!
         }}{{/field:optional?}}{{!
-        }}{{#field:optional?}}{{#program:skip_none_serialization?}}
+        }}{{#field:optional?}}{{#struct:serde?}}{{#program:skip_none_serialization?}}
         #[serde(skip_serializing_if = "Option::is_none")]{{!
-        }}{{/program:skip_none_serialization?}}{{/field:optional?}}{{!
-        }}{{/program:serde?}}{{#field:docs?}}
+        }}{{/program:skip_none_serialization?}}{{/struct:serde?}}{{/field:optional?}}{{!
+        }}{{/struct:serde?}}{{#field:docs?}}
         #[doc = {{field:docs}}]{{!
         }}{{/field:docs?}}
         pub {{field:rust_name}}: {{>lib/fieldtype}},{{!
@@ -50,9 +50,9 @@
         // the definition in Thrift. If you don't want this, add the annotation
         // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
         #[doc(hidden)]{{!
-        }}{{#program:serde?}}
+        }}{{#struct:serde?}}
         #[serde(skip, default = "self::dot_dot::default_for_serde_deserialize")]{{!
-        }}{{/program:serde?}}
+        }}{{/struct:serde?}}
         pub _dot_dot_Default_default: self::dot_dot::OtherFields,{{!
     }}{{/struct:exhaustive?}}
     }

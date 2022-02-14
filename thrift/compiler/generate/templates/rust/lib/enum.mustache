@@ -20,7 +20,7 @@
     #[doc = {{enum:docs}}]
     {{/enum:docs?}}
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash{{!
-        }}{{#program:serde?}}, ::serde_derive::Serialize, ::serde_derive::Deserialize{{/program:serde?}}{{!
+        }}{{#enum:serde?}}, ::serde_derive::Serialize, ::serde_derive::Deserialize{{/enum:serde?}}{{!
     }})]
     pub struct {{enum:rust_name}}(pub ::std::primitive::i32);
 

@@ -17,6 +17,7 @@
 #include <cassert>
 #include <cctype>
 #include <set>
+#include <stdexcept>
 #include <string>
 #include <unordered_set>
 
@@ -236,6 +237,27 @@ struct rust_codegen_options {
   const t_program* current_program;
   std::string current_crate;
 };
+
+static bool validate_rust_serde(const t_node& node) {
+  const std::string* ann = node.find_annotation_or_null("rust.serde");
+
+  return ann == nullptr || *ann == "true" || *ann == "false";
+}
+
+static bool rust_serde_enabled(
+    const rust_codegen_options& options, const t_node& node) {
+  const std::string* ann = node.find_annotation_or_null("rust.serde");
+
+  if (ann == nullptr) {
+    return options.serde;
+  } else if (*ann == "true") {
+    return true;
+  } else if (*ann == "false") {
+    return false;
+  } else {
+    throw std::runtime_error("rust.serde should be `true` or `false`");
+  }
+}
 
 std::string get_import_name(
     const t_program* program, const rust_codegen_options& options) {
@@ -510,6 +532,7 @@ class mstch_rust_struct : public mstch_struct {
             {"struct:is_exception_message_optional?",
              &mstch_rust_struct::is_exception_message_optional},
             {"struct:exception_message", &mstch_rust_struct::exception_message},
+            {"struct:serde?", &mstch_rust_struct::rust_serde},
         });
   }
   mstch::node rust_name() {
@@ -562,6 +585,7 @@ class mstch_rust_struct : public mstch_struct {
                ->get_req() == t_field::e_req::optional;
   }
   mstch::node exception_message() { return strct_->get_annotation("message"); }
+  mstch::node rust_serde() { return rust_serde_enabled(options_, *strct_); }
 
  private:
   const rust_codegen_options& options_;
@@ -789,6 +813,7 @@ class mstch_rust_enum : public mstch_enum {
             {"enum:variants_by_number", &mstch_rust_enum::variants_by_number},
             {"enum:docs?", &mstch_rust_enum::rust_has_doc},
             {"enum:docs", &mstch_rust_enum::rust_doc},
+            {"enum:serde?", &mstch_rust_enum::rust_serde},
         });
   }
   mstch::node rust_name() {
@@ -816,6 +841,7 @@ class mstch_rust_enum : public mstch_enum {
   }
   mstch::node rust_has_doc() { return enm_->has_doc(); }
   mstch::node rust_doc() { return quoted_rust_doc(enm_); }
+  mstch::node rust_serde() { return rust_serde_enabled(options_, *enm_); }
 
  private:
   const rust_codegen_options& options_;
@@ -1400,8 +1426,9 @@ class mstch_rust_typedef : public mstch_typedef {
       const t_typedef* typedf,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos)
-      : mstch_typedef(typedf, generators, cache, pos) {
+      ELEMENT_POSITION pos,
+      const rust_codegen_options& options)
+      : mstch_typedef(typedf, generators, cache, pos), options_(options) {
     register_methods(
         this,
         {
@@ -1413,6 +1440,7 @@ class mstch_rust_typedef : public mstch_typedef {
             {"typedef:nonstandard?", &mstch_rust_typedef::rust_nonstandard},
             {"typedef:docs?", &mstch_rust_typedef::rust_has_docs},
             {"typedef:docs", &mstch_rust_typedef::rust_docs},
+            {"typedef:serde?", &mstch_rust_typedef::rust_serde},
         });
   }
   mstch::node rust_name() {
@@ -1450,6 +1478,10 @@ class mstch_rust_typedef : public mstch_typedef {
   }
   mstch::node rust_has_docs() { return typedf_->has_doc(); }
   mstch::node rust_docs() { return quoted_rust_doc(typedf_); }
+  mstch::node rust_serde() { return rust_serde_enabled(options_, *typedf_); }
+
+ private:
+  const rust_codegen_options& options_;
 };
 
 class mstch_rust_annotation : public mstch_annotation {
@@ -1703,7 +1735,8 @@ class const_rust_generator : public const_generator {
 
 class typedef_rust_generator : public typedef_generator {
  public:
-  typedef_rust_generator() = default;
+  explicit typedef_rust_generator(const rust_codegen_options& options)
+      : options_(options) {}
   ~typedef_rust_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       const t_typedef* typedf,
@@ -1711,8 +1744,12 @@ class typedef_rust_generator : public typedef_generator {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
-    return std::make_shared<mstch_rust_typedef>(typedf, generators, cache, pos);
+    return std::make_shared<mstch_rust_typedef>(
+        typedf, generators, cache, pos, options_);
   }
+
+ private:
+  const rust_codegen_options& options_;
 };
 
 class annotation_rust_generator : public annotation_generator {
@@ -1755,7 +1792,7 @@ void t_mstch_rust_generator::set_mstch_generators() {
   generators_->set_const_generator(
       std::make_unique<const_rust_generator>(options_));
   generators_->set_typedef_generator(
-      std::make_unique<typedef_rust_generator>());
+      std::make_unique<typedef_rust_generator>(options_));
   generators_->set_annotation_generator(
       std::make_unique<annotation_rust_generator>());
 }
@@ -1812,10 +1849,15 @@ namespace {
 class annotation_validator : public validator {
  public:
   using validator::visit;
-  bool visit(t_struct* s) override;
+  bool visit(t_struct*) override;
+  bool visit(t_enum*) override;
 };
 
 bool annotation_validator::visit(t_struct* s) {
+  if (!validate_rust_serde(*s)) {
+    add_error(s->lineno(), "`rust.serde` must be `true` or `false`");
+  }
+
   for (auto& field : s->fields()) {
     bool box = field.has_annotation("rust.box");
     bool arc = field.has_annotation("rust.arc");
@@ -1827,6 +1869,15 @@ bool annotation_validator::visit(t_struct* s) {
   }
   return true;
 }
+
+bool annotation_validator::visit(t_enum* e) {
+  if (!validate_rust_serde(*e)) {
+    add_error(e->lineno(), "`rust.serde` must be `true` or `false`");
+  }
+
+  return true;
+}
+
 } // namespace
 
 void t_mstch_rust_generator::fill_validator_list(validator_list& l) const {

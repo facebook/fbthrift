@@ -121,6 +121,7 @@ pub mod types {
         #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
         pub struct OtherFields(pub(crate) ());
 
+        #[allow(dead_code)] // if serde isn't being used
         pub(super) fn default_for_serde_deserialize() -> OtherFields {
             OtherFields(())
         }

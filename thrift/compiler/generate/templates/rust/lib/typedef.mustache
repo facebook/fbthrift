@@ -28,7 +28,7 @@
         }}{{#typedef:copy?}}Copy, {{/typedef:copy?}}{{!
         }}Clone, Debug, PartialEq{{!
         }}{{#typedef:ord?}}, Eq, PartialOrd, Ord, Hash{{/typedef:ord?}}{{!
-        }}{{#program:serde?}}, ::serde_derive::Serialize, ::serde_derive::Deserialize{{/program:serde?}}{{!
+        }}{{#typedef:serde?}}, ::serde_derive::Serialize, ::serde_derive::Deserialize{{/typedef:serde?}}{{!
     }})]
     pub struct {{typedef:rust_name}}(pub {{!
       }}{{#typedef:rust_type}}::{{typedef:rust_type}}{{/typedef:rust_type}}{{!
