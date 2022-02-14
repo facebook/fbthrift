@@ -35,6 +35,7 @@
 #include <thrift/compiler/ast/t_interaction.h>
 #include <thrift/compiler/ast/t_named.h>
 #include <thrift/compiler/ast/t_node.h>
+#include <thrift/compiler/ast/t_package.h>
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_program_bundle.h>
 #include <thrift/compiler/ast/t_scope.h>

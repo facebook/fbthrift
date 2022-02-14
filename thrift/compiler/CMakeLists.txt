@@ -42,6 +42,7 @@ add_library(
   ast/t_interface.cc
   ast/t_named.cc
   ast/t_node.cc
+  ast/t_package.cc
   ast/t_paramlist.cc
   ast/t_program.cc
   ast/t_scope.cc

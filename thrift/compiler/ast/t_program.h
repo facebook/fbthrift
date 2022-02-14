@@ -34,6 +34,7 @@
 #include <thrift/compiler/ast/t_list.h>
 #include <thrift/compiler/ast/t_map.h>
 #include <thrift/compiler/ast/t_node.h>
+#include <thrift/compiler/ast/t_package.h>
 #include <thrift/compiler/ast/t_scope.h>
 #include <thrift/compiler/ast/t_service.h>
 #include <thrift/compiler/ast/t_set.h>
@@ -45,37 +46,6 @@
 namespace apache {
 namespace thrift {
 namespace compiler {
-
-// The Thrift package that scopes IDL definitions.
-class t_package {
- public:
-  t_package() = default;
-  // Throws std::invalid_argument if an invalid package name is provided.
-  explicit t_package(std::string name);
-  // Throws std::invalid_argument if an invalid package domain/path is provided.
-  t_package(std::vector<std::string> domain, std::vector<std::string> path);
-
-  // The domain 'labels'.
-  const std::vector<std::string>& domain() const { return domain_; }
-  // The path 'segments'
-  const std::vector<std::string>& path() const { return path_; }
-
-  // Returns the (scheme-less) uri for the given definition name, scoped by this
-  // package.
-  std::string get_uri(const std::string& name) const;
-
-  // If the package has been set.
-  bool empty() const { return uriPrefix_.empty(); }
-
- private:
-  std::string uriPrefix_;
-  std::vector<std::string> domain_;
-  std::vector<std::string> path_;
-
-  friend bool operator==(const t_package& lhs, const t_package& rhs) {
-    return lhs.uriPrefix_ == rhs.uriPrefix_;
-  }
-};
 
 /**
  * Top level class representing an entire thrift program.
