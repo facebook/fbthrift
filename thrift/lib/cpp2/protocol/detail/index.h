@@ -345,7 +345,7 @@ class ProtocolReaderStructReadStateWithIndexImpl
       return false;
     }
 
-    indexOffset_ = indexOffset;
+    indexOffset_ = folly::to_integral(indexOffset);
     return true;
   }
 
