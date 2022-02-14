@@ -220,6 +220,7 @@ class t_container_type;
 %type<std::string>                 FieldTypeIdentifier
 %type<t_def_attrs*>                DefinitionAttrs
 %type<t_named*>                    Definition
+%type<t_named*>                    DefinitionAnnotated
 
 %type<t_typedef*>                  Typedef
 
@@ -232,6 +233,7 @@ class t_container_type;
 %type<t_struct_annotations*>       NonEmptyStructuredAnnotationList
 
 %type<t_field*>                    Field
+%type<t_field*>                    FieldAnnotated
 %type<boost::optional<t_field_id>> FieldId
 %type<t_field_qualifier>           FieldQualifier
 %type<t_type_ref>                  FieldType
@@ -249,6 +251,7 @@ class t_container_type;
 %type<t_enum*>                     Enum
 %type<t_enum_value_list*>          EnumValueList
 %type<t_enum_value*>               EnumValue
+%type<t_enum_value*>               EnumValueAnnotated
 
 %type<t_const*>                    Const
 %type<t_const_value*>              ConstValue
@@ -272,6 +275,8 @@ class t_container_type;
 %type<t_interaction*>              Interaction
 
 %type<t_function*>                 Function
+%type<t_function*>                 FunctionAnnotated
+%type<t_function*>                 Performs
 %type<t_type_ref>                  FunctionType
 %type<t_function_list*>            FunctionList
 
@@ -390,19 +395,28 @@ DefinitionAttrs:
       driver.debug("DefinitionAttrs -> CaptureDocText StructuredAnnotations");
       $$ = nullptr;
       if ($1 || $2 != nullptr) {
-        driver.avoid_last_token_loc(!$1, @$, @2);
+        driver.avoid_tokens_loc(@$, {{!$1, @2}}, {});
         $$ = new t_def_attrs{std::move($1), own($2)};
       }
     }
 
 DefinitionList:
-  DefinitionList DefinitionAttrs Definition Annotations CommaOrSemicolonOptional
+  DefinitionList DefinitionAnnotated CommaOrSemicolonOptional
     {
-      driver.debug("DefinitionList -> DefinitionList Definition CommaOrSemicolonOptional");
-      driver.set_attributes(*$3, @3, own($2), @2, own($4), @4);
-      driver.add_def(own($3));
+      driver.debug("DefinitionList -> DefinitionList DefinitionAnnotated "
+        "CommaOrSemicolonOptional");
+      driver.add_def(own($2));
     }
 |   { driver.debug("DefinitionList -> "); }
+
+DefinitionAnnotated:
+  DefinitionAttrs Definition Annotations
+    {
+      driver.debug("Definition -> DefinitionAttrs Definition Annotations");
+      driver.avoid_tokens_loc(@$, {{$1 == nullptr, @2}}, {{$3 == nullptr, @2}});
+      $$ = $2;
+      driver.set_attributes(*$$, own($1), own($3), @$);
+    }
 
 Definition:
   Typedef     { $$ = $1; }
@@ -466,17 +480,25 @@ Enum:
     }
 
 EnumValueList:
-  EnumValueList DefinitionAttrs EnumValue Annotations CommaOrSemicolonOptional
+  EnumValueList EnumValueAnnotated CommaOrSemicolonOptional
     {
-      driver.debug("EnumValueList DefinitionAttrs EnumValue Annotations CommaOrSemicolonOptional");
+      driver.debug("EnumValueList EnumValueAnnotated CommaOrSemicolonOptional");
       $$ = $1;
-      driver.set_attributes(*$3, @3, own($2), @2, own($4), @4);
-      $$->emplace_back(own($3));
+      $$->emplace_back(own($2));
     }
 |
     {
       driver.debug("EnumValueList -> ");
       $$ = new t_enum_value_list;
+    }
+
+EnumValueAnnotated:
+  DefinitionAttrs EnumValue Annotations
+    {
+      driver.debug("DefinitionAttrs EnumValue Annotations");
+      driver.avoid_tokens_loc(@$, {{$1 == nullptr, @2}}, {{$3 == nullptr, @2}});
+      $$ = $2;
+      driver.set_attributes(*$$, own($1), own($3), @$);
     }
 
 EnumValue:
@@ -714,12 +736,16 @@ Interaction:
     }
 
 FunctionList:
-  FunctionList DefinitionAttrs Function Annotations CommaOrSemicolonOptional
+  FunctionList FunctionAnnotated CommaOrSemicolonOptional
     {
-      driver.debug("FunctionList -> FunctionList DefinitionAttrs Function "
-          "Annotations CommaOrSemicolonOptional");
-      driver.set_attributes(*$3, @3, own($2), @2, own($4), @4);
-      $1->emplace_back(own($3));
+      driver.debug("FunctionList -> FunctionList FunctionAnnotated CommaOrSemicolonOptional");
+      $1->emplace_back(own($2));
+      $$ = $1;
+    }
+| FunctionList Performs CommaOrSemicolon
+    {
+      driver.debug("FunctionList -> FunctionList Performs CommaOrSemicolon");
+      $1->emplace_back(own($2));
       $$ = $1;
     }
 |
@@ -732,8 +758,10 @@ Function:
   FunctionQualifier FunctionType Identifier "(" FieldList ")" MaybeThrows
     {
       driver.debug("Function => FunctionQualifier FunctionType Identifier ( FieldList ) MaybeThrows");
-      driver.avoid_last_token_loc($1 == t_function_qualifier::unspecified, @$, @2);
-      driver.avoid_next_token_loc($7 == nullptr, @$, @6);
+      driver.avoid_tokens_loc(
+        @$,
+        {{$1 == t_function_qualifier::unspecified, @2}},
+        {{$7 == nullptr, @6}});
       $$ = new t_function(driver.program, std::move($2), std::move($3));
       $$->set_qualifier($1);
       driver.set_fields($$->params(), std::move(*own($5)));
@@ -742,9 +770,20 @@ Function:
       // TODO(afuller): Leave the param list unnamed.
       $$->params().set_name($$->name() + "_args");
     }
-  | tok_performs FieldType
+
+FunctionAnnotated:
+  DefinitionAttrs Function Annotations
     {
-      driver.debug("Function => tok_performs FieldType");
+      driver.debug("FunctionAnnotated => DefinitionAttrs Function Annotations");
+      driver.avoid_tokens_loc(@$, {{$1 == nullptr, @2}}, {{$3 == nullptr, @2}});
+      $$ = $2;
+      driver.set_attributes(*$$, own($1), own($3), @$);
+    }
+
+Performs:
+  tok_performs FieldType
+    {
+      driver.debug("Performs => tok_performs FieldType");
       auto& ret = $2;
       std::string name = ret.get_type()
           ? "create" + ret.get_type()->get_name()
@@ -773,12 +812,11 @@ MaybeThrows:
 |   { $$ = nullptr; }
 
 FieldList:
-  FieldList DefinitionAttrs Field Annotations CommaOrSemicolonOptional
+  FieldList FieldAnnotated CommaOrSemicolonOptional
     {
-      driver.debug("FieldList -> DefinitionAttrs Field Annotations CommaOrSemicolonOptional");
+      driver.debug("FieldList -> FieldAnnotated CommaOrSemicolonOptional");
       $$ = $1;
-      driver.set_attributes(*$3, @3, own($2), @2, own($4), @4);
-      $$->emplace_back($3);
+      $$->emplace_back($2);
     }
 |
     {
@@ -790,11 +828,20 @@ Field:
   FieldId FieldQualifier FieldType Identifier FieldValue
     {
       driver.debug("Field => FieldId FieldQualifier FieldType Identifier FieldValue");
-      driver.avoid_next_token_loc($5 == nullptr, @$, @4);
+      driver.avoid_tokens_loc(@$, {}, {{$5 == nullptr, @4}});
       $$ = new t_field(std::move($3), std::move($4), $1.value_or(0), $1 != boost::none);
       $$->set_qualifier($2);
       $$->set_default_value(own($5));
       $$->set_lineno(@4.end.line);
+    }
+
+FieldAnnotated:
+  DefinitionAttrs Field Annotations
+    {
+      driver.debug("FieldAnnotated => DefinitionAttrs Field Annotations");
+      driver.avoid_tokens_loc(@$, {{$1 == nullptr, @2}}, {{$3 == nullptr, @2}});
+      $$ = $2;
+      driver.set_attributes(*$$, own($1), own($3), @$);
     }
 
 FieldId:

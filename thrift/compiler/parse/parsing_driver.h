@@ -370,23 +370,24 @@ class parsing_driver {
 
   /*
    * To fix Bison's default location
-   * (result's begin set to end of prev token)
+   * (result's begin set to end of prev token and result's end set
+   *  to begin of next token)
    */
-  void avoid_last_token_loc(
-      bool null_first_elem, YYLTYPE& result_loc, YYLTYPE& next_non_null_loc) {
-    if (null_first_elem) {
-      result_loc.begin = next_non_null_loc.begin;
+  void avoid_tokens_loc(
+      YYLTYPE& result_loc,
+      const std::vector<std::pair<bool, YYLTYPE>>& last_loc_overrides,
+      const std::vector<std::pair<bool, YYLTYPE>>& next_loc_overrides) {
+    for (const auto& loc_override : last_loc_overrides) {
+      if (!loc_override.first) {
+        break;
+      }
+      result_loc.begin = loc_override.second.begin;
     }
-  }
-
-  /*
-   * To fix Bison's default location
-   * (result's end set to begin of next token)
-   */
-  void avoid_next_token_loc(
-      bool null_last_elem, YYLTYPE& result_loc, YYLTYPE& next_non_null_loc) {
-    if (null_last_elem) {
-      result_loc.end = next_non_null_loc.end;
+    for (const auto& loc_override : next_loc_overrides) {
+      if (!loc_override.first) {
+        break;
+      }
+      result_loc.end = loc_override.second.end;
     }
   }
 
@@ -427,11 +428,9 @@ class parsing_driver {
   // Populate the attributes on the given node.
   void set_attributes(
       t_named& node,
-      YYLTYPE loc,
       std::unique_ptr<t_def_attrs> attrs,
-      const YYLTYPE& attrs_loc,
       std::unique_ptr<t_annotations> annots,
-      const YYLTYPE& annots_loc) const;
+      const YYLTYPE& loc) const;
 
   // Adds a definition to the program.
   t_ref<t_named> add_def(std::unique_ptr<t_named> node);

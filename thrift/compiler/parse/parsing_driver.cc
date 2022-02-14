@@ -422,19 +422,9 @@ void parsing_driver::set_annotations(
 
 void parsing_driver::set_attributes(
     t_named& node,
-    YYLTYPE loc,
     std::unique_ptr<t_def_attrs> attrs,
-    const YYLTYPE& attrs_loc,
     std::unique_ptr<t_annotations> annots,
-    const YYLTYPE& annots_loc) const {
-  // Adjust the defintions source location to include attributes and
-  // annotations, if present.
-  if (attrs != nullptr) {
-    loc.begin = attrs_loc.begin;
-  }
-  if (annots != nullptr) {
-    loc.end = annots_loc.end;
-  }
+    const YYLTYPE& loc) const {
   node.set_src_range(get_source_range(loc));
   if (attrs != nullptr) {
     if (attrs->doc) {
