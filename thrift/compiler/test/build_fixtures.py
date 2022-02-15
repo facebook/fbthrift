@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) Facebook, Inc. and its affiliates.
+# Copyright (c) Meta Platforms, Inc. and affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -169,7 +169,7 @@ for name, index in zip(fixture_names, range(len(fixture_names))):
             extra = "include_prefix=" + path
             join = "," if ":" in args[0] else ":"
             args[0] = args[0] + join + extra
-        if "cpp2" in args[0] or "schema" in args[0] or "swift" in args[0]:
+        if "cpp2" in args[0] or "schema" in args[0] or "mstch_java" in args[0]:
             # TODO: (yuhanhao) T41937765 When use generators that use
             # `t_mstch_objects` in recursive mode, if included thrift file
             # contains const structs or const union, generater will attempt to

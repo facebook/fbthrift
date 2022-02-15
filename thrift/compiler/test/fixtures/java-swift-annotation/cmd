@@ -1,1 +1,1 @@
-mstch_swift src/module.thrift
+mstch_java src/module.thrift

@@ -33,7 +33,7 @@ namespace compiler {
 
 namespace {
 /**
- * Gets the swift namespace, throws a runtime error if not found.
+ * Gets the java namespace, throws a runtime error if not found.
  */
 std::string get_namespace_or_default(const t_program& prog) {
   const auto& prog_namespace = prog.get_namespace("java.swift");
@@ -76,16 +76,15 @@ std::string get_java_swift_name(const Node* node) {
 
 } // namespace
 
-class t_mstch_swift_generator : public t_mstch_generator {
+class t_mstch_java_generator : public t_mstch_generator {
  public:
-  t_mstch_swift_generator(
+  t_mstch_java_generator(
       t_program* program,
       t_generation_context context,
       const std::map<std::string, std::string>& parsed_options,
       const std::string& /* option_string */)
-      : t_mstch_generator(
-            program, std::move(context), "java/swift", parsed_options) {
-    out_dir_base_ = "gen-swift";
+      : t_mstch_generator(program, std::move(context), "java", parsed_options) {
+    out_dir_base_ = "gen-java";
   }
 
   void generate_program() override;
@@ -279,9 +278,9 @@ class t_mstch_swift_generator : public t_mstch_generator {
   }
 };
 
-class mstch_swift_program : public mstch_program {
+class mstch_java_program : public mstch_program {
  public:
-  mstch_swift_program(
+  mstch_java_program(
       t_program const* program,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
@@ -290,9 +289,9 @@ class mstch_swift_program : public mstch_program {
     register_methods(
         this,
         {
-            {"program:javaPackage", &mstch_swift_program::java_package},
+            {"program:javaPackage", &mstch_java_program::java_package},
             {"program:constantClassName",
-             &mstch_swift_program::constant_class_name},
+             &mstch_java_program::constant_class_name},
         });
   }
   mstch::node java_package() { return get_namespace_or_default(*program_); }
@@ -301,7 +300,7 @@ class mstch_swift_program : public mstch_program {
   }
 };
 
-class mstch_swift_struct : public mstch_struct {
+class mstch_java_struct : public mstch_struct {
   // A struct is a "big struct" if it contains > 127 members. The reason for
   // this limit is that we generate exhaustive constructor for Thrift struct
   // but Java methods are limited to 255 arguments (and since long/double
@@ -309,7 +308,7 @@ class mstch_swift_struct : public mstch_struct {
   static constexpr uint64_t bigStructThreshold = 127;
 
  public:
-  mstch_swift_struct(
+  mstch_java_struct(
       t_struct const* strct,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
@@ -318,20 +317,20 @@ class mstch_swift_struct : public mstch_struct {
     register_methods(
         this,
         {
-            {"struct:javaPackage", &mstch_swift_struct::java_package},
+            {"struct:javaPackage", &mstch_java_struct::java_package},
             {"struct:unionFieldTypeUnique?",
-             &mstch_swift_struct::is_union_field_type_unique},
-            {"struct:asBean?", &mstch_swift_struct::is_as_bean},
-            {"struct:isBigStruct?", &mstch_swift_struct::is_BigStruct},
-            {"struct:javaCapitalName", &mstch_swift_struct::java_capital_name},
+             &mstch_java_struct::is_union_field_type_unique},
+            {"struct:asBean?", &mstch_java_struct::is_as_bean},
+            {"struct:isBigStruct?", &mstch_java_struct::is_BigStruct},
+            {"struct:javaCapitalName", &mstch_java_struct::java_capital_name},
             {"struct:javaAnnotations?",
-             &mstch_swift_struct::has_java_annotations},
-            {"struct:isUnion?", &mstch_swift_struct::is_struct_union},
-            {"struct:javaAnnotations", &mstch_swift_struct::java_annotations},
-            {"struct:exceptionMessage", &mstch_swift_struct::exception_message},
+             &mstch_java_struct::has_java_annotations},
+            {"struct:isUnion?", &mstch_java_struct::is_struct_union},
+            {"struct:javaAnnotations", &mstch_java_struct::java_annotations},
+            {"struct:exceptionMessage", &mstch_java_struct::exception_message},
             {"struct:needsExceptionMessage?",
-             &mstch_swift_struct::needs_exception_message},
-            {"struct:enableIsSet?", &mstch_swift_struct::enable_is_set},
+             &mstch_java_struct::needs_exception_message},
+            {"struct:enableIsSet?", &mstch_java_struct::enable_is_set},
         });
   }
   mstch::node java_package() {
@@ -396,9 +395,9 @@ class mstch_swift_struct : public mstch_struct {
   }
 };
 
-class mstch_swift_service : public mstch_service {
+class mstch_java_service : public mstch_service {
  public:
-  mstch_swift_service(
+  mstch_java_service(
       t_service const* service,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
@@ -407,18 +406,17 @@ class mstch_swift_service : public mstch_service {
     register_methods(
         this,
         {
-            {"service:javaPackage", &mstch_swift_service::java_package},
-            {"service:javaCapitalName",
-             &mstch_swift_service::java_capital_name},
+            {"service:javaPackage", &mstch_java_service::java_package},
+            {"service:javaCapitalName", &mstch_java_service::java_capital_name},
             {"service:onewayFunctions",
-             &mstch_swift_service::get_oneway_functions},
+             &mstch_java_service::get_oneway_functions},
             {"service:requestResponseFunctions",
-             &mstch_swift_service::get_request_response_functions},
+             &mstch_java_service::get_request_response_functions},
             {"service:singleRequestFunctions",
-             &mstch_swift_service::get_single_request_functions},
+             &mstch_java_service::get_single_request_functions},
             {"service:streamingFunctions",
-             &mstch_swift_service::get_streaming_functions},
-            {"service:sinkFunctions", &mstch_swift_service::get_sink_functions},
+             &mstch_java_service::get_streaming_functions},
+            {"service:sinkFunctions", &mstch_java_service::get_sink_functions},
         });
   }
   mstch::node java_package() {
@@ -478,9 +476,9 @@ class mstch_swift_service : public mstch_service {
   }
 };
 
-class mstch_swift_function : public mstch_function {
+class mstch_java_function : public mstch_function {
  public:
-  mstch_swift_function(
+  mstch_java_function(
       t_function const* function,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
@@ -489,22 +487,22 @@ class mstch_swift_function : public mstch_function {
     register_methods(
         this,
         {
-            {"function:javaName", &mstch_swift_function::java_name},
-            {"function:voidType", &mstch_swift_function::is_void_type},
-            {"function:nestedDepth", &mstch_swift_function::get_nested_depth},
+            {"function:javaName", &mstch_java_function::java_name},
+            {"function:voidType", &mstch_java_function::is_void_type},
+            {"function:nestedDepth", &mstch_java_function::get_nested_depth},
             {"function:nestedDepth++",
-             &mstch_swift_function::increment_nested_depth},
+             &mstch_java_function::increment_nested_depth},
             {"function:nestedDepth--",
-             &mstch_swift_function::decrement_nested_depth},
-            {"function:isFirstDepth?", &mstch_swift_function::is_first_depth},
+             &mstch_java_function::decrement_nested_depth},
+            {"function:isFirstDepth?", &mstch_java_function::is_first_depth},
             {"function:prevNestedDepth",
-             &mstch_swift_function::preceding_nested_depth},
+             &mstch_java_function::preceding_nested_depth},
             {"function:isNested?",
-             &mstch_swift_function::get_nested_container_flag},
+             &mstch_java_function::get_nested_container_flag},
             {"function:setIsNested",
-             &mstch_swift_function::set_nested_container_flag},
+             &mstch_java_function::set_nested_container_flag},
             {"function:unsetIsNested",
-             &mstch_swift_function::unset_nested_container_flag},
+             &mstch_java_function::unset_nested_container_flag},
         });
   }
 
@@ -539,9 +537,9 @@ class mstch_swift_function : public mstch_function {
   mstch::node is_void_type() { return function_->get_returntype()->is_void(); }
 };
 
-class mstch_swift_field : public mstch_field {
+class mstch_java_field : public mstch_field {
  public:
-  mstch_swift_field(
+  mstch_java_field(
       t_field const* field,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
@@ -552,32 +550,30 @@ class mstch_swift_field : public mstch_field {
     register_methods(
         this,
         {
-            {"field:javaName", &mstch_swift_field::java_name},
-            {"field:javaCapitalName", &mstch_swift_field::java_capital_name},
-            {"field:javaDefaultValue", &mstch_swift_field::java_default_value},
-            {"field:javaAllCapsName", &mstch_swift_field::java_all_caps_name},
-            {"field:recursive?", &mstch_swift_field::is_recursive_reference},
-            {"field:negativeId?", &mstch_swift_field::is_negative_id},
-            {"field:javaAnnotations?",
-             &mstch_swift_field::has_java_annotations},
-            {"field:javaAnnotations", &mstch_swift_field::java_annotations},
-            {"field:javaTFieldName", &mstch_swift_field::java_tfield_name},
+            {"field:javaName", &mstch_java_field::java_name},
+            {"field:javaCapitalName", &mstch_java_field::java_capital_name},
+            {"field:javaDefaultValue", &mstch_java_field::java_default_value},
+            {"field:javaAllCapsName", &mstch_java_field::java_all_caps_name},
+            {"field:recursive?", &mstch_java_field::is_recursive_reference},
+            {"field:negativeId?", &mstch_java_field::is_negative_id},
+            {"field:javaAnnotations?", &mstch_java_field::has_java_annotations},
+            {"field:javaAnnotations", &mstch_java_field::java_annotations},
+            {"field:javaTFieldName", &mstch_java_field::java_tfield_name},
             {"field:isNullableOrOptionalNotEnum?",
-             &mstch_swift_field::is_nullable_or_optional_not_enum},
-            {"field:nestedDepth", &mstch_swift_field::get_nested_depth},
-            {"field:nestedDepth++", &mstch_swift_field::increment_nested_depth},
-            {"field:nestedDepth--", &mstch_swift_field::decrement_nested_depth},
-            {"field:isFirstDepth?", &mstch_swift_field::is_first_depth},
+             &mstch_java_field::is_nullable_or_optional_not_enum},
+            {"field:nestedDepth", &mstch_java_field::get_nested_depth},
+            {"field:nestedDepth++", &mstch_java_field::increment_nested_depth},
+            {"field:nestedDepth--", &mstch_java_field::decrement_nested_depth},
+            {"field:isFirstDepth?", &mstch_java_field::is_first_depth},
             {"field:prevNestedDepth",
-             &mstch_swift_field::preceding_nested_depth},
-            {"field:isContainer?", &mstch_swift_field::is_container},
-            {"field:isNested?", &mstch_swift_field::get_nested_container_flag},
-            {"field:setIsNested",
-             &mstch_swift_field::set_nested_container_flag},
-            {"field:typeFieldName", &mstch_swift_field::type_field_name},
-            {"field:isSensitive?", &mstch_swift_field::is_sensitive},
-            {"field:hasInitialValue?", &mstch_swift_field::has_initial_value},
-            {"field:isPrimitive?", &mstch_swift_field::is_primitive},
+             &mstch_java_field::preceding_nested_depth},
+            {"field:isContainer?", &mstch_java_field::is_container},
+            {"field:isNested?", &mstch_java_field::get_nested_container_flag},
+            {"field:setIsNested", &mstch_java_field::set_nested_container_flag},
+            {"field:typeFieldName", &mstch_java_field::type_field_name},
+            {"field:isSensitive?", &mstch_java_field::is_sensitive},
+            {"field:hasInitialValue?", &mstch_java_field::has_initial_value},
+            {"field:isPrimitive?", &mstch_java_field::is_primitive},
         });
   }
 
@@ -712,9 +708,9 @@ class mstch_swift_field : public mstch_field {
   }
 };
 
-class mstch_swift_enum : public mstch_enum {
+class mstch_java_enum : public mstch_enum {
  public:
-  mstch_swift_enum(
+  mstch_java_enum(
       t_enum const* enm,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
@@ -723,10 +719,10 @@ class mstch_swift_enum : public mstch_enum {
     register_methods(
         this,
         {
-            {"enum:javaPackage", &mstch_swift_enum::java_package},
-            {"enum:javaCapitalName", &mstch_swift_enum::java_capital_name},
+            {"enum:javaPackage", &mstch_java_enum::java_package},
+            {"enum:javaCapitalName", &mstch_java_enum::java_capital_name},
             {"enum:skipEnumNameMap?",
-             &mstch_swift_enum::java_skip_enum_name_map},
+             &mstch_java_enum::java_skip_enum_name_map},
         });
   }
   mstch::node java_package() {
@@ -740,9 +736,9 @@ class mstch_swift_enum : public mstch_enum {
   }
 };
 
-class mstch_swift_enum_value : public mstch_enum_value {
+class mstch_java_enum_value : public mstch_enum_value {
  public:
-  mstch_swift_enum_value(
+  mstch_java_enum_value(
       t_enum_value const* enm_value,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
@@ -752,7 +748,7 @@ class mstch_swift_enum_value : public mstch_enum_value {
         this,
         {
             {"enum_value:javaConstantName",
-             &mstch_swift_enum_value::java_constant_name},
+             &mstch_java_enum_value::java_constant_name},
         });
   }
   mstch::node java_constant_name() {
@@ -760,9 +756,9 @@ class mstch_swift_enum_value : public mstch_enum_value {
   }
 };
 
-class mstch_swift_const : public mstch_const {
+class mstch_java_const : public mstch_const {
  public:
-  mstch_swift_const(
+  mstch_java_const(
       t_const const* cnst,
       t_const const* current_const,
       t_type const* expected_type,
@@ -783,10 +779,10 @@ class mstch_swift_const : public mstch_const {
     register_methods(
         this,
         {
-            {"constant:javaCapitalName", &mstch_swift_const::java_capital_name},
-            {"constant:javaFieldName", &mstch_swift_const::java_field_name},
+            {"constant:javaCapitalName", &mstch_java_const::java_capital_name},
+            {"constant:javaFieldName", &mstch_java_const::java_field_name},
             {"constant:javaIgnoreConstant?",
-             &mstch_swift_const::java_ignore_constant},
+             &mstch_java_const::java_ignore_constant},
         });
   }
   mstch::node java_capital_name() {
@@ -823,9 +819,9 @@ class mstch_swift_const : public mstch_const {
   }
 };
 
-class mstch_swift_const_value : public mstch_const_value {
+class mstch_java_const_value : public mstch_const_value {
  public:
-  mstch_swift_const_value(
+  mstch_java_const_value(
       t_const_value const* const_value,
       t_const const* current_const,
       t_type const* expected_type,
@@ -844,9 +840,9 @@ class mstch_swift_const_value : public mstch_const_value {
     register_methods(
         this,
         {
-            {"value:quotedString", &mstch_swift_const_value::quote_java_string},
+            {"value:quotedString", &mstch_java_const_value::quote_java_string},
             {"value:javaEnumValueName",
-             &mstch_swift_const_value::java_enum_value_name},
+             &mstch_java_const_value::java_enum_value_name},
         });
   }
   mstch::node quote_java_string() {
@@ -865,9 +861,9 @@ class mstch_swift_const_value : public mstch_const_value {
   bool same_type_as_expected() const override { return true; }
 };
 
-class mstch_swift_type : public mstch_type {
+class mstch_java_type : public mstch_type {
  public:
-  mstch_swift_type(
+  mstch_java_type(
       t_type const* type,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
@@ -876,15 +872,15 @@ class mstch_swift_type : public mstch_type {
     register_methods(
         this,
         {
-            {"type:primitive?", &mstch_swift_type::is_primitive},
-            {"type:isContainer?", &mstch_swift_type::is_container_type},
-            {"type:javaType", &mstch_swift_type::java_type},
-            {"type:setIsMapKey", &mstch_swift_type::set_is_map_key},
-            {"type:isMapKey?", &mstch_swift_type::get_map_key_flag},
-            {"type:setIsMapValue", &mstch_swift_type::set_is_map_value},
-            {"type:isMapValue?", &mstch_swift_type::get_map_value_flag},
-            {"type:isBinaryString?", &mstch_swift_type::is_binary_string},
-            {"type:setIsNotMap", &mstch_swift_type::set_is_not_map},
+            {"type:primitive?", &mstch_java_type::is_primitive},
+            {"type:isContainer?", &mstch_java_type::is_container_type},
+            {"type:javaType", &mstch_java_type::java_type},
+            {"type:setIsMapKey", &mstch_java_type::set_is_map_key},
+            {"type:isMapKey?", &mstch_java_type::get_map_key_flag},
+            {"type:setIsMapValue", &mstch_java_type::set_is_map_value},
+            {"type:isMapValue?", &mstch_java_type::get_map_value_flag},
+            {"type:isBinaryString?", &mstch_java_type::is_binary_string},
+            {"type:setIsNotMap", &mstch_java_type::set_is_not_map},
         });
   }
   bool isMapValueFlag = false;
@@ -923,69 +919,69 @@ class mstch_swift_type : public mstch_type {
   }
 };
 
-class program_swift_generator : public program_generator {
+class program_java_generator : public program_generator {
  public:
-  program_swift_generator() = default;
-  ~program_swift_generator() override = default;
+  program_java_generator() = default;
+  ~program_java_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       t_program const* program,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
-    return std::make_shared<mstch_swift_program>(
+    return std::make_shared<mstch_java_program>(
         program, generators, cache, pos);
   }
 };
 
-class struct_swift_generator : public struct_generator {
+class struct_java_generator : public struct_generator {
  public:
-  explicit struct_swift_generator() = default;
-  ~struct_swift_generator() override = default;
+  explicit struct_java_generator() = default;
+  ~struct_java_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       t_struct const* strct,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
-    return std::make_shared<mstch_swift_struct>(strct, generators, cache, pos);
+    return std::make_shared<mstch_java_struct>(strct, generators, cache, pos);
   }
 };
 
-class service_swift_generator : public service_generator {
+class service_java_generator : public service_generator {
  public:
-  explicit service_swift_generator() = default;
-  ~service_swift_generator() override = default;
+  explicit service_java_generator() = default;
+  ~service_java_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       t_service const* service,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
-    return std::make_shared<mstch_swift_service>(
+    return std::make_shared<mstch_java_service>(
         service, generators, cache, pos);
   }
 };
 
-class function_swift_generator : public function_generator {
+class function_java_generator : public function_generator {
  public:
-  function_swift_generator() = default;
-  ~function_swift_generator() override = default;
+  function_java_generator() = default;
+  ~function_java_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       t_function const* function,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
-    return std::make_shared<mstch_swift_function>(
+    return std::make_shared<mstch_java_function>(
         function, generators, cache, pos);
   }
 };
 
-class field_swift_generator : public field_generator {
+class field_java_generator : public field_generator {
  public:
-  field_swift_generator() = default;
-  ~field_swift_generator() override = default;
+  field_java_generator() = default;
+  ~field_java_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       t_field const* field,
       std::shared_ptr<mstch_generators const> generators,
@@ -993,58 +989,58 @@ class field_swift_generator : public field_generator {
       ELEMENT_POSITION pos,
       int32_t index,
       field_generator_context const* field_context) const override {
-    return std::make_shared<mstch_swift_field>(
+    return std::make_shared<mstch_java_field>(
         field, generators, cache, pos, index, field_context);
   }
 };
 
-class enum_swift_generator : public enum_generator {
+class enum_java_generator : public enum_generator {
  public:
-  explicit enum_swift_generator() = default;
-  ~enum_swift_generator() override = default;
+  explicit enum_java_generator() = default;
+  ~enum_java_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       t_enum const* enm,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
-    return std::make_shared<mstch_swift_enum>(enm, generators, cache, pos);
+    return std::make_shared<mstch_java_enum>(enm, generators, cache, pos);
   }
 };
 
-class enum_value_swift_generator : public enum_value_generator {
+class enum_value_java_generator : public enum_value_generator {
  public:
-  enum_value_swift_generator() = default;
-  ~enum_value_swift_generator() override = default;
+  enum_value_java_generator() = default;
+  ~enum_value_java_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       t_enum_value const* enm_value,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
-    return std::make_shared<mstch_swift_enum_value>(
+    return std::make_shared<mstch_java_enum_value>(
         enm_value, generators, cache, pos);
   }
 };
 
-class type_swift_generator : public type_generator {
+class type_java_generator : public type_generator {
  public:
-  type_swift_generator() = default;
-  ~type_swift_generator() override = default;
+  type_java_generator() = default;
+  ~type_java_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       t_type const* type,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
-    return std::make_shared<mstch_swift_type>(type, generators, cache, pos);
+    return std::make_shared<mstch_java_type>(type, generators, cache, pos);
   }
 };
 
-class const_swift_generator : public const_generator {
+class const_java_generator : public const_generator {
  public:
-  const_swift_generator() = default;
-  ~const_swift_generator() override = default;
+  const_java_generator() = default;
+  ~const_java_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       t_const const* cnst,
       std::shared_ptr<mstch_generators const> generators,
@@ -1054,7 +1050,7 @@ class const_swift_generator : public const_generator {
       t_const const* current_const,
       t_type const* expected_type,
       t_field const* field) const override {
-    return std::make_shared<mstch_swift_const>(
+    return std::make_shared<mstch_java_const>(
         cnst,
         current_const,
         expected_type,
@@ -1066,10 +1062,10 @@ class const_swift_generator : public const_generator {
   }
 };
 
-class const_value_swift_generator : public const_value_generator {
+class const_value_java_generator : public const_value_generator {
  public:
-  const_value_swift_generator() = default;
-  ~const_value_swift_generator() override = default;
+  const_value_java_generator() = default;
+  ~const_value_java_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       t_const_value const* const_value,
       std::shared_ptr<mstch_generators const> generators,
@@ -1078,7 +1074,7 @@ class const_value_swift_generator : public const_value_generator {
       int32_t index,
       t_const const* current_const,
       t_type const* expected_type) const override {
-    return std::make_shared<mstch_swift_const_value>(
+    return std::make_shared<mstch_java_const_value>(
         const_value,
         current_const,
         expected_type,
@@ -1089,7 +1085,7 @@ class const_value_swift_generator : public const_value_generator {
   }
 };
 
-void t_mstch_swift_generator::generate_program() {
+void t_mstch_java_generator::generate_program() {
   set_mstch_generators();
 
   auto name = get_program()->name();
@@ -1126,25 +1122,25 @@ void t_mstch_swift_generator::generate_program() {
   generate_placeholder(get_program());
 }
 
-void t_mstch_swift_generator::set_mstch_generators() {
+void t_mstch_java_generator::set_mstch_generators() {
   generators_->set_program_generator(
-      std::make_unique<program_swift_generator>());
-  generators_->set_struct_generator(std::make_unique<struct_swift_generator>());
+      std::make_unique<program_java_generator>());
+  generators_->set_struct_generator(std::make_unique<struct_java_generator>());
   generators_->set_service_generator(
-      std::make_unique<service_swift_generator>());
+      std::make_unique<service_java_generator>());
   generators_->set_function_generator(
-      std::make_unique<function_swift_generator>());
-  generators_->set_field_generator(std::make_unique<field_swift_generator>());
-  generators_->set_enum_generator(std::make_unique<enum_swift_generator>());
+      std::make_unique<function_java_generator>());
+  generators_->set_field_generator(std::make_unique<field_java_generator>());
+  generators_->set_enum_generator(std::make_unique<enum_java_generator>());
   generators_->set_enum_value_generator(
-      std::make_unique<enum_value_swift_generator>());
-  generators_->set_type_generator(std::make_unique<type_swift_generator>());
-  generators_->set_const_generator(std::make_unique<const_swift_generator>());
+      std::make_unique<enum_value_java_generator>());
+  generators_->set_type_generator(std::make_unique<type_java_generator>());
+  generators_->set_const_generator(std::make_unique<const_java_generator>());
   generators_->set_const_value_generator(
-      std::make_unique<const_value_swift_generator>());
+      std::make_unique<const_value_java_generator>());
 }
 
-THRIFT_REGISTER_GENERATOR(mstch_swift, "Java Swift", "");
+THRIFT_REGISTER_GENERATOR(mstch_java, "Java", "");
 
 } // namespace compiler
 } // namespace thrift

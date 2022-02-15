@@ -172,7 +172,7 @@ class CompilerTest(unittest.TestCase):
                 ("cpp2" == lang)
                 or ("schema" == lang)
                 or ("mstch_cpp2" == lang)
-                or ("mstch_swift" == lang)
+                or ("mstch_java" == lang)
             ):
                 args.remove("-r")
 
