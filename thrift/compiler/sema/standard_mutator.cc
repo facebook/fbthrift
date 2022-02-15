@@ -59,9 +59,15 @@ void remove_param_list_field_qualifiers(
     field.set_qualifier(t_field_qualifier::unspecified);
   }
 }
+void assign_uri(diagnostic_context&, mutator_context&, t_named& node) {
+  if (auto* uri = node.find_annotation_or_null("thrift.uri")) {
+    node.set_uri(*uri);
+  }
+}
 
 ast_mutator standard_mutator() {
   ast_mutator mutator;
+  mutator.add_root_definition_visitor(&assign_uri);
   mutator.add_interaction_visitor(&propagate_process_in_event_base_annotation);
   mutator.add_function_visitor(&remove_param_list_field_qualifiers);
   return mutator;

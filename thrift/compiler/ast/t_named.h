@@ -49,10 +49,8 @@ class t_named : public t_node {
 
   const t_const* find_structured_annotation_or_null(const char* uri) const;
 
-  const std::string& uri() const { return get_annotation("thrift.uri"); }
-  void set_uri(std::string uri) {
-    set_annotation("thrift.uri", std::move(uri));
-  }
+  const std::string& uri() const { return uri_; }
+  void set_uri(std::string uri) { uri_ = std::move(uri); }
 
  protected:
   // t_named is abstract.
@@ -63,6 +61,7 @@ class t_named : public t_node {
   std::string name_;
 
  private:
+  std::string uri_;
   std::vector<std::shared_ptr<const t_const>> structured_annotations_;
 
   // TODO(ytj): use thrift.uri --> t_const map for structured annotation
