@@ -19,7 +19,17 @@ namespace detail {
 namespace md {
 
 template <>
-class StructMetadata<::cpp2::Foo> {
+class StructMetadata<::cpp2::Default> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::cpp2::NonAtomic> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::cpp2::Atomic> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };

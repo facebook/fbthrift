@@ -12,19 +12,57 @@
 namespace apache {
 namespace thrift {
 
-const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::Foo>::fields_names = {{
+const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::Default>::fields_names = {{
   "field1",
   "field2",
   "field3",
   "field4",
 }};
-const std::array<int16_t, 4> TStructDataStorage<::cpp2::Foo>::fields_ids = {{
+const std::array<int16_t, 4> TStructDataStorage<::cpp2::Default>::fields_ids = {{
   1,
   2,
   3,
   4,
 }};
-const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::Foo>::fields_types = {{
+const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::Default>::fields_types = {{
+  TType::T_I32,
+  TType::T_I32,
+  TType::T_STRING,
+  TType::T_DOUBLE,
+}};
+
+const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::NonAtomic>::fields_names = {{
+  "field1",
+  "field2",
+  "field3",
+  "field4",
+}};
+const std::array<int16_t, 4> TStructDataStorage<::cpp2::NonAtomic>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+}};
+const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::NonAtomic>::fields_types = {{
+  TType::T_I32,
+  TType::T_I32,
+  TType::T_STRING,
+  TType::T_DOUBLE,
+}};
+
+const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::Atomic>::fields_names = {{
+  "field1",
+  "field2",
+  "field3",
+  "field4",
+}};
+const std::array<int16_t, 4> TStructDataStorage<::cpp2::Atomic>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+}};
+const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::Atomic>::fields_types = {{
   TType::T_I32,
   TType::T_I32,
   TType::T_STRING,

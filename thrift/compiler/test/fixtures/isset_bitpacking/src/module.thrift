@@ -17,7 +17,23 @@
 include "thrift/annotation/cpp.thrift"
 
 @cpp.PackIsset
-struct Foo {
+struct Default {
+  1: optional i32 field1;
+  2: optional i32 field2;
+  3: optional string field3;
+  4: optional double field4;
+}
+
+@cpp.PackIsset{atomic = false}
+struct NonAtomic {
+  1: optional i32 field1;
+  2: optional i32 field2;
+  3: optional string field3;
+  4: optional double field4;
+}
+
+@cpp.PackIsset{atomic = true}
+struct Atomic {
   1: optional i32 field1;
   2: optional i32 field2;
   3: optional string field3;
