@@ -59,9 +59,19 @@ void remove_param_list_field_qualifiers(
     field.set_qualifier(t_field_qualifier::unspecified);
   }
 }
-void assign_uri(diagnostic_context&, mutator_context&, t_named& node) {
+
+void assign_uri(diagnostic_context& ctx, mutator_context&, t_named& node) {
   if (auto* uri = node.find_annotation_or_null("thrift.uri")) {
+    // Manually assigned.
     node.set_uri(*uri);
+    return;
+  }
+
+  auto* program = dynamic_cast<const t_program*>(ctx.root());
+  assert(program != nullptr);
+  if (program != nullptr && !program->package().empty()) {
+    // Derive from package.
+    node.set_uri(program->package().get_uri(node.name()));
   }
 }
 

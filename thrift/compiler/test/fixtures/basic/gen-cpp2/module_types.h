@@ -148,7 +148,10 @@ class MyDataItem final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
-  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
+  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  using __fbthrift_fields = ::apache::thrift::type::fields<
+  >;
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -214,7 +217,17 @@ class MyStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
-  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
+  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  using __fbthrift_fields = ::apache::thrift::type::fields<
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::i64_t>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::string_t>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::cpp2::MyDataItem>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::enum_t<::cpp2::MyEnum>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::bool_t>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{6}, ::apache::thrift::type::bool_t>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{7}, ::apache::thrift::type::bool_t>
+  >;
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -544,6 +557,41 @@ class MyStruct final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> idempotent() && {
     return {static_cast<T&&>(this->__fbthrift_field_idempotent), __isset.at(6), __isset.bit(6)};
   }
+ private:
+  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &;
+  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&;
+  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &&;
+  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &       { return MyIntField_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&  { return MyIntField_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &&      { return std::move(*this).MyIntField_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&& { return std::move(*this).MyIntField_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &       { return MyStringField_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&  { return MyStringField_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &&      { return std::move(*this).MyStringField_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&& { return std::move(*this).MyStringField_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() &       { return MyDataField_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() const&  { return MyDataField_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() &&      { return std::move(*this).MyDataField_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() const&& { return std::move(*this).MyDataField_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &       { return myEnum_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&  { return myEnum_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &&      { return std::move(*this).myEnum_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&& { return std::move(*this).myEnum_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() &       { return oneway_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() const&  { return oneway_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() &&      { return std::move(*this).oneway_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() const&& { return std::move(*this).oneway_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{6}>() &       { return readonly_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{6}>() const&  { return readonly_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{6}>() &&      { return std::move(*this).readonly_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{6}>() const&& { return std::move(*this).readonly_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() &       { return idempotent_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() const&  { return idempotent_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() &&      { return std::move(*this).idempotent_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() const&& { return std::move(*this).idempotent_ref(); }
+
+ public:
 
   ::std::int64_t get_MyIntField() const {
     return __fbthrift_field_MyIntField;
@@ -652,7 +700,13 @@ class MyUnion final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
-  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
+  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  using __fbthrift_fields = ::apache::thrift::type::fields<
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::enum_t<::cpp2::MyEnum>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::struct_t<::cpp2::MyStruct>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::cpp2::MyDataItem>>
+  >;
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;

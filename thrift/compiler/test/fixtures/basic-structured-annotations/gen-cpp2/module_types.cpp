@@ -69,6 +69,10 @@ void TccStructTraits<::cpp2::structured_annotation_inline>::translateFieldName(
 
 namespace cpp2 {
 
+const char* structured_annotation_inline::__fbthrift_cpp2_gen_thrift_uri() {
+  return "test.dev/fixtures/basic-structured-annotations/structured_annotation_inline";
+}
+
 structured_annotation_inline::structured_annotation_inline(const structured_annotation_inline&) = default;
 structured_annotation_inline& structured_annotation_inline::operator=(const structured_annotation_inline&) = default;
 structured_annotation_inline::structured_annotation_inline(structured_annotation_inline&& other) noexcept  :
@@ -174,6 +178,10 @@ void TccStructTraits<::cpp2::structured_annotation_with_default>::translateField
 
 namespace cpp2 {
 
+const char* structured_annotation_with_default::__fbthrift_cpp2_gen_thrift_uri() {
+  return "test.dev/fixtures/basic-structured-annotations/structured_annotation_with_default";
+}
+
 structured_annotation_with_default::structured_annotation_with_default(const structured_annotation_with_default&) = default;
 structured_annotation_with_default& structured_annotation_with_default::operator=(const structured_annotation_with_default&) = default;
 structured_annotation_with_default::structured_annotation_with_default(structured_annotation_with_default&& other) noexcept  :
@@ -267,6 +275,10 @@ void TccStructTraits<::cpp2::structured_annotation_forward>::translateFieldName(
 
 namespace cpp2 {
 
+const char* structured_annotation_forward::__fbthrift_cpp2_gen_thrift_uri() {
+  return "test.dev/fixtures/basic-structured-annotations/structured_annotation_forward";
+}
+
 
 structured_annotation_forward::structured_annotation_forward(apache::thrift::FragileConstructor, ::std::int64_t count__arg) :
     __fbthrift_field_count(std::move(count__arg)) {
@@ -346,6 +358,10 @@ void TccStructTraits<::cpp2::structured_annotation_recursive>::translateFieldNam
 } // namespace apache
 
 namespace cpp2 {
+
+const char* structured_annotation_recursive::__fbthrift_cpp2_gen_thrift_uri() {
+  return "test.dev/fixtures/basic-structured-annotations/structured_annotation_recursive";
+}
 
 structured_annotation_recursive::structured_annotation_recursive(const structured_annotation_recursive&) = default;
 structured_annotation_recursive& structured_annotation_recursive::operator=(const structured_annotation_recursive&) = default;
@@ -504,6 +520,10 @@ void TccStructTraits<::cpp2::structured_annotation_nested>::translateFieldName(
 
 namespace cpp2 {
 
+const char* structured_annotation_nested::__fbthrift_cpp2_gen_thrift_uri() {
+  return "test.dev/fixtures/basic-structured-annotations/structured_annotation_nested";
+}
+
 structured_annotation_nested::structured_annotation_nested(const structured_annotation_nested&) = default;
 structured_annotation_nested& structured_annotation_nested::operator=(const structured_annotation_nested&) = default;
 structured_annotation_nested::structured_annotation_nested(structured_annotation_nested&& other) noexcept  :
@@ -628,6 +648,10 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const char* MyStruct::__fbthrift_cpp2_gen_thrift_uri() {
+  return "test.dev/fixtures/basic-structured-annotations/MyStruct";
+}
 
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
@@ -758,6 +782,10 @@ void TccStructTraits<::cpp2::MyException>::translateFieldName(
 
 namespace cpp2 {
 
+const char* MyException::__fbthrift_cpp2_gen_thrift_uri() {
+  return "test.dev/fixtures/basic-structured-annotations/MyException";
+}
+
 MyException::MyException(const MyException&) = default;
 MyException& MyException::operator=(const MyException&) = default;
 MyException::MyException() {
@@ -878,6 +906,10 @@ bool TEnumTraits<::cpp2::MyUnion::Type>::findValue(char const* name, type* out) 
 }
 }} // apache::thrift
 namespace cpp2 {
+
+const char* MyUnion::__fbthrift_cpp2_gen_thrift_uri() {
+  return "test.dev/fixtures/basic-structured-annotations/MyUnion";
+}
 
 void MyUnion::__fbthrift_clear() {
   // clear all fields

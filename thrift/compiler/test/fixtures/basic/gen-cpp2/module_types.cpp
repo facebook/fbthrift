@@ -69,6 +69,10 @@ void TccStructTraits<::cpp2::MyDataItem>::translateFieldName(
 
 namespace cpp2 {
 
+const char* MyDataItem::__fbthrift_cpp2_gen_thrift_uri() {
+  return "test.dev/fixtures/basic/MyDataItem";
+}
+
 
 MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
 
@@ -137,6 +141,10 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const char* MyStruct::__fbthrift_cpp2_gen_thrift_uri() {
+  return "test.dev/fixtures/basic/MyStruct";
+}
 
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
@@ -354,6 +362,10 @@ bool TEnumTraits<::cpp2::MyUnion::Type>::findValue(char const* name, type* out) 
 }
 }} // apache::thrift
 namespace cpp2 {
+
+const char* MyUnion::__fbthrift_cpp2_gen_thrift_uri() {
+  return "test.dev/fixtures/basic/MyUnion";
+}
 
 void MyUnion::__fbthrift_clear() {
   // clear all fields
