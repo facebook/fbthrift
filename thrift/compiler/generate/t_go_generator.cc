@@ -2308,7 +2308,7 @@ void t_go_generator::generate_service_client_channel_call(
 
   if (!isOneway) {
     // Declare response struct
-    f_service_ << indent() << "var result " << result_type_name << endl;
+    f_service_ << indent() << "var __result " << result_type_name << endl;
   }
 
   if (isOneway) {
@@ -2316,7 +2316,7 @@ void t_go_generator::generate_service_client_channel_call(
                << methodName << "\", &args)" << endl;
   } else {
     f_service_ << indent() << "err = p.RequestChannel.Call(ctx, \""
-               << methodName << "\", &args, &result)" << endl;
+               << methodName << "\", &args, &__result)" << endl;
   }
 
   f_service_ << indent() << "if err != nil { return }" << endl;
@@ -2329,7 +2329,7 @@ void t_go_generator::generate_service_client_channel_call(
   if (returnsVoid || isOneway) {
     f_service_ << indent() << "return nil" << endl;
   } else {
-    f_service_ << indent() << "return result.GetSuccess(), nil" << endl;
+    f_service_ << indent() << "return __result.GetSuccess(), nil" << endl;
   }
 
   // Close function
@@ -2386,14 +2386,14 @@ void t_go_generator::generate_service_client_recv_method(
 
   f_service_ << "err error) {" << endl;
   indent_up();
-  f_service_ << indent() << "var result " << result_type_name << endl;
+  f_service_ << indent() << "var __result " << result_type_name << endl;
 
   if (returnsVoid && !raisesExceptions) {
     f_service_ << indent() << "return p.CC.RecvMsg(\"" << methodName
-               << "\", &result)" << endl;
+               << "\", &__result)" << endl;
   } else {
     f_service_ << indent() << "err = p.CC.RecvMsg(\"" << methodName
-               << "\", &result)" << endl;
+               << "\", &__result)" << endl;
     f_service_ << indent() << "if err != nil { return }" << endl;
 
     // If there are no exceptions, no code is generated. So we can always call
@@ -2402,7 +2402,7 @@ void t_go_generator::generate_service_client_recv_method(
 
     // Careful, only return _result if not a void function
     if (!returnsVoid) {
-      f_service_ << indent() << "return result.GetSuccess(), nil" << endl;
+      f_service_ << indent() << "return __result.GetSuccess(), nil" << endl;
     } else {
       f_service_ << indent() << "return nil" << endl;
     }
@@ -2425,8 +2425,8 @@ void t_go_generator::generate_service_client_recv_method_exception_handling(
   for (const auto& exception : exceptions) {
     const std::string pubname = publicize(exception->get_name());
 
-    f_service_ << delim << "if result." << pubname << " != nil {" << endl;
-    f_service_ << indent() << "  err = result." << pubname << endl;
+    f_service_ << delim << "if __result." << pubname << " != nil {" << endl;
+    f_service_ << indent() << "  err = __result." << pubname << endl;
     f_service_ << indent() << "  return " << endl;
     f_service_ << indent() << "}";
     delim = else_delim;
@@ -3486,7 +3486,7 @@ void t_go_generator::generate_run_function(
   const vector<t_field*>& x_fields = exceptions->get_members();
 
   if (tfunction->qualifier() != t_function_qualifier::one_way) {
-    indent(f_service_) << "var result " << resultname << endl;
+    indent(f_service_) << "var __result " << resultname << endl;
   }
   indent(f_service_) << "if ";
 
@@ -3525,7 +3525,7 @@ void t_go_generator::generate_run_function(
     indent(f_service_) << "case " << type_to_go_type(((*xf_iter)->get_type()))
                        << ":" << endl;
     indent_up();
-    indent(f_service_) << "result." << publicize((*xf_iter)->get_name())
+    indent(f_service_) << "__result." << publicize((*xf_iter)->get_name())
                        << " = v" << endl;
     indent_down();
   }
@@ -3549,7 +3549,7 @@ void t_go_generator::generate_run_function(
     f_service_ << " else {"
                << endl; // make sure we set Success retval only on success
     indent_up();
-    indent(f_service_) << "result.Success = ";
+    indent(f_service_) << "__result.Success = ";
     if (need_reference) {
       f_service_ << "&";
     }
@@ -3561,7 +3561,7 @@ void t_go_generator::generate_run_function(
   }
 
   if (tfunction->qualifier() != t_function_qualifier::one_way) {
-    indent(f_service_) << "return &result, nil" << endl;
+    indent(f_service_) << "return &__result, nil" << endl;
   } else {
     indent(f_service_) << "return nil, nil" << endl;
   }

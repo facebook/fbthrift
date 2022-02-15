@@ -80,11 +80,11 @@ func (p *DbMixedStackArgumentsClient) GetDataByKey0(key string) (_r []byte, err 
 
 
 func (p *DbMixedStackArgumentsClient) recvGetDataByKey0() (value []byte, err error) {
-  var result DbMixedStackArgumentsGetDataByKey0Result
-  err = p.CC.RecvMsg("getDataByKey0", &result)
+  var __result DbMixedStackArgumentsGetDataByKey0Result
+  err = p.CC.RecvMsg("getDataByKey0", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -100,11 +100,11 @@ func (p *DbMixedStackArgumentsClient) GetDataByKey1(key string) (_r []byte, err 
 
 
 func (p *DbMixedStackArgumentsClient) recvGetDataByKey1() (value []byte, err error) {
-  var result DbMixedStackArgumentsGetDataByKey1Result
-  err = p.CC.RecvMsg("getDataByKey1", &result)
+  var __result DbMixedStackArgumentsGetDataByKey1Result
+  err = p.CC.RecvMsg("getDataByKey1", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 
@@ -159,11 +159,11 @@ func (p *DbMixedStackArgumentsThreadsafeClient) GetDataByKey0(key string) (_r []
 
 
 func (p *DbMixedStackArgumentsThreadsafeClient) recvGetDataByKey0() (value []byte, err error) {
-  var result DbMixedStackArgumentsGetDataByKey0Result
-  err = p.CC.RecvMsg("getDataByKey0", &result)
+  var __result DbMixedStackArgumentsGetDataByKey0Result
+  err = p.CC.RecvMsg("getDataByKey0", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -181,11 +181,11 @@ func (p *DbMixedStackArgumentsThreadsafeClient) GetDataByKey1(key string) (_r []
 
 
 func (p *DbMixedStackArgumentsThreadsafeClient) recvGetDataByKey1() (value []byte, err error) {
-  var result DbMixedStackArgumentsGetDataByKey1Result
-  err = p.CC.RecvMsg("getDataByKey1", &result)
+  var __result DbMixedStackArgumentsGetDataByKey1Result
+  err = p.CC.RecvMsg("getDataByKey1", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 
@@ -215,11 +215,11 @@ func (p *DbMixedStackArgumentsChannelClient) GetDataByKey0(ctx context.Context, 
   args := DbMixedStackArgumentsGetDataByKey0Args{
     Key : key,
   }
-  var result DbMixedStackArgumentsGetDataByKey0Result
-  err = p.RequestChannel.Call(ctx, "getDataByKey0", &args, &result)
+  var __result DbMixedStackArgumentsGetDataByKey0Result
+  err = p.RequestChannel.Call(ctx, "getDataByKey0", &args, &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -228,11 +228,11 @@ func (p *DbMixedStackArgumentsChannelClient) GetDataByKey1(ctx context.Context, 
   args := DbMixedStackArgumentsGetDataByKey1Args{
     Key : key,
   }
-  var result DbMixedStackArgumentsGetDataByKey1Result
-  err = p.RequestChannel.Call(ctx, "getDataByKey1", &args, &result)
+  var __result DbMixedStackArgumentsGetDataByKey1Result
+  err = p.RequestChannel.Call(ctx, "getDataByKey1", &args, &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 
@@ -316,7 +316,7 @@ func (p *dbMixedStackArgumentsProcessorGetDataByKey0) Write(seqId int32, result 
 
 func (p *dbMixedStackArgumentsProcessorGetDataByKey0) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*DbMixedStackArgumentsGetDataByKey0Args)
-  var result DbMixedStackArgumentsGetDataByKey0Result
+  var __result DbMixedStackArgumentsGetDataByKey0Result
   if retval, err := p.handler.GetDataByKey0(args.Key); err != nil {
     switch err.(type) {
     default:
@@ -324,9 +324,9 @@ func (p *dbMixedStackArgumentsProcessorGetDataByKey0) Run(argStruct thrift.Struc
       return x, x
     }
   } else {
-    result.Success = retval
+    __result.Success = retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type dbMixedStackArgumentsProcessorGetDataByKey1 struct {
@@ -371,7 +371,7 @@ func (p *dbMixedStackArgumentsProcessorGetDataByKey1) Write(seqId int32, result 
 
 func (p *dbMixedStackArgumentsProcessorGetDataByKey1) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*DbMixedStackArgumentsGetDataByKey1Args)
-  var result DbMixedStackArgumentsGetDataByKey1Result
+  var __result DbMixedStackArgumentsGetDataByKey1Result
   if retval, err := p.handler.GetDataByKey1(args.Key); err != nil {
     switch err.(type) {
     default:
@@ -379,9 +379,9 @@ func (p *dbMixedStackArgumentsProcessorGetDataByKey1) Run(argStruct thrift.Struc
       return x, x
     }
   } else {
-    result.Success = retval
+    __result.Success = retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 

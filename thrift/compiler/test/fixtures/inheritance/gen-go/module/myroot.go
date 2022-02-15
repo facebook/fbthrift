@@ -66,8 +66,8 @@ func (p *MyRootClient) DoRoot() (err error) {
 
 
 func (p *MyRootClient) recvDoRoot() (err error) {
-  var result MyRootDoRootResult
-  return p.CC.RecvMsg("do_root", &result)
+  var __result MyRootDoRootResult
+  return p.CC.RecvMsg("do_root", &__result)
 }
 
 
@@ -118,8 +118,8 @@ func (p *MyRootThreadsafeClient) DoRoot() (err error) {
 
 
 func (p *MyRootThreadsafeClient) recvDoRoot() (err error) {
-  var result MyRootDoRootResult
-  return p.CC.RecvMsg("do_root", &result)
+  var __result MyRootDoRootResult
+  return p.CC.RecvMsg("do_root", &__result)
 }
 
 
@@ -146,8 +146,8 @@ func NewMyRootChannelClient(channel thrift.RequestChannel) *MyRootChannelClient 
 func (p *MyRootChannelClient) DoRoot(ctx context.Context) (err error) {
   args := MyRootDoRootArgs{
   }
-  var result MyRootDoRootResult
-  err = p.RequestChannel.Call(ctx, "do_root", &args, &result)
+  var __result MyRootDoRootResult
+  err = p.RequestChannel.Call(ctx, "do_root", &args, &__result)
   if err != nil { return }
 
   return nil
@@ -231,7 +231,7 @@ func (p *myRootProcessorDoRoot) Write(seqId int32, result thrift.WritableStruct,
 }
 
 func (p *myRootProcessorDoRoot) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
-  var result MyRootDoRootResult
+  var __result MyRootDoRootResult
   if err := p.handler.DoRoot(); err != nil {
     switch err.(type) {
     default:
@@ -239,7 +239,7 @@ func (p *myRootProcessorDoRoot) Run(argStruct thrift.Struct) (thrift.WritableStr
       return x, x
     }
   }
-  return &result, nil
+  return &__result, nil
 }
 
 

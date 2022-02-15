@@ -89,11 +89,11 @@ func (p *FinderClient) ByPlate(plate Plate) (_r *Automobile, err error) {
 
 
 func (p *FinderClient) recvByPlate() (value *Automobile, err error) {
-  var result FinderByPlateResult
-  err = p.CC.RecvMsg("byPlate", &result)
+  var __result FinderByPlateResult
+  err = p.CC.RecvMsg("byPlate", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -109,11 +109,11 @@ func (p *FinderClient) AliasByPlate(plate Plate) (_r *Car, err error) {
 
 
 func (p *FinderClient) recvAliasByPlate() (value *Car, err error) {
-  var result FinderAliasByPlateResult
-  err = p.CC.RecvMsg("aliasByPlate", &result)
+  var __result FinderAliasByPlateResult
+  err = p.CC.RecvMsg("aliasByPlate", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -129,11 +129,11 @@ func (p *FinderClient) PreviousPlate(plate Plate) (_r Plate, err error) {
 
 
 func (p *FinderClient) recvPreviousPlate() (value Plate, err error) {
-  var result FinderPreviousPlateResult
-  err = p.CC.RecvMsg("previousPlate", &result)
+  var __result FinderPreviousPlateResult
+  err = p.CC.RecvMsg("previousPlate", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 
@@ -188,11 +188,11 @@ func (p *FinderThreadsafeClient) ByPlate(plate Plate) (_r *Automobile, err error
 
 
 func (p *FinderThreadsafeClient) recvByPlate() (value *Automobile, err error) {
-  var result FinderByPlateResult
-  err = p.CC.RecvMsg("byPlate", &result)
+  var __result FinderByPlateResult
+  err = p.CC.RecvMsg("byPlate", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -210,11 +210,11 @@ func (p *FinderThreadsafeClient) AliasByPlate(plate Plate) (_r *Car, err error) 
 
 
 func (p *FinderThreadsafeClient) recvAliasByPlate() (value *Car, err error) {
-  var result FinderAliasByPlateResult
-  err = p.CC.RecvMsg("aliasByPlate", &result)
+  var __result FinderAliasByPlateResult
+  err = p.CC.RecvMsg("aliasByPlate", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -232,11 +232,11 @@ func (p *FinderThreadsafeClient) PreviousPlate(plate Plate) (_r Plate, err error
 
 
 func (p *FinderThreadsafeClient) recvPreviousPlate() (value Plate, err error) {
-  var result FinderPreviousPlateResult
-  err = p.CC.RecvMsg("previousPlate", &result)
+  var __result FinderPreviousPlateResult
+  err = p.CC.RecvMsg("previousPlate", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 
@@ -266,11 +266,11 @@ func (p *FinderChannelClient) ByPlate(ctx context.Context, plate Plate) (_r *Aut
   args := FinderByPlateArgs{
     Plate : plate,
   }
-  var result FinderByPlateResult
-  err = p.RequestChannel.Call(ctx, "byPlate", &args, &result)
+  var __result FinderByPlateResult
+  err = p.RequestChannel.Call(ctx, "byPlate", &args, &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -279,11 +279,11 @@ func (p *FinderChannelClient) AliasByPlate(ctx context.Context, plate Plate) (_r
   args := FinderAliasByPlateArgs{
     Plate : plate,
   }
-  var result FinderAliasByPlateResult
-  err = p.RequestChannel.Call(ctx, "aliasByPlate", &args, &result)
+  var __result FinderAliasByPlateResult
+  err = p.RequestChannel.Call(ctx, "aliasByPlate", &args, &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -292,11 +292,11 @@ func (p *FinderChannelClient) PreviousPlate(ctx context.Context, plate Plate) (_
   args := FinderPreviousPlateArgs{
     Plate : plate,
   }
-  var result FinderPreviousPlateResult
-  err = p.RequestChannel.Call(ctx, "previousPlate", &args, &result)
+  var __result FinderPreviousPlateResult
+  err = p.RequestChannel.Call(ctx, "previousPlate", &args, &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 
@@ -382,7 +382,7 @@ func (p *finderProcessorByPlate) Write(seqId int32, result thrift.WritableStruct
 
 func (p *finderProcessorByPlate) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*FinderByPlateArgs)
-  var result FinderByPlateResult
+  var __result FinderByPlateResult
   if retval, err := p.handler.ByPlate(args.Plate); err != nil {
     switch err.(type) {
     default:
@@ -390,9 +390,9 @@ func (p *finderProcessorByPlate) Run(argStruct thrift.Struct) (thrift.WritableSt
       return x, x
     }
   } else {
-    result.Success = retval
+    __result.Success = retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type finderProcessorAliasByPlate struct {
@@ -437,7 +437,7 @@ func (p *finderProcessorAliasByPlate) Write(seqId int32, result thrift.WritableS
 
 func (p *finderProcessorAliasByPlate) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*FinderAliasByPlateArgs)
-  var result FinderAliasByPlateResult
+  var __result FinderAliasByPlateResult
   if retval, err := p.handler.AliasByPlate(args.Plate); err != nil {
     switch err.(type) {
     default:
@@ -445,9 +445,9 @@ func (p *finderProcessorAliasByPlate) Run(argStruct thrift.Struct) (thrift.Writa
       return x, x
     }
   } else {
-    result.Success = retval
+    __result.Success = retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type finderProcessorPreviousPlate struct {
@@ -492,7 +492,7 @@ func (p *finderProcessorPreviousPlate) Write(seqId int32, result thrift.Writable
 
 func (p *finderProcessorPreviousPlate) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*FinderPreviousPlateArgs)
-  var result FinderPreviousPlateResult
+  var __result FinderPreviousPlateResult
   if retval, err := p.handler.PreviousPlate(args.Plate); err != nil {
     switch err.(type) {
     default:
@@ -500,9 +500,9 @@ func (p *finderProcessorPreviousPlate) Run(argStruct thrift.Struct) (thrift.Writ
       return x, x
     }
   } else {
-    result.Success = &retval
+    __result.Success = &retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 

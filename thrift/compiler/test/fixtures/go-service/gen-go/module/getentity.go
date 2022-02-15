@@ -106,11 +106,11 @@ func (p *GetEntityClient) GetEntity(r *GetEntityRequest) (_r *GetEntityResponse,
 
 
 func (p *GetEntityClient) recvGetEntity() (value *GetEntityResponse, err error) {
-  var result GetEntityGetEntityResult
-  err = p.CC.RecvMsg("getEntity", &result)
+  var __result GetEntityGetEntityResult
+  err = p.CC.RecvMsg("getEntity", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityClient) GetBool() (_r bool, err error) {
@@ -122,11 +122,11 @@ func (p *GetEntityClient) GetBool() (_r bool, err error) {
 
 
 func (p *GetEntityClient) recvGetBool() (value bool, err error) {
-  var result GetEntityGetBoolResult
-  err = p.CC.RecvMsg("getBool", &result)
+  var __result GetEntityGetBoolResult
+  err = p.CC.RecvMsg("getBool", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityClient) GetByte() (_r int8, err error) {
@@ -138,11 +138,11 @@ func (p *GetEntityClient) GetByte() (_r int8, err error) {
 
 
 func (p *GetEntityClient) recvGetByte() (value int8, err error) {
-  var result GetEntityGetByteResult
-  err = p.CC.RecvMsg("getByte", &result)
+  var __result GetEntityGetByteResult
+  err = p.CC.RecvMsg("getByte", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityClient) GetI16() (_r int16, err error) {
@@ -154,11 +154,11 @@ func (p *GetEntityClient) GetI16() (_r int16, err error) {
 
 
 func (p *GetEntityClient) recvGetI16() (value int16, err error) {
-  var result GetEntityGetI16Result
-  err = p.CC.RecvMsg("getI16", &result)
+  var __result GetEntityGetI16Result
+  err = p.CC.RecvMsg("getI16", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityClient) GetI32() (_r int32, err error) {
@@ -170,11 +170,11 @@ func (p *GetEntityClient) GetI32() (_r int32, err error) {
 
 
 func (p *GetEntityClient) recvGetI32() (value int32, err error) {
-  var result GetEntityGetI32Result
-  err = p.CC.RecvMsg("getI32", &result)
+  var __result GetEntityGetI32Result
+  err = p.CC.RecvMsg("getI32", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityClient) GetI64() (_r int64, err error) {
@@ -186,11 +186,11 @@ func (p *GetEntityClient) GetI64() (_r int64, err error) {
 
 
 func (p *GetEntityClient) recvGetI64() (value int64, err error) {
-  var result GetEntityGetI64Result
-  err = p.CC.RecvMsg("getI64", &result)
+  var __result GetEntityGetI64Result
+  err = p.CC.RecvMsg("getI64", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityClient) GetDouble() (_r float64, err error) {
@@ -202,11 +202,11 @@ func (p *GetEntityClient) GetDouble() (_r float64, err error) {
 
 
 func (p *GetEntityClient) recvGetDouble() (value float64, err error) {
-  var result GetEntityGetDoubleResult
-  err = p.CC.RecvMsg("getDouble", &result)
+  var __result GetEntityGetDoubleResult
+  err = p.CC.RecvMsg("getDouble", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityClient) GetString() (_r string, err error) {
@@ -218,11 +218,11 @@ func (p *GetEntityClient) GetString() (_r string, err error) {
 
 
 func (p *GetEntityClient) recvGetString() (value string, err error) {
-  var result GetEntityGetStringResult
-  err = p.CC.RecvMsg("getString", &result)
+  var __result GetEntityGetStringResult
+  err = p.CC.RecvMsg("getString", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityClient) GetBinary() (_r []byte, err error) {
@@ -234,11 +234,11 @@ func (p *GetEntityClient) GetBinary() (_r []byte, err error) {
 
 
 func (p *GetEntityClient) recvGetBinary() (value []byte, err error) {
-  var result GetEntityGetBinaryResult
-  err = p.CC.RecvMsg("getBinary", &result)
+  var __result GetEntityGetBinaryResult
+  err = p.CC.RecvMsg("getBinary", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityClient) GetMap() (_r map[string]string, err error) {
@@ -250,11 +250,11 @@ func (p *GetEntityClient) GetMap() (_r map[string]string, err error) {
 
 
 func (p *GetEntityClient) recvGetMap() (value map[string]string, err error) {
-  var result GetEntityGetMapResult
-  err = p.CC.RecvMsg("getMap", &result)
+  var __result GetEntityGetMapResult
+  err = p.CC.RecvMsg("getMap", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityClient) GetSet() (_r []string, err error) {
@@ -266,11 +266,11 @@ func (p *GetEntityClient) GetSet() (_r []string, err error) {
 
 
 func (p *GetEntityClient) recvGetSet() (value []string, err error) {
-  var result GetEntityGetSetResult
-  err = p.CC.RecvMsg("getSet", &result)
+  var __result GetEntityGetSetResult
+  err = p.CC.RecvMsg("getSet", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityClient) GetList() (_r []string, err error) {
@@ -282,11 +282,11 @@ func (p *GetEntityClient) GetList() (_r []string, err error) {
 
 
 func (p *GetEntityClient) recvGetList() (value []string, err error) {
-  var result GetEntityGetListResult
-  err = p.CC.RecvMsg("getList", &result)
+  var __result GetEntityGetListResult
+  err = p.CC.RecvMsg("getList", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -306,11 +306,11 @@ func (p *GetEntityClient) GetLegacyStuff(numPos int64, numNeg1 int64, numNeg2 in
 
 
 func (p *GetEntityClient) recvGetLegacyStuff() (value int32, err error) {
-  var result GetEntityGetLegacyStuffResult
-  err = p.CC.RecvMsg("getLegacyStuff", &result)
+  var __result GetEntityGetLegacyStuffResult
+  err = p.CC.RecvMsg("getLegacyStuff", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 
@@ -365,11 +365,11 @@ func (p *GetEntityThreadsafeClient) GetEntity(r *GetEntityRequest) (_r *GetEntit
 
 
 func (p *GetEntityThreadsafeClient) recvGetEntity() (value *GetEntityResponse, err error) {
-  var result GetEntityGetEntityResult
-  err = p.CC.RecvMsg("getEntity", &result)
+  var __result GetEntityGetEntityResult
+  err = p.CC.RecvMsg("getEntity", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityThreadsafeClient) GetBool() (_r bool, err error) {
@@ -383,11 +383,11 @@ func (p *GetEntityThreadsafeClient) GetBool() (_r bool, err error) {
 
 
 func (p *GetEntityThreadsafeClient) recvGetBool() (value bool, err error) {
-  var result GetEntityGetBoolResult
-  err = p.CC.RecvMsg("getBool", &result)
+  var __result GetEntityGetBoolResult
+  err = p.CC.RecvMsg("getBool", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityThreadsafeClient) GetByte() (_r int8, err error) {
@@ -401,11 +401,11 @@ func (p *GetEntityThreadsafeClient) GetByte() (_r int8, err error) {
 
 
 func (p *GetEntityThreadsafeClient) recvGetByte() (value int8, err error) {
-  var result GetEntityGetByteResult
-  err = p.CC.RecvMsg("getByte", &result)
+  var __result GetEntityGetByteResult
+  err = p.CC.RecvMsg("getByte", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityThreadsafeClient) GetI16() (_r int16, err error) {
@@ -419,11 +419,11 @@ func (p *GetEntityThreadsafeClient) GetI16() (_r int16, err error) {
 
 
 func (p *GetEntityThreadsafeClient) recvGetI16() (value int16, err error) {
-  var result GetEntityGetI16Result
-  err = p.CC.RecvMsg("getI16", &result)
+  var __result GetEntityGetI16Result
+  err = p.CC.RecvMsg("getI16", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityThreadsafeClient) GetI32() (_r int32, err error) {
@@ -437,11 +437,11 @@ func (p *GetEntityThreadsafeClient) GetI32() (_r int32, err error) {
 
 
 func (p *GetEntityThreadsafeClient) recvGetI32() (value int32, err error) {
-  var result GetEntityGetI32Result
-  err = p.CC.RecvMsg("getI32", &result)
+  var __result GetEntityGetI32Result
+  err = p.CC.RecvMsg("getI32", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityThreadsafeClient) GetI64() (_r int64, err error) {
@@ -455,11 +455,11 @@ func (p *GetEntityThreadsafeClient) GetI64() (_r int64, err error) {
 
 
 func (p *GetEntityThreadsafeClient) recvGetI64() (value int64, err error) {
-  var result GetEntityGetI64Result
-  err = p.CC.RecvMsg("getI64", &result)
+  var __result GetEntityGetI64Result
+  err = p.CC.RecvMsg("getI64", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityThreadsafeClient) GetDouble() (_r float64, err error) {
@@ -473,11 +473,11 @@ func (p *GetEntityThreadsafeClient) GetDouble() (_r float64, err error) {
 
 
 func (p *GetEntityThreadsafeClient) recvGetDouble() (value float64, err error) {
-  var result GetEntityGetDoubleResult
-  err = p.CC.RecvMsg("getDouble", &result)
+  var __result GetEntityGetDoubleResult
+  err = p.CC.RecvMsg("getDouble", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityThreadsafeClient) GetString() (_r string, err error) {
@@ -491,11 +491,11 @@ func (p *GetEntityThreadsafeClient) GetString() (_r string, err error) {
 
 
 func (p *GetEntityThreadsafeClient) recvGetString() (value string, err error) {
-  var result GetEntityGetStringResult
-  err = p.CC.RecvMsg("getString", &result)
+  var __result GetEntityGetStringResult
+  err = p.CC.RecvMsg("getString", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityThreadsafeClient) GetBinary() (_r []byte, err error) {
@@ -509,11 +509,11 @@ func (p *GetEntityThreadsafeClient) GetBinary() (_r []byte, err error) {
 
 
 func (p *GetEntityThreadsafeClient) recvGetBinary() (value []byte, err error) {
-  var result GetEntityGetBinaryResult
-  err = p.CC.RecvMsg("getBinary", &result)
+  var __result GetEntityGetBinaryResult
+  err = p.CC.RecvMsg("getBinary", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityThreadsafeClient) GetMap() (_r map[string]string, err error) {
@@ -527,11 +527,11 @@ func (p *GetEntityThreadsafeClient) GetMap() (_r map[string]string, err error) {
 
 
 func (p *GetEntityThreadsafeClient) recvGetMap() (value map[string]string, err error) {
-  var result GetEntityGetMapResult
-  err = p.CC.RecvMsg("getMap", &result)
+  var __result GetEntityGetMapResult
+  err = p.CC.RecvMsg("getMap", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityThreadsafeClient) GetSet() (_r []string, err error) {
@@ -545,11 +545,11 @@ func (p *GetEntityThreadsafeClient) GetSet() (_r []string, err error) {
 
 
 func (p *GetEntityThreadsafeClient) recvGetSet() (value []string, err error) {
-  var result GetEntityGetSetResult
-  err = p.CC.RecvMsg("getSet", &result)
+  var __result GetEntityGetSetResult
+  err = p.CC.RecvMsg("getSet", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityThreadsafeClient) GetList() (_r []string, err error) {
@@ -563,11 +563,11 @@ func (p *GetEntityThreadsafeClient) GetList() (_r []string, err error) {
 
 
 func (p *GetEntityThreadsafeClient) recvGetList() (value []string, err error) {
-  var result GetEntityGetListResult
-  err = p.CC.RecvMsg("getList", &result)
+  var __result GetEntityGetListResult
+  err = p.CC.RecvMsg("getList", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -589,11 +589,11 @@ func (p *GetEntityThreadsafeClient) GetLegacyStuff(numPos int64, numNeg1 int64, 
 
 
 func (p *GetEntityThreadsafeClient) recvGetLegacyStuff() (value int32, err error) {
-  var result GetEntityGetLegacyStuffResult
-  err = p.CC.RecvMsg("getLegacyStuff", &result)
+  var __result GetEntityGetLegacyStuffResult
+  err = p.CC.RecvMsg("getLegacyStuff", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 
@@ -623,121 +623,121 @@ func (p *GetEntityChannelClient) GetEntity(ctx context.Context, r *GetEntityRequ
   args := GetEntityGetEntityArgs{
     R : r,
   }
-  var result GetEntityGetEntityResult
-  err = p.RequestChannel.Call(ctx, "getEntity", &args, &result)
+  var __result GetEntityGetEntityResult
+  err = p.RequestChannel.Call(ctx, "getEntity", &args, &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityChannelClient) GetBool(ctx context.Context) (_r bool, err error) {
   args := GetEntityGetBoolArgs{
   }
-  var result GetEntityGetBoolResult
-  err = p.RequestChannel.Call(ctx, "getBool", &args, &result)
+  var __result GetEntityGetBoolResult
+  err = p.RequestChannel.Call(ctx, "getBool", &args, &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityChannelClient) GetByte(ctx context.Context) (_r int8, err error) {
   args := GetEntityGetByteArgs{
   }
-  var result GetEntityGetByteResult
-  err = p.RequestChannel.Call(ctx, "getByte", &args, &result)
+  var __result GetEntityGetByteResult
+  err = p.RequestChannel.Call(ctx, "getByte", &args, &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityChannelClient) GetI16(ctx context.Context) (_r int16, err error) {
   args := GetEntityGetI16Args{
   }
-  var result GetEntityGetI16Result
-  err = p.RequestChannel.Call(ctx, "getI16", &args, &result)
+  var __result GetEntityGetI16Result
+  err = p.RequestChannel.Call(ctx, "getI16", &args, &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityChannelClient) GetI32(ctx context.Context) (_r int32, err error) {
   args := GetEntityGetI32Args{
   }
-  var result GetEntityGetI32Result
-  err = p.RequestChannel.Call(ctx, "getI32", &args, &result)
+  var __result GetEntityGetI32Result
+  err = p.RequestChannel.Call(ctx, "getI32", &args, &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityChannelClient) GetI64(ctx context.Context) (_r int64, err error) {
   args := GetEntityGetI64Args{
   }
-  var result GetEntityGetI64Result
-  err = p.RequestChannel.Call(ctx, "getI64", &args, &result)
+  var __result GetEntityGetI64Result
+  err = p.RequestChannel.Call(ctx, "getI64", &args, &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityChannelClient) GetDouble(ctx context.Context) (_r float64, err error) {
   args := GetEntityGetDoubleArgs{
   }
-  var result GetEntityGetDoubleResult
-  err = p.RequestChannel.Call(ctx, "getDouble", &args, &result)
+  var __result GetEntityGetDoubleResult
+  err = p.RequestChannel.Call(ctx, "getDouble", &args, &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityChannelClient) GetString(ctx context.Context) (_r string, err error) {
   args := GetEntityGetStringArgs{
   }
-  var result GetEntityGetStringResult
-  err = p.RequestChannel.Call(ctx, "getString", &args, &result)
+  var __result GetEntityGetStringResult
+  err = p.RequestChannel.Call(ctx, "getString", &args, &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityChannelClient) GetBinary(ctx context.Context) (_r []byte, err error) {
   args := GetEntityGetBinaryArgs{
   }
-  var result GetEntityGetBinaryResult
-  err = p.RequestChannel.Call(ctx, "getBinary", &args, &result)
+  var __result GetEntityGetBinaryResult
+  err = p.RequestChannel.Call(ctx, "getBinary", &args, &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityChannelClient) GetMap(ctx context.Context) (_r map[string]string, err error) {
   args := GetEntityGetMapArgs{
   }
-  var result GetEntityGetMapResult
-  err = p.RequestChannel.Call(ctx, "getMap", &args, &result)
+  var __result GetEntityGetMapResult
+  err = p.RequestChannel.Call(ctx, "getMap", &args, &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityChannelClient) GetSet(ctx context.Context) (_r []string, err error) {
   args := GetEntityGetSetArgs{
   }
-  var result GetEntityGetSetResult
-  err = p.RequestChannel.Call(ctx, "getSet", &args, &result)
+  var __result GetEntityGetSetResult
+  err = p.RequestChannel.Call(ctx, "getSet", &args, &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *GetEntityChannelClient) GetList(ctx context.Context) (_r []string, err error) {
   args := GetEntityGetListArgs{
   }
-  var result GetEntityGetListResult
-  err = p.RequestChannel.Call(ctx, "getList", &args, &result)
+  var __result GetEntityGetListResult
+  err = p.RequestChannel.Call(ctx, "getList", &args, &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -750,11 +750,11 @@ func (p *GetEntityChannelClient) GetLegacyStuff(ctx context.Context, numPos int6
     NumNeg1 : numNeg1,
     NumNeg2 : numNeg2,
   }
-  var result GetEntityGetLegacyStuffResult
-  err = p.RequestChannel.Call(ctx, "getLegacyStuff", &args, &result)
+  var __result GetEntityGetLegacyStuffResult
+  err = p.RequestChannel.Call(ctx, "getLegacyStuff", &args, &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 
@@ -860,7 +860,7 @@ func (p *getEntityProcessorGetEntity) Write(seqId int32, result thrift.WritableS
 
 func (p *getEntityProcessorGetEntity) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*GetEntityGetEntityArgs)
-  var result GetEntityGetEntityResult
+  var __result GetEntityGetEntityResult
   if retval, err := p.handler.GetEntity(args.R); err != nil {
     switch err.(type) {
     default:
@@ -868,9 +868,9 @@ func (p *getEntityProcessorGetEntity) Run(argStruct thrift.Struct) (thrift.Writa
       return x, x
     }
   } else {
-    result.Success = retval
+    __result.Success = retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type getEntityProcessorGetBool struct {
@@ -914,7 +914,7 @@ func (p *getEntityProcessorGetBool) Write(seqId int32, result thrift.WritableStr
 }
 
 func (p *getEntityProcessorGetBool) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
-  var result GetEntityGetBoolResult
+  var __result GetEntityGetBoolResult
   if retval, err := p.handler.GetBool(); err != nil {
     switch err.(type) {
     default:
@@ -922,9 +922,9 @@ func (p *getEntityProcessorGetBool) Run(argStruct thrift.Struct) (thrift.Writabl
       return x, x
     }
   } else {
-    result.Success = &retval
+    __result.Success = &retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type getEntityProcessorGetByte struct {
@@ -968,7 +968,7 @@ func (p *getEntityProcessorGetByte) Write(seqId int32, result thrift.WritableStr
 }
 
 func (p *getEntityProcessorGetByte) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
-  var result GetEntityGetByteResult
+  var __result GetEntityGetByteResult
   if retval, err := p.handler.GetByte(); err != nil {
     switch err.(type) {
     default:
@@ -976,9 +976,9 @@ func (p *getEntityProcessorGetByte) Run(argStruct thrift.Struct) (thrift.Writabl
       return x, x
     }
   } else {
-    result.Success = &retval
+    __result.Success = &retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type getEntityProcessorGetI16 struct {
@@ -1022,7 +1022,7 @@ func (p *getEntityProcessorGetI16) Write(seqId int32, result thrift.WritableStru
 }
 
 func (p *getEntityProcessorGetI16) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
-  var result GetEntityGetI16Result
+  var __result GetEntityGetI16Result
   if retval, err := p.handler.GetI16(); err != nil {
     switch err.(type) {
     default:
@@ -1030,9 +1030,9 @@ func (p *getEntityProcessorGetI16) Run(argStruct thrift.Struct) (thrift.Writable
       return x, x
     }
   } else {
-    result.Success = &retval
+    __result.Success = &retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type getEntityProcessorGetI32 struct {
@@ -1076,7 +1076,7 @@ func (p *getEntityProcessorGetI32) Write(seqId int32, result thrift.WritableStru
 }
 
 func (p *getEntityProcessorGetI32) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
-  var result GetEntityGetI32Result
+  var __result GetEntityGetI32Result
   if retval, err := p.handler.GetI32(); err != nil {
     switch err.(type) {
     default:
@@ -1084,9 +1084,9 @@ func (p *getEntityProcessorGetI32) Run(argStruct thrift.Struct) (thrift.Writable
       return x, x
     }
   } else {
-    result.Success = &retval
+    __result.Success = &retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type getEntityProcessorGetI64 struct {
@@ -1130,7 +1130,7 @@ func (p *getEntityProcessorGetI64) Write(seqId int32, result thrift.WritableStru
 }
 
 func (p *getEntityProcessorGetI64) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
-  var result GetEntityGetI64Result
+  var __result GetEntityGetI64Result
   if retval, err := p.handler.GetI64(); err != nil {
     switch err.(type) {
     default:
@@ -1138,9 +1138,9 @@ func (p *getEntityProcessorGetI64) Run(argStruct thrift.Struct) (thrift.Writable
       return x, x
     }
   } else {
-    result.Success = &retval
+    __result.Success = &retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type getEntityProcessorGetDouble struct {
@@ -1184,7 +1184,7 @@ func (p *getEntityProcessorGetDouble) Write(seqId int32, result thrift.WritableS
 }
 
 func (p *getEntityProcessorGetDouble) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
-  var result GetEntityGetDoubleResult
+  var __result GetEntityGetDoubleResult
   if retval, err := p.handler.GetDouble(); err != nil {
     switch err.(type) {
     default:
@@ -1192,9 +1192,9 @@ func (p *getEntityProcessorGetDouble) Run(argStruct thrift.Struct) (thrift.Writa
       return x, x
     }
   } else {
-    result.Success = &retval
+    __result.Success = &retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type getEntityProcessorGetString struct {
@@ -1238,7 +1238,7 @@ func (p *getEntityProcessorGetString) Write(seqId int32, result thrift.WritableS
 }
 
 func (p *getEntityProcessorGetString) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
-  var result GetEntityGetStringResult
+  var __result GetEntityGetStringResult
   if retval, err := p.handler.GetString(); err != nil {
     switch err.(type) {
     default:
@@ -1246,9 +1246,9 @@ func (p *getEntityProcessorGetString) Run(argStruct thrift.Struct) (thrift.Writa
       return x, x
     }
   } else {
-    result.Success = &retval
+    __result.Success = &retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type getEntityProcessorGetBinary struct {
@@ -1292,7 +1292,7 @@ func (p *getEntityProcessorGetBinary) Write(seqId int32, result thrift.WritableS
 }
 
 func (p *getEntityProcessorGetBinary) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
-  var result GetEntityGetBinaryResult
+  var __result GetEntityGetBinaryResult
   if retval, err := p.handler.GetBinary(); err != nil {
     switch err.(type) {
     default:
@@ -1300,9 +1300,9 @@ func (p *getEntityProcessorGetBinary) Run(argStruct thrift.Struct) (thrift.Writa
       return x, x
     }
   } else {
-    result.Success = retval
+    __result.Success = retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type getEntityProcessorGetMap struct {
@@ -1346,7 +1346,7 @@ func (p *getEntityProcessorGetMap) Write(seqId int32, result thrift.WritableStru
 }
 
 func (p *getEntityProcessorGetMap) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
-  var result GetEntityGetMapResult
+  var __result GetEntityGetMapResult
   if retval, err := p.handler.GetMap(); err != nil {
     switch err.(type) {
     default:
@@ -1354,9 +1354,9 @@ func (p *getEntityProcessorGetMap) Run(argStruct thrift.Struct) (thrift.Writable
       return x, x
     }
   } else {
-    result.Success = retval
+    __result.Success = retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type getEntityProcessorGetSet struct {
@@ -1400,7 +1400,7 @@ func (p *getEntityProcessorGetSet) Write(seqId int32, result thrift.WritableStru
 }
 
 func (p *getEntityProcessorGetSet) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
-  var result GetEntityGetSetResult
+  var __result GetEntityGetSetResult
   if retval, err := p.handler.GetSet(); err != nil {
     switch err.(type) {
     default:
@@ -1408,9 +1408,9 @@ func (p *getEntityProcessorGetSet) Run(argStruct thrift.Struct) (thrift.Writable
       return x, x
     }
   } else {
-    result.Success = retval
+    __result.Success = retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type getEntityProcessorGetList struct {
@@ -1454,7 +1454,7 @@ func (p *getEntityProcessorGetList) Write(seqId int32, result thrift.WritableStr
 }
 
 func (p *getEntityProcessorGetList) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
-  var result GetEntityGetListResult
+  var __result GetEntityGetListResult
   if retval, err := p.handler.GetList(); err != nil {
     switch err.(type) {
     default:
@@ -1462,9 +1462,9 @@ func (p *getEntityProcessorGetList) Run(argStruct thrift.Struct) (thrift.Writabl
       return x, x
     }
   } else {
-    result.Success = retval
+    __result.Success = retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type getEntityProcessorGetLegacyStuff struct {
@@ -1509,7 +1509,7 @@ func (p *getEntityProcessorGetLegacyStuff) Write(seqId int32, result thrift.Writ
 
 func (p *getEntityProcessorGetLegacyStuff) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*GetEntityGetLegacyStuffArgs)
-  var result GetEntityGetLegacyStuffResult
+  var __result GetEntityGetLegacyStuffResult
   if retval, err := p.handler.GetLegacyStuff(args.NumPos, args.NumNeg1, args.NumNeg2); err != nil {
     switch err.(type) {
     default:
@@ -1517,9 +1517,9 @@ func (p *getEntityProcessorGetLegacyStuff) Run(argStruct thrift.Struct) (thrift.
       return x, x
     }
   } else {
-    result.Success = &retval
+    __result.Success = &retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 

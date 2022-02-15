@@ -98,8 +98,8 @@ func (p *MyServiceClient) Ping() (err error) {
 
 
 func (p *MyServiceClient) recvPing() (err error) {
-  var result MyServicePingResult
-  return p.CC.RecvMsg("ping", &result)
+  var __result MyServicePingResult
+  return p.CC.RecvMsg("ping", &__result)
 }
 
 func (p *MyServiceClient) GetRandomData() (_r string, err error) {
@@ -111,11 +111,11 @@ func (p *MyServiceClient) GetRandomData() (_r string, err error) {
 
 
 func (p *MyServiceClient) recvGetRandomData() (value string, err error) {
-  var result MyServiceGetRandomDataResult
-  err = p.CC.RecvMsg("getRandomData", &result)
+  var __result MyServiceGetRandomDataResult
+  err = p.CC.RecvMsg("getRandomData", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -131,11 +131,11 @@ func (p *MyServiceClient) HasDataById(id int64) (_r bool, err error) {
 
 
 func (p *MyServiceClient) recvHasDataById() (value bool, err error) {
-  var result MyServiceHasDataByIdResult
-  err = p.CC.RecvMsg("hasDataById", &result)
+  var __result MyServiceHasDataByIdResult
+  err = p.CC.RecvMsg("hasDataById", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -151,11 +151,11 @@ func (p *MyServiceClient) GetDataById(id int64) (_r string, err error) {
 
 
 func (p *MyServiceClient) recvGetDataById() (value string, err error) {
-  var result MyServiceGetDataByIdResult
-  err = p.CC.RecvMsg("getDataById", &result)
+  var __result MyServiceGetDataByIdResult
+  err = p.CC.RecvMsg("getDataById", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -173,8 +173,8 @@ func (p *MyServiceClient) PutDataById(id int64, data string) (err error) {
 
 
 func (p *MyServiceClient) recvPutDataById() (err error) {
-  var result MyServicePutDataByIdResult
-  return p.CC.RecvMsg("putDataById", &result)
+  var __result MyServicePutDataByIdResult
+  return p.CC.RecvMsg("putDataById", &__result)
 }
 
 // Parameters:
@@ -199,8 +199,8 @@ func (p *MyServiceClient) DoNothing() (err error) {
 
 
 func (p *MyServiceClient) recvDoNothing() (err error) {
-  var result MyServiceDoNothingResult
-  return p.CC.RecvMsg("doNothing", &result)
+  var __result MyServiceDoNothingResult
+  return p.CC.RecvMsg("doNothing", &__result)
 }
 
 
@@ -251,8 +251,8 @@ func (p *MyServiceThreadsafeClient) Ping() (err error) {
 
 
 func (p *MyServiceThreadsafeClient) recvPing() (err error) {
-  var result MyServicePingResult
-  return p.CC.RecvMsg("ping", &result)
+  var __result MyServicePingResult
+  return p.CC.RecvMsg("ping", &__result)
 }
 
 func (p *MyServiceThreadsafeClient) GetRandomData() (_r string, err error) {
@@ -266,11 +266,11 @@ func (p *MyServiceThreadsafeClient) GetRandomData() (_r string, err error) {
 
 
 func (p *MyServiceThreadsafeClient) recvGetRandomData() (value string, err error) {
-  var result MyServiceGetRandomDataResult
-  err = p.CC.RecvMsg("getRandomData", &result)
+  var __result MyServiceGetRandomDataResult
+  err = p.CC.RecvMsg("getRandomData", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -288,11 +288,11 @@ func (p *MyServiceThreadsafeClient) HasDataById(id int64) (_r bool, err error) {
 
 
 func (p *MyServiceThreadsafeClient) recvHasDataById() (value bool, err error) {
-  var result MyServiceHasDataByIdResult
-  err = p.CC.RecvMsg("hasDataById", &result)
+  var __result MyServiceHasDataByIdResult
+  err = p.CC.RecvMsg("hasDataById", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -310,11 +310,11 @@ func (p *MyServiceThreadsafeClient) GetDataById(id int64) (_r string, err error)
 
 
 func (p *MyServiceThreadsafeClient) recvGetDataById() (value string, err error) {
-  var result MyServiceGetDataByIdResult
-  err = p.CC.RecvMsg("getDataById", &result)
+  var __result MyServiceGetDataByIdResult
+  err = p.CC.RecvMsg("getDataById", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -334,8 +334,8 @@ func (p *MyServiceThreadsafeClient) PutDataById(id int64, data string) (err erro
 
 
 func (p *MyServiceThreadsafeClient) recvPutDataById() (err error) {
-  var result MyServicePutDataByIdResult
-  return p.CC.RecvMsg("putDataById", &result)
+  var __result MyServicePutDataByIdResult
+  return p.CC.RecvMsg("putDataById", &__result)
 }
 
 // Parameters:
@@ -364,8 +364,8 @@ func (p *MyServiceThreadsafeClient) DoNothing() (err error) {
 
 
 func (p *MyServiceThreadsafeClient) recvDoNothing() (err error) {
-  var result MyServiceDoNothingResult
-  return p.CC.RecvMsg("doNothing", &result)
+  var __result MyServiceDoNothingResult
+  return p.CC.RecvMsg("doNothing", &__result)
 }
 
 
@@ -392,8 +392,8 @@ func NewMyServiceChannelClient(channel thrift.RequestChannel) *MyServiceChannelC
 func (p *MyServiceChannelClient) Ping(ctx context.Context) (err error) {
   args := MyServicePingArgs{
   }
-  var result MyServicePingResult
-  err = p.RequestChannel.Call(ctx, "ping", &args, &result)
+  var __result MyServicePingResult
+  err = p.RequestChannel.Call(ctx, "ping", &args, &__result)
   if err != nil { return }
 
   return nil
@@ -402,11 +402,11 @@ func (p *MyServiceChannelClient) Ping(ctx context.Context) (err error) {
 func (p *MyServiceChannelClient) GetRandomData(ctx context.Context) (_r string, err error) {
   args := MyServiceGetRandomDataArgs{
   }
-  var result MyServiceGetRandomDataResult
-  err = p.RequestChannel.Call(ctx, "getRandomData", &args, &result)
+  var __result MyServiceGetRandomDataResult
+  err = p.RequestChannel.Call(ctx, "getRandomData", &args, &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -415,11 +415,11 @@ func (p *MyServiceChannelClient) HasDataById(ctx context.Context, id int64) (_r 
   args := MyServiceHasDataByIdArgs{
     Id : id,
   }
-  var result MyServiceHasDataByIdResult
-  err = p.RequestChannel.Call(ctx, "hasDataById", &args, &result)
+  var __result MyServiceHasDataByIdResult
+  err = p.RequestChannel.Call(ctx, "hasDataById", &args, &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -428,11 +428,11 @@ func (p *MyServiceChannelClient) GetDataById(ctx context.Context, id int64) (_r 
   args := MyServiceGetDataByIdArgs{
     Id : id,
   }
-  var result MyServiceGetDataByIdResult
-  err = p.RequestChannel.Call(ctx, "getDataById", &args, &result)
+  var __result MyServiceGetDataByIdResult
+  err = p.RequestChannel.Call(ctx, "getDataById", &args, &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -443,8 +443,8 @@ func (p *MyServiceChannelClient) PutDataById(ctx context.Context, id int64, data
     Id : id,
     Data : data,
   }
-  var result MyServicePutDataByIdResult
-  err = p.RequestChannel.Call(ctx, "putDataById", &args, &result)
+  var __result MyServicePutDataByIdResult
+  err = p.RequestChannel.Call(ctx, "putDataById", &args, &__result)
   if err != nil { return }
 
   return nil
@@ -467,8 +467,8 @@ func (p *MyServiceChannelClient) LobDataById(ctx context.Context, id int64, data
 func (p *MyServiceChannelClient) DoNothing(ctx context.Context) (err error) {
   args := MyServiceDoNothingArgs{
   }
-  var result MyServiceDoNothingResult
-  err = p.RequestChannel.Call(ctx, "doNothing", &args, &result)
+  var __result MyServiceDoNothingResult
+  err = p.RequestChannel.Call(ctx, "doNothing", &args, &__result)
   if err != nil { return }
 
   return nil
@@ -564,7 +564,7 @@ func (p *myServiceProcessorPing) Write(seqId int32, result thrift.WritableStruct
 }
 
 func (p *myServiceProcessorPing) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
-  var result MyServicePingResult
+  var __result MyServicePingResult
   if err := p.handler.Ping(); err != nil {
     switch err.(type) {
     default:
@@ -572,7 +572,7 @@ func (p *myServiceProcessorPing) Run(argStruct thrift.Struct) (thrift.WritableSt
       return x, x
     }
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type myServiceProcessorGetRandomData struct {
@@ -616,7 +616,7 @@ func (p *myServiceProcessorGetRandomData) Write(seqId int32, result thrift.Writa
 }
 
 func (p *myServiceProcessorGetRandomData) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
-  var result MyServiceGetRandomDataResult
+  var __result MyServiceGetRandomDataResult
   if retval, err := p.handler.GetRandomData(); err != nil {
     switch err.(type) {
     default:
@@ -624,9 +624,9 @@ func (p *myServiceProcessorGetRandomData) Run(argStruct thrift.Struct) (thrift.W
       return x, x
     }
   } else {
-    result.Success = &retval
+    __result.Success = &retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type myServiceProcessorHasDataById struct {
@@ -671,7 +671,7 @@ func (p *myServiceProcessorHasDataById) Write(seqId int32, result thrift.Writabl
 
 func (p *myServiceProcessorHasDataById) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*MyServiceHasDataByIdArgs)
-  var result MyServiceHasDataByIdResult
+  var __result MyServiceHasDataByIdResult
   if retval, err := p.handler.HasDataById(args.Id); err != nil {
     switch err.(type) {
     default:
@@ -679,9 +679,9 @@ func (p *myServiceProcessorHasDataById) Run(argStruct thrift.Struct) (thrift.Wri
       return x, x
     }
   } else {
-    result.Success = &retval
+    __result.Success = &retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type myServiceProcessorGetDataById struct {
@@ -726,7 +726,7 @@ func (p *myServiceProcessorGetDataById) Write(seqId int32, result thrift.Writabl
 
 func (p *myServiceProcessorGetDataById) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*MyServiceGetDataByIdArgs)
-  var result MyServiceGetDataByIdResult
+  var __result MyServiceGetDataByIdResult
   if retval, err := p.handler.GetDataById(args.Id); err != nil {
     switch err.(type) {
     default:
@@ -734,9 +734,9 @@ func (p *myServiceProcessorGetDataById) Run(argStruct thrift.Struct) (thrift.Wri
       return x, x
     }
   } else {
-    result.Success = &retval
+    __result.Success = &retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type myServiceProcessorPutDataById struct {
@@ -781,7 +781,7 @@ func (p *myServiceProcessorPutDataById) Write(seqId int32, result thrift.Writabl
 
 func (p *myServiceProcessorPutDataById) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*MyServicePutDataByIdArgs)
-  var result MyServicePutDataByIdResult
+  var __result MyServicePutDataByIdResult
   if err := p.handler.PutDataById(args.Id, args.Data); err != nil {
     switch err.(type) {
     default:
@@ -789,7 +789,7 @@ func (p *myServiceProcessorPutDataById) Run(argStruct thrift.Struct) (thrift.Wri
       return x, x
     }
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type myServiceProcessorLobDataById struct {
@@ -880,7 +880,7 @@ func (p *myServiceProcessorDoNothing) Write(seqId int32, result thrift.WritableS
 }
 
 func (p *myServiceProcessorDoNothing) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
-  var result MyServiceDoNothingResult
+  var __result MyServiceDoNothingResult
   if err := p.handler.DoNothing(); err != nil {
     switch err.(type) {
     default:
@@ -888,7 +888,7 @@ func (p *myServiceProcessorDoNothing) Run(argStruct thrift.Struct) (thrift.Writa
       return x, x
     }
   }
-  return &result, nil
+  return &__result, nil
 }
 
 

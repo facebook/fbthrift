@@ -68,8 +68,8 @@ func (p *MyLeafClient) DoLeaf() (err error) {
 
 
 func (p *MyLeafClient) recvDoLeaf() (err error) {
-  var result MyLeafDoLeafResult
-  return p.CC.RecvMsg("do_leaf", &result)
+  var __result MyLeafDoLeafResult
+  return p.CC.RecvMsg("do_leaf", &__result)
 }
 
 
@@ -119,8 +119,8 @@ func (p *MyLeafThreadsafeClient) DoLeaf() (err error) {
 
 
 func (p *MyLeafThreadsafeClient) recvDoLeaf() (err error) {
-  var result MyLeafDoLeafResult
-  return p.CC.RecvMsg("do_leaf", &result)
+  var __result MyLeafDoLeafResult
+  return p.CC.RecvMsg("do_leaf", &__result)
 }
 
 
@@ -147,8 +147,8 @@ func NewMyLeafChannelClient(channel thrift.RequestChannel) *MyLeafChannelClient 
 func (p *MyLeafChannelClient) DoLeaf(ctx context.Context) (err error) {
   args := MyLeafDoLeafArgs{
   }
-  var result MyLeafDoLeafResult
-  err = p.RequestChannel.Call(ctx, "do_leaf", &args, &result)
+  var __result MyLeafDoLeafResult
+  err = p.RequestChannel.Call(ctx, "do_leaf", &args, &__result)
   if err != nil { return }
 
   return nil
@@ -207,7 +207,7 @@ func (p *myLeafProcessorDoLeaf) Write(seqId int32, result thrift.WritableStruct,
 }
 
 func (p *myLeafProcessorDoLeaf) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
-  var result MyLeafDoLeafResult
+  var __result MyLeafDoLeafResult
   if err := p.handler.DoLeaf(); err != nil {
     switch err.(type) {
     default:
@@ -215,7 +215,7 @@ func (p *myLeafProcessorDoLeaf) Run(argStruct thrift.Struct) (thrift.WritableStr
       return x, x
     }
   }
-  return &result, nil
+  return &__result, nil
 }
 
 

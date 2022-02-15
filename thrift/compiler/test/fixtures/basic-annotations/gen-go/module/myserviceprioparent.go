@@ -68,8 +68,8 @@ func (p *MyServicePrioParentClient) Ping() (err error) {
 
 
 func (p *MyServicePrioParentClient) recvPing() (err error) {
-  var result MyServicePrioParentPingResult
-  return p.CC.RecvMsg("ping", &result)
+  var __result MyServicePrioParentPingResult
+  return p.CC.RecvMsg("ping", &__result)
 }
 
 func (p *MyServicePrioParentClient) Pong() (err error) {
@@ -81,8 +81,8 @@ func (p *MyServicePrioParentClient) Pong() (err error) {
 
 
 func (p *MyServicePrioParentClient) recvPong() (err error) {
-  var result MyServicePrioParentPongResult
-  return p.CC.RecvMsg("pong", &result)
+  var __result MyServicePrioParentPongResult
+  return p.CC.RecvMsg("pong", &__result)
 }
 
 
@@ -133,8 +133,8 @@ func (p *MyServicePrioParentThreadsafeClient) Ping() (err error) {
 
 
 func (p *MyServicePrioParentThreadsafeClient) recvPing() (err error) {
-  var result MyServicePrioParentPingResult
-  return p.CC.RecvMsg("ping", &result)
+  var __result MyServicePrioParentPingResult
+  return p.CC.RecvMsg("ping", &__result)
 }
 
 func (p *MyServicePrioParentThreadsafeClient) Pong() (err error) {
@@ -148,8 +148,8 @@ func (p *MyServicePrioParentThreadsafeClient) Pong() (err error) {
 
 
 func (p *MyServicePrioParentThreadsafeClient) recvPong() (err error) {
-  var result MyServicePrioParentPongResult
-  return p.CC.RecvMsg("pong", &result)
+  var __result MyServicePrioParentPongResult
+  return p.CC.RecvMsg("pong", &__result)
 }
 
 
@@ -176,8 +176,8 @@ func NewMyServicePrioParentChannelClient(channel thrift.RequestChannel) *MyServi
 func (p *MyServicePrioParentChannelClient) Ping(ctx context.Context) (err error) {
   args := MyServicePrioParentPingArgs{
   }
-  var result MyServicePrioParentPingResult
-  err = p.RequestChannel.Call(ctx, "ping", &args, &result)
+  var __result MyServicePrioParentPingResult
+  err = p.RequestChannel.Call(ctx, "ping", &args, &__result)
   if err != nil { return }
 
   return nil
@@ -186,8 +186,8 @@ func (p *MyServicePrioParentChannelClient) Ping(ctx context.Context) (err error)
 func (p *MyServicePrioParentChannelClient) Pong(ctx context.Context) (err error) {
   args := MyServicePrioParentPongArgs{
   }
-  var result MyServicePrioParentPongResult
-  err = p.RequestChannel.Call(ctx, "pong", &args, &result)
+  var __result MyServicePrioParentPongResult
+  err = p.RequestChannel.Call(ctx, "pong", &args, &__result)
   if err != nil { return }
 
   return nil
@@ -273,7 +273,7 @@ func (p *myServicePrioParentProcessorPing) Write(seqId int32, result thrift.Writ
 }
 
 func (p *myServicePrioParentProcessorPing) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
-  var result MyServicePrioParentPingResult
+  var __result MyServicePrioParentPingResult
   if err := p.handler.Ping(); err != nil {
     switch err.(type) {
     default:
@@ -281,7 +281,7 @@ func (p *myServicePrioParentProcessorPing) Run(argStruct thrift.Struct) (thrift.
       return x, x
     }
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type myServicePrioParentProcessorPong struct {
@@ -325,7 +325,7 @@ func (p *myServicePrioParentProcessorPong) Write(seqId int32, result thrift.Writ
 }
 
 func (p *myServicePrioParentProcessorPong) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
-  var result MyServicePrioParentPongResult
+  var __result MyServicePrioParentPongResult
   if err := p.handler.Pong(); err != nil {
     switch err.(type) {
     default:
@@ -333,7 +333,7 @@ func (p *myServicePrioParentProcessorPong) Run(argStruct thrift.Struct) (thrift.
       return x, x
     }
   }
-  return &result, nil
+  return &__result, nil
 }
 
 

@@ -72,8 +72,8 @@ func (p *RaiserClient) DoBland() (err error) {
 
 
 func (p *RaiserClient) recvDoBland() (err error) {
-  var result RaiserDoBlandResult
-  return p.CC.RecvMsg("doBland", &result)
+  var __result RaiserDoBlandResult
+  return p.CC.RecvMsg("doBland", &__result)
 }
 
 func (p *RaiserClient) DoRaise() (err error) {
@@ -85,17 +85,17 @@ func (p *RaiserClient) DoRaise() (err error) {
 
 
 func (p *RaiserClient) recvDoRaise() (err error) {
-  var result RaiserDoRaiseResult
-  err = p.CC.RecvMsg("doRaise", &result)
+  var __result RaiserDoRaiseResult
+  err = p.CC.RecvMsg("doRaise", &__result)
   if err != nil { return }
-  if result.B != nil {
-    err = result.B
+  if __result.B != nil {
+    err = __result.B
     return 
-  } else if result.F != nil {
-    err = result.F
+  } else if __result.F != nil {
+    err = __result.F
     return 
-  } else if result.S != nil {
-    err = result.S
+  } else if __result.S != nil {
+    err = __result.S
     return 
   }
   return nil
@@ -110,11 +110,11 @@ func (p *RaiserClient) Get200() (_r string, err error) {
 
 
 func (p *RaiserClient) recvGet200() (value string, err error) {
-  var result RaiserGet200Result
-  err = p.CC.RecvMsg("get200", &result)
+  var __result RaiserGet200Result
+  err = p.CC.RecvMsg("get200", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *RaiserClient) Get500() (_r string, err error) {
@@ -126,20 +126,20 @@ func (p *RaiserClient) Get500() (_r string, err error) {
 
 
 func (p *RaiserClient) recvGet500() (value string, err error) {
-  var result RaiserGet500Result
-  err = p.CC.RecvMsg("get500", &result)
+  var __result RaiserGet500Result
+  err = p.CC.RecvMsg("get500", &__result)
   if err != nil { return }
-  if result.F != nil {
-    err = result.F
+  if __result.F != nil {
+    err = __result.F
     return 
-  } else if result.B != nil {
-    err = result.B
+  } else if __result.B != nil {
+    err = __result.B
     return 
-  } else if result.S != nil {
-    err = result.S
+  } else if __result.S != nil {
+    err = __result.S
     return 
   }
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 
@@ -190,8 +190,8 @@ func (p *RaiserThreadsafeClient) DoBland() (err error) {
 
 
 func (p *RaiserThreadsafeClient) recvDoBland() (err error) {
-  var result RaiserDoBlandResult
-  return p.CC.RecvMsg("doBland", &result)
+  var __result RaiserDoBlandResult
+  return p.CC.RecvMsg("doBland", &__result)
 }
 
 func (p *RaiserThreadsafeClient) DoRaise() (err error) {
@@ -205,17 +205,17 @@ func (p *RaiserThreadsafeClient) DoRaise() (err error) {
 
 
 func (p *RaiserThreadsafeClient) recvDoRaise() (err error) {
-  var result RaiserDoRaiseResult
-  err = p.CC.RecvMsg("doRaise", &result)
+  var __result RaiserDoRaiseResult
+  err = p.CC.RecvMsg("doRaise", &__result)
   if err != nil { return }
-  if result.B != nil {
-    err = result.B
+  if __result.B != nil {
+    err = __result.B
     return 
-  } else if result.F != nil {
-    err = result.F
+  } else if __result.F != nil {
+    err = __result.F
     return 
-  } else if result.S != nil {
-    err = result.S
+  } else if __result.S != nil {
+    err = __result.S
     return 
   }
   return nil
@@ -232,11 +232,11 @@ func (p *RaiserThreadsafeClient) Get200() (_r string, err error) {
 
 
 func (p *RaiserThreadsafeClient) recvGet200() (value string, err error) {
-  var result RaiserGet200Result
-  err = p.CC.RecvMsg("get200", &result)
+  var __result RaiserGet200Result
+  err = p.CC.RecvMsg("get200", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *RaiserThreadsafeClient) Get500() (_r string, err error) {
@@ -250,20 +250,20 @@ func (p *RaiserThreadsafeClient) Get500() (_r string, err error) {
 
 
 func (p *RaiserThreadsafeClient) recvGet500() (value string, err error) {
-  var result RaiserGet500Result
-  err = p.CC.RecvMsg("get500", &result)
+  var __result RaiserGet500Result
+  err = p.CC.RecvMsg("get500", &__result)
   if err != nil { return }
-  if result.F != nil {
-    err = result.F
+  if __result.F != nil {
+    err = __result.F
     return 
-  } else if result.B != nil {
-    err = result.B
+  } else if __result.B != nil {
+    err = __result.B
     return 
-  } else if result.S != nil {
-    err = result.S
+  } else if __result.S != nil {
+    err = __result.S
     return 
   }
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 
@@ -290,8 +290,8 @@ func NewRaiserChannelClient(channel thrift.RequestChannel) *RaiserChannelClient 
 func (p *RaiserChannelClient) DoBland(ctx context.Context) (err error) {
   args := RaiserDoBlandArgs{
   }
-  var result RaiserDoBlandResult
-  err = p.RequestChannel.Call(ctx, "doBland", &args, &result)
+  var __result RaiserDoBlandResult
+  err = p.RequestChannel.Call(ctx, "doBland", &args, &__result)
   if err != nil { return }
 
   return nil
@@ -300,17 +300,17 @@ func (p *RaiserChannelClient) DoBland(ctx context.Context) (err error) {
 func (p *RaiserChannelClient) DoRaise(ctx context.Context) (err error) {
   args := RaiserDoRaiseArgs{
   }
-  var result RaiserDoRaiseResult
-  err = p.RequestChannel.Call(ctx, "doRaise", &args, &result)
+  var __result RaiserDoRaiseResult
+  err = p.RequestChannel.Call(ctx, "doRaise", &args, &__result)
   if err != nil { return }
-  if result.B != nil {
-    err = result.B
+  if __result.B != nil {
+    err = __result.B
     return 
-  } else if result.F != nil {
-    err = result.F
+  } else if __result.F != nil {
+    err = __result.F
     return 
-  } else if result.S != nil {
-    err = result.S
+  } else if __result.S != nil {
+    err = __result.S
     return 
   }
   return nil
@@ -319,30 +319,30 @@ func (p *RaiserChannelClient) DoRaise(ctx context.Context) (err error) {
 func (p *RaiserChannelClient) Get200(ctx context.Context) (_r string, err error) {
   args := RaiserGet200Args{
   }
-  var result RaiserGet200Result
-  err = p.RequestChannel.Call(ctx, "get200", &args, &result)
+  var __result RaiserGet200Result
+  err = p.RequestChannel.Call(ctx, "get200", &args, &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 func (p *RaiserChannelClient) Get500(ctx context.Context) (_r string, err error) {
   args := RaiserGet500Args{
   }
-  var result RaiserGet500Result
-  err = p.RequestChannel.Call(ctx, "get500", &args, &result)
+  var __result RaiserGet500Result
+  err = p.RequestChannel.Call(ctx, "get500", &args, &__result)
   if err != nil { return }
-  if result.F != nil {
-    err = result.F
+  if __result.F != nil {
+    err = __result.F
     return 
-  } else if result.B != nil {
-    err = result.B
+  } else if __result.B != nil {
+    err = __result.B
     return 
-  } else if result.S != nil {
-    err = result.S
+  } else if __result.S != nil {
+    err = __result.S
     return 
   }
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 
@@ -429,7 +429,7 @@ func (p *raiserProcessorDoBland) Write(seqId int32, result thrift.WritableStruct
 }
 
 func (p *raiserProcessorDoBland) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
-  var result RaiserDoBlandResult
+  var __result RaiserDoBlandResult
   if err := p.handler.DoBland(); err != nil {
     switch err.(type) {
     default:
@@ -437,7 +437,7 @@ func (p *raiserProcessorDoBland) Run(argStruct thrift.Struct) (thrift.WritableSt
       return x, x
     }
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type raiserProcessorDoRaise struct {
@@ -499,21 +499,21 @@ func (p *raiserProcessorDoRaise) Write(seqId int32, result thrift.WritableStruct
 }
 
 func (p *raiserProcessorDoRaise) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
-  var result RaiserDoRaiseResult
+  var __result RaiserDoRaiseResult
   if err := p.handler.DoRaise(); err != nil {
     switch v := err.(type) {
     case *Banal:
-      result.B = v
+      __result.B = v
     case *Fiery:
-      result.F = v
+      __result.F = v
     case *Serious:
-      result.S = v
+      __result.S = v
     default:
       x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing doRaise: " + err.Error(), err)
       return x, x
     }
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type raiserProcessorGet200 struct {
@@ -557,7 +557,7 @@ func (p *raiserProcessorGet200) Write(seqId int32, result thrift.WritableStruct,
 }
 
 func (p *raiserProcessorGet200) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
-  var result RaiserGet200Result
+  var __result RaiserGet200Result
   if retval, err := p.handler.Get200(); err != nil {
     switch err.(type) {
     default:
@@ -565,9 +565,9 @@ func (p *raiserProcessorGet200) Run(argStruct thrift.Struct) (thrift.WritableStr
       return x, x
     }
   } else {
-    result.Success = &retval
+    __result.Success = &retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type raiserProcessorGet500 struct {
@@ -629,23 +629,23 @@ func (p *raiserProcessorGet500) Write(seqId int32, result thrift.WritableStruct,
 }
 
 func (p *raiserProcessorGet500) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
-  var result RaiserGet500Result
+  var __result RaiserGet500Result
   if retval, err := p.handler.Get500(); err != nil {
     switch v := err.(type) {
     case *Fiery:
-      result.F = v
+      __result.F = v
     case *Banal:
-      result.B = v
+      __result.B = v
     case *Serious:
-      result.S = v
+      __result.S = v
     default:
       x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing get500: " + err.Error(), err)
       return x, x
     }
   } else {
-    result.Success = &retval
+    __result.Success = &retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 

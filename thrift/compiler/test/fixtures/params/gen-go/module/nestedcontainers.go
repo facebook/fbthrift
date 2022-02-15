@@ -98,8 +98,8 @@ func (p *NestedContainersClient) MapList(foo map[int32][]int32) (err error) {
 
 
 func (p *NestedContainersClient) recvMapList() (err error) {
-  var result NestedContainersMapListResult
-  return p.CC.RecvMsg("mapList", &result)
+  var __result NestedContainersMapListResult
+  return p.CC.RecvMsg("mapList", &__result)
 }
 
 // Parameters:
@@ -115,8 +115,8 @@ func (p *NestedContainersClient) MapSet(foo map[int32][]int32) (err error) {
 
 
 func (p *NestedContainersClient) recvMapSet() (err error) {
-  var result NestedContainersMapSetResult
-  return p.CC.RecvMsg("mapSet", &result)
+  var __result NestedContainersMapSetResult
+  return p.CC.RecvMsg("mapSet", &__result)
 }
 
 // Parameters:
@@ -132,8 +132,8 @@ func (p *NestedContainersClient) ListMap(foo []map[int32]int32) (err error) {
 
 
 func (p *NestedContainersClient) recvListMap() (err error) {
-  var result NestedContainersListMapResult
-  return p.CC.RecvMsg("listMap", &result)
+  var __result NestedContainersListMapResult
+  return p.CC.RecvMsg("listMap", &__result)
 }
 
 // Parameters:
@@ -149,8 +149,8 @@ func (p *NestedContainersClient) ListSet(foo [][]int32) (err error) {
 
 
 func (p *NestedContainersClient) recvListSet() (err error) {
-  var result NestedContainersListSetResult
-  return p.CC.RecvMsg("listSet", &result)
+  var __result NestedContainersListSetResult
+  return p.CC.RecvMsg("listSet", &__result)
 }
 
 // Parameters:
@@ -166,8 +166,8 @@ func (p *NestedContainersClient) Turtles(foo [][]map[int32]map[int32][]int32) (e
 
 
 func (p *NestedContainersClient) recvTurtles() (err error) {
-  var result NestedContainersTurtlesResult
-  return p.CC.RecvMsg("turtles", &result)
+  var __result NestedContainersTurtlesResult
+  return p.CC.RecvMsg("turtles", &__result)
 }
 
 
@@ -222,8 +222,8 @@ func (p *NestedContainersThreadsafeClient) MapList(foo map[int32][]int32) (err e
 
 
 func (p *NestedContainersThreadsafeClient) recvMapList() (err error) {
-  var result NestedContainersMapListResult
-  return p.CC.RecvMsg("mapList", &result)
+  var __result NestedContainersMapListResult
+  return p.CC.RecvMsg("mapList", &__result)
 }
 
 // Parameters:
@@ -241,8 +241,8 @@ func (p *NestedContainersThreadsafeClient) MapSet(foo map[int32][]int32) (err er
 
 
 func (p *NestedContainersThreadsafeClient) recvMapSet() (err error) {
-  var result NestedContainersMapSetResult
-  return p.CC.RecvMsg("mapSet", &result)
+  var __result NestedContainersMapSetResult
+  return p.CC.RecvMsg("mapSet", &__result)
 }
 
 // Parameters:
@@ -260,8 +260,8 @@ func (p *NestedContainersThreadsafeClient) ListMap(foo []map[int32]int32) (err e
 
 
 func (p *NestedContainersThreadsafeClient) recvListMap() (err error) {
-  var result NestedContainersListMapResult
-  return p.CC.RecvMsg("listMap", &result)
+  var __result NestedContainersListMapResult
+  return p.CC.RecvMsg("listMap", &__result)
 }
 
 // Parameters:
@@ -279,8 +279,8 @@ func (p *NestedContainersThreadsafeClient) ListSet(foo [][]int32) (err error) {
 
 
 func (p *NestedContainersThreadsafeClient) recvListSet() (err error) {
-  var result NestedContainersListSetResult
-  return p.CC.RecvMsg("listSet", &result)
+  var __result NestedContainersListSetResult
+  return p.CC.RecvMsg("listSet", &__result)
 }
 
 // Parameters:
@@ -298,8 +298,8 @@ func (p *NestedContainersThreadsafeClient) Turtles(foo [][]map[int32]map[int32][
 
 
 func (p *NestedContainersThreadsafeClient) recvTurtles() (err error) {
-  var result NestedContainersTurtlesResult
-  return p.CC.RecvMsg("turtles", &result)
+  var __result NestedContainersTurtlesResult
+  return p.CC.RecvMsg("turtles", &__result)
 }
 
 
@@ -329,8 +329,8 @@ func (p *NestedContainersChannelClient) MapList(ctx context.Context, foo map[int
   args := NestedContainersMapListArgs{
     Foo : foo,
   }
-  var result NestedContainersMapListResult
-  err = p.RequestChannel.Call(ctx, "mapList", &args, &result)
+  var __result NestedContainersMapListResult
+  err = p.RequestChannel.Call(ctx, "mapList", &args, &__result)
   if err != nil { return }
 
   return nil
@@ -342,8 +342,8 @@ func (p *NestedContainersChannelClient) MapSet(ctx context.Context, foo map[int3
   args := NestedContainersMapSetArgs{
     Foo : foo,
   }
-  var result NestedContainersMapSetResult
-  err = p.RequestChannel.Call(ctx, "mapSet", &args, &result)
+  var __result NestedContainersMapSetResult
+  err = p.RequestChannel.Call(ctx, "mapSet", &args, &__result)
   if err != nil { return }
 
   return nil
@@ -355,8 +355,8 @@ func (p *NestedContainersChannelClient) ListMap(ctx context.Context, foo []map[i
   args := NestedContainersListMapArgs{
     Foo : foo,
   }
-  var result NestedContainersListMapResult
-  err = p.RequestChannel.Call(ctx, "listMap", &args, &result)
+  var __result NestedContainersListMapResult
+  err = p.RequestChannel.Call(ctx, "listMap", &args, &__result)
   if err != nil { return }
 
   return nil
@@ -368,8 +368,8 @@ func (p *NestedContainersChannelClient) ListSet(ctx context.Context, foo [][]int
   args := NestedContainersListSetArgs{
     Foo : foo,
   }
-  var result NestedContainersListSetResult
-  err = p.RequestChannel.Call(ctx, "listSet", &args, &result)
+  var __result NestedContainersListSetResult
+  err = p.RequestChannel.Call(ctx, "listSet", &args, &__result)
   if err != nil { return }
 
   return nil
@@ -381,8 +381,8 @@ func (p *NestedContainersChannelClient) Turtles(ctx context.Context, foo [][]map
   args := NestedContainersTurtlesArgs{
     Foo : foo,
   }
-  var result NestedContainersTurtlesResult
-  err = p.RequestChannel.Call(ctx, "turtles", &args, &result)
+  var __result NestedContainersTurtlesResult
+  err = p.RequestChannel.Call(ctx, "turtles", &args, &__result)
   if err != nil { return }
 
   return nil
@@ -475,7 +475,7 @@ func (p *nestedContainersProcessorMapList) Write(seqId int32, result thrift.Writ
 
 func (p *nestedContainersProcessorMapList) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*NestedContainersMapListArgs)
-  var result NestedContainersMapListResult
+  var __result NestedContainersMapListResult
   if err := p.handler.MapList(args.Foo); err != nil {
     switch err.(type) {
     default:
@@ -483,7 +483,7 @@ func (p *nestedContainersProcessorMapList) Run(argStruct thrift.Struct) (thrift.
       return x, x
     }
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type nestedContainersProcessorMapSet struct {
@@ -528,7 +528,7 @@ func (p *nestedContainersProcessorMapSet) Write(seqId int32, result thrift.Writa
 
 func (p *nestedContainersProcessorMapSet) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*NestedContainersMapSetArgs)
-  var result NestedContainersMapSetResult
+  var __result NestedContainersMapSetResult
   if err := p.handler.MapSet(args.Foo); err != nil {
     switch err.(type) {
     default:
@@ -536,7 +536,7 @@ func (p *nestedContainersProcessorMapSet) Run(argStruct thrift.Struct) (thrift.W
       return x, x
     }
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type nestedContainersProcessorListMap struct {
@@ -581,7 +581,7 @@ func (p *nestedContainersProcessorListMap) Write(seqId int32, result thrift.Writ
 
 func (p *nestedContainersProcessorListMap) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*NestedContainersListMapArgs)
-  var result NestedContainersListMapResult
+  var __result NestedContainersListMapResult
   if err := p.handler.ListMap(args.Foo); err != nil {
     switch err.(type) {
     default:
@@ -589,7 +589,7 @@ func (p *nestedContainersProcessorListMap) Run(argStruct thrift.Struct) (thrift.
       return x, x
     }
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type nestedContainersProcessorListSet struct {
@@ -634,7 +634,7 @@ func (p *nestedContainersProcessorListSet) Write(seqId int32, result thrift.Writ
 
 func (p *nestedContainersProcessorListSet) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*NestedContainersListSetArgs)
-  var result NestedContainersListSetResult
+  var __result NestedContainersListSetResult
   if err := p.handler.ListSet(args.Foo); err != nil {
     switch err.(type) {
     default:
@@ -642,7 +642,7 @@ func (p *nestedContainersProcessorListSet) Run(argStruct thrift.Struct) (thrift.
       return x, x
     }
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type nestedContainersProcessorTurtles struct {
@@ -687,7 +687,7 @@ func (p *nestedContainersProcessorTurtles) Write(seqId int32, result thrift.Writ
 
 func (p *nestedContainersProcessorTurtles) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*NestedContainersTurtlesArgs)
-  var result NestedContainersTurtlesResult
+  var __result NestedContainersTurtlesResult
   if err := p.handler.Turtles(args.Foo); err != nil {
     switch err.(type) {
     default:
@@ -695,7 +695,7 @@ func (p *nestedContainersProcessorTurtles) Run(argStruct thrift.Struct) (thrift.
       return x, x
     }
   }
-  return &result, nil
+  return &__result, nil
 }
 
 

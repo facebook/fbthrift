@@ -85,11 +85,11 @@ func (p *ServiceClient) Func(arg1 string, arg2 string, arg3 *Foo) (_r int32, err
 
 
 func (p *ServiceClient) recvFunc() (value int32, err error) {
-  var result ServiceFuncResult
-  err = p.CC.RecvMsg("func", &result)
+  var __result ServiceFuncResult
+  err = p.CC.RecvMsg("func", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 
@@ -148,11 +148,11 @@ func (p *ServiceThreadsafeClient) Func(arg1 string, arg2 string, arg3 *Foo) (_r 
 
 
 func (p *ServiceThreadsafeClient) recvFunc() (value int32, err error) {
-  var result ServiceFuncResult
-  err = p.CC.RecvMsg("func", &result)
+  var __result ServiceFuncResult
+  err = p.CC.RecvMsg("func", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 
@@ -186,11 +186,11 @@ func (p *ServiceChannelClient) Func(ctx context.Context, arg1 string, arg2 strin
     Arg2 : arg2,
     Arg3 : arg3,
   }
-  var result ServiceFuncResult
-  err = p.RequestChannel.Call(ctx, "func", &args, &result)
+  var __result ServiceFuncResult
+  err = p.RequestChannel.Call(ctx, "func", &args, &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 
@@ -272,7 +272,7 @@ func (p *serviceProcessorFunc) Write(seqId int32, result thrift.WritableStruct, 
 
 func (p *serviceProcessorFunc) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*ServiceFuncArgs)
-  var result ServiceFuncResult
+  var __result ServiceFuncResult
   if retval, err := p.handler.Func(args.Arg1, args.Arg2, args.Arg3); err != nil {
     switch err.(type) {
     default:
@@ -280,9 +280,9 @@ func (p *serviceProcessorFunc) Run(argStruct thrift.Struct) (thrift.WritableStru
       return x, x
     }
   } else {
-    result.Success = &retval
+    __result.Success = &retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 

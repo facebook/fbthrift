@@ -68,8 +68,8 @@ func (p *MyNodeClient) DoMid() (err error) {
 
 
 func (p *MyNodeClient) recvDoMid() (err error) {
-  var result MyNodeDoMidResult
-  return p.CC.RecvMsg("do_mid", &result)
+  var __result MyNodeDoMidResult
+  return p.CC.RecvMsg("do_mid", &__result)
 }
 
 
@@ -119,8 +119,8 @@ func (p *MyNodeThreadsafeClient) DoMid() (err error) {
 
 
 func (p *MyNodeThreadsafeClient) recvDoMid() (err error) {
-  var result MyNodeDoMidResult
-  return p.CC.RecvMsg("do_mid", &result)
+  var __result MyNodeDoMidResult
+  return p.CC.RecvMsg("do_mid", &__result)
 }
 
 
@@ -147,8 +147,8 @@ func NewMyNodeChannelClient(channel thrift.RequestChannel) *MyNodeChannelClient 
 func (p *MyNodeChannelClient) DoMid(ctx context.Context) (err error) {
   args := MyNodeDoMidArgs{
   }
-  var result MyNodeDoMidResult
-  err = p.RequestChannel.Call(ctx, "do_mid", &args, &result)
+  var __result MyNodeDoMidResult
+  err = p.RequestChannel.Call(ctx, "do_mid", &args, &__result)
   if err != nil { return }
 
   return nil
@@ -207,7 +207,7 @@ func (p *myNodeProcessorDoMid) Write(seqId int32, result thrift.WritableStruct, 
 }
 
 func (p *myNodeProcessorDoMid) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
-  var result MyNodeDoMidResult
+  var __result MyNodeDoMidResult
   if err := p.handler.DoMid(); err != nil {
     switch err.(type) {
     default:
@@ -215,7 +215,7 @@ func (p *myNodeProcessorDoMid) Run(argStruct thrift.Struct) (thrift.WritableStru
       return x, x
     }
   }
-  return &result, nil
+  return &__result, nil
 }
 
 

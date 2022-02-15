@@ -83,11 +83,11 @@ func (p *SomeServiceClient) BounceMap(m include0.SomeMap) (_r include0.SomeMap, 
 
 
 func (p *SomeServiceClient) recvBounceMap() (value include0.SomeMap, err error) {
-  var result SomeServiceBounceMapResult
-  err = p.CC.RecvMsg("bounce_map", &result)
+  var __result SomeServiceBounceMapResult
+  err = p.CC.RecvMsg("bounce_map", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -103,11 +103,11 @@ func (p *SomeServiceClient) BinaryKeyedMap(r []int64) (_r map[string]int64, err 
 
 
 func (p *SomeServiceClient) recvBinaryKeyedMap() (value map[string]int64, err error) {
-  var result SomeServiceBinaryKeyedMapResult
-  err = p.CC.RecvMsg("binary_keyed_map", &result)
+  var __result SomeServiceBinaryKeyedMapResult
+  err = p.CC.RecvMsg("binary_keyed_map", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 
@@ -162,11 +162,11 @@ func (p *SomeServiceThreadsafeClient) BounceMap(m include0.SomeMap) (_r include0
 
 
 func (p *SomeServiceThreadsafeClient) recvBounceMap() (value include0.SomeMap, err error) {
-  var result SomeServiceBounceMapResult
-  err = p.CC.RecvMsg("bounce_map", &result)
+  var __result SomeServiceBounceMapResult
+  err = p.CC.RecvMsg("bounce_map", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -184,11 +184,11 @@ func (p *SomeServiceThreadsafeClient) BinaryKeyedMap(r []int64) (_r map[string]i
 
 
 func (p *SomeServiceThreadsafeClient) recvBinaryKeyedMap() (value map[string]int64, err error) {
-  var result SomeServiceBinaryKeyedMapResult
-  err = p.CC.RecvMsg("binary_keyed_map", &result)
+  var __result SomeServiceBinaryKeyedMapResult
+  err = p.CC.RecvMsg("binary_keyed_map", &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 
@@ -218,11 +218,11 @@ func (p *SomeServiceChannelClient) BounceMap(ctx context.Context, m include0.Som
   args := SomeServiceBounceMapArgs{
     M : m,
   }
-  var result SomeServiceBounceMapResult
-  err = p.RequestChannel.Call(ctx, "bounce_map", &args, &result)
+  var __result SomeServiceBounceMapResult
+  err = p.RequestChannel.Call(ctx, "bounce_map", &args, &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -231,11 +231,11 @@ func (p *SomeServiceChannelClient) BinaryKeyedMap(ctx context.Context, r []int64
   args := SomeServiceBinaryKeyedMapArgs{
     R : r,
   }
-  var result SomeServiceBinaryKeyedMapResult
-  err = p.RequestChannel.Call(ctx, "binary_keyed_map", &args, &result)
+  var __result SomeServiceBinaryKeyedMapResult
+  err = p.RequestChannel.Call(ctx, "binary_keyed_map", &args, &__result)
   if err != nil { return }
 
-  return result.GetSuccess(), nil
+  return __result.GetSuccess(), nil
 }
 
 
@@ -319,7 +319,7 @@ func (p *someServiceProcessorBounceMap) Write(seqId int32, result thrift.Writabl
 
 func (p *someServiceProcessorBounceMap) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*SomeServiceBounceMapArgs)
-  var result SomeServiceBounceMapResult
+  var __result SomeServiceBounceMapResult
   if retval, err := p.handler.BounceMap(args.M); err != nil {
     switch err.(type) {
     default:
@@ -327,9 +327,9 @@ func (p *someServiceProcessorBounceMap) Run(argStruct thrift.Struct) (thrift.Wri
       return x, x
     }
   } else {
-    result.Success = retval
+    __result.Success = retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type someServiceProcessorBinaryKeyedMap struct {
@@ -374,7 +374,7 @@ func (p *someServiceProcessorBinaryKeyedMap) Write(seqId int32, result thrift.Wr
 
 func (p *someServiceProcessorBinaryKeyedMap) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*SomeServiceBinaryKeyedMapArgs)
-  var result SomeServiceBinaryKeyedMapResult
+  var __result SomeServiceBinaryKeyedMapResult
   if retval, err := p.handler.BinaryKeyedMap(args.R); err != nil {
     switch err.(type) {
     default:
@@ -382,9 +382,9 @@ func (p *someServiceProcessorBinaryKeyedMap) Run(argStruct thrift.Struct) (thrif
       return x, x
     }
   } else {
-    result.Success = retval
+    __result.Success = retval
   }
-  return &result, nil
+  return &__result, nil
 }
 
 

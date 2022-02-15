@@ -68,8 +68,8 @@ func (p *MyServicePrioChildClient) Pang() (err error) {
 
 
 func (p *MyServicePrioChildClient) recvPang() (err error) {
-  var result MyServicePrioChildPangResult
-  return p.CC.RecvMsg("pang", &result)
+  var __result MyServicePrioChildPangResult
+  return p.CC.RecvMsg("pang", &__result)
 }
 
 
@@ -119,8 +119,8 @@ func (p *MyServicePrioChildThreadsafeClient) Pang() (err error) {
 
 
 func (p *MyServicePrioChildThreadsafeClient) recvPang() (err error) {
-  var result MyServicePrioChildPangResult
-  return p.CC.RecvMsg("pang", &result)
+  var __result MyServicePrioChildPangResult
+  return p.CC.RecvMsg("pang", &__result)
 }
 
 
@@ -147,8 +147,8 @@ func NewMyServicePrioChildChannelClient(channel thrift.RequestChannel) *MyServic
 func (p *MyServicePrioChildChannelClient) Pang(ctx context.Context) (err error) {
   args := MyServicePrioChildPangArgs{
   }
-  var result MyServicePrioChildPangResult
-  err = p.RequestChannel.Call(ctx, "pang", &args, &result)
+  var __result MyServicePrioChildPangResult
+  err = p.RequestChannel.Call(ctx, "pang", &args, &__result)
   if err != nil { return }
 
   return nil
@@ -207,7 +207,7 @@ func (p *myServicePrioChildProcessorPang) Write(seqId int32, result thrift.Writa
 }
 
 func (p *myServicePrioChildProcessorPang) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
-  var result MyServicePrioChildPangResult
+  var __result MyServicePrioChildPangResult
   if err := p.handler.Pang(); err != nil {
     switch err.(type) {
     default:
@@ -215,7 +215,7 @@ func (p *myServicePrioChildProcessorPang) Run(argStruct thrift.Struct) (thrift.W
       return x, x
     }
   }
-  return &result, nil
+  return &__result, nil
 }
 
 

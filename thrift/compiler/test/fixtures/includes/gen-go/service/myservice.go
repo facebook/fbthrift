@@ -99,8 +99,8 @@ func (p *MyServiceClient) Query(s *module0.MyStruct, i *includes1.Included) (err
 
 
 func (p *MyServiceClient) recvQuery() (err error) {
-  var result MyServiceQueryResult
-  return p.CC.RecvMsg("query", &result)
+  var __result MyServiceQueryResult
+  return p.CC.RecvMsg("query", &__result)
 }
 
 // Parameters:
@@ -118,8 +118,8 @@ func (p *MyServiceClient) HasArgDocs(s *module0.MyStruct, i *includes1.Included)
 
 
 func (p *MyServiceClient) recvHasArgDocs() (err error) {
-  var result MyServiceHasArgDocsResult
-  return p.CC.RecvMsg("has_arg_docs", &result)
+  var __result MyServiceHasArgDocsResult
+  return p.CC.RecvMsg("has_arg_docs", &__result)
 }
 
 
@@ -179,8 +179,8 @@ func (p *MyServiceThreadsafeClient) Query(s *module0.MyStruct, i *includes1.Incl
 
 
 func (p *MyServiceThreadsafeClient) recvQuery() (err error) {
-  var result MyServiceQueryResult
-  return p.CC.RecvMsg("query", &result)
+  var __result MyServiceQueryResult
+  return p.CC.RecvMsg("query", &__result)
 }
 
 // Parameters:
@@ -200,8 +200,8 @@ func (p *MyServiceThreadsafeClient) HasArgDocs(s *module0.MyStruct, i *includes1
 
 
 func (p *MyServiceThreadsafeClient) recvHasArgDocs() (err error) {
-  var result MyServiceHasArgDocsResult
-  return p.CC.RecvMsg("has_arg_docs", &result)
+  var __result MyServiceHasArgDocsResult
+  return p.CC.RecvMsg("has_arg_docs", &__result)
 }
 
 
@@ -236,8 +236,8 @@ func (p *MyServiceChannelClient) Query(ctx context.Context, s *module0.MyStruct,
     S : s,
     I : i,
   }
-  var result MyServiceQueryResult
-  err = p.RequestChannel.Call(ctx, "query", &args, &result)
+  var __result MyServiceQueryResult
+  err = p.RequestChannel.Call(ctx, "query", &args, &__result)
   if err != nil { return }
 
   return nil
@@ -251,8 +251,8 @@ func (p *MyServiceChannelClient) HasArgDocs(ctx context.Context, s *module0.MySt
     S : s,
     I : i,
   }
-  var result MyServiceHasArgDocsResult
-  err = p.RequestChannel.Call(ctx, "has_arg_docs", &args, &result)
+  var __result MyServiceHasArgDocsResult
+  err = p.RequestChannel.Call(ctx, "has_arg_docs", &args, &__result)
   if err != nil { return }
 
   return nil
@@ -339,7 +339,7 @@ func (p *myServiceProcessorQuery) Write(seqId int32, result thrift.WritableStruc
 
 func (p *myServiceProcessorQuery) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*MyServiceQueryArgs)
-  var result MyServiceQueryResult
+  var __result MyServiceQueryResult
   if err := p.handler.Query(args.S, args.I); err != nil {
     switch err.(type) {
     default:
@@ -347,7 +347,7 @@ func (p *myServiceProcessorQuery) Run(argStruct thrift.Struct) (thrift.WritableS
       return x, x
     }
   }
-  return &result, nil
+  return &__result, nil
 }
 
 type myServiceProcessorHasArgDocs struct {
@@ -392,7 +392,7 @@ func (p *myServiceProcessorHasArgDocs) Write(seqId int32, result thrift.Writable
 
 func (p *myServiceProcessorHasArgDocs) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*MyServiceHasArgDocsArgs)
-  var result MyServiceHasArgDocsResult
+  var __result MyServiceHasArgDocsResult
   if err := p.handler.HasArgDocs(args.S, args.I); err != nil {
     switch err.(type) {
     default:
@@ -400,7 +400,7 @@ func (p *myServiceProcessorHasArgDocs) Run(argStruct thrift.Struct) (thrift.Writ
       return x, x
     }
   }
-  return &result, nil
+  return &__result, nil
 }
 
 
