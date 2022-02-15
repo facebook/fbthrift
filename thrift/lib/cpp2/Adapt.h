@@ -52,6 +52,12 @@ using FromThriftFieldType = decltype(Adapter::fromThriftField(
 template <typename Adapter, typename ThriftT, typename Struct>
 constexpr bool is_field_adapter_v =
     folly::is_detected_v<FromThriftFieldType, Adapter, ThriftT, Struct>;
+template <typename Adapter, typename ThriftT, typename Struct>
+using if_field_adapter =
+    std::enable_if_t<is_field_adapter_v<Adapter, ThriftT, Struct>, int>;
+template <typename Adapter, typename ThriftT, typename Struct>
+using if_not_field_adapter =
+    std::enable_if_t<!is_field_adapter_v<Adapter, ThriftT, Struct>, int>;
 
 // Used to detect if Adapter has a construct function override.
 template <typename Adapter, typename AdaptedT, typename Context>
@@ -60,6 +66,12 @@ using ConstructType = decltype(Adapter::construct(
 template <typename Adapter, typename AdaptedT, typename Context>
 constexpr bool is_ctor_adapter_v =
     folly::is_detected_v<ConstructType, Adapter, AdaptedT, Context>;
+template <typename Adapter, typename AdaptedT, typename Context>
+using if_ctor_adapter =
+    std::enable_if_t<is_ctor_adapter_v<Adapter, AdaptedT, Context>>;
+template <typename Adapter, typename AdaptedT, typename Context>
+using if_not_ctor_adapter =
+    std::enable_if_t<!is_ctor_adapter_v<Adapter, AdaptedT, Context>>;
 
 // Used to detect if Adapter has a clear function override.
 template <typename Adapter, typename AdaptedT>
@@ -67,20 +79,39 @@ using ClearType = decltype(Adapter::clear(std::declval<AdaptedT&>()));
 template <typename Adapter, typename AdaptedT>
 constexpr bool is_clear_adapter_v =
     folly::is_detected_v<ClearType, Adapter, AdaptedT>;
+template <typename Adapter, typename AdaptedT, typename R = void>
+using if_clear_adapter =
+    std::enable_if_t<is_clear_adapter_v<Adapter, AdaptedT>, R>;
+template <typename Adapter, typename AdaptedT, typename R = void>
+using if_not_clear_adapter =
+    std::enable_if_t<!is_clear_adapter_v<Adapter, AdaptedT>, R>;
 
 // Converts a Thrift field value into an adapted type via Adapter.
-//
-// Passing additional context containing the reference to the
+// This overload passes additional context containing the reference to the
 // Thrift object containing the field and the field ID as a second argument
-// to Adapter::fromThriftField, if availabile. Otherwise does the conversion v
-// ia Adapter::fromThrift.
-template <typename Adapter, int16_t FieldId, typename ThriftT, typename Struct>
+// to Adapter::fromThriftField.
+template <
+    typename Adapter,
+    int16_t FieldId,
+    typename ThriftT,
+    typename Struct,
+    if_field_adapter<Adapter, ThriftT, Struct> = 0>
 constexpr decltype(auto) fromThriftField(ThriftT&& value, Struct& object) {
-  if constexpr (is_field_adapter_v<Adapter, ThriftT, Struct>) {
-    return Adapter::fromThriftField(
-        std::forward<ThriftT>(value),
-        FieldAdapterContext<Struct, FieldId>{object});
-  }
+  return Adapter::fromThriftField(
+      std::forward<ThriftT>(value),
+      FieldAdapterContext<Struct, FieldId>{object});
+}
+
+// Converts a Thrift field value into an adapted type via Adapter.
+// This overloads does the conversion via Adapter::fromThrift and is used when
+// Adapter::fromThriftField is unavailable.
+template <
+    typename Adapter,
+    int16_t FieldId,
+    typename ThriftT,
+    typename Struct,
+    if_not_field_adapter<Adapter, ThriftT, Struct> = 0>
+constexpr decltype(auto) fromThriftField(ThriftT&& value, Struct&) {
   return Adapter::fromThrift(std::forward<ThriftT>(value));
 }
 
@@ -113,22 +144,30 @@ void fromThrift(AdaptedT& adapted, ThriftT&& value) {
 // the reference to the Thrift object containing the field and the field ID as
 // a second argument to Adapter::construct.
 template <typename Adapter, int16_t FieldId, typename AdaptedT, typename Struct>
-constexpr void construct(AdaptedT& field, Struct& object) {
-  if constexpr (is_ctor_adapter_v<
-                    Adapter,
-                    AdaptedT,
-                    FieldAdapterContext<Struct, FieldId>>) {
-    Adapter::construct(field, FieldAdapterContext<Struct, FieldId>{object});
-  }
+constexpr if_ctor_adapter<
+    Adapter,
+    AdaptedT,
+    FieldAdapterContext<Struct, FieldId>>
+construct(AdaptedT& field, Struct& object) {
+  Adapter::construct(field, FieldAdapterContext<Struct, FieldId>{object});
 }
+template <typename Adapter, int16_t FieldId, typename AdaptedT, typename Struct>
+constexpr if_not_ctor_adapter<
+    Adapter,
+    AdaptedT,
+    FieldAdapterContext<Struct, FieldId>>
+construct(AdaptedT&, Struct&) {}
 
 // Clear op based on the adapter, with a fallback to calling the default
 // constructor and Adapter::construct for context population.
 template <typename Adapter, int16_t FieldId, typename AdaptedT, typename Struct>
-constexpr void clear(AdaptedT& field, Struct& object) {
-  if constexpr (is_clear_adapter_v<Adapter, AdaptedT>) {
-    Adapter::clear(field);
-  }
+constexpr if_clear_adapter<Adapter, AdaptedT> clear(AdaptedT& field, Struct&) {
+  Adapter::clear(field);
+}
+
+template <typename Adapter, int16_t FieldId, typename AdaptedT, typename Struct>
+constexpr if_not_clear_adapter<Adapter, AdaptedT> clear(
+    AdaptedT& field, Struct& object) {
   field = AdaptedT();
   construct<Adapter, FieldId>(field, object);
 }
