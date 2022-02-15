@@ -1046,6 +1046,9 @@ class mstch_struct : public mstch_base {
     return a;
   }
 
+  // Returns the struct members ordered by the key.
+  const std::vector<const t_field*>& get_members_in_key_order();
+
  protected:
   t_struct const* strct_;
   // Although mstch_fields can be generated from different orders than the IDL
@@ -1056,6 +1059,8 @@ class mstch_struct : public mstch_base {
   // std::vector<t_field*> to find the exact t_field to compute
   // field_generator_context.
   std::unordered_map<t_field const*, field_generator_context> context_map;
+
+  std::vector<const t_field*> fields_in_key_order_;
 };
 
 class mstch_function : public mstch_base {

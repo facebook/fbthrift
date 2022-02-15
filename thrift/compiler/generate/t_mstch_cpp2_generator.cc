@@ -1238,32 +1238,12 @@ class mstch_cpp2_struct : public mstch_struct {
     return generate_fields(get_members_in_layout_order());
   }
 
-  // Returns the struct members ordered by the key.
-  const std::vector<const t_field*>& get_members_in_key_order() {
-    if (strct_->fields().size() == fields_in_key_order_.size()) {
-      // Already reordered.
-      return fields_in_key_order_;
-    }
-
-    fields_in_key_order_ = strct_->fields().copy();
-    // Sort by increasing key.
-    std::sort(
-        fields_in_key_order_.begin(),
-        fields_in_key_order_.end(),
-        [](const auto* lhs, const auto* rhs) {
-          return lhs->get_key() < rhs->get_key();
-        });
-
-    return fields_in_key_order_;
-  }
-
   mstch::node fields_in_key_order() {
     return generate_fields(get_members_in_key_order());
   }
 
   std::shared_ptr<cpp2_generator_context> context_;
 
-  std::vector<const t_field*> fields_in_key_order_;
   std::vector<const t_field*> fields_in_layout_order_;
   cpp2::is_eligible_for_constexpr is_eligible_for_constexpr_;
 };

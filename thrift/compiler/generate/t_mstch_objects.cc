@@ -594,6 +594,24 @@ mstch::node mstch_struct::exception_kind() {
   }
 }
 
+const std::vector<const t_field*>& mstch_struct::get_members_in_key_order() {
+  if (strct_->fields().size() == fields_in_key_order_.size()) {
+    // Already reordered.
+    return fields_in_key_order_;
+  }
+
+  fields_in_key_order_ = strct_->fields().copy();
+  // Sort by increasing key.
+  std::sort(
+      fields_in_key_order_.begin(),
+      fields_in_key_order_.end(),
+      [](const auto* lhs, const auto* rhs) {
+        return lhs->get_key() < rhs->get_key();
+      });
+
+  return fields_in_key_order_;
+}
+
 mstch::node mstch_function::return_type() {
   return generators_->type_generator_->generate(
       function_->get_returntype(), generators_, cache_, pos_);
