@@ -166,24 +166,49 @@ class BitRef {
 
  public:
   using Isset = std::conditional_t<kIsConst, const uint8_t, uint8_t>;
+  using AtomicIsset = std::
+      conditional_t<kIsConst, const std::atomic<uint8_t>, std::atomic<uint8_t>>;
 
   BitRef(Isset& isset, uint8_t bit_index)
       : value_(isset), bit_index_(bit_index) {}
 
+  BitRef(AtomicIsset& isset, uint8_t bit_index)
+      : value_(isset), bit_index_(bit_index), is_atomic_(true) {}
+
   template <bool B>
   explicit BitRef(const BitRef<B>& other)
-      : value_(other.value_.bitset.value()), bit_index_(other.bit_index_) {}
+      : value_(
+            other.is_atomic_ ? IssetBitSet(other.value_.atomic.value())
+                             : IssetBitSet(other.value_.non_atomic.value())),
+        bit_index_(other.bit_index_),
+        is_atomic_(other.is_atomic_) {}
 
-  void operator=(bool flag) { value_.bitset[bit_index_] = flag; }
-  explicit operator bool() const { return value_.bitset[bit_index_]; }
+  void operator=(bool flag) {
+    if (is_atomic_) {
+      value_.atomic[bit_index_] = flag;
+    } else {
+      value_.non_atomic[bit_index_] = flag;
+    }
+  }
+
+  explicit operator bool() const {
+    if (is_atomic_) {
+      return value_.atomic[bit_index_];
+    } else {
+      return value_.non_atomic[bit_index_];
+    }
+  }
 
  private:
-  struct IssetBitSet {
-    explicit IssetBitSet(Isset& isset) : bitset(isset) {}
-    apache::thrift::detail::BitSet<Isset&> bitset;
+  union IssetBitSet {
+    explicit IssetBitSet(Isset& isset) : non_atomic(isset) {}
+    explicit IssetBitSet(AtomicIsset& isset) : atomic(isset) {}
+    apache::thrift::detail::BitSet<Isset&> non_atomic;
+    apache::thrift::detail::BitSet<AtomicIsset&> atomic;
   } value_;
 
   const uint8_t bit_index_;
+  const bool is_atomic_ = false;
 };
 } // namespace detail
 
