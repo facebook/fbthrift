@@ -23,7 +23,7 @@
 #include <string>
 #include <vector>
 
-#include <thrift/compiler/generate/t_java_generator.h>
+#include <thrift/compiler/generate/t_java_deprecated_generator.h>
 
 namespace apache {
 namespace thrift {
@@ -34,14 +34,14 @@ namespace compiler {
  *
  */
 
-class t_android_generator : public t_java_generator {
+class t_android_generator : public t_java_deprecated_generator {
  public:
   t_android_generator(
       t_program* program,
       t_generation_context context,
       const std::map<std::string, std::string>& parsed_options,
       const std::string& option_string)
-      : t_java_generator(
+      : t_java_deprecated_generator(
             program, std::move(context), parsed_options, option_string) {
     generate_field_metadata_ = false;
     generate_immutable_structs_ = true;

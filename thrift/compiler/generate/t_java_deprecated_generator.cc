@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/compiler/generate/t_java_generator.h>
+#include <thrift/compiler/generate/t_java_deprecated_generator.h>
 
 #include <cctype>
 #include <fstream>
@@ -39,7 +39,7 @@ namespace compiler {
  *
  * @param tprogram The program to generate
  */
-void t_java_generator::init_generator() {
+void t_java_deprecated_generator::init_generator() {
   // Make output directory
   boost::filesystem::create_directory(get_out_dir());
   namespace_key_ = "java";
@@ -66,7 +66,7 @@ void t_java_generator::init_generator() {
  *
  * @return String of the package, i.e. "package com.facebook.thriftdemo;"
  */
-string t_java_generator::java_package() {
+string t_java_deprecated_generator::java_package() {
   if (!package_name_.empty()) {
     return string("package ") + package_name_ + ";\n\n";
   }
@@ -76,7 +76,7 @@ string t_java_generator::java_package() {
 /**
  * @return String indicating the parent class for the generated struct
  */
-boost::optional<string> t_java_generator::java_struct_parent_class(
+boost::optional<string> t_java_deprecated_generator::java_struct_parent_class(
     const t_struct* /* unused */, StructGenParams params) {
   return boost::make_optional(params.is_exception, std::string("Exception"));
 }
@@ -86,7 +86,7 @@ boost::optional<string> t_java_generator::java_struct_parent_class(
  *
  * @return List of imports for Java types that are used in here
  */
-string t_java_generator::java_service_imports() {
+string t_java_deprecated_generator::java_service_imports() {
   return java_struct_imports() +
       "import org.slf4j.Logger;\nimport org.slf4j.LoggerFactory;\n\n";
 }
@@ -96,7 +96,7 @@ string t_java_generator::java_service_imports() {
  *
  * @return List of imports for Java types that are used in here
  */
-string t_java_generator::java_struct_imports() {
+string t_java_deprecated_generator::java_struct_imports() {
   return string() + "import java.util.List;\n" +
       "import java.util.ArrayList;\nimport java.util.Map;\n" +
       "import java.util.HashMap;\nimport java.util.Set;\n" +
@@ -109,7 +109,7 @@ string t_java_generator::java_struct_imports() {
  *
  * @return List of imports necessary for thrift
  */
-string t_java_generator::java_thrift_imports() {
+string t_java_deprecated_generator::java_thrift_imports() {
   return string() + "import com.facebook.thrift.*;\n" +
       "import com.facebook.thrift.annotations.*;\n" +
       "import com.facebook.thrift.async.*;\n" +
@@ -119,31 +119,31 @@ string t_java_generator::java_thrift_imports() {
       "import com.facebook.thrift.protocol.*;\n\n";
 }
 
-string t_java_generator::java_suppress_warnings_enum() {
+string t_java_deprecated_generator::java_suppress_warnings_enum() {
   return string() + "@SuppressWarnings({ \"unused\" })\n";
 }
 
-string t_java_generator::java_suppress_warnings_consts() {
+string t_java_deprecated_generator::java_suppress_warnings_consts() {
   return string() + "@SuppressWarnings({ \"unused\" })\n";
 }
 
-string t_java_generator::java_suppress_warnings_union() {
+string t_java_deprecated_generator::java_suppress_warnings_union() {
   return string() +
       "@SuppressWarnings({ \"unused\", \"serial\", \"unchecked\" })\n";
 }
 
-string t_java_generator::java_suppress_warnings_struct() {
+string t_java_deprecated_generator::java_suppress_warnings_struct() {
   return string() + "@SuppressWarnings({ \"unused\", \"serial\" })\n";
 }
 
-string t_java_generator::java_suppress_warnings_service() {
+string t_java_deprecated_generator::java_suppress_warnings_service() {
   return string() + "@SuppressWarnings({ \"unused\", \"serial\" })\n";
 }
 
 /**
  * Nothing in Java
  */
-void t_java_generator::close_generator() {}
+void t_java_deprecated_generator::close_generator() {}
 
 /**
  * Generates a typedef. This is not done in Java, since it does
@@ -152,14 +152,15 @@ void t_java_generator::close_generator() {}
  *
  * @param ttypedef The type definition
  */
-void t_java_generator::generate_typedef(const t_typedef* /*ttypedef*/) {}
+void t_java_deprecated_generator::generate_typedef(
+    const t_typedef* /*ttypedef*/) {}
 
 /**
  * Enums are Java enums with a set of static constants.
  *
  * @param tenum The enumeration
  */
-void t_java_generator::generate_enum(const t_enum* tenum) {
+void t_java_deprecated_generator::generate_enum(const t_enum* tenum) {
   // Make output file
   string f_enum_name = get_package_dir() + "/" + (tenum->get_name()) + ".java";
   ofstream f_enum;
@@ -265,7 +266,8 @@ void t_java_generator::generate_enum(const t_enum* tenum) {
 /**
  * Generates a class that holds all the constants.
  */
-void t_java_generator::generate_consts(std::vector<t_const*> consts) {
+void t_java_deprecated_generator::generate_consts(
+    std::vector<t_const*> consts) {
   if (consts.empty()) {
     return;
   }
@@ -300,7 +302,7 @@ void t_java_generator::generate_consts(std::vector<t_const*> consts) {
  * is NOT performed in this function as it is always run beforehand using the
  * validate_types method in main.cc
  */
-void t_java_generator::print_const_value(
+void t_java_deprecated_generator::print_const_value(
     std::ostream& out,
     string name,
     const t_type* type,
@@ -401,7 +403,7 @@ void t_java_generator::print_const_value(
   }
 }
 
-string t_java_generator::render_const_value(
+string t_java_deprecated_generator::render_const_value(
     ostream& out,
     string /* unused */,
     const t_type* type,
@@ -530,7 +532,7 @@ string t_java_generator::render_const_value(
  *
  * @param tstruct The struct definition
  */
-void t_java_generator::generate_struct(const t_struct* tstruct) {
+void t_java_deprecated_generator::generate_struct(const t_struct* tstruct) {
   if (tstruct->is_union()) {
     generate_java_union(tstruct);
   } else {
@@ -543,7 +545,7 @@ void t_java_generator::generate_struct(const t_struct* tstruct) {
  *
  * @param tstruct The struct definition
  */
-void t_java_generator::generate_xception(const t_struct* txception) {
+void t_java_deprecated_generator::generate_xception(const t_struct* txception) {
   generate_java_struct(txception, true);
 }
 
@@ -552,7 +554,7 @@ void t_java_generator::generate_xception(const t_struct* txception) {
  *
  * @param tstruct The struct definition
  */
-void t_java_generator::generate_java_struct(
+void t_java_deprecated_generator::generate_java_struct(
     const t_struct* tstruct, bool is_exception) {
   // Make output file
   string f_struct_name =
@@ -578,7 +580,7 @@ void t_java_generator::generate_java_struct(
  *
  * @param tstruct The struct definition
  */
-void t_java_generator::generate_java_union(const t_struct* tstruct) {
+void t_java_deprecated_generator::generate_java_union(const t_struct* tstruct) {
   // Make output file
   string f_struct_name =
       get_package_dir() + "/" + (tstruct->get_name()) + ".java";
@@ -647,7 +649,7 @@ void t_java_generator::generate_java_union(const t_struct* tstruct) {
   f_struct.close();
 }
 
-void t_java_generator::generate_union_constructor(
+void t_java_deprecated_generator::generate_union_constructor(
     ofstream& out, const t_struct* tstruct) {
   indent(out) << "public " << type_name(tstruct) << "() {" << endl;
   indent(out) << "  super();" << endl;
@@ -683,7 +685,7 @@ void t_java_generator::generate_union_constructor(
   }
 }
 
-void t_java_generator::generate_union_getters_and_setters(
+void t_java_deprecated_generator::generate_union_getters_and_setters(
     ofstream& out, const t_struct* tstruct) {
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
@@ -744,7 +746,7 @@ void t_java_generator::generate_union_getters_and_setters(
   }
 }
 
-void t_java_generator::generate_union_abstract_methods(
+void t_java_deprecated_generator::generate_union_abstract_methods(
     ofstream& out, const t_struct* tstruct) {
   if (!generate_immutable_structs_) {
     // immutable structs use generic `checkType` (defined in parent class
@@ -770,7 +772,7 @@ void t_java_generator::generate_union_abstract_methods(
       << endl;
 }
 
-void t_java_generator::generate_check_type(
+void t_java_deprecated_generator::generate_check_type(
     ofstream& out, const t_struct* tstruct) {
   indent(out) << "@Override" << endl;
   indent(out)
@@ -819,7 +821,7 @@ void t_java_generator::generate_check_type(
  * @param out The output stream
  * @param tstruct The struct definition
  */
-void t_java_generator::generate_union_reader(
+void t_java_deprecated_generator::generate_union_reader(
     ofstream& out, const t_struct* tstruct) {
   indent(out) << "@Override" << endl;
   indent(out) << "public void read(TProtocol iprot) throws TException {"
@@ -886,7 +888,7 @@ void t_java_generator::generate_union_reader(
   indent(out) << "}" << endl;
 }
 
-void t_java_generator::generate_read_value(
+void t_java_deprecated_generator::generate_read_value(
     ofstream& out, const t_struct* tstruct) {
   indent(out) << "@Override" << endl;
   indent(out)
@@ -928,7 +930,7 @@ void t_java_generator::generate_read_value(
   indent(out) << "}" << endl;
 }
 
-void t_java_generator::generate_write_value(
+void t_java_deprecated_generator::generate_write_value(
     ofstream& out, const t_struct* tstruct) {
   indent(out) << "@Override" << endl;
   indent(out)
@@ -970,7 +972,7 @@ void t_java_generator::generate_write_value(
   indent(out) << "}" << endl;
 }
 
-void t_java_generator::generate_get_field_desc(
+void t_java_deprecated_generator::generate_get_field_desc(
     ofstream& out, const t_struct* tstruct) {
   indent(out) << "@Override" << endl;
   indent(out) << "protected TField getFieldDesc(int setField) {" << endl;
@@ -1001,7 +1003,7 @@ void t_java_generator::generate_get_field_desc(
   indent(out) << "}" << endl;
 }
 
-void t_java_generator::generate_get_struct_desc(
+void t_java_deprecated_generator::generate_get_struct_desc(
     ofstream& out, const t_struct* /*tstruct*/) {
   indent(out) << "@Override" << endl;
   indent(out) << "protected TStruct getStructDesc() {" << endl;
@@ -1009,7 +1011,7 @@ void t_java_generator::generate_get_struct_desc(
   indent(out) << "}" << endl;
 }
 
-void t_java_generator::generate_union_comparisons(
+void t_java_deprecated_generator::generate_union_comparisons(
     ofstream& out, const t_struct* tstruct) {
   // equality
   indent(out) << "public boolean equals(Object other) {" << endl;
@@ -1044,7 +1046,7 @@ void t_java_generator::generate_union_comparisons(
   }
 }
 
-void t_java_generator::generate_union_hashcode(
+void t_java_deprecated_generator::generate_union_hashcode(
     ofstream& out, const t_struct* /*tstruct*/) {
   indent(out) << "@Override" << endl;
   indent(out) << "public int hashCode() {" << endl;
@@ -1057,7 +1059,7 @@ void t_java_generator::generate_union_hashcode(
  * Generates code for a constructor for a tstruct, given the fields that
  * the constructor should take as parameters to initialize the struct.
  */
-void t_java_generator::generate_java_constructor(
+void t_java_deprecated_generator::generate_java_constructor(
     ofstream& out, const t_struct* tstruct, const vector<t_field*>& fields) {
   vector<t_field*>::const_iterator m_iter;
   indent(out) << "public " << tstruct->get_name() << "(";
@@ -1099,7 +1101,7 @@ void t_java_generator::generate_java_constructor(
 /**
  * Generates code for a constructor for a tstruct, using the Builder pattern.
  */
-void t_java_generator::generate_java_constructor_using_builder(
+void t_java_deprecated_generator::generate_java_constructor_using_builder(
     ofstream& out,
     const t_struct* tstruct,
     const vector<t_field*>& fields,
@@ -1221,7 +1223,7 @@ void t_java_generator::generate_java_constructor_using_builder(
  * @param in_class     If inside a class, needs to be static class
  * @param is_result    If this is a result it needs a different writer
  */
-void t_java_generator::generate_java_struct_definition(
+void t_java_deprecated_generator::generate_java_struct_definition(
     ofstream& out, const t_struct* tstruct, StructGenParams params) {
   generate_java_doc(out, tstruct);
 
@@ -1436,7 +1438,7 @@ void t_java_generator::generate_java_struct_definition(
   out << endl;
 }
 
-void t_java_generator::construct_constant_fields(
+void t_java_deprecated_generator::construct_constant_fields(
     ofstream& out, const t_struct* tstruct) {
   auto& members = tstruct->get_members();
   for (auto m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
@@ -1458,7 +1460,7 @@ void t_java_generator::construct_constant_fields(
  *
  * @param tstruct The struct definition
  */
-void t_java_generator::generate_java_struct_equality(
+void t_java_deprecated_generator::generate_java_struct_equality(
     ofstream& out, const t_struct* tstruct) {
   out << indent() << "@Override" << endl
       << indent() << "public boolean equals(Object _that) {" << endl;
@@ -1524,7 +1526,7 @@ void t_java_generator::generate_java_struct_equality(
   indent(out) << "}" << endl << endl;
 }
 
-void t_java_generator::generate_java_struct_compare_to(
+void t_java_deprecated_generator::generate_java_struct_compare_to(
     ofstream& out, const t_struct* tstruct) {
   indent(out) << "@Override" << endl;
   indent(out) << "public int compareTo(" << type_name(tstruct) << " other) {"
@@ -1574,7 +1576,7 @@ void t_java_generator::generate_java_struct_compare_to(
  *
  * @param tstruct The struct definition
  */
-void t_java_generator::generate_java_struct_reader(
+void t_java_deprecated_generator::generate_java_struct_reader(
     ofstream& out, const t_struct* tstruct) {
   if (generate_immutable_structs_) {
     out << indent()
@@ -1724,7 +1726,7 @@ void t_java_generator::generate_java_struct_reader(
 
 // generates java method to perform various checks
 // (e.g. check that all required fields are set)
-void t_java_generator::generate_java_validator(
+void t_java_deprecated_generator::generate_java_validator(
     ofstream& out, const t_struct* tstruct) {
   indent(out) << "public void validate() throws TException {" << endl;
   indent_up();
@@ -1759,7 +1761,7 @@ void t_java_generator::generate_java_validator(
  *
  * @param tstruct The struct definition
  */
-void t_java_generator::generate_java_struct_writer(
+void t_java_deprecated_generator::generate_java_struct_writer(
     ofstream& out, const t_struct* tstruct) {
   out << indent() << "public void write(TProtocol oprot) throws TException {"
       << endl;
@@ -1821,7 +1823,7 @@ void t_java_generator::generate_java_struct_writer(
  *
  * @param tstruct The struct definition
  */
-void t_java_generator::generate_java_struct_result_writer(
+void t_java_deprecated_generator::generate_java_struct_result_writer(
     ofstream& out, const t_struct* tstruct) {
   out << indent() << "public void write(TProtocol oprot) throws TException {"
       << endl;
@@ -1866,7 +1868,7 @@ void t_java_generator::generate_java_struct_result_writer(
   out << indent() << "}" << endl << endl;
 }
 
-void t_java_generator::generate_reflection_getters(
+void t_java_deprecated_generator::generate_reflection_getters(
     ostringstream& out,
     const t_type* type,
     string field_name,
@@ -1888,7 +1890,7 @@ void t_java_generator::generate_reflection_getters(
   indent_down();
 }
 
-void t_java_generator::generate_reflection_setters(
+void t_java_deprecated_generator::generate_reflection_setters(
     ostringstream& out,
     const t_type* type,
     string field_name,
@@ -1906,7 +1908,7 @@ void t_java_generator::generate_reflection_setters(
   indent_down();
 }
 
-void t_java_generator::generate_generic_field_getters_setters(
+void t_java_deprecated_generator::generate_generic_field_getters_setters(
     std::ofstream& out, const t_struct* tstruct) {
   std::ostringstream getter_stream;
   std::ostringstream setter_stream;
@@ -1974,7 +1976,8 @@ void t_java_generator::generate_generic_field_getters_setters(
   }
 }
 
-std::string t_java_generator::get_simple_getter_name(const t_field* field) {
+std::string t_java_deprecated_generator::get_simple_getter_name(
+    const t_field* field) {
   const std::string& field_name = field->get_name();
   std::string cap_name = get_cap_name(field_name);
   const t_type* type = field->get_type()->get_true_type();
@@ -1993,7 +1996,7 @@ std::string t_java_generator::get_simple_getter_name(const t_field* field) {
  *
  * @param tstruct The struct definition
  */
-void t_java_generator::generate_java_bean_boilerplate(
+void t_java_deprecated_generator::generate_java_bean_boilerplate(
     ofstream& out, const t_struct* tstruct, bool gen_immutable) {
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator f_iter;
@@ -2083,7 +2086,7 @@ void t_java_generator::generate_java_bean_boilerplate(
   }
 }
 
-void t_java_generator::generate_default_toString(
+void t_java_deprecated_generator::generate_default_toString(
     ofstream& out, const t_struct* /*tstruct*/) {
   out << indent() << "@Override" << endl
       << indent() << "public String toString() {" << endl;
@@ -2098,7 +2101,7 @@ void t_java_generator::generate_default_toString(
  *
  * @param tstruct The struct definition
  */
-void t_java_generator::generate_java_struct_tostring(
+void t_java_deprecated_generator::generate_java_struct_tostring(
     ofstream& out, const t_struct* tstruct) {
   generate_default_toString(out, tstruct);
   out << indent() << "@Override" << endl;
@@ -2228,7 +2231,7 @@ void t_java_generator::generate_java_struct_tostring(
  *
  * @param tstruct The struct definition
  */
-void t_java_generator::generate_java_meta_data_map(
+void t_java_deprecated_generator::generate_java_meta_data_map(
     ofstream& out, const t_struct* tstruct) {
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator f_iter;
@@ -2273,7 +2276,8 @@ void t_java_generator::generate_java_meta_data_map(
  * Returns a string with the java representation of the given thrift type
  * (e.g. for the type struct it returns "TType.STRUCT")
  */
-std::string t_java_generator::get_java_type_string(const t_type* type) {
+std::string t_java_deprecated_generator::get_java_type_string(
+    const t_type* type) {
   if (type->is_list()) {
     return "TType.LIST";
   } else if (type->is_map()) {
@@ -2310,16 +2314,16 @@ std::string t_java_generator::get_java_type_string(const t_type* type) {
       default:
         throw std::runtime_error(
             "Unknown thrift type \"" + type->get_name() +
-            "\" passed to t_java_generator::get_java_type_string!");
+            "\" passed to t_java_deprecated_generator::get_java_type_string!");
     }
   } else {
     throw std::runtime_error(
         "Unknown thrift type \"" + type->get_name() +
-        "\" passed to t_java_generator::get_java_type_string!");
+        "\" passed to t_java_deprecated_generator::get_java_type_string!");
   }
 }
 
-void t_java_generator::generate_field_value_meta_data(
+void t_java_deprecated_generator::generate_field_value_meta_data(
     std::ofstream& out, const t_type* type) {
   type = type->get_true_type();
   out << endl;
@@ -2361,7 +2365,7 @@ void t_java_generator::generate_field_value_meta_data(
  *
  * @param tservice The service definition
  */
-void t_java_generator::generate_service(const t_service* tservice) {
+void t_java_deprecated_generator::generate_service(const t_service* tservice) {
   // Make output file
   string f_service_name = get_package_dir() + "/" + service_name_ + ".java";
   f_service_.open(f_service_name.c_str());
@@ -2393,7 +2397,8 @@ void t_java_generator::generate_service(const t_service* tservice) {
  *
  * @param tservice The service to generate a header definition for
  */
-void t_java_generator::generate_service_interface(const t_service* tservice) {
+void t_java_deprecated_generator::generate_service_interface(
+    const t_service* tservice) {
   string extends = "";
   string extends_iface = "";
   if (tservice->get_extends() != nullptr) {
@@ -2422,7 +2427,7 @@ void t_java_generator::generate_service_interface(const t_service* tservice) {
   f_service_ << indent() << "}" << endl << endl;
 }
 
-void t_java_generator::generate_service_async_interface(
+void t_java_deprecated_generator::generate_service_async_interface(
     const t_service* tservice) {
   string extends = "";
   string extends_iface = "";
@@ -2456,7 +2461,8 @@ void t_java_generator::generate_service_async_interface(
  *
  * @param tservice The service
  */
-void t_java_generator::generate_service_helpers(const t_service* tservice) {
+void t_java_deprecated_generator::generate_service_helpers(
+    const t_service* tservice) {
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
@@ -2476,7 +2482,8 @@ void t_java_generator::generate_service_helpers(const t_service* tservice) {
  *
  * @param tservice The service to generate a server for.
  */
-void t_java_generator::generate_service_client(const t_service* tservice) {
+void t_java_deprecated_generator::generate_service_client(
+    const t_service* tservice) {
   string extends = "";
   string extends_client = "";
   if (tservice->get_extends() != nullptr) {
@@ -2708,7 +2715,7 @@ void t_java_generator::generate_service_client(const t_service* tservice) {
   indent(f_service_) << "}" << endl;
 }
 
-void t_java_generator::generate_service_async_client(
+void t_java_deprecated_generator::generate_service_async_client(
     const t_service* tservice) {
   string extends = "TAsyncClient";
   string extends_client = "";
@@ -2904,7 +2911,8 @@ void t_java_generator::generate_service_async_client(
  *
  * @param tservice The service to generate a server for.
  */
-void t_java_generator::generate_service_server(const t_service* tservice) {
+void t_java_deprecated_generator::generate_service_server(
+    const t_service* tservice) {
   // Generate the dispatch methods
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::iterator f_iter;
@@ -3035,7 +3043,8 @@ void t_java_generator::generate_service_server(const t_service* tservice) {
  *
  * @param tfunction The function
  */
-void t_java_generator::generate_function_helpers(const t_function* tfunction) {
+void t_java_deprecated_generator::generate_function_helpers(
+    const t_function* tfunction) {
   if (tfunction->qualifier() == t_function_qualifier::one_way) {
     return;
   }
@@ -3065,7 +3074,7 @@ void t_java_generator::generate_function_helpers(const t_function* tfunction) {
  *
  * @param tfunction The function to write a dispatcher for
  */
-void t_java_generator::generate_process_function(
+void t_java_deprecated_generator::generate_process_function(
     const t_service* tservice, const t_function* tfunction) {
   // Open class
   indent(f_service_) << "private class " << tfunction->get_name()
@@ -3227,7 +3236,7 @@ void t_java_generator::generate_process_function(
  * @param tfield The field
  * @param prefix The variable name or container for this field
  */
-void t_java_generator::generate_deserialize_field(
+void t_java_deprecated_generator::generate_deserialize_field(
     ofstream& out, const t_field* tfield, string prefix) {
   const t_type* type = tfield->get_type()->get_true_type();
 
@@ -3299,7 +3308,7 @@ void t_java_generator::generate_deserialize_field(
 /**
  * Generates an unserializer for a struct, invokes read()
  */
-void t_java_generator::generate_deserialize_struct(
+void t_java_deprecated_generator::generate_deserialize_struct(
     ofstream& out, const t_struct* tstruct, string prefix) {
   if (generate_immutable_structs_ && !tstruct->is_union()) {
     out << indent() << prefix << " = " << type_name(tstruct)
@@ -3314,7 +3323,7 @@ void t_java_generator::generate_deserialize_struct(
 /**
  * Deserializes a container by reading its size and then iterating
  */
-void t_java_generator::generate_deserialize_container(
+void t_java_deprecated_generator::generate_deserialize_container(
     ofstream& out, const t_type* ttype, string prefix) {
   scope_up(out);
 
@@ -3395,7 +3404,7 @@ void t_java_generator::generate_deserialize_container(
 /**
  * Generates code to deserialize a map
  */
-void t_java_generator::generate_deserialize_map_element(
+void t_java_deprecated_generator::generate_deserialize_map_element(
     ofstream& out, const t_map* tmap, string prefix) {
   string key = tmp("_key");
   string val = tmp("_val");
@@ -3414,7 +3423,7 @@ void t_java_generator::generate_deserialize_map_element(
 /**
  * Deserializes a set element
  */
-void t_java_generator::generate_deserialize_set_element(
+void t_java_deprecated_generator::generate_deserialize_set_element(
     ofstream& out, const t_set* tset, string prefix) {
   string elem = tmp("_elem");
   t_field felem(tset->get_elem_type(), elem);
@@ -3429,7 +3438,7 @@ void t_java_generator::generate_deserialize_set_element(
 /**
  * Deserializes a list element
  */
-void t_java_generator::generate_deserialize_list_element(
+void t_java_deprecated_generator::generate_deserialize_list_element(
     ofstream& out, const t_list* tlist, string prefix) {
   string elem = tmp("_elem");
   t_field felem(tlist->get_elem_type(), elem);
@@ -3447,7 +3456,7 @@ void t_java_generator::generate_deserialize_list_element(
  * @param tfield The field to serialize
  * @param prefix Name to prepend to field name
  */
-void t_java_generator::generate_serialize_field(
+void t_java_deprecated_generator::generate_serialize_field(
     ofstream& out, const t_field* tfield, string prefix) {
   const t_type* type = tfield->get_type()->get_true_type();
 
@@ -3525,7 +3534,7 @@ void t_java_generator::generate_serialize_field(
  * @param tstruct The struct to serialize
  * @param prefix  String prefix to attach to all fields
  */
-void t_java_generator::generate_serialize_struct(
+void t_java_deprecated_generator::generate_serialize_struct(
     ofstream& out, const t_struct* /*tstruct*/, string prefix) {
   out << indent() << prefix << ".write(oprot);" << endl;
 }
@@ -3536,7 +3545,7 @@ void t_java_generator::generate_serialize_struct(
  * @param ttype  The type of container
  * @param prefix String prefix for fields
  */
-void t_java_generator::generate_serialize_container(
+void t_java_deprecated_generator::generate_serialize_container(
     ofstream& out, const t_type* ttype, string prefix) {
   scope_up(out);
 
@@ -3596,7 +3605,7 @@ void t_java_generator::generate_serialize_container(
 /**
  * Serializes the members of a map.
  */
-void t_java_generator::generate_serialize_map_element(
+void t_java_deprecated_generator::generate_serialize_map_element(
     ofstream& out, const t_map* tmap, string iter, string /*map*/) {
   t_field kfield(tmap->get_key_type(), iter + ".getKey()");
   generate_serialize_field(out, &kfield, "");
@@ -3607,7 +3616,7 @@ void t_java_generator::generate_serialize_map_element(
 /**
  * Serializes the members of a set.
  */
-void t_java_generator::generate_serialize_set_element(
+void t_java_deprecated_generator::generate_serialize_set_element(
     ofstream& out, const t_set* tset, string iter) {
   t_field efield(tset->get_elem_type(), iter);
   generate_serialize_field(out, &efield, "");
@@ -3616,7 +3625,7 @@ void t_java_generator::generate_serialize_set_element(
 /**
  * Serializes the members of a list.
  */
-void t_java_generator::generate_serialize_list_element(
+void t_java_deprecated_generator::generate_serialize_list_element(
     ofstream& out, const t_list* tlist, string iter) {
   t_field efield(tlist->get_elem_type(), iter);
   generate_serialize_field(out, &efield, "");
@@ -3629,7 +3638,7 @@ void t_java_generator::generate_serialize_list_element(
  * @param container Is the type going inside a container?
  * @return Java type name, i.e. HashMap<Key,Value>
  */
-string t_java_generator::type_name(
+string t_java_deprecated_generator::type_name(
     const t_type* ttype, bool in_container, bool in_init, bool skip_generic) {
   // In Java typedefs are just resolved to their real type
   ttype = ttype->get_true_type();
@@ -3688,7 +3697,8 @@ string t_java_generator::type_name(
  * @param tbase The base type
  * @param container Is it going in a Java container?
  */
-string t_java_generator::base_type_name(t_base_type* type, bool in_container) {
+string t_java_deprecated_generator::base_type_name(
+    t_base_type* type, bool in_container) {
   t_base_type::t_base tbase = type->get_base();
   bool boxedPrimitive = in_container || generate_boxed_primitive;
 
@@ -3725,7 +3735,8 @@ string t_java_generator::base_type_name(t_base_type* type, bool in_container) {
  *
  * @param ttype The type
  */
-string t_java_generator::declare_field(const t_field* tfield, bool init) {
+string t_java_deprecated_generator::declare_field(
+    const t_field* tfield, bool init) {
   // TODO(mcslee): do we ever need to initialize the field?
   string result = type_name(tfield->get_type()) + " " + tfield->get_name();
   if (init) {
@@ -3779,7 +3790,7 @@ string t_java_generator::declare_field(const t_field* tfield, bool init) {
  * @param tfunction Function definition
  * @return String of rendered function definition
  */
-string t_java_generator::function_signature(
+string t_java_deprecated_generator::function_signature(
     const t_function* tfunction, string prefix) {
   const t_type* ttype = tfunction->get_returntype();
   std::string result = type_name(ttype) + " " + prefix + tfunction->get_name() +
@@ -3800,7 +3811,7 @@ string t_java_generator::function_signature(
  * @params tfunction Function definition
  * @return String of rendered function definition
  */
-string t_java_generator::function_signature_async(
+string t_java_deprecated_generator::function_signature_async(
     const t_function* tfunction,
     string result_handler_symbol,
     bool use_base_method,
@@ -3812,7 +3823,7 @@ string t_java_generator::function_signature_async(
   return result;
 }
 
-string t_java_generator::async_function_call_arglist(
+string t_java_deprecated_generator::async_function_call_arglist(
     const t_function* tfunc,
     string result_handler_symbol,
     bool /*use_base_method*/,
@@ -3833,7 +3844,7 @@ string t_java_generator::async_function_call_arglist(
 /**
  * Renders a comma separated field list, with type names
  */
-string t_java_generator::argument_list(
+string t_java_deprecated_generator::argument_list(
     const t_struct* tstruct, bool include_types) {
   string result = "";
 
@@ -3854,7 +3865,7 @@ string t_java_generator::argument_list(
   return result;
 }
 
-string t_java_generator::async_argument_list(
+string t_java_deprecated_generator::async_argument_list(
     const t_function* /*tfunct*/,
     const t_struct* tstruct,
     string result_handler_symbol,
@@ -3887,7 +3898,7 @@ string t_java_generator::async_argument_list(
 /**
  * Converts the parse type to a C++ enum string for the given type.
  */
-string t_java_generator::type_to_enum(const t_type* type) {
+string t_java_deprecated_generator::type_to_enum(const t_type* type) {
   type = type->get_true_type();
 
   if (type->is_base_type()) {
@@ -3931,12 +3942,12 @@ string t_java_generator::type_to_enum(const t_type* type) {
 /**
  * Applies the correct style to a string
  */
-std::string t_java_generator::get_cap_name(std::string name) {
+std::string t_java_deprecated_generator::get_cap_name(std::string name) {
   name[0] = toupper(name[0]);
   return name;
 }
 
-string t_java_generator::constant_name(string name) {
+string t_java_deprecated_generator::constant_name(string name) {
   string constant_name;
 
   bool is_first = true;
@@ -3958,12 +3969,13 @@ string t_java_generator::constant_name(string name) {
   return constant_name;
 }
 
-void t_java_generator::generate_java_docstring_comment(
+void t_java_deprecated_generator::generate_java_docstring_comment(
     ofstream& out, string contents) {
   generate_docstring_comment(out, "/**\n", " * ", contents, " */\n");
 }
 
-void t_java_generator::generate_java_doc(ofstream& out, const t_field* field) {
+void t_java_deprecated_generator::generate_java_doc(
+    ofstream& out, const t_field* field) {
   if (field->get_type()->is_enum()) {
     string combined_message =
         field->get_doc() + "\n@see " + get_enum_class_name(field->get_type());
@@ -3976,7 +3988,8 @@ void t_java_generator::generate_java_doc(ofstream& out, const t_field* field) {
 /**
  * Emits a JavaDoc comment if the provided object has a doc in Thrift
  */
-void t_java_generator::generate_java_doc(ofstream& out, const t_node* tdoc) {
+void t_java_deprecated_generator::generate_java_doc(
+    ofstream& out, const t_node* tdoc) {
   if (tdoc->has_doc()) {
     generate_java_docstring_comment(out, tdoc->get_doc());
   }
@@ -3985,7 +3998,7 @@ void t_java_generator::generate_java_doc(ofstream& out, const t_node* tdoc) {
 /**
  * Emits a JavaDoc comment if the provided function object has a doc in Thrift
  */
-void t_java_generator::generate_java_doc(
+void t_java_deprecated_generator::generate_java_doc(
     ofstream& out, const t_function* tfunction) {
   if (tfunction->has_doc()) {
     stringstream ss;
@@ -4003,34 +4016,40 @@ void t_java_generator::generate_java_doc(
   }
 }
 
-std::string t_java_generator::isset_field_id(const t_field* field) {
+std::string t_java_deprecated_generator::isset_field_id(const t_field* field) {
   return "__" + upcase_string(field->get_name() + "_isset_id");
 }
 
-std::string t_java_generator::generate_isset_check(const t_field* field) {
+std::string t_java_deprecated_generator::generate_isset_check(
+    const t_field* field) {
   return generate_isset_check(field->get_name());
 }
 
-std::string t_java_generator::generate_isset_check(std::string field_name) {
+std::string t_java_deprecated_generator::generate_isset_check(
+    std::string field_name) {
   return "is" + get_cap_name("set") + get_cap_name(field_name) + "()";
 }
 
-std::string t_java_generator::generate_setfield_check(const t_field* field) {
+std::string t_java_deprecated_generator::generate_setfield_check(
+    const t_field* field) {
   return generate_setfield_check(field->get_name());
 }
 
-std::string t_java_generator::generate_setfield_check(std::string field_name) {
+std::string t_java_deprecated_generator::generate_setfield_check(
+    std::string field_name) {
   return "getSetField() == " + upcase_string(field_name);
 }
 
-void t_java_generator::generate_isset_set(ofstream& out, const t_field* field) {
+void t_java_deprecated_generator::generate_isset_set(
+    ofstream& out, const t_field* field) {
   if (!type_can_be_null(field->get_type())) {
     indent(out) << "set" << get_cap_name(field->get_name())
                 << get_cap_name("isSet") << "(true);" << endl;
   }
 }
 
-std::string t_java_generator::get_enum_class_name(const t_type* type) {
+std::string t_java_deprecated_generator::get_enum_class_name(
+    const t_type* type) {
   string package = "";
   const t_program* program = type->program();
   if (program != nullptr && program != program_) {
@@ -4042,13 +4061,13 @@ std::string t_java_generator::get_enum_class_name(const t_type* type) {
   return package + type->get_name();
 }
 
-void t_java_generator::generate_struct_desc(
+void t_java_deprecated_generator::generate_struct_desc(
     ofstream& out, const t_struct* tstruct) {
   indent(out) << "private static final TStruct STRUCT_DESC = new TStruct(\""
               << tstruct->get_name() << "\");" << endl;
 }
 
-void t_java_generator::generate_field_descs(
+void t_java_deprecated_generator::generate_field_descs(
     ofstream& out, const t_struct* tstruct) {
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
@@ -4066,7 +4085,7 @@ void t_java_generator::generate_field_descs(
   }
 }
 
-void t_java_generator::generate_field_name_constants(
+void t_java_deprecated_generator::generate_field_name_constants(
     ofstream& out, const t_struct* tstruct) {
   // Members are public for -java, private for -javabean
   const vector<t_field*>& members = tstruct->get_members();
@@ -4079,7 +4098,7 @@ void t_java_generator::generate_field_name_constants(
   }
 }
 
-bool t_java_generator::is_comparable(
+bool t_java_deprecated_generator::is_comparable(
     const t_type* type, vector<const t_type*>* enclosing) {
   type = type->get_true_type();
 
@@ -4120,7 +4139,7 @@ bool t_java_generator::is_comparable(
   }
 }
 
-bool t_java_generator::struct_has_all_comparable_fields(
+bool t_java_deprecated_generator::struct_has_all_comparable_fields(
     const t_struct* tstruct, vector<const t_type*>* enclosing) {
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
@@ -4133,7 +4152,7 @@ bool t_java_generator::struct_has_all_comparable_fields(
   return true;
 }
 
-bool t_java_generator::type_has_naked_binary(const t_type* type) {
+bool t_java_deprecated_generator::type_has_naked_binary(const t_type* type) {
   type = type->get_true_type();
 
   if (type->is_base_type()) {
@@ -4154,7 +4173,8 @@ bool t_java_generator::type_has_naked_binary(const t_type* type) {
   }
 }
 
-bool t_java_generator::struct_has_naked_binary_fields(const t_struct* tstruct) {
+bool t_java_deprecated_generator::struct_has_naked_binary_fields(
+    const t_struct* tstruct) {
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
 
@@ -4166,7 +4186,7 @@ bool t_java_generator::struct_has_naked_binary_fields(const t_struct* tstruct) {
   return false;
 }
 
-bool t_java_generator::has_bit_vector(const t_struct* tstruct) {
+bool t_java_deprecated_generator::has_bit_vector(const t_struct* tstruct) {
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
 
@@ -4178,7 +4198,7 @@ bool t_java_generator::has_bit_vector(const t_struct* tstruct) {
   return false;
 }
 
-THRIFT_REGISTER_GENERATOR(java, "Java", "");
+THRIFT_REGISTER_GENERATOR(java_deprecated, "Java Deprecated", "");
 
 } // namespace compiler
 } // namespace thrift
