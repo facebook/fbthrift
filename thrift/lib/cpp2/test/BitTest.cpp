@@ -115,34 +115,11 @@ TYPED_TEST(BitRefTest, Get) {
   }
 }
 
-TYPED_TEST(BitRefTest, AtomicGet) {
-  std::atomic<uint8_t> storage{0b1001001};
-  for (int i = 0; i < 8; i++) {
-    TypeParam b(storage, i);
-    EXPECT_EQ(bool(b), i % 3 == 0);
-  }
-}
-
 TEST(BitRefTest, Set) {
   uint8_t storage = 0;
   for (int i = 0; i < 8; i++) {
     BitRef<false> b(storage, i);
     b = i % 3 == 0;
-  }
-  EXPECT_EQ(storage, 0b1001001);
-}
-
-TEST(BitRefTest, AtomicSet) {
-  std::atomic<uint8_t> storage{0};
-  std::thread a[8];
-  for (int i = 0; i < 8; i++) {
-    a[i] = std::thread([&storage, i] {
-      BitRef<false> b(storage, i);
-      b = i % 3 == 0;
-    });
-  }
-  for (auto&& t : a) {
-    t.join();
   }
   EXPECT_EQ(storage, 0b1001001);
 }
