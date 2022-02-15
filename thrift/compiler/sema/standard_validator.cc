@@ -405,7 +405,7 @@ void validate_uri_uniqueness(diagnostic_context& ctx, const t_program& prog) {
         auto result = uri_to_node.emplace(uri, &node);
         if (!result.second) {
           report_redef_failure(
-              ctx, "thrift.uri", uri, path, node, node, *result.first->second);
+              ctx, "Thrift URI", uri, path, node, node, *result.first->second);
         }
       });
   for (const auto* p : prog.get_included_programs()) {

@@ -39,30 +39,18 @@ namespace {
 class ScopeValidatorTest : public ::testing::Test {
  public:
   ScopeValidatorTest() : program{"path/to/file.thrift"} {
-    scopeStruct.set_annotation(
-        "thrift.uri", "facebook.com/thrift/annotation/Struct");
-    scopeUnion.set_annotation(
-        "thrift.uri", "facebook.com/thrift/annotation/Union");
-    scopeException.set_annotation(
-        "thrift.uri", "facebook.com/thrift/annotation/Exception");
-    scopeField.set_annotation(
-        "thrift.uri", "facebook.com/thrift/annotation/Field");
-    scopeTypedef.set_annotation(
-        "thrift.uri", "facebook.com/thrift/annotation/Typedef");
-    scopeService.set_annotation(
-        "thrift.uri", "facebook.com/thrift/annotation/Service");
-    scopeInteraction.set_annotation(
-        "thrift.uri", "facebook.com/thrift/annotation/Interaction");
-    scopeFunction.set_annotation(
-        "thrift.uri", "facebook.com/thrift/annotation/Function");
-    scopeEnum.set_annotation(
-        "thrift.uri", "facebook.com/thrift/annotation/Enum");
-    scopeEnumValue.set_annotation(
-        "thrift.uri", "facebook.com/thrift/annotation/EnumValue");
-    scopeConst.set_annotation(
-        "thrift.uri", "facebook.com/thrift/annotation/Const");
-    metaTransitive.set_annotation(
-        "thrift.uri", "facebook.com/thrift/annotation/Transitive");
+    scopeStruct.set_uri("facebook.com/thrift/annotation/Struct");
+    scopeUnion.set_uri("facebook.com/thrift/annotation/Union");
+    scopeException.set_uri("facebook.com/thrift/annotation/Exception");
+    scopeField.set_uri("facebook.com/thrift/annotation/Field");
+    scopeTypedef.set_uri("facebook.com/thrift/annotation/Typedef");
+    scopeService.set_uri("facebook.com/thrift/annotation/Service");
+    scopeInteraction.set_uri("facebook.com/thrift/annotation/Interaction");
+    scopeFunction.set_uri("facebook.com/thrift/annotation/Function");
+    scopeEnum.set_uri("facebook.com/thrift/annotation/Enum");
+    scopeEnumValue.set_uri("facebook.com/thrift/annotation/EnumValue");
+    scopeConst.set_uri("facebook.com/thrift/annotation/Const");
+    metaTransitive.set_uri("facebook.com/thrift/annotation/Transitive");
   }
 
   void SetUp() override {

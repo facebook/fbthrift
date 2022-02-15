@@ -537,7 +537,7 @@ mstch::node mstch_struct::fields() {
 }
 
 mstch::node mstch_struct::thrift_uri() {
-  return strct_->get_annotation("thrift.uri");
+  return strct_->uri();
 }
 
 mstch::node mstch_struct::exception_safety() {
@@ -673,7 +673,7 @@ mstch::node mstch_const::program() {
 
 mstch::node mstch_program::has_thrift_uris() {
   for (const auto& strct : program_->structs()) {
-    if (strct->has_annotation("thrift.uri")) {
+    if (!strct->uri().empty()) {
       return true;
     }
   }

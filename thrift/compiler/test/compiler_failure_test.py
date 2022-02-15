@@ -1501,9 +1501,9 @@ class CompilerFailureTest(unittest.TestCase):
             "\n" + err,
             textwrap.dedent(
                 """
-                [FAILURE:file2.thrift:2] thrift.uri `facebook.com/thrift/annotation/Foo` is already defined for `Foo2`.
-                [FAILURE:main.thrift:3] thrift.uri `facebook.com/thrift/annotation/Bar` is already defined for `Bar2`.
-                [FAILURE:main.thrift:7] thrift.uri `facebook.com/thrift/annotation/Baz` is already defined for `Baz2`.
+                [FAILURE:file2.thrift:2] Thrift URI `facebook.com/thrift/annotation/Foo` is already defined for `Foo2`.
+                [FAILURE:main.thrift:3] Thrift URI `facebook.com/thrift/annotation/Bar` is already defined for `Bar2`.
+                [FAILURE:main.thrift:7] Thrift URI `facebook.com/thrift/annotation/Baz` is already defined for `Baz2`.
                 """
             ),
         )

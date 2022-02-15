@@ -570,8 +570,7 @@ struct adapter_builder {
   t_struct type;
 
   explicit adapter_builder(t_program* p) : program(p), type(p, "Adapter") {
-    type.set_annotation(
-        "thrift.uri", "facebook.com/thrift/annotation/cpp/Adapter");
+    type.set_uri("facebook.com/thrift/annotation/cpp/Adapter");
   }
 
   std::unique_ptr<t_const> make() & {
@@ -601,8 +600,7 @@ TEST_F(TypeResolverTest, TransitivelyAdaptedFieldType) {
   annotation.add_structured_annotation(adapter.make());
 
   auto transitive = t_struct(nullptr, "Transitive");
-  transitive.set_annotation(
-      "thrift.uri", "facebook.com/thrift/annotation/Transitive");
+  transitive.set_uri("facebook.com/thrift/annotation/Transitive");
   annotation.add_structured_annotation(
       std::make_unique<t_const>(&program_, &transitive, "", nullptr));
 

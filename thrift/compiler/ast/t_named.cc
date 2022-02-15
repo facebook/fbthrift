@@ -24,6 +24,10 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
+namespace {
+constexpr auto kTransitiveUri = "facebook.com/thrift/annotation/Transitive";
+}
+
 // NOTE: Must be defined here for t_const's destructor's defintion.
 t_named::~t_named() = default;
 
@@ -36,9 +40,7 @@ const t_const* t_named::find_structured_annotation_or_null(
     const char* uri) const {
   for (const auto* annotation : structured_annotations_raw_) {
     const t_type& annotation_type = *annotation->get_type();
-    const std::string* actual_uri =
-        annotation_type.find_annotation_or_null("thrift.uri");
-    if (actual_uri && *actual_uri == uri) {
+    if (annotation_type.uri() == uri) {
       return annotation;
     }
     if (is_transitive_annotation(annotation_type)) {
@@ -50,9 +52,7 @@ const t_const* t_named::find_structured_annotation_or_null(
 
 bool is_transitive_annotation(const t_named& node) {
   for (const auto* annotation : node.structured_annotations()) {
-    const std::string* uri =
-        annotation->type()->find_annotation_or_null("thrift.uri");
-    if (uri && *uri == "facebook.com/thrift/annotation/Transitive") {
+    if (annotation->type()->uri() == kTransitiveUri) {
       return true;
     }
   }

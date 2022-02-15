@@ -50,6 +50,9 @@ class t_named : public t_node {
   const t_const* find_structured_annotation_or_null(const char* uri) const;
 
   const std::string& uri() const { return get_annotation("thrift.uri"); }
+  void set_uri(std::string uri) {
+    set_annotation("thrift.uri", std::move(uri));
+  }
 
  protected:
   // t_named is abstract.
