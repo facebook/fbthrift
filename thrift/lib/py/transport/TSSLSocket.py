@@ -45,7 +45,7 @@ def _detect_legacy_ssl() -> bool:
     return not all(hasattr(ssl, attr) for attr in required_attributes)
 
 
-_is_legacy_ssl = _detect_legacy_ssl()
+_is_legacy_ssl: bool = _detect_legacy_ssl()
 
 
 def _best_possible_default_version():

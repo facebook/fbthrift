@@ -445,7 +445,7 @@ class RemoteClient(object):
         self._exit(status=0)
 
 
-def ssl_parsed_bool(arg) -> bool:
+def ssl_parsed_bool(arg: bool) -> bool:
     if isinstance(arg, bool):
         return arg
     if arg in ('true', '1'):
