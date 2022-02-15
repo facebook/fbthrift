@@ -33,23 +33,23 @@ ScopedServerInterfaceThread::ScopedServerInterfaceThread(
     shared_ptr<AsyncProcessorFactory> apf,
     SocketAddress const& addr,
     ServerConfigCb configCb) {
-  auto tf = make_shared<PosixThreadFactory>(PosixThreadFactory::ATTACHED);
-  auto tm = ThreadManager::newSimpleThreadManager(1);
-  tm->threadFactory(move(tf));
-  tm->start();
   auto ts = make_shared<ThriftServer>();
   ts->setAddress(addr);
-  // Allow plaintext on loopback so the plaintext clients created by default by
-  // the newClient methods can still connect.
+  // Allow plaintext on loopback so the plaintext clients created by default
+  // by the newClient methods can still connect.
   ts->setAllowPlaintextOnLoopback(true);
   ts->setProcessorFactory(move(apf));
   ts->setNumIOWorkerThreads(1);
   ts->setNumCPUWorkerThreads(1);
-  ts->setThreadManager(tm);
-  // The default behavior is to keep N recent requests per IO worker in memory.
-  // In unit-tests, this defers memory reclamation and potentially masks
-  // use-after-free bugs. Because this facility is used mostly in tests, it is
-  // better not to keep any recent requests in memory.
+  auto tf = make_shared<PosixThreadFactory>(PosixThreadFactory::ATTACHED);
+  ts->setThreadFactory(std::move(tf));
+  ts->setThreadManagerType(
+      apache::thrift::BaseThriftServer::ThreadManagerType::SIMPLE);
+
+  // The default behavior is to keep N recent requests per IO worker in
+  // memory. In unit-tests, this defers memory reclamation and potentially
+  // masks use-after-free bugs. Because this facility is used mostly in tests,
+  // it is better not to keep any recent requests in memory.
   ts->setMaxFinishedDebugPayloadsPerWorker(0);
   if (configCb) {
     configCb(*ts);
