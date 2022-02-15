@@ -19,6 +19,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include <thrift/compiler/ast/diagnostic.h>
 #include <thrift/compiler/ast/t_program.h>
@@ -109,6 +110,17 @@ void dump_docstrings(t_program* program);
  */
 std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
     std::string path, parsing_params pparams, diagnostic_params dparams = {});
+
+/**
+ * Parse and mutate with the given parameters
+ *
+ * If the parsing fails, nullptr is returned for the program bundle.
+ */
+std::pair<std::unique_ptr<t_program_bundle>, diagnostic_results>
+parse_and_mutate_program(
+    const std::string& filename,
+    parsing_params params,
+    diagnostic_params dparams = {});
 std::unique_ptr<t_program_bundle> parse_and_mutate_program(
     diagnostic_context& ctx,
     const std::string& filename,
