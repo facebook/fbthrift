@@ -26,6 +26,12 @@ template <typename T>
 struct SameTag<T, T> : std::true_type {};
 } // namespace detail
 
+template <typename actual, typename expected>
+struct IsSameType;
+
+template <typename T>
+struct IsSameType<T, T> {};
+
 // Helper that produces a compile time error (with the types of the tags) if the
 // tags do not match. For example:
 //   static_assert(same_tag<bool_t, void_t>);

@@ -26,6 +26,7 @@
 #include <thrift/lib/cpp2/type/AnyType.h>
 #include <thrift/lib/cpp2/type/BaseType.h>
 #include <thrift/lib/cpp2/type/Name.h>
+#include <thrift/lib/cpp2/type/Testing.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
 #include <thrift/lib/thrift/gen-cpp2/type_fatal_all.h>
 #include <thrift/lib/thrift/gen-cpp2/type_types.h>
@@ -34,12 +35,7 @@ namespace apache::thrift::type {
 namespace {
 using conformance::Object;
 using conformance::Value;
-
-template <typename actual, typename expected>
-struct IsSameType;
-
-template <typename T>
-struct IsSameType<T, T> {};
+using namespace apache::thrift::test;
 
 template <typename Types, typename Tag, bool Expected>
 void testContains() {
