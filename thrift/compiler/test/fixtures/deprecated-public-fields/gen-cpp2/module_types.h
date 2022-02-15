@@ -72,7 +72,7 @@ class Foo final  {
 
   Foo() :
       __fbthrift_field_foo(),
-      bar() {
+      __fbthrift_field_bar() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -88,8 +88,8 @@ class Foo final  {
   Foo& operator=(const Foo&) = default;
  private:
   ::std::int32_t __fbthrift_field_foo;
- public:
-  ::std::int32_t bar;
+ private:
+  ::std::int32_t __fbthrift_field_bar;
  private:
   apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
@@ -140,22 +140,42 @@ class Foo final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> bar_ref() const& {
-    return {this->bar, __isset.at(1), __isset.bit(1)};
+    return {this->__fbthrift_field_bar, __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> bar_ref() const&& {
-    return {static_cast<const T&&>(this->bar), __isset.at(1), __isset.bit(1)};
+    return {static_cast<const T&&>(this->__fbthrift_field_bar), __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> bar_ref() & {
-    return {this->bar, __isset.at(1), __isset.bit(1)};
+    return {this->__fbthrift_field_bar, __isset.at(1), __isset.bit(1)};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> bar_ref() && {
-    return {static_cast<T&&>(this->bar), __isset.at(1), __isset.bit(1)};
+    return {static_cast<T&&>(this->__fbthrift_field_bar), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> bar() const& {
+    return {this->__fbthrift_field_bar, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> bar() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_bar), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> bar() & {
+    return {this->__fbthrift_field_bar, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> bar() && {
+    return {static_cast<T&&>(this->__fbthrift_field_bar), __isset.at(1), __isset.bit(1)};
   }
 
   const ::std::int32_t* get_foo() const& {
@@ -174,13 +194,13 @@ class Foo final  {
   }
 
   ::std::int32_t get_bar() const {
-    return bar;
+    return __fbthrift_field_bar;
   }
 
   [[deprecated("Use `FOO.bar_ref() = BAR;` instead of `FOO.set_bar(BAR);`")]]
   ::std::int32_t& set_bar(::std::int32_t bar_) {
     bar_ref() = bar_;
-    return bar;
+    return __fbthrift_field_bar;
   }
 
   template <class Protocol_>
