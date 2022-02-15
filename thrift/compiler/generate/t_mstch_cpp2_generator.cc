@@ -591,9 +591,12 @@ class mstch_cpp2_field : public mstch_field {
              &mstch_cpp2_field::cpp_deprecated_accessor_type},
             {"field:has_deprecated_accessors?",
              &mstch_cpp2_field::has_deprecated_accessors},
-            {"field:next_field_key", &mstch_cpp2_field::next_field_key},
-            {"field:prev_field_key", &mstch_cpp2_field::prev_field_key},
-            {"field:next_field_type", &mstch_cpp2_field::next_field_type},
+            {"field:serialization_next_field_key",
+             &mstch_cpp2_field::serialization_next_field_key},
+            {"field:serialization_prev_field_key",
+             &mstch_cpp2_field::serialization_prev_field_key},
+            {"field:serialization_next_field_type",
+             &mstch_cpp2_field::serialization_next_field_type},
             {"field:non_opt_cpp_ref?", &mstch_cpp2_field::non_opt_cpp_ref},
             {"field:cpp_ref?", &mstch_cpp2_field::cpp_ref},
             {"field:cpp_ref_unique?", &mstch_cpp2_field::cpp_ref_unique},
@@ -728,19 +731,22 @@ class mstch_cpp2_field : public mstch_field {
     }
     return mstch::node();
   }
-  mstch::node prev_field_key() {
-    assert(field_context_ && field_context_->prev);
-    return field_context_->prev->get_key();
+  mstch::node serialization_prev_field_key() {
+    assert(field_context_ && field_context_->serialization_prev);
+    return field_context_->serialization_prev->get_key();
   }
-  mstch::node next_field_key() {
-    assert(field_context_ && field_context_->next);
-    return field_context_->next->get_key();
+  mstch::node serialization_next_field_key() {
+    assert(field_context_ && field_context_->serialization_next);
+    return field_context_->serialization_next->get_key();
   }
-  mstch::node next_field_type() {
-    assert(field_context_ && field_context_->next);
-    return field_context_->next
+  mstch::node serialization_next_field_type() {
+    assert(field_context_ && field_context_->serialization_next);
+    return field_context_->serialization_next
         ? generators_->type_generator_->generate(
-              field_context_->next->get_type(), generators_, cache_, pos_)
+              field_context_->serialization_next->get_type(),
+              generators_,
+              cache_,
+              pos_)
         : mstch::node("");
   }
   mstch::node terse_writes() {

@@ -17,7 +17,7 @@
 %>
 <%#field:type%>
 <% > module_types_tcc/if_should_write%>
-<%#struct:union?%>  <%/struct:union?%>    constexpr int16_t kPrevFieldId = <%#first?%><%#struct:indexing?%>::apache::thrift::detail::kSizeField.id<%/struct:indexing?%><%^struct:indexing?%>0<%/struct:indexing?%><%/first?%><%^first?%><%field:prev_field_key%><%/first?%>;
+<%#struct:union?%>  <%/struct:union?%>    constexpr int16_t kPrevFieldId = <%#first?%><%#struct:indexing?%>::apache::thrift::detail::kSizeField.id<%/struct:indexing?%><%^struct:indexing?%>0<%/struct:indexing?%><%/first?%><%^first?%><%field:serialization_prev_field_key%><%/first?%>;
 <%#struct:union?%>  <%/struct:union?%>    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>, kPrevFieldId>(*prot_, "<%field:name%>", <%^struct:union?%>previousFieldHasValue<%/struct:union?%><%#struct:union?%>false<%/struct:union?%>);
 <%^struct:union?%>
 <%#struct:union?%>  <%/struct:union?%>    previousFieldHasValue = true;

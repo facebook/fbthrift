@@ -117,8 +117,8 @@ class type_generator {
 
 struct field_generator_context {
   const t_struct* strct = nullptr;
-  const t_field* prev = nullptr;
-  const t_field* next = nullptr;
+  const t_field* serialization_prev = nullptr;
+  const t_field* serialization_next = nullptr;
   int isset_index = -1;
 };
 
@@ -1009,9 +1009,9 @@ class mstch_struct : public mstch_base {
       if (cpp2::field_has_isset(field)) {
         ctx.isset_index++;
       }
-      ctx.next = (it + 1) != fields.end() ? &*(it + 1) : nullptr;
+      ctx.serialization_next = (it + 1) != fields.end() ? &*(it + 1) : nullptr;
       context_map[field] = ctx;
-      ctx.prev = field;
+      ctx.serialization_prev = field;
     }
   }
   mstch::node name() { return strct_->get_name(); }
