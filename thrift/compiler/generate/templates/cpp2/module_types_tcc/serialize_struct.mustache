@@ -18,9 +18,9 @@
 uint32_t <%struct:name%>::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("<%struct:name%>");
-<%#struct:fields%>
+<%#struct:fields_in_serialization_order%>
 <% > module_types_tcc/serialize_field_size%>
-<%/struct:fields%>
+<%/struct:fields_in_serialization_order%>
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -29,9 +29,9 @@ template <class Protocol_>
 uint32_t <%struct:name%>::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("<%struct:name%>");
-<%#struct:fields%>
+<%#struct:fields_in_serialization_order%>
 <% > module_types_tcc/serialize_field_size_zc%>
-<%/struct:fields%>
+<%/struct:fields_in_serialization_order%>
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -47,9 +47,9 @@ uint32_t <%struct:name%>::write(Protocol_* prot_) const {
 <%#struct:fields?%>
   bool previousFieldHasValue = true;
 <%/struct:fields?%>
-<%#struct:fields%>
+<%#struct:fields_in_serialization_order%>
 <% > module_types_tcc/serialize_field%>
-<%/struct:fields%>
+<%/struct:fields_in_serialization_order%>
 <%#struct:indexing?%>
   indexWriter.finalize();
 <%/struct:indexing?%>

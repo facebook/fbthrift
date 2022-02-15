@@ -988,6 +988,8 @@ class mstch_struct : public mstch_base {
             {"struct:name", &mstch_struct::name},
             {"struct:fields?", &mstch_struct::has_fields},
             {"struct:fields", &mstch_struct::fields},
+            {"struct:fields_in_serialization_order",
+             &mstch_struct::fields_in_serialization_order},
             {"struct:exception?", &mstch_struct::is_exception},
             {"struct:union?", &mstch_struct::is_union},
             {"struct:plain?", &mstch_struct::is_plain},
@@ -1048,6 +1050,8 @@ class mstch_struct : public mstch_base {
 
   // Returns the struct members ordered by the key.
   const std::vector<const t_field*>& get_members_in_key_order();
+
+  mstch::node fields_in_serialization_order() { return fields(); }
 
  protected:
   t_struct const* strct_;

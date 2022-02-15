@@ -23,21 +23,21 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-<%#program:enforce_required?%><%#struct:fields%><%#field:required?%>
+<%#program:enforce_required?%><%#struct:fields_in_serialization_order%><%#field:required?%>
   bool isset_<%field:cpp_name%> = false;
-<%/field:required?%><%/struct:fields%><%/program:enforce_required?%>
+<%/field:required?%><%/struct:fields_in_serialization_order%><%/program:enforce_required?%>
 <%#struct:lazy_fields?%>
   if (__fbthrift_protocol_ != iprot->protocolType()) {
 <%! Deserialize all lazy fields if new protocol is different that last deserialization protocol %>
-<%#struct:fields%><%#field:lazy?%>
+<%#struct:fields_in_serialization_order%><%#field:lazy?%>
     std::as_const(*this).__fbthrift_read_field_<%field:cpp_name%>();
-<%/field:lazy?%><%/struct:fields%>
+<%/field:lazy?%><%/struct:fields_in_serialization_order%>
     __fbthrift_protocol_ = iprot->protocolType();
   }
 <%/struct:lazy_fields?%>
 
 <%#struct:fields?%>
-<%#struct:fields%>
+<%#struct:fields_in_serialization_order%>
 <%#field:type%>
 <%#first?%>
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -99,7 +99,7 @@ _readField_<%field:cpp_name%>:
   }
 <%/last?%>
 <%/field:type%>
-<%/struct:fields%>
+<%/struct:fields_in_serialization_order%>
 <%/struct:fields?%>
 <%^struct:fields?%>
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -114,11 +114,11 @@ _readField_<%field:cpp_name%>:
 _end:
   _readState.readStructEnd(iprot);
 
-  <%#program:enforce_required?%><%#struct:fields%><%#field:required?%>
+  <%#program:enforce_required?%><%#struct:fields_in_serialization_order%><%#field:required?%>
   if (!isset_<%field:cpp_name%>) {
     TProtocolException::throwMissingRequiredField("<%field:name%>", "<%struct:name%>");
   }
-  <%/field:required?%><%/struct:fields%><%/program:enforce_required?%>
+  <%/field:required?%><%/struct:fields_in_serialization_order%><%/program:enforce_required?%>
   return;
 
 _loop:
@@ -131,7 +131,7 @@ _loop:
   }
 
   switch (_readState.fieldId) {
-<%#struct:fields%><%#field:type%>
+<%#struct:fields_in_serialization_order%><%#field:type%>
     case <%field:key%>:
     {
       if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::<% > module_types_tcc/struct_type%>))) {
@@ -140,7 +140,7 @@ _loop:
         goto _skip;
       }
     }
-<%/field:type%><%/struct:fields%>
+<%/field:type%><%/struct:fields_in_serialization_order%>
     default:
     {
 <%#struct:fields?%>
@@ -153,7 +153,7 @@ _skip:
     }
   }
 }
-<%#struct:fields%>
+<%#struct:fields_in_serialization_order%>
 <%#field:type%>
 <%#field:lazy?%>
 template<class ProtocolReader>
@@ -166,7 +166,7 @@ void <%struct:name%>::__fbthrift_read_field_<%field:cpp_name%>_impl() const {
 }
 <%/field:lazy?%>
 <%/field:type%>
-<%/struct:fields%>
+<%/struct:fields_in_serialization_order%>
 <%/program:tablebased?%>
 <%#program:tablebased?%>
 template <class Protocol_>
