@@ -109,6 +109,10 @@ void dump_docstrings(t_program* program);
  */
 std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
     std::string path, parsing_params pparams, diagnostic_params dparams = {});
+std::unique_ptr<t_program_bundle> parse_and_mutate_program(
+    diagnostic_context& ctx,
+    const std::string& filename,
+    parsing_params params);
 
 /**
  * Dump the diagnostic messages to stderr.

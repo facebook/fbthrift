@@ -21,6 +21,7 @@
 #include <boost/filesystem.hpp>
 
 #include <thrift/compiler/ast/diagnostic_context.h>
+#include <thrift/compiler/sema/standard_mutator.h>
 
 namespace apache {
 namespace thrift {
@@ -156,12 +157,24 @@ void dump_docstrings(t_program* program) {
   }
 }
 
+std::unique_ptr<t_program_bundle> parse_and_mutate_program(
+    diagnostic_context& ctx,
+    const std::string& filename,
+    parsing_params params) {
+  // Parse then mutate!
+  parsing_driver driver{ctx, filename, std::move(params)};
+  auto program = driver.parse();
+  if (program != nullptr) {
+    standard_mutator().mutate(ctx, *program);
+  }
+  return program;
+}
+
 std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
     std::string path, parsing_params pparams, diagnostic_params dparams) {
   diagnostic_results results;
   diagnostic_context ctx{results, std::move(dparams)};
-  parsing_driver driver{ctx, std::move(path), std::move(pparams)};
-  auto program = driver.parse();
+  auto program = parse_and_mutate_program(ctx, path, std::move(pparams));
   dump_diagnostics(results.diagnostics());
   return program;
 }

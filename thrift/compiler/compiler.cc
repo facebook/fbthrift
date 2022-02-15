@@ -44,7 +44,6 @@
 #include <thrift/compiler/mutator/mutator.h>
 #include <thrift/compiler/parse/parsing_driver.h>
 #include <thrift/compiler/platform.h>
-#include <thrift/compiler/sema/standard_mutator.h>
 #include <thrift/compiler/sema/standard_validator.h>
 #include <thrift/compiler/validator/validator.h>
 
@@ -415,28 +414,19 @@ std::string get_include_path(
 
 } // namespace
 
-// TODO(urielrivas): Reuse somehow this function in compile(...).
 std::unique_ptr<t_program_bundle> parse_and_get_program(
     const std::vector<std::string>& arguments) {
   // Parse arguments.
   parsing_params pparams{};
   gen_params gparams{};
   diagnostic_params dparams{};
-  std::string input_filename = parseArgs(arguments, pparams, gparams, dparams);
+  std::string filename = parseArgs(arguments, pparams, gparams, dparams);
 
-  if (input_filename.empty()) {
+  if (filename.empty()) {
     return {};
   }
-
-  // Parse and mutate it!
   auto ctx = diagnostic_context::ignore_all();
-  parsing_driver driver{ctx, input_filename, std::move(pparams)};
-  auto program = driver.parse();
-  if (program) {
-    mutator::mutate(program->root_program());
-  }
-
-  return program;
+  return parse_and_mutate_program(ctx, filename, std::move(pparams));
 }
 
 compile_result compile(const std::vector<std::string>& arguments) {
@@ -455,21 +445,17 @@ compile_result compile(const std::vector<std::string>& arguments) {
 
   // Parse it!
   g_stage = "parse";
-  parsing_driver driver{ctx, input_filename, std::move(pparams)};
-  auto program = driver.parse();
-  if (!program) {
+  auto program =
+      parse_and_mutate_program(ctx, input_filename, std::move(pparams));
+  if (!program || result.detail.has_failure()) {
     return result;
   }
 
-  // Mutate it!
+  // TODO(afuller): Migrate to ast_mutator.
   try {
     mutator::mutate(program->root_program());
   } catch (MutatorException& e) {
     ctx.report(std::move(e.message));
-    return result;
-  }
-  standard_mutator().mutate(ctx, *program->root_program());
-  if (result.detail.has_failure()) {
     return result;
   }
 

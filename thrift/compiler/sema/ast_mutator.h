@@ -18,6 +18,7 @@
 
 #include <thrift/compiler/ast/ast_visitor.h>
 #include <thrift/compiler/ast/diagnostic_context.h>
+#include <thrift/compiler/ast/t_program_bundle.h>
 
 namespace apache {
 namespace thrift {
@@ -35,9 +36,11 @@ class ast_mutator
  public:
   using base::base;
 
-  void mutate(diagnostic_context& ctx, t_program& program) {
+  void mutate(diagnostic_context& ctx, t_program_bundle& bundle) {
     mutator_context mctx;
-    operator()(ctx, mctx, program);
+    for (auto& program : bundle.programs()) {
+      operator()(ctx, mctx, program);
+    }
   }
 };
 
