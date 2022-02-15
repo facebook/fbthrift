@@ -65,6 +65,10 @@ void EventTask::setTile(TilePtr&& tile) {
   ctx_->setTile(std::move(tile));
 }
 
+char const* AsyncProcessor::getServiceName() {
+  return "NoServiceNameSet";
+}
+
 void AsyncProcessor::terminateInteraction(
     int64_t, Cpp2ConnContext&, folly::EventBase&) noexcept {
   LOG(DFATAL) << "This processor doesn't support interactions";

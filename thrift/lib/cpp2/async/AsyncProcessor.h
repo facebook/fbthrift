@@ -261,6 +261,9 @@ class AsyncProcessor : public TProcessorBase {
  public:
   virtual ~AsyncProcessor() = default;
 
+  // Return the name of the service provided by this AsyncProcessor
+  virtual const char* getServiceName();
+
   using MethodMetadata = AsyncProcessorFactory::MethodMetadata;
 
   /**
@@ -540,8 +543,6 @@ class ServerInterface;
 
 class GeneratedAsyncProcessor : public AsyncProcessor {
  public:
-  virtual const char* getServiceName() = 0;
-
   template <typename Derived>
   using ProcessFunc = void (Derived::*)(
       ResponseChannelRequest::UniquePtr,
