@@ -40,12 +40,12 @@ constexpr R fs() {
 
 inline datatype_t* registering_datatype_prep(
     schema_t& schema, folly::StringPiece rname, id_t rid) {
-  auto& dt = schema.dataTypes_ref()[rid];
-  if (!dt.name_ref()->empty()) {
+  auto& dt = schema.dataTypes()[rid];
+  if (!dt.name()->empty()) {
     return nullptr; // this datatype has already been registered
   }
-  *dt.name_ref() = rname.str();
-  schema.names_ref()[*dt.name_ref()] = rid;
+  *dt.name() = rname.str();
+  schema.names()[*dt.name()] = rid;
   return &dt;
 }
 
@@ -194,9 +194,9 @@ struct impl<T, type_class::enumeration> {
   static void go(schema_t& schema) {
     using traits = TEnumTraits<T>;
     registering_datatype(schema, rname, rid(), [&](datatype_t& dt) {
-      apache::thrift::ensure_isset_unsafe(dt.enumValues_ref());
+      apache::thrift::ensure_isset_unsafe(dt.enumValues());
       for (size_t i = 0; i < traits::size; ++i) {
-        (*dt.enumValues_ref())[traits::names[i].str()] = int(traits::values[i]);
+        (*dt.enumValues())[traits::names[i].str()] = int(traits::values[i]);
       }
     });
   }
@@ -210,11 +210,11 @@ struct impl_structure_util {
       optionality opt,
       std::string& name,
       size_t n_annots) {
-    *field.isRequired_ref() = opt != optionality::optional;
-    *field.type_ref() = type;
-    *field.name_ref() = name;
-    *field.order_ref() = index;
-    auto annotations = field.annotations_ref();
+    *field.isRequired() = opt != optionality::optional;
+    *field.type() = type;
+    *field.name() = name;
+    *field.order() = index;
+    auto annotations = field.annotations();
     if (n_annots > 0) {
       annotations = {};
     } else {
@@ -238,7 +238,7 @@ struct impl<T, type_class::structure> {
       using member_name = typename MemberInfo::name;
       using member_annotations = typename MemberInfo::annotations::map;
       type_helper::register_into(schema);
-      auto& f = (*dt.fields_ref())[MemberInfo::id::value];
+      auto& f = (*dt.fields())[MemberInfo::id::value];
       std::string name = fatal::to_instance<std::string, member_name>();
       impl_structure_util::init(
           f,
@@ -264,7 +264,7 @@ struct impl<T, type_class::structure> {
   }
   static void go(schema_t& schema) {
     registering_datatype(schema, rname, rid(), [&](datatype_t& dt) {
-      apache::thrift::ensure_isset_unsafe(dt.fields_ref());
+      apache::thrift::ensure_isset_unsafe(dt.fields());
       fatal::foreach<typename meta::members>(visitor(), schema, dt);
     });
   }
@@ -285,7 +285,7 @@ struct impl<T, type_class::variant> {
       using type_helper = get_helper<type, type_class>;
       using member_name = typename MemberInfo::metadata::name;
       type_helper::register_into(schema);
-      auto& f = (*dt.fields_ref())[MemberInfo::metadata::id::value];
+      auto& f = (*dt.fields())[MemberInfo::metadata::id::value];
       *f.isRequired_ref() = true;
       *f.type_ref() = type_helper::id();
       *f.name_ref() = fatal::to_instance<std::string, member_name>();
@@ -300,7 +300,7 @@ struct impl<T, type_class::variant> {
   }
   static void go(schema_t& schema) {
     registering_datatype(schema, rname, rid(), [&](datatype_t& dt) {
-      apache::thrift::ensure_isset_unsafe(dt.fields_ref());
+      apache::thrift::ensure_isset_unsafe(dt.fields());
       fatal::foreach<typename meta::traits::descriptors>(visitor(), schema, dt);
     });
   }
@@ -317,7 +317,7 @@ struct impl<T, type_class::list<ValueTypeClass>> {
   }
   static void go(schema_t& schema) {
     registering_datatype(schema, rname, rid(), [&](datatype_t& dt) {
-      dt.valueType_ref() = value_helper::id();
+      dt.valueType() = value_helper::id();
       value_helper::register_into(schema);
     });
   }
@@ -334,7 +334,7 @@ struct impl<T, type_class::set<ValueTypeClass>> {
   }
   static void go(schema_t& schema) {
     registering_datatype(schema, rname, rid(), [&](datatype_t& dt) {
-      dt.valueType_ref() = value_helper::id();
+      dt.valueType() = value_helper::id();
       value_helper::register_into(schema);
     });
   }
@@ -354,8 +354,8 @@ struct impl<T, type_class::map<KeyTypeClass, MappedTypeClass>> {
   }
   static void go(schema_t& schema) {
     registering_datatype(schema, rname, rid(), [&](datatype_t& dt) {
-      dt.mapKeyType_ref() = key_helper::id();
-      dt.valueType_ref() = mapped_helper::id();
+      dt.mapKeyType() = key_helper::id();
+      dt.valueType() = mapped_helper::id();
       key_helper::register_into(schema);
       mapped_helper::register_into(schema);
     });
