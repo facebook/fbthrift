@@ -182,7 +182,7 @@ struct struct3 {
   16: set<structB> fieldP;
   17: map<string, structA> fieldQ;
   18: map<string, structB> (cpp.template = 'std::unordered_map') fieldR;
-  19: map<binary, binary> fieldS;
+  20: map<binary, binary> fieldS;
 } (thrift.uri = "facebook.com/thrift/test/reflection/reflection/struct3")
 
 struct struct4 {

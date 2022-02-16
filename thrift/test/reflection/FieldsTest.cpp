@@ -20,13 +20,16 @@
 
 #include <boost/mp11.hpp>
 #include <folly/portability/GTest.h>
+#include <thrift/lib/cpp2/type/Get.h>
 #include <thrift/lib/cpp2/type/Tag.h>
+#include <thrift/lib/cpp2/type/Testing.h>
 
 using apache::thrift::detail::st::struct_private_access;
+using apache::thrift::test::same_tag;
 
 namespace apache::thrift::type {
 static_assert(
-    std::is_same_v<
+    same_tag<
         struct_private_access::fields<test_cpp2::cpp_reflection::struct3>,
         fields<
             field_t<FieldId{2}, i32_t>,
@@ -55,7 +58,7 @@ static_assert(
             field_t<
                 FieldId{18},
                 map<string_t, struct_t<::test_cpp2::cpp_reflection::structB>>>,
-            field_t<FieldId{19}, map<binary_t, binary_t>>>>);
+            field_t<FieldId{20}, map<binary_t, binary_t>>>>);
 
 struct ExtractFieldsInfo {
   std::vector<int> ids;
@@ -70,7 +73,7 @@ struct ExtractFieldsInfo {
 
 TEST(Fields, for_each) {
   const std::vector<int> expectedIds = {
-      2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19};
+      2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20};
   const std::vector<std::type_index> expectedTags = {
       typeid(i32_t),
       typeid(string_t),
@@ -116,14 +119,14 @@ TEST(Fields, get) {
   op::get<FieldId{2}>(s) = 20;
   EXPECT_EQ(*s.fieldA(), 20);
   EXPECT_TRUE(
-      (std::is_same_v<decltype(s.fieldA()), decltype(op::get<FieldId{2}>(s))>));
+      (same_tag<decltype(s.fieldA()), decltype(op::get<FieldId{2}>(s))>));
 
   s.fieldE()->ui_ref() = 10;
   EXPECT_EQ(op::get<FieldId{5}>(s)->ui_ref(), 10);
   op::get<FieldId{5}>(s)->us_ref() = "20";
   EXPECT_EQ(s.fieldE()->us_ref(), "20");
   EXPECT_TRUE(
-      (std::is_same_v<decltype(s.fieldE()), decltype(op::get<FieldId{5}>(s))>));
+      (same_tag<decltype(s.fieldE()), decltype(op::get<FieldId{5}>(s))>));
 
   boost::mp11::mp_for_each<
       struct_private_access::fields<test_cpp2::cpp_reflection::struct3>>(
@@ -131,5 +134,31 @@ TEST(Fields, get) {
 
   EXPECT_EQ(*s.fieldA(), 0);
   EXPECT_FALSE(s.fieldE()->us_ref());
+}
+
+template <class StructTag>
+struct CheckTypeTag {
+  template <FieldId Id, class Tag>
+  void operator()(field_t<Id, Tag>) {
+    static_assert(same_tag<field_tag_t<StructTag, Id>, field_t<Id, Tag>>);
+  }
+};
+
+TEST(Fields, field_tag_t) {
+  using StructTag = struct_t<test_cpp2::cpp_reflection::struct3>;
+  static_assert(same_tag<field_tag_t<StructTag, FieldId{0}>, void>);
+  static_assert(same_tag<
+                field_tag_t<StructTag, FieldId{1}>,
+                field_t<FieldId{1}, string_t>>);
+  static_assert(
+      same_tag<field_tag_t<StructTag, FieldId{2}>, field_t<FieldId{2}, i32_t>>);
+  static_assert(same_tag<field_tag_t<StructTag, FieldId{19}>, void>);
+  static_assert(same_tag<
+                field_tag_t<StructTag, FieldId{20}>,
+                field_t<FieldId{20}, map<binary_t, binary_t>>>);
+  static_assert(same_tag<field_tag_t<StructTag, FieldId{21}>, void>);
+  boost::mp11::mp_for_each<
+      struct_private_access::fields<test_cpp2::cpp_reflection::struct3>>(
+      CheckTypeTag<StructTag>{});
 }
 } // namespace apache::thrift::type
