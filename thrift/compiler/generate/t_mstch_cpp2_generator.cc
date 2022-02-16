@@ -204,6 +204,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   void generate_program() override;
   void fill_validator_list(validator_list&) const override;
   static std::string get_cpp2_namespace(t_program const* program);
+  static std::string get_cpp2_unprefixed_namespace(t_program const* program);
   static mstch::array get_namespace_array(t_program const* program);
   static mstch::node cpp_includes(t_program const* program);
   static mstch::node include_prefix(
@@ -2221,6 +2222,11 @@ void t_mstch_cpp2_generator::generate_service(t_service const* service) {
 std::string t_mstch_cpp2_generator::get_cpp2_namespace(
     t_program const* program) {
   return cpp2::get_gen_namespace(*program);
+}
+
+/* static */ std::string t_mstch_cpp2_generator::get_cpp2_unprefixed_namespace(
+    t_program const* program) {
+  return cpp2::get_gen_unprefixed_namespace(*program);
 }
 
 mstch::array t_mstch_cpp2_generator::get_namespace_array(

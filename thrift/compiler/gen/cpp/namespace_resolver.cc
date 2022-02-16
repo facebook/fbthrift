@@ -52,8 +52,13 @@ std::vector<std::string> namespace_resolver::gen_namespace_components(
 }
 
 std::string namespace_resolver::gen_namespace(const t_program* program) {
+  return "::" + gen_unprefixed_namespace(program);
+}
+
+/* static */ std::string namespace_resolver::gen_unprefixed_namespace(
+    const t_program* program) {
   auto const components = gen_namespace_components(program);
-  return "::" + boost::algorithm::join(components, "::");
+  return boost::algorithm::join(components, "::");
 }
 
 std::string namespace_resolver::gen_namespaced_name(const t_type* node) {

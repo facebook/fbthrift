@@ -45,6 +45,7 @@ class namespace_resolver {
   std::string gen_namespaced_name(const t_type* node);
 
   static std::string gen_namespace(const t_program* node);
+  static std::string gen_unprefixed_namespace(const t_program* program);
   static std::vector<std::string> gen_namespace_components(
       const t_program* program);
 

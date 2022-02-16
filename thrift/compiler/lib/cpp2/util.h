@@ -48,6 +48,10 @@ inline std::string get_gen_namespace(t_program const& program) {
   return gen::cpp::namespace_resolver::gen_namespace(&program);
 }
 
+inline std::string get_gen_unprefixed_namespace(t_program const& program) {
+  return gen::cpp::namespace_resolver::gen_unprefixed_namespace(&program);
+}
+
 /*
  * This determines if a type can be ordered.
  * If the type is using any annotation for cpp2.type or cpp2.template
