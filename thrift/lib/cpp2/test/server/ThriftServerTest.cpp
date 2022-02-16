@@ -2735,14 +2735,14 @@ TEST(ThriftServerTest, QueueTimeHeaderTest) {
   tServer->setQueueTimeout(kDefaultQueueTimeout);
   auto threadManager = tServer->getThreadManager();
 
-  folly::Baton<> startedBaton;
-  threadManager->add([&startedBaton]() {
-    startedBaton.post();
+  folly::Baton<> startupBaton;
+  threadManager->add([&startupBaton]() {
+    startupBaton.post();
     /* sleep override */
     std::this_thread::sleep_for(50ms);
   });
 
-  startedBaton.wait();
+  startupBaton.wait();
   // Send the request with a high queue timeout to make sure it succeeds.
   RpcOptions options;
   options.setTimeout(std::chrono::milliseconds(1000));
@@ -2758,17 +2758,6 @@ TEST(ThriftServerTest, QueueTimeHeaderTest) {
       queueingTime.value(),
       AllOf(
           Gt(std::chrono::milliseconds(5)), Lt(std::chrono::milliseconds(50))));
-
-  // Now send a request that will complete without any queueing.
-  auto [resp2, header2] =
-      client->header_semifuture_sendResponse(options, 100).get();
-  EXPECT_EQ(resp2, "100");
-  auto queueTimeout2 = header2->getServerQueueTimeout();
-  auto procDelay2 = header2->getProcessDelay();
-  EXPECT_TRUE(queueTimeout2.hasValue());
-  EXPECT_EQ(queueTimeout2.value().count(), 100);
-  EXPECT_TRUE(procDelay2.hasValue());
-  EXPECT_EQ(procDelay2.value().count(), 0);
 }
 
 TEST(ThriftServer, QueueTimeoutStressTest) {
@@ -2799,8 +2788,8 @@ TEST(ThriftServer, QueueTimeoutStressTest) {
   {
     ScopedServerInterfaceThread runner(
         std::make_shared<SendResponseInterface>());
-    THRIFT_FLAG_SET_MOCK(server_default_queue_timeout_ms, 10);
-
+    auto tServer = dynamic_cast<ThriftServer*>(&runner.getThriftServer());
+    tServer->setQueueTimeout(10ms);
     auto client = runner.newStickyClient<TestServiceAsyncClient>(
         nullptr /* executor */, [](auto socket) mutable {
           return RocketClientChannel::newChannel(std::move(socket));

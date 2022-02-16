@@ -99,6 +99,7 @@ THRIFT_PLUGGABLE_FUNC_REGISTER(
     AsyncProcessorFactory& /* service */) {
   return ThriftServer::UnimplementedExtraInterfacesResult::UNRECOGNIZED;
 }
+
 } // namespace apache::thrift::detail
 
 namespace {

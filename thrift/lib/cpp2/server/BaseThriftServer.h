@@ -26,6 +26,7 @@
 #include <vector>
 
 #include <folly/Memory.h>
+#include <folly/Portability.h>
 #include <folly/SocketAddress.h>
 #include <folly/Synchronized.h>
 #include <folly/io/async/AsyncTransport.h>
@@ -248,8 +249,13 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   ServerAttributeDynamic<std::chrono::milliseconds> queueTimeout_{
       folly::observer::makeValueObserver(
-          [o = THRIFT_FLAG_OBSERVE(server_default_queue_timeout_ms)]() {
-            return std::chrono::milliseconds(**o);
+          [timeoutMs = THRIFT_FLAG_OBSERVE(server_default_queue_timeout_ms)]() {
+            // Timeouts should be disabled for debug builds since this can
+            // generate false negatives in unit tests.
+            if (folly::kIsDebug) {
+              return std::chrono::milliseconds(0);
+            }
+            return std::chrono::milliseconds(**timeoutMs);
           })};
   /**
    * The time we'll allow a new connection socket to wait on the queue before
@@ -1010,8 +1016,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * Note, queuing is an indication that your server cannot keep
    * up with load, and realtime systems should not queue. Only
    * override this if you do heavily batched requests.
-   *
-   * @return queue timeout
    */
   void setQueueTimeout(
       std::chrono::milliseconds timeout,
