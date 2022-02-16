@@ -394,7 +394,10 @@ impl<B: Buf> SimpleJsonProtocolDeserializer<B> {
     // Validates that next chars is `val`
     fn eat_only(&mut self, val: &[u8]) -> Result<()> {
         if self.remaining < val.len() {
-            bail!("Expected {:?}, not enough remaining", val)
+            bail!(
+                "Expected the following chars: {:?}, not enough bytes remaining",
+                String::from_utf8_lossy(val)
+            )
         }
 
         for to_check in val {

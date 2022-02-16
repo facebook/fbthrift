@@ -222,3 +222,14 @@ fn test_trailing() {
         ),
     }
 }
+
+#[test]
+fn fail_to_read_object() {
+    let json: &[u8] = br#" { "#;
+    let mut de = SimpleJsonProtocolDeserializer::new(json);
+    let err = serde_json::Value::read(&mut de).unwrap_err();
+    assert_eq!(
+        "Expected the following chars: \"}\", not enough bytes remaining",
+        err.to_string()
+    );
+}
