@@ -18,7 +18,6 @@
 
 #include <fatal/type/search.h>
 #include <fatal/type/slice.h>
-#include <folly/Traits.h>
 #include <folly/Utility.h>
 #include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/lib/cpp2/type/detail/Traits.h>
@@ -49,7 +48,7 @@ template <class StructTag, FieldId Id>
 class field_tag {
  private:
   using fields = ::apache::thrift::detail::st::struct_private_access::fields<
-      typename detail::traits<StructTag>::native_type>;
+      typename traits<StructTag>::native_type>;
 
   using sorted_fields = fatal::sort_by<fields, field_to_id>;
 
