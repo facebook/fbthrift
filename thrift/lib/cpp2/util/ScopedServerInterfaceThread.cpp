@@ -38,7 +38,7 @@ ScopedServerInterfaceThread::ScopedServerInterfaceThread(
   // Allow plaintext on loopback so the plaintext clients created by default
   // by the newClient methods can still connect.
   ts->setAllowPlaintextOnLoopback(true);
-  ts->setProcessorFactory(move(apf));
+  ts->setInterface(move(apf));
   ts->setNumIOWorkerThreads(1);
   ts->setNumCPUWorkerThreads(1);
   auto tf = make_shared<PosixThreadFactory>(PosixThreadFactory::ATTACHED);

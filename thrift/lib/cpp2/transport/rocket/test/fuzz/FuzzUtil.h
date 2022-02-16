@@ -117,7 +117,7 @@ void testServerOneInput(const uint8_t* Data, size_t Size) {
       new apache::thrift::rocket::test::FakeTransport(&evb));
   auto* const sockPtr = sock.get();
   apache::thrift::ThriftServer server;
-  server.setProcessorFactory(std::make_shared<FakeProcessorFactory>());
+  server.setInterface(std::make_shared<FakeProcessorFactory>());
   auto worker = apache::thrift::Cpp2Worker::create(&server, nullptr, &evb);
   std::vector<std::unique_ptr<apache::thrift::rocket::SetupFrameHandler>> v;
   folly::SocketAddress address;

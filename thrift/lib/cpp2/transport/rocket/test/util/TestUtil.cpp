@@ -55,7 +55,7 @@ std::unique_ptr<ThriftServer> TestSetup::createServer(
     server->setStreamExpireTime(*streamExpireTime_);
   }
 
-  server->setProcessorFactory(processorFactory);
+  server->setInterface(processorFactory);
 
   auto eventHandler = std::make_shared<TestEventHandler>();
   server->setServerEventHandler(eventHandler);

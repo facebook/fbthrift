@@ -482,7 +482,7 @@ class CppServerWrapper : public ThriftServer {
     // We use a shared_ptr to manage the adapter so the processor
     // factory handing won't ever try to manipulate python reference
     // counts without the GIL.
-    setProcessorFactory(std::make_unique<PythonAsyncProcessorFactory>(
+    setInterface(std::make_unique<PythonAsyncProcessorFactory>(
         std::make_shared<object>(adapter)));
   }
 

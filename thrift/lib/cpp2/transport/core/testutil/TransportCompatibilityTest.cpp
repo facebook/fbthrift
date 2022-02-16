@@ -141,7 +141,7 @@ void SampleServer<Service>::setupServer() {
   server_->setPort(0);
   server_->setNumIOWorkerThreads(numIOThreads_);
   server_->setNumCPUWorkerThreads(numWorkerThreads_);
-  server_->setProcessorFactory(cpp2PFac);
+  server_->setInterface(cpp2PFac);
   server_->setGetLoad(
       [](const std::string& metric) { return metric.empty() ? 123 : -1; });
 }
@@ -1302,7 +1302,7 @@ void TransportCompatibilityTest::TestCustomAsyncProcessor() {
   auto cpp2PFac = std::make_shared<ThriftServerAsyncProcessorFactory<
       testutil::testservice::TestServiceMock>>(handler_);
 
-  server_->getServer()->setProcessorFactory(
+  server_->getServer()->setInterface(
       std::make_shared<TestAsyncProcessorFactory>(std::move(cpp2PFac)));
   startServer();
   TestRequestResponse_Simple();

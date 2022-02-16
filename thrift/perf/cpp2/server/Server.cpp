@@ -76,7 +76,7 @@ int main(int argc, char** argv) {
   server->setPort(FLAGS_port);
   server->setNumIOWorkerThreads(FLAGS_io_threads);
   server->setNumCPUWorkerThreads(FLAGS_cpu_threads);
-  server->setProcessorFactory(cpp2PFac);
+  server->setInterface(cpp2PFac);
 
   server->addRoutingHandler(createHTTP2RoutingHandler(server));
 

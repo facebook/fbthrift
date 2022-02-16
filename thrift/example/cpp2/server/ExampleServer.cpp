@@ -52,7 +52,7 @@ std::shared_ptr<ThriftServer> newServer(int32_t port) {
           handler);
   auto server = std::make_shared<ThriftServer>();
   server->setPort(port);
-  server->setProcessorFactory(proc_factory);
+  server->setInterface(proc_factory);
   server->addRoutingHandler(createHTTP2RoutingHandler(server));
   return server;
 }

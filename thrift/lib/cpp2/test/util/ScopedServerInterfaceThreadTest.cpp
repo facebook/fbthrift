@@ -233,7 +233,7 @@ TEST(ScopedServerInterfaceThread, joinRequestsSinkSlowFinalResponse) {
 TEST(ScopedServerInterfaceThread, TransportMemLimit) {
   auto ts = make_shared<ThriftServer>();
   auto serviceImpl = std::make_shared<SimpleServiceImpl>();
-  ts->setProcessorFactory(serviceImpl);
+  ts->setInterface(serviceImpl);
   ts->setAddress({"::1", 0});
   auto request = folly::IOBuf::create(257 * 1024);
   request->append(257 * 1024);
@@ -524,7 +524,7 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsRestartServer) {
     ts->setThreadManager(tm);
     ts->setAcceptExecutor({});
     auto serviceImpl = this->newService();
-    ts->setProcessorFactory(serviceImpl);
+    ts->setInterface(serviceImpl);
 
     folly::Optional<ScopedServerInterfaceThread> ssit(folly::in_place, ts);
 
