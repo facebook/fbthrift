@@ -19,6 +19,8 @@ import os
 import socket
 
 from libc.stdint cimport uint32_t
+from libcpp.utility cimport move as cmove
+from libcpp.string cimport string
 from thrift.py3lite.client cimport ssl as thrift_ssl
 from thrift.py3lite.client.client_wrapper import Client
 from thrift.py3lite.client.request_channel cimport (
@@ -86,8 +88,9 @@ def get_client(
                 host, port, _timeout_ms, client_type, protocol, endpoint
             ))
     elif path is not None:
+        fspath = os.fsencode(path)
         channel = RequestChannel.create(sync_createThriftChannelUnix(
-            path, _timeout_ms, client_type, protocol
+            cmove[string](fspath), _timeout_ms, client_type, protocol
         ))
     else:
         raise ValueError("Must set path or host/port")

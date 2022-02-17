@@ -24,6 +24,7 @@ import folly.executor
 
 from folly.futures cimport bridgeFutureWith
 from libc.stdint cimport uint32_t
+from libcpp.string cimport string
 from libcpp.utility cimport move as cmove
 from thrift.py3lite.client cimport ssl as thrift_ssl
 from thrift.py3lite.client.async_client cimport AsyncClient
@@ -116,10 +117,11 @@ def get_client(
                 <PyObject *>client,
             )
     elif path is not None:
+        fspath = os.fsencode(path)
         bridgeFutureWith[cRequestChannel_ptr](
             (<AsyncClient>client)._executor,
             createThriftChannelUnix(
-                path, _timeout_ms, client_type, protocol
+                cmove[string](fspath), _timeout_ms, client_type, protocol
             ),
             requestchannel_callback,
             <PyObject *>client,

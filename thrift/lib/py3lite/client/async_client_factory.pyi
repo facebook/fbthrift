@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import ipaddress
+import os
 import typing
 
 from thrift.py3lite.client.async_client import AsyncClient
@@ -21,6 +22,8 @@ from thrift.py3lite.client.request_channel import ClientType
 from thrift.py3lite.client.ssl import SSLContext
 from thrift.py3lite.serializer import Protocol
 
+Path = typing.Union[str, bytes, os.PathLike[str], os.PathLike[bytes]]
+
 def get_client(
     clientKlass: typing.Type[Client[TAsyncClient, TSyncClient]],
     *,
@@ -28,7 +31,7 @@ def get_client(
         typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]
     ] = ...,
     port: typing.Optional[int] = ...,
-    path: typing.Optional[str] = ...,
+    path: typing.Optional[Path] = ...,
     timeout: float = ...,
     client_type: ClientType = ...,
     protocol: Protocol = ...,
