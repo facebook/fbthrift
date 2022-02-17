@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ struct Object {
   1: string type;
 
   // The members of the object.
-  2: map<string, Value> members;
+  2: map<i16, Value> members;
 } (thrift.uri = "facebook.com/thrift/Object")
 
 // A dynamic value.

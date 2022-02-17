@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -218,10 +218,9 @@ TEST(ObjectTest, Struct) {
   const Object& object = value.get_objectValue();
   EXPECT_EQ(object.members_ref()->size(), 2);
   EXPECT_EQ(
-      object.members_ref()->at("standard"),
+      object.members_ref()->at(1),
       asValueStruct<type::enum_c>(StandardProtocol::Custom));
-  EXPECT_EQ(
-      object.members_ref()->at("custom"), asValueStruct<type::string_t>("hi"));
+  EXPECT_EQ(object.members_ref()->at(2), asValueStruct<type::string_t>("hi"));
 }
 
 } // namespace

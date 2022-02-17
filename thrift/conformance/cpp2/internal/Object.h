@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -133,11 +133,11 @@ class ObjectWriter : public BaseObjectAdapter {
   uint32_t writeStructEnd() { return endValue(Value::objectValue); }
 
   uint32_t writeFieldBegin(
-      const char* name, TType /*fieldType*/, int16_t /*fieldId*/) {
+      const char* /*name*/, TType /*fieldType*/, int16_t fieldId) {
     auto result = cur(Value::objectValue)
                       .mutable_objectValue()
                       .members_ref()
-                      ->emplace(name, Value());
+                      ->emplace(fieldId, Value());
     assert(result.second);
     cur_.push(&result.first->second);
     return 0;
