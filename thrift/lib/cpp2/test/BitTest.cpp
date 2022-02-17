@@ -95,4 +95,33 @@ TYPED_TEST(AtomicIntTest, Basic) {
   EXPECT_TRUE(b[7]);
 }
 
+template <class>
+struct BitRefTest : ::testing::Test {};
+
+using BitRefs = ::testing::Types<BitRef<true>, BitRef<false>>;
+TYPED_TEST_SUITE(BitRefTest, BitRefs);
+
+TYPED_TEST(BitRefTest, Traits) {
+  EXPECT_TRUE(std::is_trivially_copy_constructible_v<TypeParam>);
+  EXPECT_TRUE(std::is_trivially_move_constructible_v<TypeParam>);
+  EXPECT_TRUE(std::is_trivially_destructible_v<TypeParam>);
+}
+
+TYPED_TEST(BitRefTest, Get) {
+  uint8_t storage = 0b1001001;
+  for (int i = 0; i < 8; i++) {
+    TypeParam b(storage, i);
+    EXPECT_EQ(bool(b), i % 3 == 0);
+  }
+}
+
+TEST(BitRefTest, Set) {
+  uint8_t storage = 0;
+  for (int i = 0; i < 8; i++) {
+    BitRef<false> b(storage, i);
+    b = i % 3 == 0;
+  }
+  EXPECT_EQ(storage, 0b1001001);
+}
+
 } // namespace apache::thrift::detail::test
