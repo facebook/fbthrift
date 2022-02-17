@@ -1091,18 +1091,18 @@ EncodedStreamError encode_stream_exception(folly::exception_wrapper ew) {
     constexpr size_t kQueueAppenderGrowth = 4096;
     prot.setOutput(&queue, kQueueAppenderGrowth);
     TApplicationException ex(ew.what().toStdString());
-    exceptionMetadataBase.what_utf8_ref() = ex.what();
+    exceptionMetadataBase.what_utf8() = ex.what();
     apache::thrift::detail::serializeExceptionBody(&prot, &ex);
     PayloadAppUnknownExceptionMetdata aue;
-    aue.errorClassification_ref().ensure().blame_ref() = Blame;
+    aue.errorClassification().ensure().blame() = Blame;
     exceptionMetadata.appUnknownException_ref() = std::move(aue);
   }
 
-  exceptionMetadataBase.metadata_ref() = std::move(exceptionMetadata);
+  exceptionMetadataBase.metadata() = std::move(exceptionMetadata);
   StreamPayloadMetadata streamPayloadMetadata;
   PayloadMetadata payloadMetadata;
   payloadMetadata.exceptionMetadata_ref() = std::move(exceptionMetadataBase);
-  streamPayloadMetadata.payloadMetadata_ref() = std::move(payloadMetadata);
+  streamPayloadMetadata.payloadMetadata() = std::move(payloadMetadata);
   return EncodedStreamError(
       StreamPayload(std::move(queue).move(), std::move(streamPayloadMetadata)));
 }
@@ -1119,7 +1119,7 @@ class StreamElementEncoderImpl final
     StreamPayloadMetadata streamPayloadMetadata;
     PayloadMetadata payloadMetadata;
     payloadMetadata.responseMetadata_ref().ensure();
-    streamPayloadMetadata.payloadMetadata_ref() = std::move(payloadMetadata);
+    streamPayloadMetadata.payloadMetadata() = std::move(payloadMetadata);
     return folly::Try<StreamPayload>(
         {encode_stream_payload<Protocol, PResult>(std::move(val)),
          std::move(streamPayloadMetadata)});
@@ -1186,13 +1186,13 @@ folly::exception_wrapper decode_stream_exception(folly::exception_wrapper ew) {
       },
       [&hijacked](apache::thrift::detail::EncodedStreamError& err) {
         auto& payload = err.encoded;
-        DCHECK_EQ(payload.metadata.payloadMetadata_ref().has_value(), true);
+        DCHECK_EQ(payload.metadata.payloadMetadata().has_value(), true);
         DCHECK_EQ(
-            payload.metadata.payloadMetadata_ref()->getType(),
+            payload.metadata.payloadMetadata()->getType(),
             PayloadMetadata::exceptionMetadata);
         auto& exceptionMetadataBase =
-            payload.metadata.payloadMetadata_ref()->get_exceptionMetadata();
-        if (auto exceptionMetadataRef = exceptionMetadataBase.metadata_ref()) {
+            payload.metadata.payloadMetadata()->get_exceptionMetadata();
+        if (auto exceptionMetadataRef = exceptionMetadataBase.metadata()) {
           if (exceptionMetadataRef->getType() ==
               PayloadExceptionMetadata::declaredException) {
             PResult result;
@@ -1215,7 +1215,7 @@ folly::exception_wrapper decode_stream_exception(folly::exception_wrapper ew) {
             }
           } else {
             hijacked = TApplicationException(
-                exceptionMetadataBase.what_utf8_ref().value_or(""));
+                exceptionMetadataBase.what_utf8().value_or(""));
           }
         } else {
           hijacked =
@@ -1229,14 +1229,14 @@ folly::exception_wrapper decode_stream_exception(folly::exception_wrapper ew) {
         streamRpcError.read(&reader);
         TApplicationException::TApplicationExceptionType exType{
             TApplicationException::UNKNOWN};
-        auto code = streamRpcError.code_ref();
+        auto code = streamRpcError.code();
         if (code &&
             (code.value() == StreamRpcErrorCode::CREDIT_TIMEOUT ||
              code.value() == StreamRpcErrorCode::CHUNK_TIMEOUT)) {
           exType = TApplicationException::TIMEOUT;
         }
         hijacked = TApplicationException(
-            exType, streamRpcError.what_utf8_ref().value_or(""));
+            exType, streamRpcError.what_utf8().value_or(""));
       },
       [](...) {});
 
@@ -1509,26 +1509,26 @@ std::string serializeExceptionMeta(const folly::exception_wrapper& ew) {
 
   constexpr auto errorKind = apache::thrift::detail::st::struct_private_access::
       __fbthrift_cpp2_gen_exception_kind<T>();
-  errorClassification.kind_ref() = fromExceptionKind(errorKind);
+  errorClassification.kind() = fromExceptionKind(errorKind);
   constexpr auto errorBlame = apache::thrift::detail::st::
       struct_private_access::__fbthrift_cpp2_gen_exception_blame<T>();
-  errorClassification.blame_ref() = fromExceptionBlame(errorBlame);
+  errorClassification.blame() = fromExceptionBlame(errorBlame);
   constexpr auto errorSafety = apache::thrift::detail::st::
       struct_private_access::__fbthrift_cpp2_gen_exception_safety<T>();
-  errorClassification.safety_ref() = fromExceptionSafety(errorSafety);
+  errorClassification.safety() = fromExceptionSafety(errorSafety);
 
-  ew.with_exception([&errorClassification](
-                        const ExceptionMetadataOverrideBase& ex) {
-    if (ex.errorKind() != ExceptionKind::UNSPECIFIED) {
-      errorClassification.kind_ref() = fromExceptionKind(ex.errorKind());
-    }
-    if (ex.errorBlame() != ExceptionBlame::UNSPECIFIED) {
-      errorClassification.blame_ref() = fromExceptionBlame(ex.errorBlame());
-    }
-    if (ex.errorSafety() != ExceptionSafety::UNSPECIFIED) {
-      errorClassification.safety_ref() = fromExceptionSafety(ex.errorSafety());
-    }
-  });
+  ew.with_exception(
+      [&errorClassification](const ExceptionMetadataOverrideBase& ex) {
+        if (ex.errorKind() != ExceptionKind::UNSPECIFIED) {
+          errorClassification.kind() = fromExceptionKind(ex.errorKind());
+        }
+        if (ex.errorBlame() != ExceptionBlame::UNSPECIFIED) {
+          errorClassification.blame() = fromExceptionBlame(ex.errorBlame());
+        }
+        if (ex.errorSafety() != ExceptionSafety::UNSPECIFIED) {
+          errorClassification.safety() = fromExceptionSafety(ex.errorSafety());
+        }
+      });
 
   return apache::thrift::detail::serializeErrorClassification(
       errorClassification);
