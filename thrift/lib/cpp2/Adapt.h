@@ -50,6 +50,10 @@ using adapted_t = decltype(Adapter::fromThrift(std::declval<ThriftT&&>()));
 
 // Used to detect if Adapter has the fromThriftField function which takes an
 // additional FieldAdapterContext argument.
+template <typename Adapter, int16_t FieldId, typename ThriftT, typename Struct>
+using FromThriftFieldIdType = decltype(Adapter::fromThriftField(
+    std::declval<ThriftT>(),
+    std::declval<FieldAdapterContext<Struct, FieldId>>()));
 template <typename Adapter, typename ThriftT, typename Struct>
 using FromThriftFieldType = decltype(Adapter::fromThriftField(
     std::declval<ThriftT>(), std::declval<FieldAdapterContext<Struct, 0>>()));
@@ -96,8 +100,8 @@ using if_not_clear_adapter =
 // Thrift object containing the field and the field ID as a second argument
 // to Adapter::fromThriftField.
 template <typename Adapter, int16_t FieldId, typename ThriftT, typename Struct>
-constexpr FromThriftFieldType<Adapter, ThriftT, Struct> fromThriftField(
-    ThriftT&& value, Struct& object) {
+constexpr FromThriftFieldIdType<Adapter, FieldId, ThriftT, Struct>
+fromThriftField(ThriftT&& value, Struct& object) {
   return Adapter::fromThriftField(
       std::forward<ThriftT>(value),
       FieldAdapterContext<Struct, FieldId>{object});

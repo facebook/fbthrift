@@ -53,7 +53,7 @@ TEST(AdaptTest, ThriftClearTestStruct) {
   static_assert(!folly::is_detected_v<
                 adapt_detail::ClearType,
                 AdapterWithContext,
-                AdaptedWithContext<int64_t>>);
+                AdaptedWithContext<int64_t, ThriftClearTestStruct, 1>>);
 
   auto obj = ThriftClearTestStruct();
 
@@ -75,7 +75,7 @@ TEST(AdaptTest, AdapterClearTestStruct) {
   static_assert(folly::is_detected_v<
                 adapt_detail::ClearType,
                 AdapterWithContextAndClear,
-                AdaptedWithContext<int64_t>>);
+                AdaptedWithContext<int64_t, AdapterClearTestStruct, 1>>);
 
   auto obj = AdapterClearTestStruct();
 

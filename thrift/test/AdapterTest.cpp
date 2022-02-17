@@ -659,7 +659,7 @@ TEST(AdaptTest, AdapterWithContext) {
   static_assert(folly::is_detected_v<
                 adapt_detail::ConstructType,
                 AdapterWithContext,
-                AdaptedWithContext<int64_t>,
+                AdaptedWithContext<int64_t, basic::AdaptTestStruct, 0>,
                 FieldAdapterContext<basic::AdaptTestStruct, 0>>);
 
   auto obj = basic::AdaptTestStruct();

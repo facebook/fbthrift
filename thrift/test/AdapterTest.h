@@ -21,6 +21,7 @@
 #include <string>
 
 #include <folly/io/IOBuf.h>
+#include <thrift/lib/cpp2/Adapt.h>
 #include <thrift/lib/cpp2/Thrift.h>
 
 namespace apache::thrift::test {
@@ -123,62 +124,78 @@ struct IndirectionAdapter {
   }
 };
 
-template <typename T>
+template <typename T, typename Struct, int16_t FieldId>
 struct AdaptedWithContext {
   T value = {};
   int16_t fieldId = 0;
   std::string* meta = nullptr;
 };
 
-template <typename T>
+template <typename T, typename Struct, int16_t FieldId>
 inline bool operator==(
-    const AdaptedWithContext<T>& lhs, const AdaptedWithContext<T>& rhs) {
+    const AdaptedWithContext<T, Struct, FieldId>& lhs,
+    const AdaptedWithContext<T, Struct, FieldId>& rhs) {
   return lhs.value == rhs.value;
 }
 
-template <typename T>
+template <typename T, typename Struct, int16_t FieldId>
 inline bool operator<(
-    const AdaptedWithContext<T>& lhs, const AdaptedWithContext<T>& rhs) {
+    const AdaptedWithContext<T, Struct, FieldId>& lhs,
+    const AdaptedWithContext<T, Struct, FieldId>& rhs) {
   return lhs.value < rhs.value;
 }
 
 struct AdapterWithContext {
-  template <typename T, typename Context>
-  static void construct(AdaptedWithContext<T>& field, Context&& ctx) {
-    field.fieldId = Context::kFieldId;
+  template <typename T, typename Struct, int16_t FieldId>
+  static void construct(
+      AdaptedWithContext<T, Struct, FieldId>& field,
+      apache::thrift::FieldAdapterContext<Struct, FieldId>&& ctx) {
+    field.fieldId =
+        apache::thrift::FieldAdapterContext<Struct, FieldId>::kFieldId;
     field.meta = &*ctx.object.meta_ref();
   }
 
-  template <typename T, typename Context>
-  static AdaptedWithContext<T> fromThriftField(T value, Context&& ctx) {
-    return {value, Context::kFieldId, &*ctx.object.meta_ref()};
+  template <typename T, typename Struct, int16_t FieldId>
+  static AdaptedWithContext<T, Struct, FieldId> fromThriftField(
+      T value, apache::thrift::FieldAdapterContext<Struct, FieldId>&& ctx) {
+    return {
+        value,
+        apache::thrift::FieldAdapterContext<Struct, FieldId>::kFieldId,
+        &*ctx.object.meta_ref()};
   }
 
-  template <typename T>
-  static T toThrift(const AdaptedWithContext<T>& adapted) {
+  template <typename T, typename Struct, int16_t FieldId>
+  static T toThrift(const AdaptedWithContext<T, Struct, FieldId>& adapted) {
     return adapted.value;
   }
 };
 
 struct AdapterWithContextAndClear {
-  template <typename T, typename Context>
-  static void construct(AdaptedWithContext<T>& field, Context&& ctx) {
-    field.fieldId = Context::kFieldId;
+  template <typename T, typename Struct, int16_t FieldId>
+  static void construct(
+      AdaptedWithContext<T, Struct, FieldId>& field,
+      apache::thrift::FieldAdapterContext<Struct, FieldId>&& ctx) {
+    field.fieldId =
+        apache::thrift::FieldAdapterContext<Struct, FieldId>::kFieldId;
     field.meta = &*ctx.object.meta_ref();
   }
 
-  template <typename T, typename Context>
-  static AdaptedWithContext<T> fromThriftField(T value, Context&& ctx) {
-    return {value, Context::kFieldId, &*ctx.object.meta_ref()};
+  template <typename T, typename Struct, int16_t FieldId>
+  static AdaptedWithContext<T, Struct, FieldId> fromThriftField(
+      T value, apache::thrift::FieldAdapterContext<Struct, FieldId>&& ctx) {
+    return {
+        value,
+        apache::thrift::FieldAdapterContext<Struct, FieldId>::kFieldId,
+        &*ctx.object.meta_ref()};
   }
 
-  template <typename T>
-  static T toThrift(const AdaptedWithContext<T>& adapted) {
+  template <typename T, typename Struct, int16_t FieldId>
+  static T toThrift(const AdaptedWithContext<T, Struct, FieldId>& adapted) {
     return adapted.value;
   }
 
-  template <typename T>
-  static void clear(AdaptedWithContext<T>& field) {
+  template <typename T, typename Struct, int16_t FieldId>
+  static void clear(AdaptedWithContext<T, Struct, FieldId>& field) {
     field.value = {};
   }
 };

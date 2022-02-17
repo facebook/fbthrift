@@ -60,12 +60,18 @@ struct Create<type::field_t<Id, type::adapted<Adapter, Tag>>> {
   }
 
   template <typename Struct, typename AdapterT = Adapter>
-  constexpr adapt_detail::
-      FromThriftFieldType<AdapterT, type::standard_type<Tag>, Struct>
-      operator()(Struct& object) const {
-    adapt_detail::
-        FromThriftFieldType<AdapterT, type::standard_type<Tag>, Struct>
-            obj{};
+  constexpr adapt_detail::FromThriftFieldIdType<
+      AdapterT,
+      static_cast<int16_t>(Id),
+      type::standard_type<Tag>,
+      Struct>
+  operator()(Struct& object) const {
+    adapt_detail::FromThriftFieldIdType<
+        AdapterT,
+        static_cast<int16_t>(Id),
+        type::standard_type<Tag>,
+        Struct>
+        obj{};
     adapt_detail::construct<Adapter, static_cast<int16_t>(Id)>(obj, object);
     return obj;
   }
