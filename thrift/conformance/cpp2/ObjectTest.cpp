@@ -18,14 +18,24 @@
 
 #include <set>
 
+#include <folly/io/IOBufQueue.h>
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
 #include <thrift/conformance/cpp2/Protocol.h>
 #include <thrift/conformance/cpp2/Testing.h>
+#include <thrift/conformance/cpp2/internal/AnyStructSerializer.h>
+#include <thrift/conformance/data/ValueGenerator.h>
 #include <thrift/conformance/if/gen-cpp2/protocol_types_custom_protocol.h>
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/type/ThriftType.h>
+#include <thrift/test/testset/Testset.h>
+#include <thrift/test/testset/gen-cpp2/testset_types_custom_protocol.h>
 
 namespace apache::thrift::conformance {
 namespace {
+
+namespace testset = apache::thrift::test::testset;
 
 template <typename C>
 decltype(auto) at(C& container, size_t i) {
@@ -221,6 +231,53 @@ TEST(ObjectTest, Struct) {
       object.members_ref()->at(1),
       asValueStruct<type::enum_c>(StandardProtocol::Custom));
   EXPECT_EQ(object.members_ref()->at(2), asValueStruct<type::string_t>("hi"));
+}
+
+template <typename ParseObjectTestCase>
+class TypedParseObjectTest : public testing::Test {
+ public:
+  template <StandardProtocol Protocol>
+  Object ParseSerialized(testset::struct_with<ParseObjectTestCase>& s) {
+    folly::IOBufQueue iobufQueue;
+    detail::protocol_writer_t<Protocol> writer;
+    writer.setOutput(&iobufQueue);
+    s.write(&writer);
+    auto iobuf = iobufQueue.move();
+    return parseObject<detail::protocol_reader_t<Protocol>>(*iobuf);
+  }
+};
+
+// The tests cases to run.
+using ParseObjectTestCases = ::testing::Types<
+    type::bool_t,
+    type::byte_t,
+    type::i16_t,
+    type::i32_t,
+    type::i64_t,
+    type::float_t,
+    type::double_t,
+    // binary_t, conformance::object has separate binary value but
+    // BinarySerializer serializes with type set as T_STRING
+    type::string_t>;
+// TODO : test structs with containers, field modifiers, nested struct
+
+TYPED_TEST_SUITE(TypedParseObjectTest, ParseObjectTestCases);
+
+TYPED_TEST(TypedParseObjectTest, ParseSerializedSameAsDirectObject) {
+  testset::struct_with<TypeParam> s;
+  for (const auto& val : data::ValueGenerator<TypeParam>::getKeyValues()) {
+    s.field_1_ref() = val.value;
+    auto valueStruct = asValueStruct<type::struct_c>(s);
+    const Object& object = valueStruct.get_objectValue();
+
+    auto objFromBinaryProtocol =
+        this->template ParseSerialized<StandardProtocol::Binary>(s);
+    ASSERT_EQ(objFromBinaryProtocol, object);
+
+    auto objFromCompactProtocol =
+        this->template ParseSerialized<StandardProtocol::Compact>(s);
+    ASSERT_EQ(objFromCompactProtocol, object);
+  }
 }
 
 } // namespace
