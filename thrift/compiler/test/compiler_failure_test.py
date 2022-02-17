@@ -875,6 +875,8 @@ class CompilerFailureTest(unittest.TestCase):
                 struct MyStruct {
                     @cpp.Adapter{name="MyAdapter"}
                     1: MyI64 my_field;
+                    @cpp.Adapter{}
+                    2: i64 my_field2;
                 }
                 """
             ),
@@ -886,7 +888,9 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             "[FAILURE:foo.thrift:7] `@cpp.Adapter` cannot be combined with "
-            "`cpp_adapter` in `my_field`.\n",
+            "`cpp_adapter` in `my_field`.\n"
+            "[FAILURE:foo.thrift:9] `@cpp.Adapter` cannot be used without "
+            "`name` specified in `my_field2`.\n",
         )
 
     def test_mixin_nonstruct_members(self):

@@ -16,6 +16,7 @@
 
 #include <thrift/compiler/sema/standard_validator.h>
 
+#include <algorithm>
 #include <string>
 #include <unordered_map>
 
@@ -470,6 +471,17 @@ void validate_adapter_annotation(diagnostic_context& ctx, const t_field& node) {
   for (const t_const* annotation : node.structured_annotations()) {
     if (annotation->type()->uri() ==
         "facebook.com/thrift/annotation/cpp/Adapter") {
+      const auto& annotations = annotation->value()->get_map();
+      auto it = std::find_if(
+          annotations.begin(), annotations.end(), [](const auto& item) {
+            return item.first->get_string() == "name";
+          });
+      if (it == annotations.end()) {
+        ctx.failure([&](auto& o) {
+          o << "`@cpp.Adapter` cannot be used without `name` specified in `"
+            << node.name() << "`.";
+        });
+      }
       adapter_annotation = annotation;
       break;
     }
