@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,4 +33,12 @@ struct RequiresBackwardCompatibility {
   1: bool field_name = false;
 } (
   thrift.uri = "facebook.com/thrift/annotation/thrift/RequiresBackwardCompatibility",
+)
+
+// Option to serialize thrift struct in ascending field id order.
+// This can potentially make serialized data size smaller in compact protocol,
+// since compact protocol can write deltas between subsequent field ids.
+@scope.Struct
+struct ExperimentalSerializeInFieldIdOrder {} (
+  thrift.uri = "facebook.com/thrift/annotation/thrift/ExperimentalSerializeInFieldIdOrder",
 )
