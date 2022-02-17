@@ -153,8 +153,12 @@ class AsyncProcessorMethodResolutionTestP
               return HeaderClientChannel::newChannel(std::move(socket));
             case TransportType::ROCKET:
               return RocketClientChannel::newChannel(std::move(socket));
-            case TransportType::HTTP2:
-              return HTTPClientChannel::newHTTP2Channel(std::move(socket));
+            case TransportType::HTTP2: {
+              auto channel =
+                  HTTPClientChannel::newHTTP2Channel(std::move(socket));
+              channel->setProtocolId(protocol::T_COMPACT_PROTOCOL);
+              return channel;
+            }
             default:
               throw std::logic_error{"Unreachable!"};
           }

@@ -39,12 +39,15 @@ class PooledRequestChannel : public RequestChannel {
   // Recommended. Uses the global IO executor and does not support future_ /
   // unprefixed (callback) methods.
   static RequestChannel::Ptr newChannel(
-      ImplCreator implCreator, size_t numThreads = 1) {
+      ImplCreator implCreator,
+      size_t numThreads = 1,
+      protocol::PROTOCOL_TYPES protocolId = protocol::T_COMPACT_PROTOCOL) {
     return {
         new PooledRequestChannel(
             nullptr,
             globalExecutorProvider(numThreads),
-            std::move(implCreator)),
+            std::move(implCreator),
+            protocolId),
         {}};
   }
 
@@ -52,34 +55,43 @@ class PooledRequestChannel : public RequestChannel {
   static RequestChannel::Ptr newChannel(
       folly::Executor* callbackExecutor,
       ImplCreator implCreator,
-      size_t numThreads = 1) {
+      size_t numThreads = 1,
+      protocol::PROTOCOL_TYPES protocolId = protocol::T_COMPACT_PROTOCOL) {
     return {
         new PooledRequestChannel(
             callbackExecutor,
             globalExecutorProvider(numThreads),
-            std::move(implCreator)),
+            std::move(implCreator),
+            protocolId),
         {}};
   }
 
   // Does not support future_ / unprefixed (callback) methods
   // (but does support semifuture_ / co_).
   static RequestChannel::Ptr newSyncChannel(
-      std::weak_ptr<folly::IOExecutor> executor, ImplCreator implCreator) {
+      std::weak_ptr<folly::IOExecutor> executor,
+      ImplCreator implCreator,
+      protocol::PROTOCOL_TYPES protocolId = protocol::T_COMPACT_PROTOCOL) {
     return {
         new PooledRequestChannel(
-            nullptr, wrapWeakPtr(std::move(executor)), std::move(implCreator)),
+            nullptr,
+            wrapWeakPtr(std::move(executor)),
+            std::move(implCreator),
+            protocolId),
         {}};
   }
 
   static RequestChannel::Ptr newChannel(
       folly::Executor* callbackExecutor,
       std::weak_ptr<folly::IOExecutor> executor,
-      ImplCreator implCreator) {
+      ImplCreator implCreator,
+      protocol::PROTOCOL_TYPES protocolId = protocol::T_COMPACT_PROTOCOL) {
     return {
         new PooledRequestChannel(
             callbackExecutor,
             wrapWeakPtr(std::move(executor)),
-            std::move(implCreator)),
+            std::move(implCreator),
+            protocolId),
         {}};
   }
 
@@ -142,11 +154,13 @@ class PooledRequestChannel : public RequestChannel {
   PooledRequestChannel(
       folly::Executor* callbackExecutor,
       EventBaseProvider getEventBase,
-      ImplCreator implCreator)
+      ImplCreator implCreator,
+      protocol::PROTOCOL_TYPES protocolId)
       : implCreator_(std::move(implCreator)),
         callbackExecutor_(callbackExecutor),
         getEventBase_(std::move(getEventBase)),
-        impl_(std::make_shared<folly::EventBaseLocal<ImplPtr>>()) {}
+        impl_(std::make_shared<folly::EventBaseLocal<ImplPtr>>()),
+        protocolId_(protocolId) {}
 
   Impl& impl(folly::EventBase& evb);
 
@@ -164,7 +178,7 @@ class PooledRequestChannel : public RequestChannel {
 
   std::shared_ptr<folly::EventBaseLocal<ImplPtr>> impl_;
 
-  std::atomic<uint16_t> protocolId_{0};
+  const protocol::PROTOCOL_TYPES protocolId_;
 };
 } // namespace thrift
 } // namespace apache
