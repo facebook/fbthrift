@@ -482,6 +482,13 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
   using elem_methods = protocol_methods<ElemClass, elem_type>;
   using elem_ttype = protocol_type<ElemClass, elem_type>;
 
+  // Support for immutable containers
+  // TODO(yfeldblum): remove this hack in D34268066
+  static elem_type& as_non_const(const elem_type& elem) {
+    return *const_cast<elem_type*>(&elem);
+  }
+  static elem_type& as_non_const(elem_type& elem) { return elem; }
+
   template <typename Protocol>
   static void read(Protocol& protocol, Type& out) {
     std::uint32_t list_size = -1;
@@ -517,7 +524,7 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
         } else {
           out.resize(list_size);
           for (auto&& elem : out) {
-            elem_methods::read(protocol, elem);
+            elem_methods::read(protocol, as_non_const(elem));
           }
         }
       }
