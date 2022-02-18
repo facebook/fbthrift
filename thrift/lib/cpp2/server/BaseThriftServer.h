@@ -698,6 +698,17 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       AttributeSource source = AttributeSource::OVERRIDE,
       DynamicAttributeTag = DynamicAttributeTag{}) {
     maxRequests_.set(maxRequests, source);
+    // Eventually we'll remove the simple setMaxRequests but for now ensure it
+    // updates the concurrency controller for the default async pool.
+    if (!resourcePoolSet_.empty()) {
+      if (resourcePoolSet_.hasResourcePool(
+              ResourcePoolHandle::defaultAsync())) {
+        resourcePoolSet_.resourcePool(ResourcePoolHandle::defaultAsync())
+            .concurrencyController()
+            .value()
+            ->setExecutionLimitRequests(maxRequests);
+      }
+    }
   }
 
   uint64_t getMaxResponseSize() const final { return maxResponseSize_.get(); }

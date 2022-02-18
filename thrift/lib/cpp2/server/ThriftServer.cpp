@@ -423,24 +423,35 @@ void ThriftServer::setup() {
       setObserver(server::observerFactory_->getObserver());
     }
 
-    // We always need a threadmanager for cpp2.
-    setupThreadManager();
-    threadManager_->setExpireCallback([&](std::shared_ptr<Runnable> r) {
-      EventTask* task = dynamic_cast<EventTask*>(r.get());
-      if (task) {
-        task->expired();
-      }
-    });
-    threadManager_->setCodelCallback([&](std::shared_ptr<Runnable>) {
-      auto observer = getObserver();
-      if (observer) {
-        if (getEnableCodel()) {
-          observer->queueTimeout();
-        } else {
-          observer->shadowQueueTimeout();
+    if (!useResourcePoolsFlagsSet()) {
+      // We always need a threadmanager for cpp2.
+      setupThreadManager();
+      threadManager_->setExpireCallback([&](std::shared_ptr<Runnable> r) {
+        EventTask* task = dynamic_cast<EventTask*>(r.get());
+        if (task) {
+          task->expired();
         }
-      }
-    });
+      });
+      threadManager_->setCodelCallback([&](std::shared_ptr<Runnable>) {
+        auto observer = getObserver();
+        if (observer) {
+          if (getEnableCodel()) {
+            observer->queueTimeout();
+          } else {
+            observer->shadowQueueTimeout();
+          }
+        }
+      });
+    } else {
+      DCHECK(!threadManager_);
+      ensureResourcePools();
+      // Keep concurrency controller in sync with max requests for now.
+      resourcePoolSet()
+          .resourcePool(ResourcePoolHandle::defaultAsync())
+          .concurrencyController()
+          .value()
+          ->setExecutionLimitRequests(getMaxRequests());
+    }
 
     if (!serverChannel_) {
       ServerBootstrap::socketConfig.acceptBacklog = getListenBacklog();
@@ -1034,7 +1045,10 @@ void ThriftServer::stopCPUWorkers() {
   // finish, then stop the task queue workers. Have to do this now, so
   // there aren't tasks completing and trying to write to i/o thread
   // workers after we've stopped the i/o workers.
-  threadManager_->join();
+  if (threadManager_) {
+    threadManager_->join();
+  }
+  resourcePoolSet().stopAndJoin();
 #if FOLLY_HAS_COROUTINES
   // Wait for tasks running on AsyncScope to join
   folly::coro::blockingWait(asyncScope_->joinAsync());
