@@ -854,6 +854,13 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   void setupThreadManager();
 
   /**
+   * Ensure that this Thrift Server has ResourcePools set up. If there is
+   * already a non-empty ResourcePoolSet, nothing will be done. Otherwise, the
+   * default setup of ResourcePools will be created.
+   */
+  void ensureResourcePools();
+
+  /**
    * Kill the workers and wait for listeners to quit
    */
   void cleanUp();

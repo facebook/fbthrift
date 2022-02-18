@@ -28,6 +28,8 @@
 #include <folly/ScopeGuard.h>
 #include <folly/executors/CPUThreadPoolExecutor.h>
 #include <folly/executors/IOThreadPoolDeadlockDetectorObserver.h>
+#include <folly/executors/thread_factory/NamedThreadFactory.h>
+#include <folly/executors/thread_factory/PriorityThreadFactory.h>
 #include <folly/experimental/coro/BlockingWait.h>
 #include <folly/experimental/coro/CurrentExecutor.h>
 #include <folly/experimental/coro/Invoke.h>
@@ -43,6 +45,9 @@
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/LoggingEvent.h>
+#include <thrift/lib/cpp2/server/ParallelConcurrencyController.h>
+#include <thrift/lib/cpp2/server/RoundRobinRequestPile.h>
+#include <thrift/lib/cpp2/server/ServerFlags.h>
 #include <thrift/lib/cpp2/server/ServerInstrumentation.h>
 #include <thrift/lib/cpp2/server/ThriftProcessor.h>
 #include <thrift/lib/cpp2/transport/core/ManagedConnectionIf.h>
@@ -614,6 +619,75 @@ void ThriftServer::setupThreadManager() {
     }
     threadManager->start();
     setThreadManager(threadManager);
+  }
+}
+
+void ThriftServer::ensureResourcePools() {
+  // If the user has supplied resource pools we will believe them.
+  if (!resourcePoolSet().empty()) {
+    LOG(INFO) << "Using non default ResourcePoolSet";
+    return;
+  }
+
+  // Create the sync resource pool.
+  resourcePoolSet().setResourcePool(
+      ResourcePoolHandle::defaultSync(),
+      /*requestPile=*/nullptr,
+      /*executor=*/nullptr,
+      /*concurrencyController=*/nullptr);
+
+  // Now create the HIGH_IMPORTANT, HIGH, IMPORTANT, NORMAL and BEST_EFFORT
+  // pools. NORMAL gets NumCPUWorkerThreads, the rest get two each.
+
+  struct Pool {
+    std::string_view name;
+    std::string_view suffix;
+    int priority;
+    size_t numThreads;
+    std::optional<ResourcePoolHandle> handle;
+  };
+
+  // TODO: T111371879 [thrift][resourcepools] Figure out priorities for default
+  // setup in ensureResourcePool including non-linux
+  // These priority numbers are what thrift currently derives for a nice range
+  // of 19 to -20.
+  Pool pools[] = {
+      {"HIGH_IMPORTANT", "HI", -13, 2, std::nullopt},
+      {"HIGH", "H", -7, 2, std::nullopt},
+      {"IMPORTANT", "I", -7, 2, std::nullopt},
+      {"NORMAL",
+       "",
+       0,
+       getNumCPUWorkerThreads(),
+       ResourcePoolHandle::defaultAsync()},
+      {"BEST_EFFORT", "BE", 6, 2, std::nullopt}};
+
+  for (auto const& pool : pools) {
+    std::string name =
+        fmt::format("{}.{}", getCPUWorkerThreadName(), pool.suffix);
+    auto factory = std::make_shared<folly::PriorityThreadFactory>(
+        std::make_shared<folly::NamedThreadFactory>(name), pool.priority);
+    auto executor = std::make_shared<folly::CPUThreadPoolExecutor>(
+        pool.numThreads, std::move(factory));
+    apache::thrift::RoundRobinRequestPile::Options options;
+    auto requestPile = std::make_unique<apache::thrift::RoundRobinRequestPile>(
+        std::move(options));
+    auto concurrencyController =
+        std::make_unique<apache::thrift::ParallelConcurrencyController>(
+            *requestPile.get(), *executor.get());
+    if (pool.handle) {
+      resourcePoolSet().setResourcePool(
+          ResourcePoolHandle::defaultAsync(),
+          std::move(requestPile),
+          executor,
+          std::move(concurrencyController));
+    } else {
+      resourcePoolSet().addResourcePool(
+          pool.name,
+          std::move(requestPile),
+          executor,
+          std::move(concurrencyController));
+    }
   }
 }
 

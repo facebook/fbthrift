@@ -183,16 +183,20 @@ add_library(
   security/extensions/Types.cpp
   server/AdaptiveConcurrency.cpp
   server/BaseThriftServer.cpp
+  server/ConcurrencyControllerInterface.cpp
   server/Cpp2ConnContext.cpp
   server/Cpp2Connection.cpp
   server/Cpp2Worker.cpp
   server/LoggingEvent.cpp
   server/LoggingEventHelper.cpp
   server/MonitoringMethodNames.cpp
+  server/ParallelConcurrencyController.cpp
   server/RequestDebugLog.cpp
+  server/RequestPileInterface.cpp
   server/RequestsRegistry.cpp
   server/ResourcePool.cpp
   server/ResourcePoolHandle.cpp
+  server/RoundRobinRequestPile.cpp
   server/ServerFlags.cpp
   server/ServerInstrumentation.cpp
   server/ServiceHealthPoller.cpp
