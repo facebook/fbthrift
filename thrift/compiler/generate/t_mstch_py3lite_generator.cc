@@ -75,6 +75,7 @@ class mstch_py3lite_type : public mstch_type {
         this,
         {
             {"type:module_path", &mstch_py3lite_type::module_path},
+            {"type:metadata_path", &mstch_py3lite_type::metadata_path},
             {"type:py3_namespace", &mstch_py3lite_type::py3_namespace},
             {"type:need_module_path?", &mstch_py3lite_type::need_module_path},
             {"type:external_program?",
@@ -88,6 +89,12 @@ class mstch_py3lite_type : public mstch_type {
     return get_py3_namespace_with_name_and_prefix(
                get_type_program(), get_option("root_module_prefix")) +
         ".lite_types";
+  }
+
+  mstch::node metadata_path() {
+    return get_py3_namespace_with_name_and_prefix(
+               get_type_program(), get_option("root_module_prefix")) +
+        ".lite_metadata";
   }
 
   mstch::node py3_namespace() {
@@ -930,6 +937,7 @@ class t_mstch_py3lite_generator : public t_mstch_generator {
       const boost::filesystem::path& base);
   void set_types_file(bool val);
   void generate_types();
+  void generate_metadata();
   void generate_clients();
   void generate_services();
   boost::filesystem::path package_to_path();
@@ -982,6 +990,10 @@ void t_mstch_py3lite_generator::generate_file(
 void t_mstch_py3lite_generator::generate_types() {
   generate_file("lite_types.py", IsTypesFile, generate_root_path_);
   generate_file("lite_types.pyi", IsTypesFile, generate_root_path_);
+}
+
+void t_mstch_py3lite_generator::generate_metadata() {
+  generate_file("lite_metadata.py", IsTypesFile, generate_root_path_);
 }
 
 void t_mstch_py3lite_generator::generate_clients() {
