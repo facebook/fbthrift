@@ -35,7 +35,7 @@ public class MyRootReactiveBlockingWrapper
   @java.lang.Override
   public void doRoot(
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.doRoot().block();
+      _delegate.doRoot(rpcOptions).block();
   }
 
   @java.lang.Override

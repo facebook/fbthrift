@@ -36,7 +36,7 @@ public class DbMixedStackArgumentsReactiveBlockingWrapper
   public byte[] getDataByKey0(
         final String key,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.getDataByKey0(key).block();
+      return _delegate.getDataByKey0(key,rpcOptions).block();
   }
 
   @java.lang.Override
@@ -54,7 +54,7 @@ public class DbMixedStackArgumentsReactiveBlockingWrapper
   public byte[] getDataByKey1(
         final String key,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.getDataByKey1(key).block();
+      return _delegate.getDataByKey1(key,rpcOptions).block();
   }
 
   @java.lang.Override

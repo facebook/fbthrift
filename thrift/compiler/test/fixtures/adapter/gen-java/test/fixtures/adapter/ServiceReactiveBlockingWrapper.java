@@ -38,7 +38,7 @@ public class ServiceReactiveBlockingWrapper
         final String arg2,
         final test.fixtures.adapter.Foo arg3,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.func(arg1, arg2, arg3).block();
+      return _delegate.func(arg1,arg2,arg3,rpcOptions).block();
   }
 
   @java.lang.Override

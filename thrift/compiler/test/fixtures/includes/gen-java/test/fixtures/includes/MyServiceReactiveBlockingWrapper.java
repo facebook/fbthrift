@@ -37,7 +37,7 @@ public class MyServiceReactiveBlockingWrapper
         final test.fixtures.includes.MyStruct s,
         final test.fixtures.includes.includes.Included i,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.query(s, i).block();
+      _delegate.query(s,i,rpcOptions).block();
   }
 
   @java.lang.Override
@@ -57,7 +57,7 @@ public class MyServiceReactiveBlockingWrapper
         final test.fixtures.includes.MyStruct s,
         final test.fixtures.includes.includes.Included i,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.hasArgDocs(s, i).block();
+      _delegate.hasArgDocs(s,i,rpcOptions).block();
   }
 
   @java.lang.Override

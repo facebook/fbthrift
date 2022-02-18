@@ -35,7 +35,7 @@ public class RaiserReactiveBlockingWrapper
   @java.lang.Override
   public void doBland(
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.doBland().block();
+      _delegate.doBland(rpcOptions).block();
   }
 
   @java.lang.Override
@@ -51,7 +51,7 @@ public class RaiserReactiveBlockingWrapper
   @java.lang.Override
   public void doRaise(
         com.facebook.thrift.client.RpcOptions rpcOptions) throws test.fixtures.exceptions.Banal, test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
-      _delegate.doRaise().block();
+      _delegate.doRaise(rpcOptions).block();
   }
 
   @java.lang.Override
@@ -67,7 +67,7 @@ public class RaiserReactiveBlockingWrapper
   @java.lang.Override
   public String get200(
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.get200().block();
+      return _delegate.get200(rpcOptions).block();
   }
 
   @java.lang.Override
@@ -83,7 +83,7 @@ public class RaiserReactiveBlockingWrapper
   @java.lang.Override
   public String get500(
         com.facebook.thrift.client.RpcOptions rpcOptions) throws test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Banal, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
-      return _delegate.get500().block();
+      return _delegate.get500(rpcOptions).block();
   }
 
   @java.lang.Override

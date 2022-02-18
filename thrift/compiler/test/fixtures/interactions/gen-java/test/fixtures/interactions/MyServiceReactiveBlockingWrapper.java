@@ -35,7 +35,7 @@ public class MyServiceReactiveBlockingWrapper
   @java.lang.Override
   public void foo(
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.foo().block();
+      _delegate.foo(rpcOptions).block();
   }
 
   @java.lang.Override

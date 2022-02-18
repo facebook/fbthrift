@@ -59,10 +59,10 @@ public class {{service:javaCapitalName}}ReactiveBlockingWrapper {{#service:exten
           Exceptions
         }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
     {{#function:voidType}}
-      _delegate.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}).block();
+      _delegate.{{function:javaName}}({{#function:args}}{{field:javaName}},{{/function:args}}rpcOptions).block();
     {{/function:voidType}}
     {{^function:voidType}}
-      return _delegate.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}).block();
+      return _delegate.{{function:javaName}}({{#function:args}}{{field:javaName}},{{/function:args}}rpcOptions).block();
     {{/function:voidType}}
   }
 

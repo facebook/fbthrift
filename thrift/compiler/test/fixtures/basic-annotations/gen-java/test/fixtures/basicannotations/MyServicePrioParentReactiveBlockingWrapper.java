@@ -35,7 +35,7 @@ public class MyServicePrioParentReactiveBlockingWrapper
   @java.lang.Override
   public void ping(
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.ping().block();
+      _delegate.ping(rpcOptions).block();
   }
 
   @java.lang.Override
@@ -51,7 +51,7 @@ public class MyServicePrioParentReactiveBlockingWrapper
   @java.lang.Override
   public void pong(
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.pong().block();
+      _delegate.pong(rpcOptions).block();
   }
 
   @java.lang.Override

@@ -36,7 +36,7 @@ public class NestedContainersReactiveBlockingWrapper
   public void mapList(
         final Map<Integer, List<Integer>> foo,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.mapList(foo).block();
+      _delegate.mapList(foo,rpcOptions).block();
   }
 
   @java.lang.Override
@@ -54,7 +54,7 @@ public class NestedContainersReactiveBlockingWrapper
   public void mapSet(
         final Map<Integer, Set<Integer>> foo,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.mapSet(foo).block();
+      _delegate.mapSet(foo,rpcOptions).block();
   }
 
   @java.lang.Override
@@ -72,7 +72,7 @@ public class NestedContainersReactiveBlockingWrapper
   public void listMap(
         final List<Map<Integer, Integer>> foo,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.listMap(foo).block();
+      _delegate.listMap(foo,rpcOptions).block();
   }
 
   @java.lang.Override
@@ -90,7 +90,7 @@ public class NestedContainersReactiveBlockingWrapper
   public void listSet(
         final List<Set<Integer>> foo,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.listSet(foo).block();
+      _delegate.listSet(foo,rpcOptions).block();
   }
 
   @java.lang.Override
@@ -108,7 +108,7 @@ public class NestedContainersReactiveBlockingWrapper
   public void turtles(
         final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.turtles(foo).block();
+      _delegate.turtles(foo,rpcOptions).block();
   }
 
   @java.lang.Override

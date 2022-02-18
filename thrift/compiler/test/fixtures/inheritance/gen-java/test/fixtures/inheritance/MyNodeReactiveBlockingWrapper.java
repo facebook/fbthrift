@@ -35,7 +35,7 @@ public class MyNodeReactiveBlockingWrapper  extends test.fixtures.inheritance.My
   @java.lang.Override
   public void doMid(
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.doMid().block();
+      _delegate.doMid(rpcOptions).block();
   }
 
   @java.lang.Override

@@ -35,7 +35,7 @@ public class MyLeafReactiveBlockingWrapper  extends test.fixtures.inheritance.My
   @java.lang.Override
   public void doLeaf(
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.doLeaf().block();
+      _delegate.doLeaf(rpcOptions).block();
   }
 
   @java.lang.Override

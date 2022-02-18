@@ -35,7 +35,7 @@ public class MyServiceReactiveBlockingWrapper
   @java.lang.Override
   public void ping(
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.ping().block();
+      _delegate.ping(rpcOptions).block();
   }
 
   @java.lang.Override
@@ -51,7 +51,7 @@ public class MyServiceReactiveBlockingWrapper
   @java.lang.Override
   public String getRandomData(
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.getRandomData().block();
+      return _delegate.getRandomData(rpcOptions).block();
   }
 
   @java.lang.Override
@@ -68,7 +68,7 @@ public class MyServiceReactiveBlockingWrapper
   public boolean hasDataById(
         final long id,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.hasDataById(id).block();
+      return _delegate.hasDataById(id,rpcOptions).block();
   }
 
   @java.lang.Override
@@ -86,7 +86,7 @@ public class MyServiceReactiveBlockingWrapper
   public String getDataById(
         final long id,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.getDataById(id).block();
+      return _delegate.getDataById(id,rpcOptions).block();
   }
 
   @java.lang.Override
@@ -105,7 +105,7 @@ public class MyServiceReactiveBlockingWrapper
         final long id,
         final String data,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.putDataById(id, data).block();
+      _delegate.putDataById(id,data,rpcOptions).block();
   }
 
   @java.lang.Override
@@ -125,7 +125,7 @@ public class MyServiceReactiveBlockingWrapper
         final long id,
         final String data,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.lobDataById(id, data).block();
+      _delegate.lobDataById(id,data,rpcOptions).block();
   }
 
   @java.lang.Override
@@ -143,7 +143,7 @@ public class MyServiceReactiveBlockingWrapper
   @java.lang.Override
   public void doNothing(
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.doNothing().block();
+      _delegate.doNothing(rpcOptions).block();
   }
 
   @java.lang.Override
