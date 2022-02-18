@@ -7,6 +7,7 @@
 
 import typing as _typing
 
+import apache.thrift.metadata.lite_types as _fbthrift_metadata
 import folly.iobuf as _fbthrift_iobuf
 from thrift.py3lite.client import (
     AsyncClient as _fbthrift_py3lite_AsyncClient,
@@ -16,10 +17,27 @@ from thrift.py3lite.client import (
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 import thrift.py3lite.types as _fbthrift_py3lite_types
 import module.lite_types
+import module.lite_metadata
 
 
 class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.MyService"
+
+    @staticmethod
+    def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+        return module.lite_metadata.gen_metadata_service_MyService()
+
     class Async(_fbthrift_py3lite_AsyncClient):
+        @staticmethod
+        def __get_thrift_name__() -> str:
+            return "module.MyService"
+
+        @staticmethod
+        def __get_metadata__():
+            return module.lite_metadata.gen_metadata_service_MyService()
+
         async def ping(
             self
         ) -> None:
@@ -139,6 +157,14 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
 
 
     class Sync(_fbthrift_py3lite_SyncClient):
+        @staticmethod
+        def __get_thrift_name__() -> str:
+            return "module.MyService"
+
+        @staticmethod
+        def __get_metadata__():
+            return module.lite_metadata.gen_metadata_service_MyService()
+
         def ping(
             self
         ) -> None:
@@ -258,7 +284,23 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
 
 
 class DbMixedStackArguments(_fbthrift_py3lite_Client["DbMixedStackArguments.Async", "DbMixedStackArguments.Sync"]):
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.DbMixedStackArguments"
+
+    @staticmethod
+    def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+        return module.lite_metadata.gen_metadata_service_DbMixedStackArguments()
+
     class Async(_fbthrift_py3lite_AsyncClient):
+        @staticmethod
+        def __get_thrift_name__() -> str:
+            return "module.DbMixedStackArguments"
+
+        @staticmethod
+        def __get_metadata__():
+            return module.lite_metadata.gen_metadata_service_DbMixedStackArguments()
+
         async def getDataByKey0(
             self,
             key: str
@@ -299,6 +341,14 @@ class DbMixedStackArguments(_fbthrift_py3lite_Client["DbMixedStackArguments.Asyn
 
 
     class Sync(_fbthrift_py3lite_SyncClient):
+        @staticmethod
+        def __get_thrift_name__() -> str:
+            return "module.DbMixedStackArguments"
+
+        @staticmethod
+        def __get_metadata__():
+            return module.lite_metadata.gen_metadata_service_DbMixedStackArguments()
+
         def getDataByKey0(
             self,
             key: str

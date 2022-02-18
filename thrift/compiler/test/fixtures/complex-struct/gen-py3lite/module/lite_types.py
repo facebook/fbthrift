@@ -11,13 +11,6 @@ import thrift.py3lite.types as _fbthrift_py3lite_types
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 
 
-class MyEnum(enum.Enum):
-    MyValue1 = 0
-    MyValue2 = 1
-    MyValue3 = 3
-    MyValue4 = 4
-    MyValue5 = 5
-
 
 class MyStructFloatFieldThrowExp(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -51,6 +44,15 @@ class MyStructFloatFieldThrowExp(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
     )
 
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.MyStructFloatFieldThrowExp"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_MyStructFloatFieldThrowExp()
+
+
 
 class MyStructMapFloatThrowExp(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -69,6 +71,15 @@ class MyStructMapFloatThrowExp(metaclass=_fbthrift_py3lite_types.StructMeta):
             None,  # default value
         ),
     )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.MyStructMapFloatThrowExp"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_MyStructMapFloatThrowExp()
+
 
 
 class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
@@ -271,6 +282,15 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
     )
 
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.MyStruct"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_MyStruct()
+
+
 
 class SimpleStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -289,6 +309,15 @@ class SimpleStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "Batman",  # default value
         ),
     )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.SimpleStruct"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_SimpleStruct()
+
 
 
 class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
@@ -449,6 +478,15 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
     )
 
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.defaultStruct"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_defaultStruct()
+
+
 
 class MyStructTypeDef(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -517,10 +555,28 @@ class MyStructTypeDef(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
     )
 
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.MyStructTypeDef"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_MyStructTypeDef()
+
+
 
 class MyDataItem(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
     )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.MyDataItem"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_MyDataItem()
+
 
 
 class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
@@ -569,6 +625,15 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
     )
 
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.MyUnion"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_MyUnion()
+
+
 
 class MyUnionFloatFieldThrowExp(metaclass=_fbthrift_py3lite_types.UnionMeta):
     _fbthrift_SPEC = (
@@ -601,6 +666,15 @@ class MyUnionFloatFieldThrowExp(metaclass=_fbthrift_py3lite_types.UnionMeta):
             None,  # default value
         ),
     )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.MyUnionFloatFieldThrowExp"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_MyUnionFloatFieldThrowExp()
+
 
 
 class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
@@ -733,6 +807,15 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
     )
 
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.ComplexNestedStruct"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_ComplexNestedStruct()
+
+
 
 class TypeRemapped(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -766,10 +849,28 @@ class TypeRemapped(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
     )
 
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.TypeRemapped"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_TypeRemapped()
+
+
 
 class emptyXcep(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
     _fbthrift_SPEC = (
     )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.emptyXcep"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__exception_emptyXcep()
+
 
 
 class reqXcep(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
@@ -790,6 +891,15 @@ class reqXcep(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
         ),
     )
 
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.reqXcep"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__exception_reqXcep()
+
+
 
 class optXcep(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
     _fbthrift_SPEC = (
@@ -808,6 +918,15 @@ class optXcep(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
             None,  # default value
         ),
     )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.optXcep"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__exception_optXcep()
+
 
 
 class complexException(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
@@ -855,6 +974,64 @@ class complexException(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta
             None,  # default value
         ),
     )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.complexException"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__exception_complexException()
+
+
+# This unfortunately has to be down here to prevent circular imports
+import module.lite_metadata
+
+class MyEnum(_fbthrift_py3lite_types.Enum, enum.Enum):
+    MyValue1 = 0
+    MyValue2 = 1
+    MyValue3 = 3
+    MyValue4 = 4
+    MyValue5 = 5
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.MyEnum"
+
+    @staticmethod
+    def __get_metadata__():
+        return module.lite_metadata.gen_metadata_enum_MyEnum()
+
+def _fbthrift_metadata__struct_MyStructFloatFieldThrowExp():
+    return module.lite_metadata.gen_metadata_struct_MyStructFloatFieldThrowExp()
+def _fbthrift_metadata__struct_MyStructMapFloatThrowExp():
+    return module.lite_metadata.gen_metadata_struct_MyStructMapFloatThrowExp()
+def _fbthrift_metadata__struct_MyStruct():
+    return module.lite_metadata.gen_metadata_struct_MyStruct()
+def _fbthrift_metadata__struct_SimpleStruct():
+    return module.lite_metadata.gen_metadata_struct_SimpleStruct()
+def _fbthrift_metadata__struct_defaultStruct():
+    return module.lite_metadata.gen_metadata_struct_defaultStruct()
+def _fbthrift_metadata__struct_MyStructTypeDef():
+    return module.lite_metadata.gen_metadata_struct_MyStructTypeDef()
+def _fbthrift_metadata__struct_MyDataItem():
+    return module.lite_metadata.gen_metadata_struct_MyDataItem()
+def _fbthrift_metadata__struct_MyUnion():
+    return module.lite_metadata.gen_metadata_struct_MyUnion()
+def _fbthrift_metadata__struct_MyUnionFloatFieldThrowExp():
+    return module.lite_metadata.gen_metadata_struct_MyUnionFloatFieldThrowExp()
+def _fbthrift_metadata__struct_ComplexNestedStruct():
+    return module.lite_metadata.gen_metadata_struct_ComplexNestedStruct()
+def _fbthrift_metadata__struct_TypeRemapped():
+    return module.lite_metadata.gen_metadata_struct_TypeRemapped()
+def _fbthrift_metadata__exception_emptyXcep():
+    return module.lite_metadata.gen_metadata_exception_emptyXcep()
+def _fbthrift_metadata__exception_reqXcep():
+    return module.lite_metadata.gen_metadata_exception_reqXcep()
+def _fbthrift_metadata__exception_optXcep():
+    return module.lite_metadata.gen_metadata_exception_optXcep()
+def _fbthrift_metadata__exception_complexException():
+    return module.lite_metadata.gen_metadata_exception_complexException()
+
 
 
 _fbthrift_py3lite_types.fill_specs(

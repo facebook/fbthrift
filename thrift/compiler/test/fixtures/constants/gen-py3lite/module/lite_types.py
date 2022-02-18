@@ -11,23 +11,6 @@ import thrift.py3lite.types as _fbthrift_py3lite_types
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 
 
-class EmptyEnum(enum.Enum):
-    pass
-
-
-class City(enum.Enum):
-    NYC = 0
-    MPK = 1
-    SEA = 2
-    LON = 3
-
-
-class Company(enum.Enum):
-    FACEBOOK = 0
-    WHATSAPP = 1
-    OCULUS = 2
-    INSTAGRAM = 3
-
 
 class Internship(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -68,6 +51,15 @@ class Internship(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
     )
 
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.Internship"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_Internship()
+
+
 
 class Range(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -87,6 +79,15 @@ class Range(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
     )
 
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.Range"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_Range()
+
+
 
 class struct1(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -105,6 +106,15 @@ class struct1(metaclass=_fbthrift_py3lite_types.StructMeta):
             "<uninitialized>",  # default value
         ),
     )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.struct1"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_struct1()
+
 
 
 class struct2(metaclass=_fbthrift_py3lite_types.StructMeta):
@@ -139,6 +149,15 @@ class struct2(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
     )
 
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.struct2"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_struct2()
+
+
 
 class struct3(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -164,6 +183,15 @@ class struct3(metaclass=_fbthrift_py3lite_types.StructMeta):
             None,  # default value
         ),
     )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.struct3"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_struct3()
+
 
 
 class struct4(metaclass=_fbthrift_py3lite_types.StructMeta):
@@ -191,6 +219,15 @@ class struct4(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
     )
 
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.struct4"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_struct4()
+
+
 
 class union1(metaclass=_fbthrift_py3lite_types.UnionMeta):
     _fbthrift_SPEC = (
@@ -209,6 +246,15 @@ class union1(metaclass=_fbthrift_py3lite_types.UnionMeta):
             None,  # default value
         ),
     )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.union1"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_union1()
+
 
 
 class union2(metaclass=_fbthrift_py3lite_types.UnionMeta):
@@ -242,6 +288,69 @@ class union2(metaclass=_fbthrift_py3lite_types.UnionMeta):
             None,  # default value
         ),
     )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.union2"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_union2()
+
+
+# This unfortunately has to be down here to prevent circular imports
+import module.lite_metadata
+
+class EmptyEnum(_fbthrift_py3lite_types.Enum, enum.Enum):
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.EmptyEnum"
+
+    @staticmethod
+    def __get_metadata__():
+        return module.lite_metadata.gen_metadata_enum_EmptyEnum()
+class City(_fbthrift_py3lite_types.Enum, enum.Enum):
+    NYC = 0
+    MPK = 1
+    SEA = 2
+    LON = 3
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.City"
+
+    @staticmethod
+    def __get_metadata__():
+        return module.lite_metadata.gen_metadata_enum_City()
+class Company(_fbthrift_py3lite_types.Enum, enum.Enum):
+    FACEBOOK = 0
+    WHATSAPP = 1
+    OCULUS = 2
+    INSTAGRAM = 3
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.Company"
+
+    @staticmethod
+    def __get_metadata__():
+        return module.lite_metadata.gen_metadata_enum_Company()
+
+def _fbthrift_metadata__struct_Internship():
+    return module.lite_metadata.gen_metadata_struct_Internship()
+def _fbthrift_metadata__struct_Range():
+    return module.lite_metadata.gen_metadata_struct_Range()
+def _fbthrift_metadata__struct_struct1():
+    return module.lite_metadata.gen_metadata_struct_struct1()
+def _fbthrift_metadata__struct_struct2():
+    return module.lite_metadata.gen_metadata_struct_struct2()
+def _fbthrift_metadata__struct_struct3():
+    return module.lite_metadata.gen_metadata_struct_struct3()
+def _fbthrift_metadata__struct_struct4():
+    return module.lite_metadata.gen_metadata_struct_struct4()
+def _fbthrift_metadata__struct_union1():
+    return module.lite_metadata.gen_metadata_struct_union1()
+def _fbthrift_metadata__struct_union2():
+    return module.lite_metadata.gen_metadata_struct_union2()
+
 
 
 _fbthrift_py3lite_types.fill_specs(

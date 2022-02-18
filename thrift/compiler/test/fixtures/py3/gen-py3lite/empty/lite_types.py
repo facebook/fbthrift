@@ -9,5 +9,12 @@ import thrift.py3lite.types as _fbthrift_py3lite_types
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 
 
+# This unfortunately has to be down here to prevent circular imports
+import empty.lite_metadata
+
+
+
+
+
 _fbthrift_py3lite_types.fill_specs(
 )

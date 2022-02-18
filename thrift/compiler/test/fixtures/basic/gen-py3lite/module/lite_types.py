@@ -11,10 +11,6 @@ import thrift.py3lite.types as _fbthrift_py3lite_types
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 
 
-class MyEnum(enum.Enum):
-    MyValue1 = 0
-    MyValue2 = 1
-
 
 class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -69,10 +65,28 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
     )
 
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.MyStruct"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_MyStruct()
+
+
 
 class MyDataItem(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
     )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.MyDataItem"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_MyDataItem()
+
 
 
 class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
@@ -99,6 +113,37 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
             None,  # default value
         ),
     )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.MyUnion"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_MyUnion()
+
+
+# This unfortunately has to be down here to prevent circular imports
+import module.lite_metadata
+
+class MyEnum(_fbthrift_py3lite_types.Enum, enum.Enum):
+    MyValue1 = 0
+    MyValue2 = 1
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.MyEnum"
+
+    @staticmethod
+    def __get_metadata__():
+        return module.lite_metadata.gen_metadata_enum_MyEnum()
+
+def _fbthrift_metadata__struct_MyStruct():
+    return module.lite_metadata.gen_metadata_struct_MyStruct()
+def _fbthrift_metadata__struct_MyDataItem():
+    return module.lite_metadata.gen_metadata_struct_MyDataItem()
+def _fbthrift_metadata__struct_MyUnion():
+    return module.lite_metadata.gen_metadata_struct_MyUnion()
+
 
 
 _fbthrift_py3lite_types.fill_specs(

@@ -21,6 +21,7 @@ Generated Python classes for Thrift clients
 
 import typing as _typing
 
+import apache.thrift.metadata.lite_types as _fbthrift_metadata
 import folly.iobuf as _fbthrift_iobuf
 from {{program:base_library_package}}.client import (
     AsyncClient as _fbthrift_py3lite_AsyncClient,
@@ -30,6 +31,7 @@ from {{program:base_library_package}}.client import (
 import {{program:base_library_package}}.exceptions as _fbthrift_py3lite_exceptions
 import {{program:base_library_package}}.types as _fbthrift_py3lite_types
 import {{program:module_path}}.lite_types
+import {{program:module_path}}.lite_metadata
 {{#program:include_namespaces}}
 {{#has_types?}}
 import {{included_module_path}}.lite_types
@@ -43,14 +45,27 @@ import {{included_module_path}}.lite_clients
 {{#program:services?}}
 {{#program:services}}
 class {{service:name}}(_fbthrift_py3lite_Client["{{service:name}}.Async", "{{service:name}}.Sync"]):
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "{{program:name}}.{{service:name}}"
+
+    @staticmethod
+    def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+        return {{program:module_path}}.lite_metadata.gen_metadata_service_{{service:name}}()
+
     class Async({{#service:extends}}{{!
         }}{{> services/client_module_path}}.Async{{!
     }}{{/service:extends}}{{^service:extends?}}{{!
         }}_fbthrift_py3lite_AsyncClient{{!
     }}{{/service:extends?}}):
-        {{^service:supported_functions?}}
-        pass
-        {{/service:supported_functions?}}
+        @staticmethod
+        def __get_thrift_name__() -> str:
+            return "{{program:name}}.{{service:name}}"
+
+        @staticmethod
+        def __get_metadata__():
+            return {{program:module_path}}.lite_metadata.gen_metadata_service_{{service:name}}()
+
         {{#service:supported_functions}}
         async def {{function:name}}(
             self{{#function:args}},
@@ -87,9 +102,14 @@ class {{service:name}}(_fbthrift_py3lite_Client["{{service:name}}.Async", "{{ser
     }}{{/service:extends}}{{^service:extends?}}{{!
         }}_fbthrift_py3lite_SyncClient{{!
     }}{{/service:extends?}}):
-        {{^service:supported_functions?}}
-        pass
-        {{/service:supported_functions?}}
+        @staticmethod
+        def __get_thrift_name__() -> str:
+            return "{{program:name}}.{{service:name}}"
+
+        @staticmethod
+        def __get_metadata__():
+            return {{program:module_path}}.lite_metadata.gen_metadata_service_{{service:name}}()
+
         {{#service:supported_functions}}
         def {{function:name}}(
             self{{#function:args}},

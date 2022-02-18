@@ -917,6 +917,7 @@ class t_mstch_py3lite_generator : public t_mstch_generator {
   void generate_program() override {
     set_mstch_generators();
     generate_types();
+    generate_metadata();
     generate_clients();
     generate_services();
   }

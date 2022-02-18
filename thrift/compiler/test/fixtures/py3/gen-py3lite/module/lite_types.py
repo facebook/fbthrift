@@ -11,20 +11,6 @@ import fbcode.thrift.py3lite.types as _fbthrift_py3lite_types
 import fbcode.thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 
 
-class AnEnum(enum.Enum):
-    NOTSET = 0
-    ONE = 1
-    TWO = 2
-    THREE = 3
-    FOUR = 4
-
-
-class Flags(enum.Flag):
-    flag_A = 1
-    flag_B = 2
-    flag_C = 4
-    flag_D = 8
-
 
 class SimpleException(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
     _fbthrift_SPEC = (
@@ -37,6 +23,15 @@ class SimpleException(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta)
         ),
     )
 
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.SimpleException"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__exception_SimpleException()
+
+
 
 class OptionalRefStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -48,6 +43,15 @@ class OptionalRefStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             None,  # default value
         ),
     )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.OptionalRefStruct"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_OptionalRefStruct()
+
 
 
 class SimpleStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
@@ -109,6 +113,15 @@ class SimpleStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             None,  # default value
         ),
     )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.SimpleStruct"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_SimpleStruct()
+
 
 
 class ComplexStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
@@ -178,6 +191,15 @@ class ComplexStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
     )
 
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.ComplexStruct"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_ComplexStruct()
+
+
 
 class BinaryUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
     _fbthrift_SPEC = (
@@ -190,6 +212,15 @@ class BinaryUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
     )
 
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.BinaryUnion"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_BinaryUnion()
+
+
 
 class BinaryUnionStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -201,6 +232,58 @@ class BinaryUnionStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             None,  # default value
         ),
     )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.BinaryUnionStruct"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_BinaryUnionStruct()
+
+
+# This unfortunately has to be down here to prevent circular imports
+import module.lite_metadata
+
+class AnEnum(_fbthrift_py3lite_types.Enum, enum.Enum):
+    NOTSET = 0
+    ONE = 1
+    TWO = 2
+    THREE = 3
+    FOUR = 4
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.AnEnum"
+
+    @staticmethod
+    def __get_metadata__():
+        return module.lite_metadata.gen_metadata_enum_AnEnum()
+class Flags(_fbthrift_py3lite_types.Enum, enum.Flag):
+    flag_A = 1
+    flag_B = 2
+    flag_C = 4
+    flag_D = 8
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.Flags"
+
+    @staticmethod
+    def __get_metadata__():
+        return module.lite_metadata.gen_metadata_enum_Flags()
+
+def _fbthrift_metadata__exception_SimpleException():
+    return module.lite_metadata.gen_metadata_exception_SimpleException()
+def _fbthrift_metadata__struct_OptionalRefStruct():
+    return module.lite_metadata.gen_metadata_struct_OptionalRefStruct()
+def _fbthrift_metadata__struct_SimpleStruct():
+    return module.lite_metadata.gen_metadata_struct_SimpleStruct()
+def _fbthrift_metadata__struct_ComplexStruct():
+    return module.lite_metadata.gen_metadata_struct_ComplexStruct()
+def _fbthrift_metadata__struct_BinaryUnion():
+    return module.lite_metadata.gen_metadata_struct_BinaryUnion()
+def _fbthrift_metadata__struct_BinaryUnionStruct():
+    return module.lite_metadata.gen_metadata_struct_BinaryUnionStruct()
+
 
 
 _fbthrift_py3lite_types.fill_specs(

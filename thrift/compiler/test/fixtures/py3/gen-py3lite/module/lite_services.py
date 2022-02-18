@@ -9,10 +9,12 @@ import typing as _typing
 
 import folly.iobuf as _fbthrift_iobuf
 
+import apache.thrift.metadata.lite_types as _fbthrift_metadata
 from thrift.py3lite.serializer import serialize_iobuf, deserialize, Protocol
 from thrift.py3lite.server import ServiceInterface, oneway, PythonUserException
 
 import module.lite_types
+import module.lite_metadata
 
 class SimpleServiceInterface(
     ServiceInterface,
@@ -69,6 +71,14 @@ class SimpleServiceInterface(
             b"get_binary_union_struct": self._fbthrift__handler_get_binary_union_struct,
         }
         return {**super().getFunctionTable(), **functionTable}
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.SimpleService"
+
+    @staticmethod
+    def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+        return module.lite_metadata.gen_metadata_service_SimpleService()
 
 
 
@@ -666,6 +676,14 @@ SimpleServiceInterface,
         }
         return {**super().getFunctionTable(), **functionTable}
 
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.DerivedService"
+
+    @staticmethod
+    def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+        return module.lite_metadata.gen_metadata_service_DerivedService()
+
 
 
     async def get_six(
@@ -695,6 +713,14 @@ DerivedServiceInterface,
             b"get_seven": self._fbthrift__handler_get_seven,
         }
         return {**super().getFunctionTable(), **functionTable}
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.RederivedService"
+
+    @staticmethod
+    def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+        return module.lite_metadata.gen_metadata_service_RederivedService()
 
 
 

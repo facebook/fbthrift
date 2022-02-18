@@ -7,6 +7,7 @@
 
 import typing as _typing
 
+import apache.thrift.metadata.lite_types as _fbthrift_metadata
 import folly.iobuf as _fbthrift_iobuf
 from fbcode.thrift.py3lite.client import (
     AsyncClient as _fbthrift_py3lite_AsyncClient,
@@ -16,10 +17,27 @@ from fbcode.thrift.py3lite.client import (
 import fbcode.thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 import fbcode.thrift.py3lite.types as _fbthrift_py3lite_types
 import module.lite_types
+import module.lite_metadata
 
 
 class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleService.Sync"]):
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.SimpleService"
+
+    @staticmethod
+    def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+        return module.lite_metadata.gen_metadata_service_SimpleService()
+
     class Async(_fbthrift_py3lite_AsyncClient):
+        @staticmethod
+        def __get_thrift_name__() -> str:
+            return "module.SimpleService"
+
+        @staticmethod
+        def __get_metadata__():
+            return module.lite_metadata.gen_metadata_service_SimpleService()
+
         async def get_five(
             self
         ) -> int:
@@ -787,6 +805,14 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
 
 
     class Sync(_fbthrift_py3lite_SyncClient):
+        @staticmethod
+        def __get_thrift_name__() -> str:
+            return "module.SimpleService"
+
+        @staticmethod
+        def __get_metadata__():
+            return module.lite_metadata.gen_metadata_service_SimpleService()
+
         def get_five(
             self
         ) -> int:
@@ -1554,7 +1580,23 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
 
 
 class DerivedService(_fbthrift_py3lite_Client["DerivedService.Async", "DerivedService.Sync"]):
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.DerivedService"
+
+    @staticmethod
+    def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+        return module.lite_metadata.gen_metadata_service_DerivedService()
+
     class Async(SimpleService.Async):
+        @staticmethod
+        def __get_thrift_name__() -> str:
+            return "module.DerivedService"
+
+        @staticmethod
+        def __get_metadata__():
+            return module.lite_metadata.gen_metadata_service_DerivedService()
+
         async def get_six(
             self
         ) -> int:
@@ -1574,6 +1616,14 @@ class DerivedService(_fbthrift_py3lite_Client["DerivedService.Async", "DerivedSe
 
 
     class Sync(SimpleService.Sync):
+        @staticmethod
+        def __get_thrift_name__() -> str:
+            return "module.DerivedService"
+
+        @staticmethod
+        def __get_metadata__():
+            return module.lite_metadata.gen_metadata_service_DerivedService()
+
         def get_six(
             self
         ) -> int:
@@ -1593,7 +1643,23 @@ class DerivedService(_fbthrift_py3lite_Client["DerivedService.Async", "DerivedSe
 
 
 class RederivedService(_fbthrift_py3lite_Client["RederivedService.Async", "RederivedService.Sync"]):
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.RederivedService"
+
+    @staticmethod
+    def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+        return module.lite_metadata.gen_metadata_service_RederivedService()
+
     class Async(DerivedService.Async):
+        @staticmethod
+        def __get_thrift_name__() -> str:
+            return "module.RederivedService"
+
+        @staticmethod
+        def __get_metadata__():
+            return module.lite_metadata.gen_metadata_service_RederivedService()
+
         async def get_seven(
             self
         ) -> int:
@@ -1613,6 +1679,14 @@ class RederivedService(_fbthrift_py3lite_Client["RederivedService.Async", "Reder
 
 
     class Sync(DerivedService.Sync):
+        @staticmethod
+        def __get_thrift_name__() -> str:
+            return "module.RederivedService"
+
+        @staticmethod
+        def __get_metadata__():
+            return module.lite_metadata.gen_metadata_service_RederivedService()
+
         def get_seven(
             self
         ) -> int:

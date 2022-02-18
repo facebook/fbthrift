@@ -9,10 +9,12 @@ import typing as _typing
 
 import folly.iobuf as _fbthrift_iobuf
 
+import apache.thrift.metadata.lite_types as _fbthrift_metadata
 from thrift.py3lite.serializer import serialize_iobuf, deserialize, Protocol
 from thrift.py3lite.server import ServiceInterface, oneway, PythonUserException
 
 import module.lite_types
+import module.lite_metadata
 
 class MyServiceInterface(
     ServiceInterface,
@@ -36,6 +38,14 @@ class MyServiceInterface(
             b"lobDataById": self._fbthrift__handler_lobDataById,
         }
         return {**super().getFunctionTable(), **functionTable}
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.MyService"
+
+    @staticmethod
+    def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+        return module.lite_metadata.gen_metadata_service_MyService()
 
 
 
@@ -165,6 +175,14 @@ class DbMixedStackArgumentsInterface(
             b"getDataByKey1": self._fbthrift__handler_getDataByKey1,
         }
         return {**super().getFunctionTable(), **functionTable}
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.DbMixedStackArguments"
+
+    @staticmethod
+    def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+        return module.lite_metadata.gen_metadata_service_DbMixedStackArguments()
 
 
 

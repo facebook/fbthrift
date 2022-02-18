@@ -73,7 +73,7 @@ def _fbthrift_gen_metadata_service_{{service:name}}({{!
         return metadata_struct
 
     functions = [
-        {{#service:functions}}
+        {{#service:functions}}{{^function:starts_interaction?}}
         _fbthrift_metadata.ThriftFunction(name="{{function:name}}", return_type={{#function:return_type}}{{> metadata/thrift_type }}{{/function:return_type}}, arguments=[
             {{#function:args}}
             _fbthrift_metadata.ThriftField(id={{field:key}}, type={{#field:type}}{{> metadata/thrift_type }}{{/field:type}}, name="{{field:name}}", is_optional=False, structured_annotations=[]),
@@ -83,7 +83,7 @@ def _fbthrift_gen_metadata_service_{{service:name}}({{!
             _fbthrift_metadata.ThriftField(id={{field:key}}, type={{#field:type}}{{> metadata/thrift_type }}{{/field:type}}, name="{{field:name}}", is_optional=False, structured_annotations=[]),
             {{/function:exceptions}}
         ], is_oneway={{#function:oneway?}}True{{/function:oneway?}}{{^function:oneway?}}False{{/function:oneway?}}, structured_annotations=[]),
-        {{/service:functions}}
+        {{/function:starts_interaction?}}{{/service:functions}}
     ]
 
     service_dict = dict(metadata_struct.services)
@@ -92,7 +92,7 @@ def _fbthrift_gen_metadata_service_{{service:name}}({{!
     {{#service:extends?}}{{#service:extends}}
     new_struct = {{#type:need_module_path?}}{{type:metadata_path}}.{{/type:need_module_path?}}_fbthrift_gen_metadata_service_{{service:name}}(new_struct)
     {{/service:extends}}{{/service:extends?}}
-    {{#service:functions}}
+    {{#service:functions}}{{^function:starts_interaction?}}
 
     {{#function:args}}
     {{#field:type}}{{> metadata/recursive_call }}{{/field:type}} # {{field:name}}
@@ -104,7 +104,7 @@ def _fbthrift_gen_metadata_service_{{service:name}}({{!
 
     {{#function:return_type}}{{> metadata/recursive_call }}{{/field:return_type}} # return value
 
-    {{/service:functions}}
+    {{/function:starts_interaction?}}{{/service:functions}}
 
     return new_struct
 

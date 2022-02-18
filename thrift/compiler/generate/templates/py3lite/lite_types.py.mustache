@@ -25,25 +25,13 @@ import enum
 import folly.iobuf as _fbthrift_iobuf
 import {{program:base_library_package}}.types as _fbthrift_py3lite_types
 import {{program:base_library_package}}.exceptions as _fbthrift_py3lite_exceptions
+
 {{#program:include_namespaces}}
 {{#has_types?}}
 
 import {{included_module_path}}.lite_types
 {{/has_types?}}
 {{/program:include_namespaces}}
-{{#program:enums}}
-
-
-class {{enum:name}}(enum.{{!
-        }}{{#enum:flags?}}Flag{{/enum:flags?}}{{!
-        }}{{^enum:flags?}}Enum{{/enum:flags?}}):
-    {{#enum:values}}
-    {{enum_value:py_name}} = {{enum_value:value}}
-    {{/enum:values}}
-    {{^enum:values}}
-    pass
-    {{/enum:values}}
-{{/program:enums}}
 {{#program:structs}}
 
 
@@ -67,6 +55,15 @@ class {{struct:name}}(metaclass={{!
         ),
         {{/struct:fields_and_mixin_fields}}
     )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "{{program:name}}.{{struct:name}}"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__{{#struct:exception?}}exception{{/struct:exception?}}{{^struct:exception?}}struct{{/struct:exception?}}_{{struct:name}}()
+
     {{#struct:exception?}}
     {{#struct:exception_message?}}
 
@@ -80,6 +77,31 @@ class {{struct:name}}(metaclass={{!
     {{/struct:exception_message?}}
     {{/struct:exception?}}
 {{/program:structs}}
+
+# This unfortunately has to be down here to prevent circular imports
+import {{program:module_path}}.lite_metadata
+
+{{#program:enums}}
+class {{enum:name}}(_fbthrift_py3lite_types.Enum, enum.{{!
+        }}{{#enum:flags?}}Flag{{/enum:flags?}}{{!
+        }}{{^enum:flags?}}Enum{{/enum:flags?}}):
+    {{#enum:values}}
+    {{enum_value:py_name}} = {{enum_value:value}}
+    {{/enum:values}}
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "{{program:name}}.{{enum:name}}"
+
+    @staticmethod
+    def __get_metadata__():
+        return {{program:module_path}}.lite_metadata.gen_metadata_enum_{{enum:name}}()
+{{/program:enums}}
+
+{{#program:structs}}
+def _fbthrift_metadata__{{#struct:exception?}}exception{{/struct:exception?}}{{^struct:exception?}}struct{{/struct:exception?}}_{{struct:name}}():
+    return {{program:module_path}}.lite_metadata.gen_metadata_{{#struct:exception?}}exception{{/struct:exception?}}{{^struct:exception?}}struct{{/struct:exception?}}_{{struct:name}}()
+{{/program:structs}}
+
 {{#program:structs?}}
 
 

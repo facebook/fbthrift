@@ -9,6 +9,7 @@ import thrift.py3lite.types as _fbthrift_py3lite_types
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 
 
+
 class Fiery(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
     _fbthrift_SPEC = (
         (
@@ -19,6 +20,15 @@ class Fiery(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
             None,  # default value
         ),
     )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.Fiery"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__exception_Fiery()
+
 
     def __str__(self):
         field = self.message
@@ -38,6 +48,15 @@ class Serious(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
             None,  # default value
         ),
     )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.Serious"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__exception_Serious()
+
 
     def __str__(self):
         field = self.sonnet
@@ -65,6 +84,15 @@ class ComplexFieldNames(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMet
         ),
     )
 
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.ComplexFieldNames"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__exception_ComplexFieldNames()
+
+
     def __str__(self):
         field = self.internal_error_message
         if field is None:
@@ -90,6 +118,15 @@ class CustomFieldNames(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta
             None,  # default value
         ),
     )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.CustomFieldNames"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__exception_CustomFieldNames()
+
 
     def __str__(self):
         field = self.internal_error_message
@@ -117,6 +154,15 @@ class ExceptionWithPrimitiveField(metaclass=_fbthrift_py3lite_exceptions.Generat
         ),
     )
 
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.ExceptionWithPrimitiveField"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__exception_ExceptionWithPrimitiveField()
+
+
     def __str__(self):
         field = self.message
         if field is None:
@@ -128,6 +174,33 @@ class ExceptionWithPrimitiveField(metaclass=_fbthrift_py3lite_exceptions.Generat
 class Banal(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
     _fbthrift_SPEC = (
     )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.Banal"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__exception_Banal()
+
+
+# This unfortunately has to be down here to prevent circular imports
+import module.lite_metadata
+
+
+def _fbthrift_metadata__exception_Fiery():
+    return module.lite_metadata.gen_metadata_exception_Fiery()
+def _fbthrift_metadata__exception_Serious():
+    return module.lite_metadata.gen_metadata_exception_Serious()
+def _fbthrift_metadata__exception_ComplexFieldNames():
+    return module.lite_metadata.gen_metadata_exception_ComplexFieldNames()
+def _fbthrift_metadata__exception_CustomFieldNames():
+    return module.lite_metadata.gen_metadata_exception_CustomFieldNames()
+def _fbthrift_metadata__exception_ExceptionWithPrimitiveField():
+    return module.lite_metadata.gen_metadata_exception_ExceptionWithPrimitiveField()
+def _fbthrift_metadata__exception_Banal():
+    return module.lite_metadata.gen_metadata_exception_Banal()
+
 
 
 _fbthrift_py3lite_types.fill_specs(

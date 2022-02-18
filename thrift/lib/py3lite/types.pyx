@@ -444,6 +444,14 @@ cdef class Struct:
         inst._fbthrift_data = data
         return inst
 
+    @staticmethod
+    def __get_metadata__():
+        raise NotImplementedError()
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return NotImplementedError()
+
 
 cdef class Union:
     def __cinit__(self):
@@ -469,6 +477,14 @@ cdef class Union:
         inst._fbthrift_data = data
         inst._fbthrift_load_cache()
         return inst
+
+    @staticmethod
+    def __get_metadata__():
+        raise NotImplementedError()
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return NotImplementedError()
 
     cdef void _fbthrift_update_type_value(self, type_value, value) except *:
         Py_INCREF(type_value)
@@ -1075,3 +1091,12 @@ cdef Struct _fbthrift_struct_update_nested_field(Struct obj, list path_and_vals)
             nested_path_and_vals)
 
     return obj(**updatedict)
+
+class Enum:
+    @staticmethod
+    def __get_metadata__():
+        raise NotImplementedError()
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return NotImplementedError()

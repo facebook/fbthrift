@@ -8,7 +8,14 @@ import folly.iobuf as _fbthrift_iobuf
 import thrift.py3lite.types as _fbthrift_py3lite_types
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 
+
 import py3lite_module_root.my.namespacing.test.hsmodule.lite_types
+
+# This unfortunately has to be down here to prevent circular imports
+import py3lite_module_root.my.namespacing.extend.test.extend.lite_metadata
+
+
+
 
 
 class _fbthrift_ExtendTestService_check_args(metaclass=_fbthrift_py3lite_types.StructMeta):

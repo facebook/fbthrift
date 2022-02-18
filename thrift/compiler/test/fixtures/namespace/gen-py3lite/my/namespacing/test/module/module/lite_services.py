@@ -9,10 +9,12 @@ import typing as _typing
 
 import folly.iobuf as _fbthrift_iobuf
 
+import apache.thrift.metadata.lite_types as _fbthrift_metadata
 from thrift.py3lite.serializer import serialize_iobuf, deserialize, Protocol
 from thrift.py3lite.server import ServiceInterface, oneway, PythonUserException
 
 import py3lite_module_root.my.namespacing.test.module.module.lite_types
+import py3lite_module_root.my.namespacing.test.module.module.lite_metadata
 
 class TestServiceInterface(
     ServiceInterface,
@@ -29,6 +31,14 @@ class TestServiceInterface(
             b"init": self._fbthrift__handler_init,
         }
         return {**super().getFunctionTable(), **functionTable}
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.TestService"
+
+    @staticmethod
+    def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+        return py3lite_module_root.my.namespacing.test.module.module.lite_metadata.gen_metadata_service_TestService()
 
 
 

@@ -7,6 +7,7 @@
 
 import typing as _typing
 
+import apache.thrift.metadata.lite_types as _fbthrift_metadata
 import folly.iobuf as _fbthrift_iobuf
 from thrift.py3lite.client import (
     AsyncClient as _fbthrift_py3lite_AsyncClient,
@@ -16,10 +17,27 @@ from thrift.py3lite.client import (
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 import thrift.py3lite.types as _fbthrift_py3lite_types
 import py3lite_module_root.my.namespacing.test.module.module.lite_types
+import py3lite_module_root.my.namespacing.test.module.module.lite_metadata
 
 
 class TestService(_fbthrift_py3lite_Client["TestService.Async", "TestService.Sync"]):
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.TestService"
+
+    @staticmethod
+    def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+        return py3lite_module_root.my.namespacing.test.module.module.lite_metadata.gen_metadata_service_TestService()
+
     class Async(_fbthrift_py3lite_AsyncClient):
+        @staticmethod
+        def __get_thrift_name__() -> str:
+            return "module.TestService"
+
+        @staticmethod
+        def __get_metadata__():
+            return py3lite_module_root.my.namespacing.test.module.module.lite_metadata.gen_metadata_service_TestService()
+
         async def init(
             self,
             int1: int
@@ -41,6 +59,14 @@ class TestService(_fbthrift_py3lite_Client["TestService.Async", "TestService.Syn
 
 
     class Sync(_fbthrift_py3lite_SyncClient):
+        @staticmethod
+        def __get_thrift_name__() -> str:
+            return "module.TestService"
+
+        @staticmethod
+        def __get_metadata__():
+            return py3lite_module_root.my.namespacing.test.module.module.lite_metadata.gen_metadata_service_TestService()
+
         def init(
             self,
             int1: int

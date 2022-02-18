@@ -9,6 +9,7 @@ import thrift.py3lite.types as _fbthrift_py3lite_types
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 
 
+
 class Foo(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -19,6 +20,23 @@ class Foo(metaclass=_fbthrift_py3lite_types.StructMeta):
             None,  # default value
         ),
     )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.Foo"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_Foo()
+
+
+# This unfortunately has to be down here to prevent circular imports
+import py3lite_module_root.my.namespacing.test.module.module.lite_metadata
+
+
+def _fbthrift_metadata__struct_Foo():
+    return py3lite_module_root.my.namespacing.test.module.module.lite_metadata.gen_metadata_struct_Foo()
+
 
 
 _fbthrift_py3lite_types.fill_specs(

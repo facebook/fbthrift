@@ -9,10 +9,12 @@ import typing as _typing
 
 import folly.iobuf as _fbthrift_iobuf
 
+import apache.thrift.metadata.lite_types as _fbthrift_metadata
 from thrift.py3lite.serializer import serialize_iobuf, deserialize, Protocol
 from thrift.py3lite.server import ServiceInterface, oneway, PythonUserException
 
 import empty.lite_types
+import empty.lite_metadata
 
 class NullServiceInterface(
     ServiceInterface,
@@ -28,5 +30,13 @@ class NullServiceInterface(
         functionTable = {
         }
         return {**super().getFunctionTable(), **functionTable}
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "empty.NullService"
+
+    @staticmethod
+    def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+        return empty.lite_metadata.gen_metadata_service_NullService()
 
 
