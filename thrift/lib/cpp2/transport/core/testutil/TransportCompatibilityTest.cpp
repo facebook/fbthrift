@@ -256,9 +256,7 @@ void SampleServer<Service>::connectToServer(
             sslSocket->sslConn(nullptr);
             socket.reset(sslSocket);
           }
-          auto channel = HTTPClientChannel::newHTTP2Channel(std::move(socket));
-          channel->setProtocolId(protocol::T_COMPACT_PROTOCOL);
-          return channel;
+          return HTTPClientChannel::newHTTP2Channel(std::move(socket));
         });
     callMe(std::move(channel), nullptr);
   } else {
