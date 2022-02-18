@@ -39,7 +39,7 @@ import {{included_module_path}}.lite_types
 {{#program:enums}}
 
 
-class {{enum:name}}(enum.{{!
+class {{enum:name}}(_fbthrift_py3lite_types.Enum, enum.{{!
         }}{{#enum:flags?}}Flag{{/enum:flags?}}{{!
         }}{{^enum:flags?}}Enum{{/enum:flags?}}):
     {{#enum:values}}

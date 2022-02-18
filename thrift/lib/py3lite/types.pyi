@@ -86,6 +86,10 @@ class Union(
 class StructMeta(type): ...
 class UnionMeta(type): ...
 
+class Enum:
+    @staticmethod
+    def __get_thrift_name__() -> str: ...
+
 class BadEnum(typing.SupportsInt):
     enum: typing.Type[Enum]
     name: typing.Final[str]
