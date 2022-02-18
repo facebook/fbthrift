@@ -15,11 +15,13 @@ def _fbthrift_gen_metadata_exception_SimpleException(metadata_struct: _fbthrift_
     if qualified_name in metadata_struct.exceptions:
         return metadata_struct
     fields = [
-        _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE), name="err_code", is_optional=False, structured_annotations=[]),
+        _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE), name="err_code", is_optional=False, structured_annotations=[
+        ]),
     ]
     struct_dict = dict(metadata_struct.exceptions)
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftException(name=qualified_name, fields=fields,
-        structured_annotations=[])
+        structured_annotations=[
+        ])
     new_struct = metadata_struct(exceptions=struct_dict)
 
      # err_code
@@ -36,12 +38,14 @@ def _fbthrift_gen_metadata_struct_OptionalRefStruct(metadata_struct: _fbthrift_m
     if qualified_name in metadata_struct.structs:
         return metadata_struct
     fields = [
-        _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BINARY_TYPE), name="optional_blob", is_optional=False, structured_annotations=[]),
+        _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BINARY_TYPE), name="optional_blob", is_optional=False, structured_annotations=[
+        ]),
     ]
     struct_dict = dict(metadata_struct.structs)
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
-        structured_annotations=[])
+        structured_annotations=[
+        ])
     new_struct = metadata_struct(structs=struct_dict)
 
      # optional_blob
@@ -58,19 +62,28 @@ def _fbthrift_gen_metadata_struct_SimpleStruct(metadata_struct: _fbthrift_metada
     if qualified_name in metadata_struct.structs:
         return metadata_struct
     fields = [
-        _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BOOL_TYPE), name="is_on", is_optional=False, structured_annotations=[]),
-        _fbthrift_metadata.ThriftField(id=2, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BYTE_TYPE), name="tiny_int", is_optional=False, structured_annotations=[]),
-        _fbthrift_metadata.ThriftField(id=3, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE), name="small_int", is_optional=False, structured_annotations=[]),
-        _fbthrift_metadata.ThriftField(id=4, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), name="nice_sized_int", is_optional=False, structured_annotations=[]),
-        _fbthrift_metadata.ThriftField(id=5, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I64_TYPE), name="big_int", is_optional=False, structured_annotations=[]),
-        _fbthrift_metadata.ThriftField(id=6, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_FLOAT_TYPE), name="real", is_optional=False, structured_annotations=[]),
-        _fbthrift_metadata.ThriftField(id=7, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_DOUBLE_TYPE), name="smaller_real", is_optional=False, structured_annotations=[]),
-        _fbthrift_metadata.ThriftField(id=8, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE), name="hidden_field", is_optional=False, structured_annotations=[]),
+        _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BOOL_TYPE), name="is_on", is_optional=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftField(id=2, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BYTE_TYPE), name="tiny_int", is_optional=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftField(id=3, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE), name="small_int", is_optional=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftField(id=4, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), name="nice_sized_int", is_optional=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftField(id=5, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I64_TYPE), name="big_int", is_optional=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftField(id=6, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_FLOAT_TYPE), name="real", is_optional=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftField(id=7, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_DOUBLE_TYPE), name="smaller_real", is_optional=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftField(id=8, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE), name="hidden_field", is_optional=False, structured_annotations=[
+        ]),
     ]
     struct_dict = dict(metadata_struct.structs)
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
-        structured_annotations=[])
+        structured_annotations=[
+        ])
     new_struct = metadata_struct(structs=struct_dict)
 
      # is_on
@@ -94,20 +107,30 @@ def _fbthrift_gen_metadata_struct_ComplexStruct(metadata_struct: _fbthrift_metad
     if qualified_name in metadata_struct.structs:
         return metadata_struct
     fields = [
-        _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.SimpleStruct")), name="structOne", is_optional=False, structured_annotations=[]),
-        _fbthrift_metadata.ThriftField(id=2, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.SimpleStruct")), name="structTwo", is_optional=False, structured_annotations=[]),
-        _fbthrift_metadata.ThriftField(id=3, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), name="an_integer", is_optional=False, structured_annotations=[]),
-        _fbthrift_metadata.ThriftField(id=4, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="name", is_optional=False, structured_annotations=[]),
-        _fbthrift_metadata.ThriftField(id=5, type=_fbthrift_metadata.ThriftType(t_enum=_fbthrift_metadata.ThriftEnumType(name="module.AnEnum")), name="an_enum", is_optional=False, structured_annotations=[]),
-        _fbthrift_metadata.ThriftField(id=6, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BINARY_TYPE), name="some_bytes", is_optional=False, structured_annotations=[]),
-        _fbthrift_metadata.ThriftField(id=7, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="from", is_optional=False, structured_annotations=[]),
-        _fbthrift_metadata.ThriftField(id=8, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="cdef", is_optional=False, structured_annotations=[]),
-        _fbthrift_metadata.ThriftField(id=9, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BINARY_TYPE), name="bytes_with_cpp_type", is_optional=False, structured_annotations=[]),
+        _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.SimpleStruct")), name="structOne", is_optional=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftField(id=2, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.SimpleStruct")), name="structTwo", is_optional=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftField(id=3, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), name="an_integer", is_optional=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftField(id=4, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="name", is_optional=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftField(id=5, type=_fbthrift_metadata.ThriftType(t_enum=_fbthrift_metadata.ThriftEnumType(name="module.AnEnum")), name="an_enum", is_optional=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftField(id=6, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BINARY_TYPE), name="some_bytes", is_optional=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftField(id=7, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="from", is_optional=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftField(id=8, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="cdef", is_optional=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftField(id=9, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BINARY_TYPE), name="bytes_with_cpp_type", is_optional=False, structured_annotations=[
+        ]),
     ]
     struct_dict = dict(metadata_struct.structs)
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
-        structured_annotations=[])
+        structured_annotations=[
+        ])
     new_struct = metadata_struct(structs=struct_dict)
 
     new_struct = _fbthrift_gen_metadata_struct_SimpleStruct(new_struct) # structOne
@@ -132,12 +155,14 @@ def _fbthrift_gen_metadata_struct_BinaryUnion(metadata_struct: _fbthrift_metadat
     if qualified_name in metadata_struct.structs:
         return metadata_struct
     fields = [
-        _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BINARY_TYPE), name="iobuf_val", is_optional=False, structured_annotations=[]),
+        _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BINARY_TYPE), name="iobuf_val", is_optional=False, structured_annotations=[
+        ]),
     ]
     struct_dict = dict(metadata_struct.structs)
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=True,
-        structured_annotations=[])
+        structured_annotations=[
+        ])
     new_struct = metadata_struct(structs=struct_dict)
 
      # iobuf_val
@@ -154,12 +179,14 @@ def _fbthrift_gen_metadata_struct_BinaryUnionStruct(metadata_struct: _fbthrift_m
     if qualified_name in metadata_struct.structs:
         return metadata_struct
     fields = [
-        _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_union=_fbthrift_metadata.ThriftUnionType(name="module.BinaryUnion")), name="u", is_optional=False, structured_annotations=[]),
+        _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_union=_fbthrift_metadata.ThriftUnionType(name="module.BinaryUnion")), name="u", is_optional=False, structured_annotations=[
+        ]),
     ]
     struct_dict = dict(metadata_struct.structs)
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
-        structured_annotations=[])
+        structured_annotations=[
+        ])
     new_struct = metadata_struct(structs=struct_dict)
 
     new_struct = _fbthrift_gen_metadata_struct_BinaryUnion(new_struct) # u
@@ -181,172 +208,255 @@ def _fbthrift_gen_metadata_service_SimpleService(metadata_struct: _fbthrift_meta
     functions = [
         _fbthrift_metadata.ThriftFunction(name="get_five", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), arguments=[
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="add_five", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), name="num", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), name="num", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="do_nothing", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_VOID_TYPE), arguments=[
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="concat", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="first", is_optional=False, structured_annotations=[]),
-            _fbthrift_metadata.ThriftField(id=2, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="second", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="first", is_optional=False, structured_annotations=[
+            ]),
+            _fbthrift_metadata.ThriftField(id=2, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="second", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="get_value", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.SimpleStruct")), name="simple_struct", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.SimpleStruct")), name="simple_struct", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="negate", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BOOL_TYPE), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BOOL_TYPE), name="input", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BOOL_TYPE), name="input", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="tiny", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BYTE_TYPE), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BYTE_TYPE), name="input", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BYTE_TYPE), name="input", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="small", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE), name="input", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE), name="input", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="big", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I64_TYPE), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I64_TYPE), name="input", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I64_TYPE), name="input", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="two", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_FLOAT_TYPE), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_FLOAT_TYPE), name="input", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_FLOAT_TYPE), name="input", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="expected_exception", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_VOID_TYPE), arguments=[
         ], exceptions = [
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.SimpleException")), name="se", is_optional=False, structured_annotations=[]),
-        ], is_oneway=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.SimpleException")), name="se", is_optional=False, structured_annotations=[
+            ]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="unexpected_exception", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), arguments=[
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="sum_i16_list", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE))), name="numbers", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE))), name="numbers", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="sum_i32_list", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE))), name="numbers", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE))), name="numbers", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="sum_i64_list", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I64_TYPE))), name="numbers", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I64_TYPE))), name="numbers", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="concat_many", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))), name="words", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))), name="words", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="count_structs", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.SimpleStruct")))), name="items", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.SimpleStruct")))), name="items", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="sum_set", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_set=_fbthrift_metadata.ThriftSetType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE))), name="numbers", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_set=_fbthrift_metadata.ThriftSetType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE))), name="numbers", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="contains_word", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BOOL_TYPE), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_set=_fbthrift_metadata.ThriftSetType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))), name="words", is_optional=False, structured_annotations=[]),
-            _fbthrift_metadata.ThriftField(id=2, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="word", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_set=_fbthrift_metadata.ThriftSetType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))), name="words", is_optional=False, structured_annotations=[
+            ]),
+            _fbthrift_metadata.ThriftField(id=2, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="word", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="get_map_value", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_map=_fbthrift_metadata.ThriftMapType(keyType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE),valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))), name="words", is_optional=False, structured_annotations=[]),
-            _fbthrift_metadata.ThriftField(id=2, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="key", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_map=_fbthrift_metadata.ThriftMapType(keyType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE),valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))), name="words", is_optional=False, structured_annotations=[
+            ]),
+            _fbthrift_metadata.ThriftField(id=2, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="key", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="map_length", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_map=_fbthrift_metadata.ThriftMapType(keyType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE),valueType=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.SimpleStruct")))), name="items", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_map=_fbthrift_metadata.ThriftMapType(keyType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE),valueType=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.SimpleStruct")))), name="items", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="sum_map_values", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_map=_fbthrift_metadata.ThriftMapType(keyType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE),valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE))), name="items", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_map=_fbthrift_metadata.ThriftMapType(keyType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE),valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE))), name="items", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="complex_sum_i32", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.ComplexStruct")), name="counter", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.ComplexStruct")), name="counter", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="repeat_name", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.ComplexStruct")), name="counter", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.ComplexStruct")), name="counter", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="get_struct", return_type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.SimpleStruct")), arguments=[
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="fib", return_type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE))), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE), name="n", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE), name="n", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="unique_words", return_type=_fbthrift_metadata.ThriftType(t_set=_fbthrift_metadata.ThriftSetType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))), name="words", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))), name="words", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="words_count", return_type=_fbthrift_metadata.ThriftType(t_map=_fbthrift_metadata.ThriftMapType(keyType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE),valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE))), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))), name="words", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))), name="words", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="set_enum", return_type=_fbthrift_metadata.ThriftType(t_enum=_fbthrift_metadata.ThriftEnumType(name="module.AnEnum")), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_enum=_fbthrift_metadata.ThriftEnumType(name="module.AnEnum")), name="in_enum", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_enum=_fbthrift_metadata.ThriftEnumType(name="module.AnEnum")), name="in_enum", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="list_of_lists", return_type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE))))), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE), name="num_lists", is_optional=False, structured_annotations=[]),
-            _fbthrift_metadata.ThriftField(id=2, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE), name="num_items", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE), name="num_lists", is_optional=False, structured_annotations=[
+            ]),
+            _fbthrift_metadata.ThriftField(id=2, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE), name="num_items", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="word_character_frequency", return_type=_fbthrift_metadata.ThriftType(t_map=_fbthrift_metadata.ThriftMapType(keyType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE),valueType=_fbthrift_metadata.ThriftType(t_map=_fbthrift_metadata.ThriftMapType(keyType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE),valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE))))), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="sentence", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="sentence", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="list_of_sets", return_type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_set=_fbthrift_metadata.ThriftSetType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))))), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="some_words", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="some_words", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="nested_map_argument", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_map=_fbthrift_metadata.ThriftMapType(keyType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE),valueType=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.SimpleStruct")))))), name="struct_map", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_map=_fbthrift_metadata.ThriftMapType(keyType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE),valueType=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.SimpleStruct")))))), name="struct_map", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="make_sentence", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))))), name="word_chars", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))))), name="word_chars", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="get_union", return_type=_fbthrift_metadata.ThriftType(t_set=_fbthrift_metadata.ThriftSetType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE))), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_set=_fbthrift_metadata.ThriftSetType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE))))), name="sets", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_set=_fbthrift_metadata.ThriftSetType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE))))), name="sets", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="get_keys", return_type=_fbthrift_metadata.ThriftType(t_set=_fbthrift_metadata.ThriftSetType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_map=_fbthrift_metadata.ThriftMapType(keyType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE),valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))))), name="string_map", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_map=_fbthrift_metadata.ThriftMapType(keyType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE),valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))))), name="string_map", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="lookup_double", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_FLOAT_TYPE), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), name="key", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), name="key", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="retrieve_binary", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BINARY_TYPE), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BINARY_TYPE), name="something", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BINARY_TYPE), name="something", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="contain_binary", return_type=_fbthrift_metadata.ThriftType(t_set=_fbthrift_metadata.ThriftSetType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BINARY_TYPE))), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BINARY_TYPE))), name="binaries", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BINARY_TYPE))), name="binaries", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="contain_enum", return_type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_enum=_fbthrift_metadata.ThriftEnumType(name="module.AnEnum")))), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_enum=_fbthrift_metadata.ThriftEnumType(name="module.AnEnum")))), name="the_enum", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_enum=_fbthrift_metadata.ThriftEnumType(name="module.AnEnum")))), name="the_enum", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
         _fbthrift_metadata.ThriftFunction(name="get_binary_union_struct", return_type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.BinaryUnionStruct")), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_union=_fbthrift_metadata.ThriftUnionType(name="module.BinaryUnion")), name="u", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_union=_fbthrift_metadata.ThriftUnionType(name="module.BinaryUnion")), name="u", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
     ]
 
     service_dict = dict(metadata_struct.services)
-    service_dict[qualified_name] = _fbthrift_metadata.ThriftService(name=qualified_name, functions=functions,  structured_annotations=[])
+    service_dict[qualified_name] = _fbthrift_metadata.ThriftService(name=qualified_name, functions=functions,  structured_annotations=[
+    ])
     new_struct = metadata_struct(services=service_dict)
 
 
@@ -532,11 +642,13 @@ def _fbthrift_gen_metadata_service_DerivedService(metadata_struct: _fbthrift_met
     functions = [
         _fbthrift_metadata.ThriftFunction(name="get_six", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), arguments=[
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
     ]
 
     service_dict = dict(metadata_struct.services)
-    service_dict[qualified_name] = _fbthrift_metadata.ThriftService(name=qualified_name, functions=functions, parent="module.SimpleService", structured_annotations=[])
+    service_dict[qualified_name] = _fbthrift_metadata.ThriftService(name=qualified_name, functions=functions, parent="module.SimpleService", structured_annotations=[
+    ])
     new_struct = metadata_struct(services=service_dict)
     new_struct = _fbthrift_gen_metadata_service_SimpleService(new_struct)
 
@@ -557,11 +669,13 @@ def _fbthrift_gen_metadata_service_RederivedService(metadata_struct: _fbthrift_m
     functions = [
         _fbthrift_metadata.ThriftFunction(name="get_seven", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), arguments=[
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
     ]
 
     service_dict = dict(metadata_struct.services)
-    service_dict[qualified_name] = _fbthrift_metadata.ThriftService(name=qualified_name, functions=functions, parent="module.DerivedService", structured_annotations=[])
+    service_dict[qualified_name] = _fbthrift_metadata.ThriftService(name=qualified_name, functions=functions, parent="module.DerivedService", structured_annotations=[
+    ])
     new_struct = metadata_struct(services=service_dict)
     new_struct = _fbthrift_gen_metadata_service_DerivedService(new_struct)
 

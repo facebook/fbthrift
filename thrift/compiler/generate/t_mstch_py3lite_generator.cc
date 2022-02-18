@@ -75,6 +75,7 @@ class mstch_py3lite_type : public mstch_type {
         this,
         {
             {"type:module_path", &mstch_py3lite_type::module_path},
+            {"type:program_name", &mstch_py3lite_type::program_name},
             {"type:metadata_path", &mstch_py3lite_type::metadata_path},
             {"type:py3_namespace", &mstch_py3lite_type::py3_namespace},
             {"type:need_module_path?", &mstch_py3lite_type::need_module_path},
@@ -90,6 +91,8 @@ class mstch_py3lite_type : public mstch_type {
                get_type_program(), get_option("root_module_prefix")) +
         ".lite_types";
   }
+
+  mstch::node program_name() { return get_type_program()->name(); }
 
   mstch::node metadata_path() {
     return get_py3_namespace_with_name_and_prefix(

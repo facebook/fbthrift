@@ -21,7 +21,8 @@ def _fbthrift_gen_metadata_service_NullService(metadata_struct: _fbthrift_metada
     ]
 
     service_dict = dict(metadata_struct.services)
-    service_dict[qualified_name] = _fbthrift_metadata.ThriftService(name=qualified_name, functions=functions,  structured_annotations=[])
+    service_dict[qualified_name] = _fbthrift_metadata.ThriftService(name=qualified_name, functions=functions,  structured_annotations=[
+    ])
     new_struct = metadata_struct(services=service_dict)
 
     return new_struct

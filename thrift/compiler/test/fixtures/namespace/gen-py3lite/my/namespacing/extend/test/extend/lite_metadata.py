@@ -21,13 +21,16 @@ def _fbthrift_gen_metadata_service_ExtendTestService(metadata_struct: _fbthrift_
 
     functions = [
         _fbthrift_metadata.ThriftFunction(name="check", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BOOL_TYPE), arguments=[
-            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="extend.HsFoo")), name="struct1", is_optional=False, structured_annotations=[]),
+            _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="extend.HsFoo")), name="struct1", is_optional=False, structured_annotations=[
+            ]),
         ], exceptions = [
-        ], is_oneway=False, structured_annotations=[]),
+        ], is_oneway=False, structured_annotations=[
+        ]),
     ]
 
     service_dict = dict(metadata_struct.services)
-    service_dict[qualified_name] = _fbthrift_metadata.ThriftService(name=qualified_name, functions=functions, parent="hsmodule.HsTestService", structured_annotations=[])
+    service_dict[qualified_name] = _fbthrift_metadata.ThriftService(name=qualified_name, functions=functions, parent="hsmodule.HsTestService", structured_annotations=[
+    ])
     new_struct = metadata_struct(services=service_dict)
     new_struct = _fbthrift_gen_metadata_service_HsTestService(new_struct)
 

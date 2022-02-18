@@ -195,8 +195,6 @@ class MetadataTests(unittest.TestCase):
             argInstance.type.as_primitive(), ThriftPrimitiveType.THRIFT_I64_TYPE
         )
 
-        # TODO structured annotations
-        """
         annotation = arg.structured_annotations[0]
         second = annotation.fields["second"]
         self.assertEqual(len(arg.structured_annotations), 1)
@@ -204,7 +202,6 @@ class MetadataTests(unittest.TestCase):
         self.assertEqual(len(annotation.fields), 1)
         self.assertEqual(second.type, second.Type.cv_integer)
         self.assertEqual(second.cv_integer, 42)
-        """
 
         serv2 = gen_metadata(TestingServiceChild)
         self.assertEqual(serv2.name, "testing.TestingServiceChild")
@@ -217,3 +214,29 @@ class MetadataTests(unittest.TestCase):
             streamFunc.return_type.as_stream().elemType.as_primitive(),
             ThriftPrimitiveType.THRIFT_I32_TYPE,
         )
+
+    def test_metadata_structured_annotations(self) -> None:
+        annotations = gen_metadata(TestingService).structuredAnnotations
+        self.assertEqual(len(annotations), 1)
+
+        annotation = annotations[0]
+        self.assertEqual(annotation.name, "testing.StructuredAnnotation")
+        self.assertEqual(len(list(annotation.fields)), 4)
+
+        first = annotation.fields["first"]
+        second = annotation.fields["second"]
+        third = annotation.fields["third"]
+        recurse = annotation.fields["recurse"]
+
+        self.assertEqual(len(list(first.as_map())), 1)
+        self.assertEqual(first.as_map()[1.1].type, 2)
+
+        self.assertEqual(second.type, 3)
+        self.assertEqual(second.as_int(), 3)
+        self.assertEqual(third.as_list()[0].type, "a")
+        self.assertEqual(third.as_list()[1].type, "b")
+
+        recStruct = recurse.as_struct()
+        third = recStruct.fields["third"]
+        self.assertEqual(third.as_list()[0].type, "3")
+        self.assertEqual(third.as_list()[1].type, "4")

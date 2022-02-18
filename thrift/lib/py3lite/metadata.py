@@ -391,7 +391,7 @@ class ThriftConstValueProxy:
             else:
                 self.kind = ThriftConstKind.CV_STRING
         if self.thriftType.type is ThriftConstValue.Type.cv_struct:
-            assert isinstance(self.thriftType, ThriftConstStruct)
+            assert isinstance(self.thriftType.value, ThriftConstStruct)
             self.type = ThriftConstStructProxy(self.thriftType.value)
             self.kind = ThriftConstKind.CV_STRUCT
         if self.thriftType.type is ThriftConstValue.Type.cv_list:
