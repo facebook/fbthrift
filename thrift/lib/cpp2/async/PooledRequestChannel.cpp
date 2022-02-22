@@ -55,24 +55,18 @@ folly::Executor::KeepAlive<folly::EventBase> PooledRequestChannel::getEvb(
 }
 
 uint16_t PooledRequestChannel::getProtocolId() {
-  if (auto value = protocolId_.load(std::memory_order_relaxed)) {
-    return value;
-  }
-
-  auto evb = getEvb({});
-  evb->runImmediatelyOrRunInEventBaseThreadAndWait([&] {
-    protocolId_.store(impl(*evb).getProtocolId(), std::memory_order_relaxed);
-  });
-
-  return protocolId_.load(std::memory_order_relaxed);
+  return protocolId_;
 }
 
 template <typename SendFunc>
 void PooledRequestChannel::sendRequestImpl(
     SendFunc&& sendFunc, folly::Executor::KeepAlive<folly::EventBase>&& evb) {
-  std::move(evb).add(
-      [this, sendFunc = std::forward<SendFunc>(sendFunc)](
-          auto&& keepAlive) mutable { sendFunc(impl(*keepAlive)); });
+  std::move(evb).add([this, sendFunc = std::forward<SendFunc>(sendFunc)](
+                         auto&& keepAlive) mutable {
+    auto& implRef = impl(*keepAlive);
+    DCHECK_EQ(getProtocolId(), implRef.getProtocolId());
+    sendFunc(implRef);
+  });
 }
 
 namespace {
