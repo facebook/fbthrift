@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+javafoundations/scripts/create-idea-project \
+--mode-files "mac" \
+--project-root=thrift/lib/java \
+//thrift/lib/java/common:common \
+//thrift/lib/java/common:common-test \
+--verbose \
+--non-interactive
