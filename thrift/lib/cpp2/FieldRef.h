@@ -167,19 +167,21 @@ class BitRef {
  public:
   using Isset = std::conditional_t<kIsConst, const uint8_t, uint8_t>;
 
-  BitRef(Isset& isset, uint8_t bit_index)
+  FOLLY_ERASE BitRef(Isset& isset, uint8_t bit_index)
       : value_(isset), bit_index_(bit_index) {}
 
   template <bool B>
-  explicit BitRef(const BitRef<B>& other)
+  FOLLY_ERASE explicit BitRef(const BitRef<B>& other)
       : value_(other.value_.bitset.value()), bit_index_(other.bit_index_) {}
 
-  void operator=(bool flag) { value_.bitset[bit_index_] = flag; }
-  explicit operator bool() const { return value_.bitset[bit_index_]; }
+  FOLLY_ERASE void operator=(bool flag) { value_.bitset[bit_index_] = flag; }
+  FOLLY_ERASE explicit operator bool() const {
+    return value_.bitset[bit_index_];
+  }
 
  private:
   struct IssetBitSet {
-    explicit IssetBitSet(Isset& isset) : bitset(isset) {}
+    FOLLY_ERASE explicit IssetBitSet(Isset& isset) : bitset(isset) {}
     apache::thrift::detail::BitSet<Isset&> bitset;
   } value_;
 
