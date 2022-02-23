@@ -34,6 +34,8 @@ RoundRobinRequestPile::RoundRobinRequestPile(Options opts)
       new std::unique_ptr<RequestQueue[]>[numBucketsPerPriority.size()]);
   retrievalIndexQueues_.reset(
       new std::optional<RetrievalIndexQueue>[numBucketsPerPriority.size()]);
+  singleBucketRequestQueues_.reset(
+      new SingleBucketRequestQueue[numBucketsPerPriority.size()]);
 
   for (unsigned i = 0; i < numBucketsPerPriority.size(); ++i) {
     DCHECK(numBucketsPerPriority.at(i));
@@ -84,6 +86,15 @@ std::optional<ServerRequestRejection> RoundRobinRequestPile::enqueue(
   DCHECK_LT(pri, opts_.numBucketsPerPriority.size());
   DCHECK_LT(bucket, opts_.numBucketsPerPriority[pri]);
 
+  // TODO(yichengfb): enforcing limit on single bucket queue
+  // We temporarily disable limit for single bucket queue
+  // because we currently rely on AtomicNotificationQueue to
+  // achieve that.
+  if (!retrievalIndexQueues_[pri]) {
+    singleBucketRequestQueues_[pri].enqueue(std::move(request));
+    return std::nullopt;
+  }
+
   if (opts_.numMaxRequests != 0) {
     auto res = requestQueues_[pri][bucket].tryPush(
         std::move(request), opts_.numMaxRequests);
@@ -95,9 +106,7 @@ std::optional<ServerRequestRejection> RoundRobinRequestPile::enqueue(
         return rej;
       }
       case RequestQueue::TryPushResult::SUCCESS_AND_ARMED: {
-        if (retrievalIndexQueues_[pri]) {
-          retrievalIndexQueues_[pri]->enqueue(bucket);
-        }
+        retrievalIndexQueues_[pri]->enqueue(bucket);
         break;
       }
       default:
@@ -105,11 +114,9 @@ std::optional<ServerRequestRejection> RoundRobinRequestPile::enqueue(
     }
   } else {
     if (requestQueues_[pri][bucket].push(std::move(request))) {
-      if (retrievalIndexQueues_[pri]) {
-        // Schedule a pull iff we are the first one to push into
-        // the request queue
-        retrievalIndexQueues_[pri]->enqueue(bucket);
-      }
+      // Schedule a pull iff we are the first one to push into
+      // the request queue
+      retrievalIndexQueues_[pri]->enqueue(bucket);
     }
   }
   return std::nullopt;
@@ -119,10 +126,8 @@ std::pair<std::optional<ServerRequest>, std::optional<intptr_t>>
 RoundRobinRequestPile::dequeue() {
   for (unsigned i = 0; i < opts_.numBucketsPerPriority.size(); ++i) {
     if (!retrievalIndexQueues_[i]) {
-      Consumer consumer;
-      auto& queue = requestQueues_[i][0];
-      if (queue.drive(consumer)) {
-        return std::make_pair(std::move(consumer.carrier_), std::nullopt);
+      if (auto req = singleBucketRequestQueues_[i].try_dequeue()) {
+        return std::make_pair(std::move(*req), std::nullopt);
       }
     } else {
       if (auto bucket = retrievalIndexQueues_[i]->try_dequeue()) {

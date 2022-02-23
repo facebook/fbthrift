@@ -38,6 +38,7 @@ class RoundRobinRequestPile : public RequestPileInterface {
     std::vector<unsigned> numBucketsPerPriority;
 
     // 0 means no limit
+    // this is a per bucket limit
     uint64_t numMaxRequests{0};
 
     // Function to route requests to priority/bucket
@@ -93,12 +94,19 @@ class RoundRobinRequestPile : public RequestPileInterface {
   using RetrievalIndexQueue = folly::UMPMCQueue<
       unsigned,
       /* MayBlock  */ false,
-      /* SegmentSize - 1024 */ 10>;
+      /* log2(SegmentSize=1024) */ 10>;
 
   // The reason why we chose AtomicNotificationQueue instead of two UMPMCQueue
   // is that UMPMCQueue does not provide an enqueue() interface that indicates
   // which one is the first enqueue to the empty queue
   using RequestQueue = folly::AtomicNotificationQueue<ServerRequest>;
+
+  // This is a temporary solution to single bucket case
+  // because ReqeustQueue is a MPSC queue
+  using SingleBucketRequestQueue = folly::UMPMCQueue<
+      ServerRequest,
+      /* MayBlock  */ false,
+      /* log2(SegmentSize=1024) */ 10>;
 
   // the consumer class used by the AtomicNotificationQueue
   class Consumer {
@@ -120,6 +128,7 @@ class RoundRobinRequestPile : public RequestPileInterface {
   // we use std::nullopt to signal that a certain priority is
   // using only one bucket - in that case we don't need retrieval queue
   std::unique_ptr<std::optional<RetrievalIndexQueue>[]> retrievalIndexQueues_;
+  std::unique_ptr<SingleBucketRequestQueue[]> singleBucketRequestQueues_;
 
   ServerRequest dequeueImpl(unsigned pri, unsigned bucket);
 };
