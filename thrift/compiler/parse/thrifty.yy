@@ -237,8 +237,6 @@ class t_container_type;
 %type<boost::optional<t_field_id>> FieldId
 %type<t_field_qualifier>           FieldQualifier
 %type<t_type_ref>                  FieldType
-%type<t_stream_response*>          ResponseAndStreamReturnType
-%type<t_sink*>                     ResponseAndSinkReturnType
 %type<t_stream_response*>          StreamReturnType
 %type<t_sink*>                     SinkReturnType
 %type<t_typethrowspair>            SinkFieldType
@@ -866,15 +864,27 @@ FieldValue:
 |   { $$ = nullptr; }
 
 FunctionType:
-  ResponseAndStreamReturnType
+  StreamReturnType
     {
-      driver.debug("FunctionType -> ResponseAndStreamReturnType");
+      driver.debug("FunctionType -> StreamReturnType");
       $$ = driver.new_type_ref(own($1), nullptr);
     }
-| ResponseAndSinkReturnType
+| FieldType "," StreamReturnType
     {
-      driver.debug("FunctionType -> ResponseAndSinkReturnType");
+      driver.debug("FunctionType -> FieldType, StreamReturnType");
+      $3->set_first_response_type(std::move($1));
+      $$ = driver.new_type_ref(own($3), nullptr);
+    }
+| SinkReturnType
+    {
+      driver.debug("FunctionType -> SinkReturnType");
       $$ = driver.new_type_ref(own($1), nullptr);
+    }
+| FieldType "," SinkReturnType
+    {
+      driver.debug("FunctionType -> FieldType, SinkReturnType");
+      $3->set_first_response_type(std::move($1));
+      $$ = driver.new_type_ref(own($3), nullptr);
     }
 | FieldType
     {
@@ -887,19 +897,6 @@ FunctionType:
       $$ = t_base_type::t_void();
     }
 
-ResponseAndStreamReturnType:
-  FieldType "," StreamReturnType
-    {
-      driver.debug("ResponseAndStreamReturnType -> FieldType, StreamReturnType");
-      $3->set_first_response_type(std::move($1));
-      $$ = $3;
-    }
-| StreamReturnType
-    {
-      driver.debug("ResponseAndStreamReturnType -> StreamReturnType");
-      $$ = $1;
-    }
-
 StreamReturnType:
   tok_stream "<" FieldType MaybeThrows ">"
   {
@@ -908,19 +905,6 @@ StreamReturnType:
     stream_res->set_exceptions(own($4));
     $$ = stream_res.release();
   }
-
-ResponseAndSinkReturnType:
-  FieldType "," SinkReturnType
-    {
-      driver.debug("ResponseAndSinkReturnType -> FieldType, SinkReturnType");
-      $3->set_first_response_type(std::move($1));
-      $$ = $3;
-    }
-| SinkReturnType
-    {
-      driver.debug("ResponseAndSinkReturnType -> SinkReturnType");
-      $$ = $1;
-    }
 
 SinkReturnType:
   tok_sink "<" SinkFieldType "," SinkFieldType ">"
