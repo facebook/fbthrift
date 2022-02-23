@@ -1108,7 +1108,7 @@ void t_hack_generator::init_generator() {
   record_genfile(f_types_name);
 
   // Print header
-  f_types_ << "<?hh // strict\n" << autogen_comment() << "\n";
+  f_types_ << "<?hh\n" << autogen_comment() << "\n";
 
   std::string hack_ns = hack_namespace(program_);
   if (!hack_ns.empty()) {
@@ -1121,7 +1121,7 @@ void t_hack_generator::init_generator() {
         get_out_dir() + program_name_ + "_constants.php";
     f_consts_.open(f_consts_name.c_str());
     record_genfile(f_consts_name);
-    f_consts_ << "<?hh // strict\n" << autogen_comment();
+    f_consts_ << "<?hh\n" << autogen_comment();
     constants_values_.clear();
     std::string const_namespace = php_namespace(program_);
     if (!hack_ns.empty()) {
@@ -3927,7 +3927,7 @@ void t_hack_generator::generate_service(
   f_service_.open(f_service_name.c_str());
   record_genfile(f_service_name);
 
-  f_service_ << "<?hh // strict\n" << autogen_comment() << "\n";
+  f_service_ << "<?hh\n" << autogen_comment() << "\n";
   std::string hack_ns = hack_namespace(program_);
   if (!hack_ns.empty()) {
     f_service_ << "namespace " << hack_ns << ";\n\n";
@@ -6573,7 +6573,6 @@ THRIFT_REGISTER_GENERATOR(
     "    json:            Generate functions to parse JSON into thrift struct.\n"
     "    mangledsvcs      Generate services with namespace mangling.\n"
     "    stricttypes      Use Collection classes everywhere rather than KeyedContainer.\n"
-    "    strict           Generate strict hack header.\n"
     "    arraysets        Use legacy arrays for sets rather than objects.\n"
     "    nonullables      Instantiate struct fields within structs, rather than nullable\n"
     "    structtrait      Add 'use [StructName]Trait;' to generated classes\n"
