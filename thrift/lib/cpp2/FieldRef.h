@@ -114,7 +114,10 @@ class BitSet {
     const uint8_t bit_;
   };
 
-  bool operator[](const uint8_t bit) const { return get(bit); }
+  bool operator[](const uint8_t bit) const {
+    assert(bit < NUM_BITS);
+    return get(bit);
+  }
 
   reference operator[](const uint8_t bit) {
     assert(bit < NUM_BITS);
@@ -127,13 +130,23 @@ class BitSet {
 
  private:
   template <class U>
+  static bool get(U u, std::size_t bit) {
+    return u & (U(1) << bit);
+  }
+
+  template <class U>
   static void set(U& u, std::size_t bit) {
-    u |= (1 << bit);
+    u |= (U(1) << bit);
   }
 
   template <class U>
   static void reset(U& u, std::size_t bit) {
-    u &= ~(1 << bit);
+    u &= ~(U(1) << bit);
+  }
+
+  template <class U>
+  static bool get(const std::atomic<U>& u, std::size_t bit) {
+    return u.load() & (U(1) << bit);
   }
 
   template <class U>
@@ -146,13 +159,9 @@ class BitSet {
     folly::atomic_fetch_reset(u, bit, std::memory_order_relaxed);
   }
 
+  bool get(std::size_t bit) const { return get(int_.value, bit); }
   void set(std::size_t bit) { set(int_.value, bit); }
   void reset(std::size_t bit) { reset(int_.value, bit); }
-
-  bool get(const uint8_t bit) const {
-    assert(bit < NUM_BITS);
-    return (int_.value >> bit) & 1;
-  }
 
   IntWrapper<T> int_;
 
