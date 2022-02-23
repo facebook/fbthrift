@@ -33,3 +33,4 @@ cdef extern from "thrift/lib/cpp2/type/UniversalName.h" namespace "apache::thrif
     cdef fbstring getUniversalHash(UniversalHashAlgorithm alg, string uri)
     cdef StringPiece getUniversalHashPrefix(string universalHash, hash_size_t hashBytes)
     cdef fbstring maybeGetUniversalHashPrefix(UniversalHashAlgorithm alg, string uri, hash_size_t hashBytes)
+    cdef bool matchesUniversalHash(string universalHash, string prefix)

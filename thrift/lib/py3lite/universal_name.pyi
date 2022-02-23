@@ -52,3 +52,6 @@ def get_universal_hash_prefix(universal_hash: bytes, hash_bytes: int) -> bytes: 
 def maybe_get_universal_hash_prefix(
     alg: UniversalHashAlgorithm, uri: str, hash_bytes: int
 ) -> bytes: ...
+
+# Returns true iff prefix was derived from universal_hash.
+def matches_universal_hash(universal_hash: bytes, prefix: bytes) -> bool: ...

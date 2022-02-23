@@ -19,6 +19,7 @@ from thrift.py3lite.universal_name import (
     get_universal_hash_prefix,
     get_universal_hash_size,
     maybe_get_universal_hash_prefix,
+    matches_universal_hash,
     validate_universal_hash,
     validate_universal_hash_bytes,
     validate_universal_name,
@@ -107,4 +108,31 @@ class UnionTests(unittest.TestCase):
                 )
             ),
             32,
+        )
+
+    def test_match_universal_hash(self) -> None:
+        self.assertFalse(
+            matches_universal_hash(b"0123456789ABCDEF0123456789ABCDEF", b"")
+        )
+        self.assertFalse(
+            matches_universal_hash(b"0123456789ABCDEF0123456789ABCDEF", b"1")
+        )
+        self.assertTrue(
+            matches_universal_hash(b"0123456789ABCDEF0123456789ABCDEF", b"0")
+        )
+        self.assertTrue(
+            matches_universal_hash(
+                b"0123456789ABCDEF0123456789ABCDEF", b"0123456789ABCDEF"
+            )
+        )
+        self.assertTrue(
+            matches_universal_hash(
+                b"0123456789ABCDEF0123456789ABCDEF", b"0123456789ABCDEF0123456789ABCDEF"
+            )
+        )
+        self.assertFalse(
+            matches_universal_hash(
+                b"0123456789ABCDEF0123456789ABCDEF",
+                b"0123456789ABCDEF0123456789ABCDEF0",
+            )
         )
