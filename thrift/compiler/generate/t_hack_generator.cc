@@ -89,8 +89,6 @@ class t_hack_generator : public t_oop_generator {
     enum_transparenttype_ =
         option_is_specified(parsed_options, "enum_transparenttype");
     soft_attribute_ = option_is_specified(parsed_options, "soft_attribute");
-    arrprov_skip_frames_ =
-        option_is_specified(parsed_options, "arrprov_skip_frames");
     protected_unions_ = option_is_specified(parsed_options, "protected_unions");
     mangled_services_ = option_is_set(parsed_options, "mangledsvcs", false);
     has_hack_namespace = !hack_namespace(program).empty();
@@ -818,14 +816,6 @@ class t_hack_generator : public t_oop_generator {
    * True to generate soft typehints as __Soft instead of @
    */
   bool soft_attribute_;
-
-  /**
-   * True to add the `__ProvenanceSkipFrame` attribute to applicable methods.
-   * This will allow array provenance (arrprov) instrumentation to pretend that
-   * arrays created inside a given function were "created" at the particular
-   * callsite of said function.
-   */
-  bool arrprov_skip_frames_;
 
   std::string array_keyword_;
 
@@ -2345,9 +2335,6 @@ void t_hack_generator::generate_php_struct_shape_collection_value_lambda(
     std::ostream& out, t_name_generator& namer, const t_type* t) {
   std::string tmp = namer("_val");
   indent(out);
-  if (arrprov_skip_frames_) {
-    out << "<<__ProvenanceSkipFrame>> ";
-  }
   out << "($" << tmp << ") ==> ";
   if (t->is_struct()) {
     out << "$" << tmp << "->__toShape(),\n";
@@ -2448,9 +2435,6 @@ void t_hack_generator::generate_shape_from_hack_array_lambda(
   indent(out) << "$$,\n";
   std::string tmp = namer("_val");
   indent(out);
-  if (arrprov_skip_frames_) {
-    out << "<<__ProvenanceSkipFrame>> ";
-  }
   out << "($" << tmp << ") ==> $" << tmp;
 
   const t_type* val_type;
@@ -2551,8 +2535,6 @@ void t_hack_generator::generate_php_struct_shape_methods(
     indent(out) << "}\n\n";
   }
 
-  if (arrprov_skip_frames_)
-    indent(out) << "<<__ProvenanceSkipFrame>>\n";
   indent(out)
       << "public static function __fromShape(self::TShape $shape)[]: this {\n";
   indent_up();
@@ -2719,9 +2701,6 @@ void t_hack_generator::generate_php_struct_shape_methods(
   indent(out) << "}\n";
   out << "\n";
 
-  if (arrprov_skip_frames_) {
-    indent(out) << "<<__ProvenanceSkipFrame>>\n";
-  }
   indent(out) << "public function __toShape()[]: self::TShape {\n";
   indent_up();
   for (const auto& field : tstruct->fields()) {
@@ -3352,9 +3331,6 @@ void t_hack_generator::generate_php_struct_constructor(
     const t_struct* tstruct,
     ThriftStructType type,
     const std::string& name) {
-  if (arrprov_skip_frames_) {
-    indent(out) << "<<__ProvenanceSkipFrame>>\n";
-  }
   out << indent() << "public function __construct(";
   auto delim = "";
 
@@ -3402,9 +3378,6 @@ void t_hack_generator::generate_php_struct_constructor(
   scope_down(out);
   out << "\n";
 
-  if (arrprov_skip_frames_) {
-    indent(out) << "<<__ProvenanceSkipFrame>>\n";
-  }
   indent(out) << "public static function withDefaultValues()[]: this {\n";
   indent_up();
   indent(out) << "return new static();\n";
@@ -3880,8 +3853,6 @@ void t_hack_generator::_generate_php_struct_definition(
 
 void t_hack_generator::generate_php_struct_from_shape(
     std::ofstream& out, const t_struct* tstruct) {
-  if (arrprov_skip_frames_)
-    indent(out) << "<<__ProvenanceSkipFrame>>\n";
   out << indent() << "public static function fromShape"
       << "(self::TConstructorShape $shape)[]: this {\n";
   indent_up();
@@ -3899,8 +3870,6 @@ void t_hack_generator::generate_php_struct_from_shape(
 
 void t_hack_generator::generate_php_struct_from_map(
     std::ofstream& out, const t_struct* tstruct) {
-  if (arrprov_skip_frames_)
-    indent(out) << "<<__ProvenanceSkipFrame>>\n";
   out << indent() << "public static function fromMap_DEPRECATED(";
   if (strict_types_) {
     // Generate constructor from Map
@@ -5313,9 +5282,6 @@ void t_hack_generator::_generate_recvImpl(
 
   // Open function
   out << "\n";
-  if (arrprov_skip_frames_) {
-    indent(f_service_) << "<<__ProvenanceSkipFrame>>\n";
-  }
   out << indent() << "protected function "
       << function_signature(
              &recv_function,
@@ -5477,9 +5443,6 @@ void t_hack_generator::_generate_stream_decode_recvImpl(
       "(function(?string, ?\\Exception) : " + type_to_typehint(ttype) + ")";
   // Open function
   out << "\n";
-  if (arrprov_skip_frames_) {
-    indent(f_service_) << "<<__ProvenanceSkipFrame>>\n";
-  }
   out << indent() << "protected function "
       << function_signature(
              &recv_function,
@@ -5570,9 +5533,6 @@ void t_hack_generator::_generate_sink_encode_sendImpl(
       "(function(?" + typehint + ", ?\\Exception) : (string, bool))";
   // Open function
   out << "\n";
-  if (arrprov_skip_frames_) {
-    indent(f_service_) << "<<__ProvenanceSkipFrame>>\n";
-  }
   out << indent() << "protected function "
       << function_signature(&recv_function, "", return_typehint) << " {\n";
   indent_up();
@@ -5679,9 +5639,6 @@ void t_hack_generator::_generate_sink_final_response_decode_recvImpl(
       "(function(?string, ?\\Exception) : " + type_to_typehint(ttype) + ")";
   // Open function
   out << "\n";
-  if (arrprov_skip_frames_) {
-    indent(f_service_) << "<<__ProvenanceSkipFrame>>\n";
-  }
   out << indent() << "protected function "
       << function_signature(&recv_function, "", return_typehint) << " {\n";
   indent_up();
@@ -6013,9 +5970,6 @@ void t_hack_generator::_generate_service_client_children(
             std::string("recv_") + function->name(),
             std::make_unique<t_paramlist>(program_));
         // Open function
-        if (arrprov_skip_frames_) {
-          indent(out) << "<<__ProvenanceSkipFrame>>\n";
-        }
         bool is_void = function->get_returntype()->is_void();
         out << indent() << "public function "
             << function_signature(
@@ -6058,9 +6012,6 @@ void t_hack_generator::_generate_service_client_child_fn(
   std::string return_typehint = type_to_typehint(tfunction->get_returntype());
 
   generate_php_docstring(out, tfunction);
-  if (arrprov_skip_frames_) {
-    indent(out) << "<<__ProvenanceSkipFrame>>\n";
-  }
   indent(out) << "public async function " << funname << "("
               << argument_list(
                      tfunction->get_paramlist(), "", true, nullable_everything_)
@@ -6158,9 +6109,6 @@ void t_hack_generator::_generate_service_client_stream_child_fn(
       dynamic_cast<const t_stream_response*>(tfunction->get_returntype()));
 
   generate_php_docstring(out, tfunction);
-  if (arrprov_skip_frames_) {
-    indent(out) << "<<__ProvenanceSkipFrame>>\n";
-  }
   indent(out) << "public async function " << funname << "("
               << argument_list(
                      tfunction->get_paramlist(), "", true, nullable_everything_)
@@ -6268,9 +6216,6 @@ void t_hack_generator::_generate_service_client_sink_child_fn(
   std::string return_typehint = get_sink_function_return_typehint(tsink);
 
   generate_php_docstring(out, tfunction);
-  if (arrprov_skip_frames_) {
-    indent(out) << "<<__ProvenanceSkipFrame>>\n";
-  }
   indent(out) << "public async function " << funname << "("
               << argument_list(
                      tfunction->get_paramlist(), "", true, nullable_everything_)
