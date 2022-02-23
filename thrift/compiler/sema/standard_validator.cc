@@ -537,28 +537,61 @@ void validate_box_annotation_in_struct(
 
 void validate_ref_unique_and_box_annotation(
     diagnostic_context& ctx, const t_field& node) {
+  const t_const* adapter_annotation = nullptr;
+  for (const t_const* annotation : node.structured_annotations()) {
+    if (annotation->type()->uri() ==
+        "facebook.com/thrift/annotation/cpp/Adapter") {
+      adapter_annotation = annotation;
+      break;
+    }
+  }
+
   if (cpp2::is_unique_ref(&node)) {
     if (node.has_annotation({"cpp.ref", "cpp2.ref"})) {
-      ctx.warning([&](auto& o) {
-        o << "cpp.ref, cpp2.ref "
-          << "are deprecated. Please use thrift.box annotation instead in `"
-          << node.name() << "`.";
-      });
+      if (adapter_annotation) {
+        ctx.failure([&](auto& o) {
+          o << "cpp.ref, cpp2.ref "
+            << "are deprecated. Please use thrift.box annotation instead in `"
+            << node.name() << "` with @cpp.Adapter.";
+        });
+      } else {
+        ctx.warning([&](auto& o) {
+          o << "cpp.ref, cpp2.ref "
+            << "are deprecated. Please use thrift.box annotation instead in `"
+            << node.name() << "`.";
+        });
+      }
     }
     if (node.has_annotation({"cpp.ref_type", "cpp2.ref_type"})) {
-      ctx.warning([&](auto& o) {
-        o << "cpp.ref_type = `unique`, cpp2.ref_type = `unique` "
-          << "are deprecated. Please use thrift.box annotation instead in `"
-          << node.name() << "`.";
-      });
+      if (adapter_annotation) {
+        ctx.failure([&](auto& o) {
+          o << "cpp.ref_type = `unique`, cpp2.ref_type = `unique` "
+            << "are deprecated. Please use thrift.box annotation instead in `"
+            << node.name() << "` with @cpp.Adapter.";
+        });
+      } else {
+        ctx.warning([&](auto& o) {
+          o << "cpp.ref_type = `unique`, cpp2.ref_type = `unique` "
+            << "are deprecated. Please use thrift.box annotation instead in `"
+            << node.name() << "`.";
+        });
+      }
     }
     if (node.find_structured_annotation_or_null(
             "facebook.com/thrift/annotation/cpp/Ref") != nullptr) {
-      ctx.warning([&](auto& o) {
-        o << "@cpp.Ref{type = cpp.RefType.Unique} "
-          << "is deprecated. Please use thrift.box annotation instead in `"
-          << node.name() << "`.";
-      });
+      if (adapter_annotation) {
+        ctx.failure([&](auto& o) {
+          o << "@cpp.Ref{type = cpp.RefType.Unique} "
+            << "is deprecated. Please use thrift.box annotation instead in `"
+            << node.name() << "` with @cpp.Adapter.";
+        });
+      } else {
+        ctx.warning([&](auto& o) {
+          o << "@cpp.Ref{type = cpp.RefType.Unique} "
+            << "is deprecated. Please use thrift.box annotation instead in `"
+            << node.name() << "`.";
+        });
+      }
     }
   }
 }

@@ -860,6 +860,11 @@ class CompilerFailureTest(unittest.TestCase):
                 struct Adapter {
                     1: string name;
                 } (thrift.uri = "facebook.com/thrift/annotation/cpp/Adapter")
+
+                enum RefType {Unique, SharedConst, SharedMutable}
+                struct Ref {
+                    1: RefType type;
+                } (thrift.uri = "facebook.com/thrift/annotation/cpp/Ref")
                 """
             ),
         )
@@ -877,6 +882,13 @@ class CompilerFailureTest(unittest.TestCase):
                     1: MyI64 my_field;
                     @cpp.Adapter{}
                     2: i64 my_field2;
+                    @cpp.Adapter{name="MyAdapter"}
+                    3: optional i64 my_field3 (cpp.ref);
+                    @cpp.Adapter{name="MyAdapter"}
+                    4: optional i64 my_field4 (cpp.ref_type = "unique");
+                    @cpp.Adapter{name="MyAdapter"}
+                    @cpp.Ref{type = cpp.RefType.Unique}
+                    5: optional i64 my_field5;
                 }
                 """
             ),
@@ -890,7 +902,13 @@ class CompilerFailureTest(unittest.TestCase):
             "[FAILURE:foo.thrift:7] `@cpp.Adapter` cannot be combined with "
             "`cpp_adapter` in `my_field`.\n"
             "[FAILURE:foo.thrift:9] `@cpp.Adapter` cannot be used without "
-            "`name` specified in `my_field2`.\n",
+            "`name` specified in `my_field2`.\n"
+            "[FAILURE:foo.thrift:11] cpp.ref, cpp2.ref are deprecated. "
+            "Please use thrift.box annotation instead in `my_field3` with @cpp.Adapter.\n"
+            "[FAILURE:foo.thrift:13] cpp.ref_type = `unique`, cpp2.ref_type = `unique` "
+            "are deprecated. Please use thrift.box annotation instead in `my_field4` with @cpp.Adapter.\n"
+            "[FAILURE:foo.thrift:16] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. "
+            "Please use thrift.box annotation instead in `my_field5` with @cpp.Adapter.\n"
         )
 
     def test_mixin_nonstruct_members(self):
