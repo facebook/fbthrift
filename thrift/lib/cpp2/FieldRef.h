@@ -146,7 +146,7 @@ class BitSet {
 
   template <class U>
   static bool get(const std::atomic<U>& u, std::size_t bit) {
-    return u.load() & (U(1) << bit);
+    return u.load(std::memory_order_relaxed) & (U(1) << bit);
   }
 
   template <class U>
