@@ -21,6 +21,8 @@ class ExtendTestServiceWrapper : public ::cpp2::HsTestServiceWrapper, virtual pu
     void async_tm_check(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback
         , std::unique_ptr<::cpp2::HsFoo> struct1
     ) override;
+folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
+folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> ExtendTestServiceInterface(PyObject *if_object, folly::Executor *exc);

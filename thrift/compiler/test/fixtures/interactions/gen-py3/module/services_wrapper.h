@@ -24,6 +24,8 @@ class MyServiceWrapper : virtual public MyServiceSvIf {
     std::unique_ptr<MyInteractionIf> createMyInteraction() override;
     std::unique_ptr<MyInteractionFastIf> createMyInteractionFast() override;
     std::unique_ptr<SerialInteractionIf> createSerialInteraction() override;
+folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
+folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceInterface(PyObject *if_object, folly::Executor *exc);

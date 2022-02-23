@@ -42,4 +42,20 @@ struct1 = std::move(struct1)    ]() mutable {
 std::shared_ptr<apache::thrift::ServerInterface> ExtendTestServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<ExtendTestServiceWrapper>(if_object, exc);
 }
+folly::SemiFuture<folly::Unit> ExtendTestServiceWrapper::semifuture_onStartServing() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_ExtendTestService_onStartServing(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
+folly::SemiFuture<folly::Unit> ExtendTestServiceWrapper::semifuture_onStopRequested() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_ExtendTestService_onStopRequested(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
 } // namespace cpp2

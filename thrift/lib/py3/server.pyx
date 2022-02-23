@@ -76,6 +76,12 @@ cdef class AsyncProcessorFactory:
     def __get_thrift_name__():
         raise NotImplementedError()
 
+    async def onStartServing(self):
+        pass
+
+    async def onStopRequested(self):
+        pass
+
 
 cdef class ServiceInterface(AsyncProcessorFactory):
     pass

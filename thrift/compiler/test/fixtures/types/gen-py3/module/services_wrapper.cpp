@@ -68,6 +68,22 @@ r = std::move(r)    ]() mutable {
 std::shared_ptr<apache::thrift::ServerInterface> SomeServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<SomeServiceWrapper>(if_object, exc);
 }
+folly::SemiFuture<folly::Unit> SomeServiceWrapper::semifuture_onStartServing() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_SomeService_onStartServing(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
+folly::SemiFuture<folly::Unit> SomeServiceWrapper::semifuture_onStopRequested() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_SomeService_onStopRequested(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
 } // namespace apache
 } // namespace thrift
 } // namespace fixtures

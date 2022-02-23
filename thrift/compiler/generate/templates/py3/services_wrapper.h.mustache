@@ -62,6 +62,9 @@ class {{service:name}}Wrapper : {{!
 {{#service:interactions}}
     std::unique_ptr<{{service:name}}If> create{{service:name}}() override;
 {{/service:interactions}}
+{{#service:lifecycleFunctions}}
+folly::SemiFuture<folly::Unit> semifuture_{{function:cppName}}() override;
+{{/service:lifecycleFunctions}}
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> {{service:name}}Interface(PyObject *if_object, folly::Executor *exc);

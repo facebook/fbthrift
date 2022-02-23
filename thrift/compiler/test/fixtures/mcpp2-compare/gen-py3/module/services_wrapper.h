@@ -24,6 +24,8 @@ class EmptyServiceWrapper : virtual public EmptyServiceSvIf {
     folly::Executor *executor;
   public:
     explicit EmptyServiceWrapper(PyObject *if_object, folly::Executor *exc);
+folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
+folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> EmptyServiceInterface(PyObject *if_object, folly::Executor *exc);
@@ -60,6 +62,8 @@ class ReturnServiceWrapper : virtual public ReturnServiceSvIf {
     void async_tm_readData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::unique_ptr<folly::IOBuf>>>> callback
         , int64_t size
     ) override;
+folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
+folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> ReturnServiceInterface(PyObject *if_object, folly::Executor *exc);
@@ -170,6 +174,8 @@ class ParamServiceWrapper : virtual public ParamServiceSvIf {
     void async_tm_listunion_string_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector<::some::valid::ns::ComplexUnion>>>> callback
         , std::unique_ptr<std::string> param1
     ) override;
+folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
+folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> ParamServiceInterface(PyObject *if_object, folly::Executor *exc);

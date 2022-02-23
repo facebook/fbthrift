@@ -39,6 +39,8 @@ class MyServiceWrapper : virtual public MyServiceSvIf {
         , std::unique_ptr<std::string> data
     ) override;
     void async_tm_cppDoNothing(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
+folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceInterface(PyObject *if_object, folly::Executor *exc);
@@ -52,6 +54,8 @@ class MyServicePrioParentWrapper : virtual public MyServicePrioParentSvIf {
     explicit MyServicePrioParentWrapper(PyObject *if_object, folly::Executor *exc);
     void async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
     void async_tm_pong(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
+folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> MyServicePrioParentInterface(PyObject *if_object, folly::Executor *exc);
@@ -61,6 +65,8 @@ class MyServicePrioChildWrapper : public ::cpp2::MyServicePrioParentWrapper, vir
   public:
     explicit MyServicePrioChildWrapper(PyObject *if_object, folly::Executor *exc);
     void async_tm_pang(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
+folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> MyServicePrioChildInterface(PyObject *if_object, folly::Executor *exc);

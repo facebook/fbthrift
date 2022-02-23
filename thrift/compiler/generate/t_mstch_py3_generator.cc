@@ -33,6 +33,13 @@ namespace compiler {
 
 namespace {
 
+std::vector<t_function*> lifecycleFunctions() {
+  static t_function onStartServing_{
+      nullptr, {t_base_type::t_void()}, "onStartServing"},
+      onStopRequested_{nullptr, {t_base_type::t_void()}, "onStopRequested"};
+  return {&onStartServing_, &onStopRequested_};
+}
+
 mstch::array createStringArray(const std::vector<std::string>& values) {
   mstch::array a;
   for (auto it = values.begin(); it != values.end(); ++it) {
@@ -366,8 +373,6 @@ class mstch_py3_program : public mstch_program {
              &mstch_py3_program::unique_functions_by_return_type},
             {"program:cppNamespaces", &mstch_py3_program::getCpp2Namespace},
             {"program:py3Namespaces", &mstch_py3_program::getPy3Namespace},
-            {"program:hasServiceFunctions?",
-             &mstch_py3_program::hasServiceFunctions},
             {"program:includeNamespaces",
              &mstch_py3_program::includeNamespaces},
             {"program:cppIncludes", &mstch_py3_program::getCppIncludes},
@@ -390,6 +395,10 @@ class mstch_py3_program : public mstch_program {
     visit_types_for_constants();
     visit_types_for_typedefs();
     visit_types_for_mixin_fields();
+
+    for (auto func : lifecycleFunctions()) {
+      addFunctionByUniqueReturnType(func);
+    }
   }
 
   mstch::node getCppGenPath() {
@@ -475,19 +484,6 @@ class mstch_py3_program : public mstch_program {
     return createStringArray(get_py3_namespace(program_));
   }
 
-  mstch::node hasServiceFunctions() {
-    const auto& services = program_->services();
-    return std::any_of(services.begin(), services.end(), [](const auto& s) {
-      // TODO(ffrancet): This is here because service interaction functions
-      // aren't supported yet and won't be generated, so this shouldn't include
-      // them
-      const auto& functions = s->get_functions();
-      return std::any_of(functions.begin(), functions.end(), [](const auto& f) {
-        return !f->get_returntype()->is_service();
-      });
-    });
-  }
-
   mstch::node hasStream() {
     return !has_option("no_stream") && !streamTypes_.empty();
   }
@@ -534,6 +530,13 @@ class mstch_py3_program : public mstch_program {
     }
   }
 
+  void addFunctionByUniqueReturnType(const t_function* function) {
+    const t_type* return_type = function->get_returntype();
+    auto sa = cpp2::is_stack_arguments(cache_->parsed_options_, *function);
+    uniqueFunctionsByReturnType_.insert(
+        {{visit_type(return_type), sa}, function});
+  }
+
   void visit_type_single_service(const t_service* service) {
     for (const auto& function : service->functions()) {
       for (const auto& field : function.get_paramlist()->fields()) {
@@ -543,10 +546,7 @@ class mstch_py3_program : public mstch_program {
         const t_type* exType = field.get_type();
         streamExceptions_.emplace(visit_type(field.get_type()), exType);
       }
-      const t_type* return_type = function.get_returntype();
-      auto sa = cpp2::is_stack_arguments(cache_->parsed_options_, function);
-      uniqueFunctionsByReturnType_.insert(
-          {{visit_type(return_type), sa}, &function});
+      addFunctionByUniqueReturnType(&function);
     }
   }
 
@@ -732,6 +732,10 @@ class mstch_py3_service : public mstch_service {
              &mstch_py3_service::parent_service_name},
             {"service:supportedFunctions",
              &mstch_py3_service::get_supported_functions},
+            {"service:lifecycleFunctions",
+             &mstch_py3_service::get_lifecycle_functions},
+            {"service:supportedFunctionsWithLifecycle",
+             &mstch_py3_service::get_supported_functions_with_lifecycle},
         });
   }
 
@@ -755,13 +759,29 @@ class mstch_py3_service : public mstch_service {
     return cache_->parsed_options_.at("parent_service_name");
   }
 
-  mstch::node get_supported_functions() {
+  std::vector<t_function*> supportedFunctions() {
     std::vector<t_function*> funcs;
     bool no_stream = has_option("no_stream");
     for (auto func : service_->get_functions()) {
       if (is_func_supported(no_stream, func)) {
         funcs.push_back(func);
       }
+    }
+    return funcs;
+  }
+
+  mstch::node get_lifecycle_functions() {
+    return generate_functions(lifecycleFunctions());
+  }
+
+  mstch::node get_supported_functions() {
+    return generate_functions(supportedFunctions());
+  }
+
+  mstch::node get_supported_functions_with_lifecycle() {
+    auto funcs = supportedFunctions();
+    for (auto func : lifecycleFunctions()) {
+      funcs.push_back(func);
     }
     return generate_functions(funcs);
   }

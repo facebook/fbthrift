@@ -140,6 +140,8 @@ class SimpleServiceWrapper : virtual public SimpleServiceSvIf {
     void async_tm_get_binary_union_struct(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::py3::simple::BinaryUnionStruct>>> callback
         , std::unique_ptr<::py3::simple::BinaryUnion> u
     ) override;
+folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
+folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object, folly::Executor *exc);
@@ -149,6 +151,8 @@ class DerivedServiceWrapper : public ::py3::simple::SimpleServiceWrapper, virtua
   public:
     explicit DerivedServiceWrapper(PyObject *if_object, folly::Executor *exc);
     void async_tm_get_six(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
+folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
+folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> DerivedServiceInterface(PyObject *if_object, folly::Executor *exc);
@@ -158,6 +162,8 @@ class RederivedServiceWrapper : public ::py3::simple::DerivedServiceWrapper, vir
   public:
     explicit RederivedServiceWrapper(PyObject *if_object, folly::Executor *exc);
     void async_tm_get_seven(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
+folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
+folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> RederivedServiceInterface(PyObject *if_object, folly::Executor *exc);

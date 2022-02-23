@@ -153,7 +153,49 @@ cdef api void call_cy_MyService_query(
         )
     )
     __THRIFT_REQUEST_CONTEXT.reset(__context_token)
-
+cdef api void call_cy_MyService_has_arg_docs(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise,
+    unique_ptr[_module_types.cMyStruct] s,
+    unique_ptr[_includes_types.cIncluded] i
+):
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    arg_s = _module_types.MyStruct._fbthrift_create(shared_ptr[_module_types.cMyStruct](s.release()))
+    arg_i = _includes_types.Included._fbthrift_create(shared_ptr[_includes_types.cIncluded](i.release()))
+    __context = RequestContext._fbthrift_create(ctx)
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+    asyncio.get_event_loop().create_task(
+        MyService_has_arg_docs_coro(
+            self,
+            __promise,
+            arg_s,
+            arg_i
+        )
+    )
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+cdef api void call_cy_MyService_onStartServing(
+    object self,
+    cFollyPromise[cFollyUnit] cPromise
+):
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    asyncio.get_event_loop().create_task(
+        MyService_onStartServing_coro(
+            self,
+            __promise
+        )
+    )
+cdef api void call_cy_MyService_onStopRequested(
+    object self,
+    cFollyPromise[cFollyUnit] cPromise
+):
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    asyncio.get_event_loop().create_task(
+        MyService_onStopRequested_coro(
+            self,
+            __promise
+        )
+    )
 async def MyService_query_coro(
     object self,
     Promise_cFollyUnit promise,
@@ -186,28 +228,6 @@ async def MyService_query_coro(
     else:
         promise.cPromise.setValue(c_unit)
 
-cdef api void call_cy_MyService_has_arg_docs(
-    object self,
-    Cpp2RequestContext* ctx,
-    cFollyPromise[cFollyUnit] cPromise,
-    unique_ptr[_module_types.cMyStruct] s,
-    unique_ptr[_includes_types.cIncluded] i
-):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
-    arg_s = _module_types.MyStruct._fbthrift_create(shared_ptr[_module_types.cMyStruct](s.release()))
-    arg_i = _includes_types.Included._fbthrift_create(shared_ptr[_includes_types.cIncluded](i.release()))
-    __context = RequestContext._fbthrift_create(ctx)
-    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-    asyncio.get_event_loop().create_task(
-        MyService_has_arg_docs_coro(
-            self,
-            __promise,
-            arg_s,
-            arg_i
-        )
-    )
-    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
-
 async def MyService_has_arg_docs_coro(
     object self,
     Promise_cFollyUnit promise,
@@ -233,6 +253,62 @@ async def MyService_has_arg_docs_coro(
         ))
     except asyncio.CancelledError as ex:
         print("Coroutine was cancelled in service handler has_arg_docs:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+async def MyService_onStartServing_coro(
+    object self,
+    Promise_cFollyUnit promise
+):
+    try:
+        result = await self.onStartServing()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler onStartServing:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler onStartServing:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+async def MyService_onStopRequested_coro(
+    object self,
+    Promise_cFollyUnit promise
+):
+    try:
+        result = await self.onStopRequested()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler onStopRequested:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler onStopRequested:", file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')

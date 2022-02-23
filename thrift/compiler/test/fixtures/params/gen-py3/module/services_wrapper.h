@@ -35,6 +35,8 @@ class NestedContainersWrapper : virtual public NestedContainersSvIf {
     void async_tm_turtles(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
         , std::unique_ptr<std::vector<std::vector<std::map<int32_t,std::map<int32_t,std::set<int32_t>>>>>> foo
     ) override;
+folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
+folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> NestedContainersInterface(PyObject *if_object, folly::Executor *exc);

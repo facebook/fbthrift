@@ -307,6 +307,22 @@ cdef class Promise_cServerStream__cint32_t:
         return inst
 
 @cython.auto_pickle(False)
+cdef class Promise_cFollyUnit:
+    cdef cFollyPromise[cFollyUnit]* cPromise
+
+    def __cinit__(self):
+        self.cPromise = new cFollyPromise[cFollyUnit](cFollyPromise[cFollyUnit].makeEmpty())
+
+    def __dealloc__(self):
+        del self.cPromise
+
+    @staticmethod
+    cdef _fbthrift_create(cFollyPromise[cFollyUnit] cPromise):
+        cdef Promise_cFollyUnit inst = Promise_cFollyUnit.__new__(Promise_cFollyUnit)
+        inst.cPromise[0] = cmove(cPromise)
+        return inst
+
+@cython.auto_pickle(False)
 cdef class Promise_cint32_t_Stream:
     cdef cFollyPromise[optional[cint32_t]] cPromise
 
@@ -426,7 +442,103 @@ cdef api void call_cy_PubSubStreamingService_returnstream(
         )
     )
     __THRIFT_REQUEST_CONTEXT.reset(__context_token)
-
+cdef api void call_cy_PubSubStreamingService_streamthrows(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cServerStream[cint32_t]] cPromise,
+    cint32_t foo
+):
+    cdef Promise_cServerStream__cint32_t __promise = Promise_cServerStream__cint32_t._fbthrift_create(cmove(cPromise))
+    arg_foo = foo
+    __context = RequestContext._fbthrift_create(ctx)
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+    asyncio.get_event_loop().create_task(
+        PubSubStreamingService_streamthrows_coro(
+            self,
+            __promise,
+            arg_foo
+        )
+    )
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+cdef api void call_cy_PubSubStreamingService_boththrows(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cServerStream[cint32_t]] cPromise,
+    cint32_t foo
+):
+    cdef Promise_cServerStream__cint32_t __promise = Promise_cServerStream__cint32_t._fbthrift_create(cmove(cPromise))
+    arg_foo = foo
+    __context = RequestContext._fbthrift_create(ctx)
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+    asyncio.get_event_loop().create_task(
+        PubSubStreamingService_boththrows_coro(
+            self,
+            __promise,
+            arg_foo
+        )
+    )
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+cdef api void call_cy_PubSubStreamingService_responseandstreamthrows(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cResponseAndServerStream[cint32_t,cint32_t]] cPromise,
+    cint32_t foo
+):
+    cdef Promise_cResponseAndServerStream__cint32_t_cint32_t __promise = Promise_cResponseAndServerStream__cint32_t_cint32_t._fbthrift_create(cmove(cPromise))
+    arg_foo = foo
+    __context = RequestContext._fbthrift_create(ctx)
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+    asyncio.get_event_loop().create_task(
+        PubSubStreamingService_responseandstreamthrows_coro(
+            self,
+            __promise,
+            arg_foo
+        )
+    )
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+cdef api void call_cy_PubSubStreamingService_returnstreamFast(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cServerStream[cint32_t]] cPromise,
+    cint32_t i32_from,
+    cint32_t i32_to
+):
+    cdef Promise_cServerStream__cint32_t __promise = Promise_cServerStream__cint32_t._fbthrift_create(cmove(cPromise))
+    arg_i32_from = i32_from
+    arg_i32_to = i32_to
+    __context = RequestContext._fbthrift_create(ctx)
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+    asyncio.get_event_loop().create_task(
+        PubSubStreamingService_returnstreamFast_coro(
+            self,
+            __promise,
+            arg_i32_from,
+            arg_i32_to
+        )
+    )
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+cdef api void call_cy_PubSubStreamingService_onStartServing(
+    object self,
+    cFollyPromise[cFollyUnit] cPromise
+):
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    asyncio.get_event_loop().create_task(
+        PubSubStreamingService_onStartServing_coro(
+            self,
+            __promise
+        )
+    )
+cdef api void call_cy_PubSubStreamingService_onStopRequested(
+    object self,
+    cFollyPromise[cFollyUnit] cPromise
+):
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    asyncio.get_event_loop().create_task(
+        PubSubStreamingService_onStopRequested_coro(
+            self,
+            __promise
+        )
+    )
 async def PubSubStreamingService_returnstream_coro(
     object self,
     Promise_cServerStream__cint32_t promise,
@@ -463,25 +575,6 @@ async def PubSubStreamingService_returnstream_coro(
     else:
         promise.cPromise.setValue(cmove(deref((<ServerStream_cint32_t?>result).cStream)))
 
-cdef api void call_cy_PubSubStreamingService_streamthrows(
-    object self,
-    Cpp2RequestContext* ctx,
-    cFollyPromise[cServerStream[cint32_t]] cPromise,
-    cint32_t foo
-):
-    cdef Promise_cServerStream__cint32_t __promise = Promise_cServerStream__cint32_t._fbthrift_create(cmove(cPromise))
-    arg_foo = foo
-    __context = RequestContext._fbthrift_create(ctx)
-    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-    asyncio.get_event_loop().create_task(
-        PubSubStreamingService_streamthrows_coro(
-            self,
-            __promise,
-            arg_foo
-        )
-    )
-    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
-
 async def PubSubStreamingService_streamthrows_coro(
     object self,
     Promise_cServerStream__cint32_t promise,
@@ -515,25 +608,6 @@ async def PubSubStreamingService_streamthrows_coro(
         ))
     else:
         promise.cPromise.setValue(cmove(deref((<ServerStream_cint32_t?>result).cStream)))
-
-cdef api void call_cy_PubSubStreamingService_boththrows(
-    object self,
-    Cpp2RequestContext* ctx,
-    cFollyPromise[cServerStream[cint32_t]] cPromise,
-    cint32_t foo
-):
-    cdef Promise_cServerStream__cint32_t __promise = Promise_cServerStream__cint32_t._fbthrift_create(cmove(cPromise))
-    arg_foo = foo
-    __context = RequestContext._fbthrift_create(ctx)
-    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-    asyncio.get_event_loop().create_task(
-        PubSubStreamingService_boththrows_coro(
-            self,
-            __promise,
-            arg_foo
-        )
-    )
-    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def PubSubStreamingService_boththrows_coro(
     object self,
@@ -570,25 +644,6 @@ async def PubSubStreamingService_boththrows_coro(
         ))
     else:
         promise.cPromise.setValue(cmove(deref((<ServerStream_cint32_t?>result).cStream)))
-
-cdef api void call_cy_PubSubStreamingService_responseandstreamthrows(
-    object self,
-    Cpp2RequestContext* ctx,
-    cFollyPromise[cResponseAndServerStream[cint32_t,cint32_t]] cPromise,
-    cint32_t foo
-):
-    cdef Promise_cResponseAndServerStream__cint32_t_cint32_t __promise = Promise_cResponseAndServerStream__cint32_t_cint32_t._fbthrift_create(cmove(cPromise))
-    arg_foo = foo
-    __context = RequestContext._fbthrift_create(ctx)
-    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-    asyncio.get_event_loop().create_task(
-        PubSubStreamingService_responseandstreamthrows_coro(
-            self,
-            __promise,
-            arg_foo
-        )
-    )
-    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def PubSubStreamingService_responseandstreamthrows_coro(
     object self,
@@ -628,28 +683,6 @@ async def PubSubStreamingService_responseandstreamthrows_coro(
     else:
         promise.cPromise.setValue(createResponseAndServerStream[cint32_t,cint32_t]((<cint32_t?> item), cmove(deref((<ServerStream_cint32_t?>result).cStream))))
 
-cdef api void call_cy_PubSubStreamingService_returnstreamFast(
-    object self,
-    Cpp2RequestContext* ctx,
-    cFollyPromise[cServerStream[cint32_t]] cPromise,
-    cint32_t i32_from,
-    cint32_t i32_to
-):
-    cdef Promise_cServerStream__cint32_t __promise = Promise_cServerStream__cint32_t._fbthrift_create(cmove(cPromise))
-    arg_i32_from = i32_from
-    arg_i32_to = i32_to
-    __context = RequestContext._fbthrift_create(ctx)
-    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-    asyncio.get_event_loop().create_task(
-        PubSubStreamingService_returnstreamFast_coro(
-            self,
-            __promise,
-            arg_i32_from,
-            arg_i32_to
-        )
-    )
-    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
-
 async def PubSubStreamingService_returnstreamFast_coro(
     object self,
     Promise_cServerStream__cint32_t promise,
@@ -685,4 +718,60 @@ async def PubSubStreamingService_returnstreamFast_coro(
         ))
     else:
         promise.cPromise.setValue(cmove(deref((<ServerStream_cint32_t?>result).cStream)))
+
+async def PubSubStreamingService_onStartServing_coro(
+    object self,
+    Promise_cFollyUnit promise
+):
+    try:
+        result = await self.onStartServing()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler onStartServing:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler onStartServing:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+async def PubSubStreamingService_onStopRequested_coro(
+    object self,
+    Promise_cFollyUnit promise
+):
+    try:
+        result = await self.onStopRequested()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler onStopRequested:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler onStopRequested:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
 

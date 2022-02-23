@@ -312,7 +312,88 @@ cdef api void call_cy_MyService_hasDataById(
         )
     )
     __THRIFT_REQUEST_CONTEXT.reset(__context_token)
-
+cdef api void call_cy_MyService_getDataById(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[string] cPromise,
+    cint64_t id
+):
+    cdef Promise__sa_string __promise = Promise__sa_string._fbthrift_create(cmove(cPromise))
+    arg_id = id
+    __context = RequestContext._fbthrift_create(ctx)
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+    asyncio.get_event_loop().create_task(
+        MyService_getDataById_coro(
+            self,
+            __promise,
+            arg_id
+        )
+    )
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+cdef api void call_cy_MyService_putDataById(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise,
+    cint64_t id,
+    string data
+):
+    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit._fbthrift_create(cmove(cPromise))
+    arg_id = id
+    arg_data = data.data().decode('UTF-8')
+    __context = RequestContext._fbthrift_create(ctx)
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+    asyncio.get_event_loop().create_task(
+        MyService_putDataById_coro(
+            self,
+            __promise,
+            arg_id,
+            arg_data
+        )
+    )
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+cdef api void call_cy_MyService_lobDataById(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise,
+    cint64_t id,
+    string data
+):
+    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit._fbthrift_create(cmove(cPromise))
+    arg_id = id
+    arg_data = data.data().decode('UTF-8')
+    __context = RequestContext._fbthrift_create(ctx)
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+    asyncio.get_event_loop().create_task(
+        MyService_lobDataById_coro(
+            self,
+            __promise,
+            arg_id,
+            arg_data
+        )
+    )
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+cdef api void call_cy_MyService_onStartServing(
+    object self,
+    cFollyPromise[cFollyUnit] cPromise
+):
+    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit._fbthrift_create(cmove(cPromise))
+    asyncio.get_event_loop().create_task(
+        MyService_onStartServing_coro(
+            self,
+            __promise
+        )
+    )
+cdef api void call_cy_MyService_onStopRequested(
+    object self,
+    cFollyPromise[cFollyUnit] cPromise
+):
+    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit._fbthrift_create(cmove(cPromise))
+    asyncio.get_event_loop().create_task(
+        MyService_onStopRequested_coro(
+            self,
+            __promise
+        )
+    )
 async def MyService_hasDataById_coro(
     object self,
     Promise__sa_cbool promise,
@@ -343,25 +424,6 @@ async def MyService_hasDataById_coro(
     else:
         promise.cPromise.setValue(<cbool> result)
 
-cdef api void call_cy_MyService_getDataById(
-    object self,
-    Cpp2RequestContext* ctx,
-    cFollyPromise[string] cPromise,
-    cint64_t id
-):
-    cdef Promise__sa_string __promise = Promise__sa_string._fbthrift_create(cmove(cPromise))
-    arg_id = id
-    __context = RequestContext._fbthrift_create(ctx)
-    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-    asyncio.get_event_loop().create_task(
-        MyService_getDataById_coro(
-            self,
-            __promise,
-            arg_id
-        )
-    )
-    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
-
 async def MyService_getDataById_coro(
     object self,
     Promise__sa_string promise,
@@ -391,28 +453,6 @@ async def MyService_getDataById_coro(
         ))
     else:
         promise.cPromise.setValue(<string?> result.encode('UTF-8'))
-
-cdef api void call_cy_MyService_putDataById(
-    object self,
-    Cpp2RequestContext* ctx,
-    cFollyPromise[cFollyUnit] cPromise,
-    cint64_t id,
-    string data
-):
-    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit._fbthrift_create(cmove(cPromise))
-    arg_id = id
-    arg_data = data.data().decode('UTF-8')
-    __context = RequestContext._fbthrift_create(ctx)
-    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-    asyncio.get_event_loop().create_task(
-        MyService_putDataById_coro(
-            self,
-            __promise,
-            arg_id,
-            arg_data
-        )
-    )
-    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyService_putDataById_coro(
     object self,
@@ -446,28 +486,6 @@ async def MyService_putDataById_coro(
     else:
         promise.cPromise.setValue(c_unit)
 
-cdef api void call_cy_MyService_lobDataById(
-    object self,
-    Cpp2RequestContext* ctx,
-    cFollyPromise[cFollyUnit] cPromise,
-    cint64_t id,
-    string data
-):
-    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit._fbthrift_create(cmove(cPromise))
-    arg_id = id
-    arg_data = data.data().decode('UTF-8')
-    __context = RequestContext._fbthrift_create(ctx)
-    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-    asyncio.get_event_loop().create_task(
-        MyService_lobDataById_coro(
-            self,
-            __promise,
-            arg_id,
-            arg_data
-        )
-    )
-    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
-
 async def MyService_lobDataById_coro(
     object self,
     Promise__sa_cFollyUnit promise,
@@ -500,6 +518,62 @@ async def MyService_lobDataById_coro(
     else:
         promise.cPromise.setValue(c_unit)
 
+async def MyService_onStartServing_coro(
+    object self,
+    Promise__sa_cFollyUnit promise
+):
+    try:
+        result = await self.onStartServing()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler onStartServing:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler onStartServing:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+async def MyService_onStopRequested_coro(
+    object self,
+    Promise__sa_cFollyUnit promise
+):
+    try:
+        result = await self.onStopRequested()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler onStopRequested:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler onStopRequested:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
 cdef api void call_cy_MyServiceFast_hasDataById(
     object self,
     Cpp2RequestContext* ctx,
@@ -518,7 +592,88 @@ cdef api void call_cy_MyServiceFast_hasDataById(
         )
     )
     __THRIFT_REQUEST_CONTEXT.reset(__context_token)
-
+cdef api void call_cy_MyServiceFast_getDataById(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[string] cPromise,
+    cint64_t id
+):
+    cdef Promise__sa_string __promise = Promise__sa_string._fbthrift_create(cmove(cPromise))
+    arg_id = id
+    __context = RequestContext._fbthrift_create(ctx)
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+    asyncio.get_event_loop().create_task(
+        MyServiceFast_getDataById_coro(
+            self,
+            __promise,
+            arg_id
+        )
+    )
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+cdef api void call_cy_MyServiceFast_putDataById(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise,
+    cint64_t id,
+    string data
+):
+    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit._fbthrift_create(cmove(cPromise))
+    arg_id = id
+    arg_data = data.data().decode('UTF-8')
+    __context = RequestContext._fbthrift_create(ctx)
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+    asyncio.get_event_loop().create_task(
+        MyServiceFast_putDataById_coro(
+            self,
+            __promise,
+            arg_id,
+            arg_data
+        )
+    )
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+cdef api void call_cy_MyServiceFast_lobDataById(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise,
+    cint64_t id,
+    string data
+):
+    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit._fbthrift_create(cmove(cPromise))
+    arg_id = id
+    arg_data = data.data().decode('UTF-8')
+    __context = RequestContext._fbthrift_create(ctx)
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+    asyncio.get_event_loop().create_task(
+        MyServiceFast_lobDataById_coro(
+            self,
+            __promise,
+            arg_id,
+            arg_data
+        )
+    )
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+cdef api void call_cy_MyServiceFast_onStartServing(
+    object self,
+    cFollyPromise[cFollyUnit] cPromise
+):
+    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit._fbthrift_create(cmove(cPromise))
+    asyncio.get_event_loop().create_task(
+        MyServiceFast_onStartServing_coro(
+            self,
+            __promise
+        )
+    )
+cdef api void call_cy_MyServiceFast_onStopRequested(
+    object self,
+    cFollyPromise[cFollyUnit] cPromise
+):
+    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit._fbthrift_create(cmove(cPromise))
+    asyncio.get_event_loop().create_task(
+        MyServiceFast_onStopRequested_coro(
+            self,
+            __promise
+        )
+    )
 async def MyServiceFast_hasDataById_coro(
     object self,
     Promise__sa_cbool promise,
@@ -549,25 +704,6 @@ async def MyServiceFast_hasDataById_coro(
     else:
         promise.cPromise.setValue(<cbool> result)
 
-cdef api void call_cy_MyServiceFast_getDataById(
-    object self,
-    Cpp2RequestContext* ctx,
-    cFollyPromise[string] cPromise,
-    cint64_t id
-):
-    cdef Promise__sa_string __promise = Promise__sa_string._fbthrift_create(cmove(cPromise))
-    arg_id = id
-    __context = RequestContext._fbthrift_create(ctx)
-    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-    asyncio.get_event_loop().create_task(
-        MyServiceFast_getDataById_coro(
-            self,
-            __promise,
-            arg_id
-        )
-    )
-    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
-
 async def MyServiceFast_getDataById_coro(
     object self,
     Promise__sa_string promise,
@@ -597,28 +733,6 @@ async def MyServiceFast_getDataById_coro(
         ))
     else:
         promise.cPromise.setValue(<string?> result.encode('UTF-8'))
-
-cdef api void call_cy_MyServiceFast_putDataById(
-    object self,
-    Cpp2RequestContext* ctx,
-    cFollyPromise[cFollyUnit] cPromise,
-    cint64_t id,
-    string data
-):
-    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit._fbthrift_create(cmove(cPromise))
-    arg_id = id
-    arg_data = data.data().decode('UTF-8')
-    __context = RequestContext._fbthrift_create(ctx)
-    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-    asyncio.get_event_loop().create_task(
-        MyServiceFast_putDataById_coro(
-            self,
-            __promise,
-            arg_id,
-            arg_data
-        )
-    )
-    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyServiceFast_putDataById_coro(
     object self,
@@ -652,28 +766,6 @@ async def MyServiceFast_putDataById_coro(
     else:
         promise.cPromise.setValue(c_unit)
 
-cdef api void call_cy_MyServiceFast_lobDataById(
-    object self,
-    Cpp2RequestContext* ctx,
-    cFollyPromise[cFollyUnit] cPromise,
-    cint64_t id,
-    string data
-):
-    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit._fbthrift_create(cmove(cPromise))
-    arg_id = id
-    arg_data = data.data().decode('UTF-8')
-    __context = RequestContext._fbthrift_create(ctx)
-    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-    asyncio.get_event_loop().create_task(
-        MyServiceFast_lobDataById_coro(
-            self,
-            __promise,
-            arg_id,
-            arg_data
-        )
-    )
-    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
-
 async def MyServiceFast_lobDataById_coro(
     object self,
     Promise__sa_cFollyUnit promise,
@@ -706,6 +798,62 @@ async def MyServiceFast_lobDataById_coro(
     else:
         promise.cPromise.setValue(c_unit)
 
+async def MyServiceFast_onStartServing_coro(
+    object self,
+    Promise__sa_cFollyUnit promise
+):
+    try:
+        result = await self.onStartServing()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler onStartServing:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler onStartServing:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+async def MyServiceFast_onStopRequested_coro(
+    object self,
+    Promise__sa_cFollyUnit promise
+):
+    try:
+        result = await self.onStopRequested()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler onStopRequested:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler onStopRequested:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
 cdef api void call_cy_DbMixedStackArguments_getDataByKey0(
     object self,
     Cpp2RequestContext* ctx,
@@ -724,7 +872,46 @@ cdef api void call_cy_DbMixedStackArguments_getDataByKey0(
         )
     )
     __THRIFT_REQUEST_CONTEXT.reset(__context_token)
-
+cdef api void call_cy_DbMixedStackArguments_getDataByKey1(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[string] cPromise,
+    string key
+):
+    cdef Promise__sa_binary __promise = Promise__sa_binary._fbthrift_create(cmove(cPromise))
+    arg_key = key.data().decode('UTF-8')
+    __context = RequestContext._fbthrift_create(ctx)
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+    asyncio.get_event_loop().create_task(
+        DbMixedStackArguments_getDataByKey1_coro(
+            self,
+            __promise,
+            arg_key
+        )
+    )
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+cdef api void call_cy_DbMixedStackArguments_onStartServing(
+    object self,
+    cFollyPromise[cFollyUnit] cPromise
+):
+    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit._fbthrift_create(cmove(cPromise))
+    asyncio.get_event_loop().create_task(
+        DbMixedStackArguments_onStartServing_coro(
+            self,
+            __promise
+        )
+    )
+cdef api void call_cy_DbMixedStackArguments_onStopRequested(
+    object self,
+    cFollyPromise[cFollyUnit] cPromise
+):
+    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit._fbthrift_create(cmove(cPromise))
+    asyncio.get_event_loop().create_task(
+        DbMixedStackArguments_onStopRequested_coro(
+            self,
+            __promise
+        )
+    )
 async def DbMixedStackArguments_getDataByKey0_coro(
     object self,
     Promise_binary promise,
@@ -755,25 +942,6 @@ async def DbMixedStackArguments_getDataByKey0_coro(
     else:
         promise.cPromise.setValue(make_unique[string](<string?> result))
 
-cdef api void call_cy_DbMixedStackArguments_getDataByKey1(
-    object self,
-    Cpp2RequestContext* ctx,
-    cFollyPromise[string] cPromise,
-    string key
-):
-    cdef Promise__sa_binary __promise = Promise__sa_binary._fbthrift_create(cmove(cPromise))
-    arg_key = key.data().decode('UTF-8')
-    __context = RequestContext._fbthrift_create(ctx)
-    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-    asyncio.get_event_loop().create_task(
-        DbMixedStackArguments_getDataByKey1_coro(
-            self,
-            __promise,
-            arg_key
-        )
-    )
-    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
-
 async def DbMixedStackArguments_getDataByKey1_coro(
     object self,
     Promise__sa_binary promise,
@@ -803,4 +971,60 @@ async def DbMixedStackArguments_getDataByKey1_coro(
         ))
     else:
         promise.cPromise.setValue(<string?> result)
+
+async def DbMixedStackArguments_onStartServing_coro(
+    object self,
+    Promise__sa_cFollyUnit promise
+):
+    try:
+        result = await self.onStartServing()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler onStartServing:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler onStartServing:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+async def DbMixedStackArguments_onStopRequested_coro(
+    object self,
+    Promise__sa_cFollyUnit promise
+):
+    try:
+        result = await self.onStopRequested()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler onStopRequested:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler onStopRequested:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
 

@@ -100,6 +100,22 @@ cdef class Promise__module_types_std_unordered_map__cint32_t_string:
         inst.cPromise[0] = cmove(cPromise)
         return inst
 
+@cython.auto_pickle(False)
+cdef class Promise_cFollyUnit:
+    cdef cFollyPromise[cFollyUnit]* cPromise
+
+    def __cinit__(self):
+        self.cPromise = new cFollyPromise[cFollyUnit](cFollyPromise[cFollyUnit].makeEmpty())
+
+    def __dealloc__(self):
+        del self.cPromise
+
+    @staticmethod
+    cdef _fbthrift_create(cFollyPromise[cFollyUnit] cPromise):
+        cdef Promise_cFollyUnit inst = Promise_cFollyUnit.__new__(Promise_cFollyUnit)
+        inst.cPromise[0] = cmove(cPromise)
+        return inst
+
 cdef object _SomeService_annotations = _py_types.MappingProxyType({
 })
 
@@ -160,7 +176,46 @@ cdef api void call_cy_SomeService_bounce_map(
         )
     )
     __THRIFT_REQUEST_CONTEXT.reset(__context_token)
-
+cdef api void call_cy_SomeService_binary_keyed_map(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[cmap[string,cint64_t]]] cPromise,
+    unique_ptr[vector[cint64_t]] r
+):
+    cdef Promise_cmap__binary_cint64_t __promise = Promise_cmap__binary_cint64_t._fbthrift_create(cmove(cPromise))
+    arg_r = _module_types.List__i64._fbthrift_create(__to_shared_ptr(cmove(r)))
+    __context = RequestContext._fbthrift_create(ctx)
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+    asyncio.get_event_loop().create_task(
+        SomeService_binary_keyed_map_coro(
+            self,
+            __promise,
+            arg_r
+        )
+    )
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+cdef api void call_cy_SomeService_onStartServing(
+    object self,
+    cFollyPromise[cFollyUnit] cPromise
+):
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    asyncio.get_event_loop().create_task(
+        SomeService_onStartServing_coro(
+            self,
+            __promise
+        )
+    )
+cdef api void call_cy_SomeService_onStopRequested(
+    object self,
+    cFollyPromise[cFollyUnit] cPromise
+):
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    asyncio.get_event_loop().create_task(
+        SomeService_onStopRequested_coro(
+            self,
+            __promise
+        )
+    )
 async def SomeService_bounce_map_coro(
     object self,
     Promise__module_types_std_unordered_map__cint32_t_string promise,
@@ -192,25 +247,6 @@ async def SomeService_bounce_map_coro(
     else:
         promise.cPromise.setValue(make_unique[_module_types.std_unordered_map[cint32_t,string]](deref((<_module_types.std_unordered_map__Map__i32_string?> result)._cpp_obj)))
 
-cdef api void call_cy_SomeService_binary_keyed_map(
-    object self,
-    Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[cmap[string,cint64_t]]] cPromise,
-    unique_ptr[vector[cint64_t]] r
-):
-    cdef Promise_cmap__binary_cint64_t __promise = Promise_cmap__binary_cint64_t._fbthrift_create(cmove(cPromise))
-    arg_r = _module_types.List__i64._fbthrift_create(__to_shared_ptr(cmove(r)))
-    __context = RequestContext._fbthrift_create(ctx)
-    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-    asyncio.get_event_loop().create_task(
-        SomeService_binary_keyed_map_coro(
-            self,
-            __promise,
-            arg_r
-        )
-    )
-    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
-
 async def SomeService_binary_keyed_map_coro(
     object self,
     Promise_cmap__binary_cint64_t promise,
@@ -241,4 +277,60 @@ async def SomeService_binary_keyed_map_coro(
         ))
     else:
         promise.cPromise.setValue(make_unique[cmap[string,cint64_t]](deref((<_module_types.Map__binary_i64?> result)._cpp_obj)))
+
+async def SomeService_onStartServing_coro(
+    object self,
+    Promise_cFollyUnit promise
+):
+    try:
+        result = await self.onStartServing()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler onStartServing:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler onStartServing:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+async def SomeService_onStopRequested_coro(
+    object self,
+    Promise_cFollyUnit promise
+):
+    try:
+        result = await self.onStopRequested()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler onStopRequested:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler onStopRequested:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
 

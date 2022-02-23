@@ -169,6 +169,22 @@ void MyServiceWrapper::async_tm_cppDoNothing(
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<MyServiceWrapper>(if_object, exc);
 }
+folly::SemiFuture<folly::Unit> MyServiceWrapper::semifuture_onStartServing() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_MyService_onStartServing(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
+folly::SemiFuture<folly::Unit> MyServiceWrapper::semifuture_onStopRequested() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_MyService_onStopRequested(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
 
 
 MyServicePrioParentWrapper::MyServicePrioParentWrapper(PyObject *obj, folly::Executor* exc)
@@ -217,6 +233,22 @@ void MyServicePrioParentWrapper::async_tm_pong(
 std::shared_ptr<apache::thrift::ServerInterface> MyServicePrioParentInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<MyServicePrioParentWrapper>(if_object, exc);
 }
+folly::SemiFuture<folly::Unit> MyServicePrioParentWrapper::semifuture_onStartServing() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_MyServicePrioParent_onStartServing(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
+folly::SemiFuture<folly::Unit> MyServicePrioParentWrapper::semifuture_onStopRequested() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_MyServicePrioParent_onStopRequested(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
 
 
 MyServicePrioChildWrapper::MyServicePrioChildWrapper(PyObject *obj, folly::Executor* exc)
@@ -245,5 +277,21 @@ void MyServicePrioChildWrapper::async_tm_pang(
 }
 std::shared_ptr<apache::thrift::ServerInterface> MyServicePrioChildInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<MyServicePrioChildWrapper>(if_object, exc);
+}
+folly::SemiFuture<folly::Unit> MyServicePrioChildWrapper::semifuture_onStartServing() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_MyServicePrioChild_onStartServing(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
+folly::SemiFuture<folly::Unit> MyServicePrioChildWrapper::semifuture_onStopRequested() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_MyServicePrioChild_onStopRequested(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
 }
 } // namespace cpp2

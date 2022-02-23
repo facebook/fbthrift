@@ -20,6 +20,8 @@ class NullServiceWrapper : virtual public NullServiceSvIf {
     folly::Executor *executor;
   public:
     explicit NullServiceWrapper(PyObject *if_object, folly::Executor *exc);
+folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
+folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> NullServiceInterface(PyObject *if_object, folly::Executor *exc);

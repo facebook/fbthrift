@@ -63,7 +63,26 @@ cdef api void call_cy_{{service:name}}_{{function:name}}(
         )
     )
     __THRIFT_REQUEST_CONTEXT.reset(__context_token)
-
+{{/service:supportedFunctions}}
+{{#service:lifecycleFunctions}}
+cdef api void call_cy_{{service:name}}_{{function:name}}(
+    object self,
+    cFollyPromise[{{#function:return_type}}{{!
+            }}{{> services/cython_return_type_cpp_type}}{{!
+        }}{{/function:return_type}}]{{!
+    }} cPromise
+):
+    {{#function:return_type}}
+    cdef {{> services/promise_name}} __promise = {{> services/promise_name}}._fbthrift_create(cmove(cPromise))
+    {{/function:return_type}}
+    asyncio.get_event_loop().create_task(
+        {{service:name}}_{{function:name}}_coro(
+            self,
+            __promise
+        )
+    )
+{{/service:lifecycleFunctions}}
+{{#service:supportedFunctionsWithLifecycle}}
 async def {{service:name}}_{{function:name}}_coro(
     object self,
     {{#function:return_type}}{{> services/promise_name}}{{/function:return_type}}{{!
@@ -118,5 +137,5 @@ async def {{service:name}}_{{function:name}}_coro(
     else:
         promise.cPromise.setValue({{#function:return_type}}{{> services/cython_return_value}}{{/function:return_type}})
 
-{{/service:supportedFunctions}}
+{{/service:supportedFunctionsWithLifecycle}}
 {{/program:services}}

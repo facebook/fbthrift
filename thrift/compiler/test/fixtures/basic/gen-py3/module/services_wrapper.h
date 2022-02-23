@@ -43,6 +43,8 @@ class MyServiceWrapper : virtual public MyServiceSvIf {
         , int64_t id
         , std::unique_ptr<std::string> data
     ) override;
+folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
+folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceInterface(PyObject *if_object, folly::Executor *exc);
@@ -60,6 +62,8 @@ class DbMixedStackArgumentsWrapper : virtual public DbMixedStackArgumentsSvIf {
     void async_tm_getDataByKey1(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback
         , std::unique_ptr<std::string> key
     ) override;
+folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
+folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> DbMixedStackArgumentsInterface(PyObject *if_object, folly::Executor *exc);

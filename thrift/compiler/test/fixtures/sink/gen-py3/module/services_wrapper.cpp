@@ -21,4 +21,20 @@ SinkServiceWrapper::SinkServiceWrapper(PyObject *obj, folly::Executor* exc)
 std::shared_ptr<apache::thrift::ServerInterface> SinkServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<SinkServiceWrapper>(if_object, exc);
 }
+folly::SemiFuture<folly::Unit> SinkServiceWrapper::semifuture_onStartServing() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_SinkService_onStartServing(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
+folly::SemiFuture<folly::Unit> SinkServiceWrapper::semifuture_onStopRequested() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_SinkService_onStopRequested(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
 } // namespace cpp2

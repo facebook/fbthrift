@@ -28,6 +28,8 @@ class MyServiceWrapper : virtual public MyServiceSvIf {
         , std::unique_ptr<::cpp2::MyStruct> s
         , std::unique_ptr<::cpp2::Included> i
     ) override;
+folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
+folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceInterface(PyObject *if_object, folly::Executor *exc);

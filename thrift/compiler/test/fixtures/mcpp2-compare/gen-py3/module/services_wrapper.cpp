@@ -23,6 +23,22 @@ EmptyServiceWrapper::EmptyServiceWrapper(PyObject *obj, folly::Executor* exc)
 std::shared_ptr<apache::thrift::ServerInterface> EmptyServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<EmptyServiceWrapper>(if_object, exc);
 }
+folly::SemiFuture<folly::Unit> EmptyServiceWrapper::semifuture_onStartServing() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_EmptyService_onStartServing(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
+folly::SemiFuture<folly::Unit> EmptyServiceWrapper::semifuture_onStopRequested() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_EmptyService_onStopRequested(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
 
 
 ReturnServiceWrapper::ReturnServiceWrapper(PyObject *obj, folly::Executor* exc)
@@ -420,6 +436,22 @@ size    ]() mutable {
 }
 std::shared_ptr<apache::thrift::ServerInterface> ReturnServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<ReturnServiceWrapper>(if_object, exc);
+}
+folly::SemiFuture<folly::Unit> ReturnServiceWrapper::semifuture_onStartServing() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_ReturnService_onStartServing(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
+folly::SemiFuture<folly::Unit> ReturnServiceWrapper::semifuture_onStopRequested() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_ReturnService_onStopRequested(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
 }
 
 
@@ -1106,6 +1138,22 @@ param1 = std::move(param1)    ]() mutable {
 }
 std::shared_ptr<apache::thrift::ServerInterface> ParamServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<ParamServiceWrapper>(if_object, exc);
+}
+folly::SemiFuture<folly::Unit> ParamServiceWrapper::semifuture_onStartServing() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_ParamService_onStartServing(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
+folly::SemiFuture<folly::Unit> ParamServiceWrapper::semifuture_onStopRequested() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_ParamService_onStopRequested(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
 }
 } // namespace some
 } // namespace valid

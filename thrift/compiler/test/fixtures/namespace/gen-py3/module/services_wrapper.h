@@ -23,6 +23,8 @@ class TestServiceWrapper : virtual public TestServiceSvIf {
     void async_tm_init(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback
         , int64_t int1
     ) override;
+folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
+folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> TestServiceInterface(PyObject *if_object, folly::Executor *exc);

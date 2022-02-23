@@ -14,7 +14,6 @@
 # limitations under the License.
 
 import asyncio
-import sys
 import types
 import unittest
 from typing import Sequence
@@ -22,7 +21,6 @@ from typing import Sequence
 from testing.services import TestingServiceInterface
 from testing.types import Color, easy
 from thrift.py3.server import (
-    RequestContext,
     SocketAddress,
     ThriftServer,
     getServiceName,
@@ -32,10 +30,18 @@ from thrift.py3.test.is_overload.helper import OverloadTestHelper
 
 class Handler(TestingServiceInterface):
     initalized = False
+    on_start_serving_called = False
+    on_stop_requested_called = False
 
     async def __aenter__(self) -> "Handler":
         self.initalized = True
         return self
+
+    async def onStartServing(self) -> None:
+        self.on_start_serving_called = True
+
+    async def onStopRequested(self) -> None:
+        self.on_stop_requested_called = True
 
     async def invert(self, value: bool) -> bool:
         return not value
@@ -173,3 +179,19 @@ class ServicesTests(unittest.TestCase):
         helper.set_is_overload()
         self.assertTrue(helper.check_overload("overloaded_method"))
         self.assertFalse(helper.check_overload("not_overloaded_method"))
+
+    def test_lifecycle_hooks(self) -> None:
+        async def inner() -> None:
+            # pyre-fixme[45]: Cannot instantiate abstract class `Handler`.
+            handler = Handler()
+            self.assertFalse(handler.on_start_serving_called)
+            self.assertFalse(handler.on_stop_requested_called)
+            server = ThriftServer(handler, port=0)
+            serve_task = asyncio.get_event_loop().create_task(server.serve())
+            await server.get_address()
+            self.assertTrue(handler.on_start_serving_called)
+            server.stop()
+            await serve_task
+            self.assertTrue(handler.on_stop_requested_called)
+
+        asyncio.get_event_loop().run_until_complete(inner())

@@ -157,7 +157,100 @@ cdef api void call_cy_NestedContainers_mapList(
         )
     )
     __THRIFT_REQUEST_CONTEXT.reset(__context_token)
-
+cdef api void call_cy_NestedContainers_mapSet(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise,
+    unique_ptr[cmap[cint32_t,cset[cint32_t]]] foo
+):
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    arg_foo = _module_types.Map__i32_Set__i32._fbthrift_create(__to_shared_ptr(cmove(foo)))
+    __context = RequestContext._fbthrift_create(ctx)
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+    asyncio.get_event_loop().create_task(
+        NestedContainers_mapSet_coro(
+            self,
+            __promise,
+            arg_foo
+        )
+    )
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+cdef api void call_cy_NestedContainers_listMap(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise,
+    unique_ptr[vector[cmap[cint32_t,cint32_t]]] foo
+):
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    arg_foo = _module_types.List__Map__i32_i32._fbthrift_create(__to_shared_ptr(cmove(foo)))
+    __context = RequestContext._fbthrift_create(ctx)
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+    asyncio.get_event_loop().create_task(
+        NestedContainers_listMap_coro(
+            self,
+            __promise,
+            arg_foo
+        )
+    )
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+cdef api void call_cy_NestedContainers_listSet(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise,
+    unique_ptr[vector[cset[cint32_t]]] foo
+):
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    arg_foo = _module_types.List__Set__i32._fbthrift_create(__to_shared_ptr(cmove(foo)))
+    __context = RequestContext._fbthrift_create(ctx)
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+    asyncio.get_event_loop().create_task(
+        NestedContainers_listSet_coro(
+            self,
+            __promise,
+            arg_foo
+        )
+    )
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+cdef api void call_cy_NestedContainers_turtles(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise,
+    unique_ptr[vector[vector[cmap[cint32_t,cmap[cint32_t,cset[cint32_t]]]]]] foo
+):
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    arg_foo = _module_types.List__List__Map__i32_Map__i32_Set__i32._fbthrift_create(__to_shared_ptr(cmove(foo)))
+    __context = RequestContext._fbthrift_create(ctx)
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+    asyncio.get_event_loop().create_task(
+        NestedContainers_turtles_coro(
+            self,
+            __promise,
+            arg_foo
+        )
+    )
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+cdef api void call_cy_NestedContainers_onStartServing(
+    object self,
+    cFollyPromise[cFollyUnit] cPromise
+):
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    asyncio.get_event_loop().create_task(
+        NestedContainers_onStartServing_coro(
+            self,
+            __promise
+        )
+    )
+cdef api void call_cy_NestedContainers_onStopRequested(
+    object self,
+    cFollyPromise[cFollyUnit] cPromise
+):
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    asyncio.get_event_loop().create_task(
+        NestedContainers_onStopRequested_coro(
+            self,
+            __promise
+        )
+    )
 async def NestedContainers_mapList_coro(
     object self,
     Promise_cFollyUnit promise,
@@ -187,25 +280,6 @@ async def NestedContainers_mapList_coro(
         ))
     else:
         promise.cPromise.setValue(c_unit)
-
-cdef api void call_cy_NestedContainers_mapSet(
-    object self,
-    Cpp2RequestContext* ctx,
-    cFollyPromise[cFollyUnit] cPromise,
-    unique_ptr[cmap[cint32_t,cset[cint32_t]]] foo
-):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
-    arg_foo = _module_types.Map__i32_Set__i32._fbthrift_create(__to_shared_ptr(cmove(foo)))
-    __context = RequestContext._fbthrift_create(ctx)
-    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-    asyncio.get_event_loop().create_task(
-        NestedContainers_mapSet_coro(
-            self,
-            __promise,
-            arg_foo
-        )
-    )
-    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def NestedContainers_mapSet_coro(
     object self,
@@ -237,25 +311,6 @@ async def NestedContainers_mapSet_coro(
     else:
         promise.cPromise.setValue(c_unit)
 
-cdef api void call_cy_NestedContainers_listMap(
-    object self,
-    Cpp2RequestContext* ctx,
-    cFollyPromise[cFollyUnit] cPromise,
-    unique_ptr[vector[cmap[cint32_t,cint32_t]]] foo
-):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
-    arg_foo = _module_types.List__Map__i32_i32._fbthrift_create(__to_shared_ptr(cmove(foo)))
-    __context = RequestContext._fbthrift_create(ctx)
-    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-    asyncio.get_event_loop().create_task(
-        NestedContainers_listMap_coro(
-            self,
-            __promise,
-            arg_foo
-        )
-    )
-    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
-
 async def NestedContainers_listMap_coro(
     object self,
     Promise_cFollyUnit promise,
@@ -285,25 +340,6 @@ async def NestedContainers_listMap_coro(
         ))
     else:
         promise.cPromise.setValue(c_unit)
-
-cdef api void call_cy_NestedContainers_listSet(
-    object self,
-    Cpp2RequestContext* ctx,
-    cFollyPromise[cFollyUnit] cPromise,
-    unique_ptr[vector[cset[cint32_t]]] foo
-):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
-    arg_foo = _module_types.List__Set__i32._fbthrift_create(__to_shared_ptr(cmove(foo)))
-    __context = RequestContext._fbthrift_create(ctx)
-    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-    asyncio.get_event_loop().create_task(
-        NestedContainers_listSet_coro(
-            self,
-            __promise,
-            arg_foo
-        )
-    )
-    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def NestedContainers_listSet_coro(
     object self,
@@ -335,25 +371,6 @@ async def NestedContainers_listSet_coro(
     else:
         promise.cPromise.setValue(c_unit)
 
-cdef api void call_cy_NestedContainers_turtles(
-    object self,
-    Cpp2RequestContext* ctx,
-    cFollyPromise[cFollyUnit] cPromise,
-    unique_ptr[vector[vector[cmap[cint32_t,cmap[cint32_t,cset[cint32_t]]]]]] foo
-):
-    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
-    arg_foo = _module_types.List__List__Map__i32_Map__i32_Set__i32._fbthrift_create(__to_shared_ptr(cmove(foo)))
-    __context = RequestContext._fbthrift_create(ctx)
-    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-    asyncio.get_event_loop().create_task(
-        NestedContainers_turtles_coro(
-            self,
-            __promise,
-            arg_foo
-        )
-    )
-    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
-
 async def NestedContainers_turtles_coro(
     object self,
     Promise_cFollyUnit promise,
@@ -377,6 +394,62 @@ async def NestedContainers_turtles_coro(
         ))
     except asyncio.CancelledError as ex:
         print("Coroutine was cancelled in service handler turtles:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+async def NestedContainers_onStartServing_coro(
+    object self,
+    Promise_cFollyUnit promise
+):
+    try:
+        result = await self.onStartServing()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler onStartServing:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler onStartServing:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+async def NestedContainers_onStopRequested_coro(
+    object self,
+    Promise_cFollyUnit promise
+):
+    try:
+        result = await self.onStopRequested()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler onStopRequested:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler onStopRequested:", file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')

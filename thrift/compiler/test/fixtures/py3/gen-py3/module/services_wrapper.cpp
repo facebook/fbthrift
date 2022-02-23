@@ -916,6 +916,22 @@ u = std::move(u)    ]() mutable {
 std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<SimpleServiceWrapper>(if_object, exc);
 }
+folly::SemiFuture<folly::Unit> SimpleServiceWrapper::semifuture_onStartServing() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_SimpleService_onStartServing(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
+folly::SemiFuture<folly::Unit> SimpleServiceWrapper::semifuture_onStopRequested() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_SimpleService_onStopRequested(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
 
 
 DerivedServiceWrapper::DerivedServiceWrapper(PyObject *obj, folly::Executor* exc)
@@ -945,6 +961,22 @@ void DerivedServiceWrapper::async_tm_get_six(
 std::shared_ptr<apache::thrift::ServerInterface> DerivedServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<DerivedServiceWrapper>(if_object, exc);
 }
+folly::SemiFuture<folly::Unit> DerivedServiceWrapper::semifuture_onStartServing() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_DerivedService_onStartServing(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
+folly::SemiFuture<folly::Unit> DerivedServiceWrapper::semifuture_onStopRequested() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_DerivedService_onStopRequested(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
 
 
 RederivedServiceWrapper::RederivedServiceWrapper(PyObject *obj, folly::Executor* exc)
@@ -973,6 +1005,22 @@ void RederivedServiceWrapper::async_tm_get_seven(
 }
 std::shared_ptr<apache::thrift::ServerInterface> RederivedServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<RederivedServiceWrapper>(if_object, exc);
+}
+folly::SemiFuture<folly::Unit> RederivedServiceWrapper::semifuture_onStartServing() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_RederivedService_onStartServing(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
+folly::SemiFuture<folly::Unit> RederivedServiceWrapper::semifuture_onStopRequested() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_RederivedService_onStopRequested(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
 }
 } // namespace py3
 } // namespace simple

@@ -37,6 +37,8 @@ class PubSubStreamingServiceWrapper : virtual public PubSubStreamingServiceSvIf 
         , int32_t i32_from
         , int32_t i32_to
     ) override;
+folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
+folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> PubSubStreamingServiceInterface(PyObject *if_object, folly::Executor *exc);

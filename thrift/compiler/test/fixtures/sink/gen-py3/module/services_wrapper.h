@@ -20,6 +20,8 @@ class SinkServiceWrapper : virtual public SinkServiceSvIf {
     folly::Executor *executor;
   public:
     explicit SinkServiceWrapper(PyObject *if_object, folly::Executor *exc);
+folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
+folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> SinkServiceInterface(PyObject *if_object, folly::Executor *exc);

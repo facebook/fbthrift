@@ -39,6 +39,22 @@ void MyRootWrapper::async_tm_do_root(
 std::shared_ptr<apache::thrift::ServerInterface> MyRootInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<MyRootWrapper>(if_object, exc);
 }
+folly::SemiFuture<folly::Unit> MyRootWrapper::semifuture_onStartServing() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_MyRoot_onStartServing(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
+folly::SemiFuture<folly::Unit> MyRootWrapper::semifuture_onStopRequested() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_MyRoot_onStopRequested(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
 
 
 MyNodeWrapper::MyNodeWrapper(PyObject *obj, folly::Executor* exc)
@@ -68,6 +84,22 @@ void MyNodeWrapper::async_tm_do_mid(
 std::shared_ptr<apache::thrift::ServerInterface> MyNodeInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<MyNodeWrapper>(if_object, exc);
 }
+folly::SemiFuture<folly::Unit> MyNodeWrapper::semifuture_onStartServing() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_MyNode_onStartServing(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
+folly::SemiFuture<folly::Unit> MyNodeWrapper::semifuture_onStopRequested() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_MyNode_onStopRequested(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
 
 
 MyLeafWrapper::MyLeafWrapper(PyObject *obj, folly::Executor* exc)
@@ -96,5 +128,21 @@ void MyLeafWrapper::async_tm_do_leaf(
 }
 std::shared_ptr<apache::thrift::ServerInterface> MyLeafInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<MyLeafWrapper>(if_object, exc);
+}
+folly::SemiFuture<folly::Unit> MyLeafWrapper::semifuture_onStartServing() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_MyLeaf_onStartServing(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
+folly::SemiFuture<folly::Unit> MyLeafWrapper::semifuture_onStopRequested() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_MyLeaf_onStopRequested(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
 }
 } // namespace cpp2
