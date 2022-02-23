@@ -35,7 +35,6 @@ namespace apache::thrift::type {
 namespace {
 using conformance::Object;
 using conformance::Value;
-using namespace apache::thrift::test;
 
 template <typename Types, typename Tag, bool Expected>
 void testContains() {
@@ -58,8 +57,8 @@ TEST(TraitsTest, Bool) {
 
   EXPECT_EQ(base_type_v<tag>, BaseType::Bool);
   EXPECT_EQ(getName<tag>(), "bool");
-  IsSameType<standard_type<tag>, bool>();
-  IsSameType<native_type<tag>, bool>();
+  test::same_type<standard_type<tag>, bool>;
+  test::same_type<native_type<tag>, bool>;
 }
 
 TEST(TraitsTest, Byte) {
@@ -72,8 +71,8 @@ TEST(TraitsTest, Byte) {
 
   EXPECT_EQ(base_type_v<tag>, BaseType::Byte);
   EXPECT_EQ(getName<tag>(), "byte");
-  IsSameType<standard_type<tag>, int8_t>();
-  IsSameType<native_type<tag>, int8_t>();
+  test::same_type<standard_type<tag>, int8_t>;
+  test::same_type<native_type<tag>, int8_t>;
 }
 
 TEST(TraitsTest, I16) {
@@ -86,8 +85,8 @@ TEST(TraitsTest, I16) {
 
   EXPECT_EQ(base_type_v<tag>, BaseType::I16);
   EXPECT_EQ(getName<tag>(), "i16");
-  IsSameType<standard_type<tag>, int16_t>();
-  IsSameType<native_type<tag>, int16_t>();
+  test::same_type<standard_type<tag>, int16_t>;
+  test::same_type<native_type<tag>, int16_t>;
 }
 
 TEST(TraitsTest, I32) {
@@ -100,8 +99,8 @@ TEST(TraitsTest, I32) {
 
   EXPECT_EQ(base_type_v<tag>, BaseType::I32);
   EXPECT_EQ(getName<tag>(), "i32");
-  IsSameType<standard_type<tag>, int32_t>();
-  IsSameType<native_type<tag>, int32_t>();
+  test::same_type<standard_type<tag>, int32_t>;
+  test::same_type<native_type<tag>, int32_t>;
 }
 
 TEST(TraitsTest, I64) {
@@ -114,8 +113,8 @@ TEST(TraitsTest, I64) {
 
   EXPECT_EQ(base_type_v<tag>, BaseType::I64);
   EXPECT_EQ(getName<tag>(), "i64");
-  IsSameType<standard_type<tag>, int64_t>();
-  IsSameType<native_type<tag>, int64_t>();
+  test::same_type<standard_type<tag>, int64_t>;
+  test::same_type<native_type<tag>, int64_t>;
 }
 
 TEST(TraitsTest, Enum) {
@@ -132,14 +131,14 @@ TEST(TraitsTest, Enum) {
   using tag_t = enum_t<ThriftBaseType>;
   EXPECT_EQ(base_type_v<tag_t>, BaseType::Enum);
   EXPECT_EQ(getName<tag_t>(), "type.BaseType");
-  IsSameType<standard_type<tag_t>, ThriftBaseType>();
-  IsSameType<native_type<tag_t>, ThriftBaseType>();
+  test::same_type<standard_type<tag_t>, ThriftBaseType>;
+  test::same_type<native_type<tag_t>, ThriftBaseType>;
 
   using tag_at = adapted<StaticCastAdapter<BaseType, ThriftBaseType>, tag_t>;
   EXPECT_EQ(base_type_v<tag_at>, BaseType::Enum);
   EXPECT_EQ(getName<tag_at>(), "apache::thrift::type::BaseType");
-  IsSameType<standard_type<tag_at>, ThriftBaseType>();
-  IsSameType<native_type<tag_at>, BaseType>();
+  test::same_type<standard_type<tag_at>, ThriftBaseType>;
+  test::same_type<native_type<tag_at>, BaseType>;
 }
 
 TEST(TraitsTest, Float) {
@@ -152,8 +151,8 @@ TEST(TraitsTest, Float) {
 
   EXPECT_EQ(base_type_v<tag>, BaseType::Float);
   EXPECT_EQ(getName<tag>(), "float");
-  IsSameType<standard_type<tag>, float>();
-  IsSameType<native_type<tag>, float>();
+  test::same_type<standard_type<tag>, float>;
+  test::same_type<native_type<tag>, float>;
 }
 
 TEST(TraitsTest, Double) {
@@ -166,8 +165,8 @@ TEST(TraitsTest, Double) {
 
   EXPECT_EQ(base_type_v<tag>, BaseType::Double);
   EXPECT_EQ(getName<tag>(), "double");
-  IsSameType<standard_type<tag>, double>();
-  IsSameType<native_type<tag>, double>();
+  test::same_type<standard_type<tag>, double>;
+  test::same_type<native_type<tag>, double>;
 }
 
 TEST(TraitsTest, String) {
@@ -180,8 +179,8 @@ TEST(TraitsTest, String) {
 
   EXPECT_EQ(base_type_v<tag>, BaseType::String);
   EXPECT_EQ(getName<tag>(), "string");
-  IsSameType<standard_type<tag>, std::string>();
-  IsSameType<native_type<tag>, std::string>();
+  test::same_type<standard_type<tag>, std::string>;
+  test::same_type<native_type<tag>, std::string>;
 }
 
 TEST(TraitsTest, Binary) {
@@ -194,8 +193,8 @@ TEST(TraitsTest, Binary) {
 
   EXPECT_EQ(base_type_v<tag>, BaseType::Binary);
   EXPECT_EQ(getName<tag>(), "binary");
-  IsSameType<standard_type<tag>, std::string>();
-  IsSameType<native_type<tag>, std::string>();
+  test::same_type<standard_type<tag>, std::string>;
+  test::same_type<native_type<tag>, std::string>;
 }
 
 TEST(TraitsTest, Struct) {
@@ -212,8 +211,8 @@ TEST(TraitsTest, Struct) {
   using tag_t = struct_t<Object>;
   EXPECT_EQ(base_type_v<tag_t>, BaseType::Struct);
   EXPECT_EQ(getName<tag_t>(), "object.Object");
-  IsSameType<standard_type<tag_t>, Object>();
-  IsSameType<native_type<tag_t>, Object>();
+  test::same_type<standard_type<tag_t>, Object>;
+  test::same_type<native_type<tag_t>, Object>;
 }
 
 TEST(TraitsTest, Union) {
@@ -230,8 +229,8 @@ TEST(TraitsTest, Union) {
   using tag_t = union_t<Value>;
   EXPECT_EQ(base_type_v<tag_t>, BaseType::Union);
   EXPECT_EQ(getName<tag_t>(), "object.Value");
-  IsSameType<standard_type<tag_t>, Value>();
-  IsSameType<native_type<tag_t>, Value>();
+  test::same_type<standard_type<tag_t>, Value>;
+  test::same_type<native_type<tag_t>, Value>;
 }
 
 TEST(TraitsTest, Exception) {
@@ -266,14 +265,8 @@ TEST(TraitsTest, List) {
   using tag_t = list<string_t>;
   EXPECT_EQ(base_type_v<tag_t>, BaseType::List);
   EXPECT_EQ(getName<tag_t>(), "list<string>");
-  IsSameType<standard_type<tag_t>, std::vector<std::string>>();
-  IsSameType<native_type<tag_t>, std::vector<std::string>>();
-
-  using tag_s = list<string_t, std::list>;
-  EXPECT_EQ(base_type_v<tag_s>, BaseType::List);
-  EXPECT_EQ(getName<tag_s>(), "list<string>");
-  IsSameType<standard_type<tag_s>, std::list<std::string>>();
-  IsSameType<native_type<tag_s>, std::list<std::string>>();
+  test::same_type<standard_type<tag_t>, std::vector<std::string>>;
+  test::same_type<native_type<tag_t>, std::vector<std::string>>;
 }
 
 TEST(TraitsTest, Set) {
@@ -294,14 +287,8 @@ TEST(TraitsTest, Set) {
   using tag_t = set<string_t>;
   EXPECT_EQ(base_type_v<tag_t>, BaseType::Set);
   EXPECT_EQ(getName<tag_t>(), "set<string>");
-  IsSameType<standard_type<tag_t>, std::set<std::string>>();
-  IsSameType<native_type<tag_t>, std::set<std::string>>();
-
-  using tag_s = set<string_t, std::unordered_set>;
-  EXPECT_EQ(base_type_v<tag_s>, BaseType::Set);
-  EXPECT_EQ(getName<tag_s>(), "set<string>");
-  IsSameType<standard_type<tag_s>, std::unordered_set<std::string>>();
-  IsSameType<native_type<tag_s>, std::unordered_set<std::string>>();
+  test::same_type<standard_type<tag_t>, std::set<std::string>>;
+  test::same_type<native_type<tag_t>, std::set<std::string>>;
 }
 
 TEST(TraitsTest, Map) {
@@ -330,14 +317,8 @@ TEST(TraitsTest, Map) {
   using tag_t = map<i16_t, i32_t>;
   EXPECT_EQ(base_type_v<tag_t>, BaseType::Map);
   EXPECT_EQ(getName<tag_t>(), "map<i16, i32>");
-  IsSameType<standard_type<tag_t>, std::map<int16_t, int32_t>>();
-  IsSameType<native_type<tag_t>, std::map<int16_t, int32_t>>();
-
-  using tag_s = map<i16_t, i32_t, std::unordered_map>;
-  EXPECT_EQ(base_type_v<tag_s>, BaseType::Map);
-  EXPECT_EQ(getName<tag_s>(), "map<i16, i32>");
-  IsSameType<standard_type<tag_s>, std::unordered_map<int16_t, int32_t>>();
-  IsSameType<native_type<tag_s>, std::unordered_map<int16_t, int32_t>>();
+  test::same_type<standard_type<tag_t>, std::map<int16_t, int32_t>>;
+  test::same_type<native_type<tag_t>, std::map<int16_t, int32_t>>;
 }
 
 template <typename T>
@@ -361,11 +342,11 @@ TEST(TraitsTest, Adapted) {
   testContains<container_types, tag, false>();
   testContains<composite_types, tag, false>();
   EXPECT_EQ(base_type_v<tag>, BaseType::I64);
-  IsSameType<standard_type<tag>, int64_t>();
+  test::same_type<standard_type<tag>, int64_t>;
 
   // The name and native_type have changed.
   EXPECT_EQ(getName<tag>(), folly::pretty_name<TestValue<long>>());
-  IsSameType<native_type<tag>, TestValue<int64_t>>();
+  test::same_type<native_type<tag>, TestValue<int64_t>>;
 }
 
 TEST(TraitsTest, CppType) {
@@ -377,76 +358,26 @@ TEST(TraitsTest, CppType) {
   testContains<container_types, tag, false>();
   testContains<composite_types, tag, false>();
   EXPECT_EQ(base_type_v<tag>, BaseType::I64);
-  IsSameType<standard_type<tag>, int64_t>();
+  test::same_type<standard_type<tag>, int64_t>;
 
   // The name and native_type have changed.
   EXPECT_EQ(getName<tag>(), folly::pretty_name<uint64_t>());
-  IsSameType<native_type<tag>, uint64_t>();
+  test::same_type<native_type<tag>, uint64_t>;
 }
 
 TEST(TraitsTest, AdaptedListElems) {
   using tag_t = list<adapted<TestAdapter, i64_t>>;
   EXPECT_EQ(base_type_v<tag_t>, BaseType::List);
-  IsSameType<standard_type<tag_t>, std::vector<int64_t>>();
+  test::same_type<standard_type<tag_t>, std::vector<int64_t>>;
 
   EXPECT_EQ(
       getName<tag_t>(),
       fmt::format("list<{}>", folly::pretty_name<TestValue<long>>()));
-  IsSameType<native_type<tag_t>, std::vector<TestValue<int64_t>>>();
-}
-
-TEST(TraitsTest, AdaptedSetEntries) {
-  using tag_t = set<adapted<TestAdapter, i64_t>>;
-  EXPECT_EQ(base_type_v<tag_t>, BaseType::Set);
-  IsSameType<standard_type<tag_t>, std::set<int64_t>>();
-
-  EXPECT_EQ(
-      getName<tag_t>(),
-      fmt::format("set<{}>", folly::pretty_name<TestValue<long>>()));
-  IsSameType<
-      native_type<tag_t>,
-      std::set<
-          TestValue<int64_t>,
-          adapt_detail::adapted_less<TestAdapter, TestValue<int64_t>>>>();
-  IsSameType<
-      native_type<set<adapted<TestAdapter, i64_t>, std::unordered_set>>,
-      std::unordered_set<
-          TestValue<int64_t>,
-          adapt_detail::adapted_hash<TestAdapter, TestValue<int64_t>>,
-          adapt_detail::adapted_equal<TestAdapter, TestValue<int64_t>>>>();
-}
-
-TEST(TraitsTest, AdaptedMapEntries) {
-  using tag_t = map<adapted<TestAdapter, i64_t>, adapted<TestAdapter, bool_t>>;
-  EXPECT_EQ(base_type_v<tag_t>, BaseType::Map);
-  IsSameType<standard_type<tag_t>, std::map<int64_t, bool>>();
-
-  EXPECT_EQ(
-      getName<tag_t>(),
-      fmt::format(
-          "map<{}, {}>",
-          folly::pretty_name<TestValue<long>>(),
-          folly::pretty_name<TestValue<bool>>()));
-  IsSameType<
-      native_type<tag_t>,
-      std::map<
-          TestValue<long>,
-          TestValue<bool>,
-          adapt_detail::adapted_less<TestAdapter, TestValue<long>>>>();
-  IsSameType<
-      native_type<
-          map<adapted<TestAdapter, i64_t>,
-              adapted<TestAdapter, bool_t>,
-              std::unordered_map>>,
-      std::unordered_map<
-          TestValue<long>,
-          TestValue<bool>,
-          adapt_detail::adapted_hash<TestAdapter, TestValue<long>>,
-          adapt_detail::adapted_equal<TestAdapter, TestValue<long>>>>();
+  test::same_type<native_type<tag_t>, std::vector<TestValue<int64_t>>>;
 }
 
 TEST(TraitsTest, Filter) {
-  IsSameType<
+  test::same_type<
       primitive_types::filter<bound::is_concrete>,
       detail::types<
           bool_t,
@@ -457,7 +388,7 @@ TEST(TraitsTest, Filter) {
           float_t,
           double_t,
           string_t,
-          binary_t>>();
+          binary_t>>;
 }
 
 } // namespace

@@ -58,23 +58,23 @@ double_t testOverload(double_t);
 string_t testOverload(string_t);
 // binary_t testOverload(binary_t);
 
-struct General;
-struct Specialized;
+struct General {};
+struct Specialized {};
 enum_t<Specialized> testOverload(enum_t<Specialized>);
 struct_t<Specialized> testOverload(struct_t<Specialized>);
 union_t<Specialized> testOverload(union_t<Specialized>);
 exception_t<Specialized> testOverload(exception_t<Specialized>);
 
-template <template <typename...> typename ListT>
-list<Specialized, ListT> testOverload(list<Specialized, ListT>);
-set<Specialized, std::unordered_set> testOverload(
-    set<Specialized, std::unordered_set>);
+template <typename ListT>
+cpp_type<list<Specialized>, ListT> testOverload(
+    cpp_type<list<Specialized>, ListT>);
+cpp_type<set<Specialized>, std::unordered_set<int>> testOverload(
+    cpp_type<set<Specialized>, std::unordered_set<int>>);
 map<Specialized, Specialized> testOverload(map<Specialized, Specialized>);
 
 namespace {
 using test::same_tag;
 using test::TestAdapter;
-using test::TestTemplate;
 
 // Test that type tags can be used to find an overload in ~constant time
 // by the compiler.
@@ -117,29 +117,26 @@ static_assert(same_tag<
 
 static_assert(same_tag<list_c, decltype(testOverload(list_c{}))>);
 static_assert(same_tag<list_c, decltype(testOverload(list<void_t>{}))>);
-static_assert(
-    same_tag<list_c, decltype(testOverload(list<void_t, TestTemplate>{}))>);
-static_assert(
-    same_tag<list<Specialized>, decltype(testOverload(list<Specialized>{}))>);
 static_assert(same_tag<
-              list<Specialized, std::list>,
-              decltype(testOverload(list<Specialized, std::list>{}))>);
+              cpp_type<list<Specialized>, std::list<Specialized>>,
+              decltype(testOverload(
+                  cpp_type<list<Specialized>, std::list<Specialized>>{}))>);
+static_assert(same_tag<
+              cpp_type<list<Specialized>, std::list<Specialized>>,
+              decltype(testOverload(
+                  cpp_type<list<Specialized>, std::list<Specialized>>{}))>);
 
 static_assert(same_tag<container_c, decltype(testOverload(set_c{}))>);
 static_assert(same_tag<container_c, decltype(testOverload(set<void_t>{}))>);
 static_assert(
-    same_tag<container_c, decltype(testOverload(set<void_t, TestTemplate>{}))>);
-static_assert(
     same_tag<container_c, decltype(testOverload(set<Specialized>{}))>);
 static_assert(same_tag<
-              set<Specialized, std::unordered_set>,
-              decltype(testOverload(set<Specialized, std::unordered_set>{}))>);
+              cpp_type<set<Specialized>, std::unordered_set<int>>,
+              decltype(testOverload(
+                  cpp_type<set<Specialized>, std::unordered_set<int>>{}))>);
 
 static_assert(same_tag<map_c, decltype(testOverload(map_c{}))>);
 static_assert(same_tag<map_c, decltype(testOverload(map<void_t, void_t>{}))>);
-static_assert(same_tag<
-              map_c,
-              decltype(testOverload(map<void_t, void_t, TestTemplate>{}))>);
 static_assert(
     same_tag<map_c, decltype(testOverload(map<Specialized, void_t>{}))>);
 static_assert(
@@ -147,10 +144,6 @@ static_assert(
 static_assert(same_tag<
               map<Specialized, Specialized>,
               decltype(testOverload(map<Specialized, Specialized>{}))>);
-static_assert(
-    same_tag<
-        map_c,
-        decltype(testOverload(map<Specialized, Specialized, std::map>{}))>);
 
 // Adapted types are convertable to the underlying tag.
 static_assert(

@@ -41,28 +41,18 @@ void accumulateHash(type::string_c, Accumulator& accumulator, const T& value) {
   combineBuf(accumulator, value);
 }
 
-template <
-    typename ValTag,
-    template <typename...>
-    typename ListT,
-    typename Accumulator,
-    typename T>
+template <typename ValTag, typename Accumulator, typename T>
 void accumulateHash(
-    type::list<ValTag, ListT>, Accumulator& accumulator, const T& value) {
+    type::list<ValTag>, Accumulator& accumulator, const T& value) {
   auto listGuard = makeContainerHashGuard(accumulator, value.size());
   for (const auto& i : value) {
     accumulateHash(ValTag{}, accumulator, i);
   }
 }
 
-template <
-    typename KeyTag,
-    template <typename...>
-    typename SetT,
-    typename Accumulator,
-    typename T>
+template <typename KeyTag, typename Accumulator, typename T>
 void accumulateHash(
-    type::set<KeyTag, SetT>, Accumulator& accumulator, const T& value) {
+    type::set<KeyTag>, Accumulator& accumulator, const T& value) {
   auto setGuard = makeContainerHashGuard(accumulator, value.size());
   auto valuesGuard = makeUnorderedHashGuard(accumulator);
   for (const auto& i : value) {
@@ -70,15 +60,9 @@ void accumulateHash(
   }
 }
 
-template <
-    typename KeyTag,
-    typename ValTag,
-    template <typename...>
-    typename MapT,
-    typename Accumulator,
-    typename T>
+template <typename KeyTag, typename ValTag, typename Accumulator, typename T>
 void accumulateHash(
-    type::map<KeyTag, ValTag, MapT>, Accumulator& accumulator, const T& value) {
+    type::map<KeyTag, ValTag>, Accumulator& accumulator, const T& value) {
   auto mapGuard = makeContainerHashGuard(accumulator, value.size());
   auto valuesGuard = makeUnorderedHashGuard(accumulator);
   for (const auto& i : value) {

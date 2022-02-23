@@ -16,10 +16,6 @@
 
 #include <thrift/lib/cpp2/type/ThriftType.h>
 
-#include <list>
-#include <unordered_map>
-#include <unordered_set>
-
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/lib/cpp2/type/Testing.h>
@@ -27,7 +23,6 @@
 namespace apache::thrift::type {
 namespace {
 using test::TestAdapter;
-using test::TestTemplate;
 
 // Evil types trying to inject themselves into the system!
 struct evil_c : enum_c {};
@@ -72,17 +67,14 @@ static_assert(is_concrete_v<exception_t<int>>);
 
 static_assert(!is_concrete_v<list<int>>);
 static_assert(is_concrete_v<list<void_t>>);
-static_assert(is_concrete_v<list<void_t, TestTemplate>>);
 
 static_assert(!is_concrete_v<set<int>>);
 static_assert(is_concrete_v<set<void_t>>);
-static_assert(is_concrete_v<set<void_t, TestTemplate>>);
 
 static_assert(!is_concrete_v<map<int, void_t>>);
 static_assert(!is_concrete_v<map<int, int>>);
 static_assert(!is_concrete_v<map<void_t, int>>);
 static_assert(is_concrete_v<map<void_t, void_t>>);
-static_assert(is_concrete_v<map<void_t, void_t, TestTemplate>>);
 
 static_assert(!is_concrete_v<adapted<int, int>>);
 static_assert(is_concrete_v<adapted<int, void_t>>);
@@ -131,17 +123,14 @@ static_assert(is_thrift_type_tag_v<exception_t<int>>);
 
 static_assert(!is_thrift_type_tag_v<list<int>>);
 static_assert(is_thrift_type_tag_v<list<void_t>>);
-static_assert(is_thrift_type_tag_v<list<void_t, TestTemplate>>);
 
 static_assert(!is_thrift_type_tag_v<set<int>>);
 static_assert(is_thrift_type_tag_v<set<void_t>>);
-static_assert(is_thrift_type_tag_v<set<void_t, TestTemplate>>);
 
 static_assert(!is_thrift_type_tag_v<map<int, int>>);
 static_assert(!is_thrift_type_tag_v<map<int, void_t>>);
 static_assert(!is_thrift_type_tag_v<map<void_t, int>>);
 static_assert(is_thrift_type_tag_v<map<void_t, void_t>>);
-static_assert(is_thrift_type_tag_v<map<void_t, void_t, TestTemplate>>);
 
 static_assert(!is_thrift_type_tag_v<adapted<int, int>>);
 static_assert(is_thrift_type_tag_v<adapted<int, void_t>>);
@@ -190,17 +179,14 @@ static_assert(!is_abstract_v<exception_t<int>>);
 
 static_assert(!is_abstract_v<list<int>>);
 static_assert(!is_abstract_v<list<void_t>>);
-static_assert(!is_abstract_v<list<void_t, TestTemplate>>);
 
 static_assert(!is_abstract_v<set<int>>);
 static_assert(!is_abstract_v<set<void_t>>);
-static_assert(!is_abstract_v<set<void_t, TestTemplate>>);
 
 static_assert(!is_abstract_v<map<int, void_t>>);
 static_assert(!is_abstract_v<map<int, int>>);
 static_assert(!is_abstract_v<map<void_t, int>>);
 static_assert(!is_abstract_v<map<void_t, void_t>>);
-static_assert(!is_abstract_v<map<void_t, void_t, TestTemplate>>);
 
 static_assert(!is_abstract_v<adapted<int, int>>);
 static_assert(!is_abstract_v<adapted<int, void_t>>);
@@ -314,23 +300,15 @@ static_assert(!isConcrete<enum_c>());
 
 // Containers are concrete if their type parameters are concrete.
 static_assert(isConcrete<list<void_t>>());
-static_assert(isConcrete<list<void_t, std::list>>());
 static_assert(!isConcrete<list<enum_c>>());
-static_assert(!isConcrete<list<enum_c, std::list>>());
 
 static_assert(isConcrete<set<void_t>>());
-static_assert(isConcrete<set<void_t, std::unordered_set>>());
 static_assert(!isConcrete<set<enum_c>>());
-static_assert(!isConcrete<set<enum_c, std::unordered_set>>());
 
 static_assert(isConcrete<map<void_t, void_t>>());
-static_assert(isConcrete<map<void_t, void_t, std::unordered_map>>());
 static_assert(!isConcrete<map<enum_c, void_t>>());
-static_assert(!isConcrete<map<enum_c, void_t, std::unordered_map>>());
 static_assert(!isConcrete<map<void_t, enum_c>>());
-static_assert(!isConcrete<map<void_t, enum_c, std::unordered_map>>());
 static_assert(!isConcrete<map<enum_c, enum_c>>());
-static_assert(!isConcrete<map<enum_c, enum_c, std::unordered_map>>());
 
 // An adapted type is concrete if it's type parameter is concrete.
 static_assert(isConcrete<adapted<TestAdapter, void_t>>());

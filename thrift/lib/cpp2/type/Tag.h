@@ -31,12 +31,6 @@ namespace apache {
 namespace thrift {
 namespace type {
 
-namespace detail {
-// A place holder for the default template for a container.
-template <typename...>
-struct DefaultT;
-} // namespace detail
-
 // Classes of types (_c suffix).
 struct all_c {}; // all thrift types
 struct number_c : all_c {}; // all number types, including 'bool' and 'enum'
@@ -76,21 +70,11 @@ template <typename T> // the generated cpp type
 struct exception_t : exception_c {};
 
 // Parameterized types.
-template <
-    typename ValTag,
-    // the cpp template type
-    template <typename...> class ListT = detail::DefaultT>
+template <typename ValTag>
 struct list : list_c {};
-template <
-    typename KeyTag,
-    // the cpp template type
-    template <typename...> class SetT = detail::DefaultT>
+template <typename KeyTag>
 struct set : set_c {};
-template <
-    typename KeyTag,
-    typename ValTag,
-    // the cpp template type
-    template <typename...> class MapT = detail::DefaultT>
+template <typename KeyTag, typename ValTag>
 struct map : map_c {};
 
 // Extra compile-time metadata.

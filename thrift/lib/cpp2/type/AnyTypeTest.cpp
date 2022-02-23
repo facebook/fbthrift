@@ -161,16 +161,19 @@ TEST(AnyTypeTest, CppType) {
 }
 
 TEST(AnyTypeTest, CustomContainer) {
+  detail::AnyTypeHelper<cpp_type<std::list<int32_t>, list<i32_t>>>::make_type();
+
   // Custom container type is ignored.
   EXPECT_EQ(
-      (AnyType::create<list<void_t, std::list>>()),
-      AnyType::create<list<void_t>>());
+      (AnyType::create<cpp_type<std::list<int32_t>, list<i32_t>>>()),
+      AnyType::create<list<i32_t>>());
   EXPECT_EQ(
-      (AnyType::create<set<void_t, std::unordered_set>>()),
-      AnyType::create<set<void_t>>());
+      (AnyType::create<cpp_type<std::set<int32_t>, set<i32_t>>>()),
+      AnyType::create<set<i32_t>>());
   EXPECT_EQ(
-      (AnyType::create<map<void_t, void_t, std::unordered_set>>()),
-      (AnyType::create<map<void_t, void_t>>()));
+      (AnyType::create<
+          cpp_type<std::map<int32_t, int32_t>, map<i32_t, i32_t>>>()),
+      (AnyType::create<map<i32_t, i32_t>>()));
 }
 
 TEST(AnyTypeTest, ImplicitConversion) {

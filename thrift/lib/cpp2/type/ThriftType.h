@@ -145,18 +145,13 @@ constexpr inline bool is_concrete_v<union_t<T>> = true;
 template <typename T>
 constexpr inline bool is_concrete_v<exception_t<T>> = true;
 
-template <typename ValTag, template <typename...> typename ListT>
-constexpr inline bool is_concrete_v<list<ValTag, ListT>> =
-    is_concrete_v<ValTag>;
+template <typename ValTag>
+constexpr inline bool is_concrete_v<list<ValTag>> = is_concrete_v<ValTag>;
 
-template <typename KeyTag, template <typename...> typename SetT>
-constexpr inline bool is_concrete_v<set<KeyTag, SetT>> = is_concrete_v<KeyTag>;
-template <
-    typename KeyTag,
-    typename ValTag,
-    template <typename...>
-    typename MapT>
-constexpr inline bool is_concrete_v<map<KeyTag, ValTag, MapT>> =
+template <typename KeyTag>
+constexpr inline bool is_concrete_v<set<KeyTag>> = is_concrete_v<KeyTag>;
+template <typename KeyTag, typename ValTag>
+constexpr inline bool is_concrete_v<map<KeyTag, ValTag>> =
     is_concrete_v<KeyTag>&& is_concrete_v<ValTag>;
 
 template <typename Adapter, typename Tag>
@@ -195,18 +190,14 @@ constexpr inline bool is_thrift_type_tag_v<set_c> = true;
 template <>
 constexpr inline bool is_thrift_type_tag_v<map_c> = true;
 
-template <typename ValTag, template <typename...> typename ListT>
-constexpr inline bool is_thrift_type_tag_v<list<ValTag, ListT>> =
+template <typename ValTag>
+constexpr inline bool is_thrift_type_tag_v<list<ValTag>> =
     is_thrift_type_tag_v<ValTag>;
-template <typename KeyTag, template <typename...> typename SetT>
-constexpr inline bool is_thrift_type_tag_v<set<KeyTag, SetT>> =
+template <typename KeyTag>
+constexpr inline bool is_thrift_type_tag_v<set<KeyTag>> =
     is_thrift_type_tag_v<KeyTag>;
-template <
-    typename KeyTag,
-    typename ValTag,
-    template <typename...>
-    typename MapT>
-constexpr inline bool is_thrift_type_tag_v<map<KeyTag, ValTag, MapT>> =
+template <typename KeyTag, typename ValTag>
+constexpr inline bool is_thrift_type_tag_v<map<KeyTag, ValTag>> =
     is_thrift_type_tag_v<KeyTag>&& is_thrift_type_tag_v<ValTag>;
 
 template <typename Adapter, typename Tag>

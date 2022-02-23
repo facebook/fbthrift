@@ -28,7 +28,7 @@ namespace apache::thrift::op {
 namespace {
 
 using namespace apache::thrift::type;
-using namespace apache::thrift::test;
+namespace testset = apache::thrift::test::testset;
 
 // Wrapper with default constructor deleted.
 template <typename T>
@@ -106,13 +106,15 @@ void testCreateWithTag() {
   auto type_adapted_field_created = create<type_adapted_field_tag>(object);
   auto field_adapted_field_created = create<field_adapted_field_tag>(object);
 
-  IsSameType<decltype(type_created), native_type<tag>>();
-  IsSameType<decltype(adapted_created), Wrapper<native_type<tag>>>();
-  IsSameType<decltype(field_created), native_type<tag>>();
-  IsSameType<decltype(type_adapted_field_created), Wrapper<native_type<tag>>>();
-  IsSameType<
+  test::same_type<decltype(type_created), native_type<tag>>;
+  test::same_type<decltype(adapted_created), Wrapper<native_type<tag>>>;
+  test::same_type<decltype(field_created), native_type<tag>>;
+  test::same_type<
+      decltype(type_adapted_field_created),
+      Wrapper<native_type<tag>>>;
+  test::same_type<
       decltype(field_adapted_field_created),
-      WrapperWithContext<native_type<tag>>>();
+      WrapperWithContext<native_type<tag>>>;
 
   Wrapper<native_type<tag>> type_adapted_default{native_type<tag>()};
   WrapperWithContext<native_type<tag>> field_adapted_default{

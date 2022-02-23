@@ -100,6 +100,15 @@ struct concrete_type {
   using standard_type = StandardType;
   using native_type = NativeType;
 };
+struct nonconcrete_type {};
+
+template <template <typename...> typename T, typename... ParamTags>
+using parametrized_type = folly::conditional_t<
+    (is_concrete_v<ParamTags> && ...),
+    concrete_type<
+        standard_template_t<T, ParamTags...>,
+        native_template_t<T, ParamTags...>>,
+    nonconcrete_type>;
 
 template <>
 struct traits<void_t> : concrete_type<void> {};
@@ -140,180 +149,18 @@ struct traits<union_t<T>> : concrete_type<T> {};
 template <typename T>
 struct traits<exception_t<T>> : concrete_type<T> {};
 
-// The non-concrete list traits.
-template <
-    typename ValTag,
-    template <typename...>
-    typename ListT,
-    typename = void>
-struct list_type {
-  using value_type = ValTag;
-};
-
-// The concrete list traits.
-template <typename ValTag, template <typename...> typename ListT>
-struct list_type<ValTag, ListT, if_all_concrete<ValTag>>
-    : concrete_type<
-          standard_template_t<ListT, ValTag>,
-          native_template_t<ListT, ValTag>> {
-  using value_type = ValTag;
-};
-
 // Traits for lists.
 template <typename ValTag>
-struct traits<type::list<ValTag, DefaultT>>
-    : traits<type::list<ValTag, std::vector>> {};
-template <typename ValTag, template <typename...> typename ListT>
-struct traits<type::list<ValTag, ListT>> : list_type<ValTag, ListT> {};
-
-// Helpers replace less, hash, equal_to functions
-// for a set, with the appropriate adapted versions.
-template <
-    typename Adapter,
-    template <typename, typename, typename>
-    typename SetT,
-    typename Key,
-    typename Less,
-    typename Allocator>
-SetT<Key, adapt_detail::adapted_less<Adapter, Key>, Allocator>
-resolveSetForAdapated(const SetT<Key, Less, Allocator>&);
-template <
-    typename Adapter,
-    template <typename, typename, typename, typename>
-    typename SetT,
-    typename Key,
-    typename Hash,
-    typename KeyEqual,
-    typename Allocator>
-SetT<
-    Key,
-    adapt_detail::adapted_hash<Adapter, Key>,
-    adapt_detail::adapted_equal<Adapter, Key>,
-    Allocator>
-resolveSetForAdapated(const SetT<Key, Hash, KeyEqual, Allocator>&);
-
-// Normal element types just use the default template parameters.
-template <template <typename...> typename SetT, typename KeyTag>
-struct native_set : native_template<SetT, KeyTag> {};
-
-// Adapted elements use adapted template arguments.
-template <
-    template <typename...>
-    typename SetT,
-    typename Adapter,
-    typename KeyTag>
-struct native_set<SetT, adapted<Adapter, KeyTag>> {
-  using type = decltype(resolveSetForAdapated<Adapter>(
-      std::declval<native_template_t<SetT, adapted<Adapter, KeyTag>>>()));
-};
-
-// The non-concrete set traits.
-template <
-    typename KeyTag,
-    template <typename...>
-    typename SetT,
-    typename = void>
-struct set_type {
-  using key_type = KeyTag;
-};
-
-// The concrete set traits.
-template <typename KeyTag, template <typename...> typename SetT>
-struct set_type<KeyTag, SetT, if_all_concrete<KeyTag>>
-    : concrete_type<
-          standard_template_t<SetT, KeyTag>,
-          typename native_set<SetT, KeyTag>::type> {
-  using key_type = KeyTag;
-};
+struct traits<type::list<ValTag>> : parametrized_type<std::vector, ValTag> {};
 
 // Traits for sets.
 template <typename KeyTag>
-struct traits<set<KeyTag, DefaultT>> : set_type<KeyTag, std::set> {};
-template <typename KeyTag, template <typename...> typename SetT>
-struct traits<set<KeyTag, SetT>> : set_type<KeyTag, SetT> {};
-
-// Helpers to set the appropriate less, hash, equal_to functions
-// for a map with an adapted key type.
-template <
-    typename Adapter,
-    template <typename, typename, typename, typename>
-    typename MapT,
-    typename Key,
-    typename Value,
-    typename Less,
-    typename Allocator>
-MapT<Key, Value, adapt_detail::adapted_less<Adapter, Key>, Allocator>
-resolveMapForAdapated(const MapT<Key, Value, Less, Allocator>&);
-template <
-    typename Adapter,
-    template <typename, typename, typename, typename, typename>
-    typename MapT,
-    typename Key,
-    typename Value,
-    typename Hash,
-    typename KeyEqual,
-    typename Allocator>
-MapT<
-    Key,
-    Value,
-    adapt_detail::adapted_hash<Adapter, Key>,
-    adapt_detail::adapted_equal<Adapter, Key>,
-    Allocator>
-resolveMapForAdapated(const MapT<Key, Value, Hash, KeyEqual, Allocator>&);
-template <
-    template <typename...>
-    typename MapT,
-    typename KeyTag,
-    typename ValTag>
-struct native_map : native_template<MapT, KeyTag, ValTag> {};
-template <
-    typename Adapter,
-    typename KeyTag,
-    typename ValTag,
-    template <typename...>
-    typename MapT>
-struct native_map<MapT, adapted<Adapter, KeyTag>, ValTag> {
-  using type = decltype(resolveMapForAdapated<Adapter>(
-      std::declval<
-          native_template_t<MapT, adapted<Adapter, KeyTag>, ValTag>>()));
-};
-
-// The non-concrete map traits.
-template <
-    typename KeyTag,
-    typename ValTag,
-    template <typename...>
-    typename MapT,
-    typename = void>
-struct map_type {
-  using key_type = KeyTag;
-  using value_type = ValTag;
-};
-
-// The concrete map traits.
-template <
-    typename KeyTag,
-    typename ValTag,
-    template <typename...>
-    typename MapT>
-struct map_type<KeyTag, ValTag, MapT, if_all_concrete<KeyTag, ValTag>>
-    : concrete_type<
-          standard_template_t<MapT, KeyTag, ValTag>,
-          typename native_map<MapT, KeyTag, ValTag>::type> {
-  using key_type = KeyTag;
-  using value_type = ValTag;
-};
+struct traits<set<KeyTag>> : parametrized_type<std::set, KeyTag> {};
 
 // Traits for maps.
 template <typename KeyTag, typename ValTag>
-struct traits<map<KeyTag, ValTag, DefaultT>>
-    : traits<map<KeyTag, ValTag, std::map>> {};
-template <
-    typename KeyTag,
-    typename ValTag,
-    template <typename...>
-    typename MapT>
-struct traits<map<KeyTag, ValTag, MapT>> : map_type<KeyTag, ValTag, MapT> {};
+struct traits<map<KeyTag, ValTag>>
+    : parametrized_type<std::map, KeyTag, ValTag> {};
 
 // Traits for adapted types.
 //

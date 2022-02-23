@@ -23,6 +23,7 @@
 
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
+#include <thrift/lib/cpp2/type/Testing.h>
 
 namespace apache::thrift::test {
 
@@ -302,6 +303,45 @@ TEST_F(AdaptTest, UnorderedSet) {
   EXPECT_TRUE(my_set.find(val(2)) == my_set.end());
   EXPECT_TRUE(my_set.find(val(3)) != my_set.end());
   EXPECT_TRUE(my_set.find(val(4)) == my_set.end());
+}
+
+TEST_F(AdaptTest, AdaptSetKey_Ordered) {
+  test::same_type<
+      std::set<int, adapt_detail::adapted_less<test::TestAdapter, int, void>>,
+      adapt_detail::adapt_set_key_t<test::TestAdapter, std::set<int32_t>>>;
+}
+
+TEST_F(AdaptTest, AdaptSetKey_Unordered) {
+  test::same_type<
+      std::unordered_set<
+          int,
+          adapt_detail::adapted_hash<test::TestAdapter, int, void>,
+          adapt_detail::
+              adapted_equal<apache::thrift::test::TestAdapter, int, void>>,
+      adapt_detail::
+          adapt_set_key_t<test::TestAdapter, std::unordered_set<int32_t>>>;
+}
+
+TEST_F(AdaptTest, AdpatMapKey_Ordered) {
+  test::same_type<
+      std::map<
+          int,
+          std::string,
+          adapt_detail::adapted_less<test::TestAdapter, int, void>>,
+      adapt_detail::
+          adapt_map_key_t<test::TestAdapter, std::map<int32_t, std::string>>>;
+}
+
+TEST_F(AdaptTest, AdpatMapKey_Unordered) {
+  test::same_type<
+      std::unordered_map<
+          int,
+          std::string,
+          adapt_detail::adapted_hash<test::TestAdapter, int, void>,
+          adapt_detail::adapted_equal<test::TestAdapter, int, void>>,
+      adapt_detail::adapt_map_key_t<
+          test::TestAdapter,
+          std::unordered_map<int32_t, std::string>>>;
 }
 
 } // namespace

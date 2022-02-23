@@ -313,6 +313,67 @@ constexpr size_t hash(const AdaptedT& value) {
   return adapter_hash<Adapter, AdaptedT>()(value);
 }
 
+// Helpers replace less, hash, equal_to functions
+// for a set, with the appropriate adapted versions.
+template <
+    typename Adapter,
+    template <typename, typename, typename>
+    class SetT,
+    typename Key,
+    typename Less,
+    typename Allocator>
+SetT<Key, adapt_detail::adapted_less<Adapter, Key>, Allocator>
+resolveSetForAdapated(const SetT<Key, Less, Allocator>&);
+template <
+    typename Adapter,
+    template <typename, typename, typename, typename>
+    class SetT,
+    typename Key,
+    typename Hash,
+    typename KeyEqual,
+    typename Allocator>
+SetT<
+    Key,
+    adapt_detail::adapted_hash<Adapter, Key>,
+    adapt_detail::adapted_equal<Adapter, Key>,
+    Allocator>
+resolveSetForAdapated(const SetT<Key, Hash, KeyEqual, Allocator>&);
+template <typename KeyAdapter, typename StandardSet>
+using adapt_set_key_t =
+    decltype(resolveSetForAdapated<KeyAdapter>(std::declval<StandardSet>()));
+
+// Helpers to set the appropriate less, hash, equal_to functions
+// for a map with an adapted key type.
+template <
+    typename Adapter,
+    template <typename, typename, typename, typename>
+    class MapT,
+    typename Key,
+    typename Value,
+    typename Less,
+    typename Allocator>
+MapT<Key, Value, adapt_detail::adapted_less<Adapter, Key>, Allocator>
+resolveMapForAdapated(const MapT<Key, Value, Less, Allocator>&);
+template <
+    typename Adapter,
+    template <typename, typename, typename, typename, typename>
+    class MapT,
+    typename Key,
+    typename Value,
+    typename Hash,
+    typename KeyEqual,
+    typename Allocator>
+MapT<
+    Key,
+    Value,
+    adapt_detail::adapted_hash<Adapter, Key>,
+    adapt_detail::adapted_equal<Adapter, Key>,
+    Allocator>
+resolveMapForAdapated(const MapT<Key, Value, Hash, KeyEqual, Allocator>&);
+template <typename KeyAdapter, typename StandardMap>
+using adapt_map_key_t =
+    decltype(resolveMapForAdapated<KeyAdapter>(std::declval<StandardMap>()));
+
 // Validates an adapter.
 // Checking decltype(equal<Adapter>(...)) is not sufficient for validation.
 template <typename Adapter, typename AdaptedT>

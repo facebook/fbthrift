@@ -79,9 +79,9 @@ struct IdenticalTo<type::float_t> : FloatIdenticalTo<float, int32_t> {};
 template <>
 struct IdenticalTo<type::double_t> : FloatIdenticalTo<double, int64_t> {};
 
-template <typename ValTag, template <typename...> typename ListT>
-struct IdenticalTo<type::list<ValTag, ListT>> {
-  template <typename T = type::native_type<type::list<ValTag, ListT>>>
+template <typename ValTag>
+struct IdenticalTo<type::list<ValTag>> {
+  template <typename T = type::native_type<type::list<ValTag>>>
   bool operator()(const T& lhs, const T& rhs) const {
     if (lhs.size() != rhs.size()) {
       return false;
@@ -91,8 +91,8 @@ struct IdenticalTo<type::list<ValTag, ListT>> {
   }
 };
 
-template <typename KeyTag, template <typename...> typename SetT>
-struct IdenticalTo<type::set<KeyTag, SetT>> {
+template <typename KeyTag>
+struct IdenticalTo<type::set<KeyTag>> {
   // Create a multimap from hash(key)->&key
   template <typename C>
   static auto createHashMap(const C& set) {
@@ -113,7 +113,7 @@ struct IdenticalTo<type::set<KeyTag, SetT>> {
     return false;
   }
 
-  template <typename T = type::native_type<type::set<KeyTag, SetT>>>
+  template <typename T = type::native_type<type::set<KeyTag>>>
   bool operator()(const T& lhs, const T& rhs) const {
     if (lhs.size() != rhs.size()) {
       return false;
@@ -130,12 +130,8 @@ struct IdenticalTo<type::set<KeyTag, SetT>> {
   }
 };
 
-template <
-    typename KeyTag,
-    typename ValTag,
-    template <typename...>
-    typename MapT>
-struct IdenticalTo<type::map<KeyTag, ValTag, MapT>> {
+template <typename KeyTag, typename ValTag>
+struct IdenticalTo<type::map<KeyTag, ValTag>> {
   // Create a multimap from hash(key)->&pair(key, value)
   template <typename C>
   static auto createHashMap(const C& map) {
@@ -157,7 +153,7 @@ struct IdenticalTo<type::map<KeyTag, ValTag, MapT>> {
     return false;
   }
 
-  template <typename T = type::native_type<type::map<KeyTag, ValTag, MapT>>>
+  template <typename T = type::native_type<type::map<KeyTag, ValTag>>>
   bool operator()(const T& lhs, const T& rhs) const {
     if (lhs.size() != rhs.size()) {
       return false;

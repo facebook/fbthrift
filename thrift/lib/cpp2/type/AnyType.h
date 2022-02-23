@@ -116,28 +116,24 @@ class AnyType {
 
 namespace detail {
 
-template <typename ValTag, template <typename...> typename ListT>
-struct AnyTypeHelper<list<ValTag, ListT>> {
+template <typename ValTag>
+struct AnyTypeHelper<list<ValTag>> {
   static AnyTypeHolder make_type() {
     return {make_parameterized(
         list_c{}, AnyType(AnyTypeHelper<ValTag>::make_type()))};
   }
 };
 
-template <typename KeyTag, template <typename...> typename SetT>
-struct AnyTypeHelper<set<KeyTag, SetT>> {
+template <typename KeyTag>
+struct AnyTypeHelper<set<KeyTag>> {
   static AnyTypeHolder make_type() {
     return {make_parameterized(
         set_c{}, AnyType(AnyTypeHelper<KeyTag>::make_type()))};
   }
 };
 
-template <
-    typename KeyTag,
-    typename ValTag,
-    template <typename...>
-    typename MapT>
-struct AnyTypeHelper<map<KeyTag, ValTag, MapT>> {
+template <typename KeyTag, typename ValTag>
+struct AnyTypeHelper<map<KeyTag, ValTag>> {
   static AnyTypeHolder make_type() {
     return {make_parameterized(
         map_c{},
