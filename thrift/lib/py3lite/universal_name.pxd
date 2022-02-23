@@ -16,6 +16,9 @@ from libc.stdint cimport int8_t
 from libcpp cimport bool
 from libcpp.string cimport string
 
+from folly.fbstring cimport fbstring
+from folly.range cimport StringPiece
+
 ctypedef int8_t hash_size_t
 
 cdef extern from "thrift/lib/cpp2/type/UniversalHashAlgorithm.h" namespace "apache::thrift::type":
@@ -26,3 +29,7 @@ cdef extern from "thrift/lib/cpp2/type/UniversalName.h" namespace "apache::thrif
     cdef void validateUniversalName(string uri) except +
     cdef void validateUniversalHash(UniversalHashAlgorithm alg, string universalHash, hash_size_t minHashBytes) except +
     cdef void validateUniversalHashBytes(hash_size_t hashBytes, hash_size_t minHashBytes) except +
+    cdef hash_size_t getUniversalHashSize(UniversalHashAlgorithm alg)
+    cdef fbstring getUniversalHash(UniversalHashAlgorithm alg, string uri)
+    cdef StringPiece getUniversalHashPrefix(string universalHash, hash_size_t hashBytes)
+    cdef fbstring maybeGetUniversalHashPrefix(UniversalHashAlgorithm alg, string uri, hash_size_t hashBytes)

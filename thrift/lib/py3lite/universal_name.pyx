@@ -14,6 +14,8 @@
 
 # cython: c_string_type=unicode, c_string_encoding=utf8
 
+from folly.range cimport to_bytes
+
 
 def validate_universal_name(uri: str) -> None:
     validateUniversalName(uri)
@@ -27,3 +29,21 @@ def validate_universal_hash(
 
 def validate_universal_hash_bytes(hash_bytes: int, min_hash_bytes: int):
     validateUniversalHashBytes(hash_bytes, min_hash_bytes)
+
+
+def get_universal_hash_size(alg: UniversalHashAlgorithm) -> int:
+    return getUniversalHashSize(alg)
+
+
+def get_universal_hash(alg: UniversalHashAlgorithm, uri: str) -> bytes:
+    return getUniversalHash(alg, uri).toStdString()
+
+
+def get_universal_hash_prefix(universal_hash: bytes, hash_bytes: int) -> bytes:
+    return to_bytes(getUniversalHashPrefix(universal_hash, hash_bytes))
+
+
+def maybe_get_universal_hash_prefix(
+    alg: UniversalHashAlgorithm, uri: str, hash_bytes: int
+) -> bytes:
+    return maybeGetUniversalHashPrefix(alg, uri, hash_bytes).toStdString()

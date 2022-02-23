@@ -36,3 +36,19 @@ def validate_universal_hash(
 #
 # Throws std::invalid_argument on failure.
 def validate_universal_hash_bytes(hash_bytes: int, min_hash_bytes: int) -> None: ...
+
+# The number of bytes returned by the given type hash algorithm.
+def get_universal_hash_size(alg: UniversalHashAlgorithm) -> int: ...
+
+# Returns the hash for the given universal name uri.
+#
+# The hash includes the implied scheme, "fbthrift://".
+def get_universal_hash(alg: UniversalHashAlgorithm, uri: str) -> bytes: ...
+
+# Shrinks the universal_hash to fit in the given number of bytes.
+def get_universal_hash_prefix(universal_hash: bytes, hash_bytes: int) -> bytes: ...
+
+# Returns the type hash prefix iff smaller than the uri.
+def maybe_get_universal_hash_prefix(
+    alg: UniversalHashAlgorithm, uri: str, hash_bytes: int
+) -> bytes: ...
