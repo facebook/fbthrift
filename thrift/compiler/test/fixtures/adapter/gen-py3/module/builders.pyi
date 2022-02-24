@@ -51,6 +51,9 @@ class Bar_Builder(thrift.py3.builder.StructBuilder):
 
 class StructWithFieldAdapter_Builder(thrift.py3.builder.StructBuilder):
     field: _typing.Optional[int]
+    shared_field: _typing.Optional[int]
+    opt_shared_field: _typing.Optional[int]
+    opt_boxed_field: _typing.Optional[int]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

@@ -632,6 +632,7 @@ cdef class StructWithFieldAdapter(thrift.py3.types.Struct):
     cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("StructWithFieldAdapter", {
           "field": deref(self._cpp_obj).field_ref().has_value(),
+          "opt_boxed_field": deref(self._cpp_obj).opt_boxed_field_ref().has_value(),
         })
 
     @staticmethod
@@ -647,6 +648,40 @@ cdef class StructWithFieldAdapter(thrift.py3.types.Struct):
     @property
     def field(self):
         return self.field_impl()
+
+    cdef inline shared_field_impl(self):
+
+        if self.__fbthrift_cached_shared_field is None:
+            if not deref(self._cpp_obj).shared_field_ref():
+                return None
+            self.__fbthrift_cached_shared_field = cint32_t._fbthrift_create(__reference_shared_ptr(deref(deref(self._cpp_obj).shared_field_ref()), self._cpp_obj))
+        return self.__fbthrift_cached_shared_field
+
+    @property
+    def shared_field(self):
+        return self.shared_field_impl()
+
+    cdef inline opt_shared_field_impl(self):
+
+        if self.__fbthrift_cached_opt_shared_field is None:
+            if not deref(self._cpp_obj).opt_shared_field_ref():
+                return None
+            self.__fbthrift_cached_opt_shared_field = cint32_t._fbthrift_create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_shared_field_ref()), self._cpp_obj))
+        return self.__fbthrift_cached_opt_shared_field
+
+    @property
+    def opt_shared_field(self):
+        return self.opt_shared_field_impl()
+
+    cdef inline opt_boxed_field_impl(self):
+        if not deref(self._cpp_obj).opt_boxed_field_ref().has_value():
+            return None
+
+        return deref(self._cpp_obj).opt_boxed_field_ref().value()
+
+    @property
+    def opt_boxed_field(self):
+        return self.opt_boxed_field_impl()
 
 
     def __hash__(StructWithFieldAdapter self):
@@ -691,7 +726,7 @@ cdef class StructWithFieldAdapter(thrift.py3.types.Struct):
         return __get_field_name_by_index[cStructWithFieldAdapter](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 1
+        self._fbthrift_struct_size = 4
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(StructWithFieldAdapter self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data

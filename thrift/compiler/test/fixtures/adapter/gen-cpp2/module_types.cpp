@@ -661,7 +661,13 @@ namespace cpp2 {
 StructWithFieldAdapter::StructWithFieldAdapter(const StructWithFieldAdapter& srcObj) {
   __fbthrift_field_field = srcObj.__fbthrift_field_field;
   __isset.set(0,srcObj.__isset.get(0));
+  shared_field = srcObj.shared_field;
+  opt_shared_field = srcObj.opt_shared_field;
+  __fbthrift_field_opt_boxed_field = srcObj.__fbthrift_field_opt_boxed_field;
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_field, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(shared_field, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 3>(opt_shared_field, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 4>(__fbthrift_field_opt_boxed_field, *this);
 }
 
 StructWithFieldAdapter& StructWithFieldAdapter::operator=(const StructWithFieldAdapter& src) {
@@ -670,10 +676,37 @@ StructWithFieldAdapter& StructWithFieldAdapter::operator=(const StructWithFieldA
   return *this;
 }
 
-
-StructWithFieldAdapter::StructWithFieldAdapter(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 1, ::std::int32_t, __fbthrift_cpp2_type> field__arg) :
-    __fbthrift_field_field(std::move(field__arg)) {
+StructWithFieldAdapter::StructWithFieldAdapter(StructWithFieldAdapter&& other) noexcept  :
+    __fbthrift_field_field(std::move(other.__fbthrift_field_field)),
+    shared_field(std::move(other.shared_field)),
+    opt_shared_field(std::move(other.opt_shared_field)),
+    __fbthrift_field_opt_boxed_field(std::move(other.__fbthrift_field_opt_boxed_field)),
+    __isset(other.__isset) {
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_field, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(shared_field, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 3>(opt_shared_field, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 4>(__fbthrift_field_opt_boxed_field, *this);
+}
+
+StructWithFieldAdapter& StructWithFieldAdapter::operator=(FOLLY_MAYBE_UNUSED StructWithFieldAdapter&& other) noexcept {
+    this->__fbthrift_field_field = std::move(other.__fbthrift_field_field);
+    this->shared_field = std::move(other.shared_field);
+    this->opt_shared_field = std::move(other.opt_shared_field);
+    this->__fbthrift_field_opt_boxed_field = std::move(other.__fbthrift_field_opt_boxed_field);
+    __isset = other.__isset;
+    return *this;
+}
+
+
+StructWithFieldAdapter::StructWithFieldAdapter(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 1, ::std::int32_t, __fbthrift_cpp2_type> field__arg, ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 2, ::std::int32_t, __fbthrift_cpp2_type> shared_field__arg, ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 3, ::std::int32_t, __fbthrift_cpp2_type> opt_shared_field__arg, ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 4, ::std::int32_t, __fbthrift_cpp2_type> opt_boxed_field__arg) :
+    __fbthrift_field_field(std::move(field__arg)),
+    shared_field(std::move(shared_field__arg)),
+    opt_shared_field(std::move(opt_shared_field__arg)),
+    __fbthrift_field_opt_boxed_field(std::move(opt_boxed_field__arg)) {
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_field, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(shared_field, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 3>(opt_shared_field, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 4>(__fbthrift_field_opt_boxed_field, *this);
   __isset.set(folly::index_constant<0>(), true);
 }
 
@@ -681,6 +714,9 @@ StructWithFieldAdapter::StructWithFieldAdapter(apache::thrift::FragileConstructo
 void StructWithFieldAdapter::__fbthrift_clear() {
   // clear all fields
   ::apache::thrift::adapt_detail::clear<my::Adapter1, 1>(__fbthrift_field_field, *this);
+  this->shared_field = ::apache::thrift::detail::make_mutable_smart_ptr<::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 2, ::std::int32_t, __fbthrift_cpp2_type>>();
+  this->opt_shared_field.reset();
+  this->__fbthrift_field_opt_boxed_field.reset();
   __isset = {};
 }
 
@@ -695,6 +731,15 @@ bool StructWithFieldAdapter::operator==(const StructWithFieldAdapter& rhs) const
   if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.__fbthrift_field_field, rhs.__fbthrift_field_field)) {
     return false;
   }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.shared_field_ref(), rhs.shared_field_ref()))) {
+    return false;
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.opt_shared_field_ref(), rhs.opt_shared_field_ref()))) {
+    return false;
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.opt_boxed_field_ref(), rhs.opt_boxed_field_ref()))) {
+    return false;
+  }
   return true;
 }
 
@@ -705,6 +750,15 @@ bool StructWithFieldAdapter::operator<(const StructWithFieldAdapter& rhs) const 
   if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.__fbthrift_field_field, rhs.__fbthrift_field_field)) {
     return ::apache::thrift::adapt_detail::less<my::Adapter1>(lhs.__fbthrift_field_field, rhs.__fbthrift_field_field);
   }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.shared_field_ref(), rhs.shared_field_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.shared_field_ref(), rhs.shared_field_ref());
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.opt_shared_field_ref(), rhs.opt_shared_field_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.opt_shared_field_ref(), rhs.opt_shared_field_ref());
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.opt_boxed_field_ref(), rhs.opt_boxed_field_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.opt_boxed_field_ref(), rhs.opt_boxed_field_ref());
+  }
   return false;
 }
 
@@ -712,6 +766,9 @@ bool StructWithFieldAdapter::operator<(const StructWithFieldAdapter& rhs) const 
 void swap(StructWithFieldAdapter& a, StructWithFieldAdapter& b) {
   using ::std::swap;
   swap(a.field_ref().value(), b.field_ref().value());
+  swap(a.shared_field, b.shared_field);
+  swap(a.opt_shared_field, b.opt_shared_field);
+  swap(a.__fbthrift_field_opt_boxed_field, b.__fbthrift_field_opt_boxed_field);
   swap(a.__isset, b.__isset);
 }
 
@@ -747,6 +804,9 @@ FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 5, ::cpp2::Baz, ::cpp2::Bar>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 6, ::cpp2::Baz, ::cpp2::Bar>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 1, ::std::int32_t, ::cpp2::StructWithFieldAdapter>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 2, ::std::int32_t, ::cpp2::StructWithFieldAdapter>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 3, ::std::int32_t, ::cpp2::StructWithFieldAdapter>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 4, ::std::int32_t, ::cpp2::StructWithFieldAdapter>();
   ::apache::thrift::adapt_detail::validateAdapter<my::Adapter2, ::std::set<::std::string>>();
   ::apache::thrift::adapt_detail::validateAdapter<my::Adapter2, ::cpp2::Bar>();
   ::apache::thrift::adapt_detail::validateAdapter<my::Adapter2, ::cpp2::Baz>();

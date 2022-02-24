@@ -1443,27 +1443,66 @@ class StructWithFieldAdapter implements \IThriftStruct, \IThriftShapishStruct {
       'var' => 'field',
       'type' => \TType::I32,
     ),
+    2 => shape(
+      'var' => 'shared_field',
+      'type' => \TType::I32,
+    ),
+    3 => shape(
+      'var' => 'opt_shared_field',
+      'type' => \TType::I32,
+    ),
+    4 => shape(
+      'var' => 'opt_boxed_field',
+      'type' => \TType::I32,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'field' => 1,
+    'shared_field' => 2,
+    'opt_shared_field' => 3,
+    'opt_boxed_field' => 4,
   ];
 
   const type TConstructorShape = shape(
     ?'field' => ?int,
+    ?'shared_field' => ?int,
+    ?'opt_shared_field' => ?int,
+    ?'opt_boxed_field' => ?int,
   );
 
   const type TShape = shape(
     'field' => int,
+    'shared_field' => int,
+    ?'opt_shared_field' => ?int,
+    ?'opt_boxed_field' => ?int,
   );
-  const int STRUCTURAL_ID = 7035499037608086885;
+  const int STRUCTURAL_ID = 1940453594051247312;
   /**
    * Original thrift field:-
    * 1: i32 field
    */
   public int $field;
+  /**
+   * Original thrift field:-
+   * 2: i32 shared_field
+   */
+  public int $shared_field;
+  /**
+   * Original thrift field:-
+   * 3: i32 opt_shared_field
+   */
+  public ?int $opt_shared_field;
+  /**
+   * Original thrift field:-
+   * 4: i32 opt_boxed_field
+   */
+  public ?int $opt_boxed_field;
 
-  public function __construct(?int $field = null  )[] {
+  public function __construct(?int $field = null, ?int $shared_field = null, ?int $opt_shared_field = null, ?int $opt_boxed_field = null  )[] {
     $this->field = $field ?? 0;
+    $this->shared_field = $shared_field ?? 0;
+    $this->opt_shared_field = $opt_shared_field;
+    $this->opt_boxed_field = $opt_boxed_field;
   }
 
   public static function withDefaultValues()[]: this {
@@ -1473,6 +1512,9 @@ class StructWithFieldAdapter implements \IThriftStruct, \IThriftShapishStruct {
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'field'),
+      Shapes::idx($shape, 'shared_field'),
+      Shapes::idx($shape, 'opt_shared_field'),
+      Shapes::idx($shape, 'opt_boxed_field'),
     );
   }
 
@@ -1496,6 +1538,41 @@ class StructWithFieldAdapter implements \IThriftStruct, \IThriftShapishStruct {
               "name" => "field",
             )
           ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "shared_field",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "opt_shared_field",
+              "is_optional" => true,
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 4,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "opt_boxed_field",
+              "is_optional" => true,
+            )
+          ),
         ],
         "is_union" => false,
       )
@@ -1516,6 +1593,46 @@ class StructWithFieldAdapter implements \IThriftStruct, \IThriftShapishStruct {
           ],
           'type' => dict[],
         ),
+        'shared_field' => shape(
+          'field' => dict[
+            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "my::Adapter1",
+              )
+            ),
+            'facebook_thrift_annotation_cpp_Ref' => facebook_thrift_annotation_cpp_Ref::fromShape(
+              shape(
+                "type" => facebook_thrift_annotation_cpp_RefType::Shared,
+              )
+            ),
+          ],
+          'type' => dict[],
+        ),
+        'opt_shared_field' => shape(
+          'field' => dict[
+            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "my::Adapter1",
+              )
+            ),
+            'facebook_thrift_annotation_cpp_Ref' => facebook_thrift_annotation_cpp_Ref::fromShape(
+              shape(
+                "type" => facebook_thrift_annotation_cpp_RefType::Shared,
+              )
+            ),
+          ],
+          'type' => dict[],
+        ),
+        'opt_boxed_field' => shape(
+          'field' => dict[
+            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "my::Adapter1",
+              )
+            ),
+          ],
+          'type' => dict[],
+        ),
       ],
     );
   }
@@ -1523,12 +1640,18 @@ class StructWithFieldAdapter implements \IThriftStruct, \IThriftShapishStruct {
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['field'],
+      $shape['shared_field'],
+      Shapes::idx($shape, 'opt_shared_field'),
+      Shapes::idx($shape, 'opt_boxed_field'),
     );
   }
 
   public function __toShape()[]: self::TShape {
     return shape(
       'field' => $this->field,
+      'shared_field' => $this->shared_field,
+      'opt_shared_field' => $this->opt_shared_field,
+      'opt_boxed_field' => $this->opt_boxed_field,
     );
   }
   public function readFromJson(string $jsonText): void {
@@ -1544,6 +1667,30 @@ class StructWithFieldAdapter implements \IThriftStruct, \IThriftShapishStruct {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
         $this->field = (int)$_tmp0;
+      }
+    }    
+    if (idx($parsed, 'shared_field') !== null) {
+      $_tmp1 = (int)/* HH_FIXME[4110] */ $parsed['shared_field'];
+      if ($_tmp1 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->shared_field = (int)$_tmp1;
+      }
+    }    
+    if (idx($parsed, 'opt_shared_field') !== null) {
+      $_tmp2 = (int)/* HH_FIXME[4110] */ $parsed['opt_shared_field'];
+      if ($_tmp2 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->opt_shared_field = (int)$_tmp2;
+      }
+    }    
+    if (idx($parsed, 'opt_boxed_field') !== null) {
+      $_tmp3 = (int)/* HH_FIXME[4110] */ $parsed['opt_boxed_field'];
+      if ($_tmp3 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->opt_boxed_field = (int)$_tmp3;
       }
     }    
   }

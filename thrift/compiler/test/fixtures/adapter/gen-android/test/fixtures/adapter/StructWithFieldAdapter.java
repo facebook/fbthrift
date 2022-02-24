@@ -27,13 +27,28 @@ import com.facebook.thrift.protocol.*;
 public class StructWithFieldAdapter implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("StructWithFieldAdapter");
   private static final TField FIELD_FIELD_DESC = new TField("field", TType.I32, (short)1);
+  private static final TField SHARED_FIELD_FIELD_DESC = new TField("shared_field", TType.I32, (short)2);
+  private static final TField OPT_SHARED_FIELD_FIELD_DESC = new TField("opt_shared_field", TType.I32, (short)3);
+  private static final TField OPT_BOXED_FIELD_FIELD_DESC = new TField("opt_boxed_field", TType.I32, (short)4);
 
   public final Integer field;
+  public final Integer shared_field;
+  public final Integer opt_shared_field;
+  public final Integer opt_boxed_field;
   public static final int FIELD = 1;
+  public static final int SHARED_FIELD = 2;
+  public static final int OPT_SHARED_FIELD = 3;
+  public static final int OPT_BOXED_FIELD = 4;
 
   public StructWithFieldAdapter(
-      Integer field) {
+      Integer field,
+      Integer shared_field,
+      Integer opt_shared_field,
+      Integer opt_boxed_field) {
     this.field = field;
+    this.shared_field = shared_field;
+    this.opt_shared_field = opt_shared_field;
+    this.opt_boxed_field = opt_boxed_field;
   }
 
   /**
@@ -44,6 +59,21 @@ public class StructWithFieldAdapter implements TBase, java.io.Serializable, Clon
       this.field = TBaseHelper.deepCopy(other.field);
     } else {
       this.field = null;
+    }
+    if (other.isSetShared_field()) {
+      this.shared_field = TBaseHelper.deepCopy(other.shared_field);
+    } else {
+      this.shared_field = null;
+    }
+    if (other.isSetOpt_shared_field()) {
+      this.opt_shared_field = TBaseHelper.deepCopy(other.opt_shared_field);
+    } else {
+      this.opt_shared_field = null;
+    }
+    if (other.isSetOpt_boxed_field()) {
+      this.opt_boxed_field = TBaseHelper.deepCopy(other.opt_boxed_field);
+    } else {
+      this.opt_boxed_field = null;
     }
   }
 
@@ -60,6 +90,33 @@ public class StructWithFieldAdapter implements TBase, java.io.Serializable, Clon
     return this.field != null;
   }
 
+  public Integer getShared_field() {
+    return this.shared_field;
+  }
+
+  // Returns true if field shared_field is set (has been assigned a value) and false otherwise
+  public boolean isSetShared_field() {
+    return this.shared_field != null;
+  }
+
+  public Integer getOpt_shared_field() {
+    return this.opt_shared_field;
+  }
+
+  // Returns true if field opt_shared_field is set (has been assigned a value) and false otherwise
+  public boolean isSetOpt_shared_field() {
+    return this.opt_shared_field != null;
+  }
+
+  public Integer getOpt_boxed_field() {
+    return this.opt_boxed_field;
+  }
+
+  // Returns true if field opt_boxed_field is set (has been assigned a value) and false otherwise
+  public boolean isSetOpt_boxed_field() {
+    return this.opt_boxed_field != null;
+  }
+
   @Override
   public boolean equals(Object _that) {
     if (_that == null)
@@ -72,12 +129,18 @@ public class StructWithFieldAdapter implements TBase, java.io.Serializable, Clon
 
     if (!TBaseHelper.equalsNobinary(this.isSetField(), that.isSetField(), this.field, that.field)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetShared_field(), that.isSetShared_field(), this.shared_field, that.shared_field)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetOpt_shared_field(), that.isSetOpt_shared_field(), this.opt_shared_field, that.opt_shared_field)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetOpt_boxed_field(), that.isSetOpt_boxed_field(), this.opt_boxed_field, that.opt_boxed_field)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {field});
+    return Arrays.deepHashCode(new Object[] {field, shared_field, opt_shared_field, opt_boxed_field});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -87,6 +150,9 @@ public class StructWithFieldAdapter implements TBase, java.io.Serializable, Clon
 
   public static StructWithFieldAdapter deserialize(TProtocol iprot) throws TException {
     Integer tmp_field = null;
+    Integer tmp_shared_field = null;
+    Integer tmp_opt_shared_field = null;
+    Integer tmp_opt_boxed_field = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -104,6 +170,27 @@ public class StructWithFieldAdapter implements TBase, java.io.Serializable, Clon
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case SHARED_FIELD:
+          if (__field.type == TType.I32) {
+            tmp_shared_field = iprot.readI32();
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case OPT_SHARED_FIELD:
+          if (__field.type == TType.I32) {
+            tmp_opt_shared_field = iprot.readI32();
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case OPT_BOXED_FIELD:
+          if (__field.type == TType.I32) {
+            tmp_opt_boxed_field = iprot.readI32();
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -115,6 +202,9 @@ public class StructWithFieldAdapter implements TBase, java.io.Serializable, Clon
     StructWithFieldAdapter _that;
     _that = new StructWithFieldAdapter(
       tmp_field
+      ,tmp_shared_field
+      ,tmp_opt_shared_field
+      ,tmp_opt_boxed_field
     );
     _that.validate();
     return _that;
@@ -128,6 +218,25 @@ public class StructWithFieldAdapter implements TBase, java.io.Serializable, Clon
       oprot.writeFieldBegin(FIELD_FIELD_DESC);
       oprot.writeI32(this.field);
       oprot.writeFieldEnd();
+    }
+    if (this.shared_field != null) {
+      oprot.writeFieldBegin(SHARED_FIELD_FIELD_DESC);
+      oprot.writeI32(this.shared_field);
+      oprot.writeFieldEnd();
+    }
+    if (this.opt_shared_field != null) {
+      if (isSetOpt_shared_field()) {
+        oprot.writeFieldBegin(OPT_SHARED_FIELD_FIELD_DESC);
+        oprot.writeI32(this.opt_shared_field);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.opt_boxed_field != null) {
+      if (isSetOpt_boxed_field()) {
+        oprot.writeFieldBegin(OPT_BOXED_FIELD_FIELD_DESC);
+        oprot.writeI32(this.opt_boxed_field);
+        oprot.writeFieldEnd();
+      }
     }
     oprot.writeFieldStop();
     oprot.writeStructEnd();

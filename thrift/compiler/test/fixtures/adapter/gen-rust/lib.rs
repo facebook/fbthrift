@@ -66,6 +66,9 @@ pub mod types {
     #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct StructWithFieldAdapter {
         pub field: ::std::primitive::i32,
+        pub shared_field: ::std::primitive::i32,
+        pub opt_shared_field: ::std::option::Option<::std::primitive::i32>,
+        pub opt_boxed_field: ::std::option::Option<::std::primitive::i32>,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
         // the definition in Thrift. If you don't want this, add the annotation
@@ -433,6 +436,9 @@ pub mod types {
         fn default() -> Self {
             Self {
                 field: ::std::default::Default::default(),
+                shared_field: ::std::default::Default::default(),
+                opt_shared_field: ::std::option::Option::None,
+                opt_boxed_field: ::std::option::Option::None,
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
         }
@@ -443,6 +449,9 @@ pub mod types {
             formatter
                 .debug_struct("StructWithFieldAdapter")
                 .field("field", &self.field)
+                .field("shared_field", &self.shared_field)
+                .field("opt_shared_field", &self.opt_shared_field)
+                .field("opt_boxed_field", &self.opt_boxed_field)
                 .finish()
         }
     }
@@ -463,6 +472,19 @@ pub mod types {
             p.write_field_begin("field", ::fbthrift::TType::I32, 1);
             ::fbthrift::Serialize::write(&self.field, p);
             p.write_field_end();
+            p.write_field_begin("shared_field", ::fbthrift::TType::I32, 2);
+            ::fbthrift::Serialize::write(&self.shared_field, p);
+            p.write_field_end();
+            if let ::std::option::Option::Some(some) = &self.opt_shared_field {
+                p.write_field_begin("opt_shared_field", ::fbthrift::TType::I32, 3);
+                ::fbthrift::Serialize::write(some, p);
+                p.write_field_end();
+            }
+            if let ::std::option::Option::Some(some) = &self.opt_boxed_field {
+                p.write_field_begin("opt_boxed_field", ::fbthrift::TType::I32, 4);
+                ::fbthrift::Serialize::write(some, p);
+                p.write_field_end();
+            }
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -475,14 +497,23 @@ pub mod types {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static FIELDS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("field", ::fbthrift::TType::I32, 1),
+                ::fbthrift::Field::new("opt_boxed_field", ::fbthrift::TType::I32, 4),
+                ::fbthrift::Field::new("opt_shared_field", ::fbthrift::TType::I32, 3),
+                ::fbthrift::Field::new("shared_field", ::fbthrift::TType::I32, 2),
             ];
             let mut field_field = ::std::option::Option::None;
+            let mut field_shared_field = ::std::option::Option::None;
+            let mut field_opt_shared_field = ::std::option::Option::None;
+            let mut field_opt_boxed_field = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
                 match (fty, fid as ::std::primitive::i32) {
                     (::fbthrift::TType::Stop, _) => break,
                     (::fbthrift::TType::I32, 1) => field_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I32, 2) => field_shared_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I32, 3) => field_opt_shared_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I32, 4) => field_opt_boxed_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -490,6 +521,9 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
                 field: field_field.unwrap_or_default(),
+                shared_field: field_shared_field.unwrap_or_default(),
+                opt_shared_field: field_opt_shared_field,
+                opt_boxed_field: field_opt_boxed_field,
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }

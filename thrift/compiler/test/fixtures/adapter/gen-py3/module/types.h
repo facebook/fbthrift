@@ -92,6 +92,15 @@ void reset_field<::cpp2::StructWithFieldAdapter>(
     case 0:
       obj.field_ref().copy_from(default_inst<::cpp2::StructWithFieldAdapter>().field_ref());
       return;
+    case 1:
+      obj.shared_field_ref().reset();
+      return;
+    case 2:
+      obj.opt_shared_field_ref().reset();
+      return;
+    case 3:
+      obj.opt_boxed_field_ref().copy_from(default_inst<::cpp2::StructWithFieldAdapter>().opt_boxed_field_ref());
+      return;
   }
 }
 

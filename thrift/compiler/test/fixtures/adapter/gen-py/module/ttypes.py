@@ -852,6 +852,9 @@ class StructWithFieldAdapter:
   """
   Attributes:
    - field
+   - shared_field
+   - opt_shared_field
+   - opt_boxed_field
   """
 
   thrift_spec = None
@@ -879,6 +882,21 @@ class StructWithFieldAdapter:
           self.field = iprot.readI32()
         else:
           iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.I32:
+          self.shared_field = iprot.readI32()
+        else:
+          iprot.skip(ftype)
+      elif fid == 3:
+        if ftype == TType.I32:
+          self.opt_shared_field = iprot.readI32()
+        else:
+          iprot.skip(ftype)
+      elif fid == 4:
+        if ftype == TType.I32:
+          self.opt_boxed_field = iprot.readI32()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -895,6 +913,18 @@ class StructWithFieldAdapter:
     if self.field != None:
       oprot.writeFieldBegin('field', TType.I32, 1)
       oprot.writeI32(self.field)
+      oprot.writeFieldEnd()
+    if self.shared_field != None:
+      oprot.writeFieldBegin('shared_field', TType.I32, 2)
+      oprot.writeI32(self.shared_field)
+      oprot.writeFieldEnd()
+    if self.opt_shared_field != None:
+      oprot.writeFieldBegin('opt_shared_field', TType.I32, 3)
+      oprot.writeI32(self.opt_shared_field)
+      oprot.writeFieldEnd()
+    if self.opt_boxed_field != None:
+      oprot.writeFieldBegin('opt_boxed_field', TType.I32, 4)
+      oprot.writeI32(self.opt_boxed_field)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
@@ -915,6 +945,18 @@ class StructWithFieldAdapter:
       self.field = json_obj['field']
       if self.field > 0x7fffffff or self.field < -0x80000000:
         raise TProtocolException(TProtocolException.INVALID_DATA, 'number exceeds limit in field')
+    if 'shared_field' in json_obj and json_obj['shared_field'] is not None:
+      self.shared_field = json_obj['shared_field']
+      if self.shared_field > 0x7fffffff or self.shared_field < -0x80000000:
+        raise TProtocolException(TProtocolException.INVALID_DATA, 'number exceeds limit in field')
+    if 'opt_shared_field' in json_obj and json_obj['opt_shared_field'] is not None:
+      self.opt_shared_field = json_obj['opt_shared_field']
+      if self.opt_shared_field > 0x7fffffff or self.opt_shared_field < -0x80000000:
+        raise TProtocolException(TProtocolException.INVALID_DATA, 'number exceeds limit in field')
+    if 'opt_boxed_field' in json_obj and json_obj['opt_boxed_field'] is not None:
+      self.opt_boxed_field = json_obj['opt_boxed_field']
+      if self.opt_boxed_field > 0x7fffffff or self.opt_boxed_field < -0x80000000:
+        raise TProtocolException(TProtocolException.INVALID_DATA, 'number exceeds limit in field')
 
   def __repr__(self):
     L = []
@@ -923,6 +965,18 @@ class StructWithFieldAdapter:
       value = pprint.pformat(self.field, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    field=%s' % (value))
+    if self.shared_field is not None:
+      value = pprint.pformat(self.shared_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    shared_field=%s' % (value))
+    if self.opt_shared_field is not None:
+      value = pprint.pformat(self.opt_shared_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    opt_shared_field=%s' % (value))
+    if self.opt_boxed_field is not None:
+      value = pprint.pformat(self.opt_boxed_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    opt_boxed_field=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -1067,20 +1121,32 @@ all_structs.append(StructWithFieldAdapter)
 StructWithFieldAdapter.thrift_spec = (
   None, # 0
   (1, TType.I32, 'field', None, None, 2, ), # 1
+  (2, TType.I32, 'shared_field', None, None, 2, ), # 2
+  (3, TType.I32, 'opt_shared_field', None, None, 1, ), # 3
+  (4, TType.I32, 'opt_boxed_field', None, None, 1, ), # 4
 )
 
 StructWithFieldAdapter.thrift_struct_annotations = {
 }
 StructWithFieldAdapter.thrift_field_annotations = {
+  4: {
+    "thrift.box": "1",
+  },
 }
 
-def StructWithFieldAdapter__init__(self, field=None,):
+def StructWithFieldAdapter__init__(self, field=None, shared_field=None, opt_shared_field=None, opt_boxed_field=None,):
   self.field = field
+  self.shared_field = shared_field
+  self.opt_shared_field = opt_shared_field
+  self.opt_boxed_field = opt_boxed_field
 
 StructWithFieldAdapter.__init__ = StructWithFieldAdapter__init__
 
 def StructWithFieldAdapter__setstate__(self, state):
   state.setdefault('field', None)
+  state.setdefault('shared_field', None)
+  state.setdefault('opt_shared_field', None)
+  state.setdefault('opt_boxed_field', None)
   self.__dict__ = state
 
 StructWithFieldAdapter.__getstate__ = lambda self: self.__dict__.copy()

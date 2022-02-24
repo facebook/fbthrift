@@ -184,18 +184,31 @@ class Bar(thrift.py3.types.Struct, _typing.Hashable):
 class StructWithFieldAdapter(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
         field: bool
+        opt_boxed_field: bool
         pass
 
     field: Final[int] = ...
 
+    shared_field: Final[_typing.Optional[int]] = ...
+
+    opt_shared_field: Final[_typing.Optional[int]] = ...
+
+    opt_boxed_field: Final[_typing.Optional[int]] = ...
+
     def __init__(
         self, *,
-        field: _typing.Optional[int]=None
+        field: _typing.Optional[int]=None,
+        shared_field: _typing.Optional[int]=None,
+        opt_shared_field: _typing.Optional[int]=None,
+        opt_boxed_field: _typing.Optional[int]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        field: _typing.Union[int, __NotSet, None]=NOTSET
+        field: _typing.Union[int, __NotSet, None]=NOTSET,
+        shared_field: _typing.Union[int, __NotSet, None]=NOTSET,
+        opt_shared_field: _typing.Union[int, __NotSet, None]=NOTSET,
+        opt_boxed_field: _typing.Union[int, __NotSet, None]=NOTSET
     ) -> StructWithFieldAdapter: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['StructWithFieldAdapter'], bytes]]: ...

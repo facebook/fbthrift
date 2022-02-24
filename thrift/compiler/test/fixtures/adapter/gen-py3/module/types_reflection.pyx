@@ -298,6 +298,42 @@ cdef __StructSpec get_reflection__StructWithFieldAdapter():
             },
         ),
     )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=2,
+            name="shared_field",
+            type=int,
+            kind=__NumberType.I32,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=3,
+            name="opt_shared_field",
+            type=int,
+            kind=__NumberType.I32,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=4,
+            name="opt_boxed_field",
+            type=int,
+            kind=__NumberType.I32,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+                """thrift.box""": """1""",            },
+        ),
+    )
     return spec
 cdef __SetSpec get_reflection__Set__string():
     return __SetSpec._fbthrift_create(

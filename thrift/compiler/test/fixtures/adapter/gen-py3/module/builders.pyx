@@ -42,4 +42,7 @@ cdef class StructWithFieldAdapter_Builder(thrift.py3.builder.StructBuilder):
 
     def __iter__(self):
         yield "field", self.field
+        yield "shared_field", self.shared_field
+        yield "opt_shared_field", self.opt_shared_field
+        yield "opt_boxed_field", self.opt_boxed_field
 

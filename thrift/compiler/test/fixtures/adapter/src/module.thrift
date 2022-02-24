@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -148,6 +148,14 @@ struct Bar {
 struct StructWithFieldAdapter {
   @cpp.Adapter{name = "my::Adapter1"}
   1: i32 field;
+  @cpp.Adapter{name = "my::Adapter1"}
+  @cpp.Ref{type = cpp.RefType.Shared}
+  2: i32 shared_field;
+  @cpp.Adapter{name = "my::Adapter1"}
+  @cpp.Ref{type = cpp.RefType.Shared}
+  3: optional i32 opt_shared_field;
+  @cpp.Adapter{name = "my::Adapter1"}
+  4: optional i32 opt_boxed_field (thrift.box);
 }
 
 typedef Bar (

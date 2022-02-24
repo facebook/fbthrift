@@ -57,6 +57,9 @@ struct ForEachField<::cpp2::StructWithFieldAdapter> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).field_ref()...);
+    f(1, static_cast<T&&>(t).shared_field_ref()...);
+    f(2, static_cast<T&&>(t).opt_shared_field_ref()...);
+    f(3, static_cast<T&&>(t).opt_boxed_field_ref()...);
   }
 };
 } // namespace detail

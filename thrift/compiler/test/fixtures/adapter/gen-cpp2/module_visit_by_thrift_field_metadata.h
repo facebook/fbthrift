@@ -89,6 +89,12 @@ struct VisitByFieldId<::cpp2::StructWithFieldAdapter> {
     switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).field_ref());
+    case 2:
+      return f(1, static_cast<T&&>(t).shared_field_ref());
+    case 3:
+      return f(2, static_cast<T&&>(t).opt_shared_field_ref());
+    case 4:
+      return f(3, static_cast<T&&>(t).opt_boxed_field_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::StructWithFieldAdapter");
     }

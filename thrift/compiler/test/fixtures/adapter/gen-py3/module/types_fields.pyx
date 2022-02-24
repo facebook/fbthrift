@@ -191,6 +191,9 @@ cdef class __StructWithFieldAdapter_FieldsSetter(__StructFieldsSetter):
         cdef __StructWithFieldAdapter_FieldsSetter __fbthrift_inst = __StructWithFieldAdapter_FieldsSetter.__new__(__StructWithFieldAdapter_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"field")] = __StructWithFieldAdapter_FieldsSetter._set_field_0
+        __fbthrift_inst._setters[__cstring_view(<const char*>"shared_field")] = __StructWithFieldAdapter_FieldsSetter._set_field_1
+        __fbthrift_inst._setters[__cstring_view(<const char*>"opt_shared_field")] = __StructWithFieldAdapter_FieldsSetter._set_field_2
+        __fbthrift_inst._setters[__cstring_view(<const char*>"opt_boxed_field")] = __StructWithFieldAdapter_FieldsSetter._set_field_3
         return __fbthrift_inst
 
     cdef void set_field(__StructWithFieldAdapter_FieldsSetter self, const char* name, object value) except *:
@@ -209,4 +212,34 @@ cdef class __StructWithFieldAdapter_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'field is not a { int !r}.')
         _fbthrift_value = <cint32_t> _fbthrift_value
         deref(self._struct_cpp_obj).field_ref().assign(_fbthrift_value)
+
+    cdef void _set_field_1(self, _fbthrift_value) except *:
+        # for field shared_field
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cStructWithFieldAdapter](deref(self._struct_cpp_obj), 1)
+            return
+        if not isinstance(_fbthrift_value, int):
+            raise TypeError(f'shared_field is not a { int !r}.')
+        _fbthrift_value = <cint32_t> _fbthrift_value
+        assign_shared_const_ptr[cint32_t](deref(self._struct_cpp_obj).shared_field_ref(), const_pointer_cast((<cint32_t?>_fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_2(self, _fbthrift_value) except *:
+        # for field opt_shared_field
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cStructWithFieldAdapter](deref(self._struct_cpp_obj), 2)
+            return
+        if not isinstance(_fbthrift_value, int):
+            raise TypeError(f'opt_shared_field is not a { int !r}.')
+        _fbthrift_value = <cint32_t> _fbthrift_value
+        assign_shared_const_ptr[cint32_t](deref(self._struct_cpp_obj).opt_shared_field_ref(), const_pointer_cast((<cint32_t?>_fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_3(self, _fbthrift_value) except *:
+        # for field opt_boxed_field
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cStructWithFieldAdapter](deref(self._struct_cpp_obj), 3)
+            return
+        if not isinstance(_fbthrift_value, int):
+            raise TypeError(f'opt_boxed_field is not a { int !r}.')
+        _fbthrift_value = <cint32_t> _fbthrift_value
+        deref(self._struct_cpp_obj).opt_boxed_field_ref().assign(_fbthrift_value)
 

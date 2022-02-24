@@ -44,5 +44,8 @@ cdef class Bar_Builder(thrift.py3.builder.StructBuilder):
 
 cdef class StructWithFieldAdapter_Builder(thrift.py3.builder.StructBuilder):
     cdef public pint field
+    cdef public pint shared_field
+    cdef public pint opt_shared_field
+    cdef public pint opt_boxed_field
 
 

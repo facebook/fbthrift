@@ -100,13 +100,22 @@ const std::array<protocol::TType, 6> TStructDataStorage<::cpp2::Bar>::fields_typ
   TType::T_STRUCT,
 }};
 
-const std::array<folly::StringPiece, 1> TStructDataStorage<::cpp2::StructWithFieldAdapter>::fields_names = {{
+const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::StructWithFieldAdapter>::fields_names = {{
   "field",
+  "shared_field",
+  "opt_shared_field",
+  "opt_boxed_field",
 }};
-const std::array<int16_t, 1> TStructDataStorage<::cpp2::StructWithFieldAdapter>::fields_ids = {{
+const std::array<int16_t, 4> TStructDataStorage<::cpp2::StructWithFieldAdapter>::fields_ids = {{
   1,
+  2,
+  3,
+  4,
 }};
-const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::StructWithFieldAdapter>::fields_types = {{
+const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::StructWithFieldAdapter>::fields_types = {{
+  TType::T_I32,
+  TType::T_I32,
+  TType::T_I32,
   TType::T_I32,
 }};
 
