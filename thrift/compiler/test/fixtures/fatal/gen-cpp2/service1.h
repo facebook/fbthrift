@@ -52,6 +52,12 @@ class service1SvAsyncIf {
 
 class service1AsyncProcessor;
 
+class service1ServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
+  public:
+   apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
+   static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
+};
+
 class service1SvIf : public service1SvAsyncIf, public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "service1"; }
@@ -59,7 +65,7 @@ class service1SvIf : public service1SvAsyncIf, public apache::thrift::ServerInte
   typedef service1AsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
-
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
   virtual void method1();
   folly::Future<folly::Unit> future_method1() override;
@@ -86,6 +92,7 @@ class service1SvIf : public service1SvAsyncIf, public apache::thrift::ServerInte
   folly::SemiFuture<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> semifuture_method6(::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n) override;
   void async_tm_method6(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>>> callback, ::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n) override;
  private:
+  static service1ServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_method1{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_method2{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_method3{apache::thrift::detail::si::InvocationType::AsyncTm};

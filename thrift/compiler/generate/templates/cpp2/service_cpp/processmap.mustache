@@ -31,3 +31,33 @@ const <%service:name%>AsyncProcessor::ProcessMap <%service:name%>AsyncProcessor:
 <%/function:return_type%><%/service:functions%><%/service:interactions%>
 };
 <%/service:functions?%>
+
+apache::thrift::ServiceRequestInfoMap const& <%service:name%>ServiceInfoHolder::requestInfoMap() const {
+  static folly::Indestructible<apache::thrift::ServiceRequestInfoMap> requestInfoMap{staticRequestInfoMap()};
+  return *requestInfoMap;
+}
+
+apache::thrift::ServiceRequestInfoMap <%service:name%>ServiceInfoHolder::staticRequestInfoMap() {
+  apache::thrift::ServiceRequestInfoMap requestInfoMap = {
+    <%#service:functions%><%#function:return_type%><%^function:starts_interaction?%>
+  {"<%function:name%>",
+    {<%#function:eb%>true<%/function:eb%><%^function:eb%>false<%/function:eb%>,
+     <% > types/function_kind%>,
+     "<%service:parent_service_name%>.<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>",
+     std::nullopt}},
+<%/function:starts_interaction?%><%/function:return_type%><%/service:functions%>
+<%#service:interactions%><%#service:functions%><%#function:return_type%>
+  {"<%service:name%>.<%function:name%>",
+    {<%#function:eb%>true<%/function:eb%><%^function:eb%>false<%/function:eb%>,
+     <% > types/function_kind%>,
+     "<%service:parent_service_name%>.<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>",
+     "<%service:name%>"}},
+<%/function:return_type%><%/service:functions%><%/service:interactions%>
+  };
+<%#service:extends%>
+  apache::thrift::ServiceRequestInfoMap parentMap = <% > common/namespace_cpp2%><%service:name%>ServiceInfoHolder::staticRequestInfoMap();
+  requestInfoMap.insert(std::begin(parentMap), std::end(parentMap));
+<%/service:extends%>
+
+  return requestInfoMap;
+}

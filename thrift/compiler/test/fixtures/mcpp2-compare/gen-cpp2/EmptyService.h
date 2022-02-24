@@ -33,6 +33,12 @@ class EmptyServiceSvAsyncIf {
 
 class EmptyServiceAsyncProcessor;
 
+class EmptyServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
+  public:
+   apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
+   static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
+};
+
 class EmptyServiceSvIf : public EmptyServiceSvAsyncIf, public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "EmptyService"; }
@@ -40,9 +46,10 @@ class EmptyServiceSvIf : public EmptyServiceSvAsyncIf, public apache::thrift::Se
   typedef EmptyServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
-
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
  private:
+  static EmptyServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
 };
 
 class EmptyServiceSvNull : public EmptyServiceSvIf {

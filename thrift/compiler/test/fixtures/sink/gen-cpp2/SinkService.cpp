@@ -19,6 +19,12 @@ SinkServiceSvIf::CreateMethodMetadataResult SinkServiceSvIf::createMethodMetadat
   return ::apache::thrift::detail::ap::createMethodMetadataMap<SinkServiceAsyncProcessor>();
 }
 
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> SinkServiceSvIf::getServiceRequestInfoMap() const {
+  return __fbthrift_serviceInfoHolder.requestInfoMap();
+}
+
+  SinkServiceServiceInfoHolder SinkServiceSvIf::__fbthrift_serviceInfoHolder;
+
 
 ::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse> SinkServiceSvIf::method() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("method");
@@ -422,4 +428,50 @@ const SinkServiceAsyncProcessor::ProcessMap SinkServiceAsyncProcessor::kOwnProce
   {"methodFast", {&SinkServiceAsyncProcessor::setUpAndProcess_methodFast<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &SinkServiceAsyncProcessor::setUpAndProcess_methodFast<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
+apache::thrift::ServiceRequestInfoMap const& SinkServiceServiceInfoHolder::requestInfoMap() const {
+  static folly::Indestructible<apache::thrift::ServiceRequestInfoMap> requestInfoMap{staticRequestInfoMap()};
+  return *requestInfoMap;
+}
+
+apache::thrift::ServiceRequestInfoMap SinkServiceServiceInfoHolder::staticRequestInfoMap() {
+  apache::thrift::ServiceRequestInfoMap requestInfoMap = {
+  {"method",
+    {false,
+     apache::thrift::RpcKind::SINK,
+     "SinkService.method",
+     std::nullopt}},
+  {"methodAndReponse",
+    {false,
+     apache::thrift::RpcKind::SINK,
+     "SinkService.methodAndReponse",
+     std::nullopt}},
+  {"methodThrow",
+    {false,
+     apache::thrift::RpcKind::SINK,
+     "SinkService.methodThrow",
+     std::nullopt}},
+  {"methodSinkThrow",
+    {false,
+     apache::thrift::RpcKind::SINK,
+     "SinkService.methodSinkThrow",
+     std::nullopt}},
+  {"methodFinalThrow",
+    {false,
+     apache::thrift::RpcKind::SINK,
+     "SinkService.methodFinalThrow",
+     std::nullopt}},
+  {"methodBothThrow",
+    {false,
+     apache::thrift::RpcKind::SINK,
+     "SinkService.methodBothThrow",
+     std::nullopt}},
+  {"methodFast",
+    {true,
+     apache::thrift::RpcKind::SINK,
+     "SinkService.methodFast",
+     std::nullopt}},
+  };
+
+  return requestInfoMap;
+}
 } // cpp2

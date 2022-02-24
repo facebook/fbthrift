@@ -19,6 +19,12 @@ RaiserSvIf::CreateMethodMetadataResult RaiserSvIf::createMethodMetadata() {
   return ::apache::thrift::detail::ap::createMethodMetadataMap<RaiserAsyncProcessor>();
 }
 
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> RaiserSvIf::getServiceRequestInfoMap() const {
+  return __fbthrift_serviceInfoHolder.requestInfoMap();
+}
+
+  RaiserServiceInfoHolder RaiserSvIf::__fbthrift_serviceInfoHolder;
+
 
 void RaiserSvIf::doBland() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("doBland");
@@ -301,4 +307,35 @@ const RaiserAsyncProcessor::ProcessMap RaiserAsyncProcessor::kOwnProcessMap_ {
   {"get500", {&RaiserAsyncProcessor::setUpAndProcess_get500<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &RaiserAsyncProcessor::setUpAndProcess_get500<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
+apache::thrift::ServiceRequestInfoMap const& RaiserServiceInfoHolder::requestInfoMap() const {
+  static folly::Indestructible<apache::thrift::ServiceRequestInfoMap> requestInfoMap{staticRequestInfoMap()};
+  return *requestInfoMap;
+}
+
+apache::thrift::ServiceRequestInfoMap RaiserServiceInfoHolder::staticRequestInfoMap() {
+  apache::thrift::ServiceRequestInfoMap requestInfoMap = {
+  {"doBland",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "Raiser.doBland",
+     std::nullopt}},
+  {"doRaise",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "Raiser.doRaise",
+     std::nullopt}},
+  {"get200",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "Raiser.get200",
+     std::nullopt}},
+  {"get500",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "Raiser.get500",
+     std::nullopt}},
+  };
+
+  return requestInfoMap;
+}
 } // cpp2

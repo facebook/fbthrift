@@ -110,6 +110,33 @@ class AsyncProcessor;
 class ServiceHandler;
 class ServerRequest;
 
+// This contains information about a request that is required in the thrift
+// server prior to the AsyncProcessor::executeRequest interface.
+struct ServiceRequestInfo {
+  bool isSync; // True if this has thread='eb'
+  RpcKind rpcKind; // Type of this request
+  // The qualified function name is currently an input to TProcessorEventHandler
+  // callbacks. We will refactor TProcessorEventHandler to remove the
+  // requirement to pass this as a single string. T112104402
+  char const* functionName_deprecated; // Qualified function name (includes
+                                       // service name)
+  std::optional<std::string_view>
+      interactionName; // Interaction name if part of an interaction
+};
+
+using ServiceRequestInfoMap =
+    folly::F14ValueMap<std::string, ServiceRequestInfo>;
+
+// The base class for generated code that contains information about a service.
+// Each service generates a subclass of this.
+class ServiceInfoHolder {
+ public:
+  virtual ~ServiceInfoHolder() = default;
+
+  // This function is generated from the thrift IDL.
+  virtual ServiceRequestInfoMap const& requestInfoMap() const = 0;
+};
+
 /**
  * Descriptor of a Thrift service - its methods and how they should be handled.
  */
@@ -223,6 +250,15 @@ class AsyncProcessorFactory {
   virtual std::shared_ptr<folly::RequestContext> getBaseContextForRequest(
       const MethodMetadata&) {
     return nullptr;
+  }
+
+  // Override this in either generated code or implementation to provide
+  // requestInfo if it is available. A pure proxy thrift server which is
+  // not aware of the IDL of the service it is forwarding can omit overriding
+  // this.
+  virtual std::optional<std::reference_wrapper<ServiceRequestInfoMap const>>
+  getServiceRequestInfoMap() const {
+    return std::nullopt;
   }
 
   virtual ~AsyncProcessorFactory() = default;
@@ -390,7 +426,8 @@ class ServerRequest {
       protocol::PROTOCOL_TYPES protocol,
       std::shared_ptr<folly::RequestContext> follyRequestContext,
       AsyncProcessor* asyncProcessor,
-      AsyncProcessor::MethodMetadata const* methodMetadata)
+      AsyncProcessor::MethodMetadata const* methodMetadata,
+      ServiceRequestInfo const* serviceRequestInfo)
       : request_(std::move(request)),
         serializedRequest_(std::move(serializedRequest)),
         eb_(eb),
@@ -398,7 +435,8 @@ class ServerRequest {
         protocol_(protocol),
         follyRequestContext_(follyRequestContext),
         asyncProcessor_(asyncProcessor),
-        methodMetadata_(methodMetadata) {}
+        methodMetadata_(methodMetadata),
+        serviceRequestInfo_(serviceRequestInfo) {}
 
   // The public accessors are available to user code that receives the
   // ServerRequest through various customization points.
@@ -419,6 +457,8 @@ class ServerRequest {
   const std::shared_ptr<folly::RequestContext>& follyRequestContext() const {
     return follyRequestContext_;
   }
+
+  const ServiceRequestInfo* requestInfo() const { return serviceRequestInfo_; }
 
   // Set this if the request pile should be notified (via
   // RequestPileInterfaceo::onRequestFinished) when the request is completed.
@@ -518,6 +558,7 @@ class ServerRequest {
   std::shared_ptr<folly::RequestContext> follyRequestContext_;
   AsyncProcessor* asyncProcessor_;
   AsyncProcessor::MethodMetadata const* methodMetadata_;
+  ServiceRequestInfo const* serviceRequestInfo_;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack_;
   RequestPileInterface* notifyRequestPile_{nullptr};
   RequestPileInterface::UserData notifyRequestPileUserData_;

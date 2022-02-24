@@ -14,7 +14,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>class <%^service:interaction?%><%service:name%>SvIf : public <%service:name%>SvAsyncIf, <%#service:extends%>virtual public <% > common/namespace_cpp2%><%service:name%>SvIf<%/service:extends%><%^service:extends%>public apache::thrift::ServerInterface<%/service:extends%><%/service:interaction?%><%!
+%>class <%service:name%>ServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
+  public:
+   apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
+   static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
+};
+
+class <%^service:interaction?%><%service:name%>SvIf : public <%service:name%>SvAsyncIf, <%#service:extends%>virtual public <% > common/namespace_cpp2%><%service:name%>SvIf<%/service:extends%><%^service:extends%>public apache::thrift::ServerInterface<%/service:extends%><%/service:interaction?%><%!
 %><%#service:interaction?%><%service:name%>If : public apache::thrift::<%#interaction:serial?%>SerialInteraction<%/interaction:serial?%>Tile, public apache::thrift::ServerInterface<%/service:interaction?%> {
  public:
   std::string_view getGeneratedName() const override { return "<%service:name%>"; }
@@ -23,7 +29,7 @@
 <%^service:interaction?%>
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
-
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 <%#service:interactions%>
 <% > service_h/service_interface%>
 <%/service:interactions%>
@@ -34,6 +40,9 @@
     std::terminate();
   }
   CreateMethodMetadataResult createMethodMetadata() override {
+    std::terminate();
+  }
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override {
     std::terminate();
   }
 <%/service:interaction?%>
@@ -66,6 +75,9 @@
 <%/function:return_type%>
 <%/service:functions%>
  private:
+<%^service:interaction?%>
+  static <%service:name%>ServiceInfoHolder __fbthrift_serviceInfoHolder;
+<%/service:interaction?%>
 <%#service:functions%>
 <%^function:eb%>
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_<%function:cpp_name%>{apache::thrift::detail::si::InvocationType::AsyncTm};

@@ -19,6 +19,12 @@ MyServiceSvIf::CreateMethodMetadataResult MyServiceSvIf::createMethodMetadata() 
   return ::apache::thrift::detail::ap::createMethodMetadataMap<MyServiceAsyncProcessor>();
 }
 
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> MyServiceSvIf::getServiceRequestInfoMap() const {
+  return __fbthrift_serviceInfoHolder.requestInfoMap();
+}
+
+  MyServiceServiceInfoHolder MyServiceSvIf::__fbthrift_serviceInfoHolder;
+
 
 void MyServiceSvIf::foo() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("foo");
@@ -557,6 +563,67 @@ const MyServiceAsyncProcessor::ProcessMap MyServiceAsyncProcessor::kOwnProcessMa
   {"SerialInteraction.frobnicate", {&MyServiceAsyncProcessor::setUpAndProcess_SerialInteraction_frobnicate<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &MyServiceAsyncProcessor::setUpAndProcess_SerialInteraction_frobnicate<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
+apache::thrift::ServiceRequestInfoMap const& MyServiceServiceInfoHolder::requestInfoMap() const {
+  static folly::Indestructible<apache::thrift::ServiceRequestInfoMap> requestInfoMap{staticRequestInfoMap()};
+  return *requestInfoMap;
+}
+
+apache::thrift::ServiceRequestInfoMap MyServiceServiceInfoHolder::staticRequestInfoMap() {
+  apache::thrift::ServiceRequestInfoMap requestInfoMap = {
+  {"foo",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "MyService.foo",
+     std::nullopt}},
+  {"MyInteraction.frobnicate",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "MyService.MyInteraction.frobnicate",
+     "MyInteraction"}},
+  {"MyInteraction.ping",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE,
+     "MyService.MyInteraction.ping",
+     "MyInteraction"}},
+  {"MyInteraction.truthify",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
+     "MyService.MyInteraction.truthify",
+     "MyInteraction"}},
+  {"MyInteraction.encode",
+    {false,
+     apache::thrift::RpcKind::SINK,
+     "MyService.MyInteraction.encode",
+     "MyInteraction"}},
+  {"MyInteractionFast.frobnicate",
+    {true,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "MyService.MyInteractionFast.frobnicate",
+     "MyInteractionFast"}},
+  {"MyInteractionFast.ping",
+    {true,
+     apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE,
+     "MyService.MyInteractionFast.ping",
+     "MyInteractionFast"}},
+  {"MyInteractionFast.truthify",
+    {true,
+     apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
+     "MyService.MyInteractionFast.truthify",
+     "MyInteractionFast"}},
+  {"MyInteractionFast.encode",
+    {true,
+     apache::thrift::RpcKind::SINK,
+     "MyService.MyInteractionFast.encode",
+     "MyInteractionFast"}},
+  {"SerialInteraction.frobnicate",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "MyService.SerialInteraction.frobnicate",
+     "SerialInteraction"}},
+  };
+
+  return requestInfoMap;
+}
 const MyServiceAsyncProcessor::InteractionConstructorMap& MyServiceAsyncProcessor::getInteractionConstructorMap() {
   return interactionConstructorMap_;
 }

@@ -19,6 +19,12 @@ PubSubStreamingServiceSvIf::CreateMethodMetadataResult PubSubStreamingServiceSvI
   return ::apache::thrift::detail::ap::createMethodMetadataMap<PubSubStreamingServiceAsyncProcessor>();
 }
 
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> PubSubStreamingServiceSvIf::getServiceRequestInfoMap() const {
+  return __fbthrift_serviceInfoHolder.requestInfoMap();
+}
+
+  PubSubStreamingServiceServiceInfoHolder PubSubStreamingServiceSvIf::__fbthrift_serviceInfoHolder;
+
 
 ::apache::thrift::ServerStream<::std::int32_t> PubSubStreamingServiceSvIf::returnstream(::std::int32_t /*i32_from*/, ::std::int32_t /*i32_to*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("returnstream");
@@ -282,4 +288,40 @@ const PubSubStreamingServiceAsyncProcessor::ProcessMap PubSubStreamingServiceAsy
   {"returnstreamFast", {&PubSubStreamingServiceAsyncProcessor::setUpAndProcess_returnstreamFast<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &PubSubStreamingServiceAsyncProcessor::setUpAndProcess_returnstreamFast<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
+apache::thrift::ServiceRequestInfoMap const& PubSubStreamingServiceServiceInfoHolder::requestInfoMap() const {
+  static folly::Indestructible<apache::thrift::ServiceRequestInfoMap> requestInfoMap{staticRequestInfoMap()};
+  return *requestInfoMap;
+}
+
+apache::thrift::ServiceRequestInfoMap PubSubStreamingServiceServiceInfoHolder::staticRequestInfoMap() {
+  apache::thrift::ServiceRequestInfoMap requestInfoMap = {
+  {"returnstream",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
+     "PubSubStreamingService.returnstream",
+     std::nullopt}},
+  {"streamthrows",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
+     "PubSubStreamingService.streamthrows",
+     std::nullopt}},
+  {"boththrows",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
+     "PubSubStreamingService.boththrows",
+     std::nullopt}},
+  {"responseandstreamthrows",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
+     "PubSubStreamingService.responseandstreamthrows",
+     std::nullopt}},
+  {"returnstreamFast",
+    {true,
+     apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
+     "PubSubStreamingService.returnstreamFast",
+     std::nullopt}},
+  };
+
+  return requestInfoMap;
+}
 } // cpp2

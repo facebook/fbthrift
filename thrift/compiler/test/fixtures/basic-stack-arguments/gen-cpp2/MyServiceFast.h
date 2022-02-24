@@ -35,6 +35,12 @@ class MyServiceFastSvAsyncIf {
 
 class MyServiceFastAsyncProcessor;
 
+class MyServiceFastServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
+  public:
+   apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
+   static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
+};
+
 class MyServiceFastSvIf : public MyServiceFastSvAsyncIf, public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "MyServiceFast"; }
@@ -42,13 +48,14 @@ class MyServiceFastSvIf : public MyServiceFastSvAsyncIf, public apache::thrift::
   typedef MyServiceFastAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
-
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
   void async_eb_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int64_t p_id) override;
   void async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<::std::string>> callback, ::std::int64_t p_id) override;
   void async_eb_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int64_t p_id, const ::std::string& p_data) override;
   void async_eb_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, ::std::int64_t p_id, const ::std::string& p_data) override;
  private:
+  static MyServiceFastServiceInfoHolder __fbthrift_serviceInfoHolder;
 };
 
 class MyServiceFastSvNull : public MyServiceFastSvIf {

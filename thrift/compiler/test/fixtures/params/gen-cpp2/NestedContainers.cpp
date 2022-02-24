@@ -19,6 +19,12 @@ NestedContainersSvIf::CreateMethodMetadataResult NestedContainersSvIf::createMet
   return ::apache::thrift::detail::ap::createMethodMetadataMap<NestedContainersAsyncProcessor>();
 }
 
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> NestedContainersSvIf::getServiceRequestInfoMap() const {
+  return __fbthrift_serviceInfoHolder.requestInfoMap();
+}
+
+  NestedContainersServiceInfoHolder NestedContainersSvIf::__fbthrift_serviceInfoHolder;
+
 
 void NestedContainersSvIf::mapList(std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::int32_t>>> /*foo*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("mapList");
@@ -365,4 +371,40 @@ const NestedContainersAsyncProcessor::ProcessMap NestedContainersAsyncProcessor:
   {"turtles", {&NestedContainersAsyncProcessor::setUpAndProcess_turtles<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &NestedContainersAsyncProcessor::setUpAndProcess_turtles<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
+apache::thrift::ServiceRequestInfoMap const& NestedContainersServiceInfoHolder::requestInfoMap() const {
+  static folly::Indestructible<apache::thrift::ServiceRequestInfoMap> requestInfoMap{staticRequestInfoMap()};
+  return *requestInfoMap;
+}
+
+apache::thrift::ServiceRequestInfoMap NestedContainersServiceInfoHolder::staticRequestInfoMap() {
+  apache::thrift::ServiceRequestInfoMap requestInfoMap = {
+  {"mapList",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "NestedContainers.mapList",
+     std::nullopt}},
+  {"mapSet",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "NestedContainers.mapSet",
+     std::nullopt}},
+  {"listMap",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "NestedContainers.listMap",
+     std::nullopt}},
+  {"listSet",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "NestedContainers.listSet",
+     std::nullopt}},
+  {"turtles",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "NestedContainers.turtles",
+     std::nullopt}},
+  };
+
+  return requestInfoMap;
+}
 } // cpp2

@@ -19,6 +19,12 @@ MyLeafSvIf::CreateMethodMetadataResult MyLeafSvIf::createMethodMetadata() {
   return ::apache::thrift::detail::ap::createMethodMetadataMap<MyLeafAsyncProcessor>();
 }
 
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> MyLeafSvIf::getServiceRequestInfoMap() const {
+  return __fbthrift_serviceInfoHolder.requestInfoMap();
+}
+
+  MyLeafServiceInfoHolder MyLeafSvIf::__fbthrift_serviceInfoHolder;
+
 
 void MyLeafSvIf::do_leaf() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("do_leaf");
@@ -109,4 +115,22 @@ const MyLeafAsyncProcessor::ProcessMap MyLeafAsyncProcessor::kOwnProcessMap_ {
   {"do_leaf", {&MyLeafAsyncProcessor::setUpAndProcess_do_leaf<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &MyLeafAsyncProcessor::setUpAndProcess_do_leaf<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
+apache::thrift::ServiceRequestInfoMap const& MyLeafServiceInfoHolder::requestInfoMap() const {
+  static folly::Indestructible<apache::thrift::ServiceRequestInfoMap> requestInfoMap{staticRequestInfoMap()};
+  return *requestInfoMap;
+}
+
+apache::thrift::ServiceRequestInfoMap MyLeafServiceInfoHolder::staticRequestInfoMap() {
+  apache::thrift::ServiceRequestInfoMap requestInfoMap = {
+  {"do_leaf",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "MyLeaf.do_leaf",
+     std::nullopt}},
+  };
+  apache::thrift::ServiceRequestInfoMap parentMap = ::cpp2::MyNodeServiceInfoHolder::staticRequestInfoMap();
+  requestInfoMap.insert(std::begin(parentMap), std::end(parentMap));
+
+  return requestInfoMap;
+}
 } // cpp2

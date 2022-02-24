@@ -35,6 +35,12 @@ class MyLeafSvAsyncIf {
 
 class MyLeafAsyncProcessor;
 
+class MyLeafServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
+  public:
+   apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
+   static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
+};
+
 class MyLeafSvIf : public MyLeafSvAsyncIf, virtual public ::cpp2::MyNodeSvIf {
  public:
   std::string_view getGeneratedName() const override { return "MyLeaf"; }
@@ -42,13 +48,14 @@ class MyLeafSvIf : public MyLeafSvAsyncIf, virtual public ::cpp2::MyNodeSvIf {
   typedef MyLeafAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
-
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
   virtual void do_leaf();
   folly::Future<folly::Unit> future_do_leaf() override;
   folly::SemiFuture<folly::Unit> semifuture_do_leaf() override;
   void async_tm_do_leaf(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
  private:
+  static MyLeafServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_do_leaf{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 

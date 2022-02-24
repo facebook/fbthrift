@@ -31,6 +31,14 @@ std::unique_ptr<apache::thrift::AsyncProcessor> <%service:name%>SvIf::getProcess
   return ::apache::thrift::detail::ap::createMethodMetadataMap<<%service:name%>AsyncProcessor>();
 }
 
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> <%service:name%>SvIf::getServiceRequestInfoMap() const {
+  return __fbthrift_serviceInfoHolder.requestInfoMap();
+}
+
+<%^service:interaction?%>
+  <%service:name%>ServiceInfoHolder <%service:name%>SvIf::__fbthrift_serviceInfoHolder;
+<%/service:interaction?%>
+
 <% > service_cpp/service_interface_impl%>
 
 <% > service_cpp/service_null_impl%>

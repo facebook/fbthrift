@@ -19,6 +19,12 @@ NullServiceSvIf::CreateMethodMetadataResult NullServiceSvIf::createMethodMetadat
   return ::apache::thrift::detail::ap::createMethodMetadataMap<NullServiceAsyncProcessor>();
 }
 
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> NullServiceSvIf::getServiceRequestInfoMap() const {
+  return __fbthrift_serviceInfoHolder.requestInfoMap();
+}
+
+  NullServiceServiceInfoHolder NullServiceSvIf::__fbthrift_serviceInfoHolder;
+
 
 
 
@@ -44,4 +50,15 @@ const NullServiceAsyncProcessor::ProcessMap& NullServiceAsyncProcessor::getOwnPr
 
 const NullServiceAsyncProcessor::ProcessMap NullServiceAsyncProcessor::kOwnProcessMap_ {};
 
+apache::thrift::ServiceRequestInfoMap const& NullServiceServiceInfoHolder::requestInfoMap() const {
+  static folly::Indestructible<apache::thrift::ServiceRequestInfoMap> requestInfoMap{staticRequestInfoMap()};
+  return *requestInfoMap;
+}
+
+apache::thrift::ServiceRequestInfoMap NullServiceServiceInfoHolder::staticRequestInfoMap() {
+  apache::thrift::ServiceRequestInfoMap requestInfoMap = {
+  };
+
+  return requestInfoMap;
+}
 } // cpp2

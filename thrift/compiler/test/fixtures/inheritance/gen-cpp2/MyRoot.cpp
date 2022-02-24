@@ -19,6 +19,12 @@ MyRootSvIf::CreateMethodMetadataResult MyRootSvIf::createMethodMetadata() {
   return ::apache::thrift::detail::ap::createMethodMetadataMap<MyRootAsyncProcessor>();
 }
 
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> MyRootSvIf::getServiceRequestInfoMap() const {
+  return __fbthrift_serviceInfoHolder.requestInfoMap();
+}
+
+  MyRootServiceInfoHolder MyRootSvIf::__fbthrift_serviceInfoHolder;
+
 
 void MyRootSvIf::do_root() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("do_root");
@@ -109,4 +115,20 @@ const MyRootAsyncProcessor::ProcessMap MyRootAsyncProcessor::kOwnProcessMap_ {
   {"do_root", {&MyRootAsyncProcessor::setUpAndProcess_do_root<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &MyRootAsyncProcessor::setUpAndProcess_do_root<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
+apache::thrift::ServiceRequestInfoMap const& MyRootServiceInfoHolder::requestInfoMap() const {
+  static folly::Indestructible<apache::thrift::ServiceRequestInfoMap> requestInfoMap{staticRequestInfoMap()};
+  return *requestInfoMap;
+}
+
+apache::thrift::ServiceRequestInfoMap MyRootServiceInfoHolder::staticRequestInfoMap() {
+  apache::thrift::ServiceRequestInfoMap requestInfoMap = {
+  {"do_root",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "MyRoot.do_root",
+     std::nullopt}},
+  };
+
+  return requestInfoMap;
+}
 } // cpp2

@@ -19,6 +19,12 @@ SomeServiceSvIf::CreateMethodMetadataResult SomeServiceSvIf::createMethodMetadat
   return ::apache::thrift::detail::ap::createMethodMetadataMap<SomeServiceAsyncProcessor>();
 }
 
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> SomeServiceSvIf::getServiceRequestInfoMap() const {
+  return __fbthrift_serviceInfoHolder.requestInfoMap();
+}
+
+  SomeServiceServiceInfoHolder SomeServiceSvIf::__fbthrift_serviceInfoHolder;
+
 
 void SomeServiceSvIf::bounce_map(::apache::thrift::fixtures::types::SomeMap& /*_return*/, std::unique_ptr<::apache::thrift::fixtures::types::SomeMap> /*m*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("bounce_map");
@@ -173,4 +179,25 @@ const SomeServiceAsyncProcessor::ProcessMap SomeServiceAsyncProcessor::kOwnProce
   {"binary_keyed_map", {&SomeServiceAsyncProcessor::setUpAndProcess_binary_keyed_map<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &SomeServiceAsyncProcessor::setUpAndProcess_binary_keyed_map<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
+apache::thrift::ServiceRequestInfoMap const& SomeServiceServiceInfoHolder::requestInfoMap() const {
+  static folly::Indestructible<apache::thrift::ServiceRequestInfoMap> requestInfoMap{staticRequestInfoMap()};
+  return *requestInfoMap;
+}
+
+apache::thrift::ServiceRequestInfoMap SomeServiceServiceInfoHolder::staticRequestInfoMap() {
+  apache::thrift::ServiceRequestInfoMap requestInfoMap = {
+  {"bounce_map",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "SomeService.bounce_map",
+     std::nullopt}},
+  {"binary_keyed_map",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "SomeService.binary_keyed_map",
+     std::nullopt}},
+  };
+
+  return requestInfoMap;
+}
 }}}} // apache::thrift::fixtures::types

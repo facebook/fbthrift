@@ -19,6 +19,12 @@ ReturnServiceSvIf::CreateMethodMetadataResult ReturnServiceSvIf::createMethodMet
   return ::apache::thrift::detail::ap::createMethodMetadataMap<ReturnServiceAsyncProcessor>();
 }
 
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> ReturnServiceSvIf::getServiceRequestInfoMap() const {
+  return __fbthrift_serviceInfoHolder.requestInfoMap();
+}
+
+  ReturnServiceServiceInfoHolder ReturnServiceSvIf::__fbthrift_serviceInfoHolder;
+
 
 void ReturnServiceSvIf::async_eb_noReturn(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("noReturn"));
@@ -1021,4 +1027,120 @@ const ReturnServiceAsyncProcessor::ProcessMap ReturnServiceAsyncProcessor::kOwnP
   {"readData", {&ReturnServiceAsyncProcessor::setUpAndProcess_readData<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_readData<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
+apache::thrift::ServiceRequestInfoMap const& ReturnServiceServiceInfoHolder::requestInfoMap() const {
+  static folly::Indestructible<apache::thrift::ServiceRequestInfoMap> requestInfoMap{staticRequestInfoMap()};
+  return *requestInfoMap;
+}
+
+apache::thrift::ServiceRequestInfoMap ReturnServiceServiceInfoHolder::staticRequestInfoMap() {
+  apache::thrift::ServiceRequestInfoMap requestInfoMap = {
+  {"noReturn",
+    {true,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "ReturnService.noReturn",
+     std::nullopt}},
+  {"boolReturn",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "ReturnService.boolReturn",
+     std::nullopt}},
+  {"i16Return",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "ReturnService.i16Return",
+     std::nullopt}},
+  {"i32Return",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "ReturnService.i32Return",
+     std::nullopt}},
+  {"i64Return",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "ReturnService.i64Return",
+     std::nullopt}},
+  {"floatReturn",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "ReturnService.floatReturn",
+     std::nullopt}},
+  {"doubleReturn",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "ReturnService.doubleReturn",
+     std::nullopt}},
+  {"stringReturn",
+    {true,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "ReturnService.stringReturn",
+     std::nullopt}},
+  {"binaryReturn",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "ReturnService.binaryReturn",
+     std::nullopt}},
+  {"mapReturn",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "ReturnService.mapReturn",
+     std::nullopt}},
+  {"simpleTypedefReturn",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "ReturnService.simpleTypedefReturn",
+     std::nullopt}},
+  {"complexTypedefReturn",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "ReturnService.complexTypedefReturn",
+     std::nullopt}},
+  {"list_mostComplexTypedefReturn",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "ReturnService.list_mostComplexTypedefReturn",
+     std::nullopt}},
+  {"enumReturn",
+    {true,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "ReturnService.enumReturn",
+     std::nullopt}},
+  {"list_EnumReturn",
+    {true,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "ReturnService.list_EnumReturn",
+     std::nullopt}},
+  {"structReturn",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "ReturnService.structReturn",
+     std::nullopt}},
+  {"set_StructReturn",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "ReturnService.set_StructReturn",
+     std::nullopt}},
+  {"unionReturn",
+    {true,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "ReturnService.unionReturn",
+     std::nullopt}},
+  {"list_UnionReturn",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "ReturnService.list_UnionReturn",
+     std::nullopt}},
+  {"readDataEb",
+    {true,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "ReturnService.readDataEb",
+     std::nullopt}},
+  {"readData",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "ReturnService.readData",
+     std::nullopt}},
+  };
+
+  return requestInfoMap;
+}
 }}} // some::valid::ns

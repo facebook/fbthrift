@@ -118,6 +118,12 @@ class service_with_special_namesSvAsyncIf {
 
 class service_with_special_namesAsyncProcessor;
 
+class service_with_special_namesServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
+  public:
+   apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
+   static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
+};
+
 class service_with_special_namesSvIf : public service_with_special_namesSvAsyncIf, public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "service_with_special_names"; }
@@ -125,7 +131,7 @@ class service_with_special_namesSvIf : public service_with_special_namesSvAsyncI
   typedef service_with_special_namesAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
-
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
   virtual ::std::int32_t get();
   folly::Future<::std::int32_t> future_get() override;
@@ -240,6 +246,7 @@ class service_with_special_namesSvIf : public service_with_special_namesSvAsyncI
   folly::SemiFuture<::std::int32_t> semifuture_fields() override;
   void async_tm_fields(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
  private:
+  static service_with_special_namesServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_get{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_getter{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_lists{apache::thrift::detail::si::InvocationType::AsyncTm};

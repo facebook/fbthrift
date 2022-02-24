@@ -84,6 +84,12 @@ class ReturnServiceSvAsyncIf {
 
 class ReturnServiceAsyncProcessor;
 
+class ReturnServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
+  public:
+   apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
+   static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
+};
+
 class ReturnServiceSvIf : public ReturnServiceSvAsyncIf, public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "ReturnService"; }
@@ -91,7 +97,7 @@ class ReturnServiceSvIf : public ReturnServiceSvAsyncIf, public apache::thrift::
   typedef ReturnServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
-
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
   void async_eb_noReturn(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
   virtual bool boolReturn();
@@ -160,6 +166,7 @@ class ReturnServiceSvIf : public ReturnServiceSvAsyncIf, public apache::thrift::
   folly::SemiFuture<std::unique_ptr<::some::valid::ns::IOBufPtr>> semifuture_readData(::std::int64_t p_size) override;
   void async_tm_readData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::IOBufPtr>>> callback, ::std::int64_t p_size) override;
  private:
+  static ReturnServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_boolReturn{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_i16Return{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_i32Return{apache::thrift::detail::si::InvocationType::AsyncTm};

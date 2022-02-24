@@ -19,6 +19,12 @@ RederivedServiceSvIf::CreateMethodMetadataResult RederivedServiceSvIf::createMet
   return ::apache::thrift::detail::ap::createMethodMetadataMap<RederivedServiceAsyncProcessor>();
 }
 
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> RederivedServiceSvIf::getServiceRequestInfoMap() const {
+  return __fbthrift_serviceInfoHolder.requestInfoMap();
+}
+
+  RederivedServiceServiceInfoHolder RederivedServiceSvIf::__fbthrift_serviceInfoHolder;
+
 
 ::std::int32_t RederivedServiceSvIf::get_seven() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("get_seven");
@@ -107,4 +113,22 @@ const RederivedServiceAsyncProcessor::ProcessMap RederivedServiceAsyncProcessor:
   {"get_seven", {&RederivedServiceAsyncProcessor::setUpAndProcess_get_seven<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &RederivedServiceAsyncProcessor::setUpAndProcess_get_seven<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
+apache::thrift::ServiceRequestInfoMap const& RederivedServiceServiceInfoHolder::requestInfoMap() const {
+  static folly::Indestructible<apache::thrift::ServiceRequestInfoMap> requestInfoMap{staticRequestInfoMap()};
+  return *requestInfoMap;
+}
+
+apache::thrift::ServiceRequestInfoMap RederivedServiceServiceInfoHolder::staticRequestInfoMap() {
+  apache::thrift::ServiceRequestInfoMap requestInfoMap = {
+  {"get_seven",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "RederivedService.get_seven",
+     std::nullopt}},
+  };
+  apache::thrift::ServiceRequestInfoMap parentMap = ::py3::simple::DerivedServiceServiceInfoHolder::staticRequestInfoMap();
+  requestInfoMap.insert(std::begin(parentMap), std::end(parentMap));
+
+  return requestInfoMap;
+}
 }} // py3::simple

@@ -19,6 +19,12 @@ MyServiceSvIf::CreateMethodMetadataResult MyServiceSvIf::createMethodMetadata() 
   return ::apache::thrift::detail::ap::createMethodMetadataMap<MyServiceAsyncProcessor>();
 }
 
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> MyServiceSvIf::getServiceRequestInfoMap() const {
+  return __fbthrift_serviceInfoHolder.requestInfoMap();
+}
+
+  MyServiceServiceInfoHolder MyServiceSvIf::__fbthrift_serviceInfoHolder;
+
 
 void MyServiceSvIf::ping() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("ping");
@@ -382,4 +388,40 @@ const MyServiceAsyncProcessor::ProcessMap MyServiceAsyncProcessor::kOwnProcessMa
   {"putDataById", {&MyServiceAsyncProcessor::setUpAndProcess_putDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &MyServiceAsyncProcessor::setUpAndProcess_putDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
+apache::thrift::ServiceRequestInfoMap const& MyServiceServiceInfoHolder::requestInfoMap() const {
+  static folly::Indestructible<apache::thrift::ServiceRequestInfoMap> requestInfoMap{staticRequestInfoMap()};
+  return *requestInfoMap;
+}
+
+apache::thrift::ServiceRequestInfoMap MyServiceServiceInfoHolder::staticRequestInfoMap() {
+  apache::thrift::ServiceRequestInfoMap requestInfoMap = {
+  {"ping",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "MyService.ping",
+     std::nullopt}},
+  {"getRandomData",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "MyService.getRandomData",
+     std::nullopt}},
+  {"hasDataById",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "MyService.hasDataById",
+     std::nullopt}},
+  {"getDataById",
+    {true,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "MyService.getDataById",
+     std::nullopt}},
+  {"putDataById",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "MyService.putDataById",
+     std::nullopt}},
+  };
+
+  return requestInfoMap;
+}
 } // cpp2

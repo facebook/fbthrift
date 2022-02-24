@@ -35,6 +35,12 @@ class MyNodeSvAsyncIf {
 
 class MyNodeAsyncProcessor;
 
+class MyNodeServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
+  public:
+   apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
+   static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
+};
+
 class MyNodeSvIf : public MyNodeSvAsyncIf, virtual public ::cpp2::MyRootSvIf {
  public:
   std::string_view getGeneratedName() const override { return "MyNode"; }
@@ -42,13 +48,14 @@ class MyNodeSvIf : public MyNodeSvAsyncIf, virtual public ::cpp2::MyRootSvIf {
   typedef MyNodeAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
-
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
   virtual void do_mid();
   folly::Future<folly::Unit> future_do_mid() override;
   folly::SemiFuture<folly::Unit> semifuture_do_mid() override;
   void async_tm_do_mid(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
  private:
+  static MyNodeServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_do_mid{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 

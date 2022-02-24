@@ -37,6 +37,12 @@ class MyServicePrioParentSvAsyncIf {
 
 class MyServicePrioParentAsyncProcessor;
 
+class MyServicePrioParentServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
+  public:
+   apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
+   static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
+};
+
 class MyServicePrioParentSvIf : public MyServicePrioParentSvAsyncIf, public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "MyServicePrioParent"; }
@@ -44,7 +50,7 @@ class MyServicePrioParentSvIf : public MyServicePrioParentSvAsyncIf, public apac
   typedef MyServicePrioParentAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
-
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
   virtual void ping();
   folly::Future<folly::Unit> future_ping() override;
@@ -55,6 +61,7 @@ class MyServicePrioParentSvIf : public MyServicePrioParentSvAsyncIf, public apac
   folly::SemiFuture<folly::Unit> semifuture_pong() override;
   void async_tm_pong(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
  private:
+  static MyServicePrioParentServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_ping{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_pong{apache::thrift::detail::si::InvocationType::AsyncTm};
 };

@@ -19,6 +19,12 @@ DerivedServiceSvIf::CreateMethodMetadataResult DerivedServiceSvIf::createMethodM
   return ::apache::thrift::detail::ap::createMethodMetadataMap<DerivedServiceAsyncProcessor>();
 }
 
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> DerivedServiceSvIf::getServiceRequestInfoMap() const {
+  return __fbthrift_serviceInfoHolder.requestInfoMap();
+}
+
+  DerivedServiceServiceInfoHolder DerivedServiceSvIf::__fbthrift_serviceInfoHolder;
+
 
 ::std::int32_t DerivedServiceSvIf::get_six() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("get_six");
@@ -107,4 +113,22 @@ const DerivedServiceAsyncProcessor::ProcessMap DerivedServiceAsyncProcessor::kOw
   {"get_six", {&DerivedServiceAsyncProcessor::setUpAndProcess_get_six<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &DerivedServiceAsyncProcessor::setUpAndProcess_get_six<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
+apache::thrift::ServiceRequestInfoMap const& DerivedServiceServiceInfoHolder::requestInfoMap() const {
+  static folly::Indestructible<apache::thrift::ServiceRequestInfoMap> requestInfoMap{staticRequestInfoMap()};
+  return *requestInfoMap;
+}
+
+apache::thrift::ServiceRequestInfoMap DerivedServiceServiceInfoHolder::staticRequestInfoMap() {
+  apache::thrift::ServiceRequestInfoMap requestInfoMap = {
+  {"get_six",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "DerivedService.get_six",
+     std::nullopt}},
+  };
+  apache::thrift::ServiceRequestInfoMap parentMap = ::py3::simple::SimpleServiceServiceInfoHolder::staticRequestInfoMap();
+  requestInfoMap.insert(std::begin(parentMap), std::end(parentMap));
+
+  return requestInfoMap;
+}
 }} // py3::simple

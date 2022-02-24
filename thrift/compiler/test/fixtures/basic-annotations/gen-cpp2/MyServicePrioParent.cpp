@@ -19,6 +19,12 @@ MyServicePrioParentSvIf::CreateMethodMetadataResult MyServicePrioParentSvIf::cre
   return ::apache::thrift::detail::ap::createMethodMetadataMap<MyServicePrioParentAsyncProcessor>();
 }
 
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> MyServicePrioParentSvIf::getServiceRequestInfoMap() const {
+  return __fbthrift_serviceInfoHolder.requestInfoMap();
+}
+
+  MyServicePrioParentServiceInfoHolder MyServicePrioParentSvIf::__fbthrift_serviceInfoHolder;
+
 
 void MyServicePrioParentSvIf::ping() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("ping");
@@ -173,4 +179,25 @@ const MyServicePrioParentAsyncProcessor::ProcessMap MyServicePrioParentAsyncProc
   {"pong", {&MyServicePrioParentAsyncProcessor::setUpAndProcess_pong<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &MyServicePrioParentAsyncProcessor::setUpAndProcess_pong<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
+apache::thrift::ServiceRequestInfoMap const& MyServicePrioParentServiceInfoHolder::requestInfoMap() const {
+  static folly::Indestructible<apache::thrift::ServiceRequestInfoMap> requestInfoMap{staticRequestInfoMap()};
+  return *requestInfoMap;
+}
+
+apache::thrift::ServiceRequestInfoMap MyServicePrioParentServiceInfoHolder::staticRequestInfoMap() {
+  apache::thrift::ServiceRequestInfoMap requestInfoMap = {
+  {"ping",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "MyServicePrioParent.ping",
+     std::nullopt}},
+  {"pong",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "MyServicePrioParent.pong",
+     std::nullopt}},
+  };
+
+  return requestInfoMap;
+}
 } // cpp2

@@ -31,6 +31,12 @@ class NullServiceSvAsyncIf {
 
 class NullServiceAsyncProcessor;
 
+class NullServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
+  public:
+   apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
+   static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
+};
+
 class NullServiceSvIf : public NullServiceSvAsyncIf, public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "NullService"; }
@@ -38,9 +44,10 @@ class NullServiceSvIf : public NullServiceSvAsyncIf, public apache::thrift::Serv
   typedef NullServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
-
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
  private:
+  static NullServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
 };
 
 class NullServiceSvNull : public NullServiceSvIf {

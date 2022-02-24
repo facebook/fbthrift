@@ -19,6 +19,12 @@ CSvIf::CreateMethodMetadataResult CSvIf::createMethodMetadata() {
   return ::apache::thrift::detail::ap::createMethodMetadataMap<CAsyncProcessor>();
 }
 
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> CSvIf::getServiceRequestInfoMap() const {
+  return __fbthrift_serviceInfoHolder.requestInfoMap();
+}
+
+  CServiceInfoHolder CSvIf::__fbthrift_serviceInfoHolder;
+
 
 void CSvIf::f() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("f");
@@ -231,4 +237,30 @@ const CAsyncProcessor::ProcessMap CAsyncProcessor::kOwnProcessMap_ {
   {"thing", {&CAsyncProcessor::setUpAndProcess_thing<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &CAsyncProcessor::setUpAndProcess_thing<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
+apache::thrift::ServiceRequestInfoMap const& CServiceInfoHolder::requestInfoMap() const {
+  static folly::Indestructible<apache::thrift::ServiceRequestInfoMap> requestInfoMap{staticRequestInfoMap()};
+  return *requestInfoMap;
+}
+
+apache::thrift::ServiceRequestInfoMap CServiceInfoHolder::staticRequestInfoMap() {
+  apache::thrift::ServiceRequestInfoMap requestInfoMap = {
+  {"f",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "C.f",
+     std::nullopt}},
+  {"numbers",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
+     "C.numbers",
+     std::nullopt}},
+  {"thing",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "C.thing",
+     std::nullopt}},
+  };
+
+  return requestInfoMap;
+}
 } // cpp2

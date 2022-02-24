@@ -112,6 +112,12 @@ class ParamServiceSvAsyncIf {
 
 class ParamServiceAsyncProcessor;
 
+class ParamServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
+  public:
+   apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
+   static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
+};
+
 class ParamServiceSvIf : public ParamServiceSvAsyncIf, public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "ParamService"; }
@@ -119,7 +125,7 @@ class ParamServiceSvIf : public ParamServiceSvAsyncIf, public apache::thrift::Se
   typedef ParamServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
-
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
   void async_eb_void_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int16_t p_param1) override;
   virtual void void_ret_byte_i16_param(::std::int8_t /*param1*/, ::std::int16_t /*param2*/);
@@ -226,6 +232,7 @@ class ParamServiceSvIf : public ParamServiceSvAsyncIf, public apache::thrift::Se
   folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>> semifuture_listunion_string_param(std::unique_ptr<::std::string> p_param1) override;
   void async_tm_listunion_string_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>>> callback, std::unique_ptr<::std::string> p_param1) override;
  private:
+  static ParamServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_void_ret_byte_i16_param{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_void_ret_map_param{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_void_ret_map_setlist_param{apache::thrift::detail::si::InvocationType::AsyncTm};

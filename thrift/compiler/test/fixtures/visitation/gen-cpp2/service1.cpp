@@ -19,6 +19,12 @@ service1SvIf::CreateMethodMetadataResult service1SvIf::createMethodMetadata() {
   return ::apache::thrift::detail::ap::createMethodMetadataMap<service1AsyncProcessor>();
 }
 
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> service1SvIf::getServiceRequestInfoMap() const {
+  return __fbthrift_serviceInfoHolder.requestInfoMap();
+}
+
+  service1ServiceInfoHolder service1SvIf::__fbthrift_serviceInfoHolder;
+
 
 void service1SvIf::method1() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("method1");
@@ -425,4 +431,45 @@ const service1AsyncProcessor::ProcessMap service1AsyncProcessor::kOwnProcessMap_
   {"method6", {&service1AsyncProcessor::setUpAndProcess_method6<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service1AsyncProcessor::setUpAndProcess_method6<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
+apache::thrift::ServiceRequestInfoMap const& service1ServiceInfoHolder::requestInfoMap() const {
+  static folly::Indestructible<apache::thrift::ServiceRequestInfoMap> requestInfoMap{staticRequestInfoMap()};
+  return *requestInfoMap;
+}
+
+apache::thrift::ServiceRequestInfoMap service1ServiceInfoHolder::staticRequestInfoMap() {
+  apache::thrift::ServiceRequestInfoMap requestInfoMap = {
+  {"method1",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "service1.method1",
+     std::nullopt}},
+  {"method2",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "service1.method2",
+     std::nullopt}},
+  {"method3",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "service1.method3",
+     std::nullopt}},
+  {"method4",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "service1.method4",
+     std::nullopt}},
+  {"method5",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "service1.method5",
+     std::nullopt}},
+  {"method6",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "service1.method6",
+     std::nullopt}},
+  };
+
+  return requestInfoMap;
+}
 }} // test_cpp2::cpp_reflection

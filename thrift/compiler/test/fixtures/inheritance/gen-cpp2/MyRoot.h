@@ -34,6 +34,12 @@ class MyRootSvAsyncIf {
 
 class MyRootAsyncProcessor;
 
+class MyRootServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
+  public:
+   apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
+   static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
+};
+
 class MyRootSvIf : public MyRootSvAsyncIf, public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "MyRoot"; }
@@ -41,13 +47,14 @@ class MyRootSvIf : public MyRootSvAsyncIf, public apache::thrift::ServerInterfac
   typedef MyRootAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
-
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
   virtual void do_root();
   folly::Future<folly::Unit> future_do_root() override;
   folly::SemiFuture<folly::Unit> semifuture_do_root() override;
   void async_tm_do_root(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
  private:
+  static MyRootServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_do_root{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 

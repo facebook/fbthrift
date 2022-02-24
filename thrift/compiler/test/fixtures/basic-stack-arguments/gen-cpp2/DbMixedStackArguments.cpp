@@ -19,6 +19,12 @@ DbMixedStackArgumentsSvIf::CreateMethodMetadataResult DbMixedStackArgumentsSvIf:
   return ::apache::thrift::detail::ap::createMethodMetadataMap<DbMixedStackArgumentsAsyncProcessor>();
 }
 
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> DbMixedStackArgumentsSvIf::getServiceRequestInfoMap() const {
+  return __fbthrift_serviceInfoHolder.requestInfoMap();
+}
+
+  DbMixedStackArgumentsServiceInfoHolder DbMixedStackArgumentsSvIf::__fbthrift_serviceInfoHolder;
+
 
 void DbMixedStackArgumentsSvIf::getDataByKey0(::std::string& /*_return*/, std::unique_ptr<::std::string> /*key*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("getDataByKey0");
@@ -173,4 +179,25 @@ const DbMixedStackArgumentsAsyncProcessor::ProcessMap DbMixedStackArgumentsAsync
   {"getDataByKey1", {&DbMixedStackArgumentsAsyncProcessor::setUpAndProcess_getDataByKey1<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &DbMixedStackArgumentsAsyncProcessor::setUpAndProcess_getDataByKey1<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
+apache::thrift::ServiceRequestInfoMap const& DbMixedStackArgumentsServiceInfoHolder::requestInfoMap() const {
+  static folly::Indestructible<apache::thrift::ServiceRequestInfoMap> requestInfoMap{staticRequestInfoMap()};
+  return *requestInfoMap;
+}
+
+apache::thrift::ServiceRequestInfoMap DbMixedStackArgumentsServiceInfoHolder::staticRequestInfoMap() {
+  apache::thrift::ServiceRequestInfoMap requestInfoMap = {
+  {"getDataByKey0",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "DbMixedStackArguments.getDataByKey0",
+     std::nullopt}},
+  {"getDataByKey1",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "DbMixedStackArguments.getDataByKey1",
+     std::nullopt}},
+  };
+
+  return requestInfoMap;
+}
 } // cpp2

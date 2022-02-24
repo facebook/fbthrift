@@ -19,6 +19,12 @@ MyServiceFastSvIf::CreateMethodMetadataResult MyServiceFastSvIf::createMethodMet
   return ::apache::thrift::detail::ap::createMethodMetadataMap<MyServiceFastAsyncProcessor>();
 }
 
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> MyServiceFastSvIf::getServiceRequestInfoMap() const {
+  return __fbthrift_serviceInfoHolder.requestInfoMap();
+}
+
+  MyServiceFastServiceInfoHolder MyServiceFastSvIf::__fbthrift_serviceInfoHolder;
+
 
 void MyServiceFastSvIf::async_eb_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int64_t /*id*/) {
   callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("hasDataById"));
@@ -65,4 +71,35 @@ const MyServiceFastAsyncProcessor::ProcessMap MyServiceFastAsyncProcessor::kOwnP
   {"lobDataById", {&MyServiceFastAsyncProcessor::setUpAndProcess_lobDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &MyServiceFastAsyncProcessor::setUpAndProcess_lobDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
+apache::thrift::ServiceRequestInfoMap const& MyServiceFastServiceInfoHolder::requestInfoMap() const {
+  static folly::Indestructible<apache::thrift::ServiceRequestInfoMap> requestInfoMap{staticRequestInfoMap()};
+  return *requestInfoMap;
+}
+
+apache::thrift::ServiceRequestInfoMap MyServiceFastServiceInfoHolder::staticRequestInfoMap() {
+  apache::thrift::ServiceRequestInfoMap requestInfoMap = {
+  {"hasDataById",
+    {true,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "MyServiceFast.hasDataById",
+     std::nullopt}},
+  {"getDataById",
+    {true,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "MyServiceFast.getDataById",
+     std::nullopt}},
+  {"putDataById",
+    {true,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "MyServiceFast.putDataById",
+     std::nullopt}},
+  {"lobDataById",
+    {true,
+     apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE,
+     "MyServiceFast.lobDataById",
+     std::nullopt}},
+  };
+
+  return requestInfoMap;
+}
 } // cpp2

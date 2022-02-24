@@ -40,7 +40,8 @@ TEST(RoundRobinRequestPileTest, NormalCases) {
         static_cast<protocol::PROTOCOL_TYPES>(0),
         nullptr, /* requestContext  */
         nullptr, /* asyncProcessor  */
-        nullptr /* methodMetadata  */);
+        nullptr, /* methodMetadata  */
+        nullptr /* serviceRequestInfo */);
     return req;
   };
 
@@ -182,7 +183,8 @@ TEST(RoundRobinRequestPileTest, SingleBucket) {
         static_cast<protocol::PROTOCOL_TYPES>(0),
         nullptr, /* requestContext  */
         nullptr, /* asyncProcessor  */
-        nullptr /* methodMetadata  */);
+        nullptr, /* methodMetadata  */
+        nullptr /* serviceRequestInfo */);
     return req;
   };
 

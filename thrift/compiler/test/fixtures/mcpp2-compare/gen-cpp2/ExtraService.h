@@ -56,6 +56,12 @@ class ExtraServiceSvAsyncIf {
 
 class ExtraServiceAsyncProcessor;
 
+class ExtraServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
+  public:
+   apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
+   static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
+};
+
 class ExtraServiceSvIf : public ExtraServiceSvAsyncIf, virtual public ::some::valid::ns::ParamServiceSvIf {
  public:
   std::string_view getGeneratedName() const override { return "ExtraService"; }
@@ -63,7 +69,7 @@ class ExtraServiceSvIf : public ExtraServiceSvAsyncIf, virtual public ::some::va
   typedef ExtraServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
-
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
   virtual bool simple_function();
   folly::Future<bool> future_simple_function() override;
@@ -96,6 +102,7 @@ class ExtraServiceSvIf : public ExtraServiceSvAsyncIf, virtual public ::some::va
   folly::SemiFuture<folly::Unit> semifuture_oneway_void_ret_listunion_param(const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1) override;
   void async_tm_oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1) override;
  private:
+  static ExtraServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_simple_function{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_throws_function2{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_throws_function3{apache::thrift::detail::si::InvocationType::AsyncTm};

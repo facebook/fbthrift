@@ -19,6 +19,12 @@ ExtraServiceSvIf::CreateMethodMetadataResult ExtraServiceSvIf::createMethodMetad
   return ::apache::thrift::detail::ap::createMethodMetadataMap<ExtraServiceAsyncProcessor>();
 }
 
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> ExtraServiceSvIf::getServiceRequestInfoMap() const {
+  return __fbthrift_serviceInfoHolder.requestInfoMap();
+}
+
+  ExtraServiceServiceInfoHolder ExtraServiceSvIf::__fbthrift_serviceInfoHolder;
+
 
 bool ExtraServiceSvIf::simple_function() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("simple_function");
@@ -495,4 +501,62 @@ const ExtraServiceAsyncProcessor::ProcessMap ExtraServiceAsyncProcessor::kOwnPro
   {"oneway_void_ret_listunion_param", {&ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_listunion_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_listunion_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
+apache::thrift::ServiceRequestInfoMap const& ExtraServiceServiceInfoHolder::requestInfoMap() const {
+  static folly::Indestructible<apache::thrift::ServiceRequestInfoMap> requestInfoMap{staticRequestInfoMap()};
+  return *requestInfoMap;
+}
+
+apache::thrift::ServiceRequestInfoMap ExtraServiceServiceInfoHolder::staticRequestInfoMap() {
+  apache::thrift::ServiceRequestInfoMap requestInfoMap = {
+  {"simple_function",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "ExtraService.simple_function",
+     std::nullopt}},
+  {"throws_function",
+    {true,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "ExtraService.throws_function",
+     std::nullopt}},
+  {"throws_function2",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "ExtraService.throws_function2",
+     std::nullopt}},
+  {"throws_function3",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "ExtraService.throws_function3",
+     std::nullopt}},
+  {"oneway_void_ret",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE,
+     "ExtraService.oneway_void_ret",
+     std::nullopt}},
+  {"oneway_void_ret_i32_i32_i32_i32_i32_param",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE,
+     "ExtraService.oneway_void_ret_i32_i32_i32_i32_i32_param",
+     std::nullopt}},
+  {"oneway_void_ret_map_setlist_param",
+    {true,
+     apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE,
+     "ExtraService.oneway_void_ret_map_setlist_param",
+     std::nullopt}},
+  {"oneway_void_ret_struct_param",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE,
+     "ExtraService.oneway_void_ret_struct_param",
+     std::nullopt}},
+  {"oneway_void_ret_listunion_param",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE,
+     "ExtraService.oneway_void_ret_listunion_param",
+     std::nullopt}},
+  };
+  apache::thrift::ServiceRequestInfoMap parentMap = ::some::valid::ns::ParamServiceServiceInfoHolder::staticRequestInfoMap();
+  requestInfoMap.insert(std::begin(parentMap), std::end(parentMap));
+
+  return requestInfoMap;
+}
 }} // extra::svc

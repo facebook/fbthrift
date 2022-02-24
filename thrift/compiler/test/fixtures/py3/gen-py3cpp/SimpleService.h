@@ -154,6 +154,12 @@ class SimpleServiceSvAsyncIf {
 
 class SimpleServiceAsyncProcessor;
 
+class SimpleServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
+  public:
+   apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
+   static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
+};
+
 class SimpleServiceSvIf : public SimpleServiceSvAsyncIf, public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "SimpleService"; }
@@ -161,7 +167,7 @@ class SimpleServiceSvIf : public SimpleServiceSvAsyncIf, public apache::thrift::
   typedef SimpleServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
-
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
   virtual ::std::int32_t get_five();
   folly::Future<::std::int32_t> future_get_five() override;
@@ -328,6 +334,7 @@ class SimpleServiceSvIf : public SimpleServiceSvAsyncIf, public apache::thrift::
   folly::SemiFuture<std::unique_ptr<::py3::simple::BinaryUnionStruct>> semifuture_get_binary_union_struct(std::unique_ptr<::py3::simple::BinaryUnion> p_u) override;
   void async_tm_get_binary_union_struct(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::py3::simple::BinaryUnionStruct>>> callback, std::unique_ptr<::py3::simple::BinaryUnion> p_u) override;
  private:
+  static SimpleServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_get_five{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_add_five{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_do_nothing{apache::thrift::detail::si::InvocationType::AsyncTm};

@@ -19,6 +19,12 @@ MyServiceSvIf::CreateMethodMetadataResult MyServiceSvIf::createMethodMetadata() 
   return ::apache::thrift::detail::ap::createMethodMetadataMap<MyServiceAsyncProcessor>();
 }
 
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> MyServiceSvIf::getServiceRequestInfoMap() const {
+  return __fbthrift_serviceInfoHolder.requestInfoMap();
+}
+
+  MyServiceServiceInfoHolder MyServiceSvIf::__fbthrift_serviceInfoHolder;
+
 
 void MyServiceSvIf::query(std::unique_ptr<::cpp2::MyStruct> /*s*/, std::unique_ptr<::cpp2::Included> /*i*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("query");
@@ -173,4 +179,25 @@ const MyServiceAsyncProcessor::ProcessMap MyServiceAsyncProcessor::kOwnProcessMa
   {"has_arg_docs", {&MyServiceAsyncProcessor::setUpAndProcess_has_arg_docs<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &MyServiceAsyncProcessor::setUpAndProcess_has_arg_docs<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
+apache::thrift::ServiceRequestInfoMap const& MyServiceServiceInfoHolder::requestInfoMap() const {
+  static folly::Indestructible<apache::thrift::ServiceRequestInfoMap> requestInfoMap{staticRequestInfoMap()};
+  return *requestInfoMap;
+}
+
+apache::thrift::ServiceRequestInfoMap MyServiceServiceInfoHolder::staticRequestInfoMap() {
+  apache::thrift::ServiceRequestInfoMap requestInfoMap = {
+  {"query",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "MyService.query",
+     std::nullopt}},
+  {"has_arg_docs",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "MyService.has_arg_docs",
+     std::nullopt}},
+  };
+
+  return requestInfoMap;
+}
 } // cpp2

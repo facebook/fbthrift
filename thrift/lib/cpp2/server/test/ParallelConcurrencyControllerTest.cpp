@@ -129,7 +129,8 @@ ServerRequest getRequest(AsyncProcessor* ap, folly::EventBase* eb) {
       static_cast<protocol::PROTOCOL_TYPES>(0),
       nullptr, /* requestContext  */
       ap,
-      nullptr /* methodMetadata  */);
+      nullptr, /* methodMetadata  */
+      nullptr /* serviceRequestInfo */);
   return req;
 }
 
