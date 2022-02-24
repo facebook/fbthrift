@@ -110,6 +110,34 @@ StructMetadata<::cpp2::Atomic>::gen(ThriftMetadata& metadata) {
   module_Atomic.structured_annotations_ref()->push_back(*cvStruct("cpp.PackIsset", {{"atomic", cvBool(true)}}).cv_struct_ref());
   return res.first->second;
 }
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::AtomicFoo>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs_ref()->emplace("module.AtomicFoo", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return res.first->second;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_AtomicFoo = res.first->second;
+  module_AtomicFoo.name_ref() = "module.AtomicFoo";
+  module_AtomicFoo.is_union_ref() = false;
+  static const EncodedThriftField
+  module_AtomicFoo_fields[] = {
+    {1, "field1", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
+    {2, "field2", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
+    {3, "field3", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
+    {4, "field4", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}},
+  };
+  for (const auto& f : module_AtomicFoo_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id_ref() = f.id;
+    field.name_ref() = f.name;
+    field.is_optional_ref() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = f.structured_annotations;
+    module_AtomicFoo.fields_ref()->push_back(std::move(field));
+  }
+  module_AtomicFoo.structured_annotations_ref()->push_back(*cvStruct("cpp.PackIsset", {{"atomic", cvBool(true)}}).cv_struct_ref());
+  return res.first->second;
+}
 
 } // namespace md
 } // namespace detail

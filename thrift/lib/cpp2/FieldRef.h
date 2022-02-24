@@ -251,6 +251,12 @@ class field_ref {
       const uint8_t bit_index = 0) noexcept
       : value_(value), bitref_(is_set, bit_index) {}
 
+  FOLLY_ERASE field_ref(
+      reference_type value,
+      typename BitRef::AtomicIsset& is_set,
+      const uint8_t bit_index = 0) noexcept
+      : value_(value), bitref_(is_set, bit_index) {}
+
   template <
       typename U,
       std::enable_if_t<
@@ -466,6 +472,12 @@ class optional_field_ref {
   FOLLY_ERASE optional_field_ref(
       reference_type value,
       typename BitRef::Isset& is_set,
+      const uint8_t bit_index = 0) noexcept
+      : value_(value), bitref_(is_set, bit_index) {}
+
+  FOLLY_ERASE optional_field_ref(
+      reference_type value,
+      typename BitRef::AtomicIsset& is_set,
       const uint8_t bit_index = 0) noexcept
       : value_(value), bitref_(is_set, bit_index) {}
 

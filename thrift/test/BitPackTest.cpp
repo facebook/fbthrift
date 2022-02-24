@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 #include <random>
 #include <folly/portability/GTest.h>
+#include <thrift/test/gen-cpp2/Bitpack_for_each_field.h>
 #include <thrift/test/gen-cpp2/Bitpack_types.h>
 
 namespace apache::thrift::test {
@@ -48,13 +49,16 @@ Type makeStructBasic() {
 
   obj.structOpt_ref() = makeStructExtra<cpp2::Extra_unbitpack>();
   obj.structPackedOpt_ref() = makeStructExtra<cpp2::Extra_bitpack>();
+  obj.structAtomicPackedOpt_ref() =
+      makeStructExtra<cpp2::AtomicExtra_bitpack>();
   return obj;
 }
 
+template <typename Type>
 void randomTestWithSeed(int seed) {
   rng.seed(seed);
-  cpp2::Unbitpack obj1 = makeStructBasic<cpp2::Unbitpack>();
-  cpp2::Bitpack obj2 = makeStructBasic<cpp2::Bitpack>();
+  auto obj1 = makeStructBasic<cpp2::Unbitpack>();
+  auto obj2 = makeStructBasic<Type>();
   std::vector<std::function<void()>> methods = {
       [&] {
         obj1.int32Req_ref() = 2;
@@ -146,6 +150,30 @@ void randomTestWithSeed(int seed) {
         obj2.structPackedOpt_ref()->extraInt32Opt_ref().reset();
         EXPECT_EQ(obj1.structPackedOpt_ref(), obj2.structPackedOpt_ref());
       },
+      [&] {
+        obj1.structAtomicPackedOpt_ref()->extraInt32Def_ref() = 40;
+        obj2.structAtomicPackedOpt_ref()->extraInt32Def_ref() = 40;
+        EXPECT_EQ(
+            obj1.structAtomicPackedOpt_ref(), obj2.structAtomicPackedOpt_ref());
+      },
+      [&] {
+        obj1.structAtomicPackedOpt_ref()->extraInt32Req_ref() = 50;
+        obj2.structAtomicPackedOpt_ref()->extraInt32Req_ref() = 50;
+        EXPECT_EQ(
+            obj1.structAtomicPackedOpt_ref(), obj2.structAtomicPackedOpt_ref());
+      },
+      [&] {
+        obj1.structAtomicPackedOpt_ref()->extraInt32Opt_ref() = 60;
+        obj2.structAtomicPackedOpt_ref()->extraInt32Opt_ref() = 60;
+        EXPECT_EQ(
+            obj1.structAtomicPackedOpt_ref(), obj2.structAtomicPackedOpt_ref());
+      },
+      [&] {
+        obj1.structAtomicPackedOpt_ref()->extraInt32Opt_ref().reset();
+        obj2.structAtomicPackedOpt_ref()->extraInt32Opt_ref().reset();
+        EXPECT_EQ(
+            obj1.structAtomicPackedOpt_ref(), obj2.structAtomicPackedOpt_ref());
+      },
   };
   methods[rng() % methods.size()]();
 }
@@ -153,14 +181,23 @@ void randomTestWithSeed(int seed) {
 TEST(BitPackTest, compare_size) {
   cpp2::A obj1;
   cpp2::A_bitpack obj2;
+  cpp2::A_atomic_bitpack obj3;
   // size comparasion: 16 vs 9 -> 44% memory decreased after bitpacking
   static_assert(sizeof(cpp2::A) == 16);
   static_assert(sizeof(cpp2::A_bitpack) == 9);
+  static_assert(sizeof(cpp2::A_atomic_bitpack) == 9);
 }
 
-TEST(BitPackTest, compare_basic) {
-  cpp2::Unbitpack obj1 = makeStructBasic<cpp2::Unbitpack>();
-  cpp2::Bitpack obj2 = makeStructBasic<cpp2::Bitpack>();
+template <class>
+struct BitpacksTest : public ::testing::Test {};
+
+using Types = ::testing::Types<cpp2::Bitpack, cpp2::AtomicBitpack>;
+
+TYPED_TEST_SUITE(BitpacksTest, Types);
+
+TYPED_TEST(BitpacksTest, compare_basic) {
+  auto obj1 = makeStructBasic<cpp2::Unbitpack>();
+  auto obj2 = makeStructBasic<TypeParam>();
 
   EXPECT_EQ(obj1.int32Req_ref(), obj2.int32Req_ref());
   EXPECT_EQ(obj1.int32Opt_ref(), obj2.int32Opt_ref());
@@ -173,13 +210,36 @@ TEST(BitPackTest, compare_basic) {
   EXPECT_EQ(obj1.structOpt_ref(), obj2.structOpt_ref());
   EXPECT_EQ(obj1.structPackedOpt_ref(), obj2.structPackedOpt_ref());
 }
+
 class RandomTestWithSeed : public testing::TestWithParam<int> {};
+
 TEST_P(RandomTestWithSeed, test) {
-  randomTestWithSeed(GetParam());
+  randomTestWithSeed<cpp2::Bitpack>(GetParam());
+  randomTestWithSeed<cpp2::AtomicBitpack>(GetParam());
 }
 
 INSTANTIATE_TEST_CASE_P(
     RandomTest,
     RandomTestWithSeed,
-    testing::Range(0, folly::kIsDebug ? 10 : 1000));
+    testing::Range(0, folly::kIsDebug ? 100 : 10000));
+
+TEST(AtomicBitpack, multithread) {
+  cpp2::AtomicBitpack obj;
+  std::vector<std::thread> v;
+  v.emplace_back([&] { obj.int32Opt_ref().emplace(); });
+  v.emplace_back([&] { obj.stringOpt_ref().emplace(); });
+  v.emplace_back([&] { obj.setOpt_ref().emplace(); });
+  v.emplace_back([&] { obj.listOpt_ref().emplace(); });
+  v.emplace_back([&] { obj.structOpt_ref().emplace(); });
+  v.emplace_back([&] { obj.structPackedOpt_ref().emplace(); });
+  v.emplace_back([&] { obj.structAtomicPackedOpt_ref().emplace(); });
+
+  for (auto&& t : v) {
+    t.join();
+  }
+
+  apache::thrift::for_each_field(
+      obj, [](auto&&, auto&& ref) { EXPECT_TRUE(ref.has_value()); });
+}
+
 } // namespace apache::thrift::test

@@ -69,5 +69,24 @@ const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::Atomic>::fields_
   TType::T_DOUBLE,
 }};
 
+const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::AtomicFoo>::fields_names = {{
+  "field1",
+  "field2",
+  "field3",
+  "field4",
+}};
+const std::array<int16_t, 4> TStructDataStorage<::cpp2::AtomicFoo>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+}};
+const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::AtomicFoo>::fields_types = {{
+  TType::T_I32,
+  TType::T_I32,
+  TType::T_STRING,
+  TType::T_DOUBLE,
+}};
+
 } // namespace thrift
 } // namespace apache
