@@ -119,8 +119,7 @@ class t_mstch_java_generator : public t_mstch_generator {
         c[item_id] = generator->generate(item, generators_, cache_);
       }
 
-      render_to_file(
-          c[item_id], tpl_path, "data_type" / package_dir / filename);
+      render_to_file(c[item_id], tpl_path, package_dir / filename);
     }
   }
 
@@ -153,9 +152,7 @@ class t_mstch_java_generator : public t_mstch_generator {
       }
 
       render_to_file(
-          c[sync_service_id],
-          "ServiceClient",
-          "legacy_clients" / package_dir / sync_filename);
+          c[sync_service_id], "ServiceClient", package_dir / sync_filename);
 
       // Generate async client
       auto async_filename = service_name + "AsyncClientImpl.java";
@@ -167,7 +164,7 @@ class t_mstch_java_generator : public t_mstch_generator {
       render_to_file(
           c[async_service_id],
           "ServiceAsyncClient",
-          "legacy_clients" / package_dir / async_filename);
+          package_dir / async_filename);
 
       // Generate Async to Reactive Wrapper
       auto async_reactive_wrapper_filename =
@@ -182,7 +179,7 @@ class t_mstch_java_generator : public t_mstch_generator {
       render_to_file(
           c[async_reactive_wrapper_id],
           "AsyncReactiveWrapper",
-          "services" / package_dir / async_reactive_wrapper_filename);
+          package_dir / async_reactive_wrapper_filename);
 
       // Generate Blocking to Reactive Wrapper
       auto blocking_reactive_wrapper_filename =
@@ -197,7 +194,7 @@ class t_mstch_java_generator : public t_mstch_generator {
       render_to_file(
           c[blocking_reactive_wrapper_id],
           "BlockingReactiveWrapper",
-          "services" / package_dir / blocking_reactive_wrapper_filename);
+          package_dir / blocking_reactive_wrapper_filename);
 
       // Generate Reactive to Async Wrapper
       auto reactive_async_wrapper_filename =
@@ -212,7 +209,7 @@ class t_mstch_java_generator : public t_mstch_generator {
       render_to_file(
           c[reactive_async_wrapper_id],
           "ReactiveAsyncWrapper",
-          "services" / package_dir / reactive_async_wrapper_filename);
+          package_dir / reactive_async_wrapper_filename);
 
       // Generate Reactive to Blocking Wrapper
       auto reactive_blocking_wrapper_filename =
@@ -227,7 +224,7 @@ class t_mstch_java_generator : public t_mstch_generator {
       render_to_file(
           c[reactive_blocking_wrapper_id],
           "ReactiveBlockingWrapper",
-          "services" / package_dir / reactive_blocking_wrapper_filename);
+          package_dir / reactive_blocking_wrapper_filename);
 
       // Generate Reactive Client
       auto reactive_client_filename = service_name + "ReactiveClient.java";
@@ -241,7 +238,7 @@ class t_mstch_java_generator : public t_mstch_generator {
       render_to_file(
           c[reactive_client_wrapper_id],
           "ReactiveClient",
-          "services" / package_dir / reactive_client_filename);
+          package_dir / reactive_client_filename);
 
       // Generate RpcServerHandler
       auto rpc_server_handler_filename = service_name + "RpcServerHandler.java";
@@ -255,7 +252,7 @@ class t_mstch_java_generator : public t_mstch_generator {
       render_to_file(
           c[rpc_server_handler_id],
           "RpcServerHandler",
-          "services" / package_dir / rpc_server_handler_filename);
+          package_dir / rpc_server_handler_filename);
     }
   }
 
@@ -270,17 +267,14 @@ class t_mstch_java_generator : public t_mstch_generator {
     auto package_dir = boost::filesystem::path{
         java::package_to_path(get_namespace_or_default(*program))};
     auto constant_file_name = get_constants_class_name(*program) + ".java";
-    render_to_file(
-        prog, "Constants", "data_type" / package_dir / constant_file_name);
+    render_to_file(prog, "Constants", package_dir / constant_file_name);
   }
 
   void generate_placeholder(const t_program* program) {
     auto package_dir = boost::filesystem::path{
         java::package_to_path(get_namespace_or_default(*program))};
     auto placeholder_file_name = ".generated_" + program->name();
-    write_output("data_type" / package_dir / placeholder_file_name, "");
-    write_output("legacy_clients" / package_dir / placeholder_file_name, "");
-    write_output("services" / package_dir / placeholder_file_name, "");
+    write_output(package_dir / placeholder_file_name, "");
   }
 };
 
