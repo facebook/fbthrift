@@ -45,10 +45,10 @@ public class {{service:javaCapitalName}}ReactiveBlockingWrapper {{#service:exten
           Exceptions
         }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
     {{#function:voidType}}
-      _delegate.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}).block();
+      {{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}com.facebook.thrift.client.RpcOptions.EMPTY);
     {{/function:voidType}}
     {{^function:voidType}}
-      return _delegate.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}).block();
+      return {{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}com.facebook.thrift.client.RpcOptions.EMPTY).getData();
     {{/function:voidType}}
   }
 
@@ -59,10 +59,10 @@ public class {{service:javaCapitalName}}ReactiveBlockingWrapper {{#service:exten
           Exceptions
         }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
     {{#function:voidType}}
-      _delegate.{{function:javaName}}({{#function:args}}{{field:javaName}},{{/function:args}}rpcOptions).block();
+      {{function:javaName}}Wrapper({{#function:args}}{{field:javaName}},{{/function:args}}rpcOptions);
     {{/function:voidType}}
     {{^function:voidType}}
-      return _delegate.{{function:javaName}}({{#function:args}}{{field:javaName}},{{/function:args}}rpcOptions).block();
+      return {{function:javaName}}Wrapper({{#function:args}}{{field:javaName}},{{/function:args}}rpcOptions).getData();
     {{/function:voidType}}
   }
 
@@ -72,7 +72,16 @@ public class {{service:javaCapitalName}}ReactiveBlockingWrapper {{#service:exten
     com.facebook.thrift.client.RpcOptions rpcOptions){{!
       Exceptions
     }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
-      return _delegate.{{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}rpcOptions).block();
+      try {
+        return _delegate.{{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}rpcOptions).block();
+      } catch (Throwable t) {
+        {{#function:exceptions}}
+        if (t instanceof {{#field:type}}{{> BoxedType}}{{/field:type}}) {
+          throw ({{#field:type}}{{> BoxedType}}{{/field:type}})t;
+        }
+        {{/function:exceptions}}
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
   {{/service:singleRequestFunctions}}
 

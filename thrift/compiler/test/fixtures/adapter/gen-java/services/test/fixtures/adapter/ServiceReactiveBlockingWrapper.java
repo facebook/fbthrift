@@ -29,7 +29,7 @@ public class ServiceReactiveBlockingWrapper
 
   @java.lang.Override
   public int func( final String arg1, final String arg2, final test.fixtures.adapter.Foo arg3) throws org.apache.thrift.TException {
-      return _delegate.func(arg1, arg2, arg3).block();
+      return funcWrapper(arg1, arg2, arg3, com.facebook.thrift.client.RpcOptions.EMPTY).getData();
   }
 
   @java.lang.Override
@@ -38,7 +38,7 @@ public class ServiceReactiveBlockingWrapper
         final String arg2,
         final test.fixtures.adapter.Foo arg3,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.func(arg1,arg2,arg3,rpcOptions).block();
+      return funcWrapper(arg1,arg2,arg3,rpcOptions).getData();
   }
 
   @java.lang.Override
@@ -47,7 +47,11 @@ public class ServiceReactiveBlockingWrapper
     final String arg2,
     final test.fixtures.adapter.Foo arg3,
     com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.funcWrapper(arg1, arg2, arg3, rpcOptions).block();
+      try {
+        return _delegate.funcWrapper(arg1, arg2, arg3, rpcOptions).block();
+      } catch (Throwable t) {
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
 
 }

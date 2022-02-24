@@ -29,67 +29,101 @@ public class RaiserReactiveBlockingWrapper
 
   @java.lang.Override
   public void doBland() throws org.apache.thrift.TException {
-      _delegate.doBland().block();
+      doBlandWrapper(com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
   @java.lang.Override
   public void doBland(
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.doBland(rpcOptions).block();
+      doBlandWrapper(rpcOptions);
   }
 
   @java.lang.Override
   public com.facebook.thrift.client.ResponseWrapper<Void> doBlandWrapper(
     com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.doBlandWrapper(rpcOptions).block();
+      try {
+        return _delegate.doBlandWrapper(rpcOptions).block();
+      } catch (Throwable t) {
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
   @java.lang.Override
   public void doRaise() throws test.fixtures.exceptions.Banal, test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
-      _delegate.doRaise().block();
+      doRaiseWrapper(com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
   @java.lang.Override
   public void doRaise(
         com.facebook.thrift.client.RpcOptions rpcOptions) throws test.fixtures.exceptions.Banal, test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
-      _delegate.doRaise(rpcOptions).block();
+      doRaiseWrapper(rpcOptions);
   }
 
   @java.lang.Override
   public com.facebook.thrift.client.ResponseWrapper<Void> doRaiseWrapper(
     com.facebook.thrift.client.RpcOptions rpcOptions) throws test.fixtures.exceptions.Banal, test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
-      return _delegate.doRaiseWrapper(rpcOptions).block();
+      try {
+        return _delegate.doRaiseWrapper(rpcOptions).block();
+      } catch (Throwable t) {
+        if (t instanceof test.fixtures.exceptions.Banal) {
+          throw (test.fixtures.exceptions.Banal)t;
+        }
+        if (t instanceof test.fixtures.exceptions.Fiery) {
+          throw (test.fixtures.exceptions.Fiery)t;
+        }
+        if (t instanceof test.fixtures.exceptions.Serious) {
+          throw (test.fixtures.exceptions.Serious)t;
+        }
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
   @java.lang.Override
   public String get200() throws org.apache.thrift.TException {
-      return _delegate.get200().block();
+      return get200Wrapper(com.facebook.thrift.client.RpcOptions.EMPTY).getData();
   }
 
   @java.lang.Override
   public String get200(
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.get200(rpcOptions).block();
+      return get200Wrapper(rpcOptions).getData();
   }
 
   @java.lang.Override
   public com.facebook.thrift.client.ResponseWrapper<String> get200Wrapper(
     com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.get200Wrapper(rpcOptions).block();
+      try {
+        return _delegate.get200Wrapper(rpcOptions).block();
+      } catch (Throwable t) {
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
   @java.lang.Override
   public String get500() throws test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Banal, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
-      return _delegate.get500().block();
+      return get500Wrapper(com.facebook.thrift.client.RpcOptions.EMPTY).getData();
   }
 
   @java.lang.Override
   public String get500(
         com.facebook.thrift.client.RpcOptions rpcOptions) throws test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Banal, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
-      return _delegate.get500(rpcOptions).block();
+      return get500Wrapper(rpcOptions).getData();
   }
 
   @java.lang.Override
   public com.facebook.thrift.client.ResponseWrapper<String> get500Wrapper(
     com.facebook.thrift.client.RpcOptions rpcOptions) throws test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Banal, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
-      return _delegate.get500Wrapper(rpcOptions).block();
+      try {
+        return _delegate.get500Wrapper(rpcOptions).block();
+      } catch (Throwable t) {
+        if (t instanceof test.fixtures.exceptions.Fiery) {
+          throw (test.fixtures.exceptions.Fiery)t;
+        }
+        if (t instanceof test.fixtures.exceptions.Banal) {
+          throw (test.fixtures.exceptions.Banal)t;
+        }
+        if (t instanceof test.fixtures.exceptions.Serious) {
+          throw (test.fixtures.exceptions.Serious)t;
+        }
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
 
 }

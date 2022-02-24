@@ -29,19 +29,23 @@ public class MyServiceReactiveBlockingWrapper
 
   @java.lang.Override
   public void foo() throws org.apache.thrift.TException {
-      _delegate.foo().block();
+      fooWrapper(com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
   @java.lang.Override
   public void foo(
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.foo(rpcOptions).block();
+      fooWrapper(rpcOptions);
   }
 
   @java.lang.Override
   public com.facebook.thrift.client.ResponseWrapper<Void> fooWrapper(
     com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.fooWrapper(rpcOptions).block();
+      try {
+        return _delegate.fooWrapper(rpcOptions).block();
+      } catch (Throwable t) {
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
 
   public MyInteraction createMyInteraction() {

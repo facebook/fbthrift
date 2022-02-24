@@ -29,93 +29,113 @@ public class NestedContainersReactiveBlockingWrapper
 
   @java.lang.Override
   public void mapList( final Map<Integer, List<Integer>> foo) throws org.apache.thrift.TException {
-      _delegate.mapList(foo).block();
+      mapListWrapper(foo, com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
   @java.lang.Override
   public void mapList(
         final Map<Integer, List<Integer>> foo,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.mapList(foo,rpcOptions).block();
+      mapListWrapper(foo,rpcOptions);
   }
 
   @java.lang.Override
   public com.facebook.thrift.client.ResponseWrapper<Void> mapListWrapper(
     final Map<Integer, List<Integer>> foo,
     com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.mapListWrapper(foo, rpcOptions).block();
+      try {
+        return _delegate.mapListWrapper(foo, rpcOptions).block();
+      } catch (Throwable t) {
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
   @java.lang.Override
   public void mapSet( final Map<Integer, Set<Integer>> foo) throws org.apache.thrift.TException {
-      _delegate.mapSet(foo).block();
+      mapSetWrapper(foo, com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
   @java.lang.Override
   public void mapSet(
         final Map<Integer, Set<Integer>> foo,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.mapSet(foo,rpcOptions).block();
+      mapSetWrapper(foo,rpcOptions);
   }
 
   @java.lang.Override
   public com.facebook.thrift.client.ResponseWrapper<Void> mapSetWrapper(
     final Map<Integer, Set<Integer>> foo,
     com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.mapSetWrapper(foo, rpcOptions).block();
+      try {
+        return _delegate.mapSetWrapper(foo, rpcOptions).block();
+      } catch (Throwable t) {
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
   @java.lang.Override
   public void listMap( final List<Map<Integer, Integer>> foo) throws org.apache.thrift.TException {
-      _delegate.listMap(foo).block();
+      listMapWrapper(foo, com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
   @java.lang.Override
   public void listMap(
         final List<Map<Integer, Integer>> foo,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.listMap(foo,rpcOptions).block();
+      listMapWrapper(foo,rpcOptions);
   }
 
   @java.lang.Override
   public com.facebook.thrift.client.ResponseWrapper<Void> listMapWrapper(
     final List<Map<Integer, Integer>> foo,
     com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.listMapWrapper(foo, rpcOptions).block();
+      try {
+        return _delegate.listMapWrapper(foo, rpcOptions).block();
+      } catch (Throwable t) {
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
   @java.lang.Override
   public void listSet( final List<Set<Integer>> foo) throws org.apache.thrift.TException {
-      _delegate.listSet(foo).block();
+      listSetWrapper(foo, com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
   @java.lang.Override
   public void listSet(
         final List<Set<Integer>> foo,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.listSet(foo,rpcOptions).block();
+      listSetWrapper(foo,rpcOptions);
   }
 
   @java.lang.Override
   public com.facebook.thrift.client.ResponseWrapper<Void> listSetWrapper(
     final List<Set<Integer>> foo,
     com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.listSetWrapper(foo, rpcOptions).block();
+      try {
+        return _delegate.listSetWrapper(foo, rpcOptions).block();
+      } catch (Throwable t) {
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
   @java.lang.Override
   public void turtles( final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo) throws org.apache.thrift.TException {
-      _delegate.turtles(foo).block();
+      turtlesWrapper(foo, com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
   @java.lang.Override
   public void turtles(
         final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.turtles(foo,rpcOptions).block();
+      turtlesWrapper(foo,rpcOptions);
   }
 
   @java.lang.Override
   public com.facebook.thrift.client.ResponseWrapper<Void> turtlesWrapper(
     final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo,
     com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.turtlesWrapper(foo, rpcOptions).block();
+      try {
+        return _delegate.turtlesWrapper(foo, rpcOptions).block();
+      } catch (Throwable t) {
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
 
 }

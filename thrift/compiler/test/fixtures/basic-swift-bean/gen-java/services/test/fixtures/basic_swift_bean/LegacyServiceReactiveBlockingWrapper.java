@@ -29,7 +29,7 @@ public class LegacyServiceReactiveBlockingWrapper
 
   @java.lang.Override
   public Map<String, List<Integer>> getPoints( final Set<String> key, final long legacyStuff) throws org.apache.thrift.TException {
-      return _delegate.getPoints(key, legacyStuff).block();
+      return getPointsWrapper(key, legacyStuff, com.facebook.thrift.client.RpcOptions.EMPTY).getData();
   }
 
   @java.lang.Override
@@ -37,7 +37,7 @@ public class LegacyServiceReactiveBlockingWrapper
         final Set<String> key,
         final long legacyStuff,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.getPoints(key,legacyStuff,rpcOptions).block();
+      return getPointsWrapper(key,legacyStuff,rpcOptions).getData();
   }
 
   @java.lang.Override
@@ -45,7 +45,11 @@ public class LegacyServiceReactiveBlockingWrapper
     final Set<String> key,
     final long legacyStuff,
     com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.getPointsWrapper(key, legacyStuff, rpcOptions).block();
+      try {
+        return _delegate.getPointsWrapper(key, legacyStuff, rpcOptions).block();
+      } catch (Throwable t) {
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
 
 }

@@ -29,39 +29,47 @@ public class DbMixedStackArgumentsReactiveBlockingWrapper
 
   @java.lang.Override
   public byte[] getDataByKey0( final String key) throws org.apache.thrift.TException {
-      return _delegate.getDataByKey0(key).block();
+      return getDataByKey0Wrapper(key, com.facebook.thrift.client.RpcOptions.EMPTY).getData();
   }
 
   @java.lang.Override
   public byte[] getDataByKey0(
         final String key,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.getDataByKey0(key,rpcOptions).block();
+      return getDataByKey0Wrapper(key,rpcOptions).getData();
   }
 
   @java.lang.Override
   public com.facebook.thrift.client.ResponseWrapper<byte[]> getDataByKey0Wrapper(
     final String key,
     com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.getDataByKey0Wrapper(key, rpcOptions).block();
+      try {
+        return _delegate.getDataByKey0Wrapper(key, rpcOptions).block();
+      } catch (Throwable t) {
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
   @java.lang.Override
   public byte[] getDataByKey1( final String key) throws org.apache.thrift.TException {
-      return _delegate.getDataByKey1(key).block();
+      return getDataByKey1Wrapper(key, com.facebook.thrift.client.RpcOptions.EMPTY).getData();
   }
 
   @java.lang.Override
   public byte[] getDataByKey1(
         final String key,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.getDataByKey1(key,rpcOptions).block();
+      return getDataByKey1Wrapper(key,rpcOptions).getData();
   }
 
   @java.lang.Override
   public com.facebook.thrift.client.ResponseWrapper<byte[]> getDataByKey1Wrapper(
     final String key,
     com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.getDataByKey1Wrapper(key, rpcOptions).block();
+      try {
+        return _delegate.getDataByKey1Wrapper(key, rpcOptions).block();
+      } catch (Throwable t) {
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
 
 }

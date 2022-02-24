@@ -29,75 +29,91 @@ public class MyServiceReactiveBlockingWrapper
 
   @java.lang.Override
   public void ping() throws org.apache.thrift.TException {
-      _delegate.ping().block();
+      pingWrapper(com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
   @java.lang.Override
   public void ping(
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.ping(rpcOptions).block();
+      pingWrapper(rpcOptions);
   }
 
   @java.lang.Override
   public com.facebook.thrift.client.ResponseWrapper<Void> pingWrapper(
     com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.pingWrapper(rpcOptions).block();
+      try {
+        return _delegate.pingWrapper(rpcOptions).block();
+      } catch (Throwable t) {
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
   @java.lang.Override
   public String getRandomData() throws org.apache.thrift.TException {
-      return _delegate.getRandomData().block();
+      return getRandomDataWrapper(com.facebook.thrift.client.RpcOptions.EMPTY).getData();
   }
 
   @java.lang.Override
   public String getRandomData(
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.getRandomData(rpcOptions).block();
+      return getRandomDataWrapper(rpcOptions).getData();
   }
 
   @java.lang.Override
   public com.facebook.thrift.client.ResponseWrapper<String> getRandomDataWrapper(
     com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.getRandomDataWrapper(rpcOptions).block();
+      try {
+        return _delegate.getRandomDataWrapper(rpcOptions).block();
+      } catch (Throwable t) {
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
   @java.lang.Override
   public boolean hasDataById( final long id) throws org.apache.thrift.TException {
-      return _delegate.hasDataById(id).block();
+      return hasDataByIdWrapper(id, com.facebook.thrift.client.RpcOptions.EMPTY).getData();
   }
 
   @java.lang.Override
   public boolean hasDataById(
         final long id,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.hasDataById(id,rpcOptions).block();
+      return hasDataByIdWrapper(id,rpcOptions).getData();
   }
 
   @java.lang.Override
   public com.facebook.thrift.client.ResponseWrapper<Boolean> hasDataByIdWrapper(
     final long id,
     com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.hasDataByIdWrapper(id, rpcOptions).block();
+      try {
+        return _delegate.hasDataByIdWrapper(id, rpcOptions).block();
+      } catch (Throwable t) {
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
   @java.lang.Override
   public String getDataById( final long id) throws org.apache.thrift.TException {
-      return _delegate.getDataById(id).block();
+      return getDataByIdWrapper(id, com.facebook.thrift.client.RpcOptions.EMPTY).getData();
   }
 
   @java.lang.Override
   public String getDataById(
         final long id,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.getDataById(id,rpcOptions).block();
+      return getDataByIdWrapper(id,rpcOptions).getData();
   }
 
   @java.lang.Override
   public com.facebook.thrift.client.ResponseWrapper<String> getDataByIdWrapper(
     final long id,
     com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.getDataByIdWrapper(id, rpcOptions).block();
+      try {
+        return _delegate.getDataByIdWrapper(id, rpcOptions).block();
+      } catch (Throwable t) {
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
   @java.lang.Override
   public void putDataById( final long id, final String data) throws org.apache.thrift.TException {
-      _delegate.putDataById(id, data).block();
+      putDataByIdWrapper(id, data, com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
   @java.lang.Override
@@ -105,7 +121,7 @@ public class MyServiceReactiveBlockingWrapper
         final long id,
         final String data,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.putDataById(id,data,rpcOptions).block();
+      putDataByIdWrapper(id,data,rpcOptions);
   }
 
   @java.lang.Override
@@ -113,11 +129,15 @@ public class MyServiceReactiveBlockingWrapper
     final long id,
     final String data,
     com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.putDataByIdWrapper(id, data, rpcOptions).block();
+      try {
+        return _delegate.putDataByIdWrapper(id, data, rpcOptions).block();
+      } catch (Throwable t) {
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
   @java.lang.Override
   public void lobDataById( final long id, final String data) throws org.apache.thrift.TException {
-      _delegate.lobDataById(id, data).block();
+      lobDataByIdWrapper(id, data, com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
   @java.lang.Override
@@ -125,7 +145,7 @@ public class MyServiceReactiveBlockingWrapper
         final long id,
         final String data,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.lobDataById(id,data,rpcOptions).block();
+      lobDataByIdWrapper(id,data,rpcOptions);
   }
 
   @java.lang.Override
@@ -133,23 +153,31 @@ public class MyServiceReactiveBlockingWrapper
     final long id,
     final String data,
     com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.lobDataByIdWrapper(id, data, rpcOptions).block();
+      try {
+        return _delegate.lobDataByIdWrapper(id, data, rpcOptions).block();
+      } catch (Throwable t) {
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
   @java.lang.Override
   public void doNothing() throws org.apache.thrift.TException {
-      _delegate.doNothing().block();
+      doNothingWrapper(com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
   @java.lang.Override
   public void doNothing(
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.doNothing(rpcOptions).block();
+      doNothingWrapper(rpcOptions);
   }
 
   @java.lang.Override
   public com.facebook.thrift.client.ResponseWrapper<Void> doNothingWrapper(
     com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.doNothingWrapper(rpcOptions).block();
+      try {
+        return _delegate.doNothingWrapper(rpcOptions).block();
+      } catch (Throwable t) {
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
 
 }

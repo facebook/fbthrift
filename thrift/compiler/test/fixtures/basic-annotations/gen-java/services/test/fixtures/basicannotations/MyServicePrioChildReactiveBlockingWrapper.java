@@ -29,19 +29,23 @@ public class MyServicePrioChildReactiveBlockingWrapper  extends test.fixtures.ba
 
   @java.lang.Override
   public void pang() throws org.apache.thrift.TException {
-      _delegate.pang().block();
+      pangWrapper(com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
   @java.lang.Override
   public void pang(
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.pang(rpcOptions).block();
+      pangWrapper(rpcOptions);
   }
 
   @java.lang.Override
   public com.facebook.thrift.client.ResponseWrapper<Void> pangWrapper(
     com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.pangWrapper(rpcOptions).block();
+      try {
+        return _delegate.pangWrapper(rpcOptions).block();
+      } catch (Throwable t) {
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
 
 }

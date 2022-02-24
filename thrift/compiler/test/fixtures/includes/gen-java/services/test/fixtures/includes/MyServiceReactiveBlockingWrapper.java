@@ -29,7 +29,7 @@ public class MyServiceReactiveBlockingWrapper
 
   @java.lang.Override
   public void query( final test.fixtures.includes.MyStruct s, final test.fixtures.includes.includes.Included i) throws org.apache.thrift.TException {
-      _delegate.query(s, i).block();
+      queryWrapper(s, i, com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
   @java.lang.Override
@@ -37,7 +37,7 @@ public class MyServiceReactiveBlockingWrapper
         final test.fixtures.includes.MyStruct s,
         final test.fixtures.includes.includes.Included i,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.query(s,i,rpcOptions).block();
+      queryWrapper(s,i,rpcOptions);
   }
 
   @java.lang.Override
@@ -45,11 +45,15 @@ public class MyServiceReactiveBlockingWrapper
     final test.fixtures.includes.MyStruct s,
     final test.fixtures.includes.includes.Included i,
     com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.queryWrapper(s, i, rpcOptions).block();
+      try {
+        return _delegate.queryWrapper(s, i, rpcOptions).block();
+      } catch (Throwable t) {
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
   @java.lang.Override
   public void hasArgDocs( final test.fixtures.includes.MyStruct s, final test.fixtures.includes.includes.Included i) throws org.apache.thrift.TException {
-      _delegate.hasArgDocs(s, i).block();
+      hasArgDocsWrapper(s, i, com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
   @java.lang.Override
@@ -57,7 +61,7 @@ public class MyServiceReactiveBlockingWrapper
         final test.fixtures.includes.MyStruct s,
         final test.fixtures.includes.includes.Included i,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.hasArgDocs(s,i,rpcOptions).block();
+      hasArgDocsWrapper(s,i,rpcOptions);
   }
 
   @java.lang.Override
@@ -65,7 +69,11 @@ public class MyServiceReactiveBlockingWrapper
     final test.fixtures.includes.MyStruct s,
     final test.fixtures.includes.includes.Included i,
     com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.hasArgDocsWrapper(s, i, rpcOptions).block();
+      try {
+        return _delegate.hasArgDocsWrapper(s, i, rpcOptions).block();
+      } catch (Throwable t) {
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
 
 }

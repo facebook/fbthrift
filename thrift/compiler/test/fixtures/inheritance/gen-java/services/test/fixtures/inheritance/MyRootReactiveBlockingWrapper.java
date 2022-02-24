@@ -29,19 +29,23 @@ public class MyRootReactiveBlockingWrapper
 
   @java.lang.Override
   public void doRoot() throws org.apache.thrift.TException {
-      _delegate.doRoot().block();
+      doRootWrapper(com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
   @java.lang.Override
   public void doRoot(
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      _delegate.doRoot(rpcOptions).block();
+      doRootWrapper(rpcOptions);
   }
 
   @java.lang.Override
   public com.facebook.thrift.client.ResponseWrapper<Void> doRootWrapper(
     com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.doRootWrapper(rpcOptions).block();
+      try {
+        return _delegate.doRootWrapper(rpcOptions).block();
+      } catch (Throwable t) {
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
   }
 
 }
