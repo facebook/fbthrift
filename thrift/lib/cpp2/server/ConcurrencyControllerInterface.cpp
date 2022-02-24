@@ -14,16 +14,55 @@
  * limitations under the License.
  */
 
-#include <folly/GLog.h>
-
+#include <atomic>
+#include <mutex>
+#include <folly/Indestructible.h>
+#include <folly/Synchronized.h>
 #include <thrift/lib/cpp2/server/ConcurrencyControllerInterface.h>
 
 namespace apache::thrift {
+
+using Observer = ConcurrencyControllerInterface::Observer;
 
 ConcurrencyControllerInterface::~ConcurrencyControllerInterface() {}
 
 void ConcurrencyControllerInterface::onRequestFinished(UserData) {
   LOG(FATAL) << "Unimplemented onRequestFinished called";
+}
+
+auto& getObserverStorage() {
+  class Storage {
+   public:
+    void set(std::shared_ptr<Observer> o) {
+      static std::once_flag observerSetFlag;
+      std::call_once(observerSetFlag, [&] {
+        instance_ = std::move(o);
+        isset_.store(true, std::memory_order_release);
+      });
+    }
+    Observer* get() {
+      if (!isset_.load(std::memory_order_acquire)) {
+        return {};
+      }
+      return instance_.get();
+    }
+
+   private:
+    std::atomic<bool> isset_{false};
+    std::shared_ptr<Observer> instance_;
+  };
+
+  static auto observer = folly::Indestructible<Storage>();
+  return *observer;
+}
+
+Observer* ConcurrencyControllerInterface::getGlobalObserver() {
+  return getObserverStorage().get();
+}
+
+void ConcurrencyControllerInterface::setGlobalObserver(
+    std::shared_ptr<Observer> observer) {
+  getObserverStorage().set(std::move(observer));
 }
 
 } // namespace apache::thrift

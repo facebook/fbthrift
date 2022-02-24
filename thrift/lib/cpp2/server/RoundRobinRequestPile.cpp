@@ -95,6 +95,11 @@ std::optional<ServerRequestRejection> RoundRobinRequestPile::enqueue(
     return std::nullopt;
   }
 
+  auto& info =
+      apache::thrift::detail::ServerRequestHelper::processInfo(request);
+
+  info.queueBegin = std::chrono::steady_clock::now();
+
   if (opts_.numMaxRequests != 0) {
     auto res = requestQueues_[pri][bucket].tryPush(
         std::move(request), opts_.numMaxRequests);

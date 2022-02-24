@@ -16,11 +16,14 @@
 
 #pragma once
 
+#include <chrono>
 #include <cstdint>
 #include <memory>
 #include <string_view>
 
 namespace apache::thrift {
+
+class ServerRequest;
 
 // This common interface to all concurrency controllers. The details of
 // construction are left to implementations and/or factories.
@@ -30,6 +33,27 @@ namespace apache::thrift {
 // a request pile.
 class ConcurrencyControllerInterface {
  public:
+  struct PerRequestStats {
+    std::chrono::steady_clock::time_point queueBegin;
+    std::chrono::steady_clock::time_point workBegin;
+    std::chrono::steady_clock::time_point workEnd;
+  };
+
+  class Observer {
+   public:
+    virtual ~Observer() {}
+
+    // callback right before request is executed
+    virtual PerRequestStats onExecute(ServerRequest& /* request  */) {
+      return PerRequestStats();
+    }
+
+    // callback right after the request is finished execution
+    // This is more of the handler code completion instead
+    // of the request hits its end of liftcycle
+    virtual void onFinishExecution(PerRequestStats& /* stats  */) {}
+  };
+
   virtual ~ConcurrencyControllerInterface();
 
   // Set the limit for simultanous requests. 0 indicates unlimites. This is
@@ -60,6 +84,14 @@ class ConcurrencyControllerInterface {
   // Stops the concurrency controller. Stops dispatching new requests. This is
   // thread safe and does not block.
   virtual void stop() = 0;
+
+  // set the global observer of the concurrency controller
+  // This method is not thread-safe and should only be called
+  // once from the main thread
+  static void setGlobalObserver(std::shared_ptr<Observer> observer);
+
+  // thread-safe. grab the current global observer if any
+  static Observer* getGlobalObserver();
 };
 
 } // namespace apache::thrift

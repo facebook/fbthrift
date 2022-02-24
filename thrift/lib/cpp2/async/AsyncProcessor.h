@@ -374,6 +374,10 @@ class ServerRequestHelper;
 // as narrow as possible as this type is used in several customization points.
 class ServerRequest {
  public:
+  struct ProcessInfo {
+    std::chrono::steady_clock::time_point queueBegin;
+  };
+
   // Eventually we won't need a default ctor once there is no path that doesn't
   // use the ServerRequest and resource pools.
   ServerRequest() : serializedRequest_(std::unique_ptr<folly::IOBuf>{}) {}
@@ -502,6 +506,8 @@ class ServerRequest {
         sr.notifyConcurrencyControllerUserData_};
   }
 
+  static ProcessInfo& processInfo(ServerRequest& sr) { return sr.processInfo_; }
+
  private:
   ResponseChannelRequest::UniquePtr request_;
   SerializedCompressedRequest serializedRequest_;
@@ -517,6 +523,7 @@ class ServerRequest {
   RequestPileInterface::UserData notifyRequestPileUserData_;
   ConcurrencyControllerInterface* notifyConcurrencyController_{nullptr};
   ConcurrencyControllerInterface::UserData notifyConcurrencyControllerUserData_;
+  ProcessInfo processInfo_;
 };
 
 namespace detail {
@@ -529,6 +536,7 @@ class ServerRequestHelper : public ServerRequest {
   using ServerRequest::contextStack;
   using ServerRequest::eventBase;
   using ServerRequest::executor;
+  using ServerRequest::processInfo;
   using ServerRequest::protocol;
   using ServerRequest::request;
   using ServerRequest::requestContext;
