@@ -131,6 +131,14 @@ public class ServerStats {
     this.writeTimeOneHour = new Distribution(ExponentialDecay.seconds(3600));
   }
 
+  public void setNiftyMetrics(NiftyMetrics niftyMetrics) {
+    this.niftyMetrics = niftyMetrics;
+  }
+
+  public void setThreadPoolExecutor(ThreadPoolExecutor threadPoolExecutor) {
+    this.threadPoolExecutor = threadPoolExecutor;
+  }
+
   public void requestReceived(long readTimeDuration, String methodName) {
     receivedRequests.incrementAndGet();
     receivedRequestsOneMin.add(1);
