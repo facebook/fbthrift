@@ -266,6 +266,11 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
           [timeoutMs =
                THRIFT_FLAG_OBSERVE(server_default_socket_queue_timeout_ms)]()
               -> std::chrono::nanoseconds {
+            // Disable timeout for debug builds and unit tests by default - this
+            // is a production overload protection feature.
+            if (folly::kIsDebug) {
+              return std::chrono::milliseconds::zero();
+            }
             return std::chrono::milliseconds(**timeoutMs);
           })};
 

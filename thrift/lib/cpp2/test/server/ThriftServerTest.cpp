@@ -3179,46 +3179,43 @@ TEST(ThriftServer, SocketQueueTimeout) {
   };
 
   constexpr auto kDefaultTimeout = 10ms;
-  constexpr auto kThriftFlagObserverTimeout = 20ms;
-  constexpr auto kBaselineTimeout = 30ms;
+  constexpr auto kBaselineTimeout = 20ms;
+  constexpr auto kBaselineTimeoutUpdated = 30ms;
   constexpr auto kOverrideTimeout = 40ms;
   THRIFT_FLAG_SET_MOCK(
       server_default_socket_queue_timeout_ms, kDefaultTimeout.count());
 
   ScopedServerThread st(baseServer);
 
-  // Should fall back to thrift flag by default
-  checkSocketQueueTimeout(kDefaultTimeout);
+  // Unit tests do not follow the default Thrift flag and socket queue timeout
+  // should always be disabled here
+  checkSocketQueueTimeout(0ms);
 
-  // Should trigger thrift flag observer
-  THRIFT_FLAG_SET_MOCK(
-      server_default_socket_queue_timeout_ms,
-      kThriftFlagObserverTimeout.count());
-  folly::observer_detail::ObserverManager::waitForAllUpdates();
-  checkSocketQueueTimeout(kThriftFlagObserverTimeout);
-
-  // Should use config instead of thrift flag
+  folly::observer::SimpleObservable<std::chrono::nanoseconds> baseline{
+      kBaselineTimeout};
+  // Should trigger value to change
   baseServer->setSocketQueueTimeout(
-      kBaselineTimeout, AttributeSource::BASELINE);
+      baseline.getObserver(), AttributeSource::BASELINE);
   folly::observer_detail::ObserverManager::waitForAllUpdates();
   checkSocketQueueTimeout(kBaselineTimeout);
+
+  // Should use updated config
+  baseline.setValue(kBaselineTimeoutUpdated);
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
+  checkSocketQueueTimeout(kBaselineTimeoutUpdated);
 
   // Should use override instead of config
   baseServer->setSocketQueueTimeout(kOverrideTimeout);
   checkSocketQueueTimeout(kOverrideTimeout);
 
-  THRIFT_FLAG_SET_MOCK(
-      server_default_socket_queue_timeout_ms, kDefaultTimeout.count());
-  folly::observer_detail::ObserverManager::waitForAllUpdates();
-
-  // Should go back to config instead of override
+  // Should go back to baseline instead of override
   baseServer->setSocketQueueTimeout(folly::none);
-  checkSocketQueueTimeout(kBaselineTimeout);
+  checkSocketQueueTimeout(kBaselineTimeoutUpdated);
 
-  // Should go back to using thrift flag instead of flag
+  // Should go back to using disabled
   baseServer->setSocketQueueTimeout(folly::none, AttributeSource::BASELINE);
   folly::observer_detail::ObserverManager::waitForAllUpdates();
-  checkSocketQueueTimeout(kDefaultTimeout);
+  checkSocketQueueTimeout(0ms);
 }
 
 TEST(ThriftServer, RocketOnly) {

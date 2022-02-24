@@ -26,11 +26,12 @@
 #include <folly/Conv.h>
 #include <folly/GLog.h>
 #include <folly/Memory.h>
+#include <folly/Portability.h>
 #include <folly/Random.h>
 #include <folly/ScopeGuard.h>
 #include <folly/portability/Sockets.h>
 
-THRIFT_FLAG_DEFINE_int64(server_default_socket_queue_timeout_ms, 0);
+THRIFT_FLAG_DEFINE_int64(server_default_socket_queue_timeout_ms, 100);
 THRIFT_FLAG_DEFINE_int64(server_default_queue_timeout_ms, 100);
 
 THRIFT_FLAG_DEFINE_int64(server_polled_service_health_liveness_ms, 100);
