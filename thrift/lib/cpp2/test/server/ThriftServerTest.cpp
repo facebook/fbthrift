@@ -3024,6 +3024,35 @@ TEST(ThriftServer, RocketOverSSLNoALPN) {
   EXPECT_EQ(response, "test64");
 }
 
+TEST(ThriftServer, PooledRocketSyncChannel) {
+  auto server = std::static_pointer_cast<ThriftServer>(
+      TestThriftServerFactory<TestInterface>().create());
+  setupServerSSL(*server);
+  ScopedServerThread sst(std::move(server));
+
+  auto port = sst.getAddress()->getPort();
+  auto clientEvbThread = std::make_shared<folly::ScopedEventBaseThread>();
+
+  auto channel = apache::thrift::PooledRequestChannel::newSyncChannel(
+      [clientEvbThread = std::move(
+           clientEvbThread)]() -> folly::Executor::KeepAlive<folly::EventBase> {
+        return {clientEvbThread->getEventBase()};
+      },
+      [port](folly::EventBase& evb) mutable {
+        folly::SocketAddress loopback("::1", port);
+        auto ctx = makeClientSslContext();
+        folly::AsyncSSLSocket::UniquePtr sslSock(
+            new folly::AsyncSSLSocket(ctx, &evb));
+        sslSock->connect(nullptr /* connect callback */, loopback);
+        return RocketClientChannel::newChannel(std::move(sslSock));
+      });
+  TestServiceAsyncClient client(std::move(channel));
+
+  std::string response;
+  client.sync_sendResponse(response, 64);
+  EXPECT_EQ(response, "test64");
+}
+
 TEST(ThriftServer, AlpnAllowMismatch) {
   THRIFT_FLAG_SET_MOCK(alpn_allow_mismatch, true);
 

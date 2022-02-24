@@ -35,6 +35,8 @@ class PooledRequestChannel : public RequestChannel {
   using Impl = RequestChannel;
   using ImplPtr = std::shared_ptr<Impl>;
   using ImplCreator = folly::Function<ImplPtr(folly::EventBase&)>;
+  using EventBaseProvider = folly::Function<folly::Executor::KeepAlive<
+      folly::EventBase>()>; // may return invalid keepalive
 
   // Recommended. Uses the global IO executor and does not support future_ /
   // unprefixed (callback) methods.
@@ -76,6 +78,19 @@ class PooledRequestChannel : public RequestChannel {
         new PooledRequestChannel(
             nullptr,
             wrapWeakPtr(std::move(executor)),
+            std::move(implCreator),
+            protocolId),
+        {}};
+  }
+
+  static RequestChannel::Ptr newSyncChannel(
+      EventBaseProvider evbProvider,
+      ImplCreator implCreator,
+      protocol::PROTOCOL_TYPES protocolId = protocol::T_COMPACT_PROTOCOL) {
+    return {
+        new PooledRequestChannel(
+            nullptr,
+            std::move(evbProvider),
             std::move(implCreator),
             protocolId),
         {}};
@@ -148,9 +163,6 @@ class PooledRequestChannel : public RequestChannel {
       SendFunc&& sendFunc, folly::Executor::KeepAlive<folly::EventBase>&& evb);
 
  private:
-  using EventBaseProvider = folly::Function<folly::Executor::KeepAlive<
-      folly::EventBase>()>; // may return invalid keepalive
-
   PooledRequestChannel(
       folly::Executor* callbackExecutor,
       EventBaseProvider getEventBase,
