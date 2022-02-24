@@ -599,6 +599,7 @@ class mstch_cpp2_field : public mstch_field {
             {"field:serialization_next_field_type",
              &mstch_cpp2_field::serialization_next_field_type},
             {"field:non_opt_cpp_ref?", &mstch_cpp2_field::non_opt_cpp_ref},
+            {"field:opt_cpp_ref?", &mstch_cpp2_field::opt_cpp_ref},
             {"field:cpp_ref?", &mstch_cpp2_field::cpp_ref},
             {"field:cpp_ref_unique?", &mstch_cpp2_field::cpp_ref_unique},
             {"field:cpp_ref_shared?", &mstch_cpp2_field::cpp_ref_shared},
@@ -664,6 +665,10 @@ class mstch_cpp2_field : public mstch_field {
         !has_option("no_getters_setters");
   }
   mstch::node cpp_ref() { return cpp2::is_explicit_ref(field_); }
+  mstch::node opt_cpp_ref() {
+    return cpp2::is_explicit_ref(field_) &&
+        field_->get_req() == t_field::e_req::optional;
+  }
   mstch::node non_opt_cpp_ref() {
     return cpp2::is_explicit_ref(field_) &&
         field_->get_req() != t_field::e_req::optional;
