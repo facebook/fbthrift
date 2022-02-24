@@ -198,3 +198,70 @@ cdef class ClientBufferedStream__bool(ClientBufferedStream):
 cdef class ServerStream__bool(ServerStream):
     pass
 
+cdef class ClientBufferedStream__i32(ClientBufferedStream):
+
+    @staticmethod
+    cdef _fbthrift_create(cClientBufferedStream[cint32_t]& c_obj, __RpcOptions rpc_options):
+        __fbthrift_inst = ClientBufferedStream__i32(rpc_options)
+        __fbthrift_inst._gen = make_unique[cClientBufferedStreamWrapper[cint32_t]](c_obj)
+        return __fbthrift_inst
+
+    @staticmethod
+    cdef void callback(
+        cFollyTry[__cOptional[cint32_t]]&& result,
+        PyObject* userdata,
+    ):
+        cdef __cOptional[cint32_t] opt_val
+        cdef cint32_t _value
+        stream, pyfuture, rpc_options = <object> userdata
+        if result.hasException():
+            pyfuture.set_exception(
+                thrift.py3.exceptions.create_py_exception(result.exception(), <__RpcOptions>rpc_options)
+            )
+        else:
+            opt_val = result.value()
+            if opt_val.has_value():
+                try:
+                    _value = opt_val.value()
+                    pyfuture.set_result(_value)
+                except Exception as ex:
+                    pyfuture.set_exception(ex.with_trackback(None))
+            else:
+                pyfuture.set_exception(StopAsyncIteration())
+
+    def __anext__(self):
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
+        # to avoid "Future exception was never retrieved" error at SIGINT
+        __future.add_done_callback(lambda x: x.exception())
+        __userdata = (self, __future, self._rpc_options)
+        bridgeCoroTaskWith[__cOptional[cint32_t]](
+            self._executor,
+            deref(self._gen).getNext(),
+            ClientBufferedStream__i32.callback,
+            <PyObject *>__userdata,
+        )
+        return asyncio.shield(__future)
+
+cdef class ServerStream__i32(ServerStream):
+    pass
+
+cdef class ResponseAndClientBufferedStream__i32_i32(ResponseAndClientBufferedStream):
+
+    @staticmethod
+    cdef _fbthrift_create(cResponseAndClientBufferedStream[cint32_t, cint32_t]& c_obj, __RpcOptions rpc_options):
+        __fbthrift_inst = ResponseAndClientBufferedStream__i32_i32()
+        __fbthrift_inst._stream = ClientBufferedStream__i32._fbthrift_create(
+            c_obj.stream, rpc_options,
+        )
+        cdef cint32_t _value = c_obj.response
+        __fbthrift_inst._response = _value
+        return __fbthrift_inst
+
+    def __iter__(self):
+        yield self._response
+        yield self._stream
+
+cdef class ResponseAndServerStream__i32_i32(ResponseAndServerStream):
+    pass
+

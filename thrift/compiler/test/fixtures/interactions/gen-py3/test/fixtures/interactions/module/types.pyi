@@ -53,3 +53,23 @@ class ServerPublisher_cbool(thrift.py3.stream.ServerPublisher):
     def complete(self) -> None: ...
     def send(self, item: pbool) -> None: ...
 
+class ClientBufferedStream__i32(thrift.py3.stream.ClientBufferedStream[int]):
+    def __aiter__(self) -> _typing.AsyncIterator[int]: ...
+    async def __anext__(self) -> int: ...
+
+class ServerStream__i32(thrift.py3.stream.ServerStream[int]):
+    pass
+
+class ServerPublisher_cint32_t(thrift.py3.stream.ServerPublisher):
+    def complete(self) -> None: ...
+    def send(self, item: cint32_t) -> None: ...
+
+class ResponseAndClientBufferedStream__i32_i32(thrift.py3.stream.ResponseAndClientBufferedStream[int, int]):
+    def __iter__(self) -> _typing.Tuple[
+        int,
+        ClientBufferedStream__i32,
+    ]: ...
+
+class ResponseAndServerStream__i32_i32(thrift.py3.stream.ResponseAndServerStream[int, int]):
+    pass
+

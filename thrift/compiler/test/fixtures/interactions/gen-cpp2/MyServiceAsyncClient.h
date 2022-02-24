@@ -10,6 +10,7 @@
 
 #include "thrift/compiler/test/fixtures/interactions/gen-cpp2/module_types.h"
 #include <thrift/lib/cpp2/async/ClientBufferedStream.h>
+#include <thrift/lib/cpp2/async/ClientBufferedStream.h>
 #include <thrift/lib/cpp2/async/ClientSinkBridge.h>
 #include <thrift/lib/cpp2/async/Sink.h>
 
@@ -747,6 +748,287 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
   template <typename Protocol_, typename RpcOptions>
   void fooT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback);
   std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> fooCtx(apache::thrift::RpcOptions* rpcOptions);
+ public:
+  virtual void interact(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_arg);
+  virtual void interact(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_arg);
+ protected:
+  void interactImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_arg, bool stealRpcOptions = false);
+ public:
+
+  virtual void sync_interact(::std::int32_t p_arg);
+  virtual void sync_interact(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_arg);
+
+  virtual folly::Future<folly::Unit> future_interact(::std::int32_t p_arg);
+  virtual folly::SemiFuture<folly::Unit> semifuture_interact(::std::int32_t p_arg);
+  virtual folly::Future<folly::Unit> future_interact(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_arg);
+  virtual folly::SemiFuture<folly::Unit> semifuture_interact(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_arg);
+  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_interact(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_arg);
+  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_interact(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_arg);
+
+#if FOLLY_HAS_COROUTINES
+#if __clang__
+  template <int = 0>
+  folly::coro::Task<void> co_interact(::std::int32_t p_arg) {
+    return co_interact<false>(nullptr, p_arg);
+  }
+  template <int = 0>
+  folly::coro::Task<void> co_interact(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_arg) {
+    return co_interact<true>(&rpcOptions, p_arg);
+  }
+#else
+  folly::coro::Task<void> co_interact(::std::int32_t p_arg) {
+    co_await folly::coro::detachOnCancel(semifuture_interact(p_arg));
+  }
+  folly::coro::Task<void> co_interact(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_arg) {
+    co_await folly::coro::detachOnCancel(semifuture_interact(rpcOptions, p_arg));
+  }
+#endif
+ private:
+  template <bool hasRpcOptions>
+  folly::coro::Task<void> co_interact(apache::thrift::RpcOptions* rpcOptions, ::std::int32_t p_arg) {
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    const bool cancellable = cancelToken.canBeCancelled();
+    apache::thrift::ClientReceiveState returnState;
+    apache::thrift::ClientSyncCallback<false> callback(&returnState);
+    auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+    auto [ctx, header] = interactCtx(rpcOptions);
+    using CancellableCallback = apache::thrift::CancellableRequestClientCallback<false>;
+    auto cancellableCallback = cancellable ? CancellableCallback::create(&callback, channel_) : nullptr;
+    static apache::thrift::RpcOptions defaultRpcOptions;
+    auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
+    if constexpr (hasRpcOptions) {
+      interactImpl(*rpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback), p_arg);
+    } else {
+      interactImpl(defaultRpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback), p_arg);
+    }
+    if (cancellable) {
+      folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
+      co_await callback.co_waitUntilDone();
+    } else {
+      co_await callback.co_waitUntilDone();
+    }
+    if (returnState.isException()) {
+      co_yield folly::coro::co_error(std::move(returnState.exception()));
+    }
+    returnState.resetProtocolId(protocolId);
+    returnState.resetCtx(std::move(ctx));
+    SCOPE_EXIT {
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
+      }
+    };
+    if (auto ew = recv_wrapped_interact(returnState)) {
+      co_yield folly::coro::co_error(std::move(ew));
+    }
+  }
+ public:
+#endif // FOLLY_HAS_COROUTINES
+
+  virtual void interact(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int32_t p_arg);
+
+
+  static folly::exception_wrapper recv_wrapped_interact(::apache::thrift::ClientReceiveState& state);
+  static void recv_interact(::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual void recv_instance_interact(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_interact(::apache::thrift::ClientReceiveState& state);
+ private:
+  template <typename Protocol_, typename RpcOptions>
+  void interactT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_arg);
+  std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> interactCtx(apache::thrift::RpcOptions* rpcOptions);
+ public:
+  virtual void interactFast(std::unique_ptr<apache::thrift::RequestCallback> callback);
+  virtual void interactFast(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ protected:
+  void interactFastImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions = false);
+ public:
+
+  virtual ::std::int32_t sync_interactFast();
+  virtual ::std::int32_t sync_interactFast(apache::thrift::RpcOptions& rpcOptions);
+
+  virtual folly::Future<::std::int32_t> future_interactFast();
+  virtual folly::SemiFuture<::std::int32_t> semifuture_interactFast();
+  virtual folly::Future<::std::int32_t> future_interactFast(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<::std::int32_t> semifuture_interactFast(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_interactFast(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_interactFast(apache::thrift::RpcOptions& rpcOptions);
+
+#if FOLLY_HAS_COROUTINES
+#if __clang__
+  template <int = 0>
+  folly::coro::Task<::std::int32_t> co_interactFast() {
+    return co_interactFast<false>(nullptr);
+  }
+  template <int = 0>
+  folly::coro::Task<::std::int32_t> co_interactFast(apache::thrift::RpcOptions& rpcOptions) {
+    return co_interactFast<true>(&rpcOptions);
+  }
+#else
+  folly::coro::Task<::std::int32_t> co_interactFast() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_interactFast());
+  }
+  folly::coro::Task<::std::int32_t> co_interactFast(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_interactFast(rpcOptions));
+  }
+#endif
+ private:
+  template <bool hasRpcOptions>
+  folly::coro::Task<::std::int32_t> co_interactFast(apache::thrift::RpcOptions* rpcOptions) {
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    const bool cancellable = cancelToken.canBeCancelled();
+    apache::thrift::ClientReceiveState returnState;
+    apache::thrift::ClientSyncCallback<false> callback(&returnState);
+    auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+    auto [ctx, header] = interactFastCtx(rpcOptions);
+    using CancellableCallback = apache::thrift::CancellableRequestClientCallback<false>;
+    auto cancellableCallback = cancellable ? CancellableCallback::create(&callback, channel_) : nullptr;
+    static apache::thrift::RpcOptions defaultRpcOptions;
+    auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
+    if constexpr (hasRpcOptions) {
+      interactFastImpl(*rpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback));
+    } else {
+      interactFastImpl(defaultRpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback));
+    }
+    if (cancellable) {
+      folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
+      co_await callback.co_waitUntilDone();
+    } else {
+      co_await callback.co_waitUntilDone();
+    }
+    if (returnState.isException()) {
+      co_yield folly::coro::co_error(std::move(returnState.exception()));
+    }
+    returnState.resetProtocolId(protocolId);
+    returnState.resetCtx(std::move(ctx));
+    SCOPE_EXIT {
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
+      }
+    };
+    ::std::int32_t _return;
+    if (auto ew = recv_wrapped_interactFast(_return, returnState)) {
+      co_yield folly::coro::co_error(std::move(ew));
+    }
+    co_return _return;
+  }
+ public:
+#endif // FOLLY_HAS_COROUTINES
+
+  virtual void interactFast(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
+
+
+  static folly::exception_wrapper recv_wrapped_interactFast(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state);
+  static ::std::int32_t recv_interactFast(::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual ::std::int32_t recv_instance_interactFast(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_interactFast(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state);
+ private:
+  template <typename Protocol_, typename RpcOptions>
+  void interactFastT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback);
+  std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> interactFastCtx(apache::thrift::RpcOptions* rpcOptions);
+ public:
+  virtual void serialize(std::unique_ptr<apache::thrift::RequestCallback> callback);
+  virtual void serialize(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ protected:
+  void serializeImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::StreamClientCallback* callback, bool stealRpcOptions = false);
+ public:
+
+  virtual apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> sync_serialize();
+  virtual apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> sync_serialize(apache::thrift::RpcOptions& rpcOptions);
+
+  virtual folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> semifuture_serialize();
+  virtual folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> semifuture_serialize(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::pair<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_serialize(apache::thrift::RpcOptions& rpcOptions);
+
+#if FOLLY_HAS_COROUTINES
+#if __clang__
+  template <int = 0>
+  folly::coro::Task<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> co_serialize() {
+    return co_serialize<false>(nullptr);
+  }
+  template <int = 0>
+  folly::coro::Task<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> co_serialize(apache::thrift::RpcOptions& rpcOptions) {
+    return co_serialize<true>(&rpcOptions);
+  }
+#else
+  folly::coro::Task<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> co_serialize() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_serialize());
+  }
+  folly::coro::Task<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> co_serialize(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_serialize(rpcOptions));
+  }
+#endif
+ private:
+  template <bool hasRpcOptions>
+  folly::coro::Task<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> co_serialize(apache::thrift::RpcOptions* rpcOptions) {
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    const bool cancellable = cancelToken.canBeCancelled();
+    apache::thrift::ClientReceiveState returnState;
+    apache::thrift::ClientSyncCallback<false> callback(&returnState);
+    auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+    auto [ctx, header] = serializeCtx(rpcOptions);
+    using CancellableCallback = apache::thrift::CancellableRequestClientCallback<false>;
+    auto cancellableCallback = cancellable ? CancellableCallback::create(&callback, channel_) : nullptr;
+    static apache::thrift::RpcOptions defaultRpcOptions;
+    auto wrappedCallback = apache::thrift::createStreamClientCallback(
+        apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback),
+      hasRpcOptions ? rpcOptions->getBufferOptions() : defaultRpcOptions.getBufferOptions());
+    if constexpr (hasRpcOptions) {
+      serializeImpl(*rpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback));
+    } else {
+      serializeImpl(defaultRpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback));
+    }
+    if (cancellable) {
+      folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
+      co_await callback.co_waitUntilDone();
+    } else {
+      co_await callback.co_waitUntilDone();
+    }
+    if (returnState.isException()) {
+      co_yield folly::coro::co_error(std::move(returnState.exception()));
+    }
+    returnState.resetProtocolId(protocolId);
+    returnState.resetCtx(std::move(ctx));
+    SCOPE_EXIT {
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
+      }
+    };
+    apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> _return;
+    if (auto ew = recv_wrapped_serialize(_return, returnState)) {
+      co_yield folly::coro::co_error(std::move(ew));
+    }
+    co_return _return;
+  }
+ public:
+#endif // FOLLY_HAS_COROUTINES
+
+
+
+  static folly::exception_wrapper recv_wrapped_serialize(apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  static apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> recv_serialize(::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> recv_instance_serialize(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_serialize(apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
+ private:
+  template <typename Protocol_, typename RpcOptions>
+  void serializeT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::StreamClientCallback* callback);
+  std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> serializeCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
 };
 

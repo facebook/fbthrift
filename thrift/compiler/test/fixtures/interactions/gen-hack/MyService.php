@@ -17,6 +17,20 @@ interface MyServiceAsyncIf extends \IThriftAsyncIf {
    *   foo();
    */
   public function foo(): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   interact(1: i32 arg);
+   */
+  public function interact(int $arg): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * i32
+   *   interactFast();
+   */
+  public function interactFast(): Awaitable<int>;
 }
 
 /**
@@ -30,6 +44,20 @@ interface MyServiceIf extends \IThriftSyncIf {
    *   foo();
    */
   public function foo(): void;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   interact(1: i32 arg);
+   */
+  public function interact(int $arg): void;
+
+  /**
+   * Original thrift definition:-
+   * i32
+   *   interactFast();
+   */
+  public function interactFast(): int;
 }
 
 /**
@@ -37,6 +65,12 @@ interface MyServiceIf extends \IThriftSyncIf {
  * MyService
  */
 interface MyServiceAsyncClientIf extends MyServiceAsyncIf {
+  /**
+   * Original thrift definition:-
+   * i32, stream<i32>
+   *   serialize();
+   */
+  public function serialize(): Awaitable<\ResponseAndClientStream<int, int>>;
 }
 
 /**
@@ -50,6 +84,27 @@ interface MyServiceClientIf extends \IThriftSyncIf {
    *   foo();
    */
   public function foo(): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   interact(1: i32 arg);
+   */
+  public function interact(int $arg): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * i32
+   *   interactFast();
+   */
+  public function interactFast(): Awaitable<int>;
+
+  /**
+   * Original thrift definition:-
+   * i32, stream<i32>
+   *   serialize();
+   */
+  public function serialize(): Awaitable<\ResponseAndClientStream<int, int>>;
 }
 
 /**
@@ -152,6 +207,331 @@ trait MyServiceClientBase {
     return;
   }
 
+  protected function sendImpl_interact(int $arg): int {
+    $currentseqid = $this->getNextSequenceID();
+    $args = MyService_interact_args::fromShape(shape(
+      'arg' => $arg,
+    ));
+    try {
+      $this->eventHandler_->preSend('interact', $args, $currentseqid);
+      if ($this->output_ is \TBinaryProtocolAccelerated)
+      {
+        \thrift_protocol_write_binary($this->output_, 'interact', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
+      }
+      else if ($this->output_ is \TCompactProtocolAccelerated)
+      {
+        \thrift_protocol_write_compact($this->output_, 'interact', \TMessageType::CALL, $args, $currentseqid, false);
+      }
+      else
+      {
+        $this->output_->writeMessageBegin('interact', \TMessageType::CALL, $currentseqid);
+        $args->write($this->output_);
+        $this->output_->writeMessageEnd();
+        $this->output_->getTransport()->flush();
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->sendError('interact', $args, $currentseqid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postSend('interact', $args, $currentseqid);
+          return $currentseqid;
+      }
+    } catch (\Exception $ex) {
+      $this->eventHandler_->sendError('interact', $args, $currentseqid, $ex);
+      throw $ex;
+    }
+    $this->eventHandler_->postSend('interact', $args, $currentseqid);
+    return $currentseqid;
+  }
+
+  protected function recvImpl_interact(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
+    try {
+      $this->eventHandler_->preRecv('interact', $expectedsequenceid);
+      if ($this->input_ is \TBinaryProtocolAccelerated) {
+        $result = \thrift_protocol_read_binary($this->input_, 'MyService_interact_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
+      } else if ($this->input_ is \TCompactProtocolAccelerated)
+      {
+        $result = \thrift_protocol_read_compact($this->input_, 'MyService_interact_result', Shapes::idx($options, 'read_options', 0));
+      }
+      else
+      {
+        $rseqid = 0;
+        $fname = '';
+        $mtype = 0;
+
+        $this->input_->readMessageBegin(
+          inout $fname,
+          inout $mtype,
+          inout $rseqid,
+        );
+        if ($mtype === \TMessageType::EXCEPTION) {
+          $x = new \TApplicationException();
+          $x->read($this->input_);
+          $this->input_->readMessageEnd();
+          throw $x;
+        }
+        $result = MyService_interact_result::withDefaultValues();
+        $result->read($this->input_);
+        $this->input_->readMessageEnd();
+        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
+          throw new \TProtocolException("interact failed: sequence id is out of order");
+        }
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+          $this->eventHandler_->recvException('interact', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->recvError('interact', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postRecv('interact', $expectedsequenceid, $ex->result);
+          return;
+      }
+    } catch (\Exception $ex) {
+      $this->eventHandler_->recvError('interact', $expectedsequenceid, $ex);
+      throw $ex;
+    }
+    $this->eventHandler_->postRecv('interact', $expectedsequenceid, null);
+    return;
+  }
+
+  protected function sendImpl_interactFast(): int {
+    $currentseqid = $this->getNextSequenceID();
+    $args = MyService_interactFast_args::withDefaultValues();
+    try {
+      $this->eventHandler_->preSend('interactFast', $args, $currentseqid);
+      if ($this->output_ is \TBinaryProtocolAccelerated)
+      {
+        \thrift_protocol_write_binary($this->output_, 'interactFast', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
+      }
+      else if ($this->output_ is \TCompactProtocolAccelerated)
+      {
+        \thrift_protocol_write_compact($this->output_, 'interactFast', \TMessageType::CALL, $args, $currentseqid, false);
+      }
+      else
+      {
+        $this->output_->writeMessageBegin('interactFast', \TMessageType::CALL, $currentseqid);
+        $args->write($this->output_);
+        $this->output_->writeMessageEnd();
+        $this->output_->getTransport()->flush();
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->sendError('interactFast', $args, $currentseqid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postSend('interactFast', $args, $currentseqid);
+          return $currentseqid;
+      }
+    } catch (\Exception $ex) {
+      $this->eventHandler_->sendError('interactFast', $args, $currentseqid, $ex);
+      throw $ex;
+    }
+    $this->eventHandler_->postSend('interactFast', $args, $currentseqid);
+    return $currentseqid;
+  }
+
+  protected function recvImpl_interactFast(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): int {
+    try {
+      $this->eventHandler_->preRecv('interactFast', $expectedsequenceid);
+      if ($this->input_ is \TBinaryProtocolAccelerated) {
+        $result = \thrift_protocol_read_binary($this->input_, 'MyService_interactFast_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
+      } else if ($this->input_ is \TCompactProtocolAccelerated)
+      {
+        $result = \thrift_protocol_read_compact($this->input_, 'MyService_interactFast_result', Shapes::idx($options, 'read_options', 0));
+      }
+      else
+      {
+        $rseqid = 0;
+        $fname = '';
+        $mtype = 0;
+
+        $this->input_->readMessageBegin(
+          inout $fname,
+          inout $mtype,
+          inout $rseqid,
+        );
+        if ($mtype === \TMessageType::EXCEPTION) {
+          $x = new \TApplicationException();
+          $x->read($this->input_);
+          $this->input_->readMessageEnd();
+          throw $x;
+        }
+        $result = MyService_interactFast_result::withDefaultValues();
+        $result->read($this->input_);
+        $this->input_->readMessageEnd();
+        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
+          throw new \TProtocolException("interactFast failed: sequence id is out of order");
+        }
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+          $this->eventHandler_->recvException('interactFast', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->recvError('interactFast', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postRecv('interactFast', $expectedsequenceid, $ex->result);
+          return $ex->result;
+      }
+    } catch (\Exception $ex) {
+      $this->eventHandler_->recvError('interactFast', $expectedsequenceid, $ex);
+      throw $ex;
+    }
+    if ($result->success !== null) {
+      $success = $result->success;
+      $this->eventHandler_->postRecv('interactFast', $expectedsequenceid, $success);
+      return $success;
+    }
+    $x = new \TApplicationException("interactFast failed: unknown result", \TApplicationException::MISSING_RESULT);
+    $this->eventHandler_->recvError('interactFast', $expectedsequenceid, $x);
+    throw $x;
+  }
+
+  protected function sendImpl_serialize(): int {
+    $currentseqid = $this->getNextSequenceID();
+    $args = MyService_serialize_args::withDefaultValues();
+    try {
+      $this->eventHandler_->preSend('serialize', $args, $currentseqid);
+      if ($this->output_ is \TBinaryProtocolAccelerated)
+      {
+        \thrift_protocol_write_binary($this->output_, 'serialize', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
+      }
+      else if ($this->output_ is \TCompactProtocolAccelerated)
+      {
+        \thrift_protocol_write_compact($this->output_, 'serialize', \TMessageType::CALL, $args, $currentseqid, false);
+      }
+      else
+      {
+        $this->output_->writeMessageBegin('serialize', \TMessageType::CALL, $currentseqid);
+        $args->write($this->output_);
+        $this->output_->writeMessageEnd();
+        $this->output_->getTransport()->flush();
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->sendError('serialize', $args, $currentseqid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postSend('serialize', $args, $currentseqid);
+          return $currentseqid;
+      }
+    } catch (\Exception $ex) {
+      $this->eventHandler_->sendError('serialize', $args, $currentseqid, $ex);
+      throw $ex;
+    }
+    $this->eventHandler_->postSend('serialize', $args, $currentseqid);
+    return $currentseqid;
+  }
+
+  protected function recvImpl_serialize_StreamDecode(shape(?'read_options' => int) $options = shape()): (function(?string, ?\Exception) : int) {
+    $protocol = $this->input_;
+    return function(
+      ?string $stream_payload, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+      try {
+        if ($ex !== null) {
+          throw $ex;
+        }
+        $transport = $protocol->getTransport();
+        invariant(
+          $transport is \TMemoryBuffer,
+          "Stream methods require TMemoryBuffer transport"
+        );
+
+        $transport->resetBuffer();
+        $transport->write($stream_payload as nonnull);
+        $result = MyService_serialize_StreamResponse::withDefaultValues();
+        $result->read($protocol);
+        $protocol->readMessageEnd();
+      } catch (\THandlerShortCircuitException $ex) {
+        throw $ex->result;
+      }
+      if ($result->success !== null) {
+       return $result->success;
+      }
+      throw new \TApplicationException("serialize failed: unknown result", \TApplicationException::MISSING_RESULT);
+    };
+  }
+
+  protected function recvImpl_serialize_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): int {
+    try {
+      $this->eventHandler_->preRecv('serialize', $expectedsequenceid);
+      if ($this->input_ is \TBinaryProtocolAccelerated) {
+        $result = \thrift_protocol_read_binary($this->input_, 'MyService_serialize_FirstResponse', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
+      } else if ($this->input_ is \TCompactProtocolAccelerated)
+      {
+        $result = \thrift_protocol_read_compact($this->input_, 'MyService_serialize_FirstResponse', Shapes::idx($options, 'read_options', 0));
+      }
+      else
+      {
+        $rseqid = 0;
+        $fname = '';
+        $mtype = 0;
+
+        $this->input_->readMessageBegin(
+          inout $fname,
+          inout $mtype,
+          inout $rseqid,
+        );
+        if ($mtype === \TMessageType::EXCEPTION) {
+          $x = new \TApplicationException();
+          $x->read($this->input_);
+          $this->input_->readMessageEnd();
+          throw $x;
+        }
+        $result = MyService_serialize_FirstResponse::withDefaultValues();
+        $result->read($this->input_);
+        $this->input_->readMessageEnd();
+        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
+          throw new \TProtocolException("serialize failed: sequence id is out of order");
+        }
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+          $this->eventHandler_->recvException('serialize', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->recvError('serialize', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postRecv('serialize', $expectedsequenceid, $ex->result);
+          return $ex->result;
+      }
+    } catch (\Exception $ex) {
+      $this->eventHandler_->recvError('serialize', $expectedsequenceid, $ex);
+      throw $ex;
+    }
+    if ($result->success !== null) {
+      $success = $result->success;
+      $this->eventHandler_->postRecv('serialize', $expectedsequenceid, $success);
+      return $success;
+    }
+    $x = new \TApplicationException("serialize failed: unknown result", \TApplicationException::MISSING_RESULT);
+    $this->eventHandler_->recvError('serialize', $expectedsequenceid, $x);
+    throw $x;
+  }
+
   /* interaction handlers factory methods */
   public function createMyInteraction(): MyService_MyInteraction {
     $interaction = new MyService_MyInteraction($this->input_, $this->output_, $this->channel_);
@@ -205,6 +585,98 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     await $this->asyncHandler_->genAfter();
   }
 
+  /**
+   * Original thrift definition:-
+   * void
+   *   interact(1: i32 arg);
+   */
+  public async function interact(int $arg): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
+    await $this->asyncHandler_->genBefore("MyService", "interact");
+    $currentseqid = $this->sendImpl_interact($arg);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
+    $this->recvImpl_interact($currentseqid);
+    await $this->asyncHandler_->genAfter();
+  }
+
+  /**
+   * Original thrift definition:-
+   * i32
+   *   interactFast();
+   */
+  public async function interactFast(): Awaitable<int> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
+    await $this->asyncHandler_->genBefore("MyService", "interactFast");
+    $currentseqid = $this->sendImpl_interactFast();
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
+    $response = $this->recvImpl_interactFast($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
+  }
+
+  /**
+   * Original thrift definition:-
+   * i32, stream<i32>
+   *   serialize();
+   */
+  public async function serialize(): Awaitable<\ResponseAndClientStream<int, int>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Stream methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("MyService", "serialize");
+    $currentseqid = $this->sendImpl_serialize();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
+
+    $stream_gen = $stream->gen<int>($this->recvImpl_serialize_StreamDecode());
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $first_response = $this->recvImpl_serialize_FirstResponse($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return new \ResponseAndClientStream<int, int>($first_response, $stream_gen);
+  }
+
 }
 
 class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
@@ -239,12 +711,116 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     await $this->asyncHandler_->genAfter();
   }
 
+  /**
+   * Original thrift definition:-
+   * void
+   *   interact(1: i32 arg);
+   */
+  public async function interact(int $arg): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
+    await $this->asyncHandler_->genBefore("MyService", "interact");
+    $currentseqid = $this->sendImpl_interact($arg);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
+    $this->recvImpl_interact($currentseqid);
+    await $this->asyncHandler_->genAfter();
+  }
+
+  /**
+   * Original thrift definition:-
+   * i32
+   *   interactFast();
+   */
+  public async function interactFast(): Awaitable<int> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
+    await $this->asyncHandler_->genBefore("MyService", "interactFast");
+    $currentseqid = $this->sendImpl_interactFast();
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
+    $response = $this->recvImpl_interactFast($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return $response;
+  }
+
+  /**
+   * Original thrift definition:-
+   * i32, stream<i32>
+   *   serialize();
+   */
+  public async function serialize(): Awaitable<\ResponseAndClientStream<int, int>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Stream methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("MyService", "serialize");
+    $currentseqid = $this->sendImpl_serialize();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
+
+    $stream_gen = $stream->gen<int>($this->recvImpl_serialize_StreamDecode());
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $first_response = $this->recvImpl_serialize_FirstResponse($currentseqid);
+    await $this->asyncHandler_->genAfter();
+    return new \ResponseAndClientStream<int, int>($first_response, $stream_gen);
+  }
+
   /* send and recv functions */
   public function send_foo(): int {
     return $this->sendImpl_foo();
   }
   public function recv_foo(?int $expectedsequenceid = null): void {
     $this->recvImpl_foo($expectedsequenceid);
+  }
+  public function send_interact(int $arg): int {
+    return $this->sendImpl_interact($arg);
+  }
+  public function recv_interact(?int $expectedsequenceid = null): void {
+    $this->recvImpl_interact($expectedsequenceid);
+  }
+  public function send_interactFast(): int {
+    return $this->sendImpl_interactFast();
+  }
+  public function recv_interactFast(?int $expectedsequenceid = null): int {
+    return $this->recvImpl_interactFast($expectedsequenceid);
   }
 }
 
@@ -1651,6 +2227,427 @@ class MyService_foo_result implements \IThriftStruct {
 
 }
 
+class MyService_interact_args implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'arg',
+      'type' => \TType::I32,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'arg' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'arg' => ?int,
+  );
+
+  const int STRUCTURAL_ID = 6449802475022035959;
+  public int $arg;
+
+  public function __construct(?int $arg = null  )[] {
+    $this->arg = $arg ?? 0;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'arg'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'MyService_interact_args';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.interact_args",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "arg",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class MyService_interact_result implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct(  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'MyService_interact_result';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyService_interact_result",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class MyService_interactFast_args implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct(  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'MyService_interactFast_args';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.interactFast_args",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class MyService_interactFast_result implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::I32,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?int,
+  );
+
+  const int STRUCTURAL_ID = 3865318819874171525;
+  public ?int $success;
+
+  public function __construct(?int $success = null  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'MyService_interactFast_result';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyService_interactFast_result",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class MyService_serialize_args implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct(  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'MyService_serialize_args';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.serialize_args",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class MyService_serialize_StreamResponse implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::I32,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?int,
+  );
+
+  const int STRUCTURAL_ID = 3865318819874171525;
+  public ?int $success;
+
+  public function __construct(?int $success = null  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'MyService_serialize_StreamResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyService_serialize_StreamResponse",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class MyService_serialize_FirstResponse implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::I32,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?int,
+  );
+
+  const int STRUCTURAL_ID = 3865318819874171525;
+  public ?int $success;
+
+  public function __construct(?int $success = null  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'MyService_serialize_FirstResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyService_serialize_FirstResponse",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
 class MyService_MyInteraction_frobnicate_args implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
@@ -2979,6 +3976,62 @@ class MyServiceStaticMetadata implements \IThriftServiceStaticMetadata {
               "return_type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
+                )
+              ),
+            )
+          ),
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "interact",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
+                )
+              ),
+              "arguments" => vec[
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 1,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                      )
+                    ),
+                    "name" => "arg",
+                  )
+                ),
+              ],
+            )
+          ),
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "interactFast",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+            )
+          ),
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "serialize",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_stream" => tmeta_ThriftStreamType::fromShape(
+                    shape(
+                      "elemType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                      "initialResponseType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                    )
+                  ),
                 )
               ),
             )

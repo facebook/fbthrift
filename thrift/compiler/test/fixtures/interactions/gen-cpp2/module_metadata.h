@@ -41,6 +41,9 @@ class ServiceMetadata<::cpp2::MyServiceSvIf> {
   friend class ServiceMetadata;
 
   static void gen_foo(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_interact(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_interactFast(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_serialize(ThriftMetadata& metadata, ThriftService& context);
 };
 } // namespace md
 } // namespace detail

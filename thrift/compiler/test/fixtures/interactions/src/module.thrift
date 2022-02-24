@@ -46,4 +46,8 @@ service MyService {
   performs MyInteractionFast;
   performs SerialInteraction;
   void foo();
+
+  MyInteraction interact(1: i32 arg);
+  MyInteractionFast, i32 interactFast();
+  SerialInteraction, i32, stream<i32> serialize();
 }

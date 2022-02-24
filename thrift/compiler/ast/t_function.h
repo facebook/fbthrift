@@ -57,6 +57,8 @@ class t_function final : public t_named {
             std::make_unique<t_paramlist>(program)) {}
 
   const t_type_ref& return_type() const { return return_type_; }
+  void set_return_type(t_type_ref ret) { return_type_ = std::move(ret); }
+
   t_paramlist& params() { return *paramlist_; }
   const t_paramlist& params() const { return *paramlist_; }
 
@@ -74,16 +76,26 @@ class t_function final : public t_named {
     exceptions_ = std::move(exceptions);
   }
 
+  // old syntax only
   bool is_interaction_constructor() const { return isInteractionConstructor_; }
   void set_is_interaction_constructor() { isInteractionConstructor_ = true; }
   bool is_interaction_member() const { return isInteractionMember_; }
   void set_is_interaction_member() { isInteractionMember_ = true; }
+
+  // new syntax only
+  const boost::optional<t_type_ref>& returned_interaction() const {
+    return returned_interaction_;
+  }
+  void set_returned_interaction(boost::optional<t_type_ref> interaction) {
+    returned_interaction_ = std::move(interaction);
+  }
 
  private:
   t_type_ref return_type_;
   std::unique_ptr<t_paramlist> paramlist_;
   std::unique_ptr<t_throws> exceptions_;
   t_function_qualifier qualifier_;
+  boost::optional<t_type_ref> returned_interaction_;
   bool isInteractionConstructor_{false};
   bool isInteractionMember_{false};
 

@@ -36,4 +36,50 @@ cdef __InterfaceSpec get_reflection__MyService(bint for_clients):
             },
         )
     )
+    spec.add_method(
+        __MethodSpec._fbthrift_create(
+            name="interact",
+            arguments=(
+                __ArgumentSpec._fbthrift_create(
+                    name="arg",
+                    type=int,
+                    kind=__NumberType.I32,
+                    annotations={
+                    },
+                ),
+            ),
+            result=None,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    spec.add_method(
+        __MethodSpec._fbthrift_create(
+            name="interactFast",
+            arguments=(
+            ),
+            result=int,
+            result_kind=__NumberType.I32,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    spec.add_method(
+        __MethodSpec._fbthrift_create(
+            name="serialize",
+            arguments=(
+            ),
+            result=_test_fixtures_interactions_module_types.ResponseAndClientBufferedStream__i32_i32 if for_clients else _test_fixtures_interactions_module_types.ResponseAndServerStream__i32_i32,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
     return spec

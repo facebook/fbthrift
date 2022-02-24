@@ -47,6 +47,40 @@ public class MyServiceReactiveBlockingWrapper
         throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
       }
   }
+  @java.lang.Override
+  public void interact( final int arg) throws org.apache.thrift.TException {
+      _delegate.interact(arg).block();
+  }
+
+  @java.lang.Override
+  public void interact(
+        final int arg,
+        com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      _delegate.interact(arg,rpcOptions).block();
+  }
+
+  @java.lang.Override
+  public com.facebook.thrift.client.ResponseWrapper<Void> interactWrapper(
+    final int arg,
+    com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return _delegate.interactWrapper(arg, rpcOptions).block();
+  }
+  @java.lang.Override
+  public int interactFast() throws org.apache.thrift.TException {
+      return _delegate.interactFast().block();
+  }
+
+  @java.lang.Override
+  public int interactFast(
+        com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return _delegate.interactFast(rpcOptions).block();
+  }
+
+  @java.lang.Override
+  public com.facebook.thrift.client.ResponseWrapper<Integer> interactFastWrapper(
+    com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return _delegate.interactFastWrapper(rpcOptions).block();
+  }
 
   public MyInteraction createMyInteraction() {
       throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveBlockingWrapper Interfaces!");

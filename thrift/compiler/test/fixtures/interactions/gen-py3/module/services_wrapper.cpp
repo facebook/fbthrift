@@ -36,6 +36,64 @@ void MyServiceWrapper::async_tm_foo(
         });
     });
 }
+void MyServiceWrapper::async_tm_interact(
+  std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
+    , int32_t arg
+) {
+  auto ctx = callback->getRequestContext();
+  folly::via(
+    this->executor,
+    [this, ctx,
+     callback = std::move(callback),
+arg    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+        call_cy_MyService_interact(
+            this->if_object,
+            ctx,
+            std::move(promise),
+            arg        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<folly::Unit>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
+    });
+}
+void MyServiceWrapper::async_tm_interactFast(
+  std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
+  auto ctx = callback->getRequestContext();
+  folly::via(
+    this->executor,
+    [this, ctx,
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<int32_t>();
+        call_cy_MyService_interactFast(
+            this->if_object,
+            ctx,
+            std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<int32_t>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
+    });
+}
+void MyServiceWrapper::async_tm_serialize(
+  std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>> callback) {
+  auto ctx = callback->getRequestContext();
+  folly::via(
+    this->executor,
+    [this, ctx,
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>();
+        call_cy_MyService_serialize(
+            this->if_object,
+            ctx,
+            std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
+    });
+}
 std::unique_ptr<MyServiceSvIf::MyInteractionIf> MyServiceWrapper::createMyInteraction() {
   throw std::runtime_error("Py3 server doesn't support interactions.");
 }

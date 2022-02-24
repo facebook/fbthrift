@@ -35,6 +35,33 @@ public class MyServiceBlockingReactiveWrapper
             }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
     }
 
+    @java.lang.Override
+    public reactor.core.publisher.Mono<Void> interact(final int arg) {
+        return reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
+                try {
+                    _delegate.interact(arg);
+                } catch (Throwable _e) {
+                    throw reactor.core.Exceptions.propagate(_e);
+                }
+            }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+    }
+
+    @java.lang.Override
+    public reactor.core.publisher.Mono<Integer> interactFast() {
+        return reactor.core.publisher.Mono.fromSupplier(() -> {
+                try {
+                    return _delegate.interactFast();
+                } catch (Throwable _e) {
+                    throw reactor.core.Exceptions.propagate(_e);
+                }
+            }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+    }
+
+    @java.lang.Override
+    public reactor.core.publisher.Flux<com.facebook.thrift.model.StreamResponse<Integer,Integer>> serialize() {
+        throw new UnsupportedOperationException();
+    }
+
     public class MyInteractionImpl implements MyInteraction {
         private MyService.MyInteraction _delegateInteraction;
 

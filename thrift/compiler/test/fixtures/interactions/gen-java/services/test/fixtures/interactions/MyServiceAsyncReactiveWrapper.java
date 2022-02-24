@@ -29,6 +29,21 @@ public class MyServiceAsyncReactiveWrapper
         return com.facebook.thrift.util.FutureUtil.toMono(_delegate.foo());
     }
 
+    @java.lang.Override
+    public reactor.core.publisher.Mono<Void> interact(final int arg) {
+        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.interact(arg));
+    }
+
+    @java.lang.Override
+    public reactor.core.publisher.Mono<Integer> interactFast() {
+        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.interactFast());
+    }
+
+    @java.lang.Override
+    public reactor.core.publisher.Flux<com.facebook.thrift.model.StreamResponse<Integer,Integer>> serialize() {
+        throw new UnsupportedOperationException();
+    }
+
     public class MyInteractionImpl implements MyInteraction {
         private MyService.Async.MyInteraction _delegateInteraction;
 

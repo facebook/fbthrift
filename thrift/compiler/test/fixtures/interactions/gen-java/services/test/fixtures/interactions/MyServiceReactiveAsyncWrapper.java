@@ -44,6 +44,42 @@ public class MyServiceReactiveAsyncWrapper
     return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.fooWrapper( rpcOptions));
   }
 
+  @java.lang.Override
+  public com.google.common.util.concurrent.ListenableFuture<Void> interact(final int arg) {
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.interact(arg));
+  }
+
+  @java.lang.Override
+  public com.google.common.util.concurrent.ListenableFuture<Void> interact(
+    final int arg,
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.interact(arg, rpcOptions));
+  }
+
+  @java.lang.Override
+  public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<Void>> interactWrapper(
+    final int arg,
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+    return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.interactWrapper(arg, rpcOptions));
+  }
+
+  @java.lang.Override
+  public com.google.common.util.concurrent.ListenableFuture<Integer> interactFast() {
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.interactFast());
+  }
+
+  @java.lang.Override
+  public com.google.common.util.concurrent.ListenableFuture<Integer> interactFast(
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.interactFast( rpcOptions));
+  }
+
+  @java.lang.Override
+  public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<Integer>> interactFastWrapper(
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+    return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.interactFastWrapper( rpcOptions));
+  }
+
   public class MyInteractionImpl implements MyInteraction {
     @java.lang.Override
     public com.google.common.util.concurrent.ListenableFuture<Integer> frobnicate() {

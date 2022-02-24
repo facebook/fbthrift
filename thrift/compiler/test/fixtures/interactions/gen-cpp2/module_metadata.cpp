@@ -80,6 +80,40 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_foo(ThriftMetadata& metadata, T
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
+void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_interact(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name_ref() = "interact";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
+  ::apache::thrift::metadata::ThriftField module_MyService_interact_arg_1;
+  module_MyService_interact_arg_1.id_ref() = 1;
+  module_MyService_interact_arg_1.name_ref() = "arg";
+  module_MyService_interact_arg_1.is_optional_ref() = false;
+  auto module_MyService_interact_arg_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
+  module_MyService_interact_arg_1_type->writeAndGenType(*module_MyService_interact_arg_1.type_ref(), metadata);
+  func.arguments_ref()->push_back(std::move(module_MyService_interact_arg_1));
+  func.is_oneway_ref() = false;
+  service.functions_ref()->push_back(std::move(func));
+}
+void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_interactFast(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name_ref() = "interactFast";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
+  func.is_oneway_ref() = false;
+  service.functions_ref()->push_back(std::move(func));
+}
+void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_serialize(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name_ref() = "serialize";
+  auto func_ret_type = std::make_unique<Stream>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE));
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
+  func.is_oneway_ref() = false;
+  service.functions_ref()->push_back(std::move(func));
+}
 
 void ServiceMetadata<::cpp2::MyServiceSvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
   const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
@@ -97,6 +131,9 @@ const ThriftServiceContextRef* ServiceMetadata<::cpp2::MyServiceSvIf>::genRecurs
   module_MyService.name_ref() = "module.MyService";
   static const ThriftFunctionGenerator functions[] = {
     ServiceMetadata<::cpp2::MyServiceSvIf>::gen_foo,
+    ServiceMetadata<::cpp2::MyServiceSvIf>::gen_interact,
+    ServiceMetadata<::cpp2::MyServiceSvIf>::gen_interactFast,
+    ServiceMetadata<::cpp2::MyServiceSvIf>::gen_serialize,
   };
   for (auto& function_gen : functions) {
     function_gen(metadata, module_MyService);

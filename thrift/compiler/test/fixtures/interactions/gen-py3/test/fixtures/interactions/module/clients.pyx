@@ -72,6 +72,45 @@ cdef void MyService_foo_callback(
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
+cdef void MyService_interact_callback(
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
+cdef void MyService_interactFast_callback(
+    cFollyTry[cint32_t]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(result.value())
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
+cdef void MyService_serialize_callback(
+    cFollyTry[cResponseAndClientBufferedStream[cint32_t,cint32_t]]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(_test_fixtures_interactions_module_types.ResponseAndClientBufferedStream__i32_i32._fbthrift_create(result.value(), options))
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
 cdef void MyService_MyInteraction_frobnicate_callback(
     cFollyTry[cint32_t]&& result,
     PyObject* userdata
@@ -203,6 +242,72 @@ cdef class MyService(thrift.py3.client.Client):
             down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).foo(rpc_options._cpp_obj, 
             ),
             MyService_foo_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
+
+    @cython.always_allow_keywords(True)
+    def interact(
+            MyService self,
+            arg not None,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        if not isinstance(arg, int):
+            raise TypeError(f'arg is not a {int !r}.')
+        else:
+            arg = <cint32_t> arg
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).interact(rpc_options._cpp_obj, 
+                arg,
+            ),
+            MyService_interact_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
+
+    @cython.always_allow_keywords(True)
+    def interactFast(
+            MyService self,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[cint32_t](
+            self._executor,
+            down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).interactFast(rpc_options._cpp_obj, 
+            ),
+            MyService_interactFast_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
+
+    @cython.always_allow_keywords(True)
+    def serialize(
+            MyService self,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[cResponseAndClientBufferedStream[cint32_t,cint32_t]](
+            self._executor,
+            down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).serialize(rpc_options._cpp_obj, 
+            ),
+            MyService_serialize_callback,
             <PyObject *> __userdata
         )
         return asyncio_shield(__future)

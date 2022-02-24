@@ -25,6 +25,8 @@ public class MyServiceAsyncClientImpl extends AbstractThriftClient implements My
 
     // Method Handlers
     private ThriftMethodHandler fooMethodHandler;
+    private ThriftMethodHandler interactMethodHandler;
+    private ThriftMethodHandler interactFastMethodHandler;
     // Interaction Handlers
     private ThriftMethodHandler frobnicateIMethodHandler;
     private ThriftMethodHandler pingIMethodHandler;
@@ -36,6 +38,10 @@ public class MyServiceAsyncClientImpl extends AbstractThriftClient implements My
 
     // Method Exceptions
     private static final Class[] fooExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] interactExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] interactFastExceptions = new Class[] {
         org.apache.thrift.TException.class};
     // Interaction Exceptions
     private static final Class[] frobnicateIExceptions = new Class[] {
@@ -67,6 +73,8 @@ public class MyServiceAsyncClientImpl extends AbstractThriftClient implements My
 
       // Set method handlers
       fooMethodHandler = methodHandlerMap.get("foo");
+      interactMethodHandler = methodHandlerMap.get("interact");
+      interactFastMethodHandler = methodHandlerMap.get("interactFast");
       // Set interaction handlers
       frobnicateIMethodHandler = methodHandlerMap.get("frobnicate");
       pingIMethodHandler = methodHandlerMap.get("ping");
@@ -95,6 +103,8 @@ public class MyServiceAsyncClientImpl extends AbstractThriftClient implements My
 
       // Set method handlers
       fooMethodHandler = methodHandlerMap.get("foo");
+      interactMethodHandler = methodHandlerMap.get("interact");
+      interactFastMethodHandler = methodHandlerMap.get("interactFast");
       // Set interaction handlers
       frobnicateIMethodHandler = methodHandlerMap.get("frobnicate");
       pingIMethodHandler = methodHandlerMap.get("ping");
@@ -127,6 +137,51 @@ public class MyServiceAsyncClientImpl extends AbstractThriftClient implements My
         RpcOptions rpcOptions) {
         try {
           return executeWrapperWithOptions(fooMethodHandler, fooExceptions, rpcOptions);
+        } catch (Throwable t) {
+          throw new RuntimeTException(t.getMessage(), t);
+        }
+    }
+
+    @java.lang.Override
+    public ListenableFuture<Void> interact(
+        int arg) {
+        return interact(arg, RpcOptions.EMPTY);
+    }
+
+    @java.lang.Override
+    public ListenableFuture<Void> interact(
+        int arg,
+        RpcOptions rpcOptions) {
+        return FutureUtil.transform(interactWrapper(arg, rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<Void>> interactWrapper(
+        int arg,
+        RpcOptions rpcOptions) {
+        try {
+          return executeWrapperWithOptions(interactMethodHandler, interactExceptions, rpcOptions, arg);
+        } catch (Throwable t) {
+          throw new RuntimeTException(t.getMessage(), t);
+        }
+    }
+
+    @java.lang.Override
+    public ListenableFuture<Integer> interactFast() {
+        return interactFast(RpcOptions.EMPTY);
+    }
+
+    @java.lang.Override
+    public ListenableFuture<Integer> interactFast(
+        RpcOptions rpcOptions) {
+        return FutureUtil.transform(interactFastWrapper(rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<Integer>> interactFastWrapper(
+        RpcOptions rpcOptions) {
+        try {
+          return executeWrapperWithOptions(interactFastMethodHandler, interactFastExceptions, rpcOptions);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }

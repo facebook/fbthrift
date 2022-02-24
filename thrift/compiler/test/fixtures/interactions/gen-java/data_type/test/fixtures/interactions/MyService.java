@@ -34,6 +34,35 @@ public interface MyService extends java.io.Closeable {
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
+
+        @ThriftMethod(value = "interact")
+        ListenableFuture<Void> interact(
+            @com.facebook.swift.codec.ThriftField(value=1, name="arg", requiredness=Requiredness.NONE) final int arg);
+
+        default ListenableFuture<Void> interact(
+            @com.facebook.swift.codec.ThriftField(value=1, name="arg", requiredness=Requiredness.NONE) final int arg,
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default ListenableFuture<ResponseWrapper<Void>> interactWrapper(
+            @com.facebook.swift.codec.ThriftField(value=1, name="arg", requiredness=Requiredness.NONE) final int arg,
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        @ThriftMethod(value = "interactFast")
+        ListenableFuture<Integer> interactFast();
+
+        default ListenableFuture<Integer> interactFast(
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default ListenableFuture<ResponseWrapper<Integer>> interactFastWrapper(
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
         @com.facebook.swift.service.ThriftInteraction("MyInteraction")
         public interface MyInteraction extends java.io.Closeable {
             @ThriftMethod(value = "frobnicate",
@@ -121,6 +150,35 @@ public interface MyService extends java.io.Closeable {
         throw new UnsupportedOperationException();
     }
 
+    @ThriftMethod(value = "interact")
+    void interact(
+        @com.facebook.swift.codec.ThriftField(value=1, name="arg", requiredness=Requiredness.NONE) final int arg) throws org.apache.thrift.TException;
+
+    default void interact(
+        @com.facebook.swift.codec.ThriftField(value=1, name="arg", requiredness=Requiredness.NONE) final int arg,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
+    default ResponseWrapper<Void> interactWrapper(
+        @com.facebook.swift.codec.ThriftField(value=1, name="arg", requiredness=Requiredness.NONE) final int arg,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
+    @ThriftMethod(value = "interactFast")
+    int interactFast() throws org.apache.thrift.TException;
+
+    default int interactFast(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
+    default ResponseWrapper<Integer> interactFastWrapper(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
     @com.facebook.swift.service.ThriftService("MyService")
     interface Reactive extends reactor.core.Disposable {
         @ThriftMethod(value = "foo")
@@ -131,6 +189,38 @@ public interface MyService extends java.io.Closeable {
         }
 
         default reactor.core.publisher.Mono<ResponseWrapper<Void>> fooWrapper(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        @ThriftMethod(value = "interact")
+        reactor.core.publisher.Mono<Void> interact(final int arg);
+
+        default reactor.core.publisher.Mono<Void> interact(final int arg, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default reactor.core.publisher.Mono<ResponseWrapper<Void>> interactWrapper(final int arg, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        @ThriftMethod(value = "interactFast")
+        reactor.core.publisher.Mono<Integer> interactFast();
+
+        default reactor.core.publisher.Mono<Integer> interactFast(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default reactor.core.publisher.Mono<ResponseWrapper<Integer>> interactFastWrapper(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        reactor.core.publisher.Flux<com.facebook.thrift.model.StreamResponse<Integer,Integer>> serialize();
+
+        default reactor.core.publisher.Flux<com.facebook.thrift.model.StreamResponse<Integer,Integer>> serialize(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default reactor.core.publisher.Flux<ResponseWrapper<com.facebook.thrift.model.StreamResponse<Integer,Integer>>> serializeWrapper(RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 

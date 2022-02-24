@@ -25,6 +25,53 @@ MyServiceClientWrapper::foo(
   return _future;
 }
 
+folly::Future<folly::Unit>
+MyServiceClientWrapper::interact(
+    apache::thrift::RpcOptions& rpcOptions,
+    int32_t arg_arg) {
+  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
+  folly::Promise<folly::Unit> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_interact, channel_);
+  client->interact(
+    rpcOptions,
+    std::move(callback),
+    arg_arg
+  );
+  return _future;
+}
+
+folly::Future<int32_t>
+MyServiceClientWrapper::interactFast(
+    apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_interactFast, channel_);
+  client->interactFast(
+    rpcOptions,
+    std::move(callback)
+  );
+  return _future;
+}
+
+folly::Future<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>>
+MyServiceClientWrapper::serialize(
+    apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
+  folly::Promise<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_serialize, channel_);
+  client->serialize(
+    rpcOptions,
+    std::move(callback)
+  );
+  return _future;
+}
+
 
 folly::Future<std::unique_ptr<::thrift::py3::ClientWrapper>>
 MyServiceClientWrapper::createMyInteraction() {

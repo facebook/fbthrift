@@ -24,6 +24,8 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
 
     // Method Handlers
     private ThriftMethodHandler fooMethodHandler;
+    private ThriftMethodHandler interactMethodHandler;
+    private ThriftMethodHandler interactFastMethodHandler;
     // Interaction Handlers
     private ThriftMethodHandler frobnicateIMethodHandler;
     private ThriftMethodHandler pingIMethodHandler;
@@ -35,6 +37,10 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
 
     // Method Exceptions
     private static final Class[] fooExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] interactExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] interactFastExceptions = new Class[] {
         org.apache.thrift.TException.class};
     // Interaction Exceptions
     private static final Class[] frobnicateIExceptions = new Class[] {
@@ -66,6 +72,8 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
 
       // Set method handlers
       fooMethodHandler = methodHandlerMap.get("foo");
+      interactMethodHandler = methodHandlerMap.get("interact");
+      interactFastMethodHandler = methodHandlerMap.get("interactFast");
       // Set interaction handlers
       frobnicateIMethodHandler = methodHandlerMap.get("frobnicate");
       pingIMethodHandler = methodHandlerMap.get("ping");
@@ -94,6 +102,8 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
 
       // Set method handlers
       fooMethodHandler = methodHandlerMap.get("foo");
+      interactMethodHandler = methodHandlerMap.get("interact");
+      interactFastMethodHandler = methodHandlerMap.get("interactFast");
       // Set interaction handlers
       frobnicateIMethodHandler = methodHandlerMap.get("frobnicate");
       pingIMethodHandler = methodHandlerMap.get("ping");
@@ -126,6 +136,57 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
         return FutureUtil.get(executeWrapperWithOptions(fooMethodHandler, fooExceptions, rpcOptions));
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
+    }
+
+    @java.lang.Override
+    public void interact(
+        int arg) throws org.apache.thrift.TException {
+      interactWrapper(arg, RpcOptions.EMPTY).getData();
+    }
+
+    @java.lang.Override
+    public void interact(
+        int arg,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      interactWrapper(arg, rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Void> interactWrapper(
+        int arg,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      try {
+        return FutureUtil.get(executeWrapperWithOptions(interactMethodHandler, interactExceptions, rpcOptions, arg));
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
+    }
+
+    @java.lang.Override
+    public int interactFast() throws org.apache.thrift.TException {
+      return interactFastWrapper(RpcOptions.EMPTY).getData();
+    }
+
+    @java.lang.Override
+    public int interactFast(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return interactFastWrapper(rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Integer> interactFastWrapper(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      try {
+        return FutureUtil.get(executeWrapperWithOptions(interactFastMethodHandler, interactFastExceptions, rpcOptions));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;

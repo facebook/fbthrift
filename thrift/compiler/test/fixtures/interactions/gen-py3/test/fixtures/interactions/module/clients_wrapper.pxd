@@ -57,6 +57,10 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
     void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 
     cFollyFuture[cFollyUnit] foo(cRpcOptions, )
+    cFollyFuture[cFollyUnit] interact(cRpcOptions, 
+      cint32_t arg_arg,)
+    cFollyFuture[cint32_t] interactFast(cRpcOptions, )
+    cFollyFuture[cResponseAndClientBufferedStream[cint32_t,cint32_t]] serialize(cRpcOptions, )
     cFollyFuture[unique_ptr[cClientWrapper]]& createMyInteraction()
     cFollyFuture[unique_ptr[cClientWrapper]]& createMyInteractionFast()
     cFollyFuture[unique_ptr[cClientWrapper]]& createSerialInteraction()

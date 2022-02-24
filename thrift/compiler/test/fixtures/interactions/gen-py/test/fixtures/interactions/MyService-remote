@@ -43,6 +43,8 @@ from thrift.remote import Remote
 
 FUNCTIONS = {
     'foo': Function('foo', 'MyService', 'void', []),
+    'interact': Function('interact', 'MyService', 'void', [('i32', 'arg', 'i32')]),
+    'interactFast': Function('interactFast', 'MyService', 'i32', []),
 }
 
 SERVICE_NAMES = ['MyService', ]

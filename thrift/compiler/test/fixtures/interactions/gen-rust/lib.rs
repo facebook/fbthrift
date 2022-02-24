@@ -1292,6 +1292,425 @@ pub mod services {
                 ::std::result::Result::Ok(alt)
             }
         }
+
+        #[derive(Clone, Debug)]
+        pub enum InteractExn {
+            Success(()),
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for InteractExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                InteractExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::ExceptionInfo for InteractExn {
+            fn exn_name(&self) -> &'static str {
+                match self {
+                    InteractExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    InteractExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                match self {
+                    InteractExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    InteractExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                match self {
+                    InteractExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    InteractExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for InteractExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    InteractExn::Success(_) => ::fbthrift::ResultType::Return,
+                    InteractExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                }
+            }
+        }
+
+        impl ::fbthrift::GetTType for InteractExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+        }
+
+        impl<P> ::fbthrift::Serialize<P> for InteractExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                if let InteractExn::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
+                p.write_struct_begin("Interact");
+                match self {
+                    InteractExn::Success(inner) => {
+                        p.write_field_begin(
+                            "Success",
+                            ::fbthrift::TType::Void,
+                            0i16,
+                        );
+                        inner.write(p);
+                        p.write_field_end();
+                    }
+                    InteractExn::ApplicationException(_aexn) => unreachable!(),
+                }
+                p.write_field_stop();
+                p.write_struct_end();
+            }
+        }
+
+        impl<P> ::fbthrift::Deserialize<P> for InteractExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
+                static RETURNS: &[::fbthrift::Field] = &[
+                    ::fbthrift::Field::new("Success", ::fbthrift::TType::Void, 0),
+                ];
+                let _ = p.read_struct_begin(|_| ())?;
+                let mut once = false;
+                let mut alt = InteractExn::Success(());
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
+                            p.read_field_end()?;
+                            break;
+                        }
+                        ((::fbthrift::TType::Void, 0i32), false) => {
+                            once = true;
+                            alt = InteractExn::Success(::fbthrift::Deserialize::read(p)?);
+                        }
+                        ((ty, _id), false) => p.skip(ty)?,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                                format!(
+                                    "unwanted extra union {} field ty {:?} id {}",
+                                    "InteractExn",
+                                    badty,
+                                    badid,
+                                ),
+                            )
+                        )),
+                    }
+                    p.read_field_end()?;
+                }
+                p.read_struct_end()?;
+                ::std::result::Result::Ok(alt)
+            }
+        }
+
+        #[derive(Clone, Debug)]
+        pub enum InteractFastExn {
+            Success(::std::primitive::i32),
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for InteractFastExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                InteractFastExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::ExceptionInfo for InteractFastExn {
+            fn exn_name(&self) -> &'static str {
+                match self {
+                    InteractFastExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    InteractFastExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                match self {
+                    InteractFastExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    InteractFastExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                match self {
+                    InteractFastExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    InteractFastExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for InteractFastExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    InteractFastExn::Success(_) => ::fbthrift::ResultType::Return,
+                    InteractFastExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                }
+            }
+        }
+
+        impl ::fbthrift::GetTType for InteractFastExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+        }
+
+        impl<P> ::fbthrift::Serialize<P> for InteractFastExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                if let InteractFastExn::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
+                p.write_struct_begin("InteractFast");
+                match self {
+                    InteractFastExn::Success(inner) => {
+                        p.write_field_begin(
+                            "Success",
+                            ::fbthrift::TType::I32,
+                            0i16,
+                        );
+                        inner.write(p);
+                        p.write_field_end();
+                    }
+                    InteractFastExn::ApplicationException(_aexn) => unreachable!(),
+                }
+                p.write_field_stop();
+                p.write_struct_end();
+            }
+        }
+
+        impl<P> ::fbthrift::Deserialize<P> for InteractFastExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
+                static RETURNS: &[::fbthrift::Field] = &[
+                    ::fbthrift::Field::new("Success", ::fbthrift::TType::I32, 0),
+                ];
+                let _ = p.read_struct_begin(|_| ())?;
+                let mut once = false;
+                let mut alt = ::std::option::Option::None;
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
+                            p.read_field_end()?;
+                            break;
+                        }
+                        ((::fbthrift::TType::I32, 0i32), false) => {
+                            once = true;
+                            alt = ::std::option::Option::Some(InteractFastExn::Success(::fbthrift::Deserialize::read(p)?));
+                        }
+                        ((ty, _id), false) => p.skip(ty)?,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                                format!(
+                                    "unwanted extra union {} field ty {:?} id {}",
+                                    "InteractFastExn",
+                                    badty,
+                                    badid,
+                                ),
+                            )
+                        )),
+                    }
+                    p.read_field_end()?;
+                }
+                p.read_struct_end()?;
+                alt.ok_or_else(||
+                    ::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::MissingResult,
+                        format!("Empty union {}", "InteractFastExn"),
+                    )
+                    .into(),
+                )
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub enum SerializeStreamExn {
+            Success(::std::primitive::i32),
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for SerializeStreamExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                SerializeStreamExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::GetTType for SerializeStreamExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+        }
+
+        impl<P> ::fbthrift::Serialize<P> for SerializeStreamExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                p.write_struct_begin("Serialize");
+                match self {
+                    SerializeStreamExn::Success(inner) => {
+                        p.write_field_begin(
+                            "Success",
+                            ::fbthrift::TType::Stream,
+                            0i16,
+                        );
+                        inner.write(p);
+                        p.write_field_end();
+                    }
+                    SerializeStreamExn::ApplicationException(_) => panic!(
+                        "Bad union Alt field {} id {}",
+                        "ApplicationException",
+                        -2147483648i32,
+                    ),
+                }
+                p.write_field_stop();
+                p.write_struct_end();
+            }
+        }
+
+        impl<P> ::fbthrift::Deserialize<P> for SerializeStreamExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
+                static RETURNS: &[::fbthrift::Field] = &[
+                    ::fbthrift::Field::new("Success", ::fbthrift::TType::Stream, 0),
+                ];
+                let _ = p.read_struct_begin(|_| ())?;
+                let mut once = false;
+                let mut alt = ::std::option::Option::None;
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
+                            p.read_field_end()?;
+                            break;
+                        }
+                        ((::fbthrift::TType::I32, 0i32), false) => {
+                            once = true;
+                            alt = ::std::option::Option::Some(SerializeStreamExn::Success(::fbthrift::Deserialize::read(p)?));
+                        }
+                        ((ty, _id), false) => p.skip(ty)?,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                                format!(
+                                    "unwanted extra union {} field ty {:?} id {}",
+                                    "SerializeStreamExn",
+                                    badty,
+                                    badid,
+                                ),
+                            )
+                        )),
+                    }
+                    p.read_field_end()?;
+                }
+                p.read_struct_end()?;
+                alt.ok_or_else(||
+                    ::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::MissingResult,
+                        format!("Empty union {}", "SerializeStreamExn"),
+                    )
+                    .into(),
+                )
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub enum SerializeExn {
+            Success(::std::primitive::i32),
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for SerializeExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                SerializeExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::GetTType for SerializeExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+        }
+
+        impl<P> ::fbthrift::Serialize<P> for SerializeExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                p.write_struct_begin("Serialize");
+                match self {
+                    SerializeExn::Success(inner) => {
+                        p.write_field_begin(
+                            "Success",
+                            ::fbthrift::TType::I32,
+                            0i16,
+                        );
+                        inner.write(p);
+                        p.write_field_end();
+                    }
+                    SerializeExn::ApplicationException(_) => panic!(
+                        "Bad union Alt field {} id {}",
+                        "ApplicationException",
+                        -2147483648i32,
+                    ),
+                }
+                p.write_field_stop();
+                p.write_struct_end();
+            }
+        }
+
+        impl<P> ::fbthrift::Deserialize<P> for SerializeExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
+                static RETURNS: &[::fbthrift::Field] = &[
+                    ::fbthrift::Field::new("Success", ::fbthrift::TType::Stream, 0),
+                ];
+                let _ = p.read_struct_begin(|_| ())?;
+                let mut once = false;
+                let mut alt = ::std::option::Option::None;
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
+                            p.read_field_end()?;
+                            break;
+                        }
+                        ((::fbthrift::TType::I32, 0i32), false) => {
+                            once = true;
+                            alt = ::std::option::Option::Some(SerializeExn::Success(::fbthrift::Deserialize::read(p)?));
+                        }
+                        ((ty, _id), false) => p.skip(ty)?,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                                format!(
+                                    "unwanted extra union {} field ty {:?} id {}",
+                                    "SerializeExn",
+                                    badty,
+                                    badid,
+                                ),
+                            )
+                        )),
+                    }
+                    p.read_field_end()?;
+                }
+                p.read_struct_end()?;
+                alt.ok_or_else(||
+                    ::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::MissingResult,
+                        format!("Empty union {}", "SerializeExn"),
+                    )
+                    .into(),
+                )
+            }
+        }
+
     }
 }
 
@@ -2274,6 +2693,19 @@ pub mod client {
         fn foo(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::FooError>> + ::std::marker::Send + 'static>>;
+
+        fn interact(
+            &self,
+            arg_arg: ::std::primitive::i32,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::InteractError>> + ::std::marker::Send + 'static>>;
+
+        fn interactFast(
+            &self,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::InteractFastError>> + ::std::marker::Send + 'static>>;
+
+        fn serialize(
+            &self,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>), crate::errors::my_service::SerializeError>> + ::std::marker::Send + 'static>>;
     }
 
     struct Args_MyService_foo<'a> {
@@ -2283,6 +2715,52 @@ pub mod client {
     impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_MyService_foo<'a> {
         #[inline]
         #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "MyService.foo"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    struct Args_MyService_interact<'a> {
+        arg: ::std::primitive::i32,
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_MyService_interact<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "MyService.interact"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
+            p.write_field_begin("arg", ::fbthrift::TType::I32, 1i16);
+            ::fbthrift::Serialize::write(&self.arg, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    struct Args_MyService_interactFast<'a> {
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_MyService_interactFast<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "MyService.interactFast"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    struct Args_MyService_serialize<'a> {
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_MyService_serialize<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "MyService.serialize"))]
         fn write(&self, p: &mut P) {
             p.write_struct_begin("args");
             p.write_field_stop();
@@ -2388,6 +2866,153 @@ pub mod client {
             .instrument(::tracing::info_span!("MyService.foo"))
             .boxed()
         }
+
+        fn interact(
+            &self,
+            arg_arg: ::std::primitive::i32,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::InteractError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
+            use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
+            const_cstr! {
+                SERVICE_NAME = "MyService";
+                METHOD_NAME = "MyService.interact";
+            }
+            let args = self::Args_MyService_interact {
+                arg: arg_arg,
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            // need to do call setup outside of async block because T: Transport isn't Send
+            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("interact", &args) {
+                ::std::result::Result::Ok(res) => res,
+                ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+            };
+
+            let call = self.transport()
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
+                .instrument(::tracing::trace_span!("call", function = "MyService.interact"));
+
+            async move {
+                let reply_env = call.await?;
+
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::my_service::InteractExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
+
+                match res {
+                    ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
+                    ::std::result::Result::Err(aexn) =>
+                        ::std::result::Result::Err(crate::errors::my_service::InteractError::ApplicationException(aexn))
+                }
+            }
+            .instrument(::tracing::info_span!("MyService.interact"))
+            .boxed()
+        }
+
+        fn interactFast(
+            &self,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::InteractFastError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
+            use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
+            const_cstr! {
+                SERVICE_NAME = "MyService";
+                METHOD_NAME = "MyService.interactFast";
+            }
+            let args = self::Args_MyService_interactFast {
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            // need to do call setup outside of async block because T: Transport isn't Send
+            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("interactFast", &args) {
+                ::std::result::Result::Ok(res) => res,
+                ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+            };
+
+            let call = self.transport()
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
+                .instrument(::tracing::trace_span!("call", function = "MyService.interactFast"));
+
+            async move {
+                let reply_env = call.await?;
+
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::my_service::InteractFastExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
+
+                match res {
+                    ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
+                    ::std::result::Result::Err(aexn) =>
+                        ::std::result::Result::Err(crate::errors::my_service::InteractFastError::ApplicationException(aexn))
+                }
+            }
+            .instrument(::tracing::info_span!("MyService.interactFast"))
+            .boxed()
+        }
+
+        fn serialize(
+            &self,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>), crate::errors::my_service::SerializeError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
+            use ::futures::future::FutureExt as _;
+            use ::tracing::Instrument as _;
+            use ::futures::StreamExt as _;
+            use ::fbthrift::Deserialize as _;
+
+            const_cstr! {
+                SERVICE_NAME = "MyService";
+                METHOD_NAME = "MyService.serialize";
+            }
+            let args = self::Args_MyService_serialize {
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("serialize", &args) {
+                ::std::result::Result::Ok(res) => res,
+                ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+            };
+
+            let call_stream = self.transport()
+                .call_stream(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
+                .instrument(::tracing::trace_span!("call_stream", method = "MyService.serialize"));
+
+            async move {
+                let (_initial, stream) = call_stream.await?;
+
+                let new_stream = stream.then(|item_res| {
+                    async move {
+                        match item_res {
+                            ::std::result::Result::Err(err) =>
+                                ::std::result::Result::Err(crate::errors::my_service::SerializeStreamError::from(err)),
+                            ::std::result::Result::Ok(item_enc) => {
+                                let res = S::spawn(move || {
+                                    let mut de = P::deserializer(item_enc);
+                                    crate::services::my_service::SerializeStreamExn::read(&mut de)
+                                }).await?;
+
+                                let item: ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError> =
+                                    ::std::convert::From::from(res);
+                                item
+                            }
+                        }
+                    }
+                })
+                .boxed();
+
+                let de = P::deserializer(_initial);
+                let res: crate::services::my_service::SerializeExn =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?.0?;
+
+                let initial: ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeError> =
+                    ::std::convert::From::from(res);
+                initial.map(move |initial| (initial, new_stream))
+            }
+            .instrument(::tracing::info_span!("MyService.serialize"))
+            .boxed()
+        }
     }
 
     impl<'a, T> MyService for T
@@ -2414,6 +3039,26 @@ pub mod client {
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::FooError>> + ::std::marker::Send + 'static>> {
             self.as_ref().foo(
+            )
+        }
+        fn interact(
+            &self,
+            arg_arg: ::std::primitive::i32,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::InteractError>> + ::std::marker::Send + 'static>> {
+            self.as_ref().interact(
+                arg_arg,
+            )
+        }
+        fn interactFast(
+            &self,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::InteractFastError>> + ::std::marker::Send + 'static>> {
+            self.as_ref().interactFast(
+            )
+        }
+        fn serialize(
+            &self,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>), crate::errors::my_service::SerializeError>> + ::std::marker::Send + 'static>> {
+            self.as_ref().serialize(
             )
         }
     }
@@ -3837,6 +4482,28 @@ pub mod server {
                 ),
             ))
         }
+        async fn interact(
+            &self,
+            _arg: ::std::primitive::i32,
+        ) -> ::std::result::Result<(), crate::services::my_service::InteractExn> {
+            ::std::result::Result::Err(crate::services::my_service::InteractExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
+                    "MyService",
+                    "interact",
+                ),
+            ))
+        }
+        async fn interactFast(
+            &self,
+        ) -> ::std::result::Result<::std::primitive::i32, crate::services::my_service::InteractFastExn> {
+            ::std::result::Result::Err(crate::services::my_service::InteractFastExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
+                    "MyService",
+                    "interactFast",
+                ),
+            ))
+        }
+        // serialize: server-side streaming not yet implemented
     }
 
     #[::async_trait::async_trait]
@@ -3865,6 +4532,21 @@ pub mod server {
             (**self).foo(
             ).await
         }
+        async fn interact(
+            &self,
+            arg: ::std::primitive::i32,
+        ) -> ::std::result::Result<(), crate::services::my_service::InteractExn> {
+            (**self).interact(
+                arg, 
+            ).await
+        }
+        async fn interactFast(
+            &self,
+        ) -> ::std::result::Result<::std::primitive::i32, crate::services::my_service::InteractFastExn> {
+            (**self).interactFast(
+            ).await
+        }
+        // serialize: server-side streaming not yet implemented
     }
 
     /// Processor for MyService's methods.
@@ -3880,6 +4562,57 @@ pub mod server {
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyService_foo {
         #[inline]
         #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyService.foo"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+            ];
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+            })
+        }
+    }
+
+    struct Args_MyService_interact {
+        arg: ::std::primitive::i32,
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyService_interact {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyService.interact"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("arg", ::fbthrift::TType::I32, 1),
+            ];
+            let mut field_arg = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::I32, 1) => field_arg = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                arg: field_arg.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "MyService.interact", "arg"))?,
+            })
+        }
+    }
+
+    struct Args_MyService_interactFast {
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyService_interactFast {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyService.interactFast"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
             ];
@@ -3994,6 +4727,121 @@ pub mod server {
 
             ::std::result::Result::Ok(res)
         }
+
+        #[::tracing::instrument(skip_all, fields(method = "MyService.interact"))]
+        async fn handle_interact<'a>(
+            &'a self,
+            p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
+            ctx_stack: &mut R::ContextStack,
+        ) -> ::anyhow::Result<crate::services::my_service::InteractExn> {
+            use ::const_cstr::const_cstr;
+            use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
+            const_cstr! {
+                SERVICE_NAME = "MyService";
+                METHOD_NAME = "MyService.interact";
+            }
+            ::fbthrift::ContextStack::pre_read(ctx_stack)?;
+            let _args: self::Args_MyService_interact = ::fbthrift::Deserialize::read(p)?;
+            ::fbthrift::ContextStack::on_read_data(ctx_stack, &::fbthrift::SerializedMessage {
+                protocol: P::PROTOCOL_ID,
+                method_name: METHOD_NAME.as_cstr(),
+                buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
+            })?;
+            ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
+
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.interact(
+                    _args.arg,
+                )
+            )
+            .catch_unwind()
+            .instrument(::tracing::info_span!("service_handler", method = "MyService.interact"))
+            .await;
+
+            // nested results - panic catch on the outside, method on the inside
+            let res = match res {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                    ::tracing::info!(method = "MyService.interact", "success");
+                    crate::services::my_service::InteractExn::Success(res)
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_service::InteractExn::Success(_))) => {
+                    panic!(
+                        "{} attempted to return success via error",
+                        "interact",
+                    )
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
+                    ::tracing::error!(method = "MyService.interact", exception = ?exn);
+                    exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.interact", exn);
+                    crate::services::my_service::InteractExn::ApplicationException(aexn)
+                }
+            };
+
+            ::std::result::Result::Ok(res)
+        }
+
+        #[::tracing::instrument(skip_all, fields(method = "MyService.interactFast"))]
+        async fn handle_interactFast<'a>(
+            &'a self,
+            p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
+            ctx_stack: &mut R::ContextStack,
+        ) -> ::anyhow::Result<crate::services::my_service::InteractFastExn> {
+            use ::const_cstr::const_cstr;
+            use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
+            const_cstr! {
+                SERVICE_NAME = "MyService";
+                METHOD_NAME = "MyService.interactFast";
+            }
+            ::fbthrift::ContextStack::pre_read(ctx_stack)?;
+            let _args: self::Args_MyService_interactFast = ::fbthrift::Deserialize::read(p)?;
+            ::fbthrift::ContextStack::on_read_data(ctx_stack, &::fbthrift::SerializedMessage {
+                protocol: P::PROTOCOL_ID,
+                method_name: METHOD_NAME.as_cstr(),
+                buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
+            })?;
+            ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
+
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.interactFast(
+                )
+            )
+            .catch_unwind()
+            .instrument(::tracing::info_span!("service_handler", method = "MyService.interactFast"))
+            .await;
+
+            // nested results - panic catch on the outside, method on the inside
+            let res = match res {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                    ::tracing::info!(method = "MyService.interactFast", "success");
+                    crate::services::my_service::InteractFastExn::Success(res)
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_service::InteractFastExn::Success(_))) => {
+                    panic!(
+                        "{} attempted to return success via error",
+                        "interactFast",
+                    )
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
+                    ::tracing::error!(method = "MyService.interactFast", exception = ?exn);
+                    exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.interactFast", exn);
+                    crate::services::my_service::InteractFastExn::ApplicationException(aexn)
+                }
+            };
+
+            ::std::result::Result::Ok(res)
+        }
     }
 
     #[::async_trait::async_trait]
@@ -4013,6 +4861,8 @@ pub mod server {
         fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
             match name {
                 b"foo" => ::std::result::Result::Ok(3usize),
+                b"interact" => ::std::result::Result::Ok(4usize),
+                b"interactFast" => ::std::result::Result::Ok(5usize),
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
@@ -4038,6 +4888,48 @@ pub mod server {
                     let res = self.handle_foo(_p, _r, &mut ctx_stack).await?;
                     let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                         "foo",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        _r,
+                        &mut ctx_stack,
+                        res
+                    )?;
+                    Ok(env)
+                }
+                4usize => {
+                    use const_cstr::const_cstr;
+                    const_cstr! {
+                        SERVICE_NAME = "MyService";
+                        METHOD_NAME = "MyService.interact";
+                    }
+                    let mut ctx_stack = _r.get_context_stack(
+                        SERVICE_NAME.as_cstr(),
+                        METHOD_NAME.as_cstr(),
+                    )?;
+                    let res = self.handle_interact(_p, _r, &mut ctx_stack).await?;
+                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "interact",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        _r,
+                        &mut ctx_stack,
+                        res
+                    )?;
+                    Ok(env)
+                }
+                5usize => {
+                    use const_cstr::const_cstr;
+                    const_cstr! {
+                        SERVICE_NAME = "MyService";
+                        METHOD_NAME = "MyService.interactFast";
+                    }
+                    let mut ctx_stack = _r.get_context_stack(
+                        SERVICE_NAME.as_cstr(),
+                        METHOD_NAME.as_cstr(),
+                    )?;
+                    let res = self.handle_interactFast(_p, _r, &mut ctx_stack).await?;
+                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "interactFast",
                         METHOD_NAME.as_cstr(),
                         _seqid,
                         _r,
@@ -4281,6 +5173,9 @@ pub mod server {
 pub mod mock {
     pub struct MyService<'mock> {
         pub foo: r#impl::my_service::foo<'mock>,
+        pub interact: r#impl::my_service::interact<'mock>,
+        pub interactFast: r#impl::my_service::interactFast<'mock>,
+        pub serialize: r#impl::my_service::serialize<'mock>,
         _marker: ::std::marker::PhantomData<&'mock ()>,
     }
 
@@ -4288,6 +5183,9 @@ pub mod mock {
         pub fn mock<'mock>() -> MyService<'mock> {
             MyService {
                 foo: r#impl::my_service::foo::unimplemented(),
+                interact: r#impl::my_service::interact::unimplemented(),
+                interactFast: r#impl::my_service::interactFast::unimplemented(),
+                serialize: r#impl::my_service::serialize::unimplemented(),
                 _marker: ::std::marker::PhantomData,
             }
         }
@@ -4316,6 +5214,28 @@ pub mod mock {
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::FooError>> + ::std::marker::Send + 'static>> {
             let mut closure = self.foo.closure.lock().unwrap();
+            let closure: &mut dyn ::std::ops::FnMut() -> _ = &mut **closure;
+            ::std::boxed::Box::pin(::futures::future::ready(closure()))
+        }
+        fn interact(
+            &self,
+            arg_arg: ::std::primitive::i32,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::InteractError>> + ::std::marker::Send + 'static>> {
+            let mut closure = self.interact.closure.lock().unwrap();
+            let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i32) -> _ = &mut **closure;
+            ::std::boxed::Box::pin(::futures::future::ready(closure(arg_arg.clone())))
+        }
+        fn interactFast(
+            &self,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::InteractFastError>> + ::std::marker::Send + 'static>> {
+            let mut closure = self.interactFast.closure.lock().unwrap();
+            let closure: &mut dyn ::std::ops::FnMut() -> _ = &mut **closure;
+            ::std::boxed::Box::pin(::futures::future::ready(closure()))
+        }
+        fn serialize(
+            &self,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>), crate::errors::my_service::SerializeError>> + ::std::marker::Send + 'static>> {
+            let mut closure = self.serialize.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut() -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure()))
         }
@@ -4364,6 +5284,138 @@ pub mod mock {
                 pub fn throw<E>(&self, exception: E)
                 where
                     E: ::std::convert::Into<crate::errors::my_service::FooError>,
+                    E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
+                }
+            }
+
+            pub struct interact<'mock> {
+                pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
+                    dyn ::std::ops::FnMut(::std::primitive::i32) -> ::std::result::Result<
+                        (),
+                        crate::errors::my_service::InteractError,
+                    > + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                >>,
+            }
+
+            impl<'mock> interact<'mock> {
+                pub fn unimplemented() -> Self {
+                    interact {
+                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::primitive::i32| panic!(
+                            "{}::{} is not mocked",
+                            "MyService",
+                            "interact",
+                        ))),
+                    }
+                }
+
+                pub fn ret(&self, value: ()) {
+                    self.mock(move |_: ::std::primitive::i32| value.clone());
+                }
+
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> () + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |arg| ::std::result::Result::Ok(mock(arg)));
+                }
+
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> ::std::result::Result<(), crate::errors::my_service::InteractError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |arg| mock(arg));
+                }
+
+                pub fn throw<E>(&self, exception: E)
+                where
+                    E: ::std::convert::Into<crate::errors::my_service::InteractError>,
+                    E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |_: ::std::primitive::i32| ::std::result::Result::Err(exception.clone().into()));
+                }
+            }
+
+            pub struct interactFast<'mock> {
+                pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
+                    dyn ::std::ops::FnMut() -> ::std::result::Result<
+                        ::std::primitive::i32,
+                        crate::errors::my_service::InteractFastError,
+                    > + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                >>,
+            }
+
+            impl<'mock> interactFast<'mock> {
+                pub fn unimplemented() -> Self {
+                    interactFast {
+                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
+                            "{}::{} is not mocked",
+                            "MyService",
+                            "interactFast",
+                        ))),
+                    }
+                }
+
+                pub fn ret(&self, value: ::std::primitive::i32) {
+                    self.mock(move || value.clone());
+                }
+
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> ::std::primitive::i32 + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
+                }
+
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut() -> ::std::result::Result<::std::primitive::i32, crate::errors::my_service::InteractFastError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || mock());
+                }
+
+                pub fn throw<E>(&self, exception: E)
+                where
+                    E: ::std::convert::Into<crate::errors::my_service::InteractFastError>,
+                    E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
+                }
+            }
+
+            pub struct serialize<'mock> {
+                pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
+                    dyn ::std::ops::FnMut() -> ::std::result::Result<
+                        (::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>),
+                        crate::errors::my_service::SerializeError,
+                    > + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                >>,
+            }
+
+            impl<'mock> serialize<'mock> {
+                pub fn unimplemented() -> Self {
+                    serialize {
+                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
+                            "{}::{} is not mocked",
+                            "MyService",
+                            "serialize",
+                        ))),
+                    }
+                }
+
+                pub fn ret(&self, _value: (::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>)) {
+                    unimplemented!("Mocking streams is not yet implemented, as value isn't cloneable")
+                }
+
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> (::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>) + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
+                }
+
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut() -> ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>), crate::errors::my_service::SerializeError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || mock());
+                }
+
+                pub fn throw<E>(&self, exception: E)
+                where
+                    E: ::std::convert::Into<crate::errors::my_service::SerializeError>,
                     E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
                 {
                     let mut closure = self.closure.lock().unwrap();
@@ -4596,6 +5648,66 @@ pub mod errors {
                         ::std::result::Result::Ok(res),
                     crate::services::my_service::FooExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(FooError::ApplicationException(aexn)),
+                }
+            }
+        }
+
+        pub type InteractError = ::fbthrift::NonthrowingFunctionError;
+
+        impl ::std::convert::From<crate::services::my_service::InteractExn> for
+            ::std::result::Result<(), InteractError>
+        {
+            fn from(e: crate::services::my_service::InteractExn) -> Self {
+                match e {
+                    crate::services::my_service::InteractExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::InteractExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(InteractError::ApplicationException(aexn)),
+                }
+            }
+        }
+
+        pub type InteractFastError = ::fbthrift::NonthrowingFunctionError;
+
+        impl ::std::convert::From<crate::services::my_service::InteractFastExn> for
+            ::std::result::Result<::std::primitive::i32, InteractFastError>
+        {
+            fn from(e: crate::services::my_service::InteractFastExn) -> Self {
+                match e {
+                    crate::services::my_service::InteractFastExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::InteractFastExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(InteractFastError::ApplicationException(aexn)),
+                }
+            }
+        }
+
+        pub type SerializeError = ::fbthrift::NonthrowingFunctionError;
+
+        impl ::std::convert::From<crate::services::my_service::SerializeExn> for
+            ::std::result::Result<::std::primitive::i32, SerializeError>
+        {
+            fn from(e: crate::services::my_service::SerializeExn) -> Self {
+                match e {
+                    crate::services::my_service::SerializeExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::SerializeExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(SerializeError::ApplicationException(aexn)),
+                }
+            }
+        }
+
+        pub type SerializeStreamError = ::fbthrift::NonthrowingFunctionError;
+
+        impl ::std::convert::From<crate::services::my_service::SerializeStreamExn> for
+            ::std::result::Result<::std::primitive::i32, SerializeStreamError>
+        {
+            fn from(e: crate::services::my_service::SerializeStreamExn) -> Self {
+                match e {
+                    crate::services::my_service::SerializeStreamExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::SerializeStreamExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(SerializeStreamError::ApplicationException(aexn)),
                 }
             }
         }

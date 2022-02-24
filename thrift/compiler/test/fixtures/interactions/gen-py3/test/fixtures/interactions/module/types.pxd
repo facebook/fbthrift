@@ -105,3 +105,30 @@ cdef class ClientBufferedStream__bool(ClientBufferedStream):
 cdef class ServerStream__bool(ServerStream):
     pass
 
+cdef class ClientBufferedStream__i32(ClientBufferedStream):
+    cdef unique_ptr[cClientBufferedStreamWrapper[cint32_t]] _gen
+
+    @staticmethod
+    cdef _fbthrift_create(cClientBufferedStream[cint32_t]& c_obj, __RpcOptions rpc_options)
+
+    @staticmethod
+    cdef void callback(
+        cFollyTry[__cOptional[cint32_t]]&& res,
+        PyObject* userdata,
+    )
+
+cdef class ServerStream__i32(ServerStream):
+    pass
+
+
+cdef class ResponseAndClientBufferedStream__i32_i32(ResponseAndClientBufferedStream):
+    cdef ClientBufferedStream__i32 _stream
+    cdef cint32_t _response
+
+    @staticmethod
+    cdef _fbthrift_create(cResponseAndClientBufferedStream[cint32_t, cint32_t]& c_obj, __RpcOptions rpc_options)
+
+
+cdef class ResponseAndServerStream__i32_i32(ResponseAndServerStream):
+    pass
+

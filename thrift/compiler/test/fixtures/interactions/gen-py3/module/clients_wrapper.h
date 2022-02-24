@@ -29,6 +29,13 @@ class MyServiceClientWrapper : public ::thrift::py3::ClientWrapper {
 
     folly::Future<folly::Unit> foo(
       apache::thrift::RpcOptions& rpcOptions);
+    folly::Future<folly::Unit> interact(
+      apache::thrift::RpcOptions& rpcOptions,
+      int32_t arg_arg);
+    folly::Future<int32_t> interactFast(
+      apache::thrift::RpcOptions& rpcOptions);
+    folly::Future<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> serialize(
+      apache::thrift::RpcOptions& rpcOptions);
 
     class MyInteractionInteractionWrapper : public ClientWrapper {
       public:

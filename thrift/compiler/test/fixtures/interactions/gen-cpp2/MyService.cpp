@@ -85,8 +85,189 @@ void MyServiceSvIf::async_tm_foo(std::unique_ptr<apache::thrift::HandlerCallback
   }
 }
 
+void MyServiceSvIf::interact(::std::int32_t /*arg*/) {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("interact");
+}
+
+folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_interact(::std::int32_t p_arg) {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_interact.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  interact(p_arg);
+  return folly::makeSemiFuture();
+}
+
+folly::Future<folly::Unit> MyServiceSvIf::future_interact(::std::int32_t p_arg) {
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_interact.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  return apache::thrift::detail::si::future(semifuture_interact(p_arg), getInternalKeepAlive());
+}
+
+void MyServiceSvIf::async_tm_interact(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int32_t p_arg) {
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
+  auto invocationType = __fbthrift_invocation_interact.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_interact.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_interact(p_arg);
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_interact(p_arg);
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
+        interact(p_arg);
+        callback->done();
+        return;
+      }
+      default:
+      {
+        folly::assume_unreachable();
+      }
+    }
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
+}
+
+::std::int32_t MyServiceSvIf::interactFast() {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("interactFast");
+}
+
+folly::SemiFuture<::std::int32_t> MyServiceSvIf::semifuture_interactFast() {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_interactFast.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  return interactFast();
+}
+
+folly::Future<::std::int32_t> MyServiceSvIf::future_interactFast() {
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_interactFast.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  return apache::thrift::detail::si::future(semifuture_interactFast(), getInternalKeepAlive());
+}
+
+void MyServiceSvIf::async_tm_interactFast(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
+  auto invocationType = __fbthrift_invocation_interactFast.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_interactFast.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_interactFast();
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_interactFast();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
+        callback->result(interactFast());
+        return;
+      }
+      default:
+      {
+        folly::assume_unreachable();
+      }
+    }
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
+}
+
+::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t> MyServiceSvIf::serialize() {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("serialize");
+}
+
+folly::SemiFuture<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>> MyServiceSvIf::semifuture_serialize() {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_serialize.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  return serialize();
+}
+
+folly::Future<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>> MyServiceSvIf::future_serialize() {
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_serialize.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  return apache::thrift::detail::si::future(semifuture_serialize(), getInternalKeepAlive());
+}
+
+void MyServiceSvIf::async_tm_serialize(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> callback) {
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
+  auto invocationType = __fbthrift_invocation_serialize.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_serialize.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_serialize();
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_serialize();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
+        callback->result(serialize());
+        return;
+      }
+      default:
+      {
+        folly::assume_unreachable();
+      }
+    }
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
+}
+
 void MyServiceSvNull::foo() {
   return;
+}
+
+void MyServiceSvNull::interact(::std::int32_t /*arg*/) {
+  return;
+}
+
+::std::int32_t MyServiceSvNull::interactFast() {
+  return 0;
 }
 
 
@@ -552,6 +733,9 @@ const MyServiceAsyncProcessor::ProcessMap& MyServiceAsyncProcessor::getOwnProces
 
 const MyServiceAsyncProcessor::ProcessMap MyServiceAsyncProcessor::kOwnProcessMap_ {
   {"foo", {&MyServiceAsyncProcessor::setUpAndProcess_foo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &MyServiceAsyncProcessor::setUpAndProcess_foo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"interact", {&MyServiceAsyncProcessor::setUpAndProcess_interact<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &MyServiceAsyncProcessor::setUpAndProcess_interact<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"interactFast", {&MyServiceAsyncProcessor::setUpAndProcess_interactFast<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &MyServiceAsyncProcessor::setUpAndProcess_interactFast<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"serialize", {&MyServiceAsyncProcessor::setUpAndProcess_serialize<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &MyServiceAsyncProcessor::setUpAndProcess_serialize<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
   {"MyInteraction.frobnicate", {&MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_frobnicate<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_frobnicate<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
   {"MyInteraction.ping", {&MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_ping<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_ping<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
   {"MyInteraction.truthify", {&MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_truthify<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_truthify<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
