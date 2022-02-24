@@ -548,6 +548,10 @@ class ServerRequest {
 
   static ProcessInfo& processInfo(ServerRequest& sr) { return sr.processInfo_; }
 
+  static intptr_t& queueObserverPayload(ServerRequest& sr) {
+    return sr.queueObserverPayload_;
+  }
+
  private:
   ResponseChannelRequest::UniquePtr request_;
   SerializedCompressedRequest serializedRequest_;
@@ -565,6 +569,7 @@ class ServerRequest {
   ConcurrencyControllerInterface* notifyConcurrencyController_{nullptr};
   ConcurrencyControllerInterface::UserData notifyConcurrencyControllerUserData_;
   ProcessInfo processInfo_;
+  intptr_t queueObserverPayload_;
 };
 
 namespace detail {
@@ -579,6 +584,7 @@ class ServerRequestHelper : public ServerRequest {
   using ServerRequest::executor;
   using ServerRequest::processInfo;
   using ServerRequest::protocol;
+  using ServerRequest::queueObserverPayload;
   using ServerRequest::request;
   using ServerRequest::requestContext;
   using ServerRequest::requestPileNotification;

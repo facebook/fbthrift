@@ -21,11 +21,11 @@
 #include <folly/concurrency/UnboundedQueue.h>
 #include <folly/io/async/AtomicNotificationQueue.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
-#include <thrift/lib/cpp2/server/RequestPileInterface.h>
+#include <thrift/lib/cpp2/server/RequestPileBase.h>
 
 namespace apache::thrift {
 
-class RoundRobinRequestPile : public RequestPileInterface {
+class RoundRobinRequestPile : public RequestPileBase {
  public:
   using PileSelectionFunction =
       std::function<std::pair<unsigned, unsigned>(const ServerRequest&)>;
@@ -33,6 +33,8 @@ class RoundRobinRequestPile : public RequestPileInterface {
   struct Options {
     inline constexpr static unsigned kDefaultNumPriorities = 1;
     inline constexpr static unsigned kDefaultNumBuckets = 1;
+
+    std::string name;
 
     // numBucket = numBuckets_[priority]
     std::vector<unsigned> numBucketsPerPriority;
@@ -50,6 +52,8 @@ class RoundRobinRequestPile : public RequestPileInterface {
         numBucketsPerPriority.emplace_back(kDefaultNumBuckets);
       }
     }
+
+    void setName(std::string rName) { name = std::move(rName); }
 
     void setNumPriorities(unsigned numPri) {
       numBucketsPerPriority.resize(numPri);

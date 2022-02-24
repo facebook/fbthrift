@@ -27,7 +27,8 @@ void RoundRobinRequestPile::Consumer::operator()(
 }
 
 RoundRobinRequestPile::RoundRobinRequestPile(Options opts)
-    : opts_(std::move(opts)) {
+    : RequestPileBase(std::move(opts.name)) {
+  opts_ = std::move(opts);
   const auto& numBucketsPerPriority = opts_.numBucketsPerPriority;
 
   requestQueues_.reset(
@@ -74,6 +75,8 @@ ServerRequest RoundRobinRequestPile::dequeueImpl(
     retrievalIndexQueues_[pri]->enqueue(bucket);
   }
 
+  RequestPileBase::onDequeued(consumer.carrier_);
+
   return std::move(consumer.carrier_);
 }
 
@@ -99,6 +102,8 @@ std::optional<ServerRequestRejection> RoundRobinRequestPile::enqueue(
       apache::thrift::detail::ServerRequestHelper::processInfo(request);
 
   info.queueBegin = std::chrono::steady_clock::now();
+
+  RequestPileBase::onEnqueued(request);
 
   if (opts_.numMaxRequests != 0) {
     auto res = requestQueues_[pri][bucket].tryPush(
