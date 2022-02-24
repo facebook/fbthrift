@@ -17,7 +17,7 @@
 #include <folly/portability/GTest.h>
 
 #include <thrift/lib/cpp2/protocol/Serializer.h>
-#include <thrift/test/gen-cpp2/SerializationWithFieldIdOrder_types.h>
+#include <thrift/test/gen-cpp2/SerializationInFieldIdOrder_types.h>
 
 namespace apache::thrift::test {
 
@@ -34,7 +34,6 @@ std::vector<int> get_field_ids(std::string serializedData) {
   reader.setInput(buf.get());
 
   while (true) {
-    auto fieldBegin = reader.getCursor();
     reader.readFieldBegin(name, ftype, id);
 
     if (ftype == TType::T_STOP) {

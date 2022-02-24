@@ -1005,15 +1005,20 @@ class mstch_struct : public mstch_base {
     // Populate field_context_generator for each field.
     auto ctx = field_generator_context{};
     ctx.strct = strct_;
-    auto fields = strct->fields();
-    for (auto it = fields.begin(); it != fields.end(); it++) {
-      const auto* field = &*it;
-      if (cpp2::field_has_isset(field)) {
+    for (const t_field& field : strct->fields()) {
+      if (cpp2::field_has_isset(&field)) {
         ctx.isset_index++;
       }
-      ctx.serialization_next = (it + 1) != fields.end() ? &*(it + 1) : nullptr;
-      context_map[field] = ctx;
-      ctx.serialization_prev = field;
+      context_map[&field] = ctx;
+    }
+
+    const t_field* prev = nullptr;
+    for (const t_field* curr : get_members_in_serialization_order()) {
+      if (prev) {
+        context_map[prev].serialization_next = curr;
+        context_map[curr].serialization_prev = prev;
+      }
+      prev = curr;
     }
   }
   mstch::node name() { return strct_->get_name(); }
@@ -1051,7 +1056,18 @@ class mstch_struct : public mstch_base {
   // Returns the struct members ordered by the key.
   const std::vector<const t_field*>& get_members_in_key_order();
 
-  mstch::node fields_in_serialization_order() { return fields(); }
+  field_range get_members_in_serialization_order() {
+    if (strct_->find_structured_annotation_or_null(
+            "facebook.com/thrift/annotation/thrift/ExperimentalSerializeInFieldIdOrder")) {
+      return get_members_in_key_order();
+    }
+
+    return strct_->get_members();
+  }
+
+  mstch::node fields_in_serialization_order() {
+    return generate_fields(get_members_in_serialization_order());
+  }
 
  protected:
   t_struct const* strct_;
