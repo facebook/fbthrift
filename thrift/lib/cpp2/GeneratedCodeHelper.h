@@ -1422,7 +1422,10 @@ class AsyncTmPrep {
  public:
   AsyncTmPrep(ServerInterface* si, CallbackBase* callback) : si_{si} {
     si->setEventBase(callback->getEventBase());
-    si->setThreadManager(callback->getThreadManager());
+    if (auto threadManager = callback->getThreadManager();
+        threadManager != nullptr) {
+      si->setThreadManager(threadManager);
+    }
     si->setHandlerExecutor(callback->getHandlerExecutor());
     si->setRequestContext(callback->getRequestContext());
   }

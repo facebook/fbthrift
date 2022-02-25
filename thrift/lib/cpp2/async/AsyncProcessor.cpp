@@ -345,11 +345,18 @@ void ServerInterface::setEventBase(folly::EventBase* eb) {
 }
 
 void ServerInterface::BlockingThreadManager::add(folly::Func f) {
-  std::shared_ptr<concurrency::Runnable> task =
-      concurrency::FunctionRunner::create(std::move(f));
   try {
-    executor_->add(
-        std::move(task), std::chrono::milliseconds(kTimeout).count(), 0, false);
+    if (threadManagerKa_) {
+      std::shared_ptr<concurrency::Runnable> task =
+          concurrency::FunctionRunner::create(std::move(f));
+      threadManagerKa_->add(
+          std::move(task),
+          std::chrono::milliseconds(kTimeout).count() /* deprecated */,
+          0,
+          false);
+    } else {
+      executorKa_->add(std::move(f));
+    }
     return;
   } catch (...) {
     LOG(FATAL) << "Failed to schedule a task within timeout: "
@@ -373,15 +380,23 @@ void ServerInterface::BlockingThreadManager::keepAliveRelease() noexcept {
 }
 
 folly::Executor::KeepAlive<> ServerInterface::getInternalKeepAlive() {
-  return getThreadManager()->getKeepAlive(
-      getRequestContext()->getRequestExecutionScope(),
-      apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
+  if (getThreadManager()) {
+    return getThreadManager()->getKeepAlive(
+        getRequestContext()->getRequestExecutionScope(),
+        apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
+  } else {
+    return folly::Executor::getKeepAliveToken(getHandlerExecutor());
+  }
 }
 
 folly::Executor::KeepAlive<> HandlerCallbackBase::getInternalKeepAlive() {
-  return getThreadManager()->getKeepAlive(
-      getRequestContext()->getRequestExecutionScope(),
-      apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
+  if (getThreadManager()) {
+    return getThreadManager()->getKeepAlive(
+        getRequestContext()->getRequestExecutionScope(),
+        apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
+  } else {
+    return folly::Executor::getKeepAliveToken(getHandlerExecutor());
+  }
 }
 
 HandlerCallbackBase::~HandlerCallbackBase() {
@@ -422,8 +437,11 @@ concurrency::ThreadManager* HandlerCallbackBase::getThreadManager() {
 }
 
 folly::Executor* HandlerCallbackBase::getHandlerExecutor() {
-  assert(tm_ != nullptr);
-  return tm_;
+  if (executor_ == nullptr) {
+    assert(tm_ != nullptr);
+    return tm_;
+  }
+  return executor_;
 }
 
 void HandlerCallbackBase::forward(const HandlerCallbackBase& other) {

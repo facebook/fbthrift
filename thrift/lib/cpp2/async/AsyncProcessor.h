@@ -935,16 +935,26 @@ class ServerInterface : public virtual AsyncProcessorFactory,
   }
 
   folly::Executor* getHandlerExecutor() {
-    return requestParams_.getHandlerExecutor();
+    return requestParams_.handlerExecutor_ ? requestParams_.handlerExecutor_
+                                           : requestParams_.threadManager_;
   }
 
   folly::Executor::KeepAlive<> getBlockingThreadManager() {
-    return BlockingThreadManager::create(requestParams_.threadManager_);
+    if (requestParams_.threadManager_) {
+      return BlockingThreadManager::create(requestParams_.threadManager_);
+    } else {
+      return BlockingThreadManager::create(requestParams_.handlerExecutor_);
+    }
   }
 
   static folly::Executor::KeepAlive<> getBlockingThreadManager(
       concurrency::ThreadManager* threadManager) {
     return BlockingThreadManager::create(threadManager);
+  }
+
+  static folly::Executor::KeepAlive<> getBlockingThreadManager(
+      folly::Executor* executor) {
+    return BlockingThreadManager::create(executor);
   }
 
   void setEventBase(folly::EventBase* eb);
@@ -999,18 +1009,25 @@ class ServerInterface : public virtual AsyncProcessorFactory,
         concurrency::ThreadManager* executor) {
       return makeKeepAlive(new BlockingThreadManager(executor));
     }
+    static folly::Executor::KeepAlive<> create(folly::Executor* executor) {
+      return makeKeepAlive(new BlockingThreadManager(executor));
+    }
+
     void add(folly::Func f) override;
 
    private:
-    explicit BlockingThreadManager(concurrency::ThreadManager* executor)
-        : executor_(folly::getKeepAliveToken(executor)) {}
+    explicit BlockingThreadManager(concurrency::ThreadManager* threadManager)
+        : threadManagerKa_(folly::getKeepAliveToken(threadManager)) {}
+    explicit BlockingThreadManager(folly::Executor* executor)
+        : executorKa_(folly::getKeepAliveToken(executor)) {}
 
     bool keepAliveAcquire() noexcept override;
     void keepAliveRelease() noexcept override;
 
     static constexpr std::chrono::seconds kTimeout{30};
     std::atomic<size_t> keepAliveCount_{1};
-    folly::Executor::KeepAlive<concurrency::ThreadManager> executor_;
+    folly::Executor::KeepAlive<concurrency::ThreadManager> threadManagerKa_;
+    folly::Executor::KeepAlive<folly::Executor> executorKa_;
   };
 
   /**

@@ -310,7 +310,7 @@ void MyServiceSvIf::MyInteractionIf::async_tm_frobnicate(std::unique_ptr<apache:
 #if FOLLY_HAS_COROUTINES
         __fbthrift_invocation_frobnicate.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::CoroParam, std::memory_order_relaxed);
         apache::thrift::RequestParams params{callback->getRequestContext(),
-          callback->getThreadManager(), callback->getEventBase()};
+          callback->getThreadManager(), callback->getEventBase(), callback->getHandlerExecutor()};
         auto task = co_frobnicate(params);
         apache::thrift::detail::si::async_tm_coro(std::move(callback), std::move(task));
         return;
@@ -329,7 +329,7 @@ void MyServiceSvIf::MyInteractionIf::async_tm_frobnicate(std::unique_ptr<apache:
       case apache::thrift::detail::si::InvocationType::CoroParam:
       {
         apache::thrift::RequestParams params{callback->getRequestContext(),
-          callback->getThreadManager(), callback->getEventBase()};
+          callback->getThreadManager(), callback->getEventBase(), callback->getHandlerExecutor()};
         auto task = co_frobnicate(params);
         apache::thrift::detail::si::async_tm_coro(std::move(callback), std::move(task));
         return;
@@ -395,7 +395,7 @@ void MyServiceSvIf::MyInteractionIf::async_tm_ping(std::unique_ptr<apache::thrif
 #if FOLLY_HAS_COROUTINES
         __fbthrift_invocation_ping.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::CoroParam, std::memory_order_relaxed);
         apache::thrift::RequestParams params{callback->getRequestContext(),
-          callback->getThreadManager(), callback->getEventBase()};
+          callback->getThreadManager(), callback->getEventBase(), callback->getHandlerExecutor()};
         auto task = co_ping(params);
         apache::thrift::detail::si::async_tm_coro_oneway(std::move(callback), std::move(task));
         return;
@@ -414,7 +414,7 @@ void MyServiceSvIf::MyInteractionIf::async_tm_ping(std::unique_ptr<apache::thrif
       case apache::thrift::detail::si::InvocationType::CoroParam:
       {
         apache::thrift::RequestParams params{callback->getRequestContext(),
-          callback->getThreadManager(), callback->getEventBase()};
+          callback->getThreadManager(), callback->getEventBase(), callback->getHandlerExecutor()};
         auto task = co_ping(params);
         apache::thrift::detail::si::async_tm_coro_oneway(std::move(callback), std::move(task));
         return;
@@ -479,7 +479,7 @@ void MyServiceSvIf::MyInteractionIf::async_tm_truthify(std::unique_ptr<apache::t
 #if FOLLY_HAS_COROUTINES
         __fbthrift_invocation_truthify.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::CoroParam, std::memory_order_relaxed);
         apache::thrift::RequestParams params{callback->getRequestContext(),
-          callback->getThreadManager(), callback->getEventBase()};
+          callback->getThreadManager(), callback->getEventBase(), callback->getHandlerExecutor()};
         auto task = co_truthify(params);
         apache::thrift::detail::si::async_tm_coro(std::move(callback), std::move(task));
         return;
@@ -498,7 +498,7 @@ void MyServiceSvIf::MyInteractionIf::async_tm_truthify(std::unique_ptr<apache::t
       case apache::thrift::detail::si::InvocationType::CoroParam:
       {
         apache::thrift::RequestParams params{callback->getRequestContext(),
-          callback->getThreadManager(), callback->getEventBase()};
+          callback->getThreadManager(), callback->getEventBase(), callback->getHandlerExecutor()};
         auto task = co_truthify(params);
         apache::thrift::detail::si::async_tm_coro(std::move(callback), std::move(task));
         return;
@@ -563,7 +563,7 @@ void MyServiceSvIf::MyInteractionIf::async_tm_encode(std::unique_ptr<apache::thr
 #if FOLLY_HAS_COROUTINES
         __fbthrift_invocation_encode.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::CoroParam, std::memory_order_relaxed);
         apache::thrift::RequestParams params{callback->getRequestContext(),
-          callback->getThreadManager(), callback->getEventBase()};
+          callback->getThreadManager(), callback->getEventBase(), callback->getHandlerExecutor()};
         auto task = co_encode(params);
         apache::thrift::detail::si::async_tm_coro(std::move(callback), std::move(task));
         return;
@@ -582,7 +582,7 @@ void MyServiceSvIf::MyInteractionIf::async_tm_encode(std::unique_ptr<apache::thr
       case apache::thrift::detail::si::InvocationType::CoroParam:
       {
         apache::thrift::RequestParams params{callback->getRequestContext(),
-          callback->getThreadManager(), callback->getEventBase()};
+          callback->getThreadManager(), callback->getEventBase(), callback->getHandlerExecutor()};
         auto task = co_encode(params);
         apache::thrift::detail::si::async_tm_coro(std::move(callback), std::move(task));
         return;
@@ -664,7 +664,7 @@ void MyServiceSvIf::SerialInteractionIf::async_tm_frobnicate(std::unique_ptr<apa
 #if FOLLY_HAS_COROUTINES
         __fbthrift_invocation_frobnicate.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::CoroParam, std::memory_order_relaxed);
         apache::thrift::RequestParams params{callback->getRequestContext(),
-          callback->getThreadManager(), callback->getEventBase()};
+          callback->getThreadManager(), callback->getEventBase(), callback->getHandlerExecutor()};
         auto task = co_frobnicate(params);
         apache::thrift::detail::si::async_tm_coro(std::move(callback), std::move(task));
         return;
@@ -683,7 +683,7 @@ void MyServiceSvIf::SerialInteractionIf::async_tm_frobnicate(std::unique_ptr<apa
       case apache::thrift::detail::si::InvocationType::CoroParam:
       {
         apache::thrift::RequestParams params{callback->getRequestContext(),
-          callback->getThreadManager(), callback->getEventBase()};
+          callback->getThreadManager(), callback->getEventBase(), callback->getHandlerExecutor()};
         auto task = co_frobnicate(params);
         apache::thrift::detail::si::async_tm_coro(std::move(callback), std::move(task));
         return;

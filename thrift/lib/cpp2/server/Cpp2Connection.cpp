@@ -141,7 +141,10 @@ Cpp2Connection::Cpp2Connection(
           worker_->getServer()->getClientIdentityHook(),
           worker_.get()),
       transport_(transport),
-      threadManager_(worker_->getServer()->getThreadManager()) {
+      executor_(worker_->getServer()->getExecutor()) {
+  if (!useResourcePoolsFlagsSet()) {
+    threadManager_ = worker_->getServer()->getThreadManager();
+  }
   context_.setTransportType(Cpp2ConnContext::TransportType::HEADER);
 
   if (auto* observer = worker_->getServer()->getObserver()) {
@@ -568,7 +571,9 @@ void Cpp2Connection::requestReceived(
     timestamps.readEnd = readEnd;
     timestamps.processBegin = std::chrono::steady_clock::now();
     if (samplingStatus.isEnabledByServer() && observer) {
-      observer->queuedRequests(threadManager_->pendingUpstreamTaskCount());
+      if (threadManager_) {
+        observer->queuedRequests(threadManager_->pendingUpstreamTaskCount());
+      }
       observer->activeRequests(server->getActiveRequests());
     }
   }

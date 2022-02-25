@@ -92,7 +92,7 @@ void <% > service_common/service_class_name%>::async_tm_<%function:cpp_name%>(st
 #if FOLLY_HAS_COROUTINES
         __fbthrift_invocation_<%function:cpp_name%>.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::CoroParam, std::memory_order_relaxed);
         apache::thrift::RequestParams params{callback->getRequestContext(),
-          callback->getThreadManager(), callback->getEventBase()};
+          callback->getThreadManager(), callback->getEventBase(), callback->getHandlerExecutor()};
         auto task = co_<%function:cpp_name%>(params<%function:comma%><% > service_common/param_list_move%>);
         apache::thrift::detail::si::<%#function:oneway?%>async_tm_coro_oneway<%/function:oneway?%><%^function:oneway?%>async_tm_coro<%/function:oneway?%>(std::move(callback), std::move(task));
         return;
@@ -128,7 +128,7 @@ void <% > service_common/service_class_name%>::async_tm_<%function:cpp_name%>(st
       case apache::thrift::detail::si::InvocationType::CoroParam:
       {
         apache::thrift::RequestParams params{callback->getRequestContext(),
-          callback->getThreadManager(), callback->getEventBase()};
+          callback->getThreadManager(), callback->getEventBase(), callback->getHandlerExecutor()};
         auto task = co_<%function:cpp_name%>(params<%function:comma%><% > service_common/param_list_move%>);
         apache::thrift::detail::si::<%#function:oneway?%>async_tm_coro_oneway<%/function:oneway?%><%^function:oneway?%>async_tm_coro<%/function:oneway?%>(std::move(callback), std::move(task));
         return;
