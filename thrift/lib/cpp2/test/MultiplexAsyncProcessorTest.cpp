@@ -29,6 +29,7 @@
 #include <thrift/lib/cpp2/test/gen-cpp2/Conflicts.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/ConflictsInteraction1.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/First.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/FirstAsyncClient.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/Interaction1.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/Interaction2.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/Second.h>
@@ -70,7 +71,27 @@ class Conflicts : public ConflictsSvIf {
 };
 } // namespace
 
-TEST(MultiplexAsyncProcessorTest, getServiceHandlers) {
+namespace {
+class MultiplexAsyncProcessorTest : public Test {
+ public:
+  std::shared_ptr<AsyncProcessorFactory> multiplex(
+      std::vector<std::shared_ptr<AsyncProcessorFactory>> services) {
+    return std::make_shared<MultiplexAsyncProcessorFactory>(
+        std::move(services));
+  }
+};
+
+class MultiplexAsyncProcessorServerTest : public MultiplexAsyncProcessorTest {
+ public:
+  std::unique_ptr<ScopedServerInterfaceThread> runMultiplexedServices(
+      std::vector<std::shared_ptr<AsyncProcessorFactory>> services) {
+    return std::make_unique<ScopedServerInterfaceThread>(
+        multiplex(std::move(services)));
+  }
+};
+} // namespace
+
+TEST_F(MultiplexAsyncProcessorTest, getServiceHandlers) {
   std::vector<std::shared_ptr<AsyncProcessorFactory>> services = {
       std::make_shared<First>(),
       std::make_shared<Second>(),
@@ -83,7 +104,22 @@ TEST(MultiplexAsyncProcessorTest, getServiceHandlers) {
   EXPECT_EQ(processorFactory->getServiceHandlers().size(), 4);
 }
 
-TEST(MultiplexAsyncProcessorTest, getServiceMetadata) {
+TEST_F(MultiplexAsyncProcessorTest, getServiceHandlers_Nested) {
+  std::vector<std::shared_ptr<AsyncProcessorFactory>> services2 = {
+      std::make_shared<First>(),
+      multiplex({
+          std::make_shared<Second>(),
+          std::make_shared<Third>(),
+      }),
+      std::make_shared<Conflicts>(),
+  };
+  auto processorFactory =
+      std::make_shared<MultiplexAsyncProcessorFactory>(std::move(services2));
+  // Generated service handlers are one per service
+  EXPECT_EQ(processorFactory->getServiceHandlers().size(), 4);
+}
+
+TEST_F(MultiplexAsyncProcessorTest, getServiceMetadata) {
   auto getMetadataFromService = [](AsyncProcessorFactory& service) {
     metadata::ThriftServiceMetadataResponse response;
     service.getProcessor()->getServiceMetadata(response);
@@ -127,22 +163,52 @@ TEST(MultiplexAsyncProcessorTest, getServiceMetadata) {
   EXPECT_EQ(metadata.services_ref()->size(), 5);
 }
 
-namespace {
-class MultiplexAsyncProcessorServerTest : public Test {
- public:
-  std::shared_ptr<AsyncProcessorFactory> multiplex(
-      std::vector<std::shared_ptr<AsyncProcessorFactory>> services) {
-    return std::make_shared<MultiplexAsyncProcessorFactory>(
-        std::move(services));
-  }
+TEST_F(MultiplexAsyncProcessorTest, getServiceMetadata_Nested) {
+  auto getMetadataFromService = [](AsyncProcessorFactory& service) {
+    metadata::ThriftServiceMetadataResponse response;
+    service.getProcessor()->getServiceMetadata(response);
+    return response;
+  };
 
-  std::unique_ptr<ScopedServerInterfaceThread> runMultiplexedServices(
-      std::vector<std::shared_ptr<AsyncProcessorFactory>> services) {
-    return std::make_unique<ScopedServerInterfaceThread>(
-        multiplex(std::move(services)));
-  }
-};
-} // namespace
+  std::vector<std::shared_ptr<AsyncProcessorFactory>> servicesToMultiplex = {
+      std::make_shared<First>(),
+      std::make_shared<Second>(),
+      multiplex({
+          std::make_shared<SomeServiceSvIf>(),
+          std::make_shared<Conflicts>(),
+      }),
+      std::make_shared<Third>(),
+  };
+  auto processorFactory = std::make_shared<MultiplexAsyncProcessorFactory>(
+      std::move(servicesToMultiplex));
+  auto response = getMetadataFromService(*processorFactory);
+
+  LOG(INFO) << "ServiceMetadata: " << debugString(response);
+
+  EXPECT_EQ(
+      *response.context_ref()->service_info_ref()->name_ref(),
+      "MultiplexAsyncProcessor.First");
+
+  auto& services = *response.services_ref();
+  EXPECT_EQ(services.size(), 6);
+  EXPECT_EQ(*services[0].service_name_ref(), "MultiplexAsyncProcessor.First");
+  EXPECT_EQ(*services[1].service_name_ref(), "MultiplexAsyncProcessor.Second");
+  EXPECT_EQ(
+      *services[2].service_name_ref(), "MultiplexAsyncProcessor.SomeService");
+  // Base service of SomeService
+  EXPECT_EQ(*services[3].service_name_ref(), "MultiplexAsyncProcessor.Third");
+  EXPECT_EQ(
+      *services[4].service_name_ref(), "MultiplexAsyncProcessor.Conflicts");
+  EXPECT_EQ(*services[5].service_name_ref(), "MultiplexAsyncProcessor.Third");
+
+  const auto& metadata = *response.metadata_ref();
+  EXPECT_EQ(metadata.structs_ref()->size(), 1);
+  EXPECT_EQ(
+      metadata.structs_ref()->begin()->first,
+      "MultiplexAsyncProcessor.SomeStruct");
+  // All composed services are referred to
+  EXPECT_EQ(metadata.services_ref()->size(), 5);
+}
 
 TEST_F(MultiplexAsyncProcessorServerTest, Basic) {
   auto runner = runMultiplexedServices(
@@ -174,7 +240,7 @@ TEST_F(MultiplexAsyncProcessorServerTest, ConflictPrecedence) {
   EXPECT_EQ(client3->semifuture_six().get(), 6);
 }
 
-TEST_F(MultiplexAsyncProcessorServerTest, Nested) {
+TEST_F(MultiplexAsyncProcessorServerTest, Nested_1) {
   auto runner = runMultiplexedServices(
       {multiplex({std::make_shared<Second>(), std::make_shared<Conflicts>()}),
        std::make_shared<Third>()});
@@ -187,6 +253,25 @@ TEST_F(MultiplexAsyncProcessorServerTest, Nested) {
   EXPECT_EQ(client2->semifuture_four().get(), 4);
   // Conflicts takes precedence
   EXPECT_EQ(client3->semifuture_five().get(), 555);
+  EXPECT_EQ(client3->semifuture_six().get(), 6);
+}
+
+TEST_F(MultiplexAsyncProcessorServerTest, Nested_2) {
+  auto runner = runMultiplexedServices(
+      {std::make_shared<Third>(),
+       multiplex({std::make_shared<First>(), std::make_shared<Conflicts>()}),
+       std::make_shared<Second>()});
+
+  auto client1 = runner->newClient<FirstAsyncClient>();
+  auto client2 = runner->newClient<SecondAsyncClient>();
+  auto client3 = runner->newClient<ThirdAsyncClient>();
+
+  EXPECT_EQ(client1->semifuture_one().get(), 1);
+  EXPECT_EQ(client2->semifuture_three().get(), 3);
+  // Conflict takes precedence
+  EXPECT_EQ(client2->semifuture_four().get(), 444);
+  // Third takes precedence
+  EXPECT_EQ(client3->semifuture_five().get(), 5);
   EXPECT_EQ(client3->semifuture_six().get(), 6);
 }
 

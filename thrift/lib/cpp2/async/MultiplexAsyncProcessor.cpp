@@ -332,9 +332,31 @@ class MultiplexAsyncProcessor final : public AsyncProcessor {
 
 MultiplexAsyncProcessorFactory::MultiplexAsyncProcessorFactory(
     std::vector<std::shared_ptr<AsyncProcessorFactory>> processorFactories)
-    : processorFactories_(std::move(processorFactories)),
+    : processorFactories_(
+          flattenProcessorFactories(std::move(processorFactories))),
       compositionMetadata_(computeCompositionMetadata(processorFactories_)) {
   CHECK(!processorFactories_.empty());
+}
+
+/* static */
+std::vector<std::shared_ptr<AsyncProcessorFactory>>
+MultiplexAsyncProcessorFactory::flattenProcessorFactories(
+    std::vector<std::shared_ptr<AsyncProcessorFactory>> processorFactories) {
+  std::vector<std::shared_ptr<AsyncProcessorFactory>> result;
+  for (auto& factory : processorFactories) {
+    auto* multiplexFactory =
+        dynamic_cast<MultiplexAsyncProcessorFactory*>(factory.get());
+    if (multiplexFactory == nullptr) {
+      result.emplace_back(std::move(factory));
+    } else {
+      result.insert(
+          result.end(),
+          std::make_move_iterator(
+              multiplexFactory->processorFactories_.begin()),
+          std::make_move_iterator(multiplexFactory->processorFactories_.end()));
+    }
+  }
+  return result;
 }
 
 std::unique_ptr<AsyncProcessor> MultiplexAsyncProcessorFactory::getProcessor() {

@@ -104,6 +104,10 @@ class MultiplexAsyncProcessorFactory final : public AsyncProcessorFactory {
  private:
   const std::vector<std::shared_ptr<AsyncProcessorFactory>> processorFactories_;
   const CompositionMetadata compositionMetadata_;
+
+  static std::vector<std::shared_ptr<AsyncProcessorFactory>>
+      flattenProcessorFactories(
+          std::vector<std::shared_ptr<AsyncProcessorFactory>>);
 };
 
 } // namespace apache::thrift
