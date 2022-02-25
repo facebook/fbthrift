@@ -16,15 +16,17 @@
 
 package com.facebook.swift.service;
 
-import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-/** Marks the method of a Thrift enum that will return the enum given an int */
+/** Marks a class as a service that can be exported with Thrift. */
 @Documented
 @Retention(RUNTIME)
-@Target(METHOD)
-public @interface ThriftIntEnumResolver {}
+@Target(TYPE)
+public @interface ThriftService {
+  String value() default "";
+}

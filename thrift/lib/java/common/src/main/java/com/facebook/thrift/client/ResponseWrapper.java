@@ -14,22 +14,24 @@
  * limitations under the License.
  */
 
-package com.facebook.swift.service;
+package com.facebook.thrift.client;
 
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import java.util.Map;
 
-import com.facebook.swift.codec.ThriftIdlAnnotation;
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+public interface ResponseWrapper<T> {
 
-@Documented
-@Retention(RUNTIME)
-@Target({TYPE})
-public @interface ThriftEnum {
-  String value() default "";
+  T getData();
 
-  @Deprecated
-  ThriftIdlAnnotation[] idlAnnotations() default {};
+  Map<String, String> getHeaders();
+
+  Map<String, byte[]> getBinaryHeaders();
+
+  static <T> ResponseWrapper<T> create(T data, Map<String, String> headers) {
+    return new DefaultResponseWrapper<>(data, headers);
+  }
+
+  static <T> ResponseWrapper<T> create(
+      T data, Map<String, String> headers, Map<String, byte[]> binaryHeaders) {
+    return new DefaultResponseWrapper<>(data, headers, binaryHeaders);
+  }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.facebook.thrift.util;
+package com.facebook.thrift.client;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;

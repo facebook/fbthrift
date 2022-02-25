@@ -16,14 +16,18 @@
 
 package com.facebook.swift.service;
 
-/**
- * Enumeration that is really just an int, as the enum is too large for java to handle. java only
- * allows 64k of code in the constants pool of a class. if you have more than a few thousand enums
- * in a thrift file, java will no longer be able to compile that file. Enums marked with
- * java.swift.skip_enum_name_map = 1 will not try to generate a java enum as it would not be
- * compilable.
- */
-public abstract class IntEnum {
-  /** Get as an int value */
-  public abstract int getValue();
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+
+/** Provides mapping for Thrift method exceptions */
+@Documented
+@Retention(RUNTIME)
+public @interface ThriftException {
+  Class<? extends Throwable> type();
+
+  short id();
+
+  String name() default "";
 }

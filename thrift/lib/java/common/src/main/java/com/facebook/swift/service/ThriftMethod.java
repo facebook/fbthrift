@@ -16,7 +16,6 @@
 
 package com.facebook.swift.service;
 
-import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -24,8 +23,14 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-/** Marks a field or method as the field containing the state of an union. */
+/** Marks a method to be exported in a Thrift service. */
 @Documented
 @Retention(RUNTIME)
-@Target({METHOD, FIELD})
-public @interface ThriftUnionId {}
+@Target(METHOD)
+public @interface ThriftMethod {
+  String value() default "";
+
+  boolean oneway() default false;
+
+  ThriftException[] exception() default {};
+}

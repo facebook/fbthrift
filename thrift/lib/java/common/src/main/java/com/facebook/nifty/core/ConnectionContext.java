@@ -16,6 +16,7 @@
 
 package com.facebook.nifty.core;
 
+import com.facebook.nifty.ssl.SslSession;
 import java.net.SocketAddress;
 import java.util.Iterator;
 import java.util.Map;
@@ -60,4 +61,6 @@ public interface ConnectionContext {
    * @return Iterator
    */
   Iterator<Map.Entry<String, Object>> attributeIterator();
+
+  SslSession getSslSession();
 }

@@ -19,19 +19,14 @@ package com.facebook.swift.service;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import com.facebook.swift.codec.ThriftIdlAnnotation;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+/** Marks a class as a service that can be exported with Thrift. */
 @Documented
 @Retention(RUNTIME)
-@Target({TYPE})
-public @interface ThriftStruct {
+@Target(TYPE)
+public @interface ThriftInteraction {
   String value() default "";
-
-  Class<?> builder() default void.class;
-
-  @Deprecated
-  ThriftIdlAnnotation[] idlAnnotations() default {};
 }
