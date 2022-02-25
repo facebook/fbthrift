@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ namespace php thrift
 namespace py apache.thrift.dynamic
 namespace py.asyncio apache.asyncio.thrift.dynamic
 namespace py3 apache.thrift
+namespace java2 com.meta.thrift.dynamic
 namespace java.swift org.apache.thrift.dynamic
 namespace js thrift
 
