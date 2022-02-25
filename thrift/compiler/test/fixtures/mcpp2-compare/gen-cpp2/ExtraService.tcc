@@ -35,6 +35,10 @@ void ExtraServiceAsyncProcessor::setUpAndProcess_simple_function(apache::thrift:
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void ExtraServiceAsyncProcessor::executeRequest_simple_function(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void ExtraServiceAsyncProcessor::process_simple_function(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
@@ -86,6 +90,10 @@ void ExtraServiceAsyncProcessor::setUpAndProcess_throws_function(apache::thrift:
     return;
   }
   process_throws_function<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void ExtraServiceAsyncProcessor::executeRequest_throws_function(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -167,6 +175,10 @@ void ExtraServiceAsyncProcessor::setUpAndProcess_throws_function2(apache::thrift
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::HIGH);
   ctx->setRequestExecutionScope(std::move(scope));
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ExtraServiceAsyncProcessor::process_throws_function2<ProtocolIn_, ProtocolOut_>, this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void ExtraServiceAsyncProcessor::executeRequest_throws_function2(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -252,6 +264,10 @@ void ExtraServiceAsyncProcessor::setUpAndProcess_throws_function3(apache::thrift
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ExtraServiceAsyncProcessor::process_throws_function3<ProtocolIn_, ProtocolOut_>, this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void ExtraServiceAsyncProcessor::executeRequest_throws_function3(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -342,6 +358,10 @@ void ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret(apache::thrift:
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void ExtraServiceAsyncProcessor::executeRequest_oneway_void_ret(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void ExtraServiceAsyncProcessor::process_oneway_void_ret(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
@@ -368,6 +388,10 @@ void ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_i32_i32_i32_i32
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, &ExtraServiceAsyncProcessor::process_oneway_void_ret_i32_i32_i32_i32_i32_param<ProtocolIn_, ProtocolOut_>, this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void ExtraServiceAsyncProcessor::executeRequest_oneway_void_ret_i32_i32_i32_i32_i32_param(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -408,6 +432,10 @@ void ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_map_setlist_par
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void ExtraServiceAsyncProcessor::executeRequest_oneway_void_ret_map_setlist_param(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void ExtraServiceAsyncProcessor::process_oneway_void_ret_map_setlist_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
@@ -441,6 +469,10 @@ void ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_struct_param(ap
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void ExtraServiceAsyncProcessor::executeRequest_oneway_void_ret_struct_param(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void ExtraServiceAsyncProcessor::process_oneway_void_ret_struct_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
@@ -469,6 +501,10 @@ void ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_listunion_param
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, &ExtraServiceAsyncProcessor::process_oneway_void_ret_listunion_param<ProtocolIn_, ProtocolOut_>, this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void ExtraServiceAsyncProcessor::executeRequest_oneway_void_ret_listunion_param(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>

@@ -24,6 +24,10 @@ void MyNodeAsyncProcessor::setUpAndProcess_do_mid(apache::thrift::ResponseChanne
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void MyNodeAsyncProcessor::executeRequest_do_mid(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void MyNodeAsyncProcessor::process_do_mid(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);

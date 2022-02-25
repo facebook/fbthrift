@@ -26,6 +26,10 @@ void DbMixedStackArgumentsAsyncProcessor::setUpAndProcess_getDataByKey0(apache::
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void DbMixedStackArgumentsAsyncProcessor::executeRequest_getDataByKey0(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void DbMixedStackArgumentsAsyncProcessor::process_getDataByKey0(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
@@ -81,6 +85,10 @@ void DbMixedStackArgumentsAsyncProcessor::setUpAndProcess_getDataByKey1(apache::
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &DbMixedStackArgumentsAsyncProcessor::process_getDataByKey1<ProtocolIn_, ProtocolOut_>, this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void DbMixedStackArgumentsAsyncProcessor::executeRequest_getDataByKey1(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>

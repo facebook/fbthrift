@@ -107,12 +107,20 @@ void MyNodeAsyncProcessor::processSerializedCompressedRequestWithMetadata(apache
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
 }
 
+void MyNodeAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& request, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) {
+  apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
+}
+
 const MyNodeAsyncProcessor::ProcessMap& MyNodeAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const MyNodeAsyncProcessor::ProcessMap MyNodeAsyncProcessor::kOwnProcessMap_ {
-  {"do_mid", {&MyNodeAsyncProcessor::setUpAndProcess_do_mid<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &MyNodeAsyncProcessor::setUpAndProcess_do_mid<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"do_mid",
+    {&MyNodeAsyncProcessor::setUpAndProcess_do_mid<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &MyNodeAsyncProcessor::setUpAndProcess_do_mid<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &MyNodeAsyncProcessor::executeRequest_do_mid<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &MyNodeAsyncProcessor::executeRequest_do_mid<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& MyNodeServiceInfoHolder::requestInfoMap() const {

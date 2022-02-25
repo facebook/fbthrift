@@ -105,12 +105,20 @@ void DerivedServiceAsyncProcessor::processSerializedCompressedRequestWithMetadat
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
 }
 
+void DerivedServiceAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& request, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) {
+  apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
+}
+
 const DerivedServiceAsyncProcessor::ProcessMap& DerivedServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const DerivedServiceAsyncProcessor::ProcessMap DerivedServiceAsyncProcessor::kOwnProcessMap_ {
-  {"get_six", {&DerivedServiceAsyncProcessor::setUpAndProcess_get_six<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &DerivedServiceAsyncProcessor::setUpAndProcess_get_six<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"get_six",
+    {&DerivedServiceAsyncProcessor::setUpAndProcess_get_six<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &DerivedServiceAsyncProcessor::setUpAndProcess_get_six<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &DerivedServiceAsyncProcessor::executeRequest_get_six<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &DerivedServiceAsyncProcessor::executeRequest_get_six<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& DerivedServiceServiceInfoHolder::requestInfoMap() const {

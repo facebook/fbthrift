@@ -24,6 +24,10 @@ void MyRootAsyncProcessor::setUpAndProcess_do_root(apache::thrift::ResponseChann
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void MyRootAsyncProcessor::executeRequest_do_root(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void MyRootAsyncProcessor::process_do_root(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);

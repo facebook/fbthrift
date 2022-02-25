@@ -47,6 +47,10 @@ void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_returnstream(apache::
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void PubSubStreamingServiceAsyncProcessor::executeRequest_returnstream(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void PubSubStreamingServiceAsyncProcessor::process_returnstream(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
@@ -107,6 +111,10 @@ void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_streamthrows(apache::
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, &PubSubStreamingServiceAsyncProcessor::process_streamthrows<ProtocolIn_, ProtocolOut_>, this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void PubSubStreamingServiceAsyncProcessor::executeRequest_streamthrows(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -178,6 +186,10 @@ void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_boththrows(apache::th
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, &PubSubStreamingServiceAsyncProcessor::process_boththrows<ProtocolIn_, ProtocolOut_>, this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void PubSubStreamingServiceAsyncProcessor::executeRequest_boththrows(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -269,6 +281,10 @@ void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_responseandstreamthro
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void PubSubStreamingServiceAsyncProcessor::executeRequest_responseandstreamthrows(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void PubSubStreamingServiceAsyncProcessor::process_responseandstreamthrows(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
@@ -354,6 +370,10 @@ void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_returnstreamFast(apac
     return;
   }
   process_returnstreamFast<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void PubSubStreamingServiceAsyncProcessor::executeRequest_returnstreamFast(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>

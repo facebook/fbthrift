@@ -26,6 +26,10 @@ void SomeServiceAsyncProcessor::setUpAndProcess_bounce_map(apache::thrift::Respo
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void SomeServiceAsyncProcessor::executeRequest_bounce_map(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void SomeServiceAsyncProcessor::process_bounce_map(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
@@ -81,6 +85,10 @@ void SomeServiceAsyncProcessor::setUpAndProcess_binary_keyed_map(apache::thrift:
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &SomeServiceAsyncProcessor::process_binary_keyed_map<ProtocolIn_, ProtocolOut_>, this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void SomeServiceAsyncProcessor::executeRequest_binary_keyed_map(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>

@@ -170,13 +170,25 @@ void MyServiceAsyncProcessor::processSerializedCompressedRequestWithMetadata(apa
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
 }
 
+void MyServiceAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& request, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) {
+  apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
+}
+
 const MyServiceAsyncProcessor::ProcessMap& MyServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const MyServiceAsyncProcessor::ProcessMap MyServiceAsyncProcessor::kOwnProcessMap_ {
-  {"query", {&MyServiceAsyncProcessor::setUpAndProcess_query<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &MyServiceAsyncProcessor::setUpAndProcess_query<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
-  {"has_arg_docs", {&MyServiceAsyncProcessor::setUpAndProcess_has_arg_docs<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &MyServiceAsyncProcessor::setUpAndProcess_has_arg_docs<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"query",
+    {&MyServiceAsyncProcessor::setUpAndProcess_query<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &MyServiceAsyncProcessor::setUpAndProcess_query<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &MyServiceAsyncProcessor::executeRequest_query<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &MyServiceAsyncProcessor::executeRequest_query<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"has_arg_docs",
+    {&MyServiceAsyncProcessor::setUpAndProcess_has_arg_docs<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &MyServiceAsyncProcessor::setUpAndProcess_has_arg_docs<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &MyServiceAsyncProcessor::executeRequest_has_arg_docs<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &MyServiceAsyncProcessor::executeRequest_has_arg_docs<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& MyServiceServiceInfoHolder::requestInfoMap() const {

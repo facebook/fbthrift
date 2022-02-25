@@ -24,6 +24,10 @@ void ServiceAsyncProcessor::setUpAndProcess_func(apache::thrift::ResponseChannel
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void ServiceAsyncProcessor::executeRequest_func(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void ServiceAsyncProcessor::process_func(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);

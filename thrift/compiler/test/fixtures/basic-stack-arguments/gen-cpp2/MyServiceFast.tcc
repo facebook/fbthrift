@@ -27,6 +27,10 @@ void MyServiceFastAsyncProcessor::setUpAndProcess_hasDataById(apache::thrift::Re
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void MyServiceFastAsyncProcessor::executeRequest_hasDataById(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceFastAsyncProcessor::process_hasDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
@@ -80,6 +84,10 @@ void MyServiceFastAsyncProcessor::setUpAndProcess_getDataById(apache::thrift::Re
     return;
   }
   process_getDataById<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void MyServiceFastAsyncProcessor::executeRequest_getDataById(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -139,6 +147,10 @@ void MyServiceFastAsyncProcessor::setUpAndProcess_putDataById(apache::thrift::Re
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void MyServiceFastAsyncProcessor::executeRequest_putDataById(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceFastAsyncProcessor::process_putDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
@@ -192,6 +204,10 @@ void MyServiceFastAsyncProcessor::setUpAndProcess_lobDataById(apache::thrift::Re
     return;
   }
   process_lobDataById<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void MyServiceFastAsyncProcessor::executeRequest_lobDataById(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>

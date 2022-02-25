@@ -63,6 +63,10 @@ void <%service:name%>AsyncProcessor::processSerializedCompressedRequestWithMetad
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
 }
 
+void <%service:name%>AsyncProcessor::executeRequest(apache::thrift::ServerRequest&& request, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) {
+  apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
+}
+
 <% > service_cpp/processmap%>
 
 <%#service:interactions?%>

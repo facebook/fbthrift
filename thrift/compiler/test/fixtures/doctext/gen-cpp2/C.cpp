@@ -227,14 +227,30 @@ void CAsyncProcessor::processSerializedCompressedRequestWithMetadata(apache::thr
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
 }
 
+void CAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& request, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) {
+  apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
+}
+
 const CAsyncProcessor::ProcessMap& CAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const CAsyncProcessor::ProcessMap CAsyncProcessor::kOwnProcessMap_ {
-  {"f", {&CAsyncProcessor::setUpAndProcess_f<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &CAsyncProcessor::setUpAndProcess_f<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
-  {"numbers", {&CAsyncProcessor::setUpAndProcess_numbers<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &CAsyncProcessor::setUpAndProcess_numbers<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
-  {"thing", {&CAsyncProcessor::setUpAndProcess_thing<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &CAsyncProcessor::setUpAndProcess_thing<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"f",
+    {&CAsyncProcessor::setUpAndProcess_f<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &CAsyncProcessor::setUpAndProcess_f<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &CAsyncProcessor::executeRequest_f<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &CAsyncProcessor::executeRequest_f<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"numbers",
+    {&CAsyncProcessor::setUpAndProcess_numbers<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &CAsyncProcessor::setUpAndProcess_numbers<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &CAsyncProcessor::executeRequest_numbers<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &CAsyncProcessor::executeRequest_numbers<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"thing",
+    {&CAsyncProcessor::setUpAndProcess_thing<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &CAsyncProcessor::setUpAndProcess_thing<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &CAsyncProcessor::executeRequest_thing<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &CAsyncProcessor::executeRequest_thing<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& CServiceInfoHolder::requestInfoMap() const {

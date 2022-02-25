@@ -24,6 +24,10 @@ void MyServicePrioChildAsyncProcessor::setUpAndProcess_pang(apache::thrift::Resp
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void MyServicePrioChildAsyncProcessor::executeRequest_pang(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServicePrioChildAsyncProcessor::process_pang(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);

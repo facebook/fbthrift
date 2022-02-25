@@ -107,12 +107,20 @@ void MyRootAsyncProcessor::processSerializedCompressedRequestWithMetadata(apache
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
 }
 
+void MyRootAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& request, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) {
+  apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
+}
+
 const MyRootAsyncProcessor::ProcessMap& MyRootAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const MyRootAsyncProcessor::ProcessMap MyRootAsyncProcessor::kOwnProcessMap_ {
-  {"do_root", {&MyRootAsyncProcessor::setUpAndProcess_do_root<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &MyRootAsyncProcessor::setUpAndProcess_do_root<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"do_root",
+    {&MyRootAsyncProcessor::setUpAndProcess_do_root<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &MyRootAsyncProcessor::setUpAndProcess_do_root<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &MyRootAsyncProcessor::executeRequest_do_root<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &MyRootAsyncProcessor::executeRequest_do_root<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& MyRootServiceInfoHolder::requestInfoMap() const {

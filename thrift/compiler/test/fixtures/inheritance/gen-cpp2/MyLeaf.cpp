@@ -107,12 +107,20 @@ void MyLeafAsyncProcessor::processSerializedCompressedRequestWithMetadata(apache
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
 }
 
+void MyLeafAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& request, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) {
+  apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
+}
+
 const MyLeafAsyncProcessor::ProcessMap& MyLeafAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const MyLeafAsyncProcessor::ProcessMap MyLeafAsyncProcessor::kOwnProcessMap_ {
-  {"do_leaf", {&MyLeafAsyncProcessor::setUpAndProcess_do_leaf<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &MyLeafAsyncProcessor::setUpAndProcess_do_leaf<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"do_leaf",
+    {&MyLeafAsyncProcessor::setUpAndProcess_do_leaf<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &MyLeafAsyncProcessor::setUpAndProcess_do_leaf<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &MyLeafAsyncProcessor::executeRequest_do_leaf<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &MyLeafAsyncProcessor::executeRequest_do_leaf<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& MyLeafServiceInfoHolder::requestInfoMap() const {

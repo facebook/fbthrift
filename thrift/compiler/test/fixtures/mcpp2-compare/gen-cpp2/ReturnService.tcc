@@ -62,6 +62,10 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_noReturn(apache::thrift::Respo
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void ReturnServiceAsyncProcessor::executeRequest_noReturn(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_noReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
@@ -113,6 +117,10 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_boolReturn(apache::thrift::Res
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_boolReturn<ProtocolIn_, ProtocolOut_>, this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void ReturnServiceAsyncProcessor::executeRequest_boolReturn(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -172,6 +180,10 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_i16Return(apache::thrift::Resp
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void ReturnServiceAsyncProcessor::executeRequest_i16Return(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_i16Return(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
@@ -225,6 +237,10 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_i32Return(apache::thrift::Resp
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_i32Return<ProtocolIn_, ProtocolOut_>, this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void ReturnServiceAsyncProcessor::executeRequest_i32Return(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -284,6 +300,10 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_i64Return(apache::thrift::Resp
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void ReturnServiceAsyncProcessor::executeRequest_i64Return(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_i64Return(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
@@ -337,6 +357,10 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_floatReturn(apache::thrift::Re
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_floatReturn<ProtocolIn_, ProtocolOut_>, this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void ReturnServiceAsyncProcessor::executeRequest_floatReturn(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -396,6 +420,10 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_doubleReturn(apache::thrift::R
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void ReturnServiceAsyncProcessor::executeRequest_doubleReturn(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_doubleReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
@@ -447,6 +475,10 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_stringReturn(apache::thrift::R
     return;
   }
   process_stringReturn<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void ReturnServiceAsyncProcessor::executeRequest_stringReturn(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -506,6 +538,10 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_binaryReturn(apache::thrift::R
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void ReturnServiceAsyncProcessor::executeRequest_binaryReturn(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_binaryReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
@@ -559,6 +595,10 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_mapReturn(apache::thrift::Resp
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_mapReturn<ProtocolIn_, ProtocolOut_>, this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void ReturnServiceAsyncProcessor::executeRequest_mapReturn(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -618,6 +658,10 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_simpleTypedefReturn(apache::th
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void ReturnServiceAsyncProcessor::executeRequest_simpleTypedefReturn(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_simpleTypedefReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
@@ -671,6 +715,10 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_complexTypedefReturn(apache::t
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_complexTypedefReturn<ProtocolIn_, ProtocolOut_>, this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void ReturnServiceAsyncProcessor::executeRequest_complexTypedefReturn(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -730,6 +778,10 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_list_mostComplexTypedefReturn(
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void ReturnServiceAsyncProcessor::executeRequest_list_mostComplexTypedefReturn(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_list_mostComplexTypedefReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
@@ -784,6 +836,10 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_enumReturn(apache::thrift::Res
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void ReturnServiceAsyncProcessor::executeRequest_enumReturn(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_enumReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
@@ -835,6 +891,10 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_list_EnumReturn(apache::thrift
     return;
   }
   process_list_EnumReturn<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void ReturnServiceAsyncProcessor::executeRequest_list_EnumReturn(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -894,6 +954,10 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_structReturn(apache::thrift::R
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void ReturnServiceAsyncProcessor::executeRequest_structReturn(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_structReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
@@ -950,6 +1014,10 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_set_StructReturn(apache::thrif
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void ReturnServiceAsyncProcessor::executeRequest_set_StructReturn(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_set_StructReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
@@ -1001,6 +1069,10 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_unionReturn(apache::thrift::Re
     return;
   }
   process_unionReturn<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void ReturnServiceAsyncProcessor::executeRequest_unionReturn(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1060,6 +1132,10 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_list_UnionReturn(apache::thrif
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void ReturnServiceAsyncProcessor::executeRequest_list_UnionReturn(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_list_UnionReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
@@ -1111,6 +1187,10 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_readDataEb(apache::thrift::Res
     return;
   }
   process_readDataEb<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void ReturnServiceAsyncProcessor::executeRequest_readDataEb(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1169,6 +1249,10 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_readData(apache::thrift::Respo
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_readData<ProtocolIn_, ProtocolOut_>, this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void ReturnServiceAsyncProcessor::executeRequest_readData(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>

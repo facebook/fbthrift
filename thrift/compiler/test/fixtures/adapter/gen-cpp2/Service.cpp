@@ -105,12 +105,20 @@ void ServiceAsyncProcessor::processSerializedCompressedRequestWithMetadata(apach
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
 }
 
+void ServiceAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& request, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) {
+  apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
+}
+
 const ServiceAsyncProcessor::ProcessMap& ServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const ServiceAsyncProcessor::ProcessMap ServiceAsyncProcessor::kOwnProcessMap_ {
-  {"func", {&ServiceAsyncProcessor::setUpAndProcess_func<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ServiceAsyncProcessor::setUpAndProcess_func<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"func",
+    {&ServiceAsyncProcessor::setUpAndProcess_func<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &ServiceAsyncProcessor::setUpAndProcess_func<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &ServiceAsyncProcessor::executeRequest_func<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &ServiceAsyncProcessor::executeRequest_func<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& ServiceServiceInfoHolder::requestInfoMap() const {

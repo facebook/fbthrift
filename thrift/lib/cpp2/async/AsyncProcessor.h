@@ -607,9 +607,14 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       concurrency::ThreadManager* tm);
 
   template <typename Derived>
+  using ExecuteFunc = void (Derived::*)(ServerRequest&& request);
+
+  template <typename Derived>
   struct ProcessFuncs {
     ProcessFunc<Derived> compact;
     ProcessFunc<Derived> binary;
+    ExecuteFunc<Derived> compactExecute;
+    ExecuteFunc<Derived> binaryExecute;
   };
 
   template <typename ProcessFuncs>

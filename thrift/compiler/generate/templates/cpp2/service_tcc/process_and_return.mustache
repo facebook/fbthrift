@@ -30,6 +30,10 @@ void <%service:parent_service_name%>AsyncProcessor::setUpAndProcess_<%#service:i
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void <%service:parent_service_name%>AsyncProcessor::executeRequest_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void <%service:parent_service_name%>AsyncProcessor::process_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
 <%#service:interaction?%>
   auto tile = ctx->releaseTile();

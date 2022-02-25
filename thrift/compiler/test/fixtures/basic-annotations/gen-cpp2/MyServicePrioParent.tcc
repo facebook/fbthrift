@@ -26,6 +26,10 @@ void MyServicePrioParentAsyncProcessor::setUpAndProcess_ping(apache::thrift::Res
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void MyServicePrioParentAsyncProcessor::executeRequest_ping(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServicePrioParentAsyncProcessor::process_ping(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
@@ -77,6 +81,10 @@ void MyServicePrioParentAsyncProcessor::setUpAndProcess_pong(apache::thrift::Res
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::HIGH_IMPORTANT);
   ctx->setRequestExecutionScope(std::move(scope));
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServicePrioParentAsyncProcessor::process_pong<ProtocolIn_, ProtocolOut_>, this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void MyServicePrioParentAsyncProcessor::executeRequest_pong(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>

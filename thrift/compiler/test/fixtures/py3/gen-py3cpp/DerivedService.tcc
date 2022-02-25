@@ -24,6 +24,10 @@ void DerivedServiceAsyncProcessor::setUpAndProcess_get_six(apache::thrift::Respo
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void DerivedServiceAsyncProcessor::executeRequest_get_six(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void DerivedServiceAsyncProcessor::process_get_six(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);

@@ -418,17 +418,45 @@ void service3AsyncProcessor::processSerializedCompressedRequestWithMetadata(apac
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
 }
 
+void service3AsyncProcessor::executeRequest(apache::thrift::ServerRequest&& request, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) {
+  apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
+}
+
 const service3AsyncProcessor::ProcessMap& service3AsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const service3AsyncProcessor::ProcessMap service3AsyncProcessor::kOwnProcessMap_ {
-  {"methodA", {&service3AsyncProcessor::setUpAndProcess_methodA<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service3AsyncProcessor::setUpAndProcess_methodA<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
-  {"methodB", {&service3AsyncProcessor::setUpAndProcess_methodB<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service3AsyncProcessor::setUpAndProcess_methodB<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
-  {"methodC", {&service3AsyncProcessor::setUpAndProcess_methodC<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service3AsyncProcessor::setUpAndProcess_methodC<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
-  {"methodD", {&service3AsyncProcessor::setUpAndProcess_methodD<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service3AsyncProcessor::setUpAndProcess_methodD<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
-  {"methodE", {&service3AsyncProcessor::setUpAndProcess_methodE<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service3AsyncProcessor::setUpAndProcess_methodE<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
-  {"methodF", {&service3AsyncProcessor::setUpAndProcess_methodF<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &service3AsyncProcessor::setUpAndProcess_methodF<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"methodA",
+    {&service3AsyncProcessor::setUpAndProcess_methodA<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &service3AsyncProcessor::setUpAndProcess_methodA<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &service3AsyncProcessor::executeRequest_methodA<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &service3AsyncProcessor::executeRequest_methodA<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"methodB",
+    {&service3AsyncProcessor::setUpAndProcess_methodB<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &service3AsyncProcessor::setUpAndProcess_methodB<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &service3AsyncProcessor::executeRequest_methodB<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &service3AsyncProcessor::executeRequest_methodB<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"methodC",
+    {&service3AsyncProcessor::setUpAndProcess_methodC<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &service3AsyncProcessor::setUpAndProcess_methodC<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &service3AsyncProcessor::executeRequest_methodC<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &service3AsyncProcessor::executeRequest_methodC<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"methodD",
+    {&service3AsyncProcessor::setUpAndProcess_methodD<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &service3AsyncProcessor::setUpAndProcess_methodD<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &service3AsyncProcessor::executeRequest_methodD<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &service3AsyncProcessor::executeRequest_methodD<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"methodE",
+    {&service3AsyncProcessor::setUpAndProcess_methodE<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &service3AsyncProcessor::setUpAndProcess_methodE<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &service3AsyncProcessor::executeRequest_methodE<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &service3AsyncProcessor::executeRequest_methodE<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"methodF",
+    {&service3AsyncProcessor::setUpAndProcess_methodF<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &service3AsyncProcessor::setUpAndProcess_methodF<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &service3AsyncProcessor::executeRequest_methodF<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &service3AsyncProcessor::executeRequest_methodF<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& service3ServiceInfoHolder::requestInfoMap() const {

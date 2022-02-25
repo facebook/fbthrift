@@ -44,6 +44,10 @@ void EmptyServiceAsyncProcessor::processSerializedCompressedRequestWithMetadata(
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
 }
 
+void EmptyServiceAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& request, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) {
+  apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
+}
+
 const EmptyServiceAsyncProcessor::ProcessMap& EmptyServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }

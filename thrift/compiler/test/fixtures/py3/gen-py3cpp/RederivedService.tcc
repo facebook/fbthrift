@@ -24,6 +24,10 @@ void RederivedServiceAsyncProcessor::setUpAndProcess_get_seven(apache::thrift::R
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void RederivedServiceAsyncProcessor::executeRequest_get_seven(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void RederivedServiceAsyncProcessor::process_get_seven(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);

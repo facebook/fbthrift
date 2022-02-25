@@ -105,12 +105,20 @@ void RederivedServiceAsyncProcessor::processSerializedCompressedRequestWithMetad
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
 }
 
+void RederivedServiceAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& request, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) {
+  apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
+}
+
 const RederivedServiceAsyncProcessor::ProcessMap& RederivedServiceAsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 const RederivedServiceAsyncProcessor::ProcessMap RederivedServiceAsyncProcessor::kOwnProcessMap_ {
-  {"get_seven", {&RederivedServiceAsyncProcessor::setUpAndProcess_get_seven<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &RederivedServiceAsyncProcessor::setUpAndProcess_get_seven<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"get_seven",
+    {&RederivedServiceAsyncProcessor::setUpAndProcess_get_seven<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &RederivedServiceAsyncProcessor::setUpAndProcess_get_seven<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &RederivedServiceAsyncProcessor::executeRequest_get_seven<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &RederivedServiceAsyncProcessor::executeRequest_get_seven<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& RederivedServiceServiceInfoHolder::requestInfoMap() const {

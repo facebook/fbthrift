@@ -64,6 +64,10 @@ void SinkServiceAsyncProcessor::setUpAndProcess_method(apache::thrift::ResponseC
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void SinkServiceAsyncProcessor::executeRequest_method(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void SinkServiceAsyncProcessor::process_method(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
@@ -129,6 +133,10 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodAndReponse(apache::thrift:
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::process_methodAndReponse<ProtocolIn_, ProtocolOut_>, this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void SinkServiceAsyncProcessor::executeRequest_methodAndReponse(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -199,6 +207,10 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodThrow(apache::thrift::Resp
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::process_methodThrow<ProtocolIn_, ProtocolOut_>, this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void SinkServiceAsyncProcessor::executeRequest_methodThrow(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -287,6 +299,10 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodSinkThrow(apache::thrift::
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void SinkServiceAsyncProcessor::executeRequest_methodSinkThrow(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void SinkServiceAsyncProcessor::process_methodSinkThrow(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
@@ -352,6 +368,10 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodFinalThrow(apache::thrift:
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::process_methodFinalThrow<ProtocolIn_, ProtocolOut_>, this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void SinkServiceAsyncProcessor::executeRequest_methodFinalThrow(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -433,6 +453,10 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodBothThrow(apache::thrift::
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
+void SinkServiceAsyncProcessor::executeRequest_methodBothThrow(apache::thrift::ServerRequest&& /*serverRequest*/) {
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
 void SinkServiceAsyncProcessor::process_methodBothThrow(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
@@ -506,6 +530,10 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodFast(apache::thrift::Respo
     return;
   }
   process_methodFast<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void SinkServiceAsyncProcessor::executeRequest_methodFast(apache::thrift::ServerRequest&& /*serverRequest*/) {
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>

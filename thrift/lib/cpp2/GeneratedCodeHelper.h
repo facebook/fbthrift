@@ -803,6 +803,19 @@ GeneratedAsyncProcessor::ProcessFunc<Derived> getProcessFuncFromProtocol(
   return funcs.binary;
 }
 
+template <typename Derived>
+GeneratedAsyncProcessor::ExecuteFunc<Derived> getExecuteFuncFromProtocol(
+    folly::tag_t<CompactProtocolReader> /* unused */,
+    const GeneratedAsyncProcessor::ProcessFuncs<Derived>& funcs) {
+  return funcs.compactExecute;
+}
+template <typename Derived>
+GeneratedAsyncProcessor::ExecuteFunc<Derived> getExecuteFuncFromProtocol(
+    folly::tag_t<BinaryProtocolReader> /* unused */,
+    const GeneratedAsyncProcessor::ProcessFuncs<Derived>& funcs) {
+  return funcs.binaryExecute;
+}
+
 inline void nonRecursiveProcessMissing(
     const std::string& methodName,
     ResponseChannelRequest::UniquePtr req,
@@ -986,6 +999,39 @@ void process(
   }
 }
 
+template <class Processor>
+void execute(
+    Processor* processor,
+    ServerRequest&& request,
+    protocol::PROTOCOL_TYPES protType,
+    AsyncProcessor::MethodMetadata const& metadata) {
+  using Metadata = ServerInterface::GeneratedMethodMetadata<Processor>;
+  static_assert(std::is_final_v<Metadata>);
+  const bool isWildcard =
+      AsyncProcessorHelper::isWildcardMethodMetadata(metadata);
+
+  if (!isWildcard) {
+    const auto& methodMetadata =
+        AsyncProcessorHelper::expectMetadataOfType<Metadata>(metadata);
+    switch (protType) {
+      case protocol::T_BINARY_PROTOCOL: {
+        auto pfn = getExecuteFuncFromProtocol(
+            folly::tag<BinaryProtocolReader>, methodMetadata.processFuncs);
+        (processor->*pfn)(std::move(request));
+      } break;
+      case protocol::T_COMPACT_PROTOCOL: {
+        auto pfn = getExecuteFuncFromProtocol(
+            folly::tag<CompactProtocolReader>, methodMetadata.processFuncs);
+        (processor->*pfn)(std::move(request));
+      } break;
+      default:
+        LOG(ERROR) << "invalid protType: " << folly::to_underlying(protType);
+        return;
+    }
+  } else {
+    LOG(FATAL) << "Wildcard method metadata not yet supported here";
+  }
+}
 struct MessageBegin : folly::MoveOnly {
   std::string methodName;
   struct Metadata {
@@ -1019,7 +1065,10 @@ std::enable_if_t<
 downcastProcessFuncs(
     const GeneratedAsyncProcessor::ProcessFuncs<BaseProcessor>& processFuncs) {
   return GeneratedAsyncProcessor::ProcessFuncs<DerivedProcessor>{
-      processFuncs.compact, processFuncs.binary};
+      processFuncs.compact,
+      processFuncs.binary,
+      processFuncs.compactExecute,
+      processFuncs.binaryExecute};
 }
 
 template <
