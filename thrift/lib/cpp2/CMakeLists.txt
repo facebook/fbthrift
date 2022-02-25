@@ -192,6 +192,7 @@ add_library(
   server/MonitoringMethodNames.cpp
   server/ParallelConcurrencyController.cpp
   server/RequestDebugLog.cpp
+  server/RequestPileBase.cpp
   server/RequestPileInterface.cpp
   server/RequestsRegistry.cpp
   server/ResourcePool.cpp
