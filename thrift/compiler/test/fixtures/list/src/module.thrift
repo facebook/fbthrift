@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+namespace java2 test.fixtures.list
 namespace java.swift test.fixtures.list
 
 const map<i64, list<string>> TEST_MAP = {0: ["foo", "bar"], 1: ["baz"]};

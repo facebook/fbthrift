@@ -1,4 +1,5 @@
 android src/module.thrift
 hs src/module.thrift
 mstch_java src/module.thrift
+mstch_java2 src/module.thrift
 mstch_py3 src/module.thrift

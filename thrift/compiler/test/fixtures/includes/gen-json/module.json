@@ -3,7 +3,7 @@
   "thrift_module" : "module",
   "structs" : {
     "MyStruct" : {
-      "lineno" : 20,
+      "lineno" : 21,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -14,11 +14,11 @@
           "default_value" : { "MyIntField" : 2, "MyTransitiveField" : { "a" : 2 } },
           "source_range" : {
             "begin" : {
-              "line" : 21,
+              "line" : 22,
               "column" : 3
             },
             "end" : {
-              "line" : 21,
+              "line" : 22,
               "column" : 66
             }
           }
@@ -29,11 +29,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 22,
+              "line" : 23,
               "column" : 3
             },
             "end" : {
-              "line" : 22,
+              "line" : 23,
               "column" : 44
             }
           }
@@ -45,11 +45,11 @@
           "default_value" : 42,
           "source_range" : {
             "begin" : {
-              "line" : 23,
+              "line" : 24,
               "column" : 3
             },
             "end" : {
-              "line" : 23,
+              "line" : 24,
               "column" : 70
             }
           }
@@ -57,11 +57,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 20,
+          "line" : 21,
           "column" : 1
         },
         "end" : {
-          "line" : 24,
+          "line" : 25,
           "column" : 2
         }
       }

@@ -5,5 +5,6 @@ hack:json=1,protected_unions=1 src/module.thrift
 mstch_cpp2 src/module.thrift
 mstch_rust src/module.thrift
 mstch_java src/module.thrift
+mstch_java2 src/module.thrift
 mstch_py3 src/module.thrift
 mstch_py3lite src/module.thrift

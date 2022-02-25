@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 include "module.thrift"
 include "includes.thrift"
+namespace java2 test.fixtures.includes
 namespace java.swift test.fixtures.includes
 
 /** This is a service-level docblock */

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 
 namespace java test.fixtures.interactions
+namespace java2 test.fixtures.interactions
 namespace java.swift test.fixtures.interactions
 namespace py test.fixtures.interactions
 namespace py3 test.fixtures.interactions

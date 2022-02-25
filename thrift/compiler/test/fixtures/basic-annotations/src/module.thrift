@@ -15,6 +15,7 @@
  */
 
 namespace java test.fixtures.basicannotations
+namespace java2 test.fixtures.basicannotations
 namespace java.swift test.fixtures.basicannotations
 
 enum MyEnum {

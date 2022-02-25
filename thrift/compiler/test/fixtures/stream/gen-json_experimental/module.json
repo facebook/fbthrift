@@ -2,21 +2,22 @@
   "__fbthrift": "@generated",
   "thrift_module" : "module",
   "namespaces": {
-    "java.swift": "test.fixtures.stream"
+    "java.swift": "test.fixtures.stream",
+    "java2": "test.fixtures.stream"
   },  "structs" :
   {
       "FooEx" : {
         "name" : "FooEx",
         "is_exception" : true,
         "is_union" : false,
-        "lineno" : 19
+        "lineno" : 20
       }
       },
   "services" :
   {
       "PubSubStreamingService" : {
         "name" : "PubSubStreamingService",
-        "lineno" : 21,
+        "lineno" : 22,
         "functions" : {
           "returnstream" : {
             "name" : "returnstream",
@@ -25,30 +26,13 @@
                 "name" : "i32_from",
                 "type" : "i32",
                 "key" : 1,
-                "lineno" : 22,
+                "lineno" : 23,
                 "required" : "opt-in-req-out"
               },
               "i32_to": {
                 "name" : "i32_to",
                 "type" : "i32",
                 "key" : 2,
-                "lineno" : 22,
-                "required" : "opt-in-req-out"
-              }
-            },
-            "returnType" : {
-  "type" : "streamresponse",
-  "inner_type" : "i32"
-},
-            "lineno" : 22
-          },
-          "streamthrows" : {
-            "name" : "streamthrows",
-            "args" : {
-              "foo": {
-                "name" : "foo",
-                "type" : "i32",
-                "key" : 1,
                 "lineno" : 23,
                 "required" : "opt-in-req-out"
               }
@@ -59,6 +43,23 @@
 },
             "lineno" : 23
           },
+          "streamthrows" : {
+            "name" : "streamthrows",
+            "args" : {
+              "foo": {
+                "name" : "foo",
+                "type" : "i32",
+                "key" : 1,
+                "lineno" : 24,
+                "required" : "opt-in-req-out"
+              }
+            },
+            "returnType" : {
+  "type" : "streamresponse",
+  "inner_type" : "i32"
+},
+            "lineno" : 24
+          },
           "boththrows" : {
             "name" : "boththrows",
             "args" : {
@@ -66,7 +67,7 @@
                 "name" : "foo",
                 "type" : "i32",
                 "key" : 1,
-                "lineno" : 24,
+                "lineno" : 25,
                 "required" : "opt-in-req-out"
               }
             },
@@ -83,7 +84,7 @@
   "type" : "streamresponse",
   "inner_type" : "i32"
 },
-            "lineno" : 24
+            "lineno" : 25
           },
           "responseandstreamthrows" : {
             "name" : "responseandstreamthrows",
@@ -92,7 +93,7 @@
                 "name" : "foo",
                 "type" : "i32",
                 "key" : 1,
-                "lineno" : 26,
+                "lineno" : 27,
                 "required" : "opt-in-req-out"
               }
             },
@@ -110,7 +111,7 @@
   "inner_type" : "i32",
   "first_response_type" : "i32"
 },
-            "lineno" : 25
+            "lineno" : 26
           },
           "returnstreamFast" : {
             "name" : "returnstreamFast",
@@ -119,14 +120,14 @@
                 "name" : "i32_from",
                 "type" : "i32",
                 "key" : 1,
-                "lineno" : 28,
+                "lineno" : 29,
                 "required" : "opt-in-req-out"
               },
               "i32_to": {
                 "name" : "i32_to",
                 "type" : "i32",
                 "key" : 2,
-                "lineno" : 28,
+                "lineno" : 29,
                 "required" : "opt-in-req-out"
               }
             },
@@ -134,7 +135,7 @@
   "type" : "streamresponse",
   "inner_type" : "i32"
 },
-            "lineno" : 28
+            "lineno" : 29
           }
         }
       }
