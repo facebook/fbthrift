@@ -192,9 +192,9 @@ class BitRef {
         bit_index_(other.bit_index_),
         is_atomic_(other.is_atomic_) {}
 
-#ifdef ANDROID
+#ifdef FOLLY_MOBILE
   // We have this attribute to prevent binary size regression
-  // TODO: Remove special attribute for ANDROID
+  // TODO: Remove special attribute for MOBILE
   FOLLY_ERASE
 #endif
   void operator=(bool flag) {
