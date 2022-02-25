@@ -477,7 +477,9 @@ type PackIsset struct {
 }
 
 func NewPackIsset() *PackIsset {
-  return &PackIsset{}
+  return &PackIsset{
+    Atomic: true,
+  }
 }
 
 

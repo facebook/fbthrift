@@ -559,7 +559,7 @@ Adapter.__setstate__ = Adapter__setstate__
 all_structs.append(PackIsset)
 PackIsset.thrift_spec = (
   None, # 0
-  (1, TType.BOOL, 'atomic', None, False, 2, ), # 1
+  (1, TType.BOOL, 'atomic', None, True, 2, ), # 1
 )
 
 PackIsset.thrift_struct_annotations = {
@@ -574,7 +574,7 @@ def PackIsset__init__(self, atomic=PackIsset.thrift_spec[1][4],):
 PackIsset.__init__ = PackIsset__init__
 
 def PackIsset__setstate__(self, state):
-  state.setdefault('atomic', False)
+  state.setdefault('atomic', True)
   self.__dict__ = state
 
 PackIsset.__getstate__ = lambda self: self.__dict__.copy()

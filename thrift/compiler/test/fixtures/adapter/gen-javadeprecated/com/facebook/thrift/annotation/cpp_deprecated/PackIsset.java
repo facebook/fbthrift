@@ -49,7 +49,7 @@ public class PackIsset implements TBase, java.io.Serializable, Cloneable, Compar
   }
 
   public PackIsset() {
-    this.atomic = false;
+    this.atomic = true;
 
   }
 

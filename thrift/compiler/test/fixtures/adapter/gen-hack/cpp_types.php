@@ -479,7 +479,7 @@ class facebook_thrift_annotation_cpp_PackIsset implements \IThriftStruct, \IThri
   public bool $atomic;
 
   public function __construct(?bool $atomic = null  )[] {
-    $this->atomic = $atomic ?? false;
+    $this->atomic = $atomic ?? true;
   }
 
   public static function withDefaultValues()[]: this {

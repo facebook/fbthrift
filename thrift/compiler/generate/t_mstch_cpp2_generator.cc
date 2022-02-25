@@ -1076,12 +1076,12 @@ class mstch_cpp2_struct : public mstch_struct {
     if (const auto* anno = cpp2::packed_isset(*strct_)) {
       for (const auto& kv : anno->value()->get_map()) {
         if (kv.first->get_string() == "atomic") {
-          if (kv.second->get_bool()) {
-            return kPrefix + "PackedWithAtomic";
+          if (!kv.second->get_bool()) {
+            return kPrefix + "Packed";
           }
         }
       }
-      return kPrefix + "Packed";
+      return kPrefix + "PackedWithAtomic";
     }
     return kPrefix + "Unpacked";
   }

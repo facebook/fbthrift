@@ -64,5 +64,5 @@ struct Adapter {
 
 @scope.Struct
 struct PackIsset {
-  1: bool atomic = false;
+  1: bool atomic = true;
 } (thrift.uri = "facebook.com/thrift/annotation/cpp/PackIsset")
