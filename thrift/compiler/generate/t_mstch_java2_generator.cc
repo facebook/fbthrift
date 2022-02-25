@@ -145,27 +145,6 @@ class t_mstch_java2_generator : public t_mstch_generator {
     // Iterate through services
     for (const T* service : services) {
       auto service_name = java::mangle_java_name(service->get_name(), true);
-      // Generate sync client
-      auto sync_filename = service_name + "ClientImpl.java";
-      const auto& sync_service_id = id + service->get_name() + "Client";
-      if (!c.count(sync_service_id)) {
-        c[sync_service_id] = generator->generate(service, generators_, cache_);
-      }
-
-      render_to_file(
-          c[sync_service_id], "ServiceClient", package_dir / sync_filename);
-
-      // Generate async client
-      auto async_filename = service_name + "AsyncClientImpl.java";
-      const auto& async_service_id = id + service->get_name() + "AsyncClient";
-      if (!c.count(async_service_id)) {
-        c[async_service_id] = generator->generate(service, generators_, cache_);
-      }
-
-      render_to_file(
-          c[async_service_id],
-          "ServiceAsyncClient",
-          package_dir / async_filename);
 
       // Generate Async to Reactive Wrapper
       auto async_reactive_wrapper_filename =
