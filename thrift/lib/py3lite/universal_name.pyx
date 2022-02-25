@@ -51,3 +51,34 @@ def maybe_get_universal_hash_prefix(
 
 def matches_universal_hash(universal_hash: bytes, prefix: bytes) -> bool:
     return matchesUniversalHash(universal_hash, prefix)
+
+
+def contains_universal_hash(
+    universal_hash_registry: typing.Dict[bytes, typing.Any],
+    universal_hash_prefix: bytes,
+) -> bool:
+    return any(
+        matches_universal_hash(k, universal_hash_prefix)
+        for k in universal_hash_registry
+    )
+
+
+def find_by_universal_hash(
+    universal_hash_registry: typing.Dict[bytes, typing.Any],
+    universal_hash_prefix: bytes,
+) -> bool:
+    matched = (
+        v
+        for k, v in universal_hash_registry.items()
+        if matches_universal_hash(k, universal_hash_prefix)
+    )
+    try:
+        ret = next(matched)
+        try:
+            next(matched)
+            raise ValueError(f"multiple keys found with prefix {universal_hash_prefix}")
+        except StopIteration:
+            pass
+        return ret
+    except StopIteration:
+        raise KeyError(f"no key found with prefix {universal_hash_prefix}")

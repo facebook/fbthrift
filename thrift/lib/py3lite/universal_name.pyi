@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import typing
 from enum import Enum
 
 class UniversalHashAlgorithm(Enum):
@@ -55,3 +56,20 @@ def maybe_get_universal_hash_prefix(
 
 # Returns true iff prefix was derived from universal_hash.
 def matches_universal_hash(universal_hash: bytes, prefix: bytes) -> bool: ...
+
+T = typing.TypeVar("T")
+
+# Returns true, iff the given sorted map contains an entry that matches the
+# given type hash prefix.
+def contains_universal_hash(
+    universal_hash_registry: typing.Dict[bytes, T],
+    universal_hash_prefix: bytes,
+) -> bool: ...
+
+# Finds a matching hash within the given sorted map.
+#
+# Raises a KeyError if not found.
+# Raises a ValueError if the result is ambiguous.
+def find_by_universal_hash(
+    universal_hash_registry: typing.Dict[bytes, T], universal_hash_prefix: bytes
+) -> T: ...

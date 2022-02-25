@@ -15,6 +15,8 @@
 import unittest
 
 from thrift.py3lite.universal_name import (
+    contains_universal_hash,
+    find_by_universal_hash,
     get_universal_hash,
     get_universal_hash_prefix,
     get_universal_hash_size,
@@ -136,3 +138,55 @@ class UnionTests(unittest.TestCase):
                 b"0123456789ABCDEF0123456789ABCDEF0",
             )
         )
+
+    def test_contains_universal_hash_and_find_by_universal_hash(self) -> None:
+        registry = {
+            b"1233": 0,
+            b"1234": 1,
+            b"12345": 2,
+            b"1235": 3,
+        }
+        self.assertTrue(contains_universal_hash(registry, b"1"))
+        with self.assertRaises(ValueError):
+            find_by_universal_hash(registry, b"1")
+
+        self.assertTrue(contains_universal_hash(registry, b"12"))
+        with self.assertRaises(ValueError):
+            find_by_universal_hash(registry, b"12")
+
+        self.assertTrue(contains_universal_hash(registry, b"123"))
+        with self.assertRaises(ValueError):
+            find_by_universal_hash(registry, b"123")
+
+        self.assertTrue(contains_universal_hash(registry, b"1234"))
+        with self.assertRaises(ValueError):
+            find_by_universal_hash(registry, b"1234")
+
+        self.assertFalse(contains_universal_hash(registry, b""))
+        with self.assertRaises(KeyError):
+            find_by_universal_hash(registry, b"")
+
+        self.assertFalse(contains_universal_hash(registry, b"0"))
+        with self.assertRaises(KeyError):
+            find_by_universal_hash(registry, b"0")
+
+        self.assertTrue(contains_universal_hash(registry, b"1233"))
+        self.assertEqual(find_by_universal_hash(registry, b"1233"), 0)
+
+        self.assertFalse(contains_universal_hash(registry, b"12333"))
+        with self.assertRaises(KeyError):
+            find_by_universal_hash(registry, b"12333")
+
+        self.assertTrue(contains_universal_hash(registry, b"12345"))
+        self.assertEqual(find_by_universal_hash(registry, b"12345"), 2)
+
+        self.assertFalse(contains_universal_hash(registry, b"12346"))
+        with self.assertRaises(KeyError):
+            find_by_universal_hash(registry, b"12346")
+
+        self.assertTrue(contains_universal_hash(registry, b"1235"))
+        self.assertEqual(find_by_universal_hash(registry, b"1235"), 3)
+
+        self.assertFalse(contains_universal_hash(registry, b"2"))
+        with self.assertRaises(KeyError):
+            find_by_universal_hash(registry, b"2")
