@@ -488,11 +488,11 @@ class ServerRequest {
 
   friend class detail::ServerRequestHelper;
 
-  static AsyncProcessor* asyncProcessor(ServerRequest& sr) {
+  static AsyncProcessor* asyncProcessor(const ServerRequest& sr) {
     return sr.asyncProcessor_;
   }
 
-  static SerializedCompressedRequest const& compressedRequest(
+  static const SerializedCompressedRequest& compressedRequest(
       ServerRequest& sr) {
     return sr.serializedRequest_;
   }
@@ -509,7 +509,9 @@ class ServerRequest {
 
   // The executor is only available once the request has been assigned to
   // a resource pool.
-  static folly::Executor* executor(ServerRequest& sr) { return sr.executor_; }
+  static folly::Executor* executor(ServerRequest& sr) {
+    return sr.executor_ ? sr.executor_ : sr.eb_;
+  }
 
   static void setExecutor(ServerRequest& sr, folly::Executor* executor) {
     sr.executor_ = executor;
