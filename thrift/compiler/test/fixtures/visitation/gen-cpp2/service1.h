@@ -26,30 +26,6 @@ namespace apache { namespace thrift {
 }}
 
 namespace test_cpp2 { namespace cpp_reflection {
-
-class service1SvAsyncIf {
- public:
-  virtual ~service1SvAsyncIf() {}
-  virtual void async_tm_method1(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
-  virtual folly::Future<folly::Unit> future_method1() = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_method1() = 0;
-  virtual void async_tm_method2(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int32_t p_x, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_y, double p_z) = 0;
-  virtual folly::Future<folly::Unit> future_method2(::std::int32_t p_x, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_y, double p_z) = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_method2(::std::int32_t p_x, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_y, double p_z) = 0;
-  virtual void async_tm_method3(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
-  virtual folly::Future<::std::int32_t> future_method3() = 0;
-  virtual folly::SemiFuture<::std::int32_t> semifuture_method3() = 0;
-  virtual void async_tm_method4(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, ::std::int32_t p_i, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_j, double p_k) = 0;
-  virtual folly::Future<::std::int32_t> future_method4(::std::int32_t p_i, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_j, double p_k) = 0;
-  virtual folly::SemiFuture<::std::int32_t> semifuture_method4(::std::int32_t p_i, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_j, double p_k) = 0;
-  virtual void async_tm_method5(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>>> callback) = 0;
-  virtual folly::Future<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> future_method5() = 0;
-  virtual folly::SemiFuture<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> semifuture_method5() = 0;
-  virtual void async_tm_method6(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>>> callback, ::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n) = 0;
-  virtual folly::Future<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> future_method6(::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n) = 0;
-  virtual folly::SemiFuture<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> semifuture_method6(::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n) = 0;
-};
-
 class service1AsyncProcessor;
 
 class service1ServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -58,7 +34,7 @@ class service1ServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
 
-class service1SvIf : public service1SvAsyncIf, public apache::thrift::ServerInterface {
+class service1SvIf : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "service1"; }
 
@@ -68,29 +44,29 @@ class service1SvIf : public service1SvAsyncIf, public apache::thrift::ServerInte
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
   virtual void method1();
-  folly::Future<folly::Unit> future_method1() override;
-  folly::SemiFuture<folly::Unit> semifuture_method1() override;
-  void async_tm_method1(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+  virtual folly::Future<folly::Unit> future_method1();
+  virtual folly::SemiFuture<folly::Unit> semifuture_method1();
+  virtual void async_tm_method1(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
   virtual void method2(::std::int32_t /*x*/, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> /*y*/, double /*z*/);
-  folly::Future<folly::Unit> future_method2(::std::int32_t p_x, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_y, double p_z) override;
-  folly::SemiFuture<folly::Unit> semifuture_method2(::std::int32_t p_x, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_y, double p_z) override;
-  void async_tm_method2(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int32_t p_x, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_y, double p_z) override;
+  virtual folly::Future<folly::Unit> future_method2(::std::int32_t p_x, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_y, double p_z);
+  virtual folly::SemiFuture<folly::Unit> semifuture_method2(::std::int32_t p_x, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_y, double p_z);
+  virtual void async_tm_method2(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int32_t p_x, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_y, double p_z);
   virtual ::std::int32_t method3();
-  folly::Future<::std::int32_t> future_method3() override;
-  folly::SemiFuture<::std::int32_t> semifuture_method3() override;
-  void async_tm_method3(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual folly::Future<::std::int32_t> future_method3();
+  virtual folly::SemiFuture<::std::int32_t> semifuture_method3();
+  virtual void async_tm_method3(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback);
   virtual ::std::int32_t method4(::std::int32_t /*i*/, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> /*j*/, double /*k*/);
-  folly::Future<::std::int32_t> future_method4(::std::int32_t p_i, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_j, double p_k) override;
-  folly::SemiFuture<::std::int32_t> semifuture_method4(::std::int32_t p_i, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_j, double p_k) override;
-  void async_tm_method4(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, ::std::int32_t p_i, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_j, double p_k) override;
+  virtual folly::Future<::std::int32_t> future_method4(::std::int32_t p_i, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_j, double p_k);
+  virtual folly::SemiFuture<::std::int32_t> semifuture_method4(::std::int32_t p_i, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_j, double p_k);
+  virtual void async_tm_method4(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, ::std::int32_t p_i, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_j, double p_k);
   virtual void method5(::test_cpp2::cpp_reflection::struct2& /*_return*/);
-  folly::Future<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> future_method5() override;
-  folly::SemiFuture<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> semifuture_method5() override;
-  void async_tm_method5(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>>> callback) override;
+  virtual folly::Future<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> future_method5();
+  virtual folly::SemiFuture<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> semifuture_method5();
+  virtual void async_tm_method5(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>>> callback);
   virtual void method6(::test_cpp2::cpp_reflection::struct2& /*_return*/, ::std::int32_t /*l*/, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> /*m*/, double /*n*/);
-  folly::Future<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> future_method6(::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n) override;
-  folly::SemiFuture<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> semifuture_method6(::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n) override;
-  void async_tm_method6(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>>> callback, ::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n) override;
+  virtual folly::Future<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> future_method6(::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n);
+  virtual folly::SemiFuture<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> semifuture_method6(::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n);
+  virtual void async_tm_method6(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>>> callback, ::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n);
  private:
   static service1ServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_method1{apache::thrift::detail::si::InvocationType::AsyncTm};

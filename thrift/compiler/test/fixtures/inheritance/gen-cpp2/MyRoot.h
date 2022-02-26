@@ -23,15 +23,6 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
-
-class MyRootSvAsyncIf {
- public:
-  virtual ~MyRootSvAsyncIf() {}
-  virtual void async_tm_do_root(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
-  virtual folly::Future<folly::Unit> future_do_root() = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_do_root() = 0;
-};
-
 class MyRootAsyncProcessor;
 
 class MyRootServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -40,7 +31,7 @@ class MyRootServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
 
-class MyRootSvIf : public MyRootSvAsyncIf, public apache::thrift::ServerInterface {
+class MyRootSvIf : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "MyRoot"; }
 
@@ -50,9 +41,9 @@ class MyRootSvIf : public MyRootSvAsyncIf, public apache::thrift::ServerInterfac
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
   virtual void do_root();
-  folly::Future<folly::Unit> future_do_root() override;
-  folly::SemiFuture<folly::Unit> semifuture_do_root() override;
-  void async_tm_do_root(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+  virtual folly::Future<folly::Unit> future_do_root();
+  virtual folly::SemiFuture<folly::Unit> semifuture_do_root();
+  virtual void async_tm_do_root(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
  private:
   static MyRootServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_do_root{apache::thrift::detail::si::InvocationType::AsyncTm};

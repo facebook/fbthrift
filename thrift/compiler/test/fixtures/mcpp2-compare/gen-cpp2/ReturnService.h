@@ -25,63 +25,6 @@ namespace apache { namespace thrift {
 }}
 
 namespace some { namespace valid { namespace ns {
-
-class ReturnServiceSvAsyncIf {
- public:
-  virtual ~ReturnServiceSvAsyncIf() {}
-  virtual void async_eb_noReturn(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
-  virtual void async_tm_boolReturn(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback) = 0;
-  virtual folly::Future<bool> future_boolReturn() = 0;
-  virtual folly::SemiFuture<bool> semifuture_boolReturn() = 0;
-  virtual void async_tm_i16Return(std::unique_ptr<apache::thrift::HandlerCallback<::std::int16_t>> callback) = 0;
-  virtual folly::Future<::std::int16_t> future_i16Return() = 0;
-  virtual folly::SemiFuture<::std::int16_t> semifuture_i16Return() = 0;
-  virtual void async_tm_i32Return(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
-  virtual folly::Future<::std::int32_t> future_i32Return() = 0;
-  virtual folly::SemiFuture<::std::int32_t> semifuture_i32Return() = 0;
-  virtual void async_tm_i64Return(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback) = 0;
-  virtual folly::Future<::std::int64_t> future_i64Return() = 0;
-  virtual folly::SemiFuture<::std::int64_t> semifuture_i64Return() = 0;
-  virtual void async_tm_floatReturn(std::unique_ptr<apache::thrift::HandlerCallback<float>> callback) = 0;
-  virtual folly::Future<float> future_floatReturn() = 0;
-  virtual folly::SemiFuture<float> semifuture_floatReturn() = 0;
-  virtual void async_tm_doubleReturn(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback) = 0;
-  virtual folly::Future<double> future_doubleReturn() = 0;
-  virtual folly::SemiFuture<double> semifuture_doubleReturn() = 0;
-  virtual void async_eb_stringReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) = 0;
-  virtual void async_tm_binaryReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) = 0;
-  virtual folly::Future<std::unique_ptr<::std::string>> future_binaryReturn() = 0;
-  virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_binaryReturn() = 0;
-  virtual void async_tm_mapReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>>> callback) = 0;
-  virtual folly::Future<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> future_mapReturn() = 0;
-  virtual folly::SemiFuture<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> semifuture_mapReturn() = 0;
-  virtual void async_tm_simpleTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::simpleTypeDef>> callback) = 0;
-  virtual folly::Future<::some::valid::ns::simpleTypeDef> future_simpleTypedefReturn() = 0;
-  virtual folly::SemiFuture<::some::valid::ns::simpleTypeDef> semifuture_simpleTypedefReturn() = 0;
-  virtual void async_tm_complexTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::complexStructTypeDef>>> callback) = 0;
-  virtual folly::Future<std::unique_ptr<::some::valid::ns::complexStructTypeDef>> future_complexTypedefReturn() = 0;
-  virtual folly::SemiFuture<std::unique_ptr<::some::valid::ns::complexStructTypeDef>> semifuture_complexTypedefReturn() = 0;
-  virtual void async_tm_list_mostComplexTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::mostComplexTypeDef>>>> callback) = 0;
-  virtual folly::Future<std::unique_ptr<::std::vector<::some::valid::ns::mostComplexTypeDef>>> future_list_mostComplexTypedefReturn() = 0;
-  virtual folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::mostComplexTypeDef>>> semifuture_list_mostComplexTypedefReturn() = 0;
-  virtual void async_eb_enumReturn(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>> callback) = 0;
-  virtual void async_eb_list_EnumReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>>> callback) = 0;
-  virtual void async_tm_structReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::MyStruct>>> callback) = 0;
-  virtual folly::Future<std::unique_ptr<::some::valid::ns::MyStruct>> future_structReturn() = 0;
-  virtual folly::SemiFuture<std::unique_ptr<::some::valid::ns::MyStruct>> semifuture_structReturn() = 0;
-  virtual void async_tm_set_StructReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>>> callback) = 0;
-  virtual folly::Future<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> future_set_StructReturn() = 0;
-  virtual folly::SemiFuture<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> semifuture_set_StructReturn() = 0;
-  virtual void async_eb_unionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::ComplexUnion>>> callback) = 0;
-  virtual void async_tm_list_UnionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>>> callback) = 0;
-  virtual folly::Future<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>> future_list_UnionReturn() = 0;
-  virtual folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>> semifuture_list_UnionReturn() = 0;
-  virtual void async_eb_readDataEb(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::IOBuf>>> callback, ::std::int64_t p_size) = 0;
-  virtual void async_tm_readData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::IOBufPtr>>> callback, ::std::int64_t p_size) = 0;
-  virtual folly::Future<std::unique_ptr<::some::valid::ns::IOBufPtr>> future_readData(::std::int64_t p_size) = 0;
-  virtual folly::SemiFuture<std::unique_ptr<::some::valid::ns::IOBufPtr>> semifuture_readData(::std::int64_t p_size) = 0;
-};
-
 class ReturnServiceAsyncProcessor;
 
 class ReturnServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -90,7 +33,7 @@ class ReturnServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder 
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
 
-class ReturnServiceSvIf : public ReturnServiceSvAsyncIf, public apache::thrift::ServerInterface {
+class ReturnServiceSvIf : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "ReturnService"; }
 
@@ -99,72 +42,72 @@ class ReturnServiceSvIf : public ReturnServiceSvAsyncIf, public apache::thrift::
   CreateMethodMetadataResult createMethodMetadata() override;
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
-  void async_eb_noReturn(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+  virtual void async_eb_noReturn(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
   virtual bool boolReturn();
-  folly::Future<bool> future_boolReturn() override;
-  folly::SemiFuture<bool> semifuture_boolReturn() override;
-  void async_tm_boolReturn(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback) override;
+  virtual folly::Future<bool> future_boolReturn();
+  virtual folly::SemiFuture<bool> semifuture_boolReturn();
+  virtual void async_tm_boolReturn(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback);
   virtual ::std::int16_t i16Return();
-  folly::Future<::std::int16_t> future_i16Return() override;
-  folly::SemiFuture<::std::int16_t> semifuture_i16Return() override;
-  void async_tm_i16Return(std::unique_ptr<apache::thrift::HandlerCallback<::std::int16_t>> callback) override;
+  virtual folly::Future<::std::int16_t> future_i16Return();
+  virtual folly::SemiFuture<::std::int16_t> semifuture_i16Return();
+  virtual void async_tm_i16Return(std::unique_ptr<apache::thrift::HandlerCallback<::std::int16_t>> callback);
   virtual ::std::int32_t i32Return();
-  folly::Future<::std::int32_t> future_i32Return() override;
-  folly::SemiFuture<::std::int32_t> semifuture_i32Return() override;
-  void async_tm_i32Return(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual folly::Future<::std::int32_t> future_i32Return();
+  virtual folly::SemiFuture<::std::int32_t> semifuture_i32Return();
+  virtual void async_tm_i32Return(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback);
   virtual ::std::int64_t i64Return();
-  folly::Future<::std::int64_t> future_i64Return() override;
-  folly::SemiFuture<::std::int64_t> semifuture_i64Return() override;
-  void async_tm_i64Return(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback) override;
+  virtual folly::Future<::std::int64_t> future_i64Return();
+  virtual folly::SemiFuture<::std::int64_t> semifuture_i64Return();
+  virtual void async_tm_i64Return(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback);
   virtual float floatReturn();
-  folly::Future<float> future_floatReturn() override;
-  folly::SemiFuture<float> semifuture_floatReturn() override;
-  void async_tm_floatReturn(std::unique_ptr<apache::thrift::HandlerCallback<float>> callback) override;
+  virtual folly::Future<float> future_floatReturn();
+  virtual folly::SemiFuture<float> semifuture_floatReturn();
+  virtual void async_tm_floatReturn(std::unique_ptr<apache::thrift::HandlerCallback<float>> callback);
   virtual double doubleReturn();
-  folly::Future<double> future_doubleReturn() override;
-  folly::SemiFuture<double> semifuture_doubleReturn() override;
-  void async_tm_doubleReturn(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback) override;
-  void async_eb_stringReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) override;
+  virtual folly::Future<double> future_doubleReturn();
+  virtual folly::SemiFuture<double> semifuture_doubleReturn();
+  virtual void async_tm_doubleReturn(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback);
+  virtual void async_eb_stringReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback);
   virtual void binaryReturn(::std::string& /*_return*/);
-  folly::Future<std::unique_ptr<::std::string>> future_binaryReturn() override;
-  folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_binaryReturn() override;
-  void async_tm_binaryReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) override;
+  virtual folly::Future<std::unique_ptr<::std::string>> future_binaryReturn();
+  virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_binaryReturn();
+  virtual void async_tm_binaryReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback);
   virtual void mapReturn(::std::map<::std::string, ::std::int64_t>& /*_return*/);
-  folly::Future<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> future_mapReturn() override;
-  folly::SemiFuture<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> semifuture_mapReturn() override;
-  void async_tm_mapReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>>> callback) override;
+  virtual folly::Future<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> future_mapReturn();
+  virtual folly::SemiFuture<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> semifuture_mapReturn();
+  virtual void async_tm_mapReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>>> callback);
   virtual ::some::valid::ns::simpleTypeDef simpleTypedefReturn();
-  folly::Future<::some::valid::ns::simpleTypeDef> future_simpleTypedefReturn() override;
-  folly::SemiFuture<::some::valid::ns::simpleTypeDef> semifuture_simpleTypedefReturn() override;
-  void async_tm_simpleTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::simpleTypeDef>> callback) override;
+  virtual folly::Future<::some::valid::ns::simpleTypeDef> future_simpleTypedefReturn();
+  virtual folly::SemiFuture<::some::valid::ns::simpleTypeDef> semifuture_simpleTypedefReturn();
+  virtual void async_tm_simpleTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::simpleTypeDef>> callback);
   virtual void complexTypedefReturn(::some::valid::ns::complexStructTypeDef& /*_return*/);
-  folly::Future<std::unique_ptr<::some::valid::ns::complexStructTypeDef>> future_complexTypedefReturn() override;
-  folly::SemiFuture<std::unique_ptr<::some::valid::ns::complexStructTypeDef>> semifuture_complexTypedefReturn() override;
-  void async_tm_complexTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::complexStructTypeDef>>> callback) override;
+  virtual folly::Future<std::unique_ptr<::some::valid::ns::complexStructTypeDef>> future_complexTypedefReturn();
+  virtual folly::SemiFuture<std::unique_ptr<::some::valid::ns::complexStructTypeDef>> semifuture_complexTypedefReturn();
+  virtual void async_tm_complexTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::complexStructTypeDef>>> callback);
   virtual void list_mostComplexTypedefReturn(::std::vector<::some::valid::ns::mostComplexTypeDef>& /*_return*/);
-  folly::Future<std::unique_ptr<::std::vector<::some::valid::ns::mostComplexTypeDef>>> future_list_mostComplexTypedefReturn() override;
-  folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::mostComplexTypeDef>>> semifuture_list_mostComplexTypedefReturn() override;
-  void async_tm_list_mostComplexTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::mostComplexTypeDef>>>> callback) override;
-  void async_eb_enumReturn(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>> callback) override;
-  void async_eb_list_EnumReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>>> callback) override;
+  virtual folly::Future<std::unique_ptr<::std::vector<::some::valid::ns::mostComplexTypeDef>>> future_list_mostComplexTypedefReturn();
+  virtual folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::mostComplexTypeDef>>> semifuture_list_mostComplexTypedefReturn();
+  virtual void async_tm_list_mostComplexTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::mostComplexTypeDef>>>> callback);
+  virtual void async_eb_enumReturn(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>> callback);
+  virtual void async_eb_list_EnumReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>>> callback);
   virtual void structReturn(::some::valid::ns::MyStruct& /*_return*/);
-  folly::Future<std::unique_ptr<::some::valid::ns::MyStruct>> future_structReturn() override;
-  folly::SemiFuture<std::unique_ptr<::some::valid::ns::MyStruct>> semifuture_structReturn() override;
-  void async_tm_structReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::MyStruct>>> callback) override;
+  virtual folly::Future<std::unique_ptr<::some::valid::ns::MyStruct>> future_structReturn();
+  virtual folly::SemiFuture<std::unique_ptr<::some::valid::ns::MyStruct>> semifuture_structReturn();
+  virtual void async_tm_structReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::MyStruct>>> callback);
   virtual void set_StructReturn(::std::set<::some::valid::ns::MyStruct>& /*_return*/);
-  folly::Future<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> future_set_StructReturn() override;
-  folly::SemiFuture<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> semifuture_set_StructReturn() override;
-  void async_tm_set_StructReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>>> callback) override;
-  void async_eb_unionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::ComplexUnion>>> callback) override;
+  virtual folly::Future<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> future_set_StructReturn();
+  virtual folly::SemiFuture<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> semifuture_set_StructReturn();
+  virtual void async_tm_set_StructReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>>> callback);
+  virtual void async_eb_unionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::ComplexUnion>>> callback);
   virtual void list_UnionReturn(::std::vector<::some::valid::ns::ComplexUnion>& /*_return*/);
-  folly::Future<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>> future_list_UnionReturn() override;
-  folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>> semifuture_list_UnionReturn() override;
-  void async_tm_list_UnionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>>> callback) override;
-  void async_eb_readDataEb(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::IOBuf>>> callback, ::std::int64_t p_size) override;
+  virtual folly::Future<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>> future_list_UnionReturn();
+  virtual folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>> semifuture_list_UnionReturn();
+  virtual void async_tm_list_UnionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>>> callback);
+  virtual void async_eb_readDataEb(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::IOBuf>>> callback, ::std::int64_t p_size);
   virtual void readData(::some::valid::ns::IOBufPtr& /*_return*/, ::std::int64_t /*size*/);
-  folly::Future<std::unique_ptr<::some::valid::ns::IOBufPtr>> future_readData(::std::int64_t p_size) override;
-  folly::SemiFuture<std::unique_ptr<::some::valid::ns::IOBufPtr>> semifuture_readData(::std::int64_t p_size) override;
-  void async_tm_readData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::IOBufPtr>>> callback, ::std::int64_t p_size) override;
+  virtual folly::Future<std::unique_ptr<::some::valid::ns::IOBufPtr>> future_readData(::std::int64_t p_size);
+  virtual folly::SemiFuture<std::unique_ptr<::some::valid::ns::IOBufPtr>> semifuture_readData(::std::int64_t p_size);
+  virtual void async_tm_readData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::IOBufPtr>>> callback, ::std::int64_t p_size);
  private:
   static ReturnServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_boolReturn{apache::thrift::detail::si::InvocationType::AsyncTm};

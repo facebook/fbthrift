@@ -23,24 +23,6 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
-
-class RaiserSvAsyncIf {
- public:
-  virtual ~RaiserSvAsyncIf() {}
-  virtual void async_tm_doBland(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
-  virtual folly::Future<folly::Unit> future_doBland() = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_doBland() = 0;
-  virtual void async_tm_doRaise(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
-  virtual folly::Future<folly::Unit> future_doRaise() = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_doRaise() = 0;
-  virtual void async_tm_get200(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) = 0;
-  virtual folly::Future<std::unique_ptr<::std::string>> future_get200() = 0;
-  virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_get200() = 0;
-  virtual void async_tm_get500(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) = 0;
-  virtual folly::Future<std::unique_ptr<::std::string>> future_get500() = 0;
-  virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_get500() = 0;
-};
-
 class RaiserAsyncProcessor;
 
 class RaiserServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -49,7 +31,7 @@ class RaiserServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
 
-class RaiserSvIf : public RaiserSvAsyncIf, public apache::thrift::ServerInterface {
+class RaiserSvIf : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "Raiser"; }
 
@@ -59,21 +41,21 @@ class RaiserSvIf : public RaiserSvAsyncIf, public apache::thrift::ServerInterfac
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
   virtual void doBland();
-  folly::Future<folly::Unit> future_doBland() override;
-  folly::SemiFuture<folly::Unit> semifuture_doBland() override;
-  void async_tm_doBland(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+  virtual folly::Future<folly::Unit> future_doBland();
+  virtual folly::SemiFuture<folly::Unit> semifuture_doBland();
+  virtual void async_tm_doBland(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
   virtual void doRaise();
-  folly::Future<folly::Unit> future_doRaise() override;
-  folly::SemiFuture<folly::Unit> semifuture_doRaise() override;
-  void async_tm_doRaise(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+  virtual folly::Future<folly::Unit> future_doRaise();
+  virtual folly::SemiFuture<folly::Unit> semifuture_doRaise();
+  virtual void async_tm_doRaise(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
   virtual void get200(::std::string& /*_return*/);
-  folly::Future<std::unique_ptr<::std::string>> future_get200() override;
-  folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_get200() override;
-  void async_tm_get200(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) override;
+  virtual folly::Future<std::unique_ptr<::std::string>> future_get200();
+  virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_get200();
+  virtual void async_tm_get200(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback);
   virtual void get500(::std::string& /*_return*/);
-  folly::Future<std::unique_ptr<::std::string>> future_get500() override;
-  folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_get500() override;
-  void async_tm_get500(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) override;
+  virtual folly::Future<std::unique_ptr<::std::string>> future_get500();
+  virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_get500();
+  virtual void async_tm_get500(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback);
  private:
   static RaiserServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_doBland{apache::thrift::detail::si::InvocationType::AsyncTm};

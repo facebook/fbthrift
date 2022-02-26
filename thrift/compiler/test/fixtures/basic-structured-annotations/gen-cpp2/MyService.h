@@ -25,18 +25,6 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
-
-class MyServiceSvAsyncIf {
- public:
-  virtual ~MyServiceSvAsyncIf() {}
-  virtual void async_tm_first(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::cpp2::annotated_inline_string>>> callback) = 0;
-  virtual folly::Future<std::unique_ptr<::cpp2::annotated_inline_string>> future_first() = 0;
-  virtual folly::SemiFuture<std::unique_ptr<::cpp2::annotated_inline_string>> semifuture_first() = 0;
-  virtual void async_tm_second(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int64_t p_count) = 0;
-  virtual folly::Future<bool> future_second(::std::int64_t p_count) = 0;
-  virtual folly::SemiFuture<bool> semifuture_second(::std::int64_t p_count) = 0;
-};
-
 class MyServiceAsyncProcessor;
 
 class MyServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -45,7 +33,7 @@ class MyServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
 
-class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerInterface {
+class MyServiceSvIf : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "MyService"; }
 
@@ -55,13 +43,13 @@ class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerIn
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
   virtual void first(::cpp2::annotated_inline_string& /*_return*/);
-  folly::Future<std::unique_ptr<::cpp2::annotated_inline_string>> future_first() override;
-  folly::SemiFuture<std::unique_ptr<::cpp2::annotated_inline_string>> semifuture_first() override;
-  void async_tm_first(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::cpp2::annotated_inline_string>>> callback) override;
+  virtual folly::Future<std::unique_ptr<::cpp2::annotated_inline_string>> future_first();
+  virtual folly::SemiFuture<std::unique_ptr<::cpp2::annotated_inline_string>> semifuture_first();
+  virtual void async_tm_first(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::cpp2::annotated_inline_string>>> callback);
   virtual bool second(::std::int64_t /*count*/);
-  folly::Future<bool> future_second(::std::int64_t p_count) override;
-  folly::SemiFuture<bool> semifuture_second(::std::int64_t p_count) override;
-  void async_tm_second(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int64_t p_count) override;
+  virtual folly::Future<bool> future_second(::std::int64_t p_count);
+  virtual folly::SemiFuture<bool> semifuture_second(::std::int64_t p_count);
+  virtual void async_tm_second(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int64_t p_count);
  private:
   static MyServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_first{apache::thrift::detail::si::InvocationType::AsyncTm};

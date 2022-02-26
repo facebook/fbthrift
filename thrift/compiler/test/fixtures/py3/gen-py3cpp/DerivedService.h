@@ -24,15 +24,6 @@ namespace apache { namespace thrift {
 }}
 
 namespace py3 { namespace simple {
-
-class DerivedServiceSvAsyncIf {
- public:
-  virtual ~DerivedServiceSvAsyncIf() {}
-  virtual void async_tm_get_six(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
-  virtual folly::Future<::std::int32_t> future_get_six() = 0;
-  virtual folly::SemiFuture<::std::int32_t> semifuture_get_six() = 0;
-};
-
 class DerivedServiceAsyncProcessor;
 
 class DerivedServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -41,7 +32,7 @@ class DerivedServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
 
-class DerivedServiceSvIf : public DerivedServiceSvAsyncIf, virtual public ::py3::simple::SimpleServiceSvIf {
+class DerivedServiceSvIf : virtual public ::py3::simple::SimpleServiceSvIf {
  public:
   std::string_view getGeneratedName() const override { return "DerivedService"; }
 
@@ -51,9 +42,9 @@ class DerivedServiceSvIf : public DerivedServiceSvAsyncIf, virtual public ::py3:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
   virtual ::std::int32_t get_six();
-  folly::Future<::std::int32_t> future_get_six() override;
-  folly::SemiFuture<::std::int32_t> semifuture_get_six() override;
-  void async_tm_get_six(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual folly::Future<::std::int32_t> future_get_six();
+  virtual folly::SemiFuture<::std::int32_t> semifuture_get_six();
+  virtual void async_tm_get_six(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback);
  private:
   static DerivedServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_get_six{apache::thrift::detail::si::InvocationType::AsyncTm};

@@ -24,31 +24,6 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
-
-class SinkServiceSvAsyncIf {
- public:
-  virtual ~SinkServiceSvAsyncIf() {}
-  virtual void async_tm_method(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) = 0;
-  virtual folly::Future<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> future_method() = 0;
-  virtual folly::SemiFuture<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> semifuture_method() = 0;
-  virtual void async_tm_methodAndReponse(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) = 0;
-  virtual folly::Future<::apache::thrift::ResponseAndSinkConsumer<::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>> future_methodAndReponse() = 0;
-  virtual folly::SemiFuture<::apache::thrift::ResponseAndSinkConsumer<::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>> semifuture_methodAndReponse() = 0;
-  virtual void async_tm_methodThrow(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) = 0;
-  virtual folly::Future<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> future_methodThrow() = 0;
-  virtual folly::SemiFuture<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> semifuture_methodThrow() = 0;
-  virtual void async_tm_methodSinkThrow(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) = 0;
-  virtual folly::Future<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> future_methodSinkThrow() = 0;
-  virtual folly::SemiFuture<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> semifuture_methodSinkThrow() = 0;
-  virtual void async_tm_methodFinalThrow(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) = 0;
-  virtual folly::Future<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> future_methodFinalThrow() = 0;
-  virtual folly::SemiFuture<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> semifuture_methodFinalThrow() = 0;
-  virtual void async_tm_methodBothThrow(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) = 0;
-  virtual folly::Future<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> future_methodBothThrow() = 0;
-  virtual folly::SemiFuture<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> semifuture_methodBothThrow() = 0;
-  virtual void async_eb_methodFast(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) = 0;
-};
-
 class SinkServiceAsyncProcessor;
 
 class SinkServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -57,7 +32,7 @@ class SinkServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
 
-class SinkServiceSvIf : public SinkServiceSvAsyncIf, public apache::thrift::ServerInterface {
+class SinkServiceSvIf : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "SinkService"; }
 
@@ -67,30 +42,30 @@ class SinkServiceSvIf : public SinkServiceSvAsyncIf, public apache::thrift::Serv
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
   virtual ::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse> method();
-  folly::Future<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> future_method() override;
-  folly::SemiFuture<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> semifuture_method() override;
-  void async_tm_method(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) override;
+  virtual folly::Future<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> future_method();
+  virtual folly::SemiFuture<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> semifuture_method();
+  virtual void async_tm_method(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback);
   virtual ::apache::thrift::ResponseAndSinkConsumer<::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse> methodAndReponse();
-  folly::Future<::apache::thrift::ResponseAndSinkConsumer<::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>> future_methodAndReponse() override;
-  folly::SemiFuture<::apache::thrift::ResponseAndSinkConsumer<::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>> semifuture_methodAndReponse() override;
-  void async_tm_methodAndReponse(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) override;
+  virtual folly::Future<::apache::thrift::ResponseAndSinkConsumer<::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>> future_methodAndReponse();
+  virtual folly::SemiFuture<::apache::thrift::ResponseAndSinkConsumer<::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>> semifuture_methodAndReponse();
+  virtual void async_tm_methodAndReponse(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback);
   virtual ::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse> methodThrow();
-  folly::Future<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> future_methodThrow() override;
-  folly::SemiFuture<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> semifuture_methodThrow() override;
-  void async_tm_methodThrow(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) override;
+  virtual folly::Future<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> future_methodThrow();
+  virtual folly::SemiFuture<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> semifuture_methodThrow();
+  virtual void async_tm_methodThrow(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback);
   virtual ::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse> methodSinkThrow();
-  folly::Future<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> future_methodSinkThrow() override;
-  folly::SemiFuture<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> semifuture_methodSinkThrow() override;
-  void async_tm_methodSinkThrow(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) override;
+  virtual folly::Future<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> future_methodSinkThrow();
+  virtual folly::SemiFuture<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> semifuture_methodSinkThrow();
+  virtual void async_tm_methodSinkThrow(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback);
   virtual ::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse> methodFinalThrow();
-  folly::Future<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> future_methodFinalThrow() override;
-  folly::SemiFuture<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> semifuture_methodFinalThrow() override;
-  void async_tm_methodFinalThrow(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) override;
+  virtual folly::Future<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> future_methodFinalThrow();
+  virtual folly::SemiFuture<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> semifuture_methodFinalThrow();
+  virtual void async_tm_methodFinalThrow(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback);
   virtual ::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse> methodBothThrow();
-  folly::Future<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> future_methodBothThrow() override;
-  folly::SemiFuture<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> semifuture_methodBothThrow() override;
-  void async_tm_methodBothThrow(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) override;
-  void async_eb_methodFast(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) override;
+  virtual folly::Future<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> future_methodBothThrow();
+  virtual folly::SemiFuture<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> semifuture_methodBothThrow();
+  virtual void async_tm_methodBothThrow(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback);
+  virtual void async_eb_methodFast(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback);
  private:
   static SinkServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_method{apache::thrift::detail::si::InvocationType::AsyncTm};

@@ -23,33 +23,6 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
-
-class MyServiceSvAsyncIf {
- public:
-  virtual ~MyServiceSvAsyncIf() {}
-  virtual void async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
-  virtual folly::Future<folly::Unit> future_ping() = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_ping() = 0;
-  virtual void async_tm_getRandomData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) = 0;
-  virtual folly::Future<std::unique_ptr<::std::string>> future_getRandomData() = 0;
-  virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_getRandomData() = 0;
-  virtual void async_tm_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int64_t p_id) = 0;
-  virtual folly::Future<bool> future_hasDataById(::std::int64_t p_id) = 0;
-  virtual folly::SemiFuture<bool> semifuture_hasDataById(::std::int64_t p_id) = 0;
-  virtual void async_tm_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, ::std::int64_t p_id) = 0;
-  virtual folly::Future<std::unique_ptr<::std::string>> future_getDataById(::std::int64_t p_id) = 0;
-  virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_getDataById(::std::int64_t p_id) = 0;
-  virtual void async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int64_t p_id, std::unique_ptr<::std::string> p_data) = 0;
-  virtual folly::Future<folly::Unit> future_putDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data) = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_putDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data) = 0;
-  virtual void async_tm_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, ::std::int64_t p_id, std::unique_ptr<::std::string> p_data) = 0;
-  virtual folly::Future<folly::Unit> future_lobDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data) = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_lobDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data) = 0;
-  virtual void async_tm_cppDoNothing(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
-  virtual folly::Future<folly::Unit> future_cppDoNothing() = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_cppDoNothing() = 0;
-};
-
 class MyServiceAsyncProcessor;
 
 class MyServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -58,7 +31,7 @@ class MyServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
 
-class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerInterface {
+class MyServiceSvIf : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "MyService"; }
 
@@ -68,33 +41,33 @@ class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerIn
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
   virtual void ping();
-  folly::Future<folly::Unit> future_ping() override;
-  folly::SemiFuture<folly::Unit> semifuture_ping() override;
-  void async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+  virtual folly::Future<folly::Unit> future_ping();
+  virtual folly::SemiFuture<folly::Unit> semifuture_ping();
+  virtual void async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
   virtual void getRandomData(::std::string& /*_return*/);
-  folly::Future<std::unique_ptr<::std::string>> future_getRandomData() override;
-  folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_getRandomData() override;
-  void async_tm_getRandomData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) override;
+  virtual folly::Future<std::unique_ptr<::std::string>> future_getRandomData();
+  virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_getRandomData();
+  virtual void async_tm_getRandomData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback);
   virtual bool hasDataById(::std::int64_t /*id*/);
-  folly::Future<bool> future_hasDataById(::std::int64_t p_id) override;
-  folly::SemiFuture<bool> semifuture_hasDataById(::std::int64_t p_id) override;
-  void async_tm_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int64_t p_id) override;
+  virtual folly::Future<bool> future_hasDataById(::std::int64_t p_id);
+  virtual folly::SemiFuture<bool> semifuture_hasDataById(::std::int64_t p_id);
+  virtual void async_tm_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int64_t p_id);
   virtual void getDataById(::std::string& /*_return*/, ::std::int64_t /*id*/);
-  folly::Future<std::unique_ptr<::std::string>> future_getDataById(::std::int64_t p_id) override;
-  folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_getDataById(::std::int64_t p_id) override;
-  void async_tm_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, ::std::int64_t p_id) override;
+  virtual folly::Future<std::unique_ptr<::std::string>> future_getDataById(::std::int64_t p_id);
+  virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_getDataById(::std::int64_t p_id);
+  virtual void async_tm_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, ::std::int64_t p_id);
   virtual void putDataById(::std::int64_t /*id*/, std::unique_ptr<::std::string> /*data*/);
-  folly::Future<folly::Unit> future_putDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data) override;
-  folly::SemiFuture<folly::Unit> semifuture_putDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data) override;
-  void async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int64_t p_id, std::unique_ptr<::std::string> p_data) override;
+  virtual folly::Future<folly::Unit> future_putDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data);
+  virtual folly::SemiFuture<folly::Unit> semifuture_putDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data);
+  virtual void async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int64_t p_id, std::unique_ptr<::std::string> p_data);
   virtual void lobDataById(::std::int64_t /*id*/, std::unique_ptr<::std::string> /*data*/);
-  folly::Future<folly::Unit> future_lobDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data) override;
-  folly::SemiFuture<folly::Unit> semifuture_lobDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data) override;
-  void async_tm_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, ::std::int64_t p_id, std::unique_ptr<::std::string> p_data) override;
+  virtual folly::Future<folly::Unit> future_lobDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data);
+  virtual folly::SemiFuture<folly::Unit> semifuture_lobDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data);
+  virtual void async_tm_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, ::std::int64_t p_id, std::unique_ptr<::std::string> p_data);
   virtual void cppDoNothing();
-  folly::Future<folly::Unit> future_cppDoNothing() override;
-  folly::SemiFuture<folly::Unit> semifuture_cppDoNothing() override;
-  void async_tm_cppDoNothing(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+  virtual folly::Future<folly::Unit> future_cppDoNothing();
+  virtual folly::SemiFuture<folly::Unit> semifuture_cppDoNothing();
+  virtual void async_tm_cppDoNothing(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
  private:
   static MyServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_ping{apache::thrift::detail::si::InvocationType::AsyncTm};

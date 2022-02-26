@@ -23,18 +23,6 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
-
-class DbMixedStackArgumentsSvAsyncIf {
- public:
-  virtual ~DbMixedStackArgumentsSvAsyncIf() {}
-  virtual void async_tm_getDataByKey0(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_key) = 0;
-  virtual folly::Future<std::unique_ptr<::std::string>> future_getDataByKey0(std::unique_ptr<::std::string> p_key) = 0;
-  virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_getDataByKey0(std::unique_ptr<::std::string> p_key) = 0;
-  virtual void async_tm_getDataByKey1(std::unique_ptr<apache::thrift::HandlerCallback<::std::string>> callback, const ::std::string& p_key) = 0;
-  virtual folly::Future<::std::string> future_getDataByKey1(const ::std::string& p_key) = 0;
-  virtual folly::SemiFuture<::std::string> semifuture_getDataByKey1(const ::std::string& p_key) = 0;
-};
-
 class DbMixedStackArgumentsAsyncProcessor;
 
 class DbMixedStackArgumentsServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -43,7 +31,7 @@ class DbMixedStackArgumentsServiceInfoHolder : public apache::thrift::ServiceInf
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
 
-class DbMixedStackArgumentsSvIf : public DbMixedStackArgumentsSvAsyncIf, public apache::thrift::ServerInterface {
+class DbMixedStackArgumentsSvIf : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "DbMixedStackArguments"; }
 
@@ -53,13 +41,13 @@ class DbMixedStackArgumentsSvIf : public DbMixedStackArgumentsSvAsyncIf, public 
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
   virtual void getDataByKey0(::std::string& /*_return*/, std::unique_ptr<::std::string> /*key*/);
-  folly::Future<std::unique_ptr<::std::string>> future_getDataByKey0(std::unique_ptr<::std::string> p_key) override;
-  folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_getDataByKey0(std::unique_ptr<::std::string> p_key) override;
-  void async_tm_getDataByKey0(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_key) override;
+  virtual folly::Future<std::unique_ptr<::std::string>> future_getDataByKey0(std::unique_ptr<::std::string> p_key);
+  virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_getDataByKey0(std::unique_ptr<::std::string> p_key);
+  virtual void async_tm_getDataByKey0(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_key);
   virtual void getDataByKey1(::std::string& /*_return*/, const ::std::string& /*key*/);
-  folly::Future<::std::string> future_getDataByKey1(const ::std::string& p_key) override;
-  folly::SemiFuture<::std::string> semifuture_getDataByKey1(const ::std::string& p_key) override;
-  void async_tm_getDataByKey1(std::unique_ptr<apache::thrift::HandlerCallback<::std::string>> callback, const ::std::string& p_key) override;
+  virtual folly::Future<::std::string> future_getDataByKey1(const ::std::string& p_key);
+  virtual folly::SemiFuture<::std::string> semifuture_getDataByKey1(const ::std::string& p_key);
+  virtual void async_tm_getDataByKey1(std::unique_ptr<apache::thrift::HandlerCallback<::std::string>> callback, const ::std::string& p_key);
  private:
   static DbMixedStackArgumentsServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_getDataByKey0{apache::thrift::detail::si::InvocationType::AsyncTm};

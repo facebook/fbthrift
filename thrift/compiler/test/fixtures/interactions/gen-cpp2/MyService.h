@@ -25,24 +25,6 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
-
-class MyServiceSvAsyncIf {
- public:
-  virtual ~MyServiceSvAsyncIf() {}
-  virtual void async_tm_foo(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
-  virtual folly::Future<folly::Unit> future_foo() = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_foo() = 0;
-  virtual void async_tm_interact(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int32_t p_arg) = 0;
-  virtual folly::Future<folly::Unit> future_interact(::std::int32_t p_arg) = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_interact(::std::int32_t p_arg) = 0;
-  virtual void async_tm_interactFast(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) = 0;
-  virtual folly::Future<::std::int32_t> future_interactFast() = 0;
-  virtual folly::SemiFuture<::std::int32_t> semifuture_interactFast() = 0;
-  virtual void async_tm_serialize(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> callback) = 0;
-  virtual folly::Future<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>> future_serialize() = 0;
-  virtual folly::SemiFuture<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>> semifuture_serialize() = 0;
-};
-
 class MyServiceAsyncProcessor;
 
 class MyServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -51,7 +33,7 @@ class MyServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
 
-class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerInterface {
+class MyServiceSvIf : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "MyService"; }
 
@@ -174,21 +156,21 @@ class SerialInteractionIf : public apache::thrift::SerialInteractionTile, public
   virtual std::unique_ptr<MyInteractionFastIf> createMyInteractionFast() = 0;
   virtual std::unique_ptr<SerialInteractionIf> createSerialInteraction() = 0;
   virtual void foo();
-  folly::Future<folly::Unit> future_foo() override;
-  folly::SemiFuture<folly::Unit> semifuture_foo() override;
-  void async_tm_foo(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+  virtual folly::Future<folly::Unit> future_foo();
+  virtual folly::SemiFuture<folly::Unit> semifuture_foo();
+  virtual void async_tm_foo(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
   virtual void interact(::std::int32_t /*arg*/);
-  folly::Future<folly::Unit> future_interact(::std::int32_t p_arg) override;
-  folly::SemiFuture<folly::Unit> semifuture_interact(::std::int32_t p_arg) override;
-  void async_tm_interact(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int32_t p_arg) override;
+  virtual folly::Future<folly::Unit> future_interact(::std::int32_t p_arg);
+  virtual folly::SemiFuture<folly::Unit> semifuture_interact(::std::int32_t p_arg);
+  virtual void async_tm_interact(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int32_t p_arg);
   virtual ::std::int32_t interactFast();
-  folly::Future<::std::int32_t> future_interactFast() override;
-  folly::SemiFuture<::std::int32_t> semifuture_interactFast() override;
-  void async_tm_interactFast(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) override;
+  virtual folly::Future<::std::int32_t> future_interactFast();
+  virtual folly::SemiFuture<::std::int32_t> semifuture_interactFast();
+  virtual void async_tm_interactFast(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback);
   virtual ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t> serialize();
-  folly::Future<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>> future_serialize() override;
-  folly::SemiFuture<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>> semifuture_serialize() override;
-  void async_tm_serialize(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> callback) override;
+  virtual folly::Future<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>> future_serialize();
+  virtual folly::SemiFuture<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>> semifuture_serialize();
+  virtual void async_tm_serialize(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> callback);
  private:
   static MyServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_createMyInteraction{apache::thrift::detail::si::InvocationType::AsyncTm};

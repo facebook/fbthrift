@@ -24,21 +24,6 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
-
-class CSvAsyncIf {
- public:
-  virtual ~CSvAsyncIf() {}
-  virtual void async_tm_f(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
-  virtual folly::Future<folly::Unit> future_f() = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_f() = 0;
-  virtual void async_tm_numbers(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::cpp2::number>>> callback) = 0;
-  virtual folly::Future<::apache::thrift::ServerStream<::cpp2::number>> future_numbers() = 0;
-  virtual folly::SemiFuture<::apache::thrift::ServerStream<::cpp2::number>> semifuture_numbers() = 0;
-  virtual void async_tm_thing(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, ::std::int32_t p_a, std::unique_ptr<::std::string> p_b, std::unique_ptr<::std::set<::std::int32_t>> p_c) = 0;
-  virtual folly::Future<std::unique_ptr<::std::string>> future_thing(::std::int32_t p_a, std::unique_ptr<::std::string> p_b, std::unique_ptr<::std::set<::std::int32_t>> p_c) = 0;
-  virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_thing(::std::int32_t p_a, std::unique_ptr<::std::string> p_b, std::unique_ptr<::std::set<::std::int32_t>> p_c) = 0;
-};
-
 class CAsyncProcessor;
 
 class CServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -47,7 +32,7 @@ class CServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
 
-class CSvIf : public CSvAsyncIf, public apache::thrift::ServerInterface {
+class CSvIf : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "C"; }
 
@@ -57,17 +42,17 @@ class CSvIf : public CSvAsyncIf, public apache::thrift::ServerInterface {
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
   virtual void f();
-  folly::Future<folly::Unit> future_f() override;
-  folly::SemiFuture<folly::Unit> semifuture_f() override;
-  void async_tm_f(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+  virtual folly::Future<folly::Unit> future_f();
+  virtual folly::SemiFuture<folly::Unit> semifuture_f();
+  virtual void async_tm_f(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
   virtual ::apache::thrift::ServerStream<::cpp2::number> numbers();
-  folly::Future<::apache::thrift::ServerStream<::cpp2::number>> future_numbers() override;
-  folly::SemiFuture<::apache::thrift::ServerStream<::cpp2::number>> semifuture_numbers() override;
-  void async_tm_numbers(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::cpp2::number>>> callback) override;
+  virtual folly::Future<::apache::thrift::ServerStream<::cpp2::number>> future_numbers();
+  virtual folly::SemiFuture<::apache::thrift::ServerStream<::cpp2::number>> semifuture_numbers();
+  virtual void async_tm_numbers(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::cpp2::number>>> callback);
   virtual void thing(::std::string& /*_return*/, ::std::int32_t /*a*/, std::unique_ptr<::std::string> /*b*/, std::unique_ptr<::std::set<::std::int32_t>> /*c*/);
-  folly::Future<std::unique_ptr<::std::string>> future_thing(::std::int32_t p_a, std::unique_ptr<::std::string> p_b, std::unique_ptr<::std::set<::std::int32_t>> p_c) override;
-  folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_thing(::std::int32_t p_a, std::unique_ptr<::std::string> p_b, std::unique_ptr<::std::set<::std::int32_t>> p_c) override;
-  void async_tm_thing(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, ::std::int32_t p_a, std::unique_ptr<::std::string> p_b, std::unique_ptr<::std::set<::std::int32_t>> p_c) override;
+  virtual folly::Future<std::unique_ptr<::std::string>> future_thing(::std::int32_t p_a, std::unique_ptr<::std::string> p_b, std::unique_ptr<::std::set<::std::int32_t>> p_c);
+  virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_thing(::std::int32_t p_a, std::unique_ptr<::std::string> p_b, std::unique_ptr<::std::set<::std::int32_t>> p_c);
+  virtual void async_tm_thing(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, ::std::int32_t p_a, std::unique_ptr<::std::string> p_b, std::unique_ptr<::std::set<::std::int32_t>> p_c);
  private:
   static CServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_f{apache::thrift::detail::si::InvocationType::AsyncTm};

@@ -23,18 +23,6 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
-
-class MyServicePrioParentSvAsyncIf {
- public:
-  virtual ~MyServicePrioParentSvAsyncIf() {}
-  virtual void async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
-  virtual folly::Future<folly::Unit> future_ping() = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_ping() = 0;
-  virtual void async_tm_pong(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
-  virtual folly::Future<folly::Unit> future_pong() = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_pong() = 0;
-};
-
 class MyServicePrioParentAsyncProcessor;
 
 class MyServicePrioParentServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -43,7 +31,7 @@ class MyServicePrioParentServiceInfoHolder : public apache::thrift::ServiceInfoH
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
 
-class MyServicePrioParentSvIf : public MyServicePrioParentSvAsyncIf, public apache::thrift::ServerInterface {
+class MyServicePrioParentSvIf : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "MyServicePrioParent"; }
 
@@ -53,13 +41,13 @@ class MyServicePrioParentSvIf : public MyServicePrioParentSvAsyncIf, public apac
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
   virtual void ping();
-  folly::Future<folly::Unit> future_ping() override;
-  folly::SemiFuture<folly::Unit> semifuture_ping() override;
-  void async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+  virtual folly::Future<folly::Unit> future_ping();
+  virtual folly::SemiFuture<folly::Unit> semifuture_ping();
+  virtual void async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
   virtual void pong();
-  folly::Future<folly::Unit> future_pong() override;
-  folly::SemiFuture<folly::Unit> semifuture_pong() override;
-  void async_tm_pong(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+  virtual folly::Future<folly::Unit> future_pong();
+  virtual folly::SemiFuture<folly::Unit> semifuture_pong();
+  virtual void async_tm_pong(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
  private:
   static MyServicePrioParentServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_ping{apache::thrift::detail::si::InvocationType::AsyncTm};

@@ -25,18 +25,6 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
-
-class MyServiceSvAsyncIf {
- public:
-  virtual ~MyServiceSvAsyncIf() {}
-  virtual void async_tm_query(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) = 0;
-  virtual folly::Future<folly::Unit> future_query(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_query(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) = 0;
-  virtual void async_tm_has_arg_docs(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) = 0;
-  virtual folly::Future<folly::Unit> future_has_arg_docs(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_has_arg_docs(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) = 0;
-};
-
 class MyServiceAsyncProcessor;
 
 class MyServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -45,7 +33,7 @@ class MyServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
 
-class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerInterface {
+class MyServiceSvIf : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "MyService"; }
 
@@ -55,13 +43,13 @@ class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerIn
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
   virtual void query(std::unique_ptr<::cpp2::MyStruct> /*s*/, std::unique_ptr<::cpp2::Included> /*i*/);
-  folly::Future<folly::Unit> future_query(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) override;
-  folly::SemiFuture<folly::Unit> semifuture_query(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) override;
-  void async_tm_query(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) override;
+  virtual folly::Future<folly::Unit> future_query(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i);
+  virtual folly::SemiFuture<folly::Unit> semifuture_query(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i);
+  virtual void async_tm_query(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i);
   virtual void has_arg_docs(std::unique_ptr<::cpp2::MyStruct> /*s*/, std::unique_ptr<::cpp2::Included> /*i*/);
-  folly::Future<folly::Unit> future_has_arg_docs(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) override;
-  folly::SemiFuture<folly::Unit> semifuture_has_arg_docs(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) override;
-  void async_tm_has_arg_docs(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i) override;
+  virtual folly::Future<folly::Unit> future_has_arg_docs(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i);
+  virtual folly::SemiFuture<folly::Unit> semifuture_has_arg_docs(std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i);
+  virtual void async_tm_has_arg_docs(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::cpp2::MyStruct> p_s, std::unique_ptr<::cpp2::Included> p_i);
  private:
   static MyServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_query{apache::thrift::detail::si::InvocationType::AsyncTm};

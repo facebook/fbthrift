@@ -25,12 +25,6 @@ namespace apache { namespace thrift {
 }}
 
 namespace some { namespace valid { namespace ns {
-
-class EmptyServiceSvAsyncIf {
- public:
-  virtual ~EmptyServiceSvAsyncIf() {}
-};
-
 class EmptyServiceAsyncProcessor;
 
 class EmptyServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -39,7 +33,7 @@ class EmptyServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
 
-class EmptyServiceSvIf : public EmptyServiceSvAsyncIf, public apache::thrift::ServerInterface {
+class EmptyServiceSvIf : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "EmptyService"; }
 
