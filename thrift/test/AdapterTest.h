@@ -129,6 +129,10 @@ struct AdaptedWithContext {
   T value = {};
   int16_t fieldId = 0;
   std::string* meta = nullptr;
+  AdaptedWithContext() = default;
+  explicit AdaptedWithContext(T value_) : value(value_) {}
+  AdaptedWithContext(T value_, int16_t fieldId_, std::string* meta_)
+      : value(value_), fieldId(fieldId_), meta(meta_) {}
 };
 
 template <typename T, typename Struct, int16_t FieldId>

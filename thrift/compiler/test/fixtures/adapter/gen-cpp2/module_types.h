@@ -1359,7 +1359,7 @@ class StructWithFieldAdapter final  {
 
   StructWithFieldAdapter() :
       __fbthrift_field_field(),
-      shared_field(std::make_shared<::std::int32_t>()) {
+      shared_field(std::make_shared<::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 2, ::std::int32_t, __fbthrift_cpp2_type>>()) {
     ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_field, *this);
     ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(shared_field, *this);
   }

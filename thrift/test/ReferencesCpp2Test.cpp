@@ -26,6 +26,7 @@
 #include <thrift/test/gen-cpp2/References_types.tcc>
 
 using namespace apache::thrift;
+using namespace apache::thrift::test;
 
 namespace cpp2 {
 
@@ -84,6 +85,20 @@ void create_reference_clear_test(CppType value) {
   apache::thrift::clear(obj);
 
   create_reference_default_test(obj);
+}
+
+template <typename ThriftStruct>
+void create_adapted_reference_default_test(ThriftStruct& obj) {
+  // Test that non-optional ref string fields are initialized.
+  EXPECT_NE(nullptr, obj.def_shared_field_ref());
+  EXPECT_NE(nullptr, obj.req_shared_field_ref());
+  EXPECT_NE(nullptr, obj.def_shared_const_field_ref());
+  EXPECT_NE(nullptr, obj.req_shared_const_field_ref());
+
+  // Check that optional fields are absent from a default-constructed object.
+  EXPECT_EQ(nullptr, obj.opt_shared_field_ref());
+  EXPECT_EQ(nullptr, obj.opt_shared_const_field_ref());
+  EXPECT_FALSE(obj.opt_box_field_ref().has_value());
 }
 
 TEST(References, recursive_ref_fields) {
@@ -185,6 +200,70 @@ TEST(References, ref_struct_container_fields_clear) {
   create_reference_clear_test<
       ReferringStructWithMapFields,
       std::map<int32_t, int32_t>>({{1, 1}});
+}
+
+TEST(References, adapter_ref_struct_fields) {
+  TypeAdapterRefStruct type_adapted_obj;
+  FieldAdapterRefStruct field_adapted_obj;
+  create_adapted_reference_default_test(type_adapted_obj);
+  create_adapted_reference_default_test(field_adapted_obj);
+}
+
+TEST(References, type_adapter_ref_struct_fields_clear) {
+  TypeAdapterRefStruct obj;
+  Wrapper<std::string> wrapper{"1"};
+  obj.def_shared_field_ref() = std::make_shared<Wrapper<std::string>>(wrapper);
+  obj.opt_shared_field_ref() = std::make_shared<Wrapper<std::string>>(wrapper);
+  obj.req_shared_field_ref() = std::make_shared<Wrapper<std::string>>(wrapper);
+  obj.def_shared_const_field_ref() =
+      std::make_shared<Wrapper<std::string>>(wrapper);
+  obj.opt_shared_const_field_ref() =
+      std::make_shared<Wrapper<std::string>>(wrapper);
+  obj.req_shared_const_field_ref() =
+      std::make_shared<Wrapper<std::string>>(wrapper);
+  obj.opt_box_field_ref() = Wrapper<std::string>{wrapper};
+
+  EXPECT_EQ(obj.def_shared_field_ref()->value, "1");
+  EXPECT_EQ(obj.req_shared_field_ref()->value, "1");
+  EXPECT_EQ(obj.opt_shared_field_ref()->value, "1");
+  EXPECT_EQ(obj.def_shared_const_field_ref()->value, "1");
+  EXPECT_EQ(obj.req_shared_const_field_ref()->value, "1");
+  EXPECT_EQ(obj.opt_shared_const_field_ref()->value, "1");
+  EXPECT_EQ(obj.opt_box_field_ref()->value, "1");
+
+  apache::thrift::clear(obj);
+
+  create_adapted_reference_default_test(obj);
+}
+
+TEST(References, field_adapter_ref_struct_fields_clear) {
+  FieldAdapterRefStruct obj;
+  obj.def_shared_field_ref() = std::make_shared<
+      AdaptedWithContext<std::string, FieldAdapterRefStruct, 1>>("1");
+  obj.opt_shared_field_ref() = std::make_shared<
+      AdaptedWithContext<std::string, FieldAdapterRefStruct, 2>>("1");
+  obj.req_shared_field_ref() = std::make_shared<
+      AdaptedWithContext<std::string, FieldAdapterRefStruct, 3>>("1");
+  obj.def_shared_const_field_ref() = std::make_shared<
+      AdaptedWithContext<std::string, FieldAdapterRefStruct, 4>>("1");
+  obj.opt_shared_const_field_ref() = std::make_shared<
+      AdaptedWithContext<std::string, FieldAdapterRefStruct, 5>>("1");
+  obj.req_shared_const_field_ref() = std::make_shared<
+      AdaptedWithContext<std::string, FieldAdapterRefStruct, 6>>("1");
+  obj.opt_box_field_ref() =
+      AdaptedWithContext<std::string, FieldAdapterRefStruct, 7>{"1"};
+
+  EXPECT_EQ(obj.def_shared_field_ref()->value, "1");
+  EXPECT_EQ(obj.req_shared_field_ref()->value, "1");
+  EXPECT_EQ(obj.opt_shared_field_ref()->value, "1");
+  EXPECT_EQ(obj.def_shared_const_field_ref()->value, "1");
+  EXPECT_EQ(obj.req_shared_const_field_ref()->value, "1");
+  EXPECT_EQ(obj.opt_shared_const_field_ref()->value, "1");
+  EXPECT_EQ(obj.opt_box_field_ref()->value, "1");
+
+  apache::thrift::clear(obj);
+
+  create_adapted_reference_default_test(obj);
 }
 
 TEST(References, field_ref) {

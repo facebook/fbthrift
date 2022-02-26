@@ -15,6 +15,7 @@
  */
 
 include "thrift/annotation/cpp.thrift"
+cpp_include "thrift/test/AdapterTest.h"
 
 namespace cpp2 cpp2
 
@@ -134,6 +135,53 @@ struct ReferringStructWithMapFields {
     cpp2.ref_type = "shared_const",
   );
   13: optional map<i32, i32> opt_box_field (cpp.box);
+}
+
+struct TypeAdapterRefStruct {
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+  @cpp.Ref{type = cpp.RefType.SharedMutable}
+  1: string def_shared_field;
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+  @cpp.Ref{type = cpp.RefType.SharedMutable}
+  2: optional string opt_shared_field;
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+  @cpp.Ref{type = cpp.RefType.SharedMutable}
+  3: required string req_shared_field;
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+  @cpp.Ref{type = cpp.RefType.Shared}
+  4: string def_shared_const_field;
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+  @cpp.Ref{type = cpp.RefType.Shared}
+  5: optional string opt_shared_const_field;
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+  @cpp.Ref{type = cpp.RefType.Shared}
+  6: required string req_shared_const_field;
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+  7: optional string opt_box_field (thrift.box);
+}
+
+struct FieldAdapterRefStruct {
+  @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
+  @cpp.Ref{type = cpp.RefType.SharedMutable}
+  1: string def_shared_field;
+  @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
+  @cpp.Ref{type = cpp.RefType.SharedMutable}
+  2: optional string opt_shared_field;
+  @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
+  @cpp.Ref{type = cpp.RefType.SharedMutable}
+  3: required string req_shared_field;
+  @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
+  @cpp.Ref{type = cpp.RefType.Shared}
+  4: string def_shared_const_field;
+  @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
+  @cpp.Ref{type = cpp.RefType.Shared}
+  5: optional string opt_shared_const_field;
+  @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
+  @cpp.Ref{type = cpp.RefType.Shared}
+  6: required string req_shared_const_field;
+  @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
+  7: optional string opt_box_field (thrift.box);
+  8: string meta;
 }
 
 struct StructuredAnnotation {

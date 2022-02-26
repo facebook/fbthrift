@@ -586,6 +586,7 @@ class mstch_cpp2_field : public mstch_field {
             {"field:has_isset?", &mstch_cpp2_field::has_isset},
             {"field:isset_index", &mstch_cpp2_field::isset_index},
             {"field:cpp_name", &mstch_cpp2_field::cpp_name},
+            {"field:cpp_type", &mstch_cpp2_field::cpp_type},
             {"field:cpp_storage_name", &mstch_cpp2_field::cpp_storage_name},
             {"field:cpp_storage_type", &mstch_cpp2_field::cpp_storage_type},
             {"field:cpp_deprecated_accessor_type",
@@ -638,6 +639,7 @@ class mstch_cpp2_field : public mstch_field {
     return field_context_->isset_index;
   }
   mstch::node cpp_name() { return cpp2::get_name(field_); }
+  mstch::node cpp_type() { return context_->resolver().get_type_name(field_); }
   mstch::node cpp_storage_name() {
     if (!is_eligible_for_storage_name_mangling()) {
       return cpp2::get_name(field_);
