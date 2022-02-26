@@ -7,5 +7,6 @@ javafoundations/scripts/create-idea-project \
 --project-root=thrift/lib/java \
 //thrift/lib/java/common:common \
 //thrift/lib/java/common:common-test \
+//thrift/lib/java/runtime:runtime \
 --verbose \
 --non-interactive
