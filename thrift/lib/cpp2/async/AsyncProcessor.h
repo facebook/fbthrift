@@ -280,9 +280,9 @@ class ServerRequestRejection {
 
 // Returned to choose a resource pool
 using SelectPoolResult = std::variant<
+    std::monostate, // No opinion (use a reasonable default)
     std::reference_wrapper<const ResourcePoolHandle>, // Use this ResourcePool
-    ServerRequestRejection, // Reject the request with this reason
-    std::monostate>; // No opinion (use a reasonable default)
+    ServerRequestRejection>; // Reject the request with this reason
 
 /**
  * A class that is created once per-connection and handles incoming requests.
@@ -369,15 +369,9 @@ class AsyncProcessor : public TProcessorBase {
   virtual void destroyAllInteractions(
       Cpp2ConnContext& conn, folly::EventBase&) noexcept;
 
-  // This is temporary during transition. Eventually the answer to
-  // useResourcePools will always be true and we can remove this.
-  virtual bool useResourcePools(
-      AsyncProcessorFactory::MethodMetadata const* methodMetadata =
-          nullptr) const;
-
   // Allow the AsyncProcessor implementation to choose the resource pool to use
   // for a request.
-  virtual SelectPoolResult selectPool(
+  virtual SelectPoolResult selectResourcePool(
       ServerRequest const& request,
       const AsyncProcessorFactory::MethodMetadata& methodMetadata) const;
 
@@ -858,6 +852,10 @@ class ServiceHandler {
     }
 #endif
     return folly::makeSemiFuture();
+  }
+
+  virtual SelectPoolResult selectResourcePool(ServerRequest const&) const {
+    return SelectPoolResult{};
   }
 
   ThriftServer* getServer() { return server_; }

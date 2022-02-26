@@ -136,6 +136,11 @@ class CAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
   CAsyncProcessor(CSvIf* iface) :
       iface_(iface) {}
   ~CAsyncProcessor() override {}
+
+  apache::thrift::SelectPoolResult selectResourcePool(apache::thrift::ServerRequest const& request,
+    const apache::thrift::AsyncProcessorFactory::MethodMetadata&) const override {
+    return iface_->selectResourcePool(request);
+  }
 };
 
 } // cpp2

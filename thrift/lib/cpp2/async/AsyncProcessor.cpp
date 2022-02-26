@@ -108,14 +108,10 @@ void AsyncProcessor::processSerializedCompressedRequestWithMetadata(
          "Therefore, this method must be overridden alongside processSerializedRequest.";
 }
 
-bool AsyncProcessor::useResourcePools(
-    AsyncProcessorFactory::MethodMetadata const*) const {
-  return false;
-}
-
-SelectPoolResult AsyncProcessor::selectPool(
+SelectPoolResult AsyncProcessor::selectResourcePool(
     ServerRequest const&, const AsyncProcessorFactory::MethodMetadata&) const {
-  LOG(FATAL) << "Unimplemented selectPool called";
+  // Returning the default SelectPoolResult means no opinion.
+  return SelectPoolResult{};
 }
 
 void AsyncProcessor::executeRequest(

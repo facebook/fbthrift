@@ -174,6 +174,11 @@ class NestedContainersAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
   NestedContainersAsyncProcessor(NestedContainersSvIf* iface) :
       iface_(iface) {}
   ~NestedContainersAsyncProcessor() override {}
+
+  apache::thrift::SelectPoolResult selectResourcePool(apache::thrift::ServerRequest const& request,
+    const apache::thrift::AsyncProcessorFactory::MethodMetadata&) const override {
+    return iface_->selectResourcePool(request);
+  }
 };
 
 } // cpp2

@@ -117,6 +117,11 @@ class MyServicePrioParentAsyncProcessor : public ::apache::thrift::GeneratedAsyn
   MyServicePrioParentAsyncProcessor(MyServicePrioParentSvIf* iface) :
       iface_(iface) {}
   ~MyServicePrioParentAsyncProcessor() override {}
+
+  apache::thrift::SelectPoolResult selectResourcePool(apache::thrift::ServerRequest const& request,
+    const apache::thrift::AsyncProcessorFactory::MethodMetadata&) const override {
+    return iface_->selectResourcePool(request);
+  }
 };
 
 } // cpp2

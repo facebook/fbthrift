@@ -604,6 +604,11 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   ParamServiceAsyncProcessor(ParamServiceSvIf* iface) :
       iface_(iface) {}
   ~ParamServiceAsyncProcessor() override {}
+
+  apache::thrift::SelectPoolResult selectResourcePool(apache::thrift::ServerRequest const& request,
+    const apache::thrift::AsyncProcessorFactory::MethodMetadata&) const override {
+    return iface_->selectResourcePool(request);
+  }
 };
 
 }}} // some::valid::ns

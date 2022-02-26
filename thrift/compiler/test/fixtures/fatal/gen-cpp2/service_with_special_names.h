@@ -614,6 +614,11 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   service_with_special_namesAsyncProcessor(service_with_special_namesSvIf* iface) :
       iface_(iface) {}
   ~service_with_special_namesAsyncProcessor() override {}
+
+  apache::thrift::SelectPoolResult selectResourcePool(apache::thrift::ServerRequest const& request,
+    const apache::thrift::AsyncProcessorFactory::MethodMetadata&) const override {
+    return iface_->selectResourcePool(request);
+  }
 };
 
 }} // test_cpp2::cpp_reflection

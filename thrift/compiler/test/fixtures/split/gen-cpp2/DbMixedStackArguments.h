@@ -117,6 +117,11 @@ class DbMixedStackArgumentsAsyncProcessor : public ::apache::thrift::GeneratedAs
   DbMixedStackArgumentsAsyncProcessor(DbMixedStackArgumentsSvIf* iface) :
       iface_(iface) {}
   ~DbMixedStackArgumentsAsyncProcessor() override {}
+
+  apache::thrift::SelectPoolResult selectResourcePool(apache::thrift::ServerRequest const& request,
+    const apache::thrift::AsyncProcessorFactory::MethodMetadata&) const override {
+    return iface_->selectResourcePool(request);
+  }
 };
 
 } // cpp2

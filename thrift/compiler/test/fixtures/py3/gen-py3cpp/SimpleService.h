@@ -858,6 +858,11 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   SimpleServiceAsyncProcessor(SimpleServiceSvIf* iface) :
       iface_(iface) {}
   ~SimpleServiceAsyncProcessor() override {}
+
+  apache::thrift::SelectPoolResult selectResourcePool(apache::thrift::ServerRequest const& request,
+    const apache::thrift::AsyncProcessorFactory::MethodMetadata&) const override {
+    return iface_->selectResourcePool(request);
+  }
 };
 
 }} // py3::simple

@@ -219,6 +219,11 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
       ::some::valid::ns::ParamServiceAsyncProcessor(iface),
       iface_(iface) {}
   ~ExtraServiceAsyncProcessor() override {}
+
+  apache::thrift::SelectPoolResult selectResourcePool(apache::thrift::ServerRequest const& request,
+    const apache::thrift::AsyncProcessorFactory::MethodMetadata&) const override {
+    return iface_->selectResourcePool(request);
+  }
 };
 
 }} // extra::svc
