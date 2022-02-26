@@ -14,17 +14,16 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>class <%service:name%>AsyncClient : public <%#service:extends%><% > common/namespace_cpp2%><%service:name%>AsyncClient<%/service:extends%><%^service:extends%>apache::thrift::GeneratedAsyncClient<%/service:extends%> {
+%>class <%service:name%> final : public apache::thrift::InteractionHandle {
+  using apache::thrift::InteractionHandle::InteractionHandle;
+  friend class <%service:parent_service_name%>AsyncClient;
  public:
-  using <%#service:extends%><% > common/namespace_cpp2%><%service:name%>AsyncClient::<%service:name%>AsyncClient<%/service:extends%><%^service:extends%>apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient<%/service:extends%>;
+
 
   char const* getServiceName() const noexcept override {
     return "<%service:parent_service_name%>";
   }
 
-<%#service:interactions%>
-<% > service_h/interaction_async_client%>
-<%/service:interactions%>
 
 <% > service_h/async_client_functions%>
 };
