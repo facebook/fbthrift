@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ struct ReferringStructWithBaseTypeFields {
   10: i64 def_shared_const_field (cpp2.ref_type = "shared_const");
   11: optional i64 opt_shared_const_field (cpp2.ref_type = "shared_const");
   12: required i64 req_shared_const_field (cpp2.ref_type = "shared_const");
-  13: optional string opt_box_field (cpp.box); // TODO(dokwon): Fix boxed_ptr for basetypes.
+  13: optional i64 opt_box_field (cpp.box);
 }
 
 struct ReferringStructWithStringFields {
@@ -80,6 +80,62 @@ struct ReferringStructWithStringFields {
   13: optional string opt_box_field (cpp.box);
 }
 
+struct ReferringStructWithListFields {
+  1: list<i32> def_field (cpp2.ref = "true");
+  2: optional list<i32> opt_field (cpp2.ref = "true");
+  3: required list<i32> req_field (cpp2.ref = "true");
+  4: list<i32> def_unique_field (cpp2.ref_type = "unique");
+  5: optional list<i32> opt_unique_field (cpp2.ref_type = "unique");
+  6: required list<i32> req_unique_field (cpp2.ref_type = "unique");
+  7: list<i32> def_shared_field (cpp2.ref_type = "shared");
+  8: optional list<i32> opt_shared_field (cpp2.ref_type = "shared");
+  9: required list<i32> req_shared_field (cpp2.ref_type = "shared");
+  10: list<i32> def_shared_const_field (cpp2.ref_type = "shared_const");
+  11: optional list<i32> opt_shared_const_field (
+    cpp2.ref_type = "shared_const",
+  );
+  12: required list<i32> req_shared_const_field (
+    cpp2.ref_type = "shared_const",
+  );
+  13: optional list<i32> opt_box_field (cpp.box);
+}
+
+struct ReferringStructWithSetFields {
+  1: set<i32> def_field (cpp2.ref = "true");
+  2: optional set<i32> opt_field (cpp2.ref = "true");
+  3: required set<i32> req_field (cpp2.ref = "true");
+  4: set<i32> def_unique_field (cpp2.ref_type = "unique");
+  5: optional set<i32> opt_unique_field (cpp2.ref_type = "unique");
+  6: required set<i32> req_unique_field (cpp2.ref_type = "unique");
+  7: set<i32> def_shared_field (cpp2.ref_type = "shared");
+  8: optional set<i32> opt_shared_field (cpp2.ref_type = "shared");
+  9: required set<i32> req_shared_field (cpp2.ref_type = "shared");
+  10: set<i32> def_shared_const_field (cpp2.ref_type = "shared_const");
+  11: optional set<i32> opt_shared_const_field (cpp2.ref_type = "shared_const");
+  12: required set<i32> req_shared_const_field (cpp2.ref_type = "shared_const");
+  13: optional set<i32> opt_box_field (cpp.box);
+}
+
+struct ReferringStructWithMapFields {
+  1: map<i32, i32> def_field (cpp2.ref = "true");
+  2: optional map<i32, i32> opt_field (cpp2.ref = "true");
+  3: required map<i32, i32> req_field (cpp2.ref = "true");
+  4: map<i32, i32> def_unique_field (cpp2.ref_type = "unique");
+  5: optional map<i32, i32> opt_unique_field (cpp2.ref_type = "unique");
+  6: required map<i32, i32> req_unique_field (cpp2.ref_type = "unique");
+  7: map<i32, i32> def_shared_field (cpp2.ref_type = "shared");
+  8: optional map<i32, i32> opt_shared_field (cpp2.ref_type = "shared");
+  9: required map<i32, i32> req_shared_field (cpp2.ref_type = "shared");
+  10: map<i32, i32> def_shared_const_field (cpp2.ref_type = "shared_const");
+  11: optional map<i32, i32> opt_shared_const_field (
+    cpp2.ref_type = "shared_const",
+  );
+  12: required map<i32, i32> req_shared_const_field (
+    cpp2.ref_type = "shared_const",
+  );
+  13: optional map<i32, i32> opt_box_field (cpp.box);
+}
+
 struct StructuredAnnotation {
   @cpp.Ref{type = cpp.RefType.Unique}
   1: optional PlainStruct opt_unique_field;
@@ -89,57 +145,6 @@ struct StructuredAnnotation {
 
   @cpp.Ref{type = cpp.RefType.SharedMutable}
   3: optional PlainStruct opt_shared_mutable_field;
-}
-
-struct StructWithContainers {
-  1: list<i32> def_list_ref (cpp.ref = "true", cpp2.ref = "true");
-  2: set<i32> def_set_ref (cpp.ref = "true", cpp2.ref = "true");
-  3: map<i32, i32> def_map_ref (cpp.ref = "true", cpp2.ref = "true");
-  4: list<i32> def_list_ref_unique (
-    cpp.ref_type = "unique",
-    cpp2.ref_type = "unique",
-  );
-  5: set<i32> def_set_ref_shared (
-    cpp.ref_type = "shared",
-    cpp2.ref_type = "shared",
-  );
-  6: list<i32> def_list_ref_shared_const (
-    cpp.ref_type = "shared_const",
-    cpp2.ref_type = "shared_const",
-  );
-  7: required list<i32> req_list_ref (cpp.ref = "true", cpp2.ref = "true");
-  8: required set<i32> req_set_ref (cpp.ref = "true", cpp2.ref = "true");
-  9: required map<i32, i32> req_map_ref (cpp.ref = "true", cpp2.ref = "true");
-  10: required list<i32> req_list_ref_unique (
-    cpp.ref_type = "unique",
-    cpp2.ref_type = "unique",
-  );
-  11: required set<i32> req_set_ref_shared (
-    cpp.ref_type = "shared",
-    cpp2.ref_type = "shared",
-  );
-  12: required list<i32> req_list_ref_shared_const (
-    cpp.ref_type = "shared_const",
-    cpp2.ref_type = "shared_const",
-  );
-  13: optional list<i32> opt_list_ref (cpp.ref = "true", cpp2.ref = "true");
-  14: optional set<i32> opt_set_ref (cpp.ref = "true", cpp2.ref = "true");
-  15: optional map<i32, i32> opt_map_ref (cpp.ref = "true", cpp2.ref = "true");
-  16: optional list<i32> opt_list_ref_unique (
-    cpp.ref_type = "unique",
-    cpp2.ref_type = "unique",
-  );
-  17: optional set<i32> opt_set_ref_shared (
-    cpp.ref_type = "shared",
-    cpp2.ref_type = "shared",
-  );
-  18: optional list<i32> opt_list_ref_shared_const (
-    cpp.ref_type = "shared_const",
-    cpp2.ref_type = "shared_const",
-  );
-  19: optional list<i32> opt_box_list_ref (cpp.box);
-  20: optional set<i32> opt_box_set_ref (cpp.box);
-  21: optional map<i32, i32> opt_box_map_ref (cpp.box);
 }
 
 struct StructWithString {
