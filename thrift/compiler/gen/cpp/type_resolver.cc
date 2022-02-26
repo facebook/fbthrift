@@ -46,26 +46,29 @@ const std::string* find_structured_adapter_annotation(const t_named* node) {
 
 } // namespace
 
-const std::string& type_resolver::get_type_name(const t_field* node) {
+const std::string& type_resolver::get_type_name(
+    const t_field* node, const std::string* strct_name) {
   const t_type* type = &*node->type();
   if (const std::string* adapter = find_structured_adapter_annotation(node)) {
     return detail::get_or_gen(field_type_cache_, node, [&]() {
-      return gen_type(type, adapter, node->id());
+      return gen_type(type, adapter, node->id(), strct_name);
     });
   }
   return detail::get_or_gen(
       type_cache_, type, [&] { return gen_type(type, find_adapter(type)); });
 }
 
-const std::string& type_resolver::get_storage_type_name(const t_field* node) {
+const std::string& type_resolver::get_storage_type_name(
+    const t_field* node, const std::string* strct_name) {
   auto ref_type = find_ref_type(*node);
   if (ref_type == reference_type::none) {
     // The storage type is just the type name.
-    return get_type_name(node);
+    return get_type_name(node, strct_name);
   }
   auto key = std::make_tuple(node, ref_type);
-  return detail::get_or_gen(
-      storage_type_cache_, key, [&]() { return gen_storage_type(key); });
+  return detail::get_or_gen(storage_type_cache_, key, [&]() {
+    return gen_storage_type(key, strct_name);
+  });
 }
 
 const std::string* type_resolver::find_first_adapter(const t_field* field) {
@@ -150,7 +153,8 @@ const std::string& type_resolver::default_type(t_base_type::type btype) {
 std::string type_resolver::gen_type(
     const t_type* node,
     const std::string* adapter,
-    boost::optional<int16_t> field_id) {
+    boost::optional<int16_t> field_id,
+    const std::string* strct_name) {
   std::string name;
   // Find the base name.
   if (const auto* type = find_type(node)) {
@@ -162,7 +166,9 @@ std::string type_resolver::gen_type(
   }
 
   // Adapt the base name.
-  return adapter ? gen_adapted_type(*adapter, std::move(name), field_id) : name;
+  return adapter
+      ? gen_adapted_type(*adapter, std::move(name), field_id, strct_name)
+      : name;
 }
 
 std::string type_resolver::gen_standard_type(const t_type* node) {
@@ -188,9 +194,10 @@ std::string type_resolver::gen_standard_type(const t_type* node) {
 }
 
 std::string type_resolver::gen_storage_type(
-    const std::tuple<const t_field*, reference_type>& ref_type) {
+    const std::tuple<const t_field*, reference_type>& ref_type,
+    const std::string* strct_name) {
   const t_field* field = std::get<0>(ref_type);
-  const std::string& type_name = get_type_name(field);
+  const std::string& type_name = get_type_name(field, strct_name);
   const std::string* cpp_template =
       field->find_annotation_or_null("cpp.template");
   switch (std::get<1>(ref_type)) {
@@ -298,7 +305,8 @@ std::string type_resolver::gen_sink_type(
 std::string type_resolver::gen_adapted_type(
     const std::string& adapter,
     const std::string& standard_type,
-    boost::optional<int16_t> field_id) {
+    boost::optional<int16_t> field_id,
+    const std::string* strct_name) {
   if (field_id == boost::none) {
     return detail::gen_template_type(
         "::apache::thrift::adapt_detail::adapted_t", {adapter, standard_type});
@@ -308,7 +316,7 @@ std::string type_resolver::gen_adapted_type(
       {adapter,
        std::to_string(*field_id),
        standard_type,
-       "__fbthrift_cpp2_type"});
+       strct_name ? *strct_name : "__fbthrift_cpp2_type"});
 }
 
 // TODO(ytj): Support type::adapted, type::cpp_type, and cpp.template

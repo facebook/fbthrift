@@ -53,7 +53,8 @@ class type_resolver {
   }
 
   // Returns c++ type name for the given thrift field.
-  const std::string& get_type_name(const t_field* field);
+  const std::string& get_type_name(
+      const t_field* field, const std::string* strct_name);
 
   // Returns the c++ type that the runtime knows how to handle.
   const std::string& get_standard_type_name(const t_type* node) {
@@ -89,7 +90,8 @@ class type_resolver {
   //
   // This differs from the type name, when a 'cpp.ref' or 'cpp.ref_type'
   // annotation is applied to the field.
-  const std::string& get_storage_type_name(const t_field* node);
+  const std::string& get_storage_type_name(
+      const t_field* node, const std::string* strct_name);
 
   static const std::string* find_type(const t_type* node) {
     return node->find_annotation_or_null({"cpp.type", "cpp2.type"});
@@ -132,10 +134,12 @@ class type_resolver {
   std::string gen_type(
       const t_type* node,
       const std::string* adapter,
-      boost::optional<int16_t> field_id = {});
+      boost::optional<int16_t> field_id = {},
+      const std::string* strct_name = nullptr);
   std::string gen_standard_type(const t_type* node);
   std::string gen_storage_type(
-      const std::tuple<const t_field*, reference_type>& ref_type);
+      const std::tuple<const t_field*, reference_type>& ref_type,
+      const std::string* strct_name);
 
   std::string gen_raw_type_name(const t_type* node, type_resolve_fn resolve_fn);
   std::string gen_container_type(
@@ -147,7 +151,8 @@ class type_resolver {
   static std::string gen_adapted_type(
       const std::string& adapter,
       const std::string& standard_type,
-      boost::optional<int16_t> field_id);
+      boost::optional<int16_t> field_id,
+      const std::string* strct_name);
 
   std::string gen_type_tag(t_type const&);
 

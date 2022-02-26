@@ -698,7 +698,7 @@ StructWithFieldAdapter& StructWithFieldAdapter::operator=(FOLLY_MAYBE_UNUSED Str
 }
 
 
-StructWithFieldAdapter::StructWithFieldAdapter(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 1, ::std::int32_t, __fbthrift_cpp2_type> field__arg, ::std::shared_ptr<const ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 2, ::std::int32_t, __fbthrift_cpp2_type>> shared_field__arg, ::std::shared_ptr<const ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 3, ::std::int32_t, __fbthrift_cpp2_type>> opt_shared_field__arg, ::apache::thrift::detail::boxed_value_ptr<::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 4, ::std::int32_t, __fbthrift_cpp2_type>> opt_boxed_field__arg) :
+StructWithFieldAdapter::StructWithFieldAdapter(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 1, ::std::int32_t, StructWithFieldAdapter> field__arg, ::std::shared_ptr<const ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 2, ::std::int32_t, StructWithFieldAdapter>> shared_field__arg, ::std::shared_ptr<const ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 3, ::std::int32_t, StructWithFieldAdapter>> opt_shared_field__arg, ::apache::thrift::detail::boxed_value_ptr<::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 4, ::std::int32_t, StructWithFieldAdapter>> opt_boxed_field__arg) :
     __fbthrift_field_field(std::move(field__arg)),
     shared_field(std::move(shared_field__arg)),
     opt_shared_field(std::move(opt_shared_field__arg)),
@@ -714,7 +714,7 @@ StructWithFieldAdapter::StructWithFieldAdapter(apache::thrift::FragileConstructo
 void StructWithFieldAdapter::__fbthrift_clear() {
   // clear all fields
   ::apache::thrift::adapt_detail::clear<my::Adapter1, 1>(__fbthrift_field_field, *this);
-  this->shared_field = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 2, ::std::int32_t, __fbthrift_cpp2_type>>>();
+  this->shared_field = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 2, ::std::int32_t, StructWithFieldAdapter>>>();
   this->opt_shared_field.reset();
   this->__fbthrift_field_opt_boxed_field.reset();
   __isset = {};

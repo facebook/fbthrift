@@ -1034,7 +1034,7 @@ _readField_field:
   }
 _readField_shared_field:
   {
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 2, ::std::int32_t, __fbthrift_cpp2_type>>>();
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 2, ::std::int32_t, StructWithFieldAdapter>>>();
     ::std::int32_t tvalue;
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, tvalue, _readState);
     *ptr = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter1, 2>(::std::move(tvalue), *this);
@@ -1051,7 +1051,7 @@ _readField_shared_field:
   }
 _readField_opt_shared_field:
   {
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 3, ::std::int32_t, __fbthrift_cpp2_type>>>();
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 3, ::std::int32_t, StructWithFieldAdapter>>>();
     ::std::int32_t tvalue;
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, tvalue, _readState);
     *ptr = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter1, 3>(::std::move(tvalue), *this);
@@ -1068,7 +1068,7 @@ _readField_opt_shared_field:
   }
 _readField_opt_boxed_field:
   {
-    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::apache::thrift::detail::boxed_value_ptr<::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 4, ::std::int32_t, __fbthrift_cpp2_type>>>();
+    auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::apache::thrift::detail::boxed_value_ptr<::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 4, ::std::int32_t, StructWithFieldAdapter>>>();
     ::std::int32_t tvalue;
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, tvalue, _readState);
     *ptr = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter1, 4>(::std::move(tvalue), *this);

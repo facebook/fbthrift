@@ -45,7 +45,7 @@ class TypeResolverTest : public ::testing::Test {
   }
 
   const std::string& get_type_name(const t_field& node) {
-    return resolver_.get_type_name(&node);
+    return resolver_.get_type_name(&node, &strct_name);
   }
 
   const std::string& get_standard_type_name(const t_type& node) {
@@ -53,7 +53,7 @@ class TypeResolverTest : public ::testing::Test {
   }
 
   const std::string& get_storage_type_name(const t_field& node) {
-    return resolver_.get_storage_type_name(&node);
+    return resolver_.get_storage_type_name(&node, &strct_name);
   }
 
   std::string get_type_tag(const t_type& type) {
@@ -63,6 +63,7 @@ class TypeResolverTest : public ::testing::Test {
  protected:
   type_resolver resolver_;
   t_program program_;
+  std::string strct_name = "ThriftStruct";
 };
 
 TEST_F(TypeResolverTest, BaseTypes) {
@@ -383,7 +384,7 @@ TEST_F(TypeResolverTest, StorageType) {
   t_base_type ui64(t_base_type::t_i64());
   ui64.set_annotation("cpp.type", "uint64_t");
   ui64.set_annotation("cpp.adapter", "HashAdapter");
-
+  std::string strct_name = "ThriftStruct";
   {
     t_field ui64_field(ui64, "hash", 1);
     EXPECT_EQ(
@@ -602,11 +603,11 @@ TEST_F(TypeResolverTest, AdaptedFieldType) {
   EXPECT_EQ(
       get_type_name(field),
       "::apache::thrift::adapt_detail::adapted_field_t<"
-      "MyAdapter, 42, ::std::int64_t, __fbthrift_cpp2_type>");
+      "MyAdapter, 42, ::std::int64_t, ThriftStruct>");
   EXPECT_EQ(
       get_storage_type_name(field),
       "::apache::thrift::adapt_detail::adapted_field_t<"
-      "MyAdapter, 42, ::std::int64_t, __fbthrift_cpp2_type>");
+      "MyAdapter, 42, ::std::int64_t, ThriftStruct>");
 }
 
 TEST_F(TypeResolverTest, AdaptedFieldStorageType) {
@@ -618,7 +619,7 @@ TEST_F(TypeResolverTest, AdaptedFieldStorageType) {
     EXPECT_EQ(
         get_storage_type_name(field),
         "::apache::thrift::adapt_detail::adapted_field_t<"
-        "MyAdapter, 42, ::std::int64_t, __fbthrift_cpp2_type>");
+        "MyAdapter, 42, ::std::int64_t, ThriftStruct>");
   }
 
   {
@@ -628,7 +629,7 @@ TEST_F(TypeResolverTest, AdaptedFieldStorageType) {
     EXPECT_EQ(
         get_storage_type_name(field),
         "::std::unique_ptr<::apache::thrift::adapt_detail::adapted_field_t<"
-        "MyAdapter, 42, ::std::int64_t, __fbthrift_cpp2_type>>");
+        "MyAdapter, 42, ::std::int64_t, ThriftStruct>>");
   }
   {
     auto field = t_field(i64, "n", 42);
@@ -637,7 +638,7 @@ TEST_F(TypeResolverTest, AdaptedFieldStorageType) {
     EXPECT_EQ(
         get_storage_type_name(field),
         "::std::unique_ptr<::apache::thrift::adapt_detail::adapted_field_t<"
-        "MyAdapter, 42, ::std::int64_t, __fbthrift_cpp2_type>>");
+        "MyAdapter, 42, ::std::int64_t, ThriftStruct>>");
   }
 
   {
@@ -647,7 +648,7 @@ TEST_F(TypeResolverTest, AdaptedFieldStorageType) {
     EXPECT_EQ(
         get_storage_type_name(field),
         "::std::unique_ptr<::apache::thrift::adapt_detail::adapted_field_t<"
-        "MyAdapter, 42, ::std::int64_t, __fbthrift_cpp2_type>>");
+        "MyAdapter, 42, ::std::int64_t, ThriftStruct>>");
   }
 
   {
@@ -657,7 +658,7 @@ TEST_F(TypeResolverTest, AdaptedFieldStorageType) {
     EXPECT_EQ(
         get_storage_type_name(field),
         "::std::shared_ptr<::apache::thrift::adapt_detail::adapted_field_t<"
-        "MyAdapter, 42, ::std::int64_t, __fbthrift_cpp2_type>>");
+        "MyAdapter, 42, ::std::int64_t, ThriftStruct>>");
   }
 
   {
@@ -667,7 +668,7 @@ TEST_F(TypeResolverTest, AdaptedFieldStorageType) {
     EXPECT_EQ(
         get_storage_type_name(field),
         "::std::shared_ptr<::apache::thrift::adapt_detail::adapted_field_t<"
-        "MyAdapter, 42, ::std::int64_t, __fbthrift_cpp2_type>>");
+        "MyAdapter, 42, ::std::int64_t, ThriftStruct>>");
   }
 
   {
@@ -677,7 +678,7 @@ TEST_F(TypeResolverTest, AdaptedFieldStorageType) {
     EXPECT_EQ(
         get_storage_type_name(field),
         "::std::shared_ptr<const ::apache::thrift::adapt_detail::adapted_field_t<"
-        "MyAdapter, 42, ::std::int64_t, __fbthrift_cpp2_type>>");
+        "MyAdapter, 42, ::std::int64_t, ThriftStruct>>");
   }
 
   {
@@ -687,7 +688,7 @@ TEST_F(TypeResolverTest, AdaptedFieldStorageType) {
     EXPECT_EQ(
         get_storage_type_name(field),
         "::apache::thrift::detail::boxed_value_ptr<::apache::thrift::adapt_detail::adapted_field_t<"
-        "MyAdapter, 42, ::std::int64_t, __fbthrift_cpp2_type>>");
+        "MyAdapter, 42, ::std::int64_t, ThriftStruct>>");
   }
 
   { // Unrecognized throws an exception.
@@ -716,7 +717,7 @@ TEST_F(TypeResolverTest, TransitivelyAdaptedFieldType) {
   EXPECT_EQ(
       get_storage_type_name(field1),
       "::apache::thrift::adapt_detail::adapted_field_t<"
-      "MyAdapter, 1, ::std::int64_t, __fbthrift_cpp2_type>");
+      "MyAdapter, 1, ::std::int64_t, ThriftStruct>");
 
   auto field2 = t_field(i64, "field2", 42);
   field2.add_structured_annotation(
@@ -724,7 +725,7 @@ TEST_F(TypeResolverTest, TransitivelyAdaptedFieldType) {
   EXPECT_EQ(
       get_storage_type_name(field2),
       "::apache::thrift::adapt_detail::adapted_field_t<"
-      "MyAdapter, 42, ::std::int64_t, __fbthrift_cpp2_type>");
+      "MyAdapter, 42, ::std::int64_t, ThriftStruct>");
 }
 
 TEST_F(TypeResolverTest, GenTypeTagContainer) {

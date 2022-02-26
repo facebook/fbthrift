@@ -4206,7 +4206,7 @@ StructWithFieldAdapter& StructWithFieldAdapter::operator=(const StructWithFieldA
 }
 
 
-StructWithFieldAdapter::StructWithFieldAdapter(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 1, ::std::int32_t, __fbthrift_cpp2_type> field__arg) :
+StructWithFieldAdapter::StructWithFieldAdapter(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 1, ::std::int32_t, StructWithFieldAdapter> field__arg) :
     __fbthrift_field_field(std::move(field__arg)) {
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_field, *this);
   __isset.set(folly::index_constant<0>(), true);
