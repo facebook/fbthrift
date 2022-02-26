@@ -44,6 +44,10 @@ class TypeResolverTest : public ::testing::Test {
     return resolver_.get_type_name(&node);
   }
 
+  const std::string& get_type_name(const t_field& node) {
+    return resolver_.get_type_name(&node);
+  }
+
   const std::string& get_standard_type_name(const t_type& node) {
     return resolver_.get_standard_type_name(&node);
   }
@@ -434,6 +438,14 @@ TEST_F(TypeResolverTest, StorageType) {
         "::std::shared_ptr<const ::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
   }
 
+  {
+    t_field ui64_field(ui64, "hash", 1);
+    ui64_field.set_annotation("thrift.box", "");
+    EXPECT_EQ(
+        get_storage_type_name(ui64_field),
+        "::apache::thrift::detail::boxed_value_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+  }
+
   { // Unrecognized throws an exception.
     t_field ui64_field(ui64, "hash", 1);
     ui64_field.set_annotation("cpp.ref_type", "blah");
@@ -588,9 +600,102 @@ TEST_F(TypeResolverTest, AdaptedFieldType) {
   auto adapter = adapter_builder(&program_);
   field.add_structured_annotation(adapter.make());
   EXPECT_EQ(
+      get_type_name(field),
+      "::apache::thrift::adapt_detail::adapted_field_t<"
+      "MyAdapter, 42, ::std::int64_t, __fbthrift_cpp2_type>");
+  EXPECT_EQ(
       get_storage_type_name(field),
       "::apache::thrift::adapt_detail::adapted_field_t<"
       "MyAdapter, 42, ::std::int64_t, __fbthrift_cpp2_type>");
+}
+
+TEST_F(TypeResolverTest, AdaptedFieldStorageType) {
+  auto i64 = t_base_type::t_i64();
+  auto adapter = adapter_builder(&program_);
+  {
+    auto field = t_field(i64, "n", 42);
+    field.add_structured_annotation(adapter.make());
+    EXPECT_EQ(
+        get_storage_type_name(field),
+        "::apache::thrift::adapt_detail::adapted_field_t<"
+        "MyAdapter, 42, ::std::int64_t, __fbthrift_cpp2_type>");
+  }
+
+  {
+    auto field = t_field(i64, "n", 42);
+    field.add_structured_annotation(adapter.make());
+    field.set_annotation("cpp.ref", "");
+    EXPECT_EQ(
+        get_storage_type_name(field),
+        "::std::unique_ptr<::apache::thrift::adapt_detail::adapted_field_t<"
+        "MyAdapter, 42, ::std::int64_t, __fbthrift_cpp2_type>>");
+  }
+  {
+    auto field = t_field(i64, "n", 42);
+    field.add_structured_annotation(adapter.make());
+    field.set_annotation("cpp2.ref", ""); // Works with cpp2.
+    EXPECT_EQ(
+        get_storage_type_name(field),
+        "::std::unique_ptr<::apache::thrift::adapt_detail::adapted_field_t<"
+        "MyAdapter, 42, ::std::int64_t, __fbthrift_cpp2_type>>");
+  }
+
+  {
+    auto field = t_field(i64, "n", 42);
+    field.add_structured_annotation(adapter.make());
+    field.set_annotation("cpp.ref_type", "unique");
+    EXPECT_EQ(
+        get_storage_type_name(field),
+        "::std::unique_ptr<::apache::thrift::adapt_detail::adapted_field_t<"
+        "MyAdapter, 42, ::std::int64_t, __fbthrift_cpp2_type>>");
+  }
+
+  {
+    auto field = t_field(i64, "n", 42);
+    field.add_structured_annotation(adapter.make());
+    field.set_annotation("cpp.ref_type", "shared");
+    EXPECT_EQ(
+        get_storage_type_name(field),
+        "::std::shared_ptr<::apache::thrift::adapt_detail::adapted_field_t<"
+        "MyAdapter, 42, ::std::int64_t, __fbthrift_cpp2_type>>");
+  }
+
+  {
+    auto field = t_field(i64, "n", 42);
+    field.add_structured_annotation(adapter.make());
+    field.set_annotation("cpp.ref_type", "shared_mutable");
+    EXPECT_EQ(
+        get_storage_type_name(field),
+        "::std::shared_ptr<::apache::thrift::adapt_detail::adapted_field_t<"
+        "MyAdapter, 42, ::std::int64_t, __fbthrift_cpp2_type>>");
+  }
+
+  {
+    auto field = t_field(i64, "n", 42);
+    field.add_structured_annotation(adapter.make());
+    field.set_annotation("cpp.ref_type", "shared_const");
+    EXPECT_EQ(
+        get_storage_type_name(field),
+        "::std::shared_ptr<const ::apache::thrift::adapt_detail::adapted_field_t<"
+        "MyAdapter, 42, ::std::int64_t, __fbthrift_cpp2_type>>");
+  }
+
+  {
+    auto field = t_field(i64, "n", 42);
+    field.add_structured_annotation(adapter.make());
+    field.set_annotation("thrift.box", "");
+    EXPECT_EQ(
+        get_storage_type_name(field),
+        "::apache::thrift::detail::boxed_value_ptr<::apache::thrift::adapt_detail::adapted_field_t<"
+        "MyAdapter, 42, ::std::int64_t, __fbthrift_cpp2_type>>");
+  }
+
+  { // Unrecognized throws an exception.
+    auto field = t_field(i64, "n", 42);
+    field.add_structured_annotation(adapter.make());
+    field.set_annotation("cpp.ref_type", "blah");
+    EXPECT_THROW(get_storage_type_name(field), std::runtime_error);
+  }
 }
 
 TEST_F(TypeResolverTest, TransitivelyAdaptedFieldType) {

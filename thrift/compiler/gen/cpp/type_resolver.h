@@ -52,6 +52,9 @@ class type_resolver {
     });
   }
 
+  // Returns c++ type name for the given thrift field.
+  const std::string& get_type_name(const t_field* field);
+
   // Returns the c++ type that the runtime knows how to handle.
   const std::string& get_standard_type_name(const t_type* node) {
     return detail::get_or_gen(
@@ -112,14 +115,12 @@ class type_resolver {
 
   namespace_resolver namespaces_;
   std::unordered_map<const t_type*, std::string> type_cache_;
+  std::unordered_map<const t_field*, std::string> field_type_cache_;
   std::unordered_map<const t_type*, std::string> standard_type_cache_;
   // TODO(afuller): Use a custom key type with a std::unordered_map (std::tuple
   // does not have an std::hash specialization).
-  std::map<
-      std::tuple<const t_type*, reference_type, const std::string*>,
-      std::string>
+  std::map<std::tuple<const t_field*, reference_type>, std::string>
       storage_type_cache_;
-  std::unordered_map<const t_field*, std::string> adapter_storage_type_cache_;
   std::unordered_map<const t_type*, std::string> type_tag_cache_;
 
   static const std::string& default_type(t_base_type::type btype);
@@ -134,8 +135,7 @@ class type_resolver {
       boost::optional<int16_t> field_id = {});
   std::string gen_standard_type(const t_type* node);
   std::string gen_storage_type(
-      const std::tuple<const t_type*, reference_type, const std::string*>&
-          ref_type);
+      const std::tuple<const t_field*, reference_type>& ref_type);
 
   std::string gen_raw_type_name(const t_type* node, type_resolve_fn resolve_fn);
   std::string gen_container_type(

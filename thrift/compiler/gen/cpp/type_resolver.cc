@@ -46,23 +46,24 @@ const std::string* find_structured_adapter_annotation(const t_named* node) {
 
 } // namespace
 
-const std::string& type_resolver::get_storage_type_name(const t_field* node) {
+const std::string& type_resolver::get_type_name(const t_field* node) {
+  const t_type* type = &*node->type();
   if (const std::string* adapter = find_structured_adapter_annotation(node)) {
-    const t_type* type = &*node->type();
-    return detail::get_or_gen(adapter_storage_type_cache_, node, [&]() {
+    return detail::get_or_gen(field_type_cache_, node, [&]() {
       return gen_type(type, adapter, node->id());
     });
   }
+  return detail::get_or_gen(
+      type_cache_, type, [&] { return gen_type(type, find_adapter(type)); });
+}
 
+const std::string& type_resolver::get_storage_type_name(const t_field* node) {
   auto ref_type = find_ref_type(*node);
   if (ref_type == reference_type::none) {
     // The storage type is just the type name.
-    return get_type_name(node->get_type());
+    return get_type_name(node);
   }
-  auto key = std::make_tuple(
-      node->get_type(),
-      ref_type,
-      node->find_annotation_or_null("cpp.template"));
+  auto key = std::make_tuple(node, ref_type);
   return detail::get_or_gen(
       storage_type_cache_, key, [&]() { return gen_storage_type(key); });
 }
@@ -187,13 +188,15 @@ std::string type_resolver::gen_standard_type(const t_type* node) {
 }
 
 std::string type_resolver::gen_storage_type(
-    const std::tuple<const t_type*, reference_type, const std::string*>&
-        ref_type) {
-  const std::string& type_name = get_type_name(std::get<0>(ref_type));
+    const std::tuple<const t_field*, reference_type>& ref_type) {
+  const t_field* field = std::get<0>(ref_type);
+  const std::string& type_name = get_type_name(field);
+  const std::string* cpp_template =
+      field->find_annotation_or_null("cpp.template");
   switch (std::get<1>(ref_type)) {
     case reference_type::unique:
-      if (std::get<2>(ref_type) != nullptr) {
-        return detail::gen_template_type(*std::get<2>(ref_type), {type_name});
+      if (cpp_template != nullptr) {
+        return detail::gen_template_type(*cpp_template, {type_name});
       } else {
         return detail::gen_template_type("::std::unique_ptr", {type_name});
       }
