@@ -305,6 +305,14 @@ struct ForEachField<::test_cpp2::cpp_reflection::struct_with_indirections> {
     f(4, static_cast<T&&>(t).phrase_ref()...);
   }
 };
+
+template <>
+struct ForEachField<::test_cpp2::cpp_reflection::StructWithFieldAdapter> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).field_ref()...);
+  }
+};
 } // namespace detail
 } // namespace thrift
 } // namespace apache

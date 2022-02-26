@@ -8,6 +8,7 @@
 
 #include  "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_B_fatal_types.h"
 #include  "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_C_fatal_types.h"
+#include  "thrift/annotation/gen-cpp2/cpp_fatal_types.h"
 
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_types.h"
 
@@ -2273,6 +2274,48 @@ class struct_with_indirections_struct_traits {
   >;
 };
 
+class StructWithFieldAdapter_struct_traits {
+  class __fbthrift_annotations : public __fbthrift_refl_impl::no_annotations {
+    class __fbthrift_members {
+     public:
+      using field = __fbthrift_refl_impl::reflected_no_annotations;
+    };
+
+   public:
+    using members = __fbthrift_members;
+  };
+
+  struct __fbthrift_member_field {
+    using owner = ::test_cpp2::cpp_reflection::StructWithFieldAdapter;
+    using name = __fbthrift_strings_module::__fbthrift_hash_c0d2856b74d0df05b9d4456b177950351bd88e98b77f12574dfb7a911acee0d0;
+    using type = ::std::int32_t;
+    using tag = ::apache::thrift::tag::field;
+    static constexpr ::apache::thrift::field_id_t id = 1;
+    static constexpr auto optional = ::apache::thrift::optionality::required_of_writer;
+    using getter = __fbthrift_refl_impl::data_member_accessor<::apache::thrift::tag::field>;
+    using field_ref_getter = ::apache::thrift::detail::invoke_reffer<::apache::thrift::tag::field>;
+    using type_class = ::apache::thrift::type_class::integral;
+    using annotations = ::apache::thrift::reflected_annotations<__fbthrift_annotations::members::field>;
+  };
+
+  struct __fbthrift_member {
+    using field = ::apache::thrift::reflected_struct_data_member<__fbthrift_member_field>;
+  };
+ public:
+  using type = ::test_cpp2::cpp_reflection::StructWithFieldAdapter;
+  using name = __fbthrift_strings_module::StructWithFieldAdapter;
+  using member = __fbthrift_member;
+  using members = ::fatal::list<
+      member::field
+  >;
+  using members_annotations = __fbthrift_annotations::members;
+  using metadata = ::apache::thrift::detail::type_common_metadata_impl<
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(14930389291088429676ull)
+  >;
+};
+
 } // __fbthrift_refl
 
 THRIFT_REGISTER_STRUCT_TRAITS(structA, __fbthrift_refl::structA_struct_traits);
@@ -2289,4 +2332,5 @@ THRIFT_REGISTER_STRUCT_TRAITS(dep_B_struct, __fbthrift_refl::dep_B_struct_struct
 THRIFT_REGISTER_STRUCT_TRAITS(annotated, __fbthrift_refl::annotated_struct_traits);
 THRIFT_REGISTER_STRUCT_TRAITS(struct_with_special_names, __fbthrift_refl::struct_with_special_names_struct_traits);
 THRIFT_REGISTER_STRUCT_TRAITS(struct_with_indirections, __fbthrift_refl::struct_with_indirections_struct_traits);
+THRIFT_REGISTER_STRUCT_TRAITS(StructWithFieldAdapter, __fbthrift_refl::StructWithFieldAdapter_struct_traits);
 }} // test_cpp2::cpp_reflection

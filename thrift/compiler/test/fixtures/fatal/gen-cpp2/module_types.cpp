@@ -4170,7 +4170,101 @@ template uint32_t struct_with_indirections::serializedSizeZC<>(apache::thrift::C
 
 }} // test_cpp2::cpp_reflection
 
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::test_cpp2::cpp_reflection::StructWithFieldAdapter>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::test_cpp2::cpp_reflection::StructWithFieldAdapter>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace test_cpp2 { namespace cpp_reflection {
+
+StructWithFieldAdapter::StructWithFieldAdapter(const StructWithFieldAdapter& srcObj) {
+  __fbthrift_field_field = srcObj.__fbthrift_field_field;
+  __isset.set(0,srcObj.__isset.get(0));
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_field, *this);
+}
+
+StructWithFieldAdapter& StructWithFieldAdapter::operator=(const StructWithFieldAdapter& src) {
+  StructWithFieldAdapter tmp(src);
+  swap(*this, tmp);
+  return *this;
+}
+
+
+StructWithFieldAdapter::StructWithFieldAdapter(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 1, ::std::int32_t, __fbthrift_cpp2_type> field__arg) :
+    __fbthrift_field_field(std::move(field__arg)) {
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(__fbthrift_field_field, *this);
+  __isset.set(folly::index_constant<0>(), true);
+}
+
+
+void StructWithFieldAdapter::__fbthrift_clear() {
+  // clear all fields
+  ::apache::thrift::adapt_detail::clear<my::Adapter1, 1>(__fbthrift_field_field, *this);
+  __isset = {};
+}
+
+bool StructWithFieldAdapter::__fbthrift_is_empty() const {
+  return false;
+}
+
+bool StructWithFieldAdapter::operator==(const StructWithFieldAdapter& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.__fbthrift_field_field, rhs.__fbthrift_field_field)) {
+    return false;
+  }
+  return true;
+}
+
+bool StructWithFieldAdapter::operator<(const StructWithFieldAdapter& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.__fbthrift_field_field, rhs.__fbthrift_field_field)) {
+    return ::apache::thrift::adapt_detail::less<my::Adapter1>(lhs.__fbthrift_field_field, rhs.__fbthrift_field_field);
+  }
+  return false;
+}
+
+
+void swap(StructWithFieldAdapter& a, StructWithFieldAdapter& b) {
+  using ::std::swap;
+  swap(a.field_ref().value(), b.field_ref().value());
+  swap(a.__isset, b.__isset);
+}
+
+template void StructWithFieldAdapter::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t StructWithFieldAdapter::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t StructWithFieldAdapter::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t StructWithFieldAdapter::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void StructWithFieldAdapter::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t StructWithFieldAdapter::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t StructWithFieldAdapter::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t StructWithFieldAdapter::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+
+
+}} // test_cpp2::cpp_reflection
+
 namespace test_cpp2 { namespace cpp_reflection { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 1, ::std::int32_t, ::test_cpp2::cpp_reflection::StructWithFieldAdapter>();
 }
 }}} // test_cpp2::cpp_reflection

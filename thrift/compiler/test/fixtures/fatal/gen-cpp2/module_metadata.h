@@ -12,6 +12,7 @@
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_types.h"
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_B_metadata.h"
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_C_metadata.h"
+#include "thrift/annotation/gen-cpp2/cpp_metadata.h"
 
 namespace test_cpp2 {
 namespace cpp_reflection {
@@ -147,6 +148,11 @@ class StructMetadata<::test_cpp2::cpp_reflection::struct_with_special_names> {
 };
 template <>
 class StructMetadata<::test_cpp2::cpp_reflection::struct_with_indirections> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::test_cpp2::cpp_reflection::StructWithFieldAdapter> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };

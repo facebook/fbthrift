@@ -18,6 +18,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 namespace __fbthrift_refl {
 
 struct __fbthrift_strings_module {
+  using StructWithFieldAdapter = ::fatal::sequence<char, 'S', 't', 'r', 'u', 'c', 't', 'W', 'i', 't', 'h', 'F', 'i', 'e', 'l', 'd', 'A', 'd', 'a', 'p', 't', 'e', 'r'>;
   using Type = ::fatal::sequence<char, 'T', 'y', 'p', 'e'>;
   using __fbthrift_hash_015f7e6bc5aeaf483724089e9252cc13b50951a6b69412522765cff4d780306e = ::fatal::sequence<char, 'k', '2'>;
   using __fbthrift_hash_043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf89 = ::fatal::sequence<char, 's'>;
@@ -35,6 +36,7 @@ struct __fbthrift_strings_module {
   using __fbthrift_hash_144043bd95cdcc1f080ed3a117286f0b33b4738179cbcd0384c6ba14f086965e = ::fatal::sequence<char, 'v', 'a', 'l', 'u', 'e', '_', 't', 'o', '_', 'n', 'a', 'm', 'e'>;
   using __fbthrift_hash_153812ae5fea0b73a011bf28bd7cea93644437c3fe3260b7b2d7e1e2f9f46bde = ::fatal::sequence<char, 'm', '3'>;
   using __fbthrift_hash_16660941460027f94468b82213f3fcc07225e46e88b6aa2b65f59212f086250c = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '0', '_', '2'>;
+  using __fbthrift_hash_16de57742832737feafa33405ab34237a35ec9a1e21352b537807b397574da5c = ::fatal::sequence<char, 'S', 't', 'r', 'u', 'c', 't', 'W', 'i', 't', 'h', 'F', 'i', 'e', 'l', 'd', 'A', 'd', 'a', 'p', 't', 'e', 'r'>;
   using __fbthrift_hash_17077c52034434f78be6854473ea471e8beaf774b570e98314cff5da93610a61 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '1', '_', '3'>;
   using __fbthrift_hash_17373ca1c7634a4be4a13861a891abd975ec916caab8f3dcf5142fa4997d0b96 = ::fatal::sequence<char, 'm', 'e', 'm', 'b', 'e', 'r', 's'>;
   using __fbthrift_hash_189f40034be7a199f1fa9891668ee3ab6049f82d38c68be70f596eab2e1857b7 = ::fatal::sequence<char, 'j'>;
@@ -394,6 +396,7 @@ struct module_module_traits {
       ::fatal::pair<::test_cpp2::cpp_reflection::annotated, strings::annotated>,
       ::fatal::pair<::test_cpp2::cpp_reflection::struct_with_special_names, strings::struct_with_special_names>,
       ::fatal::pair<::test_cpp2::cpp_reflection::struct_with_indirections, strings::struct_with_indirections>,
+      ::fatal::pair<::test_cpp2::cpp_reflection::StructWithFieldAdapter, strings::StructWithFieldAdapter>,
       ::fatal::pair<::test_cpp2::cpp_reflection::my_structA, strings::my_structA>
   >;
   using constants = ::fatal::list<
@@ -451,6 +454,7 @@ class module_tags {
     using annotated = __fbthrift_strings::annotated;
     using struct_with_special_names = __fbthrift_strings::struct_with_special_names;
     using struct_with_indirections = __fbthrift_strings::struct_with_indirections;
+    using StructWithFieldAdapter = __fbthrift_strings::StructWithFieldAdapter;
     using my_structA = __fbthrift_strings::my_structA;
   };
   struct __fbthrift_constants {
