@@ -15,7 +15,7 @@
 namespace cpp2 {
 // Static-init time registration for dynamically-linked libraries.
 //
-// To include in statically-linked libraties, link whole (e.g. --whole-archive)
+// To include in statically-linked libraries, link whole (e.g. --whole-archive)
 // `module_sinit.cpp`.
 FOLLY_EXPORT bool __fbthrift_static_init_module = (
     apache::thrift::conformance::detail::registerGeneratedStruct<
