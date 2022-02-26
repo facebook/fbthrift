@@ -1,4 +1,4 @@
-# Copyright (c) Facebook, Inc. and its affiliates.
+# Copyright (c) Meta Platforms, Inc. and affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,27 +16,47 @@
 
 from collections import namedtuple
 from cython.operator cimport dereference as deref, preincrement as inc
-from enum import Enum
 from libc.stdint cimport uint32_t
+from libcpp.string cimport string
+from libcpp.vector cimport vector
 
-class CompileRetcode(Enum):
-    SUCCESS = 0
-    FAILURE = 1
+cdef extern from "thrift/compiler/ast/diagnostic.h" namespace "apache::thrift::compiler":
+    cpdef enum class DiagnosticLevel "apache::thrift::compiler::diagnostic_level":
+        failure
+        parse_error
+        warning
+        info
+        debug
 
-class DiagnosticLevel(Enum):
-    FAILURE = 0
-    YY_ERROR = 1
-    WARNING = 2
-    VERBOSE = 3
-    DBG = 4
+    cdef cppclass diagnostic:
+        DiagnosticLevel level()
+        string file()
+        int lineno()
+        string token()
+        string message()
+        string str()
+
+    cdef cppclass diagnostic_results:
+        vector[diagnostic] diagnostics()
+
+cdef extern from "thrift/compiler/compiler.h" namespace "apache::thrift::compiler":
+    cpdef enum class CompileRetcode "apache::thrift::compiler::compile_retcode":
+        success
+        failure
+
+    cdef struct compile_result:
+        CompileRetcode retcode
+        diagnostic_results detail
+
+    cdef compile_result compile(vector[string]) except +
 
 DiagnosticMessage = namedtuple(
     'DiagnosticMessage',
     ['level', 'filename', 'lineno', 'last_token', 'message']
 )
 
-def thrift_compile(vector[string] argv):
-    result = compile(argv)
+def thrift_compile(vector[string] args):
+    result = compile(args)
 
     py_messages = []
     it = result.detail.diagnostics().const_begin()
@@ -44,7 +64,7 @@ def thrift_compile(vector[string] argv):
     while it != end:
         py_messages.append(
             DiagnosticMessage(
-                DiagnosticLevel(<uint32_t>(deref(it).level())),
+                deref(it).level(),
                 deref(it).file(),
                 deref(it).lineno(),
                 deref(it).token(),
@@ -52,4 +72,4 @@ def thrift_compile(vector[string] argv):
             )
         )
         inc(it)
-    return CompileRetcode(<uint32_t>result.retcode), py_messages
+    return result.retcode, py_messages
