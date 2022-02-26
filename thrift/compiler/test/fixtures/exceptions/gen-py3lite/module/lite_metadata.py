@@ -219,7 +219,7 @@ def _fbthrift_gen_metadata_service_Raiser(metadata_struct: _fbthrift_metadata.Th
 
 
 
-def getThriftModuleMetadata():
+def getThriftModuleMetadata() -> _fbthrift_metadata.ThriftMetadata:
     meta = _fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={})
     meta = _fbthrift_gen_metadata_exception_Fiery(meta)
     meta = _fbthrift_gen_metadata_exception_Serious(meta)

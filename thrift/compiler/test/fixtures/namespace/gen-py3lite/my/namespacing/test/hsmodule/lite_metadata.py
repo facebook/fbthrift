@@ -63,7 +63,7 @@ def _fbthrift_gen_metadata_service_HsTestService(metadata_struct: _fbthrift_meta
 
 
 
-def getThriftModuleMetadata():
+def getThriftModuleMetadata() -> _fbthrift_metadata.ThriftMetadata:
     meta = _fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={})
     meta = _fbthrift_gen_metadata_struct_HsFoo(meta)
     meta = _fbthrift_gen_metadata_service_HsTestService(meta)

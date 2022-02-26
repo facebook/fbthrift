@@ -237,7 +237,7 @@ def gen_metadata_struct_NonCopyableUnion() -> _fbthrift_metadata.ThriftMetadata:
 
 
 
-def getThriftModuleMetadata():
+def getThriftModuleMetadata() -> _fbthrift_metadata.ThriftMetadata:
     meta = _fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={})
     meta = _fbthrift_gen_metadata_struct_ComplexUnion(meta)
     meta = _fbthrift_gen_metadata_struct_ListUnion(meta)

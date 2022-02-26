@@ -725,7 +725,7 @@ def _fbthrift_gen_metadata_enum_Flags(metadata_struct: _fbthrift_metadata.Thrift
 def gen_metadata_enum_Flags() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_enum_Flags(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
 
-def getThriftModuleMetadata():
+def getThriftModuleMetadata() -> _fbthrift_metadata.ThriftMetadata:
     meta = _fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={})
     meta = _fbthrift_gen_metadata_enum_AnEnum(meta)
     meta = _fbthrift_gen_metadata_enum_Flags(meta)

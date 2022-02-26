@@ -63,7 +63,7 @@ class {{service:name}}(_fbthrift_py3lite_Client["{{service:name}}.Async", "{{ser
             return "{{program:name}}.{{service:name}}"
 
         @staticmethod
-        def __get_metadata__():
+        def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return {{program:module_path}}.lite_metadata.gen_metadata_service_{{service:name}}()
 
         {{#service:supported_functions}}
@@ -107,7 +107,7 @@ class {{service:name}}(_fbthrift_py3lite_Client["{{service:name}}.Async", "{{ser
             return "{{program:name}}.{{service:name}}"
 
         @staticmethod
-        def __get_metadata__():
+        def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return {{program:module_path}}.lite_metadata.gen_metadata_service_{{service:name}}()
 
         {{#service:supported_functions}}

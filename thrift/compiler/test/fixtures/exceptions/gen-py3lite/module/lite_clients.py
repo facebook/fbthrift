@@ -35,7 +35,7 @@ class Raiser(_fbthrift_py3lite_Client["Raiser.Async", "Raiser.Sync"]):
             return "module.Raiser"
 
         @staticmethod
-        def __get_metadata__():
+        def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return module.lite_metadata.gen_metadata_service_Raiser()
 
         async def doBland(
@@ -111,7 +111,7 @@ class Raiser(_fbthrift_py3lite_Client["Raiser.Async", "Raiser.Sync"]):
             return "module.Raiser"
 
         @staticmethod
-        def __get_metadata__():
+        def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return module.lite_metadata.gen_metadata_service_Raiser()
 
         def doBland(

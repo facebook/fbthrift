@@ -35,7 +35,7 @@ class HsTestService(_fbthrift_py3lite_Client["HsTestService.Async", "HsTestServi
             return "hsmodule.HsTestService"
 
         @staticmethod
-        def __get_metadata__():
+        def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return py3lite_module_root.my.namespacing.test.hsmodule.lite_metadata.gen_metadata_service_HsTestService()
 
         async def init(
@@ -64,7 +64,7 @@ class HsTestService(_fbthrift_py3lite_Client["HsTestService.Async", "HsTestServi
             return "hsmodule.HsTestService"
 
         @staticmethod
-        def __get_metadata__():
+        def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return py3lite_module_root.my.namespacing.test.hsmodule.lite_metadata.gen_metadata_service_HsTestService()
 
         def init(

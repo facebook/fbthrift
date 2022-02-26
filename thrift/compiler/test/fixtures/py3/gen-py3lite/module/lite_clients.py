@@ -35,7 +35,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             return "module.SimpleService"
 
         @staticmethod
-        def __get_metadata__():
+        def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return module.lite_metadata.gen_metadata_service_SimpleService()
 
         async def get_five(
@@ -810,7 +810,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             return "module.SimpleService"
 
         @staticmethod
-        def __get_metadata__():
+        def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return module.lite_metadata.gen_metadata_service_SimpleService()
 
         def get_five(
@@ -1594,7 +1594,7 @@ class DerivedService(_fbthrift_py3lite_Client["DerivedService.Async", "DerivedSe
             return "module.DerivedService"
 
         @staticmethod
-        def __get_metadata__():
+        def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return module.lite_metadata.gen_metadata_service_DerivedService()
 
         async def get_six(
@@ -1621,7 +1621,7 @@ class DerivedService(_fbthrift_py3lite_Client["DerivedService.Async", "DerivedSe
             return "module.DerivedService"
 
         @staticmethod
-        def __get_metadata__():
+        def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return module.lite_metadata.gen_metadata_service_DerivedService()
 
         def get_six(
@@ -1657,7 +1657,7 @@ class RederivedService(_fbthrift_py3lite_Client["RederivedService.Async", "Reder
             return "module.RederivedService"
 
         @staticmethod
-        def __get_metadata__():
+        def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return module.lite_metadata.gen_metadata_service_RederivedService()
 
         async def get_seven(
@@ -1684,7 +1684,7 @@ class RederivedService(_fbthrift_py3lite_Client["RederivedService.Async", "Reder
             return "module.RederivedService"
 
         @staticmethod
-        def __get_metadata__():
+        def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return module.lite_metadata.gen_metadata_service_RederivedService()
 
         def get_seven(

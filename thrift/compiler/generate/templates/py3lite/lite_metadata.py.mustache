@@ -168,7 +168,7 @@ def gen_metadata_enum_{{enum:name}}() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_enum_{{enum:name}}(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
 {{/program:enums}}
 
-def getThriftModuleMetadata():
+def getThriftModuleMetadata() -> _fbthrift_metadata.ThriftMetadata:
     meta = _fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={})
     {{#program:enums}}
     meta = _fbthrift_gen_metadata_enum_{{enum:name}}(meta)

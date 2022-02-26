@@ -306,7 +306,7 @@ def _fbthrift_gen_metadata_enum_Company(metadata_struct: _fbthrift_metadata.Thri
 def gen_metadata_enum_Company() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_enum_Company(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
 
-def getThriftModuleMetadata():
+def getThriftModuleMetadata() -> _fbthrift_metadata.ThriftMetadata:
     meta = _fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={})
     meta = _fbthrift_gen_metadata_enum_EmptyEnum(meta)
     meta = _fbthrift_gen_metadata_enum_City(meta)

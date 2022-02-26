@@ -35,7 +35,7 @@ class NullService(_fbthrift_py3lite_Client["NullService.Async", "NullService.Syn
             return "empty.NullService"
 
         @staticmethod
-        def __get_metadata__():
+        def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return empty.lite_metadata.gen_metadata_service_NullService()
 
 
@@ -45,7 +45,7 @@ class NullService(_fbthrift_py3lite_Client["NullService.Async", "NullService.Syn
             return "empty.NullService"
 
         @staticmethod
-        def __get_metadata__():
+        def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return empty.lite_metadata.gen_metadata_service_NullService()
 
 

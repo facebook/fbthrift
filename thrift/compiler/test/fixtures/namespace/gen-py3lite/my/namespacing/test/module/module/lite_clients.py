@@ -35,7 +35,7 @@ class TestService(_fbthrift_py3lite_Client["TestService.Async", "TestService.Syn
             return "module.TestService"
 
         @staticmethod
-        def __get_metadata__():
+        def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return py3lite_module_root.my.namespacing.test.module.module.lite_metadata.gen_metadata_service_TestService()
 
         async def init(
@@ -64,7 +64,7 @@ class TestService(_fbthrift_py3lite_Client["TestService.Async", "TestService.Syn
             return "module.TestService"
 
         @staticmethod
-        def __get_metadata__():
+        def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return py3lite_module_root.my.namespacing.test.module.module.lite_metadata.gen_metadata_service_TestService()
 
         def init(

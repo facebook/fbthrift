@@ -37,7 +37,7 @@ class ExtendTestService(_fbthrift_py3lite_Client["ExtendTestService.Async", "Ext
             return "extend.ExtendTestService"
 
         @staticmethod
-        def __get_metadata__():
+        def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return py3lite_module_root.my.namespacing.extend.test.extend.lite_metadata.gen_metadata_service_ExtendTestService()
 
         async def check(
@@ -66,7 +66,7 @@ class ExtendTestService(_fbthrift_py3lite_Client["ExtendTestService.Async", "Ext
             return "extend.ExtendTestService"
 
         @staticmethod
-        def __get_metadata__():
+        def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return py3lite_module_root.my.namespacing.extend.test.extend.lite_metadata.gen_metadata_service_ExtendTestService()
 
         def check(
