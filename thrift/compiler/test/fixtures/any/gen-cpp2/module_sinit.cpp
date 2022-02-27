@@ -19,7 +19,13 @@ namespace cpp2 {
 //
 // If this file is always linked (e.g. link_whole), it will force
 // static linking to include the intialization logic.
-extern FOLLY_EXPORT bool __fbthrift_static_init_module;
-FOLLY_EXPORT auto __fbthrift_static_reg_module =
-    &__fbthrift_static_init_module;
+extern FOLLY_EXPORT bool __fbthrift_static_init_MyStruct;
+extern FOLLY_EXPORT bool __fbthrift_static_init_MyUnion;
+extern FOLLY_EXPORT bool __fbthrift_static_init_MyException;
+FOLLY_EXPORT bool* __fbthrift_static_reg_module[] = {
+    &__fbthrift_static_init_MyStruct,
+    &__fbthrift_static_init_MyUnion,
+    &__fbthrift_static_init_MyException,
+    nullptr};
+
 } // cpp2
