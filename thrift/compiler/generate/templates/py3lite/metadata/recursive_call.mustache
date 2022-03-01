@@ -30,8 +30,8 @@ Used to turn a thrift type into a gen_metadata call
 }}{{#type:sink?}}{{#type:sink_elem_type}}{{> metadata/recursive_call }}{{/type:sink_elem_type}} # elem
   {{#type:sink_final_response_type}}{{> metadata/recursive_call }}{{/type:sink_final_response_type}} # final response
   {{#type:sink_first_response_type}}{{> metadata/recursive_call }}{{/type:sink_first_response_type}} # first response {{/type:sink?}}{{!
-}}{{#type:struct?}}{{#type:struct}}new_struct = {{#type:need_module_path?}}{{type:metadata_path}}.{{/type:need_module_path?}}{{!
+}}{{#type:struct?}}{{#type:struct}}new_struct = {{#type:external_program?}}{{type:metadata_path}}.{{/type:external_program?}}{{!
   }}_fbthrift_gen_metadata_{{#struct:exception?}}exception{{/struct:exception?}}{{^struct:exception?}}struct{{/struct:exception?}}_{{struct:name}}(new_struct){{/type:struct}}{{/type:struct?}}{{!
-}}{{#type:enum?}}{{#type:enum}}new_struct = {{#type:need_module_path?}}{{type:metadata_path}}.{{/type:need_module_path?}}{{!
+}}{{#type:enum?}}{{#type:enum}}new_struct = {{#type:external_program?}}{{type:metadata_path}}.{{/type:external_program?}}{{!
   }}_fbthrift_gen_metadata_enum_{{enum:name}}(new_struct){{/type:enum}}{{/type:enum?}}{{!
 }}

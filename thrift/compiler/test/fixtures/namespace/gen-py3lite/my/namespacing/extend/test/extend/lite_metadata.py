@@ -32,7 +32,7 @@ def _fbthrift_gen_metadata_service_ExtendTestService(metadata_struct: _fbthrift_
     service_dict[qualified_name] = _fbthrift_metadata.ThriftService(name=qualified_name, functions=functions, parent="hsmodule.HsTestService", structured_annotations=[
     ])
     new_struct = metadata_struct(services=service_dict)
-    new_struct = _fbthrift_gen_metadata_service_HsTestService(new_struct)
+    new_struct = py3lite_module_root.my.namespacing.test.hsmodule.lite_metadata._fbthrift_gen_metadata_service_HsTestService(new_struct)
 
     new_struct = py3lite_module_root.my.namespacing.test.hsmodule.lite_metadata._fbthrift_gen_metadata_struct_HsFoo(new_struct) # struct1
 

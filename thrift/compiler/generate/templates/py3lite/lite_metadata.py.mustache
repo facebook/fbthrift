@@ -126,7 +126,7 @@ def _fbthrift_gen_metadata_service_{{service:name}}({{!
     ])
     new_struct = metadata_struct(services=service_dict)
     {{#service:extends?}}{{#service:extends}}
-    new_struct = {{#type:need_module_path?}}{{type:metadata_path}}.{{/type:need_module_path?}}_fbthrift_gen_metadata_service_{{service:name}}(new_struct)
+    new_struct = {{#service:external_program?}}{{service:module_path}}.lite_metadata.{{/service:external_program?}}_fbthrift_gen_metadata_service_{{service:name}}(new_struct)
     {{/service:extends}}{{/service:extends?}}
     {{#service:functions}}{{^function:starts_interaction?}}
 
