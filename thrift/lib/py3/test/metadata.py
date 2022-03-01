@@ -214,7 +214,7 @@ class MetadataTests(unittest.TestCase):
 
     def test_metadata_structured_annotations(self) -> None:
         annotations = gen_metadata(TestingService).structuredAnnotations
-        self.assertEqual(len(annotations), 1)
+        self.assertEqual(len(annotations), 2)
 
         annotation = annotations[0]
         self.assertEqual(annotation.name, "testing.StructuredAnnotation")

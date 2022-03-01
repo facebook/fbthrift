@@ -321,6 +321,7 @@ struct StructuredAnnotation {
   third = ["a", "b"],
   recurse = StructuredAnnotation{third = ["3", "4"]},
 }
+@Messy
 service TestingService {
   string getName();
   string getMethodName();
