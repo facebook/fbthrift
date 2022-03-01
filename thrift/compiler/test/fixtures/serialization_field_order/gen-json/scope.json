@@ -216,6 +216,96 @@
           "column" : 31
         }
       }
+    },
+    "FbthriftInternalScopeTransitive" : {
+      "lineno" : 61,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 61,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 63,
+          "column" : 2
+        }
+      }
+    },
+    "Structured" : {
+      "lineno" : 69,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 65,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 69,
+          "column" : 21
+        }
+      }
+    },
+    "Interface" : {
+      "lineno" : 74,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 71,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 74,
+          "column" : 20
+        }
+      }
+    },
+    "RootDefinition" : {
+      "lineno" : 82,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 76,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 82,
+          "column" : 25
+        }
+      }
+    },
+    "Definition" : {
+      "lineno" : 89,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 84,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 89,
+          "column" : 21
+        }
+      }
     }
   }
 }

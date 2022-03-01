@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,3 +57,33 @@ struct FbthriftInternalEnum {}
 typedef FbthriftInternalEnum Enum (
   thrift.uri = "facebook.com/thrift/annotation/Enum",
 )
+// Declare our own Transitive, to avoid circular dep with meta.thrift
+struct FbthriftInternalScopeTransitive {} (
+  thrift.uri = "facebook.com/thrift/annotation/Transitive",
+)
+
+@Struct
+@Union
+@Exception
+@FbthriftInternalScopeTransitive
+struct Structured {}
+
+@Service
+@Interaction
+@FbthriftInternalScopeTransitive
+struct Interface {}
+
+@Structured
+@Interface
+@Typedef
+@FbthriftInternalEnum // TODO(afuller): Use the enum typedef directly.
+@Const
+@FbthriftInternalScopeTransitive
+struct RootDefinition {}
+
+@RootDefinition
+@Field
+@Function
+@EnumValue
+@FbthriftInternalScopeTransitive
+struct Definition {}

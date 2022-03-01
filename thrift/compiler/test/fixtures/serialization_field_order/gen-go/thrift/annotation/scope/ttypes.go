@@ -742,3 +742,328 @@ func (p *FbthriftInternalEnum) String() string {
   return fmt.Sprintf("FbthriftInternalEnum({})")
 }
 
+type FbthriftInternalScopeTransitive struct {
+}
+
+func NewFbthriftInternalScopeTransitive() *FbthriftInternalScopeTransitive {
+  return &FbthriftInternalScopeTransitive{}
+}
+
+type FbthriftInternalScopeTransitiveBuilder struct {
+  obj *FbthriftInternalScopeTransitive
+}
+
+func NewFbthriftInternalScopeTransitiveBuilder() *FbthriftInternalScopeTransitiveBuilder{
+  return &FbthriftInternalScopeTransitiveBuilder{
+    obj: NewFbthriftInternalScopeTransitive(),
+  }
+}
+
+func (p FbthriftInternalScopeTransitiveBuilder) Emit() *FbthriftInternalScopeTransitive{
+  return &FbthriftInternalScopeTransitive{
+  }
+}
+
+func (p *FbthriftInternalScopeTransitive) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *FbthriftInternalScopeTransitive) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("FbthriftInternalScopeTransitive"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *FbthriftInternalScopeTransitive) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("FbthriftInternalScopeTransitive({})")
+}
+
+type Structured struct {
+}
+
+func NewStructured() *Structured {
+  return &Structured{}
+}
+
+type StructuredBuilder struct {
+  obj *Structured
+}
+
+func NewStructuredBuilder() *StructuredBuilder{
+  return &StructuredBuilder{
+    obj: NewStructured(),
+  }
+}
+
+func (p StructuredBuilder) Emit() *Structured{
+  return &Structured{
+  }
+}
+
+func (p *Structured) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *Structured) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("Structured"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *Structured) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("Structured({})")
+}
+
+type Interface struct {
+}
+
+func NewInterface() *Interface {
+  return &Interface{}
+}
+
+type InterfaceBuilder struct {
+  obj *Interface
+}
+
+func NewInterfaceBuilder() *InterfaceBuilder{
+  return &InterfaceBuilder{
+    obj: NewInterface(),
+  }
+}
+
+func (p InterfaceBuilder) Emit() *Interface{
+  return &Interface{
+  }
+}
+
+func (p *Interface) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *Interface) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("Interface"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *Interface) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("Interface({})")
+}
+
+type RootDefinition struct {
+}
+
+func NewRootDefinition() *RootDefinition {
+  return &RootDefinition{}
+}
+
+type RootDefinitionBuilder struct {
+  obj *RootDefinition
+}
+
+func NewRootDefinitionBuilder() *RootDefinitionBuilder{
+  return &RootDefinitionBuilder{
+    obj: NewRootDefinition(),
+  }
+}
+
+func (p RootDefinitionBuilder) Emit() *RootDefinition{
+  return &RootDefinition{
+  }
+}
+
+func (p *RootDefinition) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *RootDefinition) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("RootDefinition"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *RootDefinition) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("RootDefinition({})")
+}
+
+type Definition struct {
+}
+
+func NewDefinition() *Definition {
+  return &Definition{}
+}
+
+type DefinitionBuilder struct {
+  obj *Definition
+}
+
+func NewDefinitionBuilder() *DefinitionBuilder{
+  return &DefinitionBuilder{
+    obj: NewDefinition(),
+  }
+}
+
+func (p DefinitionBuilder) Emit() *Definition{
+  return &Definition{
+  }
+}
+
+func (p *Definition) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *Definition) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("Definition"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *Definition) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("Definition({})")
+}
+

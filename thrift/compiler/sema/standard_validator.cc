@@ -400,7 +400,7 @@ void validate_uri_uniqueness(diagnostic_context& ctx, const t_program& prog) {
   visit.add_definition_visitor(
       [&](const std::string& path, const t_named& node) {
         const auto& uri = node.uri();
-        if (uri.empty()) {
+        if (uri.empty() || uri == t_named::kTransitiveUri) {
           return;
         }
         auto result = uri_to_node.emplace(uri, &node);

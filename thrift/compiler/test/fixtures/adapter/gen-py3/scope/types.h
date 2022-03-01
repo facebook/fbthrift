@@ -97,6 +97,41 @@ void reset_field<::facebook::thrift::annotation::FbthriftInternalEnum>(
 }
 
 template<>
+void reset_field<::facebook::thrift::annotation::FbthriftInternalScopeTransitive>(
+    ::facebook::thrift::annotation::FbthriftInternalScopeTransitive& obj, uint16_t index) {
+  switch (index) {
+  }
+}
+
+template<>
+void reset_field<::facebook::thrift::annotation::Structured>(
+    ::facebook::thrift::annotation::Structured& obj, uint16_t index) {
+  switch (index) {
+  }
+}
+
+template<>
+void reset_field<::facebook::thrift::annotation::Interface>(
+    ::facebook::thrift::annotation::Interface& obj, uint16_t index) {
+  switch (index) {
+  }
+}
+
+template<>
+void reset_field<::facebook::thrift::annotation::RootDefinition>(
+    ::facebook::thrift::annotation::RootDefinition& obj, uint16_t index) {
+  switch (index) {
+  }
+}
+
+template<>
+void reset_field<::facebook::thrift::annotation::Definition>(
+    ::facebook::thrift::annotation::Definition& obj, uint16_t index) {
+  switch (index) {
+  }
+}
+
+template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::facebook::thrift::annotation::Struct>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
@@ -199,6 +234,56 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::facebook::thrift::annotation::FbthriftInternalEnum>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::annotation::FbthriftInternalScopeTransitive>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::annotation::Structured>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::annotation::Interface>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::annotation::RootDefinition>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::annotation::Definition>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

@@ -24,10 +24,6 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-namespace {
-constexpr auto kTransitiveUri = "facebook.com/thrift/annotation/Transitive";
-}
-
 // NOTE: Must be defined here for t_const's destructor's defintion.
 t_named::~t_named() = default;
 
@@ -52,7 +48,7 @@ const t_const* t_named::find_structured_annotation_or_null(
 
 bool is_transitive_annotation(const t_named& node) {
   for (const auto* annotation : node.structured_annotations()) {
-    if (annotation->type()->uri() == kTransitiveUri) {
+    if (annotation->type()->uri() == t_named::kTransitiveUri) {
       return true;
     }
   }
