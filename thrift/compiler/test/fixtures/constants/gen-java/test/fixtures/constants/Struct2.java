@@ -14,12 +14,8 @@ import com.google.common.collect.*;
 import java.util.*;
 import javax.annotation.Nullable;
 import org.apache.thrift.*;
-import org.apache.thrift.async.*;
-import org.apache.thrift.meta_data.*;
-import org.apache.thrift.server.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
-import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
