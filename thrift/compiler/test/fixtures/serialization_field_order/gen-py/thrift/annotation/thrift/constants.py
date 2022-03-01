@@ -19,5 +19,5 @@ if sys.version_info[0] >= 3:
 import thrift.annotation.scope.ttypes
 
 
-from .ttypes import UTF8STRINGS, RequiresBackwardCompatibility, ExperimentalSerializeInFieldIdOrder
+from .ttypes import UTF8STRINGS, RequiresBackwardCompatibility, ExperimentalSerializeInFieldIdOrder, Experimental, Deprecated
 

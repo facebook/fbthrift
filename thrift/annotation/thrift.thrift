@@ -42,3 +42,12 @@ struct RequiresBackwardCompatibility {
 struct ExperimentalSerializeInFieldIdOrder {} (
   thrift.uri = "facebook.com/thrift/annotation/thrift/ExperimentalSerializeInFieldIdOrder",
 )
+
+// Indicates a definition may change in backwards incompatible ways.
+@scope.Definition
+struct Experimental {}
+
+// Indicates a definition should no longer be used.
+@Experimental // TODO(afuller): Hook up to code gen.
+@scope.Definition
+struct Deprecated {}

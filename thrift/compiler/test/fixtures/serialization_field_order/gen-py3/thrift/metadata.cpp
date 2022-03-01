@@ -16,6 +16,8 @@ namespace thrift {
   ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
   ::apache::thrift::detail::md::StructMetadata<RequiresBackwardCompatibility>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<ExperimentalSerializeInFieldIdOrder>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<Experimental>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<Deprecated>::gen(metadata);
   return metadata;
 }
 } // namespace facebook

@@ -52,6 +52,42 @@
           "column" : 2
         }
       }
+    },
+    "Experimental" : {
+      "lineno" : 48,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 47,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 48,
+          "column" : 23
+        }
+      }
+    },
+    "Deprecated" : {
+      "lineno" : 53,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 51,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 53,
+          "column" : 21
+        }
+      }
     }
   }
 }

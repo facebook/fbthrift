@@ -200,3 +200,133 @@ func (p *ExperimentalSerializeInFieldIdOrder) String() string {
   return fmt.Sprintf("ExperimentalSerializeInFieldIdOrder({})")
 }
 
+type Experimental struct {
+}
+
+func NewExperimental() *Experimental {
+  return &Experimental{}
+}
+
+type ExperimentalBuilder struct {
+  obj *Experimental
+}
+
+func NewExperimentalBuilder() *ExperimentalBuilder{
+  return &ExperimentalBuilder{
+    obj: NewExperimental(),
+  }
+}
+
+func (p ExperimentalBuilder) Emit() *Experimental{
+  return &Experimental{
+  }
+}
+
+func (p *Experimental) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *Experimental) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("Experimental"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *Experimental) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("Experimental({})")
+}
+
+type Deprecated struct {
+}
+
+func NewDeprecated() *Deprecated {
+  return &Deprecated{}
+}
+
+type DeprecatedBuilder struct {
+  obj *Deprecated
+}
+
+func NewDeprecatedBuilder() *DeprecatedBuilder{
+  return &DeprecatedBuilder{
+    obj: NewDeprecated(),
+  }
+}
+
+func (p DeprecatedBuilder) Emit() *Deprecated{
+  return &Deprecated{
+  }
+}
+
+func (p *Deprecated) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *Deprecated) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("Deprecated"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *Deprecated) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("Deprecated({})")
+}
+

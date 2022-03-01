@@ -37,6 +37,20 @@ void reset_field<::facebook::thrift::annotation::thrift::ExperimentalSerializeIn
 }
 
 template<>
+void reset_field<::facebook::thrift::annotation::thrift::Experimental>(
+    ::facebook::thrift::annotation::thrift::Experimental& obj, uint16_t index) {
+  switch (index) {
+  }
+}
+
+template<>
+void reset_field<::facebook::thrift::annotation::thrift::Deprecated>(
+    ::facebook::thrift::annotation::thrift::Deprecated& obj, uint16_t index) {
+  switch (index) {
+  }
+}
+
+template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::facebook::thrift::annotation::thrift::RequiresBackwardCompatibility>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
@@ -49,6 +63,26 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::facebook::thrift::annotation::thrift::ExperimentalSerializeInFieldIdOrder>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::annotation::thrift::Experimental>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::annotation::thrift::Deprecated>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
