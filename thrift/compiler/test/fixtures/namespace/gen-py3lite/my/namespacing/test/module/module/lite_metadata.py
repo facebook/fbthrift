@@ -4,7 +4,7 @@
 # DO NOT EDIT
 #  @generated
 #
-import apache.thrift.metadata.lite_types as _fbthrift_metadata
+import py3lite_module_root.apache.thrift.metadata.lite_types as _fbthrift_metadata
 
 
 # TODO (ffrancet): This general pattern can be optimized by using tuples and dicts

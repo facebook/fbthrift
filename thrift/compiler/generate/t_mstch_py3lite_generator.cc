@@ -340,6 +340,8 @@ class mstch_py3lite_program : public mstch_program {
              &mstch_py3lite_program::include_namespaces},
             {"program:base_library_package",
              &mstch_py3lite_program::base_library_package},
+            {"program:root_module_prefix",
+             &mstch_py3lite_program::root_module_prefix},
         });
     gather_included_program_namespaces();
     visit_types_for_services_and_interactions();
@@ -370,6 +372,11 @@ class mstch_py3lite_program : public mstch_program {
   mstch::node base_library_package() {
     auto option = get_option("base_library_package");
     return option.empty() ? "thrift.py3lite" : option;
+  }
+
+  mstch::node root_module_prefix() {
+    auto prefix = get_option("root_module_prefix");
+    return prefix.empty() ? "" : prefix + ".";
   }
 
  protected:
