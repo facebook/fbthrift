@@ -3187,9 +3187,9 @@ TEST(ThriftServer, SocketQueueTimeout) {
 
   ScopedServerThread st(baseServer);
 
-  // Unit tests do not follow the default Thrift flag and socket queue timeout
+  // Debug mode does not follow the default Thrift flag and socket queue timeout
   // should always be disabled here
-  checkSocketQueueTimeout(0ms);
+  checkSocketQueueTimeout(folly::kIsDebug ? 0ms : kDefaultTimeout);
 
   folly::observer::SimpleObservable<std::chrono::nanoseconds> baseline{
       kBaselineTimeout};
@@ -3215,7 +3215,7 @@ TEST(ThriftServer, SocketQueueTimeout) {
   // Should go back to using disabled
   baseServer->setSocketQueueTimeout(folly::none, AttributeSource::BASELINE);
   folly::observer_detail::ObserverManager::waitForAllUpdates();
-  checkSocketQueueTimeout(0ms);
+  checkSocketQueueTimeout(folly::kIsDebug ? 0ms : kDefaultTimeout);
 }
 
 TEST(ThriftServer, RocketOnly) {
