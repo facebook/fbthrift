@@ -74,6 +74,7 @@ void StructMetadata<::cpp2::MyStruct>::unstructured_annotations(::apache::thrift
   thriftStruct.fields_ref()[4].unstructured_annotations_ref() = std::map<std::string, std::string>{{R"THRIFT_CODEGEN(custom)THRIFT_CODEGEN", R"THRIFT_CODEGEN(test)THRIFT_CODEGEN"},};
   thriftStruct.fields_ref()[5].unstructured_annotations_ref() = std::map<std::string, std::string>{};
   thriftStruct.fields_ref()[6].unstructured_annotations_ref() = std::map<std::string, std::string>{};
+  thriftStruct.fields_ref()[7].unstructured_annotations_ref() = std::map<std::string, std::string>{};
 }
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
@@ -93,6 +94,7 @@ StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
     {5, "annotation_with_trailing_comma", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {6, "empty_annotations", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {7, "my_enum", false, std::make_unique<Enum< ::cpp2::YourEnum>>("module.MyEnum"), std::vector<ThriftConstStruct>{}},
+    {8, "cpp_type_annotation", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;

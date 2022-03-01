@@ -45,6 +45,8 @@ struct VisitByFieldId<::cpp2::MyStruct> {
       return f(5, static_cast<T&&>(t).empty_annotations_ref());
     case 7:
       return f(6, static_cast<T&&>(t).my_enum_ref());
+    case 8:
+      return f(7, static_cast<T&&>(t).cpp_type_annotation_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::MyStruct");
     }

@@ -224,12 +224,12 @@ func (p *MyServicePrioParentProcessor) FunctionServiceMap() map[string]string {
 }
 
 func NewMyServicePrioParentProcessor(handler MyServicePrioParent) *MyServicePrioParentProcessor {
-  self2 := &MyServicePrioParentProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
-  self2.processorMap["ping"] = &myServicePrioParentProcessorPing{handler:handler}
-  self2.processorMap["pong"] = &myServicePrioParentProcessorPong{handler:handler}
-  self2.functionServiceMap["ping"] = "MyServicePrioParent"
-  self2.functionServiceMap["pong"] = "MyServicePrioParent"
-  return self2
+  self3 := &MyServicePrioParentProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
+  self3.processorMap["ping"] = &myServicePrioParentProcessorPing{handler:handler}
+  self3.processorMap["pong"] = &myServicePrioParentProcessorPong{handler:handler}
+  self3.functionServiceMap["ping"] = "MyServicePrioParent"
+  self3.functionServiceMap["pong"] = "MyServicePrioParent"
+  return self3
 }
 
 type myServicePrioParentProcessorPing struct {

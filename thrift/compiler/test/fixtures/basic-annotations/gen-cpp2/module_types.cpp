@@ -181,6 +181,8 @@ MyStruct::MyStruct(const MyStruct& srcObj) {
   __isset.set(5,srcObj.__isset.get(5));
   __fbthrift_field_my_enum = srcObj.__fbthrift_field_my_enum;
   __isset.set(6,srcObj.__isset.get(6));
+  __fbthrift_field_cpp_type_annotation = srcObj.__fbthrift_field_cpp_type_annotation;
+  __isset.set(7,srcObj.__isset.get(7));
   ::apache::thrift::adapt_detail::construct<StaticCast, 7>(__fbthrift_field_my_enum, *this);
 }
 
@@ -207,6 +209,7 @@ MyStruct::MyStruct(MyStruct&& other) noexcept  :
     __fbthrift_field_annotation_with_trailing_comma(std::move(other.__fbthrift_field_annotation_with_trailing_comma)),
     __fbthrift_field_empty_annotations(std::move(other.__fbthrift_field_empty_annotations)),
     __fbthrift_field_my_enum(std::move(other.__fbthrift_field_my_enum)),
+    __fbthrift_field_cpp_type_annotation(std::move(other.__fbthrift_field_cpp_type_annotation)),
     __isset(other.__isset) {
   ::apache::thrift::adapt_detail::construct<StaticCast, 7>(__fbthrift_field_my_enum, *this);
 }
@@ -219,19 +222,21 @@ MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
     this->__fbthrift_field_annotation_with_trailing_comma = std::move(other.__fbthrift_field_annotation_with_trailing_comma);
     this->__fbthrift_field_empty_annotations = std::move(other.__fbthrift_field_empty_annotations);
     this->__fbthrift_field_my_enum = std::move(other.__fbthrift_field_my_enum);
+    this->__fbthrift_field_cpp_type_annotation = std::move(other.__fbthrift_field_cpp_type_annotation);
     __isset = other.__isset;
     return *this;
 }
 
 
-MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg, ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourEnum> my_enum__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg, ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourEnum> my_enum__arg, std::deque<std::string> cpp_type_annotation__arg) :
     __fbthrift_field_majorVer(std::move(majorVer__arg)),
     __fbthrift_field_package(std::move(package__arg)),
     __fbthrift_field_annotation_with_quote(std::move(annotation_with_quote__arg)),
     __fbthrift_field_class_(std::move(class___arg)),
     __fbthrift_field_annotation_with_trailing_comma(std::move(annotation_with_trailing_comma__arg)),
     __fbthrift_field_empty_annotations(std::move(empty_annotations__arg)),
-    __fbthrift_field_my_enum(std::move(my_enum__arg)) {
+    __fbthrift_field_my_enum(std::move(my_enum__arg)),
+    __fbthrift_field_cpp_type_annotation(std::move(cpp_type_annotation__arg)) {
   ::apache::thrift::adapt_detail::construct<StaticCast, 7>(__fbthrift_field_my_enum, *this);
   __isset.set(folly::index_constant<0>(), true);
   __isset.set(folly::index_constant<1>(), true);
@@ -240,6 +245,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__
   __isset.set(folly::index_constant<4>(), true);
   __isset.set(folly::index_constant<5>(), true);
   __isset.set(folly::index_constant<6>(), true);
+  __isset.set(folly::index_constant<7>(), true);
 }
 
 
@@ -252,6 +258,7 @@ void MyStruct::__fbthrift_clear() {
   this->__fbthrift_field_annotation_with_trailing_comma = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_empty_annotations = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   ::apache::thrift::adapt_detail::clear<StaticCast, 7>(__fbthrift_field_my_enum, *this);
+  this->__fbthrift_field_cpp_type_annotation.clear();
   __isset = {};
 }
 
@@ -284,6 +291,9 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   if (::apache::thrift::adapt_detail::not_equal<StaticCast>(lhs.__fbthrift_field_my_enum, rhs.__fbthrift_field_my_enum)) {
     return false;
   }
+  if (!(lhs.cpp_type_annotation_ref() == rhs.cpp_type_annotation_ref())) {
+    return false;
+  }
   return true;
 }
 
@@ -312,7 +322,18 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   if (::apache::thrift::adapt_detail::not_equal<StaticCast>(lhs.__fbthrift_field_my_enum, rhs.__fbthrift_field_my_enum)) {
     return ::apache::thrift::adapt_detail::less<StaticCast>(lhs.__fbthrift_field_my_enum, rhs.__fbthrift_field_my_enum);
   }
+  if (!(lhs.cpp_type_annotation_ref() == rhs.cpp_type_annotation_ref())) {
+    return lhs.cpp_type_annotation_ref() < rhs.cpp_type_annotation_ref();
+  }
   return false;
+}
+
+const std::deque<std::string>& MyStruct::get_cpp_type_annotation() const& {
+  return __fbthrift_field_cpp_type_annotation;
+}
+
+std::deque<std::string> MyStruct::get_cpp_type_annotation() && {
+  return std::move(__fbthrift_field_cpp_type_annotation);
 }
 
 
@@ -325,6 +346,7 @@ void swap(MyStruct& a, MyStruct& b) {
   swap(a.annotation_with_trailing_comma_ref().value(), b.annotation_with_trailing_comma_ref().value());
   swap(a.empty_annotations_ref().value(), b.empty_annotations_ref().value());
   swap(a.my_enum_ref().value(), b.my_enum_ref().value());
+  swap(a.cpp_type_annotation_ref().value(), b.cpp_type_annotation_ref().value());
   swap(a.__isset, b.__isset);
 }
 

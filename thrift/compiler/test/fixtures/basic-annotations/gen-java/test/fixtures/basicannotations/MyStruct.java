@@ -35,7 +35,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         @com.facebook.swift.codec.ThriftField(value=4, name="class_", requiredness=Requiredness.NONE) final String class_,
         @com.facebook.swift.codec.ThriftField(value=5, name="annotation_with_trailing_comma", requiredness=Requiredness.NONE) final String annotationWithTrailingComma,
         @com.facebook.swift.codec.ThriftField(value=6, name="empty_annotations", requiredness=Requiredness.NONE) final String emptyAnnotations,
-        @com.facebook.swift.codec.ThriftField(value=7, name="my_enum", requiredness=Requiredness.NONE) final test.fixtures.basicannotations.MyEnum myEnum
+        @com.facebook.swift.codec.ThriftField(value=7, name="my_enum", requiredness=Requiredness.NONE) final test.fixtures.basicannotations.MyEnum myEnum,
+        @com.facebook.swift.codec.ThriftField(value=8, name="cpp_type_annotation", requiredness=Requiredness.NONE) final List<String> cppTypeAnnotation
     ) {
         this.major = major;
         this._package = _package;
@@ -44,6 +45,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         this.annotationWithTrailingComma = annotationWithTrailingComma;
         this.emptyAnnotations = emptyAnnotations;
         this.myEnum = myEnum;
+        this.cppTypeAnnotation = cppTypeAnnotation;
     }
     
     @ThriftConstructor
@@ -55,6 +57,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       this.annotationWithTrailingComma = null;
       this.emptyAnnotations = null;
       this.myEnum = test.fixtures.basicannotations.MyEnum.fromInteger(0);
+      this.cppTypeAnnotation = null;
     }
     
     public static class Builder {
@@ -66,6 +69,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         private String annotationWithTrailingComma = null;
         private String emptyAnnotations = null;
         private test.fixtures.basicannotations.MyEnum myEnum = test.fixtures.basicannotations.MyEnum.fromInteger(0);
+        private List<String> cppTypeAnnotation = null;
     
         @com.facebook.swift.codec.ThriftField(value=2, name="major", requiredness=Requiredness.NONE)
         public Builder setMajor(long major) {
@@ -123,6 +127,14 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     
         public test.fixtures.basicannotations.MyEnum getMyEnum() { return myEnum; }
     
+            @com.facebook.swift.codec.ThriftField(value=8, name="cpp_type_annotation", requiredness=Requiredness.NONE)
+        public Builder setCppTypeAnnotation(List<String> cppTypeAnnotation) {
+            this.cppTypeAnnotation = cppTypeAnnotation;
+            return this;
+        }
+    
+        public List<String> getCppTypeAnnotation() { return cppTypeAnnotation; }
+    
         public Builder() { }
         public Builder(MyStruct other) {
             this.major = other.major;
@@ -132,6 +144,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             this.annotationWithTrailingComma = other.annotationWithTrailingComma;
             this.emptyAnnotations = other.emptyAnnotations;
             this.myEnum = other.myEnum;
+            this.cppTypeAnnotation = other.cppTypeAnnotation;
         }
     
         @ThriftConstructor
@@ -143,7 +156,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                 this.class_,
                 this.annotationWithTrailingComma,
                 this.emptyAnnotations,
-                this.myEnum
+                this.myEnum,
+                this.cppTypeAnnotation
             );
             return result;
         }
@@ -173,6 +187,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         private final test.fixtures.basicannotations.MyEnum myEnum;
     public static final int _MY_ENUM = 7;
     private static final TField MY_ENUM_FIELD_DESC = new TField("my_enum", TType.I32, (short)7);
+        private final List<String> cppTypeAnnotation;
+    public static final int _CPP_TYPE_ANNOTATION = 8;
+    private static final TField CPP_TYPE_ANNOTATION_FIELD_DESC = new TField("cpp_type_annotation", TType.LIST, (short)8);
     static {
       NAMES_TO_IDS.put("major", 2);
       FIELD_METADATA.put(2, MAJOR_FIELD_DESC);
@@ -188,6 +205,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       FIELD_METADATA.put(6, EMPTY_ANNOTATIONS_FIELD_DESC);
       NAMES_TO_IDS.put("myEnum", 7);
       FIELD_METADATA.put(7, MY_ENUM_FIELD_DESC);
+      NAMES_TO_IDS.put("cppTypeAnnotation", 8);
+      FIELD_METADATA.put(8, CPP_TYPE_ANNOTATION_FIELD_DESC);
     }
     
     
@@ -224,6 +243,11 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     @com.facebook.swift.codec.ThriftField(value=7, name="my_enum", requiredness=Requiredness.NONE)
     public test.fixtures.basicannotations.MyEnum getMyEnum() { return myEnum; }
     
+    
+    @Nullable
+    @com.facebook.swift.codec.ThriftField(value=8, name="cpp_type_annotation", requiredness=Requiredness.NONE)
+    public List<String> getCppTypeAnnotation() { return cppTypeAnnotation; }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
@@ -234,6 +258,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         helper.add("annotationWithTrailingComma", annotationWithTrailingComma);
         helper.add("emptyAnnotations", emptyAnnotations);
         helper.add("myEnum", myEnum);
+        helper.add("cppTypeAnnotation", cppTypeAnnotation);
         return helper.toString();
     }
     
@@ -256,6 +281,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             Objects.equals(annotationWithTrailingComma, other.annotationWithTrailingComma) &&
             Objects.equals(emptyAnnotations, other.emptyAnnotations) &&
             Objects.equals(myEnum, other.myEnum) &&
+            Objects.equals(cppTypeAnnotation, other.cppTypeAnnotation) &&
             true;
     }
     
@@ -268,7 +294,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             class_,
             annotationWithTrailingComma,
             emptyAnnotations,
-            myEnum
+            myEnum,
+            cppTypeAnnotation
         });
     }
     
@@ -341,6 +368,24 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _CPP_TYPE_ANNOTATION:
+          if (__field.type == TType.LIST) {
+            List<String> cppTypeAnnotation;
+            {
+            TList _list = oprot.readListBegin();
+            cppTypeAnnotation = new ArrayList<String>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                
+                String _value1 = oprot.readString();
+                cppTypeAnnotation.add(_value1);
+            }
+            oprot.readListEnd();
+            }
+            builder.setCppTypeAnnotation(cppTypeAnnotation);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -384,6 +429,16 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
       oprot.writeI32(this.myEnum == null ? 0 : this.myEnum.getValue());
       oprot.writeFieldEnd();
+      if (this.cppTypeAnnotation != null) {
+        oprot.writeFieldBegin(CPP_TYPE_ANNOTATION_FIELD_DESC);
+        List<String> _iter0 = this.cppTypeAnnotation;
+        oprot.writeListBegin(new TList(TType.STRING, _iter0.size()));
+        for (String _iter1 : _iter0) {
+          oprot.writeString(_iter1);
+        }
+        oprot.writeListEnd();
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }

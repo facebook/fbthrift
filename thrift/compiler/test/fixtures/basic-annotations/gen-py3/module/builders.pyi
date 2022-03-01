@@ -28,6 +28,7 @@ class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     annotation_with_trailing_comma: _typing.Optional[str]
     empty_annotations: _typing.Optional[str]
     my_enum: _typing.Optional[_module_types.MyEnum]
+    cpp_type_annotation: _typing.Optional[list]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

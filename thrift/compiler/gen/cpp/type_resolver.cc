@@ -319,8 +319,16 @@ std::string type_resolver::gen_adapted_type(
        strct_name ? *strct_name : "__fbthrift_cpp2_type"});
 }
 
-// TODO(ytj): Support type::adapted, type::cpp_type, and cpp.template
-std::string type_resolver::gen_type_tag(t_type const& original_type) {
+// TODO(ytj): Support type::adapted, and cpp.template
+std::string type_resolver::gen_type_tag(t_type const& type) {
+  auto tag = gen_thrift_type_tag(type);
+  if (const auto* cpp_type = find_first_type(&type)) {
+    tag = "::apache::thrift::type::cpp_type<" + *cpp_type + ", " + tag + ">";
+  }
+  return tag;
+}
+
+std::string type_resolver::gen_thrift_type_tag(t_type const& original_type) {
   static const std::string ns = "::apache::thrift::type::";
   auto const& type = *original_type.get_true_type();
   if (type.is_void()) {

@@ -174,7 +174,7 @@ struct struct3 {
   8: union2 fieldH;
   9: list<i32> fieldI;
   10: list<string> fieldJ;
-  11: list<string> fieldK;
+  11: list<string> (cpp.type = "std::deque<std::string>") fieldK;
   12: list<structA> fieldL;
   13: set<i32> fieldM;
   14: set<string> fieldN;

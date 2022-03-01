@@ -40,6 +40,7 @@ struct MyStruct {
   5: string annotation_with_trailing_comma (custom = 'test');
   6: string empty_annotations ();
   7: MyEnum my_enum;
+  8: list<string> (cpp.type = "std::deque<std::string>") cpp_type_annotation;
 } (
   android.generate_builder,
   cpp.internal.deprecated._data.method,

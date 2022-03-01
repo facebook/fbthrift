@@ -25,6 +25,7 @@ cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public str annotation_with_trailing_comma
     cdef public str empty_annotations
     cdef public _module_types.MyEnum my_enum
+    cdef public list cpp_type_annotation
 
 
 cdef class SecretStruct_Builder(thrift.py3.builder.StructBuilder):

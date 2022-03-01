@@ -280,6 +280,23 @@ _readField_my_enum:
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           7,
+          8,
+          apache::thrift::protocol::T_LIST))) {
+    goto _loop;
+  }
+_readField_cpp_type_annotation:
+  {
+    _readState.beforeSubobject(iprot);
+    this->__fbthrift_field_cpp_type_annotation = std::deque<std::string>();
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::deque<std::string>>::readWithContext(*iprot, this->__fbthrift_field_cpp_type_annotation, _readState);
+    _readState.afterSubobject(iprot);
+    
+  }
+ this->__isset.set(7, true);
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          8,
           0,
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
@@ -356,6 +373,14 @@ _loop:
         goto _skip;
       }
     }
+    case 8:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_LIST))) {
+        goto _readField_cpp_type_annotation;
+      } else {
+        goto _skip;
+      }
+    }
     default:
     {
 _skip:
@@ -399,6 +424,10 @@ uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("my_enum", apache::thrift::protocol::T_I32, 7);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::YourEnum>::serializedSize<false>(*prot_, StaticCast::toThrift(this->__fbthrift_field_my_enum));
   }
+  {
+    xfer += prot_->serializedFieldSize("cpp_type_annotation", apache::thrift::protocol::T_LIST, 8);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::deque<std::string>>::serializedSize<false>(*prot_, this->__fbthrift_field_cpp_type_annotation);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -434,6 +463,10 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
   {
     xfer += prot_->serializedFieldSize("my_enum", apache::thrift::protocol::T_I32, 7);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::YourEnum>::serializedSize<false>(*prot_, StaticCast::toThrift(this->__fbthrift_field_my_enum));
+  }
+  {
+    xfer += prot_->serializedFieldSize("cpp_type_annotation", apache::thrift::protocol::T_LIST, 8);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::deque<std::string>>::serializedSize<false>(*prot_, this->__fbthrift_field_cpp_type_annotation);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -491,6 +524,13 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 7, kPrevFieldId>(*prot_, "my_enum", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::YourEnum>::write(*prot_, StaticCast::toThrift(this->__fbthrift_field_my_enum));
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    constexpr int16_t kPrevFieldId = 7;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 8, kPrevFieldId>(*prot_, "cpp_type_annotation", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::deque<std::string>>::write(*prot_, this->__fbthrift_field_cpp_type_annotation);
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();

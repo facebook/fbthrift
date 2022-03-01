@@ -42,7 +42,9 @@ static_assert(
             field_t<FieldId{8}, union_t<::test_cpp2::cpp_reflection::union2>>,
             field_t<FieldId{9}, list<i32_t>>,
             field_t<FieldId{10}, list<string_t>>,
-            field_t<FieldId{11}, list<string_t>>,
+            field_t<
+                FieldId{11},
+                cpp_type<std::deque<std::string>, list<string_t>>>,
             field_t<
                 FieldId{12},
                 list<struct_t<::test_cpp2::cpp_reflection::structA>>>,
@@ -85,7 +87,7 @@ TEST(Fields, for_each) {
       typeid(union_t<::test_cpp2::cpp_reflection::union2>),
       typeid(list<i32_t>),
       typeid(list<string_t>),
-      typeid(list<string_t>),
+      typeid(cpp_type<std::deque<std::string>, list<string_t>>),
       typeid(list<struct_t<::test_cpp2::cpp_reflection::structA>>),
       typeid(set<i32_t>),
       typeid(set<string_t>),

@@ -227,6 +227,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
           "annotation_with_trailing_comma": deref(self._cpp_obj).annotation_with_trailing_comma_ref().has_value(),
           "empty_annotations": deref(self._cpp_obj).empty_annotations_ref().has_value(),
           "my_enum": deref(self._cpp_obj).my_enum_ref().has_value(),
+          "cpp_type_annotation": deref(self._cpp_obj).cpp_type_annotation_ref().has_value(),
         })
 
     @staticmethod
@@ -293,6 +294,16 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def my_enum(self):
         return self.my_enum_impl()
 
+    cdef inline cpp_type_annotation_impl(self):
+
+        if self.__fbthrift_cached_cpp_type_annotation is None:
+            self.__fbthrift_cached_cpp_type_annotation = std_deque_std_string__List__string._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).cpp_type_annotation_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_cpp_type_annotation
+
+    @property
+    def cpp_type_annotation(self):
+        return self.cpp_type_annotation_impl()
+
 
     def __hash__(MyStruct self):
         return super().__hash__()
@@ -336,7 +347,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return __get_field_name_by_index[cMyStruct](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 7
+        self._fbthrift_struct_size = 8
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyStruct self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -458,5 +469,84 @@ cdef class SecretStruct(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cSecretStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
+
+@__cython.auto_pickle(False)
+cdef class std_deque_std_string__List__string(thrift.py3.types.List):
+    def __init__(self, items=None):
+        if isinstance(items, std_deque_std_string__List__string):
+            self._cpp_obj = (<std_deque_std_string__List__string> items)._cpp_obj
+        else:
+            self._cpp_obj = std_deque_std_string__List__string._make_instance(items)
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[std_deque_std_string] c_items):
+        __fbthrift_inst = <std_deque_std_string__List__string>std_deque_std_string__List__string.__new__(std_deque_std_string__List__string)
+        __fbthrift_inst._cpp_obj = cmove(c_items)
+        return __fbthrift_inst
+
+    def __copy__(std_deque_std_string__List__string self):
+        cdef shared_ptr[std_deque_std_string] cpp_obj = make_shared[std_deque_std_string](
+            deref(self._cpp_obj)
+        )
+        return std_deque_std_string__List__string._fbthrift_create(cmove(cpp_obj))
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    @staticmethod
+    cdef shared_ptr[std_deque_std_string] _make_instance(object items) except *:
+        cdef shared_ptr[std_deque_std_string] c_inst = make_shared[std_deque_std_string]()
+        if items is not None:
+            if isinstance(items, str):
+                raise TypeError("If you really want to pass a string into a _typing.Sequence[str] field, explicitly convert it first.")
+            for item in items:
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
+                deref(c_inst).push_back(item.encode('UTF-8'))
+        return c_inst
+
+    cdef _get_slice(self, slice index_obj):
+        cdef int start, stop, step
+        start, stop, step = index_obj.indices(deref(self._cpp_obj).size())
+        return std_deque_std_string__List__string._fbthrift_create(
+            __list_slice[std_deque_std_string](self._cpp_obj, start, stop, step)
+        )
+
+    cdef _get_single_item(self, size_t index):
+        cdef string citem
+        __list_getitem(self._cpp_obj, index, citem)
+        return bytes(citem).decode('UTF-8')
+
+    cdef _check_item_type(self, item):
+        if not self or item is None:
+            return
+        if isinstance(item, str):
+            return item
+
+    def index(self, item, start=0, stop=None):
+        err = ValueError(f'{item} is not in list')
+        item = self._check_item_type(item)
+        if item is None:
+            raise err
+        cdef (int, int, int) indices = slice(start, stop).indices(deref(self._cpp_obj).size())
+        cdef string citem = item.encode('UTF-8')
+        cdef std_libcpp.optional[size_t] found = __list_index[std_deque_std_string](self._cpp_obj, indices[0], indices[1], citem)
+        if not found.has_value():
+            raise err
+        return found.value()
+
+    def count(self, item):
+        item = self._check_item_type(item)
+        if item is None:
+            return 0
+        cdef string citem = item.encode('UTF-8')
+        return __list_count[std_deque_std_string](self._cpp_obj, citem)
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__std_deque_std_string__List__string()
+
+
+Sequence.register(std_deque_std_string__List__string)
 
 myStruct = MyStruct._fbthrift_create(constant_shared_ptr(cmyStruct()))

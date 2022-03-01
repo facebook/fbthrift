@@ -154,6 +154,7 @@ class type_resolver {
       boost::optional<int16_t> field_id,
       const std::string* strct_name);
 
+  std::string gen_thrift_type_tag(t_type const&);
   std::string gen_type_tag(t_type const&);
 
   const std::string& resolve(type_resolve_fn resolve_fn, const t_type* node) {

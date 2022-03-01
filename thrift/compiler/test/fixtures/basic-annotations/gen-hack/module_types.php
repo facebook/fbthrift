@@ -181,6 +181,15 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       'type' => \TType::I32,
       'enum' => MyEnum::class,
     ),
+    8 => shape(
+      'var' => 'cpp_type_annotation',
+      'type' => \TType::LST,
+      'etype' => \TType::STRING,
+      'elem' => shape(
+        'type' => \TType::STRING,
+      ),
+      'format' => 'collection',
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'major' => 2,
@@ -190,6 +199,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     'annotation_with_trailing_comma' => 5,
     'empty_annotations' => 6,
     'my_enum' => 7,
+    'cpp_type_annotation' => 8,
   ];
 
   const type TConstructorShape = shape(
@@ -200,6 +210,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     ?'annotation_with_trailing_comma' => ?string,
     ?'empty_annotations' => ?string,
     ?'my_enum' => ?MyEnum,
+    ?'cpp_type_annotation' => ?Vector<string>,
   );
 
   const type TShape = shape(
@@ -210,9 +221,10 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     'annotation_with_trailing_comma' => string,
     'empty_annotations' => string,
     ?'my_enum' => ?MyEnum,
+    'cpp_type_annotation' => vec<string>,
     ...
   );
-  const int STRUCTURAL_ID = 4307952594195002251;
+  const int STRUCTURAL_ID = 5610810523936670044;
   /**
    * Original thrift field:-
    * 2: i64 major
@@ -248,8 +260,13 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
    * 7: enum module.MyEnum my_enum
    */
   public ?MyEnum $my_enum;
+  /**
+   * Original thrift field:-
+   * 8: list<string> cpp_type_annotation
+   */
+  public Vector<string> $cpp_type_annotation;
 
-  public function __construct(?int $major = null, ?string $package = null, ?string $annotation_with_quote = null, ?string $class_ = null, ?string $annotation_with_trailing_comma = null, ?string $empty_annotations = null, ?MyEnum $my_enum = null  )[] {
+  public function __construct(?int $major = null, ?string $package = null, ?string $annotation_with_quote = null, ?string $class_ = null, ?string $annotation_with_trailing_comma = null, ?string $empty_annotations = null, ?MyEnum $my_enum = null, ?Vector<string> $cpp_type_annotation = null  )[] {
     $this->major = $major ?? 0;
     $this->package = $package ?? '';
     $this->annotation_with_quote = $annotation_with_quote ?? '';
@@ -257,6 +274,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     $this->annotation_with_trailing_comma = $annotation_with_trailing_comma ?? '';
     $this->empty_annotations = $empty_annotations ?? '';
     $this->my_enum = $my_enum;
+    $this->cpp_type_annotation = $cpp_type_annotation ?? Vector {};
   }
 
   public static function withDefaultValues()[]: this {
@@ -272,6 +290,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       Shapes::idx($shape, 'annotation_with_trailing_comma'),
       Shapes::idx($shape, 'empty_annotations'),
       Shapes::idx($shape, 'my_enum'),
+      Shapes::idx($shape, 'cpp_type_annotation'),
     );
   }
 
@@ -365,6 +384,25 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
               "name" => "my_enum",
             )
           ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 8,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "cpp_type_annotation",
+            )
+          ),
         ],
         "is_union" => false,
       )
@@ -388,6 +426,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       $shape['annotation_with_trailing_comma'],
       $shape['empty_annotations'],
       Shapes::idx($shape, 'my_enum'),
+      (new Vector($shape['cpp_type_annotation'])),
     );
   }
 
@@ -400,6 +439,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       'annotation_with_trailing_comma' => $this->annotation_with_trailing_comma,
       'empty_annotations' => $this->empty_annotations,
       'my_enum' => $this->my_enum,
+      'cpp_type_annotation' => vec($this->cpp_type_annotation),
     );
   }
   public function readFromJson(string $jsonText): void {
@@ -429,6 +469,16 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     }    
     if (idx($parsed, 'my_enum') !== null) {
       $this->my_enum = MyEnum::coerce(/* HH_FIXME[4110] */ $parsed['my_enum']);    }    
+    if (idx($parsed, 'cpp_type_annotation') !== null) {
+      $_json3 = /* HH_FIXME[4110] */ $parsed['cpp_type_annotation'];
+      $_container4 = Vector {};
+      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
+        $_elem5 = '';
+        $_elem5 = $_value2;
+        $_container4 []= $_elem5;
+      }
+      $this->cpp_type_annotation = $_container4;
+    }    
   }
 
 }

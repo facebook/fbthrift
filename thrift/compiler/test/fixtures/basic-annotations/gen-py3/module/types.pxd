@@ -44,6 +44,43 @@ cimport module.types_fields as _fbthrift_types_fields
 cdef extern from "src/gen-py3/module/types.h":
   pass
 
+cdef extern from * nogil:
+    cdef cppclass std_deque_std_string "std::deque<std::string>":
+        ctypedef string value_type
+        ctypedef size_t size_type
+
+        cppclass iterator:
+            string& operator*()
+            iterator operator++()
+            bint operator==(iterator)
+            bint operator!=(iterator)
+        cppclass reverse_iterator:
+            string& operator*()
+            iterator operator++()
+            bint operator==(reverse_iterator)
+            bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
+
+        std_deque_std_string() except +
+        std_deque_std_string(std_deque_std_string&) except +
+
+        string& operator[](size_type)
+        void push_back(string&) except +
+        size_type size()
+        iterator begin()
+        const_iterator const_begin "begin"()
+        iterator end()
+        const_iterator const_end "end"()
+        reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
+        reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
+        void clear()
+        bint empty()
+
 
 cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
     cdef cppclass EnumMetadata[T]:
@@ -98,6 +135,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[string] annotation_with_trailing_comma_ref()
         __field_ref[string] empty_annotations_ref()
         __field_ref[cMyEnum] my_enum_ref()
+        __field_ref[std_deque_std_string] cpp_type_annotation_ref()
 
 
     cdef cppclass cSecretStruct "::cpp2::SecretStruct":
@@ -135,7 +173,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef inline object annotation_with_trailing_comma_impl(self)
     cdef inline object empty_annotations_impl(self)
     cdef inline object my_enum_impl(self)
+    cdef inline object cpp_type_annotation_impl(self)
     cdef object __fbthrift_cached_my_enum
+    cdef std_deque_std_string__List__string __fbthrift_cached_cpp_type_annotation
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyStruct])
@@ -151,6 +191,13 @@ cdef class SecretStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cSecretStruct])
 
+
+cdef class std_deque_std_string__List__string(thrift.py3.types.List):
+    cdef shared_ptr[std_deque_std_string] _cpp_obj
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[std_deque_std_string])
+    @staticmethod
+    cdef shared_ptr[std_deque_std_string] _make_instance(object items) except *
 
 
 cdef extern from "src/gen-cpp2/module_constants.h" namespace "::cpp2":

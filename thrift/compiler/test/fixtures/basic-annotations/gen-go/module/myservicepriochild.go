@@ -160,10 +160,10 @@ type MyServicePrioChildProcessor struct {
 }
 
 func NewMyServicePrioChildProcessor(handler MyServicePrioChild) *MyServicePrioChildProcessor {
-  self4 := &MyServicePrioChildProcessor{NewMyServicePrioParentProcessor(handler)}
-  self4.AddToProcessorMap("pang", &myServicePrioChildProcessorPang{handler:handler})
-  self4.AddToFunctionServiceMap("pang", "MyServicePrioChild")
-  return self4
+  self5 := &MyServicePrioChildProcessor{NewMyServicePrioParentProcessor(handler)}
+  self5.AddToProcessorMap("pang", &myServicePrioChildProcessorPang{handler:handler})
+  self5.AddToFunctionServiceMap("pang", "MyServicePrioChild")
+  return self5
 }
 
 type myServicePrioChildProcessorPang struct {

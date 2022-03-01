@@ -18,6 +18,7 @@ pub mod consts {
             annotation_with_trailing_comma: ::std::default::Default::default(),
             empty_annotations: ::std::default::Default::default(),
             my_enum: crate::types::MyEnum::DOMAIN,
+            cpp_type_annotation: ::std::default::Default::default(),
             ..::std::default::Default::default()
         });
 }
@@ -47,6 +48,7 @@ pub mod types {
         pub annotation_with_trailing_comma: ::std::string::String,
         pub empty_annotations: ::std::string::String,
         pub my_enum: crate::types::MyEnum,
+        pub cpp_type_annotation: ::std::vec::Vec<::std::string::String>,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
         // the definition in Thrift. If you don't want this, add the annotation
@@ -260,6 +262,7 @@ pub mod types {
                 annotation_with_trailing_comma: ::std::default::Default::default(),
                 empty_annotations: ::std::default::Default::default(),
                 my_enum: ::std::default::Default::default(),
+                cpp_type_annotation: ::std::default::Default::default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
         }
@@ -276,6 +279,7 @@ pub mod types {
                 .field("annotation_with_trailing_comma", &self.annotation_with_trailing_comma)
                 .field("empty_annotations", &self.empty_annotations)
                 .field("my_enum", &self.my_enum)
+                .field("cpp_type_annotation", &self.cpp_type_annotation)
                 .finish()
         }
     }
@@ -314,6 +318,9 @@ pub mod types {
             p.write_field_begin("my_enum", ::fbthrift::TType::I32, 7);
             ::fbthrift::Serialize::write(&self.my_enum, p);
             p.write_field_end();
+            p.write_field_begin("cpp_type_annotation", ::fbthrift::TType::List, 8);
+            ::fbthrift::Serialize::write(&self.cpp_type_annotation, p);
+            p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -328,6 +335,7 @@ pub mod types {
                 ::fbthrift::Field::new("annotation_with_quote", ::fbthrift::TType::String, 3),
                 ::fbthrift::Field::new("annotation_with_trailing_comma", ::fbthrift::TType::String, 5),
                 ::fbthrift::Field::new("class_", ::fbthrift::TType::String, 4),
+                ::fbthrift::Field::new("cpp_type_annotation", ::fbthrift::TType::List, 8),
                 ::fbthrift::Field::new("empty_annotations", ::fbthrift::TType::String, 6),
                 ::fbthrift::Field::new("major", ::fbthrift::TType::I64, 2),
                 ::fbthrift::Field::new("my_enum", ::fbthrift::TType::I32, 7),
@@ -340,6 +348,7 @@ pub mod types {
             let mut field_annotation_with_trailing_comma = ::std::option::Option::None;
             let mut field_empty_annotations = ::std::option::Option::None;
             let mut field_my_enum = ::std::option::Option::None;
+            let mut field_cpp_type_annotation = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -352,6 +361,7 @@ pub mod types {
                     (::fbthrift::TType::String, 5) => field_annotation_with_trailing_comma = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::String, 6) => field_empty_annotations = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::I32, 7) => field_my_enum = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::List, 8) => field_cpp_type_annotation = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -365,6 +375,7 @@ pub mod types {
                 annotation_with_trailing_comma: field_annotation_with_trailing_comma.unwrap_or_default(),
                 empty_annotations: field_empty_annotations.unwrap_or_default(),
                 my_enum: field_my_enum.unwrap_or_default(),
+                cpp_type_annotation: field_cpp_type_annotation.unwrap_or_default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }

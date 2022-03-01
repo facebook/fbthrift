@@ -144,6 +144,18 @@ cdef __StructSpec get_reflection__MyStruct():
             },
         ),
     )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=8,
+            name="cpp_type_annotation",
+            type=_module_types.std_deque_std_string__List__string,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
     return spec
 cdef __StructSpec get_reflection__SecretStruct():
     cdef _module_types.SecretStruct defaults = _module_types.SecretStruct._fbthrift_create(
@@ -182,3 +194,9 @@ cdef __StructSpec get_reflection__SecretStruct():
         ),
     )
     return spec
+cdef __ListSpec get_reflection__std_deque_std_string__List__string():
+    return __ListSpec._fbthrift_create(
+        value=str,
+        kind=__NumberType.NOT_A_NUMBER,
+    )
+

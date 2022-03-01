@@ -187,6 +187,7 @@ func (p *MyStructNestedAnnotation) String() string {
 //  - AnnotationWithTrailingComma
 //  - EmptyAnnotations
 //  - MyEnum
+//  - CppTypeAnnotation
 type MyStruct struct {
   Package string `thrift:"package,1" db:"package" json:"package"`
   Major int64 `thrift:"major,2" db:"major" json:"major"`
@@ -195,6 +196,7 @@ type MyStruct struct {
   AnnotationWithTrailingComma string `thrift:"annotation_with_trailing_comma,5" db:"annotation_with_trailing_comma" json:"annotation_with_trailing_comma"`
   EmptyAnnotations string `thrift:"empty_annotations,6" db:"empty_annotations" json:"empty_annotations"`
   MyEnum MyEnum `thrift:"my_enum,7" db:"my_enum" json:"my_enum"`
+  CppTypeAnnotation []string `thrift:"cpp_type_annotation,8" db:"cpp_type_annotation" json:"cpp_type_annotation"`
 }
 
 func NewMyStruct() *MyStruct {
@@ -229,6 +231,10 @@ func (p *MyStruct) GetEmptyAnnotations() string {
 func (p *MyStruct) GetMyEnum() MyEnum {
   return p.MyEnum
 }
+
+func (p *MyStruct) GetCppTypeAnnotation() []string {
+  return p.CppTypeAnnotation
+}
 type MyStructBuilder struct {
   obj *MyStruct
 }
@@ -248,6 +254,7 @@ func (p MyStructBuilder) Emit() *MyStruct{
     AnnotationWithTrailingComma: p.obj.AnnotationWithTrailingComma,
     EmptyAnnotations: p.obj.EmptyAnnotations,
     MyEnum: p.obj.MyEnum,
+    CppTypeAnnotation: p.obj.CppTypeAnnotation,
   }
 }
 
@@ -286,6 +293,11 @@ func (m *MyStructBuilder) MyEnum(myEnum MyEnum) *MyStructBuilder {
   return m
 }
 
+func (m *MyStructBuilder) CppTypeAnnotation(cppTypeAnnotation []string) *MyStructBuilder {
+  m.obj.CppTypeAnnotation = cppTypeAnnotation
+  return m
+}
+
 func (m *MyStruct) SetMajor(major int64) *MyStruct {
   m.Major = major
   return m
@@ -318,6 +330,11 @@ func (m *MyStruct) SetEmptyAnnotations(emptyAnnotations string) *MyStruct {
 
 func (m *MyStruct) SetMyEnum(myEnum MyEnum) *MyStruct {
   m.MyEnum = myEnum
+  return m
+}
+
+func (m *MyStruct) SetCppTypeAnnotation(cppTypeAnnotation []string) *MyStruct {
+  m.CppTypeAnnotation = cppTypeAnnotation
   return m
 }
 
@@ -360,6 +377,10 @@ func (p *MyStruct) Read(iprot thrift.Protocol) error {
       }
     case 7:
       if err := p.ReadField7(iprot); err != nil {
+        return err
+      }
+    case 8:
+      if err := p.ReadField8(iprot); err != nil {
         return err
       }
     default:
@@ -441,6 +462,28 @@ func (p *MyStruct)  ReadField7(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *MyStruct)  ReadField8(iprot thrift.Protocol) error {
+  _, size, err := iprot.ReadListBegin()
+  if err != nil {
+    return thrift.PrependError("error reading list begin: ", err)
+  }
+  tSlice := make([]string, 0, size)
+  p.CppTypeAnnotation =  tSlice
+  for i := 0; i < size; i ++ {
+    var _elem0 string
+    if v, err := iprot.ReadString(); err != nil {
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _elem0 = v
+    }
+    p.CppTypeAnnotation = append(p.CppTypeAnnotation, _elem0)
+  }
+  if err := iprot.ReadListEnd(); err != nil {
+    return thrift.PrependError("error reading list end: ", err)
+  }
+  return nil
+}
+
 func (p *MyStruct) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("MyStruct"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -451,6 +494,7 @@ func (p *MyStruct) Write(oprot thrift.Protocol) error {
   if err := p.writeField5(oprot); err != nil { return err }
   if err := p.writeField6(oprot); err != nil { return err }
   if err := p.writeField7(oprot); err != nil { return err }
+  if err := p.writeField8(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -528,6 +572,24 @@ func (p *MyStruct) writeField7(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *MyStruct) writeField8(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("cpp_type_annotation", thrift.LIST, 8); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 8:cpp_type_annotation: ", p), err) }
+  if err := oprot.WriteListBegin(thrift.STRING, len(p.CppTypeAnnotation)); err != nil {
+    return thrift.PrependError("error writing list begin: ", err)
+  }
+  for _, v := range p.CppTypeAnnotation {
+    if err := oprot.WriteString(string(v)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+  }
+  if err := oprot.WriteListEnd(); err != nil {
+    return thrift.PrependError("error writing list end: ", err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 8:cpp_type_annotation: ", p), err) }
+  return err
+}
+
 func (p *MyStruct) String() string {
   if p == nil {
     return "<nil>"
@@ -540,7 +602,8 @@ func (p *MyStruct) String() string {
   annotationWithTrailingCommaVal := fmt.Sprintf("%v", p.AnnotationWithTrailingComma)
   emptyAnnotationsVal := fmt.Sprintf("%v", p.EmptyAnnotations)
   myEnumVal := fmt.Sprintf("%v", p.MyEnum)
-  return fmt.Sprintf("MyStruct({Package:%s Major:%s AnnotationWithQuote:%s Class_:%s AnnotationWithTrailingComma:%s EmptyAnnotations:%s MyEnum:%s})", packageVal, majorVal, annotationWithQuoteVal, class_Val, annotationWithTrailingCommaVal, emptyAnnotationsVal, myEnumVal)
+  cppTypeAnnotationVal := fmt.Sprintf("%v", p.CppTypeAnnotation)
+  return fmt.Sprintf("MyStruct({Package:%s Major:%s AnnotationWithQuote:%s Class_:%s AnnotationWithTrailingComma:%s EmptyAnnotations:%s MyEnum:%s CppTypeAnnotation:%s})", packageVal, majorVal, annotationWithQuoteVal, class_Val, annotationWithTrailingCommaVal, emptyAnnotationsVal, myEnumVal, cppTypeAnnotationVal)
 }
 
 // Attributes:

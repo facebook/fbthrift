@@ -505,22 +505,22 @@ func (p *MyServiceProcessor) FunctionServiceMap() map[string]string {
 }
 
 func NewMyServiceProcessor(handler MyService) *MyServiceProcessor {
-  self0 := &MyServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
-  self0.processorMap["ping"] = &myServiceProcessorPing{handler:handler}
-  self0.processorMap["getRandomData"] = &myServiceProcessorGetRandomData{handler:handler}
-  self0.processorMap["hasDataById"] = &myServiceProcessorHasDataById{handler:handler}
-  self0.processorMap["getDataById"] = &myServiceProcessorGetDataById{handler:handler}
-  self0.processorMap["putDataById"] = &myServiceProcessorPutDataById{handler:handler}
-  self0.processorMap["lobDataById"] = &myServiceProcessorLobDataById{handler:handler}
-  self0.processorMap["doNothing"] = &myServiceProcessorDoNothing{handler:handler}
-  self0.functionServiceMap["ping"] = "MyService"
-  self0.functionServiceMap["getRandomData"] = "MyService"
-  self0.functionServiceMap["hasDataById"] = "MyService"
-  self0.functionServiceMap["getDataById"] = "MyService"
-  self0.functionServiceMap["putDataById"] = "MyService"
-  self0.functionServiceMap["lobDataById"] = "MyService"
-  self0.functionServiceMap["doNothing"] = "MyService"
-  return self0
+  self1 := &MyServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
+  self1.processorMap["ping"] = &myServiceProcessorPing{handler:handler}
+  self1.processorMap["getRandomData"] = &myServiceProcessorGetRandomData{handler:handler}
+  self1.processorMap["hasDataById"] = &myServiceProcessorHasDataById{handler:handler}
+  self1.processorMap["getDataById"] = &myServiceProcessorGetDataById{handler:handler}
+  self1.processorMap["putDataById"] = &myServiceProcessorPutDataById{handler:handler}
+  self1.processorMap["lobDataById"] = &myServiceProcessorLobDataById{handler:handler}
+  self1.processorMap["doNothing"] = &myServiceProcessorDoNothing{handler:handler}
+  self1.functionServiceMap["ping"] = "MyService"
+  self1.functionServiceMap["getRandomData"] = "MyService"
+  self1.functionServiceMap["hasDataById"] = "MyService"
+  self1.functionServiceMap["getDataById"] = "MyService"
+  self1.functionServiceMap["putDataById"] = "MyService"
+  self1.functionServiceMap["lobDataById"] = "MyService"
+  self1.functionServiceMap["doNothing"] = "MyService"
+  return self1
 }
 
 type myServiceProcessorPing struct {

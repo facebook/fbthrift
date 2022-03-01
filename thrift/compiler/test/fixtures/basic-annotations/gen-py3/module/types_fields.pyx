@@ -59,6 +59,7 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
         __fbthrift_inst._setters[__cstring_view(<const char*>"annotation_with_trailing_comma")] = __MyStruct_FieldsSetter._set_field_4
         __fbthrift_inst._setters[__cstring_view(<const char*>"empty_annotations")] = __MyStruct_FieldsSetter._set_field_5
         __fbthrift_inst._setters[__cstring_view(<const char*>"my_enum")] = __MyStruct_FieldsSetter._set_field_6
+        __fbthrift_inst._setters[__cstring_view(<const char*>"cpp_type_annotation")] = __MyStruct_FieldsSetter._set_field_7
         return __fbthrift_inst
 
     cdef void set_field(__MyStruct_FieldsSetter self, const char* name, object value) except *:
@@ -131,6 +132,13 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, _module_types.MyEnum):
             raise TypeError(f'field my_enum value: {repr(_fbthrift_value)} is not of the enum type { _module_types.MyEnum }.')
         deref(self._struct_cpp_obj).my_enum_ref().assign(<_module_types.cMyEnum><int>_fbthrift_value)
+
+    cdef void _set_field_7(self, _fbthrift_value) except *:
+        # for field cpp_type_annotation
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 7)
+            return
+        deref(self._struct_cpp_obj).cpp_type_annotation_ref().assign(deref(_module_types.std_deque_std_string__List__string(_fbthrift_value)._cpp_obj))
 
 
 @__cython.auto_pickle(False)

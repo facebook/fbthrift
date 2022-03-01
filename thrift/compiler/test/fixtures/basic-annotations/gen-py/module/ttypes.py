@@ -148,6 +148,7 @@ class MyStruct:
    - annotation_with_trailing_comma
    - empty_annotations
    - my_enum
+   - cpp_type_annotation
   """
 
   thrift_spec = None
@@ -205,6 +206,21 @@ class MyStruct:
           self.my_enum = iprot.readI32()
         else:
           iprot.skip(ftype)
+      elif fid == 8:
+        if ftype == TType.LIST:
+          self.cpp_type_annotation = []
+          (_etype3, _size0) = iprot.readListBegin()
+          if _size0 >= 0:
+            for _i4 in range(_size0):
+              _elem5 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+              self.cpp_type_annotation.append(_elem5)
+          else: 
+            while iprot.peekList():
+              _elem6 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+              self.cpp_type_annotation.append(_elem6)
+          iprot.readListEnd()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -246,6 +262,13 @@ class MyStruct:
       oprot.writeFieldBegin('my_enum', TType.I32, 7)
       oprot.writeI32(self.my_enum)
       oprot.writeFieldEnd()
+    if self.cpp_type_annotation != None:
+      oprot.writeFieldBegin('cpp_type_annotation', TType.LIST, 8)
+      oprot.writeListBegin(TType.STRING, len(self.cpp_type_annotation))
+      for iter7 in self.cpp_type_annotation:
+        oprot.writeString(iter7.encode('utf-8')) if UTF8STRINGS and not isinstance(iter7, bytes) else oprot.writeString(iter7)
+      oprot.writeListEnd()
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -281,6 +304,10 @@ class MyStruct:
             warnings.warn(msg)
         else:
             raise TProtocolException(TProtocolException.INVALID_DATA, msg)
+    if 'cpp_type_annotation' in json_obj and json_obj['cpp_type_annotation'] is not None:
+      self.cpp_type_annotation = []
+      for _tmp_e8 in json_obj['cpp_type_annotation']:
+        self.cpp_type_annotation.append(_tmp_e8)
 
   def __repr__(self):
     L = []
@@ -313,6 +340,10 @@ class MyStruct:
       value = pprint.pformat(self.my_enum, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    my_enum=%s' % (value))
+    if self.cpp_type_annotation is not None:
+      value = pprint.pformat(self.cpp_type_annotation, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    cpp_type_annotation=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -463,6 +494,7 @@ MyStruct.thrift_spec = (
   (5, TType.STRING, 'annotation_with_trailing_comma', True, None, 2, ), # 5
   (6, TType.STRING, 'empty_annotations', True, None, 2, ), # 6
   (7, TType.I32, 'my_enum', MyEnum, None, 2, ), # 7
+  (8, TType.LIST, 'cpp_type_annotation', (TType.STRING,True), None, 2, ), # 8
 )
 
 MyStruct.thrift_struct_annotations = {
@@ -488,7 +520,7 @@ MyStruct.thrift_field_annotations = {
   },
 }
 
-def MyStruct__init__(self, major=None, package=None, annotation_with_quote=None, class_=None, annotation_with_trailing_comma=None, empty_annotations=None, my_enum=None,):
+def MyStruct__init__(self, major=None, package=None, annotation_with_quote=None, class_=None, annotation_with_trailing_comma=None, empty_annotations=None, my_enum=None, cpp_type_annotation=None,):
   self.major = major
   self.package = package
   self.annotation_with_quote = annotation_with_quote
@@ -496,6 +528,7 @@ def MyStruct__init__(self, major=None, package=None, annotation_with_quote=None,
   self.annotation_with_trailing_comma = annotation_with_trailing_comma
   self.empty_annotations = empty_annotations
   self.my_enum = my_enum
+  self.cpp_type_annotation = cpp_type_annotation
 
 MyStruct.__init__ = MyStruct__init__
 
@@ -507,6 +540,7 @@ def MyStruct__setstate__(self, state):
   state.setdefault('annotation_with_trailing_comma', None)
   state.setdefault('empty_annotations', None)
   state.setdefault('my_enum', None)
+  state.setdefault('cpp_type_annotation', None)
   self.__dict__ = state
 
 MyStruct.__getstate__ = lambda self: self.__dict__.copy()

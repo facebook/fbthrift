@@ -22,6 +22,7 @@ struct class_;
 struct annotation_with_trailing_comma;
 struct empty_annotations;
 struct my_enum;
+struct cpp_type_annotation;
 struct id;
 struct password;
 } // namespace tag
@@ -57,6 +58,10 @@ APACHE_THRIFT_DEFINE_ACCESSOR(empty_annotations);
 #ifndef APACHE_THRIFT_ACCESSOR_my_enum
 #define APACHE_THRIFT_ACCESSOR_my_enum
 APACHE_THRIFT_DEFINE_ACCESSOR(my_enum);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_cpp_type_annotation
+#define APACHE_THRIFT_ACCESSOR_cpp_type_annotation
+APACHE_THRIFT_DEFINE_ACCESSOR(cpp_type_annotation);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_id
 #define APACHE_THRIFT_ACCESSOR_id
@@ -282,7 +287,8 @@ class MyStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::string_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::string_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{6}, ::apache::thrift::type::string_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{7}, ::apache::thrift::type::enum_t<::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourEnum>>>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{7}, ::apache::thrift::type::enum_t<::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourEnum>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{8}, ::apache::thrift::type::cpp_type<std::deque<std::string>, ::apache::thrift::type::list<::apache::thrift::type::string_t>>>
   >;
 
   void __fbthrift_clear();
@@ -306,7 +312,7 @@ class MyStruct final  {
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg, ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourEnum> my_enum__arg);
+  MyStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg, ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourEnum> my_enum__arg, std::deque<std::string> cpp_type_annotation__arg);
 
   MyStruct(MyStruct&&) noexcept;
   MyStruct(const MyStruct& src);
@@ -332,7 +338,9 @@ class MyStruct final  {
  private:
   ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourEnum> __fbthrift_field_my_enum;
  private:
-  apache::thrift::detail::isset_bitset<7, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
+  std::deque<std::string> __fbthrift_field_cpp_type_annotation;
+ private:
+  apache::thrift::detail::isset_bitset<8, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -618,6 +626,46 @@ class MyStruct final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> my_enum() && {
     return {static_cast<T&&>(this->__fbthrift_field_my_enum), __isset.at(6), __isset.bit(6)};
   }
+
+  template <typename..., typename T = std::deque<std::string>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> cpp_type_annotation_ref() const& {
+    return {this->__fbthrift_field_cpp_type_annotation, __isset.at(7), __isset.bit(7)};
+  }
+
+  template <typename..., typename T = std::deque<std::string>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> cpp_type_annotation_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_cpp_type_annotation), __isset.at(7), __isset.bit(7)};
+  }
+
+  template <typename..., typename T = std::deque<std::string>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> cpp_type_annotation_ref() & {
+    return {this->__fbthrift_field_cpp_type_annotation, __isset.at(7), __isset.bit(7)};
+  }
+
+  template <typename..., typename T = std::deque<std::string>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> cpp_type_annotation_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_cpp_type_annotation), __isset.at(7), __isset.bit(7)};
+  }
+
+  template <typename..., typename T = std::deque<std::string>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> cpp_type_annotation() const& {
+    return {this->__fbthrift_field_cpp_type_annotation, __isset.at(7), __isset.bit(7)};
+  }
+
+  template <typename..., typename T = std::deque<std::string>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> cpp_type_annotation() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_cpp_type_annotation), __isset.at(7), __isset.bit(7)};
+  }
+
+  template <typename..., typename T = std::deque<std::string>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> cpp_type_annotation() & {
+    return {this->__fbthrift_field_cpp_type_annotation, __isset.at(7), __isset.bit(7)};
+  }
+
+  template <typename..., typename T = std::deque<std::string>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> cpp_type_annotation() && {
+    return {static_cast<T&&>(this->__fbthrift_field_cpp_type_annotation), __isset.at(7), __isset.bit(7)};
+  }
  private:
   template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &;
   template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&;
@@ -651,6 +699,10 @@ class MyStruct final  {
   template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() const&  { return my_enum_ref(); }
   template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() &&      { return std::move(*this).my_enum_ref(); }
   template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() const&& { return std::move(*this).my_enum_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{8}>() &       { return cpp_type_annotation_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{8}>() const&  { return cpp_type_annotation_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{8}>() &&      { return std::move(*this).cpp_type_annotation_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{8}>() const&& { return std::move(*this).cpp_type_annotation_ref(); }
 
  public:
 
@@ -737,6 +789,15 @@ class MyStruct final  {
   ::std::string& set_empty_annotations(T_MyStruct_empty_annotations_struct_setter&& empty_annotations_) {
     empty_annotations_ref() = std::forward<T_MyStruct_empty_annotations_struct_setter>(empty_annotations_);
     return __fbthrift_field_empty_annotations;
+  }
+  const std::deque<std::string>& get_cpp_type_annotation() const&;
+  std::deque<std::string> get_cpp_type_annotation() &&;
+
+  template <typename T_MyStruct_cpp_type_annotation_struct_setter = std::deque<std::string>>
+  [[deprecated("Use `FOO.cpp_type_annotation_ref() = BAR;` instead of `FOO.set_cpp_type_annotation(BAR);`")]]
+  std::deque<std::string>& set_cpp_type_annotation(T_MyStruct_cpp_type_annotation_struct_setter&& cpp_type_annotation_) {
+    cpp_type_annotation_ref() = std::forward<T_MyStruct_cpp_type_annotation_struct_setter>(cpp_type_annotation_);
+    return __fbthrift_field_cpp_type_annotation;
   }
 
   template <class Protocol_>

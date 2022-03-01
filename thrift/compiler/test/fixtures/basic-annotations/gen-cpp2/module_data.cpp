@@ -33,7 +33,7 @@ const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::MyStructNestedAn
   TType::T_STRING,
 }};
 
-const std::array<folly::StringPiece, 7> TStructDataStorage<::cpp2::MyStruct>::fields_names = {{
+const std::array<folly::StringPiece, 8> TStructDataStorage<::cpp2::MyStruct>::fields_names = {{
   "major",
   "package",
   "annotation_with_quote",
@@ -41,8 +41,9 @@ const std::array<folly::StringPiece, 7> TStructDataStorage<::cpp2::MyStruct>::fi
   "annotation_with_trailing_comma",
   "empty_annotations",
   "my_enum",
+  "cpp_type_annotation",
 }};
-const std::array<int16_t, 7> TStructDataStorage<::cpp2::MyStruct>::fields_ids = {{
+const std::array<int16_t, 8> TStructDataStorage<::cpp2::MyStruct>::fields_ids = {{
   2,
   1,
   3,
@@ -50,8 +51,9 @@ const std::array<int16_t, 7> TStructDataStorage<::cpp2::MyStruct>::fields_ids = 
   5,
   6,
   7,
+  8,
 }};
-const std::array<protocol::TType, 7> TStructDataStorage<::cpp2::MyStruct>::fields_types = {{
+const std::array<protocol::TType, 8> TStructDataStorage<::cpp2::MyStruct>::fields_types = {{
   TType::T_I64,
   TType::T_STRING,
   TType::T_STRING,
@@ -59,6 +61,7 @@ const std::array<protocol::TType, 7> TStructDataStorage<::cpp2::MyStruct>::field
   TType::T_STRING,
   TType::T_STRING,
   TType::T_I32,
+  TType::T_LIST,
 }};
 
 const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::SecretStruct>::fields_names = {{

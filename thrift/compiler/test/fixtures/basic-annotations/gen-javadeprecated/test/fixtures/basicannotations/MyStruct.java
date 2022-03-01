@@ -33,6 +33,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   private static final TField ANNOTATION_WITH_TRAILING_COMMA_FIELD_DESC = new TField("annotation_with_trailing_comma", TType.STRING, (short)5);
   private static final TField EMPTY_ANNOTATIONS_FIELD_DESC = new TField("empty_annotations", TType.STRING, (short)6);
   private static final TField MY_ENUM_FIELD_DESC = new TField("my_enum", TType.I32, (short)7);
+  private static final TField CPP_TYPE_ANNOTATION_FIELD_DESC = new TField("cpp_type_annotation", TType.LIST, (short)8);
 
   public long major;
   public String package;
@@ -45,6 +46,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
    * @see MyEnum
    */
   public MyEnum my_enum;
+  public List<String> cpp_type_annotation;
   public static final int MAJOR = 2;
   public static final int PACKAGE = 1;
   public static final int ANNOTATION_WITH_QUOTE = 3;
@@ -52,6 +54,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   public static final int ANNOTATION_WITH_TRAILING_COMMA = 5;
   public static final int EMPTY_ANNOTATIONS = 6;
   public static final int MY_ENUM = 7;
+  public static final int CPP_TYPE_ANNOTATION = 8;
 
   // isset id assignments
   private static final int __MAJOR_ISSET_ID = 0;
@@ -75,6 +78,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
         new FieldValueMetaData(TType.STRING)));
     tmpMetaDataMap.put(MY_ENUM, new FieldMetaData("my_enum", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.I32)));
+    tmpMetaDataMap.put(CPP_TYPE_ANNOTATION, new FieldMetaData("cpp_type_annotation", TFieldRequirementType.DEFAULT, 
+        new ListMetaData(TType.LIST, 
+            new FieldValueMetaData(TType.STRING))));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -92,7 +98,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       String class_,
       String annotation_with_trailing_comma,
       String empty_annotations,
-      MyEnum my_enum) {
+      MyEnum my_enum,
+      List<String> cpp_type_annotation) {
     this();
     this.major = major;
     setMajorIsSet(true);
@@ -102,6 +109,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     this.annotation_with_trailing_comma = annotation_with_trailing_comma;
     this.empty_annotations = empty_annotations;
     this.my_enum = my_enum;
+    this.cpp_type_annotation = cpp_type_annotation;
   }
 
   public static class Builder {
@@ -112,6 +120,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     private String annotation_with_trailing_comma;
     private String empty_annotations;
     private MyEnum my_enum;
+    private List<String> cpp_type_annotation;
 
     BitSet __optional_isset = new BitSet(1);
 
@@ -154,6 +163,11 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return this;
     }
 
+    public Builder setCpp_type_annotation(final List<String> cpp_type_annotation) {
+      this.cpp_type_annotation = cpp_type_annotation;
+      return this;
+    }
+
     public MyStruct build() {
       MyStruct result = new MyStruct();
       if (__optional_isset.get(__MAJOR_ISSET_ID)) {
@@ -165,6 +179,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       result.setAnnotation_with_trailing_comma(this.annotation_with_trailing_comma);
       result.setEmpty_annotations(this.empty_annotations);
       result.setMy_enum(this.my_enum);
+      result.setCpp_type_annotation(this.cpp_type_annotation);
       return result;
     }
   }
@@ -197,6 +212,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     }
     if (other.isSetMy_enum()) {
       this.my_enum = TBaseHelper.deepCopy(other.my_enum);
+    }
+    if (other.isSetCpp_type_annotation()) {
+      this.cpp_type_annotation = TBaseHelper.deepCopy(other.cpp_type_annotation);
     }
   }
 
@@ -379,6 +397,31 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     }
   }
 
+  public List<String> getCpp_type_annotation() {
+    return this.cpp_type_annotation;
+  }
+
+  public MyStruct setCpp_type_annotation(List<String> cpp_type_annotation) {
+    this.cpp_type_annotation = cpp_type_annotation;
+    return this;
+  }
+
+  public void unsetCpp_type_annotation() {
+    this.cpp_type_annotation = null;
+  }
+
+  // Returns true if field cpp_type_annotation is set (has been assigned a value) and false otherwise
+  public boolean isSetCpp_type_annotation() {
+    return this.cpp_type_annotation != null;
+  }
+
+  public void setCpp_type_annotationIsSet(boolean __value) {
+    if (!__value) {
+      this.cpp_type_annotation = null;
+    }
+  }
+
+  @SuppressWarnings("unchecked")
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case MAJOR:
@@ -437,6 +480,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       }
       break;
 
+    case CPP_TYPE_ANNOTATION:
+      if (__value == null) {
+        unsetCpp_type_annotation();
+      } else {
+        setCpp_type_annotation((List<String>)__value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -464,6 +515,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
 
     case MY_ENUM:
       return getMy_enum();
+
+    case CPP_TYPE_ANNOTATION:
+      return getCpp_type_annotation();
 
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -494,12 +548,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
 
     if (!TBaseHelper.equalsNobinary(this.isSetMy_enum(), that.isSetMy_enum(), this.my_enum, that.my_enum)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetCpp_type_annotation(), that.isSetCpp_type_annotation(), this.cpp_type_annotation, that.cpp_type_annotation)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {major, package, annotation_with_quote, class_, annotation_with_trailing_comma, empty_annotations, my_enum});
+    return Arrays.deepHashCode(new Object[] {major, package, annotation_with_quote, class_, annotation_with_trailing_comma, empty_annotations, my_enum, cpp_type_annotation});
   }
 
   @Override
@@ -570,6 +626,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     if (lastComparison != 0) { 
       return lastComparison;
     }
+    lastComparison = Boolean.valueOf(isSetCpp_type_annotation()).compareTo(other.isSetCpp_type_annotation());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(cpp_type_annotation, other.cpp_type_annotation);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
     return 0;
   }
 
@@ -634,6 +698,25 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case CPP_TYPE_ANNOTATION:
+          if (__field.type == TType.LIST) {
+            {
+              TList _list0 = iprot.readListBegin();
+              this.cpp_type_annotation = new ArrayList<String>(Math.max(0, _list0.size));
+              for (int _i1 = 0; 
+                   (_list0.size < 0) ? iprot.peekList() : (_i1 < _list0.size); 
+                   ++_i1)
+              {
+                String _elem2;
+                _elem2 = iprot.readString();
+                this.cpp_type_annotation.add(_elem2);
+              }
+              iprot.readListEnd();
+            }
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -682,6 +765,17 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     if (this.my_enum != null) {
       oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
       oprot.writeI32(this.my_enum == null ? 0 : this.my_enum.getValue());
+      oprot.writeFieldEnd();
+    }
+    if (this.cpp_type_annotation != null) {
+      oprot.writeFieldBegin(CPP_TYPE_ANNOTATION_FIELD_DESC);
+      {
+        oprot.writeListBegin(new TList(TType.STRING, this.cpp_type_annotation.size()));
+        for (String _iter3 : this.cpp_type_annotation)        {
+          oprot.writeString(_iter3);
+        }
+        oprot.writeListEnd();
+      }
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -782,6 +876,17 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       if (my_enum_name != null) {
         sb.append(")");
       }
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("cpp_type_annotation");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getCpp_type_annotation() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getCpp_type_annotation(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
