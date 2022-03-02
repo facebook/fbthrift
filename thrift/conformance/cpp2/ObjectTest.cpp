@@ -233,6 +233,44 @@ TEST(ObjectTest, Struct) {
   EXPECT_EQ(object.members_ref()->at(2), asValueStruct<type::string_t>("hi"));
 }
 
+TEST(ObjectTest, StructWithList) {
+  testset::struct_with<type::list<type::i32_t>> s;
+  std::vector<int> listValues = {1, 2, 3};
+  s.field_1_ref() = listValues;
+  Value value = asValueStruct<type::struct_c>(s);
+  ASSERT_EQ(value.getType(), Value::objectValue);
+  const Object& object = value.get_objectValue();
+  EXPECT_EQ(object.members_ref()->size(), 1);
+  EXPECT_EQ(
+      object.members_ref()->at(1),
+      asValueStruct<type::list<type::i32_t>>(listValues));
+}
+
+TEST(ObjectTest, StructWithMap) {
+  testset::struct_with<type::map<type::string_t, type::i32_t>> s;
+  std::map<std::string, int> mapValues = {{"one", 1}, {"four", 4}, {"two", 2}};
+  s.field_1_ref() = mapValues;
+  Value value = asValueStruct<type::struct_c>(s);
+  ASSERT_EQ(value.getType(), Value::objectValue);
+  const Object& object = value.get_objectValue();
+  EXPECT_EQ(object.members_ref()->size(), 1);
+  auto val = asValueStruct<type::map<type::string_t, type::i32_t>>(mapValues);
+  EXPECT_EQ(object.members_ref()->at(1), val);
+}
+
+TEST(ObjectTest, StructWithSet) {
+  testset::struct_with<type::set<type::i64_t>> s;
+  std::set<long> setValues = {1, 2, 3};
+  s.field_1_ref() = setValues;
+  Value value = asValueStruct<type::struct_c>(s);
+  ASSERT_EQ(value.getType(), Value::objectValue);
+  const Object& object = value.get_objectValue();
+  EXPECT_EQ(object.members_ref()->size(), 1);
+  EXPECT_EQ(
+      object.members_ref()->at(1),
+      asValueStruct<type::set<type::i64_t>>(setValues));
+}
+
 template <typename ParseObjectTestCase>
 class TypedParseObjectTest : public testing::Test {
  public:

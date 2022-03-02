@@ -143,35 +143,53 @@ class ObjectWriter : public BaseObjectAdapter {
     return 0;
   }
 
-  uint32_t writeFieldEnd() {
-    assert(!cur_.empty());
-    cur_.pop();
-    return 0;
-  }
+  uint32_t writeFieldEnd() { return 0; }
 
   uint32_t writeFieldStop() { return 0; }
 
   uint32_t writeMapBegin(
-      const TType /*keyType*/, TType /*valType*/, uint32_t /*size*/) {
-    beginValue().mapValue_ref().ensure();
+      const TType /*keyType*/, TType /*valType*/, uint32_t size) {
+    // We cannot push reference to map elements on stack without first inserting
+    // map elements. So push reference to temporary buffer on stack instead.
+    allocBufferPushOnStack((size_t)size * 2);
     return 0;
   }
 
-  uint32_t writeMapEnd() { return endValue(Value::mapValue); }
+  uint32_t writeMapEnd() {
+    // insert elements from buffer into mapValue
+    std::vector<Value> mapKeyAndValues = getBufferFromStack();
+    assert(mapKeyAndValues.size() % 2 == 0);
+    std::map<Value, Value>& mapVal = cur().mapValue_ref().ensure();
+    for (size_t i = 0; i < mapKeyAndValues.size(); i += 2) {
+      mapVal.emplace(
+          std::move(mapKeyAndValues[i]), std::move(mapKeyAndValues[i + 1]));
+    }
+    return endValue(Value::mapValue);
+  }
 
   uint32_t writeListBegin(TType /*elemType*/, uint32_t size) {
-    beginValue().listValue_ref().ensure().reserve(size);
+    allocBufferPushOnStack(size);
     return 0;
   }
 
   uint32_t writeListEnd() { return endValue(Value::listValue); }
 
-  uint32_t writeSetBegin(TType /*elemType*/, uint32_t /*size*/) {
-    beginValue().setValue_ref().ensure();
+  uint32_t writeSetBegin(TType /*elemType*/, uint32_t size) {
+    // We cannot push reference to set elements on stack without first inserting
+    // set elements. So push reference to temporary buffer on stack instead.
+    allocBufferPushOnStack(size);
     return 0;
   }
 
-  uint32_t writeSetEnd() { return endValue(Value::setValue); }
+  uint32_t writeSetEnd() {
+    // insert elements from buffer into setValue
+    std::vector<Value> setValues = getBufferFromStack();
+    std::set<Value>& setVal = cur().setValue_ref().ensure();
+    for (size_t i = 0; i < setValues.size(); i++) {
+      setVal.emplace(std::move(setValues[i]));
+    }
+    return endValue(Value::setValue);
+  }
 
   uint32_t writeBool(bool value) {
     ValueHelper<type::bool_t>::set(beginValue(), value);
@@ -260,7 +278,23 @@ class ObjectWriter : public BaseObjectAdapter {
 
   uint32_t endValue(Value::Type required) {
     checkCur(required);
+    cur_.pop();
     return 0;
+  }
+
+  // Allocated temporary buffer in cur() and pushes buffer references on stack
+  void allocBufferPushOnStack(size_t n) {
+    // using listVal as temporary buffer
+    std::vector<Value>& listVal = beginValue().listValue_ref().ensure();
+    listVal.resize(n);
+    for (auto itr = listVal.rbegin(); itr != listVal.rend(); ++itr) {
+      cur_.push(&*itr);
+    }
+  }
+
+  // Get temporary buffer from cur()
+  std::vector<Value> getBufferFromStack() {
+    return std::move(*cur(Value::listValue).listValue_ref());
   }
 };
 
