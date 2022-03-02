@@ -20,6 +20,7 @@ import com.facebook.nifty.core.RequestContext;
 import java.util.List;
 import java.util.function.Function;
 import org.apache.thrift.RequestRpcMetadata;
+import org.apache.thrift.protocol.TMessage;
 
 public interface ServerRequestPayload {
   List<Object> getData(List<Reader> readers);
@@ -27,9 +28,8 @@ public interface ServerRequestPayload {
   RequestRpcMetadata getRequestRpcMetadata();
 
   /**
-   * The seq id found in {@link org.apache.thrift.protocol.TMessage} can be different than the seq
-   * id found in the frame so they need to be stored separately. This should go away when we switch
-   * to RSocket.
+   * The seq id found in {@link TMessage} can be different than the seq id found in the frame so
+   * they need to be stored separately. This should go away when we switch to RSocket.
    *
    * @return the TMessage seq id
    */
