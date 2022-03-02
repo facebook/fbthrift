@@ -14,30 +14,30 @@
  * limitations under the License.
  */
 
-package com.facebook.nifty.header.protocol;
+package org.apache.thrift.protocol;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import org.apache.thrift.ShortStack;
 import org.apache.thrift.TException;
-import org.apache.thrift.protocol.TField;
-import org.apache.thrift.protocol.TList;
-import org.apache.thrift.protocol.TMap;
-import org.apache.thrift.protocol.TMessage;
-import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.protocol.TProtocolException;
-import org.apache.thrift.protocol.TProtocolFactory;
-import org.apache.thrift.protocol.TSet;
-import org.apache.thrift.protocol.TStruct;
-import org.apache.thrift.protocol.TType;
 import org.apache.thrift.transport.TTransport;
 
+/**
+ * TCompactProtocol2 is the Java implementation of the compact protocol specified in THRIFT-110. The
+ * fundamental approach to reducing the overhead of structures is a) use variable-length integers
+ * all over the place and b) make use of unused bits wherever possible. Your savings will obviously
+ * vary based on the specific makeup of your structs, but in general, the more fields, nested
+ * structures, short strings and collections, and low-value i32 and i64 fields you have, the more
+ * benefit you'll see.
+ */
 // This being kept to make a test work - should be removed
 @Deprecated
-public class TFacebookCompactProtocol extends TProtocol {
-  private static final long NO_LENGTH_LIMIT = -1;
+public class TCompactProtocol extends TProtocol {
   private static final byte[] EMPTY_BUFFER = new byte[0];
   private static final ByteBuffer EMPTY_BYTE_BUFFER = ByteBuffer.wrap(EMPTY_BUFFER);
+
+  private static final long NO_LENGTH_LIMIT = -1;
   private static final TStruct ANONYMOUS_STRUCT = new TStruct("");
   private static final TField TSTOP = new TField("", TType.STOP, (short) 0);
 
@@ -51,18 +51,19 @@ public class TFacebookCompactProtocol extends TProtocol {
     ttypeToCompactType[TType.I32] = Types.I32;
     ttypeToCompactType[TType.I64] = Types.I64;
     ttypeToCompactType[TType.DOUBLE] = Types.DOUBLE;
-    ttypeToCompactType[TType.FLOAT] = Types.FLOAT;
     ttypeToCompactType[TType.STRING] = Types.BINARY;
     ttypeToCompactType[TType.LIST] = Types.LIST;
     ttypeToCompactType[TType.SET] = Types.SET;
     ttypeToCompactType[TType.MAP] = Types.MAP;
     ttypeToCompactType[TType.STRUCT] = Types.STRUCT;
+    ttypeToCompactType[TType.FLOAT] = Types.FLOAT;
   }
 
   /** TProtocolFactory that produces TCompactProtocols. */
   public static class Factory implements TProtocolFactory {
     private final long stringLengthLimit_;
     private final long containerLengthLimit_;
+    private final byte protocolWritingVersion;
 
     public Factory() {
       this(NO_LENGTH_LIMIT, NO_LENGTH_LIMIT);
@@ -72,23 +73,33 @@ public class TFacebookCompactProtocol extends TProtocol {
       this(stringLengthLimit, NO_LENGTH_LIMIT);
     }
 
+    public Factory(byte protocolWritingVersion) {
+      this(NO_LENGTH_LIMIT, NO_LENGTH_LIMIT, protocolWritingVersion);
+    }
+
     public Factory(long stringLengthLimit, long containerLengthLimit) {
+      this(stringLengthLimit, containerLengthLimit, (byte) DEFAULT_WRITING_VERSION);
+    }
+
+    public Factory(long stringLengthLimit, long containerLengthLimit, byte protocolWritingVersion) {
       this.containerLengthLimit_ = containerLengthLimit;
       this.stringLengthLimit_ = stringLengthLimit;
+      this.protocolWritingVersion = protocolWritingVersion;
     }
 
     public TProtocol getProtocol(TTransport trans) {
-      return new TFacebookCompactProtocol(trans, stringLengthLimit_, containerLengthLimit_);
+      return new TCompactProtocol(
+          trans, stringLengthLimit_, containerLengthLimit_, protocolWritingVersion);
     }
   }
 
   private static final byte PROTOCOL_ID = (byte) 0x82;
-  private static final byte VERSION = 2;
+  private static final byte DEFAULT_WRITING_VERSION = 1;
   private static final byte VERSION_DOUBLE_BE = 2;
   private static final byte VERSION_MASK = 0x1f; // 0001 1111
   private static final byte TYPE_MASK = (byte) 0xE0; // 1110 0000
+  private static final byte TYPE_BITS = 0x07; // 0000 0111
   private static final int TYPE_SHIFT_AMOUNT = 5;
-  private static final byte TYPE_BITS = 0b0000_0111;
 
   /** All of the on-wire type codes. */
   private static class Types {
@@ -115,7 +126,8 @@ public class TFacebookCompactProtocol extends TProtocol {
 
   private short lastFieldId_ = 0;
 
-  private byte version_ = VERSION;
+  private final byte protocolWritingVersion;
+  private byte protocolReadingVersion;
 
   /**
    * If we encounter a boolean field begin, save the TField here so it can have the value
@@ -142,27 +154,63 @@ public class TFacebookCompactProtocol extends TProtocol {
   private final long containerLengthLimit_;
 
   /**
-   * Create a TFacebookCompactProtocol.
+   * Create a TCompactProtocol.
    *
    * @param transport the TTransport object to read from or write to.
-   * @param stringLengthLimit the maximum number of bytes to read for variable-length fields. If the
-   *     value is <= 0, then the check is disable.
-   * @param containerLengthLimit the maximum number of elements to read for containers. If the value
-   *     is <= 0, then the check is disable.
+   * @param stringLengthLimit the maximum number of bytes to read for variable-length fields.
+   * @param containerLengthLimit the maximum number of elements to read for containers.
    */
-  public TFacebookCompactProtocol(
-      TTransport transport, long stringLengthLimit, long containerLengthLimit) {
-    super(transport);
-    this.stringLengthLimit_ = stringLengthLimit;
-    this.containerLengthLimit_ = containerLengthLimit;
+  public TCompactProtocol(TTransport transport, long stringLengthLimit, long containerLengthLimit) {
+    this(transport, stringLengthLimit, containerLengthLimit, DEFAULT_WRITING_VERSION);
   }
 
   /**
-   * Create a TFacebookCompactProtocol.
+   * Create a TCompactProtocol.
+   *
+   * @param transport the TTransport object to read from or write to.
+   * @param stringLengthLimit the maximum number of bytes to read for variable-length fields.
+   * @param containerLengthLimit the maximum number of elements to read for containers.
+   */
+  public TCompactProtocol(
+      TTransport transport,
+      long stringLengthLimit,
+      long containerLengthLimit,
+      byte protocolWritingVersion) {
+    super(transport);
+    this.stringLengthLimit_ = stringLengthLimit;
+    this.containerLengthLimit_ = containerLengthLimit;
+    this.protocolWritingVersion = protocolWritingVersion;
+    this.protocolReadingVersion = protocolWritingVersion;
+  }
+
+  /**
+   * Create a TCompactProtocol.
+   *
+   * @param transport the TTransport object to read from or write to.
+   * @param stringLengthLimit the maximum number of bytes to read for variable-length fields.
+   * @deprecated Use constructor specifying both string limit and container limit instead
+   */
+  @Deprecated
+  public TCompactProtocol(TTransport transport, long stringLengthLimit) {
+    this(transport, stringLengthLimit, NO_LENGTH_LIMIT);
+  }
+
+  /**
+   * Create a TCompactProtocol.
+   *
+   * @param transport the TTransport object to read from or write to.
+   * @param protocolWritingVersion version use for writing data
+   */
+  public TCompactProtocol(TTransport transport, byte protocolWritingVersion) {
+    this(transport, NO_LENGTH_LIMIT, NO_LENGTH_LIMIT, protocolWritingVersion);
+  }
+
+  /**
+   * Create a TCompactProtocol.
    *
    * @param transport the TTransport object to read from or write to.
    */
-  public TFacebookCompactProtocol(TTransport transport) {
+  public TCompactProtocol(TTransport transport) {
     this(transport, NO_LENGTH_LIMIT, NO_LENGTH_LIMIT);
   }
 
@@ -182,7 +230,9 @@ public class TFacebookCompactProtocol extends TProtocol {
    */
   public void writeMessageBegin(TMessage message) throws TException {
     writeByteDirect(PROTOCOL_ID);
-    writeByteDirect((VERSION & VERSION_MASK) | ((message.type << TYPE_SHIFT_AMOUNT) & TYPE_MASK));
+    writeByteDirect(
+        (protocolWritingVersion & VERSION_MASK)
+            | ((message.type << TYPE_SHIFT_AMOUNT) & TYPE_MASK));
     writeVarint32(message.seqid);
     writeString(message.name);
   }
@@ -207,8 +257,8 @@ public class TFacebookCompactProtocol extends TProtocol {
 
   /**
    * Write a field header containing the field id and field type. If the difference between the
-   * current field id and the last one is small (&lt; 15), then the field id will be encoded in the
-   * 4 MSB as a delta. Otherwise, the field id will follow the type header as a zigzag varint.
+   * current field id and the last one is small (< 15), then the field id will be encoded in the 4
+   * MSB as a delta. Otherwise, the field id will follow the type header as a zigzag varint.
    */
   public void writeFieldBegin(TField field) throws TException {
     if (field.type == TType.BOOL) {
@@ -310,10 +360,16 @@ public class TFacebookCompactProtocol extends TProtocol {
   /** Write a double to the wire as 8 bytes. */
   public void writeDouble(double dub) throws TException {
     byte[] buffer = new byte[8];
-    fixedLongToBytes(Double.doubleToLongBits(dub), buffer, 0);
+    long l = Double.doubleToLongBits(dub);
+    if (protocolWritingVersion >= VERSION_DOUBLE_BE) {
+      fixedLongToBytes(l, buffer, 0);
+    } else {
+      fixedLongToBytesLE(l, buffer, 0);
+    }
     trans_.write(buffer, 0, buffer.length);
   }
 
+  /** Write a float to the wire as 4 bytes. */
   public void writeFloat(float flt) throws TException {
     byte[] buffer = new byte[4];
     fixedIntToBytes(Float.floatToIntBits(flt), buffer, 0);
@@ -328,18 +384,8 @@ public class TFacebookCompactProtocol extends TProtocol {
 
   /** Write a byte array, using a varint for the size. */
   public void writeBinary(ByteBuffer bin) throws TException {
-    byte[] bytes;
-    int offset;
     int length = bin.limit() - bin.position();
-    if (bin.hasArray()) {
-      bytes = bin.array();
-      offset = bin.position() + bin.arrayOffset();
-    } else {
-      bytes = new byte[length];
-      bin.get(bytes);
-      offset = 0;
-    }
-    writeBinary(bytes, offset, length);
+    writeBinary(bin.array(), bin.position() + bin.arrayOffset(), length);
   }
 
   private void writeBinary(byte[] buf, int offset, int length) throws TException {
@@ -379,7 +425,10 @@ public class TFacebookCompactProtocol extends TProtocol {
     }
   }
 
-  /** Write an i32 as a varint. Results in 1-5 bytes on the wire. */
+  /**
+   * Write an i32 as a varint. Results in 1-5 bytes on the wire. TODO: make a permanent buffer like
+   * writeVarint64?
+   */
   private void writeVarint32(int n) throws TException {
     byte[] buffer = new byte[5];
     int idx = 0;
@@ -427,6 +476,18 @@ public class TFacebookCompactProtocol extends TProtocol {
     return (n << 1) ^ (n >> 31);
   }
 
+  /** Convert a long into little-endian bytes in buf starting at off and going until off+7. */
+  private void fixedLongToBytesLE(long n, byte[] buf, int off) {
+    buf[off + 0] = (byte) (n & 0xff);
+    buf[off + 1] = (byte) ((n >> 8) & 0xff);
+    buf[off + 2] = (byte) ((n >> 16) & 0xff);
+    buf[off + 3] = (byte) ((n >> 24) & 0xff);
+    buf[off + 4] = (byte) ((n >> 32) & 0xff);
+    buf[off + 5] = (byte) ((n >> 40) & 0xff);
+    buf[off + 6] = (byte) ((n >> 48) & 0xff);
+    buf[off + 7] = (byte) ((n >> 56) & 0xff);
+  }
+
   /** Convert a long into big-endian bytes in buf starting at off and going until off+7. */
   private void fixedLongToBytes(long n, byte[] buf, int off) {
     buf[off + 0] = (byte) ((n >> 56) & 0xff);
@@ -453,7 +514,7 @@ public class TFacebookCompactProtocol extends TProtocol {
    */
   private void writeByteDirect(byte b) throws TException {
     byte[] buffer = new byte[] {b};
-    trans_.write(buffer, 0, 1);
+    trans_.write(buffer, 0, buffer.length);
   }
 
   /** Writes a byte without any possibility of all that field header nonsense. */
@@ -476,9 +537,9 @@ public class TFacebookCompactProtocol extends TProtocol {
               + Integer.toHexString(protocolId));
     }
     byte versionAndType = readByte();
-    version_ = (byte) (versionAndType & VERSION_MASK);
-    if (version_ != VERSION) {
-      throw new TProtocolException("Expected version " + VERSION + " but got " + version_);
+    protocolReadingVersion = (byte) (versionAndType & VERSION_MASK);
+    if (protocolReadingVersion != 1 && protocolReadingVersion != 2) {
+      throw new TProtocolException("Unsupported Thrift protocol version " + protocolReadingVersion);
     }
     byte type = (byte) ((versionAndType >> TYPE_SHIFT_AMOUNT) & TYPE_BITS);
     int seqid = readVarint32();
@@ -596,8 +657,8 @@ public class TFacebookCompactProtocol extends TProtocol {
 
   /** Read a single byte off the wire. Nothing interesting here. */
   public byte readByte() throws TException {
-    byte[] buffer = new byte[1];
     byte b;
+    byte[] buffer = new byte[1];
     if (trans_.getBytesRemainingInBuffer() > 0) {
       b = trans_.getBuffer()[trans_.getBufferPosition()];
       trans_.consumeBuffer(1);
@@ -628,8 +689,8 @@ public class TFacebookCompactProtocol extends TProtocol {
     byte[] buffer = new byte[8];
     trans_.readAll(buffer, 0, buffer.length);
     long value;
-    if (version_ >= VERSION_DOUBLE_BE) {
-      value = bytesToLongBE(buffer);
+    if (protocolReadingVersion >= VERSION_DOUBLE_BE) {
+      value = bytesToLong(buffer);
     } else {
       value = bytesToLongLE(buffer);
     }
@@ -647,26 +708,29 @@ public class TFacebookCompactProtocol extends TProtocol {
   /** Reads a byte[] (via readBinary), and then UTF-8 decodes it. */
   public String readString() throws TException {
     int length = readVarint32();
-    checkContentReadLength(length);
+    checkStringReadLength(length);
 
     if (length == 0) {
       return "";
     }
 
-    if (trans_.getBytesRemainingInBuffer() >= length) {
-      int offset = trans_.getBufferPosition();
-      String str = new String(trans_.getBuffer(), offset, length, StandardCharsets.UTF_8);
-      trans_.consumeBuffer(length);
-      return str;
-    } else {
-      return new String(readBinary(length), StandardCharsets.UTF_8);
+    try {
+      if (trans_.getBytesRemainingInBuffer() >= length) {
+        String str = new String(trans_.getBuffer(), trans_.getBufferPosition(), length, "UTF-8");
+        trans_.consumeBuffer(length);
+        return str;
+      } else {
+        return new String(readBinary(length), "UTF-8");
+      }
+    } catch (UnsupportedEncodingException e) {
+      throw new TException("UTF-8 not supported!");
     }
   }
 
   /** Read a byte[] from the wire. */
   public ByteBuffer readBinary() throws TException {
     int length = readVarint32();
-    checkContentReadLength(length);
+    checkStringReadLength(length);
     if (length == 0) {
       return EMPTY_BYTE_BUFFER;
     }
@@ -688,15 +752,13 @@ public class TFacebookCompactProtocol extends TProtocol {
     return buf;
   }
 
-  private void checkContentReadLength(int length) throws TProtocolException {
+  private void checkStringReadLength(int length) throws TProtocolException {
     if (length < 0) {
       throw new TProtocolException(TProtocolException.NEGATIVE_SIZE, "Negative length: " + length);
     }
-    if (stringLengthLimit_ > 0 && length > stringLengthLimit_) {
+    if (stringLengthLimit_ != NO_LENGTH_LIMIT && length > stringLengthLimit_) {
       throw new TProtocolException(
-          TProtocolException.SIZE_LIMIT,
-          String.format(
-              "String/binary length %s exceeded max allowed %s", length, stringLengthLimit_));
+          TProtocolException.SIZE_LIMIT, "Length exceeded max allowed: " + length);
     }
   }
 
@@ -704,11 +766,9 @@ public class TFacebookCompactProtocol extends TProtocol {
     if (length < 0) {
       throw new TProtocolException(TProtocolException.NEGATIVE_SIZE, "Negative length: " + length);
     }
-    if (containerLengthLimit_ > 0 && length > containerLengthLimit_) {
+    if (containerLengthLimit_ != NO_LENGTH_LIMIT && length > containerLengthLimit_) {
       throw new TProtocolException(
-          TProtocolException.SIZE_LIMIT,
-          String.format(
-              "Container length %s exceeded max allowed %s", length, containerLengthLimit_));
+          TProtocolException.SIZE_LIMIT, "Length exceeded max allowed: " + length);
     }
   }
 
@@ -744,9 +804,7 @@ public class TFacebookCompactProtocol extends TProtocol {
       while (true) {
         byte b = buf[pos + off];
         result |= (int) (b & 0x7f) << shift;
-        if ((b & 0x80) != 0x80) {
-          break;
-        }
+        if ((b & 0x80) != 0x80) break;
         shift += 7;
         off++;
       }
@@ -755,9 +813,7 @@ public class TFacebookCompactProtocol extends TProtocol {
       while (true) {
         byte b = readByte();
         result |= (int) (b & 0x7f) << shift;
-        if ((b & 0x80) != 0x80) {
-          break;
-        }
+        if ((b & 0x80) != 0x80) break;
         shift += 7;
       }
     }
@@ -778,9 +834,7 @@ public class TFacebookCompactProtocol extends TProtocol {
       while (true) {
         byte b = buf[pos + off];
         result |= (long) (b & 0x7f) << shift;
-        if ((b & 0x80) != 0x80) {
-          break;
-        }
+        if ((b & 0x80) != 0x80) break;
         shift += 7;
         off++;
       }
@@ -789,9 +843,7 @@ public class TFacebookCompactProtocol extends TProtocol {
       while (true) {
         byte b = readByte();
         result |= (long) (b & 0x7f) << shift;
-        if ((b & 0x80) != 0x80) {
-          break;
-        }
+        if ((b & 0x80) != 0x80) break;
         shift += 7;
       }
     }
@@ -816,7 +868,7 @@ public class TFacebookCompactProtocol extends TProtocol {
    * Note that it's important that the mask bytes are long literals, otherwise they'll default to
    * ints, and when you shift an int left 56 bits, you just get a messed up int.
    */
-  private long bytesToLongBE(byte[] bytes) {
+  private long bytesToLong(byte[] bytes) {
     return ((bytes[0] & 0xffL) << 56)
         | ((bytes[1] & 0xffL) << 48)
         | ((bytes[2] & 0xffL) << 40)
@@ -873,8 +925,6 @@ public class TFacebookCompactProtocol extends TProtocol {
         return TType.I64;
       case Types.DOUBLE:
         return TType.DOUBLE;
-      case Types.FLOAT:
-        return TType.FLOAT;
       case Types.BINARY:
         return TType.STRING;
       case Types.LIST:
@@ -885,6 +935,8 @@ public class TFacebookCompactProtocol extends TProtocol {
         return TType.MAP;
       case Types.STRUCT:
         return TType.STRUCT;
+      case Types.FLOAT:
+        return TType.FLOAT;
       default:
         throw new TProtocolException("don't know what type: " + (byte) (type & 0x0f));
     }
@@ -897,7 +949,7 @@ public class TFacebookCompactProtocol extends TProtocol {
 
   @Override
   protected int typeMinimumSize(byte type) {
-    switch (type & 0x0f) {
+    switch (type & 0x0F) {
       case TType.BOOL:
       case TType.BYTE:
       case TType.I16: // because of variable length encoding
@@ -905,6 +957,7 @@ public class TFacebookCompactProtocol extends TProtocol {
       case TType.I64: // because of variable length encoding
       case TType.FLOAT: // because of variable length encoding
       case TType.DOUBLE: // because of variable length encoding
+        return 1;
       case TType.STRING:
       case TType.STRUCT:
       case TType.MAP:

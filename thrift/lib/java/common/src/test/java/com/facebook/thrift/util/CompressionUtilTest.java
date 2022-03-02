@@ -29,10 +29,7 @@ import org.junit.Test;
 public class CompressionUtilTest {
   @Test
   public void testInflateByteArray() throws Exception {
-    InputStream s =
-        Thread.currentThread()
-            .getContextClassLoader()
-            .getResourceAsStream("src/test/resources/lorem.txt");
+    InputStream s = Thread.currentThread().getContextClassLoader().getResourceAsStream("lorem.txt");
 
     DeflaterInputStream dis = new DeflaterInputStream(s);
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -49,10 +46,7 @@ public class CompressionUtilTest {
 
     String deflatedText = out.toString(StandardCharsets.UTF_8);
 
-    s =
-        Thread.currentThread()
-            .getContextClassLoader()
-            .getResourceAsStream("src/test/resources/lorem.txt");
+    s = Thread.currentThread().getContextClassLoader().getResourceAsStream("lorem.txt");
 
     bos = new ByteArrayOutputStream();
     assert s != null;
@@ -69,9 +63,7 @@ public class CompressionUtilTest {
     ByteBuf in = alloc.buffer();
     try {
       InputStream s =
-          Thread.currentThread()
-              .getContextClassLoader()
-              .getResourceAsStream("src/test/resources/lorem.txt");
+          Thread.currentThread().getContextClassLoader().getResourceAsStream("lorem.txt");
 
       DeflaterInputStream dis = new DeflaterInputStream(s);
       ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -87,10 +79,7 @@ public class CompressionUtilTest {
 
       String deflatedText = out.toString(StandardCharsets.UTF_8);
 
-      s =
-          Thread.currentThread()
-              .getContextClassLoader()
-              .getResourceAsStream("src/test/resources/lorem.txt");
+      s = Thread.currentThread().getContextClassLoader().getResourceAsStream("lorem.txt");
 
       bos = new ByteArrayOutputStream();
       assert s != null;

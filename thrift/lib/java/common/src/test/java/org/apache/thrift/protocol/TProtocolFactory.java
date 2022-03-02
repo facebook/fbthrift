@@ -14,26 +14,14 @@
  * limitations under the License.
  */
 
-namespace java.swift com.facebook.thrift.test
+package org.apache.thrift.protocol;
 
-struct EveryLayout {
-  1: bool aBool;
-  2: i32 aInt;
-  3: i64 aLong;
-  5: string aString;
-  6: double aDouble;
-  7: float aFloat;
-  8: i16 aShort;
-  9: byte aByte;
-  10: list<string> aList;
-  11: set<string> aSet;
-  12: map<i32, string> aMap;
-  13: list<list<string>> aListOfLists;
-  14: set<set<string>> aSetOfSets;
-  15: map<list<i32>, list<i32>> aMapOfLists;
-  16: binary aBinary;
-}
+import java.io.Serializable;
+import org.apache.thrift.transport.TTransport;
 
-struct JustABinary {
-  1: binary aBinary;
+/** Factory interface for constructing protocol instances. */
+// This being kept to make a test work - should be removed
+@Deprecated
+public interface TProtocolFactory extends Serializable {
+  public TProtocol getProtocol(TTransport trans);
 }

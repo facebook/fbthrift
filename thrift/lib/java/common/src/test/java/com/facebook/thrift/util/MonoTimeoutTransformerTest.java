@@ -28,7 +28,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
-public class TestMonoTimeoutTransformer {
+public class MonoTimeoutTransformerTest {
   @Test
   public void testShouldNotTimeout() {
     Mono<Integer> transform =
