@@ -296,8 +296,15 @@ using ParseObjectTestCases = ::testing::Types<
     type::double_t,
     // binary_t, conformance::object has separate binary value but
     // BinarySerializer serializes with type set as T_STRING
-    type::string_t>;
-// TODO : test structs with containers, field modifiers, nested struct
+    type::string_t,
+    type::list<type::i64_t>,
+    type::list<type::string_t>,
+    type::set<type::i64_t>,
+    type::set<type::string_t>,
+    type::map<type::string_t, type::i64_t>,
+    type::map<type::i64_t, type::double_t>,
+    type::map<type::i64_t, type::set<type::string_t>>>;
+// TODO : field modifiers, nested struct
 
 TYPED_TEST_SUITE(TypedParseObjectTest, ParseObjectTestCases);
 
