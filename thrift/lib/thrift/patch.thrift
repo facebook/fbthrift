@@ -26,6 +26,9 @@ struct BoolPatch {
   //
   // If set, all other patch operations are ignored.
   1: optional bool assign;
+
+  // If the bool value should be inverted.
+  2: bool invert;
 } (
   cpp.name = "BoolPatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::BoolPatchAdapter",

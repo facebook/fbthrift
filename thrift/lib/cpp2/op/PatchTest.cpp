@@ -31,11 +31,22 @@ TEST(PatchTest, BoolPatch) {
   test::expectPatch(patch, false, false);
   test::expectPatch(patch, true, true);
 
+  // Inverting patch inverts.
+  patch.invert();
+  test::expectPatch(patch, false, true, false);
+  test::expectPatch(patch, true, false, true);
+
+  // Double inverting patch does nothing.
+  patch = !patch;
+  EXPECT_TRUE(patch.empty());
+  test::expectPatch(patch, false, false);
+  test::expectPatch(patch, true, true);
+
   // Assigning patch assigns.
   patch = true;
   test::expectPatch(patch, false, true);
   test::expectPatch(patch, true, true);
-  patch = false;
+  patch = !patch;
   test::expectPatch(patch, false, false);
   test::expectPatch(patch, true, false);
 }

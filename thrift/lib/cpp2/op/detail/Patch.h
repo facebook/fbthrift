@@ -94,19 +94,40 @@ class BoolPatch : public BasePatch<Patch, BoolPatch<Patch>> {
   using Base = BasePatch<Patch, BoolPatch>;
   using T = typename Base::value_type;
   using Base::applyAssign;
+  using Base::assignOr;
   using Base::mergeAssign;
 
  public:
   using Base::Base;
+  using Base::get;
   using Base::hasAssign;
   using Base::operator=;
 
-  bool empty() const noexcept { return !hasAssign(); }
-  void apply(T& val) const noexcept { applyAssign(val); }
+  bool empty() const noexcept { return !hasAssign() && !invert_(); }
+
+  void apply(T& val) const noexcept {
+    if (!applyAssign(val) && invert_()) {
+      val = !val;
+    }
+  }
+
   template <typename U>
   void merge(U&& next) {
-    mergeAssign(std::forward<U>(next));
+    if (!mergeAssign(std::forward<U>(next))) {
+      invert_() ^= *next.get().invert();
+    }
   }
+
+  void invert() noexcept {
+    auto& val = assignOr(invert_());
+    val = !val;
+  }
+
+ private:
+  friend BoolPatch operator!(BoolPatch val) { return (val.invert(), val); }
+
+  T& invert_() noexcept { return *this->patch_.invert(); }
+  const T& invert_() const noexcept { return *this->patch_.invert(); }
 };
 
 template <typename Patch>

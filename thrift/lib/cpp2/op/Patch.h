@@ -55,13 +55,19 @@ BinaryPatch<BinaryPatchStruct> patchType(type::binary_t);
 //  patch.apply(value); // Sets value to 2;
 template <typename Tag>
 using patch_type = decltype(detail::patchType(Tag{}));
+
+// A patch for a boolean, which additionally supports:
+// - invert() - Inverts the patch, in place.
+// - operator!(BoolPatch) - Returns an inverted version of the given patch.
 using BoolPatch = patch_type<type::bool_t>;
+
 using BytePatch = patch_type<type::byte_t>;
 using I16Patch = patch_type<type::i16_t>;
 using I32Patch = patch_type<type::i32_t>;
 using I64Patch = patch_type<type::i64_t>;
 using FloatPatch = patch_type<type::float_t>;
 using DoublePatch = patch_type<type::double_t>;
+
 using StringPatch = patch_type<type::string_t>;
 using BinaryPatch = patch_type<type::binary_t>;
 
