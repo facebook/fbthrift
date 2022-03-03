@@ -76,7 +76,7 @@ class MultiplexAsyncProcessorFactory final : public AsyncProcessorFactory {
 
   std::shared_ptr<folly::RequestContext> getBaseContextForRequest(
       const MethodMetadata&) override;
-  std::vector<ServiceHandler*> getServiceHandlers() override;
+  std::vector<ServiceHandlerBase*> getServiceHandlers() override;
 
   /**
    * Metadata about the chain of AsyncProcessorFactory's - computed once.

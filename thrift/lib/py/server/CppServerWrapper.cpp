@@ -464,7 +464,8 @@ class PythonAsyncProcessorFactory : public AsyncProcessorFactory {
 
   // TODO(T89004867): Call onStartServing() and onStopServing() hooks for
   // non-C++ thrift servers
-  std::vector<apache::thrift::ServiceHandler*> getServiceHandlers() override {
+  std::vector<apache::thrift::ServiceHandlerBase*> getServiceHandlers()
+      override {
     return {};
   }
 

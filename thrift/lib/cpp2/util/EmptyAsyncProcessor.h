@@ -28,7 +28,7 @@ class EmptyAsyncProcessorFactory : public AsyncProcessorFactory {
   CreateMethodMetadataResult createMethodMetadata() override {
     return MethodMetadataMap{/* empty */};
   }
-  std::vector<ServiceHandler*> getServiceHandlers() override { return {}; }
+  std::vector<ServiceHandlerBase*> getServiceHandlers() override { return {}; }
 };
 
 } // namespace apache::thrift

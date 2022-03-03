@@ -107,7 +107,7 @@ class EventTask : public concurrency::Runnable, public InteractionTask {
 };
 
 class AsyncProcessor;
-class ServiceHandler;
+class ServiceHandlerBase;
 class ServerRequest;
 
 // This contains information about a request that is required in the thrift
@@ -151,12 +151,12 @@ class AsyncProcessorFactory {
   virtual std::unique_ptr<AsyncProcessor> getProcessor() = 0;
   /**
    * Returns the known list of user-implemented service handlers. For generated
-   * services, the AsyncProcessorFactory also serves as a ServiceHandler.
+   * services, the AsyncProcessorFactory also serves as a ServiceHandlerBase.
    * However, custom implementations may wrap one or more other
    * AsyncProcessorFactory's, in which case, they MUST return their combined
    * result.
    */
-  virtual std::vector<ServiceHandler*> getServiceHandlers() = 0;
+  virtual std::vector<ServiceHandlerBase*> getServiceHandlers() = 0;
 
   struct MethodMetadata {
     virtual ~MethodMetadata() = default;
@@ -813,7 +813,7 @@ class RequestParams {
  * user code to be notified by ThriftServer and respond to events (via
  * callbacks).
  */
-class ServiceHandler {
+class ServiceHandlerBase {
  private:
 #if FOLLY_HAS_COROUTINES
   class MethodNotImplemented : public std::logic_error {
@@ -872,7 +872,7 @@ class ServiceHandler {
    */
   void shutdownServer();
 
-  virtual ~ServiceHandler() = default;
+  virtual ~ServiceHandlerBase() = default;
 
  protected:
 #if FOLLY_HAS_COROUTINES
@@ -889,11 +889,11 @@ class ServiceHandler {
 
 /**
  * Base-class for generated service handlers. While AsyncProcessorFactory and
- * ServiceHandler are separate layers of abstraction, generated code reuse the
- * same object for both.
+ * ServiceHandlerBase are separate layers of abstraction, generated code reuse
+ * the same object for both.
  */
 class ServerInterface : public virtual AsyncProcessorFactory,
-                        public ServiceHandler {
+                        public ServiceHandlerBase {
  public:
   ServerInterface() = default;
   ServerInterface(const ServerInterface&) = delete;
@@ -981,7 +981,9 @@ class ServerInterface : public virtual AsyncProcessorFactory,
     return getRequestExecutionScope(ctx, concurrency::NORMAL);
   }
 
-  std::vector<ServiceHandler*> getServiceHandlers() override { return {this}; }
+  std::vector<ServiceHandlerBase*> getServiceHandlers() override {
+    return {this};
+  }
 
   /**
    * The concrete instance of MethodMetadata that generated AsyncProcessors

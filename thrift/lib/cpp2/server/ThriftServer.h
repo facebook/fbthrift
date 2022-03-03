@@ -400,11 +400,11 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    * Collects service handlers of the current service of a specific type.
    */
   template <
-      typename TServiceHandler = ServiceHandler,
-      typename =
-          std::enable_if_t<std::is_base_of_v<ServiceHandler, TServiceHandler>>>
+      typename TServiceHandler = ServiceHandlerBase,
+      typename = std::enable_if_t<
+          std::is_base_of_v<ServiceHandlerBase, TServiceHandler>>>
   std::vector<TServiceHandler*> collectServiceHandlers() const {
-    if constexpr (std::is_same_v<TServiceHandler, ServiceHandler>) {
+    if constexpr (std::is_same_v<TServiceHandler, ServiceHandlerBase>) {
       return getDecoratedProcessorFactory().getServiceHandlers();
     }
     std::vector<TServiceHandler*> matchedServiceHandlers;

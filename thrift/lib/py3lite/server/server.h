@@ -339,7 +339,8 @@ class Py3LiteAsyncProcessorFactory
         functions_, executor, serviceName_);
   }
 
-  std::vector<apache::thrift::ServiceHandler*> getServiceHandlers() override {
+  std::vector<apache::thrift::ServiceHandlerBase*> getServiceHandlers()
+      override {
     return {};
   }
 

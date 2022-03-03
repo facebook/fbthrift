@@ -406,9 +406,9 @@ MultiplexAsyncProcessorFactory::getBaseContextForRequest(
       wildcardMethodMetadata);
 }
 
-std::vector<ServiceHandler*>
+std::vector<ServiceHandlerBase*>
 MultiplexAsyncProcessorFactory::getServiceHandlers() {
-  std::vector<ServiceHandler*> result;
+  std::vector<ServiceHandlerBase*> result;
   for (auto& processorFactory : processorFactories_) {
     auto newHandlers = processorFactory->getServiceHandlers();
     result.insert(result.end(), newHandlers.begin(), newHandlers.end());

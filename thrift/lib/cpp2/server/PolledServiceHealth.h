@@ -33,7 +33,7 @@ namespace apache::thrift {
  * ThriftServer will periodically poll getServiceHealth and adjust its
  * internally stored status accordingly.
  */
-class PolledServiceHealth : public virtual ServiceHandler {
+class PolledServiceHealth : public virtual ServiceHandlerBase {
  public:
   enum class ServiceHealth : std::uint8_t {
     // 0 is used to represent an uninitialized value

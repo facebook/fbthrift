@@ -94,7 +94,7 @@ class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {
         new typename T::ProcessorType(svIf_.get()));
   }
 
-  std::vector<ServiceHandler*> getServiceHandlers() override {
+  std::vector<ServiceHandlerBase*> getServiceHandlers() override {
     return {svIf_.get()};
   }
 

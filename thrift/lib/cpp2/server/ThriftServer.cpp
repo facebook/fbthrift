@@ -174,22 +174,22 @@ std::unique_ptr<AsyncProcessorFactory> createDecoratedProcessorFactory(
 // instead of AsyncProcessor.h
 
 #if FOLLY_HAS_COROUTINES
-folly::coro::CancellableAsyncScope* ServiceHandler::getAsyncScope() {
+folly::coro::CancellableAsyncScope* ServiceHandlerBase::getAsyncScope() {
   return server_->getAsyncScope();
 }
 #endif
 
-void ServiceHandler::attachServer(ThriftServer& server) {
+void ServiceHandlerBase::attachServer(ThriftServer& server) {
   server_ = &server;
   serverStopController_.lock()->emplace(server.getStopController());
 }
 
-void ServiceHandler::detachServer() {
+void ServiceHandlerBase::detachServer() {
   server_ = nullptr;
   serverStopController_.lock()->reset();
 }
 
-void ServiceHandler::shutdownServer() {
+void ServiceHandlerBase::shutdownServer() {
   // shutdownServer should be idempotent -- this means that it can race with
   // detachServer. Thus we should sychronize access to it.
   serverStopController_.withLock([](auto& stopController) {

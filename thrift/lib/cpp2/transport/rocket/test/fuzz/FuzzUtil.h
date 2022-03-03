@@ -106,7 +106,8 @@ class FakeProcessorFactory final
     return std::make_unique<FakeProcessor>();
   }
 
-  std::vector<apache::thrift::ServiceHandler*> getServiceHandlers() override {
+  std::vector<apache::thrift::ServiceHandlerBase*> getServiceHandlers()
+      override {
     return {};
   }
 };
