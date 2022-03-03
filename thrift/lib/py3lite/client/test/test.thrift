@@ -15,6 +15,7 @@
  */
 
 namespace cpp2 thrift.py3lite.test
+namespace py thrift.py.test
 namespace py3 thrift.py3lite
 
 exception EmptyException {}
