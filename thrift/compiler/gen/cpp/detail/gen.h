@@ -26,7 +26,7 @@ namespace gen {
 namespace cpp {
 namespace detail {
 
-template <typename C, typename K, typename G>
+template <typename C, typename K = typename C::key_type, typename G>
 auto& get_or_gen(C& cache, const K& key, const G& gen_func) {
   auto itr = cache.find(key);
   if (itr == cache.end()) {

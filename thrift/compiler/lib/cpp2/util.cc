@@ -120,7 +120,7 @@ bool is_orderable(t_type const& type) {
 }
 
 std::string const& get_type(const t_type* type) {
-  return value_or_empty(gen::cpp::type_resolver::find_type(type));
+  return value_or_empty(gen::cpp::type_resolver::find_type(*type));
 }
 
 bool is_implicit_ref(const t_type* type) {

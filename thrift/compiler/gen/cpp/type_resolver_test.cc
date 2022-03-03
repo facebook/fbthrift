@@ -32,28 +32,29 @@ namespace {
 
 class TypeResolverTest : public ::testing::Test {
  public:
-  TypeResolverTest() noexcept : program_("path/to/program.thrift") {
+  TypeResolverTest() noexcept
+      : program_("path/to/program.thrift"), struct_(&program_, "ThriftStruct") {
     program_.set_namespace("cpp2", "path.to");
   }
 
   bool can_resolve_to_scalar(const t_type& node) {
-    return resolver_.can_resolve_to_scalar(&node);
+    return resolver_.can_resolve_to_scalar(node);
   }
 
   const std::string& get_type_name(const t_type& node) {
-    return resolver_.get_type_name(&node);
+    return resolver_.get_type_name(node);
   }
 
   const std::string& get_type_name(const t_field& node) {
-    return resolver_.get_type_name(&node, &strct_name);
+    return resolver_.get_type_name(node, struct_);
   }
 
   const std::string& get_standard_type_name(const t_type& node) {
-    return resolver_.get_standard_type_name(&node);
+    return resolver_.get_standard_type_name(node);
   }
 
   const std::string& get_storage_type_name(const t_field& node) {
-    return resolver_.get_storage_type_name(&node, &strct_name);
+    return resolver_.get_storage_type_name(node, struct_);
   }
 
   std::string get_type_tag(const t_type& type) {
@@ -63,7 +64,7 @@ class TypeResolverTest : public ::testing::Test {
  protected:
   type_resolver resolver_;
   t_program program_;
-  std::string strct_name = "ThriftStruct";
+  t_struct struct_;
 };
 
 TEST_F(TypeResolverTest, BaseTypes) {
@@ -384,7 +385,6 @@ TEST_F(TypeResolverTest, StorageType) {
   t_base_type ui64(t_base_type::t_i64());
   ui64.set_annotation("cpp.type", "uint64_t");
   ui64.set_annotation("cpp.adapter", "HashAdapter");
-  std::string strct_name = "ThriftStruct";
   {
     t_field ui64_field(ui64, "hash", 1);
     EXPECT_EQ(

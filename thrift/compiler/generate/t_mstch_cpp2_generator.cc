@@ -495,13 +495,13 @@ class mstch_cpp2_type : public mstch_type {
     return false;
   }
   mstch::node cpp_name() { return cpp2::get_name(type_); }
-  mstch::node cpp_type() { return context_->resolver().get_type_name(type_); }
+  mstch::node cpp_type() { return context_->resolver().get_type_name(*type_); }
   mstch::node cpp_standard_type() {
-    return context_->resolver().get_standard_type_name(type_);
+    return context_->resolver().get_standard_type_name(*type_);
   }
   mstch::node cpp_adapter() {
     if (const auto* adapter =
-            gen::cpp::type_resolver::find_first_adapter(type_)) {
+            gen::cpp::type_resolver::find_first_adapter(*type_)) {
       return *adapter;
     }
     return {};
@@ -556,7 +556,7 @@ class mstch_cpp2_type : public mstch_type {
   std::shared_ptr<cpp2_generator_context> context_;
 
   bool is_adapted() const {
-    return gen::cpp::type_resolver::find_first_adapter(type_) != nullptr;
+    return gen::cpp::type_resolver::find_first_adapter(*type_) != nullptr;
   }
 };
 
@@ -641,8 +641,7 @@ class mstch_cpp2_field : public mstch_field {
   mstch::node cpp_name() { return cpp2::get_name(field_); }
   mstch::node cpp_type() {
     assert(field_context_->strct);
-    return context_->resolver().get_type_name(
-        field_, &field_context_->strct->name());
+    return context_->resolver().get_type_name(*field_, *field_context_->strct);
   }
   mstch::node cpp_storage_name() {
     if (!is_eligible_for_storage_name_mangling()) {
@@ -654,7 +653,7 @@ class mstch_cpp2_field : public mstch_field {
   mstch::node cpp_storage_type() {
     assert(field_context_->strct);
     return context_->resolver().get_storage_type_name(
-        field_, &field_context_->strct->name());
+        *field_, *field_context_->strct);
   }
   mstch::node eligible_for_storage_name_mangling() {
     return is_eligible_for_storage_name_mangling();
@@ -667,11 +666,11 @@ class mstch_cpp2_field : public mstch_field {
     // been removed.
     assert(field_context_->strct);
     return context_->resolver().get_storage_type_name(
-        field_, &field_context_->strct->name());
+        *field_, *field_context_->strct);
   }
   mstch::node has_deprecated_accessors() {
     return !cpp2::is_explicit_ref(field_) && !cpp2::is_lazy(field_) &&
-        !gen::cpp::type_resolver::find_first_adapter(field_) &&
+        !gen::cpp::type_resolver::find_first_adapter(*field_) &&
         !has_option("no_getters_setters");
   }
   mstch::node cpp_ref() { return cpp2::is_explicit_ref(field_); }
@@ -724,7 +723,7 @@ class mstch_cpp2_field : public mstch_field {
   }
   mstch::node cpp_adapter() {
     if (const std::string* adapter =
-            gen::cpp::type_resolver::find_first_adapter(field_)) {
+            gen::cpp::type_resolver::find_first_adapter(*field_)) {
       return *adapter;
     }
     return {};
@@ -956,7 +955,7 @@ class mstch_cpp2_struct : public mstch_struct {
   mstch::node nondefault_copy_ctor_and_assignment() {
     for (auto const& f : strct_->fields()) {
       if (cpp2::field_transitively_refers_to_unique(&f) || cpp2::is_lazy(&f) ||
-          gen::cpp::type_resolver::find_first_adapter(&f)) {
+          gen::cpp::type_resolver::find_first_adapter(f)) {
         return true;
       }
     }
