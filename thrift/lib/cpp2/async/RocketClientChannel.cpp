@@ -495,6 +495,8 @@ void RocketClientChannel::setCompression(
 
 class RocketClientChannel::SingleRequestSingleResponseCallback final
     : public rocket::RocketClient::RequestResponseCallback {
+  using clock = std::chrono::steady_clock;
+
  public:
   SingleRequestSingleResponseCallback(
       RequestClientCallback::Ptr cb,
@@ -506,17 +508,20 @@ class RocketClientChannel::SingleRequestSingleResponseCallback final
         protocolId_(protocolId),
         methodName_(std::move(methodName)),
         requestSerializedSize_(requestSerializedSize),
-        requestWireSize_(requestWireSize) {}
+        requestWireSize_(requestWireSize),
+        timeBeginSend_(clock::now()) {}
 
-  void onWriteSuccess() noexcept override {}
+  void onWriteSuccess() noexcept override { timeEndSend_ = clock::now(); }
 
   void onResponsePayload(
       folly::Try<rocket::Payload>&& payload) noexcept override {
     folly::Try<FirstResponsePayload> response;
-    ResponseSerializationHandler handler(protocolId_);
     RpcSizeStats stats;
     stats.requestSerializedSizeBytes = requestSerializedSize_;
     stats.requestWireSizeBytes = requestWireSize_;
+    stats.requestLatency = timeEndSend_ - timeBeginSend_;
+    stats.responseLatency = clock::now() - timeEndSend_;
+    ResponseSerializationHandler handler(protocolId_);
     if (payload.hasException()) {
       if (!payload.exception().with_exception<rocket::RocketException>(
               [&](auto& ex) {
@@ -568,6 +573,8 @@ class RocketClientChannel::SingleRequestSingleResponseCallback final
   ManagedStringView methodName_;
   const size_t requestSerializedSize_;
   const size_t requestWireSize_;
+  const std::chrono::time_point<clock> timeBeginSend_;
+  std::chrono::time_point<clock> timeEndSend_;
 };
 
 class RocketClientChannel::SingleRequestNoResponseCallback final
