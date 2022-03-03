@@ -113,8 +113,6 @@ struct struct_private_access {
   FOLLY_CREATE_MEMBER_INVOKER(clear_fn, __fbthrift_clear);
   FOLLY_CREATE_MEMBER_INVOKER(empty_fn, __fbthrift_is_empty);
 
-  FOLLY_INLINE_VARIABLE static constexpr empty_fn is_empty{};
-
   template <FieldId Id>
   struct get_fn {
     template <typename T>
@@ -143,6 +141,9 @@ struct IsThriftUnion<T, folly::void_t<typename T::__fbthrift_cpp2_type>>
 
 using clear_fn = detail::st::struct_private_access::clear_fn;
 FOLLY_INLINE_VARIABLE constexpr clear_fn clear{};
+
+using empty_fn = detail::st::struct_private_access::empty_fn;
+FOLLY_INLINE_VARIABLE static constexpr empty_fn empty{};
 
 template <typename T>
 constexpr bool is_thrift_class_v =

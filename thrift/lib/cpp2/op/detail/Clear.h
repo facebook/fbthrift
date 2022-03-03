@@ -88,7 +88,7 @@ struct Empty {
     } else if constexpr (type::is_a_v<Tag, type::union_c>) {
       return value.getType() == T::__EMPTY__;
     } else if constexpr (type::is_a_v<Tag, type::struct_except_c>) {
-      return apache::thrift::detail::st::struct_private_access::is_empty(value);
+      return apache::thrift::empty(value);
     }
 
     // All unstructured values are 'empty' if they are identical to their
