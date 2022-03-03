@@ -89,9 +89,19 @@ TEST(PatchTest, StringPatch) {
   EXPECT_TRUE(patch.empty());
   test::expectPatch(patch, "hi", "hi");
 
+  // Relative patch patches.
+  patch = "_" + std::move(patch);
+  patch += "_";
+  test::expectPatch(patch, "hi", "_hi_", "__hi__");
+  patch.prepend("$");
+  patch.append("^");
+  test::expectPatch(patch, "hi", "$_hi_^", "$_$_hi_^_^");
+
   // Assign patch assigns.
   patch = "bye";
   test::expectPatch(patch, "hi", "bye");
+  patch = "__" + std::move(patch) + "__";
+  test::expectPatch(patch, "hi", "__bye__");
   patch = "";
   test::expectPatch(patch, "hi", "");
 }

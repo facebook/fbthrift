@@ -206,6 +206,7 @@ class StringPatch : public BasePatch<Patch, StringPatch<Patch>> {
   using Base = BasePatch<Patch, StringPatch<Patch>>;
   using T = typename Base::value_type;
   using Base::applyAssign;
+  using Base::assignOr;
   using Base::mergeAssign;
 
  public:
@@ -213,12 +214,57 @@ class StringPatch : public BasePatch<Patch, StringPatch<Patch>> {
   using Base::hasAssign;
   using Base::operator=;
 
-  bool empty() const noexcept { return !hasAssign(); }
-  void apply(T& val) const noexcept { applyAssign(val); }
+  bool empty() const noexcept {
+    return !hasAssign() && prepend_().empty() && append_().empty();
+  }
+
+  void apply(T& val) const {
+    if (!applyAssign(val)) {
+      val = prepend_() + val + append_();
+    }
+  }
+
   template <typename U>
   void merge(U&& next) {
-    mergeAssign(std::forward<U>(next));
+    if (!mergeAssign(std::forward<U>(next))) {
+      prepend_() =
+          *std::forward<U>(next).get().prepend() + std::move(prepend_());
+      append_().append(*std::forward<U>(next).get().append());
+    }
   }
+
+  template <typename... Args>
+  void append(Args&&... args) {
+    assignOr(append_()).append(std::forward<Args>(args)...);
+  }
+
+  template <typename U>
+  void prepend(U&& val) {
+    T& cur = assignOr(prepend_());
+    cur = std::forward<U>(val) + std::move(cur);
+  }
+
+  template <typename U>
+  StringPatch& operator+=(U&& val) {
+    assignOr(append_()) += std::forward<U>(val);
+    return *this;
+  }
+
+ private:
+  template <typename U>
+  friend StringPatch operator+(StringPatch lhs, U&& rhs) {
+    return lhs += std::forward<U>(rhs);
+  }
+  template <typename U>
+  friend StringPatch operator+(U&& lhs, StringPatch rhs) {
+    rhs.prepend(std::forward<U>(lhs));
+    return rhs;
+  }
+
+  T& append_() noexcept { return *this->patch_.append(); }
+  const T& append_() const noexcept { return *this->patch_.append(); }
+  T& prepend_() noexcept { return *this->patch_.prepend(); }
+  const T& prepend_() const noexcept { return *this->patch_.prepend(); }
 };
 
 template <typename Patch>

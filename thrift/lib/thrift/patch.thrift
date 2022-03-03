@@ -131,6 +131,12 @@ struct StringPatch {
   //
   // If set, all other patch operations are ignored.
   1: optional string assign;
+
+  // Append to a given value.
+  2: string append;
+
+  // Prepend to a given value.
+  3: string prepend;
 } (
   cpp.name = "StringPatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::StringPatchAdapter",

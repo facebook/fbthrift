@@ -61,7 +61,7 @@ using patch_type = decltype(detail::patchType(Tag{}));
 // - operator!(BoolPatch) - Returns an inverted version of the given patch.
 using BoolPatch = patch_type<type::bool_t>;
 
-// A patch for a number, which additionally supports:
+// Patches for number types, which additionally support:
 // - add(T value) - Update to the patch to additionally add the given value.
 // - subtract(T value) - Update to the patch to additionally subtract the given
 // value.
@@ -73,7 +73,13 @@ using I64Patch = patch_type<type::i64_t>;
 using FloatPatch = patch_type<type::float_t>;
 using DoublePatch = patch_type<type::double_t>;
 
+// A patch for a string, which additionally supports:
+// - append(...) - Updates the patch to additionally append the given value.
+// - prepend(U&&) - Updates the patch to additionally prepend the given value.
+// - operators +, += - Alias to the appropriate append and prepend calls.
 using StringPatch = patch_type<type::string_t>;
+
+// TODO (afuller): Add more binary patch operations.
 using BinaryPatch = patch_type<type::binary_t>;
 
 } // namespace op
