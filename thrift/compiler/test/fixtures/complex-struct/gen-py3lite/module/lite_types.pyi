@@ -507,7 +507,7 @@ constEnumUnion: MyUnion = ...
 
 stringTypedef = str
 longTypeDef = int
-mapTypedef = dict
-listTypedef = list
+mapTypedef = _typing.Dict[int, str]
+listTypedef = _typing.List[float]
 floatTypedef = float
-FMap = dict
+FMap = _typing.Dict[int, int]

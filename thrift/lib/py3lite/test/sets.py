@@ -119,8 +119,10 @@ class SetTests(unittest.TestCase):
 
     def test_None(self) -> None:
         with self.assertRaises(TypeError):
+            # pyre-ignore[6]: purposely use a wrong type to raise a TypeError
             SetI32Lists({None})
         with self.assertRaises(TypeError):
+            # pyre-ignore[6]: purposely use a wrong type to raise a TypeError
             SetSetI32Lists({{None}})
 
     def test_empty(self) -> None:
@@ -139,6 +141,7 @@ class SetTests(unittest.TestCase):
         pz.add(SetI32Lists(nx))
         cz = SetSetI32Lists(pz)
         self.assertIn(nx, cz)
+        # pyre-ignore[6]: purposely use a wrong type to raise a TypeError
         pz.add(5)
         with self.assertRaises(TypeError):
             SetSetI32Lists(pz)

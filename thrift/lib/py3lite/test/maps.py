@@ -14,7 +14,6 @@
 # limitations under the License.
 
 import unittest
-from typing import Dict, List
 
 from testing.lite_types import (
     F14MapFollyString,
@@ -32,26 +31,34 @@ class MapTests(unittest.TestCase):
 
     def test_None(self) -> None:
         with self.assertRaises(TypeError):
+            # pyre-ignore[6]: purposely use a wrong type to raise a TypeError
             StrIntMap({None: 5})
         with self.assertRaises(TypeError):
+            # pyre-ignore[6]: purposely use a wrong type to raise a TypeError
             StrIntMap({"foo": None})
         with self.assertRaises(TypeError):
+            # pyre-ignore[6]: purposely use a wrong type to raise a TypeError
             StrStrIntListMapMap({"bar": {"foo": [None, None]}})
         with self.assertRaises(TypeError):
+            # pyre-ignore[6]: purposely use a wrong type to raise a TypeError
             StrStrIntListMapMap({"bar": {"foo": None}})
 
     def test_getitem(self) -> None:
         x = StrStrMap({"test": "value"})
         self.assertEqual(x["test"], "value")
         with self.assertRaises(KeyError):
+            # pyre-ignore[6]: purposely use a wrong type to raise a KeyError
             x[5]
         with self.assertRaises(KeyError):
+            # pyre-ignore[6]: purposely use a wrong type to raise a KeyError
             x[x]
 
     def test_get(self) -> None:
         x = StrStrMap({"test": "value"})
         self.assertEqual(x.get("test"), "value")
+        # pyre-ignore[6]: purposely use a wrong type to test behavior of .get()
         self.assertIs(x.get(5), None)
+        # pyre-ignore[6]: purposely use a wrong type to test behavior of .get()
         self.assertIs(x.get(x), None)
 
     def test_contains(self) -> None:
@@ -77,7 +84,7 @@ class MapTests(unittest.TestCase):
     def test_mixed_construction(self) -> None:
         s = StrI32ListMap({"bar": [0, 1]})
         x = StrStrIntListMapMap({"foo": s})
-        px: Dict[str, Dict[str, List[int]]] = {}
+        px = {}
         px["foo"] = x["foo"]
         px["baz"] = {"wat": [4]}
         px["foo"] = dict(px["foo"])
@@ -85,7 +92,6 @@ class MapTests(unittest.TestCase):
         self.assertEquals(s["bar"], [0, 1])
         # Now turn this crazy mixed structure back to Cython
         cx = StrStrIntListMapMap(px)
-        # pyre-ignore[6]: for test
         px["bar"] = {"lol": "TypeError"}
         with self.assertRaises(TypeError):
             StrStrIntListMapMap(px)

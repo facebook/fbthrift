@@ -367,4 +367,4 @@ minNSDub: float = ...
 MyCompany = Company
 MyStringIdentifier = str
 MyIntIdentifier = int
-MyMapIdentifier = dict
+MyMapIdentifier = _typing.Dict[str, str]

@@ -36,6 +36,7 @@ class ListTests(unittest.TestCase):
 
     def test_list_of_None(self) -> None:
         with self.assertRaises(TypeError):
+            # pyre-ignore[6]: purposely use a wrong type to raise a TypeError
             I32List([None, None, None])
 
     def test_list_creation_with_list_items(self) -> None:
@@ -45,6 +46,7 @@ class ListTests(unittest.TestCase):
         d = ["I", "II", "III"]
         StrList2D([a, b, c, d])
         with self.assertRaises(TypeError):
+            # pyre-ignore[6]: purposely use a wrong type to raise a TypeError
             StrList2D([a, [None]])
 
     def test_list_add(self) -> None:
@@ -66,6 +68,7 @@ class ListTests(unittest.TestCase):
     def test_list_creation(self) -> None:
         I32List(range(10))
         with self.assertRaises(TypeError):
+            # pyre-ignore[6]: purposely use a wrong type to raise a TypeError
             I32List([1, "b", "c", "four"])
 
     def test_hashability(self) -> None:

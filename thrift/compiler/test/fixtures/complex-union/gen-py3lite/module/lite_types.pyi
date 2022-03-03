@@ -187,4 +187,4 @@ class NonCopyableUnion(_fbthrift_py3lite_types.Union):
     type: Type
     def get_type(self) -> Type:...
 
-containerTypedef = dict
+containerTypedef = _typing.Dict[int, str]

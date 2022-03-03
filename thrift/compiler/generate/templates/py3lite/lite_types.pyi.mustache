@@ -100,19 +100,7 @@ class {{struct:name}}({{!
 {{#program:constants}}
 
 {{constant:name}}: {{#constant:type}}{{!
-    }}{{#type:container?}}{{!
-        }}{{#type:list?}}_typing.List[{{!
-            }}{{#type:list_elem_type}}{{> types/pep484_type}}{{/type:list_elem_type}}{{!
-        }}]{{/type:list?}}{{!
-        }}{{#type:set?}}_typing.Set[{{!
-            }}{{#type:set_elem_type}}{{> types/pep484_type}}{{/type:set_elem_type}}{{!
-        }}]{{/type:set?}}{{!
-        }}{{#type:map?}}_typing.Dict[{{!
-            }}{{#type:key_type}}{{> types/pep484_type}}{{/type:key_type}}, {{!
-            }}{{#type:value_type}}{{> types/pep484_type}}{{/type:value_type}}{{!
-        }}]{{/type:map?}}{{!
-    }}{{/type:container?}}{{!
-    }}{{^type:container?}}{{> types/pep484_type}}{{/type:container?}}{{!
+    }}{{> types/typedef_const_pep484_type}}{{!
 }}{{/constant:type}} = ...
 {{/program:constants}}
 {{/program:constants?}}
@@ -120,12 +108,7 @@ class {{struct:name}}({{!
 
 {{#program:typedefs}}
 {{typedef:name}} = {{#typedef:type}}{{!
-}}{{#type:container?}}{{!
-    }}{{#type:list?}}list{{/type:list?}}{{!
-    }}{{#type:set?}}frozenset{{/type:set?}}{{!
-    }}{{#type:map?}}dict{{/type:map?}}{{!
-}}{{/type:container?}}{{!
-}}{{^type:container?}}{{> types/pep484_type}}{{/type:container?}}{{!
+    }}{{> types/typedef_const_pep484_type}}{{!
 }}{{/typedef:type}}
 {{/program:typedefs}}
 {{/program:typedefs?}}
