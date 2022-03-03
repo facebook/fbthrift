@@ -15,6 +15,7 @@
  */
 
 include "thrift/annotation/thrift.thrift"
+cpp_include "thrift/lib/cpp2/op/detail/Patch.h"
 
 namespace cpp2 apache.thrift.op
 
@@ -25,7 +26,10 @@ struct BoolPatch {
   //
   // If set, all other patch operations are ignored.
   1: optional bool assign;
-}
+} (
+  cpp.name = "BoolPatchStruct",
+  cpp.adapter = "::apache::thrift::op::detail::BoolPatchAdapter",
+)
 
 // A patch for an 8-bit integer value.
 @thrift.Experimental
@@ -34,7 +38,10 @@ struct BytePatch {
   //
   // If set, all other patch operations are ignored.
   1: optional byte assign;
-}
+} (
+  cpp.name = "BytePatchStruct",
+  cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
+)
 
 // A patch for a 16-bit integer value.
 @thrift.Experimental
@@ -42,7 +49,10 @@ struct I16Patch {
   // Assign to the given value.
   // If set, all other patch operations are ignored.
   1: optional i16 assign;
-}
+} (
+  cpp.name = "I16PatchStruct",
+  cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
+)
 
 // A patch for a 32-bit integer value.
 @thrift.Experimental
@@ -51,7 +61,10 @@ struct I32Patch {
   //
   // If set, all other patch operations are ignored.
   1: optional i32 assign;
-}
+} (
+  cpp.name = "I32PatchStruct",
+  cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
+)
 
 // A patch for a 64-bit integer value.
 @thrift.Experimental
@@ -60,7 +73,10 @@ struct I64Patch {
   //
   // If set, all other patch operations are ignored.
   1: optional i64 assign;
-}
+} (
+  cpp.name = "I64PatchStruct",
+  cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
+)
 
 // A patch for a 32-bit floating point value.
 @thrift.Experimental
@@ -69,7 +85,10 @@ struct FloatPatch {
   //
   // If set, all other patch operations are ignored.
   1: optional float assign;
-}
+} (
+  cpp.name = "FloatPatchStruct",
+  cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
+)
 
 // A patch for an 64-bit floating point value.
 @thrift.Experimental
@@ -78,7 +97,10 @@ struct DoublePatch {
   //
   // If set, all other patch operations are ignored.
   1: optional double assign;
-}
+} (
+  cpp.name = "DoublePatchStruct",
+  cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
+)
 
 // A patch for a string value.
 @thrift.Experimental
@@ -87,7 +109,10 @@ struct StringPatch {
   //
   // If set, all other patch operations are ignored.
   1: optional string assign;
-}
+} (
+  cpp.name = "StringPatchStruct",
+  cpp.adapter = "::apache::thrift::op::detail::StringPatchAdapter",
+)
 
 // A patch for a binary value.
 @thrift.Experimental
@@ -96,4 +121,7 @@ struct BinaryPatch {
   //
   // If set, all other patch operations are ignored.
   1: optional binary (cpp.type = "::folly::IOBuf") assign;
-}
+} (
+  cpp.name = "BinaryPatchStruct",
+  cpp.adapter = "::apache::thrift::op::detail::BinaryPatchAdapter",
+)

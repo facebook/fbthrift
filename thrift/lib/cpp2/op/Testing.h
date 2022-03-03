@@ -17,7 +17,10 @@
 // gtest matchers for thrift ops.
 #pragma once
 
+#include <utility>
+
 #include <folly/portability/GMock.h>
+#include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/op/Clear.h>
 #include <thrift/lib/cpp2/op/Compare.h>
 #include <thrift/lib/cpp2/type/Traits.h>
@@ -79,6 +82,47 @@ struct EmptyMatcher {
 template <typename Tag>
 auto IsEmpty() {
   return ::testing::MakePolymorphicMatcher(EmptyMatcher<Tag>{});
+}
+
+// Applies a patch twice and checks the results.
+template <
+    typename P,
+    typename T1 = typename P::value_type,
+    typename T2 = typename P::value_type>
+void expectPatch(
+    P patch,
+    const typename P::value_type& actual,
+    const T1& expected1,
+    const T2& expected2) {
+  { // Applying twice produces the expected results.
+    auto actual1 = actual;
+    patch.apply(actual1);
+    EXPECT_EQ(actual1, expected1);
+    patch.apply(actual1);
+    EXPECT_EQ(actual1, expected2);
+    if (actual != expected1) {
+      // The value changes, so this cannot be an empty patch.
+      EXPECT_FALSE(patch.empty());
+    }
+  }
+  { // Merging with self, is the same as applying twice.
+    patch.merge(patch);
+    auto actual2 = actual;
+    patch.apply(actual2);
+    EXPECT_EQ(actual2, expected2);
+  }
+  { // Clearing creates a noop patch.
+    patch.clear();
+    EXPECT_TRUE(patch.empty());
+    auto actual3 = actual;
+    patch.apply(actual3);
+    EXPECT_EQ(actual3, actual);
+  }
+}
+template <typename P, typename T = typename P::value_type>
+void expectPatch(
+    P patch, const typename P::value_type& actual, const T& expected) {
+  expectPatch(std::move(patch), actual, expected, expected);
 }
 
 } // namespace apache::thrift::test
