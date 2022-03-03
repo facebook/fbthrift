@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,6 +43,7 @@ void EventHandlerBase::addNotNullEventHandler(
     handlers_ = std::make_shared<
         std::vector<std::shared_ptr<TProcessorEventHandler>>>();
   }
+
   handlers_->push_back(
       static_cast<const std::shared_ptr<TProcessorEventHandler>>(handler));
 }
@@ -57,12 +58,14 @@ EventHandlerBase::getEventHandlers() const {
 
 TProcessorBase::TProcessorBase() {
   RLock lock{getRWMutex()};
+
   for (auto factory : getFactories()) {
     auto handler = factory->getEventHandler();
     if (handler) {
       addEventHandler(handler);
     }
   }
+
   for (const auto& handler : getHandlers()) {
     addNotNullEventHandler(handler);
   }
@@ -133,14 +136,28 @@ TClientBase::TClientBase() {
   // Automatically ask all registered factories to produce an event
   // handler, and attach the handlers
   RLock lock{getRWMutex()};
-  for (auto factory : getFactories()) {
-    auto handler = factory->getEventHandler();
-    if (handler) {
-      addEventHandler(handler);
+
+  auto& factories = getFactories();
+  auto& handlers = getHandlers();
+  size_t capacity = factories.size() + handlers.size();
+
+  if (capacity != 0) {
+    // Initialize the handlers_ in the ctor to be owner of vector object.
+    handlers_ = std::make_shared<
+        std::vector<std::shared_ptr<TProcessorEventHandler>>>();
+    // production data suggests reserving capacity here.
+    handlers_->reserve(capacity);
+
+    for (const auto& factory : factories) {
+      auto handler = factory->getEventHandler();
+      if (handler) {
+        addEventHandler(handler);
+      }
     }
-  }
-  for (const auto& handler : getHandlers()) {
-    addNotNullEventHandler(handler);
+
+    for (const auto& handler : handlers) {
+      addNotNullEventHandler(handler);
+    }
   }
 }
 
