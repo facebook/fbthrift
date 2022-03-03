@@ -14,7 +14,8 @@ interface MyServiceAsyncIf extends \IThriftAsyncIf {
   /**
    * Original thrift definition:-
    * void
-   *   ping();
+   *   ping()
+   *   throws (1: MyException myExcept);
    */
   public function ping(): Awaitable<void>;
 
@@ -71,7 +72,8 @@ interface MyServiceIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
    * void
-   *   ping();
+   *   ping()
+   *   throws (1: MyException myExcept);
    */
   public function ping(): void;
 
@@ -135,7 +137,8 @@ interface MyServiceClientIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
    * void
-   *   ping();
+   *   ping()
+   *   throws (1: MyException myExcept);
    */
   public function ping(): Awaitable<void>;
 
@@ -279,6 +282,11 @@ trait MyServiceClientBase {
     } catch (\Exception $ex) {
       $this->eventHandler_->recvError('ping', $expectedsequenceid, $ex);
       throw $ex;
+    }
+    if ($result->myExcept !== null) {
+      $x = $result->myExcept;
+      $this->eventHandler_->recvException('ping', $expectedsequenceid, $x);
+      throw $x;
     }
     $this->eventHandler_->postRecv('ping', $expectedsequenceid, null);
     return;
@@ -824,7 +832,8 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
   /**
    * Original thrift definition:-
    * void
-   *   ping();
+   *   ping()
+   *   throws (1: MyException myExcept);
    */
   public async function ping(): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
@@ -1030,7 +1039,8 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
   /**
    * Original thrift definition:-
    * void
-   *   ping();
+   *   ping()
+   *   throws (1: MyException myExcept);
    */
   public async function ping(): Awaitable<void> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
@@ -1295,6 +1305,9 @@ abstract class MyServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
       $this->eventHandler_->preExec($handler_ctx, 'MyService', 'ping', $args);
       await $this->handler->ping();
       $this->eventHandler_->postExec($handler_ctx, 'ping', $result);
+    } catch (MyException $exc0) {
+      $this->eventHandler_->handlerException($handler_ctx, 'ping', $exc0);
+      $result->myExcept = $exc0;
     } catch (\Exception $ex) {
       $reply_type = \TMessageType::EXCEPTION;
       $this->eventHandler_->handlerError($handler_ctx, 'ping', $ex);
@@ -1629,6 +1642,9 @@ abstract class MyServiceSyncProcessorBase extends \ThriftSyncProcessor {
       $this->eventHandler_->preExec($handler_ctx, 'MyService', 'ping', $args);
       $this->handler->ping();
       $this->eventHandler_->postExec($handler_ctx, 'ping', $result);
+    } catch (MyException $exc0) {
+      $this->eventHandler_->handlerException($handler_ctx, 'ping', $exc0);
+      $result->myExcept = $exc0;
     } catch (\Exception $ex) {
       $reply_type = \TMessageType::EXCEPTION;
       $this->eventHandler_->handlerError($handler_ctx, 'ping', $ex);
@@ -2015,16 +2031,24 @@ class MyService_ping_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'myExcept',
+      'type' => \TType::STRUCT,
+      'class' => MyException::class,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
+    'myExcept' => 1,
   ];
 
   const type TConstructorShape = shape(
+    ?'myExcept' => ?MyException,
   );
 
-  const int STRUCTURAL_ID = 957977401221134810;
+  const int STRUCTURAL_ID = 7189959854181053156;
+  public ?MyException $myExcept;
 
-  public function __construct(  )[] {
+  public function __construct(?MyException $myExcept = null  )[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -2033,6 +2057,7 @@ class MyService_ping_result implements \IThriftStruct {
 
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
+      Shapes::idx($shape, 'myExcept'),
     );
   }
 
@@ -2044,6 +2069,23 @@ class MyService_ping_result implements \IThriftStruct {
     return tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.MyService_ping_result",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.MyException",
+                    )
+                  ),
+                )
+              ),
+              "name" => "myExcept",
+            )
+          ),
+        ],
         "is_union" => false,
       )
     );
@@ -2064,6 +2106,12 @@ class MyService_ping_result implements \IThriftStruct {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
+    if (idx($parsed, 'myExcept') !== null) {
+      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['myExcept']);
+      $_tmp1 = MyException::withDefaultValues();
+      $_tmp1->readFromJson($_tmp0);
+      $this->myExcept = $_tmp1;
+    }    
   }
 
 }
@@ -3027,6 +3075,23 @@ class MyServiceStaticMetadata implements \IThriftServiceStaticMetadata {
                   "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
                 )
               ),
+              "exceptions" => vec[
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 1,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_struct" => tmeta_ThriftStructType::fromShape(
+                          shape(
+                            "name" => "module.MyException",
+                          )
+                        ),
+                      )
+                    ),
+                    "name" => "myExcept",
+                  )
+                ),
+              ],
             )
           ),
           tmeta_ThriftFunction::fromShape(
@@ -3189,6 +3254,7 @@ class MyServiceStaticMetadata implements \IThriftServiceStaticMetadata {
             'structs' => dict[
             ],
             'exceptions' => dict[
+              'module.MyException' => MyException::getExceptionMetadata(),
             ],
             'services' => dict[
             ],

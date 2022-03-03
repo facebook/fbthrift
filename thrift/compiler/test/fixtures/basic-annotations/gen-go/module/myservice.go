@@ -99,7 +99,13 @@ func (p *MyServiceClient) Ping() (err error) {
 
 func (p *MyServiceClient) recvPing() (err error) {
   var __result MyServicePingResult
-  return p.CC.RecvMsg("ping", &__result)
+  err = p.CC.RecvMsg("ping", &__result)
+  if err != nil { return }
+  if __result.MyExcept != nil {
+    err = __result.MyExcept
+    return 
+  }
+  return nil
 }
 
 func (p *MyServiceClient) GetRandomData() (_r string, err error) {
@@ -252,7 +258,13 @@ func (p *MyServiceThreadsafeClient) Ping() (err error) {
 
 func (p *MyServiceThreadsafeClient) recvPing() (err error) {
   var __result MyServicePingResult
-  return p.CC.RecvMsg("ping", &__result)
+  err = p.CC.RecvMsg("ping", &__result)
+  if err != nil { return }
+  if __result.MyExcept != nil {
+    err = __result.MyExcept
+    return 
+  }
+  return nil
 }
 
 func (p *MyServiceThreadsafeClient) GetRandomData() (_r string, err error) {
@@ -395,7 +407,10 @@ func (p *MyServiceChannelClient) Ping(ctx context.Context) (err error) {
   var __result MyServicePingResult
   err = p.RequestChannel.Call(ctx, "ping", &args, &__result)
   if err != nil { return }
-
+  if __result.MyExcept != nil {
+    err = __result.MyExcept
+    return 
+  }
   return nil
 }
 
@@ -529,6 +544,9 @@ type myServiceProcessorPing struct {
 
 func (p *MyServicePingResult) Exception() thrift.WritableException {
   if p == nil { return nil }
+  if p.MyExcept != nil {
+    return p.MyExcept
+  }
   return nil
 }
 
@@ -544,7 +562,10 @@ func (p *myServiceProcessorPing) Read(iprot thrift.Protocol) (thrift.Struct, thr
 func (p *myServiceProcessorPing) Write(seqId int32, result thrift.WritableStruct, oprot thrift.Protocol) (err thrift.Exception) {
   var err2 error
   messageType := thrift.REPLY
-  switch result.(type) {
+  switch v := result.(type) {
+  case *MyException:
+    msg := MyServicePingResult{MyExcept: v}
+    result = &msg
   case thrift.ApplicationException:
     messageType = thrift.EXCEPTION
   }
@@ -566,7 +587,9 @@ func (p *myServiceProcessorPing) Write(seqId int32, result thrift.WritableStruct
 func (p *myServiceProcessorPing) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   var __result MyServicePingResult
   if err := p.handler.Ping(); err != nil {
-    switch err.(type) {
+    switch v := err.(type) {
+    case *MyException:
+      __result.MyExcept = v
     default:
       x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing ping: " + err.Error(), err)
       return x, x
@@ -960,12 +983,26 @@ func (p *MyServicePingArgs) String() string {
   return fmt.Sprintf("MyServicePingArgs({})")
 }
 
+// Attributes:
+//  - MyExcept
 type MyServicePingResult struct {
   thrift.IResponse
+  MyExcept *MyException `thrift:"myExcept,1,optional" db:"myExcept" json:"myExcept,omitempty"`
 }
 
 func NewMyServicePingResult() *MyServicePingResult {
   return &MyServicePingResult{}
+}
+
+var MyServicePingResult_MyExcept_DEFAULT *MyException
+func (p *MyServicePingResult) GetMyExcept() *MyException {
+  if !p.IsSetMyExcept() {
+    return MyServicePingResult_MyExcept_DEFAULT
+  }
+return p.MyExcept
+}
+func (p *MyServicePingResult) IsSetMyExcept() bool {
+  return p != nil && p.MyExcept != nil
 }
 
 type MyServicePingResultBuilder struct {
@@ -980,7 +1017,18 @@ func NewMyServicePingResultBuilder() *MyServicePingResultBuilder{
 
 func (p MyServicePingResultBuilder) Emit() *MyServicePingResult{
   return &MyServicePingResult{
+    MyExcept: p.obj.MyExcept,
   }
+}
+
+func (m *MyServicePingResultBuilder) MyExcept(myExcept *MyException) *MyServicePingResultBuilder {
+  m.obj.MyExcept = myExcept
+  return m
+}
+
+func (m *MyServicePingResult) SetMyExcept(myExcept *MyException) *MyServicePingResult {
+  m.MyExcept = myExcept
+  return m
 }
 
 func (p *MyServicePingResult) Read(iprot thrift.Protocol) error {
@@ -995,8 +1043,15 @@ func (p *MyServicePingResult) Read(iprot thrift.Protocol) error {
       return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
     }
     if fieldTypeId == thrift.STOP { break; }
-    if err := iprot.Skip(fieldTypeId); err != nil {
-      return err
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
     }
     if err := iprot.ReadFieldEnd(); err != nil {
       return err
@@ -1008,9 +1063,18 @@ func (p *MyServicePingResult) Read(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *MyServicePingResult)  ReadField1(iprot thrift.Protocol) error {
+  p.MyExcept = NewMyException()
+  if err := p.MyExcept.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.MyExcept), err)
+  }
+  return nil
+}
+
 func (p *MyServicePingResult) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("ping_result"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -1018,12 +1082,31 @@ func (p *MyServicePingResult) Write(oprot thrift.Protocol) error {
   return nil
 }
 
+func (p *MyServicePingResult) writeField1(oprot thrift.Protocol) (err error) {
+  if p.IsSetMyExcept() {
+    if err := oprot.WriteFieldBegin("myExcept", thrift.STRUCT, 1); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:myExcept: ", p), err) }
+    if err := p.MyExcept.Write(oprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.MyExcept), err)
+    }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 1:myExcept: ", p), err) }
+  }
+  return err
+}
+
 func (p *MyServicePingResult) String() string {
   if p == nil {
     return "<nil>"
   }
 
-  return fmt.Sprintf("MyServicePingResult({})")
+  var myExceptVal string
+  if p.MyExcept == nil {
+    myExceptVal = "<nil>"
+  } else {
+    myExceptVal = fmt.Sprintf("%v", p.MyExcept)
+  }
+  return fmt.Sprintf("MyServicePingResult({MyExcept:%s})", myExceptVal)
 }
 
 type MyServiceGetRandomDataArgs struct {

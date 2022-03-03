@@ -22,7 +22,10 @@ public interface MyService extends java.io.Closeable {
     public interface Async extends java.io.Closeable {
         @java.lang.Override void close();
 
-        @ThriftMethod(value = "ping")
+        @ThriftMethod(value = "ping",
+                      exception = { 
+                          @ThriftException(type=test.fixtures.basicannotations.MyException.class, id=1)
+                      })
         ListenableFuture<Void> ping();
 
         default ListenableFuture<Void> ping(
@@ -134,16 +137,19 @@ public interface MyService extends java.io.Closeable {
     }
     @java.lang.Override void close();
 
-    @ThriftMethod(value = "ping")
-    void ping() throws org.apache.thrift.TException;
+    @ThriftMethod(value = "ping",
+                  exception = { 
+                      @ThriftException(type=test.fixtures.basicannotations.MyException.class, id=1)
+                  })
+    void ping() throws test.fixtures.basicannotations.MyException, org.apache.thrift.TException;
 
     default void ping(
-        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        RpcOptions rpcOptions) throws test.fixtures.basicannotations.MyException, org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
 
     default ResponseWrapper<Void> pingWrapper(
-        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        RpcOptions rpcOptions) throws test.fixtures.basicannotations.MyException, org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
 
@@ -246,7 +252,10 @@ public interface MyService extends java.io.Closeable {
 
     @com.facebook.swift.service.ThriftService("MyService")
     interface Reactive extends reactor.core.Disposable {
-        @ThriftMethod(value = "ping")
+        @ThriftMethod(value = "ping",
+                  exception = { 
+                      @ThriftException(type=test.fixtures.basicannotations.MyException.class, id=1)
+                  })
         reactor.core.publisher.Mono<Void> ping();
 
         default reactor.core.publisher.Mono<Void> ping(RpcOptions rpcOptions) {

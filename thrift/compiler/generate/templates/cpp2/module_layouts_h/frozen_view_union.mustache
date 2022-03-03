@@ -15,29 +15,29 @@
   limitations under the License.
 
 %>
-  struct View : public ViewBase<View, LayoutSelf, <% > common/namespace_cpp2%><%struct:name%>> {
-    <% > common/namespace_cpp2%><%struct:name%>::Type type_;
-    View() : type_(<% > common/namespace_cpp2%><%struct:name%>::Type::__EMPTY__) {}
+  struct View : public ViewBase<View, LayoutSelf, <% > common/namespace_cpp2%><%struct:cpp_name%>> {
+    <% > common/namespace_cpp2%><%struct:cpp_name%>::Type type_;
+    View() : type_(<% > common/namespace_cpp2%><%struct:cpp_name%>::Type::__EMPTY__) {}
     View(const LayoutSelf* layout, ViewPosition position)
-        : ViewBase<View, LayoutSelf, <% > common/namespace_cpp2%><%struct:name%>>(layout, position) {
+        : ViewBase<View, LayoutSelf, <% > common/namespace_cpp2%><%struct:cpp_name%>>(layout, position) {
       type_ = this->layout_->type_Field.layout.view(this->position_(this->layout_->type_Field.pos));
       switch (type_) {
 <%#struct:fields%>
-        case <% > common/namespace_cpp2%><%struct:name%>::Type::<%field:cpp_name%>: {
+        case <% > common/namespace_cpp2%><%struct:cpp_name%>::Type::<%field:cpp_name%>: {
           break;
         }
 <%/struct:fields%>
         default: {
-          type_ = <% > common/namespace_cpp2%><%struct:name%>::Type::__EMPTY__;
+          type_ = <% > common/namespace_cpp2%><%struct:cpp_name%>::Type::__EMPTY__;
         }
       }
     }
 
-    <% > common/namespace_cpp2%><%struct:name%>::Type getType() {return type_;}
+    <% > common/namespace_cpp2%><%struct:cpp_name%>::Type getType() {return type_;}
 
 <%#struct:fields%><%#field:type%>
     auto get_<%field:cpp_name%>() const {
-      assert(type_ == <% > common/namespace_cpp2%><%struct:name%>::Type::<%field:cpp_name%>);
+      assert(type_ == <% > common/namespace_cpp2%><%struct:cpp_name%>::Type::<%field:cpp_name%>);
       return this->layout_-><%field:cpp_name%>Field.layout.view(
           this->position_(this->layout_-><%field:cpp_name%>Field.pos));
     }

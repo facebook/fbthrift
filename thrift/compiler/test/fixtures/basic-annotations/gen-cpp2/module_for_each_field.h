@@ -22,7 +22,21 @@ struct ForEachField<::cpp2::MyStructNestedAnnotation> {
 };
 
 template <>
-struct ForEachField<::cpp2::MyStruct> {
+struct ForEachField<::cpp2::YourUnion> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+  }
+};
+
+template <>
+struct ForEachField<::cpp2::YourException> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+  }
+};
+
+template <>
+struct ForEachField<::cpp2::YourStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).majorVer_ref()...);
@@ -33,6 +47,7 @@ struct ForEachField<::cpp2::MyStruct> {
     f(5, static_cast<T&&>(t).empty_annotations_ref()...);
     f(6, static_cast<T&&>(t).my_enum_ref()...);
     f(7, static_cast<T&&>(t).cpp_type_annotation_ref()...);
+    f(8, static_cast<T&&>(t).my_union_ref()...);
   }
 };
 

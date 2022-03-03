@@ -22,7 +22,7 @@ namespace detail {
 
 <%#program:structs%>
 template <>
-struct TccStructTraits<<% > common/namespace_cpp2%><%struct:name%>> {
+struct TccStructTraits<<% > common/namespace_cpp2%><%struct:cpp_name%>> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,

@@ -32,7 +32,7 @@ except ImportError:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'MyEnum', 'MyStructNestedAnnotation', 'MyStruct', 'SecretStruct']
+__all__ = ['UTF8STRINGS', 'MyEnum', 'MyStructNestedAnnotation', 'MyUnion', 'MyException', 'MyStruct', 'SecretStruct']
 
 class MyEnum:
   MyValue1 = 0
@@ -138,6 +138,155 @@ class MyStructNestedAnnotation:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+class MyUnion(object):
+
+  thrift_spec = None
+  __EMPTY__ = 0
+  
+  @staticmethod
+  def isUnion():
+    return True
+
+  def getType(self):
+    return self.field
+
+  def __repr__(self):
+    value = pprint.pformat(self.value)
+    member = ''
+    return "%s(%s)" % (self.__class__.__name__, member)
+
+  def read(self, iprot):
+    self.field = 0
+    self.value = None
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, True], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, True], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, True], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, True], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeUnionBegin('MyUnion')
+    oprot.writeFieldStop()
+    oprot.writeUnionEnd()
+  
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
+    self.field = 0
+    self.value = None
+    obj = json
+    if is_text:
+      obj = loads(json)
+    if not isinstance(obj, dict) or len(obj) > 1:
+      raise TProtocolException(TProtocolException.INVALID_DATA, 'Can not parse')
+    
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__
+
+  def __ne__(self, other):
+    return not (self == other)
+
+class MyException(TException):
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('MyException')
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
+    json_obj = json
+    if is_text:
+      json_obj = loads(json)
+
+  def __str__(self):
+    return repr(self)
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    if 'message' not in self.__dict__:
+      message = getattr(self, 'message', None)
+      if message:
+        L.append('message=%r' % message)
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  # Override the __hash__ function for Python3 - t10434117
+  __hash__ = object.__hash__
+
 class MyStruct:
   """
   Attributes:
@@ -149,6 +298,7 @@ class MyStruct:
    - empty_annotations
    - my_enum
    - cpp_type_annotation
+   - my_union
   """
 
   thrift_spec = None
@@ -221,6 +371,12 @@ class MyStruct:
           iprot.readListEnd()
         else:
           iprot.skip(ftype)
+      elif fid == 9:
+        if ftype == TType.STRUCT:
+          self.my_union = MyUnion()
+          self.my_union.read(iprot)
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -269,6 +425,10 @@ class MyStruct:
         oprot.writeString(iter7.encode('utf-8')) if UTF8STRINGS and not isinstance(iter7, bytes) else oprot.writeString(iter7)
       oprot.writeListEnd()
       oprot.writeFieldEnd()
+    if self.my_union != None:
+      oprot.writeFieldBegin('my_union', TType.STRUCT, 9)
+      self.my_union.write(oprot)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -308,6 +468,9 @@ class MyStruct:
       self.cpp_type_annotation = []
       for _tmp_e8 in json_obj['cpp_type_annotation']:
         self.cpp_type_annotation.append(_tmp_e8)
+    if 'my_union' in json_obj and json_obj['my_union'] is not None:
+      self.my_union = MyUnion()
+      self.my_union.readFromJson(json_obj['my_union'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
 
   def __repr__(self):
     L = []
@@ -344,6 +507,10 @@ class MyStruct:
       value = pprint.pformat(self.cpp_type_annotation, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    cpp_type_annotation=%s' % (value))
+    if self.my_union is not None:
+      value = pprint.pformat(self.my_union, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    my_union=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -484,6 +651,28 @@ def MyStructNestedAnnotation__setstate__(self, state):
 MyStructNestedAnnotation.__getstate__ = lambda self: self.__dict__.copy()
 MyStructNestedAnnotation.__setstate__ = MyStructNestedAnnotation__setstate__
 
+all_structs.append(MyUnion)
+MyUnion.thrift_spec = (
+)
+
+MyUnion.thrift_struct_annotations = {
+  "cpp.adapter": "StaticCast",
+  "cpp.name": "YourUnion",
+}
+MyUnion.thrift_field_annotations = {
+}
+
+all_structs.append(MyException)
+MyException.thrift_spec = (
+)
+
+MyException.thrift_struct_annotations = {
+  "cpp.adapter": "StaticCast",
+  "cpp.name": "YourException",
+}
+MyException.thrift_field_annotations = {
+}
+
 all_structs.append(MyStruct)
 MyStruct.thrift_spec = (
   None, # 0
@@ -495,11 +684,14 @@ MyStruct.thrift_spec = (
   (6, TType.STRING, 'empty_annotations', True, None, 2, ), # 6
   (7, TType.I32, 'my_enum', MyEnum, None, 2, ), # 7
   (8, TType.LIST, 'cpp_type_annotation', (TType.STRING,True), None, 2, ), # 8
+  (9, TType.STRUCT, 'my_union', [MyUnion, MyUnion.thrift_spec, True], None, 2, ), # 9
 )
 
 MyStruct.thrift_struct_annotations = {
   "android.generate_builder": "1",
+  "cpp.adapter": "StaticCast",
   "cpp.internal.deprecated._data.method": "1",
+  "cpp.name": "YourStruct",
   "thrift.uri": "facebook.com/thrift/compiler/test/fixtures/basic-annotations/src/module/MyStruct",
 }
 MyStruct.thrift_field_annotations = {
@@ -520,7 +712,7 @@ MyStruct.thrift_field_annotations = {
   },
 }
 
-def MyStruct__init__(self, major=None, package=None, annotation_with_quote=None, class_=None, annotation_with_trailing_comma=None, empty_annotations=None, my_enum=None, cpp_type_annotation=None,):
+def MyStruct__init__(self, major=None, package=None, annotation_with_quote=None, class_=None, annotation_with_trailing_comma=None, empty_annotations=None, my_enum=None, cpp_type_annotation=None, my_union=None,):
   self.major = major
   self.package = package
   self.annotation_with_quote = annotation_with_quote
@@ -529,6 +721,7 @@ def MyStruct__init__(self, major=None, package=None, annotation_with_quote=None,
   self.empty_annotations = empty_annotations
   self.my_enum = my_enum
   self.cpp_type_annotation = cpp_type_annotation
+  self.my_union = my_union
 
 MyStruct.__init__ = MyStruct__init__
 
@@ -541,6 +734,7 @@ def MyStruct__setstate__(self, state):
   state.setdefault('empty_annotations', None)
   state.setdefault('my_enum', None)
   state.setdefault('cpp_type_annotation', None)
+  state.setdefault('my_union', None)
   self.__dict__ = state
 
 MyStruct.__getstate__ = lambda self: self.__dict__.copy()

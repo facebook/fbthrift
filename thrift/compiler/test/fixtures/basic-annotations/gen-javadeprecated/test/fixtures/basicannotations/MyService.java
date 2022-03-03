@@ -31,7 +31,7 @@ public class MyService {
 
   public interface Iface {
 
-    public void ping() throws TException;
+    public void ping() throws MyException, TException;
 
     public String getRandomData() throws TException;
 
@@ -94,7 +94,7 @@ public class MyService {
       return this.oprot_;
     }
 
-    public void ping() throws TException
+    public void ping() throws MyException, TException
     {
       ContextStack ctx = getContextStack("MyService.ping", null);
       this.setContextStack(ctx);
@@ -115,7 +115,7 @@ public class MyService {
       return;
     }
 
-    public void recv_ping() throws TException
+    public void recv_ping() throws MyException, TException
     {
       ContextStack ctx = super.getContextStack();
       long bytes;
@@ -132,6 +132,9 @@ public class MyService {
       iprot_.readMessageEnd();
       super.postRead(ctx, "MyService.ping", result);
 
+      if (result.myExcept != null) {
+        throw result.myExcept;
+      }
       return;
     }
 
@@ -412,7 +415,7 @@ public class MyService {
         prot.writeMessageEnd();
       }
 
-      public void getResult() throws TException {
+      public void getResult() throws MyException, TException {
         if (getState() != State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -670,7 +673,23 @@ public class MyService {
         iprot.readMessageEnd();
         event_handler_.postRead(handler_ctx, "MyService.ping", args);
         ping_result result = new ping_result();
-        iface_.ping();
+        try {
+          iface_.ping();
+        } catch (MyException myExcept) {
+          result.myExcept = myExcept;
+          event_handler_.declaredUserException(handler_ctx, "MyService.ping", myExcept);
+        } catch (Throwable th) {
+          LOGGER.error("Internal error processing MyService.ping", th);
+          event_handler_.handlerError(handler_ctx, "MyService.ping", th);
+          TApplicationException x = new TApplicationException(TApplicationException.INTERNAL_ERROR, "Internal error processing MyService.ping");
+          event_handler_.preWrite(handler_ctx, "MyService.ping", null);
+          oprot.writeMessageBegin(new TMessage("MyService.ping", TMessageType.EXCEPTION, seqid));
+          x.write(oprot);
+          oprot.writeMessageEnd();
+          oprot.getTransport().flush();
+          event_handler_.postWrite(handler_ctx, "MyService.ping", null);
+          return;
+        }
         event_handler_.preWrite(handler_ctx, "MyService.ping", result);
         oprot.writeMessageBegin(new TMessage("ping", TMessageType.REPLY, seqid));
         result.write(oprot);
@@ -936,13 +955,21 @@ public class MyService {
 
   }
 
-  public static class ping_result implements TBase, java.io.Serializable, Cloneable, Comparable<ping_result>   {
+  public static class ping_result implements TBase, java.io.Serializable, Cloneable   {
     private static final TStruct STRUCT_DESC = new TStruct("ping_result");
+    private static final TField MY_EXCEPT_FIELD_DESC = new TField("myExcept", TType.STRUCT, (short)1);
+
+    public MyException myExcept;
+    public static final int MYEXCEPT = 1;
+
+    // isset id assignments
 
     public static final Map<Integer, FieldMetaData> metaDataMap;
 
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
+      tmpMetaDataMap.put(MYEXCEPT, new FieldMetaData("myExcept", TFieldRequirementType.DEFAULT, 
+          new FieldValueMetaData(TType.STRUCT)));
       metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
     }
 
@@ -953,18 +980,59 @@ public class MyService {
     public ping_result() {
     }
 
+    public ping_result(
+        MyException myExcept) {
+      this();
+      this.myExcept = myExcept;
+    }
+
     /**
      * Performs a deep copy on <i>other</i>.
      */
     public ping_result(ping_result other) {
+      if (other.isSetMyExcept()) {
+        this.myExcept = TBaseHelper.deepCopy(other.myExcept);
+      }
     }
 
     public ping_result deepCopy() {
       return new ping_result(this);
     }
 
+    public MyException getMyExcept() {
+      return this.myExcept;
+    }
+
+    public ping_result setMyExcept(MyException myExcept) {
+      this.myExcept = myExcept;
+      return this;
+    }
+
+    public void unsetMyExcept() {
+      this.myExcept = null;
+    }
+
+    // Returns true if field myExcept is set (has been assigned a value) and false otherwise
+    public boolean isSetMyExcept() {
+      return this.myExcept != null;
+    }
+
+    public void setMyExceptIsSet(boolean __value) {
+      if (!__value) {
+        this.myExcept = null;
+      }
+    }
+
     public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
+      case MYEXCEPT:
+        if (__value == null) {
+          unsetMyExcept();
+        } else {
+          setMyExcept((MyException)__value);
+        }
+        break;
+
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
       }
@@ -972,6 +1040,9 @@ public class MyService {
 
     public Object getFieldValue(int fieldID) {
       switch (fieldID) {
+      case MYEXCEPT:
+        return getMyExcept();
+
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
       }
@@ -987,27 +1058,14 @@ public class MyService {
         return false;
       ping_result that = (ping_result)_that;
 
+      if (!TBaseHelper.equalsNobinary(this.isSetMyExcept(), that.isSetMyExcept(), this.myExcept, that.myExcept)) { return false; }
+
       return true;
     }
 
     @Override
     public int hashCode() {
-      return Arrays.deepHashCode(new Object[] {});
-    }
-
-    @Override
-    public int compareTo(ping_result other) {
-      if (other == null) {
-        // See java.lang.Comparable docs
-        throw new NullPointerException();
-      }
-
-      if (other == this) {
-        return 0;
-      }
-      int lastComparison = 0;
-
-      return 0;
+      return Arrays.deepHashCode(new Object[] {myExcept});
     }
 
     public void read(TProtocol iprot) throws TException {
@@ -1021,6 +1079,14 @@ public class MyService {
         }
         switch (__field.id)
         {
+          case MYEXCEPT:
+            if (__field.type == TType.STRUCT) {
+              this.myExcept = new MyException();
+              this.myExcept.read(iprot);
+            } else {
+              TProtocolUtil.skip(iprot, __field.type);
+            }
+            break;
           default:
             TProtocolUtil.skip(iprot, __field.type);
             break;
@@ -1037,6 +1103,11 @@ public class MyService {
     public void write(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
 
+      if (this.isSetMyExcept()) {
+        oprot.writeFieldBegin(MY_EXCEPT_FIELD_DESC);
+        this.myExcept.write(oprot);
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -1057,6 +1128,16 @@ public class MyService {
       sb.append(newLine);
       boolean first = true;
 
+      sb.append(indentStr);
+      sb.append("myExcept");
+      sb.append(space);
+      sb.append(":").append(space);
+      if (this.getMyExcept() == null) {
+        sb.append("null");
+      } else {
+        sb.append(TBaseHelper.toString(this.getMyExcept(), indent + 1, prettyPrint));
+      }
+      first = false;
       sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
       sb.append(")");
       return sb.toString();

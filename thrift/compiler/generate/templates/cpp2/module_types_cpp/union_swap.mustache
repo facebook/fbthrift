@@ -16,8 +16,8 @@
 
 %>
 
-void swap(<%struct:name%>& a, <%struct:name%>& b) {
-  <%struct:name%> temp(std::move(a));
+void swap(<%struct:cpp_name%>& a, <%struct:cpp_name%>& b) {
+  <%struct:cpp_name%> temp(std::move(a));
   a = std::move(b);
   b = std::move(temp);
 }

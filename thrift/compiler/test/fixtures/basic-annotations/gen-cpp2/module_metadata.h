@@ -39,7 +39,21 @@ class StructMetadata<::cpp2::MyStructNestedAnnotation> {
   static void unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct);
 };
 template <>
-class StructMetadata<::cpp2::MyStruct> {
+class StructMetadata<::cpp2::YourUnion> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+ private:
+  static void unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct);
+};
+template <>
+class StructMetadata<::cpp2::YourException> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+ private:
+  static void unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct);
+};
+template <>
+class StructMetadata<::cpp2::YourStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
  private:
@@ -51,6 +65,11 @@ class StructMetadata<::cpp2::SecretStruct> {
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
  private:
   static void unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct);
+};
+template <>
+class ExceptionMetadata<::cpp2::YourException> {
+ public:
+  static void gen(ThriftMetadata& metadata);
 };
 template <>
 class ServiceMetadata<::cpp2::MyServiceSvIf> {

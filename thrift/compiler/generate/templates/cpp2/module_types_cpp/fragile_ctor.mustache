@@ -15,10 +15,10 @@
   limitations under the License.
 
 %><%^struct:fields?%>
-<%struct:name%>::<%struct:name%>(apache::thrift::FragileConstructor) {}
+<%struct:cpp_name%>::<%struct:cpp_name%>(apache::thrift::FragileConstructor) {}
 <%/struct:fields?%>
 <%#struct:fields?%>
-<%struct:name%>::<%struct:name%>(apache::thrift::FragileConstructor<% > module_types_h/fragile_ctor_param_list%>) :
+<%struct:cpp_name%>::<%struct:cpp_name%>(apache::thrift::FragileConstructor<% > module_types_h/fragile_ctor_param_list%>) :
 <%#struct:fields_in_layout_order%>
     <%field:cpp_storage_name%>(std::move(<%field:cpp_name%>__arg))<%#last?%> {<%/last?%><%^last?%>,<%/last?%>
 <%/struct:fields_in_layout_order%>

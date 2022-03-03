@@ -56,7 +56,7 @@ class EnumMetadata<<% > common/namespace_cpp2%><%enum:cpp_name%>>
 <%#program:structs%>
 <%^program:no_metadata?%>
 template <>
-class StructMetadata<<% > common/namespace_cpp2%><%struct:name%>> {
+class StructMetadata<<% > common/namespace_cpp2%><%struct:cpp_name%>> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
  <%#program:unstructured_annotations_in_metadata?%>
@@ -67,7 +67,7 @@ class StructMetadata<<% > common/namespace_cpp2%><%struct:name%>> {
 <%/program:no_metadata?%>
 <%#program:no_metadata?%>
 template <>
-class StructMetadata<<% > common/namespace_cpp2%><%struct:name%>>
+class StructMetadata<<% > common/namespace_cpp2%><%struct:cpp_name%>>
     : private EmptyMetadata {
  public:
   using EmptyMetadata::gen;
@@ -78,14 +78,14 @@ class StructMetadata<<% > common/namespace_cpp2%><%struct:name%>>
 <%#struct:exception?%>
 <%^program:no_metadata?%>
 template <>
-class ExceptionMetadata<<% > common/namespace_cpp2%><%struct:name%>> {
+class ExceptionMetadata<<% > common/namespace_cpp2%><%struct:cpp_name%>> {
  public:
   static void gen(ThriftMetadata& metadata);
 };
 <%/program:no_metadata?%>
 <%#program:no_metadata?%>
 template <>
-class ExceptionMetadata<<% > common/namespace_cpp2%><%struct:name%>>
+class ExceptionMetadata<<% > common/namespace_cpp2%><%struct:cpp_name%>>
     : private EmptyMetadata {
  public:
   using EmptyMetadata::gen;

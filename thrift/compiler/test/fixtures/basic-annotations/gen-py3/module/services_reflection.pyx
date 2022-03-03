@@ -31,6 +31,7 @@ cdef __InterfaceSpec get_reflection__MyService(bint for_clients):
             result=None,
             result_kind=__NumberType.NOT_A_NUMBER,
             exceptions=(
+                _module_types.MyException,
             ),
             annotations={
             },

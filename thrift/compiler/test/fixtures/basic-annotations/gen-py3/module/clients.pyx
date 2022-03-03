@@ -62,7 +62,14 @@ cdef void MyService_ping_callback(
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  
-    if result.hasException():
+    if result.hasException[_module_types.cMyException]():
+        try:
+            exc = _module_types.MyException._fbthrift_create(try_make_shared_exception[_module_types.cMyException](result.exception()))
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+        else:
+            pyfuture.set_exception(exc)
+    elif result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:

@@ -15,21 +15,21 @@
   limitations under the License.
 
 %><%#struct:is_large?%>
-<%struct:name%>::<% > module_types_h/base_ctor%>
+<%struct:cpp_name%>::<% > module_types_h/base_ctor%>
 <%#struct:message%>
 
-<%struct:name%>::<%struct:name%>(std::string __message) : <%struct:name%>() {
+<%struct:cpp_name%>::<%struct:cpp_name%>(std::string __message) : <%struct:cpp_name%>() {
   <%struct:message%> = std::move(__message);
 }
 <%/struct:message%>
 
 
-<%struct:name%>::~<%struct:name%>() {}
+<%struct:cpp_name%>::~<%struct:cpp_name%>() {}
 
 <%/struct:is_large?%>
 <%^struct:is_eligible_for_constexpr?%>
-<%struct:name%>::<% > module_types_cpp/move_ctor%>
-<%struct:name%>& <%struct:name%>::operator=(FOLLY_MAYBE_UNUSED <%struct:name%>&& other) noexcept {
+<%struct:cpp_name%>::<% > module_types_cpp/move_ctor%>
+<%struct:cpp_name%>& <%struct:cpp_name%>::operator=(FOLLY_MAYBE_UNUSED <%struct:cpp_name%>&& other) noexcept {
 <%#struct:lazy_fields?%>
     const auto relaxed = std::memory_order_relaxed;
     __fbthrift_protocol_ = other.__fbthrift_protocol_;
@@ -57,7 +57,7 @@
 
 <% > module_types_cpp/lazy_deserialization%>
 
-void <%struct:name%>::__fbthrift_clear() {
+void <%struct:cpp_name%>::__fbthrift_clear() {
   // clear all fields
 <%#struct:fields%><%#field:type%><%!
 %><%#type:resolves_to_base_or_enum?%><%!
@@ -136,7 +136,7 @@ void <%struct:name%>::__fbthrift_clear() {
 <%/struct:isset_fields?%>
 }
 
-bool <%struct:name%>::__fbthrift_is_empty() const {
+bool <%struct:cpp_name%>::__fbthrift_is_empty() const {
 <%^struct:has_non_optional_and_non_terse_field?%>
 <%#struct:fields?%>
   return<%#struct:fields%><%#field:type%><%!

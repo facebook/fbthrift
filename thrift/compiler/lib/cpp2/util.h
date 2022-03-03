@@ -33,6 +33,7 @@
 #include <thrift/compiler/ast/t_type.h>
 #include <thrift/compiler/gen/cpp/namespace_resolver.h>
 #include <thrift/compiler/gen/cpp/reference_type.h>
+#include <thrift/compiler/gen/cpp/type_resolver.h>
 
 namespace apache {
 namespace thrift {
@@ -163,7 +164,7 @@ inline bool is_unique_ref(const t_field* f) {
 
 template <typename Node>
 const std::string& get_name(const Node* node) {
-  return node->get_annotation("cpp.name", &node->get_name());
+  return gen::cpp::type_resolver::get_cpp_name(*node);
 }
 
 bool is_stack_arguments(

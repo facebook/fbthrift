@@ -179,6 +179,140 @@ func (p *MyStructNestedAnnotation) String() string {
   return fmt.Sprintf("MyStructNestedAnnotation({Name:%s})", nameVal)
 }
 
+type MyUnion struct {
+}
+
+func NewMyUnion() *MyUnion {
+  return &MyUnion{}
+}
+
+type MyUnionBuilder struct {
+  obj *MyUnion
+}
+
+func NewMyUnionBuilder() *MyUnionBuilder{
+  return &MyUnionBuilder{
+    obj: NewMyUnion(),
+  }
+}
+
+func (p MyUnionBuilder) Emit() *MyUnion{
+  return &MyUnion{
+  }
+}
+
+func (p *MyUnion) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *MyUnion) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("MyUnion"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *MyUnion) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("MyUnion({})")
+}
+
+type MyException struct {
+}
+
+func NewMyException() *MyException {
+  return &MyException{}
+}
+
+type MyExceptionBuilder struct {
+  obj *MyException
+}
+
+func NewMyExceptionBuilder() *MyExceptionBuilder{
+  return &MyExceptionBuilder{
+    obj: NewMyException(),
+  }
+}
+
+func (p MyExceptionBuilder) Emit() *MyException{
+  return &MyException{
+  }
+}
+
+func (p *MyException) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *MyException) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("MyException"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *MyException) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("MyException({})")
+}
+
+func (p *MyException) Error() string {
+  return p.String()
+}
+
 // Attributes:
 //  - Major
 //  - Package
@@ -188,6 +322,7 @@ func (p *MyStructNestedAnnotation) String() string {
 //  - EmptyAnnotations
 //  - MyEnum
 //  - CppTypeAnnotation
+//  - MyUnion
 type MyStruct struct {
   Package string `thrift:"package,1" db:"package" json:"package"`
   Major int64 `thrift:"major,2" db:"major" json:"major"`
@@ -197,6 +332,7 @@ type MyStruct struct {
   EmptyAnnotations string `thrift:"empty_annotations,6" db:"empty_annotations" json:"empty_annotations"`
   MyEnum MyEnum `thrift:"my_enum,7" db:"my_enum" json:"my_enum"`
   CppTypeAnnotation []string `thrift:"cpp_type_annotation,8" db:"cpp_type_annotation" json:"cpp_type_annotation"`
+  MyUnion *MyUnion `thrift:"my_union,9" db:"my_union" json:"my_union"`
 }
 
 func NewMyStruct() *MyStruct {
@@ -235,6 +371,17 @@ func (p *MyStruct) GetMyEnum() MyEnum {
 func (p *MyStruct) GetCppTypeAnnotation() []string {
   return p.CppTypeAnnotation
 }
+var MyStruct_MyUnion_DEFAULT *MyUnion
+func (p *MyStruct) GetMyUnion() *MyUnion {
+  if !p.IsSetMyUnion() {
+    return MyStruct_MyUnion_DEFAULT
+  }
+return p.MyUnion
+}
+func (p *MyStruct) IsSetMyUnion() bool {
+  return p != nil && p.MyUnion != nil
+}
+
 type MyStructBuilder struct {
   obj *MyStruct
 }
@@ -255,6 +402,7 @@ func (p MyStructBuilder) Emit() *MyStruct{
     EmptyAnnotations: p.obj.EmptyAnnotations,
     MyEnum: p.obj.MyEnum,
     CppTypeAnnotation: p.obj.CppTypeAnnotation,
+    MyUnion: p.obj.MyUnion,
   }
 }
 
@@ -298,6 +446,11 @@ func (m *MyStructBuilder) CppTypeAnnotation(cppTypeAnnotation []string) *MyStruc
   return m
 }
 
+func (m *MyStructBuilder) MyUnion(myUnion *MyUnion) *MyStructBuilder {
+  m.obj.MyUnion = myUnion
+  return m
+}
+
 func (m *MyStruct) SetMajor(major int64) *MyStruct {
   m.Major = major
   return m
@@ -335,6 +488,11 @@ func (m *MyStruct) SetMyEnum(myEnum MyEnum) *MyStruct {
 
 func (m *MyStruct) SetCppTypeAnnotation(cppTypeAnnotation []string) *MyStruct {
   m.CppTypeAnnotation = cppTypeAnnotation
+  return m
+}
+
+func (m *MyStruct) SetMyUnion(myUnion *MyUnion) *MyStruct {
+  m.MyUnion = myUnion
   return m
 }
 
@@ -381,6 +539,10 @@ func (p *MyStruct) Read(iprot thrift.Protocol) error {
       }
     case 8:
       if err := p.ReadField8(iprot); err != nil {
+        return err
+      }
+    case 9:
+      if err := p.ReadField9(iprot); err != nil {
         return err
       }
     default:
@@ -484,6 +646,14 @@ func (p *MyStruct)  ReadField8(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *MyStruct)  ReadField9(iprot thrift.Protocol) error {
+  p.MyUnion = NewMyUnion()
+  if err := p.MyUnion.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.MyUnion), err)
+  }
+  return nil
+}
+
 func (p *MyStruct) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("MyStruct"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -495,6 +665,7 @@ func (p *MyStruct) Write(oprot thrift.Protocol) error {
   if err := p.writeField6(oprot); err != nil { return err }
   if err := p.writeField7(oprot); err != nil { return err }
   if err := p.writeField8(oprot); err != nil { return err }
+  if err := p.writeField9(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -590,6 +761,17 @@ func (p *MyStruct) writeField8(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *MyStruct) writeField9(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("my_union", thrift.STRUCT, 9); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 9:my_union: ", p), err) }
+  if err := p.MyUnion.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.MyUnion), err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 9:my_union: ", p), err) }
+  return err
+}
+
 func (p *MyStruct) String() string {
   if p == nil {
     return "<nil>"
@@ -603,7 +785,13 @@ func (p *MyStruct) String() string {
   emptyAnnotationsVal := fmt.Sprintf("%v", p.EmptyAnnotations)
   myEnumVal := fmt.Sprintf("%v", p.MyEnum)
   cppTypeAnnotationVal := fmt.Sprintf("%v", p.CppTypeAnnotation)
-  return fmt.Sprintf("MyStruct({Package:%s Major:%s AnnotationWithQuote:%s Class_:%s AnnotationWithTrailingComma:%s EmptyAnnotations:%s MyEnum:%s CppTypeAnnotation:%s})", packageVal, majorVal, annotationWithQuoteVal, class_Val, annotationWithTrailingCommaVal, emptyAnnotationsVal, myEnumVal, cppTypeAnnotationVal)
+  var myUnionVal string
+  if p.MyUnion == nil {
+    myUnionVal = "<nil>"
+  } else {
+    myUnionVal = fmt.Sprintf("%v", p.MyUnion)
+  }
+  return fmt.Sprintf("MyStruct({Package:%s Major:%s AnnotationWithQuote:%s Class_:%s AnnotationWithTrailingComma:%s EmptyAnnotations:%s MyEnum:%s CppTypeAnnotation:%s MyUnion:%s})", packageVal, majorVal, annotationWithQuoteVal, class_Val, annotationWithTrailingCommaVal, emptyAnnotationsVal, myEnumVal, cppTypeAnnotationVal, myUnionVal)
 }
 
 // Attributes:

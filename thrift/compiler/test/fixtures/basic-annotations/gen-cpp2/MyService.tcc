@@ -12,7 +12,7 @@
 
 namespace cpp2 {
 typedef apache::thrift::ThriftPresult<false> MyService_ping_pargs;
-typedef apache::thrift::ThriftPresult<true> MyService_ping_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure, ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourException>>> MyService_ping_presult;
 typedef apache::thrift::ThriftPresult<false> MyService_getRandomData_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::string, ::std::string*>> MyService_getRandomData_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int64_t*>> MyService_hasDataById_pargs;
@@ -74,12 +74,29 @@ void MyServiceAsyncProcessor::throw_wrapped_ping(apache::thrift::ResponseChannel
   if (!ew) {
     return;
   }
+  MyService_ping_presult result;
+  if (ew.with_exception([&]( ::cpp2::MyException& e) {
+    if (ctx) {
+      ctx->userExceptionWrapped(true, ew);
+    }
+    ::apache::thrift::util::appendExceptionToHeader(ew, *reqCtx);
+    ::apache::thrift::util::appendErrorClassificationToHeader< ::cpp2::MyException>(ew, *reqCtx);
+    result.get<0>().ref() = e;
+    result.setIsSet(0, true);
+  }
+  )) {} else
   {
     (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "ping");
     return;
   }
+  ProtocolOut_ prot;
+  auto response = serializeResponse(&prot, ctx, result);
+  auto payload = std::move(response).extractPayload(
+      req->includeEnvelope(), prot.protocolType(), protoSeqId, apache::thrift::MessageType::T_REPLY, "ping");
+  payload.transform(reqCtx->getHeader()->getWriteTransforms());
+  return req->sendReply(std::move(payload));
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>

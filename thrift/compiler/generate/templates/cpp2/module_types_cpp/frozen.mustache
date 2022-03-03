@@ -17,8 +17,8 @@
 %><%#program:frozen?%>
 namespace apache { namespace thrift {
 template<>
-size_t Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::extraSizeImpl(
-    const Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::ThawedType& src) {
+size_t Freezer<<% > common/namespace_cpp2%><%struct:cpp_name%>, void>::extraSizeImpl(
+    const Freezer<<% > common/namespace_cpp2%><%struct:cpp_name%>, void>::ThawedType& src) {
   (void)src;
   return 0<%!
 %><%#struct:fields%><%!
@@ -31,9 +31,9 @@ size_t Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::extraSizeImpl
 }
 
 template<>
-void Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::freezeImpl(
-    const Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::ThawedType& src,
-    Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::FrozenType& dst,
+void Freezer<<% > common/namespace_cpp2%><%struct:cpp_name%>, void>::freezeImpl(
+    const Freezer<<% > common/namespace_cpp2%><%struct:cpp_name%>, void>::ThawedType& src,
+    Freezer<<% > common/namespace_cpp2%><%struct:cpp_name%>, void>::FrozenType& dst,
     byte*& buffer) {
   (void)src;
   (void)dst;
@@ -56,9 +56,9 @@ void Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::freezeImpl(
 }
 
 template<>
-void Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::thawImpl(
-    const Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::FrozenType& src,
-    Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::ThawedType& dst) {
+void Freezer<<% > common/namespace_cpp2%><%struct:cpp_name%>, void>::thawImpl(
+    const Freezer<<% > common/namespace_cpp2%><%struct:cpp_name%>, void>::FrozenType& src,
+    Freezer<<% > common/namespace_cpp2%><%struct:cpp_name%>, void>::ThawedType& dst) {
   (void)src;
   (void)dst;
 <%#struct:fields%>

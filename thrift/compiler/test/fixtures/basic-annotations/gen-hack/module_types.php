@@ -144,6 +144,159 @@ class MyStructNestedAnnotation implements \IThriftStruct, \IThriftShapishStruct 
 
 }
 
+enum MyUnionEnum: int {
+  _EMPTY_ = 0;
+}
+
+/**
+ * Original thrift struct:-
+ * MyUnion
+ */
+class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftShapishStruct {
+  use \ThriftUnionSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const type TShape = shape(
+    ...
+  );
+  const int STRUCTURAL_ID = 957977401221134810;
+  protected MyUnionEnum $_type = MyUnionEnum::_EMPTY_;
+
+  public function __construct(  )[] {
+    $this->_type = MyUnionEnum::_EMPTY_;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'MyUnion';
+  }
+
+  public function getType()[]: MyUnionEnum {
+    return $this->_type;
+  }
+
+  public function reset()[write_props]: void {
+    switch ($this->_type) {
+      case MyUnionEnum::_EMPTY_:
+        break;
+    }
+    $this->_type = MyUnionEnum::_EMPTY_;
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyUnion",
+        "is_union" => true,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+    );
+  }
+  public function readFromJson(string $jsonText): void {
+    $this->_type = MyUnionEnum::_EMPTY_;
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+  }
+
+}
+
+/**
+ * Original thrift exception:-
+ * MyException
+ */
+class MyException extends \TException implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct(  )[] {
+    parent::__construct();
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'MyException';
+  }
+
+  public static function getExceptionMetadata()[]: \tmeta_ThriftException {
+    return tmeta_ThriftException::fromShape(
+      shape(
+        "name" => "module.MyException",
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+  }
+
+}
+
 /**
  * Original thrift struct:-
  * MyStruct
@@ -190,6 +343,11 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       ),
       'format' => 'collection',
     ),
+    9 => shape(
+      'var' => 'my_union',
+      'type' => \TType::STRUCT,
+      'class' => MyUnion::class,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'major' => 2,
@@ -200,6 +358,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     'empty_annotations' => 6,
     'my_enum' => 7,
     'cpp_type_annotation' => 8,
+    'my_union' => 9,
   ];
 
   const type TConstructorShape = shape(
@@ -211,6 +370,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     ?'empty_annotations' => ?string,
     ?'my_enum' => ?MyEnum,
     ?'cpp_type_annotation' => ?Vector<string>,
+    ?'my_union' => ?MyUnion,
   );
 
   const type TShape = shape(
@@ -222,9 +382,10 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     'empty_annotations' => string,
     ?'my_enum' => ?MyEnum,
     'cpp_type_annotation' => vec<string>,
+    ?'my_union' => ?MyUnion::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 5610810523936670044;
+  const int STRUCTURAL_ID = 8440300490729065437;
   /**
    * Original thrift field:-
    * 2: i64 major
@@ -265,8 +426,13 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
    * 8: list<string> cpp_type_annotation
    */
   public Vector<string> $cpp_type_annotation;
+  /**
+   * Original thrift field:-
+   * 9: struct module.MyUnion my_union
+   */
+  public ?MyUnion $my_union;
 
-  public function __construct(?int $major = null, ?string $package = null, ?string $annotation_with_quote = null, ?string $class_ = null, ?string $annotation_with_trailing_comma = null, ?string $empty_annotations = null, ?MyEnum $my_enum = null, ?Vector<string> $cpp_type_annotation = null  )[] {
+  public function __construct(?int $major = null, ?string $package = null, ?string $annotation_with_quote = null, ?string $class_ = null, ?string $annotation_with_trailing_comma = null, ?string $empty_annotations = null, ?MyEnum $my_enum = null, ?Vector<string> $cpp_type_annotation = null, ?MyUnion $my_union = null  )[] {
     $this->major = $major ?? 0;
     $this->package = $package ?? '';
     $this->annotation_with_quote = $annotation_with_quote ?? '';
@@ -275,6 +441,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     $this->empty_annotations = $empty_annotations ?? '';
     $this->my_enum = $my_enum;
     $this->cpp_type_annotation = $cpp_type_annotation ?? Vector {};
+    $this->my_union = $my_union;
   }
 
   public static function withDefaultValues()[]: this {
@@ -291,6 +458,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       Shapes::idx($shape, 'empty_annotations'),
       Shapes::idx($shape, 'my_enum'),
       Shapes::idx($shape, 'cpp_type_annotation'),
+      Shapes::idx($shape, 'my_union'),
     );
   }
 
@@ -403,6 +571,21 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
               "name" => "cpp_type_annotation",
             )
           ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 9,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.MyUnion",
+                    )
+                  ),
+                )
+              ),
+              "name" => "my_union",
+            )
+          ),
         ],
         "is_union" => false,
       )
@@ -427,6 +610,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       $shape['empty_annotations'],
       Shapes::idx($shape, 'my_enum'),
       (new Vector($shape['cpp_type_annotation'])),
+      Shapes::idx($shape, 'my_union') === null ? null : (MyUnion::__fromShape($shape['my_union'])),
     );
   }
 
@@ -440,6 +624,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       'empty_annotations' => $this->empty_annotations,
       'my_enum' => $this->my_enum,
       'cpp_type_annotation' => vec($this->cpp_type_annotation),
+      'my_union' => $this->my_union?->__toShape(),
     );
   }
   public function readFromJson(string $jsonText): void {
@@ -478,6 +663,12 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
         $_container4 []= $_elem5;
       }
       $this->cpp_type_annotation = $_container4;
+    }    
+    if (idx($parsed, 'my_union') !== null) {
+      $_tmp6 = json_encode(/* HH_FIXME[4110] */ $parsed['my_union']);
+      $_tmp7 = MyUnion::withDefaultValues();
+      $_tmp7->readFromJson($_tmp6);
+      $this->my_union = $_tmp7;
     }    
   }
 

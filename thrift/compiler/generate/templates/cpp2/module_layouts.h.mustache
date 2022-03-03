@@ -27,14 +27,14 @@ namespace apache { namespace thrift { namespace frozen {
 
 <%#program:structs%>
 <%#struct:cpp_frozen2_exclude?%>
-FROZEN_EXCLUDE_TYPE(<% > common/namespace_cpp2%><%struct:name%>)
+FROZEN_EXCLUDE_TYPE(<% > common/namespace_cpp2%><%struct:cpp_name%>)
 <%/struct:cpp_frozen2_exclude?%>
 <%/program:structs%>
 
 <%#program:structs%>
 <%^struct:cpp_frozen2_exclude?%>
 <%^struct:union?%>
-FROZEN_TYPE(<% > common/namespace_cpp2%><%struct:name%>,<%!
+FROZEN_TYPE(<% > common/namespace_cpp2%><%struct:cpp_name%>,<%!
 %><%#struct:fields%>
   FROZEN_FIELD<% > common/field_suffix%>(<%field:cpp_name%>, <%field:key%>, <%#field:type%><%field:cpp_storage_type%><%/field:type%>)<%!
 %><%/struct:fields%>
@@ -52,9 +52,9 @@ FROZEN_TYPE(<% > common/namespace_cpp2%><%struct:name%>,<%!
 %><%/struct:fields%>));
 <%/struct:union?%>
 <%#struct:union?%>
-FROZEN_TYPE(<% > common/namespace_cpp2%><%struct:name%>,<%!
+FROZEN_TYPE(<% > common/namespace_cpp2%><%struct:cpp_name%>,<%!
 %>
-  FROZEN_FIELD(type_, 0, <% > common/namespace_cpp2%><%struct:name%>::Type)<%!
+  FROZEN_FIELD(type_, 0, <% > common/namespace_cpp2%><%struct:cpp_name%>::Type)<%!
 %><%#struct:fields%>
   FROZEN_FIELD<% > common/frozen2_union_field_suffix%>(<%field:cpp_name%>, <%field:key%>, <%#field:type%><%field:cpp_storage_type%><%/field:type%>)<%!
 %><%/struct:fields%>

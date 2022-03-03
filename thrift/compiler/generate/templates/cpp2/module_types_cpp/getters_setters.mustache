@@ -17,21 +17,21 @@
 %><%#struct:fields?%><%#struct:fields%><%#field:type%><%#type:resolves_to_container_or_struct?%>
 <%#field:has_deprecated_accessors?%>
 <%#field:optional?%>
-const <%type:cpp_type%>* <%struct:name%>::get_<%field:cpp_name%>() const& {
+const <%type:cpp_type%>* <%struct:cpp_name%>::get_<%field:cpp_name%>() const& {
   return <%field:cpp_name%>_ref().has_value() ? std::addressof(<%field:cpp_storage_name%>) : nullptr;
 }
 
-<%type:cpp_type%>* <%struct:name%>::get_<%field:cpp_name%>() & {
+<%type:cpp_type%>* <%struct:cpp_name%>::get_<%field:cpp_name%>() & {
   return <%field:cpp_name%>_ref().has_value() ? std::addressof(<%field:cpp_storage_name%>) : nullptr;
 }
 
 <%/field:optional?%>
 <%^field:optional?%>
-const <%type:cpp_type%>& <%struct:name%>::get_<%field:cpp_name%>() const& {
+const <%type:cpp_type%>& <%struct:cpp_name%>::get_<%field:cpp_name%>() const& {
   return <%field:cpp_storage_name%>;
 }
 
-<%type:cpp_type%> <%struct:name%>::get_<%field:cpp_name%>() && {
+<%type:cpp_type%> <%struct:cpp_name%>::get_<%field:cpp_name%>() && {
   return std::move(<%field:cpp_storage_name%>);
 }
 

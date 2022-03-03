@@ -16,7 +16,7 @@ import sys
 if sys.version_info[0] >= 3:
   long = int
 
-from .ttypes import UTF8STRINGS, MyEnum, MyStructNestedAnnotation, MyStruct, SecretStruct
+from .ttypes import UTF8STRINGS, MyEnum, MyStructNestedAnnotation, MyUnion, MyException, MyStruct, SecretStruct
 from thrift.Thrift import TProcessor
 import pprint
 import warnings
@@ -204,10 +204,15 @@ ping_args.thrift_field_annotations = {
 }
 
 class ping_result:
+  """
+  Attributes:
+   - myExcept
+  """
 
   thrift_spec = None
   thrift_field_annotations = None
   thrift_struct_annotations = None
+  __init__ = None
   @staticmethod
   def isUnion():
     return False
@@ -224,6 +229,12 @@ class ping_result:
       (fname, ftype, fid) = iprot.readFieldBegin()
       if ftype == TType.STOP:
         break
+      if fid == 1:
+        if ftype == TType.STRUCT:
+          self.myExcept = MyException()
+          self.myExcept.read(iprot)
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -237,6 +248,10 @@ class ping_result:
       oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
       return
     oprot.writeStructBegin('ping_result')
+    if self.myExcept != None:
+      oprot.writeFieldBegin('myExcept', TType.STRUCT, 1)
+      self.myExcept.write(oprot)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -252,10 +267,17 @@ class ping_result:
     json_obj = json
     if is_text:
       json_obj = loads(json)
+    if 'myExcept' in json_obj and json_obj['myExcept'] is not None:
+      self.myExcept = MyException()
+      self.myExcept.readFromJson(json_obj['myExcept'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
 
   def __repr__(self):
     L = []
     padding = ' ' * 4
+    if self.myExcept is not None:
+      value = pprint.pformat(self.myExcept, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    myExcept=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -272,12 +294,26 @@ class ping_result:
 
 all_structs.append(ping_result)
 ping_result.thrift_spec = (
+  None, # 0
+  (1, TType.STRUCT, 'myExcept', [MyException, MyException.thrift_spec, False], None, 2, ), # 1
 )
 
 ping_result.thrift_struct_annotations = {
 }
 ping_result.thrift_field_annotations = {
 }
+
+def ping_result__init__(self, myExcept=None,):
+  self.myExcept = myExcept
+
+ping_result.__init__ = ping_result__init__
+
+def ping_result__setstate__(self, state):
+  state.setdefault('myExcept', None)
+  self.__dict__ = state
+
+ping_result.__getstate__ = lambda self: self.__dict__.copy()
+ping_result.__setstate__ = ping_result__setstate__
 
 class getRandomData_args:
 
@@ -1424,6 +1460,8 @@ class Client(Iface):
     result = ping_result()
     result.read(self._iprot)
     self._iprot.readMessageEnd()
+    if result.myExcept != None:
+      raise result.myExcept
     return
 
   def getRandomData(self, ):
@@ -1617,6 +1655,9 @@ class Processor(Iface, TProcessor):
     result = ping_result()
     try:
       self._handler.ping()
+    except MyException as exc0:
+      self._event_handler.handlerException(handler_ctx, 'ping', exc0)
+      result.myExcept = exc0
     except:
       ex = sys.exc_info()[1]
       self._event_handler.handlerError(handler_ctx, 'ping', ex)
@@ -1725,6 +1766,9 @@ class ContextProcessor(ContextIface, TProcessor):
     result = ping_result()
     try:
       self._handler.ping(handler_ctx)
+    except MyException as exc0:
+      self._event_handler.handlerException(handler_ctx, 'ping', exc0)
+      result.myExcept = exc0
     except:
       ex = sys.exc_info()[1]
       self._event_handler.handlerError(handler_ctx, 'ping', ex)

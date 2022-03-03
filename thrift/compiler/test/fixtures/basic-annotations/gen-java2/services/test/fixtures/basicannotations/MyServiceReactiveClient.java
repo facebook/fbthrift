@@ -30,7 +30,8 @@ public class MyServiceReactiveClient
   private final Map<String, String> _persistentHeaders;
   private final Set<Long> _activeInteractions;
 
-  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _ping_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _ping_EXCEPTION_READERS = new HashMap<>();
+  private static final com.facebook.thrift.payload.Reader _ping_EXCEPTION_READER0 = Readers.wrap(test.fixtures.basicannotations.MyException.asReader());
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _getRandomData_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final TField _hasDataById_ID_FIELD_DESC = new TField("id", TType.I64, (short)1);
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _hasDataById_EXCEPTION_READERS = java.util.Collections.emptyMap();
@@ -45,6 +46,7 @@ public class MyServiceReactiveClient
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _doNothing_EXCEPTION_READERS = java.util.Collections.emptyMap();
 
   static {
+    _ping_EXCEPTION_READERS.put((short)1, _ping_EXCEPTION_READER0);
   }
 
   public MyServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient) {

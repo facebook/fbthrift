@@ -16,7 +16,7 @@
 
 %><%^program:tablebased?%>
 template <class Protocol_>
-void <%struct:name%>::readNoXfer(Protocol_* iprot) {
+void <%struct:cpp_name%>::readNoXfer(Protocol_* iprot) {
   apache::thrift::detail::ProtocolReaderStructReadState<%#struct:indexing?%>WithIndex<%/struct:indexing?%><Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -127,7 +127,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<<%struct:name%>>>();
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<<%struct:cpp_name%>>>();
   }
 
   switch (_readState.fieldId) {
@@ -157,7 +157,7 @@ _skip:
 <%#field:type%>
 <%#field:lazy?%>
 template<class ProtocolReader>
-void <%struct:name%>::__fbthrift_read_field_<%field:cpp_name%>_impl() const {
+void <%struct:cpp_name%>::__fbthrift_read_field_<%field:cpp_name%>_impl() const {
   ProtocolReader reader;
   reader.setInput(&<%#field:lazy_ref?%>*<%/field:lazy_ref?%>__fbthrift_serializedData_.<%field:cpp_name%>);
   ProtocolReader *iprot = &reader;
@@ -170,11 +170,11 @@ void <%struct:name%>::__fbthrift_read_field_<%field:cpp_name%>_impl() const {
 <%/program:tablebased?%>
 <%#program:tablebased?%>
 template <class Protocol_>
-void <%struct:name%>::readNoXfer(Protocol_* iprot) {
+void <%struct:cpp_name%>::readNoXfer(Protocol_* iprot) {
   ::apache::thrift::detail::read(
     iprot,
     ::apache::thrift::detail::toStructInfo(
-      <% > common/namespace_cpp2%>__fbthrift_struct_info_<%struct:name%>
+      <% > common/namespace_cpp2%>__fbthrift_struct_info_<%struct:cpp_name%>
     ),
     this);
 }

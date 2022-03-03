@@ -58,7 +58,7 @@ void EnumMetadata<<% > common/namespace_cpp2%><%enum:cpp_name%>>::gen(ThriftMeta
 
 <%#program:structs%>
 <%#program:unstructured_annotations_in_metadata?%>
-void StructMetadata<<% > common/namespace_cpp2%><%struct:name%>>::unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct){
+void StructMetadata<<% > common/namespace_cpp2%><%struct:cpp_name%>>::unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct){
   <%#struct:fields%>
   thriftStruct.fields_ref()[<%field:index%>].unstructured_annotations_ref() = <% > metadata/unstructured_field_gen%>;
   <%/struct:fields%>
@@ -68,7 +68,7 @@ void StructMetadata<<% > common/namespace_cpp2%><%struct:name%>>::unstructured_a
 }
 <%/program:unstructured_annotations_in_metadata?%>
 const ::apache::thrift::metadata::ThriftStruct&
-StructMetadata<<% > common/namespace_cpp2%><%struct:name%>>::gen(ThriftMetadata& metadata) {
+StructMetadata<<% > common/namespace_cpp2%><%struct:cpp_name%>>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs_ref()->emplace("<%program:name%>.<%struct:name%>", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
@@ -107,7 +107,7 @@ StructMetadata<<% > common/namespace_cpp2%><%struct:name%>>::gen(ThriftMetadata&
 
 <%#program:structs%>
 <%#struct:exception?%>
-void ExceptionMetadata<<% > common/namespace_cpp2%><%struct:name%>>::gen(ThriftMetadata& metadata) {
+void ExceptionMetadata<<% > common/namespace_cpp2%><%struct:cpp_name%>>::gen(ThriftMetadata& metadata) {
   auto res = metadata.exceptions_ref()->emplace("<%program:name%>.<%struct:name%>", ::apache::thrift::metadata::ThriftException{});
   if (!res.second) {
     return;

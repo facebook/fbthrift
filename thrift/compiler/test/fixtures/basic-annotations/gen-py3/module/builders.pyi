@@ -20,6 +20,16 @@ class MyStructNestedAnnotation_Builder(thrift.py3.builder.StructBuilder):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
 
+class MyUnion_Builder(thrift.py3.builder.StructBuilder):
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class MyException_Builder(thrift.py3.builder.StructBuilder):
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
 class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     major: _typing.Optional[int]
     package: _typing.Optional[str]
@@ -29,6 +39,7 @@ class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     empty_annotations: _typing.Optional[str]
     my_enum: _typing.Optional[_module_types.MyEnum]
     cpp_type_annotation: _typing.Optional[list]
+    my_union: _typing.Any
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

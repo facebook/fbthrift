@@ -33,7 +33,7 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
 
     // Method Exceptions
     private static final Class[] pingExceptions = new Class[] {
-        org.apache.thrift.TException.class};
+        test.fixtures.basicannotations.MyException.class, org.apache.thrift.TException.class};
     private static final Class[] getRandomDataExceptions = new Class[] {
         org.apache.thrift.TException.class};
     private static final Class[] hasDataByIdExceptions = new Class[] {
@@ -104,24 +104,27 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
 
 
     @java.lang.Override
-    public void ping() throws org.apache.thrift.TException {
+    public void ping() throws test.fixtures.basicannotations.MyException, org.apache.thrift.TException {
       pingWrapper(RpcOptions.EMPTY).getData();
     }
 
     @java.lang.Override
     public void ping(
-        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        RpcOptions rpcOptions) throws test.fixtures.basicannotations.MyException, org.apache.thrift.TException {
       pingWrapper(rpcOptions).getData();
     }
 
     @java.lang.Override
     public ResponseWrapper<Void> pingWrapper(
-        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        RpcOptions rpcOptions) throws test.fixtures.basicannotations.MyException, org.apache.thrift.TException {
       try {
         return FutureUtil.get(executeWrapperWithOptions(pingMethodHandler, pingExceptions, rpcOptions));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;
+        }
+        if (t instanceof test.fixtures.basicannotations.MyException) {
+          throw (test.fixtures.basicannotations.MyException) t;
         }
         throw new org.apache.thrift.TException(t);
       }

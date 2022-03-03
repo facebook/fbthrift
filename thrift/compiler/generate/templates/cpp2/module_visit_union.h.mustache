@@ -27,7 +27,7 @@ namespace detail {
 <%#program:structs%>
 <%#struct:union?%>
 template <>
-struct VisitUnion<<% > common/namespace_cpp2%><%struct:name%>> {
+struct VisitUnion<<% > common/namespace_cpp2%><%struct:cpp_name%>> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;

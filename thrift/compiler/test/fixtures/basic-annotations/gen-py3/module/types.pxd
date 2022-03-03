@@ -118,6 +118,31 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cMyStructNestedAnnotation&)
         __field_ref[string] name_ref()
 
+    cdef enum cMyUnion__type "::cpp2::MyUnion::Type":
+        cMyUnion__type___EMPTY__ "::cpp2::MyUnion::Type::__EMPTY__",
+
+    cdef cppclass cMyUnion "::cpp2::MyUnion":
+        cMyUnion() except +
+        cMyUnion(const cMyUnion&) except +
+        bint operator==(cMyUnion&)
+        bint operator!=(cMyUnion&)
+        bint operator<(cMyUnion&)
+        bint operator>(cMyUnion&)
+        bint operator<=(cMyUnion&)
+        bint operator>=(cMyUnion&)
+        cMyUnion__type getType() const
+
+
+    cdef cppclass cMyException "::cpp2::MyException"(cTException):
+        cMyException() except +
+        cMyException(const cMyException&) except +
+        bint operator==(cMyException&)
+        bint operator!=(cMyException&)
+        bint operator<(cMyException&)
+        bint operator>(cMyException&)
+        bint operator<=(cMyException&)
+        bint operator>=(cMyException&)
+
 
     cdef cppclass cMyStruct "::cpp2::MyStruct":
         cMyStruct() except +
@@ -136,6 +161,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[string] empty_annotations_ref()
         __field_ref[cMyEnum] my_enum_ref()
         __field_ref[std_deque_std_string] cpp_type_annotation_ref()
+        __field_ref[cMyUnion] my_union_ref()
 
 
     cdef cppclass cSecretStruct "::cpp2::SecretStruct":
@@ -161,6 +187,35 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyStructNestedAnnotation])
 
+cdef class __MyUnionType(thrift.py3.types.CompiledEnum):
+    pass
+
+
+
+
+cdef class MyUnion(thrift.py3.types.Union):
+    cdef shared_ptr[cMyUnion] _cpp_obj
+    cdef readonly __MyUnionType type
+    cdef readonly object value
+    cdef _load_cache(MyUnion self)
+
+    @staticmethod
+    cdef unique_ptr[cMyUnion] _make_instance(
+        cMyUnion* base_instance
+    ) except *
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cMyUnion])
+
+
+
+cdef class MyException(thrift.py3.exceptions.GeneratedError):
+    cdef shared_ptr[cMyException] _cpp_obj
+    cdef _fbthrift_types_fields.__MyException_FieldsSetter _fields_setter
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cMyException])
+
 
 
 cdef class MyStruct(thrift.py3.types.Struct):
@@ -174,8 +229,10 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef inline object empty_annotations_impl(self)
     cdef inline object my_enum_impl(self)
     cdef inline object cpp_type_annotation_impl(self)
+    cdef inline object my_union_impl(self)
     cdef object __fbthrift_cached_my_enum
     cdef std_deque_std_string__List__string __fbthrift_cached_cpp_type_annotation
+    cdef MyUnion __fbthrift_cached_my_union
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyStruct])

@@ -19,10 +19,10 @@
 namespace apache { namespace thrift {
 <%#program:structs%><%#struct:union?%>
 
-template <> struct TEnumDataStorage<<% > common/namespace_cpp2%><%struct:name%>::Type>;
+template <> struct TEnumDataStorage<<% > common/namespace_cpp2%><%struct:cpp_name%>::Type>;
 
-template <> struct TEnumTraits<<% > common/namespace_cpp2%><%struct:name%>::Type> {
-  using type = <% > common/namespace_cpp2%><%struct:name%>::Type;
+template <> struct TEnumTraits<<% > common/namespace_cpp2%><%struct:cpp_name%>::Type> {
+  using type = <% > common/namespace_cpp2%><%struct:cpp_name%>::Type;
 
   static constexpr std::size_t const size = <%struct:num_union_members%>;
   static folly::Range<type const*> const values;

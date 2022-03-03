@@ -115,7 +115,7 @@ std::string get_fatal_string_short_id(const std::string& key) {
   return boost::algorithm::replace_all_copy(key, ".", "_");
 }
 
-std::string get_fatal_namesoace_name_short_id(
+std::string get_fatal_namespace_name_short_id(
     const std::string& lang, const std::string& ns) {
   std::string replacement = lang == "cpp" || lang == "cpp2" ? "__" : "_";
   std::string result = boost::algorithm::replace_all_copy(ns, ".", replacement);
@@ -125,7 +125,7 @@ std::string get_fatal_namesoace_name_short_id(
   return result;
 }
 
-std::string get_fatal_namesoace(
+std::string get_fatal_namespace(
     const std::string& lang, const std::string& ns) {
   if (lang == "cpp" || lang == "cpp2") {
     return boost::algorithm::replace_all_copy(ns, ".", "::");
@@ -863,6 +863,7 @@ class mstch_cpp2_struct : public mstch_struct {
              &mstch_cpp2_struct::is_struct_orderable},
             {"struct:nondefault_copy_ctor_and_assignment?",
              &mstch_cpp2_struct::nondefault_copy_ctor_and_assignment},
+            {"struct:cpp_name", &mstch_cpp2_struct::cpp_name},
             {"struct:cpp_methods", &mstch_cpp2_struct::cpp_methods},
             {"struct:cpp_declare_hash", &mstch_cpp2_struct::cpp_declare_hash},
             {"struct:cpp_declare_equal_to",
@@ -961,6 +962,8 @@ class mstch_cpp2_struct : public mstch_struct {
     }
     return false;
   }
+  mstch::node cpp_name() { return cpp2::get_name(strct_); }
+
   mstch::node cpp_methods() {
     return strct_->get_annotation({"cpp.methods", "cpp2.methods"});
   }
@@ -1614,7 +1617,7 @@ class mstch_cpp2_program : public mstch_program {
       a.push_back(mstch::map{
           {"language:safe_name", get_fatal_string_short_id(pair.first)},
           {"language:safe_namespace",
-           get_fatal_namesoace_name_short_id(pair.first, pair.second)},
+           get_fatal_namespace_name_short_id(pair.first, pair.second)},
           {"last?", idx == size - 1},
       });
       ++idx;
@@ -1644,8 +1647,8 @@ class mstch_cpp2_program : public mstch_program {
     for (const auto& pair : program_->namespaces()) {
       unique_names.emplace(get_fatal_string_short_id(pair.first), pair.first);
       unique_names.emplace(
-          get_fatal_namesoace_name_short_id(pair.first, pair.second),
-          get_fatal_namesoace(pair.first, pair.second));
+          get_fatal_namespace_name_short_id(pair.first, pair.second),
+          get_fatal_namespace(pair.first, pair.second));
     }
     // enums
     for (const auto* enm : program_->enums()) {

@@ -30,7 +30,21 @@ struct TccStructTraits<::cpp2::MyStructNestedAnnotation> {
       apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
-struct TccStructTraits<::cpp2::MyStruct> {
+struct TccStructTraits<::cpp2::YourUnion> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype) noexcept;
+};
+template <>
+struct TccStructTraits<::cpp2::YourException> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype) noexcept;
+};
+template <>
+struct TccStructTraits<::cpp2::YourStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
@@ -169,7 +183,162 @@ extern template uint32_t MyStructNestedAnnotation::serializedSizeZC<>(apache::th
 namespace cpp2 {
 
 template <class Protocol_>
-void MyStruct::readNoXfer(Protocol_* iprot) {
+void YourUnion::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+  _readState.fieldId = 0;
+
+  _readState.readStructBegin(iprot);
+
+  _readState.readFieldBegin(iprot);
+  if (_readState.atStop()) {
+    apache::thrift::clear(*this);
+  } else {
+    if (iprot->kUsesFieldNames()) {
+      _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<YourUnion>>();
+    }
+    switch (_readState.fieldId) {
+      default:
+      {
+        _readState.skip(iprot);
+        break;
+      }
+    }
+    _readState.readFieldEnd(iprot);
+    _readState.readFieldBegin(iprot);
+    if (UNLIKELY(!_readState.atStop())) {
+      using apache::thrift::protocol::TProtocolException;
+      TProtocolException::throwUnionMissingStop();
+    }
+  }
+  _readState.readStructEnd(iprot);
+}
+template <class Protocol_>
+uint32_t YourUnion::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("MyUnion");
+  switch(this->getType()) {
+    case YourUnion::Type::__EMPTY__:;
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t YourUnion::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("MyUnion");
+  switch(this->getType()) {
+    case YourUnion::Type::__EMPTY__:;
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t YourUnion::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("MyUnion");
+  switch(this->getType()) {
+    case YourUnion::Type::__EMPTY__:;
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+extern template void YourUnion::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t YourUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t YourUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t YourUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void YourUnion::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t YourUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t YourUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t YourUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace cpp2 {
+
+template <class Protocol_>
+void YourException::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+
+  _readState.readStructBegin(iprot);
+
+  using apache::thrift::TProtocolException;
+
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  return;
+
+_loop:
+  _readState.afterAdvanceFailure(iprot);
+  if (_readState.atStop()) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<YourException>>();
+  }
+
+  switch (_readState.fieldId) {
+    default:
+    {
+      _readState.skip(iprot);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
+}
+
+template <class Protocol_>
+uint32_t YourException::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("MyException");
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t YourException::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("MyException");
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t YourException::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("MyException");
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+extern template void YourException::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t YourException::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t YourException::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t YourException::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void YourException::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t YourException::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t YourException::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t YourException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace cpp2 {
+
+template <class Protocol_>
+void YourStruct::readNoXfer(Protocol_* iprot) {
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -297,6 +466,24 @@ _readField_cpp_type_annotation:
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           8,
+          9,
+          apache::thrift::protocol::T_STRUCT))) {
+    goto _loop;
+  }
+_readField_my_union:
+  {
+    _readState.beforeSubobject(iprot);
+    ::cpp2::YourUnion tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::variant, ::cpp2::YourUnion>::readWithContext(*iprot, tvalue, _readState);
+    this->__fbthrift_field_my_union = ::apache::thrift::adapt_detail::fromThriftField<StaticCast, 9>(::std::move(tvalue), *this);
+    _readState.afterSubobject(iprot);
+    
+  }
+ this->__isset.set(8, true);
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          9,
           0,
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
@@ -313,7 +500,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<MyStruct>>();
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<YourStruct>>();
   }
 
   switch (_readState.fieldId) {
@@ -381,6 +568,14 @@ _loop:
         goto _skip;
       }
     }
+    case 9:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRUCT))) {
+        goto _readField_my_union;
+      } else {
+        goto _skip;
+      }
+    }
     default:
     {
 _skip:
@@ -393,7 +588,7 @@ _skip:
 }
 
 template <class Protocol_>
-uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
+uint32_t YourStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStruct");
   {
@@ -428,12 +623,16 @@ uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("cpp_type_annotation", apache::thrift::protocol::T_LIST, 8);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::deque<std::string>>::serializedSize<false>(*prot_, this->__fbthrift_field_cpp_type_annotation);
   }
+  {
+    xfer += prot_->serializedFieldSize("my_union", apache::thrift::protocol::T_STRUCT, 9);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::variant, ::cpp2::YourUnion>::serializedSize<false>(*prot_, StaticCast::toThrift(this->__fbthrift_field_my_union));
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
+uint32_t YourStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStruct");
   {
@@ -468,12 +667,16 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("cpp_type_annotation", apache::thrift::protocol::T_LIST, 8);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::deque<std::string>>::serializedSize<false>(*prot_, this->__fbthrift_field_cpp_type_annotation);
   }
+  {
+    xfer += prot_->serializedFieldSize("my_union", apache::thrift::protocol::T_STRUCT, 9);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::variant, ::cpp2::YourUnion>::serializedSize<true>(*prot_, StaticCast::toThrift(this->__fbthrift_field_my_union));
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t MyStruct::write(Protocol_* prot_) const {
+uint32_t YourStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("MyStruct");
   bool previousFieldHasValue = true;
@@ -533,19 +736,26 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::deque<std::string>>::write(*prot_, this->__fbthrift_field_cpp_type_annotation);
     xfer += prot_->writeFieldEnd();
   }
+  {
+    constexpr int16_t kPrevFieldId = 8;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 9, kPrevFieldId>(*prot_, "my_union", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::variant, ::cpp2::YourUnion>::write(*prot_, StaticCast::toThrift(this->__fbthrift_field_my_union));
+    xfer += prot_->writeFieldEnd();
+  }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
 }
 
-extern template void MyStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t MyStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t MyStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void MyStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t MyStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void YourStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t YourStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t YourStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t YourStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void YourStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t YourStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t YourStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t YourStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace cpp2 {

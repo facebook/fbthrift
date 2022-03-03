@@ -54,6 +54,16 @@ cdef class __MyStructNestedAnnotation_FieldsSetter(__StructFieldsSetter):
     cdef void _set_field_0(self, _fbthrift_value) except *
 
 
+ctypedef void (*__MyException_FieldsSetterFunc)(__MyException_FieldsSetter, object) except *
+
+cdef class __MyException_FieldsSetter(__StructFieldsSetter):
+    cdef _module_types.cMyException* _struct_cpp_obj
+    cdef cumap[__cstring_view, __MyException_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __MyException_FieldsSetter _fbthrift_create(_module_types.cMyException* struct_cpp_obj)
+
+
 ctypedef void (*__MyStruct_FieldsSetterFunc)(__MyStruct_FieldsSetter, object) except *
 
 cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
@@ -70,6 +80,7 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
     cdef void _set_field_5(self, _fbthrift_value) except *
     cdef void _set_field_6(self, _fbthrift_value) except *
     cdef void _set_field_7(self, _fbthrift_value) except *
+    cdef void _set_field_8(self, _fbthrift_value) except *
 
 
 ctypedef void (*__SecretStruct_FieldsSetterFunc)(__SecretStruct_FieldsSetter, object) except *

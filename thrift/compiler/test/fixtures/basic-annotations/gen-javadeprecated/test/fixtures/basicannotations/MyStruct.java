@@ -34,6 +34,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   private static final TField EMPTY_ANNOTATIONS_FIELD_DESC = new TField("empty_annotations", TType.STRING, (short)6);
   private static final TField MY_ENUM_FIELD_DESC = new TField("my_enum", TType.I32, (short)7);
   private static final TField CPP_TYPE_ANNOTATION_FIELD_DESC = new TField("cpp_type_annotation", TType.LIST, (short)8);
+  private static final TField MY_UNION_FIELD_DESC = new TField("my_union", TType.STRUCT, (short)9);
 
   public long major;
   public String package;
@@ -47,6 +48,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
    */
   public MyEnum my_enum;
   public List<String> cpp_type_annotation;
+  public MyUnion my_union;
   public static final int MAJOR = 2;
   public static final int PACKAGE = 1;
   public static final int ANNOTATION_WITH_QUOTE = 3;
@@ -55,6 +57,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   public static final int EMPTY_ANNOTATIONS = 6;
   public static final int MY_ENUM = 7;
   public static final int CPP_TYPE_ANNOTATION = 8;
+  public static final int MY_UNION = 9;
 
   // isset id assignments
   private static final int __MAJOR_ISSET_ID = 0;
@@ -81,6 +84,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     tmpMetaDataMap.put(CPP_TYPE_ANNOTATION, new FieldMetaData("cpp_type_annotation", TFieldRequirementType.DEFAULT, 
         new ListMetaData(TType.LIST, 
             new FieldValueMetaData(TType.STRING))));
+    tmpMetaDataMap.put(MY_UNION, new FieldMetaData("my_union", TFieldRequirementType.DEFAULT, 
+        new StructMetaData(TType.STRUCT, MyUnion.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -99,7 +104,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       String annotation_with_trailing_comma,
       String empty_annotations,
       MyEnum my_enum,
-      List<String> cpp_type_annotation) {
+      List<String> cpp_type_annotation,
+      MyUnion my_union) {
     this();
     this.major = major;
     setMajorIsSet(true);
@@ -110,6 +116,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     this.empty_annotations = empty_annotations;
     this.my_enum = my_enum;
     this.cpp_type_annotation = cpp_type_annotation;
+    this.my_union = my_union;
   }
 
   public static class Builder {
@@ -121,6 +128,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     private String empty_annotations;
     private MyEnum my_enum;
     private List<String> cpp_type_annotation;
+    private MyUnion my_union;
 
     BitSet __optional_isset = new BitSet(1);
 
@@ -168,6 +176,11 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return this;
     }
 
+    public Builder setMy_union(final MyUnion my_union) {
+      this.my_union = my_union;
+      return this;
+    }
+
     public MyStruct build() {
       MyStruct result = new MyStruct();
       if (__optional_isset.get(__MAJOR_ISSET_ID)) {
@@ -180,6 +193,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       result.setEmpty_annotations(this.empty_annotations);
       result.setMy_enum(this.my_enum);
       result.setCpp_type_annotation(this.cpp_type_annotation);
+      result.setMy_union(this.my_union);
       return result;
     }
   }
@@ -215,6 +229,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     }
     if (other.isSetCpp_type_annotation()) {
       this.cpp_type_annotation = TBaseHelper.deepCopy(other.cpp_type_annotation);
+    }
+    if (other.isSetMy_union()) {
+      this.my_union = TBaseHelper.deepCopy(other.my_union);
     }
   }
 
@@ -421,6 +438,30 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     }
   }
 
+  public MyUnion getMy_union() {
+    return this.my_union;
+  }
+
+  public MyStruct setMy_union(MyUnion my_union) {
+    this.my_union = my_union;
+    return this;
+  }
+
+  public void unsetMy_union() {
+    this.my_union = null;
+  }
+
+  // Returns true if field my_union is set (has been assigned a value) and false otherwise
+  public boolean isSetMy_union() {
+    return this.my_union != null;
+  }
+
+  public void setMy_unionIsSet(boolean __value) {
+    if (!__value) {
+      this.my_union = null;
+    }
+  }
+
   @SuppressWarnings("unchecked")
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
@@ -488,6 +529,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       }
       break;
 
+    case MY_UNION:
+      if (__value == null) {
+        unsetMy_union();
+      } else {
+        setMy_union((MyUnion)__value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -518,6 +567,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
 
     case CPP_TYPE_ANNOTATION:
       return getCpp_type_annotation();
+
+    case MY_UNION:
+      return getMy_union();
 
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -550,12 +602,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
 
     if (!TBaseHelper.equalsNobinary(this.isSetCpp_type_annotation(), that.isSetCpp_type_annotation(), this.cpp_type_annotation, that.cpp_type_annotation)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetMy_union(), that.isSetMy_union(), this.my_union, that.my_union)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {major, package, annotation_with_quote, class_, annotation_with_trailing_comma, empty_annotations, my_enum, cpp_type_annotation});
+    return Arrays.deepHashCode(new Object[] {major, package, annotation_with_quote, class_, annotation_with_trailing_comma, empty_annotations, my_enum, cpp_type_annotation, my_union});
   }
 
   @Override
@@ -631,6 +685,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(cpp_type_annotation, other.cpp_type_annotation);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetMy_union()).compareTo(other.isSetMy_union());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(my_union, other.my_union);
     if (lastComparison != 0) { 
       return lastComparison;
     }
@@ -717,6 +779,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case MY_UNION:
+          if (__field.type == TType.STRUCT) {
+            this.my_union = new MyUnion();
+            this.my_union.read(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -776,6 +846,11 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
         }
         oprot.writeListEnd();
       }
+      oprot.writeFieldEnd();
+    }
+    if (this.my_union != null) {
+      oprot.writeFieldBegin(MY_UNION_FIELD_DESC);
+      this.my_union.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -887,6 +962,17 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       sb.append("null");
     } else {
       sb.append(TBaseHelper.toString(this.getCpp_type_annotation(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("my_union");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getMy_union() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getMy_union(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

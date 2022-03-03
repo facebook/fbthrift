@@ -308,7 +308,7 @@ std::string type_resolver::gen_adapted_type(
                 *adapter,
                 std::to_string(field_id),
                 standard_type,
-                parent.get_name(),
+                get_cpp_name(parent),
             });
 }
 

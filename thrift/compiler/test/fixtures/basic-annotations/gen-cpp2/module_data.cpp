@@ -23,6 +23,11 @@ const std::array<folly::StringPiece, 3> TEnumDataStorage<::cpp2::YourEnum>::name
   "DOMAIN",
 }};
 
+const std::array<::cpp2::YourUnion::Type, 0> TEnumDataStorage<::cpp2::YourUnion::Type>::values = {{
+}};
+const std::array<folly::StringPiece, 0> TEnumDataStorage<::cpp2::YourUnion::Type>::names = {{
+}};
+
 const std::array<folly::StringPiece, 1> TStructDataStorage<::cpp2::MyStructNestedAnnotation>::fields_names = {{
   "name",
 }};
@@ -33,7 +38,21 @@ const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::MyStructNestedAn
   TType::T_STRING,
 }};
 
-const std::array<folly::StringPiece, 8> TStructDataStorage<::cpp2::MyStruct>::fields_names = {{
+const std::array<folly::StringPiece, 0> TStructDataStorage<::cpp2::YourUnion>::fields_names = {{
+}};
+const std::array<int16_t, 0> TStructDataStorage<::cpp2::YourUnion>::fields_ids = {{
+}};
+const std::array<protocol::TType, 0> TStructDataStorage<::cpp2::YourUnion>::fields_types = {{
+}};
+
+const std::array<folly::StringPiece, 0> TStructDataStorage<::cpp2::YourException>::fields_names = {{
+}};
+const std::array<int16_t, 0> TStructDataStorage<::cpp2::YourException>::fields_ids = {{
+}};
+const std::array<protocol::TType, 0> TStructDataStorage<::cpp2::YourException>::fields_types = {{
+}};
+
+const std::array<folly::StringPiece, 9> TStructDataStorage<::cpp2::YourStruct>::fields_names = {{
   "major",
   "package",
   "annotation_with_quote",
@@ -42,8 +61,9 @@ const std::array<folly::StringPiece, 8> TStructDataStorage<::cpp2::MyStruct>::fi
   "empty_annotations",
   "my_enum",
   "cpp_type_annotation",
+  "my_union",
 }};
-const std::array<int16_t, 8> TStructDataStorage<::cpp2::MyStruct>::fields_ids = {{
+const std::array<int16_t, 9> TStructDataStorage<::cpp2::YourStruct>::fields_ids = {{
   2,
   1,
   3,
@@ -52,8 +72,9 @@ const std::array<int16_t, 8> TStructDataStorage<::cpp2::MyStruct>::fields_ids = 
   6,
   7,
   8,
+  9,
 }};
-const std::array<protocol::TType, 8> TStructDataStorage<::cpp2::MyStruct>::fields_types = {{
+const std::array<protocol::TType, 9> TStructDataStorage<::cpp2::YourStruct>::fields_types = {{
   TType::T_I64,
   TType::T_STRING,
   TType::T_STRING,
@@ -62,6 +83,7 @@ const std::array<protocol::TType, 8> TStructDataStorage<::cpp2::MyStruct>::field
   TType::T_STRING,
   TType::T_I32,
   TType::T_LIST,
+  TType::T_STRUCT,
 }};
 
 const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::SecretStruct>::fields_names = {{

@@ -19,6 +19,7 @@ pub mod consts {
             empty_annotations: ::std::default::Default::default(),
             my_enum: crate::types::MyEnum::DOMAIN,
             cpp_type_annotation: ::std::default::Default::default(),
+            my_union: ::std::default::Default::default(),
             ..::std::default::Default::default()
         });
 }
@@ -39,7 +40,39 @@ pub mod types {
         pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]
+    pub enum MyUnion {
+        UnknownField(::std::primitive::i32),
+    }
+
     #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    pub struct MyException {
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
+    }
+
+    impl ::fbthrift::ExceptionInfo for MyException {
+        fn exn_value(&self) -> String {
+            format!("{:?}", self)
+        }
+
+        #[inline]
+        fn exn_is_declared(&self) -> bool { true }
+    }
+
+    impl ::std::error::Error for MyException {}
+
+    impl ::std::fmt::Display for MyException {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            write!(f, "{:?}", self)
+        }
+    }
+
+    #[derive(Clone, PartialEq)]
     pub struct MyStruct {
         pub major: ::std::primitive::i64,
         pub package: ::std::string::String,
@@ -49,6 +82,7 @@ pub mod types {
         pub empty_annotations: ::std::string::String,
         pub my_enum: crate::types::MyEnum,
         pub cpp_type_annotation: ::std::vec::Vec<::std::string::String>,
+        pub my_union: crate::types::MyUnion,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
         // the definition in Thrift. If you don't want this, add the annotation
@@ -252,6 +286,121 @@ pub mod types {
     }
 
 
+
+    impl ::std::default::Default for MyUnion {
+        fn default() -> Self {
+            Self::UnknownField(-1)
+        }
+    }
+
+    impl ::fbthrift::GetTType for MyUnion {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for MyUnion
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("MyUnion");
+            match self {
+                MyUnion::UnknownField(_) => {}
+            }
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for MyUnion
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static FIELDS: &[::fbthrift::Field] = &[
+            ];
+            let _ = p.read_struct_begin(|_| ())?;
+            let once = false;
+            let alt = ::std::option::Option::None;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
+                match (fty, fid as ::std::primitive::i32, once) {
+                    (::fbthrift::TType::Stop, _, _) => break,
+                    (fty, _, false) => p.skip(fty)?,
+                    (badty, badid, true) => return ::std::result::Result::Err(::std::convert::From::from(::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                        format!(
+                            "unwanted extra union {} field ty {:?} id {}",
+                            "MyUnion",
+                            badty,
+                            badid,
+                        ),
+                    ))),
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(alt.unwrap_or_default())
+        }
+    }
+
+    impl ::std::default::Default for self::MyException {
+        fn default() -> Self {
+            Self {
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+            }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::MyException {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("MyException")
+                .finish()
+        }
+    }
+
+    unsafe impl ::std::marker::Send for self::MyException {}
+    unsafe impl ::std::marker::Sync for self::MyException {}
+
+    impl ::fbthrift::GetTType for self::MyException {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for self::MyException
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("MyException");
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for self::MyException
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static FIELDS: &[::fbthrift::Field] = &[
+            ];
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+            })
+        }
+    }
+
+
     impl ::std::default::Default for self::MyStruct {
         fn default() -> Self {
             Self {
@@ -263,6 +412,7 @@ pub mod types {
                 empty_annotations: ::std::default::Default::default(),
                 my_enum: ::std::default::Default::default(),
                 cpp_type_annotation: ::std::default::Default::default(),
+                my_union: ::std::default::Default::default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
         }
@@ -280,6 +430,7 @@ pub mod types {
                 .field("empty_annotations", &self.empty_annotations)
                 .field("my_enum", &self.my_enum)
                 .field("cpp_type_annotation", &self.cpp_type_annotation)
+                .field("my_union", &self.my_union)
                 .finish()
         }
     }
@@ -321,6 +472,9 @@ pub mod types {
             p.write_field_begin("cpp_type_annotation", ::fbthrift::TType::List, 8);
             ::fbthrift::Serialize::write(&self.cpp_type_annotation, p);
             p.write_field_end();
+            p.write_field_begin("my_union", ::fbthrift::TType::Struct, 9);
+            ::fbthrift::Serialize::write(&self.my_union, p);
+            p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -339,6 +493,7 @@ pub mod types {
                 ::fbthrift::Field::new("empty_annotations", ::fbthrift::TType::String, 6),
                 ::fbthrift::Field::new("major", ::fbthrift::TType::I64, 2),
                 ::fbthrift::Field::new("my_enum", ::fbthrift::TType::I32, 7),
+                ::fbthrift::Field::new("my_union", ::fbthrift::TType::Struct, 9),
                 ::fbthrift::Field::new("package", ::fbthrift::TType::String, 1),
             ];
             let mut field_major = ::std::option::Option::None;
@@ -349,6 +504,7 @@ pub mod types {
             let mut field_empty_annotations = ::std::option::Option::None;
             let mut field_my_enum = ::std::option::Option::None;
             let mut field_cpp_type_annotation = ::std::option::Option::None;
+            let mut field_my_union = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -362,6 +518,7 @@ pub mod types {
                     (::fbthrift::TType::String, 6) => field_empty_annotations = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::I32, 7) => field_my_enum = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::List, 8) => field_cpp_type_annotation = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 9) => field_my_union = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -376,6 +533,7 @@ pub mod types {
                 empty_annotations: field_empty_annotations.unwrap_or_default(),
                 my_enum: field_my_enum.unwrap_or_default(),
                 cpp_type_annotation: field_cpp_type_annotation.unwrap_or_default(),
+                my_union: field_my_union.unwrap_or_default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
@@ -479,7 +637,14 @@ pub mod services {
         #[derive(Clone, Debug)]
         pub enum PingExn {
             Success(()),
+            myExcept(crate::types::MyException),
             ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::std::convert::From<crate::types::MyException> for PingExn {
+            fn from(exn: crate::types::MyException) -> Self {
+                PingExn::myExcept(exn)
+            }
         }
 
         impl ::std::convert::From<::fbthrift::ApplicationException> for PingExn {
@@ -493,6 +658,7 @@ pub mod services {
                 match self {
                     PingExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
                     PingExn::ApplicationException(aexn) => aexn.exn_name(),
+                    PingExn::myExcept(exn) => exn.exn_name(),
                 }
             }
 
@@ -500,6 +666,7 @@ pub mod services {
                 match self {
                     PingExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
                     PingExn::ApplicationException(aexn) => aexn.exn_value(),
+                    PingExn::myExcept(exn) => exn.exn_value(),
                 }
             }
 
@@ -507,6 +674,7 @@ pub mod services {
                 match self {
                     PingExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
                     PingExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                    PingExn::myExcept(exn) => exn.exn_is_declared(),
                 }
             }
         }
@@ -516,6 +684,7 @@ pub mod services {
                 match self {
                     PingExn::Success(_) => ::fbthrift::ResultType::Return,
                     PingExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                    PingExn::myExcept(_exn) => fbthrift::ResultType::Error,
                 }
             }
         }
@@ -543,6 +712,15 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
+                    PingExn::myExcept(inner) => {
+                        p.write_field_begin(
+                            "myExcept",
+                            ::fbthrift::TType::Struct,
+                            1,
+                        );
+                        inner.write(p);
+                        p.write_field_end();
+                    }
                     PingExn::ApplicationException(_aexn) => unreachable!(),
                 }
                 p.write_field_stop();
@@ -557,6 +735,7 @@ pub mod services {
             fn read(p: &mut P) -> ::anyhow::Result<Self> {
                 static RETURNS: &[::fbthrift::Field] = &[
                     ::fbthrift::Field::new("Success", ::fbthrift::TType::Void, 0),
+                    ::fbthrift::Field::new("myExcept", ::fbthrift::TType::Struct, 1),
                 ];
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
@@ -571,6 +750,10 @@ pub mod services {
                         ((::fbthrift::TType::Void, 0i32), false) => {
                             once = true;
                             alt = PingExn::Success(::fbthrift::Deserialize::read(p)?);
+                        }
+                        ((::fbthrift::TType::Struct, 1), false) => {
+                            once = true;
+                            alt = PingExn::myExcept(::fbthrift::Deserialize::read(p)?);
                         }
                         ((ty, _id), false) => p.skip(ty)?,
                         ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
@@ -5233,8 +5416,58 @@ pub mod errors {
     /// Errors for MyService functions.
     pub mod my_service {
 
-        pub type PingError = ::fbthrift::NonthrowingFunctionError;
+        pub trait AsMyException {
+            fn as_my_exception(&self) -> Option<&crate::types::MyException>;
+        }
 
+        impl AsMyException for ::anyhow::Error {
+            fn as_my_exception(&self) -> Option<&crate::types::MyException> {
+                for cause in self.chain() {
+                    if let Some(PingError::myExcept(e)) = cause.downcast_ref::<PingError>() {
+                        return Some(e);
+                    }
+                }
+                None
+            }
+        }
+
+        /// Errors for ping (client side).
+        #[derive(Debug, ::thiserror::Error)]
+        pub enum PingError {
+            #[error("MyService::ping failed with {0:?}")]
+            myExcept(crate::types::MyException),
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
+        }
+
+        impl ::std::convert::From<crate::types::MyException> for PingError {
+            fn from(e: crate::types::MyException) -> Self {
+                PingError::myExcept(e)
+            }
+        }
+
+        impl AsMyException for PingError {
+            fn as_my_exception(&self) -> Option<&crate::types::MyException> {
+                match self {
+                    PingError::myExcept(inner) => Some(inner),
+                    _ => None,
+                }
+            }
+        }
+
+        impl ::std::convert::From<::anyhow::Error> for PingError {
+            fn from(err: ::anyhow::Error) -> Self {
+                PingError::ThriftError(err)
+            }
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for PingError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                PingError::ApplicationException(ae)
+            }
+        }
         impl ::std::convert::From<crate::services::my_service::PingExn> for
             ::std::result::Result<(), PingError>
         {
@@ -5244,6 +5477,8 @@ pub mod errors {
                         ::std::result::Result::Ok(res),
                     crate::services::my_service::PingExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(PingError::ApplicationException(aexn)),
+                    crate::services::my_service::PingExn::myExcept(exn) =>
+                        ::std::result::Result::Err(PingError::myExcept(exn)),
                 }
             }
         }

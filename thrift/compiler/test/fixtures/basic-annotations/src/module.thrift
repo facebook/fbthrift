@@ -28,6 +28,12 @@ struct MyStructNestedAnnotation {
   1: string name;
 }
 
+union MyUnion {} (cpp.name = "YourUnion", cpp.adapter = "StaticCast")
+safe exception MyException {} (
+  cpp.name = "YourException",
+  cpp.adapter = "StaticCast",
+)
+
 # We intentionally keep field IDs out of order to check whether this case is handled correctly
 struct MyStruct {
   # glibc has macros with this name, Thrift should be able to prevent collisions
@@ -41,7 +47,10 @@ struct MyStruct {
   6: string empty_annotations ();
   7: MyEnum my_enum;
   8: list<string> (cpp.type = "std::deque<std::string>") cpp_type_annotation;
+  9: MyUnion my_union;
 } (
+  cpp.name = "YourStruct",
+  cpp.adapter = "StaticCast",
   android.generate_builder,
   cpp.internal.deprecated._data.method,
   thrift.uri = "facebook.com/thrift/compiler/test/fixtures/basic-annotations/src/module/MyStruct",
@@ -54,7 +63,7 @@ const MyStruct myStruct = {
 };
 
 service MyService {
-  void ping();
+  void ping() throws (1: MyException myExcept);
   string getRandomData();
   bool hasDataById(1: i64 id);
   string getDataById(1: i64 id);

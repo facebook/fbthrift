@@ -34,7 +34,7 @@ public class MyServiceAsyncClientImpl extends AbstractThriftClient implements My
 
     // Method Exceptions
     private static final Class[] pingExceptions = new Class[] {
-        org.apache.thrift.TException.class};
+        test.fixtures.basicannotations.MyException.class, org.apache.thrift.TException.class};
     private static final Class[] getRandomDataExceptions = new Class[] {
         org.apache.thrift.TException.class};
     private static final Class[] hasDataByIdExceptions = new Class[] {

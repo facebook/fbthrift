@@ -27,7 +27,29 @@ struct VisitByFieldId<::cpp2::MyStructNestedAnnotation> {
 };
 
 template <>
-struct VisitByFieldId<::cpp2::MyStruct> {
+struct VisitByFieldId<::cpp2::YourUnion> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
+    default:
+      throwInvalidThriftId(fieldId, "::cpp2::YourUnion");
+    }
+  }
+};
+
+template <>
+struct VisitByFieldId<::cpp2::YourException> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
+    default:
+      throwInvalidThriftId(fieldId, "::cpp2::YourException");
+    }
+  }
+};
+
+template <>
+struct VisitByFieldId<::cpp2::YourStruct> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
     switch (fieldId) {
@@ -47,8 +69,10 @@ struct VisitByFieldId<::cpp2::MyStruct> {
       return f(6, static_cast<T&&>(t).my_enum_ref());
     case 8:
       return f(7, static_cast<T&&>(t).cpp_type_annotation_ref());
+    case 9:
+      return f(8, static_cast<T&&>(t).my_union_ref());
     default:
-      throwInvalidThriftId(fieldId, "::cpp2::MyStruct");
+      throwInvalidThriftId(fieldId, "::cpp2::YourStruct");
     }
   }
 };

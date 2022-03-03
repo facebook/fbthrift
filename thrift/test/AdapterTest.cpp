@@ -267,24 +267,24 @@ TEST_F(AdapterTest, StructCodeGen_Terse) {
 
 namespace basic {
 TEST_F(AdapterTest, UnionCodeGen_Empty) {
-  AdaptTestUnion obj0a;
-  EXPECT_EQ(obj0a.getType(), AdaptTestUnion::__EMPTY__);
+  ThriftAdaptTestUnion obj0a;
+  EXPECT_EQ(obj0a.getType(), ThriftAdaptTestUnion::__EMPTY__);
 
   auto data0 = CompactSerializer::serialize<std::string>(obj0a);
-  AdaptTestUnion obj0b;
+  ThriftAdaptTestUnion obj0b;
   CompactSerializer::deserialize(data0, obj0b);
-  EXPECT_EQ(obj0b.getType(), AdaptTestUnion::__EMPTY__);
+  EXPECT_EQ(obj0b.getType(), ThriftAdaptTestUnion::__EMPTY__);
 
   EXPECT_EQ(obj0b, obj0a);
   EXPECT_FALSE(obj0b < obj0a);
 }
 
 TEST_F(AdapterTest, UnionCodeGen_Delay_Default) {
-  AdaptTestUnion obj1a;
+  ThriftAdaptTestUnion obj1a;
   EXPECT_EQ(obj1a.delay_ref().ensure(), std::chrono::milliseconds(0));
 
   auto data1 = CompactSerializer::serialize<std::string>(obj1a);
-  AdaptTestUnion obj1b;
+  ThriftAdaptTestUnion obj1b;
   CompactSerializer::deserialize(data1, obj1b);
   EXPECT_EQ(obj1b.delay_ref().ensure(), std::chrono::milliseconds(0));
 
@@ -293,13 +293,13 @@ TEST_F(AdapterTest, UnionCodeGen_Delay_Default) {
 }
 
 TEST_F(AdapterTest, UnionCodeGen_Delay) {
-  AdaptTestUnion obj1a;
+  ThriftAdaptTestUnion obj1a;
   EXPECT_EQ(obj1a.delay_ref().ensure(), std::chrono::milliseconds(0));
   obj1a.delay_ref() = std::chrono::milliseconds(7);
   EXPECT_EQ(obj1a.delay_ref(), std::chrono::milliseconds(7));
 
   auto data1 = CompactSerializer::serialize<std::string>(obj1a);
-  AdaptTestUnion obj1b;
+  ThriftAdaptTestUnion obj1b;
   CompactSerializer::deserialize(data1, obj1b);
   EXPECT_EQ(obj1b.delay_ref(), std::chrono::milliseconds(7));
 
@@ -315,11 +315,11 @@ TEST_F(AdapterTest, UnionCodeGen_Delay) {
 }
 
 TEST_F(AdapterTest, UnionCodeGen_Custom_Default) {
-  AdaptTestUnion obj2a;
+  ThriftAdaptTestUnion obj2a;
   EXPECT_EQ(obj2a.custom_ref().ensure().val, 13); // Defined in Num.
 
   auto data2 = CompactSerializer::serialize<std::string>(obj2a);
-  AdaptTestUnion obj2b;
+  ThriftAdaptTestUnion obj2b;
   CompactSerializer::deserialize(data2, obj2b);
   EXPECT_EQ(obj2b.custom_ref()->val, 13);
 
@@ -328,12 +328,12 @@ TEST_F(AdapterTest, UnionCodeGen_Custom_Default) {
 }
 
 TEST_F(AdapterTest, UnionCodeGen_Custom_Zero) {
-  AdaptTestUnion obj2a;
+  ThriftAdaptTestUnion obj2a;
   EXPECT_EQ(obj2a.custom_ref().ensure().val, 13); // Defined in Num.
   obj2a.custom_ref()->val = 0;
 
   auto data2 = CompactSerializer::serialize<std::string>(obj2a);
-  AdaptTestUnion obj2b;
+  ThriftAdaptTestUnion obj2b;
   CompactSerializer::deserialize(data2, obj2b);
   EXPECT_EQ(obj2b.custom_ref()->val, 0);
 
@@ -342,13 +342,13 @@ TEST_F(AdapterTest, UnionCodeGen_Custom_Zero) {
 }
 
 TEST_F(AdapterTest, UnionCodeGen_Custom) {
-  AdaptTestUnion obj2a;
+  ThriftAdaptTestUnion obj2a;
   EXPECT_EQ(obj2a.custom_ref().ensure().val, 13); // Defined in Num.
   obj2a.custom_ref() = Num{std::numeric_limits<int64_t>::min()};
   EXPECT_EQ(obj2a.custom_ref()->val, std::numeric_limits<int64_t>::min());
 
   auto data2 = CompactSerializer::serialize<std::string>(obj2a);
-  AdaptTestUnion obj2b;
+  ThriftAdaptTestUnion obj2b;
   CompactSerializer::deserialize(data2, obj2b);
   EXPECT_EQ(obj2b.custom_ref()->val, std::numeric_limits<int64_t>::min());
 
@@ -514,7 +514,7 @@ TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedNestedTestStruct) {
 
 TEST_F(AdapterTest, StructFieldAdaptedStruct) {
   StructFieldAdaptedStruct obj;
-  auto wrapper = Wrapper<AdaptedStruct>();
+  auto wrapper = Wrapper<ThriftAdaptedStruct>();
   wrapper.value.data_ref() = 42;
   obj.adaptedStruct_ref() = wrapper;
   EXPECT_EQ(obj.adaptedStruct_ref()->value.data_ref(), 42);

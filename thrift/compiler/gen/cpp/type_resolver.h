@@ -27,6 +27,7 @@
 #include <thrift/compiler/ast/t_base_type.h>
 #include <thrift/compiler/ast/t_container.h>
 #include <thrift/compiler/ast/t_field.h>
+#include <thrift/compiler/ast/t_named.h>
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_sink.h>
 #include <thrift/compiler/ast/t_stream.h>
@@ -109,6 +110,9 @@ class type_resolver {
   static const std::string* find_first_adapter(const t_field& node);
   static const std::string* find_template(const t_type& node) {
     return node.find_annotation_or_null({"cpp.template", "cpp2.template"});
+  }
+  static const std::string& get_cpp_name(const t_named& node) {
+    return node.get_annotation("cpp.name", &node.name());
   }
 
  private:

@@ -66,7 +66,35 @@ StructMetadata<::cpp2::MyStructNestedAnnotation>::gen(ThriftMetadata& metadata) 
   StructMetadata::unstructured_annotations(module_MyStructNestedAnnotation);
   return res.first->second;
 }
-void StructMetadata<::cpp2::MyStruct>::unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct){
+void StructMetadata<::cpp2::YourUnion>::unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct){
+  (void)thriftStruct;
+}
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::YourUnion>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs_ref()->emplace("module.MyUnion", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return res.first->second;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_MyUnion = res.first->second;
+  module_MyUnion.name_ref() = "module.MyUnion";
+  module_MyUnion.is_union_ref() = true;
+  return res.first->second;
+}
+void StructMetadata<::cpp2::YourException>::unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct){
+  (void)thriftStruct;
+}
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::YourException>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs_ref()->emplace("module.MyException", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return res.first->second;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_MyException = res.first->second;
+  module_MyException.name_ref() = "module.MyException";
+  module_MyException.is_union_ref() = false;
+  return res.first->second;
+}
+void StructMetadata<::cpp2::YourStruct>::unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct){
   thriftStruct.fields_ref()[0].unstructured_annotations_ref() = std::map<std::string, std::string>{{R"THRIFT_CODEGEN(cpp.name)THRIFT_CODEGEN", R"THRIFT_CODEGEN(majorVer)THRIFT_CODEGEN"},};
   thriftStruct.fields_ref()[1].unstructured_annotations_ref() = std::map<std::string, std::string>{{R"THRIFT_CODEGEN(java.swift.name)THRIFT_CODEGEN", R"THRIFT_CODEGEN(_package)THRIFT_CODEGEN"},};
   thriftStruct.fields_ref()[2].unstructured_annotations_ref() = std::map<std::string, std::string>{{R"THRIFT_CODEGEN(go.tag)THRIFT_CODEGEN", R"THRIFT_CODEGEN(tag:"somevalue")THRIFT_CODEGEN"},};
@@ -75,9 +103,10 @@ void StructMetadata<::cpp2::MyStruct>::unstructured_annotations(::apache::thrift
   thriftStruct.fields_ref()[5].unstructured_annotations_ref() = std::map<std::string, std::string>{};
   thriftStruct.fields_ref()[6].unstructured_annotations_ref() = std::map<std::string, std::string>{};
   thriftStruct.fields_ref()[7].unstructured_annotations_ref() = std::map<std::string, std::string>{};
+  thriftStruct.fields_ref()[8].unstructured_annotations_ref() = std::map<std::string, std::string>{};
 }
 const ::apache::thrift::metadata::ThriftStruct&
-StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
+StructMetadata<::cpp2::YourStruct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs_ref()->emplace("module.MyStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
@@ -95,6 +124,7 @@ StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
     {6, "empty_annotations", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {7, "my_enum", false, std::make_unique<Enum< ::cpp2::YourEnum>>("module.MyEnum"), std::vector<ThriftConstStruct>{}},
     {8, "cpp_type_annotation", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
+    {9, "my_union", false, std::make_unique<Union< ::cpp2::YourUnion>>("module.MyUnion"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -139,12 +169,28 @@ StructMetadata<::cpp2::SecretStruct>::gen(ThriftMetadata& metadata) {
   return res.first->second;
 }
 
+void ExceptionMetadata<::cpp2::YourException>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.exceptions_ref()->emplace("module.MyException", ::apache::thrift::metadata::ThriftException{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftException& module_MyException = res.first->second;
+  module_MyException.name_ref() = "module.MyException";
+}
 void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_ping(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "ping";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
+  ::apache::thrift::metadata::ThriftField module_MyService_ping_myExcept_1;
+  module_MyService_ping_myExcept_1.id_ref() = 1;
+  module_MyService_ping_myExcept_1.name_ref() = "myExcept";
+  module_MyService_ping_myExcept_1.is_optional_ref() = false;
+  auto module_MyService_ping_myExcept_1_type = std::make_unique<Struct< ::cpp2::YourException>>("module.MyException");
+  module_MyService_ping_myExcept_1_type->writeAndGenType(*module_MyService_ping_myExcept_1.type_ref(), metadata);
+  func.exceptions_ref()->push_back(std::move(module_MyService_ping_myExcept_1));
+  ExceptionMetadata< ::cpp2::YourException>::gen(metadata);
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }

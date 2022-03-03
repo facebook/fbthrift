@@ -46,6 +46,23 @@ cdef class __MyStructNestedAnnotation_FieldsSetter(__StructFieldsSetter):
 
 
 @__cython.auto_pickle(False)
+cdef class __MyException_FieldsSetter(__StructFieldsSetter):
+
+    @staticmethod
+    cdef __MyException_FieldsSetter _fbthrift_create(_module_types.cMyException* struct_cpp_obj):
+        cdef __MyException_FieldsSetter __fbthrift_inst = __MyException_FieldsSetter.__new__(__MyException_FieldsSetter)
+        __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
+        return __fbthrift_inst
+
+    cdef void set_field(__MyException_FieldsSetter self, const char* name, object value) except *:
+        cdef __cstring_view cname = __cstring_view(name)
+        cdef cumap[__cstring_view, __MyException_FieldsSetterFunc].iterator found = self._setters.find(cname)
+        if found == self._setters.end():
+            raise TypeError(f"invalid field name {name.decode('utf-8')}")
+        deref(found).second(self, value)
+
+
+@__cython.auto_pickle(False)
 cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
@@ -60,6 +77,7 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
         __fbthrift_inst._setters[__cstring_view(<const char*>"empty_annotations")] = __MyStruct_FieldsSetter._set_field_5
         __fbthrift_inst._setters[__cstring_view(<const char*>"my_enum")] = __MyStruct_FieldsSetter._set_field_6
         __fbthrift_inst._setters[__cstring_view(<const char*>"cpp_type_annotation")] = __MyStruct_FieldsSetter._set_field_7
+        __fbthrift_inst._setters[__cstring_view(<const char*>"my_union")] = __MyStruct_FieldsSetter._set_field_8
         return __fbthrift_inst
 
     cdef void set_field(__MyStruct_FieldsSetter self, const char* name, object value) except *:
@@ -139,6 +157,15 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
             __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 7)
             return
         deref(self._struct_cpp_obj).cpp_type_annotation_ref().assign(deref(_module_types.std_deque_std_string__List__string(_fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_8(self, _fbthrift_value) except *:
+        # for field my_union
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 8)
+            return
+        if not isinstance(_fbthrift_value, _module_types.MyUnion):
+            raise TypeError(f'my_union is not a { _module_types.MyUnion !r}.')
+        deref(self._struct_cpp_obj).my_union_ref().assign(deref((<_module_types.MyUnion?> _fbthrift_value)._cpp_obj))
 
 
 @__cython.auto_pickle(False)

@@ -48,6 +48,27 @@ cdef __StructSpec get_reflection__MyStructNestedAnnotation():
         ),
     )
     return spec
+cdef __StructSpec get_reflection__MyUnion():
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
+        name="MyUnion",
+        kind=__StructType.UNION,
+        annotations={
+            """cpp.adapter""": """StaticCast""",            """cpp.name""": """YourUnion""",        },
+    )
+    return spec
+cdef __StructSpec get_reflection__MyException():
+    cdef _module_types.MyException defaults = _module_types.MyException._fbthrift_create(
+        constant_shared_ptr[_module_types.cMyException](
+            default_inst[_module_types.cMyException]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
+        name="MyException",
+        kind=__StructType.EXCEPTION,
+        annotations={
+            """cpp.adapter""": """StaticCast""",            """cpp.name""": """YourException""",        },
+    )
+    return spec
 cdef __StructSpec get_reflection__MyStruct():
     cdef _module_types.MyStruct defaults = _module_types.MyStruct._fbthrift_create(
         constant_shared_ptr[_module_types.cMyStruct](
@@ -58,7 +79,7 @@ cdef __StructSpec get_reflection__MyStruct():
         name="MyStruct",
         kind=__StructType.STRUCT,
         annotations={
-            """android.generate_builder""": """1""",            """cpp.internal.deprecated._data.method""": """1""",            """thrift.uri""": """facebook.com/thrift/compiler/test/fixtures/basic-annotations/src/module/MyStruct""",        },
+            """android.generate_builder""": """1""",            """cpp.adapter""": """StaticCast""",            """cpp.internal.deprecated._data.method""": """1""",            """cpp.name""": """YourStruct""",            """thrift.uri""": """facebook.com/thrift/compiler/test/fixtures/basic-annotations/src/module/MyStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -149,6 +170,18 @@ cdef __StructSpec get_reflection__MyStruct():
             id=8,
             name="cpp_type_annotation",
             type=_module_types.std_deque_std_string__List__string,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=9,
+            name="my_union",
+            type=_module_types.MyUnion,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,

@@ -28,22 +28,25 @@ public class MyServiceReactiveBlockingWrapper
   }
 
   @java.lang.Override
-  public void ping() throws org.apache.thrift.TException {
+  public void ping() throws test.fixtures.basicannotations.MyException, org.apache.thrift.TException {
       pingWrapper(com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
   @java.lang.Override
   public void ping(
-        com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        com.facebook.thrift.client.RpcOptions rpcOptions) throws test.fixtures.basicannotations.MyException, org.apache.thrift.TException {
       pingWrapper(rpcOptions);
   }
 
   @java.lang.Override
   public com.facebook.thrift.client.ResponseWrapper<Void> pingWrapper(
-    com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+    com.facebook.thrift.client.RpcOptions rpcOptions) throws test.fixtures.basicannotations.MyException, org.apache.thrift.TException {
       try {
         return _delegate.pingWrapper(rpcOptions).block();
       } catch (Throwable t) {
+        if (t instanceof test.fixtures.basicannotations.MyException) {
+          throw (test.fixtures.basicannotations.MyException)t;
+        }
         throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
       }
   }

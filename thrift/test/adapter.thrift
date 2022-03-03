@@ -121,11 +121,11 @@ struct AdaptTemplatedNestedTestStruct {
 union AdaptTestUnion {
   1: DurationMs delay;
   2: CustomProtocolType custom;
-}
+} (cpp.name = "ThriftAdaptTestUnion")
 
 struct AdaptedStruct {
   1: i64 data;
-}
+} (cpp.name = "ThriftAdaptedStruct")
 
 struct StructFieldAdaptedStruct {
   @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}

@@ -95,6 +95,31 @@ public class MyServiceRpcServerHandler
     };
   }
 
+  private static com.facebook.thrift.payload.Writer _create_ping_exception_writer(
+      final Throwable _t,
+      final com.facebook.swift.service.ContextChain _chain,
+      final int _seqId,
+      final short _fieldId) {
+      return oprot -> {
+      try {
+        _chain.declaredUserException(_t);
+        oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
+
+        oprot.writeFieldBegin(
+            new TField("responseField", TType.STRUCT, _fieldId));
+        com.facebook.thrift.payload.ThriftSerializable _iter0 = (com.facebook.thrift.payload.ThriftSerializable)_t;
+        _iter0.write0(oprot);
+
+        oprot.writeFieldEnd();
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+
+        _chain.postWriteException(_t);
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
 
   private static reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload>
     _doping(
@@ -135,6 +160,16 @@ public class MyServiceRpcServerHandler
             )
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
+                if (_t instanceof test.fixtures.basicannotations.MyException) {
+                    com.facebook.thrift.payload.Writer _exceptionWriter = _create_ping_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) 1);
+                                    com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
+                        _payload,
+                        _exceptionWriter);
+
+                    return reactor.core.publisher.Mono.just(_serverResponsePayload);
+                }
+                else {
                 // exception is not of user declared type
                 String _errorMessage = String.format("Internal error processing ping: %s", _t.getMessage() == null ? "<null>" : _t.getMessage());
                 org.apache.thrift.TApplicationException _tApplicationException =
@@ -144,6 +179,7 @@ public class MyServiceRpcServerHandler
                     com.facebook.thrift.util.RpcPayloadUtil.fromTApplicationException(_tApplicationException, _payload.getRequestRpcMetadata(),  _chain);
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
+                }
             });
           if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
             _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());

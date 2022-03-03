@@ -100,6 +100,40 @@ __SetMetaClass(<PyTypeObject*> MyEnum, <PyTypeObject*> __MyEnumMeta)
 
 
 
+cdef __UnionTypeEnumData __MyUnion_union_type_enum_data  = __UnionTypeEnumData._fbthrift_create(
+    __createEnumDataForUnionType[cMyUnion](),
+    __MyUnionType,
+)
+
+
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __MyUnion_Union_TypeMeta(thrift.py3.types.EnumMeta):
+    def _fbthrift_get_by_value(cls, int value):
+        return __MyUnion_union_type_enum_data.get_by_value(value)
+
+    def _fbthrift_get_all_names(cls):
+        return __MyUnion_union_type_enum_data.get_all_names()
+
+    def __len__(cls):
+        return __MyUnion_union_type_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __MyUnion_union_type_enum_data.get_by_name(name)
+
+
+@__cython.final
+@__cython.auto_pickle(False)
+cdef class __MyUnionType(thrift.py3.types.CompiledEnum):
+    cdef get_by_name(self, str name):
+        return __MyUnion_union_type_enum_data.get_by_name(name)
+
+
+__SetMetaClass(<PyTypeObject*> __MyUnionType, <PyTypeObject*> __MyUnion_Union_TypeMeta)
+
+
 @__cython.auto_pickle(False)
 cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
     def __init__(MyStructNestedAnnotation self, **kwargs):
@@ -198,6 +232,183 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
         return needed
 
 
+
+
+@__cython.auto_pickle(False)
+cdef class MyUnion(thrift.py3.types.Union):
+    Type = __MyUnionType
+
+    def __init__(
+        self, *
+    ):
+        self._cpp_obj = __to_shared_ptr(cmove(MyUnion._make_instance(
+          NULL,
+        )))
+        self._load_cache()
+
+    @staticmethod
+    def fromValue(value):
+        if value is None:
+            return MyUnion()
+        raise ValueError(f"Unable to derive correct union field for value: {value}")
+
+    @staticmethod
+    cdef unique_ptr[cMyUnion] _make_instance(
+        cMyUnion* base_instance
+    ) except *:
+        cdef unique_ptr[cMyUnion] c_inst = make_unique[cMyUnion]()
+        cdef bint any_set = False
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return cmove(c_inst)
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cMyUnion] cpp_obj):
+        __fbthrift_inst = <MyUnion>MyUnion.__new__(MyUnion)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
+        __fbthrift_inst._load_cache()
+        return __fbthrift_inst
+
+
+    def __hash__(MyUnion self):
+        return  super().__hash__()
+
+    cdef _load_cache(MyUnion self):
+        self.type = MyUnion.Type(<int>(deref(self._cpp_obj).getType()))
+        cdef int type = self.type.value
+        if type == 0:    # Empty
+            self.value = None
+
+    def __copy__(MyUnion self):
+        cdef shared_ptr[cMyUnion] cpp_obj = make_shared[cMyUnion](
+            deref(self._cpp_obj)
+        )
+        return MyUnion._fbthrift_create(cmove(cpp_obj))
+
+    def __richcmp__(self, other, int op):
+        r = self._fbthrift_cmp_sametype(other, op)
+        return __richcmp[cMyUnion](
+            self._cpp_obj,
+            (<MyUnion>other)._cpp_obj,
+            op,
+        ) if r is None else r
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__MyUnion()
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cMyUnion].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.MyUnion"
+
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cMyUnion](idx)
+
+    def __cinit__(self):
+        self._fbthrift_struct_size = 0
+
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyUnion self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cMyUnion](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(MyUnion self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cMyUnion]()
+        with nogil:
+            needed = serializer.cdeserialize[cMyUnion](buf, self._cpp_obj.get(), proto)
+        # force a cache reload since the underlying data's changed
+        self._load_cache()
+        return needed
+
+
+@__cython.auto_pickle(False)
+cdef class MyException(thrift.py3.exceptions.GeneratedError):
+    def __init__(MyException self, *args, **kwargs):
+        self._cpp_obj = make_shared[cMyException]()
+        self._fields_setter = _fbthrift_types_fields.__MyException_FieldsSetter._fbthrift_create(self._cpp_obj.get())
+        super().__init__( *args, **kwargs)
+
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
+
+    cdef object _fbthrift_isset(self):
+        return thrift.py3.types._IsSet("MyException", {
+        })
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cMyException] cpp_obj):
+        __fbthrift_inst = <MyException>MyException.__new__(MyException, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
+        _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
+        return __fbthrift_inst
+
+
+    def __hash__(MyException self):
+        return super().__hash__()
+
+    def __repr__(MyException self):
+        return super().__repr__()
+
+    def __str__(MyException self):
+        return super().__str__()
+
+
+    def __copy__(MyException self):
+        cdef shared_ptr[cMyException] cpp_obj = make_shared[cMyException](
+            deref(self._cpp_obj)
+        )
+        return MyException._fbthrift_create(cmove(cpp_obj))
+
+    def __richcmp__(self, other, int op):
+        r = self._fbthrift_cmp_sametype(other, op)
+        return __richcmp[cMyException](
+            self._cpp_obj,
+            (<MyException>other)._cpp_obj,
+            op,
+        ) if r is None else r
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__MyException()
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        ExceptionMetadata[cMyException].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.MyException"
+
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cMyException](idx)
+
+    def __cinit__(self):
+        self._fbthrift_struct_size = 0
+
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyException self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cMyException](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(MyException self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cMyException]()
+        with nogil:
+            needed = serializer.cdeserialize[cMyException](buf, self._cpp_obj.get(), proto)
+        return needed
+
+
 @__cython.auto_pickle(False)
 cdef class MyStruct(thrift.py3.types.Struct):
     def __init__(MyStruct self, **kwargs):
@@ -228,6 +439,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
           "empty_annotations": deref(self._cpp_obj).empty_annotations_ref().has_value(),
           "my_enum": deref(self._cpp_obj).my_enum_ref().has_value(),
           "cpp_type_annotation": deref(self._cpp_obj).cpp_type_annotation_ref().has_value(),
+          "my_union": deref(self._cpp_obj).my_union_ref().has_value(),
         })
 
     @staticmethod
@@ -304,6 +516,16 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def cpp_type_annotation(self):
         return self.cpp_type_annotation_impl()
 
+    cdef inline my_union_impl(self):
+
+        if self.__fbthrift_cached_my_union is None:
+            self.__fbthrift_cached_my_union = MyUnion._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).my_union_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_my_union
+
+    @property
+    def my_union(self):
+        return self.my_union_impl()
+
 
     def __hash__(MyStruct self):
         return super().__hash__()
@@ -347,7 +569,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return __get_field_name_by_index[cMyStruct](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 8
+        self._fbthrift_struct_size = 9
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyStruct self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
