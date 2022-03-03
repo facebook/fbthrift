@@ -141,14 +141,13 @@ void Cpp2Worker::handleHeader(
   auto connection = std::make_shared<Cpp2Connection>(
       std::move(thriftTransport), addr, shared_from_this(), nullptr);
   Acceptor::addConnection(connection.get());
-  connection->addConnection(connection);
+  connection->addConnection(connection, tinfo);
   connection->start();
 
   VLOG(4) << "Cpp2Worker: created connection for socket " << fd;
 
   auto observer = server_->getObserver();
   if (observer) {
-    observer->connAccepted(tinfo);
     observer->activeConnections(
         getConnectionManager()->getNumConnections() *
         server_->getNumIOWorkerThreads());

@@ -96,7 +96,18 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
     stop();
   }
   void dumpConnectionState(uint8_t /* loglevel */) override {}
-  void addConnection(std::shared_ptr<Cpp2Connection> conn) { this_ = conn; }
+  void addConnection(
+      std::shared_ptr<Cpp2Connection> conn,
+      std::optional<std::reference_wrapper<const wangle::TransportInfo>> tinfo =
+          std::nullopt) {
+    this_ = conn;
+    if (tinfo) {
+      if (auto* observer = worker_->getServer()->getObserver()) {
+        observer->connAccepted(*tinfo);
+        connectionAdded_ = true;
+      }
+    }
+  }
 
   typedef apache::thrift::ThriftPresult<true>
       RocketUpgrade_upgradeToRocket_presult;
@@ -278,6 +289,8 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
   friend class Cpp2Request;
 
   std::shared_ptr<Cpp2Connection> this_;
+
+  bool connectionAdded_{false};
 };
 
 } // namespace thrift
