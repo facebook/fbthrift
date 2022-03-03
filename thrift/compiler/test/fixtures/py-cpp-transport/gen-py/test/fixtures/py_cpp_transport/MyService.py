@@ -38,6 +38,7 @@ from thrift.util.Decorators import (
   should_run_on_thread,
   write_results_after_future,
 )
+from thrift.py.client.sync_client import SyncClient as _fbthrift_SyncClient
 
 class Iface:
   def ping(self, ):
@@ -379,74 +380,8 @@ def echo_result__setstate__(self, state):
 echo_result.__getstate__ = lambda self: self.__dict__.copy()
 echo_result.__setstate__ = echo_result__setstate__
 
-class Client(Iface):
-  def __enter__(self):
-    return self
-
-  def __exit__(self, type, value, tb):
-    self._iprot.trans.close()
-    if self._iprot is not self._oprot:
-      self._oprot.trans.close()
-
-  def __init__(self, iprot, oprot=None):
-    self._iprot = self._oprot = iprot
-    if oprot != None:
-      self._oprot = oprot
-    self._seqid = 0
-
-  def ping(self, ):
-    self.send_ping()
-    self.recv_ping()
-
-  def send_ping(self, ):
-    self._oprot.writeMessageBegin('ping', TMessageType.CALL, self._seqid)
-    args = ping_args()
-    args.write(self._oprot)
-    self._oprot.writeMessageEnd()
-    self._oprot.trans.flush()
-
-  def recv_ping(self, ):
-    (fname, mtype, rseqid) = self._iprot.readMessageBegin()
-    if mtype == TMessageType.EXCEPTION:
-      x = TApplicationException()
-      x.read(self._iprot)
-      self._iprot.readMessageEnd()
-      raise x
-    result = ping_result()
-    result.read(self._iprot)
-    self._iprot.readMessageEnd()
-    return
-
-  def echo(self, input=None):
-    """
-    Parameters:
-     - input
-    """
-    self.send_echo(input)
-    return self.recv_echo()
-
-  def send_echo(self, input=None):
-    self._oprot.writeMessageBegin('echo', TMessageType.CALL, self._seqid)
-    args = echo_args()
-    args.input = input
-    args.write(self._oprot)
-    self._oprot.writeMessageEnd()
-    self._oprot.trans.flush()
-
-  def recv_echo(self, ):
-    (fname, mtype, rseqid) = self._iprot.readMessageBegin()
-    if mtype == TMessageType.EXCEPTION:
-      x = TApplicationException()
-      x.read(self._iprot)
-      self._iprot.readMessageEnd()
-      raise x
-    result = echo_result()
-    result.read(self._iprot)
-    self._iprot.readMessageEnd()
-    if result.success != None:
-      return result.success
-    raise TApplicationException(TApplicationException.MISSING_RESULT, "echo failed: unknown result");
-
+class Client(_fbthrift_SyncClient, Iface):
+  pass
 
 class Processor(Iface, TProcessor):
   _onewayMethods = ()

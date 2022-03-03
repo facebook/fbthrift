@@ -85,6 +85,13 @@ class t_py_generator : public t_concat_generator {
     iter = parsed_options.find("utf8strings");
     gen_utf8strings_ = (iter != parsed_options.end());
 
+    iter = parsed_options.find("cpp_transport");
+    gen_cpp_transport_ = (iter != parsed_options.end());
+    if (gen_cpp_transport_ && gen_asyncio_) {
+      throw std::runtime_error(
+          "compiler error: can't use cpp transport together with asyncio yet");
+    }
+
     iter = parsed_options.find("sort_keys");
     sort_keys_ = (iter != parsed_options.end());
 
@@ -151,6 +158,7 @@ class t_py_generator : public t_concat_generator {
   void generate_service_helpers(const t_service* tservice);
   void generate_service_interface(const t_service* tservice, bool with_context);
   void generate_service_client(const t_service* tservice);
+  void generate_service_client_cpp_transport(const t_service* tservice);
   void generate_service_remote(const t_service* tservice);
   void generate_service_fuzzer(const t_service* tservice);
   void generate_service_server(const t_service* tservice, bool with_context);
@@ -325,6 +333,11 @@ class t_py_generator : public t_concat_generator {
    * True iff strings should be encoded using utf-8.
    */
   bool gen_utf8strings_;
+
+  /**
+   * True if we should generate new clients using C++ transport.
+   */
+  bool gen_cpp_transport_;
 
   /**
    * True iff we serialize maps sorted by key and sets by value
@@ -2062,6 +2075,12 @@ void t_py_generator::generate_service(const t_service* tservice) {
              << "  write_results_after_future," << endl
              << ")" << endl;
 
+  if (gen_cpp_transport_) {
+    f_service_
+        << "from thrift.py.client.sync_client import SyncClient as _fbthrift_SyncClient"
+        << endl;
+  }
+
   f_service_ << endl;
 
   // Generate the three main parts of the service (well, two for now in PHP)
@@ -2071,7 +2090,11 @@ void t_py_generator::generate_service(const t_service* tservice) {
   }
 
   generate_service_helpers(tservice);
-  generate_service_client(tservice);
+  if (gen_cpp_transport_) {
+    generate_service_client_cpp_transport(tservice);
+  } else {
+    generate_service_client(tservice);
+  }
   generate_service_server(tservice, false);
   if (!gen_future_) {
     generate_service_server(tservice, true);
@@ -2457,6 +2480,30 @@ void t_py_generator::generate_service_client(const t_service* tservice) {
     }
   }
 
+  indent_down();
+  f_service_ << endl;
+}
+
+/**
+ * Generates a service client definition using C++ transport
+ *
+ * @param tservice The service to generate a server for.
+ */
+void t_py_generator::generate_service_client_cpp_transport(
+    const t_service* tservice) {
+  string extends = "";
+  string extends_client = "";
+  if (tservice->get_extends() != nullptr) {
+    extends = type_name(tservice->get_extends());
+    extends_client = extends + ".Client, ";
+  } else {
+    extends_client = "_fbthrift_SyncClient, ";
+  }
+
+  f_service_ << "class Client(" << extends_client << "Iface):" << endl;
+  indent_up();
+  generate_python_docstring(f_service_, tservice);
+  f_service_ << indent() << "pass" << endl;
   indent_down();
   f_service_ << endl;
 }
