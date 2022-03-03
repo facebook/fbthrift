@@ -61,6 +61,11 @@ using patch_type = decltype(detail::patchType(Tag{}));
 // - operator!(BoolPatch) - Returns an inverted version of the given patch.
 using BoolPatch = patch_type<type::bool_t>;
 
+// A patch for a number, which additionally supports:
+// - add(T value) - Update to the patch to additionally add the given value.
+// - subtract(T value) - Update to the patch to additionally subtract the given
+// value.
+// - operators -, -=, +, += - Alias to the appropriate add and subtract calls.
 using BytePatch = patch_type<type::byte_t>;
 using I16Patch = patch_type<type::i16_t>;
 using I32Patch = patch_type<type::i32_t>;

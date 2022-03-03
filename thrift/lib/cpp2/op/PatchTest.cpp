@@ -59,10 +59,17 @@ void testNumberPatch() {
   EXPECT_TRUE(patch.empty());
   test::expectPatch(patch, 7, 7);
 
+  // Incrementing patch increments.
+  patch = 2 + patch;
+  test::expectPatch(patch, 7, 9, 11);
+  patch = patch - 2;
+  EXPECT_TRUE(patch.empty());
+  test::expectPatch(patch, 7, 7);
+
   // Assigning patch assigns.
   patch = 2;
   test::expectPatch(patch, 7, 2);
-  patch = 0;
+  patch -= 2;
   test::expectPatch(patch, 7, 0);
 }
 

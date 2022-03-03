@@ -135,6 +135,7 @@ class NumberPatch : public BasePatch<Patch, NumberPatch<Patch>> {
   using Base = BasePatch<Patch, NumberPatch>;
   using T = typename Base::value_type;
   using Base::applyAssign;
+  using Base::assignOr;
   using Base::mergeAssign;
 
  public:
@@ -142,12 +143,62 @@ class NumberPatch : public BasePatch<Patch, NumberPatch<Patch>> {
   using Base::hasAssign;
   using Base::operator=;
 
-  bool empty() const noexcept { return !hasAssign(); }
-  void apply(T& val) const noexcept { applyAssign(val); }
+  bool empty() const noexcept { return !hasAssign() && add_() == 0; }
+
+  void apply(T& val) const noexcept {
+    if (!applyAssign(val)) {
+      val += add_();
+    }
+  }
+
   template <typename U>
   void merge(U&& next) {
-    mergeAssign(std::forward<U>(next));
+    if (!mergeAssign(std::forward<U>(next))) {
+      add_() += *next.get().add();
+    }
   }
+
+  template <typename U>
+  void add(U&& val) {
+    assignOr(add_()) += std::forward<U>(val);
+  }
+  template <typename U>
+  void subtract(U&& val) noexcept {
+    assignOr(add_()) -= std::forward<U>(val);
+  }
+
+  template <typename U>
+  NumberPatch& operator+=(U&& val) noexcept {
+    add(std::forward<U>(val));
+    return *this;
+  }
+  template <typename U>
+  NumberPatch& operator-=(U&& val) noexcept {
+    subtract(std::forward<T>(val));
+    return *this;
+  }
+
+ private:
+  template <typename U>
+  friend NumberPatch operator+(NumberPatch lhs, U&& rhs) {
+    lhs.add(std::forward<U>(rhs));
+    return lhs;
+  }
+
+  template <typename U>
+  friend NumberPatch operator+(U&& lhs, NumberPatch rhs) {
+    rhs.add(std::forward<U>(lhs));
+    return rhs;
+  }
+
+  template <typename U>
+  friend NumberPatch operator-(NumberPatch lhs, U&& rhs) {
+    lhs.subtract(std::forward<U>(rhs));
+    return lhs;
+  }
+
+  T& add_() noexcept { return *this->patch_.add(); }
+  const T& add_() const noexcept { return *this->patch_.add(); }
 };
 
 template <typename Patch>
