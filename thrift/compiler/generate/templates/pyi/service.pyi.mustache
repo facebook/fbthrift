@@ -24,6 +24,9 @@ import typing as __T
 {{#program:asyncio?}}
 import asyncio
 {{/program:asyncio?}}
+{{#program:cpp_transport?}}
+from thrift.py.client.sync_client import SyncClient as _fbthrift_SyncClient
+{{/program:cpp_transport?}}
 
 from thrift import Thrift
 from thrift.protocol.TProtocol import TProtocolBase
@@ -60,7 +63,7 @@ class Iface{{!
     {{/function:isSupported?}}
     {{/service:functions}}
 
-class Client(Iface, __T.ContextManager[Client]):  # {{service:name}}
+class Client({{#program:cpp_transport?}}_fbthrift_SyncClient, {{/program:cpp_transport?}}Iface, __T.ContextManager[Client]):  # {{service:name}}
     {{#program:asyncio?}}{{!
     }}def __init__(self, oprot: TProtocolBase, loop: __T.Optional[asyncio.AbstractEventLoop] = None) -> None: ...{{!
     }}{{/program:asyncio?}}{{!

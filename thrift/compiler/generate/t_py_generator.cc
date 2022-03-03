@@ -2503,7 +2503,39 @@ void t_py_generator::generate_service_client_cpp_transport(
   f_service_ << "class Client(" << extends_client << "Iface):" << endl;
   indent_up();
   generate_python_docstring(f_service_, tservice);
-  f_service_ << indent() << "pass" << endl;
+
+  const auto& functions = get_functions(tservice);
+  vector<t_function*>::const_iterator f_iter;
+  for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
+    const t_struct* arg_struct = (*f_iter)->get_paramlist();
+    const vector<t_field*>& fields = arg_struct->get_members();
+    vector<t_field*>::const_iterator fld_iter;
+    string funname = rename_reserved_keywords((*f_iter)->get_name());
+
+    // Open function
+    indent(f_service_) << "def " << function_signature(*f_iter) << ":" << endl;
+    indent_up();
+    generate_python_docstring(f_service_, (*f_iter));
+
+    // Construct args
+    std::string argsname = (*f_iter)->get_name() + "_args";
+    f_service_ << indent() << "args = " << argsname << "()" << endl;
+    for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
+      f_service_ << indent() << "args."
+                 << rename_reserved_keywords((*fld_iter)->get_name()) << " = "
+                 << rename_reserved_keywords((*fld_iter)->get_name()) << endl;
+    }
+
+    // Send request
+    f_service_ << indent() << "return self._send_request(\""
+               << tservice->get_name() << "\", \"" << (*f_iter)->get_name()
+               << "\", args, " << (*f_iter)->get_name() << "_result).success"
+               << endl;
+
+    indent_down();
+    f_service_ << endl;
+  }
+
   indent_down();
   f_service_ << endl;
 }

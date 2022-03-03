@@ -137,6 +137,7 @@ mstch::map t_mstch_pyi_generator::extend_program(const t_program& program) {
       {"pyNamespaces", pyNamespaces},
       {"importModules", importModules},
       {"asyncio?", has_option("asyncio")},
+      {"cpp_transport?", has_option("cpp_transport")},
       {"json?", has_option("json")},
   };
   add_container_types(program, result);

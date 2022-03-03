@@ -381,7 +381,19 @@ echo_result.__getstate__ = lambda self: self.__dict__.copy()
 echo_result.__setstate__ = echo_result__setstate__
 
 class Client(_fbthrift_SyncClient, Iface):
-  pass
+  def ping(self, ):
+    args = ping_args()
+    return self._send_request("MyService", "ping", args, ping_result).success
+
+  def echo(self, input=None):
+    """
+    Parameters:
+     - input
+    """
+    args = echo_args()
+    args.input = input
+    return self._send_request("MyService", "echo", args, echo_result).success
+
 
 class Processor(Iface, TProcessor):
   _onewayMethods = ()

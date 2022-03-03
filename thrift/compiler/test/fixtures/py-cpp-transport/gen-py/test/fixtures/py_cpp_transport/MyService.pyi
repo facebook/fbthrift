@@ -5,6 +5,7 @@
 #  @generated
 #
 import typing as __T
+from thrift.py.client.sync_client import SyncClient as _fbthrift_SyncClient
 
 from thrift import Thrift
 from thrift.protocol.TProtocol import TProtocolBase
@@ -16,7 +17,7 @@ class Iface:  # MyService
     def ping(self) -> None: ...
     def echo(self, input: str) -> str: ...
 
-class Client(Iface, __T.ContextManager[Client]):  # MyService
+class Client(_fbthrift_SyncClient, Iface, __T.ContextManager[Client]):  # MyService
     def __init__(self, iprot: TProtocolBase, oprot: __T.Optional[TProtocolBase] = None) -> None: ...
     def send_ping(self) -> None: ...
     def recv_ping(self) -> None: ...
