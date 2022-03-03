@@ -482,14 +482,7 @@ void HandlerCallbackBase::doExceptionWrapped(folly::exception_wrapper ew) {
 }
 
 void HandlerCallbackBase::doAppOverloadedException(const std::string& message) {
-  if (eb_->inRunningEventBaseThread()) {
-    AppOverloadExceptionInfo::send(std::move(req_), message);
-  } else {
-    putMessageInReplyQueue(
-        std::in_place_type_t<AppOverloadExceptionInfo>(),
-        std::move(req_),
-        message);
-  }
+  exception(TrustedServerException::appOverloadError(message));
 }
 
 void HandlerCallbackBase::sendReply(SerializedResponse response) {

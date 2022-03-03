@@ -23,28 +23,6 @@
 namespace apache {
 namespace thrift {
 
-class AppOverloadExceptionInfo {
- public:
-  AppOverloadExceptionInfo(
-      ResponseChannelRequest::UniquePtr req, std::string message)
-      : req_(std::move(req)), message_(std::move(message)) {}
-
-  static void send(
-      ResponseChannelRequest::UniquePtr req,
-      const std::string& message) noexcept {
-    req->sendErrorWrapped(
-        folly::make_exception_wrapper<TApplicationException>(
-            TApplicationException::LOADSHEDDING, message),
-        kAppOverloadedErrorCode);
-  }
-  void operator()(folly::EventBase&) noexcept {
-    send(std::move(req_), message_);
-  }
-
-  ResponseChannelRequest::UniquePtr req_;
-  std::string message_;
-};
-
 class QueueReplyInfo {
  public:
   QueueReplyInfo(
@@ -109,11 +87,8 @@ class SinkConsumerReplyInfo {
   folly::Optional<uint32_t> crc32c_;
 };
 
-using ReplyInfo = std::variant<
-    AppOverloadExceptionInfo,
-    QueueReplyInfo,
-    StreamReplyInfo,
-    SinkConsumerReplyInfo>;
+using ReplyInfo =
+    std::variant<QueueReplyInfo, StreamReplyInfo, SinkConsumerReplyInfo>;
 
 /**
  * Used in EventBaseAtomicNotificationQueue to process each dequeued item

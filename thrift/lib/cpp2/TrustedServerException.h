@@ -46,9 +46,10 @@ namespace apache::thrift {
  */
 class FOLLY_EXPORT TrustedServerException final : public std::runtime_error {
  private:
+  template <typename Str>
   explicit TrustedServerException(
       TApplicationException::TApplicationExceptionType type,
-      const char* message,
+      const Str& message,
       std::string_view errorCode)
       : std::runtime_error{message},
         type_(type),
@@ -57,6 +58,7 @@ class FOLLY_EXPORT TrustedServerException final : public std::runtime_error {
  public:
   static TrustedServerException requestParsingError(const char* message);
   static TrustedServerException unimplementedMethodError(const char* message);
+  static TrustedServerException appOverloadError(const std::string& message);
 
   TApplicationException toApplicationException() const {
     return TApplicationException(type_, std::string(what()));

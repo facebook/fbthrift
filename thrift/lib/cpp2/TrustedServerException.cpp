@@ -34,4 +34,10 @@ TrustedServerException::unimplementedMethodError(const char* message) {
       kUnimplementedMethodErrorCode};
 }
 
+/* static */ TrustedServerException TrustedServerException::appOverloadError(
+    const std::string& message) {
+  return TrustedServerException{
+      TApplicationException::LOADSHEDDING, message, kAppOverloadedErrorCode};
+}
+
 } // namespace apache::thrift
