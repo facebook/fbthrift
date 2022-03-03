@@ -15,7 +15,7 @@
 from libcpp.memory cimport unique_ptr
 from libcpp.string cimport string
 from folly.iobuf cimport cIOBuf
-from thrift.py3.server cimport cAsyncProcessorFactory, AsyncProcessorFactory
+from thrift.py3.server cimport cAsyncProcessorFactory, AsyncProcessorFactory, ThriftServer as ThriftServer_py3
 from thrift.py3.exceptions cimport cException
 
 cdef extern from "thrift/lib/py3lite/server/server.h" namespace "::thrift::py3lite":
@@ -37,3 +37,7 @@ cdef class Py3LiteAsyncProcessorFactory(AsyncProcessorFactory):
 
 cdef class PythonUserException(Exception):
     cdef unique_ptr[cPythonUserException] _cpp_obj
+
+cdef class ThriftServer(ThriftServer_py3):
+    cdef readonly dict funcMap
+    cdef readonly ServiceInterface handler

@@ -25,7 +25,7 @@ from libcpp.utility cimport move as cmove
 from folly.executor cimport get_executor
 from folly.iobuf cimport IOBuf, from_unique_ptr
 from thrift.py3.exceptions cimport cTApplicationException, cTApplicationExceptionType__UNKNOWN, ApplicationError
-from thrift.py3.server cimport Cpp2RequestContext, ThriftServer as ThriftServer_py3, RequestContext, THRIFT_REQUEST_CONTEXT
+from thrift.py3.server cimport Cpp2RequestContext, RequestContext, THRIFT_REQUEST_CONTEXT
 from thrift.py3lite.serializer cimport Protocol
 from folly cimport (
   cFollyPromise,
@@ -184,9 +184,6 @@ cdef class ServiceInterface:
         pass
 
 cdef class ThriftServer(ThriftServer_py3):
-    cdef readonly dict funcMap
-    cdef readonly ServiceInterface handler
-
     def __init__(self, ServiceInterface server, int port=0, ip=None, path=None):
         self.funcMap = server.getFunctionTable()
         self.handler = server
