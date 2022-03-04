@@ -656,6 +656,10 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       const SerializedRequest& serializedRequest,
       ContextStack* c);
 
+  template <typename ProtocolIn, typename Args>
+  static void simpleDeserializeRequest(
+      Args& args, const SerializedRequest& serializedRequest);
+
   template <typename Response, typename ProtocolOut, typename Result>
   static Response serializeResponseImpl(
       const char* method,
@@ -1165,7 +1169,7 @@ class HandlerCallbackBase {
   }
 
   void appOverloadedException(const std::string& message) {
-    doAppOverloadedException(message);
+    exception(TrustedServerException::appOverloadError(message));
   }
 
   folly::EventBase* getEventBase();
@@ -1214,7 +1218,6 @@ class HandlerCallbackBase {
   }
 
   virtual void doExceptionWrapped(folly::exception_wrapper ew);
-  virtual void doAppOverloadedException(const std::string& message);
 
   template <typename F, typename T>
   void callExceptionInEventBaseThread(F&& f, T&& ex);
@@ -1390,6 +1393,22 @@ void GeneratedAsyncProcessor::deserializeRequest(
   }
   if (c) {
     c->postRead(nullptr, bytes);
+  }
+}
+
+template <typename ProtocolIn, typename Args>
+void GeneratedAsyncProcessor::simpleDeserializeRequest(
+    Args& args, const SerializedRequest& serializedRequest) {
+  ProtocolIn iprot;
+  iprot.setInput(serializedRequest.buffer.get());
+  try {
+    apache::thrift::detail::deserializeRequestBody(&iprot, &args);
+    iprot.readMessageEnd();
+  } catch (const std::exception& ex) {
+    throw TrustedServerException::requestParsingError(ex.what());
+  } catch (...) {
+    throw TrustedServerException::requestParsingError(
+        folly::exceptionStr(std::current_exception()).c_str());
   }
 }
 

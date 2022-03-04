@@ -20,11 +20,11 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<<% > common/namespace_cpp2%><%struct:cpp_name%>>::translateFieldName(
+void TccStructTraits<<%struct:cpp_fullname%>>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<<% > common/namespace_cpp2%><%struct:cpp_name%>>;
+  using data = apache::thrift::TStructDataStorage<<%struct:cpp_fullname%>>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),

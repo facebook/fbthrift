@@ -106,7 +106,7 @@ class <%struct:cpp_name%>_struct_traits {
 
   <%#struct:fields%>
   struct __fbthrift_member_<%field:cpp_name%> {
-    using owner = <% > common/namespace_cpp2%><%struct:cpp_name%>;
+    using owner = <%struct:cpp_fullname%>;
     using name = __fbthrift_strings_<%program:name%>::<%field:name_hash%>;
     using type = <%field:cpp_type%>;
     using tag = ::apache::thrift::tag::<%field:cpp_name%>;
@@ -134,7 +134,7 @@ class <%struct:cpp_name%>_struct_traits {
     <%/struct:fields%>
   };
  public:
-  using type = <% > common/namespace_cpp2%><%struct:cpp_name%>;
+  using type = <%struct:cpp_fullname%>;
   using name = __fbthrift_strings_<%program:name%>::<%struct:name%>;
   using member = __fbthrift_member;
   using members = ::fatal::list<

@@ -95,12 +95,12 @@ StructMetadata<::cpp2::Bar>::gen(ThriftMetadata& metadata) {
   module_Bar.is_union_ref() = false;
   static const EncodedThriftField
   module_Bar_fields[] = {
-    {1, "structField", false, std::make_unique<Typedef>("module.Foo", std::make_unique<Struct< ::cpp2::Foo>>("module.Foo"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
-    {2, "optionalStructField", true, std::make_unique<Typedef>("module.Foo", std::make_unique<Struct< ::cpp2::Foo>>("module.Foo"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
-    {3, "structListField", false, std::make_unique<List>(std::make_unique<Typedef>("module.Foo", std::make_unique<Struct< ::cpp2::Foo>>("module.Foo"), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
-    {4, "optionalStructListField", true, std::make_unique<List>(std::make_unique<Typedef>("module.Foo", std::make_unique<Struct< ::cpp2::Foo>>("module.Foo"), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
-    {5, "unionField", false, std::make_unique<Typedef>("module.Baz", std::make_unique<Union< ::cpp2::Baz>>("module.Baz"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
-    {6, "optionalUnionField", true, std::make_unique<Typedef>("module.Baz", std::make_unique<Union< ::cpp2::Baz>>("module.Baz"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {1, "structField", false, std::make_unique<Typedef>("module.Foo", std::make_unique<Struct<::cpp2::Foo>>("module.Foo"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {2, "optionalStructField", true, std::make_unique<Typedef>("module.Foo", std::make_unique<Struct<::cpp2::Foo>>("module.Foo"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {3, "structListField", false, std::make_unique<List>(std::make_unique<Typedef>("module.Foo", std::make_unique<Struct<::cpp2::Foo>>("module.Foo"), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
+    {4, "optionalStructListField", true, std::make_unique<List>(std::make_unique<Typedef>("module.Foo", std::make_unique<Struct<::cpp2::Foo>>("module.Foo"), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
+    {5, "unionField", false, std::make_unique<Typedef>("module.Baz", std::make_unique<Union<::cpp2::Baz>>("module.Baz"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {6, "optionalUnionField", true, std::make_unique<Typedef>("module.Baz", std::make_unique<Union<::cpp2::Baz>>("module.Baz"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_Bar_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -168,7 +168,7 @@ void ServiceMetadata<::cpp2::ServiceSvIf>::gen_func(ThriftMetadata& metadata, Th
   module_Service_func_arg3_3.id_ref() = 3;
   module_Service_func_arg3_3.name_ref() = "arg3";
   module_Service_func_arg3_3.is_optional_ref() = false;
-  auto module_Service_func_arg3_3_type = std::make_unique<Struct< ::cpp2::Foo>>("module.Foo");
+  auto module_Service_func_arg3_3_type = std::make_unique<Struct<::cpp2::Foo>>("module.Foo");
   module_Service_func_arg3_3_type->writeAndGenType(*module_Service_func_arg3_3.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_Service_func_arg3_3));
   func.is_oneway_ref() = false;

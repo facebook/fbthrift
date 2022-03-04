@@ -88,7 +88,7 @@ StructMetadata<::test_cpp2::cpp_reflection::union1>::gen(ThriftMetadata& metadat
     {1, "ui", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "ud", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "us", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-    {4, "ue", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::vector<ThriftConstStruct>{}},
+    {4, "ue", false, std::make_unique<Enum<::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_union1_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -115,7 +115,7 @@ StructMetadata<::test_cpp2::cpp_reflection::union2>::gen(ThriftMetadata& metadat
     {1, "ui_2", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "ud_2", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "us_2", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-    {4, "ue_2", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::vector<ThriftConstStruct>{}},
+    {4, "ue_2", false, std::make_unique<Enum<::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_union2_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -142,7 +142,7 @@ StructMetadata<::test_cpp2::cpp_reflection::union3>::gen(ThriftMetadata& metadat
     {1, "ui_3", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "ud_3", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "us_3", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-    {4, "ue_3", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::vector<ThriftConstStruct>{}},
+    {4, "ue_3", false, std::make_unique<Enum<::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_union3_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -194,8 +194,8 @@ StructMetadata<::test_cpp2::cpp_reflection::unionA>::gen(ThriftMetadata& metadat
     {1, "i", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "d", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "s", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-    {4, "e", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::vector<ThriftConstStruct>{}},
-    {5, "a", false, std::make_unique<Struct< ::test_cpp2::cpp_reflection::structA>>("module.structA"), std::vector<ThriftConstStruct>{}},
+    {4, "e", false, std::make_unique<Enum<::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::vector<ThriftConstStruct>{}},
+    {5, "a", false, std::make_unique<Struct<::test_cpp2::cpp_reflection::structA>>("module.structA"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_unionA_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -248,32 +248,32 @@ StructMetadata<::test_cpp2::cpp_reflection::structC>::gen(ThriftMetadata& metada
     {2, "b", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "c", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}},
     {4, "d", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
-    {5, "e", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::vector<ThriftConstStruct>{}},
-    {6, "f", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum2>>("module.enum2"), std::vector<ThriftConstStruct>{}},
-    {7, "g", false, std::make_unique<Union< ::test_cpp2::cpp_reflection::union1>>("module.union1"), std::vector<ThriftConstStruct>{}},
-    {8, "h", false, std::make_unique<Union< ::test_cpp2::cpp_reflection::unionA>>("module.unionA"), std::vector<ThriftConstStruct>{}},
-    {9, "i", false, std::make_unique<Union< ::test_cpp2::cpp_reflection::unionA>>("module.unionA"), std::vector<ThriftConstStruct>{}},
+    {5, "e", false, std::make_unique<Enum<::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::vector<ThriftConstStruct>{}},
+    {6, "f", false, std::make_unique<Enum<::test_cpp2::cpp_reflection::enum2>>("module.enum2"), std::vector<ThriftConstStruct>{}},
+    {7, "g", false, std::make_unique<Union<::test_cpp2::cpp_reflection::union1>>("module.union1"), std::vector<ThriftConstStruct>{}},
+    {8, "h", false, std::make_unique<Union<::test_cpp2::cpp_reflection::unionA>>("module.unionA"), std::vector<ThriftConstStruct>{}},
+    {9, "i", false, std::make_unique<Union<::test_cpp2::cpp_reflection::unionA>>("module.unionA"), std::vector<ThriftConstStruct>{}},
     {10, "j", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {11, "j1", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
-    {12, "j2", false, std::make_unique<List>(std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1")), std::vector<ThriftConstStruct>{}},
-    {13, "j3", false, std::make_unique<List>(std::make_unique<Struct< ::test_cpp2::cpp_reflection::structA>>("module.structA")), std::vector<ThriftConstStruct>{}},
+    {12, "j2", false, std::make_unique<List>(std::make_unique<Enum<::test_cpp2::cpp_reflection::enum1>>("module.enum1")), std::vector<ThriftConstStruct>{}},
+    {13, "j3", false, std::make_unique<List>(std::make_unique<Struct<::test_cpp2::cpp_reflection::structA>>("module.structA")), std::vector<ThriftConstStruct>{}},
     {14, "k", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {15, "k1", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
-    {16, "k2", false, std::make_unique<Set>(std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum2>>("module.enum2")), std::vector<ThriftConstStruct>{}},
-    {17, "k3", false, std::make_unique<Set>(std::make_unique<Struct< ::test_cpp2::cpp_reflection::structB>>("module.structB")), std::vector<ThriftConstStruct>{}},
+    {16, "k2", false, std::make_unique<Set>(std::make_unique<Enum<::test_cpp2::cpp_reflection::enum2>>("module.enum2")), std::vector<ThriftConstStruct>{}},
+    {17, "k3", false, std::make_unique<Set>(std::make_unique<Struct<::test_cpp2::cpp_reflection::structB>>("module.structB")), std::vector<ThriftConstStruct>{}},
     {18, "l", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {19, "l1", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
-    {20, "l2", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1")), std::vector<ThriftConstStruct>{}},
-    {21, "l3", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Struct< ::test_cpp2::cpp_reflection::structB>>("module.structB")), std::vector<ThriftConstStruct>{}},
-    {22, "m1", false, std::make_unique<Map>(std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
-    {23, "m2", false, std::make_unique<Map>(std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum2>>("module.enum2")), std::vector<ThriftConstStruct>{}},
-    {24, "m3", false, std::make_unique<Map>(std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::make_unique<Struct< ::test_cpp2::cpp_reflection::structB>>("module.structB")), std::vector<ThriftConstStruct>{}},
+    {20, "l2", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Enum<::test_cpp2::cpp_reflection::enum1>>("module.enum1")), std::vector<ThriftConstStruct>{}},
+    {21, "l3", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Struct<::test_cpp2::cpp_reflection::structB>>("module.structB")), std::vector<ThriftConstStruct>{}},
+    {22, "m1", false, std::make_unique<Map>(std::make_unique<Enum<::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
+    {23, "m2", false, std::make_unique<Map>(std::make_unique<Enum<::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::make_unique<Enum<::test_cpp2::cpp_reflection::enum2>>("module.enum2")), std::vector<ThriftConstStruct>{}},
+    {24, "m3", false, std::make_unique<Map>(std::make_unique<Enum<::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::make_unique<Struct<::test_cpp2::cpp_reflection::structB>>("module.structB")), std::vector<ThriftConstStruct>{}},
     {25, "n1", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
-    {26, "n2", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1")), std::vector<ThriftConstStruct>{}},
-    {27, "n3", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Struct< ::test_cpp2::cpp_reflection::structB>>("module.structB")), std::vector<ThriftConstStruct>{}},
-    {28, "o1", false, std::make_unique<Map>(std::make_unique<Struct< ::test_cpp2::cpp_reflection::structA>>("module.structA"), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
-    {29, "o2", false, std::make_unique<Map>(std::make_unique<Struct< ::test_cpp2::cpp_reflection::structA>>("module.structA"), std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1")), std::vector<ThriftConstStruct>{}},
-    {30, "o3", false, std::make_unique<Map>(std::make_unique<Struct< ::test_cpp2::cpp_reflection::structA>>("module.structA"), std::make_unique<Struct< ::test_cpp2::cpp_reflection::structB>>("module.structB")), std::vector<ThriftConstStruct>{}},
+    {26, "n2", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Enum<::test_cpp2::cpp_reflection::enum1>>("module.enum1")), std::vector<ThriftConstStruct>{}},
+    {27, "n3", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Struct<::test_cpp2::cpp_reflection::structB>>("module.structB")), std::vector<ThriftConstStruct>{}},
+    {28, "o1", false, std::make_unique<Map>(std::make_unique<Struct<::test_cpp2::cpp_reflection::structA>>("module.structA"), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
+    {29, "o2", false, std::make_unique<Map>(std::make_unique<Struct<::test_cpp2::cpp_reflection::structA>>("module.structA"), std::make_unique<Enum<::test_cpp2::cpp_reflection::enum1>>("module.enum1")), std::vector<ThriftConstStruct>{}},
+    {30, "o3", false, std::make_unique<Map>(std::make_unique<Struct<::test_cpp2::cpp_reflection::structA>>("module.structA"), std::make_unique<Struct<::test_cpp2::cpp_reflection::structB>>("module.structB")), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_structC_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -299,10 +299,10 @@ StructMetadata<::test_cpp2::cpp_reflection::struct1>::gen(ThriftMetadata& metada
   module_struct1_fields[] = {
     {1, "field0", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "field1", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-    {3, "field2", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::vector<ThriftConstStruct>{}},
-    {4, "field3", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum2>>("module.enum2"), std::vector<ThriftConstStruct>{}},
-    {5, "field4", true, std::make_unique<Union< ::test_cpp2::cpp_reflection::union1>>("module.union1"), std::vector<ThriftConstStruct>{}},
-    {6, "field5", false, std::make_unique<Union< ::test_cpp2::cpp_reflection::union2>>("module.union2"), std::vector<ThriftConstStruct>{}},
+    {3, "field2", false, std::make_unique<Enum<::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::vector<ThriftConstStruct>{}},
+    {4, "field3", false, std::make_unique<Enum<::test_cpp2::cpp_reflection::enum2>>("module.enum2"), std::vector<ThriftConstStruct>{}},
+    {5, "field4", true, std::make_unique<Union<::test_cpp2::cpp_reflection::union1>>("module.union1"), std::vector<ThriftConstStruct>{}},
+    {6, "field5", false, std::make_unique<Union<::test_cpp2::cpp_reflection::union2>>("module.union2"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_struct1_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -328,11 +328,11 @@ StructMetadata<::test_cpp2::cpp_reflection::struct2>::gen(ThriftMetadata& metada
   module_struct2_fields[] = {
     {1, "fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "fieldB", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-    {3, "fieldC", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::vector<ThriftConstStruct>{}},
-    {4, "fieldD", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum2>>("module.enum2"), std::vector<ThriftConstStruct>{}},
-    {5, "fieldE", false, std::make_unique<Union< ::test_cpp2::cpp_reflection::union1>>("module.union1"), std::vector<ThriftConstStruct>{}},
-    {6, "fieldF", false, std::make_unique<Union< ::test_cpp2::cpp_reflection::union2>>("module.union2"), std::vector<ThriftConstStruct>{}},
-    {7, "fieldG", false, std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct1>>("module.struct1"), std::vector<ThriftConstStruct>{}},
+    {3, "fieldC", false, std::make_unique<Enum<::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::vector<ThriftConstStruct>{}},
+    {4, "fieldD", false, std::make_unique<Enum<::test_cpp2::cpp_reflection::enum2>>("module.enum2"), std::vector<ThriftConstStruct>{}},
+    {5, "fieldE", false, std::make_unique<Union<::test_cpp2::cpp_reflection::union1>>("module.union1"), std::vector<ThriftConstStruct>{}},
+    {6, "fieldF", false, std::make_unique<Union<::test_cpp2::cpp_reflection::union2>>("module.union2"), std::vector<ThriftConstStruct>{}},
+    {7, "fieldG", false, std::make_unique<Struct<::test_cpp2::cpp_reflection::struct1>>("module.struct1"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_struct2_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -358,22 +358,22 @@ StructMetadata<::test_cpp2::cpp_reflection::struct3>::gen(ThriftMetadata& metada
   module_struct3_fields[] = {
     {1, "fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "fieldB", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-    {3, "fieldC", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::vector<ThriftConstStruct>{}},
-    {4, "fieldD", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum2>>("module.enum2"), std::vector<ThriftConstStruct>{}},
-    {5, "fieldE", false, std::make_unique<Union< ::test_cpp2::cpp_reflection::union1>>("module.union1"), std::vector<ThriftConstStruct>{}},
-    {6, "fieldF", false, std::make_unique<Union< ::test_cpp2::cpp_reflection::union2>>("module.union2"), std::vector<ThriftConstStruct>{}},
-    {7, "fieldG", false, std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct1>>("module.struct1"), std::vector<ThriftConstStruct>{}},
-    {8, "fieldH", false, std::make_unique<Union< ::test_cpp2::cpp_reflection::union2>>("module.union2"), std::vector<ThriftConstStruct>{}},
+    {3, "fieldC", false, std::make_unique<Enum<::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::vector<ThriftConstStruct>{}},
+    {4, "fieldD", false, std::make_unique<Enum<::test_cpp2::cpp_reflection::enum2>>("module.enum2"), std::vector<ThriftConstStruct>{}},
+    {5, "fieldE", false, std::make_unique<Union<::test_cpp2::cpp_reflection::union1>>("module.union1"), std::vector<ThriftConstStruct>{}},
+    {6, "fieldF", false, std::make_unique<Union<::test_cpp2::cpp_reflection::union2>>("module.union2"), std::vector<ThriftConstStruct>{}},
+    {7, "fieldG", false, std::make_unique<Struct<::test_cpp2::cpp_reflection::struct1>>("module.struct1"), std::vector<ThriftConstStruct>{}},
+    {8, "fieldH", false, std::make_unique<Union<::test_cpp2::cpp_reflection::union2>>("module.union2"), std::vector<ThriftConstStruct>{}},
     {9, "fieldI", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {10, "fieldJ", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
     {11, "fieldK", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
-    {12, "fieldL", false, std::make_unique<List>(std::make_unique<Struct< ::test_cpp2::cpp_reflection::structA>>("module.structA")), std::vector<ThriftConstStruct>{}},
+    {12, "fieldL", false, std::make_unique<List>(std::make_unique<Struct<::test_cpp2::cpp_reflection::structA>>("module.structA")), std::vector<ThriftConstStruct>{}},
     {13, "fieldM", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {14, "fieldN", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
     {15, "fieldO", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
-    {16, "fieldP", false, std::make_unique<Set>(std::make_unique<Struct< ::test_cpp2::cpp_reflection::structB>>("module.structB")), std::vector<ThriftConstStruct>{}},
-    {17, "fieldQ", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Struct< ::test_cpp2::cpp_reflection::structA>>("module.structA")), std::vector<ThriftConstStruct>{}},
-    {18, "fieldR", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Struct< ::test_cpp2::cpp_reflection::structB>>("module.structB")), std::vector<ThriftConstStruct>{}},
+    {16, "fieldP", false, std::make_unique<Set>(std::make_unique<Struct<::test_cpp2::cpp_reflection::structB>>("module.structB")), std::vector<ThriftConstStruct>{}},
+    {17, "fieldQ", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Struct<::test_cpp2::cpp_reflection::structA>>("module.structA")), std::vector<ThriftConstStruct>{}},
+    {18, "fieldR", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Struct<::test_cpp2::cpp_reflection::structB>>("module.structB")), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_struct3_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -399,8 +399,8 @@ StructMetadata<::test_cpp2::cpp_reflection::struct4>::gen(ThriftMetadata& metada
   module_struct4_fields[] = {
     {1, "field0", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "field1", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-    {3, "field2", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::vector<ThriftConstStruct>{}},
-    {6, "field3", false, std::make_unique<Struct< ::test_cpp2::cpp_reflection::structA>>("module.structA"), std::vector<ThriftConstStruct>{}},
+    {3, "field2", false, std::make_unique<Enum<::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::vector<ThriftConstStruct>{}},
+    {6, "field3", false, std::make_unique<Struct<::test_cpp2::cpp_reflection::structA>>("module.structA"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_struct4_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -426,9 +426,9 @@ StructMetadata<::test_cpp2::cpp_reflection::struct5>::gen(ThriftMetadata& metada
   module_struct5_fields[] = {
     {1, "field0", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "field1", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-    {3, "field2", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::vector<ThriftConstStruct>{}},
-    {4, "field3", false, std::make_unique<Struct< ::test_cpp2::cpp_reflection::structA>>("module.structA"), std::vector<ThriftConstStruct>{}},
-    {5, "field4", false, std::make_unique<Struct< ::test_cpp2::cpp_reflection::structB>>("module.structB"), std::vector<ThriftConstStruct>{}},
+    {3, "field2", false, std::make_unique<Enum<::test_cpp2::cpp_reflection::enum1>>("module.enum1"), std::vector<ThriftConstStruct>{}},
+    {4, "field3", false, std::make_unique<Struct<::test_cpp2::cpp_reflection::structA>>("module.structA"), std::vector<ThriftConstStruct>{}},
+    {5, "field4", false, std::make_unique<Struct<::test_cpp2::cpp_reflection::structB>>("module.structB"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_struct5_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -476,8 +476,8 @@ StructMetadata<::test_cpp2::cpp_reflection::dep_A_struct>::gen(ThriftMetadata& m
   module_dep_A_struct.is_union_ref() = false;
   static const EncodedThriftField
   module_dep_A_struct_fields[] = {
-    {1, "b", false, std::make_unique<Struct< ::test_cpp2::cpp_reflection::dep_B_struct>>("reflection_dep_B.dep_B_struct"), std::vector<ThriftConstStruct>{}},
-    {2, "c", false, std::make_unique<Struct< ::test_cpp2::cpp_reflection::dep_C_struct>>("reflection_dep_C.dep_C_struct"), std::vector<ThriftConstStruct>{}},
+    {1, "b", false, std::make_unique<Struct<::test_cpp2::cpp_reflection::dep_B_struct>>("reflection_dep_B.dep_B_struct"), std::vector<ThriftConstStruct>{}},
+    {2, "c", false, std::make_unique<Struct<::test_cpp2::cpp_reflection::dep_C_struct>>("reflection_dep_C.dep_C_struct"), std::vector<ThriftConstStruct>{}},
     {3, "i_a", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_dep_A_struct_fields) {
@@ -502,8 +502,8 @@ StructMetadata<::test_cpp2::cpp_reflection::dep_B_struct>::gen(ThriftMetadata& m
   module_dep_B_struct.is_union_ref() = false;
   static const EncodedThriftField
   module_dep_B_struct_fields[] = {
-    {1, "b", false, std::make_unique<Struct< ::test_cpp2::cpp_reflection::dep_B_struct>>("reflection_dep_B.dep_B_struct"), std::vector<ThriftConstStruct>{}},
-    {2, "c", false, std::make_unique<Struct< ::test_cpp2::cpp_reflection::dep_C_struct>>("reflection_dep_C.dep_C_struct"), std::vector<ThriftConstStruct>{}},
+    {1, "b", false, std::make_unique<Struct<::test_cpp2::cpp_reflection::dep_B_struct>>("reflection_dep_B.dep_B_struct"), std::vector<ThriftConstStruct>{}},
+    {2, "c", false, std::make_unique<Struct<::test_cpp2::cpp_reflection::dep_C_struct>>("reflection_dep_C.dep_C_struct"), std::vector<ThriftConstStruct>{}},
     {3, "i_a", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_dep_B_struct_fields) {
@@ -698,7 +698,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method2(Thr
   module_service1_method2_y_2.id_ref() = 2;
   module_service1_method2_y_2.name_ref() = "y";
   module_service1_method2_y_2.is_optional_ref() = false;
-  auto module_service1_method2_y_2_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct1>>("module.struct1");
+  auto module_service1_method2_y_2_type = std::make_unique<Struct<::test_cpp2::cpp_reflection::struct1>>("module.struct1");
   module_service1_method2_y_2_type->writeAndGenType(*module_service1_method2_y_2.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_service1_method2_y_2));
   ::apache::thrift::metadata::ThriftField module_service1_method2_z_3;
@@ -737,7 +737,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method4(Thr
   module_service1_method4_j_2.id_ref() = 2;
   module_service1_method4_j_2.name_ref() = "j";
   module_service1_method4_j_2.is_optional_ref() = false;
-  auto module_service1_method4_j_2_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct1>>("module.struct1");
+  auto module_service1_method4_j_2_type = std::make_unique<Struct<::test_cpp2::cpp_reflection::struct1>>("module.struct1");
   module_service1_method4_j_2_type->writeAndGenType(*module_service1_method4_j_2.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_service1_method4_j_2));
   ::apache::thrift::metadata::ThriftField module_service1_method4_k_3;
@@ -754,7 +754,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method5(Thr
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "method5";
-  auto func_ret_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct2>>("module.struct2");
+  auto func_ret_type = std::make_unique<Struct<::test_cpp2::cpp_reflection::struct2>>("module.struct2");
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
@@ -763,7 +763,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method6(Thr
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "method6";
-  auto func_ret_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct2>>("module.struct2");
+  auto func_ret_type = std::make_unique<Struct<::test_cpp2::cpp_reflection::struct2>>("module.struct2");
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_service1_method6_l_1;
   module_service1_method6_l_1.id_ref() = 1;
@@ -776,7 +776,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method6(Thr
   module_service1_method6_m_2.id_ref() = 2;
   module_service1_method6_m_2.name_ref() = "m";
   module_service1_method6_m_2.is_optional_ref() = false;
-  auto module_service1_method6_m_2_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct1>>("module.struct1");
+  auto module_service1_method6_m_2_type = std::make_unique<Struct<::test_cpp2::cpp_reflection::struct1>>("module.struct1");
   module_service1_method6_m_2_type->writeAndGenType(*module_service1_method6_m_2.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_service1_method6_m_2));
   ::apache::thrift::metadata::ThriftField module_service1_method6_n_3;
@@ -852,7 +852,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodB(Thr
   module_service2_methodB_y_2.id_ref() = 2;
   module_service2_methodB_y_2.name_ref() = "y";
   module_service2_methodB_y_2.is_optional_ref() = false;
-  auto module_service2_methodB_y_2_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct1>>("module.struct1");
+  auto module_service2_methodB_y_2_type = std::make_unique<Struct<::test_cpp2::cpp_reflection::struct1>>("module.struct1");
   module_service2_methodB_y_2_type->writeAndGenType(*module_service2_methodB_y_2.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_service2_methodB_y_2));
   ::apache::thrift::metadata::ThriftField module_service2_methodB_z_3;
@@ -891,7 +891,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodD(Thr
   module_service2_methodD_j_2.id_ref() = 2;
   module_service2_methodD_j_2.name_ref() = "j";
   module_service2_methodD_j_2.is_optional_ref() = false;
-  auto module_service2_methodD_j_2_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct1>>("module.struct1");
+  auto module_service2_methodD_j_2_type = std::make_unique<Struct<::test_cpp2::cpp_reflection::struct1>>("module.struct1");
   module_service2_methodD_j_2_type->writeAndGenType(*module_service2_methodD_j_2.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_service2_methodD_j_2));
   ::apache::thrift::metadata::ThriftField module_service2_methodD_k_3;
@@ -908,7 +908,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodE(Thr
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "methodE";
-  auto func_ret_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct2>>("module.struct2");
+  auto func_ret_type = std::make_unique<Struct<::test_cpp2::cpp_reflection::struct2>>("module.struct2");
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
@@ -917,7 +917,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodF(Thr
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "methodF";
-  auto func_ret_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct2>>("module.struct2");
+  auto func_ret_type = std::make_unique<Struct<::test_cpp2::cpp_reflection::struct2>>("module.struct2");
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_service2_methodF_l_1;
   module_service2_methodF_l_1.id_ref() = 1;
@@ -930,7 +930,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodF(Thr
   module_service2_methodF_m_2.id_ref() = 2;
   module_service2_methodF_m_2.name_ref() = "m";
   module_service2_methodF_m_2.is_optional_ref() = false;
-  auto module_service2_methodF_m_2_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct1>>("module.struct1");
+  auto module_service2_methodF_m_2_type = std::make_unique<Struct<::test_cpp2::cpp_reflection::struct1>>("module.struct1");
   module_service2_methodF_m_2_type->writeAndGenType(*module_service2_methodF_m_2.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_service2_methodF_m_2));
   ::apache::thrift::metadata::ThriftField module_service2_methodF_n_3;
@@ -1006,7 +1006,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodB(Thr
   module_service3_methodB_y_2.id_ref() = 2;
   module_service3_methodB_y_2.name_ref() = "y";
   module_service3_methodB_y_2.is_optional_ref() = false;
-  auto module_service3_methodB_y_2_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct1>>("module.struct1");
+  auto module_service3_methodB_y_2_type = std::make_unique<Struct<::test_cpp2::cpp_reflection::struct1>>("module.struct1");
   module_service3_methodB_y_2_type->writeAndGenType(*module_service3_methodB_y_2.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_service3_methodB_y_2));
   ::apache::thrift::metadata::ThriftField module_service3_methodB_z_3;
@@ -1045,7 +1045,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodD(Thr
   module_service3_methodD_j_2.id_ref() = 2;
   module_service3_methodD_j_2.name_ref() = "j";
   module_service3_methodD_j_2.is_optional_ref() = false;
-  auto module_service3_methodD_j_2_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct1>>("module.struct1");
+  auto module_service3_methodD_j_2_type = std::make_unique<Struct<::test_cpp2::cpp_reflection::struct1>>("module.struct1");
   module_service3_methodD_j_2_type->writeAndGenType(*module_service3_methodD_j_2.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_service3_methodD_j_2));
   ::apache::thrift::metadata::ThriftField module_service3_methodD_k_3;
@@ -1062,7 +1062,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodE(Thr
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "methodE";
-  auto func_ret_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct2>>("module.struct2");
+  auto func_ret_type = std::make_unique<Struct<::test_cpp2::cpp_reflection::struct2>>("module.struct2");
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
@@ -1071,7 +1071,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodF(Thr
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "methodF";
-  auto func_ret_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct3>>("module.struct3");
+  auto func_ret_type = std::make_unique<Struct<::test_cpp2::cpp_reflection::struct3>>("module.struct3");
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_service3_methodF_l_1;
   module_service3_methodF_l_1.id_ref() = 1;
@@ -1084,7 +1084,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodF(Thr
   module_service3_methodF_m_2.id_ref() = 2;
   module_service3_methodF_m_2.name_ref() = "m";
   module_service3_methodF_m_2.is_optional_ref() = false;
-  auto module_service3_methodF_m_2_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct1>>("module.struct1");
+  auto module_service3_methodF_m_2_type = std::make_unique<Struct<::test_cpp2::cpp_reflection::struct1>>("module.struct1");
   module_service3_methodF_m_2_type->writeAndGenType(*module_service3_methodF_m_2.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_service3_methodF_m_2));
   ::apache::thrift::metadata::ThriftField module_service3_methodF_n_3;

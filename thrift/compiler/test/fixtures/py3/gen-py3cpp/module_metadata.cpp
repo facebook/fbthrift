@@ -140,11 +140,11 @@ StructMetadata<::py3::simple::ComplexStruct>::gen(ThriftMetadata& metadata) {
   module_ComplexStruct.is_union_ref() = false;
   static const EncodedThriftField
   module_ComplexStruct_fields[] = {
-    {1, "structOne", false, std::make_unique<Struct< ::py3::simple::SimpleStruct>>("module.SimpleStruct"), std::vector<ThriftConstStruct>{}},
-    {2, "structTwo", false, std::make_unique<Struct< ::py3::simple::SimpleStruct>>("module.SimpleStruct"), std::vector<ThriftConstStruct>{}},
+    {1, "structOne", false, std::make_unique<Struct<::py3::simple::SimpleStruct>>("module.SimpleStruct"), std::vector<ThriftConstStruct>{}},
+    {2, "structTwo", false, std::make_unique<Struct<::py3::simple::SimpleStruct>>("module.SimpleStruct"), std::vector<ThriftConstStruct>{}},
     {3, "an_integer", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {4, "name", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-    {5, "an_enum", false, std::make_unique<Enum< ::py3::simple::AnEnum>>("module.AnEnum"), std::vector<ThriftConstStruct>{}},
+    {5, "an_enum", false, std::make_unique<Enum<::py3::simple::AnEnum>>("module.AnEnum"), std::vector<ThriftConstStruct>{}},
     {6, "some_bytes", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}},
     {7, "from", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {8, "cdef", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
@@ -196,7 +196,7 @@ StructMetadata<::py3::simple::BinaryUnionStruct>::gen(ThriftMetadata& metadata) 
   module_BinaryUnionStruct.is_union_ref() = false;
   static const EncodedThriftField
   module_BinaryUnionStruct_fields[] = {
-    {1, "u", false, std::make_unique<Union< ::py3::simple::BinaryUnion>>("module.BinaryUnion"), std::vector<ThriftConstStruct>{}},
+    {1, "u", false, std::make_unique<Union<::py3::simple::BinaryUnion>>("module.BinaryUnion"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_BinaryUnionStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -297,7 +297,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_get_value(ThriftMeta
   module_SimpleService_get_value_simple_struct_1.id_ref() = 1;
   module_SimpleService_get_value_simple_struct_1.name_ref() = "simple_struct";
   module_SimpleService_get_value_simple_struct_1.is_optional_ref() = false;
-  auto module_SimpleService_get_value_simple_struct_1_type = std::make_unique<Struct< ::py3::simple::SimpleStruct>>("module.SimpleStruct");
+  auto module_SimpleService_get_value_simple_struct_1_type = std::make_unique<Struct<::py3::simple::SimpleStruct>>("module.SimpleStruct");
   module_SimpleService_get_value_simple_struct_1_type->writeAndGenType(*module_SimpleService_get_value_simple_struct_1.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_SimpleService_get_value_simple_struct_1));
   func.is_oneway_ref() = false;
@@ -393,10 +393,10 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_expected_exception(T
   module_SimpleService_expected_exception_se_1.id_ref() = 1;
   module_SimpleService_expected_exception_se_1.name_ref() = "se";
   module_SimpleService_expected_exception_se_1.is_optional_ref() = false;
-  auto module_SimpleService_expected_exception_se_1_type = std::make_unique<Struct< ::py3::simple::SimpleException>>("module.SimpleException");
+  auto module_SimpleService_expected_exception_se_1_type = std::make_unique<Struct<::py3::simple::SimpleException>>("module.SimpleException");
   module_SimpleService_expected_exception_se_1_type->writeAndGenType(*module_SimpleService_expected_exception_se_1.type_ref(), metadata);
   func.exceptions_ref()->push_back(std::move(module_SimpleService_expected_exception_se_1));
-  ExceptionMetadata< ::py3::simple::SimpleException>::gen(metadata);
+  ExceptionMetadata<::py3::simple::SimpleException>::gen(metadata);
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
@@ -483,7 +483,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_count_structs(Thrift
   module_SimpleService_count_structs_items_1.id_ref() = 1;
   module_SimpleService_count_structs_items_1.name_ref() = "items";
   module_SimpleService_count_structs_items_1.is_optional_ref() = false;
-  auto module_SimpleService_count_structs_items_1_type = std::make_unique<List>(std::make_unique<Struct< ::py3::simple::SimpleStruct>>("module.SimpleStruct"));
+  auto module_SimpleService_count_structs_items_1_type = std::make_unique<List>(std::make_unique<Struct<::py3::simple::SimpleStruct>>("module.SimpleStruct"));
   module_SimpleService_count_structs_items_1_type->writeAndGenType(*module_SimpleService_count_structs_items_1.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_SimpleService_count_structs_items_1));
   func.is_oneway_ref() = false;
@@ -561,7 +561,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_map_length(ThriftMet
   module_SimpleService_map_length_items_1.id_ref() = 1;
   module_SimpleService_map_length_items_1.name_ref() = "items";
   module_SimpleService_map_length_items_1.is_optional_ref() = false;
-  auto module_SimpleService_map_length_items_1_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Struct< ::py3::simple::SimpleStruct>>("module.SimpleStruct"));
+  auto module_SimpleService_map_length_items_1_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Struct<::py3::simple::SimpleStruct>>("module.SimpleStruct"));
   module_SimpleService_map_length_items_1_type->writeAndGenType(*module_SimpleService_map_length_items_1.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_SimpleService_map_length_items_1));
   func.is_oneway_ref() = false;
@@ -593,7 +593,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_complex_sum_i32(Thri
   module_SimpleService_complex_sum_i32_counter_1.id_ref() = 1;
   module_SimpleService_complex_sum_i32_counter_1.name_ref() = "counter";
   module_SimpleService_complex_sum_i32_counter_1.is_optional_ref() = false;
-  auto module_SimpleService_complex_sum_i32_counter_1_type = std::make_unique<Struct< ::py3::simple::ComplexStruct>>("module.ComplexStruct");
+  auto module_SimpleService_complex_sum_i32_counter_1_type = std::make_unique<Struct<::py3::simple::ComplexStruct>>("module.ComplexStruct");
   module_SimpleService_complex_sum_i32_counter_1_type->writeAndGenType(*module_SimpleService_complex_sum_i32_counter_1.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_SimpleService_complex_sum_i32_counter_1));
   func.is_oneway_ref() = false;
@@ -609,7 +609,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_repeat_name(ThriftMe
   module_SimpleService_repeat_name_counter_1.id_ref() = 1;
   module_SimpleService_repeat_name_counter_1.name_ref() = "counter";
   module_SimpleService_repeat_name_counter_1.is_optional_ref() = false;
-  auto module_SimpleService_repeat_name_counter_1_type = std::make_unique<Struct< ::py3::simple::ComplexStruct>>("module.ComplexStruct");
+  auto module_SimpleService_repeat_name_counter_1_type = std::make_unique<Struct<::py3::simple::ComplexStruct>>("module.ComplexStruct");
   module_SimpleService_repeat_name_counter_1_type->writeAndGenType(*module_SimpleService_repeat_name_counter_1.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_SimpleService_repeat_name_counter_1));
   func.is_oneway_ref() = false;
@@ -619,7 +619,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_get_struct(ThriftMet
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "get_struct";
-  auto func_ret_type = std::make_unique<Struct< ::py3::simple::SimpleStruct>>("module.SimpleStruct");
+  auto func_ret_type = std::make_unique<Struct<::py3::simple::SimpleStruct>>("module.SimpleStruct");
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
@@ -676,13 +676,13 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_set_enum(ThriftMetad
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "set_enum";
-  auto func_ret_type = std::make_unique<Enum< ::py3::simple::AnEnum>>("module.AnEnum");
+  auto func_ret_type = std::make_unique<Enum<::py3::simple::AnEnum>>("module.AnEnum");
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_SimpleService_set_enum_in_enum_1;
   module_SimpleService_set_enum_in_enum_1.id_ref() = 1;
   module_SimpleService_set_enum_in_enum_1.name_ref() = "in_enum";
   module_SimpleService_set_enum_in_enum_1.is_optional_ref() = false;
-  auto module_SimpleService_set_enum_in_enum_1_type = std::make_unique<Enum< ::py3::simple::AnEnum>>("module.AnEnum");
+  auto module_SimpleService_set_enum_in_enum_1_type = std::make_unique<Enum<::py3::simple::AnEnum>>("module.AnEnum");
   module_SimpleService_set_enum_in_enum_1_type->writeAndGenType(*module_SimpleService_set_enum_in_enum_1.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_SimpleService_set_enum_in_enum_1));
   func.is_oneway_ref() = false;
@@ -753,7 +753,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_nested_map_argument(
   module_SimpleService_nested_map_argument_struct_map_1.id_ref() = 1;
   module_SimpleService_nested_map_argument_struct_map_1.name_ref() = "struct_map";
   module_SimpleService_nested_map_argument_struct_map_1.is_optional_ref() = false;
-  auto module_SimpleService_nested_map_argument_struct_map_1_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<List>(std::make_unique<Struct< ::py3::simple::SimpleStruct>>("module.SimpleStruct")));
+  auto module_SimpleService_nested_map_argument_struct_map_1_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<List>(std::make_unique<Struct<::py3::simple::SimpleStruct>>("module.SimpleStruct")));
   module_SimpleService_nested_map_argument_struct_map_1_type->writeAndGenType(*module_SimpleService_nested_map_argument_struct_map_1.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_SimpleService_nested_map_argument_struct_map_1));
   func.is_oneway_ref() = false;
@@ -859,13 +859,13 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_contain_enum(ThriftM
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "contain_enum";
-  auto func_ret_type = std::make_unique<List>(std::make_unique<Enum< ::py3::simple::AnEnum>>("module.AnEnum"));
+  auto func_ret_type = std::make_unique<List>(std::make_unique<Enum<::py3::simple::AnEnum>>("module.AnEnum"));
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_SimpleService_contain_enum_the_enum_1;
   module_SimpleService_contain_enum_the_enum_1.id_ref() = 1;
   module_SimpleService_contain_enum_the_enum_1.name_ref() = "the_enum";
   module_SimpleService_contain_enum_the_enum_1.is_optional_ref() = false;
-  auto module_SimpleService_contain_enum_the_enum_1_type = std::make_unique<List>(std::make_unique<Enum< ::py3::simple::AnEnum>>("module.AnEnum"));
+  auto module_SimpleService_contain_enum_the_enum_1_type = std::make_unique<List>(std::make_unique<Enum<::py3::simple::AnEnum>>("module.AnEnum"));
   module_SimpleService_contain_enum_the_enum_1_type->writeAndGenType(*module_SimpleService_contain_enum_the_enum_1.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_SimpleService_contain_enum_the_enum_1));
   func.is_oneway_ref() = false;
@@ -875,13 +875,13 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_get_binary_union_str
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "get_binary_union_struct";
-  auto func_ret_type = std::make_unique<Struct< ::py3::simple::BinaryUnionStruct>>("module.BinaryUnionStruct");
+  auto func_ret_type = std::make_unique<Struct<::py3::simple::BinaryUnionStruct>>("module.BinaryUnionStruct");
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_SimpleService_get_binary_union_struct_u_1;
   module_SimpleService_get_binary_union_struct_u_1.id_ref() = 1;
   module_SimpleService_get_binary_union_struct_u_1.name_ref() = "u";
   module_SimpleService_get_binary_union_struct_u_1.is_optional_ref() = false;
-  auto module_SimpleService_get_binary_union_struct_u_1_type = std::make_unique<Union< ::py3::simple::BinaryUnion>>("module.BinaryUnion");
+  auto module_SimpleService_get_binary_union_struct_u_1_type = std::make_unique<Union<::py3::simple::BinaryUnion>>("module.BinaryUnion");
   module_SimpleService_get_binary_union_struct_u_1_type->writeAndGenType(*module_SimpleService_get_binary_union_struct_u_1.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_SimpleService_get_binary_union_struct_u_1));
   func.is_oneway_ref() = false;

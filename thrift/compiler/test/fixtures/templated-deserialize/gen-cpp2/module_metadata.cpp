@@ -90,12 +90,12 @@ StructMetadata<::cpp2::containerStruct>::gen(ThriftMetadata& metadata) {
     {14, "fieldN", false, std::make_unique<List>(std::make_unique<Typedef>("module.IndirectionA", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
     {15, "fieldO", false, std::make_unique<List>(std::make_unique<Typedef>("module.IndirectionB", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
     {16, "fieldP", false, std::make_unique<List>(std::make_unique<Typedef>("module.IndirectionC", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
-    {17, "fieldQ", false, std::make_unique<Enum< ::cpp2::MyEnumA>>("module.MyEnumA"), std::vector<ThriftConstStruct>{}},
+    {17, "fieldQ", false, std::make_unique<Enum<::cpp2::MyEnumA>>("module.MyEnumA"), std::vector<ThriftConstStruct>{}},
     {18, "fieldR", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE)), std::vector<ThriftConstStruct>{}},
-    {19, "fieldS", false, std::make_unique<Struct< ::cpp2::SmallStruct>>("module.SmallStruct"), std::vector<ThriftConstStruct>{}},
-    {20, "fieldT", false, std::make_unique<Struct< ::cpp2::SmallStruct>>("module.SmallStruct"), std::vector<ThriftConstStruct>{}},
-    {21, "fieldU", false, std::make_unique<Struct< ::cpp2::SmallStruct>>("module.SmallStruct"), std::vector<ThriftConstStruct>{}},
-    {23, "fieldX", false, std::make_unique<Struct< ::cpp2::SmallStruct>>("module.SmallStruct"), std::vector<ThriftConstStruct>{}},
+    {19, "fieldS", false, std::make_unique<Struct<::cpp2::SmallStruct>>("module.SmallStruct"), std::vector<ThriftConstStruct>{}},
+    {20, "fieldT", false, std::make_unique<Struct<::cpp2::SmallStruct>>("module.SmallStruct"), std::vector<ThriftConstStruct>{}},
+    {21, "fieldU", false, std::make_unique<Struct<::cpp2::SmallStruct>>("module.SmallStruct"), std::vector<ThriftConstStruct>{}},
+    {23, "fieldX", false, std::make_unique<Struct<::cpp2::SmallStruct>>("module.SmallStruct"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_containerStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;

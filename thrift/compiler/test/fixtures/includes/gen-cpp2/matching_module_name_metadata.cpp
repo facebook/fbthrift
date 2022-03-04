@@ -37,7 +37,7 @@ StructMetadata<::matching_module_name::MyStruct>::gen(ThriftMetadata& metadata) 
   matching_module_name_MyStruct.is_union_ref() = false;
   static const EncodedThriftField
   matching_module_name_MyStruct_fields[] = {
-    {1, "OtherStructField", false, std::make_unique<Struct< ::matching_module_name::OtherStruct>>("matching_module_name.OtherStruct"), std::vector<ThriftConstStruct>{}},
+    {1, "OtherStructField", false, std::make_unique<Struct<::matching_module_name::OtherStruct>>("matching_module_name.OtherStruct"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : matching_module_name_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;

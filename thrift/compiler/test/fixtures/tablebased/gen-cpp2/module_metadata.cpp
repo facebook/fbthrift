@@ -53,7 +53,7 @@ StructMetadata<::test::fixtures::tablebased::TrivialTypesStruct>::gen(ThriftMeta
     {2, "fieldB", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "fieldC", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}},
     {4, "fieldD", true, std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
-    {5, "fieldE", false, std::make_unique<Enum< ::test::fixtures::tablebased::ExampleEnum>>("module.ExampleEnum"), std::vector<ThriftConstStruct>{}},
+    {5, "fieldE", false, std::make_unique<Enum<::test::fixtures::tablebased::ExampleEnum>>("module.ExampleEnum"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_TrivialTypesStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -84,7 +84,7 @@ StructMetadata<::test::fixtures::tablebased::ContainerStruct>::gen(ThriftMetadat
     {5, "fieldE", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {6, "fieldF", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {7, "fieldG", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
-    {8, "fieldH", false, std::make_unique<List>(std::make_unique<Struct< ::test::fixtures::tablebased::TrivialTypesStruct>>("module.TrivialTypesStruct")), std::vector<ThriftConstStruct>{}},
+    {8, "fieldH", false, std::make_unique<List>(std::make_unique<Struct<::test::fixtures::tablebased::TrivialTypesStruct>>("module.TrivialTypesStruct")), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_ContainerStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -108,8 +108,8 @@ StructMetadata<::test::fixtures::tablebased::ExampleUnion>::gen(ThriftMetadata& 
   module_ExampleUnion.is_union_ref() = true;
   static const EncodedThriftField
   module_ExampleUnion_fields[] = {
-    {1, "fieldA", false, std::make_unique<Struct< ::test::fixtures::tablebased::ContainerStruct>>("module.ContainerStruct"), std::vector<ThriftConstStruct>{}},
-    {2, "fieldB", false, std::make_unique<Struct< ::test::fixtures::tablebased::TrivialTypesStruct>>("module.TrivialTypesStruct"), std::vector<ThriftConstStruct>{}},
+    {1, "fieldA", false, std::make_unique<Struct<::test::fixtures::tablebased::ContainerStruct>>("module.ContainerStruct"), std::vector<ThriftConstStruct>{}},
+    {2, "fieldB", false, std::make_unique<Struct<::test::fixtures::tablebased::TrivialTypesStruct>>("module.TrivialTypesStruct"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_ExampleUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;

@@ -102,10 +102,10 @@ void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_boththrows(ThriftM
   module_PubSubStreamingService_boththrows_e_1.id_ref() = 1;
   module_PubSubStreamingService_boththrows_e_1.name_ref() = "e";
   module_PubSubStreamingService_boththrows_e_1.is_optional_ref() = false;
-  auto module_PubSubStreamingService_boththrows_e_1_type = std::make_unique<Struct< ::cpp2::FooEx>>("module.FooEx");
+  auto module_PubSubStreamingService_boththrows_e_1_type = std::make_unique<Struct<::cpp2::FooEx>>("module.FooEx");
   module_PubSubStreamingService_boththrows_e_1_type->writeAndGenType(*module_PubSubStreamingService_boththrows_e_1.type_ref(), metadata);
   func.exceptions_ref()->push_back(std::move(module_PubSubStreamingService_boththrows_e_1));
-  ExceptionMetadata< ::cpp2::FooEx>::gen(metadata);
+  ExceptionMetadata<::cpp2::FooEx>::gen(metadata);
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
@@ -126,10 +126,10 @@ void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_responseandstreamt
   module_PubSubStreamingService_responseandstreamthrows_e_1.id_ref() = 1;
   module_PubSubStreamingService_responseandstreamthrows_e_1.name_ref() = "e";
   module_PubSubStreamingService_responseandstreamthrows_e_1.is_optional_ref() = false;
-  auto module_PubSubStreamingService_responseandstreamthrows_e_1_type = std::make_unique<Struct< ::cpp2::FooEx>>("module.FooEx");
+  auto module_PubSubStreamingService_responseandstreamthrows_e_1_type = std::make_unique<Struct<::cpp2::FooEx>>("module.FooEx");
   module_PubSubStreamingService_responseandstreamthrows_e_1_type->writeAndGenType(*module_PubSubStreamingService_responseandstreamthrows_e_1.type_ref(), metadata);
   func.exceptions_ref()->push_back(std::move(module_PubSubStreamingService_responseandstreamthrows_e_1));
-  ExceptionMetadata< ::cpp2::FooEx>::gen(metadata);
+  ExceptionMetadata<::cpp2::FooEx>::gen(metadata);
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }

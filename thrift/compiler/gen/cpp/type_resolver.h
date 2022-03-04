@@ -69,6 +69,11 @@ class type_resolver {
         type_tag_cache_, &node, [&] { return gen_type_tag(node); });
   }
 
+  std::string get_namespaced_name(
+      const t_program& program, const t_named& node) {
+    return namespaces_.get_namespaced_name(program, node);
+  }
+
   // Checks whether a t_type could resolve to a scalar.
   //
   // A type could resolve to a scalar if t_type is
@@ -110,9 +115,6 @@ class type_resolver {
   static const std::string* find_first_adapter(const t_field& node);
   static const std::string* find_template(const t_type& node) {
     return node.find_annotation_or_null({"cpp.template", "cpp2.template"});
-  }
-  static const std::string& get_cpp_name(const t_named& node) {
-    return node.get_annotation("cpp.name", &node.name());
   }
 
  private:

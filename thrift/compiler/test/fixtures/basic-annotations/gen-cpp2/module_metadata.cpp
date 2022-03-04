@@ -122,9 +122,9 @@ StructMetadata<::cpp2::YourStruct>::gen(ThriftMetadata& metadata) {
     {4, "class_", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {5, "annotation_with_trailing_comma", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {6, "empty_annotations", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-    {7, "my_enum", false, std::make_unique<Enum< ::cpp2::YourEnum>>("module.MyEnum"), std::vector<ThriftConstStruct>{}},
+    {7, "my_enum", false, std::make_unique<Enum<::cpp2::YourEnum>>("module.MyEnum"), std::vector<ThriftConstStruct>{}},
     {8, "cpp_type_annotation", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
-    {9, "my_union", false, std::make_unique<Union< ::cpp2::YourUnion>>("module.MyUnion"), std::vector<ThriftConstStruct>{}},
+    {9, "my_union", false, std::make_unique<Union<::cpp2::YourUnion>>("module.MyUnion"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -187,10 +187,10 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_ping(ThriftMetadata& metadata, 
   module_MyService_ping_myExcept_1.id_ref() = 1;
   module_MyService_ping_myExcept_1.name_ref() = "myExcept";
   module_MyService_ping_myExcept_1.is_optional_ref() = false;
-  auto module_MyService_ping_myExcept_1_type = std::make_unique<Struct< ::cpp2::YourException>>("module.MyException");
+  auto module_MyService_ping_myExcept_1_type = std::make_unique<Struct<::cpp2::YourException>>("module.MyException");
   module_MyService_ping_myExcept_1_type->writeAndGenType(*module_MyService_ping_myExcept_1.type_ref(), metadata);
   func.exceptions_ref()->push_back(std::move(module_MyService_ping_myExcept_1));
-  ExceptionMetadata< ::cpp2::YourException>::gen(metadata);
+  ExceptionMetadata<::cpp2::YourException>::gen(metadata);
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }

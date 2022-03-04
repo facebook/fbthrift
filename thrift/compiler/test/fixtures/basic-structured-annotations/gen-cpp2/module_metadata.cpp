@@ -124,8 +124,8 @@ StructMetadata<::cpp2::structured_annotation_recursive>::gen(ThriftMetadata& met
   static const EncodedThriftField
   module_structured_annotation_recursive_fields[] = {
     {1, "name", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-    {2, "recurse", false, std::make_unique<Typedef>("module.structured_annotation_recursive", std::make_unique<Struct< ::cpp2::structured_annotation_recursive>>("module.structured_annotation_recursive"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
-    {3, "forward", false, std::make_unique<Typedef>("module.structured_annotation_forward", std::make_unique<Struct< ::cpp2::structured_annotation_forward>>("module.structured_annotation_forward"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {2, "recurse", false, std::make_unique<Typedef>("module.structured_annotation_recursive", std::make_unique<Struct<::cpp2::structured_annotation_recursive>>("module.structured_annotation_recursive"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {3, "forward", false, std::make_unique<Typedef>("module.structured_annotation_forward", std::make_unique<Struct<::cpp2::structured_annotation_forward>>("module.structured_annotation_forward"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_structured_annotation_recursive_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -150,7 +150,7 @@ StructMetadata<::cpp2::structured_annotation_nested>::gen(ThriftMetadata& metada
   static const EncodedThriftField
   module_structured_annotation_nested_fields[] = {
     {1, "name", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-    {2, "nest", false, std::make_unique<Struct< ::cpp2::structured_annotation_with_default>>("module.structured_annotation_with_default"), std::vector<ThriftConstStruct>{}},
+    {2, "nest", false, std::make_unique<Struct<::cpp2::structured_annotation_with_default>>("module.structured_annotation_with_default"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_structured_annotation_nested_fields) {
     ::apache::thrift::metadata::ThriftField field;

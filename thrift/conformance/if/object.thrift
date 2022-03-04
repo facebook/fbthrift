@@ -37,28 +37,28 @@ struct Object {
 // A dynamic value.
 union Value {
   // Integers.
-  2: bool boolValue;
-  3: byte byteValue;
-  4: i16 i16Value;
-  5: i32 i32Value;
-  6: i64 i64Value;
+  1: bool boolValue;
+  2: byte byteValue;
+  3: i16 i16Value;
+  4: i32 i32Value;
+  5: i64 i64Value;
 
   // Floats.
-  7: float floatValue;
-  8: double doubleValue;
+  6: float floatValue;
+  7: double doubleValue;
 
   // Strings.
-  9: string stringValue;
-  10: binary (cpp.type = "folly::IOBuf") binaryValue;
-
-  // Containers of values.
-  11: list<Value> listValue;
-  12: map<Value, Value> mapValue;
-  13: set<Value> setValue;
+  8: string stringValue;
+  9: binary (cpp.type = "folly::IOBuf") binaryValue;
 
   // A dynamic object value.
-  14: Object objectValue;
+  11: Object objectValue;
+
+  // Containers of values.
+  14: list<Value> listValue;
+  15: set<Value> setValue;
+  16: map<Value, Value> mapValue;
 
   // A static object value.
-  15: any.Any anyValue;
+  17: any.Any anyValue;
 } (thrift.uri = "facebook.com/thrift/Value")

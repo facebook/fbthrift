@@ -300,7 +300,7 @@ class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:cpp_name
     return <%struct:message%>.c_str();
 <%/struct:message%>
 <%^struct:message%>
-    return "<% > common/namespace_cpp2%><%struct:cpp_name%>";
+    return "<%struct:cpp_fullname%>";
 <%/struct:message%>
   }
 <%/struct:exception?%>
@@ -349,7 +349,7 @@ namespace detail {
 template <>
 struct TypeToInfo<
     ::apache::thrift::type_class::<%#struct:union?%>variant<%/struct:union?%><%^struct:union?%>structure<%/struct:union?%>,
-    <% > common/namespace_cpp2 %><%struct:cpp_name%>> {
+    <%struct:cpp_fullname%>> {
   static const ::apache::thrift::detail::TypeInfo typeInfo;
 };
 <%/program:structs%>

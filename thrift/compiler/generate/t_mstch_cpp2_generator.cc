@@ -403,6 +403,7 @@ class mstch_cpp2_type : public mstch_type {
             {"type:transitively_refers_to_struct?",
              &mstch_cpp2_type::transitively_refers_to_struct},
             {"type:cpp_name", &mstch_cpp2_type::cpp_name},
+            {"type:cpp_fullname", &mstch_cpp2_type::cpp_fullname},
             {"type:cpp_type", &mstch_cpp2_type::cpp_type},
             {"type:cpp_standard_type", &mstch_cpp2_type::cpp_standard_type},
             {"type:cpp_adapter", &mstch_cpp2_type::cpp_adapter},
@@ -495,6 +496,10 @@ class mstch_cpp2_type : public mstch_type {
     return false;
   }
   mstch::node cpp_name() { return cpp2::get_name(type_); }
+  mstch::node cpp_fullname() {
+    return context_->resolver().get_namespaced_name(
+        *type_->get_program(), *type_);
+  }
   mstch::node cpp_type() { return context_->resolver().get_type_name(*type_); }
   mstch::node cpp_standard_type() {
     return context_->resolver().get_standard_type_name(*type_);
@@ -864,6 +869,7 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:nondefault_copy_ctor_and_assignment?",
              &mstch_cpp2_struct::nondefault_copy_ctor_and_assignment},
             {"struct:cpp_name", &mstch_cpp2_struct::cpp_name},
+            {"struct:cpp_fullname", &mstch_cpp2_struct::cpp_fullname},
             {"struct:cpp_methods", &mstch_cpp2_struct::cpp_methods},
             {"struct:cpp_declare_hash", &mstch_cpp2_struct::cpp_declare_hash},
             {"struct:cpp_declare_equal_to",
@@ -963,6 +969,10 @@ class mstch_cpp2_struct : public mstch_struct {
     return false;
   }
   mstch::node cpp_name() { return cpp2::get_name(strct_); }
+  mstch::node cpp_fullname() {
+    return context_->resolver().get_namespaced_name(
+        *strct_->get_program(), *strct_);
+  }
 
   mstch::node cpp_methods() {
     return strct_->get_annotation({"cpp.methods", "cpp2.methods"});

@@ -20,7 +20,7 @@ namespace apache { namespace thrift {
 
 <%#program:frozen_packed?%>#pragma pack(push, 1)<%/program:frozen_packed?%>
 template<>
-struct Frozen<<% > common/namespace_cpp2%><%struct:cpp_name%>, void> {
+struct Frozen<<%struct:cpp_fullname%>, void> {
 <%#struct:fields%>
 <%#field:type%>
 <%#type:bool?%>

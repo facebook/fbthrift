@@ -15,14 +15,14 @@
   limitations under the License.
 
 %>
-  FieldPosition Layout<<% > common/namespace_cpp2%><%struct:cpp_name%>>::layout(
+  FieldPosition Layout<<%struct:cpp_fullname%>>::layout(
       LayoutRoot& root, const T& x, LayoutPosition self) {
     auto type = x.getType();
     FieldPosition pos = startFieldPosition();
     pos = root.layoutField(self, pos, this->type_Field, type);
     switch (type) {
 <%#struct:fields%>
-      case <% > common/namespace_cpp2%><%struct:cpp_name%>::Type::<%field:cpp_name%>: {
+      case <%struct:cpp_fullname%>::Type::<%field:cpp_name%>: {
         pos = root.layoutField(self, pos, this-><%field:cpp_name%>Field, x.get_<%field:cpp_name%>());
         break;
       }

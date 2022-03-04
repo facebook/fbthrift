@@ -152,7 +152,7 @@ StructMetadata<::some::valid::ns::MyStruct>::gen(ThriftMetadata& metadata) {
     {6, "MyBinaryField2", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}},
     {7, "MyBinaryField3", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}},
     {8, "MyBinaryListField4", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)), std::vector<ThriftConstStruct>{}},
-    {9, "MyMapEnumAndInt", false, std::make_unique<Map>(std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA"), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
+    {9, "MyMapEnumAndInt", false, std::make_unique<Map>(std::make_unique<Enum<::some::valid::ns::MyEnumA>>("module.MyEnumA"), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
     {10, "MyCustomField", false, std::make_unique<Typedef>("module.CustomProtocolType", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
     {11, "MyOptCustomField", true, std::make_unique<Typedef>("module.CustomProtocolType", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
   };
@@ -215,21 +215,21 @@ StructMetadata<::some::valid::ns::ComplexUnion>::gen(ThriftMetadata& metadata) {
     {10, "union_set", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)), std::vector<ThriftConstStruct>{}},
     {11, "union_map", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {211, "opt_union_map", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
-    {12, "enum_field", false, std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA"), std::vector<ThriftConstStruct>{}},
-    {13, "enum_container", false, std::make_unique<List>(std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA")), std::vector<ThriftConstStruct>{}},
-    {14, "a_struct", false, std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct"), std::vector<ThriftConstStruct>{}},
-    {15, "a_set_struct", false, std::make_unique<Set>(std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct")), std::vector<ThriftConstStruct>{}},
-    {16, "a_union", false, std::make_unique<Union< ::some::valid::ns::SimpleUnion>>("module.SimpleUnion"), std::vector<ThriftConstStruct>{}},
-    {216, "opt_a_union", false, std::make_unique<Union< ::some::valid::ns::SimpleUnion>>("module.SimpleUnion"), std::vector<ThriftConstStruct>{}},
-    {17, "a_union_list", false, std::make_unique<List>(std::make_unique<Union< ::some::valid::ns::SimpleUnion>>("module.SimpleUnion")), std::vector<ThriftConstStruct>{}},
-    {18, "a_union_typedef", false, std::make_unique<Typedef>("module.unionTypeDef", std::make_unique<Set>(std::make_unique<Union< ::some::valid::ns::SimpleUnion>>("module.SimpleUnion")), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
-    {19, "a_union_typedef_list", false, std::make_unique<List>(std::make_unique<Typedef>("module.unionTypeDef", std::make_unique<Set>(std::make_unique<Union< ::some::valid::ns::SimpleUnion>>("module.SimpleUnion")), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
+    {12, "enum_field", false, std::make_unique<Enum<::some::valid::ns::MyEnumA>>("module.MyEnumA"), std::vector<ThriftConstStruct>{}},
+    {13, "enum_container", false, std::make_unique<List>(std::make_unique<Enum<::some::valid::ns::MyEnumA>>("module.MyEnumA")), std::vector<ThriftConstStruct>{}},
+    {14, "a_struct", false, std::make_unique<Struct<::some::valid::ns::MyStruct>>("module.MyStruct"), std::vector<ThriftConstStruct>{}},
+    {15, "a_set_struct", false, std::make_unique<Set>(std::make_unique<Struct<::some::valid::ns::MyStruct>>("module.MyStruct")), std::vector<ThriftConstStruct>{}},
+    {16, "a_union", false, std::make_unique<Union<::some::valid::ns::SimpleUnion>>("module.SimpleUnion"), std::vector<ThriftConstStruct>{}},
+    {216, "opt_a_union", false, std::make_unique<Union<::some::valid::ns::SimpleUnion>>("module.SimpleUnion"), std::vector<ThriftConstStruct>{}},
+    {17, "a_union_list", false, std::make_unique<List>(std::make_unique<Union<::some::valid::ns::SimpleUnion>>("module.SimpleUnion")), std::vector<ThriftConstStruct>{}},
+    {18, "a_union_typedef", false, std::make_unique<Typedef>("module.unionTypeDef", std::make_unique<Set>(std::make_unique<Union<::some::valid::ns::SimpleUnion>>("module.SimpleUnion")), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {19, "a_union_typedef_list", false, std::make_unique<List>(std::make_unique<Typedef>("module.unionTypeDef", std::make_unique<Set>(std::make_unique<Union<::some::valid::ns::SimpleUnion>>("module.SimpleUnion")), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
     {20, "MyBinaryField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}},
     {21, "MyBinaryField2", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}},
     {23, "MyBinaryListField4", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)), std::vector<ThriftConstStruct>{}},
-    {24, "ref_field", false, std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct"), std::vector<ThriftConstStruct>{}},
-    {25, "ref_field2", false, std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct"), std::vector<ThriftConstStruct>{}},
-    {26, "excp_field", false, std::make_unique<Typedef>("module.AnException", std::make_unique<Struct< ::some::valid::ns::AnException>>("module.AnException"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {24, "ref_field", false, std::make_unique<Struct<::some::valid::ns::MyStruct>>("module.MyStruct"), std::vector<ThriftConstStruct>{}},
+    {25, "ref_field2", false, std::make_unique<Struct<::some::valid::ns::MyStruct>>("module.MyStruct"), std::vector<ThriftConstStruct>{}},
+    {26, "excp_field", false, std::make_unique<Typedef>("module.AnException", std::make_unique<Struct<::some::valid::ns::AnException>>("module.AnException"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
     {27, "MyCustomField", false, std::make_unique<Typedef>("module.CustomProtocolType", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_ComplexUnion_fields) {
@@ -262,13 +262,13 @@ StructMetadata<::some::valid::ns::AnException>::gen(ThriftMetadata& metadata) {
     {4, "exception_set", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)), std::vector<ThriftConstStruct>{}},
     {5, "exception_map", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {105, "req_exception_map", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
-    {6, "enum_field", false, std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA"), std::vector<ThriftConstStruct>{}},
-    {7, "enum_container", false, std::make_unique<List>(std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA")), std::vector<ThriftConstStruct>{}},
-    {8, "a_struct", false, std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct"), std::vector<ThriftConstStruct>{}},
-    {9, "a_set_struct", false, std::make_unique<Set>(std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct")), std::vector<ThriftConstStruct>{}},
-    {10, "a_union_list", false, std::make_unique<List>(std::make_unique<Union< ::some::valid::ns::SimpleUnion>>("module.SimpleUnion")), std::vector<ThriftConstStruct>{}},
-    {11, "union_typedef", false, std::make_unique<Typedef>("module.unionTypeDef", std::make_unique<Set>(std::make_unique<Union< ::some::valid::ns::SimpleUnion>>("module.SimpleUnion")), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
-    {19, "a_union_typedef_list", false, std::make_unique<List>(std::make_unique<Typedef>("module.unionTypeDef", std::make_unique<Set>(std::make_unique<Union< ::some::valid::ns::SimpleUnion>>("module.SimpleUnion")), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
+    {6, "enum_field", false, std::make_unique<Enum<::some::valid::ns::MyEnumA>>("module.MyEnumA"), std::vector<ThriftConstStruct>{}},
+    {7, "enum_container", false, std::make_unique<List>(std::make_unique<Enum<::some::valid::ns::MyEnumA>>("module.MyEnumA")), std::vector<ThriftConstStruct>{}},
+    {8, "a_struct", false, std::make_unique<Struct<::some::valid::ns::MyStruct>>("module.MyStruct"), std::vector<ThriftConstStruct>{}},
+    {9, "a_set_struct", false, std::make_unique<Set>(std::make_unique<Struct<::some::valid::ns::MyStruct>>("module.MyStruct")), std::vector<ThriftConstStruct>{}},
+    {10, "a_union_list", false, std::make_unique<List>(std::make_unique<Union<::some::valid::ns::SimpleUnion>>("module.SimpleUnion")), std::vector<ThriftConstStruct>{}},
+    {11, "union_typedef", false, std::make_unique<Typedef>("module.unionTypeDef", std::make_unique<Set>(std::make_unique<Union<::some::valid::ns::SimpleUnion>>("module.SimpleUnion")), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {19, "a_union_typedef_list", false, std::make_unique<List>(std::make_unique<Typedef>("module.unionTypeDef", std::make_unique<Set>(std::make_unique<Union<::some::valid::ns::SimpleUnion>>("module.SimpleUnion")), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
     {20, "MyCustomField", false, std::make_unique<Typedef>("module.CustomProtocolType", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
     {21, "MyOptCustomField", true, std::make_unique<Typedef>("module.CustomProtocolType", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
   };
@@ -342,28 +342,28 @@ StructMetadata<::some::valid::ns::containerStruct>::gen(ThriftMetadata& metadata
     {12, "fieldL", false, std::make_unique<Set>(std::make_unique<Set>(std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE)))), std::vector<ThriftConstStruct>{}},
     {13, "fieldM", false, std::make_unique<Map>(std::make_unique<Set>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))), std::make_unique<Map>(std::make_unique<List>(std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))), std::vector<ThriftConstStruct>{}},
     {14, "fieldN", false, std::make_unique<Typedef>("module.simpleTypeDef", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
-    {15, "fieldO", false, std::make_unique<Typedef>("module.complexStructTypeDef", std::make_unique<List>(std::make_unique<Map>(std::make_unique<Struct< ::some::valid::ns::Empty>>("module.Empty"), std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct"))), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
-    {16, "fieldP", false, std::make_unique<List>(std::make_unique<Typedef>("module.mostComplexTypeDef", std::make_unique<List>(std::make_unique<Typedef>("module.complexStructTypeDef", std::make_unique<List>(std::make_unique<Map>(std::make_unique<Struct< ::some::valid::ns::Empty>>("module.Empty"), std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct"))), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
-    {17, "fieldQ", false, std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA"), std::vector<ThriftConstStruct>{}},
-    {18, "fieldR", false, std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA"), std::vector<ThriftConstStruct>{}},
-    {118, "req_fieldR", false, std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA"), std::vector<ThriftConstStruct>{}},
-    {218, "opt_fieldR", true, std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA"), std::vector<ThriftConstStruct>{}},
-    {19, "fieldS", false, std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA"), std::vector<ThriftConstStruct>{}},
-    {21, "fieldT", false, std::make_unique<List>(std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA")), std::vector<ThriftConstStruct>{}},
-    {22, "fieldU", false, std::make_unique<List>(std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA")), std::vector<ThriftConstStruct>{}},
-    {23, "fieldV", false, std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct"), std::vector<ThriftConstStruct>{}},
-    {123, "req_fieldV", false, std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct"), std::vector<ThriftConstStruct>{}},
-    {223, "opt_fieldV", true, std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct"), std::vector<ThriftConstStruct>{}},
-    {24, "fieldW", false, std::make_unique<Set>(std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct")), std::vector<ThriftConstStruct>{}},
-    {25, "fieldX", false, std::make_unique<Union< ::some::valid::ns::ComplexUnion>>("module.ComplexUnion"), std::vector<ThriftConstStruct>{}},
-    {125, "req_fieldX", false, std::make_unique<Union< ::some::valid::ns::ComplexUnion>>("module.ComplexUnion"), std::vector<ThriftConstStruct>{}},
-    {225, "opt_fieldX", true, std::make_unique<Union< ::some::valid::ns::ComplexUnion>>("module.ComplexUnion"), std::vector<ThriftConstStruct>{}},
-    {26, "fieldY", false, std::make_unique<List>(std::make_unique<Union< ::some::valid::ns::ComplexUnion>>("module.ComplexUnion")), std::vector<ThriftConstStruct>{}},
-    {27, "fieldZ", false, std::make_unique<Typedef>("module.unionTypeDef", std::make_unique<Set>(std::make_unique<Union< ::some::valid::ns::SimpleUnion>>("module.SimpleUnion")), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
-    {28, "fieldAA", false, std::make_unique<List>(std::make_unique<Typedef>("module.unionTypeDef", std::make_unique<Set>(std::make_unique<Union< ::some::valid::ns::SimpleUnion>>("module.SimpleUnion")), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
+    {15, "fieldO", false, std::make_unique<Typedef>("module.complexStructTypeDef", std::make_unique<List>(std::make_unique<Map>(std::make_unique<Struct<::some::valid::ns::Empty>>("module.Empty"), std::make_unique<Struct<::some::valid::ns::MyStruct>>("module.MyStruct"))), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {16, "fieldP", false, std::make_unique<List>(std::make_unique<Typedef>("module.mostComplexTypeDef", std::make_unique<List>(std::make_unique<Typedef>("module.complexStructTypeDef", std::make_unique<List>(std::make_unique<Map>(std::make_unique<Struct<::some::valid::ns::Empty>>("module.Empty"), std::make_unique<Struct<::some::valid::ns::MyStruct>>("module.MyStruct"))), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
+    {17, "fieldQ", false, std::make_unique<Enum<::some::valid::ns::MyEnumA>>("module.MyEnumA"), std::vector<ThriftConstStruct>{}},
+    {18, "fieldR", false, std::make_unique<Enum<::some::valid::ns::MyEnumA>>("module.MyEnumA"), std::vector<ThriftConstStruct>{}},
+    {118, "req_fieldR", false, std::make_unique<Enum<::some::valid::ns::MyEnumA>>("module.MyEnumA"), std::vector<ThriftConstStruct>{}},
+    {218, "opt_fieldR", true, std::make_unique<Enum<::some::valid::ns::MyEnumA>>("module.MyEnumA"), std::vector<ThriftConstStruct>{}},
+    {19, "fieldS", false, std::make_unique<Enum<::some::valid::ns::MyEnumA>>("module.MyEnumA"), std::vector<ThriftConstStruct>{}},
+    {21, "fieldT", false, std::make_unique<List>(std::make_unique<Enum<::some::valid::ns::MyEnumA>>("module.MyEnumA")), std::vector<ThriftConstStruct>{}},
+    {22, "fieldU", false, std::make_unique<List>(std::make_unique<Enum<::some::valid::ns::MyEnumA>>("module.MyEnumA")), std::vector<ThriftConstStruct>{}},
+    {23, "fieldV", false, std::make_unique<Struct<::some::valid::ns::MyStruct>>("module.MyStruct"), std::vector<ThriftConstStruct>{}},
+    {123, "req_fieldV", false, std::make_unique<Struct<::some::valid::ns::MyStruct>>("module.MyStruct"), std::vector<ThriftConstStruct>{}},
+    {223, "opt_fieldV", true, std::make_unique<Struct<::some::valid::ns::MyStruct>>("module.MyStruct"), std::vector<ThriftConstStruct>{}},
+    {24, "fieldW", false, std::make_unique<Set>(std::make_unique<Struct<::some::valid::ns::MyStruct>>("module.MyStruct")), std::vector<ThriftConstStruct>{}},
+    {25, "fieldX", false, std::make_unique<Union<::some::valid::ns::ComplexUnion>>("module.ComplexUnion"), std::vector<ThriftConstStruct>{}},
+    {125, "req_fieldX", false, std::make_unique<Union<::some::valid::ns::ComplexUnion>>("module.ComplexUnion"), std::vector<ThriftConstStruct>{}},
+    {225, "opt_fieldX", true, std::make_unique<Union<::some::valid::ns::ComplexUnion>>("module.ComplexUnion"), std::vector<ThriftConstStruct>{}},
+    {26, "fieldY", false, std::make_unique<List>(std::make_unique<Union<::some::valid::ns::ComplexUnion>>("module.ComplexUnion")), std::vector<ThriftConstStruct>{}},
+    {27, "fieldZ", false, std::make_unique<Typedef>("module.unionTypeDef", std::make_unique<Set>(std::make_unique<Union<::some::valid::ns::SimpleUnion>>("module.SimpleUnion")), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {28, "fieldAA", false, std::make_unique<List>(std::make_unique<Typedef>("module.unionTypeDef", std::make_unique<Set>(std::make_unique<Union<::some::valid::ns::SimpleUnion>>("module.SimpleUnion")), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
     {29, "fieldAB", false, std::make_unique<Map>(std::make_unique<Typedef>("module.IndirectionB", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}), std::make_unique<Typedef>("module.IndirectionC", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
-    {30, "fieldAC", false, std::make_unique<Typedef>("module.MyEnumB", std::make_unique<Enum< ::some::valid::ns::MyEnumB>>("module.MyEnumB"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
-    {31, "fieldAD", false, std::make_unique<Enum< ::a::different::ns::AnEnum>>("includes.AnEnum"), std::vector<ThriftConstStruct>{}},
+    {30, "fieldAC", false, std::make_unique<Typedef>("module.MyEnumB", std::make_unique<Enum<::some::valid::ns::MyEnumB>>("module.MyEnumB"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {31, "fieldAD", false, std::make_unique<Enum<::a::different::ns::AnEnum>>("includes.AnEnum"), std::vector<ThriftConstStruct>{}},
     {32, "fieldAE", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {33, "fieldSD", false, std::make_unique<Typedef>("module.IndirectionD", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
   };
@@ -390,9 +390,9 @@ StructMetadata<::some::valid::ns::MyIncludedStruct>::gen(ThriftMetadata& metadat
   static const EncodedThriftField
   module_MyIncludedStruct_fields[] = {
     {1, "MyIncludedInt", false, std::make_unique<Typedef>("includes.IncludedInt64", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
-    {2, "MyIncludedStruct", false, std::make_unique<Typedef>("module.AStruct", std::make_unique<Struct< ::a::different::ns::AStruct>>("includes.AStruct"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
-    {3, "ARefField", false, std::make_unique<Typedef>("module.AStruct", std::make_unique<Struct< ::a::different::ns::AStruct>>("includes.AStruct"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
-    {4, "ARequiredField", false, std::make_unique<Typedef>("module.AStruct", std::make_unique<Struct< ::a::different::ns::AStruct>>("includes.AStruct"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {2, "MyIncludedStruct", false, std::make_unique<Typedef>("module.AStruct", std::make_unique<Struct<::a::different::ns::AStruct>>("includes.AStruct"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {3, "ARefField", false, std::make_unique<Typedef>("module.AStruct", std::make_unique<Struct<::a::different::ns::AStruct>>("includes.AStruct"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {4, "ARequiredField", false, std::make_unique<Typedef>("module.AStruct", std::make_unique<Struct<::a::different::ns::AStruct>>("includes.AStruct"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_MyIncludedStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -416,30 +416,30 @@ StructMetadata<::some::valid::ns::AnnotatedStruct>::gen(ThriftMetadata& metadata
   module_AnnotatedStruct.is_union_ref() = false;
   static const EncodedThriftField
   module_AnnotatedStruct_fields[] = {
-    {1, "no_annotation", false, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
-    {2, "cpp_unique_ref", false, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
-    {3, "cpp2_unique_ref", false, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
+    {1, "no_annotation", false, std::make_unique<Struct<::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
+    {2, "cpp_unique_ref", false, std::make_unique<Struct<::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
+    {3, "cpp2_unique_ref", false, std::make_unique<Struct<::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
     {4, "container_with_ref", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))), std::vector<ThriftConstStruct>{}},
-    {5, "req_cpp_unique_ref", false, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
-    {6, "req_cpp2_unique_ref", false, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
+    {5, "req_cpp_unique_ref", false, std::make_unique<Struct<::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
+    {6, "req_cpp2_unique_ref", false, std::make_unique<Struct<::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
     {7, "req_container_with_ref", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
-    {8, "opt_cpp_unique_ref", true, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
-    {9, "opt_cpp2_unique_ref", true, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
+    {8, "opt_cpp_unique_ref", true, std::make_unique<Struct<::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
+    {9, "opt_cpp2_unique_ref", true, std::make_unique<Struct<::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
     {10, "opt_container_with_ref", true, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
-    {11, "ref_type_unique", false, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
-    {12, "ref_type_shared", false, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
+    {11, "ref_type_unique", false, std::make_unique<Struct<::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
+    {12, "ref_type_shared", false, std::make_unique<Struct<::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
     {13, "ref_type_const", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))), std::vector<ThriftConstStruct>{}},
-    {14, "req_ref_type_shared", false, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
-    {15, "req_ref_type_const", false, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
+    {14, "req_ref_type_shared", false, std::make_unique<Struct<::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
+    {15, "req_ref_type_const", false, std::make_unique<Struct<::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
     {16, "req_ref_type_unique", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
-    {17, "opt_ref_type_const", true, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
-    {18, "opt_ref_type_unique", true, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
+    {17, "opt_ref_type_const", true, std::make_unique<Struct<::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
+    {18, "opt_ref_type_unique", true, std::make_unique<Struct<::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
     {19, "opt_ref_type_shared", true, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {20, "base_type", false, std::make_unique<Typedef>("module.CppFakeI32", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
     {21, "list_type", false, std::make_unique<Typedef>("module.FollySmallVectorI64", std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
     {22, "set_type", false, std::make_unique<Typedef>("module.SortedVectorSetString", std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
     {23, "map_type", false, std::make_unique<Typedef>("module.FakeMap", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
-    {24, "map_struct_type", false, std::make_unique<Typedef>("module.UnorderedMapStruct", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct")), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {24, "map_struct_type", false, std::make_unique<Typedef>("module.UnorderedMapStruct", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Struct<::some::valid::ns::containerStruct>>("module.containerStruct")), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
     {25, "iobuf_type", false, std::make_unique<Typedef>("module.IOBuf", std::make_unique<Typedef>("module.IOBuf", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
     {26, "iobuf_ptr", false, std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
     {27, "list_i32_template", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
@@ -455,7 +455,7 @@ StructMetadata<::some::valid::ns::AnnotatedStruct>::gen(ThriftMetadata& metadata
     {37, "indirection_c", false, std::make_unique<Set>(std::make_unique<Typedef>("module.IndirectionC", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
     {38, "iobuf_type_val", false, std::make_unique<Typedef>("module.IOBuf", std::make_unique<Typedef>("module.IOBuf", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
     {39, "iobuf_ptr_val", false, std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
-    {40, "struct_struct", false, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
+    {40, "struct_struct", false, std::make_unique<Struct<::some::valid::ns::containerStruct>>("module.containerStruct"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_AnnotatedStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -585,13 +585,13 @@ void ExceptionMetadata<::some::valid::ns::AnException>::gen(ThriftMetadata& meta
     {4, "exception_set", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)), std::vector<ThriftConstStruct>{}},
     {5, "exception_map", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
     {105, "req_exception_map", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
-    {6, "enum_field", false, std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA"), std::vector<ThriftConstStruct>{}},
-    {7, "enum_container", false, std::make_unique<List>(std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA")), std::vector<ThriftConstStruct>{}},
-    {8, "a_struct", false, std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct"), std::vector<ThriftConstStruct>{}},
-    {9, "a_set_struct", false, std::make_unique<Set>(std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct")), std::vector<ThriftConstStruct>{}},
-    {10, "a_union_list", false, std::make_unique<List>(std::make_unique<Union< ::some::valid::ns::SimpleUnion>>("module.SimpleUnion")), std::vector<ThriftConstStruct>{}},
-    {11, "union_typedef", false, std::make_unique<Typedef>("module.unionTypeDef", std::make_unique<Set>(std::make_unique<Union< ::some::valid::ns::SimpleUnion>>("module.SimpleUnion")), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
-    {19, "a_union_typedef_list", false, std::make_unique<List>(std::make_unique<Typedef>("module.unionTypeDef", std::make_unique<Set>(std::make_unique<Union< ::some::valid::ns::SimpleUnion>>("module.SimpleUnion")), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
+    {6, "enum_field", false, std::make_unique<Enum<::some::valid::ns::MyEnumA>>("module.MyEnumA"), std::vector<ThriftConstStruct>{}},
+    {7, "enum_container", false, std::make_unique<List>(std::make_unique<Enum<::some::valid::ns::MyEnumA>>("module.MyEnumA")), std::vector<ThriftConstStruct>{}},
+    {8, "a_struct", false, std::make_unique<Struct<::some::valid::ns::MyStruct>>("module.MyStruct"), std::vector<ThriftConstStruct>{}},
+    {9, "a_set_struct", false, std::make_unique<Set>(std::make_unique<Struct<::some::valid::ns::MyStruct>>("module.MyStruct")), std::vector<ThriftConstStruct>{}},
+    {10, "a_union_list", false, std::make_unique<List>(std::make_unique<Union<::some::valid::ns::SimpleUnion>>("module.SimpleUnion")), std::vector<ThriftConstStruct>{}},
+    {11, "union_typedef", false, std::make_unique<Typedef>("module.unionTypeDef", std::make_unique<Set>(std::make_unique<Union<::some::valid::ns::SimpleUnion>>("module.SimpleUnion")), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {19, "a_union_typedef_list", false, std::make_unique<List>(std::make_unique<Typedef>("module.unionTypeDef", std::make_unique<Set>(std::make_unique<Union<::some::valid::ns::SimpleUnion>>("module.SimpleUnion")), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
     {20, "MyCustomField", false, std::make_unique<Typedef>("module.CustomProtocolType", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
     {21, "MyOptCustomField", true, std::make_unique<Typedef>("module.CustomProtocolType", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
   };
@@ -755,7 +755,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_complexTypedefRe
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "complexTypedefReturn";
-  auto func_ret_type = std::make_unique<Typedef>("module.complexStructTypeDef", std::make_unique<List>(std::make_unique<Map>(std::make_unique<Struct< ::some::valid::ns::Empty>>("module.Empty"), std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct"))), std::vector<ThriftConstStruct>{});
+  auto func_ret_type = std::make_unique<Typedef>("module.complexStructTypeDef", std::make_unique<List>(std::make_unique<Map>(std::make_unique<Struct<::some::valid::ns::Empty>>("module.Empty"), std::make_unique<Struct<::some::valid::ns::MyStruct>>("module.MyStruct"))), std::vector<ThriftConstStruct>{});
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
@@ -764,7 +764,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_list_mostComplex
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "list_mostComplexTypedefReturn";
-  auto func_ret_type = std::make_unique<List>(std::make_unique<Typedef>("module.mostComplexTypeDef", std::make_unique<List>(std::make_unique<Typedef>("module.complexStructTypeDef", std::make_unique<List>(std::make_unique<Map>(std::make_unique<Struct< ::some::valid::ns::Empty>>("module.Empty"), std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct"))), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}));
+  auto func_ret_type = std::make_unique<List>(std::make_unique<Typedef>("module.mostComplexTypeDef", std::make_unique<List>(std::make_unique<Typedef>("module.complexStructTypeDef", std::make_unique<List>(std::make_unique<Map>(std::make_unique<Struct<::some::valid::ns::Empty>>("module.Empty"), std::make_unique<Struct<::some::valid::ns::MyStruct>>("module.MyStruct"))), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}));
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
@@ -773,7 +773,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_enumReturn(Thrif
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "enumReturn";
-  auto func_ret_type = std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA");
+  auto func_ret_type = std::make_unique<Enum<::some::valid::ns::MyEnumA>>("module.MyEnumA");
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
@@ -782,7 +782,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_list_EnumReturn(
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "list_EnumReturn";
-  auto func_ret_type = std::make_unique<List>(std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA"));
+  auto func_ret_type = std::make_unique<List>(std::make_unique<Enum<::some::valid::ns::MyEnumA>>("module.MyEnumA"));
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
@@ -791,7 +791,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_structReturn(Thr
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "structReturn";
-  auto func_ret_type = std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct");
+  auto func_ret_type = std::make_unique<Struct<::some::valid::ns::MyStruct>>("module.MyStruct");
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
@@ -800,7 +800,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_set_StructReturn
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "set_StructReturn";
-  auto func_ret_type = std::make_unique<Set>(std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct"));
+  auto func_ret_type = std::make_unique<Set>(std::make_unique<Struct<::some::valid::ns::MyStruct>>("module.MyStruct"));
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
@@ -809,7 +809,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_unionReturn(Thri
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "unionReturn";
-  auto func_ret_type = std::make_unique<Union< ::some::valid::ns::ComplexUnion>>("module.ComplexUnion");
+  auto func_ret_type = std::make_unique<Union<::some::valid::ns::ComplexUnion>>("module.ComplexUnion");
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
@@ -818,7 +818,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_list_UnionReturn
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "list_UnionReturn";
-  auto func_ret_type = std::make_unique<List>(std::make_unique<Union< ::some::valid::ns::ComplexUnion>>("module.ComplexUnion"));
+  auto func_ret_type = std::make_unique<List>(std::make_unique<Union<::some::valid::ns::ComplexUnion>>("module.ComplexUnion"));
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
@@ -1011,7 +1011,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_enum_par
   module_ParamService_void_ret_enum_param_param1_1.id_ref() = 1;
   module_ParamService_void_ret_enum_param_param1_1.name_ref() = "param1";
   module_ParamService_void_ret_enum_param_param1_1.is_optional_ref() = false;
-  auto module_ParamService_void_ret_enum_param_param1_1_type = std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA");
+  auto module_ParamService_void_ret_enum_param_param1_1_type = std::make_unique<Enum<::some::valid::ns::MyEnumA>>("module.MyEnumA");
   module_ParamService_void_ret_enum_param_param1_1_type->writeAndGenType(*module_ParamService_void_ret_enum_param_param1_1.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_ParamService_void_ret_enum_param_param1_1));
   func.is_oneway_ref() = false;
@@ -1027,7 +1027,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_struct_p
   module_ParamService_void_ret_struct_param_param1_1.id_ref() = 1;
   module_ParamService_void_ret_struct_param_param1_1.name_ref() = "param1";
   module_ParamService_void_ret_struct_param_param1_1.is_optional_ref() = false;
-  auto module_ParamService_void_ret_struct_param_param1_1_type = std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct");
+  auto module_ParamService_void_ret_struct_param_param1_1_type = std::make_unique<Struct<::some::valid::ns::MyStruct>>("module.MyStruct");
   module_ParamService_void_ret_struct_param_param1_1_type->writeAndGenType(*module_ParamService_void_ret_struct_param_param1_1.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_ParamService_void_ret_struct_param_param1_1));
   func.is_oneway_ref() = false;
@@ -1043,7 +1043,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_listunio
   module_ParamService_void_ret_listunion_param_param1_1.id_ref() = 1;
   module_ParamService_void_ret_listunion_param_param1_1.name_ref() = "param1";
   module_ParamService_void_ret_listunion_param_param1_1.is_optional_ref() = false;
-  auto module_ParamService_void_ret_listunion_param_param1_1_type = std::make_unique<List>(std::make_unique<Union< ::some::valid::ns::ComplexUnion>>("module.ComplexUnion"));
+  auto module_ParamService_void_ret_listunion_param_param1_1_type = std::make_unique<List>(std::make_unique<Union<::some::valid::ns::ComplexUnion>>("module.ComplexUnion"));
   module_ParamService_void_ret_listunion_param_param1_1_type->writeAndGenType(*module_ParamService_void_ret_listunion_param_param1_1.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_ParamService_void_ret_listunion_param_param1_1));
   func.is_oneway_ref() = false;
@@ -1098,7 +1098,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_bool_ret_union_pa
   module_ParamService_bool_ret_union_param_param1_1.id_ref() = 1;
   module_ParamService_bool_ret_union_param_param1_1.name_ref() = "param1";
   module_ParamService_bool_ret_union_param_param1_1.is_optional_ref() = false;
-  auto module_ParamService_bool_ret_union_param_param1_1_type = std::make_unique<Union< ::some::valid::ns::ComplexUnion>>("module.ComplexUnion");
+  auto module_ParamService_bool_ret_union_param_param1_1_type = std::make_unique<Union<::some::valid::ns::ComplexUnion>>("module.ComplexUnion");
   module_ParamService_bool_ret_union_param_param1_1_type->writeAndGenType(*module_ParamService_bool_ret_union_param_param1_1.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_ParamService_bool_ret_union_param_param1_1));
   func.is_oneway_ref() = false;
@@ -1144,7 +1144,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_i64_ret_string_ty
   module_ParamService_i64_ret_string_typedef_param_param2_3.id_ref() = 3;
   module_ParamService_i64_ret_string_typedef_param_param2_3.name_ref() = "param2";
   module_ParamService_i64_ret_string_typedef_param_param2_3.is_optional_ref() = false;
-  auto module_ParamService_i64_ret_string_typedef_param_param2_3_type = std::make_unique<Set>(std::make_unique<Typedef>("module.mostComplexTypeDef", std::make_unique<List>(std::make_unique<Typedef>("module.complexStructTypeDef", std::make_unique<List>(std::make_unique<Map>(std::make_unique<Struct< ::some::valid::ns::Empty>>("module.Empty"), std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct"))), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}));
+  auto module_ParamService_i64_ret_string_typedef_param_param2_3_type = std::make_unique<Set>(std::make_unique<Typedef>("module.mostComplexTypeDef", std::make_unique<List>(std::make_unique<Typedef>("module.complexStructTypeDef", std::make_unique<List>(std::make_unique<Map>(std::make_unique<Struct<::some::valid::ns::Empty>>("module.Empty"), std::make_unique<Struct<::some::valid::ns::MyStruct>>("module.MyStruct"))), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}));
   module_ParamService_i64_ret_string_typedef_param_param2_3_type->writeAndGenType(*module_ParamService_i64_ret_string_typedef_param_param2_3.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_ParamService_i64_ret_string_typedef_param_param2_3));
   func.is_oneway_ref() = false;
@@ -1204,7 +1204,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_double_ret_setstr
   module_ParamService_double_ret_setstruct_param_param1_4.id_ref() = 4;
   module_ParamService_double_ret_setstruct_param_param1_4.name_ref() = "param1";
   module_ParamService_double_ret_setstruct_param_param1_4.is_optional_ref() = false;
-  auto module_ParamService_double_ret_setstruct_param_param1_4_type = std::make_unique<Set>(std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct"));
+  auto module_ParamService_double_ret_setstruct_param_param1_4_type = std::make_unique<Set>(std::make_unique<Struct<::some::valid::ns::MyStruct>>("module.MyStruct"));
   module_ParamService_double_ret_setstruct_param_param1_4_type->writeAndGenType(*module_ParamService_double_ret_setstruct_param_param1_4.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_ParamService_double_ret_setstruct_param_param1_4));
   func.is_oneway_ref() = false;
@@ -1323,7 +1323,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_listtypedef_ret_t
   module_ParamService_listtypedef_ret_typedef_param_param1_1.id_ref() = 1;
   module_ParamService_listtypedef_ret_typedef_param_param1_1.name_ref() = "param1";
   module_ParamService_listtypedef_ret_typedef_param_param1_1.is_optional_ref() = false;
-  auto module_ParamService_listtypedef_ret_typedef_param_param1_1_type = std::make_unique<Typedef>("module.complexStructTypeDef", std::make_unique<List>(std::make_unique<Map>(std::make_unique<Struct< ::some::valid::ns::Empty>>("module.Empty"), std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct"))), std::vector<ThriftConstStruct>{});
+  auto module_ParamService_listtypedef_ret_typedef_param_param1_1_type = std::make_unique<Typedef>("module.complexStructTypeDef", std::make_unique<List>(std::make_unique<Map>(std::make_unique<Struct<::some::valid::ns::Empty>>("module.Empty"), std::make_unique<Struct<::some::valid::ns::MyStruct>>("module.MyStruct"))), std::vector<ThriftConstStruct>{});
   module_ParamService_listtypedef_ret_typedef_param_param1_1_type->writeAndGenType(*module_ParamService_listtypedef_ret_typedef_param_param1_1.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_ParamService_listtypedef_ret_typedef_param_param1_1));
   func.is_oneway_ref() = false;
@@ -1333,7 +1333,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_enum_ret_double_p
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "enum_ret_double_param";
-  auto func_ret_type = std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA");
+  auto func_ret_type = std::make_unique<Enum<::some::valid::ns::MyEnumA>>("module.MyEnumA");
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_enum_ret_double_param_param1_3;
   module_ParamService_enum_ret_double_param_param1_3.id_ref() = 3;
@@ -1349,7 +1349,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_enum_ret_double_e
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "enum_ret_double_enum_param";
-  auto func_ret_type = std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA");
+  auto func_ret_type = std::make_unique<Enum<::some::valid::ns::MyEnumA>>("module.MyEnumA");
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_enum_ret_double_enum_param_param1_3;
   module_ParamService_enum_ret_double_enum_param_param1_3.id_ref() = 3;
@@ -1362,7 +1362,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_enum_ret_double_e
   module_ParamService_enum_ret_double_enum_param_param2_5.id_ref() = 5;
   module_ParamService_enum_ret_double_enum_param_param2_5.name_ref() = "param2";
   module_ParamService_enum_ret_double_enum_param_param2_5.is_optional_ref() = false;
-  auto module_ParamService_enum_ret_double_enum_param_param2_5_type = std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA");
+  auto module_ParamService_enum_ret_double_enum_param_param2_5_type = std::make_unique<Enum<::some::valid::ns::MyEnumA>>("module.MyEnumA");
   module_ParamService_enum_ret_double_enum_param_param2_5_type->writeAndGenType(*module_ParamService_enum_ret_double_enum_param_param2_5.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_ParamService_enum_ret_double_enum_param_param2_5));
   func.is_oneway_ref() = false;
@@ -1372,7 +1372,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_listenum_ret_map_
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "listenum_ret_map_param";
-  auto func_ret_type = std::make_unique<List>(std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA"));
+  auto func_ret_type = std::make_unique<List>(std::make_unique<Enum<::some::valid::ns::MyEnumA>>("module.MyEnumA"));
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_listenum_ret_map_param_param1_1;
   module_ParamService_listenum_ret_map_param_param1_1.id_ref() = 1;
@@ -1388,7 +1388,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_struct_ret_i16_pa
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "struct_ret_i16_param";
-  auto func_ret_type = std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct");
+  auto func_ret_type = std::make_unique<Struct<::some::valid::ns::MyStruct>>("module.MyStruct");
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_struct_ret_i16_param_param1_1;
   module_ParamService_struct_ret_i16_param_param1_1.id_ref() = 1;
@@ -1404,7 +1404,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_setstruct_ret_set
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "setstruct_ret_set_param";
-  auto func_ret_type = std::make_unique<Set>(std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct"));
+  auto func_ret_type = std::make_unique<Set>(std::make_unique<Struct<::some::valid::ns::MyStruct>>("module.MyStruct"));
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_setstruct_ret_set_param_param1_8;
   module_ParamService_setstruct_ret_set_param_param1_8.id_ref() = 8;
@@ -1420,7 +1420,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_union_ret_i32_i32
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "union_ret_i32_i32_param";
-  auto func_ret_type = std::make_unique<Union< ::some::valid::ns::ComplexUnion>>("module.ComplexUnion");
+  auto func_ret_type = std::make_unique<Union<::some::valid::ns::ComplexUnion>>("module.ComplexUnion");
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_union_ret_i32_i32_param_param1_4;
   module_ParamService_union_ret_i32_i32_param_param1_4.id_ref() = 4;
@@ -1443,7 +1443,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_listunion_string_
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "listunion_string_param";
-  auto func_ret_type = std::make_unique<List>(std::make_unique<Union< ::some::valid::ns::ComplexUnion>>("module.ComplexUnion"));
+  auto func_ret_type = std::make_unique<List>(std::make_unique<Union<::some::valid::ns::ComplexUnion>>("module.ComplexUnion"));
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_ParamService_listunion_string_param_param1_1;
   module_ParamService_listunion_string_param_param1_1.id_ref() = 1;

@@ -227,8 +227,8 @@ class ObjectWriter : public BaseObjectAdapter {
   }
 
   uint32_t writeString(folly::StringPiece value) {
-    ValueHelper<type::string_t>::set(beginValue(), value);
-    return endValue(Value::stringValue);
+    // TODO: set in stringValue if UTF8
+    return writeBinary(value);
   }
 
   uint32_t writeBinary(folly::ByteRange value) {
@@ -310,5 +310,217 @@ struct ValueHelper<TT, type::if_structured<TT>> {
     value.write(&writer);
   }
 };
+
+// Schemaless deserialization of thrift serialized data of specified
+// thrift type into conformance::Value
+// Protocol: protocol to use eg. apache::thrift::BinaryProtocolReader
+// TODO: handle jsonprotocol
+template <class Protocol>
+Value parseValue(Protocol& prot, TType arg_type) {
+  Value result;
+  switch (arg_type) {
+    case protocol::T_BOOL: {
+      bool boolv;
+      prot.readBool(boolv);
+      result.boolValue_ref() = boolv;
+      return result;
+    }
+    case protocol::T_BYTE: {
+      int8_t bytev = 0;
+      prot.readByte(bytev);
+      result.byteValue_ref() = bytev;
+      return result;
+    }
+    case protocol::T_I16: {
+      int16_t i16;
+      prot.readI16(i16);
+      result.i16Value_ref() = i16;
+      return result;
+    }
+    case protocol::T_I32: {
+      int32_t i32;
+      prot.readI32(i32);
+      result.i32Value_ref() = i32;
+      return result;
+    }
+    case protocol::T_I64: {
+      int64_t i64;
+      prot.readI64(i64);
+      result.i64Value_ref() = i64;
+      return result;
+    }
+    case protocol::T_DOUBLE: {
+      double dub;
+      prot.readDouble(dub);
+      result.doubleValue_ref() = dub;
+      return result;
+    }
+    case protocol::T_FLOAT: {
+      float flt;
+      prot.readFloat(flt);
+      result.floatValue_ref() = flt;
+      return result;
+    }
+    case protocol::T_STRING: {
+      auto& binaryValue = result.binaryValue_ref().ensure();
+      prot.readBinary(binaryValue);
+      return result;
+    }
+    case protocol::T_STRUCT: {
+      std::string name;
+      int16_t fid;
+      TType ftype;
+      auto& objectValue = result.objectValue_ref().ensure();
+      prot.readStructBegin(name);
+      while (true) {
+        prot.readFieldBegin(name, ftype, fid);
+        if (ftype == protocol::T_STOP) {
+          break;
+        }
+        auto val = parseValue(prot, ftype);
+        objectValue.members_ref()->emplace(fid, val);
+        prot.readFieldEnd();
+      }
+      prot.readStructEnd();
+      return result;
+    }
+    case protocol::T_MAP: {
+      TType keyType;
+      TType valType;
+      uint32_t size;
+      auto& mapValue = result.mapValue_ref().ensure();
+      prot.readMapBegin(keyType, valType, size);
+      for (uint32_t i = 0; i < size; i++) {
+        auto key = parseValue(prot, keyType);
+        auto val = parseValue(prot, valType);
+        mapValue.emplace(key, val);
+      }
+      prot.readMapEnd();
+      return result;
+    }
+    case protocol::T_SET: {
+      TType elemType;
+      uint32_t size;
+      auto& setValue = result.setValue_ref().ensure();
+      prot.readSetBegin(elemType, size);
+      for (uint32_t i = 0; i < size; i++) {
+        auto val = parseValue(prot, elemType);
+        setValue.emplace(val);
+      }
+      prot.readSetEnd();
+      return result;
+    }
+    case protocol::T_LIST: {
+      TType elemType;
+      uint32_t size;
+      prot.readListBegin(elemType, size);
+      auto& listValue = result.listValue_ref().ensure();
+      for (uint32_t i = 0; i < size; i++) {
+        auto val = parseValue(prot, elemType);
+        listValue.emplace_back(val);
+      }
+      prot.readListEnd();
+      return result;
+    }
+    default: {
+      TProtocolException::throwInvalidSkipType(arg_type);
+    }
+  }
+}
+
+inline TType getTType(const Value& val) {
+  return toTType(static_cast<type::BaseType>(val.getType()));
+}
+
+template <class Protocol>
+void serializeValue(Protocol& prot, const Value& value) {
+  switch (value.getType()) {
+    case Value::Type::boolValue:
+      prot.writeBool(*value.boolValue_ref());
+      return;
+    case Value::Type::byteValue:
+      prot.writeByte(*value.byteValue_ref());
+      return;
+    case Value::Type::i16Value:
+      prot.writeI16(*value.i16Value_ref());
+      return;
+    case Value::Type::i32Value:
+      prot.writeI32(*value.i32Value_ref());
+      return;
+    case Value::Type::i64Value:
+      prot.writeI64(*value.i64Value_ref());
+      return;
+    case Value::Type::floatValue:
+      prot.writeFloat(*value.floatValue_ref());
+      return;
+    case Value::Type::doubleValue:
+      prot.writeDouble(*value.doubleValue_ref());
+      return;
+    case Value::Type::stringValue:
+      prot.writeString(*value.stringValue_ref());
+      return;
+    case Value::Type::binaryValue:
+      prot.writeBinary(*value.binaryValue_ref());
+      return;
+    case Value::Type::listValue: {
+      TType elemType = protocol::T_I64;
+      uint32_t size = value.listValue_ref()->size();
+      if (size > 0) {
+        elemType = getTType(value.listValue_ref()->at(0));
+      }
+      prot.writeListBegin(elemType, size);
+      for (uint32_t i = 0; i < size; i++) {
+        serializeValue(prot, value.listValue_ref()->at(i));
+      }
+      prot.writeListEnd();
+      return;
+    }
+    case Value::Type::mapValue: {
+      TType keyType = protocol::T_STRING;
+      TType valueType = protocol::T_I64;
+      uint32_t size = value.mapValue_ref()->size();
+      if (size > 0) {
+        keyType = getTType(value.mapValue_ref()->begin()->first);
+        valueType = getTType(value.mapValue_ref()->begin()->second);
+      }
+      prot.writeMapBegin(keyType, valueType, size);
+      for (auto const& [key, val] : *value.mapValue_ref()) {
+        serializeValue(prot, key);
+        serializeValue(prot, val);
+      }
+      prot.writeMapEnd();
+      return;
+    }
+    case Value::Type::setValue: {
+      TType elemType = protocol::T_I64;
+      uint32_t size = value.setValue_ref()->size();
+      if (size > 0) {
+        elemType = getTType(*value.setValue_ref()->begin());
+      }
+      prot.writeSetBegin(elemType, size);
+      for (auto const& val : *value.setValue_ref()) {
+        serializeValue(prot, val);
+      }
+      prot.writeSetEnd();
+      return;
+    }
+    case Value::Type::objectValue: {
+      prot.writeStructBegin("");
+      for (auto const& [fieldID, fieldVal] :
+           *value.objectValue_ref()->members_ref()) {
+        auto fieldType = getTType(fieldVal);
+        prot.writeFieldBegin("", fieldType, fieldID);
+        serializeValue(prot, fieldVal);
+        prot.writeFieldEnd();
+      }
+      prot.writeFieldStop();
+      prot.writeStructEnd();
+      return;
+    }
+    default: {
+      TProtocolException::throwInvalidFieldData();
+    }
+  }
+}
 
 } // namespace apache::thrift::conformance::detail
