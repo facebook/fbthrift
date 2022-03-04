@@ -34,9 +34,9 @@ static bool is_dot(char const c) {
 } // namespace
 
 std::vector<std::string> namespace_resolver::gen_namespace_components(
-    const t_program* program) {
-  auto const& cpp2 = program->get_namespace("cpp2");
-  auto const& cpp = program->get_namespace("cpp");
+    const t_program& program) {
+  auto const& cpp2 = program.get_namespace("cpp2");
+  auto const& cpp = program.get_namespace("cpp");
 
   std::vector<std::string> components;
   if (!cpp2.empty()) {
@@ -51,23 +51,14 @@ std::vector<std::string> namespace_resolver::gen_namespace_components(
   return components;
 }
 
-std::string namespace_resolver::gen_namespace(const t_program* program) {
+std::string namespace_resolver::gen_namespace(const t_program& program) {
   return "::" + gen_unprefixed_namespace(program);
 }
 
-/* static */ std::string namespace_resolver::gen_unprefixed_namespace(
-    const t_program* program) {
+std::string namespace_resolver::gen_unprefixed_namespace(
+    const t_program& program) {
   auto const components = gen_namespace_components(program);
   return boost::algorithm::join(components, "::");
-}
-
-std::string namespace_resolver::gen_namespaced_name(const t_type* node) {
-  const std::string& name = node->get_annotation("cpp.name", &node->get_name());
-  if (node->program() == nullptr) {
-    // No namespace.
-    return name;
-  }
-  return get_namespace(node->program()) + "::" + name;
 }
 
 } // namespace cpp

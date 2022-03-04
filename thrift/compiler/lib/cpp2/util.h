@@ -33,7 +33,6 @@
 #include <thrift/compiler/ast/t_type.h>
 #include <thrift/compiler/gen/cpp/namespace_resolver.h>
 #include <thrift/compiler/gen/cpp/reference_type.h>
-#include <thrift/compiler/gen/cpp/type_resolver.h>
 
 namespace apache {
 namespace thrift {
@@ -42,15 +41,15 @@ namespace cpp2 {
 
 inline std::vector<std::string> get_gen_namespace_components(
     t_program const& program) {
-  return gen::cpp::namespace_resolver::gen_namespace_components(&program);
+  return gen::cpp::namespace_resolver::gen_namespace_components(program);
 }
 
 inline std::string get_gen_namespace(t_program const& program) {
-  return gen::cpp::namespace_resolver::gen_namespace(&program);
+  return gen::cpp::namespace_resolver::gen_namespace(program);
 }
 
 inline std::string get_gen_unprefixed_namespace(t_program const& program) {
-  return gen::cpp::namespace_resolver::gen_unprefixed_namespace(&program);
+  return gen::cpp::namespace_resolver::gen_unprefixed_namespace(program);
 }
 
 /*
@@ -164,7 +163,7 @@ inline bool is_unique_ref(const t_field* f) {
 
 template <typename Node>
 const std::string& get_name(const Node* node) {
-  return gen::cpp::type_resolver::get_cpp_name(*node);
+  return gen::cpp::namespace_resolver::get_cpp_name(*node);
 }
 
 bool is_stack_arguments(

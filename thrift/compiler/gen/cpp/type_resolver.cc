@@ -227,7 +227,7 @@ std::string type_resolver::gen_raw_type_name(
   }
 
   // For everything else, just use namespaced name.
-  return namespaces_.gen_namespaced_name(&node);
+  return namespaces_.get_namespaced_name(node);
 }
 
 std::string type_resolver::gen_container_type(
@@ -308,7 +308,7 @@ std::string type_resolver::gen_adapted_type(
                 *adapter,
                 std::to_string(field_id),
                 standard_type,
-                get_cpp_name(parent),
+                namespace_resolver::get_cpp_name(parent),
             });
 }
 

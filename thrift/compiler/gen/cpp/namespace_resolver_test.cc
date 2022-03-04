@@ -37,7 +37,7 @@ TEST_F(NamespaceResolverTest, gen_namespace_components_cpp2) {
   p.set_namespace("cpp2", "foo.bar");
   p.set_namespace("cpp", "baz.foo");
   EXPECT_THAT(
-      namespace_resolver::gen_namespace_components(&p),
+      namespace_resolver::gen_namespace_components(p),
       testing::ElementsAreArray({"foo", "bar"}));
 }
 
@@ -45,14 +45,14 @@ TEST_F(NamespaceResolverTest, gen_namespace_components_cpp) {
   t_program p("path/to/program.thrift");
   p.set_namespace("cpp", "baz.foo");
   EXPECT_THAT(
-      namespace_resolver::gen_namespace_components(&p),
+      namespace_resolver::gen_namespace_components(p),
       testing::ElementsAreArray({"baz", "foo", "cpp2"}));
 }
 
 TEST_F(NamespaceResolverTest, gen_namespace_components_none) {
   t_program p("path/to/program.thrift");
   EXPECT_THAT(
-      namespace_resolver::gen_namespace_components(&p),
+      namespace_resolver::gen_namespace_components(p),
       testing::ElementsAreArray({"cpp2"}));
 }
 
@@ -60,27 +60,28 @@ TEST_F(NamespaceResolverTest, get_namespace_cpp2) {
   t_program p("path/to/program.thrift");
   p.set_namespace("cpp2", "foo.bar");
   p.set_namespace("cpp", "baz.foo");
-  EXPECT_EQ("::foo::bar", namespaces_.get_namespace(&p));
+  EXPECT_EQ("::foo::bar", namespaces_.get_namespace(p));
 }
 
 TEST_F(NamespaceResolverTest, get_namespace_cpp) {
   t_program p("path/to/program.thrift");
   p.set_namespace("cpp", "baz.foo");
-  EXPECT_EQ("::baz::foo::cpp2", namespaces_.get_namespace(&p));
+  EXPECT_EQ("::baz::foo::cpp2", namespaces_.get_namespace(p));
 }
 
 TEST_F(NamespaceResolverTest, get_namespace_none) {
   t_program p("path/to/program.thrift");
-  EXPECT_EQ("::cpp2", namespaces_.get_namespace(&p));
+  EXPECT_EQ("::cpp2", namespaces_.get_namespace(p));
 }
 
 TEST_F(NamespaceResolverTest, gen_namespaced_name) {
   t_program p("path/to/program.thrift");
   p.set_namespace("cpp2", "foo.bar");
-  t_enum e(&p, "MyEnum");
-  EXPECT_EQ("::foo::bar::MyEnum", namespaces_.gen_namespaced_name(&e));
-  e.set_annotation("cpp.name", "YourEnum");
-  EXPECT_EQ("::foo::bar::YourEnum", namespaces_.gen_namespaced_name(&e));
+  t_enum e1(&p, "MyEnum1");
+  t_enum e2(&p, "MyEnum2");
+  e2.set_annotation("cpp.name", "YourEnum");
+  EXPECT_EQ("::foo::bar::MyEnum1", namespaces_.get_namespaced_name(e1));
+  EXPECT_EQ("::foo::bar::YourEnum", namespaces_.get_namespaced_name(e2));
 }
 
 } // namespace

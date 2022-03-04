@@ -37,20 +37,43 @@ class namespace_resolver {
   namespace_resolver() = default;
 
   // Returns c++ namespace for the given program.
-  const std::string& get_namespace(const t_program* node) {
+  const std::string& get_namespace(const t_program& node) {
     return detail::get_or_gen(
-        namespace_cache_, node, [&]() { return gen_namespace(node); });
+        namespace_cache_, &node, [&]() { return gen_namespace(node); });
   }
 
-  std::string gen_namespaced_name(const t_type* node);
+  const std::string& get_namespaced_name(
+      const t_program& program, const t_named& node) {
+    return detail::get_or_gen(name_cache_, &node, [&]() {
+      return gen_namespaced_name(program, node);
+    });
+  }
+  const std::string& get_namespaced_name(
+      const t_program* program, const t_named& node) {
+    return program == nullptr ? get_cpp_name(node)
+                              : get_namespaced_name(*program, node);
+  }
+  const std::string& get_namespaced_name(const t_type& node) {
+    return get_namespaced_name(node.program(), node);
+  }
 
-  static std::string gen_namespace(const t_program* node);
-  static std::string gen_unprefixed_namespace(const t_program* program);
+  static const std::string& get_cpp_name(const t_named& node) {
+    return node.get_annotation("cpp.name", &node.name());
+  }
+
+  static std::string gen_namespace(const t_program& progam);
+  static std::string gen_unprefixed_namespace(const t_program& progam);
   static std::vector<std::string> gen_namespace_components(
-      const t_program* program);
+      const t_program& program);
 
  private:
   std::unordered_map<const t_program*, std::string> namespace_cache_;
+  std::unordered_map<const t_named*, std::string> name_cache_;
+
+  std::string gen_namespaced_name(
+      const t_program& program, const t_named& node) {
+    return get_namespace(program) + "::" + get_cpp_name(node);
+  }
 };
 
 } // namespace cpp
