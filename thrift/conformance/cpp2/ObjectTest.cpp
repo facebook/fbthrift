@@ -274,6 +274,32 @@ TEST(ObjectTest, StructWithSet) {
       asValueStruct<type::set<type::i64_t>>(setValues));
 }
 
+TEST(ObjectTest, parseObject) {
+  folly::IOBufQueue iobufQueue;
+  testset::struct_with<type::set<type::i64_t>> thriftStruct;
+  std::set<long> setValues = {1, 2, 3};
+  thriftStruct.field_1_ref() = setValues;
+  BinarySerializer::serialize(thriftStruct, &iobufQueue);
+  auto serialized = iobufQueue.move();
+  auto object = parseObject<BinarySerializer::ProtocolReader>(*serialized);
+  EXPECT_EQ(object.members_ref()->size(), 1);
+  EXPECT_EQ(
+      object.members_ref()->at(1),
+      asValueStruct<type::set<type::i64_t>>(setValues));
+}
+
+TEST(ObjectTest, serializeObject) {
+  folly::IOBufQueue iobufQueue;
+  testset::struct_with<type::set<type::i64_t>> thriftStruct;
+  std::set<long> setValues = {1, 2, 3};
+  thriftStruct.field_1_ref() = setValues;
+  BinarySerializer::serialize(thriftStruct, &iobufQueue);
+  auto expected = iobufQueue.move();
+  auto object = parseObject<BinarySerializer::ProtocolReader>(*expected);
+  auto actual = serializeObject<BinarySerializer::ProtocolWriter>(object);
+  EXPECT_TRUE(folly::IOBufEqualTo{}(*actual, *expected));
+}
+
 TEST(ObjectTest, ValueUnionTypeMatch) {
   EXPECT_EQ(
       static_cast<type::BaseType>(Value::Type::boolValue),
