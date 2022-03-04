@@ -1165,7 +1165,7 @@ class HandlerCallbackBase {
   }
 
   void appOverloadedException(const std::string& message) {
-    doAppOverloadedException(message);
+    exception(TrustedServerException::appOverloadError(message));
   }
 
   folly::EventBase* getEventBase();
@@ -1214,7 +1214,6 @@ class HandlerCallbackBase {
   }
 
   virtual void doExceptionWrapped(folly::exception_wrapper ew);
-  virtual void doAppOverloadedException(const std::string& message);
 
   template <typename F, typename T>
   void callExceptionInEventBaseThread(F&& f, T&& ex);

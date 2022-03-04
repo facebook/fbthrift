@@ -481,10 +481,6 @@ void HandlerCallbackBase::doExceptionWrapped(folly::exception_wrapper ew) {
   }
 }
 
-void HandlerCallbackBase::doAppOverloadedException(const std::string& message) {
-  exception(TrustedServerException::appOverloadError(message));
-}
-
 void HandlerCallbackBase::sendReply(SerializedResponse response) {
   folly::Optional<uint32_t> crc32c = checksumIfNeeded(response);
   auto payload = std::move(response).extractPayload(
