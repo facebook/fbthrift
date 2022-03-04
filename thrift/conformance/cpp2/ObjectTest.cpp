@@ -21,10 +21,13 @@
 #include <folly/io/IOBufQueue.h>
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
+#include <thrift/conformance/cpp2/AnyRegistry.h>
+#include <thrift/conformance/cpp2/AnyStructSerializer.h>
 #include <thrift/conformance/cpp2/Protocol.h>
 #include <thrift/conformance/cpp2/Testing.h>
 #include <thrift/conformance/cpp2/internal/AnyStructSerializer.h>
 #include <thrift/conformance/data/ValueGenerator.h>
+#include <thrift/conformance/if/gen-cpp2/conformance_types_custom_protocol.h>
 #include <thrift/conformance/if/gen-cpp2/protocol_types_custom_protocol.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
@@ -271,19 +274,136 @@ TEST(ObjectTest, StructWithSet) {
       asValueStruct<type::set<type::i64_t>>(setValues));
 }
 
+TEST(ObjectTest, ValueUnionTypeMatch) {
+  EXPECT_EQ(
+      static_cast<type::BaseType>(Value::Type::boolValue),
+      type::BaseType::Bool);
+  EXPECT_EQ(
+      static_cast<type::BaseType>(Value::Type::byteValue),
+      type::BaseType::Byte);
+  EXPECT_EQ(
+      static_cast<type::BaseType>(Value::Type::i16Value), type::BaseType::I16);
+  EXPECT_EQ(
+      static_cast<type::BaseType>(Value::Type::i32Value), type::BaseType::I32);
+  EXPECT_EQ(
+      static_cast<type::BaseType>(Value::Type::i64Value), type::BaseType::I64);
+  EXPECT_EQ(
+      static_cast<type::BaseType>(Value::Type::floatValue),
+      type::BaseType::Float);
+  EXPECT_EQ(
+      static_cast<type::BaseType>(Value::Type::doubleValue),
+      type::BaseType::Double);
+  EXPECT_EQ(
+      static_cast<type::BaseType>(Value::Type::stringValue),
+      type::BaseType::String);
+  EXPECT_EQ(
+      static_cast<type::BaseType>(Value::Type::binaryValue),
+      type::BaseType::Binary);
+  EXPECT_EQ(
+      static_cast<type::BaseType>(Value::Type::listValue),
+      type::BaseType::List);
+  EXPECT_EQ(
+      static_cast<type::BaseType>(Value::Type::setValue), type::BaseType::Set);
+  EXPECT_EQ(
+      static_cast<type::BaseType>(Value::Type::mapValue), type::BaseType::Map);
+  EXPECT_EQ(
+      static_cast<type::BaseType>(Value::Type::objectValue),
+      type::BaseType::Struct);
+}
+
 template <typename ParseObjectTestCase>
-class TypedParseObjectTest : public testing::Test {
- public:
-  template <StandardProtocol Protocol>
-  Object ParseSerialized(testset::struct_with<ParseObjectTestCase>& s) {
-    folly::IOBufQueue iobufQueue;
-    detail::protocol_writer_t<Protocol> writer;
-    writer.setOutput(&iobufQueue);
-    s.write(&writer);
-    auto iobuf = iobufQueue.move();
-    return parseObject<detail::protocol_reader_t<Protocol>>(*iobuf);
+class TypedParseObjectTest : public testing::Test {};
+
+template <StandardProtocol Protocol, typename T>
+std::unique_ptr<folly::IOBuf> serialize(T& s) {
+  folly::IOBufQueue iobufQueue;
+  detail::protocol_writer_t<Protocol> writer;
+  writer.setOutput(&iobufQueue);
+  s.write(&writer);
+  auto iobuf = iobufQueue.move();
+  return iobuf;
+}
+
+template <StandardProtocol Protocol, typename Tag, typename T>
+void testParseObject() {
+  T testsetValue;
+  for (const auto& val : data::ValueGenerator<Tag>::getKeyValues()) {
+    SCOPED_TRACE(val.name);
+    testsetValue.field_1_ref() = val.value;
+    auto valueStruct = asValueStruct<type::struct_c>(testsetValue);
+    const Object& object = valueStruct.get_objectValue();
+
+    auto iobuf = serialize<Protocol, T>(testsetValue);
+    auto objFromParseObject =
+        parseObject<detail::protocol_reader_t<Protocol>>(*iobuf);
+    EXPECT_EQ(objFromParseObject, object);
   }
-};
+}
+
+template <typename Tag>
+bool hasEmptyContainer(const type::standard_type<Tag>& value) {
+  if constexpr (type::is_a_v<Tag, type::container_c>) {
+    if (value.size() == 0) {
+      return true;
+    }
+  }
+  if constexpr (type::is_a_v<Tag, type::map<type::all_c, type::container_c>>) {
+    for (auto const& [mapkey, mapval] : value) {
+      if (mapval.size() == 0) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+template <StandardProtocol Protocol, typename Tag, typename T>
+void testSerializeObject() {
+  T testsetValue;
+  for (const auto& val : data::ValueGenerator<Tag>::getKeyValues()) {
+    SCOPED_TRACE(val.name);
+    testsetValue.field_1_ref() = val.value;
+    auto valueStruct = asValueStruct<type::struct_c>(testsetValue);
+    const Object& object = valueStruct.get_objectValue();
+    auto schemalessSerializedData =
+        serializeObject<detail::protocol_writer_t<Protocol>>(object);
+
+    auto schemaBasedSerializedData = serialize<Protocol, T>(testsetValue);
+
+    // FIXME: skip validation for structs with empty list, set, map.
+    if (hasEmptyContainer<Tag>(val.value)) {
+      continue;
+    }
+    EXPECT_TRUE(folly::IOBufEqualTo{}(
+        *schemalessSerializedData, *schemaBasedSerializedData));
+  }
+}
+
+template <StandardProtocol Protocol, typename Tag, typename T>
+void testSerializeObjectAny() {
+  AnyRegistry registry;
+  registry.registerType<T>(
+      createThriftTypeInfo({"facebook.com/thrift/conformance/struct_with"}));
+  registry.registerSerializer<T>(&getAnyStandardSerializer<T, Protocol>());
+  for (const auto& val : data::ValueGenerator<Tag>::getKeyValues()) {
+    SCOPED_TRACE(val.name);
+    RoundTripResponse anyValue;
+    T testsetValue;
+    testsetValue.field_1_ref() = val.value;
+    anyValue.value_ref() = registry.store<Protocol>(testsetValue);
+
+    auto schemaBasedSerializedData = serialize<Protocol>(anyValue);
+    auto objFromParseObject = parseObject<detail::protocol_reader_t<Protocol>>(
+        *schemaBasedSerializedData);
+
+    auto schemalessSerializedData =
+        serializeObject<detail::protocol_writer_t<Protocol>>(
+            objFromParseObject);
+
+    EXPECT_TRUE(folly::IOBufEqualTo{}(
+        *schemalessSerializedData, *schemaBasedSerializedData));
+  }
+}
 
 // The tests cases to run.
 using ParseObjectTestCases = ::testing::Types<
@@ -304,25 +424,88 @@ using ParseObjectTestCases = ::testing::Types<
     type::map<type::string_t, type::i64_t>,
     type::map<type::i64_t, type::double_t>,
     type::map<type::i64_t, type::set<type::string_t>>>;
-// TODO : field modifiers, nested struct
 
 TYPED_TEST_SUITE(TypedParseObjectTest, ParseObjectTestCases);
 
 TYPED_TEST(TypedParseObjectTest, ParseSerializedSameAsDirectObject) {
-  testset::struct_with<TypeParam> s;
-  for (const auto& val : data::ValueGenerator<TypeParam>::getKeyValues()) {
-    s.field_1_ref() = val.value;
-    auto valueStruct = asValueStruct<type::struct_c>(s);
-    const Object& object = valueStruct.get_objectValue();
+  testParseObject<
+      StandardProtocol::Binary,
+      TypeParam,
+      testset::struct_with<TypeParam>>();
+  testParseObject<
+      StandardProtocol::Compact,
+      TypeParam,
+      testset::struct_with<TypeParam>>();
+  testParseObject<
+      StandardProtocol::Json,
+      TypeParam,
+      testset::struct_with<TypeParam>>();
+  testParseObject<
+      StandardProtocol::Binary,
+      TypeParam,
+      testset::union_with<TypeParam>>();
+  testParseObject<
+      StandardProtocol::Compact,
+      TypeParam,
+      testset::union_with<TypeParam>>();
+  testParseObject<
+      StandardProtocol::Json,
+      TypeParam,
+      testset::union_with<TypeParam>>();
+}
 
-    auto objFromBinaryProtocol =
-        this->template ParseSerialized<StandardProtocol::Binary>(s);
-    ASSERT_EQ(objFromBinaryProtocol, object);
+TYPED_TEST(TypedParseObjectTest, SerializeObjectSameAsDirectSerialization) {
+  testSerializeObject<
+      StandardProtocol::Binary,
+      TypeParam,
+      testset::struct_with<TypeParam>>();
+  testSerializeObject<
+      StandardProtocol::Compact,
+      TypeParam,
+      testset::struct_with<TypeParam>>();
+  testSerializeObject<
+      StandardProtocol::Json,
+      TypeParam,
+      testset::struct_with<TypeParam>>();
+  testSerializeObject<
+      StandardProtocol::Binary,
+      TypeParam,
+      testset::union_with<TypeParam>>();
+  testSerializeObject<
+      StandardProtocol::Compact,
+      TypeParam,
+      testset::union_with<TypeParam>>();
+  testSerializeObject<
+      StandardProtocol::Json,
+      TypeParam,
+      testset::union_with<TypeParam>>();
+}
 
-    auto objFromCompactProtocol =
-        this->template ParseSerialized<StandardProtocol::Compact>(s);
-    ASSERT_EQ(objFromCompactProtocol, object);
-  }
+TYPED_TEST(TypedParseObjectTest, SerializeObjectSameAsDirectSerializationAny) {
+  testSerializeObjectAny<
+      StandardProtocol::Binary,
+      TypeParam,
+      testset::struct_with<TypeParam>>();
+  testSerializeObjectAny<
+      StandardProtocol::Compact,
+      TypeParam,
+      testset::struct_with<TypeParam>>();
+  testSerializeObjectAny<
+      StandardProtocol::Json,
+      TypeParam,
+      testset::struct_with<TypeParam>>();
+  testSerializeObjectAny<
+      StandardProtocol::Binary,
+      TypeParam,
+      testset::union_with<TypeParam>>();
+  testSerializeObjectAny<
+      StandardProtocol::Compact,
+      TypeParam,
+      testset::union_with<TypeParam>>();
+  testSerializeObjectAny<
+      StandardProtocol::Json,
+      TypeParam,
+      testset::union_with<TypeParam>>();
 }
 
 } // namespace
