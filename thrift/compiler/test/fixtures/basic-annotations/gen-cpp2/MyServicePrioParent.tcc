@@ -26,7 +26,42 @@ void MyServicePrioParentAsyncProcessor::setUpAndProcess_ping(apache::thrift::Res
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void MyServicePrioParentAsyncProcessor::executeRequest_ping(apache::thrift::ServerRequest&& /*serverRequest*/) {
+void MyServicePrioParentAsyncProcessor::executeRequest_ping(apache::thrift::ServerRequest&& serverRequest) {
+  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::IMPORTANT);
+  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
+  // make sure getRequestContext is null
+  // so async calls don't accidentally use it
+  iface_->setRequestContext(nullptr);
+  MyServicePrioParent_ping_pargs args;
+  try {
+    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+  }
+  catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
+    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
+        ew
+        , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+        , nullptr
+        , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+        , "ping");
+    return;
+  }
+  auto requestPileNotification = apache::thrift::detail::ServerRequestHelper::requestPileNotification(serverRequest);
+  auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(
+    apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , return_ping<ProtocolIn_,ProtocolOut_>
+    , throw_wrapped_ping<ProtocolIn_, ProtocolOut_>
+    , serverRequest.requestContext()->getProtoSeqId()
+    , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , serverRequest.requestContext()
+    , requestPileNotification.first, requestPileNotification.second
+    , concurrencyControllerNotification.first, concurrencyControllerNotification.second
+    
+    );
+  iface_->async_tm_ping(std::move(callback));
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -84,7 +119,42 @@ void MyServicePrioParentAsyncProcessor::setUpAndProcess_pong(apache::thrift::Res
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void MyServicePrioParentAsyncProcessor::executeRequest_pong(apache::thrift::ServerRequest&& /*serverRequest*/) {
+void MyServicePrioParentAsyncProcessor::executeRequest_pong(apache::thrift::ServerRequest&& serverRequest) {
+  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::HIGH_IMPORTANT);
+  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
+  // make sure getRequestContext is null
+  // so async calls don't accidentally use it
+  iface_->setRequestContext(nullptr);
+  MyServicePrioParent_pong_pargs args;
+  try {
+    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+  }
+  catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
+    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
+        ew
+        , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+        , nullptr
+        , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+        , "pong");
+    return;
+  }
+  auto requestPileNotification = apache::thrift::detail::ServerRequestHelper::requestPileNotification(serverRequest);
+  auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(
+    apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , return_pong<ProtocolIn_,ProtocolOut_>
+    , throw_wrapped_pong<ProtocolIn_, ProtocolOut_>
+    , serverRequest.requestContext()->getProtoSeqId()
+    , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , serverRequest.requestContext()
+    , requestPileNotification.first, requestPileNotification.second
+    , concurrencyControllerNotification.first, concurrencyControllerNotification.second
+    
+    );
+  iface_->async_tm_pong(std::move(callback));
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>

@@ -64,7 +64,42 @@ void SinkServiceAsyncProcessor::setUpAndProcess_method(apache::thrift::ResponseC
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void SinkServiceAsyncProcessor::executeRequest_method(apache::thrift::ServerRequest&& /*serverRequest*/) {
+void SinkServiceAsyncProcessor::executeRequest_method(apache::thrift::ServerRequest&& serverRequest) {
+  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
+  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
+  // make sure getRequestContext is null
+  // so async calls don't accidentally use it
+  iface_->setRequestContext(nullptr);
+  SinkService_method_pargs args;
+  try {
+    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+  }
+  catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
+    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
+        ew
+        , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+        , nullptr
+        , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+        , "method");
+    return;
+  }
+  auto requestPileNotification = apache::thrift::detail::ServerRequestHelper::requestPileNotification(serverRequest);
+  auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(
+    apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , return_method<ProtocolIn_,ProtocolOut_>
+    , throw_wrapped_method<ProtocolIn_, ProtocolOut_>
+    , serverRequest.requestContext()->getProtoSeqId()
+    , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , serverRequest.requestContext()
+    , requestPileNotification.first, requestPileNotification.second
+    , concurrencyControllerNotification.first, concurrencyControllerNotification.second
+    , apache::thrift::ServerInterface::getBlockingThreadManager(apache::thrift::detail::ServerRequestHelper::executor(serverRequest))
+    );
+  iface_->async_tm_method(std::move(callback));
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -136,7 +171,42 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodAndReponse(apache::thrift:
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void SinkServiceAsyncProcessor::executeRequest_methodAndReponse(apache::thrift::ServerRequest&& /*serverRequest*/) {
+void SinkServiceAsyncProcessor::executeRequest_methodAndReponse(apache::thrift::ServerRequest&& serverRequest) {
+  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
+  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
+  // make sure getRequestContext is null
+  // so async calls don't accidentally use it
+  iface_->setRequestContext(nullptr);
+  SinkService_methodAndReponse_pargs args;
+  try {
+    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+  }
+  catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
+    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
+        ew
+        , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+        , nullptr
+        , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+        , "methodAndReponse");
+    return;
+  }
+  auto requestPileNotification = apache::thrift::detail::ServerRequestHelper::requestPileNotification(serverRequest);
+  auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(
+    apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , return_methodAndReponse<ProtocolIn_,ProtocolOut_>
+    , throw_wrapped_methodAndReponse<ProtocolIn_, ProtocolOut_>
+    , serverRequest.requestContext()->getProtoSeqId()
+    , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , serverRequest.requestContext()
+    , requestPileNotification.first, requestPileNotification.second
+    , concurrencyControllerNotification.first, concurrencyControllerNotification.second
+    , apache::thrift::ServerInterface::getBlockingThreadManager(apache::thrift::detail::ServerRequestHelper::executor(serverRequest))
+    );
+  iface_->async_tm_methodAndReponse(std::move(callback));
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -210,7 +280,42 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodThrow(apache::thrift::Resp
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void SinkServiceAsyncProcessor::executeRequest_methodThrow(apache::thrift::ServerRequest&& /*serverRequest*/) {
+void SinkServiceAsyncProcessor::executeRequest_methodThrow(apache::thrift::ServerRequest&& serverRequest) {
+  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
+  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
+  // make sure getRequestContext is null
+  // so async calls don't accidentally use it
+  iface_->setRequestContext(nullptr);
+  SinkService_methodThrow_pargs args;
+  try {
+    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+  }
+  catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
+    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
+        ew
+        , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+        , nullptr
+        , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+        , "methodThrow");
+    return;
+  }
+  auto requestPileNotification = apache::thrift::detail::ServerRequestHelper::requestPileNotification(serverRequest);
+  auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(
+    apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , return_methodThrow<ProtocolIn_,ProtocolOut_>
+    , throw_wrapped_methodThrow<ProtocolIn_, ProtocolOut_>
+    , serverRequest.requestContext()->getProtoSeqId()
+    , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , serverRequest.requestContext()
+    , requestPileNotification.first, requestPileNotification.second
+    , concurrencyControllerNotification.first, concurrencyControllerNotification.second
+    , apache::thrift::ServerInterface::getBlockingThreadManager(apache::thrift::detail::ServerRequestHelper::executor(serverRequest))
+    );
+  iface_->async_tm_methodThrow(std::move(callback));
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -299,7 +404,42 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodSinkThrow(apache::thrift::
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void SinkServiceAsyncProcessor::executeRequest_methodSinkThrow(apache::thrift::ServerRequest&& /*serverRequest*/) {
+void SinkServiceAsyncProcessor::executeRequest_methodSinkThrow(apache::thrift::ServerRequest&& serverRequest) {
+  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
+  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
+  // make sure getRequestContext is null
+  // so async calls don't accidentally use it
+  iface_->setRequestContext(nullptr);
+  SinkService_methodSinkThrow_pargs args;
+  try {
+    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+  }
+  catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
+    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
+        ew
+        , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+        , nullptr
+        , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+        , "methodSinkThrow");
+    return;
+  }
+  auto requestPileNotification = apache::thrift::detail::ServerRequestHelper::requestPileNotification(serverRequest);
+  auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(
+    apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , return_methodSinkThrow<ProtocolIn_,ProtocolOut_>
+    , throw_wrapped_methodSinkThrow<ProtocolIn_, ProtocolOut_>
+    , serverRequest.requestContext()->getProtoSeqId()
+    , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , serverRequest.requestContext()
+    , requestPileNotification.first, requestPileNotification.second
+    , concurrencyControllerNotification.first, concurrencyControllerNotification.second
+    , apache::thrift::ServerInterface::getBlockingThreadManager(apache::thrift::detail::ServerRequestHelper::executor(serverRequest))
+    );
+  iface_->async_tm_methodSinkThrow(std::move(callback));
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -371,7 +511,42 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodFinalThrow(apache::thrift:
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void SinkServiceAsyncProcessor::executeRequest_methodFinalThrow(apache::thrift::ServerRequest&& /*serverRequest*/) {
+void SinkServiceAsyncProcessor::executeRequest_methodFinalThrow(apache::thrift::ServerRequest&& serverRequest) {
+  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
+  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
+  // make sure getRequestContext is null
+  // so async calls don't accidentally use it
+  iface_->setRequestContext(nullptr);
+  SinkService_methodFinalThrow_pargs args;
+  try {
+    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+  }
+  catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
+    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
+        ew
+        , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+        , nullptr
+        , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+        , "methodFinalThrow");
+    return;
+  }
+  auto requestPileNotification = apache::thrift::detail::ServerRequestHelper::requestPileNotification(serverRequest);
+  auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(
+    apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , return_methodFinalThrow<ProtocolIn_,ProtocolOut_>
+    , throw_wrapped_methodFinalThrow<ProtocolIn_, ProtocolOut_>
+    , serverRequest.requestContext()->getProtoSeqId()
+    , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , serverRequest.requestContext()
+    , requestPileNotification.first, requestPileNotification.second
+    , concurrencyControllerNotification.first, concurrencyControllerNotification.second
+    , apache::thrift::ServerInterface::getBlockingThreadManager(apache::thrift::detail::ServerRequestHelper::executor(serverRequest))
+    );
+  iface_->async_tm_methodFinalThrow(std::move(callback));
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -453,7 +628,42 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodBothThrow(apache::thrift::
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void SinkServiceAsyncProcessor::executeRequest_methodBothThrow(apache::thrift::ServerRequest&& /*serverRequest*/) {
+void SinkServiceAsyncProcessor::executeRequest_methodBothThrow(apache::thrift::ServerRequest&& serverRequest) {
+  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
+  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
+  // make sure getRequestContext is null
+  // so async calls don't accidentally use it
+  iface_->setRequestContext(nullptr);
+  SinkService_methodBothThrow_pargs args;
+  try {
+    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+  }
+  catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
+    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
+        ew
+        , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+        , nullptr
+        , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+        , "methodBothThrow");
+    return;
+  }
+  auto requestPileNotification = apache::thrift::detail::ServerRequestHelper::requestPileNotification(serverRequest);
+  auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(
+    apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , return_methodBothThrow<ProtocolIn_,ProtocolOut_>
+    , throw_wrapped_methodBothThrow<ProtocolIn_, ProtocolOut_>
+    , serverRequest.requestContext()->getProtoSeqId()
+    , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , serverRequest.requestContext()
+    , requestPileNotification.first, requestPileNotification.second
+    , concurrencyControllerNotification.first, concurrencyControllerNotification.second
+    , apache::thrift::ServerInterface::getBlockingThreadManager(apache::thrift::detail::ServerRequestHelper::executor(serverRequest))
+    );
+  iface_->async_tm_methodBothThrow(std::move(callback));
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -533,7 +743,40 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodFast(apache::thrift::Respo
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void SinkServiceAsyncProcessor::executeRequest_methodFast(apache::thrift::ServerRequest&& /*serverRequest*/) {
+void SinkServiceAsyncProcessor::executeRequest_methodFast(apache::thrift::ServerRequest&& serverRequest) {
+  // make sure getRequestContext is null
+  // so async calls don't accidentally use it
+  iface_->setRequestContext(nullptr);
+  SinkService_methodFast_pargs args;
+  try {
+    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+  }
+  catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
+    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
+        ew
+        , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+        , nullptr
+        , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+        , "methodFast");
+    return;
+  }
+  auto requestPileNotification = apache::thrift::detail::ServerRequestHelper::requestPileNotification(serverRequest);
+  auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(
+    apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , return_methodFast<ProtocolIn_,ProtocolOut_>
+    , throw_wrapped_methodFast<ProtocolIn_, ProtocolOut_>
+    , serverRequest.requestContext()->getProtoSeqId()
+    , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , serverRequest.requestContext()
+    , requestPileNotification.first, requestPileNotification.second
+    , concurrencyControllerNotification.first, concurrencyControllerNotification.second
+    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    );
+  iface_->async_eb_methodFast(std::move(callback));
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>

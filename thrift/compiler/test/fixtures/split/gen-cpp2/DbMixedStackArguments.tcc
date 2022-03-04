@@ -26,7 +26,44 @@ void DbMixedStackArgumentsAsyncProcessor::setUpAndProcess_getDataByKey0(apache::
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void DbMixedStackArgumentsAsyncProcessor::executeRequest_getDataByKey0(apache::thrift::ServerRequest&& /*serverRequest*/) {
+void DbMixedStackArgumentsAsyncProcessor::executeRequest_getDataByKey0(apache::thrift::ServerRequest&& serverRequest) {
+  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
+  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
+  // make sure getRequestContext is null
+  // so async calls don't accidentally use it
+  iface_->setRequestContext(nullptr);
+  DbMixedStackArguments_getDataByKey0_pargs args;
+  auto uarg_key = std::make_unique<::std::string>();
+  args.get<0>().value = uarg_key.get();
+  try {
+    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+  }
+  catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
+    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
+        ew
+        , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+        , nullptr
+        , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+        , "getDataByKey0");
+    return;
+  }
+  auto requestPileNotification = apache::thrift::detail::ServerRequestHelper::requestPileNotification(serverRequest);
+  auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(
+    apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , return_getDataByKey0<ProtocolIn_,ProtocolOut_>
+    , throw_wrapped_getDataByKey0<ProtocolIn_, ProtocolOut_>
+    , serverRequest.requestContext()->getProtoSeqId()
+    , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , serverRequest.requestContext()
+    , requestPileNotification.first, requestPileNotification.second
+    , concurrencyControllerNotification.first, concurrencyControllerNotification.second
+    
+    );
+  iface_->async_tm_getDataByKey0(std::move(callback), std::move(uarg_key));
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -88,7 +125,44 @@ void DbMixedStackArgumentsAsyncProcessor::setUpAndProcess_getDataByKey1(apache::
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void DbMixedStackArgumentsAsyncProcessor::executeRequest_getDataByKey1(apache::thrift::ServerRequest&& /*serverRequest*/) {
+void DbMixedStackArgumentsAsyncProcessor::executeRequest_getDataByKey1(apache::thrift::ServerRequest&& serverRequest) {
+  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
+  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
+  // make sure getRequestContext is null
+  // so async calls don't accidentally use it
+  iface_->setRequestContext(nullptr);
+  DbMixedStackArguments_getDataByKey1_pargs args;
+  auto uarg_key = std::make_unique<::std::string>();
+  args.get<0>().value = uarg_key.get();
+  try {
+    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+  }
+  catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
+    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
+        ew
+        , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+        , nullptr
+        , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+        , "getDataByKey1");
+    return;
+  }
+  auto requestPileNotification = apache::thrift::detail::ServerRequestHelper::requestPileNotification(serverRequest);
+  auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(
+    apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , return_getDataByKey1<ProtocolIn_,ProtocolOut_>
+    , throw_wrapped_getDataByKey1<ProtocolIn_, ProtocolOut_>
+    , serverRequest.requestContext()->getProtoSeqId()
+    , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , serverRequest.requestContext()
+    , requestPileNotification.first, requestPileNotification.second
+    , concurrencyControllerNotification.first, concurrencyControllerNotification.second
+    
+    );
+  iface_->async_tm_getDataByKey1(std::move(callback), std::move(uarg_key));
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>

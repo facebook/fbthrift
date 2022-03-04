@@ -29,7 +29,44 @@ void MyServiceAsyncProcessor::setUpAndProcess_hasDataById(apache::thrift::Respon
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void MyServiceAsyncProcessor::executeRequest_hasDataById(apache::thrift::ServerRequest&& /*serverRequest*/) {
+void MyServiceAsyncProcessor::executeRequest_hasDataById(apache::thrift::ServerRequest&& serverRequest) {
+  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
+  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
+  // make sure getRequestContext is null
+  // so async calls don't accidentally use it
+  iface_->setRequestContext(nullptr);
+  MyService_hasDataById_pargs args;
+  ::std::int64_t uarg_id{0};
+  args.get<0>().value = &uarg_id;
+  try {
+    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+  }
+  catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
+    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
+        ew
+        , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+        , nullptr
+        , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+        , "hasDataById");
+    return;
+  }
+  auto requestPileNotification = apache::thrift::detail::ServerRequestHelper::requestPileNotification(serverRequest);
+  auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(
+    apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , return_hasDataById<ProtocolIn_,ProtocolOut_>
+    , throw_wrapped_hasDataById<ProtocolIn_, ProtocolOut_>
+    , serverRequest.requestContext()->getProtoSeqId()
+    , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , serverRequest.requestContext()
+    , requestPileNotification.first, requestPileNotification.second
+    , concurrencyControllerNotification.first, concurrencyControllerNotification.second
+    
+    );
+  iface_->async_tm_hasDataById(std::move(callback), args.get<0>().ref());
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -91,7 +128,44 @@ void MyServiceAsyncProcessor::setUpAndProcess_getDataById(apache::thrift::Respon
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void MyServiceAsyncProcessor::executeRequest_getDataById(apache::thrift::ServerRequest&& /*serverRequest*/) {
+void MyServiceAsyncProcessor::executeRequest_getDataById(apache::thrift::ServerRequest&& serverRequest) {
+  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
+  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
+  // make sure getRequestContext is null
+  // so async calls don't accidentally use it
+  iface_->setRequestContext(nullptr);
+  MyService_getDataById_pargs args;
+  ::std::int64_t uarg_id{0};
+  args.get<0>().value = &uarg_id;
+  try {
+    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+  }
+  catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
+    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
+        ew
+        , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+        , nullptr
+        , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+        , "getDataById");
+    return;
+  }
+  auto requestPileNotification = apache::thrift::detail::ServerRequestHelper::requestPileNotification(serverRequest);
+  auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::string>>(
+    apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , return_getDataById<ProtocolIn_,ProtocolOut_>
+    , throw_wrapped_getDataById<ProtocolIn_, ProtocolOut_>
+    , serverRequest.requestContext()->getProtoSeqId()
+    , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , serverRequest.requestContext()
+    , requestPileNotification.first, requestPileNotification.second
+    , concurrencyControllerNotification.first, concurrencyControllerNotification.second
+    
+    );
+  iface_->async_tm_getDataById(std::move(callback), args.get<0>().ref());
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -153,7 +227,46 @@ void MyServiceAsyncProcessor::setUpAndProcess_putDataById(apache::thrift::Respon
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void MyServiceAsyncProcessor::executeRequest_putDataById(apache::thrift::ServerRequest&& /*serverRequest*/) {
+void MyServiceAsyncProcessor::executeRequest_putDataById(apache::thrift::ServerRequest&& serverRequest) {
+  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
+  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
+  // make sure getRequestContext is null
+  // so async calls don't accidentally use it
+  iface_->setRequestContext(nullptr);
+  MyService_putDataById_pargs args;
+  ::std::int64_t uarg_id{0};
+  args.get<0>().value = &uarg_id;
+  ::std::string uarg_data;
+  args.get<1>().value = &uarg_data;
+  try {
+    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+  }
+  catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
+    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
+        ew
+        , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+        , nullptr
+        , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+        , "putDataById");
+    return;
+  }
+  auto requestPileNotification = apache::thrift::detail::ServerRequestHelper::requestPileNotification(serverRequest);
+  auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(
+    apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , return_putDataById<ProtocolIn_,ProtocolOut_>
+    , throw_wrapped_putDataById<ProtocolIn_, ProtocolOut_>
+    , serverRequest.requestContext()->getProtoSeqId()
+    , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , serverRequest.requestContext()
+    , requestPileNotification.first, requestPileNotification.second
+    , concurrencyControllerNotification.first, concurrencyControllerNotification.second
+    
+    );
+  iface_->async_tm_putDataById(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -215,7 +328,38 @@ void MyServiceAsyncProcessor::setUpAndProcess_lobDataById(apache::thrift::Respon
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void MyServiceAsyncProcessor::executeRequest_lobDataById(apache::thrift::ServerRequest&& /*serverRequest*/) {
+void MyServiceAsyncProcessor::executeRequest_lobDataById(apache::thrift::ServerRequest&& serverRequest) {
+  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
+  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
+  // make sure getRequestContext is null
+  // so async calls don't accidentally use it
+  iface_->setRequestContext(nullptr);
+  MyService_lobDataById_pargs args;
+  ::std::int64_t uarg_id{0};
+  args.get<0>().value = &uarg_id;
+  ::std::string uarg_data;
+  args.get<1>().value = &uarg_data;
+  try {
+    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+  }
+  catch (const std::exception& ex) {
+    LOG(ERROR) << ex.what() << " in function lobDataById";
+    apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)->runInEventBaseThread([req = apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))] {});
+    return;
+  }
+  auto requestPileNotification = apache::thrift::detail::ServerRequestHelper::requestPileNotification(serverRequest);
+  auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
+  auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(
+    apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+    , nullptr
+    , nullptr
+    , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , serverRequest.requestContext()
+    , requestPileNotification.first, requestPileNotification.second
+    , concurrencyControllerNotification.first, concurrencyControllerNotification.second
+    );
+  iface_->async_tm_lobDataById(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
