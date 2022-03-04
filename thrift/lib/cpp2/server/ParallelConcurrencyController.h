@@ -16,7 +16,7 @@
 
 #include <limits>
 
-#include <folly/Executor.h>
+#include <folly/executors/MeteredExecutor.h>
 #include <folly/lang/Align.h>
 #include <folly/synchronization/RelaxedAtomic.h>
 
@@ -28,7 +28,7 @@ namespace apache::thrift {
 class ParallelConcurrencyController : public ConcurrencyControllerInterface {
  public:
   ParallelConcurrencyController(RequestPileInterface& pile, folly::Executor& ex)
-      : pile_(pile), executor_(ex) {}
+      : pile_(pile), executor_(folly::getKeepAliveToken(ex)) {}
 
   void setExecutionLimitRequests(uint64_t limit) override;
 
@@ -63,7 +63,7 @@ class ParallelConcurrencyController : public ConcurrencyControllerInterface {
       std::numeric_limits<uint64_t>::max()};
 
   RequestPileInterface& pile_;
-  folly::Executor& executor_;
+  folly::MeteredExecutor executor_;
 
   bool trySchedule(bool onEnqueued = false);
 

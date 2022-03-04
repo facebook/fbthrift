@@ -293,8 +293,6 @@ TEST(ParallelConcurrencyControllerTest, DifferentOrdering1) {
   latch.wait();
   EXPECT_EQ(controller.requestCount(), 0);
   EXPECT_EQ(pile.requestCount(), 0);
-
-  ex.stop();
 }
 
 TEST(ParallelConcurrencyControllerTest, DifferentOrdering2) {
@@ -333,6 +331,131 @@ TEST(ParallelConcurrencyControllerTest, DifferentOrdering2) {
   latch.wait();
   EXPECT_EQ(controller.requestCount(), 0);
   EXPECT_EQ(pile.requestCount(), 0);
+}
 
-  ex.stop();
+// This test verifies that tasks added through the underlying executor
+// of the ConcurrencyController will get higher priority than the task
+// added through ConcurrencyController
+// This is mimicing the scenario where one request may spawn other tasks
+// in their handler code and we should execute those first
+TEST(ParallelConcurrencyControllerTest, ExistingTasksHaveHigherPriority) {
+  folly::EventBase eb;
+
+  folly::Baton baton1;
+  folly::Baton baton2;
+  folly::Baton baton3;
+  folly::Baton baton4;
+
+  std::atomic<size_t> counter{0};
+
+  Func task1 = [&](ServerRequest&& /* request */,
+                   const AsyncProcessorFactory::MethodMetadata&) {
+    baton1.wait();
+    ++counter;
+    EXPECT_EQ(counter, 1);
+  };
+  Func task2 = [&](ServerRequest&& /* request */,
+                   const AsyncProcessorFactory::MethodMetadata&) {
+    baton2.wait();
+    ++counter;
+    EXPECT_EQ(counter, 3);
+  };
+  Func task3 = [&](ServerRequest&& /* request */,
+                   const AsyncProcessorFactory::MethodMetadata&) {
+    baton3.wait();
+    ++counter;
+    EXPECT_EQ(counter, 4);
+  };
+  auto task4 = [&] {
+    baton4.wait();
+    ++counter;
+    EXPECT_EQ(counter, 2);
+  };
+
+  folly::Baton baton5;
+  folly::Baton baton6;
+  folly::Baton baton7;
+
+  Func task5 = [&](ServerRequest&& /* request */,
+                   const AsyncProcessorFactory::MethodMetadata&) {
+    baton5.wait();
+    ++counter;
+    EXPECT_EQ(counter, 5);
+  };
+  Func task6 = [&](ServerRequest&& /* request */,
+                   const AsyncProcessorFactory::MethodMetadata&) {
+    baton6.wait();
+    ++counter;
+    EXPECT_EQ(counter, 6);
+  };
+  Func task7 = [&](ServerRequest&& /* request */,
+                   const AsyncProcessorFactory::MethodMetadata&) {
+    baton7.wait();
+    ++counter;
+    EXPECT_EQ(counter, 7);
+  };
+
+  auto ap1 = std::make_unique<MockAsyncProcessor>();
+  ap1->setFunc(task1);
+  auto ap2 = std::make_unique<MockAsyncProcessor>();
+  ap2->setFunc(task2);
+  auto ap3 = std::make_unique<MockAsyncProcessor>();
+  ap3->setFunc(task3);
+
+  auto ap5 = std::make_unique<MockAsyncProcessor>();
+  ap5->setFunc(task5);
+  auto ap6 = std::make_unique<MockAsyncProcessor>();
+  ap6->setFunc(task6);
+  auto ap7 = std::make_unique<MockAsyncProcessor>();
+  ap7->setFunc(task7);
+
+  folly::CPUThreadPoolExecutor ex(1);
+  FIFORequestPile pile;
+  ParallelConcurrencyController controller(pile, ex);
+
+  ResourcePool pool(&pile, &controller);
+
+  // This block is verifying that when a task is added through
+  // underlying executor, it will get higher priority
+  {
+    // task1 is pushed by ConcurrencyController
+    // and gets blocked
+    // This is executed first so counter == 1
+    pool.enqueue(getRequest(ap1.get(), &eb));
+    // task2 is pushed
+    // This is executed last so counter == 3
+    pool.enqueue(getRequest(ap2.get(), &eb));
+    // task2 is pushed
+    // This is executed last so counter == 4
+    pool.enqueue(getRequest(ap3.get(), &eb));
+    // task3 is pushed through executor which should
+    // get higher priority than task2
+    // This is executed before task2 so counter == 2
+    ex.add(task4);
+  }
+
+  // This block is verifying the normal behavior that
+  // tasks added through ConcurrencyController are
+  // executed in order
+  {
+    // task5 is pushed by ConcurrencyController
+    // and gets blocked
+    // This is executed first so counter == 5
+    pool.enqueue(getRequest(ap5.get(), &eb));
+    // task6 is pushed
+    // This is executed last so counter == 6
+    pool.enqueue(getRequest(ap6.get(), &eb));
+    // task7 is pushed
+    // This is executed last so counter == 6
+    pool.enqueue(getRequest(ap7.get(), &eb));
+  }
+
+  baton1.post();
+  baton2.post();
+  baton3.post();
+  baton4.post();
+
+  baton5.post();
+  baton6.post();
+  baton7.post();
 }
