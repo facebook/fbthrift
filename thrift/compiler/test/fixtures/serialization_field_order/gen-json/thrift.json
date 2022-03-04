@@ -88,6 +88,24 @@
           "column" : 21
         }
       }
+    },
+    "TerseWrite" : {
+      "lineno" : 58,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 55,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 60,
+          "column" : 2
+        }
+      }
     }
   }
 }

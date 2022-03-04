@@ -51,3 +51,10 @@ struct Experimental {}
 @Experimental // TODO(afuller): Hook up to code gen.
 @scope.Definition
 struct Deprecated {}
+
+@scope.Field
+@scope.Struct
+@Experimental
+struct TerseWrite {} (
+  thrift.uri = "facebook.com/thrift/annotation/thrift/TerseWrite",
+)

@@ -1,0 +1,2 @@
+mstch_cpp2:terse_writes src/deprecated_terse_write.thrift
+mstch_cpp2 src/terse_write.thrift
