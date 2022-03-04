@@ -26,7 +26,7 @@ namespace detail {
 <%#program:structs%>
 
 template <>
-struct VisitByFieldId<<% > common/namespace_cpp2%><%struct:cpp_name%>> {
+struct VisitByFieldId<<%struct:cpp_fullname%>> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
     switch (fieldId) {
@@ -35,7 +35,7 @@ struct VisitByFieldId<<% > common/namespace_cpp2%><%struct:cpp_name%>> {
       return f(<%field:index%>, static_cast<T&&>(t).<%field:cpp_name%>_ref());
     <%/struct:fields%>
     default:
-      throwInvalidThriftId(fieldId, "<% > common/namespace_cpp2%><%struct:cpp_name%>");
+      throwInvalidThriftId(fieldId, "<%struct:cpp_fullname%>");
     }
   }
 };

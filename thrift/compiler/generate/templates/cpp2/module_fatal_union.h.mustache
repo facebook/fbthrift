@@ -37,7 +37,7 @@ namespace __fbthrift_refl_impl = ::apache::thrift::detail::reflection_impl;
 <%#program:structs%><%#struct:union?%>
 class <%struct:cpp_name%>_tenum_traits {
  public:
-  using type = <% > common/namespace_cpp2%><%struct:cpp_name%>::Type;
+  using type = <%struct:cpp_fullname%>::Type;
 
  private:
   <%#struct:fields%>
@@ -105,7 +105,7 @@ class <%struct:cpp_name%>_variant_traits {
  private:
   struct __fbthrift_ids {
     <%#struct:fields%>
-    using <%field:cpp_name%> = std::integral_constant<<% > common/namespace_cpp2%><%struct:cpp_name%>::Type, <% > common/namespace_cpp2%><%struct:cpp_name%>::Type::<%field:cpp_name%>>;
+    using <%field:cpp_name%> = std::integral_constant<<%struct:cpp_fullname%>::Type, <%struct:cpp_fullname%>::Type::<%field:cpp_name%>>;
     <%/struct:fields%>
   };
 
@@ -117,18 +117,18 @@ class <%struct:cpp_name%>_variant_traits {
     using type_class = <%#field:type%><%type:type_class%><%/field:type%>;
     struct setter {
       template <typename... Args>
-      decltype(auto) operator ()(<% > common/namespace_cpp2%><%struct:cpp_name%> &variant, Args &&...args) const {
+      decltype(auto) operator ()(<%struct:cpp_fullname%> &variant, Args &&...args) const {
         return variant.set_<%field:cpp_name%>(std::forward<Args>(args)...);
       }
     };
     struct getter {
-      decltype(auto) operator ()(<% > common/namespace_cpp2%><%struct:cpp_name%> const &variant) const {
+      decltype(auto) operator ()(<%struct:cpp_fullname%> const &variant) const {
         return variant.get_<%field:cpp_name%>();
       }
-      decltype(auto) operator ()(<% > common/namespace_cpp2%><%struct:cpp_name%> &variant) const {
+      decltype(auto) operator ()(<%struct:cpp_fullname%> &variant) const {
         return variant.mutable_<%field:cpp_name%>();
       }
-      decltype(auto) operator ()(<% > common/namespace_cpp2%><%struct:cpp_name%> &&variant) const {
+      decltype(auto) operator ()(<%struct:cpp_fullname%> &&variant) const {
         return std::move(variant).move_<%field:cpp_name%>();
       }
     };
@@ -136,7 +136,7 @@ class <%struct:cpp_name%>_variant_traits {
   <%/struct:fields%>
 
  public:
-  using type = <% > common/namespace_cpp2%><%struct:cpp_name%>;
+  using type = <%struct:cpp_fullname%>;
   using name = __fbthrift_strings_<%program:name%>::<%struct:name%>;
   using id = type::Type;
   using ids = __fbthrift_ids;

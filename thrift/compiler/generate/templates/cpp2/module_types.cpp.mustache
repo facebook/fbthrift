@@ -58,20 +58,20 @@ FOLLY_GNU_DISABLE_WARNING("-Winvalid-offsetof")
 <%#program:structs%>
 <%^struct:union?%>
 template<>
-constexpr ptrdiff_t fieldOffset<<% > common/namespace_cpp2 %><%struct:cpp_name%>>(std::int16_t fieldIndex) {
+constexpr ptrdiff_t fieldOffset<<%struct:cpp_fullname%>>(std::int16_t fieldIndex) {
   constexpr ptrdiff_t offsets[] = {
     <%#struct:fields_in_key_order%>
-    offsetof(<% > common/namespace_cpp2 %><%struct:cpp_name%>, <%field:cpp_storage_name%>)<%!
+    offsetof(<%struct:cpp_fullname%>, <%field:cpp_storage_name%>)<%!
     %><% > common/comma_newline%><%/struct:fields_in_key_order%>};
   return offsets[fieldIndex];
 }
 
 template<>
-constexpr ptrdiff_t issetOffset<<% > common/namespace_cpp2 %><%struct:cpp_name%>>(std::int16_t fieldIndex) {
+constexpr ptrdiff_t issetOffset<<%struct:cpp_fullname%>>(std::int16_t fieldIndex) {
   constexpr ptrdiff_t offsets[] = {
     <%#struct:fields_in_key_order%>
     <%#field:has_isset?%><%!
-    %>offsetof(<% > common/namespace_cpp2 %><%struct:cpp_name%>, __isset) + isset_bitset<<%struct:isset_fields_size%>>::get_offset() + <%field:isset_index%><%!
+    %>offsetof(<%struct:cpp_fullname%>, __isset) + isset_bitset<<%struct:isset_fields_size%>>::get_offset() + <%field:isset_index%><%!
     %><%/field:has_isset?%><%!
     %><%^field:has_isset?%><%!
     %>0<%/field:has_isset?%><% > common/comma_newline%><%/struct:fields_in_key_order%>};
@@ -81,8 +81,8 @@ constexpr ptrdiff_t issetOffset<<% > common/namespace_cpp2 %><%struct:cpp_name%>
 
 <%#struct:union?%>
 template<>
-constexpr ptrdiff_t unionTypeOffset<<% > common/namespace_cpp2 %><%struct:cpp_name%>>() {
-  return offsetof(<% > common/namespace_cpp2 %><%struct:cpp_name%>, type_);
+constexpr ptrdiff_t unionTypeOffset<<%struct:cpp_fullname%>>() {
+  return offsetof(<%struct:cpp_fullname%>, type_);
 }
 <%/struct:union?%>
 <%/program:structs%>
@@ -181,8 +181,8 @@ template uint32_t <%struct:cpp_name%>::serializedSizeZC<>(apache::thrift::Nimble
 <%#program:tablebased?%>
 <%#struct:union?%>
 constexpr ::apache::thrift::detail::UnionExtN<<%struct:fields_size%>> <%struct:cpp_name%>_unionExt = {
-  /* .clear */ ::apache::thrift::detail::clearUnion<<% > common/namespace_cpp2 %><%struct:cpp_name%>>,
-  /* .unionTypeOffset */ ::apache::thrift::detail::unionTypeOffset<<% > common/namespace_cpp2 %><%struct:cpp_name%>>(),
+  /* .clear */ ::apache::thrift::detail::clearUnion<<%struct:cpp_fullname%>>,
+  /* .unionTypeOffset */ ::apache::thrift::detail::unionTypeOffset<<%struct:cpp_fullname%>>(),
   /* .getActiveId */ nullptr,
   /* .setActiveId */ nullptr,
   /* .initMember */ {
@@ -210,9 +210,9 @@ constexpr ::apache::thrift::detail::StructInfoN<<%struct:fields_size%>> __fbthri
     /* .name */ "<%field:name%>",
     /* .memberOffset */ <%!
     %><%#struct:union?%>0<%/struct:union?%><%!
-    %><%^struct:union?%>::apache::thrift::detail::fieldOffset<<% > common/namespace_cpp2 %><%struct:cpp_name%>>(<%field:index%>)<%/struct:union?%>,<%!
+    %><%^struct:union?%>::apache::thrift::detail::fieldOffset<<%struct:cpp_fullname%>>(<%field:index%>)<%/struct:union?%>,<%!
     %><%^struct:union?%>
-    /* .issetOffset */ ::apache::thrift::detail::issetOffset<<% > common/namespace_cpp2 %><%struct:cpp_name%>>(<%field:index%>),<%!
+    /* .issetOffset */ ::apache::thrift::detail::issetOffset<<%struct:cpp_fullname%>>(<%field:index%>),<%!
     %><%/struct:union?%><%!
     %><%#struct:union?%>
     /* .issetOffset */ 0,<%!
@@ -264,7 +264,7 @@ FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 <%#program:structs%><%#struct:fields%>
 <%#field:cpp_adapter%><%#field:type%>
   ::apache::thrift::adapt_detail::validateFieldAdapter<<%!
-      %><%field:cpp_adapter%>, <%field:key%>, <%type:cpp_standard_type%>, <% > common/namespace_cpp2 %><%struct:cpp_name%>>();
+      %><%field:cpp_adapter%>, <%field:key%>, <%type:cpp_standard_type%>, <%struct:cpp_fullname%>>();
 <%/field:type%><%/field:cpp_adapter%>
 <%/struct:fields%><%/program:structs%>
 <%#program:typedefs%><%#typedef:type%>
@@ -294,7 +294,7 @@ const ::apache::thrift::detail::TypeInfo TypeToInfo<
 <%#program:structs%>
 const ::apache::thrift::detail::TypeInfo TypeToInfo<
   ::apache::thrift::type_class::<%#struct:union?%>variant<%/struct:union?%><%^struct:union?%>structure<%/struct:union?%>,
-  <% > common/namespace_cpp2 %><%struct:cpp_name%>>::typeInfo = {
+  <%struct:cpp_fullname%>>::typeInfo = {
   /* .type */ ::apache::thrift::protocol::TType::T_STRUCT,
   /* .get */ nullptr,
   /* .set */ nullptr,

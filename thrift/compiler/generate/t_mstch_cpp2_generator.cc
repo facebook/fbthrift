@@ -869,6 +869,7 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:nondefault_copy_ctor_and_assignment?",
              &mstch_cpp2_struct::nondefault_copy_ctor_and_assignment},
             {"struct:cpp_name", &mstch_cpp2_struct::cpp_name},
+            {"struct:cpp_fullname", &mstch_cpp2_struct::cpp_fullname},
             {"struct:cpp_methods", &mstch_cpp2_struct::cpp_methods},
             {"struct:cpp_declare_hash", &mstch_cpp2_struct::cpp_declare_hash},
             {"struct:cpp_declare_equal_to",
@@ -968,6 +969,10 @@ class mstch_cpp2_struct : public mstch_struct {
     return false;
   }
   mstch::node cpp_name() { return cpp2::get_name(strct_); }
+  mstch::node cpp_fullname() {
+    return context_->resolver().get_namespaced_name(
+        *strct_->get_program(), *strct_);
+  }
 
   mstch::node cpp_methods() {
     return strct_->get_annotation({"cpp.methods", "cpp2.methods"});

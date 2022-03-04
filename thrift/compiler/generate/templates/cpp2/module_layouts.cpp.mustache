@@ -23,45 +23,45 @@ namespace apache { namespace thrift { namespace frozen {
 <%#program:structs%>
 <%^struct:cpp_frozen2_exclude?%>
 <%^struct:union?%>
-FROZEN_CTOR(<% > common/namespace_cpp2%><%struct:cpp_name%>,<%!
+FROZEN_CTOR(<%struct:cpp_fullname%>,<%!
 %><%#struct:fields%>
   FROZEN_CTOR_FIELD<% > common/field_suffix%>(<%field:cpp_name%>, <%field:key%>)<%!
 %><%/struct:fields%>)
-FROZEN_MAXIMIZE(<% > common/namespace_cpp2%><%struct:cpp_name%>,<%!
+FROZEN_MAXIMIZE(<%struct:cpp_fullname%>,<%!
 %><%#struct:fields%>
   FROZEN_MAXIMIZE_FIELD(<%field:cpp_name%>)<%!
 %><%/struct:fields%>)
-FROZEN_LAYOUT(<% > common/namespace_cpp2%><%struct:cpp_name%>,<%!
+FROZEN_LAYOUT(<%struct:cpp_fullname%>,<%!
 %><%#struct:fields%>
   FROZEN_LAYOUT_FIELD<% > common/field_suffix%>(<%field:cpp_name%>)<%!
 %><%/struct:fields%>)
-FROZEN_FREEZE(<% > common/namespace_cpp2%><%struct:cpp_name%>,<%!
+FROZEN_FREEZE(<%struct:cpp_fullname%>,<%!
 %><%#struct:fields%>
   FROZEN_FREEZE_FIELD<% > common/field_suffix%>(<%field:cpp_name%>)<%!
 %><%/struct:fields%>)
-FROZEN_THAW(<% > common/namespace_cpp2%><%struct:cpp_name%>,<%!
+FROZEN_THAW(<%struct:cpp_fullname%>,<%!
 %><%#struct:fields%>
   FROZEN_THAW_FIELD<% > common/field_suffix%>(<%field:cpp_name%>)<%!
 %><%/struct:fields%>)
-FROZEN_DEBUG(<% > common/namespace_cpp2%><%struct:cpp_name%>,<%!
+FROZEN_DEBUG(<%struct:cpp_fullname%>,<%!
 %><%#struct:fields%>
   FROZEN_DEBUG_FIELD(<%field:cpp_name%>)<%!
 %><%/struct:fields%>)
-FROZEN_CLEAR(<% > common/namespace_cpp2%><%struct:cpp_name%>,<%!
+FROZEN_CLEAR(<%struct:cpp_fullname%>,<%!
 %><%#struct:fields%>
   FROZEN_CLEAR_FIELD(<%field:cpp_name%>)<%!
 %><%/struct:fields%>)
 <%/struct:union?%>
 
 <%#struct:union?%>
-FROZEN_CTOR(<% > common/namespace_cpp2%><%struct:cpp_name%>,<%!
+FROZEN_CTOR(<%struct:cpp_fullname%>,<%!
 %>
   FROZEN_CTOR_FIELD(type_, 0)<%!
 %><%#struct:fields%>
   FROZEN_CTOR_FIELD<% > common/frozen2_union_field_suffix%>(<%field:cpp_name%>, <%field:key%>)<%!
 %><%/struct:fields%>)
 
-FROZEN_MAXIMIZE(<% > common/namespace_cpp2%><%struct:cpp_name%>,<%!
+FROZEN_MAXIMIZE(<%struct:cpp_fullname%>,<%!
 %>
   FROZEN_MAXIMIZE_FIELD(type_)<%!
 %><%#struct:fields%>
@@ -75,13 +75,13 @@ FROZEN_MAXIMIZE(<% > common/namespace_cpp2%><%struct:cpp_name%>,<%!
 
 <% > module_layouts_cpp/frozen_thaw_union%>
 
-FROZEN_DEBUG(<% > common/namespace_cpp2%><%struct:cpp_name%>,<%!
+FROZEN_DEBUG(<%struct:cpp_fullname%>,<%!
 %>
   FROZEN_DEBUG_FIELD(type_)<%!
 %><%#struct:fields%>
   FROZEN_DEBUG_FIELD(<%field:cpp_name%>)<%!
 %><%/struct:fields%>)
-FROZEN_CLEAR(<% > common/namespace_cpp2%><%struct:cpp_name%>,<%!
+FROZEN_CLEAR(<%struct:cpp_fullname%>,<%!
 %>
   FROZEN_CLEAR_FIELD(type_)<%!
 %><%#struct:fields%>
