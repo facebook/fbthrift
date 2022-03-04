@@ -49,9 +49,9 @@ StructMetadata<::cpp2::SomeStruct>::gen(ThriftMetadata& metadata) {
   module_SomeStruct.is_union_ref() = false;
   static const EncodedThriftField
   module_SomeStruct_fields[] = {
-    {1, "reasonable", false, std::make_unique<Enum< ::cpp2::Metasyntactic>>("module.Metasyntactic"), std::vector<ThriftConstStruct>{}},
-    {2, "fine", false, std::make_unique<Enum< ::cpp2::Metasyntactic>>("module.Metasyntactic"), std::vector<ThriftConstStruct>{}},
-    {3, "questionable", false, std::make_unique<Enum< ::cpp2::Metasyntactic>>("module.Metasyntactic"), std::vector<ThriftConstStruct>{}},
+    {1, "reasonable", false, std::make_unique<Enum<::cpp2::Metasyntactic>>("module.Metasyntactic"), std::vector<ThriftConstStruct>{}},
+    {2, "fine", false, std::make_unique<Enum<::cpp2::Metasyntactic>>("module.Metasyntactic"), std::vector<ThriftConstStruct>{}},
+    {3, "questionable", false, std::make_unique<Enum<::cpp2::Metasyntactic>>("module.Metasyntactic"), std::vector<ThriftConstStruct>{}},
     {4, "tags", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_SomeStruct_fields) {

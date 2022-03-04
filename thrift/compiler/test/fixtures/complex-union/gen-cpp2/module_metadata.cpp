@@ -142,8 +142,8 @@ StructMetadata<::cpp2::ValUnion>::gen(ThriftMetadata& metadata) {
   module_ValUnion.is_union_ref() = true;
   static const EncodedThriftField
   module_ValUnion_fields[] = {
-    {1, "v1", false, std::make_unique<Struct< ::cpp2::Val>>("module.Val"), std::vector<ThriftConstStruct>{}},
-    {2, "v2", false, std::make_unique<Struct< ::cpp2::Val>>("module.Val"), std::vector<ThriftConstStruct>{}},
+    {1, "v1", false, std::make_unique<Struct<::cpp2::Val>>("module.Val"), std::vector<ThriftConstStruct>{}},
+    {2, "v2", false, std::make_unique<Struct<::cpp2::Val>>("module.Val"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_ValUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -216,7 +216,7 @@ StructMetadata<::cpp2::NonCopyableUnion>::gen(ThriftMetadata& metadata) {
   module_NonCopyableUnion.is_union_ref() = true;
   static const EncodedThriftField
   module_NonCopyableUnion_fields[] = {
-    {1, "s", false, std::make_unique<Struct< ::cpp2::NonCopyableStruct>>("module.NonCopyableStruct"), std::vector<ThriftConstStruct>{}},
+    {1, "s", false, std::make_unique<Struct<::cpp2::NonCopyableStruct>>("module.NonCopyableStruct"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_NonCopyableUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;

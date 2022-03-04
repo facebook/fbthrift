@@ -75,7 +75,7 @@ StructMetadata<::cpp2::Internship>::gen(ThriftMetadata& metadata) {
   module_Internship_fields[] = {
     {1, "weeks", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "title", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-    {3, "employer", true, std::make_unique<Enum< ::cpp2::Company>>("module.Company"), std::vector<ThriftConstStruct>{}},
+    {3, "employer", true, std::make_unique<Enum<::cpp2::Company>>("module.Company"), std::vector<ThriftConstStruct>{}},
     {4, "compensation", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}},
     {5, "school", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
   };
@@ -153,7 +153,7 @@ StructMetadata<::cpp2::struct2>::gen(ThriftMetadata& metadata) {
   module_struct2_fields[] = {
     {1, "a", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "b", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-    {3, "c", false, std::make_unique<Struct< ::cpp2::struct1>>("module.struct1"), std::vector<ThriftConstStruct>{}},
+    {3, "c", false, std::make_unique<Struct<::cpp2::struct1>>("module.struct1"), std::vector<ThriftConstStruct>{}},
     {4, "d", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_struct2_fields) {
@@ -180,7 +180,7 @@ StructMetadata<::cpp2::struct3>::gen(ThriftMetadata& metadata) {
   module_struct3_fields[] = {
     {1, "a", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "b", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
-    {3, "c", false, std::make_unique<Struct< ::cpp2::struct2>>("module.struct2"), std::vector<ThriftConstStruct>{}},
+    {3, "c", false, std::make_unique<Struct<::cpp2::struct2>>("module.struct2"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_struct3_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -257,8 +257,8 @@ StructMetadata<::cpp2::union2>::gen(ThriftMetadata& metadata) {
   module_union2_fields[] = {
     {1, "i", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "d", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}},
-    {3, "s", false, std::make_unique<Struct< ::cpp2::struct1>>("module.struct1"), std::vector<ThriftConstStruct>{}},
-    {4, "u", false, std::make_unique<Union< ::cpp2::union1>>("module.union1"), std::vector<ThriftConstStruct>{}},
+    {3, "s", false, std::make_unique<Struct<::cpp2::struct1>>("module.struct1"), std::vector<ThriftConstStruct>{}},
+    {4, "u", false, std::make_unique<Union<::cpp2::union1>>("module.union1"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_union2_fields) {
     ::apache::thrift::metadata::ThriftField field;

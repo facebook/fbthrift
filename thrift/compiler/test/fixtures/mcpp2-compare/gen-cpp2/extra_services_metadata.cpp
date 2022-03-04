@@ -82,18 +82,18 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_throws_function(Thrift
   extra_services_ExtraService_throws_function_ex_1.id_ref() = 1;
   extra_services_ExtraService_throws_function_ex_1.name_ref() = "ex";
   extra_services_ExtraService_throws_function_ex_1.is_optional_ref() = false;
-  auto extra_services_ExtraService_throws_function_ex_1_type = std::make_unique<Struct< ::some::valid::ns::AnException>>("module.AnException");
+  auto extra_services_ExtraService_throws_function_ex_1_type = std::make_unique<Struct<::some::valid::ns::AnException>>("module.AnException");
   extra_services_ExtraService_throws_function_ex_1_type->writeAndGenType(*extra_services_ExtraService_throws_function_ex_1.type_ref(), metadata);
   func.exceptions_ref()->push_back(std::move(extra_services_ExtraService_throws_function_ex_1));
-  ExceptionMetadata< ::some::valid::ns::AnException>::gen(metadata);
+  ExceptionMetadata<::some::valid::ns::AnException>::gen(metadata);
   ::apache::thrift::metadata::ThriftField extra_services_ExtraService_throws_function_aex_2;
   extra_services_ExtraService_throws_function_aex_2.id_ref() = 2;
   extra_services_ExtraService_throws_function_aex_2.name_ref() = "aex";
   extra_services_ExtraService_throws_function_aex_2.is_optional_ref() = false;
-  auto extra_services_ExtraService_throws_function_aex_2_type = std::make_unique<Struct< ::some::valid::ns::AnotherException>>("module.AnotherException");
+  auto extra_services_ExtraService_throws_function_aex_2_type = std::make_unique<Struct<::some::valid::ns::AnotherException>>("module.AnotherException");
   extra_services_ExtraService_throws_function_aex_2_type->writeAndGenType(*extra_services_ExtraService_throws_function_aex_2.type_ref(), metadata);
   func.exceptions_ref()->push_back(std::move(extra_services_ExtraService_throws_function_aex_2));
-  ExceptionMetadata< ::some::valid::ns::AnotherException>::gen(metadata);
+  ExceptionMetadata<::some::valid::ns::AnotherException>::gen(metadata);
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
@@ -114,18 +114,18 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_throws_function2(Thrif
   extra_services_ExtraService_throws_function2_ex_1.id_ref() = 1;
   extra_services_ExtraService_throws_function2_ex_1.name_ref() = "ex";
   extra_services_ExtraService_throws_function2_ex_1.is_optional_ref() = false;
-  auto extra_services_ExtraService_throws_function2_ex_1_type = std::make_unique<Struct< ::some::valid::ns::AnException>>("module.AnException");
+  auto extra_services_ExtraService_throws_function2_ex_1_type = std::make_unique<Struct<::some::valid::ns::AnException>>("module.AnException");
   extra_services_ExtraService_throws_function2_ex_1_type->writeAndGenType(*extra_services_ExtraService_throws_function2_ex_1.type_ref(), metadata);
   func.exceptions_ref()->push_back(std::move(extra_services_ExtraService_throws_function2_ex_1));
-  ExceptionMetadata< ::some::valid::ns::AnException>::gen(metadata);
+  ExceptionMetadata<::some::valid::ns::AnException>::gen(metadata);
   ::apache::thrift::metadata::ThriftField extra_services_ExtraService_throws_function2_aex_2;
   extra_services_ExtraService_throws_function2_aex_2.id_ref() = 2;
   extra_services_ExtraService_throws_function2_aex_2.name_ref() = "aex";
   extra_services_ExtraService_throws_function2_aex_2.is_optional_ref() = false;
-  auto extra_services_ExtraService_throws_function2_aex_2_type = std::make_unique<Struct< ::some::valid::ns::AnotherException>>("module.AnotherException");
+  auto extra_services_ExtraService_throws_function2_aex_2_type = std::make_unique<Struct<::some::valid::ns::AnotherException>>("module.AnotherException");
   extra_services_ExtraService_throws_function2_aex_2_type->writeAndGenType(*extra_services_ExtraService_throws_function2_aex_2.type_ref(), metadata);
   func.exceptions_ref()->push_back(std::move(extra_services_ExtraService_throws_function2_aex_2));
-  ExceptionMetadata< ::some::valid::ns::AnotherException>::gen(metadata);
+  ExceptionMetadata<::some::valid::ns::AnotherException>::gen(metadata);
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
@@ -153,18 +153,18 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_throws_function3(Thrif
   extra_services_ExtraService_throws_function3_ex_2.id_ref() = 2;
   extra_services_ExtraService_throws_function3_ex_2.name_ref() = "ex";
   extra_services_ExtraService_throws_function3_ex_2.is_optional_ref() = false;
-  auto extra_services_ExtraService_throws_function3_ex_2_type = std::make_unique<Struct< ::some::valid::ns::AnException>>("module.AnException");
+  auto extra_services_ExtraService_throws_function3_ex_2_type = std::make_unique<Struct<::some::valid::ns::AnException>>("module.AnException");
   extra_services_ExtraService_throws_function3_ex_2_type->writeAndGenType(*extra_services_ExtraService_throws_function3_ex_2.type_ref(), metadata);
   func.exceptions_ref()->push_back(std::move(extra_services_ExtraService_throws_function3_ex_2));
-  ExceptionMetadata< ::some::valid::ns::AnException>::gen(metadata);
+  ExceptionMetadata<::some::valid::ns::AnException>::gen(metadata);
   ::apache::thrift::metadata::ThriftField extra_services_ExtraService_throws_function3_aex_5;
   extra_services_ExtraService_throws_function3_aex_5.id_ref() = 5;
   extra_services_ExtraService_throws_function3_aex_5.name_ref() = "aex";
   extra_services_ExtraService_throws_function3_aex_5.is_optional_ref() = false;
-  auto extra_services_ExtraService_throws_function3_aex_5_type = std::make_unique<Struct< ::some::valid::ns::AnotherException>>("module.AnotherException");
+  auto extra_services_ExtraService_throws_function3_aex_5_type = std::make_unique<Struct<::some::valid::ns::AnotherException>>("module.AnotherException");
   extra_services_ExtraService_throws_function3_aex_5_type->writeAndGenType(*extra_services_ExtraService_throws_function3_aex_5.type_ref(), metadata);
   func.exceptions_ref()->push_back(std::move(extra_services_ExtraService_throws_function3_aex_5));
-  ExceptionMetadata< ::some::valid::ns::AnotherException>::gen(metadata);
+  ExceptionMetadata<::some::valid::ns::AnotherException>::gen(metadata);
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
@@ -254,7 +254,7 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_oneway_void_ret_struct
   extra_services_ExtraService_oneway_void_ret_struct_param_param1_1.id_ref() = 1;
   extra_services_ExtraService_oneway_void_ret_struct_param_param1_1.name_ref() = "param1";
   extra_services_ExtraService_oneway_void_ret_struct_param_param1_1.is_optional_ref() = false;
-  auto extra_services_ExtraService_oneway_void_ret_struct_param_param1_1_type = std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct");
+  auto extra_services_ExtraService_oneway_void_ret_struct_param_param1_1_type = std::make_unique<Struct<::some::valid::ns::MyStruct>>("module.MyStruct");
   extra_services_ExtraService_oneway_void_ret_struct_param_param1_1_type->writeAndGenType(*extra_services_ExtraService_oneway_void_ret_struct_param_param1_1.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(extra_services_ExtraService_oneway_void_ret_struct_param_param1_1));
   func.is_oneway_ref() = true;
@@ -270,7 +270,7 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_oneway_void_ret_listun
   extra_services_ExtraService_oneway_void_ret_listunion_param_param1_1.id_ref() = 1;
   extra_services_ExtraService_oneway_void_ret_listunion_param_param1_1.name_ref() = "param1";
   extra_services_ExtraService_oneway_void_ret_listunion_param_param1_1.is_optional_ref() = false;
-  auto extra_services_ExtraService_oneway_void_ret_listunion_param_param1_1_type = std::make_unique<List>(std::make_unique<Union< ::some::valid::ns::ComplexUnion>>("module.ComplexUnion"));
+  auto extra_services_ExtraService_oneway_void_ret_listunion_param_param1_1_type = std::make_unique<List>(std::make_unique<Union<::some::valid::ns::ComplexUnion>>("module.ComplexUnion"));
   extra_services_ExtraService_oneway_void_ret_listunion_param_param1_1_type->writeAndGenType(*extra_services_ExtraService_oneway_void_ret_listunion_param_param1_1.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(extra_services_ExtraService_oneway_void_ret_listunion_param_param1_1));
   func.is_oneway_ref() = true;

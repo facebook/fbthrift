@@ -69,11 +69,11 @@ StructMetadata<::apache::thrift::test::EmptiableStruct>::gen(ThriftMetadata& met
     {7, "double_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}},
     {8, "string_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {9, "binary_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}},
-    {10, "MyEnum", false, std::make_unique<Enum< ::apache::thrift::test::MyEnum>>("simple_terse_writes.MyEnum"), std::vector<ThriftConstStruct>{}},
+    {10, "MyEnum", false, std::make_unique<Enum<::apache::thrift::test::MyEnum>>("simple_terse_writes.MyEnum"), std::vector<ThriftConstStruct>{}},
     {11, "list_field", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {12, "set_field", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {13, "map_field", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
-    {14, "struct_field", true, std::make_unique<Struct< ::apache::thrift::test::MyStruct>>("simple_terse_writes.MyStruct"), std::vector<ThriftConstStruct>{}},
+    {14, "struct_field", true, std::make_unique<Struct<::apache::thrift::test::MyStruct>>("simple_terse_writes.MyStruct"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : simple_terse_writes_EmptiableStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -106,11 +106,11 @@ StructMetadata<::apache::thrift::test::NotEmptiableStruct>::gen(ThriftMetadata& 
     {7, "double_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}},
     {8, "string_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {9, "binary_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}},
-    {10, "MyEnum", false, std::make_unique<Enum< ::apache::thrift::test::MyEnum>>("simple_terse_writes.MyEnum"), std::vector<ThriftConstStruct>{}},
+    {10, "MyEnum", false, std::make_unique<Enum<::apache::thrift::test::MyEnum>>("simple_terse_writes.MyEnum"), std::vector<ThriftConstStruct>{}},
     {11, "list_field", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {12, "set_field", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {13, "map_field", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
-    {14, "struct_field", false, std::make_unique<Struct< ::apache::thrift::test::MyStruct>>("simple_terse_writes.MyStruct"), std::vector<ThriftConstStruct>{}},
+    {14, "struct_field", false, std::make_unique<Struct<::apache::thrift::test::MyStruct>>("simple_terse_writes.MyStruct"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : simple_terse_writes_NotEmptiableStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;

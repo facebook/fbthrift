@@ -188,8 +188,8 @@ StructMetadata<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>::g
   module_MyStructWithForwardRefEnum.is_union_ref() = false;
   static const EncodedThriftField
   module_MyStructWithForwardRefEnum_fields[] = {
-    {1, "a", false, std::make_unique<Typedef>("module.MyForwardRefEnum", std::make_unique<Enum< ::apache::thrift::fixtures::types::MyForwardRefEnum>>("module.MyForwardRefEnum"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
-    {2, "b", false, std::make_unique<Typedef>("module.MyForwardRefEnum", std::make_unique<Enum< ::apache::thrift::fixtures::types::MyForwardRefEnum>>("module.MyForwardRefEnum"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {1, "a", false, std::make_unique<Typedef>("module.MyForwardRefEnum", std::make_unique<Enum<::apache::thrift::fixtures::types::MyForwardRefEnum>>("module.MyForwardRefEnum"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {2, "b", false, std::make_unique<Typedef>("module.MyForwardRefEnum", std::make_unique<Enum<::apache::thrift::fixtures::types::MyForwardRefEnum>>("module.MyForwardRefEnum"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_MyStructWithForwardRefEnum_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -239,7 +239,7 @@ StructMetadata<::apache::thrift::fixtures::types::TrivialNestedWithDefault>::gen
   static const EncodedThriftField
   module_TrivialNestedWithDefault_fields[] = {
     {1, "z", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
-    {2, "n", false, std::make_unique<Struct< ::apache::thrift::fixtures::types::TrivialNumeric>>("module.TrivialNumeric"), std::vector<ThriftConstStruct>{}},
+    {2, "n", false, std::make_unique<Struct<::apache::thrift::fixtures::types::TrivialNumeric>>("module.TrivialNumeric"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_TrivialNestedWithDefault_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -289,7 +289,7 @@ StructMetadata<::apache::thrift::fixtures::types::ComplexNestedWithDefault>::gen
   static const EncodedThriftField
   module_ComplexNestedWithDefault_fields[] = {
     {1, "z", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-    {2, "n", false, std::make_unique<Struct< ::apache::thrift::fixtures::types::ComplexString>>("module.ComplexString"), std::vector<ThriftConstStruct>{}},
+    {2, "n", false, std::make_unique<Struct<::apache::thrift::fixtures::types::ComplexString>>("module.ComplexString"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_ComplexNestedWithDefault_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -355,7 +355,7 @@ StructMetadata<::apache::thrift::fixtures::types::MyStruct>::gen(ThriftMetadata&
     {1, "MyIntField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "MyStringField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "majorVer", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}},
-    {4, "data", false, std::make_unique<Typedef>("module.MyDataItem", std::make_unique<Struct< ::apache::thrift::fixtures::types::MyDataItem>>("module.MyDataItem"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {4, "data", false, std::make_unique<Typedef>("module.MyDataItem", std::make_unique<Struct<::apache::thrift::fixtures::types::MyDataItem>>("module.MyDataItem"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -428,7 +428,7 @@ StructMetadata<::apache::thrift::fixtures::types::ForwardUsageStruct>::gen(Thrif
   module_ForwardUsageStruct.is_union_ref() = false;
   static const EncodedThriftField
   module_ForwardUsageStruct_fields[] = {
-    {1, "foo", true, std::make_unique<Struct< ::apache::thrift::fixtures::types::ForwardUsageRoot>>("module.ForwardUsageRoot"), std::vector<ThriftConstStruct>{}},
+    {1, "foo", true, std::make_unique<Struct<::apache::thrift::fixtures::types::ForwardUsageRoot>>("module.ForwardUsageRoot"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_ForwardUsageStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -452,8 +452,8 @@ StructMetadata<::apache::thrift::fixtures::types::ForwardUsageRoot>::gen(ThriftM
   module_ForwardUsageRoot.is_union_ref() = false;
   static const EncodedThriftField
   module_ForwardUsageRoot_fields[] = {
-    {1, "ForwardUsageStruct", true, std::make_unique<Typedef>("module.ForwardUsageStruct", std::make_unique<Struct< ::apache::thrift::fixtures::types::ForwardUsageStruct>>("module.ForwardUsageStruct"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
-    {2, "ForwardUsageByRef", true, std::make_unique<Typedef>("module.ForwardUsageByRef", std::make_unique<Struct< ::apache::thrift::fixtures::types::ForwardUsageByRef>>("module.ForwardUsageByRef"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {1, "ForwardUsageStruct", true, std::make_unique<Typedef>("module.ForwardUsageStruct", std::make_unique<Struct<::apache::thrift::fixtures::types::ForwardUsageStruct>>("module.ForwardUsageStruct"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {2, "ForwardUsageByRef", true, std::make_unique<Typedef>("module.ForwardUsageByRef", std::make_unique<Struct<::apache::thrift::fixtures::types::ForwardUsageByRef>>("module.ForwardUsageByRef"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_ForwardUsageRoot_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -477,7 +477,7 @@ StructMetadata<::apache::thrift::fixtures::types::ForwardUsageByRef>::gen(Thrift
   module_ForwardUsageByRef.is_union_ref() = false;
   static const EncodedThriftField
   module_ForwardUsageByRef_fields[] = {
-    {1, "foo", true, std::make_unique<Struct< ::apache::thrift::fixtures::types::ForwardUsageRoot>>("module.ForwardUsageRoot"), std::vector<ThriftConstStruct>{}},
+    {1, "foo", true, std::make_unique<Struct<::apache::thrift::fixtures::types::ForwardUsageRoot>>("module.ForwardUsageRoot"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_ForwardUsageByRef_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -544,7 +544,7 @@ StructMetadata<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct>::ge
     {6, "MyBinaryField2", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}},
     {7, "MyBinaryField3", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}},
     {8, "MyBinaryListField4", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)), std::vector<ThriftConstStruct>{}},
-    {9, "MyMapEnumAndInt", false, std::make_unique<Map>(std::make_unique<Enum< ::apache::thrift::fixtures::types::MyEnumA>>("module.MyEnumA"), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
+    {9, "MyMapEnumAndInt", false, std::make_unique<Map>(std::make_unique<Enum<::apache::thrift::fixtures::types::MyEnumA>>("module.MyEnumA"), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_NoexceptMoveComplexStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;

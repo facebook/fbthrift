@@ -181,10 +181,10 @@ void ServiceMetadata<::cpp2::CSvIf>::gen_thing(ThriftMetadata& metadata, ThriftS
   module_C_thing_bang_1.id_ref() = 1;
   module_C_thing_bang_1.name_ref() = "bang";
   module_C_thing_bang_1.is_optional_ref() = false;
-  auto module_C_thing_bang_1_type = std::make_unique<Struct< ::cpp2::Bang>>("module.Bang");
+  auto module_C_thing_bang_1_type = std::make_unique<Struct<::cpp2::Bang>>("module.Bang");
   module_C_thing_bang_1_type->writeAndGenType(*module_C_thing_bang_1.type_ref(), metadata);
   func.exceptions_ref()->push_back(std::move(module_C_thing_bang_1));
-  ExceptionMetadata< ::cpp2::Bang>::gen(metadata);
+  ExceptionMetadata<::cpp2::Bang>::gen(metadata);
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
