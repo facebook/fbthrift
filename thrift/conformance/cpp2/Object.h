@@ -38,14 +38,12 @@ Value asValueStruct(T&& value) {
 // into conformance::Object
 // Protocol: protocol to use eg. apache::thrift::BinaryProtocolReader
 // buf: serialized payload
-// Works for binary, compact and json protocol. Does not work for SimpleJson
-// protocol as it does not save fieldID and field type information in serialized
-// data. There is no difference in serialized data for binary and string field
-// for protocols except Json protocol. In Json protocol, binary field value is
-// base64 encoded, while a string will be written as is. This method cannot not
-// differentiate between binary and string field as both are marked as string
-// field type in serialized data. Binary fields are saved in stringValue field
-// of Object instead of binaryValue field.
+// Works for binary, compact. Does not work for SimpleJson protocol as it does
+// not save fieldID and field type information in serialized data. Does not work
+// with json protocol because both binary & string is marked as T_STRING type in
+// serailized data but both are encoded differently. Binary is base64 encoded
+// and string is written as is. So during deserialization we cannot decode it
+// correctly without schema. String fields are currently saved in binaryValue.
 template <class Protocol>
 Object parseObject(const folly::IOBuf& buf) {
   Protocol prot;
@@ -58,7 +56,7 @@ Object parseObject(const folly::IOBuf& buf) {
 // into thrift serialization protocol
 // Protocol: protocol to use eg. apache::thrift::BinaryProtocolWriter
 // obj: object to be serialized
-// Serialized output is same schema based serialization except when struct
+// Serialized output is same as schema based serialization except when struct
 // contains an empty list, set or map
 template <class Protocol>
 std::unique_ptr<folly::IOBuf> serializeObject(const Object& obj) {

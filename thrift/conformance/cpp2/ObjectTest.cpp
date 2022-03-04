@@ -233,7 +233,7 @@ TEST(ObjectTest, Struct) {
   EXPECT_EQ(
       object.members_ref()->at(1),
       asValueStruct<type::enum_c>(StandardProtocol::Custom));
-  EXPECT_EQ(object.members_ref()->at(2), asValueStruct<type::string_t>("hi"));
+  EXPECT_EQ(object.members_ref()->at(2), asValueStruct<type::binary_t>("hi"));
 }
 
 TEST(ObjectTest, StructWithList) {
@@ -257,7 +257,7 @@ TEST(ObjectTest, StructWithMap) {
   ASSERT_EQ(value.getType(), Value::objectValue);
   const Object& object = value.get_objectValue();
   EXPECT_EQ(object.members_ref()->size(), 1);
-  auto val = asValueStruct<type::map<type::string_t, type::i32_t>>(mapValues);
+  auto val = asValueStruct<type::map<type::binary_t, type::i32_t>>(mapValues);
   EXPECT_EQ(object.members_ref()->at(1), val);
 }
 
@@ -414,8 +414,7 @@ using ParseObjectTestCases = ::testing::Types<
     type::i64_t,
     type::float_t,
     type::double_t,
-    // binary_t, conformance::object has separate binary value but
-    // BinarySerializer serializes with type set as T_STRING
+    type::binary_t,
     type::string_t,
     type::list<type::i64_t>,
     type::list<type::string_t>,
@@ -437,19 +436,11 @@ TYPED_TEST(TypedParseObjectTest, ParseSerializedSameAsDirectObject) {
       TypeParam,
       testset::struct_with<TypeParam>>();
   testParseObject<
-      StandardProtocol::Json,
-      TypeParam,
-      testset::struct_with<TypeParam>>();
-  testParseObject<
       StandardProtocol::Binary,
       TypeParam,
       testset::union_with<TypeParam>>();
   testParseObject<
       StandardProtocol::Compact,
-      TypeParam,
-      testset::union_with<TypeParam>>();
-  testParseObject<
-      StandardProtocol::Json,
       TypeParam,
       testset::union_with<TypeParam>>();
 }
@@ -464,19 +455,11 @@ TYPED_TEST(TypedParseObjectTest, SerializeObjectSameAsDirectSerialization) {
       TypeParam,
       testset::struct_with<TypeParam>>();
   testSerializeObject<
-      StandardProtocol::Json,
-      TypeParam,
-      testset::struct_with<TypeParam>>();
-  testSerializeObject<
       StandardProtocol::Binary,
       TypeParam,
       testset::union_with<TypeParam>>();
   testSerializeObject<
       StandardProtocol::Compact,
-      TypeParam,
-      testset::union_with<TypeParam>>();
-  testSerializeObject<
-      StandardProtocol::Json,
       TypeParam,
       testset::union_with<TypeParam>>();
 }
@@ -491,19 +474,11 @@ TYPED_TEST(TypedParseObjectTest, SerializeObjectSameAsDirectSerializationAny) {
       TypeParam,
       testset::struct_with<TypeParam>>();
   testSerializeObjectAny<
-      StandardProtocol::Json,
-      TypeParam,
-      testset::struct_with<TypeParam>>();
-  testSerializeObjectAny<
       StandardProtocol::Binary,
       TypeParam,
       testset::union_with<TypeParam>>();
   testSerializeObjectAny<
       StandardProtocol::Compact,
-      TypeParam,
-      testset::union_with<TypeParam>>();
-  testSerializeObjectAny<
-      StandardProtocol::Json,
       TypeParam,
       testset::union_with<TypeParam>>();
 }

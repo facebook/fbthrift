@@ -227,8 +227,8 @@ class ObjectWriter : public BaseObjectAdapter {
   }
 
   uint32_t writeString(folly::StringPiece value) {
-    ValueHelper<type::string_t>::set(beginValue(), value);
-    return endValue(Value::stringValue);
+    // TODO: set in stringValue if UTF8
+    return writeBinary(value);
   }
 
   uint32_t writeBinary(folly::ByteRange value) {
@@ -362,10 +362,8 @@ Value parseValue(Protocol& prot, TType arg_type) {
       return result;
     }
     case protocol::T_STRING: {
-      std::string str;
-      prot.readString(str);
-      // TODO: save in binaryValue
-      result.stringValue_ref() = str;
+      auto& binaryValue = result.binaryValue_ref().ensure();
+      prot.readBinary(binaryValue);
       return result;
     }
     case protocol::T_STRUCT: {
@@ -430,18 +428,8 @@ Value parseValue(Protocol& prot, TType arg_type) {
   }
 }
 
-// TODO: this method should go away if we
-// save string fields (which are not utf8)
-// in binaryValue
 inline TType getTType(const Value& val) {
-  auto thriftType = val.getType();
-  // FIXME: toTType maps Value::Type::stringValue
-  // to protocol::T_UTF8. All protocols map string
-  // to protocol::T_STRING
-  if (thriftType == Value::Type::stringValue) {
-    thriftType = Value::Type::binaryValue;
-  }
-  return toTType(static_cast<type::BaseType>(thriftType));
+  return toTType(static_cast<type::BaseType>(val.getType()));
 }
 
 template <class Protocol>
@@ -520,8 +508,8 @@ void serializeValue(Protocol& prot, const Value& value) {
       prot.writeStructBegin("");
       for (auto const& [fieldID, fieldVal] :
            *value.objectValue_ref()->members_ref()) {
-        auto thriftType = getTType(fieldVal);
-        prot.writeFieldBegin("", thriftType, fieldID);
+        auto fieldType = getTType(fieldVal);
+        prot.writeFieldBegin("", fieldType, fieldID);
         serializeValue(prot, fieldVal);
         prot.writeFieldEnd();
       }
