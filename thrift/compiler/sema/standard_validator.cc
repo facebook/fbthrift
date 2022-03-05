@@ -45,6 +45,11 @@ namespace compiler {
 
 namespace {
 
+constexpr auto kCppRefUri = "facebook.com/thrift/annotation/cpp/Ref";
+constexpr auto kCppAdapterUri = "facebook.com/thrift/annotation/cpp/Adapter";
+constexpr auto kHackAdapterUri =
+    "facebook.com/thrift/annotation/hack/ExperimentalAdapter";
+
 const t_structured* get_mixin_type(const t_field& field) {
   if (cpp2::is_mixin(field)) {
     return dynamic_cast<const t_structured*>(field.type()->get_true_type());
@@ -455,8 +460,7 @@ void validate_compatibility_with_lazy_field(
 }
 
 void validate_ref_annotation(diagnostic_context& ctx, const t_field& node) {
-  if (node.find_structured_annotation_or_null(
-          "facebook.com/thrift/annotation/cpp/Ref") &&
+  if (node.find_structured_annotation_or_null(kCppRefUri) &&
       node.has_annotation(
           {"cpp.ref", "cpp2.ref", "cpp.ref_type", "cpp2.ref_type"})) {
     ctx.failure([&](auto& o) {
@@ -469,8 +473,7 @@ void validate_ref_annotation(diagnostic_context& ctx, const t_field& node) {
 void validate_adapter_annotation(diagnostic_context& ctx, const t_field& node) {
   const t_const* adapter_annotation = nullptr;
   for (const t_const* annotation : node.structured_annotations()) {
-    if (annotation->type()->uri() ==
-        "facebook.com/thrift/annotation/cpp/Adapter") {
+    if (annotation->type()->uri() == kCppAdapterUri) {
       const auto& annotations = annotation->value()->get_map();
       auto it = std::find_if(
           annotations.begin(), annotations.end(), [](const auto& item) {
@@ -498,14 +501,8 @@ void validate_adapter_annotation(diagnostic_context& ctx, const t_field& node) {
 
 void validate_hack_adapter_annotation(
     diagnostic_context& ctx, const t_field& node) {
-  const t_const* field_adapter_annotation = nullptr;
-  for (const t_const* annotation : node.structured_annotations()) {
-    if (annotation->type()->uri() ==
-        "facebook.com/thrift/annotation/hack/ExperimentalAdapter") {
-      field_adapter_annotation = annotation;
-      break;
-    }
-  }
+  const t_const* field_adapter_annotation =
+      node.find_structured_annotation_or_null(kHackAdapterUri);
 
   if (field_adapter_annotation &&
       t_typedef::get_first_annotation_or_null(
@@ -537,14 +534,8 @@ void validate_box_annotation_in_struct(
 
 void validate_ref_unique_and_box_annotation(
     diagnostic_context& ctx, const t_field& node) {
-  const t_const* adapter_annotation = nullptr;
-  for (const t_const* annotation : node.structured_annotations()) {
-    if (annotation->type()->uri() ==
-        "facebook.com/thrift/annotation/cpp/Adapter") {
-      adapter_annotation = annotation;
-      break;
-    }
-  }
+  const t_const* adapter_annotation =
+      node.find_structured_annotation_or_null(kCppAdapterUri);
 
   if (cpp2::is_unique_ref(&node)) {
     if (node.has_annotation({"cpp.ref", "cpp2.ref"})) {
@@ -577,8 +568,7 @@ void validate_ref_unique_and_box_annotation(
         });
       }
     }
-    if (node.find_structured_annotation_or_null(
-            "facebook.com/thrift/annotation/cpp/Ref") != nullptr) {
+    if (node.find_structured_annotation_or_null(kCppRefUri) != nullptr) {
       if (adapter_annotation) {
         ctx.failure([&](auto& o) {
           o << "@cpp.Ref{type = cpp.RefType.Unique} "
