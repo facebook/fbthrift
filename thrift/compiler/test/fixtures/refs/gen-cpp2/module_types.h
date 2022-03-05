@@ -618,7 +618,7 @@ class MyUnion final  {
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -643,7 +643,7 @@ class MyUnion final  {
 };
 
 template <class Protocol_>
-uint32_t MyUnion::read(Protocol_* iprot) {
+unsigned long MyUnion::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -810,7 +810,7 @@ class MyField final  {
   FOLLY_ERASE const T&& req_str_value_ref() const&& { return static_cast<const T&&>(req_str_value); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -827,7 +827,7 @@ class MyField final  {
 };
 
 template <class Protocol_>
-uint32_t MyField::read(Protocol_* iprot) {
+unsigned long MyField::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -915,7 +915,7 @@ class MyStruct final  {
   FOLLY_ERASE const T&& req_ref_ref() const&& { return static_cast<const T&&>(req_ref); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -932,7 +932,7 @@ class MyStruct final  {
 };
 
 template <class Protocol_>
-uint32_t MyStruct::read(Protocol_* iprot) {
+unsigned long MyStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1060,7 +1060,7 @@ class StructWithUnion final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1077,7 +1077,7 @@ class StructWithUnion final  {
 };
 
 template <class Protocol_>
-uint32_t StructWithUnion::read(Protocol_* iprot) {
+unsigned long StructWithUnion::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1179,7 +1179,7 @@ class RecursiveStruct final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1196,7 +1196,7 @@ class RecursiveStruct final  {
 };
 
 template <class Protocol_>
-uint32_t RecursiveStruct::read(Protocol_* iprot) {
+unsigned long RecursiveStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1324,7 +1324,7 @@ class StructWithContainers final  {
   FOLLY_ERASE const T&& list_ref_shared_const_ref() const&& { return static_cast<const T&&>(list_ref_shared_const); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1341,7 +1341,7 @@ class StructWithContainers final  {
 };
 
 template <class Protocol_>
-uint32_t StructWithContainers::read(Protocol_* iprot) {
+unsigned long StructWithContainers::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1430,7 +1430,7 @@ class StructWithSharedConst final  {
   FOLLY_ERASE const T&& req_shared_const_ref() const&& { return static_cast<const T&&>(req_shared_const); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1447,7 +1447,7 @@ class StructWithSharedConst final  {
 };
 
 template <class Protocol_>
-uint32_t StructWithSharedConst::read(Protocol_* iprot) {
+unsigned long StructWithSharedConst::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1496,7 +1496,7 @@ class Empty final  {
   bool operator<(const Empty&) const;
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1513,7 +1513,7 @@ class Empty final  {
 };
 
 template <class Protocol_>
-uint32_t Empty::read(Protocol_* iprot) {
+unsigned long Empty::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1601,7 +1601,7 @@ class StructWithRef final  {
   FOLLY_ERASE const T&& req_field_ref() const&& { return static_cast<const T&&>(req_field); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1618,7 +1618,7 @@ class StructWithRef final  {
 };
 
 template <class Protocol_>
-uint32_t StructWithRef::read(Protocol_* iprot) {
+unsigned long StructWithRef::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1792,7 +1792,7 @@ class StructWithBox final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1809,7 +1809,7 @@ class StructWithBox final  {
 };
 
 template <class Protocol_>
-uint32_t StructWithBox::read(Protocol_* iprot) {
+unsigned long StructWithBox::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1897,7 +1897,7 @@ class StructWithRefTypeUnique final  {
   FOLLY_ERASE const T&& req_field_ref() const&& { return static_cast<const T&&>(req_field); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1914,7 +1914,7 @@ class StructWithRefTypeUnique final  {
 };
 
 template <class Protocol_>
-uint32_t StructWithRefTypeUnique::read(Protocol_* iprot) {
+unsigned long StructWithRefTypeUnique::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -2003,7 +2003,7 @@ class StructWithRefTypeShared final  {
   FOLLY_ERASE const T&& req_field_ref() const&& { return static_cast<const T&&>(req_field); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -2020,7 +2020,7 @@ class StructWithRefTypeShared final  {
 };
 
 template <class Protocol_>
-uint32_t StructWithRefTypeShared::read(Protocol_* iprot) {
+unsigned long StructWithRefTypeShared::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -2109,7 +2109,7 @@ class StructWithRefTypeSharedConst final  {
   FOLLY_ERASE const T&& req_field_ref() const&& { return static_cast<const T&&>(req_field); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -2126,7 +2126,7 @@ class StructWithRefTypeSharedConst final  {
 };
 
 template <class Protocol_>
-uint32_t StructWithRefTypeSharedConst::read(Protocol_* iprot) {
+unsigned long StructWithRefTypeSharedConst::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -2187,7 +2187,7 @@ class StructWithRefAndAnnotCppNoexceptMoveCtor final  {
   FOLLY_ERASE const T&& def_field_ref() const&& { return static_cast<const T&&>(def_field); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -2204,7 +2204,7 @@ class StructWithRefAndAnnotCppNoexceptMoveCtor final  {
 };
 
 template <class Protocol_>
-uint32_t StructWithRefAndAnnotCppNoexceptMoveCtor::read(Protocol_* iprot) {
+unsigned long StructWithRefAndAnnotCppNoexceptMoveCtor::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -2319,7 +2319,7 @@ class StructWithString final  {
   FOLLY_ERASE const T&& shared_string_ref_ref() const&& { return static_cast<const T&&>(shared_string_ref); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -2336,7 +2336,7 @@ class StructWithString final  {
 };
 
 template <class Protocol_>
-uint32_t StructWithString::read(Protocol_* iprot) {
+unsigned long StructWithString::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

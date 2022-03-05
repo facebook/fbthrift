@@ -207,7 +207,7 @@ class Struct final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -224,7 +224,7 @@ class Struct final  {
 };
 
 template <class Protocol_>
-uint32_t Struct::read(Protocol_* iprot) {
+unsigned long Struct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -378,7 +378,7 @@ class BigStruct final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -395,7 +395,7 @@ class BigStruct final  {
 };
 
 template <class Protocol_>
-uint32_t BigStruct::read(Protocol_* iprot) {
+unsigned long BigStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

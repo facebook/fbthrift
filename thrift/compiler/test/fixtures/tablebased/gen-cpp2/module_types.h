@@ -476,7 +476,7 @@ class TrivialTypesStruct final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -495,7 +495,7 @@ class TrivialTypesStruct final  {
 };
 
 template <class Protocol_>
-uint32_t TrivialTypesStruct::read(Protocol_* iprot) {
+unsigned long TrivialTypesStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -956,7 +956,7 @@ class ContainerStruct final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -975,7 +975,7 @@ class ContainerStruct final  {
 };
 
 template <class Protocol_>
-uint32_t ContainerStruct::read(Protocol_* iprot) {
+unsigned long ContainerStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1238,7 +1238,7 @@ class ExampleUnion final  {
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1264,7 +1264,7 @@ class ExampleUnion final  {
 };
 
 template <class Protocol_>
-uint32_t ExampleUnion::read(Protocol_* iprot) {
+unsigned long ExampleUnion::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

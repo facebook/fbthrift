@@ -489,7 +489,7 @@ class ModuleA final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -506,7 +506,7 @@ class ModuleA final  {
 };
 
 template <class Protocol_>
-uint32_t ModuleA::read(Protocol_* iprot) {
+unsigned long ModuleA::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -663,7 +663,7 @@ class ModuleB final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -680,7 +680,7 @@ class ModuleB final  {
 };
 
 template <class Protocol_>
-uint32_t ModuleB::read(Protocol_* iprot) {
+unsigned long ModuleB::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

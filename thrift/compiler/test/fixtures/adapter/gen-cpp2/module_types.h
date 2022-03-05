@@ -540,7 +540,7 @@ class Foo final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -557,7 +557,7 @@ class Foo final  {
 };
 
 template <class Protocol_>
-uint32_t Foo::read(Protocol_* iprot) {
+unsigned long Foo::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -964,7 +964,7 @@ class Baz final  {
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -989,7 +989,7 @@ class Baz final  {
 };
 
 template <class Protocol_>
-uint32_t Baz::read(Protocol_* iprot) {
+unsigned long Baz::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1312,7 +1312,7 @@ class Bar final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1329,7 +1329,7 @@ class Bar final  {
 };
 
 template <class Protocol_>
-uint32_t Bar::read(Protocol_* iprot) {
+unsigned long Bar::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1492,7 +1492,7 @@ class StructWithFieldAdapter final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1509,7 +1509,7 @@ class StructWithFieldAdapter final  {
 };
 
 template <class Protocol_>
-uint32_t StructWithFieldAdapter::read(Protocol_* iprot) {
+unsigned long StructWithFieldAdapter::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

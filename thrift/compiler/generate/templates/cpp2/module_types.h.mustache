@@ -175,7 +175,7 @@ class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:cpp_name
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -286,7 +286,7 @@ class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:cpp_name
 <%/struct:fields?%>
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -329,7 +329,7 @@ class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:cpp_name
 };
 
 template <class Protocol_>
-uint32_t <%struct:cpp_name%>::read(Protocol_* iprot) {
+unsigned long <%struct:cpp_name%>::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

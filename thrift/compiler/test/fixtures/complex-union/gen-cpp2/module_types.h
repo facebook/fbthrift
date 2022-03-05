@@ -702,7 +702,7 @@ class ComplexUnion final  {
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -727,7 +727,7 @@ class ComplexUnion final  {
 };
 
 template <class Protocol_>
-uint32_t ComplexUnion::read(Protocol_* iprot) {
+unsigned long ComplexUnion::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -990,7 +990,7 @@ class ListUnion final  {
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1015,7 +1015,7 @@ class ListUnion final  {
 };
 
 template <class Protocol_>
-uint32_t ListUnion::read(Protocol_* iprot) {
+unsigned long ListUnion::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1278,7 +1278,7 @@ class DataUnion final  {
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1303,7 +1303,7 @@ class DataUnion final  {
 };
 
 template <class Protocol_>
-uint32_t DataUnion::read(Protocol_* iprot) {
+unsigned long DataUnion::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1514,7 +1514,7 @@ class Val final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1531,7 +1531,7 @@ class Val final  {
 };
 
 template <class Protocol_>
-uint32_t Val::read(Protocol_* iprot) {
+unsigned long Val::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1794,7 +1794,7 @@ class ValUnion final  {
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1819,7 +1819,7 @@ class ValUnion final  {
 };
 
 template <class Protocol_>
-uint32_t ValUnion::read(Protocol_* iprot) {
+unsigned long ValUnion::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -2083,7 +2083,7 @@ class VirtualComplexUnion  {
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -2108,7 +2108,7 @@ class VirtualComplexUnion  {
 };
 
 template <class Protocol_>
-uint32_t VirtualComplexUnion::read(Protocol_* iprot) {
+unsigned long VirtualComplexUnion::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -2208,7 +2208,7 @@ class NonCopyableStruct final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -2225,7 +2225,7 @@ class NonCopyableStruct final  {
 };
 
 template <class Protocol_>
-uint32_t NonCopyableStruct::read(Protocol_* iprot) {
+unsigned long NonCopyableStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -2366,7 +2366,7 @@ class NonCopyableUnion final  {
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -2391,7 +2391,7 @@ class NonCopyableUnion final  {
 };
 
 template <class Protocol_>
-uint32_t NonCopyableUnion::read(Protocol_* iprot) {
+unsigned long NonCopyableUnion::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

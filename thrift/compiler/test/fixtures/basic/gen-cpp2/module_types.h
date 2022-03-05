@@ -185,7 +185,7 @@ class MyDataItem final  {
   bool operator<(const MyDataItem&) const;
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -202,7 +202,7 @@ class MyDataItem final  {
 };
 
 template <class Protocol_>
-uint32_t MyDataItem::read(Protocol_* iprot) {
+unsigned long MyDataItem::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -668,7 +668,7 @@ class MyStruct final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -685,7 +685,7 @@ class MyStruct final  {
 };
 
 template <class Protocol_>
-uint32_t MyStruct::read(Protocol_* iprot) {
+unsigned long MyStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1019,7 +1019,7 @@ class MyUnion final  {
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1044,7 +1044,7 @@ class MyUnion final  {
 };
 
 template <class Protocol_>
-uint32_t MyUnion::read(Protocol_* iprot) {
+unsigned long MyUnion::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

@@ -669,7 +669,7 @@ class decorated_struct final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -686,7 +686,7 @@ class decorated_struct final  {
 };
 
 template <class Protocol_>
-uint32_t decorated_struct::read(Protocol_* iprot) {
+unsigned long decorated_struct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1147,7 +1147,7 @@ class ContainerStruct final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1164,7 +1164,7 @@ class ContainerStruct final  {
 };
 
 template <class Protocol_>
-uint32_t ContainerStruct::read(Protocol_* iprot) {
+unsigned long ContainerStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1265,7 +1265,7 @@ class CppTypeStruct final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1282,7 +1282,7 @@ class CppTypeStruct final  {
 };
 
 template <class Protocol_>
-uint32_t CppTypeStruct::read(Protocol_* iprot) {
+unsigned long CppTypeStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1388,7 +1388,7 @@ class VirtualStruct  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1405,7 +1405,7 @@ class VirtualStruct  {
 };
 
 template <class Protocol_>
-uint32_t VirtualStruct::read(Protocol_* iprot) {
+unsigned long VirtualStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1561,7 +1561,7 @@ class MyStructWithForwardRefEnum final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1578,7 +1578,7 @@ class MyStructWithForwardRefEnum final  {
 };
 
 template <class Protocol_>
-uint32_t MyStructWithForwardRefEnum::read(Protocol_* iprot) {
+unsigned long MyStructWithForwardRefEnum::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1735,7 +1735,7 @@ class TrivialNumeric final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1752,7 +1752,7 @@ class TrivialNumeric final  {
 };
 
 template <class Protocol_>
-uint32_t TrivialNumeric::read(Protocol_* iprot) {
+unsigned long TrivialNumeric::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1908,7 +1908,7 @@ class TrivialNestedWithDefault final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1925,7 +1925,7 @@ class TrivialNestedWithDefault final  {
 };
 
 template <class Protocol_>
-uint32_t TrivialNestedWithDefault::read(Protocol_* iprot) {
+unsigned long TrivialNestedWithDefault::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -2083,7 +2083,7 @@ class ComplexString final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -2100,7 +2100,7 @@ class ComplexString final  {
 };
 
 template <class Protocol_>
-uint32_t ComplexString::read(Protocol_* iprot) {
+unsigned long ComplexString::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -2260,7 +2260,7 @@ class ComplexNestedWithDefault final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -2277,7 +2277,7 @@ class ComplexNestedWithDefault final  {
 };
 
 template <class Protocol_>
-uint32_t ComplexNestedWithDefault::read(Protocol_* iprot) {
+unsigned long ComplexNestedWithDefault::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -2490,7 +2490,7 @@ class MinPadding final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -2507,7 +2507,7 @@ class MinPadding final  {
 };
 
 template <class Protocol_>
-uint32_t MinPadding::read(Protocol_* iprot) {
+unsigned long MinPadding::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -2553,7 +2553,7 @@ class MyDataItem final  {
  public:
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -2570,7 +2570,7 @@ class MyDataItem final  {
 };
 
 template <class Protocol_>
-uint32_t MyDataItem::read(Protocol_* iprot) {
+unsigned long MyDataItem::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -2831,7 +2831,7 @@ class MyStruct final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -2848,7 +2848,7 @@ class MyStruct final  {
 };
 
 template <class Protocol_>
-uint32_t MyStruct::read(Protocol_* iprot) {
+unsigned long MyStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -2952,7 +2952,7 @@ class Renaming final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -2969,7 +2969,7 @@ class Renaming final  {
 };
 
 template <class Protocol_>
-uint32_t Renaming::read(Protocol_* iprot) {
+unsigned long Renaming::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -3127,7 +3127,7 @@ class AnnotatedTypes final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -3144,7 +3144,7 @@ class AnnotatedTypes final  {
 };
 
 template <class Protocol_>
-uint32_t AnnotatedTypes::read(Protocol_* iprot) {
+unsigned long AnnotatedTypes::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -3246,7 +3246,7 @@ class ForwardUsageStruct final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -3263,7 +3263,7 @@ class ForwardUsageStruct final  {
 };
 
 template <class Protocol_>
-uint32_t ForwardUsageStruct::read(Protocol_* iprot) {
+unsigned long ForwardUsageStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -3377,7 +3377,7 @@ class ForwardUsageRoot final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -3394,7 +3394,7 @@ class ForwardUsageRoot final  {
 };
 
 template <class Protocol_>
-uint32_t ForwardUsageRoot::read(Protocol_* iprot) {
+unsigned long ForwardUsageRoot::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -3496,7 +3496,7 @@ class ForwardUsageByRef final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -3513,7 +3513,7 @@ class ForwardUsageByRef final  {
 };
 
 template <class Protocol_>
-uint32_t ForwardUsageByRef::read(Protocol_* iprot) {
+unsigned long ForwardUsageByRef::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -3562,7 +3562,7 @@ class NoexceptMoveEmpty final  {
   bool operator<(const NoexceptMoveEmpty&) const;
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -3579,7 +3579,7 @@ class NoexceptMoveEmpty final  {
 };
 
 template <class Protocol_>
-uint32_t NoexceptMoveEmpty::read(Protocol_* iprot) {
+unsigned long NoexceptMoveEmpty::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -3683,7 +3683,7 @@ class NoexceptMoveSimpleStruct final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -3700,7 +3700,7 @@ class NoexceptMoveSimpleStruct final  {
 };
 
 template <class Protocol_>
-uint32_t NoexceptMoveSimpleStruct::read(Protocol_* iprot) {
+unsigned long NoexceptMoveSimpleStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -4225,7 +4225,7 @@ class NoexceptMoveComplexStruct final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -4242,7 +4242,7 @@ class NoexceptMoveComplexStruct final  {
 };
 
 template <class Protocol_>
-uint32_t NoexceptMoveComplexStruct::read(Protocol_* iprot) {
+unsigned long NoexceptMoveComplexStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -4491,7 +4491,7 @@ class NoExceptMoveUnion final  {
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -4516,7 +4516,7 @@ class NoExceptMoveUnion final  {
 };
 
 template <class Protocol_>
-uint32_t NoExceptMoveUnion::read(Protocol_* iprot) {
+unsigned long NoExceptMoveUnion::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -4894,7 +4894,7 @@ class AllocatorAware final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -4911,7 +4911,7 @@ class AllocatorAware final  {
 };
 
 template <class Protocol_>
-uint32_t AllocatorAware::read(Protocol_* iprot) {
+unsigned long AllocatorAware::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -5034,7 +5034,7 @@ class AllocatorAware2 final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -5051,7 +5051,7 @@ class AllocatorAware2 final  {
 };
 
 template <class Protocol_>
-uint32_t AllocatorAware2::read(Protocol_* iprot) {
+unsigned long AllocatorAware2::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -5260,7 +5260,7 @@ class TypedefStruct final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -5277,7 +5277,7 @@ class TypedefStruct final  {
 };
 
 template <class Protocol_>
-uint32_t TypedefStruct::read(Protocol_* iprot) {
+unsigned long TypedefStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -5381,7 +5381,7 @@ class StructWithDoubleUnderscores final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -5398,7 +5398,7 @@ class StructWithDoubleUnderscores final  {
 };
 
 template <class Protocol_>
-uint32_t StructWithDoubleUnderscores::read(Protocol_* iprot) {
+unsigned long StructWithDoubleUnderscores::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

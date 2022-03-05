@@ -445,7 +445,7 @@ class Color final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -462,7 +462,7 @@ class Color final  {
 };
 
 template <class Protocol_>
-uint32_t Color::read(Protocol_* iprot) {
+unsigned long Color::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -797,7 +797,7 @@ class Vehicle final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -814,7 +814,7 @@ class Vehicle final  {
 };
 
 template <class Protocol_>
-uint32_t Vehicle::read(Protocol_* iprot) {
+unsigned long Vehicle::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1413,7 +1413,7 @@ class Person final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1430,7 +1430,7 @@ class Person final  {
 };
 
 template <class Protocol_>
-uint32_t Person::read(Protocol_* iprot) {
+unsigned long Person::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

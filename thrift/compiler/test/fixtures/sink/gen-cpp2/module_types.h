@@ -180,7 +180,7 @@ class InitialResponse final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -197,7 +197,7 @@ class InitialResponse final  {
 };
 
 template <class Protocol_>
-uint32_t InitialResponse::read(Protocol_* iprot) {
+unsigned long InitialResponse::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -304,7 +304,7 @@ class FinalResponse final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -321,7 +321,7 @@ class FinalResponse final  {
 };
 
 template <class Protocol_>
-uint32_t FinalResponse::read(Protocol_* iprot) {
+unsigned long FinalResponse::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -428,7 +428,7 @@ class SinkPayload final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -445,7 +445,7 @@ class SinkPayload final  {
 };
 
 template <class Protocol_>
-uint32_t SinkPayload::read(Protocol_* iprot) {
+unsigned long SinkPayload::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -552,7 +552,7 @@ class CompatibleWithKeywordSink final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -569,7 +569,7 @@ class CompatibleWithKeywordSink final  {
 };
 
 template <class Protocol_>
-uint32_t CompatibleWithKeywordSink::read(Protocol_* iprot) {
+unsigned long CompatibleWithKeywordSink::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -665,7 +665,7 @@ class FOLLY_EXPORT InitialException : public apache::thrift::TException {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -686,7 +686,7 @@ class FOLLY_EXPORT InitialException : public apache::thrift::TException {
 };
 
 template <class Protocol_>
-uint32_t InitialException::read(Protocol_* iprot) {
+unsigned long InitialException::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -782,7 +782,7 @@ class FOLLY_EXPORT SinkException1 : public apache::thrift::TException {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -803,7 +803,7 @@ class FOLLY_EXPORT SinkException1 : public apache::thrift::TException {
 };
 
 template <class Protocol_>
-uint32_t SinkException1::read(Protocol_* iprot) {
+unsigned long SinkException1::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -894,7 +894,7 @@ class FOLLY_EXPORT SinkException2 : public apache::thrift::TException {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -915,7 +915,7 @@ class FOLLY_EXPORT SinkException2 : public apache::thrift::TException {
 };
 
 template <class Protocol_>
-uint32_t SinkException2::read(Protocol_* iprot) {
+unsigned long SinkException2::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

@@ -369,7 +369,7 @@ class TerseFoo final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -386,7 +386,7 @@ class TerseFoo final  {
 };
 
 template <class Protocol_>
-uint32_t TerseFoo::read(Protocol_* iprot) {
+unsigned long TerseFoo::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -621,7 +621,7 @@ class TerseLazyFoo final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -661,7 +661,7 @@ class TerseLazyFoo final  {
 };
 
 template <class Protocol_>
-uint32_t TerseLazyFoo::read(Protocol_* iprot) {
+unsigned long TerseLazyFoo::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -919,7 +919,7 @@ class TerseOptionalFoo final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -936,7 +936,7 @@ class TerseOptionalFoo final  {
 };
 
 template <class Protocol_>
-uint32_t TerseOptionalFoo::read(Protocol_* iprot) {
+unsigned long TerseOptionalFoo::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1173,7 +1173,7 @@ class TerseOptionalLazyFoo final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1213,7 +1213,7 @@ class TerseOptionalLazyFoo final  {
 };
 
 template <class Protocol_>
-uint32_t TerseOptionalLazyFoo::read(Protocol_* iprot) {
+unsigned long TerseOptionalLazyFoo::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

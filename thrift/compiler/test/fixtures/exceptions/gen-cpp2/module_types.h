@@ -172,7 +172,7 @@ class FOLLY_EXPORT Fiery : public apache::thrift::TException {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -193,7 +193,7 @@ class FOLLY_EXPORT Fiery : public apache::thrift::TException {
 };
 
 template <class Protocol_>
-uint32_t Fiery::read(Protocol_* iprot) {
+unsigned long Fiery::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -291,7 +291,7 @@ class FOLLY_EXPORT Serious : public apache::thrift::TException {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -312,7 +312,7 @@ class FOLLY_EXPORT Serious : public apache::thrift::TException {
 };
 
 template <class Protocol_>
-uint32_t Serious::read(Protocol_* iprot) {
+unsigned long Serious::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -446,7 +446,7 @@ class FOLLY_EXPORT ComplexFieldNames : public apache::thrift::TException {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -467,7 +467,7 @@ class FOLLY_EXPORT ComplexFieldNames : public apache::thrift::TException {
 };
 
 template <class Protocol_>
-uint32_t ComplexFieldNames::read(Protocol_* iprot) {
+unsigned long ComplexFieldNames::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -601,7 +601,7 @@ class FOLLY_EXPORT CustomFieldNames : public apache::thrift::TException {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -622,7 +622,7 @@ class FOLLY_EXPORT CustomFieldNames : public apache::thrift::TException {
 };
 
 template <class Protocol_>
-uint32_t CustomFieldNames::read(Protocol_* iprot) {
+unsigned long CustomFieldNames::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -751,7 +751,7 @@ class FOLLY_EXPORT ExceptionWithPrimitiveField : public apache::thrift::TExcepti
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -772,7 +772,7 @@ class FOLLY_EXPORT ExceptionWithPrimitiveField : public apache::thrift::TExcepti
 };
 
 template <class Protocol_>
-uint32_t ExceptionWithPrimitiveField::read(Protocol_* iprot) {
+unsigned long ExceptionWithPrimitiveField::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -829,7 +829,7 @@ class FOLLY_EXPORT Banal : public apache::thrift::TException {
   bool operator<(const Banal&) const;
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -850,7 +850,7 @@ class FOLLY_EXPORT Banal : public apache::thrift::TException {
 };
 
 template <class Protocol_>
-uint32_t Banal::read(Protocol_* iprot) {
+unsigned long Banal::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

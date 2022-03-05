@@ -917,7 +917,7 @@ class MyStructFloatFieldThrowExp final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -934,7 +934,7 @@ class MyStructFloatFieldThrowExp final  {
 };
 
 template <class Protocol_>
-uint32_t MyStructFloatFieldThrowExp::read(Protocol_* iprot) {
+unsigned long MyStructFloatFieldThrowExp::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1088,7 +1088,7 @@ class MyStructMapFloatThrowExp final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1105,7 +1105,7 @@ class MyStructMapFloatThrowExp final  {
 };
 
 template <class Protocol_>
-uint32_t MyStructMapFloatThrowExp::read(Protocol_* iprot) {
+unsigned long MyStructMapFloatThrowExp::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1154,7 +1154,7 @@ class MyDataItem final  {
   bool operator<(const MyDataItem&) const;
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1171,7 +1171,7 @@ class MyDataItem final  {
 };
 
 template <class Protocol_>
-uint32_t MyDataItem::read(Protocol_* iprot) {
+unsigned long MyDataItem::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -2665,7 +2665,7 @@ class MyStruct final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -2682,7 +2682,7 @@ class MyStruct final  {
 };
 
 template <class Protocol_>
-uint32_t MyStruct::read(Protocol_* iprot) {
+unsigned long MyStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -2843,7 +2843,7 @@ class SimpleStruct final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -2860,7 +2860,7 @@ class SimpleStruct final  {
 };
 
 template <class Protocol_>
-uint32_t SimpleStruct::read(Protocol_* iprot) {
+unsigned long SimpleStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -3831,7 +3831,7 @@ class ComplexNestedStruct final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -3848,7 +3848,7 @@ class ComplexNestedStruct final  {
 };
 
 template <class Protocol_>
-uint32_t ComplexNestedStruct::read(Protocol_* iprot) {
+unsigned long ComplexNestedStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -4385,7 +4385,7 @@ class MyUnion final  {
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -4410,7 +4410,7 @@ class MyUnion final  {
 };
 
 template <class Protocol_>
-uint32_t MyUnion::read(Protocol_* iprot) {
+unsigned long MyUnion::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -5606,7 +5606,7 @@ class defaultStruct final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -5623,7 +5623,7 @@ class defaultStruct final  {
 };
 
 template <class Protocol_>
-uint32_t defaultStruct::read(Protocol_* iprot) {
+unsigned long defaultStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -6149,7 +6149,7 @@ class MyStructTypeDef final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -6166,7 +6166,7 @@ class MyStructTypeDef final  {
 };
 
 template <class Protocol_>
-uint32_t MyStructTypeDef::read(Protocol_* iprot) {
+unsigned long MyStructTypeDef::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -6573,7 +6573,7 @@ class MyUnionFloatFieldThrowExp final  {
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -6598,7 +6598,7 @@ class MyUnionFloatFieldThrowExp final  {
 };
 
 template <class Protocol_>
-uint32_t MyUnionFloatFieldThrowExp::read(Protocol_* iprot) {
+unsigned long MyUnionFloatFieldThrowExp::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -6860,7 +6860,7 @@ class TypeRemapped final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -6877,7 +6877,7 @@ class TypeRemapped final  {
 };
 
 template <class Protocol_>
-uint32_t TypeRemapped::read(Protocol_* iprot) {
+unsigned long TypeRemapped::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -6934,7 +6934,7 @@ class FOLLY_EXPORT emptyXcep : public apache::thrift::TException {
   bool operator<(const emptyXcep&) const;
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -6955,7 +6955,7 @@ class FOLLY_EXPORT emptyXcep : public apache::thrift::TException {
 };
 
 template <class Protocol_>
-uint32_t emptyXcep::read(Protocol_* iprot) {
+unsigned long emptyXcep::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -7081,7 +7081,7 @@ class FOLLY_EXPORT reqXcep : public apache::thrift::TException {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -7102,7 +7102,7 @@ class FOLLY_EXPORT reqXcep : public apache::thrift::TException {
 };
 
 template <class Protocol_>
-uint32_t reqXcep::read(Protocol_* iprot) {
+unsigned long reqXcep::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -7236,7 +7236,7 @@ class FOLLY_EXPORT optXcep : public apache::thrift::TException {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -7257,7 +7257,7 @@ class FOLLY_EXPORT optXcep : public apache::thrift::TException {
 };
 
 template <class Protocol_>
-uint32_t optXcep::read(Protocol_* iprot) {
+unsigned long optXcep::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -7510,7 +7510,7 @@ class FOLLY_EXPORT complexException : public apache::thrift::TException {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -7531,7 +7531,7 @@ class FOLLY_EXPORT complexException : public apache::thrift::TException {
 };
 
 template <class Protocol_>
-uint32_t complexException::read(Protocol_* iprot) {
+unsigned long complexException::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

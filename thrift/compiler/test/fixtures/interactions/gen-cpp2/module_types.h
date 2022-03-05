@@ -133,7 +133,7 @@ class FOLLY_EXPORT CustomException : public apache::thrift::TException {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -154,7 +154,7 @@ class FOLLY_EXPORT CustomException : public apache::thrift::TException {
 };
 
 template <class Protocol_>
-uint32_t CustomException::read(Protocol_* iprot) {
+unsigned long CustomException::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

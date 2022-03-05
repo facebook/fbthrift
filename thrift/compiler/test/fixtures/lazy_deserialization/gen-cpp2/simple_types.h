@@ -454,7 +454,7 @@ class Foo final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -471,7 +471,7 @@ class Foo final  {
 };
 
 template <class Protocol_>
-uint32_t Foo::read(Protocol_* iprot) {
+unsigned long Foo::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -706,7 +706,7 @@ class LazyFoo final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -746,7 +746,7 @@ class LazyFoo final  {
 };
 
 template <class Protocol_>
-uint32_t LazyFoo::read(Protocol_* iprot) {
+unsigned long LazyFoo::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1004,7 +1004,7 @@ class OptionalFoo final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1021,7 +1021,7 @@ class OptionalFoo final  {
 };
 
 template <class Protocol_>
-uint32_t OptionalFoo::read(Protocol_* iprot) {
+unsigned long OptionalFoo::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1258,7 +1258,7 @@ class OptionalLazyFoo final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1298,7 +1298,7 @@ class OptionalLazyFoo final  {
 };
 
 template <class Protocol_>
-uint32_t OptionalLazyFoo::read(Protocol_* iprot) {
+unsigned long OptionalLazyFoo::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1398,7 +1398,7 @@ class LazyCppRef final  {
   FOLLY_ERASE const T&& field4_ref() const&& { return static_cast<const T&&>(__fbthrift_read_field_field4()); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1450,7 +1450,7 @@ class LazyCppRef final  {
 };
 
 template <class Protocol_>
-uint32_t LazyCppRef::read(Protocol_* iprot) {
+unsigned long LazyCppRef::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1810,7 +1810,7 @@ class IndexedFoo final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1827,7 +1827,7 @@ class IndexedFoo final  {
 };
 
 template <class Protocol_>
-uint32_t IndexedFoo::read(Protocol_* iprot) {
+unsigned long IndexedFoo::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -2191,7 +2191,7 @@ class OptionalIndexedFoo final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -2208,7 +2208,7 @@ class OptionalIndexedFoo final  {
 };
 
 template <class Protocol_>
-uint32_t OptionalIndexedFoo::read(Protocol_* iprot) {
+unsigned long OptionalIndexedFoo::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -2257,7 +2257,7 @@ class Empty final  {
   bool operator<(const Empty&) const;
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -2274,7 +2274,7 @@ class Empty final  {
 };
 
 template <class Protocol_>
-uint32_t Empty::read(Protocol_* iprot) {
+unsigned long Empty::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

@@ -601,7 +601,7 @@ class Internship final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -618,7 +618,7 @@ class Internship final  {
 };
 
 template <class Protocol_>
-uint32_t Internship::read(Protocol_* iprot) {
+unsigned long Internship::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -733,7 +733,7 @@ class Range final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -750,7 +750,7 @@ class Range final  {
 };
 
 template <class Protocol_>
-uint32_t Range::read(Protocol_* iprot) {
+unsigned long Range::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -911,7 +911,7 @@ class struct1 final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -928,7 +928,7 @@ class struct1 final  {
 };
 
 template <class Protocol_>
-uint32_t struct1::read(Protocol_* iprot) {
+unsigned long struct1::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1190,7 +1190,7 @@ class struct2 final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1207,7 +1207,7 @@ class struct2 final  {
 };
 
 template <class Protocol_>
-uint32_t struct2::read(Protocol_* iprot) {
+unsigned long struct2::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1418,7 +1418,7 @@ class struct3 final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1435,7 +1435,7 @@ class struct3 final  {
 };
 
 template <class Protocol_>
-uint32_t struct3::read(Protocol_* iprot) {
+unsigned long struct3::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1654,7 +1654,7 @@ class struct4 final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1671,7 +1671,7 @@ class struct4 final  {
 };
 
 template <class Protocol_>
-uint32_t struct4::read(Protocol_* iprot) {
+unsigned long struct4::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1906,7 +1906,7 @@ class union1 final  {
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1931,7 +1931,7 @@ class union1 final  {
 };
 
 template <class Protocol_>
-uint32_t union1::read(Protocol_* iprot) {
+unsigned long union1::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -2324,7 +2324,7 @@ class union2 final  {
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -2349,7 +2349,7 @@ class union2 final  {
 };
 
 template <class Protocol_>
-uint32_t union2::read(Protocol_* iprot) {
+unsigned long union2::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

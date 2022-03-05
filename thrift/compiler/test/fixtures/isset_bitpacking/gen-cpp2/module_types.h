@@ -398,7 +398,7 @@ class Default final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -415,7 +415,7 @@ class Default final  {
 };
 
 template <class Protocol_>
-uint32_t Default::read(Protocol_* iprot) {
+unsigned long Default::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -697,7 +697,7 @@ class NonAtomic final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -714,7 +714,7 @@ class NonAtomic final  {
 };
 
 template <class Protocol_>
-uint32_t NonAtomic::read(Protocol_* iprot) {
+unsigned long NonAtomic::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -996,7 +996,7 @@ class Atomic final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1013,7 +1013,7 @@ class Atomic final  {
 };
 
 template <class Protocol_>
-uint32_t Atomic::read(Protocol_* iprot) {
+unsigned long Atomic::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1295,7 +1295,7 @@ class AtomicFoo final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -1312,7 +1312,7 @@ class AtomicFoo final  {
 };
 
 template <class Protocol_>
-uint32_t AtomicFoo::read(Protocol_* iprot) {
+unsigned long AtomicFoo::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

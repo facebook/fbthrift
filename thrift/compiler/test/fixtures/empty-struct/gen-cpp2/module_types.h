@@ -82,7 +82,7 @@ class Empty final  {
   bool operator<(const Empty&) const;
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -99,7 +99,7 @@ class Empty final  {
 };
 
 template <class Protocol_>
-uint32_t Empty::read(Protocol_* iprot) {
+unsigned long Empty::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -204,7 +204,7 @@ class Nada final  {
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -229,7 +229,7 @@ class Nada final  {
 };
 
 template <class Protocol_>
-uint32_t Nada::read(Protocol_* iprot) {
+unsigned long Nada::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

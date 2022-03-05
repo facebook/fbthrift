@@ -200,7 +200,7 @@ class AStruct final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -217,7 +217,7 @@ class AStruct final  {
 };
 
 template <class Protocol_>
-uint32_t AStruct::read(Protocol_* iprot) {
+unsigned long AStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -279,7 +279,7 @@ class AStructB final  {
   FOLLY_ERASE const T&& FieldA_ref() const&& { return static_cast<const T&&>(FieldA); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -296,7 +296,7 @@ class AStructB final  {
 };
 
 template <class Protocol_>
-uint32_t AStructB::read(Protocol_* iprot) {
+unsigned long AStructB::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

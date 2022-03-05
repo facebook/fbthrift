@@ -882,7 +882,7 @@ class StructWithDefaultStruct final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -899,7 +899,7 @@ class StructWithDefaultStruct final  {
 };
 
 template <class Protocol_>
-uint32_t StructWithDefaultStruct::read(Protocol_* iprot) {
+unsigned long StructWithDefaultStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

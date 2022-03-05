@@ -115,7 +115,7 @@ class Foo final  {
   FOLLY_ERASE const T&& bar_ref() const&& { return static_cast<const T&&>(__fbthrift_field_bar); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -132,7 +132,7 @@ class Foo final  {
 };
 
 template <class Protocol_>
-uint32_t Foo::read(Protocol_* iprot) {
+unsigned long Foo::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

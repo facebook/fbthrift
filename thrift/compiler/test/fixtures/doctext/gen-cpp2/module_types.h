@@ -210,7 +210,7 @@ class A final  {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -227,7 +227,7 @@ class A final  {
 };
 
 template <class Protocol_>
-uint32_t A::read(Protocol_* iprot) {
+unsigned long A::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -476,7 +476,7 @@ class U final  {
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -501,7 +501,7 @@ class U final  {
 };
 
 template <class Protocol_>
-uint32_t U::read(Protocol_* iprot) {
+unsigned long U::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -597,7 +597,7 @@ class FOLLY_EXPORT Bang : public apache::thrift::TException {
   }
 
   template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
+  unsigned long read(Protocol_* iprot);
   template <class Protocol_>
   uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
@@ -618,7 +618,7 @@ class FOLLY_EXPORT Bang : public apache::thrift::TException {
 };
 
 template <class Protocol_>
-uint32_t Bang::read(Protocol_* iprot) {
+unsigned long Bang::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
