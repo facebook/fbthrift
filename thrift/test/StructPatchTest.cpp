@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-#include <thrift/test/gen-cpp2/StructPatchTest_types.h>
-
 #include <folly/portability/GTest.h>
+#include <thrift/lib/cpp2/op/Testing.h>
+#include <thrift/lib/cpp2/op/detail/Patch.h>
+#include <thrift/test/gen-cpp2/StructPatchTest_types.h>
 
 namespace apache::thrift {
 using test::patch::MyStruct;
 using test::patch::MyStructPatch;
+using test::patch::MyStructValuePatch;
 
 void applyPatch(const MyStructPatch& patch, MyStruct& val) {
   patch.boolVal()->apply(*val.boolVal());
@@ -67,6 +69,12 @@ TEST(StructPatchTest, Assign) {
   // Apply the patch again to ensure it is idempotent.
   applyPatch(patch, actual);
   EXPECT_EQ(actual, expected);
+
+  // Assign in a single step, via op::patch.
+  using Patch = op::detail::AssignPatch<MyStructValuePatch>;
+  Patch assignPatch;
+  assignPatch = expected;
+  test::expectPatch(assignPatch, {}, expected);
 
   // Check the individual fields for better failure messages.
   EXPECT_EQ(*actual.boolVal(), *expected.boolVal());

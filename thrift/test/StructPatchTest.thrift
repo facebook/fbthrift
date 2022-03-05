@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-namespace cpp2 apache.thrift.test.patch
-
 include "thrift/lib/thrift/patch.thrift"
+
+namespace cpp2 apache.thrift.test.patch
 
 struct MyStruct {
   1: bool boolVal;
@@ -40,4 +40,8 @@ struct MyStructPatch {
   7: patch.DoublePatch doubleVal;
   8: patch.StringPatch stringVal;
   9: patch.BinaryPatch binaryVal;
+}
+
+struct MyStructValuePatch {
+  1: optional MyStruct assign (thrift.box);
 }

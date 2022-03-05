@@ -33,7 +33,7 @@ NumberPatch<I64PatchStruct> patchType(type::i64_t);
 NumberPatch<FloatPatchStruct> patchType(type::float_t);
 NumberPatch<DoublePatchStruct> patchType(type::double_t);
 StringPatch<StringPatchStruct> patchType(type::string_t);
-BinaryPatch<BinaryPatchStruct> patchType(type::binary_t);
+AssignPatch<BinaryPatchStruct> patchType(type::binary_t);
 } // namespace detail
 
 // The patch represenations for the base thrift types.

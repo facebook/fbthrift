@@ -151,5 +151,5 @@ struct BinaryPatch {
   1: optional binary (cpp.type = "::folly::IOBuf") assign;
 } (
   cpp.name = "BinaryPatchStruct",
-  cpp.adapter = "::apache::thrift::op::detail::BinaryPatchAdapter",
+  cpp.adapter = "::apache::thrift::op::detail::AssignPatchAdapter",
 )

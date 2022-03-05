@@ -203,7 +203,7 @@ class NumberPatch : public BasePatch<Patch, NumberPatch<Patch>> {
 
 template <typename Patch>
 class StringPatch : public BasePatch<Patch, StringPatch<Patch>> {
-  using Base = BasePatch<Patch, StringPatch<Patch>>;
+  using Base = BasePatch<Patch, StringPatch>;
   using T = typename Base::value_type;
   using Base::applyAssign;
   using Base::assignOr;
@@ -267,9 +267,11 @@ class StringPatch : public BasePatch<Patch, StringPatch<Patch>> {
   const T& prepend_() const noexcept { return *this->patch_.prepend(); }
 };
 
+// A patch adapter that only supports 'assign',
+// which is the minimum any patch should support.
 template <typename Patch>
-class BinaryPatch : public BasePatch<Patch, BinaryPatch<Patch>> {
-  using Base = BasePatch<Patch, BinaryPatch<Patch>>;
+class AssignPatch : public BasePatch<Patch, AssignPatch<Patch>> {
+  using Base = BasePatch<Patch, AssignPatch>;
   using T = typename Base::value_type;
   using Base::applyAssign;
   using Base::mergeAssign;
@@ -304,7 +306,7 @@ struct PatchAdapter {
 using BoolPatchAdapter = PatchAdapter<BoolPatch>;
 using NumberPatchAdapter = PatchAdapter<NumberPatch>;
 using StringPatchAdapter = PatchAdapter<StringPatch>;
-using BinaryPatchAdapter = PatchAdapter<BinaryPatch>;
+using AssignPatchAdapter = PatchAdapter<AssignPatch>;
 
 } // namespace detail
 } // namespace op
