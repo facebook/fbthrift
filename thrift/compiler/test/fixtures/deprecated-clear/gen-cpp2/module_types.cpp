@@ -19,7 +19,7 @@ folly::Range<::apache::thrift::test::MyEnum const*> const TEnumTraits<::apache::
 folly::Range<folly::StringPiece const*> const TEnumTraits<::apache::thrift::test::MyEnum>::names = folly::range(TEnumDataStorage<::apache::thrift::test::MyEnum>::names);
 
 char const* TEnumTraits<::apache::thrift::test::MyEnum>::findName(type value) {
-  using factory = ::apache::thrift::test::_MyEnum_EnumMapFactory;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
@@ -27,7 +27,7 @@ char const* TEnumTraits<::apache::thrift::test::MyEnum>::findName(type value) {
 }
 
 bool TEnumTraits<::apache::thrift::test::MyEnum>::findValue(char const* name, type* out) {
-  using factory = ::apache::thrift::test::_MyEnum_EnumMapFactory;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);

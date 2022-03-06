@@ -281,7 +281,7 @@ folly::Range<::cpp2::Baz::Type const*> const TEnumTraits<::cpp2::Baz::Type>::val
 folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::Baz::Type>::names = folly::range(TEnumDataStorage<::cpp2::Baz::Type>::names);
 
 char const* TEnumTraits<::cpp2::Baz::Type>::findName(type value) {
-  using factory = detail::TEnumMapFactory<::cpp2::Baz::Type>;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
@@ -289,7 +289,7 @@ char const* TEnumTraits<::cpp2::Baz::Type>::findName(type value) {
 }
 
 bool TEnumTraits<::cpp2::Baz::Type>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<::cpp2::Baz::Type>;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);

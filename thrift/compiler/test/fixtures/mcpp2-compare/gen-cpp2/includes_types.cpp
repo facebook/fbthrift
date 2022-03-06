@@ -19,7 +19,7 @@ folly::Range<::a::different::ns::AnEnum const*> const TEnumTraits<::a::different
 folly::Range<folly::StringPiece const*> const TEnumTraits<::a::different::ns::AnEnum>::names = folly::range(TEnumDataStorage<::a::different::ns::AnEnum>::names);
 
 char const* TEnumTraits<::a::different::ns::AnEnum>::findName(type value) {
-  using factory = ::a::different::ns::_AnEnum_EnumMapFactory;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
@@ -27,7 +27,7 @@ char const* TEnumTraits<::a::different::ns::AnEnum>::findName(type value) {
 }
 
 bool TEnumTraits<::a::different::ns::AnEnum>::findValue(char const* name, type* out) {
-  using factory = ::a::different::ns::_AnEnum_EnumMapFactory;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);

@@ -69,11 +69,11 @@ StructMetadata<::apache::thrift::test::StructLevelTerseStruct>::gen(ThriftMetada
     {7, "double_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}},
     {8, "string_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {9, "binary_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}},
-    {10, "enum_field", false, std::make_unique<Enum< ::apache::thrift::test::MyEnum>>("deprecated_terse_write.MyEnum"), std::vector<ThriftConstStruct>{}},
+    {10, "enum_field", false, std::make_unique<Enum<::apache::thrift::test::MyEnum>>("deprecated_terse_write.MyEnum"), std::vector<ThriftConstStruct>{}},
     {11, "list_field", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {12, "set_field", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {13, "map_field", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
-    {14, "struct_field", false, std::make_unique<Struct< ::apache::thrift::test::MyStruct>>("deprecated_terse_write.MyStruct"), std::vector<ThriftConstStruct>{}},
+    {14, "struct_field", false, std::make_unique<Struct<::apache::thrift::test::MyStruct>>("deprecated_terse_write.MyStruct"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : deprecated_terse_write_StructLevelTerseStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -107,11 +107,11 @@ StructMetadata<::apache::thrift::test::FieldLevelTerseStruct>::gen(ThriftMetadat
     {7, "terse_double_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{*cvStruct("thrift.TerseWrite", {}).cv_struct_ref(), }},
     {8, "terse_string_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{*cvStruct("thrift.TerseWrite", {}).cv_struct_ref(), }},
     {9, "terse_binary_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{*cvStruct("thrift.TerseWrite", {}).cv_struct_ref(), }},
-    {10, "terse_enum_field", false, std::make_unique<Enum< ::apache::thrift::test::MyEnum>>("deprecated_terse_write.MyEnum"), std::vector<ThriftConstStruct>{*cvStruct("thrift.TerseWrite", {}).cv_struct_ref(), }},
+    {10, "terse_enum_field", false, std::make_unique<Enum<::apache::thrift::test::MyEnum>>("deprecated_terse_write.MyEnum"), std::vector<ThriftConstStruct>{*cvStruct("thrift.TerseWrite", {}).cv_struct_ref(), }},
     {11, "terse_list_field", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{*cvStruct("thrift.TerseWrite", {}).cv_struct_ref(), }},
     {12, "terse_set_field", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{*cvStruct("thrift.TerseWrite", {}).cv_struct_ref(), }},
     {13, "terse_map_field", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{*cvStruct("thrift.TerseWrite", {}).cv_struct_ref(), }},
-    {14, "terse_struct_field", false, std::make_unique<Struct< ::apache::thrift::test::MyStruct>>("deprecated_terse_write.MyStruct"), std::vector<ThriftConstStruct>{*cvStruct("thrift.TerseWrite", {}).cv_struct_ref(), }},
+    {14, "terse_struct_field", false, std::make_unique<Struct<::apache::thrift::test::MyStruct>>("deprecated_terse_write.MyStruct"), std::vector<ThriftConstStruct>{*cvStruct("thrift.TerseWrite", {}).cv_struct_ref(), }},
     {15, "bool_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
     {16, "byte_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BYTE_TYPE), std::vector<ThriftConstStruct>{}},
     {17, "short_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::vector<ThriftConstStruct>{}},
@@ -121,11 +121,11 @@ StructMetadata<::apache::thrift::test::FieldLevelTerseStruct>::gen(ThriftMetadat
     {21, "double_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}},
     {22, "string_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {23, "binary_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}},
-    {24, "enum_field", false, std::make_unique<Enum< ::apache::thrift::test::MyEnum>>("deprecated_terse_write.MyEnum"), std::vector<ThriftConstStruct>{}},
+    {24, "enum_field", false, std::make_unique<Enum<::apache::thrift::test::MyEnum>>("deprecated_terse_write.MyEnum"), std::vector<ThriftConstStruct>{}},
     {25, "list_field", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {26, "set_field", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {27, "map_field", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
-    {28, "struct_field", false, std::make_unique<Struct< ::apache::thrift::test::MyStruct>>("deprecated_terse_write.MyStruct"), std::vector<ThriftConstStruct>{}},
+    {28, "struct_field", false, std::make_unique<Struct<::apache::thrift::test::MyStruct>>("deprecated_terse_write.MyStruct"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : deprecated_terse_write_FieldLevelTerseStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;

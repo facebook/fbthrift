@@ -19,7 +19,7 @@ folly::Range<::cpp2::Metasyntactic const*> const TEnumTraits<::cpp2::Metasyntact
 folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::Metasyntactic>::names = folly::range(TEnumDataStorage<::cpp2::Metasyntactic>::names);
 
 char const* TEnumTraits<::cpp2::Metasyntactic>::findName(type value) {
-  using factory = ::cpp2::_Metasyntactic_EnumMapFactory;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
@@ -27,7 +27,7 @@ char const* TEnumTraits<::cpp2::Metasyntactic>::findName(type value) {
 }
 
 bool TEnumTraits<::cpp2::Metasyntactic>::findValue(char const* name, type* out) {
-  using factory = ::cpp2::_Metasyntactic_EnumMapFactory;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);

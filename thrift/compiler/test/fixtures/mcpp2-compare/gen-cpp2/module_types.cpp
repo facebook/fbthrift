@@ -19,7 +19,7 @@ folly::Range<::some::valid::ns::MyEnumA const*> const TEnumTraits<::some::valid:
 folly::Range<folly::StringPiece const*> const TEnumTraits<::some::valid::ns::MyEnumA>::names = folly::range(TEnumDataStorage<::some::valid::ns::MyEnumA>::names);
 
 char const* TEnumTraits<::some::valid::ns::MyEnumA>::findName(type value) {
-  using factory = ::some::valid::ns::_MyEnumA_EnumMapFactory;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
@@ -27,7 +27,7 @@ char const* TEnumTraits<::some::valid::ns::MyEnumA>::findName(type value) {
 }
 
 bool TEnumTraits<::some::valid::ns::MyEnumA>::findValue(char const* name, type* out) {
-  using factory = ::some::valid::ns::_MyEnumA_EnumMapFactory;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);
@@ -53,7 +53,7 @@ folly::Range<::some::valid::ns::AnnotatedEnum const*> const TEnumTraits<::some::
 folly::Range<folly::StringPiece const*> const TEnumTraits<::some::valid::ns::AnnotatedEnum>::names = folly::range(TEnumDataStorage<::some::valid::ns::AnnotatedEnum>::names);
 
 char const* TEnumTraits<::some::valid::ns::AnnotatedEnum>::findName(type value) {
-  using factory = ::some::valid::ns::_AnnotatedEnum_EnumMapFactory;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
@@ -61,7 +61,7 @@ char const* TEnumTraits<::some::valid::ns::AnnotatedEnum>::findName(type value) 
 }
 
 bool TEnumTraits<::some::valid::ns::AnnotatedEnum>::findValue(char const* name, type* out) {
-  using factory = ::some::valid::ns::_AnnotatedEnum_EnumMapFactory;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);
@@ -87,7 +87,7 @@ folly::Range<::some::valid::ns::AnnotatedEnum2 const*> const TEnumTraits<::some:
 folly::Range<folly::StringPiece const*> const TEnumTraits<::some::valid::ns::AnnotatedEnum2>::names = folly::range(TEnumDataStorage<::some::valid::ns::AnnotatedEnum2>::names);
 
 char const* TEnumTraits<::some::valid::ns::AnnotatedEnum2>::findName(type value) {
-  using factory = ::some::valid::ns::_AnnotatedEnum2_EnumMapFactory;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
@@ -95,7 +95,7 @@ char const* TEnumTraits<::some::valid::ns::AnnotatedEnum2>::findName(type value)
 }
 
 bool TEnumTraits<::some::valid::ns::AnnotatedEnum2>::findValue(char const* name, type* out) {
-  using factory = ::some::valid::ns::_AnnotatedEnum2_EnumMapFactory;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);
@@ -121,7 +121,7 @@ folly::Range<::some::valid::ns::MyEnumB const*> const TEnumTraits<::some::valid:
 folly::Range<folly::StringPiece const*> const TEnumTraits<::some::valid::ns::MyEnumB>::names = folly::range(TEnumDataStorage<::some::valid::ns::MyEnumB>::names);
 
 char const* TEnumTraits<::some::valid::ns::MyEnumB>::findName(type value) {
-  using factory = ::some::valid::ns::_MyEnumB_EnumMapFactory;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
@@ -129,7 +129,7 @@ char const* TEnumTraits<::some::valid::ns::MyEnumB>::findName(type value) {
 }
 
 bool TEnumTraits<::some::valid::ns::MyEnumB>::findValue(char const* name, type* out) {
-  using factory = ::some::valid::ns::_MyEnumB_EnumMapFactory;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);
@@ -687,7 +687,7 @@ folly::Range<::some::valid::ns::SimpleUnion::Type const*> const TEnumTraits<::so
 folly::Range<folly::StringPiece const*> const TEnumTraits<::some::valid::ns::SimpleUnion::Type>::names = folly::range(TEnumDataStorage<::some::valid::ns::SimpleUnion::Type>::names);
 
 char const* TEnumTraits<::some::valid::ns::SimpleUnion::Type>::findName(type value) {
-  using factory = detail::TEnumMapFactory<::some::valid::ns::SimpleUnion::Type>;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
@@ -695,7 +695,7 @@ char const* TEnumTraits<::some::valid::ns::SimpleUnion::Type>::findName(type val
 }
 
 bool TEnumTraits<::some::valid::ns::SimpleUnion::Type>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<::some::valid::ns::SimpleUnion::Type>;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);
@@ -801,7 +801,7 @@ folly::Range<::some::valid::ns::ComplexUnion::Type const*> const TEnumTraits<::s
 folly::Range<folly::StringPiece const*> const TEnumTraits<::some::valid::ns::ComplexUnion::Type>::names = folly::range(TEnumDataStorage<::some::valid::ns::ComplexUnion::Type>::names);
 
 char const* TEnumTraits<::some::valid::ns::ComplexUnion::Type>::findName(type value) {
-  using factory = detail::TEnumMapFactory<::some::valid::ns::ComplexUnion::Type>;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
@@ -809,7 +809,7 @@ char const* TEnumTraits<::some::valid::ns::ComplexUnion::Type>::findName(type va
 }
 
 bool TEnumTraits<::some::valid::ns::ComplexUnion::Type>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<::some::valid::ns::ComplexUnion::Type>;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);
@@ -3867,7 +3867,7 @@ folly::Range<::some::valid::ns::FloatUnion::Type const*> const TEnumTraits<::som
 folly::Range<folly::StringPiece const*> const TEnumTraits<::some::valid::ns::FloatUnion::Type>::names = folly::range(TEnumDataStorage<::some::valid::ns::FloatUnion::Type>::names);
 
 char const* TEnumTraits<::some::valid::ns::FloatUnion::Type>::findName(type value) {
-  using factory = detail::TEnumMapFactory<::some::valid::ns::FloatUnion::Type>;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
@@ -3875,7 +3875,7 @@ char const* TEnumTraits<::some::valid::ns::FloatUnion::Type>::findName(type valu
 }
 
 bool TEnumTraits<::some::valid::ns::FloatUnion::Type>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<::some::valid::ns::FloatUnion::Type>;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);

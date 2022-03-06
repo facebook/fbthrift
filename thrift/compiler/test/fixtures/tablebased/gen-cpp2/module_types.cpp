@@ -19,7 +19,7 @@ folly::Range<::test::fixtures::tablebased::ExampleEnum const*> const TEnumTraits
 folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::tablebased::ExampleEnum>::names = folly::range(TEnumDataStorage<::test::fixtures::tablebased::ExampleEnum>::names);
 
 char const* TEnumTraits<::test::fixtures::tablebased::ExampleEnum>::findName(type value) {
-  using factory = ::test::fixtures::tablebased::_ExampleEnum_EnumMapFactory;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
@@ -27,7 +27,7 @@ char const* TEnumTraits<::test::fixtures::tablebased::ExampleEnum>::findName(typ
 }
 
 bool TEnumTraits<::test::fixtures::tablebased::ExampleEnum>::findValue(char const* name, type* out) {
-  using factory = ::test::fixtures::tablebased::_ExampleEnum_EnumMapFactory;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);
@@ -598,7 +598,7 @@ folly::Range<::test::fixtures::tablebased::ExampleUnion::Type const*> const TEnu
 folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::tablebased::ExampleUnion::Type>::names = folly::range(TEnumDataStorage<::test::fixtures::tablebased::ExampleUnion::Type>::names);
 
 char const* TEnumTraits<::test::fixtures::tablebased::ExampleUnion::Type>::findName(type value) {
-  using factory = detail::TEnumMapFactory<::test::fixtures::tablebased::ExampleUnion::Type>;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
@@ -606,7 +606,7 @@ char const* TEnumTraits<::test::fixtures::tablebased::ExampleUnion::Type>::findN
 }
 
 bool TEnumTraits<::test::fixtures::tablebased::ExampleUnion::Type>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<::test::fixtures::tablebased::ExampleUnion::Type>;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);

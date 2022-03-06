@@ -19,7 +19,7 @@ folly::Range<::apache::thrift::fixtures::types::has_bitwise_ops const*> const TE
 folly::Range<folly::StringPiece const*> const TEnumTraits<::apache::thrift::fixtures::types::has_bitwise_ops>::names = folly::range(TEnumDataStorage<::apache::thrift::fixtures::types::has_bitwise_ops>::names);
 
 char const* TEnumTraits<::apache::thrift::fixtures::types::has_bitwise_ops>::findName(type value) {
-  using factory = ::apache::thrift::fixtures::types::_has_bitwise_ops_EnumMapFactory;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
@@ -27,7 +27,7 @@ char const* TEnumTraits<::apache::thrift::fixtures::types::has_bitwise_ops>::fin
 }
 
 bool TEnumTraits<::apache::thrift::fixtures::types::has_bitwise_ops>::findValue(char const* name, type* out) {
-  using factory = ::apache::thrift::fixtures::types::_has_bitwise_ops_EnumMapFactory;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);
@@ -53,7 +53,7 @@ folly::Range<::apache::thrift::fixtures::types::is_unscoped const*> const TEnumT
 folly::Range<folly::StringPiece const*> const TEnumTraits<::apache::thrift::fixtures::types::is_unscoped>::names = folly::range(TEnumDataStorage<::apache::thrift::fixtures::types::is_unscoped>::names);
 
 char const* TEnumTraits<::apache::thrift::fixtures::types::is_unscoped>::findName(type value) {
-  using factory = ::apache::thrift::fixtures::types::_is_unscoped_EnumMapFactory;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
@@ -61,7 +61,7 @@ char const* TEnumTraits<::apache::thrift::fixtures::types::is_unscoped>::findNam
 }
 
 bool TEnumTraits<::apache::thrift::fixtures::types::is_unscoped>::findValue(char const* name, type* out) {
-  using factory = ::apache::thrift::fixtures::types::_is_unscoped_EnumMapFactory;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);
@@ -87,7 +87,7 @@ folly::Range<::apache::thrift::fixtures::types::MyForwardRefEnum const*> const T
 folly::Range<folly::StringPiece const*> const TEnumTraits<::apache::thrift::fixtures::types::MyForwardRefEnum>::names = folly::range(TEnumDataStorage<::apache::thrift::fixtures::types::MyForwardRefEnum>::names);
 
 char const* TEnumTraits<::apache::thrift::fixtures::types::MyForwardRefEnum>::findName(type value) {
-  using factory = ::apache::thrift::fixtures::types::_MyForwardRefEnum_EnumMapFactory;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
@@ -95,7 +95,7 @@ char const* TEnumTraits<::apache::thrift::fixtures::types::MyForwardRefEnum>::fi
 }
 
 bool TEnumTraits<::apache::thrift::fixtures::types::MyForwardRefEnum>::findValue(char const* name, type* out) {
-  using factory = ::apache::thrift::fixtures::types::_MyForwardRefEnum_EnumMapFactory;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);
@@ -121,7 +121,7 @@ folly::Range<::apache::thrift::fixtures::types::MyEnumA const*> const TEnumTrait
 folly::Range<folly::StringPiece const*> const TEnumTraits<::apache::thrift::fixtures::types::MyEnumA>::names = folly::range(TEnumDataStorage<::apache::thrift::fixtures::types::MyEnumA>::names);
 
 char const* TEnumTraits<::apache::thrift::fixtures::types::MyEnumA>::findName(type value) {
-  using factory = ::apache::thrift::fixtures::types::_MyEnumA_EnumMapFactory;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
@@ -129,7 +129,7 @@ char const* TEnumTraits<::apache::thrift::fixtures::types::MyEnumA>::findName(ty
 }
 
 bool TEnumTraits<::apache::thrift::fixtures::types::MyEnumA>::findValue(char const* name, type* out) {
-  using factory = ::apache::thrift::fixtures::types::_MyEnumA_EnumMapFactory;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);
@@ -2442,7 +2442,7 @@ folly::Range<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type const*> 
 folly::Range<folly::StringPiece const*> const TEnumTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::names = folly::range(TEnumDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::names);
 
 char const* TEnumTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::findName(type value) {
-  using factory = detail::TEnumMapFactory<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
@@ -2450,7 +2450,7 @@ char const* TEnumTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion::Ty
 }
 
 bool TEnumTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>;
+  using factory = detail::TEnumMapFactory<type>;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);
