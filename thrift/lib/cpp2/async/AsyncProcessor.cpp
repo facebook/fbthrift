@@ -440,12 +440,6 @@ folly::Executor* HandlerCallbackBase::getHandlerExecutor() {
   return executor_;
 }
 
-void HandlerCallbackBase::forward(const HandlerCallbackBase& other) {
-  eb_ = other.eb_;
-  tm_ = other.tm_;
-  ewp_ = other.ewp_;
-}
-
 folly::Optional<uint32_t> HandlerCallbackBase::checksumIfNeeded(
     LegacySerializedResponse& response) {
   folly::Optional<uint32_t> crc32c;

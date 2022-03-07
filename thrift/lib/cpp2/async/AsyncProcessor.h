@@ -1199,12 +1199,6 @@ class HandlerCallbackBase {
   folly::Executor::KeepAlive<> getInternalKeepAlive();
 
  protected:
-  // HACK(tudorb): Call this to set up forwarding to the event base and
-  // thread manager of the other callback.  Use when you want to create
-  // callback wrappers that forward to another callback (and do some
-  // pre- / post-processing).
-  void forward(const HandlerCallbackBase& other);
-
   folly::Optional<uint32_t> checksumIfNeeded(
       LegacySerializedResponse& response);
 
