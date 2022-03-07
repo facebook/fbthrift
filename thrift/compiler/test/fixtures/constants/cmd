@@ -1,7 +1,7 @@
 android src/module.thrift
 py src/module.thrift
 php:lazy_constants=1 src/module.thrift
-hack:lazy_constants=1 src/module.thrift
+hack:typedef,lazy_constants=1 src/module.thrift
 go src/module.thrift
 mstch_cpp2 src/module.thrift
 mstch_rust src/module.thrift

@@ -101,6 +101,10 @@ class Company_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
   }
 }
 
+type MyCompany = Company;
+type MyStringIdentifier = string;
+type MyIntIdentifier = int;
+type MyMapIdentifier = Map<string, string>;
 /**
  * Original thrift struct:-
  * Internship

@@ -91,6 +91,7 @@ class t_hack_generator : public t_oop_generator {
     soft_attribute_ = option_is_specified(parsed_options, "soft_attribute");
     protected_unions_ = option_is_specified(parsed_options, "protected_unions");
     mangled_services_ = option_is_set(parsed_options, "mangledsvcs", false);
+    typedef_ = option_is_specified(parsed_options, "typedef");
     has_hack_namespace = !hack_namespace(program).empty();
 
     // no_use_hack_collections_ is only used to migrate away from php gen
@@ -817,6 +818,11 @@ class t_hack_generator : public t_oop_generator {
    */
   bool soft_attribute_;
 
+  /**
+   * True to generate type aliases for typedefs defined
+   */
+  bool typedef_;
+
   std::string array_keyword_;
 
   bool has_hack_namespace;
@@ -1174,11 +1180,16 @@ void t_hack_generator::close_generator() {
 }
 
 /**
- * Generates a typedef. This is not done in PHP, types are all implicit.
+ * Generates a typedef.
  *
  * @param ttypedef The type definition
  */
-void t_hack_generator::generate_typedef(const t_typedef* /*ttypedef*/) {}
+void t_hack_generator::generate_typedef(const t_typedef* ttypedef) {
+  if (typedef_) {
+    f_types_ << "type " << ttypedef->get_name() << " = "
+             << type_to_typehint(ttypedef->get_type()) << ";\n";
+  }
+}
 
 /**
  * Generates code for an enumerated type. Since define is expensive to lookup
@@ -6584,6 +6595,7 @@ THRIFT_REGISTER_GENERATOR(
     "    frommap_construct Generate fromMap_DEPRECATED method.\n"
     "    arrays           Use Hack arrays for maps/lists/sets instead of objects.\n"
     "    const_collections Use ConstCollection objects rather than their mutable counterparts.\n"
+    "    typedef          Generate type aliases for all the types defined\n"
     "    enum_transparenttype Use transparent typing for Hack enums: 'enum FooBar: int as int'.\n");
 
 } // namespace compiler

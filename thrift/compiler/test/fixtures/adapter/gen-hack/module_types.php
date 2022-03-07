@@ -6,6 +6,10 @@
  *  @generated
  */
 
+type SetWithAdapter = \Adapter2::THackType;
+type ListWithElemAdapter = Vector<\Adapter1::THackType>;
+type StructWithAdapter = \Adapter2::THackType;
+type UnionWithAdapter = \Adapter2::THackType;
 /**
  * Original thrift struct:-
  * Foo

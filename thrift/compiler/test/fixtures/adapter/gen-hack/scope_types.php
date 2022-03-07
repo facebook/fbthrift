@@ -6,6 +6,7 @@
  *  @generated
  */
 
+type Enum = facebook_thrift_annotation_FbthriftInternalEnum;
 /**
  * Original thrift struct:-
  * Struct
