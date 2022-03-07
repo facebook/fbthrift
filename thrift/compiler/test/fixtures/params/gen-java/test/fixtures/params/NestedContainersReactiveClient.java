@@ -120,7 +120,7 @@ public class NestedContainersReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());});
+                .singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw com.facebook.thrift.util.ExceptionUtil.propagate(_p);});
       });
   }
 
@@ -185,7 +185,7 @@ public class NestedContainersReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());});
+                .singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw com.facebook.thrift.util.ExceptionUtil.propagate(_p);});
       });
   }
 
@@ -249,7 +249,7 @@ public class NestedContainersReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());});
+                .singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw com.facebook.thrift.util.ExceptionUtil.propagate(_p);});
       });
   }
 
@@ -312,7 +312,7 @@ public class NestedContainersReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());});
+                .singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw com.facebook.thrift.util.ExceptionUtil.propagate(_p);});
       });
   }
 
@@ -391,7 +391,7 @@ public class NestedContainersReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());});
+                .singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw com.facebook.thrift.util.ExceptionUtil.propagate(_p);});
       });
   }
 

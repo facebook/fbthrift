@@ -197,7 +197,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
 
             return _rpc
                 {{#function:oneway?}}.singleRequestNoResponse(_crp, rpcOptions).thenReturn(ResponseWrapper.create(null, java.util.Collections.emptyMap(), java.util.Collections.emptyMap())){{/function:oneway?}}{{!
-                }}{{^function:oneway?}}.singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());}){{/function:oneway?}};
+                }}{{^function:oneway?}}.singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw com.facebook.thrift.util.ExceptionUtil.propagate(_p);}){{/function:oneway?}};
       });
   }
 
@@ -491,7 +491,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
 
           return _rpc
               {{#function:oneway?}}.singleRequestNoResponse(_crp, rpcOptions).thenReturn(ResponseWrapper.create(null, java.util.Collections.emptyMap(), java.util.Collections.emptyMap())){{/function:oneway?}}{{!
-              }}{{^function:oneway?}}.singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());}){{/function:oneway?}};
+              }}{{^function:oneway?}}.singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw com.facebook.thrift.util.ExceptionUtil.propagate(_p);}){{/function:oneway?}};
         });
     }
 
