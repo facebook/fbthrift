@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <memory>
 #include <thrift/compiler/sema/standard_mutator.h>
 
 #include <folly/portability/GTest.h>
@@ -26,20 +27,20 @@ namespace {
 class StandardMutatorTest : public ::testing::Test {
  protected:
   std::vector<diagnostic> mutate(
-      t_program& program,
+      std::unique_ptr<t_program> program,
       diagnostic_params params = diagnostic_params::keep_all()) {
     diagnostic_results results;
     diagnostic_context ctx{results, std::move(params)};
-    mutator_context mctx;
-    ctx.start_program(&program);
-    standard_mutator()(ctx, mctx, program);
+    ctx.start_program(program.get());
+    t_program_bundle program_bundle{std::move(program)};
+    standard_mutators()(ctx, program_bundle);
     return std::move(results).diagnostics();
   }
 };
 
 TEST_F(StandardMutatorTest, Empty) {
-  t_program program("path/to/file.thrift");
-  mutate(program);
+  auto program = std::make_unique<t_program>("path/to/file.thrift");
+  mutate(std::move(program));
 }
 
 } // namespace

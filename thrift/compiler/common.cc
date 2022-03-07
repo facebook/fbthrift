@@ -165,7 +165,7 @@ std::unique_ptr<t_program_bundle> parse_and_mutate_program(
   parsing_driver driver{ctx, filename, std::move(params)};
   auto program = driver.parse();
   if (program != nullptr) {
-    standard_mutator().mutate(ctx, *program);
+    standard_mutators()(ctx, *program);
   }
   return program;
 }

@@ -22,8 +22,8 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-// The standard mutator for Thrift.
-ast_mutator standard_mutator();
+// Standard mutators for Thrift.
+ast_mutators standard_mutators();
 
 } // namespace compiler
 } // namespace thrift

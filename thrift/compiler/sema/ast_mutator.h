@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <vector>
+
 #include <thrift/compiler/ast/ast_visitor.h>
 #include <thrift/compiler/ast/diagnostic_context.h>
 #include <thrift/compiler/ast/t_program_bundle.h>
@@ -42,6 +44,21 @@ class ast_mutator
       operator()(ctx, mctx, program);
     }
   }
+};
+
+class ast_mutators {
+ public:
+  explicit ast_mutators(std::vector<ast_mutator> mutators)
+      : mutators_(mutators) {}
+
+  void operator()(diagnostic_context& ctx, t_program_bundle& bundle) {
+    for (auto& mutator : mutators_) {
+      mutator.mutate(ctx, bundle);
+    }
+  }
+
+ private:
+  std::vector<ast_mutator> mutators_;
 };
 
 } // namespace compiler

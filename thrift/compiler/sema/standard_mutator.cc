@@ -117,13 +117,13 @@ void rectify_returned_interactions(
   }
 }
 
-ast_mutator standard_mutator() {
+ast_mutators standard_mutators() {
   ast_mutator mutator;
   mutator.add_root_definition_visitor(&assign_uri);
   mutator.add_interaction_visitor(&propagate_process_in_event_base_annotation);
   mutator.add_function_visitor(&remove_param_list_field_qualifiers);
   mutator.add_function_visitor(&rectify_returned_interactions);
-  return mutator;
+  return ast_mutators{{std::move(mutator)}};
 }
 
 } // namespace compiler
