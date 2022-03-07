@@ -20,6 +20,9 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
+constexpr auto kTerseWriteUri =
+    "facebook.com/thrift/annotation/thrift/TerseWrite";
+
 // TODO(afuller): Instead of mutating the AST, readers should look for
 // the interaction level annotation and the validation logic should be moved to
 // a standard validator.
@@ -55,8 +58,46 @@ void remove_param_list_field_qualifiers(
       case t_field_qualifier::optional:
         ctx.warning("required keyword is ignored in argument lists.");
         break;
+      case t_field_qualifier::terse:
+        ctx.warning(
+            "@thrift.TerseWrite annotation is ignored in argument lists.");
+        break;
     }
     field.set_qualifier(t_field_qualifier::unspecified);
+  }
+}
+
+// Only an unqualified field is eligible for terse write.
+void mutate_terse_write_annotation_field(
+    diagnostic_context& ctx, mutator_context&, t_field& node) {
+  const t_const* terse_write_annotation =
+      node.find_structured_annotation_or_null(kTerseWriteUri);
+
+  if (terse_write_annotation) {
+    auto qual = node.qualifier();
+    if (qual != t_field_qualifier::unspecified) {
+      ctx.failure(node, [&](auto& o) {
+        o << "`@thrift.TerseWrite` cannot be used with qualified fields. Remove `"
+          << (qual == t_field_qualifier::required ? "required" : "optional")
+          << "` qualifier from field `" << node.name() << "`.";
+      });
+    }
+    node.set_qualifier(t_field_qualifier::terse);
+  }
+}
+
+// Only an unqualified field is eligible for terse write.
+void mutate_terse_write_annotation_struct(
+    diagnostic_context&, mutator_context&, t_struct& node) {
+  const t_const* terse_write_annotation =
+      node.find_structured_annotation_or_null(kTerseWriteUri);
+
+  if (terse_write_annotation) {
+    for (auto& field : node.fields()) {
+      if (field.qualifier() == t_field_qualifier::unspecified) {
+        field.set_qualifier(t_field_qualifier::terse);
+      }
+    }
   }
 }
 
@@ -118,12 +159,18 @@ void rectify_returned_interactions(
 }
 
 ast_mutators standard_mutators() {
-  ast_mutator mutator;
-  mutator.add_root_definition_visitor(&assign_uri);
-  mutator.add_interaction_visitor(&propagate_process_in_event_base_annotation);
-  mutator.add_function_visitor(&remove_param_list_field_qualifiers);
-  mutator.add_function_visitor(&rectify_returned_interactions);
-  return ast_mutators{{std::move(mutator)}};
+  ast_mutator initial_mutator;
+  ast_mutator final_mutator;
+
+  initial_mutator.add_root_definition_visitor(&assign_uri);
+  initial_mutator.add_interaction_visitor(
+      &propagate_process_in_event_base_annotation);
+  initial_mutator.add_function_visitor(&remove_param_list_field_qualifiers);
+  initial_mutator.add_function_visitor(&rectify_returned_interactions);
+  final_mutator.add_field_visitor(&mutate_terse_write_annotation_field);
+  final_mutator.add_struct_visitor(&mutate_terse_write_annotation_struct);
+
+  return ast_mutators{{std::move(initial_mutator), std::move(final_mutator)}};
 }
 
 } // namespace compiler

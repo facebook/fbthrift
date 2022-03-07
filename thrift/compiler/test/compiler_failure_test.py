@@ -1625,3 +1625,42 @@ class CompilerFailureTest(unittest.TestCase):
                 """
             ),
         )
+
+    def test_terse_write_annotation(self):
+        write_file(
+            "thrift/annotation/thrift.thrift",
+            textwrap.dedent(
+                """\
+                struct TerseWrite {} (thrift.uri = "facebook.com/thrift/annotation/thrift/TerseWrite")
+                """
+            ),
+        )
+
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                include "thrift/annotation/thrift.thrift"
+
+                struct TerseFields {
+                    @thrift.TerseWrite
+                    1: i64 field1;
+                    @thrift.TerseWrite
+                    2: optional i64 field2;
+                    @thrift.TerseWrite
+                    3: required i64 field3;
+                }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift:7] `@thrift.TerseWrite` cannot be used with qualified fields. "
+            "Remove `optional` qualifier from field `field2`.\n"
+            "[FAILURE:foo.thrift:9] `@thrift.TerseWrite` cannot be used with qualified fields. "
+            "Remove `required` qualifier from field `field3`.\n"
+        )

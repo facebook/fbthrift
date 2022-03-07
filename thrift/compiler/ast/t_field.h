@@ -35,6 +35,7 @@ enum class t_field_qualifier {
   unspecified = 0,
   required,
   optional,
+  terse,
 };
 
 using t_field_id = int16_t;
@@ -120,6 +121,7 @@ class t_field final : public t_named {
     required = 0,
     optional = 1,
     opt_in_req_out = 2,
+    terse = 3,
   };
 
   t_field(t_type_ref type, std::string name)
@@ -147,6 +149,9 @@ class t_field final : public t_named {
       case e_req::optional:
         set_qualifier(t_field_qualifier::optional);
         break;
+      case e_req::terse:
+        set_qualifier(t_field_qualifier::terse);
+        break;
     }
   }
   e_req get_req() const {
@@ -157,6 +162,8 @@ class t_field final : public t_named {
         return e_req::required;
       case t_field_qualifier::optional:
         return e_req::optional;
+      case t_field_qualifier::terse:
+        return e_req::terse;
     }
     return {};
   }

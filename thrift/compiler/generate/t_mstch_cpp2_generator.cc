@@ -710,6 +710,8 @@ class mstch_cpp2_field : public mstch_field {
         return ns + "optional_field_ref";
       case t_field::e_req::opt_in_req_out:
         return ns + "field_ref";
+      case t_field::e_req::terse:
+        return ns + "terse_field_ref";
       default:
         throw std::runtime_error("unknown qualifier");
     }
