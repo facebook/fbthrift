@@ -208,8 +208,11 @@ void ThriftRocketServerHandler::handleSetupFrame(
         std::addressof(worker_->getServer()->getDecoratedProcessorFactory());
     serviceMetadata_ =
         std::addressof(worker_->getMetadataForService(*processorFactory_));
+    serviceRequestInfoMap_ = processorFactory_->getServiceRequestInfoMap();
     processor_ = processorFactory_->getProcessor();
-    threadManager_ = worker_->getServer()->getThreadManager();
+    if (!useResourcePoolsFlagsSet()) {
+      threadManager_ = worker_->getServer()->getThreadManager();
+    }
     serverConfigs_ = worker_->getServer();
     requestsRegistry_ = worker_->getRequestsRegistry();
 
@@ -508,38 +511,51 @@ void ThriftRocketServerHandler::handleRequestCommon(
   // check if server is overloaded
   const auto& headers = request->getTHeader().getHeaders();
   const auto& name = request->getMethodName();
-  auto errorCode = serverConfigs_->checkOverload(&headers, &name);
-  serverConfigs_->incActiveRequests();
-  if (UNLIKELY(errorCode.has_value())) {
-    handleRequestOverloadedServer(std::move(request), errorCode.value());
-    return;
-  }
 
-  if (!serverConfigs_->shouldHandleRequestForMethod(name)) {
-    handleServerNotReady(std::move(request));
-    return;
-  }
+  bool useResourcePools =
+      useResourcePoolsFlagsSet() && !serverConfigs_->resourcePoolSet().empty();
 
-  auto preprocessResult =
-      serverConfigs_->preprocess({headers, name, connContext_, request.get()});
-  if (UNLIKELY(!std::holds_alternative<std::monostate>(preprocessResult))) {
-    folly::variant_match(
-        preprocessResult,
-        [&](AppClientException& ace) {
-          handleAppError(
-              std::move(request), ace.name(), ace.getMessage(), true);
-        },
-        [&](AppOverloadedException&) {
-          handleRequestOverloadedServer(
-              std::move(request), kAppOverloadedErrorCode);
-        },
-        [&](const AppServerException& ase) {
-          handleAppError(
-              std::move(request), ase.name(), ase.getMessage(), false);
-        },
-        [](std::monostate&) { folly::assume_unreachable(); });
+  if (useResourcePools) {
+    serverConfigs_->incActiveRequests();
 
-    return;
+    if (!serverConfigs_->shouldHandleRequestForMethod(name)) {
+      handleServerNotReady(std::move(request));
+      return;
+    }
+  } else {
+    auto errorCode = serverConfigs_->checkOverload(&headers, &name);
+    serverConfigs_->incActiveRequests();
+    if (UNLIKELY(errorCode.has_value())) {
+      handleRequestOverloadedServer(std::move(request), errorCode.value());
+      return;
+    }
+
+    if (!serverConfigs_->shouldHandleRequestForMethod(name)) {
+      handleServerNotReady(std::move(request));
+      return;
+    }
+
+    auto preprocessResult = serverConfigs_->preprocess(
+        {headers, name, connContext_, request.get()});
+    if (UNLIKELY(!std::holds_alternative<std::monostate>(preprocessResult))) {
+      folly::variant_match(
+          preprocessResult,
+          [&](AppClientException& ace) {
+            handleAppError(
+                std::move(request), ace.name(), ace.getMessage(), true);
+          },
+          [&](AppOverloadedException&) {
+            handleRequestOverloadedServer(
+                std::move(request), kAppOverloadedErrorCode);
+          },
+          [&](const AppServerException& ase) {
+            handleAppError(
+                std::move(request), ase.name(), ase.getMessage(), false);
+          },
+          [](std::monostate&) { folly::assume_unreachable(); });
+
+      return;
+    }
   }
 
   logSetupConnectionEventsOnce(setupLoggingFlag_, connContext_);
@@ -573,7 +589,9 @@ void ThriftRocketServerHandler::handleRequestCommon(
       observer->admittedRequest(&request->getMethodName());
       // Expensive operations; happens only when sampling is enabled
       if (samplingStatus.isEnabledByServer()) {
-        observer->queuedRequests(threadManager_->pendingUpstreamTaskCount());
+        if (threadManager_) {
+          observer->queuedRequests(threadManager_->pendingUpstreamTaskCount());
+        }
         observer->activeRequests(serverConfigs_->getActiveRequests());
       }
     }
@@ -598,14 +616,73 @@ void ThriftRocketServerHandler::handleRequestCommon(
     if (auto* found = std::get_if<PerServiceMetadata::MetadataFound>(
             &methodMetadataResult);
         LIKELY(found != nullptr)) {
-      processor_->processSerializedCompressedRequestWithMetadata(
-          std::move(request),
-          std::move(serializedCompressedRequest),
-          found->metadata,
-          protocolId,
-          cpp2ReqCtx,
-          eventBase_,
-          threadManager_.get());
+      if (useResourcePools) {
+        const ServiceRequestInfo* serviceRequestInfo = serviceRequestInfoMap_
+            ? folly::get_ptr(
+                  serviceRequestInfoMap_->get(), request->getMethodName())
+            : nullptr;
+        if (!serviceRequestInfo) {
+          std::string_view methodName = request->getMethodName();
+          AsyncProcessorHelper::sendUnknownMethodError(
+              std::move(request), methodName);
+          return;
+        }
+
+        ServerRequest serverRequest(
+            std::move(request),
+            std::move(serializedCompressedRequest),
+            eventBase_,
+            cpp2ReqCtx,
+            protocolId,
+            folly::RequestContext::saveContext(),
+            processor_.get(),
+            &found->metadata,
+            serviceRequestInfo);
+
+        auto poolResult = AsyncProcessorHelper::selectResourcePool(
+            *processor_, serverRequest, found->metadata);
+        if (auto* reject = std::get_if<ServerRequestRejection>(&poolResult)) {
+          auto errorCode = kAppOverloadedErrorCode;
+          if (reject->applicationException().getType() ==
+              TApplicationException::UNKNOWN_METHOD) {
+            errorCode = kMethodUnknownErrorCode;
+          }
+          serverRequest.request()->sendErrorWrapped(
+              folly::exception_wrapper(
+                  folly::in_place, std::move(*reject).applicationException()),
+              errorCode);
+          return;
+        }
+
+        auto resourcePoolHandle =
+            std::get_if<std::reference_wrapper<const ResourcePoolHandle>>(
+                &poolResult);
+        DCHECK(serverConfigs_->resourcePoolSet().hasResourcePool(
+            *resourcePoolHandle));
+        auto& resourcePool =
+            serverConfigs_->resourcePoolSet().resourcePool(*resourcePoolHandle);
+        apache::thrift::detail::ServerRequestHelper::setExecutor(
+            serverRequest, resourcePool.executor().value_or(nullptr));
+        auto result = resourcePool.accept(std::move(serverRequest));
+        if (result) {
+          auto errorCode = kQueueOverloadedErrorCode;
+          serverRequest.request()->sendErrorWrapped(
+              folly::exception_wrapper(
+                  folly::in_place,
+                  std::move(std::move(result).value()).applicationException()),
+              errorCode);
+          return;
+        }
+      } else {
+        processor_->processSerializedCompressedRequestWithMetadata(
+            std::move(request),
+            std::move(serializedCompressedRequest),
+            found->metadata,
+            protocolId,
+            cpp2ReqCtx,
+            eventBase_,
+            threadManager_.get());
+      }
     } else if (std::holds_alternative<
                    PerServiceMetadata::MetadataNotImplemented>(
                    methodMetadataResult)) {

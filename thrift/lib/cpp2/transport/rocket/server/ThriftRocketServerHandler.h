@@ -107,6 +107,8 @@ class ThriftRocketServerHandler : public RocketServerHandler {
   const std::vector<std::unique_ptr<SetupFrameHandler>>& setupFrameHandlers_;
   AsyncProcessorFactory* processorFactory_ = nullptr;
   Cpp2Worker::PerServiceMetadata* serviceMetadata_ = nullptr;
+  std::optional<std::reference_wrapper<ServiceRequestInfoMap const>>
+      serviceRequestInfoMap_;
   std::shared_ptr<AsyncProcessor> processor_;
   std::shared_ptr<concurrency::ThreadManager> threadManager_;
   server::ServerConfigs* serverConfigs_ = nullptr;

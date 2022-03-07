@@ -22,6 +22,7 @@
 #include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/async/AsyncProcessorHelper.h>
+#include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
@@ -118,6 +119,7 @@ Cpp2Connection::Cpp2Connection(
     const std::shared_ptr<HeaderServerChannel>& serverChannel)
     : processorFactory_(worker->getServer()->getDecoratedProcessorFactory()),
       serviceMetadata_(worker->getMetadataForService(processorFactory_)),
+      serviceRequestInfoMap_(processorFactory_.getServiceRequestInfoMap()),
       processor_(processorFactory_.getProcessor()),
       duplexChannel_(
           worker->getServer()->isDuplex()
@@ -644,15 +646,72 @@ void Cpp2Connection::requestReceived(
         },
         [&](const PerServiceMetadata::MetadataFound& found) {
           logSetupConnectionEventsOnce(setupLoggingFlag_, context_);
+          if (!server->resourcePoolSet().empty()) {
+            // We need to process this using request pools
+            const ServiceRequestInfo* serviceRequestInfo{nullptr};
+            if (serviceRequestInfoMap_) {
+              serviceRequestInfo = &serviceRequestInfoMap_->get().at(
+                  reqContext->getMethodName());
+            }
+            ServerRequest serverRequest(
+                std::move(req),
+                SerializedCompressedRequest(std::move(serializedRequest)),
+                worker_->getEventBase(),
+                reqContext,
+                protoId,
+                folly::RequestContext::saveContext(),
+                processor_.get(),
+                &found.metadata,
+                serviceRequestInfo);
 
-          processor_->processSerializedCompressedRequestWithMetadata(
-              std::move(req),
-              SerializedCompressedRequest(std::move(serializedRequest)),
-              found.metadata,
-              protoId,
-              reqContext,
-              worker_->getEventBase(),
-              threadManager_.get());
+            auto poolResult = AsyncProcessorHelper::selectResourcePool(
+                *processor_, serverRequest, found.metadata);
+            if (auto* reject =
+                    std::get_if<ServerRequestRejection>(&poolResult)) {
+              auto errorCode = kAppOverloadedErrorCode;
+              if (reject->applicationException().getType() ==
+                  TApplicationException::UNKNOWN_METHOD) {
+                errorCode = kMethodUnknownErrorCode;
+              }
+              serverRequest.request()->sendErrorWrapped(
+                  folly::exception_wrapper(
+                      folly::in_place,
+                      std::move(*reject).applicationException()),
+                  errorCode);
+              return;
+            }
+
+            auto resourcePoolHandle =
+                std::get_if<std::reference_wrapper<const ResourcePoolHandle>>(
+                    &poolResult);
+            DCHECK(
+                server->resourcePoolSet().hasResourcePool(*resourcePoolHandle));
+            auto& resourcePool =
+                server->resourcePoolSet().resourcePool(*resourcePoolHandle);
+            apache::thrift::detail::ServerRequestHelper::setExecutor(
+                serverRequest, resourcePool.executor().value_or(nullptr));
+
+            auto result = resourcePool.accept(std::move(serverRequest));
+            if (result) {
+              auto errorCode = kQueueOverloadedErrorCode;
+              serverRequest.request()->sendErrorWrapped(
+                  folly::exception_wrapper(
+                      folly::in_place,
+                      std::move(std::move(result).value())
+                          .applicationException()),
+                  errorCode);
+              return;
+            }
+          } else {
+            processor_->processSerializedCompressedRequestWithMetadata(
+                std::move(req),
+                SerializedCompressedRequest(std::move(serializedRequest)),
+                found.metadata,
+                protoId,
+                reqContext,
+                worker_->getEventBase(),
+                threadManager_.get());
+          }
         });
   } catch (...) {
     LOG(DFATAL) << "AsyncProcessor::process exception: "

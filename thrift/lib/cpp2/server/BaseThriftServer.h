@@ -98,6 +98,11 @@ class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {
     return {svIf_.get()};
   }
 
+  std::optional<std::reference_wrapper<ServiceRequestInfoMap const>>
+  getServiceRequestInfoMap() const override {
+    return svIf_->getServiceRequestInfoMap();
+  }
+
  private:
   std::shared_ptr<T> svIf_;
 };

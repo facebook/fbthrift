@@ -126,6 +126,8 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
  protected:
   apache::thrift::AsyncProcessorFactory& processorFactory_;
   Cpp2Worker::PerServiceMetadata& serviceMetadata_;
+  std::optional<std::reference_wrapper<ServiceRequestInfoMap const>>
+      serviceRequestInfoMap_;
   std::unique_ptr<apache::thrift::AsyncProcessor> processor_;
   std::unique_ptr<DuplexChannel> duplexChannel_;
   std::shared_ptr<apache::thrift::HeaderServerChannel> channel_;

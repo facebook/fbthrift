@@ -118,14 +118,70 @@ void ThriftProcessor::onThriftRequest(
             std::move(request), methodName);
       },
       [&](const PerServiceMetadata::MetadataFound& found) {
-        processor_->processSerializedCompressedRequestWithMetadata(
-            std::move(request),
-            SerializedCompressedRequest(std::move(payload)),
-            found.metadata,
-            protoId,
-            reqContext,
-            evb,
-            server_.getThreadManager().get());
+        if (!server_.resourcePoolSet().empty()) {
+          // We need to process this using request pools
+          const ServiceRequestInfo* serviceRequestInfo{nullptr};
+          if (auto requestInfo = processorFactory.getServiceRequestInfoMap()) {
+            serviceRequestInfo =
+                &requestInfo->get().at(request->getMethodName());
+          }
+          ServerRequest serverRequest(
+              std::move(request),
+              SerializedCompressedRequest(std::move(payload)),
+              evb,
+              reqContext,
+              protoId,
+              folly::RequestContext::saveContext(),
+              processor_.get(),
+              &found.metadata,
+              serviceRequestInfo);
+
+          auto poolResult = AsyncProcessorHelper::selectResourcePool(
+              *processor_, serverRequest, found.metadata);
+          if (auto* reject = std::get_if<ServerRequestRejection>(&poolResult)) {
+            auto errorCode = kAppOverloadedErrorCode;
+            if (reject->applicationException().getType() ==
+                TApplicationException::UNKNOWN_METHOD) {
+              errorCode = kMethodUnknownErrorCode;
+            }
+            serverRequest.request()->sendErrorWrapped(
+                folly::exception_wrapper(
+                    folly::in_place, std::move(*reject).applicationException()),
+                errorCode);
+            return;
+          }
+
+          auto resourcePoolHandle =
+              std::get_if<std::reference_wrapper<const ResourcePoolHandle>>(
+                  &poolResult);
+          DCHECK(
+              server_.resourcePoolSet().hasResourcePool(*resourcePoolHandle));
+          auto& resourcePool =
+              server_.resourcePoolSet().resourcePool(*resourcePoolHandle);
+          apache::thrift::detail::ServerRequestHelper::setExecutor(
+              serverRequest, resourcePool.executor().value_or(nullptr));
+
+          auto result = resourcePool.accept(std::move(serverRequest));
+          if (result) {
+            auto errorCode = kQueueOverloadedErrorCode;
+            serverRequest.request()->sendErrorWrapped(
+                folly::exception_wrapper(
+                    folly::in_place,
+                    std::move(std::move(result).value())
+                        .applicationException()),
+                errorCode);
+            return;
+          }
+        } else {
+          processor_->processSerializedCompressedRequestWithMetadata(
+              std::move(request),
+              SerializedCompressedRequest(std::move(payload)),
+              found.metadata,
+              protoId,
+              reqContext,
+              evb,
+              server_.getThreadManager().get());
+        }
       });
 }
 } // namespace thrift

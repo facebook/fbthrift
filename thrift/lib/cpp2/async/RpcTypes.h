@@ -49,6 +49,8 @@ class SerializedCompressedRequest {
 
   CompressionAlgorithm getCompressionAlgorithm() const { return compression_; }
 
+  const folly::IOBuf* compressedBuffer() const { return buffer_.get(); }
+
  private:
   std::unique_ptr<folly::IOBuf> buffer_;
   CompressionAlgorithm compression_;

@@ -67,6 +67,12 @@ class AsyncProcessorHelper {
   // Helper code to bridge from a ServerRequest to calling the
   // AsyncProcessor::execute method.
   static void executeRequest(ServerRequest&& request);
+
+  // Helper code to choose a valid resource pool.
+  static SelectPoolResult selectResourcePool(
+      AsyncProcessor& processor,
+      const ServerRequest& request,
+      const AsyncProcessorFactory::MethodMetadata& methodMetadata);
 };
 
 } // namespace apache::thrift
