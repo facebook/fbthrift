@@ -341,56 +341,40 @@ TEST(ParallelConcurrencyControllerTest, DifferentOrdering2) {
 TEST(ParallelConcurrencyControllerTest, ExistingTasksHaveHigherPriority) {
   folly::EventBase eb;
 
-  folly::Baton baton1;
-  folly::Baton baton2;
-  folly::Baton baton3;
-  folly::Baton baton4;
-
   std::atomic<size_t> counter{0};
 
   Func task1 = [&](ServerRequest&& /* request */,
                    const AsyncProcessorFactory::MethodMetadata&) {
-    baton1.wait();
     ++counter;
     EXPECT_EQ(counter, 1);
   };
   Func task2 = [&](ServerRequest&& /* request */,
                    const AsyncProcessorFactory::MethodMetadata&) {
-    baton2.wait();
     ++counter;
     EXPECT_EQ(counter, 3);
   };
   Func task3 = [&](ServerRequest&& /* request */,
                    const AsyncProcessorFactory::MethodMetadata&) {
-    baton3.wait();
     ++counter;
     EXPECT_EQ(counter, 4);
   };
   auto task4 = [&] {
-    baton4.wait();
     ++counter;
     EXPECT_EQ(counter, 2);
   };
 
-  folly::Baton baton5;
-  folly::Baton baton6;
-  folly::Baton baton7;
-
   Func task5 = [&](ServerRequest&& /* request */,
                    const AsyncProcessorFactory::MethodMetadata&) {
-    baton5.wait();
     ++counter;
     EXPECT_EQ(counter, 5);
   };
   Func task6 = [&](ServerRequest&& /* request */,
                    const AsyncProcessorFactory::MethodMetadata&) {
-    baton6.wait();
     ++counter;
     EXPECT_EQ(counter, 6);
   };
   Func task7 = [&](ServerRequest&& /* request */,
                    const AsyncProcessorFactory::MethodMetadata&) {
-    baton7.wait();
     ++counter;
     EXPECT_EQ(counter, 7);
   };
@@ -409,11 +393,15 @@ TEST(ParallelConcurrencyControllerTest, ExistingTasksHaveHigherPriority) {
   auto ap7 = std::make_unique<MockAsyncProcessor>();
   ap7->setFunc(task7);
 
+  folly::Baton baton;
+
   folly::CPUThreadPoolExecutor ex(1);
   FIFORequestPile pile;
   ParallelConcurrencyController controller(pile, ex);
 
   ResourcePool pool(&pile, &controller);
+
+  ex.add([&] { baton.wait(); });
 
   // This block is verifying that when a task is added through
   // underlying executor, it will get higher priority
@@ -450,12 +438,5 @@ TEST(ParallelConcurrencyControllerTest, ExistingTasksHaveHigherPriority) {
     pool.enqueue(getRequest(ap7.get(), &eb));
   }
 
-  baton1.post();
-  baton2.post();
-  baton3.post();
-  baton4.post();
-
-  baton5.post();
-  baton6.post();
-  baton7.post();
+  baton.post();
 }
