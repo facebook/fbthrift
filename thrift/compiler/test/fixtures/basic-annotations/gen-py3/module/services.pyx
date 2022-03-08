@@ -65,6 +65,7 @@ import types as _py_types
 from module.services_wrapper cimport cMyServiceInterface
 from module.services_wrapper cimport cMyServicePrioParentInterface
 from module.services_wrapper cimport cMyServicePrioChildInterface
+from module.services_wrapper cimport cBadServiceInterface
 
 
 
@@ -81,6 +82,22 @@ cdef class Promise_cbool:
     @staticmethod
     cdef _fbthrift_create(cFollyPromise[cbool] cPromise):
         cdef Promise_cbool inst = Promise_cbool.__new__(Promise_cbool)
+        inst.cPromise[0] = cmove(cPromise)
+        return inst
+
+@cython.auto_pickle(False)
+cdef class Promise_cint32_t:
+    cdef cFollyPromise[cint32_t]* cPromise
+
+    def __cinit__(self):
+        self.cPromise = new cFollyPromise[cint32_t](cFollyPromise[cint32_t].makeEmpty())
+
+    def __dealloc__(self):
+        del self.cPromise
+
+    @staticmethod
+    cdef _fbthrift_create(cFollyPromise[cint32_t] cPromise):
+        cdef Promise_cint32_t inst = Promise_cint32_t.__new__(Promise_cint32_t)
         inst.cPromise[0] = cmove(cPromise)
         return inst
 
@@ -252,6 +269,41 @@ MyServicePrioParentInterface
     @staticmethod
     def __get_thrift_name__():
         return "module.MyServicePrioChild"
+
+cdef object _BadService_annotations = _py_types.MappingProxyType({
+    """cpp.name""": """GoodService""",
+})
+
+
+@cython.auto_pickle(False)
+cdef class BadServiceInterface(
+    ServiceInterface
+):
+    annotations = _BadService_annotations
+
+    def __cinit__(self):
+        self._cpp_obj = cBadServiceInterface(
+            <PyObject *> self,
+            get_executor()
+        )
+
+    async def bar(
+            self):
+        raise NotImplementedError("async def bar is not implemented")
+
+    @classmethod
+    def __get_reflection__(cls):
+        return _services_reflection.get_reflection__BadService(for_clients=False)
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftServiceMetadataResponse response
+        ServiceMetadata[_services_reflection.cGoodServiceSvIf].gen(response)
+        return __MetadataBox.box(cmove(deref(response.metadata_ref())))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.BadService"
 
 
 
@@ -924,6 +976,127 @@ async def MyServicePrioChild_onStartServing_coro(
         promise.cPromise.setValue(c_unit)
 
 async def MyServicePrioChild_onStopRequested_coro(
+    object self,
+    Promise_cFollyUnit promise
+):
+    try:
+        result = await self.onStopRequested()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler onStopRequested:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler onStopRequested:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+cdef api void call_cy_BadService_bar(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cint32_t] cPromise
+):
+    cdef Promise_cint32_t __promise = Promise_cint32_t._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+    asyncio.get_event_loop().create_task(
+        BadService_bar_coro(
+            self,
+            __promise
+        )
+    )
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+cdef api void call_cy_BadService_onStartServing(
+    object self,
+    cFollyPromise[cFollyUnit] cPromise
+):
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    asyncio.get_event_loop().create_task(
+        BadService_onStartServing_coro(
+            self,
+            __promise
+        )
+    )
+cdef api void call_cy_BadService_onStopRequested(
+    object self,
+    cFollyPromise[cFollyUnit] cPromise
+):
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    asyncio.get_event_loop().create_task(
+        BadService_onStopRequested_coro(
+            self,
+            __promise
+        )
+    )
+async def BadService_bar_coro(
+    object self,
+    Promise_cint32_t promise
+):
+    try:
+        result = await self.bar()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler bar:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler bar:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<cint32_t> result)
+
+async def BadService_onStartServing_coro(
+    object self,
+    Promise_cFollyUnit promise
+):
+    try:
+        result = await self.onStartServing()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler onStartServing:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler onStartServing:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+async def BadService_onStopRequested_coro(
     object self,
     Promise_cFollyUnit promise
 ):

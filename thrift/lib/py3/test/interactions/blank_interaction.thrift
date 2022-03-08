@@ -21,4 +21,4 @@ interaction Blank {
 
 service BlankService {
   performs Blank;
-}
+} (cpp.name = "BlankServiceRenamed")

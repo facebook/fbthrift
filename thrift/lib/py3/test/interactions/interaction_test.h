@@ -57,7 +57,7 @@ struct SemiCalculatorHandler : CalculatorSvIf {
     return a + b;
   }
 };
-struct SemiBlankServiceHandler : BlankServiceSvIf {};
+struct SemiBlankServiceHandler : BlankServiceRenamedSvIf {};
 } // namespace thrift
 } // namespace test
 } // namespace interactions

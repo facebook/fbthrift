@@ -188,7 +188,7 @@ cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
     @staticmethod
     def __get_metadata__():
         cdef __fbthrift_cThriftServiceMetadataResponse response
-        ServiceMetadata[_services_reflection.c{{service:name}}SvIf].gen(response)
+        ServiceMetadata[_services_reflection.c{{service:cpp_name}}SvIf].gen(response)
         return __MetadataBox.box(cmove(deref(response.metadata_ref())))
 
     @staticmethod

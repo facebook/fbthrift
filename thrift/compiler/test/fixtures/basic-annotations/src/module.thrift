@@ -89,3 +89,12 @@ struct SecretStruct {
   1: i64 id;
   2: string password (java.sensitive);
 }
+
+interaction BadInteraction {
+  void foo();
+} (cpp.name = "GoodInteraction")
+
+service BadService {
+  performs BadInteraction;
+  i32 bar();
+} (cpp.name = "GoodService")

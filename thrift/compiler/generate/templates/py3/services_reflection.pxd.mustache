@@ -31,8 +31,8 @@ cdef __InterfaceSpec get_reflection__{{service:name}}(bint for_clients)
 
 cdef extern from "{{program:includePrefix}}{{program:cpp_gen_path}}/{{service:name}}.h"{{!
     }} namespace "{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}":
-    cdef cppclass c{{service:name}}SvIf {{!
+    cdef cppclass c{{service:cpp_name}}SvIf {{!
       }}"::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{!
-      }}{{service:name}}SvIf":
+      }}{{service:cpp_name}}SvIf":
         pass
 {{/program:services}}

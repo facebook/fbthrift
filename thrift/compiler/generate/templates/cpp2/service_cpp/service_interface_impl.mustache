@@ -48,7 +48,7 @@ folly::SemiFuture<<% > service_common/async_return_type%>> <% > service_common/s
 }
 <%^service:interaction?%>
 
-folly::Future<<% > service_common/async_return_type%>> <%service:name%>SvIf::future_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
+folly::Future<<% > service_common/async_return_type%>> <%service:cpp_name%>SvIf::future_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_<%function:cpp_name%>.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_<%function:cpp_name%>(<% > service_common/param_list_move%>), getInternalKeepAlive());

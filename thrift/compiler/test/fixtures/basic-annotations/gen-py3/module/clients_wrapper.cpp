@@ -172,4 +172,46 @@ MyServicePrioChildClientWrapper::pang(
   return _future;
 }
 
+folly::Future<int32_t>
+BadServiceClientWrapper::bar(
+    apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::cpp2::GoodServiceAsyncClient*>(async_client_.get());
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_bar, channel_);
+  client->bar(
+    rpcOptions,
+    std::move(callback)
+  );
+  return _future;
+}
+
+
+folly::Future<std::unique_ptr<::thrift::py3::ClientWrapper>>
+BadServiceClientWrapper::createBadInteraction() {
+  return folly::via(
+      channel_->getEventBase(),
+      [=]() -> std::unique_ptr<::thrift::py3::ClientWrapper> {
+        auto interaction_client = static_cast<std::unique_ptr<apache::thrift::GeneratedAsyncClient>>(std::make_unique<GoodServiceAsyncClient::BadInteraction>(((GoodServiceAsyncClient*)async_client_.get())->createBadInteraction()));
+        return static_cast<std::unique_ptr<::thrift::py3::ClientWrapper>>(std::make_unique<BadInteractionInteractionWrapper>(std::move(interaction_client), channel_));
+      }
+  );
+}
+
+folly::Future<folly::Unit>
+BadServiceClientWrapper::BadInteractionInteractionWrapper::foo(
+    apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::cpp2::GoodServiceAsyncClient::BadInteraction*>(async_client_.get());
+  folly::Promise<folly::Unit> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_foo, channel_);
+  client->foo(
+    rpcOptions,
+    std::move(callback)
+  );
+  return _future;
+}
+
 } // namespace cpp2

@@ -55,6 +55,8 @@ cimport module.services_reflection as _services_reflection
 from module.clients_wrapper cimport cMyServiceAsyncClient, cMyServiceClientWrapper
 from module.clients_wrapper cimport cMyServicePrioParentAsyncClient, cMyServicePrioParentClientWrapper
 from module.clients_wrapper cimport cMyServicePrioChildAsyncClient, cMyServicePrioChildClientWrapper
+from module.clients_wrapper cimport cBadServiceAsyncClient, cBadServiceClientWrapper
+from module.clients_wrapper cimport cBadServiceClientWrapper_BadInteractionInteractionWrapper
 
 
 cdef void MyService_ping_callback(
@@ -182,6 +184,32 @@ cdef void MyServicePrioParent_pong_callback(
             pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void MyServicePrioChild_pang_callback(
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
+cdef void BadService_bar_callback(
+    cFollyTry[cint32_t]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(result.value())
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
+cdef void BadService_BadInteraction_foo_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
@@ -516,4 +544,91 @@ cdef class MyServicePrioChild(MyServicePrioParent):
     @staticmethod
     def __get_thrift_name__():
         return "module.MyServicePrioChild"
+
+cdef object _BadService_annotations = _py_types.MappingProxyType({
+    """cpp.name""": """GoodService""",
+})
+
+
+@cython.auto_pickle(False)
+cdef class BadService(thrift.py3.client.Client):
+    annotations = _BadService_annotations
+
+    cdef const type_info* _typeid(BadService self):
+        return &typeid(cBadServiceAsyncClient)
+
+    cdef bind_client(BadService self, cRequestChannel_ptr&& channel):
+        self._client = makeClientWrapper[cBadServiceAsyncClient, cBadServiceClientWrapper](
+            cmove(channel)
+        )
+
+    @cython.always_allow_keywords(True)
+    def bar(
+            BadService self,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[cint32_t](
+            self._executor,
+            down_cast_ptr[cBadServiceClientWrapper, cClientWrapper](self._client.get()).bar(rpc_options._cpp_obj, 
+            ),
+            BadService_bar_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
+
+
+    def createBadInteraction(
+            BadService self
+    ):
+        interaction = BadService_BadInteraction()
+        bridgeFutureWith[unique_ptr[cClientWrapper]](
+            interaction._executor,
+            down_cast_ptr[cBadServiceClientWrapper, cClientWrapper](self._client.get()).createBadInteraction(),
+            thrift.py3.client.interactions_callback,
+            <PyObject *> interaction
+        )
+        return interaction
+
+    @classmethod
+    def __get_reflection__(cls):
+        return _services_reflection.get_reflection__BadService(for_clients=True)
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftServiceMetadataResponse response
+        ServiceMetadata[_services_reflection.cGoodServiceSvIf].gen(response)
+        return __MetadataBox.box(cmove(deref(response.metadata_ref())))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.BadService"
+
+@cython.auto_pickle(False)
+cdef class BadService_BadInteraction(thrift.py3.client.Client):
+
+    @cython.always_allow_keywords(True)
+    def foo(
+            BadService_BadInteraction self,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            down_cast_ptr[cBadServiceClientWrapper_BadInteractionInteractionWrapper, cClientWrapper](self._client.get()).foo(rpc_options._cpp_obj, 
+            ),
+            BadService_BadInteraction_foo_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
 

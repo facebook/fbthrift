@@ -20,6 +20,9 @@ class MyServicePrioParentSvIf;
 namespace cpp2 {
 class MyServicePrioChildSvIf;
 } // namespace cpp2
+namespace cpp2 {
+class GoodServiceSvIf;
+} // namespace cpp2
 
 namespace apache {
 namespace thrift {
@@ -113,6 +116,18 @@ class ServiceMetadata<::cpp2::MyServicePrioChildSvIf> {
   friend class ServiceMetadata;
 
   static void gen_pang(ThriftMetadata& metadata, ThriftService& context);
+};
+template <>
+class ServiceMetadata<::cpp2::GoodServiceSvIf> {
+ public:
+  static void gen(ThriftServiceMetadataResponse& response);
+ private:
+  static const ThriftServiceContextRef* genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services);
+
+  template <typename T>
+  friend class ServiceMetadata;
+
+  static void gen_bar(ThriftMetadata& metadata, ThriftService& context);
 };
 } // namespace md
 } // namespace detail

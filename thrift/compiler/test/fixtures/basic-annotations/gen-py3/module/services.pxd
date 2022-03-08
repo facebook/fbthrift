@@ -30,3 +30,8 @@ cdef class MyServicePrioChildInterface(MyServicePrioParentInterface):
     cdef bint _for_cython_pang
     pass
 
+cdef class BadServiceInterface(ServiceInterface):
+    # these are to avoid weird Cython multiple inheritance issue
+    cdef bint _for_cython_bar
+    pass
+

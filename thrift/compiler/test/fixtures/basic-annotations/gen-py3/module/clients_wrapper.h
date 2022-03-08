@@ -9,6 +9,7 @@
 #include <src/gen-cpp2/MyService.h>
 #include <src/gen-cpp2/MyServicePrioParent.h>
 #include <src/gen-cpp2/MyServicePrioChild.h>
+#include <src/gen-cpp2/BadService.h>
 
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>
@@ -69,6 +70,27 @@ class MyServicePrioChildClientWrapper : public ::cpp2::MyServicePrioParentClient
 
     folly::Future<folly::Unit> pang(
       apache::thrift::RpcOptions& rpcOptions);
+};
+
+
+class BadServiceClientWrapper : public ::thrift::py3::ClientWrapper {
+  public:
+    using ::thrift::py3::ClientWrapper::ClientWrapper;
+
+    folly::Future<int32_t> bar(
+      apache::thrift::RpcOptions& rpcOptions);
+
+    class BadInteractionInteractionWrapper : public ClientWrapper {
+      public:
+        BadInteractionInteractionWrapper(
+          std::unique_ptr<apache::thrift::GeneratedAsyncClient> async_client,
+           std::shared_ptr<apache::thrift::RequestChannel> channel)
+           : ClientWrapper(std::move(async_client), channel) {}
+
+        folly::Future<folly::Unit> foo(
+          apache::thrift::RpcOptions& rpcOptions);
+    };
+    folly::Future<std::unique_ptr<::thrift::py3::ClientWrapper>> createBadInteraction();
 };
 
 

@@ -9,6 +9,7 @@
 #include <src/gen-cpp2/MyService.h>
 #include <src/gen-cpp2/MyServicePrioParent.h>
 #include <src/gen-cpp2/MyServicePrioChild.h>
+#include <src/gen-cpp2/BadService.h>
 #include <folly/python/futures.h>
 #include <Python.h>
 
@@ -70,4 +71,19 @@ folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> MyServicePrioChildInterface(PyObject *if_object, folly::Executor *exc);
+
+
+class BadServiceWrapper : virtual public GoodServiceSvIf {
+  protected:
+    PyObject *if_object;
+    folly::Executor *executor;
+  public:
+    explicit BadServiceWrapper(PyObject *if_object, folly::Executor *exc);
+    void async_tm_bar(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
+    std::unique_ptr<BadInteractionIf> createBadInteraction() override;
+folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
+folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
+};
+
+std::shared_ptr<apache::thrift::ServerInterface> BadServiceInterface(PyObject *if_object, folly::Executor *exc);
 } // namespace cpp2

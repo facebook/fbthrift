@@ -17,12 +17,12 @@
 %><% > service_h/service_info_holder%>
 
 
-class <%service:name%>If : public apache::thrift::<%#interaction:serial?%>SerialInteraction<%/interaction:serial?%>Tile, public apache::thrift::ServerInterface {
+class <%service:cpp_name%>If : public apache::thrift::<%#interaction:serial?%>SerialInteraction<%/interaction:serial?%>Tile, public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "<%service:name%>"; }
 
-  typedef <%service:parent_service_name%>AsyncProcessor ProcessorType;
-  virtual ~<%service:name%>If() = default;
+  typedef <%service:parent_service_cpp_name%>AsyncProcessor ProcessorType;
+  virtual ~<%service:cpp_name%>If() = default;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
     std::terminate();
   }

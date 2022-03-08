@@ -20,6 +20,7 @@ namespace cpp2 {
   ::apache::thrift::detail::md::ServiceMetadata<MyServiceSvIf>::gen(response);
   ::apache::thrift::detail::md::ServiceMetadata<MyServicePrioParentSvIf>::gen(response);
   ::apache::thrift::detail::md::ServiceMetadata<MyServicePrioChildSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<GoodServiceSvIf>::gen(response);
   return metadata;
 }
 } // namespace cpp2

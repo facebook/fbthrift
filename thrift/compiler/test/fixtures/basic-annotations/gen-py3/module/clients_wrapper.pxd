@@ -48,6 +48,17 @@ cdef extern from "src/gen-cpp2/MyServicePrioChild.h" namespace "::cpp2":
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cMyServicePrioChildClientWrapper] move(unique_ptr[cMyServicePrioChildClientWrapper])
 
+cdef extern from "src/gen-cpp2/BadService.h" namespace "::cpp2":
+  cdef cppclass cBadServiceAsyncClient "::cpp2::GoodServiceAsyncClient":
+      pass
+
+cdef extern from "src/gen-cpp2/BadService.h" namespace "::cpp2":
+  cdef cppclass cBadServiceAsyncClient_BadInteraction "::cpp2::BadServiceAsyncClient::BadInteraction":
+      pass
+
+cdef extern from "<utility>" namespace "std":
+  cdef unique_ptr[cBadServiceClientWrapper] move(unique_ptr[cBadServiceClientWrapper])
+
 cdef extern from "thrift/lib/cpp/TProcessorEventHandler.h" namespace "::apache::thrift":
   cdef cppclass cTProcessorEventHandler "apache::thrift::TProcessorEventHandler":
     pass
@@ -83,4 +94,18 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
   cdef cppclass cMyServicePrioChildClientWrapper "::cpp2::MyServicePrioChildClientWrapper"(cMyServicePrioParentClientWrapper):
 
     cFollyFuture[cFollyUnit] pang(cRpcOptions, )
+
+
+  cdef cppclass cBadServiceClientWrapper "::cpp2::BadServiceClientWrapper":
+    void setPersistentHeader(const string& key, const string& value)
+    void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
+
+    cFollyFuture[cint32_t] bar(cRpcOptions, )
+    cFollyFuture[unique_ptr[cClientWrapper]]& createBadInteraction()
+
+  cdef cppclass cBadServiceClientWrapper_BadInteractionInteractionWrapper "::cpp2::BadServiceClientWrapper::BadInteractionInteractionWrapper"(cClientWrapper):
+    void setPersistentHeader(const string& key, const string& value)
+    void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
+
+    cFollyFuture[cFollyUnit] foo(cRpcOptions, )
 

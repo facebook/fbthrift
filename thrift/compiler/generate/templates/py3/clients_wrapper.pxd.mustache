@@ -59,7 +59,7 @@ cdef extern from "{{program:includePrefix}}{{program:cpp_gen_path}}/{{service:na
     }} namespace "{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}":
   cdef cppclass c{{service:name}}AsyncClient {{!
     }}"::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{!
-    }}{{service:name}}AsyncClient":
+    }}{{service:cpp_name}}AsyncClient":
       pass
 
 {{#service:interactions}}

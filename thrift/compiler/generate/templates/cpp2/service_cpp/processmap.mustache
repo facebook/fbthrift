@@ -14,38 +14,38 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>const <%service:name%>AsyncProcessor::ProcessMap& <%service:name%>AsyncProcessor::getOwnProcessMap() {
+%>const <%service:cpp_name%>AsyncProcessor::ProcessMap& <%service:cpp_name%>AsyncProcessor::getOwnProcessMap() {
   return kOwnProcessMap_;
 }
 
 <%^service:functions?%>
-const <%service:name%>AsyncProcessor::ProcessMap <%service:name%>AsyncProcessor::kOwnProcessMap_ {};
+const <%service:cpp_name%>AsyncProcessor::ProcessMap <%service:cpp_name%>AsyncProcessor::kOwnProcessMap_ {};
 <%/service:functions?%>
 <%#service:functions?%>
-const <%service:name%>AsyncProcessor::ProcessMap <%service:name%>AsyncProcessor::kOwnProcessMap_ {
+const <%service:cpp_name%>AsyncProcessor::ProcessMap <%service:cpp_name%>AsyncProcessor::kOwnProcessMap_ {
 <%#service:functions%><%#function:return_type%><%^function:starts_interaction?%>
   {"<%function:name%>",
-    {&<%service:name%>AsyncProcessor::setUpAndProcess_<%function:cpp_name%><apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &<%service:name%>AsyncProcessor::setUpAndProcess_<%function:cpp_name%><apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &<%service:name%>AsyncProcessor::executeRequest_<%function:cpp_name%><apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &<%service:name%>AsyncProcessor::executeRequest_<%function:cpp_name%><apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&<%service:cpp_name%>AsyncProcessor::setUpAndProcess_<%function:cpp_name%><apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &<%service:cpp_name%>AsyncProcessor::setUpAndProcess_<%function:cpp_name%><apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &<%service:cpp_name%>AsyncProcessor::executeRequest_<%function:cpp_name%><apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &<%service:cpp_name%>AsyncProcessor::executeRequest_<%function:cpp_name%><apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 <%/function:starts_interaction?%><%/function:return_type%><%/service:functions%>
 <%#service:interactions%><%#service:functions%><%#function:return_type%>
   {"<%service:name%>.<%function:name%>",
-    {&<%service:parent_service_name%>AsyncProcessor::setUpAndProcess_<%service:name%>_<%function:cpp_name%><apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &<%service:parent_service_name%>AsyncProcessor::setUpAndProcess_<%service:name%>_<%function:cpp_name%><apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
-     &<%service:parent_service_name%>AsyncProcessor::executeRequest_<%service:name%>_<%function:cpp_name%><apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
-     &<%service:parent_service_name%>AsyncProcessor::executeRequest_<%service:name%>_<%function:cpp_name%><apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+    {&<%service:parent_service_cpp_name%>AsyncProcessor::setUpAndProcess_<%service:cpp_name%>_<%function:cpp_name%><apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &<%service:parent_service_cpp_name%>AsyncProcessor::setUpAndProcess_<%service:cpp_name%>_<%function:cpp_name%><apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &<%service:parent_service_cpp_name%>AsyncProcessor::executeRequest_<%service:cpp_name%>_<%function:cpp_name%><apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &<%service:parent_service_cpp_name%>AsyncProcessor::executeRequest_<%service:cpp_name%>_<%function:cpp_name%><apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 <%/function:return_type%><%/service:functions%><%/service:interactions%>
 };
 <%/service:functions?%>
 
-apache::thrift::ServiceRequestInfoMap const& <%service:name%>ServiceInfoHolder::requestInfoMap() const {
+apache::thrift::ServiceRequestInfoMap const& <%service:cpp_name%>ServiceInfoHolder::requestInfoMap() const {
   static folly::Indestructible<apache::thrift::ServiceRequestInfoMap> requestInfoMap{staticRequestInfoMap()};
   return *requestInfoMap;
 }
 
-apache::thrift::ServiceRequestInfoMap <%service:name%>ServiceInfoHolder::staticRequestInfoMap() {
+apache::thrift::ServiceRequestInfoMap <%service:cpp_name%>ServiceInfoHolder::staticRequestInfoMap() {
   apache::thrift::ServiceRequestInfoMap requestInfoMap = {
     <%#service:functions%><%#function:return_type%><%^function:starts_interaction?%>
   {"<%function:name%>",
@@ -63,7 +63,7 @@ apache::thrift::ServiceRequestInfoMap <%service:name%>ServiceInfoHolder::staticR
 <%/function:return_type%><%/service:functions%><%/service:interactions%>
   };
 <%#service:extends%>
-  apache::thrift::ServiceRequestInfoMap parentMap = <% > common/namespace_cpp2%><%service:name%>ServiceInfoHolder::staticRequestInfoMap();
+  apache::thrift::ServiceRequestInfoMap parentMap = <% > common/namespace_cpp2%><%service:cpp_name%>ServiceInfoHolder::staticRequestInfoMap();
   requestInfoMap.insert(std::begin(parentMap), std::end(parentMap));
 <%/service:extends%>
 

@@ -347,7 +347,7 @@ service TestingService {
 
 service TestingServiceChild extends TestingService {
   stream<i32> stream_func();
-}
+} (cpp.name = "TestingServiceChildRenamed")
 
 struct ListNode {
   1: i32 value;

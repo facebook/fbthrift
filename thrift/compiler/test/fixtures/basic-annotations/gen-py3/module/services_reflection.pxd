@@ -27,3 +27,9 @@ cdef __InterfaceSpec get_reflection__MyServicePrioChild(bint for_clients)
 cdef extern from "src/gen-cpp2/MyServicePrioChild.h" namespace "::cpp2":
     cdef cppclass cMyServicePrioChildSvIf "::cpp2::MyServicePrioChildSvIf":
         pass
+
+cdef __InterfaceSpec get_reflection__BadService(bint for_clients)
+
+cdef extern from "src/gen-cpp2/BadService.h" namespace "::cpp2":
+    cdef cppclass cGoodServiceSvIf "::cpp2::GoodServiceSvIf":
+        pass

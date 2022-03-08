@@ -896,6 +896,73 @@
         }
       }
 
+    },
+    "BadService" : {
+      "lineno" : 97,
+      "annotations" : {
+        "cpp.name" : {
+          "value" : "GoodService",
+          "source_range" : {
+            "begin" : {
+              "line" : 100,
+              "column" : 4
+            },
+            "end" : {
+              "line" : 100,
+              "column" : 28
+            }
+          }
+        }
+      },
+      "functions" : {
+        "BadService.createBadInteraction" : {
+          "return_type" : {
+            "type_enum" : "SERVICE",
+            "spec_args" : "BadInteraction"
+          },
+          "args" : [],
+          "throws" : [],
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
+        },
+        "BadService.bar" : {
+          "return_type" : {
+            "type_enum" : "I32",
+            "spec_args" : null
+          },
+          "args" : [],
+          "throws" : [],
+          "source_range" : {
+            "begin" : {
+              "line" : 99,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 99,
+              "column" : 12
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 97,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 100,
+          "column" : 29
+        }
+      }
+
     }
   }
 }

@@ -108,3 +108,19 @@ MyServicePrioParentInterface,
     pass
 
 
+_BadServiceInterfaceT = _typing.TypeVar('_BadServiceInterfaceT', bound='BadServiceInterface')
+
+
+class BadServiceInterface(
+    ServiceInterface,
+    metaclass=ABCMeta,
+):
+
+
+    @abstractmethod
+    async def bar(
+        self
+    ) -> int: ...
+    pass
+
+

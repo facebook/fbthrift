@@ -27,7 +27,7 @@
 
 <%#program:services%>
 <% > common/service_namespace_cpp2_begin %>
-class <%service:name%>SvIf;
+class <%service:cpp_name%>SvIf;
 <% > common/service_namespace_cpp2_end %>
 <%/program:services%>
 
@@ -96,7 +96,7 @@ class ExceptionMetadata<<%struct:cpp_fullname%>>
 <%#program:services%>
 <%^program:no_metadata?%>
 template <>
-class ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvIf> {
+class ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:cpp_name%>SvIf> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
  private:
@@ -112,7 +112,7 @@ class ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>Sv
 <%/program:no_metadata?%>
 <%#program:no_metadata?%>
 template <>
-class ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvIf>
+class ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:cpp_name%>SvIf>
     : private EmptyServiceMetadata {
  public:
   using EmptyServiceMetadata::gen;

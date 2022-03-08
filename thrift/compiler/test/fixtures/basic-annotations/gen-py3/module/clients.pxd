@@ -16,3 +16,9 @@ cdef class MyServicePrioParent(thrift.py3.client.Client):
 cdef class MyServicePrioChild(MyServicePrioParent):
     pass
 
+cdef class BadService(thrift.py3.client.Client):
+    pass
+
+cdef class BadService_BadInteraction(thrift.py3.client.Client):
+    pass
+

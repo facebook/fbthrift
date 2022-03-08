@@ -425,6 +425,47 @@ const ThriftServiceContextRef* ServiceMetadata<::cpp2::MyServicePrioChildSvIf>::
   context.module_ref() = std::move(module);
   return &context;
 }
+void ServiceMetadata<::cpp2::GoodServiceSvIf>::gen_bar(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name_ref() = "bar";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
+  func.is_oneway_ref() = false;
+  service.functions_ref()->push_back(std::move(func));
+}
+
+void ServiceMetadata<::cpp2::GoodServiceSvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+  const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
+  DCHECK(self != nullptr);
+  // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
+  ::apache::thrift::metadata::ThriftServiceContext context;
+  context.module_ref() = *self->module_ref();
+  context.service_info_ref() = response.metadata_ref()->services_ref()->at(*self->service_name_ref());
+  response.context_ref() = std::move(context);
+}
+
+const ThriftServiceContextRef* ServiceMetadata<::cpp2::GoodServiceSvIf>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
+  (void) metadata;
+  ::apache::thrift::metadata::ThriftService module_BadService;
+  module_BadService.name_ref() = "module.BadService";
+  static const ThriftFunctionGenerator functions[] = {
+    ServiceMetadata<::cpp2::GoodServiceSvIf>::gen_bar,
+  };
+  for (auto& function_gen : functions) {
+    function_gen(metadata, module_BadService);
+  }
+  // We need to keep the index around because a reference or iterator could be invalidated.
+  auto selfIndex = services.size();
+  services.emplace_back();
+  ThriftServiceContextRef& context = services[selfIndex];
+  metadata.services_ref()->emplace("module.BadService", std::move(module_BadService));
+  context.service_name_ref() = "module.BadService";
+  ::apache::thrift::metadata::ThriftModuleContext module;
+  module.name_ref() = "module";
+  context.module_ref() = std::move(module);
+  return &context;
+}
 } // namespace md
 } // namespace detail
 } // namespace thrift

@@ -23,20 +23,20 @@
 
 <% > common/namespace_cpp2_begin%>
 
-std::unique_ptr<apache::thrift::AsyncProcessor> <%service:name%>SvIf::getProcessor() {
-  return std::make_unique<<%service:name%>AsyncProcessor>(this);
+std::unique_ptr<apache::thrift::AsyncProcessor> <%service:cpp_name%>SvIf::getProcessor() {
+  return std::make_unique<<%service:cpp_name%>AsyncProcessor>(this);
 }
 
-<%service:name%>SvIf::CreateMethodMetadataResult <%service:name%>SvIf::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<<%service:name%>AsyncProcessor>();
+<%service:cpp_name%>SvIf::CreateMethodMetadataResult <%service:cpp_name%>SvIf::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<<%service:cpp_name%>AsyncProcessor>();
 }
 
-std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> <%service:name%>SvIf::getServiceRequestInfoMap() const {
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> <%service:cpp_name%>SvIf::getServiceRequestInfoMap() const {
   return __fbthrift_serviceInfoHolder.requestInfoMap();
 }
 
 <%^service:interaction?%>
-  <%service:name%>ServiceInfoHolder <%service:name%>SvIf::__fbthrift_serviceInfoHolder;
+  <%service:cpp_name%>ServiceInfoHolder <%service:cpp_name%>SvIf::__fbthrift_serviceInfoHolder;
 <%/service:interaction?%>
 
 <% > service_cpp/service_interface_impl%>
@@ -47,23 +47,23 @@ std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const
 <% > service_cpp/service_interface_impl%>
 <%/service:interactions%>
 
-const char* <%service:name%>AsyncProcessor::getServiceName() {
+const char* <%service:cpp_name%>AsyncProcessor::getServiceName() {
   return "<%service:name%>";
 }
 
-void <%service:name%>AsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<<%service:name%>SvIf>::gen(response);
+void <%service:cpp_name%>AsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+  ::apache::thrift::detail::md::ServiceMetadata<<%service:cpp_name%>SvIf>::gen(response);
 }
 
-void <%service:name%>AsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void <%service:cpp_name%>AsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-void <%service:name%>AsyncProcessor::processSerializedCompressedRequestWithMetadata(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void <%service:cpp_name%>AsyncProcessor::processSerializedCompressedRequestWithMetadata(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
 }
 
-void <%service:name%>AsyncProcessor::executeRequest(apache::thrift::ServerRequest&& request, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) {
+void <%service:cpp_name%>AsyncProcessor::executeRequest(apache::thrift::ServerRequest&& request, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) {
   apache::thrift::detail::ap::execute(this, std::move(request), apache::thrift::detail::ServerRequestHelper::protocol(request), methodMetadata);
 }
 

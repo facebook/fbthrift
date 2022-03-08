@@ -1256,6 +1256,8 @@ class mstch_service : public mstch_base {
   mstch::node interactions() {
     if (!service_->is_interaction()) {
       cache_->parsed_options_["parent_service_name"] = service_->get_name();
+      cache_->parsed_options_["parent_service_cpp_name"] =
+          cpp2::get_name(service_);
     }
     std::vector<t_service const*> interactions;
     for (auto const* function : get_functions()) {

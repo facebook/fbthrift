@@ -90,3 +90,27 @@ class MyServicePrioChild(MyServicePrioParent):
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
+
+
+_BadServiceT = _typing.TypeVar('_BadServiceT', bound='BadService')
+
+
+class BadService(thrift.py3.client.Client):
+
+    async def bar(
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
+    ) -> int: ...
+
+    def createBadInteraction(self) -> BadService_BadInteraction: ...
+
+_BadService_BadInteraction = _typing.TypeVar('_BadService_BadInteraction', bound='BadService_BadInteraction')
+
+
+class BadService_BadInteraction(thrift.py3.client.Client):
+
+    async def foo(
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
+    ) -> None: ...
+

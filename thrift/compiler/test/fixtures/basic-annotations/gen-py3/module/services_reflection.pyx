@@ -215,3 +215,25 @@ cdef __InterfaceSpec get_reflection__MyServicePrioChild(bint for_clients):
         )
     )
     return spec
+
+
+cdef __InterfaceSpec get_reflection__BadService(bint for_clients):
+    cdef __InterfaceSpec spec = __InterfaceSpec._fbthrift_create(
+        name="BadService",
+        annotations={
+            """cpp.name""": """GoodService""",        },
+    )
+    spec.add_method(
+        __MethodSpec._fbthrift_create(
+            name="bar",
+            arguments=(
+            ),
+            result=int,
+            result_kind=__NumberType.I32,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    return spec

@@ -294,4 +294,53 @@ folly::SemiFuture<folly::Unit> MyServicePrioChildWrapper::semifuture_onStopReque
   );
   return std::move(future);
 }
+
+
+BadServiceWrapper::BadServiceWrapper(PyObject *obj, folly::Executor* exc)
+  : if_object(obj), executor(exc)
+  {
+    import_module__services();
+  }
+
+
+void BadServiceWrapper::async_tm_bar(
+  std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
+  auto ctx = callback->getRequestContext();
+  folly::via(
+    this->executor,
+    [this, ctx,
+     callback = std::move(callback)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<int32_t>();
+        call_cy_BadService_bar(
+            this->if_object,
+            ctx,
+            std::move(promise)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<int32_t>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
+    });
+}
+std::unique_ptr<GoodServiceSvIf::BadInteractionIf> BadServiceWrapper::createBadInteraction() {
+  throw std::runtime_error("Py3 server doesn't support interactions.");
+}
+std::shared_ptr<apache::thrift::ServerInterface> BadServiceInterface(PyObject *if_object, folly::Executor *exc) {
+  return std::make_shared<BadServiceWrapper>(if_object, exc);
+}
+folly::SemiFuture<folly::Unit> BadServiceWrapper::semifuture_onStartServing() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_BadService_onStartServing(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
+folly::SemiFuture<folly::Unit> BadServiceWrapper::semifuture_onStopRequested() {
+  auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+  call_cy_BadService_onStopRequested(
+      this->if_object,
+      std::move(promise)
+  );
+  return std::move(future);
+}
 } // namespace cpp2
