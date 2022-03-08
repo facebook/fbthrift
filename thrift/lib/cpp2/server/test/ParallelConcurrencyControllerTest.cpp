@@ -121,6 +121,8 @@ class MockResponseChannelRequest : public ResponseChannelRequest {
 namespace {
 
 ServerRequest getRequest(AsyncProcessor* ap, folly::EventBase* eb) {
+  static ServiceRequestInfo requestInfo{
+      false, RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, "function", std::nullopt};
   ServerRequest req(
       ResponseChannelRequest::UniquePtr(new MockResponseChannelRequest),
       SerializedCompressedRequest(std::unique_ptr<folly::IOBuf>{}),
@@ -130,7 +132,7 @@ ServerRequest getRequest(AsyncProcessor* ap, folly::EventBase* eb) {
       nullptr, /* requestContext  */
       ap,
       nullptr, /* methodMetadata  */
-      nullptr /* serviceRequestInfo */);
+      &requestInfo);
   return req;
 }
 
