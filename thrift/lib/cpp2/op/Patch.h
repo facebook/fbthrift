@@ -40,7 +40,7 @@ AssignPatch<BinaryPatchStruct> patchType(type::binary_t);
 //
 // All patch types support the following methods:
 // - empty() - Returns true iff the patch is a noop.
-// - clear() - Makes the patch empty.
+// - reset() - Makes the patch a noop.
 // - apply(T&& value) - Applies the patch to the given value, in place.
 // - merge(P&& next) - Merges the 'next' patch into this one, such that the
 // result is equivalent to applying this and next in sequence.

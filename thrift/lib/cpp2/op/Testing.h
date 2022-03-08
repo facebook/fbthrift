@@ -111,8 +111,8 @@ void expectPatch(
     patch.apply(actual2);
     EXPECT_EQ(actual2, expected2);
   }
-  { // Clearing creates a noop patch.
-    patch.clear();
+  { // Reset should be a noop patch.
+    patch.reset();
     EXPECT_TRUE(patch.empty());
     auto actual3 = actual;
     patch.apply(actual3);

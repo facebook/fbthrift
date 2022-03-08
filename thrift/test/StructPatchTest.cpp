@@ -40,6 +40,8 @@ bool emptyPatch(const MyStructPatch& patch) {
   return patch == MyStructPatch{};
 }
 
+using TestStructPatch = op::detail::StructPatch<MyStructValuePatch>;
+
 TEST(StructPatchTest, Assign) {
   MyStruct actual;
   MyStructPatch patch;
@@ -71,8 +73,7 @@ TEST(StructPatchTest, Assign) {
   EXPECT_EQ(actual, expected);
 
   // Assign in a single step, via op::patch.
-  using Patch = op::detail::AssignPatch<MyStructValuePatch>;
-  Patch assignPatch;
+  TestStructPatch assignPatch;
   assignPatch = expected;
   test::expectPatch(assignPatch, {}, expected);
 
@@ -87,6 +88,53 @@ TEST(StructPatchTest, Assign) {
   EXPECT_EQ(*actual.stringVal(), *expected.stringVal());
   EXPECT_TRUE(StringTraits<folly::IOBuf>::isEqual(
       *actual.binaryVal(), *expected.binaryVal()));
+}
+
+MyStruct testValue() {
+  MyStruct val;
+  val.boolVal() = true;
+  val.byteVal() = 2;
+  val.i16Val() = 3;
+  val.i32Val() = 4;
+  val.i64Val() = 5;
+  val.floatVal() = 6;
+  val.doubleVal() = 7;
+  val.stringVal() = "8";
+  val.binaryVal() = StringTraits<folly::IOBuf>::fromStringLiteral("9");
+  return val;
+}
+
+TEST(StructPatchTest, Clear) {
+  // Clear patch, clears all fields (even ones with defaults)
+  TestStructPatch patch;
+  patch.clear();
+  test::expectPatch(patch, testValue(), {});
+}
+
+TEST(StructPatchTest, ClearAssign) {
+  TestStructPatch clearPatch;
+  clearPatch.clear();
+  TestStructPatch assignPatch;
+  assignPatch = testValue();
+
+  // Assign takes precedence, like usual.
+  clearPatch.merge(assignPatch);
+  test::expectPatch(clearPatch, {}, testValue());
+}
+
+TEST(StructPatchTest, AssignClear) {
+  TestStructPatch clearPatch;
+  clearPatch.clear();
+  TestStructPatch assignPatch;
+  assignPatch = testValue();
+
+  assignPatch.merge(clearPatch);
+  test::expectPatch(assignPatch, testValue(), {});
+
+  // Clear patch takes precedence (as it is smaller to encode and slightly
+  // stronger in the presense of non-terse non-optional fields).
+  EXPECT_FALSE(assignPatch.hasAssign());
+  EXPECT_TRUE(*assignPatch.get().clear());
 }
 
 } // namespace apache::thrift

@@ -38,11 +38,11 @@ class BasePatch {
   const Patch& get() const& { return patch_; }
   Patch&& get() && { return std::move(patch_); }
 
-  void clear() { clearAnd(); }
+  void reset() { resetAnd(); }
 
   bool hasAssign() const noexcept { return patch_.assign().has_value(); }
-  void assign(const value_type& val) { clearAnd().assign().emplace(val); }
-  void assign(value_type&& val) { clearAnd().assign().emplace(std::move(val)); }
+  void assign(const value_type& val) { resetAnd().assign().emplace(val); }
+  void assign(value_type&& val) { resetAnd().assign().emplace(std::move(val)); }
 
   Derived& operator=(const value_type& val) { return (assign(val), derived()); }
   Derived& operator=(value_type&& val) {
@@ -55,7 +55,7 @@ class BasePatch {
 
   ~BasePatch() = default; // abstract base class
 
-  Patch& clearAnd() {
+  Patch& resetAnd() {
     op::clear<type::struct_t<Patch>>(patch_);
     return patch_;
   }
@@ -265,6 +265,45 @@ class StringPatch : public BasePatch<Patch, StringPatch<Patch>> {
   const T& append_() const noexcept { return *this->patch_.append(); }
   T& prepend_() noexcept { return *this->patch_.prepend(); }
   const T& prepend_() const noexcept { return *this->patch_.prepend(); }
+};
+
+template <typename Patch>
+class StructPatch : public BasePatch<Patch, StructPatch<Patch>> {
+  using Base = BasePatch<Patch, StructPatch>;
+  using T = typename Base::value_type;
+  using Base::applyAssign;
+  using Base::mergeAssign;
+
+ public:
+  using Base::Base;
+  using Base::hasAssign;
+  using Base::operator=;
+
+  bool empty() const noexcept { return !hasAssign() && !clear_(); }
+  void apply(T& val) const noexcept {
+    if (!applyAssign(val) && clear_()) {
+      thrift::clear(val);
+    }
+  }
+
+  template <typename U>
+  void merge(U&& next) {
+    // Clear is slightly stronger than assigning a 'cleared' struct,
+    // in the presense of non-terse, non-optional fields with custom defaults
+    // and missmatched schemas... it's also smaller, so prefer it.
+    if (*next.get().clear() && !next.hasAssign()) {
+      this->patch_.assign().reset();
+      clear_() = true;
+    } else {
+      mergeAssign(std::forward<U>(next));
+    }
+  }
+
+  void clear() { clear_() = true; }
+
+ private:
+  bool& clear_() { return *this->patch_.clear(); }
+  const bool& clear_() const { return *this->patch_.clear(); }
 };
 
 // A patch adapter that only supports 'assign',

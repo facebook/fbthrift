@@ -28,8 +28,9 @@ struct MyStruct {
   7: double doubleVal;
   8: string stringVal;
   9: binary (cpp.type = "::folly::IOBuf") binaryVal;
-}
+} (thrift.uri = "facebook.com/thrift/test/patch/MyStruct")
 
+// TODO(afuller): Generate this via an annotation + ast_mutator.
 struct MyStructPatch {
   1: patch.BoolPatch boolVal;
   2: patch.BytePatch byteVal;
@@ -40,8 +41,14 @@ struct MyStructPatch {
   7: patch.DoublePatch doubleVal;
   8: patch.StringPatch stringVal;
   9: patch.BinaryPatch binaryVal;
-}
+} (thrift.uri = "facebook.com/thrift/test/patch/MyStructPatch")
 
+// TODO(afuller): Generate this via an annotation + ast_mutator (though
+// eventually it should be a shared type-parameterized struct).
 struct MyStructValuePatch {
+  // Assigns to a given struct. If set, all other operations are ignored.
   1: optional MyStruct assign (thrift.box);
-}
+
+  // Clears a given struct.
+  2: bool clear;
+} (thrift.uri = "facebook.com/thrift/test/patch/MyStructValuePatch")
