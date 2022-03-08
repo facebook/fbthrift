@@ -43,6 +43,9 @@ class SerializableDynamic {
   const folly::dynamic& operator*() const { return value_; }
   folly::dynamic& operator*() { return value_; }
 
+  const folly::dynamic& value() const { return value_; }
+  folly::dynamic& value() { return value_; }
+
   const folly::dynamic* operator->() const { return &value_; }
   folly::dynamic* operator->() { return &value_; }
 
