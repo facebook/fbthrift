@@ -1296,7 +1296,8 @@ class HandlerCallback : public HandlerCallbackBase {
       TilePtr&& interaction = {});
 
   void result(InputType r) { doResult(std::forward<InputType>(r)); }
-  void result(std::unique_ptr<ResultType> r);
+  [[deprecated("Pass the inner value directly to result()")]] void result(
+      std::unique_ptr<ResultType> r);
 
   void complete(folly::Try<T>&& r);
 
