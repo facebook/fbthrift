@@ -47,7 +47,7 @@ void BasicTypes::readNoXfer(Protocol_* iprot) {
   }
 _readField_first:
   {
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, this->first, _readState);
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, this->__fbthrift_field_first, _readState);
     
   }
 
@@ -165,7 +165,7 @@ uint32_t BasicTypes::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("BasicTypes");
   {
     xfer += prot_->serializedFieldSize("first", apache::thrift::protocol::T_I32, 1);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->first);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->__fbthrift_field_first);
   }
   if (this->__isset.get(0)) {
     xfer += prot_->serializedFieldSize("second", apache::thrift::protocol::T_I32, 2);
@@ -189,7 +189,7 @@ uint32_t BasicTypes::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("BasicTypes");
   {
     xfer += prot_->serializedFieldSize("first", apache::thrift::protocol::T_I32, 1);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->first);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->__fbthrift_field_first);
   }
   if (this->__isset.get(0)) {
     xfer += prot_->serializedFieldSize("second", apache::thrift::protocol::T_I32, 2);
@@ -216,7 +216,7 @@ uint32_t BasicTypes::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 0;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 1, kPrevFieldId>(*prot_, "first", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->first);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->__fbthrift_field_first);
     xfer += prot_->writeFieldEnd();
   }
   if (this->__isset.get(0)) {

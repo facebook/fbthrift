@@ -14,5 +14,5 @@
  * VirtualProtocol) to read/write thrift structs.
  */
 
-#include "thrift/compiler/test/fixtures/deprecated-private-required-fields/gen-cpp2/module_types.tcc"
+#include "thrift/compiler/test/fixtures/deprecated-public-required-fields/gen-cpp2/module_types.tcc"
 

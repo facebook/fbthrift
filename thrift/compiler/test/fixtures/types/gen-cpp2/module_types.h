@@ -2306,11 +2306,11 @@ class MinPadding final  {
  public:
 
   MinPadding() :
-      big(),
-      biggish(),
-      medium(),
-      small(),
-      tiny() {
+      __fbthrift_field_big(),
+      __fbthrift_field_biggish(),
+      __fbthrift_field_medium(),
+      __fbthrift_field_small(),
+      __fbthrift_field_tiny() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -2323,16 +2323,16 @@ class MinPadding final  {
 
   MinPadding& operator=(MinPadding&&) noexcept;
   MinPadding& operator=(const MinPadding& src);
- public:
-  ::std::int64_t big;
- public:
-  ::std::int32_t biggish;
- public:
-  ::std::int16_t medium;
- public:
-  ::std::int8_t small;
- public:
-  ::std::int8_t tiny;
+ private:
+  ::std::int64_t __fbthrift_field_big;
+ private:
+  ::std::int32_t __fbthrift_field_biggish;
+ private:
+  ::std::int16_t __fbthrift_field_medium;
+ private:
+  ::std::int8_t __fbthrift_field_small;
+ private:
+  ::std::int8_t __fbthrift_field_tiny;
 
  public:
 
@@ -2341,152 +2341,252 @@ class MinPadding final  {
 
   template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> small_ref() const& {
-    return ::apache::thrift::required_field_ref<const T&>{this->small};
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_small};
   }
 
   template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> small_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->small)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_small)};
   }
 
   template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> small_ref() & {
-    return ::apache::thrift::required_field_ref<T&>{this->small};
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_small};
   }
 
   template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> small_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->small)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_small)};
+  }
+
+  template <typename..., typename T = ::std::int8_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> small() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_small};
+  }
+
+  template <typename..., typename T = ::std::int8_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> small() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_small)};
+  }
+
+  template <typename..., typename T = ::std::int8_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> small() & {
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_small};
+  }
+
+  template <typename..., typename T = ::std::int8_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> small() && {
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_small)};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> big_ref() const& {
-    return ::apache::thrift::required_field_ref<const T&>{this->big};
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_big};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> big_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->big)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_big)};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> big_ref() & {
-    return ::apache::thrift::required_field_ref<T&>{this->big};
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_big};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> big_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->big)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_big)};
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> big() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_big};
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> big() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_big)};
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> big() & {
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_big};
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> big() && {
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_big)};
   }
 
   template <typename..., typename T = ::std::int16_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> medium_ref() const& {
-    return ::apache::thrift::required_field_ref<const T&>{this->medium};
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_medium};
   }
 
   template <typename..., typename T = ::std::int16_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> medium_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->medium)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_medium)};
   }
 
   template <typename..., typename T = ::std::int16_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> medium_ref() & {
-    return ::apache::thrift::required_field_ref<T&>{this->medium};
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_medium};
   }
 
   template <typename..., typename T = ::std::int16_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> medium_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->medium)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_medium)};
+  }
+
+  template <typename..., typename T = ::std::int16_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> medium() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_medium};
+  }
+
+  template <typename..., typename T = ::std::int16_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> medium() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_medium)};
+  }
+
+  template <typename..., typename T = ::std::int16_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> medium() & {
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_medium};
+  }
+
+  template <typename..., typename T = ::std::int16_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> medium() && {
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_medium)};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> biggish_ref() const& {
-    return ::apache::thrift::required_field_ref<const T&>{this->biggish};
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_biggish};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> biggish_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->biggish)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_biggish)};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> biggish_ref() & {
-    return ::apache::thrift::required_field_ref<T&>{this->biggish};
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_biggish};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> biggish_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->biggish)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_biggish)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> biggish() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_biggish};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> biggish() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_biggish)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> biggish() & {
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_biggish};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> biggish() && {
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_biggish)};
   }
 
   template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> tiny_ref() const& {
-    return ::apache::thrift::required_field_ref<const T&>{this->tiny};
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_tiny};
   }
 
   template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> tiny_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->tiny)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_tiny)};
   }
 
   template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> tiny_ref() & {
-    return ::apache::thrift::required_field_ref<T&>{this->tiny};
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_tiny};
   }
 
   template <typename..., typename T = ::std::int8_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> tiny_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->tiny)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_tiny)};
+  }
+
+  template <typename..., typename T = ::std::int8_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> tiny() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_tiny};
+  }
+
+  template <typename..., typename T = ::std::int8_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> tiny() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_tiny)};
+  }
+
+  template <typename..., typename T = ::std::int8_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> tiny() & {
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_tiny};
+  }
+
+  template <typename..., typename T = ::std::int8_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> tiny() && {
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_tiny)};
   }
 
   ::std::int8_t get_small() const {
-    return small;
+    return __fbthrift_field_small;
   }
 
   [[deprecated("Use `FOO.small_ref() = BAR;` instead of `FOO.set_small(BAR);`")]]
   ::std::int8_t& set_small(::std::int8_t small_) {
     small_ref() = small_;
-    return small;
+    return __fbthrift_field_small;
   }
 
   ::std::int64_t get_big() const {
-    return big;
+    return __fbthrift_field_big;
   }
 
   [[deprecated("Use `FOO.big_ref() = BAR;` instead of `FOO.set_big(BAR);`")]]
   ::std::int64_t& set_big(::std::int64_t big_) {
     big_ref() = big_;
-    return big;
+    return __fbthrift_field_big;
   }
 
   ::std::int16_t get_medium() const {
-    return medium;
+    return __fbthrift_field_medium;
   }
 
   [[deprecated("Use `FOO.medium_ref() = BAR;` instead of `FOO.set_medium(BAR);`")]]
   ::std::int16_t& set_medium(::std::int16_t medium_) {
     medium_ref() = medium_;
-    return medium;
+    return __fbthrift_field_medium;
   }
 
   ::std::int32_t get_biggish() const {
-    return biggish;
+    return __fbthrift_field_biggish;
   }
 
   [[deprecated("Use `FOO.biggish_ref() = BAR;` instead of `FOO.set_biggish(BAR);`")]]
   ::std::int32_t& set_biggish(::std::int32_t biggish_) {
     biggish_ref() = biggish_;
-    return biggish;
+    return __fbthrift_field_biggish;
   }
 
   ::std::int8_t get_tiny() const {
-    return tiny;
+    return __fbthrift_field_tiny;
   }
 
   [[deprecated("Use `FOO.tiny_ref() = BAR;` instead of `FOO.set_tiny(BAR);`")]]
   ::std::int8_t& set_tiny(::std::int8_t tiny_) {
     tiny_ref() = tiny_;
-    return tiny;
+    return __fbthrift_field_tiny;
   }
 
   template <class Protocol_>
@@ -3756,8 +3856,8 @@ class NoexceptMoveComplexStruct final  {
   ::std::string __fbthrift_field_MyBinaryField;
  private:
   ::std::string __fbthrift_field_MyBinaryField2;
- public:
-  ::std::string MyBinaryField3;
+ private:
+  ::std::string __fbthrift_field_MyBinaryField3;
  private:
   ::std::vector<::std::string> __fbthrift_field_MyBinaryListField4;
  private:
@@ -4012,22 +4112,42 @@ class NoexceptMoveComplexStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> MyBinaryField3_ref() const& {
-    return ::apache::thrift::required_field_ref<const T&>{this->MyBinaryField3};
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_MyBinaryField3};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> MyBinaryField3_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->MyBinaryField3)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_MyBinaryField3)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> MyBinaryField3_ref() & {
-    return ::apache::thrift::required_field_ref<T&>{this->MyBinaryField3};
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_MyBinaryField3};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> MyBinaryField3_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->MyBinaryField3)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_MyBinaryField3)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> MyBinaryField3() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_MyBinaryField3};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> MyBinaryField3() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_MyBinaryField3)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> MyBinaryField3() & {
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_MyBinaryField3};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> MyBinaryField3() && {
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_MyBinaryField3)};
   }
 
   template <typename..., typename T = ::std::vector<::std::string>>
@@ -4192,18 +4312,18 @@ class NoexceptMoveComplexStruct final  {
   }
 
   const ::std::string& get_MyBinaryField3() const& {
-    return MyBinaryField3;
+    return __fbthrift_field_MyBinaryField3;
   }
 
   ::std::string get_MyBinaryField3() && {
-    return std::move(MyBinaryField3);
+    return std::move(__fbthrift_field_MyBinaryField3);
   }
 
   template <typename T_NoexceptMoveComplexStruct_MyBinaryField3_struct_setter = ::std::string>
   [[deprecated("Use `FOO.MyBinaryField3_ref() = BAR;` instead of `FOO.set_MyBinaryField3(BAR);`")]]
   ::std::string& set_MyBinaryField3(T_NoexceptMoveComplexStruct_MyBinaryField3_struct_setter&& MyBinaryField3_) {
     MyBinaryField3_ref() = std::forward<T_NoexceptMoveComplexStruct_MyBinaryField3_struct_setter>(MyBinaryField3_);
-    return MyBinaryField3;
+    return __fbthrift_field_MyBinaryField3;
   }
   const ::std::vector<::std::string>& get_MyBinaryListField4() const&;
   ::std::vector<::std::string> get_MyBinaryListField4() &&;

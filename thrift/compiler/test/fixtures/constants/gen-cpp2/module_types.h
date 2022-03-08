@@ -331,8 +331,8 @@ class Internship final  {
 
   ~Internship();
 
- public:
-  ::std::int32_t weeks;
+ private:
+  ::std::int32_t __fbthrift_field_weeks;
  private:
   ::std::string __fbthrift_field_title;
  private:
@@ -351,22 +351,42 @@ class Internship final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> weeks_ref() const& {
-    return ::apache::thrift::required_field_ref<const T&>{this->weeks};
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_weeks};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> weeks_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->weeks)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_weeks)};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> weeks_ref() & {
-    return ::apache::thrift::required_field_ref<T&>{this->weeks};
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_weeks};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> weeks_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->weeks)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_weeks)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> weeks() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_weeks};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> weeks() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_weeks)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> weeks() & {
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_weeks};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> weeks() && {
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_weeks)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -530,13 +550,13 @@ class Internship final  {
   }
 
   ::std::int32_t get_weeks() const {
-    return weeks;
+    return __fbthrift_field_weeks;
   }
 
   [[deprecated("Use `FOO.weeks_ref() = BAR;` instead of `FOO.set_weeks(BAR);`")]]
   ::std::int32_t& set_weeks(::std::int32_t weeks_) {
     weeks_ref() = weeks_;
-    return weeks;
+    return __fbthrift_field_weeks;
   }
 
   const ::std::string& get_title() const& {
@@ -647,8 +667,8 @@ class Range final  {
  public:
 
   Range() :
-      min(),
-      max() {
+      __fbthrift_field_min(),
+      __fbthrift_field_max() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -662,10 +682,10 @@ class Range final  {
   Range& operator=(Range&&) = default;
 
   Range& operator=(const Range&) = default;
- public:
-  ::std::int32_t min;
- public:
-  ::std::int32_t max;
+ private:
+  ::std::int32_t __fbthrift_field_min;
+ private:
+  ::std::int32_t __fbthrift_field_max;
 
  public:
 
@@ -674,62 +694,102 @@ class Range final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> min_ref() const& {
-    return ::apache::thrift::required_field_ref<const T&>{this->min};
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_min};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> min_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->min)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_min)};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> min_ref() & {
-    return ::apache::thrift::required_field_ref<T&>{this->min};
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_min};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> min_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->min)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_min)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> min() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_min};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> min() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_min)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> min() & {
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_min};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> min() && {
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_min)};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> max_ref() const& {
-    return ::apache::thrift::required_field_ref<const T&>{this->max};
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_max};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> max_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->max)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_max)};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> max_ref() & {
-    return ::apache::thrift::required_field_ref<T&>{this->max};
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_max};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> max_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->max)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_max)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> max() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_max};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> max() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_max)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> max() & {
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_max};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> max() && {
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_max)};
   }
 
   ::std::int32_t get_min() const {
-    return min;
+    return __fbthrift_field_min;
   }
 
   [[deprecated("Use `FOO.min_ref() = BAR;` instead of `FOO.set_min(BAR);`")]]
   ::std::int32_t& set_min(::std::int32_t min_) {
     min_ref() = min_;
-    return min;
+    return __fbthrift_field_min;
   }
 
   ::std::int32_t get_max() const {
-    return max;
+    return __fbthrift_field_max;
   }
 
   [[deprecated("Use `FOO.max_ref() = BAR;` instead of `FOO.set_max(BAR);`")]]
   ::std::int32_t& set_max(::std::int32_t max_) {
     max_ref() = max_;
-    return max;
+    return __fbthrift_field_max;
   }
 
   template <class Protocol_>

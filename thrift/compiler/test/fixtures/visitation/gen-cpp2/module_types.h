@@ -4740,14 +4740,14 @@ class struct1 final  {
 
   ~struct1();
 
- public:
-  ::std::int32_t field0;
+ private:
+  ::std::int32_t __fbthrift_field_field0;
  private:
   ::std::string __fbthrift_field_field1;
  private:
   ::test_cpp2::cpp_reflection::enum1 __fbthrift_field_field2;
- public:
-  ::test_cpp2::cpp_reflection::enum2 field3;
+ private:
+  ::test_cpp2::cpp_reflection::enum2 __fbthrift_field_field3;
  private:
   ::test_cpp2::cpp_reflection::union1 __fbthrift_field_field4;
  private:
@@ -4762,22 +4762,42 @@ class struct1 final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> field0_ref() const& {
-    return ::apache::thrift::required_field_ref<const T&>{this->field0};
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_field0};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> field0_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->field0)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_field0)};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> field0_ref() & {
-    return ::apache::thrift::required_field_ref<T&>{this->field0};
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_field0};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> field0_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->field0)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_field0)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> field0() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_field0};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> field0() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_field0)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> field0() & {
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_field0};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> field0() && {
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_field0)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -4862,22 +4882,42 @@ class struct1 final  {
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum2>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> field3_ref() const& {
-    return ::apache::thrift::required_field_ref<const T&>{this->field3};
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_field3};
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum2>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> field3_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->field3)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_field3)};
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum2>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> field3_ref() & {
-    return ::apache::thrift::required_field_ref<T&>{this->field3};
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_field3};
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::enum2>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> field3_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->field3)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_field3)};
+  }
+
+  template <typename..., typename T = ::test_cpp2::cpp_reflection::enum2>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> field3() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_field3};
+  }
+
+  template <typename..., typename T = ::test_cpp2::cpp_reflection::enum2>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> field3() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_field3)};
+  }
+
+  template <typename..., typename T = ::test_cpp2::cpp_reflection::enum2>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> field3() & {
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_field3};
+  }
+
+  template <typename..., typename T = ::test_cpp2::cpp_reflection::enum2>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> field3() && {
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_field3)};
   }
 
   template <typename..., typename T = ::test_cpp2::cpp_reflection::union1>
@@ -4961,13 +5001,13 @@ class struct1 final  {
   }
 
   ::std::int32_t get_field0() const {
-    return field0;
+    return __fbthrift_field_field0;
   }
 
   [[deprecated("Use `FOO.field0_ref() = BAR;` instead of `FOO.set_field0(BAR);`")]]
   ::std::int32_t& set_field0(::std::int32_t field0_) {
     field0_ref() = field0_;
-    return field0;
+    return __fbthrift_field_field0;
   }
 
   const ::std::string* get_field1() const& {
@@ -4997,13 +5037,13 @@ class struct1 final  {
   }
 
   ::test_cpp2::cpp_reflection::enum2 get_field3() const {
-    return field3;
+    return __fbthrift_field_field3;
   }
 
   [[deprecated("Use `FOO.field3_ref() = BAR;` instead of `FOO.set_field3(BAR);`")]]
   ::test_cpp2::cpp_reflection::enum2& set_field3(::test_cpp2::cpp_reflection::enum2 field3_) {
     field3_ref() = field3_;
-    return field3;
+    return __fbthrift_field_field3;
   }
   const ::test_cpp2::cpp_reflection::union1* get_field4() const&;
   ::test_cpp2::cpp_reflection::union1* get_field4() &;
@@ -6505,7 +6545,7 @@ class struct4 final  {
  public:
 
   struct4() :
-      field0(),
+      __fbthrift_field_field0(),
       __fbthrift_field_field2(),
       field3(std::make_unique<::test_cpp2::cpp_reflection::structA>()) {
   }
@@ -6519,8 +6559,8 @@ class struct4 final  {
 
   struct4& operator=(struct4&&) noexcept;
   struct4& operator=(const struct4& src);
- public:
-  ::std::int32_t field0;
+ private:
+  ::std::int32_t __fbthrift_field_field0;
  private:
   ::std::string __fbthrift_field_field1;
  private:
@@ -6537,22 +6577,42 @@ class struct4 final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> field0_ref() const& {
-    return ::apache::thrift::required_field_ref<const T&>{this->field0};
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_field0};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> field0_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->field0)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_field0)};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> field0_ref() & {
-    return ::apache::thrift::required_field_ref<T&>{this->field0};
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_field0};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> field0_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->field0)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_field0)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> field0() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_field0};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> field0() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_field0)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> field0() & {
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_field0};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> field0() && {
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_field0)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -6647,13 +6707,13 @@ class struct4 final  {
   FOLLY_ERASE const T&& field3_ref() const&& { return static_cast<const T&&>(field3); }
 
   ::std::int32_t get_field0() const {
-    return field0;
+    return __fbthrift_field_field0;
   }
 
   [[deprecated("Use `FOO.field0_ref() = BAR;` instead of `FOO.set_field0(BAR);`")]]
   ::std::int32_t& set_field0(::std::int32_t field0_) {
     field0_ref() = field0_;
-    return field0;
+    return __fbthrift_field_field0;
   }
 
   const ::std::string* get_field1() const& {
@@ -6744,8 +6804,8 @@ class struct5 final  {
 
   ~struct5();
 
- public:
-  ::std::int32_t field0;
+ private:
+  ::std::int32_t __fbthrift_field_field0;
  private:
   ::std::string __fbthrift_field_field1;
  private:
@@ -6764,22 +6824,42 @@ class struct5 final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> field0_ref() const& {
-    return ::apache::thrift::required_field_ref<const T&>{this->field0};
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_field0};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> field0_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->field0)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_field0)};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> field0_ref() & {
-    return ::apache::thrift::required_field_ref<T&>{this->field0};
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_field0};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> field0_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->field0)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_field0)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> field0() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_field0};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> field0() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_field0)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> field0() & {
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_field0};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> field0() && {
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_field0)};
   }
 
   template <typename..., typename T = ::std::string>
@@ -6943,13 +7023,13 @@ class struct5 final  {
   }
 
   ::std::int32_t get_field0() const {
-    return field0;
+    return __fbthrift_field_field0;
   }
 
   [[deprecated("Use `FOO.field0_ref() = BAR;` instead of `FOO.set_field0(BAR);`")]]
   ::std::int32_t& set_field0(::std::int32_t field0_) {
     field0_ref() = field0_;
-    return field0;
+    return __fbthrift_field_field0;
   }
 
   const ::std::string* get_field1() const& {

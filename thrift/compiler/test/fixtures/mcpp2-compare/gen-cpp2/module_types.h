@@ -1469,8 +1469,8 @@ class MyStruct final  {
   ::std::string __fbthrift_field_MyBinaryField;
  private:
   ::std::string __fbthrift_field_MyBinaryField2;
- public:
-  ::std::string MyBinaryField3;
+ private:
+  ::std::string __fbthrift_field_MyBinaryField3;
  private:
   ::std::vector<::std::string> __fbthrift_field_MyBinaryListField4;
  private:
@@ -1729,22 +1729,42 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> MyBinaryField3_ref() const& {
-    return ::apache::thrift::required_field_ref<const T&>{this->MyBinaryField3};
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_MyBinaryField3};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> MyBinaryField3_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->MyBinaryField3)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_MyBinaryField3)};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> MyBinaryField3_ref() & {
-    return ::apache::thrift::required_field_ref<T&>{this->MyBinaryField3};
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_MyBinaryField3};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> MyBinaryField3_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->MyBinaryField3)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_MyBinaryField3)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> MyBinaryField3() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_MyBinaryField3};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> MyBinaryField3() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_MyBinaryField3)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> MyBinaryField3() & {
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_MyBinaryField3};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> MyBinaryField3() && {
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_MyBinaryField3)};
   }
 
   template <typename..., typename T = ::std::vector<::std::string>>
@@ -1989,18 +2009,18 @@ class MyStruct final  {
   }
 
   const ::std::string& get_MyBinaryField3() const& {
-    return MyBinaryField3;
+    return __fbthrift_field_MyBinaryField3;
   }
 
   ::std::string get_MyBinaryField3() && {
-    return std::move(MyBinaryField3);
+    return std::move(__fbthrift_field_MyBinaryField3);
   }
 
   template <typename T_MyStruct_MyBinaryField3_struct_setter = ::std::string>
   [[deprecated("Use `FOO.MyBinaryField3_ref() = BAR;` instead of `FOO.set_MyBinaryField3(BAR);`")]]
   ::std::string& set_MyBinaryField3(T_MyStruct_MyBinaryField3_struct_setter&& MyBinaryField3_) {
     MyBinaryField3_ref() = std::forward<T_MyStruct_MyBinaryField3_struct_setter>(MyBinaryField3_);
-    return MyBinaryField3;
+    return __fbthrift_field_MyBinaryField3;
   }
   const ::std::vector<::std::string>& get_MyBinaryListField4() const&;
   ::std::vector<::std::string> get_MyBinaryListField4() &&;
@@ -4590,11 +4610,11 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
 
  private:
   ::std::int32_t code;
- public:
+ private:
   ::std::int32_t req_code;
  private:
   ::std::string message2;
- public:
+ private:
   ::std::string req_message;
  private:
   ::std::vector<::std::int32_t> exception_list;
@@ -4602,7 +4622,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
   ::std::set<::std::int64_t> exception_set;
  private:
   ::std::map<::std::string, ::std::int32_t> exception_map;
- public:
+ private:
   ::std::map<::std::string, ::std::int32_t> req_exception_map;
  private:
   ::some::valid::ns::MyEnumA enum_field;
@@ -5194,7 +5214,7 @@ class FOLLY_EXPORT AnotherException : public apache::thrift::TException {
 
  private:
   ::std::int32_t code;
- public:
+ private:
   ::std::int32_t req_code;
  private:
   ::std::string message;
@@ -5366,19 +5386,19 @@ class containerStruct final  {
 
  private:
   bool fieldA;
- public:
+ private:
   bool req_fieldA;
  private:
   bool opt_fieldA;
  private:
   ::std::map<::std::string, bool> fieldB;
- public:
+ private:
   ::std::map<::std::string, bool> req_fieldB;
  private:
   ::std::map<::std::string, bool> opt_fieldB;
  private:
   ::std::set<::std::int32_t> fieldC;
- public:
+ private:
   ::std::set<::std::int32_t> req_fieldC;
  private:
   ::std::set<::std::int32_t> opt_fieldC;
@@ -5386,7 +5406,7 @@ class containerStruct final  {
   ::std::string fieldD;
  private:
   ::std::string fieldE;
- public:
+ private:
   ::std::string req_fieldE;
  private:
   ::std::string opt_fieldE;
@@ -5416,7 +5436,7 @@ class containerStruct final  {
   ::some::valid::ns::MyEnumA fieldQ;
  private:
   ::some::valid::ns::MyEnumA fieldR;
- public:
+ private:
   ::some::valid::ns::MyEnumA req_fieldR;
  private:
   ::some::valid::ns::MyEnumA opt_fieldR;
@@ -5428,7 +5448,7 @@ class containerStruct final  {
   ::std::vector<::some::valid::ns::MyEnumA> fieldU;
  private:
   ::some::valid::ns::MyStruct fieldV;
- public:
+ private:
   ::some::valid::ns::MyStruct req_fieldV;
  private:
   ::some::valid::ns::MyStruct opt_fieldV;
@@ -5436,7 +5456,7 @@ class containerStruct final  {
   ::std::set<::some::valid::ns::MyStruct> fieldW;
  private:
   ::some::valid::ns::ComplexUnion fieldX;
- public:
+ private:
   ::some::valid::ns::ComplexUnion req_fieldX;
  private:
   ::some::valid::ns::ComplexUnion opt_fieldX;
@@ -6923,8 +6943,8 @@ class MyIncludedStruct final  {
   ::some::valid::ns::AStruct __fbthrift_field_MyIncludedStruct;
  public:
   ::std::unique_ptr<::some::valid::ns::AStruct> ARefField;
- public:
-  ::some::valid::ns::AStruct ARequiredField;
+ private:
+  ::some::valid::ns::AStruct __fbthrift_field_ARequiredField;
  private:
   apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
@@ -7026,22 +7046,42 @@ class MyIncludedStruct final  {
 
   template <typename..., typename T = ::some::valid::ns::AStruct>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> ARequiredField_ref() const& {
-    return ::apache::thrift::required_field_ref<const T&>{this->ARequiredField};
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_ARequiredField};
   }
 
   template <typename..., typename T = ::some::valid::ns::AStruct>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> ARequiredField_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->ARequiredField)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_ARequiredField)};
   }
 
   template <typename..., typename T = ::some::valid::ns::AStruct>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> ARequiredField_ref() & {
-    return ::apache::thrift::required_field_ref<T&>{this->ARequiredField};
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_ARequiredField};
   }
 
   template <typename..., typename T = ::some::valid::ns::AStruct>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> ARequiredField_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->ARequiredField)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_ARequiredField)};
+  }
+
+  template <typename..., typename T = ::some::valid::ns::AStruct>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> ARequiredField() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_ARequiredField};
+  }
+
+  template <typename..., typename T = ::some::valid::ns::AStruct>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> ARequiredField() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_ARequiredField)};
+  }
+
+  template <typename..., typename T = ::some::valid::ns::AStruct>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> ARequiredField() & {
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_ARequiredField};
+  }
+
+  template <typename..., typename T = ::some::valid::ns::AStruct>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> ARequiredField() && {
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_ARequiredField)};
   }
 
   ::a::different::ns::IncludedInt64 get_MyIncludedInt() const {
@@ -7069,7 +7109,7 @@ class MyIncludedStruct final  {
   [[deprecated("Use `FOO.ARequiredField_ref() = BAR;` instead of `FOO.set_ARequiredField(BAR);`")]]
   ::some::valid::ns::AStruct& set_ARequiredField(T_MyIncludedStruct_ARequiredField_struct_setter&& ARequiredField_) {
     ARequiredField_ref() = std::forward<T_MyIncludedStruct_ARequiredField_struct_setter>(ARequiredField_);
-    return ARequiredField;
+    return __fbthrift_field_ARequiredField;
   }
 
   template <class Protocol_>
@@ -8732,7 +8772,7 @@ class AllRequiredNoExceptMoveCtrStruct final  {
  public:
 
   AllRequiredNoExceptMoveCtrStruct() :
-      intField() {
+      __fbthrift_field_intField() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -8746,8 +8786,8 @@ class AllRequiredNoExceptMoveCtrStruct final  {
   AllRequiredNoExceptMoveCtrStruct& operator=(AllRequiredNoExceptMoveCtrStruct&&) = default;
 
   AllRequiredNoExceptMoveCtrStruct& operator=(const AllRequiredNoExceptMoveCtrStruct&) = default;
- public:
-  ::std::int64_t intField;
+ private:
+  ::std::int64_t __fbthrift_field_intField;
 
  public:
 
@@ -8756,32 +8796,52 @@ class AllRequiredNoExceptMoveCtrStruct final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> intField_ref() const& {
-    return ::apache::thrift::required_field_ref<const T&>{this->intField};
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_intField};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> intField_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->intField)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_intField)};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> intField_ref() & {
-    return ::apache::thrift::required_field_ref<T&>{this->intField};
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_intField};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> intField_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->intField)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_intField)};
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> intField() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_intField};
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> intField() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_intField)};
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> intField() & {
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_intField};
+  }
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> intField() && {
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_intField)};
   }
 
   ::std::int64_t get_intField() const {
-    return intField;
+    return __fbthrift_field_intField;
   }
 
   [[deprecated("Use `FOO.intField_ref() = BAR;` instead of `FOO.set_intField(BAR);`")]]
   ::std::int64_t& set_intField(::std::int64_t intField_) {
     intField_ref() = intField_;
-    return intField;
+    return __fbthrift_field_intField;
   }
 
   template <class Protocol_>

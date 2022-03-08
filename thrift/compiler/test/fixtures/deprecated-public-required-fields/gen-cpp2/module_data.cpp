@@ -5,7 +5,7 @@
  *  @generated @nocommit
  */
 
-#include "thrift/compiler/test/fixtures/deprecated-private-required-fields/gen-cpp2/module_data.h"
+#include "thrift/compiler/test/fixtures/deprecated-public-required-fields/gen-cpp2/module_data.h"
 
 #include <thrift/lib/cpp2/gen/module_data_cpp.h>
 

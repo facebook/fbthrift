@@ -37,13 +37,13 @@ namespace cpp2 {
 
 
 Foo::Foo(apache::thrift::FragileConstructor, ::std::int32_t bar__arg) :
-    bar(std::move(bar__arg)) {
+    __fbthrift_field_bar(std::move(bar__arg)) {
 }
 
 
 void Foo::__fbthrift_clear() {
   // clear all fields
-  this->bar = ::std::int32_t();
+  this->__fbthrift_field_bar = ::std::int32_t();
 }
 
 bool Foo::__fbthrift_is_empty() const {

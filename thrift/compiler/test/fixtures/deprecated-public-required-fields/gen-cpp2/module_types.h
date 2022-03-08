@@ -66,7 +66,7 @@ class Foo final  {
  public:
 
   Foo() :
-      __fbthrift_field_field() {
+      field() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -80,8 +80,8 @@ class Foo final  {
   Foo& operator=(Foo&&) = default;
 
   Foo& operator=(const Foo&) = default;
- private:
-  ::std::int32_t __fbthrift_field_field;
+ public:
+  ::std::int32_t field;
 
  public:
 
@@ -90,52 +90,32 @@ class Foo final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> field_ref() const& {
-    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_field};
+    return ::apache::thrift::required_field_ref<const T&>{this->field};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> field_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_field)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->field)};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> field_ref() & {
-    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_field};
+    return ::apache::thrift::required_field_ref<T&>{this->field};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> field_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_field)};
-  }
-
-  template <typename..., typename T = ::std::int32_t>
-  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> field() const& {
-    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_field};
-  }
-
-  template <typename..., typename T = ::std::int32_t>
-  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> field() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_field)};
-  }
-
-  template <typename..., typename T = ::std::int32_t>
-  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> field() & {
-    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_field};
-  }
-
-  template <typename..., typename T = ::std::int32_t>
-  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> field() && {
-    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_field)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->field)};
   }
 
   ::std::int32_t get_field() const {
-    return __fbthrift_field_field;
+    return field;
   }
 
   [[deprecated("Use `FOO.field_ref() = BAR;` instead of `FOO.set_field(BAR);`")]]
   ::std::int32_t& set_field(::std::int32_t field_) {
     field_ref() = field_;
-    return __fbthrift_field_field;
+    return field;
   }
 
   template <class Protocol_>

@@ -8,7 +8,7 @@
 
 #include <thrift/lib/cpp2/gen/module_constants_h.h>
 
-#include "thrift/compiler/test/fixtures/deprecated-private-required-fields/gen-cpp2/module_types.h"
+#include "thrift/compiler/test/fixtures/deprecated-public-required-fields/gen-cpp2/module_types.h"
 
 namespace cpp2 {
 

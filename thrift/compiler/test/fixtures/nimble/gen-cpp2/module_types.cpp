@@ -37,7 +37,7 @@ namespace cpp2 {
 
 
 BasicTypes::BasicTypes(apache::thrift::FragileConstructor, ::std::int32_t first__arg, ::std::int32_t second__arg, ::std::int64_t third__arg, bool isTrue__arg) :
-    first(std::move(first__arg)),
+    __fbthrift_field_first(std::move(first__arg)),
     __fbthrift_field_second(std::move(second__arg)),
     __fbthrift_field_third(std::move(third__arg)),
     __fbthrift_field_isTrue(std::move(isTrue__arg)) {
@@ -49,7 +49,7 @@ BasicTypes::BasicTypes(apache::thrift::FragileConstructor, ::std::int32_t first_
 
 void BasicTypes::__fbthrift_clear() {
   // clear all fields
-  this->first = ::std::int32_t();
+  this->__fbthrift_field_first = ::std::int32_t();
   this->__fbthrift_field_second = ::std::int32_t();
   this->__fbthrift_field_third = ::std::int64_t();
   this->__fbthrift_field_isTrue = bool();

@@ -1220,39 +1220,39 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 MinPadding::MinPadding(const MinPadding&) = default;
 MinPadding& MinPadding::operator=(const MinPadding&) = default;
 MinPadding::MinPadding(MinPadding&& other) noexcept  :
-    big(std::move(other.big)),
-    biggish(std::move(other.biggish)),
-    medium(std::move(other.medium)),
-    small(std::move(other.small)),
-    tiny(std::move(other.tiny)) {
+    __fbthrift_field_big(std::move(other.__fbthrift_field_big)),
+    __fbthrift_field_biggish(std::move(other.__fbthrift_field_biggish)),
+    __fbthrift_field_medium(std::move(other.__fbthrift_field_medium)),
+    __fbthrift_field_small(std::move(other.__fbthrift_field_small)),
+    __fbthrift_field_tiny(std::move(other.__fbthrift_field_tiny)) {
 }
 
 MinPadding& MinPadding::operator=(FOLLY_MAYBE_UNUSED MinPadding&& other) noexcept {
-    this->big = std::move(other.big);
-    this->biggish = std::move(other.biggish);
-    this->medium = std::move(other.medium);
-    this->small = std::move(other.small);
-    this->tiny = std::move(other.tiny);
+    this->__fbthrift_field_big = std::move(other.__fbthrift_field_big);
+    this->__fbthrift_field_biggish = std::move(other.__fbthrift_field_biggish);
+    this->__fbthrift_field_medium = std::move(other.__fbthrift_field_medium);
+    this->__fbthrift_field_small = std::move(other.__fbthrift_field_small);
+    this->__fbthrift_field_tiny = std::move(other.__fbthrift_field_tiny);
     return *this;
 }
 
 
 MinPadding::MinPadding(apache::thrift::FragileConstructor, ::std::int8_t small__arg, ::std::int64_t big__arg, ::std::int16_t medium__arg, ::std::int32_t biggish__arg, ::std::int8_t tiny__arg) :
-    big(std::move(big__arg)),
-    biggish(std::move(biggish__arg)),
-    medium(std::move(medium__arg)),
-    small(std::move(small__arg)),
-    tiny(std::move(tiny__arg)) {
+    __fbthrift_field_big(std::move(big__arg)),
+    __fbthrift_field_biggish(std::move(biggish__arg)),
+    __fbthrift_field_medium(std::move(medium__arg)),
+    __fbthrift_field_small(std::move(small__arg)),
+    __fbthrift_field_tiny(std::move(tiny__arg)) {
 }
 
 
 void MinPadding::__fbthrift_clear() {
   // clear all fields
-  this->small = ::std::int8_t();
-  this->big = ::std::int64_t();
-  this->medium = ::std::int16_t();
-  this->biggish = ::std::int32_t();
-  this->tiny = ::std::int8_t();
+  this->__fbthrift_field_small = ::std::int8_t();
+  this->__fbthrift_field_big = ::std::int64_t();
+  this->__fbthrift_field_medium = ::std::int16_t();
+  this->__fbthrift_field_biggish = ::std::int32_t();
+  this->__fbthrift_field_tiny = ::std::int8_t();
 }
 
 bool MinPadding::__fbthrift_is_empty() const {
@@ -2242,7 +2242,7 @@ NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(NoexceptMoveComplexStruct&&
     __fbthrift_field_MyStringField2(std::move(other.__fbthrift_field_MyStringField2)),
     __fbthrift_field_MyBinaryField(std::move(other.__fbthrift_field_MyBinaryField)),
     __fbthrift_field_MyBinaryField2(std::move(other.__fbthrift_field_MyBinaryField2)),
-    MyBinaryField3(std::move(other.MyBinaryField3)),
+    __fbthrift_field_MyBinaryField3(std::move(other.__fbthrift_field_MyBinaryField3)),
     __fbthrift_field_MyBinaryListField4(std::move(other.__fbthrift_field_MyBinaryListField4)),
     __fbthrift_field_MyMapEnumAndInt(std::move(other.__fbthrift_field_MyMapEnumAndInt)),
     __isset(other.__isset) {
@@ -2255,7 +2255,7 @@ NoexceptMoveComplexStruct& NoexceptMoveComplexStruct::operator=(FOLLY_MAYBE_UNUS
     this->__fbthrift_field_MyStringField2 = std::move(other.__fbthrift_field_MyStringField2);
     this->__fbthrift_field_MyBinaryField = std::move(other.__fbthrift_field_MyBinaryField);
     this->__fbthrift_field_MyBinaryField2 = std::move(other.__fbthrift_field_MyBinaryField2);
-    this->MyBinaryField3 = std::move(other.MyBinaryField3);
+    this->__fbthrift_field_MyBinaryField3 = std::move(other.__fbthrift_field_MyBinaryField3);
     this->__fbthrift_field_MyBinaryListField4 = std::move(other.__fbthrift_field_MyBinaryListField4);
     this->__fbthrift_field_MyMapEnumAndInt = std::move(other.__fbthrift_field_MyMapEnumAndInt);
     __isset = other.__isset;
@@ -2270,7 +2270,7 @@ NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(apache::thrift::FragileCons
     __fbthrift_field_MyStringField2(std::move(MyStringField2__arg)),
     __fbthrift_field_MyBinaryField(std::move(MyBinaryField__arg)),
     __fbthrift_field_MyBinaryField2(std::move(MyBinaryField2__arg)),
-    MyBinaryField3(std::move(MyBinaryField3__arg)),
+    __fbthrift_field_MyBinaryField3(std::move(MyBinaryField3__arg)),
     __fbthrift_field_MyBinaryListField4(std::move(MyBinaryListField4__arg)),
     __fbthrift_field_MyMapEnumAndInt(std::move(MyMapEnumAndInt__arg)) {
   __isset.set(folly::index_constant<0>(), true);
@@ -2292,7 +2292,7 @@ void NoexceptMoveComplexStruct::__fbthrift_clear() {
   this->__fbthrift_field_MyStringField2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_MyBinaryField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_MyBinaryField2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->MyBinaryField3 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_MyBinaryField3 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_MyBinaryListField4.clear();
   this->__fbthrift_field_MyMapEnumAndInt.clear();
   __isset = {};
@@ -2324,7 +2324,7 @@ bool NoexceptMoveComplexStruct::operator==(const NoexceptMoveComplexStruct& rhs)
   if (lhs.MyBinaryField2_ref().has_value() != rhs.MyBinaryField2_ref().has_value() || (lhs.MyBinaryField2_ref().has_value() && !apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_MyBinaryField2, rhs.__fbthrift_field_MyBinaryField2))) {
     return false;
   }
-  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField3, rhs.MyBinaryField3)) {
+  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_MyBinaryField3, rhs.__fbthrift_field_MyBinaryField3)) {
     return false;
   }
   if (!(lhs.MyBinaryListField4_ref() == rhs.MyBinaryListField4_ref())) {
@@ -2358,8 +2358,8 @@ bool NoexceptMoveComplexStruct::operator<(const NoexceptMoveComplexStruct& rhs) 
   if (lhs.MyBinaryField2_ref().has_value() != rhs.MyBinaryField2_ref().has_value() || (lhs.MyBinaryField2_ref().has_value() && !apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_MyBinaryField2, rhs.__fbthrift_field_MyBinaryField2))) {
     return !lhs.MyBinaryField2_ref().has_value() || (rhs.MyBinaryField2_ref().has_value() && apache::thrift::StringTraits<std::string>::isLess(lhs.__fbthrift_field_MyBinaryField2, rhs.__fbthrift_field_MyBinaryField2));
   }
-  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField3, rhs.MyBinaryField3)) {
-    return apache::thrift::StringTraits<std::string>::isLess(lhs.MyBinaryField3, rhs.MyBinaryField3);
+  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_MyBinaryField3, rhs.__fbthrift_field_MyBinaryField3)) {
+    return apache::thrift::StringTraits<std::string>::isLess(lhs.__fbthrift_field_MyBinaryField3, rhs.__fbthrift_field_MyBinaryField3);
   }
   if (!(lhs.MyBinaryListField4_ref() == rhs.MyBinaryListField4_ref())) {
     return lhs.MyBinaryListField4_ref() < rhs.MyBinaryListField4_ref();

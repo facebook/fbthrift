@@ -415,7 +415,7 @@ MyStruct::MyStruct(const MyStruct& srcObj) {
   __isset.set(4,srcObj.__isset.get(4));
   __fbthrift_field_MyBinaryField2 = srcObj.__fbthrift_field_MyBinaryField2;
   __isset.set(5,srcObj.__isset.get(5));
-  MyBinaryField3 = srcObj.MyBinaryField3;
+  __fbthrift_field_MyBinaryField3 = srcObj.__fbthrift_field_MyBinaryField3;
   __fbthrift_field_MyBinaryListField4 = srcObj.__fbthrift_field_MyBinaryListField4;
   __isset.set(6,srcObj.__isset.get(6));
   __fbthrift_field_MyMapEnumAndInt = srcObj.__fbthrift_field_MyMapEnumAndInt;
@@ -455,7 +455,7 @@ MyStruct::MyStruct(MyStruct&& other) noexcept  :
     __fbthrift_field_MyStringField2(std::move(other.__fbthrift_field_MyStringField2)),
     __fbthrift_field_MyBinaryField(std::move(other.__fbthrift_field_MyBinaryField)),
     __fbthrift_field_MyBinaryField2(std::move(other.__fbthrift_field_MyBinaryField2)),
-    MyBinaryField3(std::move(other.MyBinaryField3)),
+    __fbthrift_field_MyBinaryField3(std::move(other.__fbthrift_field_MyBinaryField3)),
     __fbthrift_field_MyBinaryListField4(std::move(other.__fbthrift_field_MyBinaryListField4)),
     __fbthrift_field_MyMapEnumAndInt(std::move(other.__fbthrift_field_MyMapEnumAndInt)),
     __fbthrift_field_MyCustomField(std::move(other.__fbthrift_field_MyCustomField)),
@@ -472,7 +472,7 @@ MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
     this->__fbthrift_field_MyStringField2 = std::move(other.__fbthrift_field_MyStringField2);
     this->__fbthrift_field_MyBinaryField = std::move(other.__fbthrift_field_MyBinaryField);
     this->__fbthrift_field_MyBinaryField2 = std::move(other.__fbthrift_field_MyBinaryField2);
-    this->MyBinaryField3 = std::move(other.MyBinaryField3);
+    this->__fbthrift_field_MyBinaryField3 = std::move(other.__fbthrift_field_MyBinaryField3);
     this->__fbthrift_field_MyBinaryListField4 = std::move(other.__fbthrift_field_MyBinaryListField4);
     this->__fbthrift_field_MyMapEnumAndInt = std::move(other.__fbthrift_field_MyMapEnumAndInt);
     this->__fbthrift_field_MyCustomField = std::move(other.__fbthrift_field_MyCustomField);
@@ -489,7 +489,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, ::
     __fbthrift_field_MyStringField2(std::move(MyStringField2__arg)),
     __fbthrift_field_MyBinaryField(std::move(MyBinaryField__arg)),
     __fbthrift_field_MyBinaryField2(std::move(MyBinaryField2__arg)),
-    MyBinaryField3(std::move(MyBinaryField3__arg)),
+    __fbthrift_field_MyBinaryField3(std::move(MyBinaryField3__arg)),
     __fbthrift_field_MyBinaryListField4(std::move(MyBinaryListField4__arg)),
     __fbthrift_field_MyMapEnumAndInt(std::move(MyMapEnumAndInt__arg)),
     __fbthrift_field_MyCustomField(std::move(MyCustomField__arg)),
@@ -517,7 +517,7 @@ void MyStruct::__fbthrift_clear() {
   this->__fbthrift_field_MyStringField2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_MyBinaryField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_MyBinaryField2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->MyBinaryField3 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_MyBinaryField3 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_MyBinaryListField4.clear();
   this->__fbthrift_field_MyMapEnumAndInt.clear();
   ::apache::thrift::adapt_detail::clear<CustomProtocolAdapter, 10>(__fbthrift_field_MyCustomField, *this);
@@ -551,7 +551,7 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   if (lhs.MyBinaryField2_ref().has_value() != rhs.MyBinaryField2_ref().has_value() || (lhs.MyBinaryField2_ref().has_value() && !apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_MyBinaryField2, rhs.__fbthrift_field_MyBinaryField2))) {
     return false;
   }
-  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField3, rhs.MyBinaryField3)) {
+  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_MyBinaryField3, rhs.__fbthrift_field_MyBinaryField3)) {
     return false;
   }
   if (!(lhs.MyBinaryListField4_ref() == rhs.MyBinaryListField4_ref())) {
@@ -591,8 +591,8 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   if (lhs.MyBinaryField2_ref().has_value() != rhs.MyBinaryField2_ref().has_value() || (lhs.MyBinaryField2_ref().has_value() && !apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_MyBinaryField2, rhs.__fbthrift_field_MyBinaryField2))) {
     return !lhs.MyBinaryField2_ref().has_value() || (rhs.MyBinaryField2_ref().has_value() && apache::thrift::StringTraits<std::string>::isLess(lhs.__fbthrift_field_MyBinaryField2, rhs.__fbthrift_field_MyBinaryField2));
   }
-  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField3, rhs.MyBinaryField3)) {
-    return apache::thrift::StringTraits<std::string>::isLess(lhs.MyBinaryField3, rhs.MyBinaryField3);
+  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_MyBinaryField3, rhs.__fbthrift_field_MyBinaryField3)) {
+    return apache::thrift::StringTraits<std::string>::isLess(lhs.__fbthrift_field_MyBinaryField3, rhs.__fbthrift_field_MyBinaryField3);
   }
   if (!(lhs.MyBinaryListField4_ref() == rhs.MyBinaryListField4_ref())) {
     return lhs.MyBinaryListField4_ref() < rhs.MyBinaryListField4_ref();
@@ -2766,7 +2766,7 @@ MyIncludedStruct::MyIncludedStruct(const MyIncludedStruct& srcObj) {
   __isset.set(1,srcObj.__isset.get(1));
   ARefField = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::structure>(srcObj.ARefField);
-  ARequiredField = srcObj.ARequiredField;
+  __fbthrift_field_ARequiredField = srcObj.__fbthrift_field_ARequiredField;
 }
 
 MyIncludedStruct& MyIncludedStruct::operator=(const MyIncludedStruct& src) {
@@ -2779,7 +2779,7 @@ MyIncludedStruct::MyIncludedStruct(MyIncludedStruct&& other) noexcept  :
     __fbthrift_field_MyIncludedInt(std::move(other.__fbthrift_field_MyIncludedInt)),
     __fbthrift_field_MyIncludedStruct(std::move(other.__fbthrift_field_MyIncludedStruct)),
     ARefField(std::move(other.ARefField)),
-    ARequiredField(std::move(other.ARequiredField)),
+    __fbthrift_field_ARequiredField(std::move(other.__fbthrift_field_ARequiredField)),
     __isset(other.__isset) {
 }
 
@@ -2787,7 +2787,7 @@ MyIncludedStruct& MyIncludedStruct::operator=(FOLLY_MAYBE_UNUSED MyIncludedStruc
     this->__fbthrift_field_MyIncludedInt = std::move(other.__fbthrift_field_MyIncludedInt);
     this->__fbthrift_field_MyIncludedStruct = std::move(other.__fbthrift_field_MyIncludedStruct);
     this->ARefField = std::move(other.ARefField);
-    this->ARequiredField = std::move(other.ARequiredField);
+    this->__fbthrift_field_ARequiredField = std::move(other.__fbthrift_field_ARequiredField);
     __isset = other.__isset;
     return *this;
 }
@@ -2797,7 +2797,7 @@ MyIncludedStruct::MyIncludedStruct(apache::thrift::FragileConstructor, ::a::diff
     __fbthrift_field_MyIncludedInt(std::move(MyIncludedInt__arg)),
     __fbthrift_field_MyIncludedStruct(std::move(MyIncludedStruct__arg)),
     ARefField(std::move(ARefField__arg)),
-    ARequiredField(std::move(ARequiredField__arg)) {
+    __fbthrift_field_ARequiredField(std::move(ARequiredField__arg)) {
   __isset.set(folly::index_constant<0>(), true);
   __isset.set(folly::index_constant<1>(), true);
 }
@@ -2809,7 +2809,7 @@ void MyIncludedStruct::__fbthrift_clear() {
     apache::thrift::clear(this->__fbthrift_field_MyIncludedStruct);
 
   if (this->ARefField) apache::thrift::clear(*this->ARefField);
-    apache::thrift::clear(this->ARequiredField);
+    apache::thrift::clear(this->__fbthrift_field_ARequiredField);
   __isset = {};
 }
 
@@ -2864,11 +2864,11 @@ const ::some::valid::ns::AStruct& MyIncludedStruct::get_MyIncludedStruct() const
 }
 
 const ::some::valid::ns::AStruct& MyIncludedStruct::get_ARequiredField() const& {
-  return ARequiredField;
+  return __fbthrift_field_ARequiredField;
 }
 
 ::some::valid::ns::AStruct MyIncludedStruct::get_ARequiredField() && {
-  return std::move(ARequiredField);
+  return std::move(__fbthrift_field_ARequiredField);
 }
 
 
@@ -3978,13 +3978,13 @@ namespace some { namespace valid { namespace ns {
 
 
 AllRequiredNoExceptMoveCtrStruct::AllRequiredNoExceptMoveCtrStruct(apache::thrift::FragileConstructor, ::std::int64_t intField__arg) :
-    intField(std::move(intField__arg)) {
+    __fbthrift_field_intField(std::move(intField__arg)) {
 }
 
 
 void AllRequiredNoExceptMoveCtrStruct::__fbthrift_clear() {
   // clear all fields
-  this->intField = ::std::int64_t();
+  this->__fbthrift_field_intField = ::std::int64_t();
 }
 
 bool AllRequiredNoExceptMoveCtrStruct::__fbthrift_is_empty() const {

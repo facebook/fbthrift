@@ -140,7 +140,7 @@ namespace cpp2 {
 Internship::Internship(const Internship&) = default;
 Internship& Internship::operator=(const Internship&) = default;
 Internship::Internship() :
-      weeks(),
+      __fbthrift_field_weeks(),
       __fbthrift_field_employer(),
       __fbthrift_field_compensation() {
 }
@@ -149,7 +149,7 @@ Internship::Internship() :
 Internship::~Internship() {}
 
 Internship::Internship(Internship&& other) noexcept  :
-    weeks(std::move(other.weeks)),
+    __fbthrift_field_weeks(std::move(other.__fbthrift_field_weeks)),
     __fbthrift_field_title(std::move(other.__fbthrift_field_title)),
     __fbthrift_field_employer(std::move(other.__fbthrift_field_employer)),
     __fbthrift_field_compensation(std::move(other.__fbthrift_field_compensation)),
@@ -158,7 +158,7 @@ Internship::Internship(Internship&& other) noexcept  :
 }
 
 Internship& Internship::operator=(FOLLY_MAYBE_UNUSED Internship&& other) noexcept {
-    this->weeks = std::move(other.weeks);
+    this->__fbthrift_field_weeks = std::move(other.__fbthrift_field_weeks);
     this->__fbthrift_field_title = std::move(other.__fbthrift_field_title);
     this->__fbthrift_field_employer = std::move(other.__fbthrift_field_employer);
     this->__fbthrift_field_compensation = std::move(other.__fbthrift_field_compensation);
@@ -169,7 +169,7 @@ Internship& Internship::operator=(FOLLY_MAYBE_UNUSED Internship&& other) noexcep
 
 
 Internship::Internship(apache::thrift::FragileConstructor, ::std::int32_t weeks__arg, ::std::string title__arg, ::cpp2::Company employer__arg, double compensation__arg, ::std::string school__arg) :
-    weeks(std::move(weeks__arg)),
+    __fbthrift_field_weeks(std::move(weeks__arg)),
     __fbthrift_field_title(std::move(title__arg)),
     __fbthrift_field_employer(std::move(employer__arg)),
     __fbthrift_field_compensation(std::move(compensation__arg)),
@@ -183,7 +183,7 @@ Internship::Internship(apache::thrift::FragileConstructor, ::std::int32_t weeks_
 
 void Internship::__fbthrift_clear() {
   // clear all fields
-  this->weeks = ::std::int32_t();
+  this->__fbthrift_field_weeks = ::std::int32_t();
   this->__fbthrift_field_title = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_employer = ::cpp2::Company();
   this->__fbthrift_field_compensation = double();
@@ -288,15 +288,15 @@ namespace cpp2 {
 
 
 Range::Range(apache::thrift::FragileConstructor, ::std::int32_t min__arg, ::std::int32_t max__arg) :
-    min(std::move(min__arg)),
-    max(std::move(max__arg)) {
+    __fbthrift_field_min(std::move(min__arg)),
+    __fbthrift_field_max(std::move(max__arg)) {
 }
 
 
 void Range::__fbthrift_clear() {
   // clear all fields
-  this->min = ::std::int32_t();
-  this->max = ::std::int32_t();
+  this->__fbthrift_field_min = ::std::int32_t();
+  this->__fbthrift_field_max = ::std::int32_t();
 }
 
 bool Range::__fbthrift_is_empty() const {

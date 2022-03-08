@@ -81,7 +81,7 @@ class BasicTypes final  {
  public:
 
   BasicTypes() :
-      first(),
+      __fbthrift_field_first(),
       __fbthrift_field_second(),
       __fbthrift_field_third(),
       __fbthrift_field_isTrue() {
@@ -98,8 +98,8 @@ class BasicTypes final  {
   BasicTypes& operator=(BasicTypes&&) = default;
 
   BasicTypes& operator=(const BasicTypes&) = default;
- public:
-  ::std::int32_t first;
+ private:
+  ::std::int32_t __fbthrift_field_first;
  private:
   ::std::int32_t __fbthrift_field_second;
  private:
@@ -116,22 +116,42 @@ class BasicTypes final  {
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> first_ref() const& {
-    return ::apache::thrift::required_field_ref<const T&>{this->first};
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_first};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> first_ref() const&& {
-    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->first)};
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_first)};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&> first_ref() & {
-    return ::apache::thrift::required_field_ref<T&>{this->first};
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_first};
   }
 
   template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> first_ref() && {
-    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->first)};
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_first)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> first() const& {
+    return ::apache::thrift::required_field_ref<const T&>{this->__fbthrift_field_first};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> first() const&& {
+    return ::apache::thrift::required_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_first)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> first() & {
+    return ::apache::thrift::required_field_ref<T&>{this->__fbthrift_field_first};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> first() && {
+    return ::apache::thrift::required_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_first)};
   }
 
   template <typename..., typename T = ::std::int32_t>
@@ -255,13 +275,13 @@ class BasicTypes final  {
   }
 
   ::std::int32_t get_first() const {
-    return first;
+    return __fbthrift_field_first;
   }
 
   [[deprecated("Use `FOO.first_ref() = BAR;` instead of `FOO.set_first(BAR);`")]]
   ::std::int32_t& set_first(::std::int32_t first_) {
     first_ref() = first_;
-    return first;
+    return __fbthrift_field_first;
   }
 
   const ::std::int32_t* get_second() const& {

@@ -39,13 +39,13 @@ containerStruct2::containerStruct2(const containerStruct2&) = default;
 containerStruct2& containerStruct2::operator=(const containerStruct2&) = default;
 containerStruct2::containerStruct2() :
       __fbthrift_field_fieldA(),
-      req_fieldA(),
+      __fbthrift_field_req_fieldA(),
       __fbthrift_field_opt_fieldA(),
       __fbthrift_field_fieldC(static_cast<::std::set<::std::int32_t>>(std::initializer_list<::std::int32_t>{1,
   2,
   3,
   4})),
-      req_fieldC(static_cast<::std::set<::std::int32_t>>(std::initializer_list<::std::int32_t>{1,
+      __fbthrift_field_req_fieldC(static_cast<::std::set<::std::int32_t>>(std::initializer_list<::std::int32_t>{1,
   2,
   3,
   4})),
@@ -54,7 +54,7 @@ containerStruct2::containerStruct2() :
   3,
   4})),
       __fbthrift_field_fieldE(apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring")),
-      req_fieldE(apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring")),
+      __fbthrift_field_req_fieldE(apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring")),
       __fbthrift_field_opt_fieldE(apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring")) {
 }
 
@@ -63,34 +63,34 @@ containerStruct2::~containerStruct2() {}
 
 containerStruct2::containerStruct2(containerStruct2&& other) noexcept  :
     __fbthrift_field_fieldA(std::move(other.__fbthrift_field_fieldA)),
-    req_fieldA(std::move(other.req_fieldA)),
+    __fbthrift_field_req_fieldA(std::move(other.__fbthrift_field_req_fieldA)),
     __fbthrift_field_opt_fieldA(std::move(other.__fbthrift_field_opt_fieldA)),
     __fbthrift_field_fieldB(std::move(other.__fbthrift_field_fieldB)),
-    req_fieldB(std::move(other.req_fieldB)),
+    __fbthrift_field_req_fieldB(std::move(other.__fbthrift_field_req_fieldB)),
     __fbthrift_field_opt_fieldB(std::move(other.__fbthrift_field_opt_fieldB)),
     __fbthrift_field_fieldC(std::move(other.__fbthrift_field_fieldC)),
-    req_fieldC(std::move(other.req_fieldC)),
+    __fbthrift_field_req_fieldC(std::move(other.__fbthrift_field_req_fieldC)),
     __fbthrift_field_opt_fieldC(std::move(other.__fbthrift_field_opt_fieldC)),
     __fbthrift_field_fieldD(std::move(other.__fbthrift_field_fieldD)),
     __fbthrift_field_fieldE(std::move(other.__fbthrift_field_fieldE)),
-    req_fieldE(std::move(other.req_fieldE)),
+    __fbthrift_field_req_fieldE(std::move(other.__fbthrift_field_req_fieldE)),
     __fbthrift_field_opt_fieldE(std::move(other.__fbthrift_field_opt_fieldE)),
     __isset(other.__isset) {
 }
 
 containerStruct2& containerStruct2::operator=(FOLLY_MAYBE_UNUSED containerStruct2&& other) noexcept {
     this->__fbthrift_field_fieldA = std::move(other.__fbthrift_field_fieldA);
-    this->req_fieldA = std::move(other.req_fieldA);
+    this->__fbthrift_field_req_fieldA = std::move(other.__fbthrift_field_req_fieldA);
     this->__fbthrift_field_opt_fieldA = std::move(other.__fbthrift_field_opt_fieldA);
     this->__fbthrift_field_fieldB = std::move(other.__fbthrift_field_fieldB);
-    this->req_fieldB = std::move(other.req_fieldB);
+    this->__fbthrift_field_req_fieldB = std::move(other.__fbthrift_field_req_fieldB);
     this->__fbthrift_field_opt_fieldB = std::move(other.__fbthrift_field_opt_fieldB);
     this->__fbthrift_field_fieldC = std::move(other.__fbthrift_field_fieldC);
-    this->req_fieldC = std::move(other.req_fieldC);
+    this->__fbthrift_field_req_fieldC = std::move(other.__fbthrift_field_req_fieldC);
     this->__fbthrift_field_opt_fieldC = std::move(other.__fbthrift_field_opt_fieldC);
     this->__fbthrift_field_fieldD = std::move(other.__fbthrift_field_fieldD);
     this->__fbthrift_field_fieldE = std::move(other.__fbthrift_field_fieldE);
-    this->req_fieldE = std::move(other.req_fieldE);
+    this->__fbthrift_field_req_fieldE = std::move(other.__fbthrift_field_req_fieldE);
     this->__fbthrift_field_opt_fieldE = std::move(other.__fbthrift_field_opt_fieldE);
     __isset = other.__isset;
     return *this;
@@ -99,17 +99,17 @@ containerStruct2& containerStruct2::operator=(FOLLY_MAYBE_UNUSED containerStruct
 
 containerStruct2::containerStruct2(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, ::std::map<::std::string, bool> fieldB__arg, ::std::map<::std::string, bool> req_fieldB__arg, ::std::map<::std::string, bool> opt_fieldB__arg, ::std::set<::std::int32_t> fieldC__arg, ::std::set<::std::int32_t> req_fieldC__arg, ::std::set<::std::int32_t> opt_fieldC__arg, ::std::string fieldD__arg, ::std::string fieldE__arg, ::std::string req_fieldE__arg, ::std::string opt_fieldE__arg) :
     __fbthrift_field_fieldA(std::move(fieldA__arg)),
-    req_fieldA(std::move(req_fieldA__arg)),
+    __fbthrift_field_req_fieldA(std::move(req_fieldA__arg)),
     __fbthrift_field_opt_fieldA(std::move(opt_fieldA__arg)),
     __fbthrift_field_fieldB(std::move(fieldB__arg)),
-    req_fieldB(std::move(req_fieldB__arg)),
+    __fbthrift_field_req_fieldB(std::move(req_fieldB__arg)),
     __fbthrift_field_opt_fieldB(std::move(opt_fieldB__arg)),
     __fbthrift_field_fieldC(std::move(fieldC__arg)),
-    req_fieldC(std::move(req_fieldC__arg)),
+    __fbthrift_field_req_fieldC(std::move(req_fieldC__arg)),
     __fbthrift_field_opt_fieldC(std::move(opt_fieldC__arg)),
     __fbthrift_field_fieldD(std::move(fieldD__arg)),
     __fbthrift_field_fieldE(std::move(fieldE__arg)),
-    req_fieldE(std::move(req_fieldE__arg)),
+    __fbthrift_field_req_fieldE(std::move(req_fieldE__arg)),
     __fbthrift_field_opt_fieldE(std::move(opt_fieldE__arg)) {
   __isset.set(folly::index_constant<0>(), true);
   __isset.set(folly::index_constant<1>(), true);
@@ -126,17 +126,17 @@ containerStruct2::containerStruct2(apache::thrift::FragileConstructor, bool fiel
 void containerStruct2::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_fieldA = bool();
-  this->req_fieldA = bool();
+  this->__fbthrift_field_req_fieldA = bool();
   this->__fbthrift_field_opt_fieldA = bool();
   this->__fbthrift_field_fieldB.clear();
-  this->req_fieldB.clear();
+  this->__fbthrift_field_req_fieldB.clear();
   this->__fbthrift_field_opt_fieldB.clear();
   this->__fbthrift_field_fieldC.clear();
-  this->req_fieldC.clear();
+  this->__fbthrift_field_req_fieldC.clear();
   this->__fbthrift_field_opt_fieldC.clear();
   this->__fbthrift_field_fieldD = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->req_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_req_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_opt_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
@@ -246,11 +246,11 @@ const ::std::map<::std::string, bool>& containerStruct2::get_fieldB() const& {
 }
 
 const ::std::map<::std::string, bool>& containerStruct2::get_req_fieldB() const& {
-  return req_fieldB;
+  return __fbthrift_field_req_fieldB;
 }
 
 ::std::map<::std::string, bool> containerStruct2::get_req_fieldB() && {
-  return std::move(req_fieldB);
+  return std::move(__fbthrift_field_req_fieldB);
 }
 
 const ::std::map<::std::string, bool>* containerStruct2::get_opt_fieldB() const& {
@@ -270,11 +270,11 @@ const ::std::set<::std::int32_t>& containerStruct2::get_fieldC() const& {
 }
 
 const ::std::set<::std::int32_t>& containerStruct2::get_req_fieldC() const& {
-  return req_fieldC;
+  return __fbthrift_field_req_fieldC;
 }
 
 ::std::set<::std::int32_t> containerStruct2::get_req_fieldC() && {
-  return std::move(req_fieldC);
+  return std::move(__fbthrift_field_req_fieldC);
 }
 
 const ::std::set<::std::int32_t>* containerStruct2::get_opt_fieldC() const& {

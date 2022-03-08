@@ -4,12 +4,12 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated @nocommit
  */
-#include "thrift/compiler/test/fixtures/deprecated-private-required-fields/gen-cpp2/module_types.h"
-#include "thrift/compiler/test/fixtures/deprecated-private-required-fields/gen-cpp2/module_types.tcc"
+#include "thrift/compiler/test/fixtures/deprecated-public-required-fields/gen-cpp2/module_types.h"
+#include "thrift/compiler/test/fixtures/deprecated-public-required-fields/gen-cpp2/module_types.tcc"
 
 #include <thrift/lib/cpp2/gen/module_types_cpp.h>
 
-#include "thrift/compiler/test/fixtures/deprecated-private-required-fields/gen-cpp2/module_data.h"
+#include "thrift/compiler/test/fixtures/deprecated-public-required-fields/gen-cpp2/module_data.h"
 
 
 namespace apache {
@@ -37,13 +37,13 @@ namespace cpp2 {
 
 
 Foo::Foo(apache::thrift::FragileConstructor, ::std::int32_t field__arg) :
-    __fbthrift_field_field(std::move(field__arg)) {
+    field(std::move(field__arg)) {
 }
 
 
 void Foo::__fbthrift_clear() {
   // clear all fields
-  this->__fbthrift_field_field = ::std::int32_t();
+  this->field = ::std::int32_t();
 }
 
 bool Foo::__fbthrift_is_empty() const {

@@ -128,7 +128,7 @@ class FOLLY_EXPORT Fiery : public apache::thrift::TException {
 
   ~Fiery() override;
 
- public:
+ private:
   ::std::string message;
 
  public:

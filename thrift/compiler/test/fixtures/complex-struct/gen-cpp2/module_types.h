@@ -7005,9 +7005,9 @@ class FOLLY_EXPORT reqXcep : public apache::thrift::TException {
 
   ~reqXcep() override;
 
- public:
+ private:
   ::std::string message;
- public:
+ private:
   ::std::int32_t errorCode;
 
  public:
