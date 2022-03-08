@@ -345,15 +345,6 @@ enum LazyDeserializationState : uint8_t { // Bitfield.
 
 } // namespace detail
 
-namespace op {
-
-template <FieldId Id>
-FOLLY_INLINE_VARIABLE constexpr ::apache::thrift::detail::st::
-    struct_private_access::get_fn<Id>
-        get{};
-
-} // namespace op
-
 } // namespace thrift
 } // namespace apache
 
