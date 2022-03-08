@@ -112,29 +112,21 @@ TEST(StructPatchTest, Clear) {
 }
 
 TEST(StructPatchTest, ClearAssign) {
-  TestStructPatch clearPatch;
-  clearPatch.clear();
-  TestStructPatch assignPatch;
-  assignPatch = testValue();
-
+  auto patch = TestStructPatch::createClear();
+  patch.merge(TestStructPatch::createAssign(testValue()));
   // Assign takes precedence, like usual.
-  clearPatch.merge(assignPatch);
-  test::expectPatch(clearPatch, {}, testValue());
+  test::expectPatch(patch, {}, testValue());
 }
 
 TEST(StructPatchTest, AssignClear) {
-  TestStructPatch clearPatch;
-  clearPatch.clear();
-  TestStructPatch assignPatch;
-  assignPatch = testValue();
-
-  assignPatch.merge(clearPatch);
-  test::expectPatch(assignPatch, testValue(), {});
+  auto patch = TestStructPatch::createAssign(testValue());
+  patch.merge(TestStructPatch::createClear());
+  test::expectPatch(patch, testValue(), {});
 
   // Clear patch takes precedence (as it is smaller to encode and slightly
   // stronger in the presense of non-terse non-optional fields).
-  EXPECT_FALSE(assignPatch.hasAssign());
-  EXPECT_TRUE(*assignPatch.get().clear());
+  EXPECT_FALSE(patch.hasAssign());
+  EXPECT_TRUE(*patch.get().clear());
 }
 
 } // namespace apache::thrift

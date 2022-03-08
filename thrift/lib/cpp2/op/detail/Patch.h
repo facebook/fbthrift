@@ -44,6 +44,17 @@ class BasePatch {
   void assign(const value_type& val) { resetAnd().assign().emplace(val); }
   void assign(value_type&& val) { resetAnd().assign().emplace(std::move(val)); }
 
+  static Derived createAssign(value_type&& val) {
+    Derived patch;
+    patch.assign(std::move(val));
+    return patch;
+  }
+  static Derived createAssign(const value_type& val) {
+    Derived patch;
+    patch.assign(val);
+    return patch;
+  }
+
   Derived& operator=(const value_type& val) { return (assign(val), derived()); }
   Derived& operator=(value_type&& val) {
     assign(std::move(val));
@@ -122,6 +133,7 @@ class BoolPatch : public BasePatch<Patch, BoolPatch<Patch>> {
     auto& val = assignOr(invert_());
     val = !val;
   }
+  static BoolPatch createInvert() { return !BoolPatch{}; }
 
  private:
   friend BoolPatch operator!(BoolPatch val) { return (val.invert(), val); }
@@ -163,19 +175,31 @@ class NumberPatch : public BasePatch<Patch, NumberPatch<Patch>> {
     assignOr(add_()) += std::forward<U>(val);
   }
   template <typename U>
-  void subtract(U&& val) noexcept {
-    assignOr(add_()) -= std::forward<U>(val);
-  }
-
-  template <typename U>
   NumberPatch& operator+=(U&& val) noexcept {
     add(std::forward<U>(val));
     return *this;
   }
   template <typename U>
+  static NumberPatch createAdd(U&& val) {
+    NumberPatch patch;
+    patch.add(std::forward<U>(val));
+    return patch;
+  }
+
+  template <typename U>
+  void subtract(U&& val) noexcept {
+    assignOr(add_()) -= std::forward<U>(val);
+  }
+  template <typename U>
   NumberPatch& operator-=(U&& val) noexcept {
     subtract(std::forward<T>(val));
     return *this;
+  }
+  template <typename U>
+  static NumberPatch createSubtract(U&& val) {
+    NumberPatch patch;
+    patch.subtract(std::forward<U>(val));
+    return patch;
   }
 
  private:
@@ -237,17 +261,28 @@ class StringPatch : public BasePatch<Patch, StringPatch<Patch>> {
   void append(Args&&... args) {
     assignOr(append_()).append(std::forward<Args>(args)...);
   }
+  template <typename U>
+  StringPatch& operator+=(U&& val) {
+    assignOr(append_()) += std::forward<U>(val);
+    return *this;
+  }
+  template <typename... Args>
+  static StringPatch createAppend(Args&&... args) {
+    StringPatch patch;
+    patch.append(std::forward<Args>(args)...);
+    return patch;
+  }
 
   template <typename U>
   void prepend(U&& val) {
     T& cur = assignOr(prepend_());
     cur = std::forward<U>(val) + std::move(cur);
   }
-
   template <typename U>
-  StringPatch& operator+=(U&& val) {
-    assignOr(append_()) += std::forward<U>(val);
-    return *this;
+  static StringPatch createPrepend(U&& val) {
+    StringPatch patch;
+    patch.prepend(std::forward<U>(val));
+    return patch;
   }
 
  private:
@@ -300,6 +335,11 @@ class StructPatch : public BasePatch<Patch, StructPatch<Patch>> {
   }
 
   void clear() { clear_() = true; }
+  static StructPatch createClear() {
+    StructPatch patch;
+    patch.clear();
+    return patch;
+  }
 
  private:
   bool& clear_() { return *this->patch_.clear(); }

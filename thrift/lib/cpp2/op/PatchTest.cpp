@@ -32,7 +32,7 @@ TEST(PatchTest, BoolPatch) {
   test::expectPatch(patch, true, true);
 
   // Inverting patch inverts.
-  patch.invert();
+  patch = BoolPatch::createInvert();
   test::expectPatch(patch, false, true, false);
   test::expectPatch(patch, true, false, true);
 
@@ -60,9 +60,9 @@ void testNumberPatch() {
   test::expectPatch(patch, 7, 7);
 
   // Incrementing patch increments.
-  patch = 2 + patch;
+  patch = 1 + NPatch::createAdd(1);
   test::expectPatch(patch, 7, 9, 11);
-  patch = patch - 2;
+  patch.merge(NPatch::createSubtract(2));
   EXPECT_TRUE(patch.empty());
   test::expectPatch(patch, 7, 7);
 
@@ -90,11 +90,11 @@ TEST(PatchTest, StringPatch) {
   test::expectPatch(patch, "hi", "hi");
 
   // Relative patch patches.
-  patch = "_" + std::move(patch);
+  patch = StringPatch::createPrepend("_");
   patch += "_";
   test::expectPatch(patch, "hi", "_hi_", "__hi__");
   patch.prepend("$");
-  patch.append("^");
+  patch.merge(StringPatch::createAppend("^"));
   test::expectPatch(patch, "hi", "$_hi_^", "$_$_hi_^_^");
 
   // Assign patch assigns.
