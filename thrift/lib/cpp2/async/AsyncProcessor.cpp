@@ -428,13 +428,11 @@ folly::EventBase* HandlerCallbackBase::getEventBase() {
 }
 
 concurrency::ThreadManager* HandlerCallbackBase::getThreadManager() {
-  assert(tm_ != nullptr);
   return tm_;
 }
 
 folly::Executor* HandlerCallbackBase::getHandlerExecutor() {
   if (executor_ == nullptr) {
-    assert(tm_ != nullptr);
     return tm_;
   }
   return executor_;
