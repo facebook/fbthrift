@@ -50,28 +50,26 @@ using CreateMethodMetadataResult =
     AsyncProcessorFactory::CreateMethodMetadataResult;
 
 namespace {
-class First : public FirstSvIf {
+class FirstHandler : public FirstSvIf {
   int one() override { return 1; }
   int two() override { return 2; }
 };
 
-class Second : public SecondSvIf {
+class SecondHandler : public SecondSvIf {
   int three() override { return 3; }
   int four() override { return 4; }
 };
 
-class Third : public ThirdSvIf {
+class ThirdHandler : public ThirdSvIf {
   int five() override { return 5; }
   int six() override { return 6; }
 };
 
-class Conflicts : public ConflictsSvIf {
+class ConflictsHandler : public ConflictsSvIf {
   int four() override { return 444; }
   int five() override { return 555; }
 };
-} // namespace
 
-namespace {
 class MultiplexAsyncProcessorTest : public Test {
  public:
   std::shared_ptr<AsyncProcessorFactory> multiplex(
@@ -93,10 +91,10 @@ class MultiplexAsyncProcessorServerTest : public MultiplexAsyncProcessorTest {
 
 TEST_F(MultiplexAsyncProcessorTest, getServiceHandlers) {
   std::vector<std::shared_ptr<AsyncProcessorFactory>> services = {
-      std::make_shared<First>(),
-      std::make_shared<Second>(),
-      std::make_shared<Third>(),
-      std::make_shared<Conflicts>(),
+      std::make_shared<FirstHandler>(),
+      std::make_shared<SecondHandler>(),
+      std::make_shared<ThirdHandler>(),
+      std::make_shared<ConflictsHandler>(),
   };
   auto processorFactory =
       std::make_shared<MultiplexAsyncProcessorFactory>(std::move(services));
@@ -106,12 +104,12 @@ TEST_F(MultiplexAsyncProcessorTest, getServiceHandlers) {
 
 TEST_F(MultiplexAsyncProcessorTest, getServiceHandlers_Nested) {
   std::vector<std::shared_ptr<AsyncProcessorFactory>> services2 = {
-      std::make_shared<First>(),
+      std::make_shared<FirstHandler>(),
       multiplex({
-          std::make_shared<Second>(),
-          std::make_shared<Third>(),
+          std::make_shared<SecondHandler>(),
+          std::make_shared<ThirdHandler>(),
       }),
-      std::make_shared<Conflicts>(),
+      std::make_shared<ConflictsHandler>(),
   };
   auto processorFactory =
       std::make_shared<MultiplexAsyncProcessorFactory>(std::move(services2));
@@ -126,11 +124,11 @@ TEST_F(MultiplexAsyncProcessorTest, getServiceMetadata) {
     return response;
   };
   std::vector<std::shared_ptr<AsyncProcessorFactory>> servicesToMultiplex = {
-      std::make_shared<First>(),
-      std::make_shared<Second>(),
+      std::make_shared<FirstHandler>(),
+      std::make_shared<SecondHandler>(),
       std::make_shared<SomeServiceSvIf>(),
-      std::make_shared<Conflicts>(),
-      std::make_shared<Third>(),
+      std::make_shared<ConflictsHandler>(),
+      std::make_shared<ThirdHandler>(),
   };
   auto processorFactory = std::make_shared<MultiplexAsyncProcessorFactory>(
       std::move(servicesToMultiplex));
@@ -171,13 +169,13 @@ TEST_F(MultiplexAsyncProcessorTest, getServiceMetadata_Nested) {
   };
 
   std::vector<std::shared_ptr<AsyncProcessorFactory>> servicesToMultiplex = {
-      std::make_shared<First>(),
-      std::make_shared<Second>(),
+      std::make_shared<FirstHandler>(),
+      std::make_shared<SecondHandler>(),
       multiplex({
           std::make_shared<SomeServiceSvIf>(),
-          std::make_shared<Conflicts>(),
+          std::make_shared<ConflictsHandler>(),
       }),
-      std::make_shared<Third>(),
+      std::make_shared<ThirdHandler>(),
   };
   auto processorFactory = std::make_shared<MultiplexAsyncProcessorFactory>(
       std::move(servicesToMultiplex));
@@ -212,7 +210,7 @@ TEST_F(MultiplexAsyncProcessorTest, getServiceMetadata_Nested) {
 
 TEST_F(MultiplexAsyncProcessorServerTest, Basic) {
   auto runner = runMultiplexedServices(
-      {std::make_shared<First>(), std::make_shared<Second>()});
+      {std::make_shared<FirstHandler>(), std::make_shared<SecondHandler>()});
 
   auto client1 = runner->newClient<FirstAsyncClient>();
   auto client2 = runner->newClient<SecondAsyncClient>();
@@ -225,9 +223,9 @@ TEST_F(MultiplexAsyncProcessorServerTest, Basic) {
 
 TEST_F(MultiplexAsyncProcessorServerTest, ConflictPrecedence) {
   auto runner = runMultiplexedServices(
-      {std::make_shared<Second>(),
-       std::make_shared<Conflicts>(),
-       std::make_shared<Third>()});
+      {std::make_shared<SecondHandler>(),
+       std::make_shared<ConflictsHandler>(),
+       std::make_shared<ThirdHandler>()});
 
   auto client2 = runner->newClient<SecondAsyncClient>();
   auto client3 = runner->newClient<ThirdAsyncClient>();
@@ -242,8 +240,10 @@ TEST_F(MultiplexAsyncProcessorServerTest, ConflictPrecedence) {
 
 TEST_F(MultiplexAsyncProcessorServerTest, Nested_1) {
   auto runner = runMultiplexedServices(
-      {multiplex({std::make_shared<Second>(), std::make_shared<Conflicts>()}),
-       std::make_shared<Third>()});
+      {multiplex(
+           {std::make_shared<SecondHandler>(),
+            std::make_shared<ConflictsHandler>()}),
+       std::make_shared<ThirdHandler>()});
 
   auto client2 = runner->newClient<SecondAsyncClient>();
   auto client3 = runner->newClient<ThirdAsyncClient>();
@@ -258,9 +258,11 @@ TEST_F(MultiplexAsyncProcessorServerTest, Nested_1) {
 
 TEST_F(MultiplexAsyncProcessorServerTest, Nested_2) {
   auto runner = runMultiplexedServices(
-      {std::make_shared<Third>(),
-       multiplex({std::make_shared<First>(), std::make_shared<Conflicts>()}),
-       std::make_shared<Second>()});
+      {std::make_shared<ThirdHandler>(),
+       multiplex(
+           {std::make_shared<FirstHandler>(),
+            std::make_shared<ConflictsHandler>()}),
+       std::make_shared<SecondHandler>()});
 
   auto client1 = runner->newClient<FirstAsyncClient>();
   auto client2 = runner->newClient<SecondAsyncClient>();
@@ -418,8 +420,9 @@ class WithUnimplementedMethodMetadata : public TProcessorFactory {
 
 TEST_F(MultiplexAsyncProcessorServerTest, BasicWildcard) {
   auto runner = runMultiplexedServices(
-      {std::make_shared<First>(),
-       std::make_shared<WildcardThrowsInternalError<Second>>("BasicWildcard")});
+      {std::make_shared<FirstHandler>(),
+       std::make_shared<WildcardThrowsInternalError<SecondHandler>>(
+           "BasicWildcard")});
 
   auto client1 = runner->newClient<FirstAsyncClient>();
   auto client2 = runner->newClient<SecondAsyncClient>();
@@ -437,9 +440,11 @@ TEST_F(MultiplexAsyncProcessorServerTest, BasicWildcard) {
 
 TEST_F(MultiplexAsyncProcessorServerTest, WildcardSwallows) {
   auto runner = runMultiplexedServices(
-      {std::make_shared<WildcardThrowsInternalError<First>>("WildcardSwallows"),
-       std::make_shared<Second>(),
-       std::make_shared<WildcardThrowsInternalError<Third>>("NeverReached")});
+      {std::make_shared<WildcardThrowsInternalError<FirstHandler>>(
+           "WildcardSwallows"),
+       std::make_shared<SecondHandler>(),
+       std::make_shared<WildcardThrowsInternalError<ThirdHandler>>(
+           "NeverReached")});
 
   auto client1 = runner->newClient<FirstAsyncClient>();
   auto client2 = runner->newClient<SecondAsyncClient>();
@@ -454,8 +459,8 @@ TEST_F(MultiplexAsyncProcessorServerTest, WildcardSwallows) {
 
 TEST_F(MultiplexAsyncProcessorServerTest, WildcardConflicts) {
   auto runner = runMultiplexedServices(
-      {std::make_shared<Second>(),
-       std::make_shared<WildcardThrowsInternalError<Conflicts>>(
+      {std::make_shared<SecondHandler>(),
+       std::make_shared<WildcardThrowsInternalError<ConflictsHandler>>(
            "WildcardConflicts")});
 
   auto client2 = runner->newClient<SecondAsyncClient>();
@@ -472,8 +477,8 @@ TEST_F(MultiplexAsyncProcessorServerTest, WildcardConflicts) {
 
 TEST_F(MultiplexAsyncProcessorServerTest, UnimplementedMetadataActsAsWildcard) {
   auto runner = runMultiplexedServices(
-      {std::make_shared<WithUnimplementedMethodMetadata<First>>(),
-       std::make_shared<Second>()});
+      {std::make_shared<WithUnimplementedMethodMetadata<FirstHandler>>(),
+       std::make_shared<SecondHandler>()});
 
   auto client1 = runner->newClient<FirstAsyncClient>();
   auto client2 = runner->newClient<SecondAsyncClient>();
@@ -754,7 +759,7 @@ TEST_F(MultiplexAsyncProcessorServerTest, InteractionConflict) {
   auto runner = runMultiplexedServices(
       {std::make_shared<Interaction1>(),
        std::make_shared<ConflictsInteraction1>(),
-       std::make_shared<WildcardThrowsInternalError<Second>>(
+       std::make_shared<WildcardThrowsInternalError<SecondHandler>>(
            "ConflictsInteraction1")});
 
   auto client1 = runner->newClient<Interaction1AsyncClient>(

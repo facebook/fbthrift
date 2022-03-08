@@ -55,7 +55,7 @@ using CreateMethodMetadataResult =
 using TransportType = Cpp2ConnContext::TransportType;
 
 namespace {
-class Child : public ChildSvIf {
+class ChildHandler : public ChildSvIf {
   MOCK_METHOD(std::unique_ptr<InteractionIf>, createInteraction, ());
 
   int parentMethod1() override { return 42; }
@@ -95,7 +95,7 @@ TEST(AsyncProcessorMetadataTest, ParentMetadata) {
 }
 
 TEST(AsyncProcessorMetadataTest, ChildMetadata) {
-  Child service;
+  ChildHandler service;
   auto createMethodMetadataResult = service.createMethodMetadata();
   auto& metadataMap = expectMethodMetadataMap(createMethodMetadataResult);
 
@@ -110,17 +110,17 @@ TEST(AsyncProcessorMetadataTest, ChildMetadata) {
 }
 
 namespace {
-class ChildWithMetadata : public Child {
+class ChildHandlerWithMetadata : public ChildHandler {
  public:
   using MetadataFactory = std::function<CreateMethodMetadataResult(
       CreateMethodMetadataResult defaultResult)>;
 
-  explicit ChildWithMetadata(MetadataFactory metadataFactory)
+  explicit ChildHandlerWithMetadata(MetadataFactory metadataFactory)
       : metadataFactory_(std::move(metadataFactory)) {}
 
  private:
   CreateMethodMetadataResult createMethodMetadata() override {
-    return metadataFactory_(Child::createMethodMetadata());
+    return metadataFactory_(ChildHandler::createMethodMetadata());
   }
 
   MetadataFactory metadataFactory_;
@@ -168,7 +168,7 @@ class AsyncProcessorMethodResolutionTestP
 } // namespace
 
 TEST_P(AsyncProcessorMethodResolutionTestP, CreateMethodMetadataNotSupported) {
-  auto service = std::make_shared<ChildWithMetadata>(
+  auto service = std::make_shared<ChildHandlerWithMetadata>(
       [](auto&&) -> CreateMethodMetadataResult { return {}; });
   auto runner = makeServer(service);
   auto client = makeClientFor<ChildAsyncClient>(*runner);
@@ -179,7 +179,7 @@ TEST_P(AsyncProcessorMethodResolutionTestP, CreateMethodMetadataNotSupported) {
 }
 
 TEST_P(AsyncProcessorMethodResolutionTestP, EmptyMap) {
-  auto service = std::make_shared<ChildWithMetadata>(
+  auto service = std::make_shared<ChildHandlerWithMetadata>(
       [](auto&&) -> MethodMetadataMap { return {}; });
   auto runner = makeServer(service);
   auto client = makeClientFor<ChildAsyncClient>(*runner);
@@ -194,15 +194,16 @@ TEST_P(AsyncProcessorMethodResolutionTestP, MistypedMetadataDeathTest) {
     return;
   }
   auto runTest = [&](auto&& callback) {
-    auto service = std::make_shared<ChildWithMetadata>([](auto defaultResult) {
-      MethodMetadataMap result;
-      const auto& defaultMap = expectMethodMetadataMap(defaultResult);
-      for (auto& [name, _] : defaultMap) {
-        class DummyMethodMetadata : public MethodMetadata {};
-        result.emplace(name, std::make_shared<DummyMethodMetadata>());
-      }
-      return result;
-    });
+    auto service =
+        std::make_shared<ChildHandlerWithMetadata>([](auto defaultResult) {
+          MethodMetadataMap result;
+          const auto& defaultMap = expectMethodMetadataMap(defaultResult);
+          for (auto& [name, _] : defaultMap) {
+            class DummyMethodMetadata : public MethodMetadata {};
+            result.emplace(name, std::make_shared<DummyMethodMetadata>());
+          }
+          return result;
+        });
     auto runner = makeServer(service);
     callback(makeClientFor<ChildAsyncClient>(*runner));
   };
@@ -224,7 +225,7 @@ TEST_P(AsyncProcessorMethodResolutionTestP, ParentMapDeathTest) {
   // might contain all the function pointers we need.
   EXPECT_DEATH(
       [&] {
-        auto service = std::make_shared<ChildWithMetadata>(
+        auto service = std::make_shared<ChildHandlerWithMetadata>(
             [](auto&&) { return ParentSvIf{}.createMethodMetadata(); });
         auto runner = makeServer(service);
         auto client = makeClientFor<ChildAsyncClient>(*runner);
@@ -235,9 +236,9 @@ TEST_P(AsyncProcessorMethodResolutionTestP, ParentMapDeathTest) {
 
 TEST_P(AsyncProcessorMethodResolutionTestP, Wildcard) {
   auto runTest = [&](auto&& callback) {
-    class ChildImpl : public Child {
+    class ChildImpl : public ChildHandler {
       CreateMethodMetadataResult createMethodMetadata() override {
-        auto defaultResult = Child::createMethodMetadata();
+        auto defaultResult = ChildHandler::createMethodMetadata();
         auto& defaultMap = expectMethodMetadataMap(defaultResult);
         MethodMetadataMap knownMethods;
         // swap out for another method to make sure we are using this map
@@ -334,12 +335,13 @@ TEST_P(
   class Control : public DummyControlSvIf, public ControlServerInterface {
     std::int64_t getOption() override { return 42; }
   };
-  auto service = std::make_shared<ChildWithMetadata>([](auto defaultResult) {
-    MethodMetadataMap result;
-    auto& defaultMap = expectMethodMetadataMap(defaultResult);
-    result.emplace("parentMethod1", std::move(defaultMap["parentMethod1"]));
-    return result;
-  });
+  auto service =
+      std::make_shared<ChildHandlerWithMetadata>([](auto defaultResult) {
+        MethodMetadataMap result;
+        auto& defaultMap = expectMethodMetadataMap(defaultResult);
+        result.emplace("parentMethod1", std::move(defaultMap["parentMethod1"]));
+        return result;
+      });
   auto runner = makeServer(service, [&](ThriftServer& server) {
     server.setStatusInterface(std::make_shared<Status>());
     server.setMonitoringInterface(std::make_shared<Monitor>());
@@ -369,13 +371,13 @@ TEST_P(
 TEST_P(
     AsyncProcessorMethodResolutionTestP,
     MonitoringMethodMultiplexingCollision) {
-  class ChildMonitor : public Child, public MonitoringServerInterface {
+  class ChildMonitor : public ChildHandler, public MonitoringServerInterface {
     void childMethod2(std::string& result) override {
       result = "hello from Monitor";
     }
   };
   auto runner =
-      makeServer(std::make_shared<Child>(), [&](ThriftServer& server) {
+      makeServer(std::make_shared<ChildHandler>(), [&](ThriftServer& server) {
         server.setMonitoringInterface(std::make_shared<ChildMonitor>());
       });
 
@@ -400,10 +402,10 @@ TEST_P(
   class Control : public DummyControlSvIf, public ControlServerInterface {
     std::int64_t getOption() override { return 42; }
   };
-  class ChildWithWildcard : public ChildWithMetadata {
+  class ChildHandlerWithWildcard : public ChildHandlerWithMetadata {
    public:
-    ChildWithWildcard()
-        : ChildWithMetadata([](auto defaultResult) {
+    ChildHandlerWithWildcard()
+        : ChildHandlerWithMetadata([](auto defaultResult) {
             auto& defaultMap = expectMethodMetadataMap(defaultResult);
             return WildcardMethodMetadataMap{std::move(defaultMap)};
           }) {}
@@ -452,10 +454,11 @@ TEST_P(
         std::unique_ptr<AsyncProcessor> processor_;
       };
 
-      return std::make_unique<Processor>(ChildWithMetadata::getProcessor());
+      return std::make_unique<Processor>(
+          ChildHandlerWithMetadata::getProcessor());
     }
   };
-  auto service = std::make_shared<ChildWithWildcard>();
+  auto service = std::make_shared<ChildHandlerWithWildcard>();
   auto runner = makeServer(service, [&](ThriftServer& server) {
     server.setStatusInterface(std::make_shared<Status>());
     server.setMonitoringInterface(std::make_shared<Monitor>());
@@ -533,7 +536,7 @@ TEST(AsyncProcessorMethodResolutionTest, MultipleService) {
     }
   };
   ScopedServerInterfaceThread runner{
-      std::make_shared<Child>(), [&](ThriftServer& server) {
+      std::make_shared<ChildHandler>(), [&](ThriftServer& server) {
         server.setMonitoringInterface(std::make_shared<Monitor>());
       }};
 
