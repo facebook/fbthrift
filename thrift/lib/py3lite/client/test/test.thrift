@@ -34,6 +34,9 @@ service TestService {
   oneway void oneway();
   void surprise();
   string readHeader(1: string key);
+  SimpleResponse, sink<EmptyChunk, SimpleResponse> dumbSink(
+    1: EmptyRequest request,
+  );
 }
 
 service EchoService extends TestService {
@@ -51,6 +54,12 @@ struct AddRequest {
 }
 
 struct EmptyRequest {}
+
+struct SimpleResponse {
+  1: string value;
+}
+
+struct EmptyChunk {}
 
 struct ReadHeaderRequest {
   1: string key;

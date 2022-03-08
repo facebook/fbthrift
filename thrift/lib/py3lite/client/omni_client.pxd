@@ -21,6 +21,13 @@ from libcpp.string cimport string
 from libcpp.unordered_map cimport unordered_map
 from thrift.py3lite.client.request_channel cimport cRequestChannel_ptr
 
+cdef extern from "thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h" namespace "::apache::thrift":
+    cpdef enum class RpcKind:
+        SINGLE_REQUEST_SINGLE_RESPONSE = 0,
+        SINGLE_REQUEST_NO_RESPONSE = 1,
+        SINGLE_REQUEST_STREAMING_RESPONSE = 4,
+        SINK = 6,
+
 cdef extern from "thrift/lib/py3lite/client/OmniClient.h" namespace "::thrift::py3lite::client":
     cdef cppclass cOmniClientResponseWithHeaders "::thrift::py3lite::client::OmniClientResponseWithHeaders":
         cExpected[unique_ptr[cIOBuf], cFollyExceptionWrapper] buf
@@ -44,5 +51,6 @@ cdef extern from "thrift/lib/py3lite/client/OmniClient.h" namespace "::thrift::p
             const string& methodName,
             unique_ptr[cIOBuf] args,
             const unordered_map[string, string] headers,
+            const RpcKind rpcKind,
         )
         uint16_t getChannelProtocolId()

@@ -26,7 +26,7 @@ from folly.futures cimport bridgeSemiFutureWith
 from folly.iobuf cimport IOBuf
 from libcpp.memory cimport make_unique
 from libcpp.utility cimport move as cmove
-from thrift.py3lite.client.omni_client cimport cOmniClientResponseWithHeaders
+from thrift.py3lite.client.omni_client cimport cOmniClientResponseWithHeaders, RpcKind
 from thrift.py3lite.exceptions cimport create_py_exception
 from thrift.py3lite.exceptions import ApplicationError, ApplicationErrorType
 from thrift.py3lite.serializer import serialize_iobuf, deserialize
@@ -68,6 +68,7 @@ cdef class AsyncClient:
         string function_name,
         args,
         response_cls,
+        rpc_kind = RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE,
     ):
         protocol = deref(self._omni_client).getChannelProtocolId()
         cdef IOBuf args_iobuf = serialize_iobuf(args, protocol=protocol)
@@ -93,6 +94,7 @@ cdef class AsyncClient:
                     function_name,
                     args_iobuf.c_clone(),
                     self._persistent_headers,
+                    rpc_kind,
                 ),
                 _async_client_send_request_callback,
                 <PyObject *> userdata,

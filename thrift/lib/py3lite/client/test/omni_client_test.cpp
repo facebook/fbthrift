@@ -25,6 +25,7 @@
 #include <folly/io/async/EventBaseManager.h>
 #include <thrift/lib/cpp/server/TServerEventHandler.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 
@@ -51,6 +52,21 @@ class TestService : virtual public TestServiceSvIf {
   void readHeader(
       std::string& value, std::unique_ptr<std::string> key) override {
     value = getRequestContext()->getHeader()->getHeaders().at(*key);
+  }
+  ResponseAndSinkConsumer<SimpleResponse, EmptyChunk, SimpleResponse> dumbSink(
+      std::unique_ptr<EmptyRequest> request) override {
+    (void)request;
+    SinkConsumer<EmptyChunk, SimpleResponse> consumer{
+        [&](folly::coro::AsyncGenerator<EmptyChunk&&> gen)
+            -> folly::coro::Task<SimpleResponse> {
+          SimpleResponse response;
+          response.value_ref() = "final";
+          co_return response;
+        },
+        1};
+    SimpleResponse response;
+    response.value_ref() = "initial";
+    return {std::move(response), std::move(consumer)};
   }
 };
 
@@ -113,10 +129,11 @@ class OmniClientTest : public ::testing::Test {
       const std::string& function,
       const Request& req,
       const std::unordered_map<std::string, std::string>& headers,
-      const Result& expected) {
+      const Result& expected,
+      const RpcKind rpcKind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE) {
     std::string args = S::template serialize<std::string>(req);
     testContains<S>(
-        client->semifuture_send(service, function, args, headers)
+        client->semifuture_send(service, function, args, headers, rpcKind)
             .via(eb_)
             .waitVia(eb_)
             .get(),
@@ -131,15 +148,16 @@ class OmniClientTest : public ::testing::Test {
       const std::string& function,
       const Request& req,
       const std::unordered_map<std::string, std::string>& headers,
-      const Result& expected) {
+      const Result& expected,
+      const RpcKind rpcKind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE) {
     switch (client->getChannelProtocolId()) {
       case protocol::T_BINARY_PROTOCOL:
         testSendHeaders<BinarySerializer>(
-            client, service, function, req, headers, expected);
+            client, service, function, req, headers, expected, rpcKind);
         break;
       case protocol::T_COMPACT_PROTOCOL:
         testSendHeaders<CompactSerializer>(
-            client, service, function, req, headers, expected);
+            client, service, function, req, headers, expected, rpcKind);
         break;
       default:
         FAIL() << "Channel protocol not supported";
@@ -152,8 +170,9 @@ class OmniClientTest : public ::testing::Test {
       const std::string& service,
       const std::string& function,
       const Request& req,
-      const Result& expected) {
-    testSendHeaders(client, service, function, req, {}, expected);
+      const Result& expected,
+      const RpcKind rpcKind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE) {
+    testSendHeaders(client, service, function, req, {}, expected, rpcKind);
   }
 
   // Send a request and compare the results to the expected value.
@@ -205,6 +224,35 @@ class OmniClientTest : public ::testing::Test {
   folly::EventBase* eb_ = folly::EventBaseManager::get()->getEventBase();
 };
 
+class OmniClientSinkTest : public OmniClientTest {
+ protected:
+  void SetUp() override {
+    // Startup the test server.
+    folly::SocketAddress addr;
+    addr.setFromLocalPort((uint16_t)0);
+    server_ = std::make_unique<ThriftServer>();
+    server_->setServerEventHandler(
+        std::make_shared<ServerEventHandler>(addressPromise_));
+    server_->setAddress(addr);
+    server_->setInterface(std::make_shared<TestService>());
+    serverThread_ = std::thread([this]() { server_->run(); });
+
+    // Wait for the server to be ready.
+    auto port = addressPromise_.getFuture()
+                    .get(std::chrono::milliseconds(5000))
+                    ->getPort();
+
+    // Create the RequestChannel to pass onto the clients.
+    auto channel =
+        RocketClientChannel::newChannel(folly::AsyncSocket::newSocket(
+            eb_, folly::SocketAddress("::1", port, true), 5 * 1000LL /* 5 sec */
+            ));
+
+    // Create clients.
+    client_ = std::make_unique<OmniClient>(std::move(channel));
+  }
+};
+
 TEST_F(OmniClientTest, AddTest) {
   AddRequest request;
   request.num1_ref() = 1;
@@ -229,4 +277,12 @@ TEST_F(OmniClientTest, ReadHeaderTest) {
       request,
       {{kTestHeaderKey, kTestHeaderValue}},
       kTestHeaderValue);
+}
+
+TEST_F(OmniClientSinkTest, SinkRequestTest) {
+  EmptyRequest request;
+  SimpleResponse response;
+  response.value_ref() = "initial";
+  testSend(
+      client_, "TestService", "dumbSink", request, response, RpcKind::SINK);
 }

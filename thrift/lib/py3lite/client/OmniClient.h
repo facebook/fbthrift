@@ -24,6 +24,7 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/RequestCallback.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace thrift {
 namespace py3lite {
@@ -80,13 +81,17 @@ class OmniClient : public apache::thrift::TClientBase {
       const std::string& serviceName,
       const std::string& functionName,
       std::unique_ptr<folly::IOBuf> args,
-      const std::unordered_map<std::string, std::string>& headers = {});
+      const std::unordered_map<std::string, std::string>& headers = {},
+      const apache::thrift::RpcKind rpcKind =
+          apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
 
   folly::SemiFuture<OmniClientResponseWithHeaders> semifuture_send(
       const std::string& serviceName,
       const std::string& functionName,
       const std::string& args,
-      const std::unordered_map<std::string, std::string>& headers = {});
+      const std::unordered_map<std::string, std::string>& headers = {},
+      const apache::thrift::RpcKind rpcKind =
+          apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
 
   uint16_t getChannelProtocolId();
 
@@ -100,7 +105,8 @@ class OmniClient : public apache::thrift::TClientBase {
       std::unique_ptr<folly::IOBuf> args,
       const char* serviceNameForContextStack,
       const char* functionNameForContextStack,
-      std::unique_ptr<apache::thrift::RequestCallback> callback);
+      std::unique_ptr<apache::thrift::RequestCallback> callback,
+      const apache::thrift::RpcKind rpcKind);
 
   std::shared_ptr<apache::thrift::RequestChannel> channel_;
 };
