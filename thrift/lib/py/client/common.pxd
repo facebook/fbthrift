@@ -21,3 +21,6 @@ cdef extern from "<thrift/lib/cpp/protocol/TProtocolTypes.h>" namespace "apache:
     cpdef enum Protocol "apache::thrift::protocol::PROTOCOL_TYPES":
         BINARY "apache::thrift::protocol::T_BINARY_PROTOCOL"
         COMPACT "apache::thrift::protocol::T_COMPACT_PROTOCOL"
+
+from thrift.py3lite.client.request_channel cimport RequestChannel
+from thrift.py3lite.client.request_channel cimport cRequestChannel_ptr

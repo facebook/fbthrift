@@ -2496,11 +2496,10 @@ void t_py_generator::generate_service_client_cpp_transport(
   if (tservice->get_extends() != nullptr) {
     extends = type_name(tservice->get_extends());
     extends_client = extends + ".Client, ";
-  } else {
-    extends_client = "_fbthrift_SyncClient, ";
   }
 
-  f_service_ << "class Client(" << extends_client << "Iface):" << endl;
+  f_service_ << "class Client(_fbthrift_SyncClient, " << extends_client
+             << "Iface):" << endl;
   indent_up();
   generate_python_docstring(f_service_, tservice);
 
