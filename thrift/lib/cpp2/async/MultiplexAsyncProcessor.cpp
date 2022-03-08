@@ -25,6 +25,7 @@
 #include <folly/container/F14Set.h>
 
 #include <thrift/lib/cpp2/async/AsyncProcessorHelper.h>
+#include <thrift/lib/cpp2/server/ServerFlags.h>
 
 namespace apache::thrift {
 
@@ -317,6 +318,20 @@ class MultiplexAsyncProcessor final : public AsyncProcessor {
     DCHECK(!processors_.empty());
   }
 
+  apache::thrift::SelectPoolResult selectResourcePool(
+      ServerRequest const& request,
+      const MethodMetadata& methodMetadata) const override {
+    auto [processor, metadata] = derefProcessor(methodMetadata);
+    return processor->selectResourcePool(request, *metadata);
+  }
+
+  void executeRequest(
+      ServerRequest&& request, const MethodMetadata& methodMetadata) override {
+    auto [processor, metadata] = derefProcessor(methodMetadata);
+    processor->executeRequest(std::move(request), *metadata);
+    return;
+  }
+
  private:
   const std::vector<std::unique_ptr<AsyncProcessor>> processors_;
   const MultiplexAsyncProcessorFactory::CompositionMetadata&
@@ -326,6 +341,21 @@ class MultiplexAsyncProcessor final : public AsyncProcessor {
   // chunk of the traffic. To save memory, we avoid tracking interactions in the
   // map for the first processor that creates an interaction.
   AsyncProcessor* defaultInteractionProcessor_{nullptr};
+
+  std::pair<AsyncProcessor*, const AsyncProcessorFactory::MethodMetadata*>
+  derefProcessor(const MethodMetadata& methodMetadata) const {
+    if (AsyncProcessorHelper::isWildcardMethodMetadata(methodMetadata)) {
+      return std::make_pair(
+          processors_[compositionMetadata_.wildcardIndex().value()].get(),
+          &methodMetadata);
+    }
+    const auto& multiplexMethodMetadata =
+        AsyncProcessorHelper::expectMetadataOfType<MetadataImpl>(
+            methodMetadata);
+    return std::make_pair(
+        processors_[multiplexMethodMetadata.sourceIndex].get(),
+        multiplexMethodMetadata.inner.get());
+  }
 };
 
 } // namespace
@@ -336,6 +366,13 @@ MultiplexAsyncProcessorFactory::MultiplexAsyncProcessorFactory(
           flattenProcessorFactories(std::move(processorFactories))),
       compositionMetadata_(computeCompositionMetadata(processorFactories_)) {
   CHECK(!processorFactories_.empty());
+  for (auto& processorFactory : processorFactories_) {
+    auto requestInfoMap = processorFactory->getServiceRequestInfoMap();
+    if (requestInfoMap) {
+      serviceRequestInfoMap_.insert(
+          requestInfoMap->get().begin(), requestInfoMap->get().end());
+    }
+  }
 }
 
 /* static */
@@ -423,6 +460,14 @@ MultiplexAsyncProcessorFactory::CompositionMetadata::wildcardIndex() const {
       firstWildcardLike,
       [](std::monostate) -> Result { return std::nullopt; },
       [](auto&& wildcard) -> Result { return wildcard.index; });
+}
+
+std::optional<std::reference_wrapper<ServiceRequestInfoMap const>>
+MultiplexAsyncProcessorFactory::getServiceRequestInfoMap() const {
+  if (serviceRequestInfoMap_.size()) {
+    return std::cref(serviceRequestInfoMap_);
+  }
+  return std::nullopt;
 }
 
 } // namespace apache::thrift

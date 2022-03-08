@@ -78,6 +78,9 @@ class MultiplexAsyncProcessorFactory final : public AsyncProcessorFactory {
       const MethodMetadata&) override;
   std::vector<ServiceHandlerBase*> getServiceHandlers() override;
 
+  std::optional<std::reference_wrapper<ServiceRequestInfoMap const>>
+  getServiceRequestInfoMap() const override;
+
   /**
    * Metadata about the chain of AsyncProcessorFactory's - computed once.
    */
@@ -104,6 +107,7 @@ class MultiplexAsyncProcessorFactory final : public AsyncProcessorFactory {
  private:
   const std::vector<std::shared_ptr<AsyncProcessorFactory>> processorFactories_;
   const CompositionMetadata compositionMetadata_;
+  ServiceRequestInfoMap serviceRequestInfoMap_;
 
   static std::vector<std::shared_ptr<AsyncProcessorFactory>>
       flattenProcessorFactories(
