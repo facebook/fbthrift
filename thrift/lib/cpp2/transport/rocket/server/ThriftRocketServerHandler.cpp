@@ -188,8 +188,12 @@ void ThriftRocketServerHandler::handleSetupFrame(
         processorFactory_ = std::addressof(processorInfo->processorFactory_);
         serviceMetadata_ =
             std::addressof(worker_->getMetadataForService(*processorFactory_));
+        serviceRequestInfoMap_ = processorFactory_->getServiceRequestInfoMap();
         valid &= !!(processor_ = processorFactory_->getProcessor());
-        valid &= !!(threadManager_ = std::move(processorInfo->threadManager_));
+        // Allow no thread manager if resource pools in use
+        valid &=
+            (!!(threadManager_ = std::move(processorInfo->threadManager_)) ||
+             useResourcePoolsFlagsSet());
         valid &= !!(serverConfigs_ = &processorInfo->serverConfigs_);
         requestsRegistry_ = processorInfo->requestsRegistry_ != nullptr
             ? processorInfo->requestsRegistry_
