@@ -19,19 +19,11 @@ folly::Range<::test::fixtures::tablebased::ExampleEnum const*> const TEnumTraits
 folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::tablebased::ExampleEnum>::names = folly::range(TEnumDataStorage<::test::fixtures::tablebased::ExampleEnum>::names);
 
 char const* TEnumTraits<::test::fixtures::tablebased::ExampleEnum>::findName(type value) {
-  using factory = detail::TEnumMapFactory<type>;
-  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
-      factory::makeValuesToNamesMap()};
-  auto found = map->find(value);
-  return found == map->end() ? nullptr : found->second;
+  return ::apache::thrift::detail::st::enum_find_name(value);
 }
 
 bool TEnumTraits<::test::fixtures::tablebased::ExampleEnum>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<type>;
-  static folly::Indestructible<factory::NamesToValuesMapType> const map{
-      factory::makeNamesToValuesMap()};
-  auto found = map->find(name);
-  return found == map->end() ? false : (*out = found->second, true);
+  return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 
 }} // apache::thrift
@@ -598,19 +590,11 @@ folly::Range<::test::fixtures::tablebased::ExampleUnion::Type const*> const TEnu
 folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::tablebased::ExampleUnion::Type>::names = folly::range(TEnumDataStorage<::test::fixtures::tablebased::ExampleUnion::Type>::names);
 
 char const* TEnumTraits<::test::fixtures::tablebased::ExampleUnion::Type>::findName(type value) {
-  using factory = detail::TEnumMapFactory<type>;
-  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
-      factory::makeValuesToNamesMap()};
-  auto found = map->find(value);
-  return found == map->end() ? nullptr : found->second;
+  return ::apache::thrift::detail::st::enum_find_name(value);
 }
 
 bool TEnumTraits<::test::fixtures::tablebased::ExampleUnion::Type>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<type>;
-  static folly::Indestructible<factory::NamesToValuesMapType> const map{
-      factory::makeNamesToValuesMap()};
-  auto found = map->find(name);
-  return found == map->end() ? false : (*out = found->second, true);
+  return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 }} // apache::thrift
 namespace test { namespace fixtures { namespace tablebased {

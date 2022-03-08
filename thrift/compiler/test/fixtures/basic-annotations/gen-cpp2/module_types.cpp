@@ -19,19 +19,11 @@ folly::Range<::cpp2::YourEnum const*> const TEnumTraits<::cpp2::YourEnum>::value
 folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::YourEnum>::names = folly::range(TEnumDataStorage<::cpp2::YourEnum>::names);
 
 char const* TEnumTraits<::cpp2::YourEnum>::findName(type value) {
-  using factory = detail::TEnumMapFactory<type>;
-  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
-      factory::makeValuesToNamesMap()};
-  auto found = map->find(value);
-  return found == map->end() ? nullptr : found->second;
+  return ::apache::thrift::detail::st::enum_find_name(value);
 }
 
 bool TEnumTraits<::cpp2::YourEnum>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<type>;
-  static folly::Indestructible<factory::NamesToValuesMapType> const map{
-      factory::makeNamesToValuesMap()};
-  auto found = map->find(name);
-  return found == map->end() ? false : (*out = found->second, true);
+  return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 
 }} // apache::thrift
@@ -167,19 +159,11 @@ folly::Range<::cpp2::YourUnion::Type const*> const TEnumTraits<::cpp2::YourUnion
 folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::YourUnion::Type>::names = folly::range(TEnumDataStorage<::cpp2::YourUnion::Type>::names);
 
 char const* TEnumTraits<::cpp2::YourUnion::Type>::findName(type value) {
-  using factory = detail::TEnumMapFactory<type>;
-  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
-      factory::makeValuesToNamesMap()};
-  auto found = map->find(value);
-  return found == map->end() ? nullptr : found->second;
+  return ::apache::thrift::detail::st::enum_find_name(value);
 }
 
 bool TEnumTraits<::cpp2::YourUnion::Type>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<type>;
-  static folly::Indestructible<factory::NamesToValuesMapType> const map{
-      factory::makeNamesToValuesMap()};
-  auto found = map->find(name);
-  return found == map->end() ? false : (*out = found->second, true);
+  return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 }} // apache::thrift
 namespace cpp2 {

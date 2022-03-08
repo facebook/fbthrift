@@ -35,6 +35,35 @@ namespace detail {
 
 namespace st {
 
+template <typename E>
+struct enum_find {
+  using F = TEnumMapFactory<E>;
+
+  FOLLY_EXPORT static char const* find_name(E const value) {
+    using map_t = typename F::ValuesToNamesMapType;
+    static folly::Indestructible<map_t> const map{F::makeValuesToNamesMap()};
+    auto const found = map->find(value);
+    return found == map->end() ? nullptr : found->second;
+  }
+
+  FOLLY_EXPORT static bool find_value(char const* const name, E* const out) {
+    using map_t = typename F::NamesToValuesMapType;
+    static folly::Indestructible<map_t> const map{F::makeNamesToValuesMap()};
+    auto found = map->find(name);
+    return found == map->end() ? false : (*out = found->second, true);
+  }
+};
+
+template <typename E>
+FOLLY_ERASE char const* enum_find_name(E const value) {
+  return enum_find<E>::find_name(value);
+}
+
+template <typename E>
+FOLLY_ERASE bool enum_find_value(char const* const name, E* const out) {
+  return enum_find<E>::find_value(name, out);
+}
+
 //  copy_field_fn
 //  copy_field
 //

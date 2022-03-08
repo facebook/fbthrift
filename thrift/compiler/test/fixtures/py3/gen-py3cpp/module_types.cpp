@@ -19,19 +19,11 @@ folly::Range<::py3::simple::AnEnum const*> const TEnumTraits<::py3::simple::AnEn
 folly::Range<folly::StringPiece const*> const TEnumTraits<::py3::simple::AnEnum>::names = folly::range(TEnumDataStorage<::py3::simple::AnEnum>::names);
 
 char const* TEnumTraits<::py3::simple::AnEnum>::findName(type value) {
-  using factory = detail::TEnumMapFactory<type>;
-  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
-      factory::makeValuesToNamesMap()};
-  auto found = map->find(value);
-  return found == map->end() ? nullptr : found->second;
+  return ::apache::thrift::detail::st::enum_find_name(value);
 }
 
 bool TEnumTraits<::py3::simple::AnEnum>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<type>;
-  static folly::Indestructible<factory::NamesToValuesMapType> const map{
-      factory::makeNamesToValuesMap()};
-  auto found = map->find(name);
-  return found == map->end() ? false : (*out = found->second, true);
+  return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 
 }} // apache::thrift
@@ -53,19 +45,11 @@ folly::Range<::py3::simple::Flags const*> const TEnumTraits<::py3::simple::Flags
 folly::Range<folly::StringPiece const*> const TEnumTraits<::py3::simple::Flags>::names = folly::range(TEnumDataStorage<::py3::simple::Flags>::names);
 
 char const* TEnumTraits<::py3::simple::Flags>::findName(type value) {
-  using factory = detail::TEnumMapFactory<type>;
-  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
-      factory::makeValuesToNamesMap()};
-  auto found = map->find(value);
-  return found == map->end() ? nullptr : found->second;
+  return ::apache::thrift::detail::st::enum_find_name(value);
 }
 
 bool TEnumTraits<::py3::simple::Flags>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<type>;
-  static folly::Indestructible<factory::NamesToValuesMapType> const map{
-      factory::makeNamesToValuesMap()};
-  auto found = map->find(name);
-  return found == map->end() ? false : (*out = found->second, true);
+  return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 
 }} // apache::thrift
@@ -725,19 +709,11 @@ folly::Range<::py3::simple::BinaryUnion::Type const*> const TEnumTraits<::py3::s
 folly::Range<folly::StringPiece const*> const TEnumTraits<::py3::simple::BinaryUnion::Type>::names = folly::range(TEnumDataStorage<::py3::simple::BinaryUnion::Type>::names);
 
 char const* TEnumTraits<::py3::simple::BinaryUnion::Type>::findName(type value) {
-  using factory = detail::TEnumMapFactory<type>;
-  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
-      factory::makeValuesToNamesMap()};
-  auto found = map->find(value);
-  return found == map->end() ? nullptr : found->second;
+  return ::apache::thrift::detail::st::enum_find_name(value);
 }
 
 bool TEnumTraits<::py3::simple::BinaryUnion::Type>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<type>;
-  static folly::Indestructible<factory::NamesToValuesMapType> const map{
-      factory::makeNamesToValuesMap()};
-  auto found = map->find(name);
-  return found == map->end() ? false : (*out = found->second, true);
+  return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 }} // apache::thrift
 namespace py3 { namespace simple {
