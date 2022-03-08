@@ -95,11 +95,11 @@ template <
 struct cpp_type : Tag {};
 
 template <FieldId Id, typename Tag>
-struct field_t {};
+struct field_t;
 
 // TODO(ytj): ensure all arguments are field_t
 template <class... Tags>
-struct fields {};
+struct fields;
 
 } // namespace type
 } // namespace thrift
