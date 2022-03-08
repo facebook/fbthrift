@@ -39,6 +39,8 @@ namespace thrift {
 namespace compiler {
 namespace cpp2 {
 
+bool is_custom_type(const t_type& type);
+
 inline std::vector<std::string> get_gen_namespace_components(
     t_program const& program) {
   return gen::cpp::namespace_resolver::gen_namespace_components(program);

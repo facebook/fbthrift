@@ -1,0 +1,3 @@
+mstch_cpp2:sort_objects_with_map_dependency src/module.thrift
+mstch_cpp2 src/self-reference.thrift
+mstch_cpp2 src/self-reference-annotated.thrift

@@ -47,16 +47,21 @@ const std::string& value_or_empty(const std::string* value) {
 
 } // namespace
 
-bool is_orderable(
-    std::unordered_set<t_type const*>& seen,
-    std::unordered_map<t_type const*, bool>& memo,
-    t_type const& type) {
-  bool has_disqualifying_annotation = type.has_annotation({
+bool is_custom_type(const t_type& type) {
+  return type.has_annotation({
       "cpp.template",
       "cpp2.template",
       "cpp.type",
       "cpp2.type",
+      "cpp.adapter",
   });
+}
+
+bool is_orderable(
+    std::unordered_set<t_type const*>& seen,
+    std::unordered_map<t_type const*, bool>& memo,
+    t_type const& type) {
+  const bool has_disqualifying_annotation = is_custom_type(type);
   auto memo_it = memo.find(&type);
   if (memo_it != memo.end()) {
     return memo_it->second;
