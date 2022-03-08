@@ -16,11 +16,20 @@
 
 #pragma once
 
-#include <thrift/lib/cpp2/type/detail/Get.h>
+#include <thrift/lib/cpp/FieldId.h>
+#include <thrift/lib/cpp2/type/detail/Field.h>
 
 namespace apache {
 namespace thrift {
 namespace type {
+
+// The type tag for the given type::field_t.
+template <typename Tag>
+using field_type_tag = typename detail::field_to_tag::apply<Tag>::type;
+
+// The FieldId for the given type::field_t
+template <typename Tag>
+constexpr FieldId field_id_v = FieldId(detail::field_to_id::apply<Tag>::value);
 
 // field_tag_t<StructTag, Id> is an alias for the field_t of the field in given
 // thrift struct where corresponding field id == Id, or for void if there is no
@@ -29,7 +38,7 @@ namespace type {
 // Compile-time complexity: O(logN) (With O(NlogN) preparation per TU that used
 // this alias since fatal::sort<fields> will be instantiated once in each TU)
 template <class StructTag, FieldId Id>
-using field_tag_t = typename detail::field_tag<StructTag, Id>::type;
+using field_tag_by_id = typename detail::field_tag<StructTag, Id>::type;
 
 } // namespace type
 } // namespace thrift

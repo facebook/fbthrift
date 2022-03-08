@@ -37,10 +37,18 @@ namespace detail {
 struct field_to_id {
   template <class>
   struct apply;
-
   template <FieldId Id, class Tag>
   struct apply<field_t<Id, Tag>> {
     static constexpr auto value = folly::to_underlying(Id);
+  };
+};
+
+struct field_to_tag {
+  template <class>
+  struct apply;
+  template <FieldId Id, class Tag>
+  struct apply<field_t<Id, Tag>> {
+    using type = Tag;
   };
 };
 

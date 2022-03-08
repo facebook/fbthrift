@@ -18,18 +18,41 @@
 
 #include <typeindex>
 
-#include <boost/mp11.hpp>
+#include <folly/Utility.h>
 #include <folly/portability/GTest.h>
-#include <thrift/lib/cpp2/type/Get.h>
+#include <thrift/lib/cpp2/Thrift.h>
+#include <thrift/lib/cpp2/type/Field.h>
 #include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/lib/cpp2/type/Testing.h>
 
-using apache::thrift::detail::st::struct_private_access;
-using apache::thrift::test::same_tag;
-
 namespace apache::thrift::type {
+using apache::thrift::detail::st::struct_private_access;
+
+// A type tag for a given field id.
+template <typename FieldTag>
+using field_id_t = std::integral_constant<FieldId, type::field_id_v<FieldTag>>;
+
+// Helper for visiting field metadata.
+template <typename List>
+struct ForEach;
+template <typename... Tags>
+struct ForEach<type::fields<Tags...>> {
+  template <typename F>
+  static void id(F&& fun) {
+    (..., fun(field_id_t<Tags>{}));
+  }
+  template <typename F>
+  static void tag(F&& fun) {
+    (..., fun(type::field_type_tag<Tags>{}));
+  }
+  template <typename F>
+  static void field(F&& fun) {
+    (..., fun(field_id_t<Tags>{}, type::field_type_tag<Tags>{}));
+  }
+};
+
 static_assert(
-    same_tag<
+    test::same_tag<
         struct_private_access::fields<test_cpp2::cpp_reflection::struct3>,
         fields<
             field_t<FieldId{2}, i32_t>,
@@ -62,18 +85,7 @@ static_assert(
                 map<string_t, struct_t<::test_cpp2::cpp_reflection::structB>>>,
             field_t<FieldId{20}, map<binary_t, binary_t>>>>);
 
-struct ExtractFieldsInfo {
-  std::vector<int> ids;
-  std::vector<std::type_index> tags;
-
-  template <FieldId Id, class Tag>
-  void operator()(field_t<Id, Tag>) {
-    ids.push_back(int(Id));
-    tags.emplace_back(typeid(Tag));
-  }
-};
-
-TEST(Fields, for_each) {
+TEST(FieldsTest, Fields) {
   const std::vector<int> expectedIds = {
       2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20};
   const std::vector<std::type_index> expectedTags = {
@@ -97,70 +109,58 @@ TEST(Fields, for_each) {
       typeid(map<string_t, struct_t<::test_cpp2::cpp_reflection::structB>>),
       typeid(map<binary_t, binary_t>)};
 
-  ExtractFieldsInfo info;
-  boost::mp11::mp_for_each<
-      struct_private_access::fields<test_cpp2::cpp_reflection::struct3>>(info);
-  EXPECT_EQ(info.ids, expectedIds);
-  EXPECT_EQ(info.tags, expectedTags);
+  std::vector<int> ids;
+  std::vector<std::type_index> tags;
+  ForEach<struct_private_access::fields<test_cpp2::cpp_reflection::struct3>>::
+      field([&](auto id, auto tag) {
+        ids.emplace_back(folly::to_underlying(id.value));
+        tags.emplace_back(typeid(tag));
+      });
+  EXPECT_EQ(ids, expectedIds);
+  EXPECT_EQ(tags, expectedTags);
 }
 
-struct Emplacer {
-  test_cpp2::cpp_reflection::struct3& s;
-
-  template <FieldId Id, class Tag>
-  void operator()(field_t<Id, Tag>) {
-    op::get<Id>(s).emplace();
-  }
-};
-
-TEST(Fields, get) {
+TEST(FieldsTest, Get) {
   test_cpp2::cpp_reflection::struct3 s;
 
   s.fieldA() = 10;
   EXPECT_EQ(op::get<FieldId{2}>(s), 10);
   op::get<FieldId{2}>(s) = 20;
   EXPECT_EQ(*s.fieldA(), 20);
-  EXPECT_TRUE(
-      (same_tag<decltype(s.fieldA()), decltype(op::get<FieldId{2}>(s))>));
+  test::same_tag<decltype(s.fieldA()), decltype(op::get<FieldId{2}>(s))>;
 
   s.fieldE()->ui_ref() = 10;
   EXPECT_EQ(op::get<FieldId{5}>(s)->ui_ref(), 10);
   op::get<FieldId{5}>(s)->us_ref() = "20";
   EXPECT_EQ(s.fieldE()->us_ref(), "20");
-  EXPECT_TRUE(
-      (same_tag<decltype(s.fieldE()), decltype(op::get<FieldId{5}>(s))>));
+  test::same_tag<decltype(s.fieldE()), decltype(op::get<FieldId{5}>(s))>;
 
-  boost::mp11::mp_for_each<
-      struct_private_access::fields<test_cpp2::cpp_reflection::struct3>>(
-      Emplacer{s});
+  ForEach<struct_private_access::fields<test_cpp2::cpp_reflection::struct3>>::
+      id([&](auto id) { op::get<decltype(id)::value>(s).emplace(); });
 
   EXPECT_EQ(*s.fieldA(), 0);
   EXPECT_FALSE(s.fieldE()->us_ref());
 }
 
-template <class StructTag>
-struct CheckTypeTag {
-  template <FieldId Id, class Tag>
-  void operator()(field_t<Id, Tag>) {
-    static_assert(same_tag<field_tag_t<StructTag, Id>, field_t<Id, Tag>>);
-  }
-};
-
-TEST(Fields, field_tag_t) {
+TEST(FieldsTest, field_tag_by_id) {
   using StructTag = struct_t<test_cpp2::cpp_reflection::struct3>;
-  static_assert(same_tag<field_tag_t<StructTag, FieldId{0}>, void>);
-  static_assert(same_tag<
-                field_tag_t<StructTag, FieldId{1}>,
-                field_t<FieldId{1}, string_t>>);
-  static_assert(
-      same_tag<field_tag_t<StructTag, FieldId{2}>, field_t<FieldId{2}, i32_t>>);
-  static_assert(same_tag<field_tag_t<StructTag, FieldId{19}>, void>);
-  static_assert(same_tag<
-                field_tag_t<StructTag, FieldId{20}>,
-                field_t<FieldId{20}, map<binary_t, binary_t>>>);
-  static_assert(same_tag<field_tag_t<StructTag, FieldId{21}>, void>);
-  boost::mp11::mp_for_each<
-      struct_private_access::fields<test_cpp2::cpp_reflection::struct3>>(
-      CheckTypeTag<StructTag>{});
+  test::same_tag<field_tag_by_id<StructTag, FieldId{0}>, void>;
+  test::same_tag<
+      field_tag_by_id<StructTag, FieldId{1}>,
+      field_t<FieldId{1}, string_t>>;
+  test::same_tag<
+      field_tag_by_id<StructTag, FieldId{2}>,
+      field_t<FieldId{2}, i32_t>>;
+  test::same_tag<field_tag_by_id<StructTag, FieldId{19}>, void>;
+  test::same_tag<
+      field_tag_by_id<StructTag, FieldId{20}>,
+      field_t<FieldId{20}, map<binary_t, binary_t>>>;
+  test::same_tag<field_tag_by_id<StructTag, FieldId{21}>, void>;
+  ForEach<struct_private_access::fields<test_cpp2::cpp_reflection::struct3>>::
+      field([](auto id, auto tag) {
+        constexpr auto Id = decltype(id)::value;
+        using Tag = decltype(tag);
+        test::same_tag<field_tag_by_id<StructTag, Id>, field_t<Id, Tag>>;
+      });
 }
 } // namespace apache::thrift::type
