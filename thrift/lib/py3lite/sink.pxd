@@ -13,16 +13,27 @@
 # limitations under the License.
 
 from libcpp.memory cimport shared_ptr, unique_ptr
+
+from folly cimport cFollyExecutor, cFollyPromise
+from folly.async_generator cimport cAsyncGenerator
 from folly.coro cimport cFollyCoroTask
 from folly.iobuf cimport cIOBuf
-from folly.async_generator cimport cAsyncGenerator
+
+from thrift.py3.std_libcpp cimport optional
 
 cdef extern from "thrift/lib/cpp2/async/Sink.h" namespace "::apache::thrift":
   cdef cppclass cClientSink "::apache::thrift::ClientSink"[TChunk, TFinalResponse]:
     cClientSink()
     cFollyCoroTask[TFinalResponse] sink(cAsyncGenerator[TChunk])
 
+  cdef cppclass cResponseAndClientSink "::apache::thrift::ResponseAndClientSink"[TInitResponse, TChunk, TFinalResponse]:
+    TInitResponse response
+    cClientSink[TChunk, TFinalResponse] sink
+
 cdef class ClientSink:
-  cdef shared_ptr[cClientSink[cIOBuf, cIOBuf]] _cpp_obj
+  cdef shared_ptr[cClientSink[unique_ptr[cIOBuf], unique_ptr[cIOBuf]]] _cpp_obj
   @staticmethod
-  cdef create(cClientSink[cIOBuf, cIOBuf]&& client)
+  cdef create(cClientSink[unique_ptr[cIOBuf], unique_ptr[cIOBuf]]&& client)
+
+cdef class ResponseAndClientSink:
+  pass

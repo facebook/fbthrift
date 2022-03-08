@@ -12,22 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import AsyncIterator
-from unittest import IsolatedAsyncioTestCase
+from folly cimport cFollyExecutor, cFollyPromise
+from folly.async_generator cimport cAsyncGenerator
 
-from thrift.py3lite.sink import ClientSink
+from thrift.py3.std_libcpp cimport optional
 
+cdef extern from "thrift/lib/py3lite/util.h" namespace "::thrift::py3lite":
+  cAsyncGenerator[TChunk] toAsyncGenerator[TChunk](
+    object,
+    cFollyExecutor*,
+    void(*)(object, cFollyPromise[optional[TChunk]])
+  )
 
-class SinkTests(IsolatedAsyncioTestCase):
-    def test_create_client_sink(self) -> None:
-        sink = ClientSink()
-        self.assertIsNotNone(sink)
-
-    async def test_create_async_generator(self) -> None:
-        async def iter_alphabet() -> AsyncIterator[str]:
-            for c in "abcdefghijklmnopqrstuvwxyz":
-                yield c
-
-        sink = ClientSink()
-        response = await sink.sink(iter_alphabet())
-        self.assertEqual(response, "pass")
+cdef public api void cancelAsyncGenerator(object generator)

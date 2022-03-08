@@ -12,5 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class ClientSink:
-    pass
+from typing import AsyncIterator, TypeVar, Generic
+
+TChunk = TypeVar("TChunk")
+TFinalResponse = TypeVar("TFinalResponse")
+
+class ClientSink(Generic[TFinalResponse]):
+    async def sink(
+        self, iterator: AsyncIterator[TChunk]
+    ) -> Generic[TFinalResponse]: ...

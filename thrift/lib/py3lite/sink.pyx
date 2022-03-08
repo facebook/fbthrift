@@ -12,12 +12,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from libcpp.memory cimport make_shared
+import asyncio
+
+from folly cimport cFollyPromise
+from folly.executor cimport get_executor
+
+from cython.operator import dereference
+from libcpp.memory cimport make_shared, make_unique, shared_ptr
 from libcpp.utility cimport move
+from thrift.py3lite.util cimport toAsyncGenerator
+
+# TODO: (pyamane) This is here just to validate the types are correct for now
+cdef void generator(object iterator, cFollyPromise[optional[unique_ptr[cIOBuf]]] promise):
+  pass
 
 cdef class ClientSink:
   @staticmethod
-  cdef create(cClientSink[cIOBuf, cIOBuf]&& client):
+  cdef create(cClientSink[unique_ptr[cIOBuf], unique_ptr[cIOBuf]]&& client):
     inst = <ClientSink>ClientSink.__new__(ClientSink)
-    inst._cpp_obj = make_shared[cClientSink[cIOBuf, cIOBuf]](move(client))
+    inst._cpp_obj = make_shared[cClientSink[unique_ptr[cIOBuf], unique_ptr[cIOBuf]]](move(client))
     return inst
+
+  async def sink(self, iterator):
+    # TODO: (pyamane) This is here just to validate the types are correct for now
+    dereference(self._cpp_obj).sink(
+      toAsyncGenerator[unique_ptr[cIOBuf]](iterator, get_executor(), generator)
+    )
+    return "pass"
