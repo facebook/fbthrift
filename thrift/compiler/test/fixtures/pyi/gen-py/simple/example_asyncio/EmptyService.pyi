@@ -20,7 +20,7 @@ class Iface: ...  # EmptyService
     # You can cast the result of a Client if you need Future
 
 class Client(Iface, __T.ContextManager[Client]):  # EmptyService
-    def __init__(self, oprot: TProtocolBase, loop: __T.Optional[asyncio.AbstractEventLoop] = None) -> None: ...
+    def __init__(self, oprot: __T.Optional[TProtocolBase], loop: __T.Optional[asyncio.AbstractEventLoop] = None, cpp_transport: __T.Optional[__T.TypeVar("SyncClient")] = None) -> None: ...
 
 class Processor(Iface, Thrift.TProcessor):  # EmptyService
     def __init__(self, handler: Iface) -> None:

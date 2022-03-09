@@ -538,15 +538,17 @@ class Client(Iface):
     return self
 
   def __exit__(self, type, value, tb):
-    self._iprot.trans.close()
-    if self._iprot is not self._oprot:
+    if self._iprot:
+      self._iprot.trans.close()
+    if self._oprot and self._iprot is not self._oprot:
       self._oprot.trans.close()
 
-  def __init__(self, iprot, oprot=None):
+  def __init__(self, iprot=None, oprot=None, cpp_transport=None):
     self._iprot = self._oprot = iprot
     if oprot != None:
       self._oprot = oprot
     self._seqid = 0
+    self._fbthrift_cpp_transport = cpp_transport
 
   def init(self, int1=None, int2=None, int3=None, int4=None, int5=None, int6=None, int7=None, int8=None, int9=None, int10=None, int11=None, int12=None, int13=None, int14=None, int15=None, int16=None):
     """

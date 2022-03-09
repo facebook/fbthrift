@@ -24,9 +24,6 @@ import typing as __T
 {{#program:asyncio?}}
 import asyncio
 {{/program:asyncio?}}
-{{#program:cpp_transport?}}
-from thrift.py.client.sync_client import SyncClient as _fbthrift_SyncClient
-{{/program:cpp_transport?}}
 
 from thrift import Thrift
 from thrift.protocol.TProtocol import TProtocolBase
@@ -63,12 +60,12 @@ class Iface{{!
     {{/function:isSupported?}}
     {{/service:functions}}
 
-class Client({{#program:cpp_transport?}}_fbthrift_SyncClient, {{/program:cpp_transport?}}Iface, __T.ContextManager[Client]):  # {{service:name}}
+class Client(Iface, __T.ContextManager[Client]):  # {{service:name}}
     {{#program:asyncio?}}{{!
-    }}def __init__(self, oprot: TProtocolBase, loop: __T.Optional[asyncio.AbstractEventLoop] = None) -> None: ...{{!
+    }}def __init__(self, oprot: __T.Optional[TProtocolBase], loop: __T.Optional[asyncio.AbstractEventLoop] = None, cpp_transport: __T.Optional[__T.TypeVar("SyncClient")] = None) -> None: ...{{!
     }}{{/program:asyncio?}}{{!
     }}{{^program:asyncio?}}{{!
-    }}def __init__(self, iprot: TProtocolBase, oprot: __T.Optional[TProtocolBase] = None) -> None: ...{{!
+    }}def __init__(self, iprot: __T.Optional[TProtocolBase], oprot: __T.Optional[TProtocolBase] = None, cpp_transport: __T.Optional[__T.TypeVar("SyncClient")] = None) -> None: ...{{!
     }}{{/program:asyncio?}}
     {{#service:functions}}
     {{#function:isSupported?}}

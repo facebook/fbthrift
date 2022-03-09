@@ -15,7 +15,7 @@ from module.ttypes import *
 class Iface:  # PubSubStreamingService
 
 class Client(Iface, __T.ContextManager[Client]):  # PubSubStreamingService
-    def __init__(self, iprot: TProtocolBase, oprot: __T.Optional[TProtocolBase] = None) -> None: ...
+    def __init__(self, iprot: __T.Optional[TProtocolBase], oprot: __T.Optional[TProtocolBase] = None, cpp_transport: __T.Optional[__T.TypeVar("SyncClient")] = None) -> None: ...
 
 class Processor(Iface, Thrift.TProcessor):  # PubSubStreamingService
     def __init__(self, handler: Iface) -> None:

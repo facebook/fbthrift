@@ -213,12 +213,13 @@ class Client(module.MyServicePrioParent.Client, Iface):
     return self
 
   def __exit__(self, type, value, tb):
-    self._iprot.trans.close()
-    if self._iprot is not self._oprot:
+    if self._iprot:
+      self._iprot.trans.close()
+    if self._oprot and self._iprot is not self._oprot:
       self._oprot.trans.close()
 
-  def __init__(self, iprot, oprot=None):
-    module.MyServicePrioParent.Client.__init__(self, iprot, oprot)
+  def __init__(self, iprot=None, oprot=None, cpp_transport=None):
+    module.MyServicePrioParent.Client.__init__(self, iprot, oprot, cpp_transport)
 
   def pang(self, ):
     self.send_pang()

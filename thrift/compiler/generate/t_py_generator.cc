@@ -2246,17 +2246,25 @@ void t_py_generator::generate_service_client(const t_service* tservice) {
                << indent() << "  return self" << endl
                << endl;
     f_service_ << indent() << "def __exit__(self, type, value, tb):" << endl
-               << indent() << "  self._iprot.trans.close()" << endl
-               << indent() << "  if self._iprot is not self._oprot:" << endl
+               << indent() << "  if self._iprot:" << endl
+               << indent() << "    self._iprot.trans.close()" << endl
+               << indent()
+               << "  if self._oprot and self._iprot is not self._oprot:" << endl
                << indent() << "    self._oprot.trans.close()" << endl
                << endl;
   }
 
   // Constructor function
   if (gen_asyncio_) {
-    f_service_ << indent() << "def __init__(self, oprot, loop=None):" << endl;
+    f_service_
+        << indent()
+        << "def __init__(self, oprot=None, loop=None, cpp_transport=None):"
+        << endl;
   } else {
-    f_service_ << indent() << "def __init__(self, iprot, oprot=None):" << endl;
+    f_service_
+        << indent()
+        << "def __init__(self, iprot=None, oprot=None, cpp_transport=None):"
+        << endl;
   }
   if (extends.empty()) {
     if (gen_asyncio_) {
@@ -2265,12 +2273,15 @@ void t_py_generator::generate_service_client(const t_service* tservice) {
                  << "  self._loop = loop or asyncio.get_event_loop()" << endl
                  << indent() << "  self._seqid = 0" << endl
                  << indent() << "  self._futures = {}" << endl
+                 << indent() << "  self._fbthrift_cpp_transport = None" << endl
                  << endl;
     } else {
       f_service_ << indent() << "  self._iprot = self._oprot = iprot" << endl
                  << indent() << "  if oprot != None:" << endl
                  << indent() << "    self._oprot = oprot" << endl
                  << indent() << "  self._seqid = 0" << endl
+                 << indent() << "  self._fbthrift_cpp_transport = cpp_transport"
+                 << endl
                  << endl;
     }
   } else {
@@ -2280,7 +2291,8 @@ void t_py_generator::generate_service_client(const t_service* tservice) {
                  << endl;
     } else {
       f_service_ << indent() << "  " << extends
-                 << ".Client.__init__(self, iprot, oprot)" << endl
+                 << ".Client.__init__(self, iprot, oprot, cpp_transport)"
+                 << endl
                  << endl;
     }
   }
