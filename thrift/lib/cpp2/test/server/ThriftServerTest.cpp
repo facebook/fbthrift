@@ -49,6 +49,7 @@
 #include <folly/portability/GTest.h>
 #include <folly/synchronization/test/Barrier.h>
 #include <folly/system/ThreadName.h>
+#include <folly/test/TestUtils.h>
 #include <proxygen/httpserver/HTTPServerOptions.h>
 #include <thrift/lib/cpp/server/TServerEventHandler.h>
 #include <thrift/lib/cpp/transport/THeader.h>
@@ -63,6 +64,7 @@
 #include <thrift/lib/cpp2/security/extensions/ThriftParametersClientExtension.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
+#include <thrift/lib/cpp2/server/ServerFlags.h>
 #include <thrift/lib/cpp2/server/StatusServerInterface.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/DummyStatus.h>
@@ -128,10 +130,10 @@ TEST(ThriftServer, OnewayDeferredHandlerTest) {
     folly::Baton<> done;
 
     folly::Future<folly::Unit> future_noResponse(int64_t size) override {
-      auto tm = getThreadManager();
+      auto executor = getHandlerExecutor();
       auto ctx = getConnectionContext();
       return folly::futures::sleep(std::chrono::milliseconds(size))
-          .via(tm)
+          .via(executor)
           .thenValue(
               [ctx](auto&&) { EXPECT_EQ("noResponse", ctx->getMethodName()); })
           .thenValue([this](auto&&) { done.post(); });
@@ -500,7 +502,10 @@ void doLoadHeaderTest(bool isRocket) {
               TApplicationException::TApplicationExceptionType::LOADSHEDDING,
               tae.getType());
         });
-    ASSERT_TRUE(matched);
+
+    if (!useResourcePoolsFlagsSet(/* no isOverloaded with resource pools*/)) {
+      ASSERT_TRUE(matched);
+    }
     checkLoadHeader(header, kLoadMetric);
   }
 
@@ -884,11 +889,11 @@ TEST(ThriftServerDeathTest, LongShutdown_DumpSnapshot) {
             [](ThriftServer& server) {
               server.setWorkersJoinTimeout(1s);
               // We need at least 2 cpu threads for the test
-              auto tm = ThreadManager::newSimpleThreadManager(2);
-              tm->threadFactory(std::make_shared<PosixThreadFactory>(
+              server.setNumCPUWorkerThreads(2);
+              server.setThreadManagerType(
+                  apache::thrift::BaseThriftServer::ThreadManagerType::SIMPLE);
+              server.setThreadFactory(std::make_shared<PosixThreadFactory>(
                   PosixThreadFactory::ATTACHED));
-              tm->start();
-              server.setThreadManager(tm);
             });
 
         long_shutdown::requestedDumpSnapshotDelay = 1s;
@@ -912,11 +917,11 @@ TEST(ThriftServerDeathTest, LongShutdown_DumpSnapshotTimeout) {
             [](ThriftServer& server) {
               server.setWorkersJoinTimeout(1s);
               // We need at least 2 cpu threads for the test
-              auto tm = ThreadManager::newSimpleThreadManager(2);
-              tm->threadFactory(std::make_shared<PosixThreadFactory>(
+              server.setNumCPUWorkerThreads(2);
+              server.setThreadManagerType(
+                  apache::thrift::BaseThriftServer::ThreadManagerType::SIMPLE);
+              server.setThreadFactory(std::make_shared<PosixThreadFactory>(
                   PosixThreadFactory::ATTACHED));
-              tm->start();
-              server.setThreadManager(tm);
             });
 
         long_shutdown::requestedDumpSnapshotDelay = 500ms;
@@ -1064,11 +1069,11 @@ TEST_P(HeaderOrRocket, RequestParamsNullCheck) {
   class TestInterfaceSF : public TestServiceSvIf {
     folly::SemiFuture<folly::Unit> semifuture_voidResponse() override {
       EXPECT_NE(getRequestContext(), nullptr);
-      EXPECT_NE(getThreadManager(), nullptr);
+      EXPECT_NE(getHandlerExecutor(), nullptr);
       EXPECT_NE(getEventBase(), nullptr);
       return folly::makeSemiFuture().deferValue([this](folly::Unit) {
         EXPECT_EQ(getRequestContext(), nullptr);
-        EXPECT_EQ(getThreadManager(), nullptr);
+        EXPECT_EQ(getHandlerExecutor(), nullptr);
         EXPECT_EQ(getEventBase(), nullptr);
       });
     }
@@ -1077,11 +1082,11 @@ TEST_P(HeaderOrRocket, RequestParamsNullCheck) {
   class TestInterfaceCoro : public TestServiceSvIf {
     folly::coro::Task<void> co_voidResponse() override {
       EXPECT_NE(getRequestContext(), nullptr);
-      EXPECT_NE(getThreadManager(), nullptr);
+      EXPECT_NE(getHandlerExecutor(), nullptr);
       EXPECT_NE(getEventBase(), nullptr);
       co_await folly::coro::co_reschedule_on_current_executor;
       EXPECT_EQ(getRequestContext(), nullptr);
-      EXPECT_EQ(getThreadManager(), nullptr);
+      EXPECT_EQ(getHandlerExecutor(), nullptr);
       EXPECT_EQ(getEventBase(), nullptr);
     }
   };
@@ -1173,10 +1178,11 @@ bool blockWhile(F&& f, Duration duration = 1s) {
 } // namespace
 
 TEST_P(HeaderOrRocket, ThreadManagerAdapterOverSimpleTMUpstreamPriorities) {
+  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* ThreadManager features */);
   class TestInterface : public TestServiceSvIf {
    public:
     TestInterface() {}
-    void voidResponse() override { callback_(getThreadManager()); }
+    void voidResponse() override { callback_(getHandlerExecutor()); }
     folly::Function<void(folly::Executor*)> callback_;
   };
 
@@ -1224,10 +1230,11 @@ TEST_P(HeaderOrRocket, ThreadManagerAdapterOverSimpleTMUpstreamPriorities) {
 
 TEST_P(
     HeaderOrRocket, ThreadManagerAdapterOverMeteredExecutorUpstreamPriorities) {
+  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* ThreadManager features */);
   class TestInterface : public TestServiceSvIf {
    public:
     explicit TestInterface(int& testCounter) : testCounter_(testCounter) {}
-    void voidResponse() override { callback_(getThreadManager()); }
+    void voidResponse() override { callback_(getHandlerExecutor()); }
     int echoInt(int value) override {
       EXPECT_EQ(value, testCounter_++);
       return value;
@@ -1293,6 +1300,7 @@ TEST_P(
 }
 
 TEST_P(HeaderOrRocket, ThreadManagerAdapterManyPools) {
+  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* ThreadManager features*/);
   int callCount{0};
   class TestInterface : public TestServiceSvIf {
     int& callCount_;
@@ -1338,6 +1346,7 @@ TEST_P(HeaderOrRocket, ThreadManagerAdapterManyPools) {
 }
 
 TEST_P(HeaderOrRocket, ThreadManagerAdapterSinglePool) {
+  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* ThreadManager features */);
   int callCount{0};
   class TestInterface : public TestServiceSvIf {
     int& callCount_;
@@ -1379,6 +1388,7 @@ TEST_P(HeaderOrRocket, ThreadManagerAdapterSinglePool) {
 }
 
 TEST_P(HeaderOrRocket, StickyToThreadPool) {
+  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* ThreadManager features */);
   int callCount{0};
   class TestInterface : public TestServiceSvIf {
     int& callCount_;
@@ -1559,6 +1569,15 @@ TEST_P(HeaderOrRocket, QueueTimeoutOnServerShutdown) {
 
   auto blockIf = std::make_shared<BlockInterface>();
   auto runner = std::make_unique<ScopedServerInterfaceThread>(blockIf);
+  if (!runner->getThriftServer().resourcePoolSet().empty()) {
+    // Limit active requests to 1 for this test and ensure we have two threads
+    // in the worker pool.
+    auto& resourcePool =
+        runner->getThriftServer().resourcePoolSet().resourcePool(
+            ResourcePoolHandle::defaultAsync());
+    resourcePool.concurrencyController().value()->setExecutionLimitRequests(1);
+    resourcePool.executor().value()->setNumThreads(2);
+  }
 
   auto client = runner->newStickyClient<TestServiceAsyncClient>(
       folly::getGlobalIOExecutor()->getEventBase(),
@@ -1622,6 +1641,7 @@ INSTANTIATE_TEST_CASE_P(
     testing::Values(TransportType::Header, TransportType::Rocket));
 
 TEST_P(OverloadTest, Test) {
+  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* isOverloaded and preprocess */);
   class BlockInterface : public TestServiceSvIf {
    public:
     folly::Baton<> block;
@@ -2713,6 +2733,7 @@ TEST(ThriftServer, ClientOnlyTimeouts) {
 }
 
 TEST(ThriftServerTest, QueueTimeHeaderTest) {
+  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* ThreadManager feattures */);
   using namespace ::testing;
   // Tests that queue time metadata is returned in the THeader when
   // queueing delay on server side is greater than pre-defined threshold.
@@ -3394,10 +3415,10 @@ TEST_P(HeaderOrRocket, OnStartStopServingTest) {
           auto tf = std::make_shared<PosixThreadFactory>(
               PosixThreadFactory::ATTACHED);
           // We need at least 2 threads for the test
-          auto tm = ThreadManager::newSimpleThreadManager(2);
-          tm->threadFactory(move(tf));
-          tm->start();
-          ts.setThreadManager(tm);
+          ts.setThreadManagerType(
+              apache::thrift::BaseThriftServer::ThreadManagerType::SIMPLE);
+          ts.setNumCPUWorkerThreads(2);
+          ts.setThreadFactory(std::move(tf));
           ts.addServerEventHandler(preStartHandler);
           ts.setInternalMethods({"voidResponse"});
           ts.setRejectRequestsUntilStarted(true);
@@ -3700,6 +3721,8 @@ class HeaderOrRocketCompression
 };
 
 TEST_P(HeaderOrRocketCompression, ClientCompressionTest) {
+  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(
+      /* Test mock does not implement executeRequest */);
   folly::EventBase base;
   ScopedServerInterfaceThread runner(makeFactory());
   auto client = makeClient(runner, &base);

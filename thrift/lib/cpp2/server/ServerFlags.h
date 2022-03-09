@@ -29,7 +29,10 @@ FOLLY_ALWAYS_INLINE bool useResourcePoolsFlagsSet() {
       FLAGS_thrift_experimental_use_resource_pools;
 }
 
-#define OMIT_TEST_WITH_RESOURCE_POOLS()               \
+// This is a temporary solution during resource pools roll out. Once
+// roll out is complete there will be no tests that require this and it
+// will be removed.
+#define THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS()        \
   do {                                                \
     if (apache::thrift::useResourcePoolsFlagsSet()) { \
       return;                                         \
