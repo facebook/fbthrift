@@ -101,10 +101,10 @@ void <%service:parent_service_cpp_name%>AsyncProcessor::executeRequest_<%#servic
   }
   auto requestPileNotification = apache::thrift::detail::ServerRequestHelper::requestPileNotification(serverRequest);
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>>(
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > types/return_type_server%>>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
     , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
-    , return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%><ProtocolIn_,ProtocolOut_>
+    , return_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%><ProtocolIn_,ProtocolOut_>
     , throw_wrapped_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%><ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
     , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
@@ -176,7 +176,7 @@ void <%service:parent_service_cpp_name%>AsyncProcessor::process_<%#service:inter
         ew, std::move(req), ctx, eb, "<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>>(std::move(req), std::move(ctxStack), return_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%><ProtocolIn_,ProtocolOut_>, throw_wrapped_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%><ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx<%!
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > types/return_type_server%>>>(std::move(req), std::move(ctxStack), return_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%><ProtocolIn_,ProtocolOut_>, throw_wrapped_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%><ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx<%!
   %><%#type:stream_or_sink?%>, <%^function:eb%>apache::thrift::ServerInterface::getBlockingThreadManager(tm)<%/function:eb%><%#function:eb%>eb<%/function:eb%><%/type:stream_or_sink?%><%!
   %><%#service:interaction?%><%^type:stream_or_sink?%><%^type:void?%>, nullptr<%/type:void?%><%/type:stream_or_sink?%>, std::move(tile)<%/service:interaction?%>);
 <%/function:oneway?%>

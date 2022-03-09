@@ -14,5 +14,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#type:void?%>folly::Unit<%/type:void?%><%!
-%><%^type:void?%><%type:cpp_type%><%/type:void?%>
+%><%#function:args%><%#field:type%><%!
+  %><%^first?%>, <%/first?%><% > types/param_type_server%> p_<%field:cpp_name%><%!
+%><%/field:type%><%/function:args%>

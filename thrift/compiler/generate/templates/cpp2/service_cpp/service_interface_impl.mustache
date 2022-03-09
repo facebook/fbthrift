@@ -18,11 +18,11 @@
 <%^function:starts_interaction?%>
 <%^function:eb%>
 
-<% > service_common/function_return_type%> <% > service_common/service_class_name%>::<%function:cpp_name%>(<% > service_common/function_return_param%><% > service_common/function_param_list_commented_out%>) {
+<% > service_common/sync_function_return_type_server%> <% > service_common/service_class_name%>::<%function:cpp_name%>(<% > service_common/sync_function_return_param_server%><% > service_common/function_param_list_server_commented_out%>) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("<%function:name%>");
 }
 
-folly::SemiFuture<<% > service_common/async_return_type%>> <% > service_common/service_class_name%>::semifuture_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
+folly::SemiFuture<<% > types/return_type_server_lift_unit%>> <% > service_common/service_class_name%>::semifuture_<%function:cpp_name%>(<% > service_common/function_param_list_server%>) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_<%function:cpp_name%>.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
 <%^type:resolves_to_complex_return?%>
@@ -48,7 +48,7 @@ folly::SemiFuture<<% > service_common/async_return_type%>> <% > service_common/s
 }
 <%^service:interaction?%>
 
-folly::Future<<% > service_common/async_return_type%>> <%service:cpp_name%>SvIf::future_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
+folly::Future<<% > types/return_type_server_lift_unit%>> <% > service_common/service_class_name%>::future_<%function:cpp_name%>(<% > service_common/function_param_list_server%>) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_<%function:cpp_name%>.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_<%function:cpp_name%>(<% > service_common/param_list_move%>), getInternalKeepAlive());
@@ -57,13 +57,13 @@ folly::Future<<% > service_common/async_return_type%>> <%service:cpp_name%>SvIf:
 <%#function:coroutine?%>
 
 #if FOLLY_HAS_COROUTINES
-folly::coro::Task<<% > service_common/callback_type%>> <% > service_common/service_class_name%>::co_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
+folly::coro::Task<<% > types/return_type_server%>> <% > service_common/service_class_name%>::co_<%function:cpp_name%>(<% > service_common/function_param_list_server%>) {
   auto expected{apache::thrift::detail::si::InvocationType::Coro};
   __fbthrift_invocation_<%function:cpp_name%>.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::<%^service:interaction?%>Future<%/service:interaction?%><%#service:interaction?%>SemiFuture<%/service:interaction?%>, std::memory_order_relaxed);
   return folly::coro::toTask(<%^service:interaction?%>future_<%/service:interaction?%><%#service:interaction?%>semifuture_<%/service:interaction?%><%function:cpp_name%>(<% > service_common/param_list_move%>));
 }
 
-folly::coro::Task<<% > service_common/callback_type%>> <% > service_common/service_class_name%>::co_<%function:cpp_name%>(apache::thrift::RequestParams /* params */<%function:comma%><% > service_common/function_param_list%>) {
+folly::coro::Task<<% > types/return_type_server%>> <% > service_common/service_class_name%>::co_<%function:cpp_name%>(apache::thrift::RequestParams /* params */<%function:comma%><% > service_common/function_param_list_server%>) {
   auto expected{apache::thrift::detail::si::InvocationType::CoroParam};
   __fbthrift_invocation_<%function:cpp_name%>.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Coro, std::memory_order_relaxed);
   return co_<%function:cpp_name%>(<% > service_common/param_list_move%>);
@@ -72,11 +72,11 @@ folly::coro::Task<<% > service_common/callback_type%>> <% > service_common/servi
 <%/function:coroutine?%>
 <%#function:oneway?%>
 
-void <% > service_common/service_class_name%>::async_tm_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<%function:comma%><% > service_common/function_param_list%>) {
+void <% > service_common/service_class_name%>::async_tm_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<%function:comma%><% > service_common/function_param_list_server%>) {
 <%/function:oneway?%>
 <%^function:oneway?%>
 
-void <% > service_common/service_class_name%>::async_tm_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/function_param_list%>) {
+void <% > service_common/service_class_name%>::async_tm_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/return_type_server%>>> callback<%function:comma%><% > service_common/function_param_list_server%>) {
 <%/function:oneway?%>
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
@@ -155,7 +155,7 @@ void <% > service_common/service_class_name%>::async_tm_<%function:cpp_name%>(st
 <%/type:void?%>
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-        <% > types/type%> _return;
+        <%type:cpp_type%> _return;
         <%function:cpp_name%>(_return<%function:comma%><% > service_common/param_list_move%>);
         callback->result(_return);
 <%/type:resolves_to_complex_return?%>
@@ -174,13 +174,13 @@ void <% > service_common/service_class_name%>::async_tm_<%function:cpp_name%>(st
 <%#function:eb%><%!Event base codegen%>
 <%#function:oneway?%>
 
-void <% > service_common/service_class_name%>::async_eb_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> /*callback*/<%function:comma%><% > service_common/function_param_list_commented_out%>) {
+void <% > service_common/service_class_name%>::async_eb_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> /*callback*/<%function:comma%><% > service_common/function_param_list_server_commented_out%>) {
   LOG(DFATAL) << "Function <%function:cpp_name%> is unimplemented";
 }
 <%/function:oneway?%>
 <%^function:oneway?%>
 
-void <% > service_common/service_class_name%>::async_eb_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/function_param_list_commented_out%>) {
+void <% > service_common/service_class_name%>::async_eb_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/return_type_server%>>> callback<%function:comma%><% > service_common/function_param_list_server_commented_out%>) {
   callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("<%function:name%>"));
 }
 <%/function:oneway?%>

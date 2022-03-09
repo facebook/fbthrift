@@ -15,7 +15,7 @@
   limitations under the License.
 
 %><%^type:resolves_to_complex_return?%>
-<% > types/semi_type%> <%service:cpp_name%>AsyncClient::recv_instance_<%function:cpp_name%>(::apache::thrift::ClientReceiveState& state) {
+<% > types/return_type_client%> <%service:cpp_name%>AsyncClient::recv_instance_<%function:cpp_name%>(::apache::thrift::ClientReceiveState& state) {
 <%#type:void?%>
   recv_<%function:cpp_name%>(state);
 <%/type:void?%>
@@ -36,7 +36,7 @@ folly::exception_wrapper <%service:cpp_name%>AsyncClient::recv_instance_wrapped_
 }
 <%/type:void?%>
 <%^type:void?%>
-folly::exception_wrapper <%service:cpp_name%>AsyncClient::recv_instance_wrapped_<%function:cpp_name%>(<% > types/semi_type%>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper <%service:cpp_name%>AsyncClient::recv_instance_wrapped_<%function:cpp_name%>(<% > types/return_type_client%>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_<%function:cpp_name%>(_return, state);
 }
 <%/type:void?%>

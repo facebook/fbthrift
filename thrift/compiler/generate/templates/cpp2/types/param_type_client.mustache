@@ -14,5 +14,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-// TODO(afuller): Delete this file.
-%><%type:cpp_type%>
+%><%#type:resolves_to_complex_return?%><%!
+  %>const <%type:cpp_type%>&<%!
+%><%/type:resolves_to_complex_return?%><%!
+%><%^type:resolves_to_complex_return?%><%!
+  %><%type:cpp_type%><%!
+%><%/type:resolves_to_complex_return?%>

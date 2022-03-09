@@ -15,11 +15,5 @@
   limitations under the License.
 
 %><%#function:args%><%#field:type%><%!
-  %><%^first?%>, <%/first?%><%!
-%><%#type:resolves_to_complex_return?%><%!
-  %>const <%type:cpp_type%>& p_<%field:cpp_name%><%!
-%><%/type:resolves_to_complex_return?%><%!
-%><%^type:resolves_to_complex_return?%><%!
-  %><%type:cpp_type%> p_<%field:cpp_name%><%!
-%><%/type:resolves_to_complex_return?%><%!
+  %><%^first?%>, <%/first?%><% > types/param_type_client%> p_<%field:cpp_name%><%!
 %><%/field:type%><%/function:args%>

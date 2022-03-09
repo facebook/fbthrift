@@ -14,9 +14,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%^type:resolves_to_complex_return?%><%!
-%><%type:cpp_type%><%!
-%><%/type:resolves_to_complex_return?%><%!
-%><%#type:resolves_to_complex_return?%><%!
-%><% > types/unique_ptr_type%><%!
-%><%/type:resolves_to_complex_return?%>
+%><%#function:args%><%#field:type%><%!
+  %><%^first?%>, <%/first?%><% > types/param_type_server%> /*<%field:cpp_name%>*/<%!
+%><%/field:type%><%/function:args%>
