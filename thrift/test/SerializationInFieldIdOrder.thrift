@@ -18,7 +18,7 @@ include "thrift/annotation/thrift.thrift"
 
 namespace cpp2 apache.thrift.test
 
-@thrift.ExperimentalSerializeInFieldIdOrder
+@thrift.SerializeInFieldIdOrder
 struct Foo {
   3: i32 field1;
   1: i32 field2;

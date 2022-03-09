@@ -56,6 +56,6 @@ struct TerseWrite {} (
 // since compact protocol can write deltas between subsequent field ids.
 @scope.Struct
 @Experimental
-struct ExperimentalSerializeInFieldIdOrder {} (
-  thrift.uri = "facebook.com/thrift/annotation/thrift/ExperimentalSerializeInFieldIdOrder",
+struct SerializeInFieldIdOrder {} (
+  thrift.uri = "facebook.com/thrift/annotation/thrift/SerializeInFieldIdOrder",
 )

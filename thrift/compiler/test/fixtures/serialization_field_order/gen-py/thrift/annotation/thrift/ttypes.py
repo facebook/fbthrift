@@ -34,7 +34,7 @@ except ImportError:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'RequiresBackwardCompatibility', 'Experimental', 'Deprecated', 'TerseWrite', 'ExperimentalSerializeInFieldIdOrder']
+__all__ = ['UTF8STRINGS', 'RequiresBackwardCompatibility', 'Experimental', 'Deprecated', 'TerseWrite', 'SerializeInFieldIdOrder']
 
 class RequiresBackwardCompatibility:
   """
@@ -324,7 +324,7 @@ class TerseWrite:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-class ExperimentalSerializeInFieldIdOrder:
+class SerializeInFieldIdOrder:
 
   thrift_spec = None
   thrift_field_annotations = None
@@ -357,7 +357,7 @@ class ExperimentalSerializeInFieldIdOrder:
     if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
       oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
       return
-    oprot.writeStructBegin('ExperimentalSerializeInFieldIdOrder')
+    oprot.writeStructBegin('SerializeInFieldIdOrder')
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -443,14 +443,14 @@ TerseWrite.thrift_struct_annotations = {
 TerseWrite.thrift_field_annotations = {
 }
 
-all_structs.append(ExperimentalSerializeInFieldIdOrder)
-ExperimentalSerializeInFieldIdOrder.thrift_spec = (
+all_structs.append(SerializeInFieldIdOrder)
+SerializeInFieldIdOrder.thrift_spec = (
 )
 
-ExperimentalSerializeInFieldIdOrder.thrift_struct_annotations = {
-  "thrift.uri": "facebook.com/thrift/annotation/thrift/ExperimentalSerializeInFieldIdOrder",
+SerializeInFieldIdOrder.thrift_struct_annotations = {
+  "thrift.uri": "facebook.com/thrift/annotation/thrift/SerializeInFieldIdOrder",
 }
-ExperimentalSerializeInFieldIdOrder.thrift_field_annotations = {
+SerializeInFieldIdOrder.thrift_field_annotations = {
 }
 
 fix_spec(all_structs)

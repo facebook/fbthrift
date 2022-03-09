@@ -368,9 +368,9 @@ class facebook_thrift_annotation_thrift_TerseWrite implements \IThriftStruct, \I
 
 /**
  * Original thrift struct:-
- * ExperimentalSerializeInFieldIdOrder
+ * SerializeInFieldIdOrder
  */
-class facebook_thrift_annotation_thrift_ExperimentalSerializeInFieldIdOrder implements \IThriftStruct, \IThriftShapishStruct {
+class facebook_thrift_annotation_thrift_SerializeInFieldIdOrder implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -398,13 +398,13 @@ class facebook_thrift_annotation_thrift_ExperimentalSerializeInFieldIdOrder impl
   }
 
   public function getName()[]: string {
-    return 'ExperimentalSerializeInFieldIdOrder';
+    return 'SerializeInFieldIdOrder';
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
     return tmeta_ThriftStruct::fromShape(
       shape(
-        "name" => "thrift.ExperimentalSerializeInFieldIdOrder",
+        "name" => "thrift.SerializeInFieldIdOrder",
         "is_union" => false,
       )
     );

@@ -51,8 +51,8 @@ void reset_field<::facebook::thrift::annotation::thrift::TerseWrite>(
 }
 
 template<>
-void reset_field<::facebook::thrift::annotation::thrift::ExperimentalSerializeInFieldIdOrder>(
-    ::facebook::thrift::annotation::thrift::ExperimentalSerializeInFieldIdOrder& obj, uint16_t index) {
+void reset_field<::facebook::thrift::annotation::thrift::SerializeInFieldIdOrder>(
+    ::facebook::thrift::annotation::thrift::SerializeInFieldIdOrder& obj, uint16_t index) {
   switch (index) {
   }
 }
@@ -99,7 +99,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::facebook::thrift::annotation::thrift::ExperimentalSerializeInFieldIdOrder>::namesmap() {
+    ::facebook::thrift::annotation::thrift::SerializeInFieldIdOrder>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

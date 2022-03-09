@@ -22,21 +22,21 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class ExperimentalSerializeInFieldIdOrder implements TBase, java.io.Serializable, Cloneable {
-  private static final TStruct STRUCT_DESC = new TStruct("ExperimentalSerializeInFieldIdOrder");
+public class SerializeInFieldIdOrder implements TBase, java.io.Serializable, Cloneable {
+  private static final TStruct STRUCT_DESC = new TStruct("SerializeInFieldIdOrder");
 
 
-  public ExperimentalSerializeInFieldIdOrder() {
+  public SerializeInFieldIdOrder() {
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public ExperimentalSerializeInFieldIdOrder(ExperimentalSerializeInFieldIdOrder other) {
+  public SerializeInFieldIdOrder(SerializeInFieldIdOrder other) {
   }
 
-  public ExperimentalSerializeInFieldIdOrder deepCopy() {
-    return new ExperimentalSerializeInFieldIdOrder(this);
+  public SerializeInFieldIdOrder deepCopy() {
+    return new SerializeInFieldIdOrder(this);
   }
 
   @Override
@@ -45,9 +45,9 @@ public class ExperimentalSerializeInFieldIdOrder implements TBase, java.io.Seria
       return false;
     if (this == _that)
       return true;
-    if (!(_that instanceof ExperimentalSerializeInFieldIdOrder))
+    if (!(_that instanceof SerializeInFieldIdOrder))
       return false;
-    ExperimentalSerializeInFieldIdOrder that = (ExperimentalSerializeInFieldIdOrder)_that;
+    SerializeInFieldIdOrder that = (SerializeInFieldIdOrder)_that;
 
     return true;
   }
@@ -62,7 +62,7 @@ public class ExperimentalSerializeInFieldIdOrder implements TBase, java.io.Seria
     throw new TException("unimplemented in android immutable structure");
   }
 
-  public static ExperimentalSerializeInFieldIdOrder deserialize(TProtocol iprot) throws TException {
+  public static SerializeInFieldIdOrder deserialize(TProtocol iprot) throws TException {
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -81,8 +81,8 @@ public class ExperimentalSerializeInFieldIdOrder implements TBase, java.io.Seria
     }
     iprot.readStructEnd();
 
-    ExperimentalSerializeInFieldIdOrder _that;
-    _that = new ExperimentalSerializeInFieldIdOrder(
+    SerializeInFieldIdOrder _that;
+    _that = new SerializeInFieldIdOrder(
     );
     _that.validate();
     return _that;

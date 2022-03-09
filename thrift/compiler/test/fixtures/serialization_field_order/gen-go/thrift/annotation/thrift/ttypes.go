@@ -330,29 +330,29 @@ func (p *TerseWrite) String() string {
   return fmt.Sprintf("TerseWrite({})")
 }
 
-type ExperimentalSerializeInFieldIdOrder struct {
+type SerializeInFieldIdOrder struct {
 }
 
-func NewExperimentalSerializeInFieldIdOrder() *ExperimentalSerializeInFieldIdOrder {
-  return &ExperimentalSerializeInFieldIdOrder{}
+func NewSerializeInFieldIdOrder() *SerializeInFieldIdOrder {
+  return &SerializeInFieldIdOrder{}
 }
 
-type ExperimentalSerializeInFieldIdOrderBuilder struct {
-  obj *ExperimentalSerializeInFieldIdOrder
+type SerializeInFieldIdOrderBuilder struct {
+  obj *SerializeInFieldIdOrder
 }
 
-func NewExperimentalSerializeInFieldIdOrderBuilder() *ExperimentalSerializeInFieldIdOrderBuilder{
-  return &ExperimentalSerializeInFieldIdOrderBuilder{
-    obj: NewExperimentalSerializeInFieldIdOrder(),
+func NewSerializeInFieldIdOrderBuilder() *SerializeInFieldIdOrderBuilder{
+  return &SerializeInFieldIdOrderBuilder{
+    obj: NewSerializeInFieldIdOrder(),
   }
 }
 
-func (p ExperimentalSerializeInFieldIdOrderBuilder) Emit() *ExperimentalSerializeInFieldIdOrder{
-  return &ExperimentalSerializeInFieldIdOrder{
+func (p SerializeInFieldIdOrderBuilder) Emit() *SerializeInFieldIdOrder{
+  return &SerializeInFieldIdOrder{
   }
 }
 
-func (p *ExperimentalSerializeInFieldIdOrder) Read(iprot thrift.Protocol) error {
+func (p *SerializeInFieldIdOrder) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -377,8 +377,8 @@ func (p *ExperimentalSerializeInFieldIdOrder) Read(iprot thrift.Protocol) error 
   return nil
 }
 
-func (p *ExperimentalSerializeInFieldIdOrder) Write(oprot thrift.Protocol) error {
-  if err := oprot.WriteStructBegin("ExperimentalSerializeInFieldIdOrder"); err != nil {
+func (p *SerializeInFieldIdOrder) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("SerializeInFieldIdOrder"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -387,11 +387,11 @@ func (p *ExperimentalSerializeInFieldIdOrder) Write(oprot thrift.Protocol) error
   return nil
 }
 
-func (p *ExperimentalSerializeInFieldIdOrder) String() string {
+func (p *SerializeInFieldIdOrder) String() string {
   if p == nil {
     return "<nil>"
   }
 
-  return fmt.Sprintf("ExperimentalSerializeInFieldIdOrder({})")
+  return fmt.Sprintf("SerializeInFieldIdOrder({})")
 }
 

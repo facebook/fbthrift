@@ -20,7 +20,7 @@ namespace java.swift test.fixtures.adapter
 
 include "thrift/annotation/thrift.thrift"
 
-@thrift.ExperimentalSerializeInFieldIdOrder
+@thrift.SerializeInFieldIdOrder
 struct Foo {
   3: i32 field1;
   1: i32 field2;

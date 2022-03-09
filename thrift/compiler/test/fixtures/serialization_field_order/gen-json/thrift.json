@@ -89,7 +89,7 @@
         }
       }
     },
-    "ExperimentalSerializeInFieldIdOrder" : {
+    "SerializeInFieldIdOrder" : {
       "lineno" : 59,
       "is_exception" : false,
       "is_union" : false,

@@ -1058,7 +1058,7 @@ class mstch_struct : public mstch_base {
 
   field_range get_members_in_serialization_order() {
     if (strct_->find_structured_annotation_or_null(
-            "facebook.com/thrift/annotation/thrift/ExperimentalSerializeInFieldIdOrder")) {
+            "facebook.com/thrift/annotation/thrift/SerializeInFieldIdOrder")) {
       return get_members_in_key_order();
     }
 
