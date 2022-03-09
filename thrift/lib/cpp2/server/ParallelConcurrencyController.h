@@ -28,7 +28,9 @@ namespace apache::thrift {
 class ParallelConcurrencyController : public ConcurrencyControllerInterface {
  public:
   ParallelConcurrencyController(RequestPileInterface& pile, folly::Executor& ex)
-      : pile_(pile), executor_(folly::getKeepAliveToken(ex)) {}
+      : pile_(pile),
+        executor_(std::make_unique<folly::MeteredExecutor>(
+            folly::getKeepAliveToken(ex))) {}
 
   void setExecutionLimitRequests(uint64_t limit) override;
 
@@ -44,7 +46,7 @@ class ParallelConcurrencyController : public ConcurrencyControllerInterface {
 
   void onRequestFinished(UserData userData) override;
 
-  void stop() override {}
+  void stop() override;
 
  private:
   struct Counters {
@@ -63,7 +65,7 @@ class ParallelConcurrencyController : public ConcurrencyControllerInterface {
       std::numeric_limits<uint64_t>::max()};
 
   RequestPileInterface& pile_;
-  folly::MeteredExecutor executor_;
+  std::unique_ptr<folly::MeteredExecutor> executor_;
 
   bool trySchedule(bool onEnqueued = false);
 

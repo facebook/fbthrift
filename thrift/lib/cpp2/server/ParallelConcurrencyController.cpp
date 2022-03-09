@@ -95,7 +95,7 @@ bool ParallelConcurrencyController::trySchedule(bool onEnqueued) {
       }
 
       // If the swap succeeded we schedule the task on the executor
-      executor_.add([this]() { executeRequest(); });
+      executor_->add([this]() { executeRequest(); });
       return true;
     }
 
@@ -148,6 +148,10 @@ void ParallelConcurrencyController::executeRequest() {
     onExecuteFinish(false);
     return;
   }
+}
+
+void ParallelConcurrencyController::stop() {
+  executor_.reset();
 }
 
 } // namespace apache::thrift
