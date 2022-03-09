@@ -48,8 +48,8 @@ def deserialize(protocol_factory: Any, data: AnyStr, thr_out: T) -> T:
     transport = TTransport.TMemoryBuffer(data)
     try:
         protocol = protocol_factory.getProtocol(
-            # pyre-fixme[16]: `T` has no attribute `thrift_spec`.
             transport,
+            # pyre-fixme[16]: `T` has no attribute `thrift_spec`.
             thr_out.thrift_spec,
         )  # noqa: T484
     except TypeError:
