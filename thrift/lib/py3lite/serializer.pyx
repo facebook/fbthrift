@@ -14,11 +14,10 @@
 
 from cython.view cimport memoryview
 from folly.iobuf cimport IOBuf
-from thrift.py3lite.types cimport Struct, Union
+from thrift.py3lite.types cimport Struct, StructOrUnion, Union
 
 import cython
 
-StructOrUnion = cython.fused_type(Struct, Union)
 Buf = cython.fused_type(IOBuf, bytes, bytearray, memoryview)
 
 def serialize_iobuf(StructOrUnion strct, Protocol protocol=Protocol.COMPACT):
@@ -28,7 +27,7 @@ def serialize(StructOrUnion struct, Protocol protocol=Protocol.COMPACT):
     return b''.join(serialize_iobuf(struct, protocol))
 
 def deserialize_with_length(klass, Buf buf, Protocol protocol=Protocol.COMPACT):
-    if not issubclass(klass, (Struct, Union)):
+    if not issubclass(klass, StructOrUnion):
         raise TypeError("Only Struct or Union classes can be deserialized")
     cdef IOBuf iobuf = buf if isinstance(buf, IOBuf) else IOBuf(buf)
     inst = klass.__new__(klass)

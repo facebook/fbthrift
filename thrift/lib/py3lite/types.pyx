@@ -346,8 +346,15 @@ cdef void set_struct_field(tuple struct_tuple, int16_t index, value) except *:
     PyTuple_SET_ITEM(struct_tuple, index + 1, value)
     Py_DECREF(old_value)
 
+cdef class StructOrUnion:
+    cdef folly.iobuf.IOBuf _serialize(Struct self, Protocol proto):
+        raise NotImplementedError("Not implemented on base StructOrUnion class")
+    cdef uint32_t _deserialize(Struct self, folly.iobuf.IOBuf buf, Protocol proto) except? 0:
+        raise NotImplementedError("Not implemented on base StructOrUnion class")
+    cdef _fbthrift_get_field_value(self, int16_t index):
+        raise NotImplementedError("Not implemented on base StructOrUnion class")
 
-cdef class Struct:
+cdef class Struct(StructOrUnion):
     def __cinit__(self):
         cdef StructInfo info = self._fbthrift_struct_info
         self._fbthrift_data = createStructTuple(
@@ -453,7 +460,7 @@ cdef class Struct:
         return NotImplementedError()
 
 
-cdef class Union:
+cdef class Union(StructOrUnion):
     def __cinit__(self):
         self._fbthrift_data = createUnionTuple()
 

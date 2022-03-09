@@ -124,14 +124,18 @@ cdef class StructTypeInfo:
 cdef class EnumTypeInfo:
     cdef object _class
 
-cdef class Struct:
+cdef class StructOrUnion:
     cdef object _fbthrift_data
+    cdef folly.iobuf.IOBuf _serialize(StructOrUnion self, Protocol proto)
+    cdef uint32_t _deserialize(StructOrUnion self, folly.iobuf.IOBuf buf, Protocol proto) except? 0
+    cdef _fbthrift_get_field_value(self, int16_t index)
+
+cdef class Struct(StructOrUnion):
     cdef folly.iobuf.IOBuf _serialize(Struct self, Protocol proto)
     cdef uint32_t _deserialize(Struct self, folly.iobuf.IOBuf buf, Protocol proto) except? 0
     cdef _fbthrift_get_field_value(self, int16_t index)
 
-cdef class Union:
-    cdef object _fbthrift_data
+cdef class Union(StructOrUnion):
     cdef readonly object type
     cdef readonly object value
     cdef void _fbthrift_load_cache(self) except *

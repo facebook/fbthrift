@@ -17,10 +17,10 @@ import types
 import typing
 
 from thrift.py3lite.client.omni_client import RpcKind
-from thrift.py3lite.types import Struct, Union
+from thrift.py3lite.types import StructOrUnion
 
 TAsyncClient = typing.TypeVar("TAsyncClient", bound="AsyncClient")
-StructOrUnion = typing.TypeVar("StructOrUnion", bound=typing.Union[Struct, Union])
+StructOrUnionVar = typing.TypeVar("StructOrUnionVar", bound=StructOrUnion)
 
 class AsyncClient:
     def __init__(self, service_name: str) -> None: ...
@@ -35,10 +35,10 @@ class AsyncClient:
         self,
         service_name: str,
         function_name: str,
-        args: Struct,
-        response_cls: typing.Optional[typing.Type[StructOrUnion]],
+        args: StructOrUnion,
+        response_cls: typing.Optional[typing.Type[StructOrUnionVar]],
         rpc_kind: RpcKind = ...,
-    ) -> StructOrUnion: ...
+    ) -> StructOrUnionVar: ...
     def set_persistent_header(self, key: str, value: str) -> None: ...
 
 class ClientType(enum.Enum):

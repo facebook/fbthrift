@@ -16,9 +16,9 @@ import typing
 from enum import Enum
 
 from folly.iobuf import IOBuf
-from thrift.py3lite.types import Struct, Union
+from thrift.py3lite.types import StructOrUnion
 
-sT = typing.TypeVar("sT", bound=typing.Union[Struct, Union])
+sT = typing.TypeVar("sT", bound=StructOrUnion)
 
 class Protocol(Enum):
     COMPACT: Protocol = ...
