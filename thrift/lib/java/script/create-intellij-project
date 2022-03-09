@@ -8,5 +8,8 @@ javafoundations/scripts/create-idea-project \
 //thrift/lib/java/common:common \
 //thrift/lib/java/runtime:runtime \
 //thrift/lib/java/runtime:runtime-test \
+//thrift/lib/java/example/ping:ping-lib \
+//thrift/lib/java/example/ping:ping-server \
+//thrift/lib/java/example/ping:ping-client \
 --verbose \
 --non-interactive
