@@ -35,14 +35,6 @@ struct RequiresBackwardCompatibility {
   thrift.uri = "facebook.com/thrift/annotation/thrift/RequiresBackwardCompatibility",
 )
 
-// Option to serialize thrift struct in ascending field id order.
-// This can potentially make serialized data size smaller in compact protocol,
-// since compact protocol can write deltas between subsequent field ids.
-@scope.Struct
-struct ExperimentalSerializeInFieldIdOrder {} (
-  thrift.uri = "facebook.com/thrift/annotation/thrift/ExperimentalSerializeInFieldIdOrder",
-)
-
 // Indicates a definition may change in backwards incompatible ways.
 @scope.Definition
 struct Experimental {}
@@ -57,4 +49,13 @@ struct Deprecated {}
 @Experimental
 struct TerseWrite {} (
   thrift.uri = "facebook.com/thrift/annotation/thrift/TerseWrite",
+)
+
+// Option to serialize thrift struct in ascending field id order.
+// This can potentially make serialized data size smaller in compact protocol,
+// since compact protocol can write deltas between subsequent field ids.
+@scope.Struct
+@Experimental
+struct ExperimentalSerializeInFieldIdOrder {} (
+  thrift.uri = "facebook.com/thrift/annotation/thrift/ExperimentalSerializeInFieldIdOrder",
 )

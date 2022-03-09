@@ -125,83 +125,6 @@ class facebook_thrift_annotation_thrift_RequiresBackwardCompatibility implements
 
 /**
  * Original thrift struct:-
- * ExperimentalSerializeInFieldIdOrder
- */
-class facebook_thrift_annotation_thrift_ExperimentalSerializeInFieldIdOrder implements \IThriftStruct, \IThriftShapishStruct {
-  use \ThriftSerializationTrait;
-
-  const dict<int, this::TFieldSpec> SPEC = dict[
-  ];
-  const dict<string, int> FIELDMAP = dict[
-  ];
-
-  const type TConstructorShape = shape(
-  );
-
-  const type TShape = shape(
-  );
-  const int STRUCTURAL_ID = 957977401221134810;
-
-  public function __construct(  )[] {
-  }
-
-  public static function withDefaultValues()[]: this {
-    return new static();
-  }
-
-  public static function fromShape(self::TConstructorShape $shape)[]: this {
-    return new static(
-    );
-  }
-
-  public function getName()[]: string {
-    return 'ExperimentalSerializeInFieldIdOrder';
-  }
-
-  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
-      shape(
-        "name" => "thrift.ExperimentalSerializeInFieldIdOrder",
-        "is_union" => false,
-      )
-    );
-  }
-
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
-    return shape(
-      'struct' => dict[
-        'facebook_thrift_annotation_Struct' => facebook_thrift_annotation_Struct::fromShape(
-          shape(
-          )
-        ),
-      ],
-      'fields' => dict[
-      ],
-    );
-  }
-
-  public static function __fromShape(self::TShape $shape)[]: this {
-    return new static(
-    );
-  }
-
-  public function __toShape()[]: self::TShape {
-    return shape(
-    );
-  }
-  public function readFromJson(string $jsonText): void {
-    $parsed = json_decode($jsonText, true);
-
-    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
-      throw new \TProtocolException("Cannot parse the given json string.");
-    }
-
-  }
-
-}
-
-/**
- * Original thrift struct:-
  * Experimental
  */
 class facebook_thrift_annotation_thrift_Experimental implements \IThriftStruct, \IThriftShapishStruct {
@@ -409,6 +332,87 @@ class facebook_thrift_annotation_thrift_TerseWrite implements \IThriftStruct, \I
           shape(
           )
         ),
+        'facebook_thrift_annotation_Struct' => facebook_thrift_annotation_Struct::fromShape(
+          shape(
+          )
+        ),
+        'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+          shape(
+          )
+        ),
+      ],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+    );
+  }
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * ExperimentalSerializeInFieldIdOrder
+ */
+class facebook_thrift_annotation_thrift_ExperimentalSerializeInFieldIdOrder implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const type TShape = shape(
+  );
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct(  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'ExperimentalSerializeInFieldIdOrder';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "thrift.ExperimentalSerializeInFieldIdOrder",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
         'facebook_thrift_annotation_Struct' => facebook_thrift_annotation_Struct::fromShape(
           shape(
           )
