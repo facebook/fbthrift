@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.facebook.swift.service.stats;
+package com.facebook.thrift.service.stats;
 
 import static java.lang.System.currentTimeMillis;
 

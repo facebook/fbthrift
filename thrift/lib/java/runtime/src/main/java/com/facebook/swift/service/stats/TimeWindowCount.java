@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.facebook.swift.service.stats;
+package com.facebook.thrift.service.stats;
 
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.distribution.DistributionStatisticConfig;

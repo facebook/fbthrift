@@ -16,9 +16,9 @@
 
 package com.facebook.swift.service;
 
-import com.facebook.swift.service.stats.ThriftDecayCounter;
-import com.facebook.swift.service.stats.ThriftSummary;
-import com.facebook.swift.service.stats.ThriftTimer;
+import com.facebook.thrift.service.stats.ThriftDecayCounter;
+import com.facebook.thrift.service.stats.ThriftSummary;
+import com.facebook.thrift.service.stats.ThriftTimer;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.DistributionSummary;

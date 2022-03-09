@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.facebook.swift.service.stats;
+package com.facebook.thrift.service.stats;
 
 import com.facebook.nifty.core.NiftyMetrics;
 import io.airlift.stats.DecayCounter;
