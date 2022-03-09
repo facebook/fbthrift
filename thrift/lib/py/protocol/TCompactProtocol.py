@@ -355,8 +355,7 @@ class TCompactProtocol(TProtocolBase):
         ver_type = self.__readUByte()
         type = (ver_type & self.TYPE_MASK) >> self.TYPE_SHIFT_AMOUNT
         self.__version = ver_type & self.VERSION_MASK
-        if not (self.__version <= self.VERSION
-                and self.__version >= self.VERSION_LOW):
+        if not (self.__version <= self.VERSION and self.__version >= self.VERSION_LOW):
             raise TProtocolException(
                 TProtocolException.BAD_VERSION,
                 "Bad version: %d (expect %d)" % (self.__version, self.VERSION),

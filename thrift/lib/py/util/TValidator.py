@@ -19,29 +19,32 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import logging
+
 from thrift.Thrift import TType
 
-import logging
-_log = logging.getLogger('thrift.validator')
+_log = logging.getLogger("thrift.validator")
 
 import sys
+
 if sys.version_info[0] >= 3:
     basestring = str
     unicode = str
     long = int
 
+
 class TValidator:
     tinfo = {
-            # ttype: (type_name, python_type, min_value, max_value)
-            TType.BOOL: ('BOOL', bool, None, None),
-            TType.BYTE: ('BYTE', int, -128, 127),
-            TType.DOUBLE: ('DOUBLE', float, None, None),
-            TType.I16: ('I16', int, -32768, 32767),
-            TType.I32: ('I32', int, -2147483648, 2147483647),
-            TType.I64: ('I64', (int, long), None, None),
-            TType.STRING: ('STRING', basestring, None, None),
-            TType.UTF8: ('UTF8', unicode, None, None),
-            }
+        # ttype: (type_name, python_type, min_value, max_value)
+        TType.BOOL: ("BOOL", bool, None, None),
+        TType.BYTE: ("BYTE", int, -128, 127),
+        TType.DOUBLE: ("DOUBLE", float, None, None),
+        TType.I16: ("I16", int, -32768, 32767),
+        TType.I32: ("I32", int, -2147483648, 2147483647),
+        TType.I64: ("I64", (int, long), None, None),
+        TType.STRING: ("STRING", basestring, None, None),
+        TType.UTF8: ("UTF8", unicode, None, None),
+    }
 
     def __init__(self):
         self.custom_validators = {}
@@ -50,7 +53,7 @@ class TValidator:
         self.custom_validators[name] = validator
 
     def validate(self, msg):
-        if not hasattr(msg, 'thrift_spec'):
+        if not hasattr(msg, "thrift_spec"):
             _log.error("Not a valid thrift object")
             return False
 
@@ -59,15 +62,17 @@ class TValidator:
 
     def check_basic(self, name, value, thrift_type):
         if thrift_type not in self.tinfo:
-            _log.warn("%s Unrecognized thrift type %d. No validation done!",
-                    name, thrift_type)
+            _log.warn(
+                "%s Unrecognized thrift type %d. No validation done!", name, thrift_type
+            )
             return True
 
         t_name, python_type, v_min, v_max = self.tinfo[thrift_type]
         if not isinstance(value, python_type):
             error = "Value %s is not a %s" % (str(value), t_name)
-        elif (v_min is not None and value < v_min) \
-                or (v_max is not None and value > v_max):
+        elif (v_min is not None and value < v_min) or (
+            v_max is not None and value > v_max
+        ):
             error = "Value %s not within %s boundaries" % (str(value), t_name)
         else:
             error = None
@@ -79,7 +84,7 @@ class TValidator:
         return error is None
 
     def check_map(self, name, value, k_type, k_specs, v_type, v_specs):
-        _log.debug('%s - MAP check:', name)
+        _log.debug("%s - MAP check:", name)
         ok = True
         for k, v in value.items():
             if not self.check_type("%s key" % (name), k, k_type, k_specs):
@@ -89,7 +94,7 @@ class TValidator:
         return ok
 
     def check_listset(self, name, value, v_type, v_specs):
-        _log.debug('%s - LIST/SET check:', name)
+        _log.debug("%s - LIST/SET check:", name)
         ok = True
         for i, v in enumerate(value):
             if not self.check_type("%s[%d]" % (name, i), v, v_type, v_specs):
@@ -120,7 +125,7 @@ class TValidator:
         return ok
 
     def check_struct(self, name, value, specs):
-        _log.debug('%s - STRUCT check:', name)
+        _log.debug("%s - STRUCT check:", name)
         if specs is None:
             _log.error("%s - Empty thrift specs, can not be validated", name)
             return False
@@ -141,10 +146,10 @@ class TValidator:
         class_name = value.__class__.__name__
         if ok and class_name in self.custom_validators:
             if self.custom_validators[class_name](value):
-                _log.debug('%s - Custom validator for class %s OK',
-                    name, class_name)
+                _log.debug("%s - Custom validator for class %s OK", name, class_name)
             else:
-                _log.error('%s - Custom validator for class %s failed!',
-                        name, class_name)
+                _log.error(
+                    "%s - Custom validator for class %s failed!", name, class_name
+                )
                 ok = False
         return ok

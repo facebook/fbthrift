@@ -18,17 +18,17 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import unittest
-from thrift.Thrift import TApplicationException
+
 from thrift.protocol import THeaderProtocol
-from thrift.transport import TSocket
-from thrift.transport import THeaderTransport
-from thrift.util.TCppServerTestManager import TCppServerTestManager
 from thrift.server.test.slots_throwing_service import SlotsThrowingService
 from thrift.server.test.slots_throwing_service.ttypes import UserException2
+from thrift.Thrift import TApplicationException
+from thrift.transport import THeaderTransport
+from thrift.transport import TSocket
+from thrift.util.TCppServerTestManager import TCppServerTestManager
 
 
 class SlotsServiceThrowsTest(unittest.TestCase):
-
     class Handler(SlotsThrowingService.Iface):
         def throwUserException(self):
             raise UserException2("Some message")
@@ -57,7 +57,7 @@ class SlotsServiceThrowsTest(unittest.TestCase):
 
                 try:
                     client.throwUserException()
-                    self.fail('Expect to throw UserException2')
+                    self.fail("Expect to throw UserException2")
                 except UserException2:
                     pass
 
@@ -66,11 +66,11 @@ class SlotsServiceThrowsTest(unittest.TestCase):
 
                 try:
                     client.throwUncaughtException("a message!")
-                    self.fail('Expect to throw TApplicationException')
+                    self.fail("Expect to throw TApplicationException")
                 except TApplicationException:
                     pass
 
                 self.assertEquals(
-                    b"TApplicationException", transport.get_headers()[b"uex"])
-                self.assertIn(
-                    b"a message!", transport.get_headers()[b"uexw"])
+                    b"TApplicationException", transport.get_headers()[b"uex"]
+                )
+                self.assertIn(b"a message!", transport.get_headers()[b"uexw"])

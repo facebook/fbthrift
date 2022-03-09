@@ -19,10 +19,11 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from thrift.Thrift import TMessageType
 from thrift.protocol import TProtocolDecorator
+from thrift.Thrift import TMessageType
 
 SEPARATOR = ":"
+
 
 class TMultiplexedProtocol(TProtocolDecorator.TProtocolDecorator):
     def __init__(self, protocol, serviceName):
@@ -32,9 +33,7 @@ class TMultiplexedProtocol(TProtocolDecorator.TProtocolDecorator):
     def writeMessageBegin(self, name, type, seqid):
         if type == TMessageType.CALL or type == TMessageType.ONEWAY:
             self.protocol.writeMessageBegin(
-                self.serviceName + SEPARATOR + name,
-                type,
-                seqid
+                self.serviceName + SEPARATOR + name, type, seqid
             )
         else:
             self.protocol.writeMessageBegin(name, type, seqid)

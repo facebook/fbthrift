@@ -17,14 +17,14 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import gc
+import os
+import timeit
+from multiprocessing import Process, Queue
+
+import psutil
 from thrift.protocol import fastproto, TBinaryProtocol, TCompactProtocol
 from thrift.transport import TTransport
-
-import timeit
-import gc
-from multiprocessing import Process, Queue
-import os
-import psutil
 
 try:
     from guppy import hpy
@@ -57,6 +57,7 @@ proto = TCompactProtocol.TCompactProtocol(trans)
 ooe.write(proto)
 compact_buf = trans.getvalue()
 
+
 class TDevNullTransport(TTransport.TTransportBase):
     def __init__(self):
         pass
@@ -64,7 +65,9 @@ class TDevNullTransport(TTransport.TTransportBase):
     def isOpen(self):
         return True
 
+
 iters = 1000000
+
 
 def benchmark_fastproto():
     setup_write = """
@@ -78,12 +81,16 @@ def doWrite():
         utf8strings=0, protoid={0})
     trans.write(buf)
 """
-    print("Fastproto binary write = {}".format(
-        timeit.Timer('doWrite()', setup_write.format(0))
-            .timeit(number=iters)))
-    print("Fastproto compact write = {}".format(
-        timeit.Timer('doWrite()', setup_write.format(2))
-            .timeit(number=iters)))
+    print(
+        "Fastproto binary write = {}".format(
+            timeit.Timer("doWrite()", setup_write.format(0)).timeit(number=iters)
+        )
+    )
+    print(
+        "Fastproto compact write = {}".format(
+            timeit.Timer("doWrite()", setup_write.format(2)).timeit(number=iters)
+        )
+    )
 
     setup_read = """
 from __main__ import binary_buf, compact_buf
@@ -103,10 +110,17 @@ def doReadCompact():
     fastproto.decode(ooe, trans, [OneOfEach, OneOfEach.thrift_spec, False],
         utf8strings=0, protoid=2)
 """
-    print("Fastproto binary read = {}".format(
-        timeit.Timer("doReadBinary()", setup_read).timeit(number=iters)))
-    print("Fastproto compact read = {}".format(
-        timeit.Timer("doReadCompact()", setup_read).timeit(number=iters)))
+    print(
+        "Fastproto binary read = {}".format(
+            timeit.Timer("doReadBinary()", setup_read).timeit(number=iters)
+        )
+    )
+    print(
+        "Fastproto compact read = {}".format(
+            timeit.Timer("doReadCompact()", setup_read).timeit(number=iters)
+        )
+    )
+
 
 def fastproto_encode(q, protoid):
     hp = hpy()
@@ -117,10 +131,11 @@ def fastproto_encode(q, protoid):
     before = hp.heap()
     for i in range(iters):
         buf = fastproto.encode(
-                ooe,
-                [OneOfEach, OneOfEach.thrift_spec, False],
-                utf8strings=0,
-                protoid=protoid)
+            ooe,
+            [OneOfEach, OneOfEach.thrift_spec, False],
+            utf8strings=0,
+            protoid=protoid,
+        )
         trans.write(buf)
         if (i + 1) % 100000 == 0:
             q.put((i + 1, p.memory_info()))
@@ -128,8 +143,8 @@ def fastproto_encode(q, protoid):
     gc.collect()
     after = hp.heap()
     leftover = after - before
-    q.put("Memory leftover in Python after {} times: {}".format(
-        iters, leftover))
+    q.put("Memory leftover in Python after {} times: {}".format(iters, leftover))
+
 
 def fastproto_decode(q, protoid):
     hp = hpy()
@@ -137,23 +152,23 @@ def fastproto_decode(q, protoid):
 
     before = hp.heap()
     for i in range(iters):
-        trans = TTransport.TMemoryBuffer(
-                binary_buf if protoid == 0 else compact_buf)
+        trans = TTransport.TMemoryBuffer(binary_buf if protoid == 0 else compact_buf)
         ooe_local = OneOfEach()
         fastproto.decode(
-                ooe_local,
-                trans,
-                [OneOfEach, OneOfEach.thrift_spec, False],
-                utf8strings=0,
-                protoid=protoid)
+            ooe_local,
+            trans,
+            [OneOfEach, OneOfEach.thrift_spec, False],
+            utf8strings=0,
+            protoid=protoid,
+        )
         if (i + 1) % 100000 == 0:
             q.put((i + 1, p.memory_info()))
 
     gc.collect()
     after = hp.heap()
     leftover = after - before
-    q.put("Memory leftover in Python after {} times: {}".format(
-        iters, leftover))
+    q.put("Memory leftover in Python after {} times: {}".format(iters, leftover))
+
 
 def memory_usage_fastproto():
     q = Queue()
@@ -166,12 +181,12 @@ def memory_usage_fastproto():
             while True:
                 ret = q.get()
                 if isinstance(ret, tuple):
-                    print("Memory info after {} times: {}".format(
-                        ret[0], ret[1]))
+                    print("Memory info after {} times: {}".format(ret[0], ret[1]))
                 else:
                     print(ret)
                     p.join()
                     break
+
 
 if __name__ == "__main__":
     print("Starting Benchmarks")

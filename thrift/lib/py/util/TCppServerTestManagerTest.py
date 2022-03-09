@@ -20,14 +20,14 @@ from __future__ import unicode_literals
 import threading
 import unittest
 
+from thrift.protocol import THeaderProtocol
 from thrift.Thrift import (
     TApplicationException,
     TPriority,
     TProcessorEventHandler,
 )
-from thrift.protocol import THeaderProtocol
-from thrift.transport import TSocket
 from thrift.transport import THeaderTransport
+from thrift.transport import TSocket
 from thrift.transport.TTransport import TTransportException
 from thrift.util.TCppServerTestManager import TCppServerTestManager
 from thrift.util.test_service import TestService, PriorityService, SubPriorityService
@@ -108,9 +108,7 @@ class TestTCppServerTestManager(BaseTest):
             )
 
         # make sure we saw the headers in the handler's postRead
-        self.assertTrue(
-            message.startswith("headers: {b'fruit': b'orange'")
-        )
+        self.assertTrue(message.startswith("headers: {b'fruit': b'orange'"))
 
         # make sure they were reset after the method call
         self.assertTrue(handler.getRequestContext() is None)

@@ -908,7 +908,7 @@ class CompilerFailureTest(unittest.TestCase):
             "[FAILURE:foo.thrift:13] cpp.ref_type = `unique`, cpp2.ref_type = `unique` "
             "are deprecated. Please use thrift.box annotation instead in `my_field4` with @cpp.Adapter.\n"
             "[FAILURE:foo.thrift:16] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. "
-            "Please use thrift.box annotation instead in `my_field5` with @cpp.Adapter.\n"
+            "Please use thrift.box annotation instead in `my_field5` with @cpp.Adapter.\n",
         )
 
     def test_mixin_nonstruct_members(self):
@@ -1662,5 +1662,5 @@ class CompilerFailureTest(unittest.TestCase):
             "[FAILURE:foo.thrift:7] `@thrift.TerseWrite` cannot be used with qualified fields. "
             "Remove `optional` qualifier from field `field2`.\n"
             "[FAILURE:foo.thrift:9] `@thrift.TerseWrite` cannot be used with qualified fields. "
-            "Remove `required` qualifier from field `field3`.\n"
+            "Remove `required` qualifier from field `field3`.\n",
         )

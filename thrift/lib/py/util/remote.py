@@ -46,17 +46,23 @@ import pprint
 import sys
 import traceback
 
-from six.moves.urllib.parse import urlparse
 from six import string_types
+from six.moves.urllib.parse import urlparse
 from thrift import Thrift
+from thrift.protocol import (
+    TBinaryProtocol,
+    TCompactProtocol,
+    TJSONProtocol,
+    THeaderProtocol,
+    TSimpleJSONProtocol,
+)
 from thrift.transport import TTransport, TSocket, TSSLSocket, THttpClient
 from thrift.transport.THeaderTransport import THeaderTransport
-from thrift.protocol import TBinaryProtocol, TCompactProtocol, \
-    TJSONProtocol, THeaderProtocol, TSimpleJSONProtocol
 
 
 class Function(object):
     """Metadata for a service method"""
+
     def __init__(self, fn_name, svc_name, return_type, args):
         self.fn_name = fn_name
         self.svc_name = svc_name
@@ -64,25 +70,25 @@ class Function(object):
         self.args = args
 
 
-def print_functions(functions, service_names, out, local_only: bool=False) -> None:
+def print_functions(functions, service_names, out, local_only: bool = False) -> None:
     """Print all the functions available from this thrift service"""
     fns_by_service_name = {svc_name: {} for svc_name in service_names}
     for fn in functions.values():
         fns_by_service_name[fn.svc_name][fn.fn_name] = fn
 
-    svc_names = service_names[0:1] if local_only else \
-                    reversed(service_names)
+    svc_names = service_names[0:1] if local_only else reversed(service_names)
     for svc_name in svc_names:
-        out.write('Functions in %s:\n' % (svc_name,))
+        out.write("Functions in %s:\n" % (svc_name,))
         for fn_name, fn in sorted(fns_by_service_name[svc_name].items()):
             if fn.return_type is None:
-                out.write('  oneway void ')
+                out.write("  oneway void ")
             else:
-                out.write('  %s ' % (fn.return_type,))
-            out.write(fn_name + '(')
-            out.write(', '.join('%s %s' % (type, name)
-                                for type, name, true_type in fn.args))
-            out.write(')\n')
+                out.write("  %s " % (fn.return_type,))
+            out.write(fn_name + "(")
+            out.write(
+                ", ".join("%s %s" % (type, name) for type, name, true_type in fn.args)
+            )
+            out.write(")\n")
 
 
 format_to_helper = {
@@ -111,25 +117,26 @@ def add_format(name, format_type: str, help_msg=None):
         if help_msg is not None:
             format_to_help_message[format_type][name] = help_msg
         return func
+
     return builder
 
 
 def get_helper_for_format(name, format_type: str):
     helper = format_to_helper[format_type].get(name)
     if name == "help":
-        full_help_message = '\nDetailed help messages:\n\n' + '\n\n'.join(
-            '[{}] {}'.format(*x)
+        full_help_message = "\nDetailed help messages:\n\n" + "\n\n".join(
+            "[{}] {}".format(*x)
             for x in sorted(
                 format_to_help_message[format_type].items(),
                 key=lambda x: x[0],
             )
         )
         print(
-            'List of all formats: {}'.format(
-                ', '.join(format_to_helper[format_type].keys())
+            "List of all formats: {}".format(
+                ", ".join(format_to_helper[format_type].keys())
             ),
-            full_help_message if format_to_help_message[format_type] else '',
-            file=sys.stderr
+            full_help_message if format_to_help_message[format_type] else "",
+            file=sys.stderr,
         )
         sys.exit(os.EX_USAGE)
     if helper is None:
@@ -203,39 +210,43 @@ def __eval_arg(arg, thrift_types):
     # __future__ directives imported above.  In particular this ensures
     # that string literals are not treated as unicode unless explicitly
     # qualified as such.
-    code = compile(arg, '<command_line>', 'eval', 0, 1)
+    code = compile(arg, "<command_line>", "eval", 0, 1)
     return eval(code, code_globals)
 
 
 def __preprocess_input(fn, args, ctx):
     if len(args) != len(fn.args):
-        sys.stderr.write(('"%s" expects %d arguments (received %d)\n')
-                         % (fn.fn_name, len(fn.args), len(args)))
+        sys.stderr.write(
+            ('"%s" expects %d arguments (received %d)\n')
+            % (fn.fn_name, len(fn.args), len(args))
+        )
         sys.exit(os.EX_USAGE)
 
     # Get all custom Thrift types
-    return {
-        key: getattr(ctx.ttypes, key)
-        for key in dir(ctx.ttypes)
-    }
+    return {key: getattr(ctx.ttypes, key) for key in dir(ctx.ttypes)}
 
 
-@add_format("python", "input", (
-    'Evaluate every string in "function_args" using eval() so '
-    'that we can support any type of data, unless we already know '
-    'the thrift function accepts that argument as a string. In that '
-    'case, we simply pass your string without eval().'
-))
+@add_format(
+    "python",
+    "input",
+    (
+        'Evaluate every string in "function_args" using eval() so '
+        "that we can support any type of data, unless we already know "
+        "the thrift function accepts that argument as a string. In that "
+        "case, we simply pass your string without eval()."
+    ),
+)
 def __python_natural_input_handler(fn, args, ctx):
-    return __python_eval_input_handler(fn, [
-        repr(x) if y[2] == 'string' else x
-        for x, y in zip(args, fn.args)
-    ], ctx)
+    return __python_eval_input_handler(
+        fn, [repr(x) if y[2] == "string" else x for x, y in zip(args, fn.args)], ctx
+    )
 
 
-@add_format("python_eval", "input", (
-    'Similar to "python", but we evaluate everything, including strings.'
-))
+@add_format(
+    "python_eval",
+    "input",
+    ('Similar to "python", but we evaluate everything, including strings.'),
+)
 def __python_eval_input_handler(fn, args, ctx):
     thrift_types = __preprocess_input(fn, args, ctx)
     fn_args = []
@@ -251,12 +262,16 @@ def __python_eval_input_handler(fn, args, ctx):
     return fn_args
 
 
-@add_format("python_eval_stdin", "input", (
-    'Disables the command line option "function_args", and requires '
-    'you to pass parameters from stdin. The string you passed in will '
-    'be sent to eval(). And it must produce a Python list of objects, '
-    'which represents the input argument list to the thrift function.'
-))
+@add_format(
+    "python_eval_stdin",
+    "input",
+    (
+        'Disables the command line option "function_args", and requires '
+        "you to pass parameters from stdin. The string you passed in will "
+        "be sent to eval(). And it must produce a Python list of objects, "
+        "which represents the input argument list to the thrift function."
+    ),
+)
 def __python_stdin_input_handler(fn, args, ctx):
     new_args = json.load(sys.stdin)
     return __python_eval_input_handler(fn, new_args, ctx)
@@ -273,20 +288,24 @@ def __args_class_for_function(fn, service_class):
     return args_class
 
 
-@add_format("json", "input", (
-    'Please pass in only one string as "function_args". This string '
-    'is a json. Its top level must be a dictionary mapping names of '
-    'the thrift function\'s parameters to the value you want to pass '
-    'in. Make sure to represent thrift objects using the same format '
-    'as generated by pyremote (when using json output format). [Hint: '
-    'use this option with a command line tool that can operate on JSONs]'
-))
+@add_format(
+    "json",
+    "input",
+    (
+        'Please pass in only one string as "function_args". This string '
+        "is a json. Its top level must be a dictionary mapping names of "
+        "the thrift function's parameters to the value you want to pass "
+        "in. Make sure to represent thrift objects using the same format "
+        "as generated by pyremote (when using json output format). [Hint: "
+        "use this option with a command line tool that can operate on JSONs]"
+    ),
+)
 def __json_natural_input_handler(fn, args, ctx):
     if len(args) != 1:
         sys.stderr.write(
             'Error: when using "json" input format, only one cmdline argument '
-            'should be used to specify function call arguments. Store arguments '
-            'as a json list.'
+            "should be used to specify function call arguments. Store arguments "
+            "as a json list."
         )
         sys.exit(os.EX_USAGE)
     partially_decoded = json.loads(args[0])
@@ -308,10 +327,14 @@ def __json_natural_input_handler(fn, args, ctx):
     return ans
 
 
-@add_format("json_stdin", "input", (
-    'Similar to "json". But this disables the command line option "function_args" '
-    'and accepts one json string from stdin.'
-))
+@add_format(
+    "json_stdin",
+    "input",
+    (
+        'Similar to "json". But this disables the command line option "function_args" '
+        "and accepts one json string from stdin."
+    ),
+)
 def __json_stdin_input_handler(fn, args, ctx):
     return __json_natural_input_handler(fn, [sys.stdin.read()], ctx)
 
@@ -325,11 +348,7 @@ def __is_thrift_struct(obj) -> bool:
 
 
 def __get_template_for_struct(struct_type):
-    fields = [
-        (x[1], x[2], x[3]) for x in
-        struct_type.thrift_spec
-        if x is not None
-    ]
+    fields = [(x[1], x[2], x[3]) for x in struct_type.thrift_spec if x is not None]
     ans = {}
     for type1, name, type2 in fields:
         if type1 != Thrift.TType.STRUCT:
@@ -347,14 +366,16 @@ def get_json_template_obj(name, functions, service_class):
         sys.exit(os.EX_USAGE)
     if fn is not None:
         print(
-            "Treating", name,
+            "Treating",
+            name,
             "as a function. Generating template for its arguments...",
             file=sys.stderr,
         )
         ans_class = __args_class_for_function(fn, service_class)
     elif struct is not None:
         print(
-            "Treating", name,
+            "Treating",
+            name,
             "as a structure. Generating template for it...",
             file=sys.stderr,
         )
@@ -363,8 +384,9 @@ def get_json_template_obj(name, functions, service_class):
 
 
 class RemoteClient(object):
-    def __init__(self, functions, service_names, service_class,
-                 ttypes, print_usage, default_port):
+    def __init__(
+        self, functions, service_names, service_class, ttypes, print_usage, default_port
+    ):
         self.functions = functions
         self.service_names = service_names
         self.service_class = service_class
@@ -373,15 +395,14 @@ class RemoteClient(object):
         self.default_port = default_port
 
     def _exit(self, error_message=None, status=os.EX_USAGE, err_out=sys.stderr):
-        """ Report an error, show help information, and exit the program """
+        """Report an error, show help information, and exit the program"""
         if error_message is not None:
             print("Error: %s" % error_message, file=err_out)
 
         if status is os.EX_USAGE:
             self.print_usage(err_out)
 
-        if (self.functions is not None and
-                status in {os.EX_USAGE, os.EX_CONFIG}):
+        if self.functions is not None and status in {os.EX_USAGE, os.EX_CONFIG}:
             print_functions(self.functions, self.service_names, err_out)
 
         sys.exit(status)
@@ -392,8 +413,7 @@ class RemoteClient(object):
 
     def _get_client(self, options):
         """Get the thrift client that will be used to make method calls"""
-        raise TypeError("_get_client should be called on "
-                        "a subclass of RemoteClient")
+        raise TypeError("_get_client should be called on " "a subclass of RemoteClient")
 
     def _close_client(self):
         """After making the method call, do any cleanup work"""
@@ -403,8 +423,9 @@ class RemoteClient(object):
         """Populate instance data using commandline arguments"""
         fn_name = cmdline_args.function_name
         if fn_name not in self.functions:
-            self._exit(error_message='Unknown function "%s"' % fn_name,
-                       status=os.EX_CONFIG)
+            self._exit(
+                error_message='Unknown function "%s"' % fn_name, status=os.EX_CONFIG
+            )
         else:
             function = self.functions[fn_name]
 
@@ -426,7 +447,7 @@ class RemoteClient(object):
         try:
             ret = method(*fn_args)
         except Thrift.TException as e:
-            ret = 'Exception:\n' + str(e)
+            ret = "Exception:\n" + str(e)
 
         cmdline_args.output_format(ret)
 
@@ -448,62 +469,56 @@ class RemoteClient(object):
 def ssl_parsed_bool(arg: bool) -> bool:
     if isinstance(arg, bool):
         return arg
-    if arg in ('true', '1'):
+    if arg in ("true", "1"):
         return True
-    elif arg in ('false', '0'):
+    elif arg in ("false", "0"):
         return False
     else:
-        raise argparse.ArgumentTypeError('argument must be one of true, 1, false, or 0')
+        raise argparse.ArgumentTypeError("argument must be one of true, 1, false, or 0")
+
 
 class RemoteTransportClient(RemoteClient):
     """Abstract class for clients with transport manually opened and closed"""
+
     CMDLINE_OPTIONS = [
         (
-            ('-f', '--framed'),
+            ("-f", "--framed"),
+            {"action": "store_true", "default": False, "help": "Use framed transport"},
+        ),
+        (
+            ("-s", "--ssl"),
             {
-                'action': 'store_true',
-                'default': False,
-                'help': 'Use framed transport'
-            }
-        ), (
-            ('-s', '--ssl'),
+                "action": "store",
+                "type": ssl_parsed_bool,
+                "default": True,
+                "const": True,
+                "nargs": "?",
+                "help": "Use SSL socket",
+            },
+        ),
+        (
+            ("-U", "--unframed"),
             {
-                'action': 'store',
-                'type': ssl_parsed_bool,
-                'default': True,
-                'const': True,
-                'nargs': '?',
-                'help': 'Use SSL socket'
-            }
-        ), (
-            ('-U', '--unframed'),
+                "action": "store_true",
+                "default": False,
+                "help": "Use unframed transport",
+            },
+        ),
+        (
+            ("-j", "--json"),
+            {"action": "store_true", "default": False, "help": "Use TJSONProtocol"},
+        ),
+        (
+            ("-c", "--compact"),
+            {"action": "store_true", "default": False, "help": "Use TCompactProtocol"},
+        ),
+        (
+            ("-H", "--headers"),
             {
-                'action': 'store_true',
-                'default': False,
-                'help': 'Use unframed transport'
-            }
-        ), (
-            ('-j', '--json'),
-            {
-                'action': 'store_true',
-                'default': False,
-                'help': 'Use TJSONProtocol'
-            }
-        ), (
-            ('-c', '--compact'),
-            {
-                'action': 'store_true',
-                'default': False,
-                'help': 'Use TCompactProtocol'
-            }
-        ), (
-            ('-H', '--headers'),
-            {
-                'action': 'store',
-                'metavar': 'HEADERS_DICT',
-                'help':
-                'Python code to eval() into a dict of write headers',
-            }
+                "action": "store",
+                "metavar": "HEADERS_DICT",
+                "help": "Python code to eval() into a dict of write headers",
+            },
         ),
     ]
 
@@ -527,19 +542,22 @@ class RemoteTransportClient(RemoteClient):
                     parsed_headers = eval(options.headers)
                 except Exception:
                     self._exit(
-                        error_message='Request headers (--headers) argument'
-                                      ' failed eval')
+                        error_message="Request headers (--headers) argument"
+                        " failed eval"
+                    )
                 if not isinstance(parsed_headers, dict):
                     self._exit(
-                        error_message='Request headers (--headers) argument'
-                                      ' must evaluate to a dict')
+                        error_message="Request headers (--headers) argument"
+                        " must evaluate to a dict"
+                    )
                 for header_name, header_value in parsed_headers.items():
                     transport.set_header(header_name, header_value)
             protocol = THeaderProtocol.THeaderProtocol(transport)
         else:
-            self._exit(error_message=('No valid protocol '
-                                      'specified for %s' % (type(self))),
-                       status=os.EX_USAGE)
+            self._exit(
+                error_message=("No valid protocol " "specified for %s" % (type(self))),
+                status=os.EX_USAGE,
+            )
 
         transport.open()
         self._transport = transport
@@ -554,35 +572,39 @@ class RemoteTransportClient(RemoteClient):
     def _validate_options(self, options):
         super(RemoteTransportClient, self)._validate_options(options)
         if options.framed and options.unframed:
-            self._exit(error_message='cannot specify both '
-                       '--framed and --unframed')
+            self._exit(error_message="cannot specify both " "--framed and --unframed")
 
     def _parse_host_port(self, value, default_port):
-        parts = value.rsplit(':', 1)
+        parts = value.rsplit(":", 1)
         if len(parts) == 1:
             return (parts[0], default_port)
         try:
             port = int(parts[1])
         except ValueError:
-            raise ValueError('invalid port: ' + parts[1])
+            raise ValueError("invalid port: " + parts[1])
         return (parts[0], port)
 
 
 class RemoteHostClient(RemoteTransportClient):
-    SELECTOR_OPTIONS = 'host'
-    CMDLINE_OPTIONS = list(RemoteTransportClient.CMDLINE_OPTIONS) + [(
-        ('-h', '--host'),
-        {
-            'action': 'store',
-            'metavar': 'HOST[:PORT]',
-            'help': 'The host and port to connect to'
-        }
-    )]
+    SELECTOR_OPTIONS = "host"
+    CMDLINE_OPTIONS = list(RemoteTransportClient.CMDLINE_OPTIONS) + [
+        (
+            ("-h", "--host"),
+            {
+                "action": "store",
+                "metavar": "HOST[:PORT]",
+                "help": "The host and port to connect to",
+            },
+        )
+    ]
 
     def _get_client(self, options):
         host, port = self._parse_host_port(options.host, self.default_port)
-        socket = (TSSLSocket.TSSLSocket(host, port) if options.ssl
-                  else TSocket.TSocket(host, port))
+        socket = (
+            TSSLSocket.TSSLSocket(host, port)
+            if options.ssl
+            else TSocket.TSocket(host, port)
+        )
         if options.framed:
             transport = TTransport.TFramedTransport(socket)
         else:
@@ -591,14 +613,13 @@ class RemoteHostClient(RemoteTransportClient):
 
 
 class RemoteHttpClient(RemoteTransportClient):
-    SELECTOR_OPTIONS = 'url'
-    CMDLINE_OPTIONS = list(RemoteTransportClient.CMDLINE_OPTIONS) + [(
-        ('-u', '--url'),
-        {
-            'action': 'store',
-            'help': 'The URL to connect to, for HTTP transport'
-        }
-    )]
+    SELECTOR_OPTIONS = "url"
+    CMDLINE_OPTIONS = list(RemoteTransportClient.CMDLINE_OPTIONS) + [
+        (
+            ("-u", "--url"),
+            {"action": "store", "help": "The URL to connect to, for HTTP transport"},
+        )
+    ]
 
     def _get_client(self, options):
         url = urlparse(options.url)
@@ -610,19 +631,16 @@ class RemoteHttpClient(RemoteTransportClient):
         """Check if there are any option inconsistencies, and exit if so"""
         super(RemoteHttpClient, self)._validate_options(options)
         if not any([options.unframed, options.json]):
-            self._exit(error_message='can only specify --url with '
-                       '--unframed or --json')
+            self._exit(
+                error_message="can only specify --url with " "--unframed or --json"
+            )
 
 
 class RemoteUNIXDomainClient(RemoteTransportClient):
-    SELECTOR_OPTIONS = 'path'
-    CMDLINE_OPTIONS = list(RemoteTransportClient.CMDLINE_OPTIONS) + [(
-        ('-p', '--path'),
-        {
-            'action': 'store',
-            'help': 'The path of the socket to use'
-        }
-    )]
+    SELECTOR_OPTIONS = "path"
+    CMDLINE_OPTIONS = list(RemoteTransportClient.CMDLINE_OPTIONS) + [
+        (("-p", "--path"), {"action": "store", "help": "The path of the socket to use"})
+    ]
 
     def _get_client(self, options):
         socket = TSocket.TSocket(unix_socket=options.path)
@@ -657,7 +675,7 @@ class Remote(object):
             for arg in args:
                 if arg in cls.__occupied_args:
                     if cls.__occupied_args[arg] != kwargs:
-                        raise ValueError('Redefinition of {}'.format(arg))
+                        raise ValueError("Redefinition of {}".format(arg))
                     is_repeated = True
             if is_repeated:
                 continue
@@ -667,120 +685,144 @@ class Remote(object):
     @classmethod
     def register_client_type(cls, client_type):
         if not issubclass(client_type, RemoteClient):
-            raise TypeError(('Remote client must be of type RemoteClient. '
-                             'Got type %s.' % client_type.__name__))
+            raise TypeError(
+                (
+                    "Remote client must be of type RemoteClient. "
+                    "Got type %s." % client_type.__name__
+                )
+            )
         if client_type is RemoteClient:
-            raise TypeError(('Remote client must be a strict subclass '
-                             'of RemoteClient.'))
-        if not hasattr(client_type, 'SELECTOR_OPTIONS'):
-            raise AttributeError(('Remote client must have a '
-                                  'SELECTOR_OPTIONS field.'))
+            raise TypeError(
+                ("Remote client must be a strict subclass " "of RemoteClient.")
+            )
+        if not hasattr(client_type, "SELECTOR_OPTIONS"):
+            raise AttributeError(
+                ("Remote client must have a " "SELECTOR_OPTIONS field.")
+            )
 
         cls.__client_types.add(client_type)
         cls.register_cmdline_options(client_type.CMDLINE_OPTIONS)
 
     @classmethod
     def _exit_usage_error(cls, message):
-        sys.stderr.write('ERROR: ' + message + '\n')
+        sys.stderr.write("ERROR: " + message + "\n")
         cls.__parser.print_help(sys.stderr)
         sys.exit(os.EX_USAGE)
 
     @classmethod
     def _get_client_type(cls, options):
-        matching_types = [ct for ct in cls.__client_types if
-                          getattr(options, ct.SELECTOR_OPTIONS) is not None]
+        matching_types = [
+            ct
+            for ct in cls.__client_types
+            if getattr(options, ct.SELECTOR_OPTIONS) is not None
+        ]
         if len(matching_types) != 1:
-            cls._exit_usage_error('Must specify exactly one of [%s]' % (
-                ', '.join('--%s' % ct.SELECTOR_OPTIONS
-                          for ct in cls.__client_types)))
+            cls._exit_usage_error(
+                "Must specify exactly one of [%s]"
+                % (", ".join("--%s" % ct.SELECTOR_OPTIONS for ct in cls.__client_types))
+            )
         else:
             return matching_types[0]
 
     @classmethod
     def _parse_cmdline_options(cls, argv):
-        cls.register_cmdline_options((
+        cls.register_cmdline_options(
             (
-                ('-ifmt', '--input-format'),
-                {
-                    'action': 'store',
-                    'default': 'python',
-                    'type': lambda x: get_helper_for_format(x, "input"),
-                    'help': (
-                        'Change the format for function_args. Generally speaking, '
-                        'there are two main formats: python_* and json_*. Defaults '
-                        'to "python". Use -ifmt help for entire list of available '
-                        'formats.'
+                (
+                    ("-ifmt", "--input-format"),
+                    {
+                        "action": "store",
+                        "default": "python",
+                        "type": lambda x: get_helper_for_format(x, "input"),
+                        "help": (
+                            "Change the format for function_args. Generally speaking, "
+                            "there are two main formats: python_* and json_*. Defaults "
+                            'to "python". Use -ifmt help for entire list of available '
+                            "formats."
+                        ),
+                    },
+                ),
+                (
+                    (
+                        "-ofmt",
+                        "--output-format",
                     ),
-                },
-            ),
-            (
-                ('-ofmt', '--output-format', ),
-                {
-                    'action': 'store',
-                    'default': 'python',
-                    'type': lambda x: get_helper_for_format(x, "output"),
-                    'help': (
-                        'Change the output format for the return value. The '
-                        'default is "python", which direclty prints out strings '
-                        'and pprint() other types. Available formats: {}.'
-                    ).format(','.join(format_to_helper["output"].keys()))
-                },
-            ),
-            (
-                ('--help', ),
-                {'action': 'help'},
-            ),
-            (
-                ('-la', '--list-all-functions'),
-                {'action': 'store_true'},
-            ),
-            (
-                ('-l', '--list-functions', ),
-                {'action': 'store_true'},
-            ),
-            (
-                ('-g', '--generate-template'),
-                {
-                    'action': 'store',
-                    'metavar': 'THRIFT_STRUCT_OR_FUNCTION_NAME',
-                    'help': (
-                        'Generate a template for a thrift struct, OR, arguments of '
-                        'a function call. Currently it supports only json format. '
-                        'No need to specify function_name.'
-                    )
-                }
-            ),
-            (
-                ('function_name', ),
-                {'nargs': '?', 'help': 'Name of the remote function to call'},
-            ),
-            (
-                ('function_args', ),
-                {'nargs': '*', 'help': (
-                    'Arguments for the remote function. Look at --input-format '
-                    'for more details.'
-                )},
-            ),
-        ))
+                    {
+                        "action": "store",
+                        "default": "python",
+                        "type": lambda x: get_helper_for_format(x, "output"),
+                        "help": (
+                            "Change the output format for the return value. The "
+                            'default is "python", which direclty prints out strings '
+                            "and pprint() other types. Available formats: {}."
+                        ).format(",".join(format_to_helper["output"].keys())),
+                    },
+                ),
+                (
+                    ("--help",),
+                    {"action": "help"},
+                ),
+                (
+                    ("-la", "--list-all-functions"),
+                    {"action": "store_true"},
+                ),
+                (
+                    (
+                        "-l",
+                        "--list-functions",
+                    ),
+                    {"action": "store_true"},
+                ),
+                (
+                    ("-g", "--generate-template"),
+                    {
+                        "action": "store",
+                        "metavar": "THRIFT_STRUCT_OR_FUNCTION_NAME",
+                        "help": (
+                            "Generate a template for a thrift struct, OR, arguments of "
+                            "a function call. Currently it supports only json format. "
+                            "No need to specify function_name."
+                        ),
+                    },
+                ),
+                (
+                    ("function_name",),
+                    {"nargs": "?", "help": "Name of the remote function to call"},
+                ),
+                (
+                    ("function_args",),
+                    {
+                        "nargs": "*",
+                        "help": (
+                            "Arguments for the remote function. Look at --input-format "
+                            "for more details."
+                        ),
+                    },
+                ),
+            )
+        )
         try:
             return cls.__parser.parse_args(argv[1:])
         except BaseException:
             sys.exit(os.EX_USAGE)
 
     @classmethod
-    def run(cls, functions, service_names, service_class,
-            ttypes, argv, default_port=9090):
+    def run(
+        cls, functions, service_names, service_class, ttypes, argv, default_port=9090
+    ):
         args = cls._parse_cmdline_options(argv)
-        conflicts = [x for x in [
-            "list_all_functions",
-            "list_functions",
-            "generate_template",
-        ] if getattr(args, x)]
+        conflicts = [
+            x
+            for x in [
+                "list_all_functions",
+                "list_functions",
+                "generate_template",
+            ]
+            if getattr(args, x)
+        ]
         if len(conflicts) > 1:
             cls._exit_usage_error(
-                'Please do not specify all of {} at once.'.format(
-                    ','.join(conflicts)
-                )
+                "Please do not specify all of {} at once.".format(",".join(conflicts))
             )
         if args.list_all_functions:
             print_functions(functions, service_names, sys.stdout, local_only=False)
@@ -789,7 +831,7 @@ class Remote(object):
             print_functions(functions, service_names, sys.stdout, local_only=True)
             return
         if args.function_name is None:
-            cls._exit_usage_error('Please specify function_name.')
+            cls._exit_usage_error("Please specify function_name.")
         if args.generate_template:
             ans = get_json_template_obj(
                 args.generate_template, functions, service_class
@@ -797,8 +839,14 @@ class Remote(object):
             print(json.dumps(ans))
             return
         client_type = cls._get_client_type(args)
-        client = client_type(functions, service_names, service_class, ttypes,
-                             cls.__parser.print_help, default_port)
+        client = client_type(
+            functions,
+            service_names,
+            service_class,
+            ttypes,
+            cls.__parser.print_help,
+            default_port,
+        )
         client.run(args)
 
 

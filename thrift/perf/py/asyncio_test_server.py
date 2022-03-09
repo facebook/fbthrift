@@ -12,27 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from argparse import ArgumentParser
 import asyncio
 import sys
-
-from thrift.server.TAsyncioServer import ThriftAsyncServerFactory
+from argparse import ArgumentParser
 
 from apache.thrift.test.asyncio.asyncio_load_handler import LoadHandler
+from thrift.server.TAsyncioServer import ThriftAsyncServerFactory
 
 
 def main():
     parser = ArgumentParser()
-    parser.add_argument(
-        '--port',
-        default=1234,
-        type=int,
-        help='Port to run on')
+    parser.add_argument("--port", default=1234, type=int, help="Port to run on")
     options = parser.parse_args()
     loop = asyncio.get_event_loop()
     handler = LoadHandler()
     server = loop.run_until_complete(
-        ThriftAsyncServerFactory(handler, port=options.port, loop=loop))
+        ThriftAsyncServerFactory(handler, port=options.port, loop=loop)
+    )
     print("Running Asyncio server on port {}".format(options.port))
 
     try:
@@ -43,5 +39,6 @@ def main():
         server.close()
         loop.close()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     sys.exit(main())

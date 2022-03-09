@@ -19,38 +19,40 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import sys, glob, json
-sys.path.insert(0, './gen-py')
-lib_path = glob.glob('../../lib/py/build/lib.*')
+
+sys.path.insert(0, "./gen-py")
+lib_path = glob.glob("../../lib/py/build/lib.*")
 if lib_path:
     sys.path.insert(0, lib_path[0])
 
 from ThriftTest.ttypes import *
-from thrift.transport import TTransport
-from thrift.transport import TSocket
+import unittest
+
 from thrift.protocol import TBinaryProtocol
 from thrift.protocol import TCompactProtocol
 from thrift.protocol import THeaderProtocol
 from thrift.protocol import TJSONProtocol
 from thrift.protocol import TSimpleJSONProtocol
+from thrift.transport import TSocket
+from thrift.transport import TTransport
 from thrift.util import Serializer
 
-import unittest
 
 def bytes_comp(ut, seq1, seq2):
     if not isinstance(seq1, bytes):
-        seq1 = seq1.encode('utf-8')
+        seq1 = seq1.encode("utf-8")
     if not isinstance(seq2, bytes):
-        seq2 = seq2.encode('utf-8')
+        seq2 = seq2.encode("utf-8")
     ut.assertEquals(seq1, seq2)
 
-class AbstractTest():
 
+class AbstractTest:
     def setUp(self):
         self.v1obj = VersioningTestV1(
             begin_in_both=12345,
-            old_string='aaa',
+            old_string="aaa",
             end_in_both=54321,
-            )
+        )
 
         self.v2obj = VersioningTestV2(
             begin_in_both=12345,
@@ -65,11 +67,12 @@ class AbstractTest():
             newmap={1: 2, 2: 3},
             newstring="Hola!",
             # json cannot serialize bytes in python 3
-            newunicodestring=u"any\x7f\xff".encode('utf-8')
-                    if sys.version_info[0] < 3 else u"any\x7f\xff",
+            newunicodestring="any\x7f\xff".encode("utf-8")
+            if sys.version_info[0] < 3
+            else "any\x7f\xff",
             newbool=True,
             end_in_both=54321,
-            )
+        )
 
         self.sjtObj = SimpleJSONTestStruct(
             m={
@@ -117,17 +120,22 @@ class AbstractTest():
         obj = self._deserialize(VersioningTestV2, self._serialize(self.v2obj))
         self.assertEquals(obj.newdouble, self.v2obj.newdouble)
 
+
 class NormalBinaryTest(AbstractTest, unittest.TestCase):
     protocol_factory = TBinaryProtocol.TBinaryProtocolFactory()
+
 
 class AcceleratedBinaryTest(AbstractTest, unittest.TestCase):
     protocol_factory = TBinaryProtocol.TBinaryProtocolAcceleratedFactory()
 
+
 class CompactTest(AbstractTest, unittest.TestCase):
     protocol_factory = TCompactProtocol.TCompactProtocolFactory()
 
+
 class AcceleratedCompactTest(AbstractTest, unittest.TestCase):
     protocol_factory = TCompactProtocol.TCompactProtocolAcceleratedFactory()
+
 
 class AcceleratedFramedTest(unittest.TestCase):
     def testSplit(self):
@@ -137,8 +145,7 @@ class AcceleratedFramedTest(unittest.TestCase):
         play nicely together when a read spans a frame"""
 
         protocol_factory = TBinaryProtocol.TBinaryProtocolAcceleratedFactory()
-        bigstring = "".join(chr(byte)
-                for byte in range(ord("a"), ord("z") + 1))
+        bigstring = "".join(chr(byte) for byte in range(ord("a"), ord("z") + 1))
 
         databuf = TTransport.TMemoryBuffer()
         prot = protocol_factory.getProtocol(databuf)
@@ -164,8 +171,10 @@ class AcceleratedFramedTest(unittest.TestCase):
         bytes_comp(self, prot.readString(), bigstring)
         self.assertEqual(prot.readI16(), 24)
 
+
 class SimpleJSONTest(AbstractTest):
     protocol_factory = TSimpleJSONProtocol.TSimpleJSONProtocolFactory()
+
 
 class JSONProtocolTest(AbstractTest, unittest.TestCase):
     protocol_factory = TJSONProtocol.TJSONProtocolFactory()
@@ -176,13 +185,15 @@ class JSONProtocolTest(AbstractTest, unittest.TestCase):
         # Old protocol should be able to deserialize both valid and invalid
         # JSON.
         protocol_factory = TJSONProtocol.TJSONProtocolFactory(validJSON=False)
-        Serializer.deserialize(protocol_factory,
-            '{"1":{"rec":{}}"2":{"rec":{}}}', NestedStructs())
-        Serializer.deserialize(protocol_factory,
-            '{"1":{"rec":{}},"2":{"rec":{}}}', NestedStructs())
+        Serializer.deserialize(
+            protocol_factory, '{"1":{"rec":{}}"2":{"rec":{}}}', NestedStructs()
+        )
+        Serializer.deserialize(
+            protocol_factory, '{"1":{"rec":{}},"2":{"rec":{}}}', NestedStructs()
+        )
+
 
 class HeaderDefaultFactory(THeaderProtocol.THeaderProtocolFactory):
-
     def __init__(self, default_protocol):
         super(HeaderDefaultFactory, self).__init__()
         self.defaultProtocol = default_protocol
@@ -193,23 +204,26 @@ class HeaderDefaultFactory(THeaderProtocol.THeaderProtocolFactory):
         proto.reset_protocol()
         return proto
 
-class HeaderTest(AbstractTest):
 
+class HeaderTest(AbstractTest):
     def _serialize(self, obj):
         return Serializer.serialize(self.serialize_factory, obj)
 
     def _deserialize(self, objtype, data):
         return Serializer.deserialize(self.deserialize_factory, data, objtype())
 
+
 class HeaderCompactToCompactTest(HeaderTest, unittest.TestCase):
     serialize_factory = deserialize_factory = HeaderDefaultFactory(
         THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL
     )
 
+
 class HeaderBinaryToBinaryTest(HeaderTest, unittest.TestCase):
     serialize_factory = deserialize_factory = HeaderDefaultFactory(
         THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL
     )
+
 
 class HeaderCompactToBinaryTest(HeaderTest, unittest.TestCase):
     serialize_factory = HeaderDefaultFactory(
@@ -218,6 +232,8 @@ class HeaderCompactToBinaryTest(HeaderTest, unittest.TestCase):
     deserialize_factory = HeaderDefaultFactory(
         THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL
     )
+
+
 class HeaderBinaryToCompactTest(HeaderTest, unittest.TestCase):
     serialize_factory = HeaderDefaultFactory(
         THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL
@@ -225,11 +241,15 @@ class HeaderBinaryToCompactTest(HeaderTest, unittest.TestCase):
     deserialize_factory = HeaderDefaultFactory(
         THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL
     )
+
+
 class HeaderBinaryToDefault(HeaderTest, unittest.TestCase):
     serialize_factory = HeaderDefaultFactory(
         THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL
     )
     deserialize_factory = THeaderProtocol.THeaderProtocolFactory()
+
+
 class HeaderCompactToDefault(HeaderTest, unittest.TestCase):
     serialize_factory = HeaderDefaultFactory(
         THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL
@@ -258,6 +278,6 @@ def suite():
 
     return suite
 
+
 if __name__ == "__main__":
-    unittest.main(defaultTest="suite",
-            testRunner=unittest.TextTestRunner(verbosity=2))
+    unittest.main(defaultTest="suite", testRunner=unittest.TextTestRunner(verbosity=2))

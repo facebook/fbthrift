@@ -27,19 +27,21 @@ import sys
 import warnings
 
 if sys.version_info[0] >= 3:
+    from http import client
     from io import BytesIO as StringIO
     from urllib import parse
-    from http import client
+
     # pyre-fixme[11]: Annotation `parse` is not defined as a type.
     urlparse = parse
     urllib = parse
     # pyre-fixme[11]: Annotation `client` is not defined as a type.
     httplib = client
 else:
-    from cStringIO import StringIO
-    import urlparse
     import httplib  # @manual
     import urllib
+    import urlparse
+    from cStringIO import StringIO
+
 
 class THttpClient(TTransportBase):
 
@@ -57,26 +59,27 @@ class THttpClient(TTransportBase):
             warnings.warn(
                 "Please use the THttpClient('http://host:port/path') syntax",
                 DeprecationWarning,
-                stacklevel=2)
+                stacklevel=2,
+            )
             self.host = uri_or_host
             self.http_host = self.host
             self.port = port
             assert path
             self.path = path
-            self.scheme = 'http'
+            self.scheme = "http"
         else:
             parsed = urlparse.urlparse(uri_or_host)
             self.scheme = parsed.scheme
-            assert self.scheme in ('http', 'https')
-            if self.scheme == 'http':
+            assert self.scheme in ("http", "https")
+            if self.scheme == "http":
                 self.port = parsed.port or httplib.HTTP_PORT
-            elif self.scheme == 'https':
+            elif self.scheme == "https":
                 self.port = parsed.port or httplib.HTTPS_PORT
             self.host = parsed.hostname
             self.http_host = parsed.netloc
             self.path = parsed.path
             if parsed.query:
-                self.path += '?%s' % parsed.query
+                self.path += "?%s" % parsed.query
         self.__wbuf = StringIO()
         self.__http = None
         self.__timeout = None
@@ -84,13 +87,14 @@ class THttpClient(TTransportBase):
         self.ssl_context = ssl_context
 
     def open(self):
-        if self.scheme == 'http':
-            self.__http = httplib.HTTPConnection(self.host, self.port,
-                                                 timeout=self.__timeout)
+        if self.scheme == "http":
+            self.__http = httplib.HTTPConnection(
+                self.host, self.port, timeout=self.__timeout
+            )
         else:
-            self.__http = httplib.HTTPSConnection(self.host, self.port,
-                                                  context=self.ssl_context,
-                                                  timeout=self.__timeout)
+            self.__http = httplib.HTTPSConnection(
+                self.host, self.port, context=self.ssl_context, timeout=self.__timeout
+            )
 
     def close(self):
         self.__http.close()
@@ -129,21 +133,20 @@ class THttpClient(TTransportBase):
         self.__wbuf = StringIO()
 
         # HTTP request
-        self.__http.putrequest('POST', self.path, skip_host=True)
+        self.__http.putrequest("POST", self.path, skip_host=True)
 
-        if not self.__custom_headers or 'Host' not in self.__custom_headers:
-            self.__http.putheader('Host', self.http_host)
+        if not self.__custom_headers or "Host" not in self.__custom_headers:
+            self.__http.putheader("Host", self.http_host)
 
-        self.__http.putheader('Content-Type', 'application/x-thrift')
-        self.__http.putheader('Content-Length', str(len(data)))
+        self.__http.putheader("Content-Type", "application/x-thrift")
+        self.__http.putheader("Content-Length", str(len(data)))
 
-        if not self.__custom_headers or 'User-Agent' not in \
-                self.__custom_headers:
-            user_agent = 'Python/THttpClient'
+        if not self.__custom_headers or "User-Agent" not in self.__custom_headers:
+            user_agent = "Python/THttpClient"
             script = os.path.basename(sys.argv[0])
             if script:
-                user_agent = '%s (%s)' % (user_agent, urllib.quote(script))
-            self.__http.putheader('User-Agent', user_agent)
+                user_agent = "%s (%s)" % (user_agent, urllib.quote(script))
+            self.__http.putheader("User-Agent", user_agent)
 
         if self.__custom_headers:
             if sys.version_info[0] >= 3:
@@ -162,7 +165,6 @@ class THttpClient(TTransportBase):
             raise TTransportException(TTransportException.NOT_OPEN, str(e))
         except Exception as e:
             raise TTransportException(TTransportException.UNKNOWN, str(e))
-
 
         # Get reply to flush the request
         self.response = self.__http.getresponse()

@@ -19,8 +19,9 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import sys, glob
-sys.path.insert(0, './gen-py')
-lib_path = glob.glob('../../lib/py/build/lib.*')
+
+sys.path.insert(0, "./gen-py")
+lib_path = glob.glob("../../lib/py/build/lib.*")
 if lib_path:
     sys.path.insert(0, lib_path[0])
 
@@ -29,14 +30,16 @@ if sys.version_info[0] >= 3:
 
 from ThriftTest import ThriftTest
 from ThriftTest.ttypes import *
-from thrift.transport import TTransport
-from thrift.transport import TSocket
-from thrift.protocol import TBinaryProtocol
-import unittest
-import time
-import socket
 import random
+import socket
+import time
+import unittest
 from optparse import OptionParser
+
+from thrift.protocol import TBinaryProtocol
+from thrift.transport import TSocket
+from thrift.transport import TTransport
+
 
 class TimeoutTest(unittest.TestCase):
     def setUp(self):
@@ -45,7 +48,7 @@ class TimeoutTest(unittest.TestCase):
                 # find a port we can use
                 self.listen_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 self.port = random.randint(10000, 30000)
-                self.listen_sock.bind(('localhost', self.port))
+                self.listen_sock.bind(("localhost", self.port))
                 self.listen_sock.listen(5)
                 break
             except Exception:
@@ -58,7 +61,7 @@ class TimeoutTest(unittest.TestCase):
         try:
             leaky = []
             for _ in xrange(100):
-                socket = TSocket.TSocket('localhost', self.port)
+                socket = TSocket.TSocket("localhost", self.port)
                 socket.setTimeout(10)
                 socket.open()
                 leaky.append(socket)
@@ -69,7 +72,7 @@ class TimeoutTest(unittest.TestCase):
         starttime = time.time()
 
         try:
-            socket = TSocket.TSocket('localhost', self.port)
+            socket = TSocket.TSocket("localhost", self.port)
             socket.setTimeout(10)
             socket.open()
             self.listen_sock.accept()
@@ -79,11 +82,13 @@ class TimeoutTest(unittest.TestCase):
         except Exception:
             self.assert_(time.time() - starttime < 5.0)
 
+
 def suite():
     suite = unittest.TestSuite()
     loader = unittest.TestLoader()
     suite.addTest(loader.loadTestsFromTestCase(TimeoutTest))
     return suite
+
 
 if __name__ == "__main__":
     testRunner = unittest.TextTestRunner(verbosity=2)

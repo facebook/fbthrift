@@ -18,8 +18,10 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import threading
-from thrift.Thrift import TProcessor
+
 from thrift.server.TCppServer import TCppServer
+from thrift.Thrift import TProcessor
+
 
 class TCppServerTestManager(object):
     """
@@ -134,8 +136,7 @@ class TCppServerTestManager(object):
                 self.__server.cleanUp()
 
     def __is_handler(self, obj):
-        return hasattr(obj, '_processor_type') \
-                and not self.__is_processor(obj)
+        return hasattr(obj, "_processor_type") and not self.__is_processor(obj)
 
     def __is_processor(self, obj):
         return isinstance(obj, TProcessor)

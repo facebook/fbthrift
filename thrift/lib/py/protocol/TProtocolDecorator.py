@@ -22,7 +22,8 @@ from __future__ import unicode_literals
 from thrift.protocol.TProtocol import TProtocolBase
 from types import *
 
-class TProtocolDecorator():
+
+class TProtocolDecorator:
     def __init__(self, protocol):
         TProtocolBase(protocol)
         self.protocol = protocol
@@ -30,8 +31,13 @@ class TProtocolDecorator():
     def __getattr__(self, name):
         if hasattr(self.protocol, name):
             member = getattr(self.protocol, name)
-        if type(member) in [MethodType, FunctionType, LambdaType,
-                BuiltinFunctionType, BuiltinMethodType]:
+        if type(member) in [
+            MethodType,
+            FunctionType,
+            LambdaType,
+            BuiltinFunctionType,
+            BuiltinMethodType,
+        ]:
             return lambda *args, **kwargs: self._wrap(member, args, kwargs)
         else:
             return member

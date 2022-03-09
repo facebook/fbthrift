@@ -21,14 +21,14 @@ from __future__ import unicode_literals
 
 from thrift.transport.TSocket import *
 from thrift.transport.TTransport import *
-import socket
-import ssl
-import traceback
-import sys
-import logging
 
 # workaround for a python bug.  see http://bugs.python.org/issue8484
 import hashlib
+import logging
+import socket
+import ssl
+import sys
+import traceback
 
 
 def _detect_legacy_ssl() -> bool:
@@ -37,10 +37,10 @@ def _detect_legacy_ssl() -> bool:
     necessary to properly configure TLS settings
     """
     required_attributes = [
-        'SSLContext',
-        'OP_NO_SSLv2',
-        'OP_NO_SSLv3',
-        'OP_NO_TLSv1',
+        "SSLContext",
+        "OP_NO_SSLv2",
+        "OP_NO_SSLv3",
+        "OP_NO_TLSv1",
     ]
     return not all(hasattr(ssl, attr) for attr in required_attributes)
 
@@ -61,9 +61,7 @@ def _best_possible_default_version():
     # recommended against PROTOCOL_SSLv23, even though at this time they are
     # aliases for one another.
     return next(
-        getattr(ssl, p)
-        for p in ['PROTOCOL_TLS', 'PROTOCOL_SSLv23']
-        if hasattr(ssl, p)
+        getattr(ssl, p) for p in ["PROTOCOL_TLS", "PROTOCOL_SSLv23"] if hasattr(ssl, p)
     )
 
 
@@ -74,17 +72,24 @@ if _is_legacy_ssl:
         global _has_warned
         if not _has_warned:
             logging.warning(
-                'You are using an old version of Python (< 2.7.9) that is '
-                'limited to an old version of TLS (1.0) with known security '
-                'vulnerabilities. '
+                "You are using an old version of Python (< 2.7.9) that is "
+                "limited to an old version of TLS (1.0) with known security "
+                "vulnerabilities. "
             )
             _has_warned = True
 
     def _warn_if_insecure_version_specified(version):
         pass
 
-    def _get_ssl_socket(socket, ssl_version, cert_reqs=ssl.CERT_NONE,
-                        ca_certs=None, keyfile=None, certfile=None, **kwargs):
+    def _get_ssl_socket(
+        socket,
+        ssl_version,
+        cert_reqs=ssl.CERT_NONE,
+        ca_certs=None,
+        keyfile=None,
+        certfile=None,
+        **kwargs
+    ):
         return ssl.SSLSocket(
             socket,
             ssl_version=ssl_version,
@@ -93,7 +98,10 @@ if _is_legacy_ssl:
             keyfile=keyfile,
             certfile=certfile,
         )
+
+
 else:
+
     def _warn_if_legacy():
         pass
 
@@ -103,24 +111,30 @@ else:
 
         blacklist = [ssl.PROTOCOL_TLSv1]
 
-        if hasattr(ssl, 'PROTOCOL_SSLv2'):
+        if hasattr(ssl, "PROTOCOL_SSLv2"):
             blacklist.append(ssl.PROTOCOL_SSLv2)
-        if hasattr(ssl, 'PROTOCOL_SSLv3'):
+        if hasattr(ssl, "PROTOCOL_SSLv3"):
             blacklist.append(ssl.PROTOCOL_SSLv3)
-        if hasattr(ssl, 'PROTOCOL_TLSv1_1'):
+        if hasattr(ssl, "PROTOCOL_TLSv1_1"):
             blacklist.append(ssl.PROTOCOL_TLSv1_1)
 
         if version in blacklist:
             logging.warning(
-                'You are constructing TSSLSocket and intentionally specifying '
-                'a weak, vulnerable ssl_version on a platform that has secure '
-                'versions available! Leave ssl_version unspecified and we will '
-                'automatically choose a suitable, secure version for you.'
+                "You are constructing TSSLSocket and intentionally specifying "
+                "a weak, vulnerable ssl_version on a platform that has secure "
+                "versions available! Leave ssl_version unspecified and we will "
+                "automatically choose a suitable, secure version for you."
             )
 
-    def _get_ssl_socket(socket, ssl_version, cert_reqs=ssl.CERT_NONE,
-                        ca_certs=None, keyfile=None, certfile=None,
-                        disable_weaker_versions=True):
+    def _get_ssl_socket(
+        socket,
+        ssl_version,
+        cert_reqs=ssl.CERT_NONE,
+        ca_certs=None,
+        keyfile=None,
+        certfile=None,
+        disable_weaker_versions=True,
+    ):
         ctx = ssl.SSLContext(ssl_version)
         ctx.verify_mode = cert_reqs
         if certfile is not None:
@@ -141,7 +155,7 @@ else:
             ctx.options |= ssl.OP_NO_TLSv1
 
             # Python 2.7.9+ has this symbol, Python 3 only gets this at 3.4
-            if hasattr(ssl, 'OP_NO_TLSv1_1'):
+            if hasattr(ssl, "OP_NO_TLSv1_1"):
                 ctx.options |= ssl.OP_NO_TLSv1_1
 
         return ctx.wrap_socket(socket)
@@ -150,14 +164,20 @@ else:
 class TSSLSocket(TSocket):
     """Socket implementation that communicates over an SSL/TLS encrypted
     channel."""
-    def __init__(self, host='localhost', port=9090, unix_socket=None,
-                 ssl_version=None,
-                 cert_reqs=ssl.CERT_NONE,
-                 ca_certs=None,
-                 verify_name=False,
-                 keyfile=None,
-                 certfile=None,
-                 allow_weak_ssl_versions=False):
+
+    def __init__(
+        self,
+        host="localhost",
+        port=9090,
+        unix_socket=None,
+        ssl_version=None,
+        cert_reqs=ssl.CERT_NONE,
+        ca_certs=None,
+        verify_name=False,
+        keyfile=None,
+        certfile=None,
+        allow_weak_ssl_versions=False,
+    ):
         """Initialize a TSSLSocket.
 
         @param ssl_version(int)  protocol version. see ssl module. If none is
@@ -242,15 +262,20 @@ class TSSLSocket(TSocket):
                         break
                 if not match:
                     sslh.close()
-                    raise TTransportException(TTransportException.NOT_OPEN,
-                            "failed to verify certificate name")
+                    raise TTransportException(
+                        TTransportException.NOT_OPEN,
+                        "failed to verify certificate name",
+                    )
             self.setHandle(sslh)
         except ssl.SSLError as e:
-            raise TTransportException(TTransportException.NOT_OPEN,
-                            "SSL error during handshake: " + str(e))
+            raise TTransportException(
+                TTransportException.NOT_OPEN, "SSL error during handshake: " + str(e)
+            )
         except socket.error as e:
-            raise TTransportException(TTransportException.NOT_OPEN,
-                            "socket error during SSL handshake: " + str(e))
+            raise TTransportException(
+                TTransportException.NOT_OPEN,
+                "socket error during SSL handshake: " + str(e),
+            )
 
     @staticmethod
     def _getCertNames(cert, includeAlt=None):
@@ -261,12 +286,12 @@ class TSSLSocket(TSocket):
         # distinguished names (RDNs) given in the certificate's data structure
         # for the principal, and each RDN is a sequence of name-value pairs.
         names = set()
-        for rdn in cert.get('subject', ()):
+        for rdn in cert.get("subject", ()):
             for k, v in rdn:
-                if k == 'commonName':
+                if k == "commonName":
                     names.add(v)
         if includeAlt:
-            for k, v in cert.get('subjectAltName', ()):
+            for k, v in cert.get("subjectAltName", ()):
                 if k == includeAlt:
                     names.add(v)
         return names
@@ -275,12 +300,12 @@ class TSSLSocket(TSocket):
     def _matchName(name, pattern):
         """match a DNS name against a pattern. match is not case sensitive.
         a '*' in the pattern will match any single component of name."""
-        name_parts = name.split('.')
-        pattern_parts = pattern.split('.')
+        name_parts = name.split(".")
+        pattern_parts = pattern.split(".")
         if len(name_parts) != len(pattern_parts):
             return False
         for n, p in zip(name_parts, pattern_parts):
-            if p != '*' and (n.lower() != p.lower()):
+            if p != "*" and (n.lower() != p.lower()):
                 return False
         return True
 
@@ -295,9 +320,15 @@ class TSSLServerSocket(TServerSocket):
     negotiated encryption.
     """
 
-    def __init__(self, port=9090, ssl_version=ssl.PROTOCOL_TLSv1,
-                 cert_reqs=ssl.CERT_NONE, ca_certs=None, certfile='cert.pem',
-                 unix_socket=None):
+    def __init__(
+        self,
+        port=9090,
+        ssl_version=ssl.PROTOCOL_TLSv1,
+        cert_reqs=ssl.CERT_NONE,
+        ca_certs=None,
+        certfile="cert.pem",
+        unix_socket=None,
+    ):
         """Initialize a TSSLServerSocket
 
         @param certfile: The filename of the server certificate file, defaults
@@ -323,7 +354,7 @@ class TSSLServerSocket(TServerSocket):
         unreadable.
         """
         if not os.access(certfile, os.R_OK):
-            raise IOError('No such certfile found: %s' % (certfile))
+            raise IOError("No such certfile found: %s" % (certfile))
         self.certfile = certfile
 
     def setCertReqs(self, cert_reqs, ca_certs):
@@ -337,12 +368,14 @@ class TSSLServerSocket(TServerSocket):
     def accept(self):
         plain_client, addr = self._sock_accept()
         try:
-            client = ssl.wrap_socket(plain_client,
-                                     certfile=self.certfile,
-                                     server_side=True,
-                                     ssl_version=self.ssl_version,
-                                     cert_reqs=self.cert_reqs,
-                                     ca_certs=self.ca_certs)
+            client = ssl.wrap_socket(
+                plain_client,
+                certfile=self.certfile,
+                server_side=True,
+                ssl_version=self.ssl_version,
+                cert_reqs=self.cert_reqs,
+                ca_certs=self.ca_certs,
+            )
         except ssl.SSLError:
             # failed handshake/ssl wrap, close socket to client
             plain_client.close()

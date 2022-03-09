@@ -19,14 +19,17 @@ from __future__ import unicode_literals
 
 import unittest
 
-from thrift.transport import TTransport
 from thrift.protocol import TBinaryProtocol
-from thrift.protocol.TBinaryProtocol import TBinaryProtocolFactory, \
-        TBinaryProtocolAcceleratedFactory
+from thrift.protocol.TBinaryProtocol import (
+    TBinaryProtocolFactory,
+    TBinaryProtocolAcceleratedFactory,
+)
+from thrift.transport import TTransport
 from thrift.util.Serializer import serialize, deserialize
 from Recursive.ttypes import *
 
-class AbstractTestRecursivePythonStructs():
+
+class AbstractTestRecursivePythonStructs:
     def test_tree(self):
         tree = RecTree()
         child = RecTree()
@@ -56,14 +59,16 @@ class AbstractTestRecursivePythonStructs():
         self.assertIsNotNone(c.other)
         self.assertIsNone(c.other.other)
 
+
 class TestBinary(AbstractTestRecursivePythonStructs, unittest.TestCase):
     def setUp(self):
         self.fac = TBinaryProtocolFactory()
 
-class TestBinaryAccelerated(AbstractTestRecursivePythonStructs,
-        unittest.TestCase):
+
+class TestBinaryAccelerated(AbstractTestRecursivePythonStructs, unittest.TestCase):
     def setUp(self):
         self.fac = TBinaryProtocolAcceleratedFactory()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

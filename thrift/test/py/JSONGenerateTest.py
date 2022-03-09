@@ -16,31 +16,32 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
+
 import json
 import os
 import shutil
-import unittest
 import subprocess
 import tempfile
+import unittest
 
 
 class TestJSONGenerate(unittest.TestCase):
-    unsupportedThriftFiles = [
-      'DebugProtoTest']
+    unsupportedThriftFiles = ["DebugProtoTest"]
 
     thriftFiles = [
-      'ThriftTest',
-      'OptionalRequiredTest',
-      'ManyTypedefs',
-      'EnumTest',
-      'DocTest',
-      'AnnotationTest']
+        "ThriftTest",
+        "OptionalRequiredTest",
+        "ManyTypedefs",
+        "EnumTest",
+        "DocTest",
+        "AnnotationTest",
+    ]
 
     namespaces = {
-        'ThriftTest': 'thrift.test',
-        'OptionalRequiredTest': 'thrift.test.optional',
-        'DocTest': 'thrift.test.doc',
-        }
+        "ThriftTest": "thrift.test",
+        "OptionalRequiredTest": "thrift.test.optional",
+        "DocTest": "thrift.test.doc",
+    }
 
     def setUp(self):
         self.addCleanup(self.cleanup)
@@ -51,50 +52,50 @@ class TestJSONGenerate(unittest.TestCase):
             shutil.rmtree(self.temp_dir)
 
     def getGenPath(self, thriftFile):
-        output_path = os.path.join(self.temp_dir, 'gen-json/')
-        output_path += self.namespaces.get(thriftFile,
-                                           thriftFile).replace('.', '/')
-        output_path += '.json'
+        output_path = os.path.join(self.temp_dir, "gen-json/")
+        output_path += self.namespaces.get(thriftFile, thriftFile).replace(".", "/")
+        output_path += ".json"
         return output_path
 
     def testGen(self):
         thrift_compiler = self.getThriftCompiler()
         for thriftFile in self.thriftFiles + self.unsupportedThriftFiles:
-            path = 'thrift/test/' + thriftFile + '.thrift'
+            path = "thrift/test/" + thriftFile + ".thrift"
             self.assertTrue(os.path.exists(path))
             proc = subprocess.Popen(
-                [thrift_compiler, '-gen', 'json', '-o', self.temp_dir, path],
+                [thrift_compiler, "-gen", "json", "-o", self.temp_dir, path],
                 stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT)
+                stderr=subprocess.STDOUT,
+            )
             output = proc.communicate()[0]
             proc.wait()
-            self.assertTrue(
-                os.path.exists(self.getGenPath(thriftFile)), output)
+            self.assertTrue(os.path.exists(self.getGenPath(thriftFile)), output)
 
         for JSONFile in self.thriftFiles:
             with open(self.getGenPath(JSONFile)) as jsonData:
                 json.load(jsonData)
 
         for JSONFile in self.unsupportedThriftFiles:
-            path = os.path.join(self.temp_dir, 'gen-json', JSONFile + '.json')
+            path = os.path.join(self.temp_dir, "gen-json", JSONFile + ".json")
             jsonData = open(path)
             self.assertRaises(TypeError, json.loads, jsonData)
 
     def getThriftCompiler(self):
         # Use the $THRIFT_COMPILER environment variable if it is set
         # This will normally be set when run via buck.
-        path = os.environ.get('THRIFT_COMPILER')
+        path = os.environ.get("THRIFT_COMPILER")
         if path is not None:
             return path
 
         # Otherwise try to find the compiler location automatically.
         # This makes testing easier when the test program is run manually.
-        for build_dir in ('buck-out/gen', '_bin'):
-            path = os.path.join(build_dir, 'thrift/compiler/thrift')
+        for build_dir in ("buck-out/gen", "_bin"):
+            path = os.path.join(build_dir, "thrift/compiler/thrift")
             if os.access(path, os.X_OK):
                 return path
 
-        raise Exception('unable to find the thrift compiler')
+        raise Exception("unable to find the thrift compiler")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

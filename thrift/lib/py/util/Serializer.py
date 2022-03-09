@@ -21,8 +21,8 @@ from __future__ import unicode_literals
 
 from typing import Any, AnyStr, TypeVar
 
-from thrift.transport import TTransport
 from thrift.protocol import THeaderProtocol
+from thrift.transport import TTransport
 
 
 # pyre-fixme[34]: `Variable[AnyStr <: [str, bytes]]` isn't present in the function's
@@ -49,7 +49,8 @@ def deserialize(protocol_factory: Any, data: AnyStr, thr_out: T) -> T:
     try:
         protocol = protocol_factory.getProtocol(
             # pyre-fixme[16]: `T` has no attribute `thrift_spec`.
-            transport, thr_out.thrift_spec
+            transport,
+            thr_out.thrift_spec,
         )  # noqa: T484
     except TypeError:
         protocol = protocol_factory.getProtocol(transport)

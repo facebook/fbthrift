@@ -162,7 +162,7 @@ for name, index in zip(fixture_names, range(len(fixture_names))):
             os.path.abspath(fixture_root),
             "--allow-experimental-features",
             "all",
-            "--gen"
+            "--gen",
         ]
         if "mstch_cpp" in args[0]:
             path = os.path.join("thrift/compiler/test/fixtures", name)

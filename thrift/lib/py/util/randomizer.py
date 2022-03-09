@@ -29,16 +29,15 @@ import sys
 
 import six
 import six.moves as sm
-
 from thrift import Thrift
-
 from thrift.util.type_inspect import get_spec, ThriftPyTypeSpec
 
 
-INFINITY = float('inf')
+INFINITY = float("inf")
 
 if sys.version_info[0] >= 3:
     unicode = None
+
 
 def deep_dict_update(base, update) -> None:
     """Similar to dict.update(base, update), but if any values in base are
@@ -47,13 +46,13 @@ def deep_dict_update(base, update) -> None:
     Destructive on base, but non-destructive on base's values.
     """
     for key, val in six.iteritems(update):
-        if (key in base and
-                isinstance(base[key], dict) and isinstance(val, dict)):
+        if key in base and isinstance(base[key], dict) and isinstance(val, dict):
             # Copy base[key] (non-destructive on base's values)
             updated = dict(base[key])
             deep_dict_update(updated, val)
             val = updated
         base[key] = val
+
 
 class BaseRandomizer(object):
     """
@@ -83,12 +82,13 @@ class BaseRandomizer(object):
     recursively updated with the key/value pairs in the constraint dict passed
     to __init__.
     """
+
     ttype = None
 
     default_constraints = {
-        'seeds': [],
-        'p_random': 0.08,  # If seeded, chance of ignoring seed
-        'p_fuzz': 1  # If seed not ignored, chance of fuzzing seed
+        "seeds": [],
+        "p_random": 0.08,  # If seeded, chance of ignoring seed
+        "p_fuzz": 1,  # If seed not ignored, chance of fuzzing seed
     }
 
     def __init__(self, type_spec, state, constraints):
@@ -146,8 +146,9 @@ class BaseRandomizer(object):
         """Check if this randomizer is equal to `other` randomizer. If two
         randomizers are equal, they have the same type and constraints and
         are expected to behave identically (up to random number generation.)"""
-        return ((self.type_spec == other.type_spec) and
-                (self.constraints == other.constraints))
+        return (self.type_spec == other.type_spec) and (
+            self.constraints == other.constraints
+        )
 
     @property
     def universe_size(self):
@@ -156,8 +157,9 @@ class BaseRandomizer(object):
         randomizer is used for sets or map keys, the size of the container
         will be limited to this value.
         """
-        raise NotImplementedError("_universe_size not implemented for %s" % (
-            self.__class__.__name__))
+        raise NotImplementedError(
+            "_universe_size not implemented for %s" % (self.__class__.__name__)
+        )
 
     def generate(self, seed=None):
         """Generate a value, possibly based on a seed.
@@ -173,24 +175,25 @@ class BaseRandomizer(object):
         Otherwise, return the seed.
         """
         if seed is None:
-            seeds = self.constraints['seeds']
+            seeds = self.constraints["seeds"]
         else:
             seeds = [seed]
 
-        if not seeds or (random.random() < self.constraints['p_random']):
+        if not seeds or (random.random() < self.constraints["p_random"]):
             return self._randomize()
 
         seed = random.choice(seeds)
 
-        if random.random() < self.constraints['p_fuzz']:
+        if random.random() < self.constraints["p_fuzz"]:
             return self._fuzz(seed)
         else:
             return self.eval_seed(seed)
 
     def _randomize(self):
         """Generate a random value of the type, given the spec args"""
-        raise NotImplementedError("randomize not implemented for %s" % (
-            self.__class__.__name__))
+        raise NotImplementedError(
+            "randomize not implemented for %s" % (self.__class__.__name__)
+        )
 
     def _fuzz(self, seed):
         """Randomly modify the given seed value.
@@ -220,39 +223,37 @@ class BaseRandomizer(object):
         """
         return seed
 
+
 class ScalarTypeRandomizer(BaseRandomizer):
     """Randomizer for types that do not constain other types, including
     enum, byte, i16, i32, i64, float, double and string. Bool is excluded
     because it does not need to inherit any properties from this class"""
 
     default_constraints = dict(BaseRandomizer.default_constraints)
-    default_constraints.update({
-        'choices': []
-    })
+    default_constraints.update({"choices": []})
 
     def _randomize(self):
         """Basic types support the choices constraint, which restricts
         the range of the randomizer to an explicit list"""
-        choices = self.constraints['choices']
+        choices = self.constraints["choices"]
         if choices:
             return random.choice(choices)
         else:
             return None
 
+
 class BoolRandomizer(BaseRandomizer):
     ttype = Thrift.TType.BOOL
 
     default_constraints = dict(BaseRandomizer.default_constraints)
-    default_constraints.update({
-        'p_true': 0.5
-    })
+    default_constraints.update({"p_true": 0.5})
 
     @property
     def universe_size(self):
         return 2
 
     def _randomize(self):
-        return (random.random() < self.constraints['p_true'])
+        return random.random() < self.constraints["p_true"]
 
     def eval_seed(self, seed):
         if isinstance(seed, bool):
@@ -266,14 +267,17 @@ class BoolRandomizer(BaseRandomizer):
         else:
             raise ValueError("Invalid bool seed: %s" % seed)
 
+
 def _random_int_factory(k):
     """Return a function that generates a random k-bit signed int"""
-    min_ = -(1 << (k - 1))   # -2**(k-1)
+    min_ = -(1 << (k - 1))  # -2**(k-1)
     max_ = 1 << (k - 1) - 1  # +2**(k-1)-1
 
     def random_int_k_bits():
         return random.randint(min_, max_)
+
     return random_int_k_bits
+
 
 class EnumRandomizer(ScalarTypeRandomizer):
     ttype = Thrift.TType.I32
@@ -281,10 +285,12 @@ class EnumRandomizer(ScalarTypeRandomizer):
     random_int_32 = staticmethod(_random_int_factory(32))
 
     default_constraints = dict(ScalarTypeRandomizer.default_constraints)
-    default_constraints.update({
-        # Probability of generating an i32 with no corresponding Enum name
-        'p_invalid': 0.01,
-    })
+    default_constraints.update(
+        {
+            # Probability of generating an i32 with no corresponding Enum name
+            "p_invalid": 0.01,
+        }
+    )
 
     def _preprocess_constraints(self):
         self._whiteset = set()
@@ -303,7 +309,7 @@ class EnumRandomizer(ScalarTypeRandomizer):
             else:
                 return self.type_spec.construct_instance(val)
 
-        if random.random() < self.constraints['p_invalid']:
+        if random.random() < self.constraints["p_invalid"]:
             # Generate an i32 value that does not correspond to an enum member
             n = None
             while (n in self._whiteset) or (n is None):
@@ -338,10 +344,7 @@ def _integer_randomizer_factory(name, ttype, n_bits):
         ttype = _ttype
 
         default_constraints = dict(ScalarTypeRandomizer.default_constraints)
-        default_constraints.update({
-            'range': [],
-            'fuzz_max_delta': 4
-        })
+        default_constraints.update({"range": [], "fuzz_max_delta": 4})
 
         def _randomize(self):
             val = super(NBitIntegerRandomizer, self)._randomize()
@@ -349,7 +352,7 @@ def _integer_randomizer_factory(name, ttype, n_bits):
             if val is not None:
                 return val
 
-            range_ = self.constraints['range']
+            range_ = self.constraints["range"]
             if range_:
                 min_, max_ = range_
                 return random.randint(min_, max_)
@@ -363,7 +366,7 @@ def _integer_randomizer_factory(name, ttype, n_bits):
 
         def _add_delta(self, seed):
             """Fuzz seed by adding a small number"""
-            max_delta = self.constraints['fuzz_max_delta']
+            max_delta = self.constraints["fuzz_max_delta"]
             delta = random.randint(-max_delta, max_delta)
             fuzzed = seed + delta
 
@@ -373,10 +376,7 @@ def _integer_randomizer_factory(name, ttype, n_bits):
         def _fuzz(self, seed):
             """Apply a random fuzzer function"""
             seed = self.eval_seed(seed)
-            fuzz_fn = random.choice([
-                self._flip_bit,
-                self._add_delta
-            ])
+            fuzz_fn = random.choice([self._flip_bit, self._add_delta])
             return fuzz_fn(seed)
 
         @property
@@ -398,6 +398,7 @@ def _integer_randomizer_factory(name, ttype, n_bits):
 
     return NBitIntegerRandomizer
 
+
 ByteRandomizer = _integer_randomizer_factory("i8", Thrift.TType.BYTE, 8)
 I16Randomizer = _integer_randomizer_factory("i16", Thrift.TType.I16, 16)
 I32Randomizer = _integer_randomizer_factory("i32", Thrift.TType.I32, 32)
@@ -405,17 +406,21 @@ I64Randomizer = _integer_randomizer_factory("i64", Thrift.TType.I64, 64)
 
 del _integer_randomizer_factory
 
+
 class FloatingPointRandomizer(ScalarTypeRandomizer):
     """Abstract class for floating point types"""
-    unreals = [float('nan'), float('inf'), float('-inf')]
+
+    unreals = [float("nan"), float("inf"), float("-inf")]
 
     default_constraints = dict(ScalarTypeRandomizer.default_constraints)
-    default_constraints.update({
-        'p_zero': 0.01,
-        'p_unreal': 0.01,
-        'mean': 0.0,
-        'std_deviation': 1e8,
-    })
+    default_constraints.update(
+        {
+            "p_zero": 0.01,
+            "p_unreal": 0.01,
+            "mean": 0.0,
+            "std_deviation": 1e8,
+        }
+    )
 
     @property
     def universe_size(self):
@@ -428,14 +433,15 @@ class FloatingPointRandomizer(ScalarTypeRandomizer):
         if val is not None:
             return val
 
-        if random.random() < self.constraints['p_unreal']:
+        if random.random() < self.constraints["p_unreal"]:
             return random.choice(cls.unreals)
 
-        if random.random() < self.constraints['p_zero']:
-            return 0.
+        if random.random() < self.constraints["p_zero"]:
+            return 0.0
 
-        return random.normalvariate(self.constraints['mean'],
-                                    self.constraints['std_deviation'])
+        return random.normalvariate(
+            self.constraints["mean"], self.constraints["std_deviation"]
+        )
 
     def eval_seed(self, seed):
         if isinstance(seed, six.string_types):
@@ -445,38 +451,40 @@ class FloatingPointRandomizer(ScalarTypeRandomizer):
         else:
             raise TypeError("Invalid %s seed: %s" % (self.__class__.name, seed))
 
+
 class SinglePrecisionFloatRandomizer(FloatingPointRandomizer):
     ttype = Thrift.TType.FLOAT
 
     _universe_size = 2 ** 32
+
 
 class DoublePrecisionFloatRandomizer(FloatingPointRandomizer):
     ttype = Thrift.TType.DOUBLE
 
     _universe_size = 2 ** 64
 
+
 class CollectionTypeRandomizer(BaseRandomizer):
     """Superclass for ttypes with lengths"""
 
     default_constraints = dict(BaseRandomizer.default_constraints)
-    default_constraints.update({
-        'mean_length': 12
-    })
+    default_constraints.update({"mean_length": 12})
 
     @property
     def universe_size(self):
         return INFINITY
 
     def _get_length(self):
-        mean = self.constraints['mean_length']
+        mean = self.constraints["mean_length"]
         if mean == 0:
             return 0
         else:
             val = int(random.expovariate(1 / mean))
-            max_len = self.constraints.get('max_length', None)
+            max_len = self.constraints.get("max_length", None)
             if max_len is not None and val > max_len:
                 val = max_len
             return val
+
 
 class StringRandomizer(CollectionTypeRandomizer, ScalarTypeRandomizer):
     ttype = Thrift.TType.STRING
@@ -499,7 +507,7 @@ class StringRandomizer(CollectionTypeRandomizer, ScalarTypeRandomizer):
         for _ in sm.xrange(length):
             chars.append(chr(random.randint(*cls.ascii_range)))
 
-        return ''.join(chars)
+        return "".join(chars)
 
     def eval_seed(self, seed):
         if isinstance(seed, six.string_types):
@@ -529,7 +537,7 @@ class BinaryRandomizer(CollectionTypeRandomizer, ScalarTypeRandomizer):
         for _ in sm.xrange(length):
             bs.append(six.int2byte(random.randint(*self.byte_range)))
 
-        return self.type_spec.construct_instance(six.ensure_binary('').join(bs))
+        return self.type_spec.construct_instance(six.ensure_binary("").join(bs))
 
     def eval_seed(self, seed):
         if isinstance(seed, six.string_types):
@@ -544,15 +552,15 @@ class NonAssociativeContainerRandomizer(CollectionTypeRandomizer):
     """Randomizer class for lists and sets"""
 
     default_constraints = dict(CollectionTypeRandomizer.default_constraints)
-    default_constraints.update({
-        'element': {}
-    })
+    default_constraints.update({"element": {}})
 
     def _init_subrandomizers(self):
         elem_spec = self.type_spec.get_subtypes()[ThriftPyTypeSpec.SUBTYPE_ELEMENT]
-        elem_constraints = self.constraints['element']
+        elem_constraints = self.constraints["element"]
         self._element_randomizer = self.state.get_randomizer_for_spec(
-            elem_spec, elem_constraints)
+            elem_spec, elem_constraints
+        )
+
 
 class ListRandomizer(NonAssociativeContainerRandomizer):
     ttype = Thrift.TType.LIST
@@ -606,11 +614,9 @@ class ListRandomizer(NonAssociativeContainerRandomizer):
             fuzzed = self._fuzz_insert(seed)
         else:
             # All fuzzer functions are valid
-            fuzz_fn = random.choice([
-                self._fuzz_insert,
-                self._fuzz_delete,
-                self._fuzz_one_element
-            ])
+            fuzz_fn = random.choice(
+                [self._fuzz_insert, self._fuzz_delete, self._fuzz_one_element]
+            )
             fuzzed = fuzz_fn(seed)
         return self.type_spec.construct_instance(fuzzed)
 
@@ -618,6 +624,7 @@ class ListRandomizer(NonAssociativeContainerRandomizer):
         return self.type_spec.construct_instance(
             [self._element_randomizer.eval_seed(e) for e in seed]
         )
+
 
 class SetRandomizer(NonAssociativeContainerRandomizer):
     ttype = Thrift.TType.SET
@@ -649,27 +656,27 @@ class SetRandomizer(NonAssociativeContainerRandomizer):
             {self._element_randomizer.eval_seed(e) for e in seed}
         )
 
+
 class MapRandomizer(CollectionTypeRandomizer):
     ttype = Thrift.TType.MAP
 
     default_constraints = dict(CollectionTypeRandomizer.default_constraints)
-    default_constraints.update({
-        'key': {},
-        'value': {}
-    })
+    default_constraints.update({"key": {}, "value": {}})
 
     def _init_subrandomizers(self):
         subtypes = self.type_spec.get_subtypes()
         key_spec = subtypes[ThriftPyTypeSpec.SUBTYPE_KEY]
         val_spec = subtypes[ThriftPyTypeSpec.SUBTYPE_VALUE]
 
-        key_constraints = self.constraints['key']
-        val_constraints = self.constraints['value']
+        key_constraints = self.constraints["key"]
+        val_constraints = self.constraints["value"]
 
         self._key_randomizer = self.state.get_randomizer_for_spec(
-            key_spec, key_constraints)
+            key_spec, key_constraints
+        )
         self._val_randomizer = self.state.get_randomizer_for_spec(
-            val_spec, val_constraints)
+            val_spec, val_constraints
+        )
 
     def _randomize(self):
         key_randomizer = self._key_randomizer
@@ -708,15 +715,14 @@ class MapRandomizer(CollectionTypeRandomizer):
             res[key] = val
         return self.type_spec.construct_instance(res)
 
+
 class StructRandomizer(BaseRandomizer):
     ttype = Thrift.TType.STRUCT
 
     default_constraints = dict(BaseRandomizer.default_constraints)
-    default_constraints.update({
-        'p_include': 0.99,
-        'max_recursion_depth': 3,
-        'per_field': {}
-    })
+    default_constraints.update(
+        {"p_include": 0.99, "max_recursion_depth": 3, "per_field": {}}
+    )
 
     @property
     def universe_size(self):
@@ -732,13 +738,14 @@ class StructRandomizer(BaseRandomizer):
             field_constraints = self.constraints.get(name, {})
 
             field_randomizer = self.state.get_randomizer_for_spec(
-                field_spec, field_constraints)
+                field_spec, field_constraints
+            )
 
             field_rules[name] = {
-                'required': field_required,
-                'randomizer': field_randomizer
+                "required": field_required,
+                "randomizer": field_randomizer,
             }
-            field_rules[name].update(self.constraints['per_field'].get(name, {}))
+            field_rules[name].update(self.constraints["per_field"].get(name, {}))
 
         self._field_rules = field_rules
         self._is_union = self.type_spec.is_union
@@ -768,7 +775,7 @@ class StructRandomizer(BaseRandomizer):
             is_top_level = False
         else:
             is_top_level = True
-            trace[name] = self.constraints['max_recursion_depth']
+            trace[name] = self.constraints["max_recursion_depth"]
 
         depth = trace[name]
 
@@ -810,7 +817,7 @@ class StructRandomizer(BaseRandomizer):
 
         fields = {}
         fields_to_randomize = self._field_names
-        p_include = self.constraints['p_include']
+        p_include = self.constraints["p_include"]
 
         if self._is_union:
             if fields_to_randomize and random.random() < p_include:
@@ -821,13 +828,13 @@ class StructRandomizer(BaseRandomizer):
 
         for field_name in fields_to_randomize:
             rule = self._field_rules[field_name]
-            required = rule['required']
+            required = rule["required"]
 
-            field_p_include = rule.get('p_include', p_include)
+            field_p_include = rule.get("p_include", p_include)
             if not required and not (random.random() < field_p_include):
                 continue
 
-            value = rule['randomizer'].generate()
+            value = rule["randomizer"].generate()
 
             if value is None:
                 # Randomizer was unable to generate a value
@@ -863,7 +870,7 @@ class StructRandomizer(BaseRandomizer):
                 return None
             # The seed should be a single key/value pair
             field_name, seed_val = six.next(six.iteritems(seed))
-            field_randomizer = field_rules[field_name]['randomizer']
+            field_randomizer = field_rules[field_name]["randomizer"]
             fuzzed_val = field_randomizer.generate(seed=seed_val)
             fields[field_name] = fuzzed_val
             for f in self._field_names:
@@ -872,12 +879,12 @@ class StructRandomizer(BaseRandomizer):
             # Fuzz only one field and leave the rest with the seed value
             fuzz_field_name = random.choice(list(field_rules))
             fuzz_field_rule = field_rules[fuzz_field_name]
-            fuzz_field_randomizer = fuzz_field_rule['randomizer']
+            fuzz_field_randomizer = fuzz_field_rule["randomizer"]
             fuzz_seed_val = seed.get(fuzz_field_name, None)
             fuzzed_value = fuzz_field_randomizer.generate(seed=fuzz_seed_val)
 
             if fuzzed_value is None:
-                if fuzz_field_rule['required']:
+                if fuzz_field_rule["required"]:
                     # Cannot generate the struct
                     return None
             else:
@@ -886,7 +893,7 @@ class StructRandomizer(BaseRandomizer):
             for field_name, seed_val in six.iteritems(seed):
                 if field_name == fuzz_field_name or field_name not in field_rules:
                     continue
-                field_randomizer = field_rules[field_name]['randomizer']
+                field_randomizer = field_rules[field_name]["randomizer"]
                 fields[field_name] = field_randomizer.eval_seed(seed_val)
 
         return self.type_spec.construct_instance(**fields)
@@ -897,7 +904,7 @@ class StructRandomizer(BaseRandomizer):
         for key, val in six.iteritems(seed):
             if key not in self._field_rules:
                 continue
-            field_randomizer = self._field_rules[key]['randomizer']
+            field_randomizer = self._field_rules[key]["randomizer"]
             val = field_randomizer.eval_seed(val)
             fields[key] = val
 
@@ -906,7 +913,9 @@ class StructRandomizer(BaseRandomizer):
                 fields.setdefault(f, None)
         return self.type_spec.construct_instance(**fields)
 
+
 _ttype_to_randomizer = {}
+
 
 def _init_types() -> None:
     # Find classes that subclass BaseRandomizer
@@ -922,7 +931,9 @@ def _init_types() -> None:
             if cls.ttype is not None:
                 _ttype_to_randomizer[cls.ttype] = cls
 
+
 _init_types()
+
 
 def _get_randomizer_class(type_spec):
     # Special case: i32 and enum have separate classes but the same ttype

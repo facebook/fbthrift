@@ -20,13 +20,14 @@ from __future__ import unicode_literals
 
 from ThriftTest import ThriftTest
 from ThriftTest.ttypes import *
-from thrift.transport import TTransport
-from thrift.transport.THeaderTransport import THeaderTransport
-from thrift.protocol import TBinaryProtocol
 import unittest
 
-class TestEof(unittest.TestCase):
+from thrift.protocol import TBinaryProtocol
+from thrift.transport import TTransport
+from thrift.transport.THeaderTransport import THeaderTransport
 
+
+class TestEof(unittest.TestCase):
     def setUp(self):
         self.trans = TTransport.TMemoryBuffer()
         self.trans = THeaderTransport(self.trans)
@@ -70,12 +71,13 @@ class TestEof(unittest.TestCase):
 
         self.fail("Should have gotten TTransportException")
 
+
 def suite():
     suite = unittest.TestSuite()
     loader = unittest.TestLoader()
     suite.addTest(loader.loadTestsFromTestCase(TestHeaderTransportFeatures))
     return suite
 
+
 if __name__ == "__main__":
-    unittest.main(defaultTest="suite",
-                  testRunner=unittest.TextTestRunner(verbosity=2))
+    unittest.main(defaultTest="suite", testRunner=unittest.TextTestRunner(verbosity=2))

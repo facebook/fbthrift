@@ -25,8 +25,8 @@ from DefaultValuesTest.ttypes import *
 from thrift.protocol.TBinaryProtocol import *
 from thrift.transport.TTransport import *
 
-class TestDefaultValues(unittest.TestCase):
 
+class TestDefaultValues(unittest.TestCase):
     def testReadDefaults(self):
         w = DefaultValues(def_reg=11, req_reg=22)
         r = DefaultValues()
@@ -51,8 +51,10 @@ class TestDefaultValues(unittest.TestCase):
         w = DefaultValues(def_reg=11, req_reg=22)
         r = DefaultValues(def_reg=0, req_reg=33, opt_list_val=[11, 22, 33])
         write_to_read(w, r)
-        self.assertEquals(r.opt_list_val, [11, 22, 33],
-                          "defaults are transmitted on the wire")
+        self.assertEquals(
+            r.opt_list_val, [11, 22, 33], "defaults are transmitted on the wire"
+        )
+
 
 def write_to_read(write_struct, read_struct):
     write_buffer = TMemoryBuffer()
@@ -66,5 +68,6 @@ def write_to_read(write_struct, read_struct):
     read_protocol = TBinaryProtocol(read_buffer)
     read_struct.read(read_protocol)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

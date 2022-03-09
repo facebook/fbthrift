@@ -20,14 +20,18 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import sys
+
 if sys.version_info[0] >= 3:
     from io import BytesIO
+
     from thrift.util.BytesStrIO import BytesStrIO
+
     StringIO = BytesStrIO
 
 else:
     from cStringIO import StringIO
 from struct import pack, unpack
+
 from thrift.Thrift import TException
 
 
@@ -71,11 +75,13 @@ class TTransportBase(object):
         while need:
             chunk = self.read(need)
             if not chunk:
-                raise TTransportException(TTransportException.END_OF_FILE,
-                                          "End of file reading from transport")
+                raise TTransportException(
+                    TTransportException.END_OF_FILE,
+                    "End of file reading from transport",
+                )
             chunks.append(chunk)
             need -= len(chunk)
-        return b''.join(chunks)
+        return b"".join(chunks)
 
     def write(self, buf):
         pass
@@ -286,7 +292,10 @@ class TFramedTransport(TTransportBase, CReadableTransport):
 
     """Class that wraps another transport and frames its I/O when writing."""
 
-    def __init__(self, trans,):
+    def __init__(
+        self,
+        trans,
+    ):
         self.__trans = trans
         self.__rbuf = StringIO()
         self.__wbuf = StringIO()
@@ -313,7 +322,7 @@ class TFramedTransport(TTransportBase, CReadableTransport):
 
     def readFrame(self):
         buff = self.__trans.readAll(4)
-        sz, = unpack(b'!i', buff)
+        (sz,) = unpack(b"!i", buff)
         self.__rbuf = StringIO(self.__trans.readAll(sz))
 
     def write(self, buf):

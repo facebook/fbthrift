@@ -13,23 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from argparse import ArgumentParser
 import asyncio
 import signal
 import sys
+from argparse import ArgumentParser
 
-from thrift.py3 import ThriftServer
 from apache.thrift.test.py3.load_handler import LoadTestHandler
+from thrift.py3 import ThriftServer
 
 
 def main():
     parser = ArgumentParser()
-    parser.add_argument(
-        '--port',
-        default=1234,
-        type=int,
-        help='Port to run on'
-    )
+    parser.add_argument("--port", default=1234, type=int, help="Port to run on")
     options = parser.parse_args()
     loop = asyncio.get_event_loop()
     handler = LoadTestHandler(loop)
@@ -40,5 +35,5 @@ def main():
     loop.run_until_complete(server.serve())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())

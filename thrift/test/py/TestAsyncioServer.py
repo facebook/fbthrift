@@ -14,8 +14,8 @@
 # limitations under the License.
 
 from unittest.mock import MagicMock
-from libfb.py.asyncio.unittest import TestCase
 
+from libfb.py.asyncio.unittest import TestCase
 from thrift.server.TAsyncioServer import ThriftAsyncServerFactory
 from thrift.Thrift import TProcessor
 

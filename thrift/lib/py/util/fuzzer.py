@@ -40,13 +40,14 @@ from six.moves.urllib.parse import urlparse
 try:
     # pyre-fixme[21]: Could not find module `ServiceRouter`.
     from ServiceRouter import ConnConfigs, ServiceOptions, ServiceRouter  # @manual
+
     SR_AVAILABLE = True
 except ImportError:
     SR_AVAILABLE = False
 
 from thrift import Thrift
-from thrift.transport import TTransport, TSocket, TSSLSocket, THttpClient
 from thrift.protocol import TBinaryProtocol, TCompactProtocol, THeaderProtocol
+from thrift.transport import TTransport, TSocket, TSSLSocket, THttpClient
 from thrift.util import randomizer
 
 if six.PY3:
@@ -54,6 +55,8 @@ if six.PY3:
 
     def load_source(name, pathname):
         return SourceFileLoader(name, pathname).load_module()
+
+
 else:
     import imp
 
@@ -66,12 +69,10 @@ def positive_int(s) -> int:
     try:
         n = int(s)
         if not n > 0:
-            raise argparse.ArgumentTypeError(
-                "%s is not positive." % s)
+            raise argparse.ArgumentTypeError("%s is not positive." % s)
         return n
     except ValueError:
-        raise argparse.ArgumentTypeError(
-            "Cannot convert %s to an integer." % s)
+        raise argparse.ArgumentTypeError("Cannot convert %s to an integer." % s)
 
 
 def prob_float(s) -> float:
@@ -79,149 +80,130 @@ def prob_float(s) -> float:
     try:
         x = float(s)
         if not 0 <= x <= 1:
-            raise argparse.ArgumentTypeError(
-                "%s is not a valid probability." % x)
+            raise argparse.ArgumentTypeError("%s is not a valid probability." % x)
         return x
     except ValueError:
-        raise argparse.ArgumentTypeError(
-            "Cannot convert %s to a float." % s)
+        raise argparse.ArgumentTypeError("Cannot convert %s to a float." % s)
 
 
 class FuzzerConfiguration(object):
     """Container for Fuzzer configuration options"""
 
     argspec = {
-        'allow_application_exceptions': {
-            'description': 'Do not flag TApplicationExceptions as errors',
-            'type': bool,
-            'flag': '-a',
-            'argparse_kwargs': {
-                'action': 'store_const',
-                'const': True
+        "allow_application_exceptions": {
+            "description": "Do not flag TApplicationExceptions as errors",
+            "type": bool,
+            "flag": "-a",
+            "argparse_kwargs": {"action": "store_const", "const": True},
+            "default": False,
+        },
+        "compact": {
+            "description": "Use TCompactProtocol",
+            "type": bool,
+            "flag": "-c",
+            "argparse_kwargs": {"action": "store_const", "const": True},
+            "default": False,
+        },
+        "constraints": {
+            "description": "JSON Constraint dictionary",
+            "type": str,
+            "flag": "-Con",
+            "default": {},
+            "is_json": True,
+        },
+        "framed": {
+            "description": "Use framed transport.",
+            "type": bool,
+            "flag": "-f",
+            "argparse_kwargs": {"action": "store_const", "const": True},
+            "default": False,
+        },
+        "functions": {
+            "description": "Which functions to test. If excluded, test all",
+            "type": str,
+            "flag": "-F",
+            "argparse_kwargs": {
+                "nargs": "*",
             },
-            'default': False,
+            "default": None,
         },
-        'compact': {
-            'description': 'Use TCompactProtocol',
-            'type': bool,
-            'flag': '-c',
-            'argparse_kwargs': {
-                'action': 'store_const',
-                'const': True
+        "host": {
+            "description": "The host and port to connect to",
+            "type": str,
+            "flag": "-h",
+            "argparse_kwargs": {"metavar": "HOST[:PORT]"},
+            "default": None,
+        },
+        "iterations": {
+            "description": "Number of calls per method.",
+            "type": positive_int,
+            "flag": "-n",
+            "attr_name": "n_iterations",
+            "default": 1000,
+        },
+        "logfile": {
+            "description": "File to write output logs.",
+            "type": str,
+            "flag": "-l",
+            "default": None,
+        },
+        "loglevel": {
+            "description": "Level of verbosity to write logs.",
+            "type": str,
+            "flag": "-L",
+            "argparse_kwargs": {
+                "choices": ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
             },
-            'default': False
+            "default": "INFO",
         },
-        'constraints': {
-            'description': 'JSON Constraint dictionary',
-            'type': str,
-            'flag': '-Con',
-            'default': {},
-            'is_json': True
+        "service": {
+            "description": "Path to file of Python service module.",
+            "type": str,
+            "flag": "-S",
+            "attr_name": "service_path",
+            "default": None,
         },
-        'framed': {
-            'description': 'Use framed transport.',
-            'type': bool,
-            'flag': '-f',
-            'argparse_kwargs': {
-                'action': 'store_const',
-                'const': True
-            },
-            'default': False
+        "ssl": {
+            "description": "Use SSL socket.",
+            "type": bool,
+            "flag": "-s",
+            "argparse_kwargs": {"action": "store_const", "const": True},
+            "default": False,
         },
-        'functions': {
-            'description': 'Which functions to test. If excluded, test all',
-            'type': str,
-            'flag': '-F',
-            'argparse_kwargs': {
-                'nargs': '*',
-            },
-            'default': None
+        "unframed": {
+            "description": "Use unframed transport.",
+            "type": bool,
+            "flag": "-U",
+            "argparse_kwargs": {"action": "store_const", "const": True},
+            "default": False,
         },
-        'host': {
-            'description': 'The host and port to connect to',
-            'type': str,
-            'flag': '-h',
-            'argparse_kwargs': {
-                'metavar': 'HOST[:PORT]'
-            },
-            'default': None
-        },
-        'iterations': {
-            'description': 'Number of calls per method.',
-            'type': positive_int,
-            'flag': '-n',
-            'attr_name': 'n_iterations',
-            'default': 1000
-        },
-        'logfile': {
-            'description': 'File to write output logs.',
-            'type': str,
-            'flag': '-l',
-            'default': None
-        },
-        'loglevel': {
-            'description': 'Level of verbosity to write logs.',
-            'type': str,
-            'flag': '-L',
-            'argparse_kwargs': {
-                'choices': ['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
-            },
-            'default': 'INFO'
-        },
-        'service': {
-            'description': 'Path to file of Python service module.',
-            'type': str,
-            'flag': '-S',
-            'attr_name': 'service_path',
-            'default': None
-        },
-        'ssl': {
-            'description': 'Use SSL socket.',
-            'type': bool,
-            'flag': '-s',
-            'argparse_kwargs': {
-                'action': 'store_const',
-                'const': True
-            },
-            'default': False
-        },
-        'unframed': {
-            'description': 'Use unframed transport.',
-            'type': bool,
-            'flag': '-U',
-            'argparse_kwargs': {
-                'action': 'store_const',
-                'const': True
-            },
-            'default': False
-        },
-        'url': {
-            'description': 'The URL to connect to for HTTP transport',
-            'type': str,
-            'flag': '-u',
-            'default': None
+        "url": {
+            "description": "The URL to connect to for HTTP transport",
+            "type": str,
+            "flag": "-u",
+            "default": None,
         },
     }
     if SR_AVAILABLE:
-        argspec['tier'] = {
-            'description': 'The SMC tier to connect to',
-            'type': str,
-            'flag': '-t',
-            'default': None
+        argspec["tier"] = {
+            "description": "The SMC tier to connect to",
+            "type": str,
+            "flag": "-t",
+            "default": None,
         }
-        argspec['conn_configs'] = {
-            'description': 'ConnConfigs to use for ServiceRouter connection',
-            'type': str,
-            'flag': '-Conn',
-            'default': {},
-            'is_json': True
+        argspec["conn_configs"] = {
+            "description": "ConnConfigs to use for ServiceRouter connection",
+            "type": str,
+            "flag": "-Conn",
+            "default": {},
+            "is_json": True,
         }
-        argspec['service_options'] = {
-            'description': 'ServiceOptions to use for ServiceRouter connection',
-            'type': str,
-            'flag': '-SO',
-            'default': {},
-            'is_json': True
+        argspec["service_options"] = {
+            "description": "ServiceOptions to use for ServiceRouter connection",
+            "type": str,
+            "flag": "-SO",
+            "default": {},
+            "is_json": True,
         }
 
     def __init__(self, service=None):
@@ -230,41 +212,49 @@ class FuzzerConfiguration(object):
         if service is not None:
             self.service = service
 
-        parser = argparse.ArgumentParser(description='Fuzzer Configuration',
-                                         add_help=False)
-        parser.add_argument('-C', '--config', dest='config_filename',
-                            help='JSON Configuration file. '
-                            'All settings can be specified as commandline '
-                            'args and config file settings. Commandline args '
-                            'override config file settings.')
+        parser = argparse.ArgumentParser(
+            description="Fuzzer Configuration", add_help=False
+        )
+        parser.add_argument(
+            "-C",
+            "--config",
+            dest="config_filename",
+            help="JSON Configuration file. "
+            "All settings can be specified as commandline "
+            "args and config file settings. Commandline args "
+            "override config file settings.",
+        )
 
-        parser.add_argument('-?', '--help', action='help',
-                            help='Show this help message and exit.')
+        parser.add_argument(
+            "-?", "--help", action="help", help="Show this help message and exit."
+        )
 
         for name, arg in six.iteritems(cls.argspec):
-            kwargs = arg.get('argparse_kwargs', {})
+            kwargs = arg.get("argparse_kwargs", {})
 
-            if kwargs.get('action', None) != 'store_const':
+            if kwargs.get("action", None) != "store_const":
                 # Pass type to argparse. With store_const, type can be inferred
-                kwargs['type'] = arg['type']
+                kwargs["type"] = arg["type"]
 
             # If an argument is not passed, don't put a value in the namespace
-            kwargs['default'] = argparse.SUPPRESS
+            kwargs["default"] = argparse.SUPPRESS
 
             # Use the argument's description and default as a help message
-            kwargs['help'] = "%s Default: %s" % (arg.get('description', ''),
-                                                 arg['default'])
+            kwargs["help"] = "%s Default: %s" % (
+                arg.get("description", ""),
+                arg["default"],
+            )
 
-            kwargs['dest'] = arg.get('attr_name', name)
+            kwargs["dest"] = arg.get("attr_name", name)
 
-            if hasattr(self, kwargs['dest']):
+            if hasattr(self, kwargs["dest"]):
                 # Attribute already assigned (e.g., service passed to __init__)
                 continue
 
-            parser.add_argument(arg['flag'], '--%s' % name, **kwargs)
+            parser.add_argument(arg["flag"], "--%s" % name, **kwargs)
 
             # Assign the default value to config namespace
-            setattr(self, kwargs['dest'], arg['default'])
+            setattr(self, kwargs["dest"], arg["default"])
 
         args = parser.parse_args()
 
@@ -284,27 +274,32 @@ class FuzzerConfiguration(object):
         try:
             val = type_(val)
         except ValueError:
-            raise TypeError(("Expected type %s for setting %s, "
-                             "but got type %s (%s)") % (
-                                 type_, name, type(val), val))
+            raise TypeError(
+                ("Expected type %s for setting %s, " "but got type %s (%s)")
+                % (type_, name, type(val), val)
+            )
         return val
 
     @classmethod
     def _try_parse(cls, name, arg, val):
-        if arg.get('is_json', False):
+        if arg.get("is_json", False):
             return val
 
-        type_ = arg['type']
+        type_ = arg["type"]
 
-        nargs = arg.get('argparse_kwargs', {}).get('nargs', None)
+        nargs = arg.get("argparse_kwargs", {}).get("nargs", None)
 
         if nargs is None:
             return cls._try_parse_type(name, type_, val)
         else:
             if not isinstance(val, list):
-                raise TypeError(("Expected list of length %s "
-                                 "for setting %s, but got type %s (%s)") % (
-                                     nargs, name, type(val), val))
+                raise TypeError(
+                    (
+                        "Expected list of length %s "
+                        "for setting %s, but got type %s (%s)"
+                    )
+                    % (nargs, name, type(val), val)
+                )
             ret = []
             for elem in val:
                 ret.append(cls._try_parse_type(name, type_, elem))
@@ -316,8 +311,9 @@ class FuzzerConfiguration(object):
         if args.config_filename is None:
             return {}  # No config file
         if not os.path.exists(args.config_filename):
-            raise OSError(os.EX_NOINPUT,
-                "Config file does not exist: %s" % args.config_filename)
+            raise OSError(
+                os.EX_NOINPUT, "Config file does not exist: %s" % args.config_filename
+            )
         with open(args.config_filename, "r") as fd:
             try:
                 settings = json.load(fd)
@@ -330,11 +326,10 @@ class FuzzerConfiguration(object):
             raise TypeError("Invalid config file. Top-level must be Object.")
         for name, val in six.iteritems(settings):
             if name not in cls.argspec:
-                raise ValueError(("Unrecognized configuration "
-                                  "option: %s") % name)
+                raise ValueError(("Unrecognized configuration " "option: %s") % name)
             arg = cls.argspec[name]
             val = cls._try_parse(name, arg, val)
-            attr_name = arg.get('attr_name', name)
+            attr_name = arg.get("attr_name", name)
             renamed_settings[attr_name] = val
         return renamed_settings
 
@@ -343,24 +338,26 @@ class FuzzerConfiguration(object):
         """Read settings from the args namespace returned by argparse"""
         settings = {}
         for name, arg in six.iteritems(cls.argspec):
-            attr_name = arg.get('attr_name', name)
+            attr_name = arg.get("attr_name", name)
             if not hasattr(args, attr_name):
                 continue
             value = getattr(args, attr_name)
-            if arg.get('is_json', False):
+            if arg.get("is_json", False):
                 settings[attr_name] = json.loads(value)
             else:
                 settings[attr_name] = value
         return settings
 
     def __str__(self):
-        return 'Configuration(\n%s\n)' % pprint.pformat(self.__dict__)
+        return "Configuration(\n%s\n)" % pprint.pformat(self.__dict__)
 
     def load_service(self):
         if self.service is not None:
             if self.service_path is not None:
-                raise ValueError("Cannot specify a service path when the "
-                                 "service is input programmatically")
+                raise ValueError(
+                    "Cannot specify a service path when the "
+                    "service is input programmatically"
+                )
             # Service already loaded programmatically. Just load methods.
             self.service.load_methods()
             return self.service
@@ -373,9 +370,8 @@ class FuzzerConfiguration(object):
         if not os.path.exists(service_path):
             raise OSError("Service module does not exist: %s" % service_path)
 
-        if not service_path.endswith('.py'):
-            raise OSError("Service module is not a Python module: %s" %
-                          service_path)
+        if not service_path.endswith(".py"):
+            raise OSError("Service module is not a Python module: %s" % service_path)
 
         parent_path, service_filename = os.path.split(service_path)
         service_name = service_filename[:-3]  # Truncate extension
@@ -383,13 +379,13 @@ class FuzzerConfiguration(object):
         logging.info("Service name: %s" % (service_name))
 
         parent_path = os.path.dirname(service_path)
-        ttypes_path = os.path.join(parent_path, 'ttypes.py')
-        constants_path = os.path.join(parent_path, 'constants.py')
+        ttypes_path = os.path.join(parent_path, "ttypes.py")
+        constants_path = os.path.join(parent_path, "constants.py")
 
-        load_source('module', parent_path)
-        ttypes_module = load_source('module.ttypes', ttypes_path)
-        constants_module = load_source('module.constants', constants_path)
-        service_module = load_source('module.%s' % (service_name), service_path)
+        load_source("module", parent_path)
+        ttypes_module = load_source("module.ttypes", ttypes_path)
+        constants_module = load_source("module.constants", constants_path)
+        service_module = load_source("module.%s" % (service_name), service_path)
 
         service = Service(ttypes_module, constants_module, service_module)
         service.load_methods()
@@ -405,32 +401,35 @@ class FuzzerConfiguration(object):
 
         if not len(specified_flags) == 1:
             message = "Exactly one of [%s] must be specified. Got [%s]." % (
-                (', '.join('--%s' % flag for flag in connection_flags)),
-                (', '.join('--%s' % flag for flag in specified_flags)))
+                (", ".join("--%s" % flag for flag in connection_flags)),
+                (", ".join("--%s" % flag for flag in specified_flags)),
+            )
             return False, message
 
         connection_method = specified_flags[0]
         self.connection_method = connection_method
 
-        if connection_method == 'url':
+        if connection_method == "url":
             if not (self.compact or self.framed or self.unframed):
-                message = ("A protocol (compact, framed, or unframed) "
-                           "must be specified for HTTP Transport.")
+                message = (
+                    "A protocol (compact, framed, or unframed) "
+                    "must be specified for HTTP Transport."
+                )
                 return False, message
 
-        if connection_method in {'url', 'host'}:
-            if connection_method == 'url':
+        if connection_method in {"url", "host"}:
+            if connection_method == "url":
                 try:
                     url = urlparse(self.url)
                 except Exception:
                     return False, "Unable to parse url %s" % self.url
                 else:
                     connection_str = url[1]
-            elif connection_method == 'host':
+            elif connection_method == "host":
                 connection_str = self.host
-            if ':' in connection_str:
+            if ":" in connection_str:
                 # Get the string after the colon
-                port = connection_str[connection_str.index(':') + 1:]
+                port = connection_str[connection_str.index(":") + 1 :]
                 try:
                     int(port)
                 except ValueError:
@@ -442,6 +441,7 @@ class FuzzerConfiguration(object):
 
 class Service(object):
     """Wrapper for a thrift service"""
+
     def __init__(self, ttypes_module, constants_module, service_module):
         self.ttypes = ttypes_module
         self.constants = constants_module
@@ -449,7 +449,7 @@ class Service(object):
         self.methods = None
 
     def __str__(self):
-        return 'Service(%s)' % self.service.__name__
+        return "Service(%s)" % self.service.__name__
 
     def load_methods(self, exclude_ifaces=None):
         """Load a service's methods.
@@ -511,8 +511,9 @@ class Service(object):
         the method names in that collection will be included."""
 
         if self.methods is None:
-            raise ValueError("Service.load_methods must be "
-                             "called before Service.get_methods")
+            raise ValueError(
+                "Service.load_methods must be " "called before Service.get_methods"
+            )
 
         if include is None:
             return self.methods
@@ -529,7 +530,7 @@ class Service(object):
 class FuzzerClient(object):
     """Client wrapper used to make calls based on configuration settings"""
 
-    connection_flags = ['host', 'url', 'tier']
+    connection_flags = ["host", "url", "tier"]
     default_port = 9090
 
     def __init__(self, config, client_class):
@@ -555,7 +556,7 @@ class FuzzerClient(object):
         return client
 
     def _parse_host_port(self, value, default_port):
-        parts = value.rsplit(':', 1)
+        parts = value.rsplit(":", 1)
         if len(parts) == 1:
             return (parts[0], default_port)
         else:
@@ -565,8 +566,11 @@ class FuzzerClient(object):
     def _get_client_by_host(self):
         config = self.config
         host, port = self._parse_host_port(config.host, self.default_port)
-        socket = (TSSLSocket.TSSLSocket(host, port) if config.ssl
-                  else TSocket.TSocket(host, port))
+        socket = (
+            TSSLSocket.TSSLSocket(host, port)
+            if config.ssl
+            else TSocket.TSocket(host, port)
+        )
         if config.framed:
             transport = TTransport.TFramedTransport(socket)
         else:
@@ -595,37 +599,40 @@ class FuzzerClient(object):
         for key, val in six.iteritems(config.service_options):
             key = six.binary_type(key)
             if not isinstance(val, list):
-                raise TypeError("Service option %s expected list; got %s (%s)"
-                                % (key, val, type(val)))
+                raise TypeError(
+                    "Service option %s expected list; got %s (%s)"
+                    % (key, val, type(val))
+                )
             val = [six.binary_type(elem) for elem in val]
             sr_options[key] = val
 
         service_name = config.tier
 
         # Obtain a normal client connection using SR2
-        client = serviceRouter.getClient2(self.client_class,
-                                          service_name, sr_options,
-                                          overrides)
+        client = serviceRouter.getClient2(
+            self.client_class, service_name, sr_options, overrides
+        )
 
         if client is None:
-            raise NameError('Failed to lookup host for tier %s' % service_name)
+            raise NameError("Failed to lookup host for tier %s" % service_name)
 
         return client
 
     def _get_client(self):
-        if self.config.connection_method == 'host':
+        if self.config.connection_method == "host":
             client = self._get_client_by_host()
-        elif self.config.connection_method == 'url':
+        elif self.config.connection_method == "url":
             client = self._get_client_by_url()
-        elif self.config.connection_method == 'tier':
+        elif self.config.connection_method == "tier":
             client = self._get_client_by_tier()
         else:
-            raise NameError("Unknown connection type: %s" %
-                            self.config.connection_method)
+            raise NameError(
+                "Unknown connection type: %s" % self.config.connection_method
+            )
         return client
 
     def _close_client(self):
-        if self.config.connection_method in {'host', 'url'}:
+        if self.config.connection_method in {"host", "url"}:
             self._transport.close()
 
     def __enter__(self):
@@ -673,7 +680,8 @@ class Timer(object):
 class TimeAggregator(object):
     def __init__(self):
         self.total_time = collections.defaultdict(
-            lambda: collections.defaultdict(float))
+            lambda: collections.defaultdict(float)
+        )
 
     def time(self, category, action):
         return Timer(self, category, action)
@@ -683,9 +691,10 @@ class TimeAggregator(object):
 
     def summarize(self):
         max_category_name_length = max(len(name) for name in self.total_time)
-        max_action_name_length = max(max(len(action_name) for action_name in
-                                         self.total_time[name]) for name in
-                                     self.total_time)
+        max_action_name_length = max(
+            max(len(action_name) for action_name in self.total_time[name])
+            for name in self.total_time
+        )
         category_format = "%%%ds: %%s" % max_category_name_length
         action_format = "%%%ds: %%4.3fs" % max_action_name_length
 
@@ -695,8 +704,7 @@ class TimeAggregator(object):
             for action_name, action_time in sorted(category_actions.items()):
                 timing_items.append(action_format % (action_name, action_time))
             all_actions = " | ".join(timing_items)
-            category_summaries.append(category_format % (
-                category_name, all_actions))
+            category_summaries.append(category_format % (category_name, all_actions))
         summaries = "\n".join(category_summaries)
         logging.info("Timing Summary:\n%s" % summaries)
 
@@ -721,13 +729,13 @@ class FuzzTester(object):
     def start_logging(self):
         logfile = self.config.logfile
         if self.config.logfile is None:
-            logfile = '/dev/null'
+            logfile = "/dev/null"
         log_level = getattr(logging, self.config.loglevel)
 
-        datefmt = '%Y-%m-%d %H:%M:%S'
+        datefmt = "%Y-%m-%d %H:%M:%S"
         fmt = "[%(asctime)s] [%(levelname)s] %(message)s"
 
-        if logfile == 'stdout':
+        if logfile == "stdout":
             logging.basicConfig(stream=sys.stdout, level=log_level)
         else:
             logging.basicConfig(filename=self.config.logfile, level=log_level)
@@ -740,51 +748,54 @@ class FuzzTester(object):
         self.next_summary_time = time.time() + self.__class__.summary_interval
 
     def _call_string(self, method_name, kwargs):
-        kwarg_str = ', '.join('%s=%s' % (k, v)
-                              for k, v in six.iteritems(kwargs))
+        kwarg_str = ", ".join("%s=%s" % (k, v) for k, v in six.iteritems(kwargs))
         return "%s(%s)" % (method_name, kwarg_str)
 
-    def run_test(self, method_name, kwargs, expected_output,
-                 is_oneway, thrift_exceptions):
+    def run_test(
+        self, method_name, kwargs, expected_output, is_oneway, thrift_exceptions
+    ):
         """
         Make an RPC with given arguments and check for exceptions.
         """
         try:
             with self.timer.time(method_name, "Thrift"):
-                self.client.make_call(method_name, kwargs,
-                                            is_oneway)
+                self.client.make_call(method_name, kwargs, is_oneway)
         except thrift_exceptions as e:
-            self.record_result(
-                method_name, FuzzTester.Result.UserDefinedException)
+            self.record_result(method_name, FuzzTester.Result.UserDefinedException)
             if self.config.loglevel == "DEBUG":
                 with self.timer.time(method_name, "Logging"):
                     logging.debug("Got thrift exception: %r" % e)
-                    logging.debug("Exception thrown by call: %s" % (
-                        self._call_string(method_name, kwargs)))
+                    logging.debug(
+                        "Exception thrown by call: %s"
+                        % (self._call_string(method_name, kwargs))
+                    )
 
         except Thrift.TApplicationException as e:
-            self.record_result(
-                method_name, FuzzTester.Result.ApplicationException)
+            self.record_result(method_name, FuzzTester.Result.ApplicationException)
             if self.config.allow_application_exceptions:
                 if self.config.loglevel == "DEBUG":
                     with self.timer.time(method_name, "Logging"):
                         logging.debug("Got TApplication exception %s" % e)
-                        logging.debug("Exception thrown by call: %s" % (
-                            self._call_string(method_name, kwargs)))
+                        logging.debug(
+                            "Exception thrown by call: %s"
+                            % (self._call_string(method_name, kwargs))
+                        )
             else:
                 with self.timer.time(method_name, "Logging"):
                     self.n_exceptions += 1
                     logging.error("Got application exception: %s" % e)
-                    logging.error("Offending call: %s" % (
-                        self._call_string(method_name, kwargs)))
+                    logging.error(
+                        "Offending call: %s" % (self._call_string(method_name, kwargs))
+                    )
 
         except TTransport.TTransportException as e:
             self.n_exceptions += 1
 
             with self.timer.time(method_name, "Logging"):
                 logging.error("Got TTransportException: (%s, %r)" % (e, e))
-                logging.error("Offending call: %s" % (
-                    self._call_string(method_name, kwargs)))
+                logging.error(
+                    "Offending call: %s" % (self._call_string(method_name, kwargs))
+                )
 
             if "errno = 111: Connection refused" in e.args[0]:
                 # Unable to connect to server - server may be down
@@ -796,26 +807,29 @@ class FuzzTester(object):
                 self.record_result(method_name, FuzzTester.Result.Crash)
                 return False
 
-            self.record_result(
-                method_name, FuzzTester.Result.TransportException)
+            self.record_result(method_name, FuzzTester.Result.TransportException)
 
         except Exception as e:
             self.record_result(method_name, FuzzTester.Result.OtherException)
             with self.timer.time(method_name, "Logging"):
                 self.n_exceptions += 1
                 logging.error("Got exception %s (%r)" % (e, e))
-                logging.error("Offending call: %s" % (
-                    self._call_string(method_name, kwargs)))
-                if hasattr(self, 'previous_kwargs'):
-                    logging.error("Previous call: %s" % (
-                        self._call_string(method_name, self.previous_kwargs)))
+                logging.error(
+                    "Offending call: %s" % (self._call_string(method_name, kwargs))
+                )
+                if hasattr(self, "previous_kwargs"):
+                    logging.error(
+                        "Previous call: %s"
+                        % (self._call_string(method_name, self.previous_kwargs))
+                    )
 
         else:
             self.record_result(method_name, FuzzTester.Result.Success)
             if self.config.loglevel == "DEBUG":
                 with self.timer.time(method_name, "Logging"):
-                    logging.debug("Successful call: %s" % (
-                        self._call_string(method_name, kwargs)))
+                    logging.debug(
+                        "Successful call: %s" % (self._call_string(method_name, kwargs))
+                    )
         finally:
             self.n_tests += 1
 
@@ -830,8 +844,7 @@ class FuzzTester(object):
                 method_randomizer = self.method_randomizers[method_name]
                 args_struct = method_randomizer.generate()
             if args_struct is None:
-                logging.error("Unable to produce valid arguments for %s" %
-                              method_name)
+                logging.error("Unable to produce valid arguments for %s" % method_name)
             else:
                 kwargs = args_struct.__dict__  # Get members of args struct
                 yield kwargs
@@ -845,19 +858,17 @@ class FuzzTester(object):
 
         for method_name in methods:
             method_constraints = constraints.get(method_name, {})
-            args_class = methods[method_name]['args_class']
+            args_class = methods[method_name]["args_class"]
 
             # Create a spec_args tuple for the method args struct type
             randomizer_spec_args = (
                 args_class,
                 args_class.thrift_spec,
-                False  # isUnion
+                False,  # isUnion
             )
 
             method_randomizer = state.get_randomizer(
-                Thrift.TType.STRUCT,
-                randomizer_spec_args,
-                method_constraints
+                Thrift.TType.STRUCT, randomizer_spec_args, method_constraints
             )
             method_randomizers[method_name] = method_randomizer
 
@@ -874,11 +885,10 @@ class FuzzTester(object):
         start_idx = 0
         cur_idx = 0
         while cur_idx < len(key):
-            if (cur_idx != start_idx and
-                    key[cur_idx] in {'.', '|', '#'}):
+            if cur_idx != start_idx and key[cur_idx] in {".", "|", "#"}:
                 components.append(key[start_idx:cur_idx])
                 start_idx = cur_idx
-                if key[cur_idx] == '.':
+                if key[cur_idx] == ".":
                     start_idx += 1
                 cur_idx = start_idx
             else:
@@ -932,7 +942,7 @@ class FuzzTester(object):
                     add_constraints_from_dict(rule)
                 else:
                     add_constraint(rule)
-                scope_path[-len(key_components):] = []
+                scope_path[-len(key_components) :] = []
 
         add_constraints_from_dict(source_constraints)
         return constraints
@@ -950,21 +960,22 @@ class FuzzTester(object):
         if time.time() >= self.next_summary_time:
             results = []
             for name, val in six.iteritems(vars(FuzzTester.Result)):
-                if name.startswith('_'):
+                if name.startswith("_"):
                     continue
                 count = self.result_counters[method_name][val]
                 if count > 0:
                     results.append((name, count))
             results.sort()
-            logging.info('%s count: {%s}' %
-                (method_name, ', '.join('%s: %d' % r for r in results)))
+            logging.info(
+                "%s count: {%s}"
+                % (method_name, ", ".join("%s: %d" % r for r in results))
+            )
 
             interval = self.__class__.summary_interval
             # Determine how many full intervals have passed between
             # self.next_summary_time (the scheduled time for this summary) and
             # the time the summary is actually completed.
-            intervals_passed = int(
-                (time.time() - self.next_summary_time) / interval)
+            intervals_passed = int((time.time() - self.next_summary_time) / interval)
             # Schedule the next summary for the first interval that has not yet
             # fully passed
             self.next_summary_time += interval * (intervals_passed + 1)
@@ -983,39 +994,38 @@ class FuzzTester(object):
 
         methods = self.service.get_methods(self.config.functions)
         constraints = self.preprocess_constraints(self.config.constraints)
-        self.method_randomizers = self.get_method_randomizers(
-            methods, constraints)
+        self.method_randomizers = self.get_method_randomizers(methods, constraints)
 
         logging.info("Fuzzing methods: %s" % methods.keys())
 
         with FuzzerClient(self.config, client_class) as self.client:
             for method_name, spec in six.iteritems(methods):
-                result_spec = spec.get('result_spec', None)
-                thrift_exceptions = spec['thrift_exceptions']
+                result_spec = spec.get("result_spec", None)
+                thrift_exceptions = spec["thrift_exceptions"]
                 is_oneway = result_spec is None
                 logging.info("Fuzz testing method %s" % (method_name))
                 self.n_tests = 0
                 self.n_exceptions = 0
                 did_crash = False
-                for kwargs in self.fuzz_kwargs(
-                        method_name, self.config.n_iterations):
-                    if not self.run_test(method_name, kwargs, None,
-                                         is_oneway, thrift_exceptions):
+                for kwargs in self.fuzz_kwargs(method_name, self.config.n_iterations):
+                    if not self.run_test(
+                        method_name, kwargs, None, is_oneway, thrift_exceptions
+                    ):
                         did_crash = True
                         break
                     self.log_result_summary(method_name)
                     self.previous_kwargs = kwargs
 
                 if did_crash:
-                    logging.error(("Method %s caused the "
-                                   "server to crash.") % (
-                                       method_name))
+                    logging.error(
+                        ("Method %s caused the " "server to crash.") % (method_name)
+                    )
                     break
                 else:
-                    logging.info(("Method %s raised unexpected "
-                                  "exceptions in %d/%d tests.") % (
-                                      method_name, self.n_exceptions,
-                                      self.n_tests))
+                    logging.info(
+                        ("Method %s raised unexpected " "exceptions in %d/%d tests.")
+                        % (method_name, self.n_exceptions, self.n_tests)
+                    )
 
         self.timer.summarize()
 
@@ -1032,6 +1042,6 @@ def fuzz_service(service: Service, ttypes, constants) -> None:
     run_fuzzer(config)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     config = FuzzerConfiguration()
     run_fuzzer(config)

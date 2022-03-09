@@ -14,20 +14,14 @@
 # limitations under the License.
 
 import unittest
-import mock
 
-from thrift.async_common import  AsyncioRpcConnectionContext
+import mock
+from thrift.async_common import AsyncioRpcConnectionContext
 
 
 class TestAsyncioRpcConnectionContext(unittest.TestCase):
-
     def test_getSockName(self):
-        test_sock_laddr = (
-            '198.51.100.29',  # TEST-NET-2
-            2929,
-            0,
-            0
-        )
+        test_sock_laddr = ("198.51.100.29", 2929, 0, 0)  # TEST-NET-2
         client_socket = mock.Mock()
         client_socket.getsockname.return_value = test_sock_laddr
         context = AsyncioRpcConnectionContext(client_socket)

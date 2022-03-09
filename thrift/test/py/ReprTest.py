@@ -16,22 +16,25 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
+
 import textwrap
 import unittest
-from thrift.test.UnionTest.ttypes import \
-    RandomStuff, \
-    StructWithUnionAndOther, \
-    TestUnion, \
-    OneOfEach, \
-    StructWithDoubleUnderscoreField
+
+from thrift.test.UnionTest.ttypes import (
+    RandomStuff,
+    StructWithUnionAndOther,
+    TestUnion,
+    OneOfEach,
+    StructWithDoubleUnderscoreField,
+)
+
 
 class TestRepr(unittest.TestCase):
-
     def assertReprEquals(self, obj):
         self.assertEquals(obj, eval(repr(obj)))
 
     def test_repr(self):
-        """ Ensure that __repr__() return a valid expression that can be
+        """Ensure that __repr__() return a valid expression that can be
         used to construct the original object
         """
 
@@ -42,7 +45,7 @@ class TestRepr(unittest.TestCase):
         self.assertReprEquals(TestUnion(string_field="blah"))
 
     def test_content(self):
-        """ Ensure that the content of repr() is what we wanted. We should
+        """Ensure that the content of repr() is what we wanted. We should
         print the members in the same order as it is appeared in Thrift file,
         skipping unset members.
         """
@@ -53,8 +56,7 @@ class TestRepr(unittest.TestCase):
         self.assertEquals(repr(obj), textwrap.dedent(output))
 
     def test_defaults(self):
-        """ Ensure repr() includes fields which have default values.
-        """
+        """Ensure repr() includes fields which have default values."""
         obj = OneOfEach()
         output = """\
             OneOfEach(

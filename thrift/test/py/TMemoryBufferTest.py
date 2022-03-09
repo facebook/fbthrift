@@ -17,6 +17,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
+
 import unittest
 
 from thrift.transport.TTransport import TMemoryBuffer
@@ -43,5 +44,6 @@ class TestTMemoryBuffer(unittest.TestCase):
         self.assertRaises(RuntimeError, buf.read, 5)
         self.assertRaises(RuntimeError, buf.write, b"world")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

@@ -37,8 +37,8 @@ def create_client(
     Given a thrift client class, and a host/port
     return a client using HeaderTransport
     """
-    from thrift.transport.TSocket import TSocket
     from thrift.protocol.THeaderProtocol import THeaderProtocol
+    from thrift.transport.TSocket import TSocket
 
     sock = TSocket(host=host, port=port, unix_socket=path)
     sock.setTimeout(timeout)
@@ -75,7 +75,7 @@ def parse_struct_spec(struct):
         yield StructField._make(field)
 
 
-def struct_to_dict(struct, defaults: bool=False):
+def struct_to_dict(struct, defaults: bool = False):
     """
     Given a Thrift Struct convert it into a dict
     :param struct: a thrift struct
@@ -120,7 +120,7 @@ def struct_to_dict(struct, defaults: bool=False):
     return adict
 
 
-def __list_to_dict(alist, type_args, defaults: bool=False):
+def __list_to_dict(alist, type_args, defaults: bool = False):
     """
     Given a python list-like collection, potentially containing Thrift Structs,
     convert it into a dict
@@ -147,7 +147,7 @@ def __list_to_dict(alist, type_args, defaults: bool=False):
         return alist
 
 
-def __set_to_dict(aset, type_args, defaults: bool=False):
+def __set_to_dict(aset, type_args, defaults: bool = False):
     """
     Given a python set-like collection, potentially containing Thrift Structs
     and recursively parsing the elements
@@ -163,8 +163,7 @@ def __set_to_dict(aset, type_args, defaults: bool=False):
         return {struct_to_dict(element, defaults=defaults) for element in aset}
     if element_type == TType.LIST:
         return {
-            __list_to_dict(element, type_args[1], defaults=defaults)
-            for element in aset
+            __list_to_dict(element, type_args[1], defaults=defaults) for element in aset
         }
     if element_type == TType.SET:
         return {
@@ -174,7 +173,7 @@ def __set_to_dict(aset, type_args, defaults: bool=False):
         return aset
 
 
-def __map_to_dict(amap, type_args, defaults: bool=False):
+def __map_to_dict(amap, type_args, defaults: bool = False):
     """
     Given a python dictionary, potentially containing Thrift Structs, convert it
     into a dict

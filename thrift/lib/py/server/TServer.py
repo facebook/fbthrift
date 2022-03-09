@@ -20,21 +20,24 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import logging
-import sys
 import os
+import sys
 import threading
+
 if sys.version_info[0] >= 3:
     import queue
+
     # pyre-fixme[11]: Annotation `queue` is not defined as a type.
     Queue = queue
 else:
     import Queue
 import warnings
 
-from thrift.Thrift import TProcessor, TApplicationException
-from thrift.transport import TTransport
 from thrift.protocol import TBinaryProtocol
 from thrift.protocol.THeaderProtocol import THeaderProtocolFactory
+from thrift.Thrift import TProcessor, TApplicationException
+from thrift.transport import TTransport
+
 
 class TConnectionContext:
     def getPeerName(self):
@@ -48,6 +51,7 @@ class TConnectionContext:
 
 class TRpcConnectionContext(TConnectionContext):
     """Connection context class for thrift RPC calls"""
+
     def __init__(self, client_socket, iprot=None, oprot=None):
         """Initializer.
 
@@ -84,6 +88,7 @@ class TServerEventHandler:
 
     Override selected methods on this class to implement custom event handling
     """
+
     def preServe(self, address):
         """Called before the server begins.
 
@@ -144,23 +149,31 @@ class TServer:
         be set to an instance of TServerEventHandler.
 
         """
-    def __init__(self, *args):
-        if (len(args) == 2):
-            self.__initArgs__(args[0], args[1],
-                              TTransport.TTransportFactoryBase(),
-                              TTransport.TTransportFactoryBase(),
-                              TBinaryProtocol.TBinaryProtocolFactory(),
-                              TBinaryProtocol.TBinaryProtocolFactory())
-        elif (len(args) == 4):
-            self.__initArgs__(args[0], args[1], args[2], args[2], args[3],
-                    args[3])
-        elif (len(args) == 6):
-            self.__initArgs__(args[0], args[1], args[2], args[3], args[4],
-                    args[5])
 
-    def __initArgs__(self, processor, serverTransport,
-                     inputTransportFactory, outputTransportFactory,
-                     inputProtocolFactory, outputProtocolFactory):
+    def __init__(self, *args):
+        if len(args) == 2:
+            self.__initArgs__(
+                args[0],
+                args[1],
+                TTransport.TTransportFactoryBase(),
+                TTransport.TTransportFactoryBase(),
+                TBinaryProtocol.TBinaryProtocolFactory(),
+                TBinaryProtocol.TBinaryProtocolFactory(),
+            )
+        elif len(args) == 4:
+            self.__initArgs__(args[0], args[1], args[2], args[2], args[3], args[3])
+        elif len(args) == 6:
+            self.__initArgs__(args[0], args[1], args[2], args[3], args[4], args[5])
+
+    def __initArgs__(
+        self,
+        processor,
+        serverTransport,
+        inputTransportFactory,
+        outputTransportFactory,
+        inputProtocolFactory,
+        outputProtocolFactory,
+    ):
         self.processor = self._getProcessor(processor)
         self.serverTransport = serverTransport
         self.inputTransportFactory = inputTransportFactory
@@ -171,16 +184,15 @@ class TServer:
         self.serverEventHandler = TServerEventHandler()
 
     def _getProcessor(self, processor):
-        """ Check if a processor is really a processor, or if it is a handler
-            auto create a processor for it """
+        """Check if a processor is really a processor, or if it is a handler
+        auto create a processor for it"""
         if isinstance(processor, TProcessor):
             return processor
         elif hasattr(processor, "_processor_type"):
             handler = processor
             return handler._processor_type(handler)
         else:
-            raise TApplicationException(
-                    message="Could not detect processor type")
+            raise TApplicationException(message="Could not detect processor type")
 
     def setServerEventHandler(self, handler):
         self.serverEventHandler = handler

@@ -19,8 +19,9 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import sys, glob
-sys.path.insert(0, './gen-py')
-lib_path = glob.glob('../../lib/py/build/lib.*')
+
+sys.path.insert(0, "./gen-py")
+lib_path = glob.glob("../../lib/py/build/lib.*")
 if lib_path:
     sys.path.insert(0, lib_path[0])
 
@@ -29,14 +30,15 @@ if sys.version_info[0] >= 3:
 
 from ThriftTest import ThriftTest
 from ThriftTest.ttypes import *
-from thrift.transport import TTransport
-from thrift.transport import TSocket
-from thrift.protocol import TBinaryProtocol
-import unittest
 import time
+import unittest
+
+from thrift.protocol import TBinaryProtocol
+from thrift.transport import TSocket
+from thrift.transport import TTransport
+
 
 class TestEof(unittest.TestCase):
-
     def setUp(self):
         trans = TTransport.TMemoryBuffer()
         prot = TBinaryProtocol.TBinaryProtocol(trans)
@@ -124,8 +126,8 @@ class TestEof(unittest.TestCase):
         """Test that TBinaryProtocolAccelerated throws a TTransportException
         when it reaches the end of the stream"""
         self.eofTestHelper(TBinaryProtocol.TBinaryProtocolAcceleratedFactory())
-        self.eofTestHelperStress(
-                TBinaryProtocol.TBinaryProtocolAcceleratedFactory())
+        self.eofTestHelperStress(TBinaryProtocol.TBinaryProtocolAcceleratedFactory())
+
 
 def suite():
     suite = unittest.TestSuite()
@@ -133,6 +135,6 @@ def suite():
     suite.addTest(loader.loadTestsFromTestCase(TestEof))
     return suite
 
+
 if __name__ == "__main__":
-    unittest.main(defaultTest="suite",
-            testRunner=unittest.TextTestRunner(verbosity=2))
+    unittest.main(defaultTest="suite", testRunner=unittest.TextTestRunner(verbosity=2))

@@ -17,21 +17,24 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
+
 import json
 import unittest
-from thrift.transport import TTransport
+
 from thrift.protocol import TBinaryProtocol
 from thrift.protocol import TSimpleJSONProtocol
+from thrift.transport import TTransport
 from thrift.test.UnionTest.ttypes import *
+
 
 class TestUnionStructs(unittest.TestCase):
     def test_init(self):
         u = TestUnion()
         self.assertEquals(TestUnion.__EMPTY__, u.getType())
 
-        v = TestUnion(string_field='test')
+        v = TestUnion(string_field="test")
         self.assertEquals(TestUnion.STRING_FIELD, v.getType())
-        self.assertEquals('test', v.value)
+        self.assertEquals("test", v.value)
         self.assertNotEqual(u, v)
 
         try:
@@ -57,15 +60,15 @@ class TestUnionStructs(unittest.TestCase):
 
     def test_json(self):
         v = TestUnion(i32_field=123)
-        j = {'i32_field': 123}
+        j = {"i32_field": 123}
         self._test_json(j, v)
 
-        v = TestUnion(string_field='test')
-        j = {'string_field': 'test'}
+        v = TestUnion(string_field="test")
+        j = {"string_field": "test"}
         self._test_json(j, v)
 
     def test_repr(self):
-        """ Ensure that __repr__() return a valid expression that can be
+        """Ensure that __repr__() return a valid expression that can be
         used to construct the original object
         """
         v = TestUnion(i32_field=123)
@@ -74,8 +77,9 @@ class TestUnionStructs(unittest.TestCase):
         v = TestUnion()
         self.assertEquals(v, eval(v.__repr__()))
 
-        v = TestUnion(string_field='test')
+        v = TestUnion(string_field="test")
         self.assertEquals(v, eval(v.__repr__()))
+
     def _test_read_write(self, u, j):
         protocol_factory = TBinaryProtocol.TBinaryProtocolAcceleratedFactory()
         databuf = TTransport.TMemoryBuffer()
@@ -90,12 +94,13 @@ class TestUnionStructs(unittest.TestCase):
 
     def test_read_write(self):
         l = [
-            (TestUnion(string_field='test'),
-                TestUnion(string_field='test')),
+            (TestUnion(string_field="test"), TestUnion(string_field="test")),
             (TestUnion(), TestUnion()),
             (TestUnion(i32_field=100), TestUnion(i32_field=100)),
-            (StructWithUnionAndOther(TestUnion(i32_field=100), 'test'),
-                StructWithUnionAndOther(TestUnion(i32_field=100), 'test')),
+            (
+                StructWithUnionAndOther(TestUnion(i32_field=100), "test"),
+                StructWithUnionAndOther(TestUnion(i32_field=100), "test"),
+            ),
         ]
 
         for i, j in l:
@@ -111,11 +116,13 @@ class TestUnionStructs(unittest.TestCase):
 
     def test_json_output(self):
         l = [
-          (TestUnion(), {}),
-          (TestUnion(i32_field=10), {'i32_field': 10}),
-          (TestUnion(string_field='test'), {'string_field': 'test'}),
-          (StructWithUnionAndOther(TestUnion(i32_field=10), 'test'),
-              {'test_union': {'i32_field': 10}, 'string_field': 'test'})
+            (TestUnion(), {}),
+            (TestUnion(i32_field=10), {"i32_field": 10}),
+            (TestUnion(string_field="test"), {"string_field": "test"}),
+            (
+                StructWithUnionAndOther(TestUnion(i32_field=10), "test"),
+                {"test_union": {"i32_field": 10}, "string_field": "test"},
+            ),
         ]
 
         for i, j in l:
@@ -125,5 +132,6 @@ class TestUnionStructs(unittest.TestCase):
         self.assertFalse(OneOfEach.isUnion())
         self.assertTrue(TestUnion.isUnion())
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

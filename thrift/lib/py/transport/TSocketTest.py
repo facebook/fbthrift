@@ -29,7 +29,6 @@ import thrift.transport.TTransport as TTransport
 
 
 class TSocketTest(unittest.TestCase):
-
     def test_usage_as_context_manager(self):
         """
         Asserts that both TSocket and TServerSocket can be used with `with` and
@@ -52,25 +51,25 @@ class TSocketTest(unittest.TestCase):
         # swallow exceptions
         def do_test():
             with TSocket.TServerSocket(port=0, family=socket.AF_INET6):
-                raise Exception('test_error')
+                raise Exception("test_error")
 
-        self.assertRaisesRegexp(Exception, 'test_error', do_test)
+        self.assertRaisesRegexp(Exception, "test_error", do_test)
 
     def test_open_failure(self):
         # Bind a server socket to an address, but don't actually listen on it.
         server_socket = socket.socket(socket.AF_INET6)
         try:
-            server_socket.bind(('::', 0))
+            server_socket.bind(("::", 0))
             server_port = server_socket.getsockname()[1]
 
             # Explicitly use "localhost" as the hostname, so that the
             # connect code will try both IPv6 and IPv4.  We want to
             # exercise the failure behavior when trying multiple addresses.
-            sock = TSocket.TSocket(host='localhost', port=server_port)
+            sock = TSocket.TSocket(host="localhost", port=server_port)
             sock.setTimeout(50)  # ms
             try:
                 sock.open()
-                self.fail('unexpectedly succeeded to connect to closed socket')
+                self.fail("unexpectedly succeeded to connect to closed socket")
             except TTransport.TTransportException:
                 # sock.open() should not leave the file descriptor open
                 # when it fails
@@ -123,7 +122,7 @@ class TSocketTest(unittest.TestCase):
             self.assertEquals(read, text)
 
     def test_bad_port(self):
-        port = 'bogus'
+        port = "bogus"
         with self.assertRaises(ValueError):
             with TSocket.TServerSocket(port=port):
                 pass

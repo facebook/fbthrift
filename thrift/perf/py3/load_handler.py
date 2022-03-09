@@ -14,9 +14,10 @@
 # limitations under the License.
 
 import asyncio
-from concurrent.futures import ProcessPoolExecutor
 import pickle
 import time
+from concurrent.futures import ProcessPoolExecutor
+
 from thrift.perf.load.services import LoadTestInterface
 from thrift.perf.load.types import LoadError
 
@@ -55,16 +56,10 @@ class LoadTestHandler(LoadTestInterface):
         await asyncio.sleep(us_to_sec(us))
 
     async def burn(self, us):
-        return await self.loop.run_in_executor(
-            self.pool,
-            burn_in_executor,
-            us)
+        return await self.loop.run_in_executor(self.pool, burn_in_executor, us)
 
     async def onewayBurn(self, us):
-        return await self.loop.run_in_executor(
-            self.pool,
-            burn_in_executor,
-            us)
+        return await self.loop.run_in_executor(self.pool, burn_in_executor, us)
 
     async def badSleep(self, us):
         # "bad" because it sleeps on the main thread
@@ -86,10 +81,10 @@ class LoadTestHandler(LoadTestInterface):
         pass
 
     async def recv(self, bytes):
-        return 'a' * bytes
+        return "a" * bytes
 
     async def sendrecv(self, data, recvBytes):
-        return 'a' * recvBytes
+        return "a" * recvBytes
 
     async def echo(self, data):
         return data

@@ -21,8 +21,10 @@ import time
 
 from apache.thrift.test.load.ttypes import LoadError
 
+
 def us_to_sec(microseconds):
     return float(microseconds) / 1000000
+
 
 class LoadHandler(object):
     def __init__(self):
@@ -76,10 +78,10 @@ class LoadHandler(object):
         pass
 
     def recv(self, bytes):
-        return 'a' * bytes
+        return "a" * bytes
 
     def sendrecv(self, data, recvBytes):
-        return 'a' * recvBytes
+        return "a" * recvBytes
 
     def echo(self, data):
         return data

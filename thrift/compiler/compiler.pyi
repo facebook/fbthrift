@@ -12,14 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import NamedTuple, Tuple, List, Sequence
 import enum
-
+from typing import NamedTuple, Tuple, List, Sequence
 
 class CompileRetcode(enum.Enum):
     success: CompileRetcode = ...
     failure: CompileRetcode = ...
-
 
 class DiagnosticLevel(enum.Enum):
     failure: DiagnosticLevel = ...
@@ -28,7 +26,6 @@ class DiagnosticLevel(enum.Enum):
     info: DiagnosticLevel = ...
     debug: DiagnosticLevel = ...
 
-
 class DiagnosticMessage(NamedTuple):
     level: DiagnosticLevel
     filename: str
@@ -36,5 +33,6 @@ class DiagnosticMessage(NamedTuple):
     last_token: str
     message: str
 
-
-def thrift_compile(args: Sequence[str]) -> Tuple[CompileRetcode, List[DiagnosticMessage]]: ...
+def thrift_compile(
+    args: Sequence[str],
+) -> Tuple[CompileRetcode, List[DiagnosticMessage]]: ...

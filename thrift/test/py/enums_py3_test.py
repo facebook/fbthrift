@@ -59,5 +59,5 @@ class EnumTest(unittest.TestCase):
             MyEnum1.ME1_1 > 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

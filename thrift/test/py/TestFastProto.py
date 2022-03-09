@@ -26,8 +26,8 @@ from FastProto.ttypes import (
     TestUnion,
 )
 from thrift.protocol import TBinaryProtocol, TCompactProtocol, fastproto
-from thrift.transport.TTransport import TMemoryBuffer
 from thrift.protocol.exceptions import ThriftUnicodeDecodeError
+from thrift.transport.TTransport import TMemoryBuffer
 
 if sys.version_info[0] >= 3:
     from thrift.util.BytesStrIO import BytesStrIO
@@ -222,6 +222,7 @@ class AbstractTest:
             return TBinaryProtocol.TBinaryProtocol(trans)
         else:
             return TCompactProtocol.TCompactProtocol(trans)
+
 
 class FastBinaryTest(AbstractTest, unittest.TestCase):
     PROTO = 0

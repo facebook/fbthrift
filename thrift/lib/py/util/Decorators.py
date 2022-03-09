@@ -22,9 +22,11 @@ from __future__ import unicode_literals
 import contextlib
 import logging
 import os
-import six
 from concurrent.futures import Future
 from functools import partial
+
+import six
+
 try:
     import resource
 except ImportError:
@@ -32,13 +34,13 @@ except ImportError:
     resource = None
 
 
+from thrift.protocol import THeaderProtocol
 from thrift.Thrift import (
     TApplicationException,
     TException,
     TMessageType,
     TRequestContext,
 )
-from thrift.protocol import THeaderProtocol
 
 
 log = logging.getLogger(__name__)
@@ -47,7 +49,7 @@ log = logging.getLogger(__name__)
 def get_memory_usage():
     # this parses the resident set size from /proc/self/stat, which
     # is the same approach the C++ FacebookBase takes
-    with open('/proc/self/stat') as stat:
+    with open("/proc/self/stat") as stat:
         stat_string = stat.read()
     # rss is field number 23 in /proc/pid/stat, see man proc
     # for the full list
@@ -58,13 +60,13 @@ def get_memory_usage():
 
 
 def get_function_name(func):
-    return func.__name__.split('_', 1)[-1]
+    return func.__name__.split("_", 1)[-1]
 
 
 def make_unknown_function_exception(name):
     return TApplicationException(
         TApplicationException.UNKNOWN_METHOD,
-        'Unknown function {!r}'.format(name),
+        "Unknown function {!r}".format(name),
     )
 
 
@@ -83,7 +85,7 @@ def process_main(asyncio=False):
             if self.doesKnowFunction(name):
                 ret = self.callFunction(name, seqid, iprot, oprot, server_ctx)
                 if asyncio:
-                    return ret   # a Deferred/Future
+                    return ret  # a Deferred/Future
 
                 return True
             self.skipMessageStruct(iprot)
@@ -110,7 +112,7 @@ try:
 
     # Also note this is unsupported on Twisted/asyncio.
     MEMORY_WARNING_THRESHOLD = int(
-        os.environ.get('THRIFT_PER_REQUEST_MEMORY_WARNING', 0)
+        os.environ.get("THRIFT_PER_REQUEST_MEMORY_WARNING", 0)
     )
 except (TypeError, ValueError):
     MEMORY_WARNING_THRESHOLD = 0
@@ -137,6 +139,7 @@ def reset_request_context(processor):
 
 def process_method(argtype, oneway=False, asyncio=False):
     """Decorator for process_xxx methods."""
+
     def _decorator(func):
         def nested(self, seqid, iprot, oprot, server_ctx):
             _mem_before = _process_method_mem_usage()
@@ -152,7 +155,7 @@ def process_method(argtype, oneway=False, asyncio=False):
             except Exception as e:
                 args = argtype()
                 log.exception(
-                    'Exception thrown while reading arguments: `%s`',
+                    "Exception thrown while reading arguments: `%s`",
                     str(e),
                 )
                 result = TApplicationException(message=str(e))
@@ -165,20 +168,22 @@ def process_method(argtype, oneway=False, asyncio=False):
                 result = func(self, args, handler_ctx)
                 if not oneway:
                     self.writeReply(
-                        oprot, handler_ctx, fn_name, seqid, result, server_ctx)
+                        oprot, handler_ctx, fn_name, seqid, result, server_ctx
+                    )
             finally:
                 reset_request_context(self)
 
             _mem_after = _process_method_mem_usage()
             if _mem_after - _mem_before > MEMORY_WARNING_THRESHOLD:
                 log.error(
-                    'Memory usage rose from %d to %d while processing `%s` '
-                    'with args `%s`',
+                    "Memory usage rose from %d to %d while processing `%s` "
+                    "with args `%s`",
                     _mem_before,
                     _mem_after,
                     fn_name,
                     str(args),
                 )
+
         return nested
 
     return _decorator
@@ -186,12 +191,12 @@ def process_method(argtype, oneway=False, asyncio=False):
 
 def future_process_main():
     """Decorator for process method of future processor."""
+
     def _decorator(func):
         def nested(self, iprot, oprot, server_ctx=None):
             name, seqid = self.readMessageBegin(iprot)
             if self.doesKnowFunction(name):
-                return self._processMap[name](self, seqid, iprot, oprot,
-                                              server_ctx)
+                return self._processMap[name](self, seqid, iprot, oprot, server_ctx)
             else:
                 self.skipMessageStruct(iprot)
                 exc = make_unknown_function_exception(name)
@@ -199,13 +204,13 @@ def future_process_main():
                 fut = Future(self._loop)
                 fut.set_result(True)
                 return fut
+
         return nested
 
     return _decorator
 
 
-def write_result(result, reply_type, seqid,
-                  event_handler, handler_ctx, fn_name, oprot):
+def write_result(result, reply_type, seqid, event_handler, handler_ctx, fn_name, oprot):
 
     event_handler.preWrite(handler_ctx, fn_name, result)
 
@@ -239,8 +244,7 @@ def write_result(result, reply_type, seqid,
         event_handler.postWrite(handler_ctx, fn_name, result)
 
 
-def _done(future, processor, handler_ctx, fn_name, oprot, reply_type, seqid,
-          oneway):
+def _done(future, processor, handler_ctx, fn_name, oprot, reply_type, seqid, oneway):
     try:
         result = future.result()
     except TApplicationException as e:
@@ -255,8 +259,9 @@ def _done(future, processor, handler_ctx, fn_name, oprot, reply_type, seqid,
     if isinstance(result, TApplicationException):
         reply_type = TMessageType.EXCEPTION
 
-    write_result(result, reply_type, seqid,
-                 processor._event_handler, handler_ctx, fn_name, oprot)
+    write_result(
+        result, reply_type, seqid, processor._event_handler, handler_ctx, fn_name, oprot
+    )
 
 
 def future_process_method(argtype, oneway=False):
@@ -267,11 +272,11 @@ def future_process_method(argtype, oneway=False):
     and ContextProcessor should be deprecated. To pass things to handler
     methods, use request context.
     """
+
     def _decorator(func):
         def nested(self, seqid, iprot, oprot, server_ctx):
-            fn_name = func.__name__.split('_', 1)[-1]
-            handler_ctx = self._event_handler.getHandlerContext(fn_name,
-                                                                server_ctx)
+            fn_name = func.__name__.split("_", 1)[-1]
+            handler_ctx = self._event_handler.getHandlerContext(fn_name, server_ctx)
             args = argtype()
             reply_type = TMessageType.REPLY
             self._event_handler.preRead(handler_ctx, fn_name, args)
@@ -281,19 +286,21 @@ def future_process_method(argtype, oneway=False):
 
             if hasattr(self._handler, "setRequestContext"):
                 request_context = TRequestContext()
-                if (isinstance(iprot, THeaderProtocol.THeaderProtocol)):
+                if isinstance(iprot, THeaderProtocol.THeaderProtocol):
                     request_context.setHeaders(iprot.trans.get_headers())
                 self._handler.setRequestContext(request_context)
 
             fut = func(self, args, handler_ctx)
-            done_callback = partial(_done,
-                                    processor=self,
-                                    handler_ctx=handler_ctx,
-                                    fn_name=fn_name,
-                                    oprot=oprot,
-                                    reply_type=reply_type,
-                                    seqid=seqid,
-                                    oneway=oneway)
+            done_callback = partial(
+                _done,
+                processor=self,
+                handler_ctx=handler_ctx,
+                fn_name=fn_name,
+                oprot=oprot,
+                reply_type=reply_type,
+                seqid=seqid,
+                oneway=oneway,
+            )
             fut.add_done_callback(done_callback)
 
             if hasattr(self._handler, "setRequestContext"):
@@ -306,8 +313,14 @@ def future_process_method(argtype, oneway=False):
 
 
 def write_results_after_future(
-    result, event_handler, handler_ctx, seqid, oprot, fn_name,
-    known_exceptions, future,
+    result,
+    event_handler,
+    handler_ctx,
+    seqid,
+    oprot,
+    fn_name,
+    known_exceptions,
+    future,
 ):
     """Result/exception handler for asyncio futures."""
     try:
@@ -328,8 +341,7 @@ def write_results_after_future(
         reply_type = TMessageType.EXCEPTION
         event_handler.handlerError(handler_ctx, fn_name, e)
 
-    write_result(result, reply_type, seqid,
-                 event_handler, handler_ctx, fn_name, oprot)
+    write_result(result, reply_type, seqid, event_handler, handler_ctx, fn_name, oprot)
 
 
 @contextlib.contextmanager

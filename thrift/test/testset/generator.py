@@ -164,7 +164,7 @@ CPP_REF_TRANSFORM: Dict[Target, str] = {
 
 SHARED_CPP_REF_TRANSFORM: Dict[Target, str] = {
     Target.NAME: "{}_shared_cpp_ref",
-    Target.THRIFT: "{}|cpp.ref_type = \"shared\"",
+    Target.THRIFT: '{}|cpp.ref_type = "shared"',
     Target.CPP2: "{}|FieldModifier::SharedReference",
 }
 
@@ -278,7 +278,11 @@ def gen_optional_box_fields(target: Target) -> Dict[str, str]:
 def gen_struct_fields(target: Target) -> Dict[str, str]:
     """Generates field name -> type that are appropriate for use in structs."""
     ret = gen_union_fields(target)
-    ret.update(**gen_optional(target, ret), **gen_required(target, ret), **gen_optional_box_fields(target))
+    ret.update(
+        **gen_optional(target, ret),
+        **gen_required(target, ret),
+        **gen_optional_box_fields(target),
+    )
     ret.update(**gen_lazy_fields(target))
     return ret
 

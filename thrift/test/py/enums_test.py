@@ -57,11 +57,11 @@ class EnumTest(unittest.TestCase):
         self.assertEquals(MyEnum3.ME3_10, 10)
         self.assertEquals(max(MyEnum3._VALUES_TO_NAMES), 10)
 
-        self.assertEquals(min(MyEnum4._VALUES_TO_NAMES), 0x7ffffffd)
-        self.assertEquals(MyEnum4.ME4_A, 0x7ffffffd)
-        self.assertEquals(MyEnum4.ME4_B, 0x7ffffffe)
-        self.assertEquals(MyEnum4.ME4_C, 0x7fffffff)
-        self.assertEquals(max(MyEnum4._VALUES_TO_NAMES), 0x7fffffff)
+        self.assertEquals(min(MyEnum4._VALUES_TO_NAMES), 0x7FFFFFFD)
+        self.assertEquals(MyEnum4.ME4_A, 0x7FFFFFFD)
+        self.assertEquals(MyEnum4.ME4_B, 0x7FFFFFFE)
+        self.assertEquals(MyEnum4.ME4_C, 0x7FFFFFFF)
+        self.assertEquals(max(MyEnum4._VALUES_TO_NAMES), 0x7FFFFFFF)
 
     def test_struct(self):
         ms = MyStruct()
@@ -72,18 +72,12 @@ class EnumTest(unittest.TestCase):
         self.assertEquals(MyEnum2._VALUES_TO_NAMES[MyEnum2.ME2_2], "ME2_2")
 
     def test_names_to_values(self):
-        self.assertEquals(
-            MyEnum2._NAMES_TO_VALUES["ME2_2"],
-            MyEnum2.ME2_2
-        )
-        self.assertEquals(
-            MyEnum3._NAMES_TO_VALUES["ME3_N2"],
-            MyEnum3.ME3_N2
-        )
+        self.assertEquals(MyEnum2._NAMES_TO_VALUES["ME2_2"], MyEnum2.ME2_2)
+        self.assertEquals(MyEnum3._NAMES_TO_VALUES["ME3_N2"], MyEnum3.ME3_N2)
 
     def test_compare(self):
         self.assertTrue(MyEnum1.ME1_0 < MyEnum1.ME1_1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

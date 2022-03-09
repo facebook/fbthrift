@@ -17,22 +17,21 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import unittest
 import socket
 import time
+import unittest
 from threading import Thread
 
-from ThriftTest import ThriftTest
-
-from thrift.transport import TSocket
-from thrift.transport.THeaderTransport import MAX_BIG_FRAME_SIZE
 from thrift.protocol import THeaderProtocol
 from thrift.server import TCppServer
+from thrift.transport import TSocket
+from thrift.transport.THeaderTransport import MAX_BIG_FRAME_SIZE
+from ThriftTest import ThriftTest
 
 
 class TestHandler(ThriftTest.Iface):
     def testString(self, str):
-        return str * 2**30
+        return str * 2 ** 30
 
 
 def create_server():
@@ -40,7 +39,7 @@ def create_server():
     server = TCppServer.TCppServer(processor)
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    sock.bind(('0.0.0.0', 0))
+    sock.bind(("0.0.0.0", 0))
     port = sock.getsockname()[1]
     server.setPort(port)
 
@@ -66,5 +65,5 @@ class BigFrameTest(unittest.TestCase):
         server, port = create_server()
 
         with create_client(port) as client:
-            result = client.testString('a')
-            self.assertEqual(len(result), 2**30)
+            result = client.testString("a")
+            self.assertEqual(len(result), 2 ** 30)

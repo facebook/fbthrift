@@ -13,12 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from thrift.Thrift import TType
-
 import inspect
 import sys
-from typing import Any, Dict, List, Optional, Tuple, Type, cast
 from types import ModuleType
+from typing import Any, Dict, List, Optional, Tuple, Type, cast
+
+from thrift.Thrift import TType
 
 ExtraTypeSpec = Any
 FieldSpec = Tuple[

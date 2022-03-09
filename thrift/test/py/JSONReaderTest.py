@@ -16,17 +16,17 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
+
 import unittest
 
+from JsonReaderTest.ttypes import Container
+from JsonReaderTest.ttypes import StructContainingEnum
 from JsonReaderTest.ttypes import StructContainingOptionalList
 from JsonReaderTest.ttypes import StructContainingRequiredList
-from JsonReaderTest.ttypes import StructContainingEnum
-from JsonReaderTest.ttypes import Container
 from thrift.protocol.TProtocol import TProtocolException
 
 
 class TestJSONReader(unittest.TestCase):
-
     def testReadNullOptionalList(self):
         struct = StructContainingOptionalList()
         struct.readFromJson('{ "data" : null }')
@@ -72,5 +72,5 @@ class TestJSONReader(unittest.TestCase):
         struct.readFromJson(json_data, relax_enum_validation=True)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

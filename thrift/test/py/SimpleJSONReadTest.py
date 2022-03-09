@@ -18,15 +18,15 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import math
 import sys
 import unittest
-import math
 
+from SimpleJSONRead.ttypes import SomeStruct, Stuff, StuffMissing, Empty
 from thrift.protocol import TSimpleJSONProtocol, TProtocol
 from thrift.transport.TTransport import TMemoryBuffer
 from thrift.util import Serializer
 
-from SimpleJSONRead.ttypes import SomeStruct, Stuff, StuffMissing, Empty
 
 def writeToJSON(obj):
     trans = TMemoryBuffer()
@@ -34,23 +34,25 @@ def writeToJSON(obj):
     obj.write(proto)
     return trans.getvalue()
 
+
 def readStuffFromJSON(jstr, struct_type=Stuff):
     stuff = struct_type()
     trans = TMemoryBuffer(jstr)
-    proto = TSimpleJSONProtocol.TSimpleJSONProtocol(trans,
-                                                    struct_type.thrift_spec)
+    proto = TSimpleJSONProtocol.TSimpleJSONProtocol(trans, struct_type.thrift_spec)
     stuff.read(proto)
     return stuff
+
 
 class TestSimpleJSONRead(unittest.TestCase):
     def test_primitive_type(self):
         stuff = Stuff(
-                aString="hello",
-                aShort=10,
-                anInteger=23990,
-                aLong=123456789012,
-                aDouble=1234567.9,
-                aBool=True)
+            aString="hello",
+            aShort=10,
+            anInteger=23990,
+            aLong=123456789012,
+            aDouble=1234567.9,
+            aBool=True,
+        )
         j = writeToJSON(stuff)
         stuff_read = readStuffFromJSON(j)
         self.assertEqual(stuff_read.aString, "hello")
@@ -61,29 +63,26 @@ class TestSimpleJSONRead(unittest.TestCase):
         self.assertTrue(stuff_read.aBool)
 
     def test_escape_string(self):
-        stuff = Stuff(
-            aString=b'\\"hello')
+        stuff = Stuff(aString=b'\\"hello')
         j = writeToJSON(stuff)
         stuff_read = readStuffFromJSON(j)
         self.assertEqual(stuff_read.aString, '\\"hello')
 
     def test_unicode_in_binary_escape(self):
-        stuff = Stuff(
-            aBinary=b'\\"hello'.decode('utf-8'))
+        stuff = Stuff(aBinary=b'\\"hello'.decode("utf-8"))
         j = writeToJSON(stuff)
         self.assertEqual(j, b'{\n  "aBinary": "\\\\\\"hello"\n}')
         stuff_read = readStuffFromJSON(j)
         self.assertEqual(stuff_read.aBinary, b'\\"hello')
 
     def test_unicode_string(self):
-        stuff = Stuff(
-            aString='año'.encode('utf-8'))
+        stuff = Stuff(aString="año".encode("utf-8"))
         j = writeToJSON(stuff)
         stuff_read = readStuffFromJSON(j)
         if sys.version_info[0] == 3:
-            self.assertEqual(stuff_read.aString, 'año')
+            self.assertEqual(stuff_read.aString, "año")
         else:
-            self.assertEqual(stuff_read.aString, 'año'.encode('utf-8'))
+            self.assertEqual(stuff_read.aString, "año".encode("utf-8"))
 
     def test_unusual_numbers(self):
         j = '{ "aListOfDouble": ["inf", "-inf", "nan"]}'
@@ -100,27 +99,29 @@ class TestSimpleJSONRead(unittest.TestCase):
 
     def test_map(self):
         stuff = Stuff(
-                aMap={1: {"hello": [1,2,3,4],
-                          "world": [5,6,7,8]},
-                      2: {"good": [100, 200],
-                          "bye": [300, 400]}
-                      },
-                anotherString="Hey")
+            aMap={
+                1: {"hello": [1, 2, 3, 4], "world": [5, 6, 7, 8]},
+                2: {"good": [100, 200], "bye": [300, 400]},
+            },
+            anotherString="Hey",
+        )
         j = writeToJSON(stuff)
         stuff_read = readStuffFromJSON(j)
         self.assertEqual(len(stuff_read.aMap), 2)
-        self.assertEqual(stuff_read.aMap[1]["hello"], [1,2,3,4])
-        self.assertEqual(stuff_read.aMap[1]["world"], [5,6,7,8])
+        self.assertEqual(stuff_read.aMap[1]["hello"], [1, 2, 3, 4])
+        self.assertEqual(stuff_read.aMap[1]["world"], [5, 6, 7, 8])
         self.assertEqual(stuff_read.aMap[2]["good"], [100, 200])
         self.assertEqual(stuff_read.aMap[2]["bye"], [300, 400])
         self.assertEqual(stuff_read.anotherString, "Hey")
 
     def test_list(self):
         stuff = Stuff(
-                aList=[
-                    [[["hello", "world"], ["good", "bye"]]],
-                    [[["what", "is"], ["going", "on"]]]],
-                anotherString="Hey")
+            aList=[
+                [[["hello", "world"], ["good", "bye"]]],
+                [[["what", "is"], ["going", "on"]]],
+            ],
+            anotherString="Hey",
+        )
         j = writeToJSON(stuff)
         stuff_read = readStuffFromJSON(j)
         self.assertEqual(len(stuff_read.aList), 2)
@@ -131,9 +132,7 @@ class TestSimpleJSONRead(unittest.TestCase):
         self.assertEqual(stuff_read.anotherString, "Hey")
 
     def test_set(self):
-        stuff = Stuff(
-                aListOfSet=[set(["hello"]), set(["world"])],
-                anotherString="Hey")
+        stuff = Stuff(aListOfSet=[set(["hello"]), set(["world"])], anotherString="Hey")
         j = writeToJSON(stuff)
         stuff_read = readStuffFromJSON(j)
         self.assertEqual(len(stuff_read.aListOfSet), 2)
@@ -143,15 +142,13 @@ class TestSimpleJSONRead(unittest.TestCase):
 
     def test_struct(self):
         stuff = Stuff(
-                aStruct=SomeStruct(anInteger=12,
-                                   aMap={"hi": 1.5}),
-                aListOfStruct=[
-                    SomeStruct(anInteger=10,
-                               aMap={"good": 2.0}),
-                    SomeStruct(anInteger=11,
-                               aMap={"bye": 1.0})],
-                anotherString="Hey"
-            )
+            aStruct=SomeStruct(anInteger=12, aMap={"hi": 1.5}),
+            aListOfStruct=[
+                SomeStruct(anInteger=10, aMap={"good": 2.0}),
+                SomeStruct(anInteger=11, aMap={"bye": 1.0}),
+            ],
+            anotherString="Hey",
+        )
         j = writeToJSON(stuff)
         stuff_read = readStuffFromJSON(j)
         self.assertEqual(len(stuff_read.aListOfStruct), 2)
@@ -165,7 +162,8 @@ class TestSimpleJSONRead(unittest.TestCase):
         j = '{"aShort": 1, "anInteger": 2, "aLong": 3}'
         stuff = Stuff()
         Serializer.deserialize(
-            TSimpleJSONProtocol.TSimpleJSONProtocolFactory(), j, stuff)
+            TSimpleJSONProtocol.TSimpleJSONProtocolFactory(), j, stuff
+        )
         self.assertEqual(stuff.aShort, 1)
         self.assertEqual(stuff.anInteger, 2)
         self.assertEqual(stuff.aLong, 3)
@@ -183,46 +181,46 @@ class TestSimpleJSONRead(unittest.TestCase):
         j = '{"aString": "a fancy e looks like \\u00e9", "anotherString": null, "anInteger": 10, "unknownField": null}'
         stuff = Stuff()
         Serializer.deserialize(
-            TSimpleJSONProtocol.TSimpleJSONProtocolFactory(), j, stuff)
+            TSimpleJSONProtocol.TSimpleJSONProtocolFactory(), j, stuff
+        )
         self.assertEqual(stuff.aString, s)
 
         def should_throw():
             j = '{"aString": "foo", "anotherString": nullcorrupt}'
             stuff = Stuff()
             Serializer.deserialize(
-                TSimpleJSONProtocol.TSimpleJSONProtocolFactory(), j, stuff)
+                TSimpleJSONProtocol.TSimpleJSONProtocolFactory(), j, stuff
+            )
+
         self.assertRaises(TProtocol.TProtocolException, should_throw)
 
     def test_skip_unrecognized_fields(self):
         stuff = Stuff(
-                aString="hello",
-                aShort=10,
-                anInteger=23990,
-                aLong=123456789012,
-                aDouble=1234567.9,
-                aBool=True,
-                aBinary=b'\\"hello'.decode('utf-8'),
-                aStruct=SomeStruct(anInteger=12,
-                                   aMap={"hi": 1.5}),
-                aList=[
-                    [[["hello", "world"], ["good", "bye"]]],
-                    [[["what", "is"], ["going", "on"]]]],
-                aMap={1: {"hello": [1, 2, 3, 4],
-                          "world": [5, 6, 7, 8]},
-                      2: {"good": [100, 200],
-                          "bye": [300, 400]}},
-                anotherString="Hey",
-                aListOfStruct=[
-                    SomeStruct(anInteger=10,
-                               aMap={"good": 2.0}),
-                    SomeStruct(anInteger=11,
-                               aMap={"bye": 1.0})],
-                aListOfSet=[{"hello"}, {"world"}],
-                aListOfDouble=[0., 1.25, 10.],
-                anotherMap={3: {"foo": 1,
-                                "bar": 12},
-                            4: {"baz": 123,
-                                "bazzz": 1234}})
+            aString="hello",
+            aShort=10,
+            anInteger=23990,
+            aLong=123456789012,
+            aDouble=1234567.9,
+            aBool=True,
+            aBinary=b'\\"hello'.decode("utf-8"),
+            aStruct=SomeStruct(anInteger=12, aMap={"hi": 1.5}),
+            aList=[
+                [[["hello", "world"], ["good", "bye"]]],
+                [[["what", "is"], ["going", "on"]]],
+            ],
+            aMap={
+                1: {"hello": [1, 2, 3, 4], "world": [5, 6, 7, 8]},
+                2: {"good": [100, 200], "bye": [300, 400]},
+            },
+            anotherString="Hey",
+            aListOfStruct=[
+                SomeStruct(anInteger=10, aMap={"good": 2.0}),
+                SomeStruct(anInteger=11, aMap={"bye": 1.0}),
+            ],
+            aListOfSet=[{"hello"}, {"world"}],
+            aListOfDouble=[0.0, 1.25, 10.0],
+            anotherMap={3: {"foo": 1, "bar": 12}, 4: {"baz": 123, "bazzz": 1234}},
+        )
 
         j = writeToJSON(stuff)
         stuff_read = readStuffFromJSON(j, struct_type=StuffMissing)
@@ -279,5 +277,5 @@ class TestSimpleJSONRead(unittest.TestCase):
         self.assertFalse(hasattr(stuff_read_2, "anotherMap"))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

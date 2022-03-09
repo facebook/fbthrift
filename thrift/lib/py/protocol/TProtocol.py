@@ -21,6 +21,7 @@ from __future__ import unicode_literals
 
 from thrift.Thrift import *
 
+
 class TProtocolException(TException):
 
     """Custom Protocol Exception class"""
@@ -36,6 +37,7 @@ class TProtocolException(TException):
     def __init__(self, type=UNKNOWN, message=None):
         TException.__init__(self, message)
         self.type = type
+
 
 class TProtocolBase:
 
@@ -218,7 +220,7 @@ class TProtocolBase:
         else:
             raise TProtocolException(
                 TProtocolException.INVALID_DATA,
-                "Unexpected type for skipping {}".format(type)
+                "Unexpected type for skipping {}".format(type),
             )
 
     def readIntegral(self, type):
@@ -242,6 +244,7 @@ class TProtocolBase:
             return self.readDouble()
         else:
             raise Exception("Unknown floating point type: %s" % str(type))
+
 
 class TProtocolFactory:
     def getProtocol(self, trans):

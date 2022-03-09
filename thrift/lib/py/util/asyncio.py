@@ -45,15 +45,15 @@ class async_protocol_manager:
 
 
 def create_client(
-        client_klass,
-        *,
-        host=None,
-        port=None,
-        sock=None,
-        loop=None,
-        timeouts=None,
-        client_type=None,
-        ssl=None,
+    client_klass,
+    *,
+    host=None,
+    port=None,
+    sock=None,
+    loop=None,
+    timeouts=None,
+    client_type=None,
+    ssl=None,
 ):
     """
     create an asyncio thrift client and return an async context

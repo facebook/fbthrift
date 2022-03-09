@@ -19,16 +19,17 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from thrift.protocol.TProtocol import TProtocolBase, TProtocolException
-from thrift.Thrift import TApplicationException, TMessageType
 from thrift.protocol.TBinaryProtocol import TBinaryProtocolAccelerated
 from thrift.protocol.TCompactProtocol import TCompactProtocolAccelerated
+from thrift.protocol.TProtocol import TProtocolBase, TProtocolException
+from thrift.Thrift import TApplicationException, TMessageType
 from thrift.transport.THeaderTransport import THeaderTransport, CLIENT_TYPE
 
 
 class THeaderProtocolAccelerate(object):
 
     """Base class for pass through header protocols"""
+
     def get_protocol_id(self):
         raise NotImplementedError()
 
@@ -36,6 +37,7 @@ class THeaderProtocolAccelerate(object):
 class THeaderProtocol(TProtocolBase, THeaderProtocolAccelerate):
 
     """Pass through header protocol (transport can set)"""
+
     T_BINARY_PROTOCOL = 0
     T_JSON_PROTOCOL = 1
     T_COMPACT_PROTOCOL = 2
@@ -53,17 +55,16 @@ class THeaderProtocol(TProtocolBase, THeaderProtocolAccelerate):
         proto_id = self.trans.get_protocol_id()
 
         if proto_id == self.T_BINARY_PROTOCOL:
-            self.__proto = TBinaryProtocolAccelerated(self.trans,
-                    self.strictRead, True)
+            self.__proto = TBinaryProtocolAccelerated(self.trans, self.strictRead, True)
         elif proto_id == self.T_COMPACT_PROTOCOL:
             self.__proto = TCompactProtocolAccelerated(self.trans)
         else:
-            raise TApplicationException(TProtocolException.INVALID_PROTOCOL,
-                                        "Unknown protocol requested")
+            raise TApplicationException(
+                TProtocolException.INVALID_PROTOCOL, "Unknown protocol requested"
+            )
         self.__proto_id = proto_id
 
-    def __init__(self, trans, strictRead=False,
-                 client_types=None, client_type=None):
+    def __init__(self, trans, strictRead=False, client_types=None, client_type=None):
         """Create a THeaderProtocol instance
 
         @param transport(TTransport) The underlying transport.
@@ -75,7 +76,8 @@ class THeaderProtocol(TProtocolBase, THeaderProtocolAccelerate):
 
         if isinstance(trans, THeaderTransport):
             trans._THeaderTransport__supported_client_types = set(
-                client_types or (CLIENT_TYPE.HEADER,))
+                client_types or (CLIENT_TYPE.HEADER,)
+            )
             if client_type is not None:
                 trans._THeaderTransport__client_type = client_type
             htrans = trans
@@ -152,7 +154,7 @@ class THeaderProtocol(TProtocolBase, THeaderProtocolAccelerate):
         self.__proto.writeString(str)
 
     def readMessageBegin(self):
-        #Read the next frame, and change protocols if needed
+        # Read the next frame, and change protocols if needed
         try:
             self.trans._reset_protocol()
             self.reset_protocol()
@@ -221,6 +223,7 @@ class THeaderProtocol(TProtocolBase, THeaderProtocolAccelerate):
     def readString(self):
         return self.__proto.readString()
 
+
 class THeaderProtocolFactory(object):
     def __init__(self, strictRead=False, client_types=None, client_type=None):
         self.strictRead = strictRead
@@ -228,6 +231,7 @@ class THeaderProtocolFactory(object):
         self.client_type = client_type
 
     def getProtocol(self, trans):
-        prot = THeaderProtocol(trans, self.strictRead, self.client_types,
-                self.client_type)
+        prot = THeaderProtocol(
+            trans, self.strictRead, self.client_types, self.client_type
+        )
         return prot

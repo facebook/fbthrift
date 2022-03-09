@@ -67,6 +67,7 @@ get_spec.cache = []
 
 class ThriftTypeSpec(object):
     """Base class that abstracts the functionality required by the randomizer"""
+
     SUBTYPE_ELEMENT = "element"
     SUBTYPE_KEY = "key"
     SUBTYPE_VALUE = "value"
@@ -110,6 +111,7 @@ class ThriftTypeSpec(object):
 
 class ThriftPyTypeSpec(ThriftTypeSpec):
     """TypeSpec implementation for python thrift structures"""
+
     name = ""
 
     def __init__(self, ttype, spec_args):
@@ -117,10 +119,7 @@ class ThriftPyTypeSpec(ThriftTypeSpec):
         self.spec_args = spec_args
 
     def __eq__(self, other):
-        return (
-            self.ttype == other.ttype
-            and self.spec_args == other.spec_args
-        )
+        return self.ttype == other.ttype and self.spec_args == other.spec_args
 
     def _init_subelements(self):
         pass
@@ -186,11 +185,13 @@ class ThriftListSpec(ThriftNonAssociativeContainerSpec):
     def get_type(self):
         return list
 
+
 class ThriftSetSpec(ThriftNonAssociativeContainerSpec):
     name = "set"
 
     def get_type(self):
         return set
+
 
 class ThriftMapSpec(ThriftPyTypeSpec):
     name = "map"
@@ -211,10 +212,7 @@ class ThriftMapSpec(ThriftPyTypeSpec):
         )
 
     def get_subtypes(self):
-        return {
-            self.SUBTYPE_KEY: self.key_spec,
-            self.SUBTYPE_VALUE: self.val_spec
-        }
+        return {self.SUBTYPE_KEY: self.key_spec, self.SUBTYPE_VALUE: self.val_spec}
 
 
 class ThriftStructSpec(ThriftPyTypeSpec):
@@ -261,9 +259,9 @@ class ThriftStructSpec(ThriftPyTypeSpec):
             return thrift_value
         res = {}
         if self.is_union:
-            field = getattr(thrift_value, 'field', None)
-            value = getattr(thrift_value, 'value', None)
-            thrift_spec = getattr(thrift_value, 'thrift_spec', None)
+            field = getattr(thrift_value, "field", None)
+            value = getattr(thrift_value, "value", None)
+            thrift_spec = getattr(thrift_value, "thrift_spec", None)
             if not field or not thrift_spec:
                 return res
             field_spec = thrift_spec[field]

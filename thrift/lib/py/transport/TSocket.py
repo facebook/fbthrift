@@ -19,16 +19,19 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-
-from thrift.transport.TTransport import TTransportBase, TTransportException, \
-        TServerTransportBase
-import os
 import errno
+import os
 import select
 import socket
 import sys
 import time
 import warnings
+
+from thrift.transport.TTransport import (
+    TTransportBase,
+    TTransportException,
+    TServerTransportBase,
+)
 
 try:
     import fcntl
@@ -45,8 +48,8 @@ def py2_compatible_process_time():
 
 
 class ConnectionEpoll:
-    """ epoll is preferred over select due to its efficiency and ability to
-        handle more than 1024 simultaneous connections """
+    """epoll is preferred over select due to its efficiency and ability to
+    handle more than 1024 simultaneous connections"""
 
     def __init__(self):
         self.epoll = select.epoll()
@@ -58,9 +61,7 @@ class ConnectionEpoll:
 
     def read(self, fileno):
         self.unregister(fileno)
-        self.epoll.register(
-            fileno, self.READ_MASK | self.ERR_MASK
-        )
+        self.epoll.register(fileno, self.READ_MASK | self.ERR_MASK)
 
     def write(self, fileno):
         self.unregister(fileno)
@@ -141,8 +142,12 @@ class ConnectionSelect:
             if timeout is not None and timeout > 0:
                 poll_timeout = max(0, deadline - py2_compatible_process_time())
             try:
-                return select.select(list(self.readable), list(self.writable),
-                        list(self.readable), poll_timeout)
+                return select.select(
+                    list(self.readable),
+                    list(self.writable),
+                    list(self.readable),
+                    poll_timeout,
+                )
             except IOError as e:
                 if e.errno == errno.EINTR:
                     continue
@@ -152,6 +157,7 @@ class ConnectionSelect:
 
 class TSocketBase(TTransportBase):
     """Base class for both connected and listening sockets"""
+
     def __init__(self):
         self.handles = {}
 
@@ -159,33 +165,37 @@ class TSocketBase(TTransportBase):
         if family is None:
             family = socket.AF_UNSPEC
         if self._unix_socket is not None:
-            return [(socket.AF_UNIX, socket.SOCK_STREAM, None, None,
-                     self._unix_socket)]
+            return [(socket.AF_UNIX, socket.SOCK_STREAM, None, None, self._unix_socket)]
         else:
             ai_flags = 0
             if self.host is None:
                 ai_flags |= socket.AI_PASSIVE
-            return socket.getaddrinfo(self.host, self.port, family,
-                                      socket.SOCK_STREAM, 0,
-                                      ai_flags)
+            return socket.getaddrinfo(
+                self.host, self.port, family, socket.SOCK_STREAM, 0, ai_flags
+            )
 
     def close(self):
-        klist = self.handles.keys() if sys.version_info[0] < 3 else \
-            list(self.handles.keys())
+        klist = (
+            self.handles.keys()
+            if sys.version_info[0] < 3
+            else list(self.handles.keys())
+        )
         for key in klist:
             self.handles[key].close()
             del self.handles[key]
 
     def getSocketName(self):
         if not self.handles:
-            raise TTransportException(TTransportException.NOT_OPEN,
-                'Transport not open')
+            raise TTransportException(
+                TTransportException.NOT_OPEN, "Transport not open"
+            )
         return next(iter(self.handles.values())).getsockname()
 
     def fileno(self):
         if not self.handles:
-            raise TTransportException(TTransportException.NOT_OPEN,
-                'Transport not open')
+            raise TTransportException(
+                TTransportException.NOT_OPEN, "Transport not open"
+            )
         if sys.version_info[0] >= 3:
             return list(self.handles.values())[0].fileno()
         else:
@@ -203,7 +213,7 @@ class TSocketBase(TTransportBase):
 
         flags = fcntl.fcntl(handle, fcntl.F_GETFD, 0)
         if flags < 0:
-            raise IOError('Error in retrieving file options')
+            raise IOError("Error in retrieving file options")
         if self.close_on_exec:
             fcntl.fcntl(handle, fcntl.F_SETFD, flags | fcntl.FD_CLOEXEC)
         else:
@@ -213,7 +223,7 @@ class TSocketBase(TTransportBase):
 class TSocket(TSocketBase):
     """Connection Socket implementation of TTransport base."""
 
-    def __init__(self, host='localhost', port=9090, unix_socket=None, family=None):
+    def __init__(self, host="localhost", port=9090, unix_socket=None, family=None):
         """Initialize a TSocket
 
         @param host(str)  The host to connect to.
@@ -268,8 +278,9 @@ class TSocket(TSocketBase):
 
     def getPeerName(self):
         if not self.handle:
-            raise TTransportException(TTransportException.NOT_OPEN,
-                'Transport not open')
+            raise TTransportException(
+                TTransportException.NOT_OPEN, "Transport not open"
+            )
         return self.handle.getpeername()
 
     def open(self):
@@ -293,30 +304,38 @@ class TSocket(TSocketBase):
                 break
         except socket.error as e:
             if self._unix_socket:
-                msg = 'socket error connecting to path %s: %s' % (
-                    self._unix_socket, repr(e))
+                msg = "socket error connecting to path %s: %s" % (
+                    self._unix_socket,
+                    repr(e),
+                )
             else:
-                msg = 'socket error connecting to host %s, port %s (%s): %s' % (
-                    self.host, self.port, repr(address), repr(e))
+                msg = "socket error connecting to host %s, port %s (%s): %s" % (
+                    self.host,
+                    self.port,
+                    repr(address),
+                    repr(e),
+                )
             raise TTransportException(TTransportException.NOT_OPEN, msg)
 
     def read(self, sz):
         try:
             buff = self.handle.recv(sz)
             if len(buff) == 0:
-                raise TTransportException(type=TTransportException.END_OF_FILE,
-                                          message='TSocket read 0 bytes')
+                raise TTransportException(
+                    type=TTransportException.END_OF_FILE, message="TSocket read 0 bytes"
+                )
         except socket.error as e:
             raise TTransportException(
                 type=TTransportException.END_OF_FILE,
-                message='Socket read failed: {}'.format(str(e))
+                message="Socket read failed: {}".format(str(e)),
             )
         return buff
 
     def write(self, buff):
         if not self.handle:
-            raise TTransportException(TTransportException.NOT_OPEN,
-                    'Transport not open')
+            raise TTransportException(
+                TTransportException.NOT_OPEN, "Transport not open"
+            )
         sent = 0
         have = len(buff)
         while sent < have:
@@ -325,7 +344,7 @@ class TSocket(TSocketBase):
             except socket.error as e:
                 raise TTransportException(
                     type=TTransportException.END_OF_FILE,
-                    message='Socket write failed: {}'.format(str(e))
+                    message="Socket write failed: {}".format(str(e)),
                 )
             assert plus > 0
             sent += plus
@@ -333,6 +352,7 @@ class TSocket(TSocketBase):
 
     def flush(self):
         pass
+
 
 class TServerSocket(TSocketBase, TServerTransportBase):
     """Socket implementation of TServerTransport base."""
@@ -374,16 +394,20 @@ class TServerSocket(TSocketBase, TServerTransportBase):
             self.close()
 
     def getSocketName(self):
-        warnings.warn('getSocketName() is deprecated for TServerSocket.  '
-                      'Please use getSocketNames() instead.')
+        warnings.warn(
+            "getSocketName() is deprecated for TServerSocket.  "
+            "Please use getSocketNames() instead."
+        )
         return TSocketBase.getSocketName(self)
 
     def getSocketNames(self):
         return [handle.getsockname() for handle in self.handles.values()]
 
     def fileno(self):
-        warnings.warn('fileno() is deprecated for TServerSocket.  '
-                      'Please use filenos() instead.')
+        warnings.warn(
+            "fileno() is deprecated for TServerSocket.  "
+            "Please use filenos() instead."
+        )
         return TSocketBase.fileno(self)
 
     def filenos(self):
@@ -429,7 +453,7 @@ class TServerSocket(TSocketBase, TServerTransportBase):
             self._setHandleCloseOnExec(handle)
 
             # Always set IPV6_V6ONLY for IPv6 sockets when not on Windows
-            if res[0] == socket.AF_INET6 and sys.platform != 'win32':
+            if res[0] == socket.AF_INET6 and sys.platform != "win32":
                 handle.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, True)
 
             handle.settimeout(None)

@@ -18,11 +18,6 @@ import functools
 import logging
 import traceback
 
-from thrift.server.TServer import TServerEventHandler
-from thrift.Thrift import (
-    TException,
-    TProcessor,
-)
 from thrift.async_common import (
     AsyncioRpcConnectionContext,
     FramedProtocol,
@@ -31,11 +26,17 @@ from thrift.async_common import (
     TReadWriteBuffer,
     WrappedTransport,
 )
+from thrift.server.TServer import TServerEventHandler
+from thrift.Thrift import (
+    TException,
+    TProcessor,
+)
 
 
 __all__ = [
-    'ThriftAsyncServerFactory', 'ThriftClientProtocolFactory',
-    'ThriftServerProtocolFactory',
+    "ThriftAsyncServerFactory",
+    "ThriftClientProtocolFactory",
+    "ThriftServerProtocolFactory",
 ]
 
 
@@ -48,8 +49,17 @@ logger = logging.getLogger(__name__)
 
 
 async def ThriftAsyncServerFactory(
-    processor, *, interface=None, port=0, loop=None, nthreads=None, sock=None,
-    backlog=100, ssl=None, event_handler=None, protocol_factory=None
+    processor,
+    *,
+    interface=None,
+    port=0,
+    loop=None,
+    nthreads=None,
+    sock=None,
+    backlog=100,
+    ssl=None,
+    event_handler=None,
+    protocol_factory=None
 ):
     """
     ThriftAsyncServerFactory(processor) -> asyncio.Server
@@ -120,6 +130,7 @@ async def ThriftAsyncServerFactory(
 
     if nthreads:
         from concurrent.futures import ThreadPoolExecutor
+
         loop.set_default_executor(
             ThreadPoolExecutor(max_workers=nthreads),
         )
@@ -144,12 +155,14 @@ async def ThriftAsyncServerFactory(
 
 def ThriftServerProtocolFactory(processor, server_event_handler, loop=None):
     return functools.partial(
-        ThriftHeaderServerProtocol, processor, server_event_handler, loop,
+        ThriftHeaderServerProtocol,
+        processor,
+        server_event_handler,
+        loop,
     )
 
 
 class ThriftHeaderServerProtocol(FramedProtocol):
-
     def __init__(self, processor, server_event_handler, loop=None):
         super().__init__(loop=loop)
         self.processor = processor
@@ -166,7 +179,9 @@ class ThriftHeaderServerProtocol(FramedProtocol):
 
         try:
             await self.processor.process(
-                prot, prot, self.server_context,
+                prot,
+                prot,
+                self.server_context,
             )
             msg = buf.getvalue()
             if len(msg) > 0:

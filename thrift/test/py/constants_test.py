@@ -19,9 +19,11 @@ from __future__ import unicode_literals
 
 import unittest
 
+
 class TestPythonConstants(unittest.TestCase):
     def testStrings(self):
         from .constants import constants
+
         self.assertEquals(constants.apostrophe, "'")
         self.assertEquals(constants.tripleApostrophe, "'''")
         self.assertEquals(constants.quotationMark, '"')
@@ -31,10 +33,11 @@ class TestPythonConstants(unittest.TestCase):
 
     def testDict(self):
         from .constants import constants
-        self.assertEquals(constants.escapeChars['apostrophe'], "'")
-        self.assertEquals(constants.escapeChars['quotationMark'], '"')
-        self.assertEquals(constants.escapeChars['backslash'], "\\")
-        self.assertEquals(constants.escapeChars['escaped_a'], "a")
+
+        self.assertEquals(constants.escapeChars["apostrophe"], "'")
+        self.assertEquals(constants.escapeChars["quotationMark"], '"')
+        self.assertEquals(constants.escapeChars["backslash"], "\\")
+        self.assertEquals(constants.escapeChars["escaped_a"], "a")
         self.assertEquals(constants.char2ascii["'"], 39)
         self.assertEquals(constants.char2ascii['"'], 34)
         self.assertEquals(constants.char2ascii["\\"], 92)
@@ -42,7 +45,9 @@ class TestPythonConstants(unittest.TestCase):
 
     def testStruct(self):
         from .constants import constants
+
         self.assertEquals(constants.str2struct["foo"].bar, {"baz": "qux"})
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

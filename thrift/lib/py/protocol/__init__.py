@@ -13,10 +13,10 @@
 # limitations under the License.
 
 __all__ = [
-           'TProtocol',
-           'TBinaryProtocol',
-           'fastproto',
-           'TSimpleJSONProtocol',
-           'TCompactProtocol',
-           'THeaderProtocol',
-           ]
+    "TProtocol",
+    "TBinaryProtocol",
+    "fastproto",
+    "TSimpleJSONProtocol",
+    "TCompactProtocol",
+    "THeaderProtocol",
+]

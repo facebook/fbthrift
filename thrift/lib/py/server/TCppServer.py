@@ -19,21 +19,25 @@ from __future__ import unicode_literals
 
 import sys
 import threading
+import time
 import traceback
+from concurrent.futures import Future
+from functools import partial
 
 from thrift.protocol.THeaderProtocol import THeaderProtocol
+from thrift.server.CppServerWrapper import (
+    CppServerWrapper,
+    CppContextData,
+    SSLPolicy,
+    VerifyClientCertificate,
+    SSLVersion,
+    CallbackWrapper,
+    CallTimestamps,
+)
 from thrift.server.TServer import TServer, TConnectionContext
 from thrift.Thrift import TPriority
 from thrift.transport.THeaderTransport import THeaderTransport, MAX_BIG_FRAME_SIZE
 from thrift.transport.TTransport import TMemoryBuffer
-
-from thrift.server.CppServerWrapper import CppServerWrapper, CppContextData, \
-    SSLPolicy, VerifyClientCertificate, SSLVersion, CallbackWrapper, CallTimestamps
-
-from concurrent.futures import Future
-from functools import partial
-
-import time
 
 # Default sampling rate for expensive sampling operations, such as histogram
 # counters.
@@ -51,7 +55,7 @@ class TCppConnectionContext(TConnectionContext):
         principal = self.getClientPrincipal()
         if not principal:
             return None
-        user, match, domain = principal.partition('@')
+        user, match, domain = principal.partition("@")
         if match:
             return user
         return None
@@ -83,8 +87,9 @@ class _ProcessorAdapter(object):
     # TODO mhorowitz: add read headers here, so they can be added to
     # the constructed header buffer.  Also add endpoint addrs to the
     # context
-    def call_processor(self, input, headers, client_type, protocol_type,
-                       context_data, callback):
+    def call_processor(
+        self, input, headers, client_type, protocol_type, context_data, callback
+    ):
         try:
             # TCppServer threads are not created by Python so they are
             # missing settrace() hooks.  We need to manually set the
@@ -121,10 +126,12 @@ class _ProcessorAdapter(object):
 
             ret = self.processor.process(prot, prot, ctx)
 
-            done_callback = partial(_ProcessorAdapter.done,
-                                    prot_buf=prot_buf,
-                                    client_type=client_type,
-                                    callback=callback)
+            done_callback = partial(
+                _ProcessorAdapter.done,
+                prot_buf=prot_buf,
+                client_type=client_type,
+                callback=callback,
+            )
 
             if self.observer:
                 if should_sample:
@@ -179,14 +186,14 @@ class _ProcessorAdapter(object):
 
 class TSSLConfig(object):
     def __init__(self):
-        self.cert_path = ''
-        self.key_path = ''
-        self.key_pw_path = ''
-        self.client_ca_path = ''
-        self.ecc_curve_name = ''
+        self.cert_path = ""
+        self.key_path = ""
+        self.key_pw_path = ""
+        self.client_ca_path = ""
+        self.ecc_curve_name = ""
         self.verify = VerifyClientCertificate.IF_PRESENTED
         self.ssl_policy = SSLPolicy.PERMITTED
-        self.ticket_file_path = ''
+        self.ticket_file_path = ""
         self.session_context = None
         self.ssl_version = None
 
@@ -281,8 +288,7 @@ class TCppServer(CppServerWrapper, TServer):
 
     def loop(self):
         if not self._setup_done:
-            raise RuntimeError(
-                "setup() must be called before loop()")
+            raise RuntimeError("setup() must be called before loop()")
         CppServerWrapper.loop(self)
 
     def serve(self):
