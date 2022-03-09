@@ -24,8 +24,9 @@ namespace op {
 
 // Gets a field by FieldId.
 template <FieldId Id>
-FOLLY_INLINE_VARIABLE constexpr detail::st::struct_private_access::get_fn<Id>
-    getById{};
+FOLLY_INLINE_VARIABLE constexpr ::apache::thrift::detail::st::
+    struct_private_access::get_fn<Id>
+        getById{};
 
 } // namespace op
 } // namespace thrift

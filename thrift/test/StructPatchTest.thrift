@@ -49,6 +49,9 @@ struct MyStructValuePatch {
   // Assigns to a given struct. If set, all other operations are ignored.
   1: optional MyStruct assign (thrift.box);
 
-  // Clears a given struct.
+  // Clears a given struct. Applied first
   2: bool clear;
+
+  // Patches a given struct. Applied second.
+  3: MyStructPatch patch;
 } (thrift.uri = "facebook.com/thrift/test/patch/MyStructValuePatch")

@@ -20,6 +20,8 @@
 #include <utility>
 
 #include <thrift/lib/cpp2/op/Clear.h>
+#include <thrift/lib/cpp2/op/Get.h>
+#include <thrift/lib/cpp2/type/Field.h>
 
 namespace apache {
 namespace thrift {
@@ -302,23 +304,68 @@ class StringPatch : public BasePatch<Patch, StringPatch<Patch>> {
   const T& prepend_() const noexcept { return *this->patch_.prepend(); }
 };
 
+// Helpers for unpacking and folding field tags.
+template <FieldId Id, typename P, typename T>
+void applyFieldPatch(const P& patch, T& val) {
+  op::getById<Id>(patch)->apply(*op::getById<Id>(val));
+}
+template <FieldId Id, typename P1, typename P2>
+void mergeFieldPatch(P1& lhs, const P2& rhs) {
+  op::getById<Id>(lhs)->merge(*op::getById<Id>(rhs));
+}
+template <FieldId Id, typename P, typename T>
+void forwardToFieldPatch(P& patch, T&& val) {
+  op::getById<Id>(patch)->assign(*op::getById<Id>(std::forward<T>(val)));
+}
+template <typename F>
+struct FieldPatch;
+template <typename... FieldTags>
+struct FieldPatch<type::fields<FieldTags...>> {
+  template <typename P, typename T>
+  static void apply(const P& patch, T& val) {
+    (..., applyFieldPatch<type::field_id_v<FieldTags>>(patch, val));
+  }
+  template <typename P1, typename P2>
+  static void merge(P1& lhs, const P2& rhs) {
+    (..., mergeFieldPatch<type::field_id_v<FieldTags>>(lhs, rhs));
+  }
+  template <typename T, typename P>
+  static void forwardTo(T&& val, P& patch) {
+    (...,
+     forwardToFieldPatch<type::field_id_v<FieldTags>>(
+         patch, std::forward<T>(val)));
+  }
+};
+
 template <typename Patch>
 class StructPatch : public BasePatch<Patch, StructPatch<Patch>> {
   using Base = BasePatch<Patch, StructPatch>;
   using T = typename Base::value_type;
   using Base::applyAssign;
   using Base::mergeAssign;
+  using Base::resetAnd;
+  using Fields = ::apache::thrift::detail::st::struct_private_access::fields<T>;
+  using FieldPatch = detail::FieldPatch<Fields>;
 
  public:
   using Base::Base;
   using Base::hasAssign;
   using Base::operator=;
+  using patch_type = std::decay_t<decltype(*std::declval<Patch>().patch())>;
 
-  bool empty() const noexcept { return !hasAssign() && !clear_(); }
+  bool empty() const noexcept {
+    return !hasAssign() && !clear_() &&
+        // TODO(afuller): Use terse writes and switch to op::empty.
+        fieldPatch_() == patch_type{};
+  }
   void apply(T& val) const noexcept {
-    if (!applyAssign(val) && clear_()) {
+    if (applyAssign(val)) {
+      return;
+    }
+    if (clear_()) {
       thrift::clear(val);
     }
+    FieldPatch::apply(fieldPatch_(), val);
   }
 
   template <typename U>
@@ -327,10 +374,11 @@ class StructPatch : public BasePatch<Patch, StructPatch<Patch>> {
     // in the presense of non-terse, non-optional fields with custom defaults
     // and missmatched schemas... it's also smaller, so prefer it.
     if (*next.get().clear() && !next.hasAssign()) {
-      this->patch_.assign().reset();
-      clear_() = true;
-    } else {
-      mergeAssign(std::forward<U>(next));
+      // Next patch completely replaces this one.
+      *this = std::forward<U>(next);
+    } else if (!mergeAssign(std::forward<U>(next))) {
+      // Merge field patches.
+      FieldPatch::merge(fieldPatch_(), *std::forward<U>(next).get().patch());
     }
   }
 
@@ -341,9 +389,29 @@ class StructPatch : public BasePatch<Patch, StructPatch<Patch>> {
     return patch;
   }
 
+  // Convert to a patch, if needed, and return the
+  // patch object.
+  patch_type& patch() { return ensurePatch(); }
+  patch_type* operator->() { return &ensurePatch(); }
+
  private:
   bool& clear_() { return *this->patch_.clear(); }
   const bool& clear_() const { return *this->patch_.clear(); }
+  patch_type& fieldPatch_() { return *this->patch_.patch(); }
+  const patch_type& fieldPatch_() const { return *this->patch_.patch(); }
+
+  patch_type& ensurePatch() {
+    if (hasAssign()) {
+      // Ensure even unknown fields are cleared.
+      clear_() = true;
+
+      // Split the assignment patch into a patch of assignments.
+      FieldPatch::forwardTo(std::move(*this->patch_.assign()), fieldPatch_());
+      this->patch_.assign().reset();
+    }
+    assert(!hasAssign());
+    return fieldPatch_();
+  }
 };
 
 // A patch adapter that only supports 'assign',

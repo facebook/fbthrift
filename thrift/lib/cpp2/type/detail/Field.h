@@ -19,18 +19,12 @@
 #include <fatal/type/search.h>
 #include <fatal/type/slice.h>
 #include <folly/Utility.h>
+#include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/lib/cpp2/type/detail/Traits.h>
 
 namespace apache {
 namespace thrift {
-
-namespace detail {
-namespace st {
-struct struct_private_access;
-} // namespace st
-} // namespace detail
-
 namespace type {
 namespace detail {
 

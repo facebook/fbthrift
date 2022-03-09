@@ -15,8 +15,10 @@
  */
 
 #include <folly/portability/GTest.h>
+#include <thrift/lib/cpp2/op/Get.h>
+#include <thrift/lib/cpp2/op/Patch.h>
 #include <thrift/lib/cpp2/op/Testing.h>
-#include <thrift/lib/cpp2/op/detail/Patch.h>
+#include <thrift/lib/cpp2/type/Field.h>
 #include <thrift/test/gen-cpp2/StructPatchTest_types.h>
 
 namespace apache::thrift {
@@ -24,71 +26,7 @@ using test::patch::MyStruct;
 using test::patch::MyStructPatch;
 using test::patch::MyStructValuePatch;
 
-void applyPatch(const MyStructPatch& patch, MyStruct& val) {
-  patch.boolVal()->apply(*val.boolVal());
-  patch.byteVal()->apply(*val.byteVal());
-  patch.i16Val()->apply(*val.i16Val());
-  patch.i32Val()->apply(*val.i32Val());
-  patch.i64Val()->apply(*val.i64Val());
-  patch.floatVal()->apply(*val.floatVal());
-  patch.doubleVal()->apply(*val.doubleVal());
-  patch.stringVal()->apply(*val.stringVal());
-  patch.binaryVal()->apply(*val.binaryVal());
-}
-
-bool emptyPatch(const MyStructPatch& patch) {
-  return patch == MyStructPatch{};
-}
-
 using TestStructPatch = op::detail::StructPatch<MyStructValuePatch>;
-
-TEST(StructPatchTest, Assign) {
-  MyStruct actual;
-  MyStructPatch patch;
-
-  // Empty patch does nothing.
-  EXPECT_TRUE(emptyPatch(patch));
-  applyPatch(patch, actual);
-  EXPECT_EQ(actual, MyStruct{});
-
-  // Assign patch assigns in parallel.
-  MyStruct expected;
-  patch.boolVal() = *expected.boolVal() = true;
-  patch.byteVal() = *expected.byteVal() = 2;
-  patch.i16Val() = *expected.i16Val() = 3;
-  patch.i32Val() = *expected.i32Val() = 4;
-  patch.i64Val() = *expected.i64Val() = 5;
-  patch.floatVal() = *expected.floatVal() = 6;
-  patch.doubleVal() = *expected.doubleVal() = 7;
-  patch.stringVal() = *expected.stringVal() = "8";
-  patch.binaryVal() = *expected.binaryVal() =
-      StringTraits<folly::IOBuf>::fromStringLiteral("9");
-  EXPECT_FALSE(emptyPatch(patch));
-  EXPECT_NE(actual, expected);
-  applyPatch(patch, actual);
-  EXPECT_EQ(actual, expected);
-
-  // Apply the patch again to ensure it is idempotent.
-  applyPatch(patch, actual);
-  EXPECT_EQ(actual, expected);
-
-  // Assign in a single step, via op::patch.
-  TestStructPatch assignPatch;
-  assignPatch = expected;
-  test::expectPatch(assignPatch, {}, expected);
-
-  // Check the individual fields for better failure messages.
-  EXPECT_EQ(*actual.boolVal(), *expected.boolVal());
-  EXPECT_EQ(*actual.byteVal(), *expected.byteVal());
-  EXPECT_EQ(*actual.i16Val(), *expected.i16Val());
-  EXPECT_EQ(*actual.i32Val(), *expected.i32Val());
-  EXPECT_EQ(*actual.i64Val(), *expected.i64Val());
-  EXPECT_EQ(*actual.floatVal(), *expected.floatVal());
-  EXPECT_EQ(*actual.doubleVal(), *expected.doubleVal());
-  EXPECT_EQ(*actual.stringVal(), *expected.stringVal());
-  EXPECT_TRUE(StringTraits<folly::IOBuf>::isEqual(
-      *actual.binaryVal(), *expected.binaryVal()));
-}
 
 MyStruct testValue() {
   MyStruct val;
@@ -104,10 +42,73 @@ MyStruct testValue() {
   return val;
 }
 
+TEST(StructPatchTest, Noop) {
+  // Empty patch does nothing.
+  TestStructPatch patch;
+  test::expectPatch(patch, {}, {});
+}
+
+TEST(StructPatchTest, Assign) {
+  // Assign in a single step.
+  auto patch = TestStructPatch::createAssign(testValue());
+  test::expectPatch(patch, {}, testValue());
+}
+
+TEST(StructPatchTest, AssignSplit) {
+  auto patch = TestStructPatch::createAssign(testValue());
+  // Break apart the assign patch and check the result;
+  patch.patch();
+  EXPECT_FALSE(patch.hasAssign());
+  EXPECT_TRUE(*patch.get().clear());
+  EXPECT_NE(*patch.get().patch(), MyStructPatch{});
+  test::expectPatch(patch, {}, testValue());
+}
+
 TEST(StructPatchTest, Clear) {
   // Clear patch, clears all fields (even ones with defaults)
   TestStructPatch patch;
   patch.clear();
+  test::expectPatch(patch, testValue(), {});
+}
+
+TEST(StructPatchTest, Patch) {
+  TestStructPatch patch;
+  patch.patch().boolVal() = !op::BoolPatch{};
+  *patch->byteVal() += 1;
+  *patch->i16Val() += 2;
+  *patch->i32Val() += 3;
+  *patch->i64Val() += 4;
+  *patch->floatVal() += 5;
+  *patch->doubleVal() += 6;
+  patch->stringVal() = "_" + op::StringPatch{} + "_";
+
+  MyStruct val;
+  val.stringVal() = "hi";
+
+  MyStruct expected1, expected2;
+  expected1.boolVal() = true;
+  expected2.boolVal() = false;
+  expected1.byteVal() = 1;
+  expected2.byteVal() = 2;
+  expected1.i16Val() = 2;
+  expected2.i16Val() = 4;
+  expected1.i32Val() = 3;
+  expected2.i32Val() = 6;
+  expected1.i64Val() = 4;
+  expected2.i64Val() = 8;
+  expected1.floatVal() = 5;
+  expected2.floatVal() = 10;
+  expected1.doubleVal() = 6;
+  expected2.doubleVal() = 12;
+  expected1.stringVal() = "_hi_";
+  expected2.stringVal() = "__hi__";
+
+  test::expectPatch(patch, val, expected1, expected2);
+
+  patch.merge(TestStructPatch::createClear());
+  EXPECT_FALSE(patch.hasAssign());
+  EXPECT_EQ(patch.patch(), MyStructPatch{});
+  EXPECT_TRUE(*patch.get().clear());
   test::expectPatch(patch, testValue(), {});
 }
 
