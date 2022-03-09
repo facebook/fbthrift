@@ -121,9 +121,6 @@ bool interactions_validator::visit(t_service* s) {
     }
 
     if (!func->is_interaction_constructor()) {
-      if (ret->is_service()) {
-        add_error(func->get_lineno(), "Functions cannot return interactions.");
-      }
       continue;
     }
 

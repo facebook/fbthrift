@@ -112,26 +112,16 @@ TEST_F(ValidatorTest, DuplicateInteractions) {
   func->set_is_interaction_constructor();
   service->add_function(std::move(func));
 
-  func = std::make_unique<t_function>(
-      interaction.get(),
-      "functionInteract",
-      std::make_unique<t_paramlist>(&program));
-  func->set_lineno(4);
-  service->add_function(std::move(func));
-
   program.add_service(std::move(service));
 
   program.add_interaction(std::move(interaction));
 
   auto errors = run_validator<interactions_validator>(&program);
-  EXPECT_EQ(3, errors.size());
+  EXPECT_EQ(2, errors.size());
   EXPECT_EQ(
       "[FAILURE:/path/to/file.thrift:1] Only interactions can be performed.",
       errors.front().str());
   EXPECT_EQ(
       "[FAILURE:/path/to/file.thrift:3] Service `foo` has multiple methods for creating interaction `Clyde`.",
       errors.at(1).str());
-  EXPECT_EQ(
-      "[FAILURE:/path/to/file.thrift:4] Functions cannot return interactions.",
-      errors.at(2).str());
 }

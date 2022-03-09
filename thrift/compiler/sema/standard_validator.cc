@@ -648,7 +648,8 @@ void validate_oneway_function(diagnostic_context& ctx, const t_function& node) {
   }
 
   if (node.return_type().get_type() == nullptr ||
-      !node.return_type().get_type()->is_void()) {
+      !node.return_type().get_type()->is_void() ||
+      node.returned_interaction()) {
     ctx.failure([&](auto& o) {
       o << "Oneway methods must have void return type: " << node.name();
     });
@@ -675,6 +676,36 @@ void validate_stream_exceptions_return_type(
   }
 }
 
+void validate_interaction_factories(
+    diagnostic_context& ctx, const t_function& node) {
+  if (node.is_interaction_member() && node.returned_interaction()) {
+    ctx.failure([&](auto& o) {
+      o << "Nested interactions are forbidden: " << node.name();
+    });
+  }
+
+  if (node.is_interaction_constructor()) {
+    // uses old syntax
+    return;
+  }
+
+  boost::optional<t_type_ref> ret;
+  if (node.return_type()->is_streamresponse()) {
+    auto& stream =
+        static_cast<const t_stream_response&>(node.return_type().deref());
+    ret = stream.first_response_type();
+  } else if (node.return_type()->is_sink()) {
+    auto& sink = static_cast<const t_sink&>(node.return_type().deref());
+    ret = sink.first_response_type();
+  } else {
+    ret = node.return_type();
+  }
+
+  if (ret && ret->deref().is_service()) {
+    ctx.failure("Interactions are not allowed in this position");
+  }
+}
+
 } // namespace
 
 ast_validator standard_validator() {
@@ -687,6 +718,7 @@ ast_validator standard_validator() {
   validator.add_function_visitor(&validate_oneway_function);
   validator.add_function_visitor(&validate_stream_exceptions_return_type);
   validator.add_function_visitor(&validate_function_priority_annotation);
+  validator.add_function_visitor(&validate_interaction_factories);
 
   validator.add_structured_definition_visitor(&validate_field_names_uniqueness);
   validator.add_structured_definition_visitor(

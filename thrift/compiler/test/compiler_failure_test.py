@@ -1664,3 +1664,112 @@ class CompilerFailureTest(unittest.TestCase):
             "[FAILURE:foo.thrift:9] `@thrift.TerseWrite` cannot be used with qualified fields. "
             "Remove `required` qualifier from field `field3`.\n",
         )
+
+    def test_interaction_nesting(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                interaction I {
+                    void foo();
+                }
+
+                interaction J {
+                    performs I;
+                }
+
+                interaction K {
+                    I foo();
+                }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift:6] Nested interactions are forbidden.\n"
+            "[FAILURE:foo.thrift:10] Nested interactions are forbidden: foo\n",
+        )
+
+    def test_interaction_oneway_factory(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                interaction I {
+                    void foo();
+                }
+
+                service S {
+                    oneway I foo();
+                }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift:6] Oneway methods must have void return type: foo\n",
+        )
+
+    def test_interaction_return_type_order(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                interaction I {
+                    void foo();
+                }
+
+                service S {
+                    i32, I foo();
+                    i32, i32 bar();
+                    i32, I, stream<i32> baz();
+                }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift:6] Only an interaction is allowed in this position\n"
+            "[FAILURE:foo.thrift:7] Only an interaction is allowed in this position\n"
+            "[FAILURE:foo.thrift:8] Only an interaction is allowed in this position\n",
+        )
+
+    def test_interaction_in_return_type(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                interaction I {
+                    void foo();
+                }
+
+                service S {
+                    I, I foo();
+                    I, I, stream<i32> bar();
+                    I, I, sink<i32, i32> baz();
+                }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift:6] Interactions are not allowed in this position\n"
+            "[FAILURE:foo.thrift:7] Interactions are not allowed in this position\n"
+            "[FAILURE:foo.thrift:8] Interactions are not allowed in this position\n",
+        )
