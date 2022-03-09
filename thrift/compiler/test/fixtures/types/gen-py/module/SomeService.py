@@ -536,6 +536,10 @@ class Client(Iface):
     Parameters:
      - m
     """
+    if (self._fbthrift_cpp_transport):
+      args = bounce_map_args()
+      args.m = m
+      return self._fbthrift_cpp_transport._send_request("SomeService", "bounce_map", args, bounce_map_result).success
     self.send_bounce_map(m)
     return self.recv_bounce_map()
 
@@ -566,6 +570,10 @@ class Client(Iface):
     Parameters:
      - r
     """
+    if (self._fbthrift_cpp_transport):
+      args = binary_keyed_map_args()
+      args.r = r
+      return self._fbthrift_cpp_transport._send_request("SomeService", "binary_keyed_map", args, binary_keyed_map_result).success
     self.send_binary_keyed_map(r)
     return self.recv_binary_keyed_map()
 

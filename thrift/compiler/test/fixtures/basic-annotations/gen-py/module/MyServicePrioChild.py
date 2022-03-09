@@ -222,6 +222,9 @@ class Client(module.MyServicePrioParent.Client, Iface):
     module.MyServicePrioParent.Client.__init__(self, iprot, oprot, cpp_transport)
 
   def pang(self, ):
+    if (self._fbthrift_cpp_transport):
+      args = pang_args()
+      return self._fbthrift_cpp_transport._send_request("MyServicePrioChild", "pang", args, pang_result).success
     self.send_pang()
     self.recv_pang()
 

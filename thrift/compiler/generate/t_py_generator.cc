@@ -2305,11 +2305,31 @@ void t_py_generator::generate_service_client(const t_service* tservice) {
     const vector<t_field*>& fields = arg_struct->get_members();
     vector<t_field*>::const_iterator fld_iter;
     string funname = rename_reserved_keywords((*f_iter)->get_name());
+    string argsname = (*f_iter)->get_name() + "_args";
 
     // Open function
     indent(f_service_) << "def " << function_signature(*f_iter) << ":" << endl;
     indent_up();
     generate_python_docstring(f_service_, (*f_iter));
+
+    // CPP transport
+    if (!gen_asyncio_) {
+      indent(f_service_) << "if (self._fbthrift_cpp_transport):" << endl;
+      indent_up();
+      f_service_ << indent() << "args = " << argsname << "()" << endl;
+      for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
+        f_service_ << indent() << "args."
+                   << rename_reserved_keywords((*fld_iter)->get_name()) << " = "
+                   << rename_reserved_keywords((*fld_iter)->get_name()) << endl;
+      }
+      f_service_ << indent()
+                 << "return self._fbthrift_cpp_transport._send_request(\""
+                 << tservice->get_name() << "\", \"" << (*f_iter)->get_name()
+                 << "\", args, " << (*f_iter)->get_name() << "_result).success"
+                 << endl;
+      indent_down();
+    }
+
     if (gen_asyncio_) {
       indent(f_service_) << "self._seqid += 1" << endl;
       indent(f_service_)
@@ -2353,8 +2373,6 @@ void t_py_generator::generate_service_client(const t_service* tservice) {
                        << endl;
 
     indent_up();
-
-    std::string argsname = (*f_iter)->get_name() + "_args";
 
     // Serialize the request header
     f_service_ << indent() << "self._oprot.writeMessageBegin('"

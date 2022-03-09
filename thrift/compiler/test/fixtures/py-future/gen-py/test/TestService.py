@@ -575,6 +575,9 @@ class Client(Iface):
     self._fbthrift_cpp_transport = cpp_transport
 
   def sleep(self, ):
+    if (self._fbthrift_cpp_transport):
+      args = sleep_args()
+      return self._fbthrift_cpp_transport._send_request("TestService", "sleep", args, sleep_result).success
     self.send_sleep()
     self.recv_sleep()
 
@@ -602,6 +605,10 @@ class Client(Iface):
     Parameters:
      - num
     """
+    if (self._fbthrift_cpp_transport):
+      args = isPrime_args()
+      args.num = num
+      return self._fbthrift_cpp_transport._send_request("TestService", "isPrime", args, isPrime_result).success
     self.send_isPrime(num)
     return self.recv_isPrime()
 
@@ -628,6 +635,9 @@ class Client(Iface):
     raise TApplicationException(TApplicationException.MISSING_RESULT, "isPrime failed: unknown result");
 
   def getResult(self, ):
+    if (self._fbthrift_cpp_transport):
+      args = getResult_args()
+      return self._fbthrift_cpp_transport._send_request("TestService", "getResult", args, getResult_result).success
     self.send_getResult()
     return self.recv_getResult()
 

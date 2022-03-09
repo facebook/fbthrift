@@ -570,6 +570,25 @@ class Client(Iface):
      - int15
      - int16
     """
+    if (self._fbthrift_cpp_transport):
+      args = init_args()
+      args.int1 = int1
+      args.int2 = int2
+      args.int3 = int3
+      args.int4 = int4
+      args.int5 = int5
+      args.int6 = int6
+      args.int7 = int7
+      args.int8 = int8
+      args.int9 = int9
+      args.int10 = int10
+      args.int11 = int11
+      args.int12 = int12
+      args.int13 = int13
+      args.int14 = int14
+      args.int15 = int15
+      args.int16 = int16
+      return self._fbthrift_cpp_transport._send_request("TestService", "init", args, init_result).success
     self.send_init(int1, int2, int3, int4, int5, int6, int7, int8, int9, int10, int11, int12, int13, int14, int15, int16)
     return self.recv_init()
 

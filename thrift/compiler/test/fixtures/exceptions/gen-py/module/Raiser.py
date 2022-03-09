@@ -776,6 +776,9 @@ class Client(Iface):
     self._fbthrift_cpp_transport = cpp_transport
 
   def doBland(self, ):
+    if (self._fbthrift_cpp_transport):
+      args = doBland_args()
+      return self._fbthrift_cpp_transport._send_request("Raiser", "doBland", args, doBland_result).success
     self.send_doBland()
     self.recv_doBland()
 
@@ -799,6 +802,9 @@ class Client(Iface):
     return
 
   def doRaise(self, ):
+    if (self._fbthrift_cpp_transport):
+      args = doRaise_args()
+      return self._fbthrift_cpp_transport._send_request("Raiser", "doRaise", args, doRaise_result).success
     self.send_doRaise()
     self.recv_doRaise()
 
@@ -828,6 +834,9 @@ class Client(Iface):
     return
 
   def get200(self, ):
+    if (self._fbthrift_cpp_transport):
+      args = get200_args()
+      return self._fbthrift_cpp_transport._send_request("Raiser", "get200", args, get200_result).success
     self.send_get200()
     return self.recv_get200()
 
@@ -853,6 +862,9 @@ class Client(Iface):
     raise TApplicationException(TApplicationException.MISSING_RESULT, "get200 failed: unknown result");
 
   def get500(self, ):
+    if (self._fbthrift_cpp_transport):
+      args = get500_args()
+      return self._fbthrift_cpp_transport._send_request("Raiser", "get500", args, get500_result).success
     self.send_get500()
     return self.recv_get500()
 

@@ -391,6 +391,9 @@ class Client(Iface):
     self._fbthrift_cpp_transport = cpp_transport
 
   def ping(self, ):
+    if (self._fbthrift_cpp_transport):
+      args = ping_args()
+      return self._fbthrift_cpp_transport._send_request("MyServicePrioParent", "ping", args, ping_result).success
     self.send_ping()
     self.recv_ping()
 
@@ -414,6 +417,9 @@ class Client(Iface):
     return
 
   def pong(self, ):
+    if (self._fbthrift_cpp_transport):
+      args = pong_args()
+      return self._fbthrift_cpp_transport._send_request("MyServicePrioParent", "pong", args, pong_result).success
     self.send_pong()
     self.recv_pong()
 

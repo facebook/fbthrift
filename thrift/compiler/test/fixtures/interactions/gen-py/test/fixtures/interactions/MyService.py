@@ -620,6 +620,9 @@ class Client(Iface):
     self._fbthrift_cpp_transport = cpp_transport
 
   def foo(self, ):
+    if (self._fbthrift_cpp_transport):
+      args = foo_args()
+      return self._fbthrift_cpp_transport._send_request("MyService", "foo", args, foo_result).success
     self.send_foo()
     self.recv_foo()
 
@@ -647,6 +650,10 @@ class Client(Iface):
     Parameters:
      - arg
     """
+    if (self._fbthrift_cpp_transport):
+      args = interact_args()
+      args.arg = arg
+      return self._fbthrift_cpp_transport._send_request("MyService", "interact", args, interact_result).success
     self.send_interact(arg)
     self.recv_interact()
 
@@ -671,6 +678,9 @@ class Client(Iface):
     return
 
   def interactFast(self, ):
+    if (self._fbthrift_cpp_transport):
+      args = interactFast_args()
+      return self._fbthrift_cpp_transport._send_request("MyService", "interactFast", args, interactFast_result).success
     self.send_interactFast()
     return self.recv_interactFast()
 

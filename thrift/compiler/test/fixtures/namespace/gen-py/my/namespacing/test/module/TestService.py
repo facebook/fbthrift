@@ -270,6 +270,10 @@ class Client(Iface):
     Parameters:
      - int1
     """
+    if (self._fbthrift_cpp_transport):
+      args = init_args()
+      args.int1 = int1
+      return self._fbthrift_cpp_transport._send_request("TestService", "init", args, init_result).success
     self.send_init(int1)
     return self.recv_init()
 

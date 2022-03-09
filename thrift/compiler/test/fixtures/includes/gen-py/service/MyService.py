@@ -472,6 +472,11 @@ class Client(Iface):
      - s
      - i
     """
+    if (self._fbthrift_cpp_transport):
+      args = query_args()
+      args.s = s
+      args.i = i
+      return self._fbthrift_cpp_transport._send_request("MyService", "query", args, query_result).success
     self.send_query(s, i)
     self.recv_query()
 
@@ -502,6 +507,11 @@ class Client(Iface):
      - s
      - i: arg doc
     """
+    if (self._fbthrift_cpp_transport):
+      args = has_arg_docs_args()
+      args.s = s
+      args.i = i
+      return self._fbthrift_cpp_transport._send_request("MyService", "has_arg_docs", args, has_arg_docs_result).success
     self.send_has_arg_docs(s, i)
     self.recv_has_arg_docs()
 

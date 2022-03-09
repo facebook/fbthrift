@@ -1442,6 +1442,9 @@ class Client(Iface):
     self._fbthrift_cpp_transport = cpp_transport
 
   def ping(self, ):
+    if (self._fbthrift_cpp_transport):
+      args = ping_args()
+      return self._fbthrift_cpp_transport._send_request("MyService", "ping", args, ping_result).success
     self.send_ping()
     self.recv_ping()
 
@@ -1467,6 +1470,9 @@ class Client(Iface):
     return
 
   def getRandomData(self, ):
+    if (self._fbthrift_cpp_transport):
+      args = getRandomData_args()
+      return self._fbthrift_cpp_transport._send_request("MyService", "getRandomData", args, getRandomData_result).success
     self.send_getRandomData()
     return self.recv_getRandomData()
 
@@ -1496,6 +1502,10 @@ class Client(Iface):
     Parameters:
      - id
     """
+    if (self._fbthrift_cpp_transport):
+      args = hasDataById_args()
+      args.id = id
+      return self._fbthrift_cpp_transport._send_request("MyService", "hasDataById", args, hasDataById_result).success
     self.send_hasDataById(id)
     return self.recv_hasDataById()
 
@@ -1526,6 +1536,10 @@ class Client(Iface):
     Parameters:
      - id
     """
+    if (self._fbthrift_cpp_transport):
+      args = getDataById_args()
+      args.id = id
+      return self._fbthrift_cpp_transport._send_request("MyService", "getDataById", args, getDataById_result).success
     self.send_getDataById(id)
     return self.recv_getDataById()
 
@@ -1557,6 +1571,11 @@ class Client(Iface):
      - id
      - data
     """
+    if (self._fbthrift_cpp_transport):
+      args = putDataById_args()
+      args.id = id
+      args.data = data
+      return self._fbthrift_cpp_transport._send_request("MyService", "putDataById", args, putDataById_result).success
     self.send_putDataById(id, data)
     self.recv_putDataById()
 
@@ -1587,6 +1606,11 @@ class Client(Iface):
      - id
      - data
     """
+    if (self._fbthrift_cpp_transport):
+      args = lobDataById_args()
+      args.id = id
+      args.data = data
+      return self._fbthrift_cpp_transport._send_request("MyService", "lobDataById", args, lobDataById_result).success
     self.send_lobDataById(id, data)
 
   def send_lobDataById(self, id=None, data=None):
@@ -1598,6 +1622,9 @@ class Client(Iface):
     self._oprot.writeMessageEnd()
     self._oprot.trans.onewayFlush()
   def doNothing(self, ):
+    if (self._fbthrift_cpp_transport):
+      args = doNothing_args()
+      return self._fbthrift_cpp_transport._send_request("MyService", "doNothing", args, doNothing_result).success
     self.send_doNothing()
     self.recv_doNothing()
 

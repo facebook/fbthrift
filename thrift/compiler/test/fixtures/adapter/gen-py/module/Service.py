@@ -356,6 +356,12 @@ class Client(Iface):
      - arg2
      - arg3
     """
+    if (self._fbthrift_cpp_transport):
+      args = func_args()
+      args.arg1 = arg1
+      args.arg2 = arg2
+      args.arg3 = arg3
+      return self._fbthrift_cpp_transport._send_request("Service", "func", args, func_result).success
     self.send_func(arg1, arg2, arg3)
     return self.recv_func()
 

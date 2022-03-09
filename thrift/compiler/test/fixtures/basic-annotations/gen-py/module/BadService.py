@@ -268,6 +268,9 @@ class Client(Iface):
     self._fbthrift_cpp_transport = cpp_transport
 
   def bar(self, ):
+    if (self._fbthrift_cpp_transport):
+      args = bar_args()
+      return self._fbthrift_cpp_transport._send_request("BadService", "bar", args, bar_result).success
     self.send_bar()
     return self.recv_bar()
 
