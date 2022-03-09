@@ -46,19 +46,26 @@ class ast_mutator
   }
 };
 
-class ast_mutators {
- public:
-  explicit ast_mutators(std::vector<ast_mutator> mutators)
-      : mutators_(mutators) {}
+// A thin wrapper around a vector of mutators that
+// knows how to apply those mutators in order.
+struct ast_mutators {
+  std::vector<ast_mutator> stages;
 
-  void operator()(diagnostic_context& ctx, t_program_bundle& bundle) {
-    for (auto& mutator : mutators_) {
-      mutator.mutate(ctx, bundle);
+  // Access a specific mutator stage, growing the number of stages if needed.
+  template <typename T>
+  ast_mutator& operator[](T&& stage) {
+    auto index = static_cast<size_t>(stage);
+    if (stages.size() <= index) {
+      stages.resize(index + 1);
     }
+    return stages[index];
   }
 
- private:
-  std::vector<ast_mutator> mutators_;
+  void operator()(diagnostic_context& ctx, t_program_bundle& bundle) {
+    for (auto& stage : stages) {
+      stage.mutate(ctx, bundle);
+    }
+  }
 };
 
 } // namespace compiler

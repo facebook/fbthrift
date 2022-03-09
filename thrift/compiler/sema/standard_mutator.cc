@@ -16,6 +16,8 @@
 
 #include <thrift/compiler/sema/standard_mutator.h>
 
+#include <thrift/compiler/sema/standard_mutator_stage.h>
+
 namespace apache {
 namespace thrift {
 namespace compiler {
@@ -159,18 +161,22 @@ void rectify_returned_interactions(
 }
 
 ast_mutators standard_mutators() {
-  ast_mutator initial_mutator;
-  ast_mutator final_mutator;
+  ast_mutators mutators;
+  {
+    auto& initial = mutators[standard_mutator_stage::initial];
+    initial.add_root_definition_visitor(&assign_uri);
+    initial.add_interaction_visitor(
+        &propagate_process_in_event_base_annotation);
+    initial.add_function_visitor(&remove_param_list_field_qualifiers);
+    initial.add_function_visitor(&rectify_returned_interactions);
+  }
 
-  initial_mutator.add_root_definition_visitor(&assign_uri);
-  initial_mutator.add_interaction_visitor(
-      &propagate_process_in_event_base_annotation);
-  initial_mutator.add_function_visitor(&remove_param_list_field_qualifiers);
-  initial_mutator.add_function_visitor(&rectify_returned_interactions);
-  final_mutator.add_field_visitor(&mutate_terse_write_annotation_field);
-  final_mutator.add_struct_visitor(&mutate_terse_write_annotation_struct);
-
-  return ast_mutators{{std::move(initial_mutator), std::move(final_mutator)}};
+  {
+    auto& main = mutators[standard_mutator_stage::main];
+    main.add_field_visitor(&mutate_terse_write_annotation_field);
+    main.add_struct_visitor(&mutate_terse_write_annotation_struct);
+  }
+  return mutators;
 }
 
 } // namespace compiler
