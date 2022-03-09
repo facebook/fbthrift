@@ -16,12 +16,14 @@
 
 package com.facebook.thrift.client;
 
+import com.facebook.swift.service.ThriftClientEventHandler;
 import com.facebook.swift.service.ThriftClientStats;
 import com.facebook.thrift.legacy.client.LegacyRpcClientFactory;
 import com.facebook.thrift.rsocket.client.RSocketRpcClientFactory;
 import com.facebook.thrift.util.resources.RpcResources;
 import com.google.common.base.Preconditions;
 import java.net.SocketAddress;
+import java.util.List;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
 
@@ -38,6 +40,7 @@ public interface RpcClientFactory {
     private boolean disableStats = false;
     private boolean disableReconnectingClient = false;
     private boolean disableTimeout = false;
+    private List<ThriftClientEventHandler> clientEventHandlers;
     private int connectionPoolSize = RpcResources.getNumEventLoopThreads();
 
     private ThriftClientConfig thriftClientConfig;
@@ -72,6 +75,10 @@ public interface RpcClientFactory {
       return this;
     }
 
+    public void setClientEventHandlers(List<ThriftClientEventHandler> clientEventHandlers) {
+      this.clientEventHandlers = clientEventHandlers;
+    }
+
     public Builder setConnectionPoolSize(int poolSize) {
       Preconditions.checkArgument(
           poolSize >= 1, "0 or negative connection pool size is not allowed");
@@ -102,6 +109,10 @@ public interface RpcClientFactory {
 
       if (!disableStats) {
         rpcClientFactory = new InstrumentedRpcClientFactory(rpcClientFactory, thriftClientStats);
+      }
+
+      if (clientEventHandlers != null && !clientEventHandlers.isEmpty()) {
+        rpcClientFactory = new EventHandlerRpcClientFactory(rpcClientFactory, clientEventHandlers);
       }
 
       if (!disableReconnectingClient) {
