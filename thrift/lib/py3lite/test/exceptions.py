@@ -23,7 +23,7 @@ from testing.lite_types import (
     UnusedError,
     ValueOrError,
 )
-from thrift.py3lite.exceptions import Error
+from thrift.py3lite.exceptions import Error, ApplicationErrorType
 from thrift.py3lite.serializer import (
     deserialize,
     serialize_iobuf,
@@ -33,6 +33,9 @@ from thrift.py3lite.serializer import (
 class ExceptionTests(unittest.TestCase):
     def test_hashability(self) -> None:
         hash(UnusedError())
+
+    def test_cython_enum_scope(self) -> None:
+        self.assertEqual(ApplicationErrorType(6), ApplicationErrorType.INTERNAL_ERROR)
 
     def test_exception_message_annotation(self) -> None:
         x = UnusedError(message="something broke")

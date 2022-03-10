@@ -28,7 +28,7 @@ cdef extern from "thrift/lib/cpp/Thrift.h" namespace "apache::thrift":
 
 cdef extern from "thrift/lib/cpp/TApplicationException.h" namespace "apache::thrift":
 
-    cpdef enum ApplicationErrorType "apache::thrift::TApplicationException::TApplicationExceptionType":
+    cpdef enum class ApplicationErrorType "apache::thrift::TApplicationException::TApplicationExceptionType":
         UNKNOWN "apache::thrift::TApplicationException::UNKNOWN"
         UNKNOWN_METHOD "apache::thrift::TApplicationException::UNKNOWN_METHOD"
         INVALID_MESSAGE_TYPE "apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE"
@@ -51,7 +51,7 @@ cdef extern from "thrift/lib/cpp/TApplicationException.h" namespace "apache::thr
 
 cdef extern from "thrift/lib/cpp/transport/TTransportException.h" namespace "apache::thrift::transport":
 
-    cpdef enum TransportErrorType "apache::thrift::transport::TTransportException::TTransportExceptionType":
+    cpdef enum class TransportErrorType "apache::thrift::transport::TTransportException::TTransportExceptionType":
         UNKNOWN "apache::thrift::transport::TTransportException::UNKNOWN"
         NOT_OPEN "apache::thrift::transport::TTransportException::NOT_OPEN"
         ALREADY_OPEN "apache::thrift::transport::TTransportException::ALREADY_OPEN"
