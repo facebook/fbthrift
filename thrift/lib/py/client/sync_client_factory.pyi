@@ -17,13 +17,12 @@ import os
 import typing
 
 from thrift.py.client.common import ClientType, Protocol
-from thrift.py.client.sync_client import SyncClient
 
-TSyncClient = typing.TypeVar("TSyncClient", bound=SyncClient)
+TClient = typing.TypeVar("TClient")
 Path = typing.Union[str, bytes, os.PathLike[str], os.PathLike[bytes]]
 
 def get_client(
-    clientKlass: typing.Type[TSyncClient],
+    clientKlass: typing.Type[TClient],
     *,
     host: typing.Optional[
         typing.Union[str, ipaddress.IPv4Address, ipaddress.IPv6Address]
@@ -33,4 +32,4 @@ def get_client(
     timeout: float = ...,
     client_type: ClientType = ...,
     protocol: Protocol = ...,
-) -> TSyncClient: ...
+) -> TClient: ...

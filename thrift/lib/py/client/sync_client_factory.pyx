@@ -44,9 +44,6 @@ def get_client(
     cClientType client_type = ClientType.THRIFT_HEADER_CLIENT_TYPE,
     cProtocol protocol = cProtocol.COMPACT,
 ):
-    if not issubclass(clientKlass, SyncClient):
-        raise TypeError(f"{clientKlass} is not a py client class")
-
     endpoint = b""
     cdef uint32_t _timeout_ms = int(timeout * 1000)
 
@@ -73,4 +70,4 @@ def get_client(
     else:
         raise ValueError("Must set path or host/port")
 
-    return clientKlass(channel)
+    return clientKlass(cpp_transport=SyncClient(channel))
