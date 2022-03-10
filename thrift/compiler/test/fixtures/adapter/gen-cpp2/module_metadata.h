@@ -11,6 +11,7 @@
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include "thrift/compiler/test/fixtures/adapter/gen-cpp2/module_types.h"
 #include "thrift/annotation/gen-cpp2/cpp_metadata.h"
+#include "thrift/annotation/gen-cpp2/thrift_metadata.h"
 
 namespace cpp2 {
 class ServiceSvIf;

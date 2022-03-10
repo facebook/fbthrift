@@ -795,7 +795,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             "[WARNING:foo.thrift:2] `cpp.ref` field `rec` must be optional if it is recursive.\n"
-            "[WARNING:foo.thrift:2] cpp.ref, cpp2.ref are deprecated. Please use thrift.box annotation instead in `rec`.\n",
+            "[WARNING:foo.thrift:2] cpp.ref, cpp2.ref are deprecated. Please use @thrift.Box annotation instead in `rec`.\n",
         )
 
     def test_structured_ref(self):
@@ -841,12 +841,12 @@ class CompilerFailureTest(unittest.TestCase):
             "\n" + err,
             textwrap.dedent(
                 """
-                [WARNING:foo.thrift:4] cpp.ref, cpp2.ref are deprecated. Please use thrift.box annotation instead in `field1`.
-                [WARNING:foo.thrift:7] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. Please use thrift.box annotation instead in `field2`.
+                [WARNING:foo.thrift:4] cpp.ref, cpp2.ref are deprecated. Please use @thrift.Box annotation instead in `field1`.
+                [WARNING:foo.thrift:7] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. Please use @thrift.Box annotation instead in `field2`.
                 [FAILURE:foo.thrift:10] The @cpp.Ref annotation cannot be combined with the `cpp.ref` or `cpp.ref_type` annotations. Remove one of the annotations from `field3`.
-                [WARNING:foo.thrift:10] cpp.ref, cpp2.ref are deprecated. Please use thrift.box annotation instead in `field3`.
-                [WARNING:foo.thrift:10] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. Please use thrift.box annotation instead in `field3`.
-                [WARNING:foo.thrift:14] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. Please use thrift.box annotation instead in `field4`.
+                [WARNING:foo.thrift:10] cpp.ref, cpp2.ref are deprecated. Please use @thrift.Box annotation instead in `field3`.
+                [WARNING:foo.thrift:10] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. Please use @thrift.Box annotation instead in `field3`.
+                [WARNING:foo.thrift:14] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. Please use @thrift.Box annotation instead in `field4`.
                 [FAILURE:foo.thrift:13] Structured annotation `Ref` is already defined for `field4`.
             """
             ),
@@ -904,11 +904,11 @@ class CompilerFailureTest(unittest.TestCase):
             "[FAILURE:foo.thrift:9] `@cpp.Adapter` cannot be used without "
             "`name` specified in `my_field2`.\n"
             "[FAILURE:foo.thrift:11] cpp.ref, cpp2.ref are deprecated. "
-            "Please use thrift.box annotation instead in `my_field3` with @cpp.Adapter.\n"
+            "Please use @thrift.Box annotation instead in `my_field3` with @cpp.Adapter.\n"
             "[FAILURE:foo.thrift:13] cpp.ref_type = `unique`, cpp2.ref_type = `unique` "
-            "are deprecated. Please use thrift.box annotation instead in `my_field4` with @cpp.Adapter.\n"
+            "are deprecated. Please use @thrift.Box annotation instead in `my_field4` with @cpp.Adapter.\n"
             "[FAILURE:foo.thrift:16] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. "
-            "Please use thrift.box annotation instead in `my_field5` with @cpp.Adapter.\n",
+            "Please use @thrift.Box annotation instead in `my_field5` with @cpp.Adapter.\n",
         )
 
     def test_mixin_nonstruct_members(self):
@@ -973,7 +973,7 @@ class CompilerFailureTest(unittest.TestCase):
                 """\
                 [FAILURE:foo.thrift:3] Mixin field `a` can not be a ref in cpp.
                 [WARNING:foo.thrift:3] `cpp.ref` field `a` must be optional if it is recursive.
-                [WARNING:foo.thrift:3] cpp.ref, cpp2.ref are deprecated. Please use thrift.box annotation instead in `a`.
+                [WARNING:foo.thrift:3] cpp.ref, cpp2.ref are deprecated. Please use @thrift.Box annotation instead in `a`.
                 """
             ),
         )
@@ -1294,7 +1294,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             textwrap.dedent(
-                "[WARNING:foo.thrift:1] Cpp.box is deprecated. Please use thrift.box annotation instead in `field`.\n"
+                "[WARNING:foo.thrift:1] Cpp.box and thrift.box are deprecated. Please use @thrift.Box annotation instead in `field`.\n"
                 "[FAILURE:foo.thrift:2] The `cpp.box` annotation cannot be combined "
                 "with the `cpp.ref` or `cpp.ref_type` annotations. Remove one of the "
                 "annotations from `field`.\n"
@@ -1319,7 +1319,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             textwrap.dedent(
-                "[WARNING:foo.thrift:1] Cpp.box is deprecated. Please use thrift.box annotation instead in `field`.\n"
+                "[WARNING:foo.thrift:1] Cpp.box and thrift.box are deprecated. Please use @thrift.Box annotation instead in `field`.\n"
                 "[FAILURE:foo.thrift:2] The `cpp.box` annotation can only be used with "
                 "optional fields. Make sure `field` is optional.\n"
             ),
@@ -1591,13 +1591,13 @@ class CompilerFailureTest(unittest.TestCase):
             "\n" + err,
             textwrap.dedent(
                 """
-                [WARNING:foo.thrift:4] cpp.ref, cpp2.ref are deprecated. Please use thrift.box annotation instead in `field1`.
-                [WARNING:foo.thrift:6] cpp.ref, cpp2.ref are deprecated. Please use thrift.box annotation instead in `field2`.
-                [WARNING:foo.thrift:9] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. Please use thrift.box annotation instead in `field3`.
-                [WARNING:foo.thrift:17] cpp.ref_type = `unique`, cpp2.ref_type = `unique` are deprecated. Please use thrift.box annotation instead in `field6`.
-                [WARNING:foo.thrift:19] cpp.ref_type = `unique`, cpp2.ref_type = `unique` are deprecated. Please use thrift.box annotation instead in `field7`.
-                [WARNING:foo.thrift:25] cpp.ref, cpp2.ref are deprecated. Please use thrift.box annotation instead in `field10`.
-                [WARNING:foo.thrift:27] cpp.ref, cpp2.ref are deprecated. Please use thrift.box annotation instead in `field11`.
+                [WARNING:foo.thrift:4] cpp.ref, cpp2.ref are deprecated. Please use @thrift.Box annotation instead in `field1`.
+                [WARNING:foo.thrift:6] cpp.ref, cpp2.ref are deprecated. Please use @thrift.Box annotation instead in `field2`.
+                [WARNING:foo.thrift:9] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. Please use @thrift.Box annotation instead in `field3`.
+                [WARNING:foo.thrift:17] cpp.ref_type = `unique`, cpp2.ref_type = `unique` are deprecated. Please use @thrift.Box annotation instead in `field6`.
+                [WARNING:foo.thrift:19] cpp.ref_type = `unique`, cpp2.ref_type = `unique` are deprecated. Please use @thrift.Box annotation instead in `field7`.
+                [WARNING:foo.thrift:25] cpp.ref, cpp2.ref are deprecated. Please use @thrift.Box annotation instead in `field10`.
+                [WARNING:foo.thrift:27] cpp.ref, cpp2.ref are deprecated. Please use @thrift.Box annotation instead in `field11`.
                 """
             ),
         )
@@ -1621,7 +1621,7 @@ class CompilerFailureTest(unittest.TestCase):
             "\n" + err,
             textwrap.dedent(
                 """
-                [WARNING:foo.thrift:1] Cpp.box is deprecated. Please use thrift.box annotation instead in `field`.
+                [WARNING:foo.thrift:1] Cpp.box and thrift.box are deprecated. Please use @thrift.Box annotation instead in `field`.
                 """
             ),
         )

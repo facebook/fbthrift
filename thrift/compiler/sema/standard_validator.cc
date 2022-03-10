@@ -516,9 +516,9 @@ void validate_hack_adapter_annotation(
 }
 
 void validate_box_annotation(diagnostic_context& ctx, const t_field& node) {
-  if (node.has_annotation("cpp.box")) {
+  if (node.has_annotation({"cpp.box", "thrift.box"})) {
     ctx.warning([&](auto& o) {
-      o << "Cpp.box is deprecated. Please use thrift.box annotation instead in `"
+      o << "Cpp.box and thrift.box are deprecated. Please use @thrift.Box annotation instead in `"
         << node.name() << "`.";
     });
   }
@@ -542,13 +542,13 @@ void validate_ref_unique_and_box_annotation(
       if (adapter_annotation) {
         ctx.failure([&](auto& o) {
           o << "cpp.ref, cpp2.ref "
-            << "are deprecated. Please use thrift.box annotation instead in `"
+            << "are deprecated. Please use @thrift.Box annotation instead in `"
             << node.name() << "` with @cpp.Adapter.";
         });
       } else {
         ctx.warning([&](auto& o) {
           o << "cpp.ref, cpp2.ref "
-            << "are deprecated. Please use thrift.box annotation instead in `"
+            << "are deprecated. Please use @thrift.Box annotation instead in `"
             << node.name() << "`.";
         });
       }
@@ -557,13 +557,13 @@ void validate_ref_unique_and_box_annotation(
       if (adapter_annotation) {
         ctx.failure([&](auto& o) {
           o << "cpp.ref_type = `unique`, cpp2.ref_type = `unique` "
-            << "are deprecated. Please use thrift.box annotation instead in `"
+            << "are deprecated. Please use @thrift.Box annotation instead in `"
             << node.name() << "` with @cpp.Adapter.";
         });
       } else {
         ctx.warning([&](auto& o) {
           o << "cpp.ref_type = `unique`, cpp2.ref_type = `unique` "
-            << "are deprecated. Please use thrift.box annotation instead in `"
+            << "are deprecated. Please use @thrift.Box annotation instead in `"
             << node.name() << "`.";
         });
       }
@@ -572,13 +572,13 @@ void validate_ref_unique_and_box_annotation(
       if (adapter_annotation) {
         ctx.failure([&](auto& o) {
           o << "@cpp.Ref{type = cpp.RefType.Unique} "
-            << "is deprecated. Please use thrift.box annotation instead in `"
+            << "is deprecated. Please use @thrift.Box annotation instead in `"
             << node.name() << "` with @cpp.Adapter.";
         });
       } else {
         ctx.warning([&](auto& o) {
           o << "@cpp.Ref{type = cpp.RefType.Unique} "
-            << "is deprecated. Please use thrift.box annotation instead in `"
+            << "is deprecated. Please use @thrift.Box annotation instead in `"
             << node.name() << "`.";
         });
       }

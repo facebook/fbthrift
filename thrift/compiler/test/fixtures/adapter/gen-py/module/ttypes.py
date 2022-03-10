@@ -17,6 +17,7 @@ if sys.version_info[0] >= 3:
   long = int
 
 import thrift.annotation.cpp.ttypes
+import thrift.annotation.thrift.ttypes
 
 import my
 
@@ -1129,9 +1130,6 @@ StructWithFieldAdapter.thrift_spec = (
 StructWithFieldAdapter.thrift_struct_annotations = {
 }
 StructWithFieldAdapter.thrift_field_annotations = {
-  4: {
-    "thrift.box": "1",
-  },
 }
 
 def StructWithFieldAdapter__init__(self, field=None, shared_field=None, opt_shared_field=None, opt_boxed_field=None,):

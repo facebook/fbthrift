@@ -7,6 +7,7 @@
 import typing as __T
 
 import thrift.annotation.cpp.ttypes
+import thrift.annotation.thrift.ttypes
 import my
 from module.ttypes import *
 

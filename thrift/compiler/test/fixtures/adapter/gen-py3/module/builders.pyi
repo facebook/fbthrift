@@ -12,6 +12,8 @@ import thrift.py3.builder
 
 import facebook.thrift.annotation.cpp.cpp.types as _facebook_thrift_annotation_cpp_cpp_types
 import facebook.thrift.annotation.cpp.cpp.builders as _facebook_thrift_annotation_cpp_cpp_builders
+import facebook.thrift.annotation.thrift.thrift.types as _facebook_thrift_annotation_thrift_thrift_types
+import facebook.thrift.annotation.thrift.thrift.builders as _facebook_thrift_annotation_thrift_thrift_builders
 
 import module.types as _module_types
 

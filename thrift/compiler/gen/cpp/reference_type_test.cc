@@ -15,6 +15,7 @@
  */
 
 #include <thrift/compiler/gen/cpp/reference_type.h>
+#include <thrift/compiler/gen/cpp/testing.h>
 
 #include <folly/portability/GTest.h>
 #include <thrift/compiler/ast/t_base_type.h>
@@ -75,6 +76,14 @@ TEST_F(ReferenceTypeTest, CppRefType_Unknown) {
 TEST_F(ReferenceTypeTest, CppRefType_box) {
   t_field tfield(&t_base_type::t_string(), "my_string");
   tfield.set_annotation("thrift.box", "");
+  EXPECT_EQ(find_ref_type(tfield), reference_type::boxed);
+}
+
+TEST_F(ReferenceTypeTest, ThriftBox) {
+  t_program program{"path/to/program.thrift"};
+  t_field tfield(&t_base_type::t_string(), "my_string");
+  auto box = box_builder(&program);
+  tfield.add_structured_annotation(box.make());
   EXPECT_EQ(find_ref_type(tfield), reference_type::boxed);
 }
 } // namespace

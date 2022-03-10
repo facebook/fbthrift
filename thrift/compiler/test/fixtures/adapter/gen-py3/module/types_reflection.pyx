@@ -15,6 +15,7 @@ from thrift.py3.reflection cimport (
 )
 
 cimport facebook.thrift.annotation.cpp.cpp.types as _facebook_thrift_annotation_cpp_cpp_types
+cimport facebook.thrift.annotation.thrift.thrift.types as _facebook_thrift_annotation_thrift_thrift_types
 
 cimport module.types as _module_types
 
@@ -331,7 +332,7 @@ cdef __StructSpec get_reflection__StructWithFieldAdapter():
             qualifier=__Qualifier.OPTIONAL,
             default=None,
             annotations={
-                """thrift.box""": """1""",            },
+            },
         ),
     )
     return spec

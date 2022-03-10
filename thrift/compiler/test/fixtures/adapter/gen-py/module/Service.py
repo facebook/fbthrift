@@ -18,6 +18,7 @@ if sys.version_info[0] >= 3:
 
 from .ttypes import UTF8STRINGS, Foo, Baz, Bar, StructWithFieldAdapter, SetWithAdapter, ListWithElemAdapter, StructWithAdapter, UnionWithAdapter
 import thrift.annotation.cpp.ttypes
+import thrift.annotation.thrift.ttypes
 
 import my
 

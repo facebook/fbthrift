@@ -20,6 +20,7 @@ namespace java2 test.fixtures.adapter
 namespace java.swift test.fixtures.adapter
 
 include "thrift/annotation/cpp.thrift"
+include "thrift/annotation/thrift.thrift"
 
 typedef set<string> (
   hack.adapter = '\Adapter2',
@@ -156,7 +157,8 @@ struct StructWithFieldAdapter {
   @cpp.Ref{type = cpp.RefType.Shared}
   3: optional i32 opt_shared_field;
   @cpp.Adapter{name = "my::Adapter1"}
-  4: optional i32 opt_boxed_field (thrift.box);
+  @thrift.Box
+  4: optional i32 opt_boxed_field;
 }
 
 typedef Bar (

@@ -51,6 +51,9 @@ struct TerseWrite {} (
   thrift.uri = "facebook.com/thrift/annotation/thrift/TerseWrite",
 )
 
+@scope.Field
+struct Box {} (thrift.uri = "facebook.com/thrift/annotation/thrift/Box")
+
 // Option to serialize thrift struct in ascending field id order.
 // This can potentially make serialized data size smaller in compact protocol,
 // since compact protocol can write deltas between subsequent field ids.

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <thrift/compiler/gen/cpp/testing.h>
 #include <thrift/compiler/gen/cpp/type_resolver.h>
 
 #include <memory>
@@ -383,6 +384,7 @@ TEST_F(TypeResolverTest, StreamingSink) {
 
 TEST_F(TypeResolverTest, StorageType) {
   t_base_type ui64(t_base_type::t_i64());
+  auto box = box_builder(&program_);
   ui64.set_annotation("cpp.type", "uint64_t");
   ui64.set_annotation("cpp.adapter", "HashAdapter");
   {
@@ -442,6 +444,14 @@ TEST_F(TypeResolverTest, StorageType) {
   {
     t_field ui64_field(ui64, "hash", 1);
     ui64_field.set_annotation("thrift.box", "");
+    EXPECT_EQ(
+        get_storage_type_name(ui64_field),
+        "::apache::thrift::detail::boxed_value_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
+  }
+
+  {
+    t_field ui64_field(ui64, "hash", 1);
+    ui64_field.add_structured_annotation(box.make());
     EXPECT_EQ(
         get_storage_type_name(ui64_field),
         "::apache::thrift::detail::boxed_value_ptr<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>");
@@ -572,29 +582,6 @@ TEST_F(TypeResolverTest, Typedef_cpptype_and_adapter) {
   EXPECT_TRUE(can_resolve_to_scalar(*field2.type()));
 }
 
-std::unique_ptr<t_const_value> make_string(const char* value) {
-  auto name = std::make_unique<t_const_value>();
-  name->set_string(value);
-  return name;
-}
-
-struct adapter_builder {
-  t_program* program;
-  t_struct type;
-
-  explicit adapter_builder(t_program* p) : program(p), type(p, "Adapter") {
-    type.set_uri("facebook.com/thrift/annotation/cpp/Adapter");
-  }
-
-  std::unique_ptr<t_const> make() & {
-    auto map = std::make_unique<t_const_value>();
-    map->set_map();
-    map->add_map(make_string("name"), make_string("MyAdapter"));
-    map->set_ttype(t_type_ref::from_ptr(&type));
-    return std::make_unique<t_const>(program, &type, "", std::move(map));
-  }
-};
-
 TEST_F(TypeResolverTest, AdaptedFieldType) {
   auto i64 = t_base_type::t_i64();
   auto field = t_field(i64, "n", 42);
@@ -613,6 +600,7 @@ TEST_F(TypeResolverTest, AdaptedFieldType) {
 TEST_F(TypeResolverTest, AdaptedFieldStorageType) {
   auto i64 = t_base_type::t_i64();
   auto adapter = adapter_builder(&program_);
+  auto box = box_builder(&program_);
   {
     auto field = t_field(i64, "n", 42);
     field.add_structured_annotation(adapter.make());
@@ -685,6 +673,16 @@ TEST_F(TypeResolverTest, AdaptedFieldStorageType) {
     auto field = t_field(i64, "n", 42);
     field.add_structured_annotation(adapter.make());
     field.set_annotation("thrift.box", "");
+    EXPECT_EQ(
+        get_storage_type_name(field),
+        "::apache::thrift::detail::boxed_value_ptr<::apache::thrift::adapt_detail::adapted_field_t<"
+        "MyAdapter, 42, ::std::int64_t, ThriftStruct>>");
+  }
+
+  {
+    auto field = t_field(i64, "n", 42);
+    field.add_structured_annotation(adapter.make());
+    field.add_structured_annotation(box.make());
     EXPECT_EQ(
         get_storage_type_name(field),
         "::apache::thrift::detail::boxed_value_ptr<::apache::thrift::adapt_detail::adapted_field_t<"

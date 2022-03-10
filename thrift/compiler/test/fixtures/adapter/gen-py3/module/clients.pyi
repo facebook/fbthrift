@@ -14,6 +14,7 @@ from types import TracebackType
 
 import module.types as _module_types
 import facebook.thrift.annotation.cpp.cpp.types as _facebook_thrift_annotation_cpp_cpp_types
+import facebook.thrift.annotation.thrift.thrift.types as _facebook_thrift_annotation_thrift_thrift_types
 
 
 _ServiceT = _typing.TypeVar('_ServiceT', bound='Service')
