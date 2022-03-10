@@ -1,4 +1,4 @@
-# Copyright (c) Facebook, Inc. and its affiliates.
+# Copyright (c) Meta Platforms, Inc. and affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,10 +22,11 @@ import tempfile
 import textwrap
 import unittest
 
+# @manual=//thrift/compiler/test:compiler_failure_test-library
 from thrift.compiler.test.compiler_failure_test import (
     thrift,
     write_file,
-)  # @manual=//thrift/compiler/test:compiler_failure_test-library
+)
 
 
 class CompilerFailureTest(unittest.TestCase):
