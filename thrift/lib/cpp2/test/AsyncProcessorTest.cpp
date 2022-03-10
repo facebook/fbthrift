@@ -32,6 +32,7 @@
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/MonitoringServerInterface.h>
+#include <thrift/lib/cpp2/server/ServerFlags.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
@@ -168,6 +169,8 @@ class AsyncProcessorMethodResolutionTestP
 } // namespace
 
 TEST_P(AsyncProcessorMethodResolutionTestP, CreateMethodMetadataNotSupported) {
+  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(
+      /* Not yet supported for resource pools, maybe never? */);
   auto service = std::make_shared<ChildHandlerWithMetadata>(
       [](auto&&) -> CreateMethodMetadataResult { return {}; });
   auto runner = makeServer(service);
@@ -278,6 +281,28 @@ TEST_P(AsyncProcessorMethodResolutionTestP, Wildcard) {
                 eb,
                 tm);
           }
+
+          void executeRequest(
+              ServerRequest&& request,
+              const AsyncProcessorFactory::MethodMetadata& methodMetadata)
+              override {
+            if (dynamic_cast<const WildcardMethodMetadata*>(&methodMetadata)) {
+              // Instead of crashing when receiving a wildcard method metadata,
+              // return an error so we can check that the correct metadata was
+              // propagated.
+              auto eb = detail::ServerRequestHelper::eventBase(request);
+              eb->runInEventBaseThread(
+                  [request = std::move(request)]() mutable {
+                    request.request()->sendErrorWrapped(
+                        folly::make_exception_wrapper<TApplicationException>(
+                            TApplicationException::UNKNOWN_METHOD, ""),
+                        "");
+                  });
+              return;
+            }
+            ChildAsyncProcessor::executeRequest(
+                std::move(request), methodMetadata);
+          }
         };
         return std::make_unique<ProcessorImpl>(this);
       }
@@ -298,6 +323,8 @@ TEST_P(AsyncProcessorMethodResolutionTestP, Wildcard) {
 }
 
 TEST_P(AsyncProcessorMethodResolutionTestP, Interaction) {
+  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(
+      /* Interaction not yet supported in resource pools */);
   if (transportType() != TransportType::ROCKET) {
     // Interactions are only supported on rocket
     return;
@@ -445,6 +472,22 @@ TEST_P(
               context,
               eb,
               tm);
+        }
+
+        void executeRequest(
+            ServerRequest&& request,
+            const AsyncProcessorFactory::MethodMetadata& methodMetadata)
+            override {
+          if (AsyncProcessorHelper::isWildcardMethodMetadata(methodMetadata)) {
+            auto eb = detail::ServerRequestHelper::eventBase(request);
+            eb->runInEventBaseThread([request = std::move(request)]() mutable {
+              AsyncProcessorHelper::sendUnknownMethodError(
+                  detail::ServerRequestHelper::request(std::move(request)),
+                  "someUnknownMethod");
+            });
+            return;
+          }
+          processor_->executeRequest(std::move(request), methodMetadata);
         }
 
         explicit Processor(std::unique_ptr<AsyncProcessor> processor)
