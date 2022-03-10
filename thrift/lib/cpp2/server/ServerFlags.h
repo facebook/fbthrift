@@ -39,4 +39,11 @@ FOLLY_ALWAYS_INLINE bool useResourcePoolsFlagsSet() {
     }                                                 \
   } while (false)
 
+#define THRIFT_CO_OMIT_TEST_WITH_RESOURCE_POOLS()     \
+  do {                                                \
+    if (apache::thrift::useResourcePoolsFlagsSet()) { \
+      co_return;                                      \
+    }                                                 \
+  } while (false)
+
 } // namespace apache::thrift
