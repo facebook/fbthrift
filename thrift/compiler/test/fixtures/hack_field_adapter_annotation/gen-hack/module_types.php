@@ -145,19 +145,19 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
    */
   private ?\MyFieldWrapper<int> $wrapped_field;
 
-  public function getWrapped_wrapped_field(): \MyFieldWrapper<int> {
+  public function getWrapped_wrapped_field()[]: \MyFieldWrapper<int> {
     return $this->wrapped_field as nonnull;
   }
 
-  public function setWrapped_wrapped_field(\MyFieldWrapper<int> $wrapped_field): void {
+  public function setWrapped_wrapped_field(\MyFieldWrapper<int> $wrapped_field)[write_props]: void {
     \MyFieldAdapter::assignWrapped<int>($this->wrapped_field as nonnull, $wrapped_field);
    }
 
-  public function get_wrapped_field(): int {
+  public function get_wrapped_field()[]: int {
     return \MyFieldAdapter::toThrift<int>($this->wrapped_field as nonnull);
   }
 
-  public function set_wrapped_field(int $wrapped_field): void {
+  public function set_wrapped_field(int $wrapped_field)[write_props]: void {
     \MyFieldAdapter::assign<int>($this->wrapped_field as nonnull, $wrapped_field);
   }
 
@@ -167,19 +167,19 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
    */
   private ?\MyFieldWrapper<int> $annotated_field;
 
-  public function getWrapped_annotated_field(): \MyFieldWrapper<int> {
+  public function getWrapped_annotated_field()[]: \MyFieldWrapper<int> {
     return $this->annotated_field as nonnull;
   }
 
-  public function setWrapped_annotated_field(\MyFieldWrapper<int> $annotated_field): void {
+  public function setWrapped_annotated_field(\MyFieldWrapper<int> $annotated_field)[write_props]: void {
     \MyFieldAdapter::assignWrapped<int>($this->annotated_field as nonnull, $annotated_field);
    }
 
-  public function get_annotated_field(): int {
+  public function get_annotated_field()[]: int {
     return \MyFieldAdapter::toThrift<int>($this->annotated_field as nonnull);
   }
 
-  public function set_annotated_field(int $annotated_field): void {
+  public function set_annotated_field(int $annotated_field)[write_props]: void {
     \MyFieldAdapter::assign<int>($this->annotated_field as nonnull, $annotated_field);
   }
 
@@ -450,7 +450,7 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     return $this->_type;
   }
 
-  public function reset(): void {
+  public function reset()[write_props]: void {
     switch ($this->_type) {
       case MyUnionEnum::union_annotated_field:
         \MyFieldAdapter::assign<?int>($this->union_annotated_field as nonnull, null);
@@ -464,29 +464,29 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     $this->_type = MyUnionEnum::_EMPTY_;
   }
 
-  public function getWrapped_union_annotated_field(): \MyFieldWrapper<?int> {
+  public function getWrapped_union_annotated_field()[]: \MyFieldWrapper<?int> {
     return $this->union_annotated_field as nonnull;
   }
 
-  public function setWrapped_union_annotated_field(\MyFieldWrapper<?int> $union_annotated_field): this {
+  public function setWrapped_union_annotated_field(\MyFieldWrapper<?int> $union_annotated_field)[write_props]: this {
     $this->reset();
     $this->_type = MyUnionEnum::union_annotated_field;
     \MyFieldAdapter::assignWrapped<?int>($this->union_annotated_field as nonnull, $union_annotated_field);
     return $this;
   }
 
-  public function set_union_annotated_field(int $union_annotated_field): this {
+  public function set_union_annotated_field(int $union_annotated_field)[write_props]: this {
     $this->reset();
     $this->_type = MyUnionEnum::union_annotated_field;
     \MyFieldAdapter::assign<?int>($this->union_annotated_field as nonnull, $union_annotated_field);
     return $this;
   }
 
-  public function get_union_annotated_field(): ?int {
+  public function get_union_annotated_field()[]: ?int {
     return \MyFieldAdapter::toThrift<?int>($this->union_annotated_field as nonnull);
   }
 
-  public function getx_union_annotated_field(): int {
+  public function getx_union_annotated_field()[]: int {
     invariant(
       $this->_type === MyUnionEnum::union_annotated_field,
       'get_union_annotated_field called on an instance of MyUnion whose current type is %s',
@@ -495,18 +495,18 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     return \MyFieldAdapter::toThrift<?int>($this->union_annotated_field as nonnull) as nonnull;
   }
 
-  public function set_union_adapted_type(\AdapterTestIntToString::THackType $union_adapted_type): this {
+  public function set_union_adapted_type(\AdapterTestIntToString::THackType $union_adapted_type)[write_props]: this {
     $this->reset();
     $this->_type = MyUnionEnum::union_adapted_type;
     $this->union_adapted_type = $union_adapted_type;
     return $this;
   }
 
-  public function get_union_adapted_type(): ?\AdapterTestIntToString::THackType {
+  public function get_union_adapted_type()[]: ?\AdapterTestIntToString::THackType {
     return $this->union_adapted_type;
   }
 
-  public function getx_union_adapted_type(): \AdapterTestIntToString::THackType {
+  public function getx_union_adapted_type()[]: \AdapterTestIntToString::THackType {
     invariant(
       $this->_type === MyUnionEnum::union_adapted_type,
       'get_union_adapted_type called on an instance of MyUnion whose current type is %s',
@@ -659,19 +659,19 @@ class MyException extends \TException implements \IThriftStruct {
    */
   private ?\MyFieldWrapper<string> $annotated_message;
 
-  public function getWrapped_annotated_message(): \MyFieldWrapper<string> {
+  public function getWrapped_annotated_message()[]: \MyFieldWrapper<string> {
     return $this->annotated_message as nonnull;
   }
 
-  public function setWrapped_annotated_message(\MyFieldWrapper<string> $annotated_message): void {
+  public function setWrapped_annotated_message(\MyFieldWrapper<string> $annotated_message)[write_props]: void {
     \MyFieldAdapter::assignWrapped<string>($this->annotated_message as nonnull, $annotated_message);
    }
 
-  public function get_annotated_message(): string {
+  public function get_annotated_message()[]: string {
     return \MyFieldAdapter::toThrift<string>($this->annotated_message as nonnull);
   }
 
-  public function set_annotated_message(string $annotated_message): void {
+  public function set_annotated_message(string $annotated_message)[write_props]: void {
     \MyFieldAdapter::assign<string>($this->annotated_message as nonnull, $annotated_message);
   }
 
