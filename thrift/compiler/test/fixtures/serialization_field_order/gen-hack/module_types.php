@@ -14,10 +14,6 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
-    3 => shape(
-      'var' => 'field1',
-      'type' => \TType::I32,
-    ),
     1 => shape(
       'var' => 'field2',
       'type' => \TType::I32,
@@ -26,11 +22,15 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
       'var' => 'field3',
       'type' => \TType::I32,
     ),
+    3 => shape(
+      'var' => 'field1',
+      'type' => \TType::I32,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
-    'field1' => 3,
     'field2' => 1,
     'field3' => 2,
+    'field1' => 3,
   ];
 
   const type TConstructorShape = shape(

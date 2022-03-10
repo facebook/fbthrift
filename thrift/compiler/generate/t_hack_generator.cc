@@ -2218,7 +2218,13 @@ void t_hack_generator::generate_php_struct_spec(
     std::ofstream& out, const t_struct* tstruct) {
   indent(out) << "const dict<int, this::TFieldSpec> SPEC = dict[\n";
   indent_up();
-  for (const auto& field : tstruct->fields()) {
+  const auto fields =
+      tstruct->find_structured_annotation_or_null(
+          "facebook.com/thrift/annotation/thrift/SerializeInFieldIdOrder")
+      ? tstruct->fields_id_order()
+      : tstruct->fields().copy();
+  for (const auto* field_ptr : fields) {
+    const auto& field = *field_ptr;
     const t_type& t = *field.type();
     indent(out) << field.id() << " => shape(\n";
     indent_up();
@@ -2251,8 +2257,8 @@ void t_hack_generator::generate_php_struct_spec(
 
   indent(out) << "const dict<string, int> FIELDMAP = dict[\n";
   indent_up();
-  for (const auto& field : tstruct->fields()) {
-    indent(out) << "'" << field.name() << "' => " << field.id() << ",\n";
+  for (const auto& field : fields) {
+    indent(out) << "'" << field->name() << "' => " << field->id() << ",\n";
   }
   indent_down();
   indent(out) << "];\n";
