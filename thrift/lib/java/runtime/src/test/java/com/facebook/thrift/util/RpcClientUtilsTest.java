@@ -68,7 +68,6 @@ import org.apache.thrift.protocol.TField;
 import org.apache.thrift.protocol.TStruct;
 import org.apache.thrift.protocol.TType;
 import org.apache.thrift.transport.TTransportException;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -173,9 +172,7 @@ public class RpcClientUtilsTest {
     assertNull(context);
   }
 
-  // TODO(yuhanhao) need NettyTcNativeLoader
   @Test
-  @Ignore
   public void tesSslContext() {
     SslContext context =
         RpcClientUtils.getSslContext(new ThriftClientConfig(), new InetSocketAddress(0));

@@ -39,7 +39,6 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.util.AttributeKey;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -108,7 +107,6 @@ public class RpcServerUtilsTest {
 
   // TODO(yuhanhao) need NettyTcNativeLoader
   @Test
-  @Ignore
   public void tesSslContext() {
     SslContext context = RpcServerUtils.getSslContext(new ThriftServerConfig());
     assertTrue(context.isServer());
