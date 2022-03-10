@@ -135,7 +135,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
   }
 
   public {{service:javaCapitalName}}ReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders, AtomicLong interactionCounter, Set<Long> activeInteractions) {
-    {{#service:extends}}super(_protocolId, _rpcClient);{{/service:extends}}
+    {{#service:extends}}super(_protocolId, _rpcClient, _headers, _persistentHeaders, interactionCounter, activeInteractions);{{/service:extends}}
     this._protocolId = _protocolId;
     this._rpcClient = _rpcClient;
     this._headers = _headers;

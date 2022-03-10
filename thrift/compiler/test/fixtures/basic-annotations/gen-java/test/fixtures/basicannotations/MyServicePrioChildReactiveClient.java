@@ -49,7 +49,7 @@ public class MyServicePrioChildReactiveClient  extends test.fixtures.basicannota
   }
 
   public MyServicePrioChildReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders, AtomicLong interactionCounter, Set<Long> activeInteractions) {
-    super(_protocolId, _rpcClient);
+    super(_protocolId, _rpcClient, _headers, _persistentHeaders, interactionCounter, activeInteractions);
     this._protocolId = _protocolId;
     this._rpcClient = _rpcClient;
     this._headers = _headers;
