@@ -733,6 +733,10 @@ class MyServicePrioParent_ping_args implements \IThriftStruct, \IThriftShapishSt
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -788,6 +792,10 @@ class MyServicePrioParent_ping_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
   public function readFromJson(string $jsonText): void {
@@ -859,6 +867,10 @@ class MyServicePrioParent_pong_args implements \IThriftStruct, \IThriftShapishSt
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -914,6 +926,10 @@ class MyServicePrioParent_pong_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
   public function readFromJson(string $jsonText): void {

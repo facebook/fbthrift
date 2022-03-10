@@ -778,6 +778,10 @@ class DbMixedStackArguments_getDataByKey0_args implements \IThriftStruct, \IThri
       'key' => $this->key,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -857,6 +861,10 @@ class DbMixedStackArguments_getDataByKey0_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
   public function readFromJson(string $jsonText): void {
@@ -956,6 +964,10 @@ class DbMixedStackArguments_getDataByKey1_args implements \IThriftStruct, \IThri
       'key' => $this->key,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1035,6 +1047,10 @@ class DbMixedStackArguments_getDataByKey1_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
   public function readFromJson(string $jsonText): void {

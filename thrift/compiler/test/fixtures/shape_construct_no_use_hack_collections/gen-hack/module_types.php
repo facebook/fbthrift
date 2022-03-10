@@ -497,6 +497,10 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
       'struct_foo' => $this->struct_foo?->__toShape(),
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 /**
@@ -760,6 +764,10 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
       'str_value' => $this->str_value,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 /**
@@ -1116,6 +1124,10 @@ class TestStruct implements \IThriftStruct, \IThriftShapishStruct {
         ),
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 /**
@@ -1284,6 +1296,10 @@ class Baz extends \TException implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 /**
@@ -1361,6 +1377,10 @@ class OptBaz extends \TException implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }

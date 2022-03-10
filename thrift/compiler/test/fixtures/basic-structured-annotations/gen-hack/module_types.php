@@ -157,6 +157,10 @@ class structured_annotation_inline implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 /**
@@ -233,6 +237,10 @@ class structured_annotation_with_default implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -389,6 +397,10 @@ class structured_annotation_recursive implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 /**
@@ -465,6 +477,10 @@ class structured_annotation_forward implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -572,6 +588,10 @@ class structured_annotation_nested implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -819,6 +839,10 @@ class MyStruct implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 /**
@@ -910,6 +934,10 @@ class MyException extends \TException implements \IThriftStruct {
         ),
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -1150,6 +1178,10 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
         ),
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }

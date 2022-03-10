@@ -1616,6 +1616,10 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
         |> dict($$),
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class NestedContainers_mapList_result implements \IThriftStruct {
@@ -1662,6 +1666,10 @@ class NestedContainers_mapList_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -1789,6 +1797,10 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
         |> dict($$),
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class NestedContainers_mapSet_result implements \IThriftStruct {
@@ -1835,6 +1847,10 @@ class NestedContainers_mapSet_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -1962,6 +1978,10 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
         |> vec($$),
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class NestedContainers_listMap_result implements \IThriftStruct {
@@ -2008,6 +2028,10 @@ class NestedContainers_listMap_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -2126,6 +2150,10 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
         |> vec($$),
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class NestedContainers_listSet_result implements \IThriftStruct {
@@ -2172,6 +2200,10 @@ class NestedContainers_listSet_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -2362,6 +2394,10 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
         |> vec($$),
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class NestedContainers_turtles_result implements \IThriftStruct {
@@ -2408,6 +2444,10 @@ class NestedContainers_turtles_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }

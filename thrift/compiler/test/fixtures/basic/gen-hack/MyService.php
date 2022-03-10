@@ -2270,6 +2270,10 @@ class MyService_ping_args implements \IThriftStruct, \IThriftShapishStruct {
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -2325,6 +2329,10 @@ class MyService_ping_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
   public function readFromJson(string $jsonText): void {
@@ -2396,6 +2404,10 @@ class MyService_getRandomData_args implements \IThriftStruct, \IThriftShapishStr
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -2472,6 +2484,10 @@ class MyService_getRandomData_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
   public function readFromJson(string $jsonText): void {
@@ -2571,6 +2587,10 @@ class MyService_sink_args implements \IThriftStruct, \IThriftShapishStruct {
       'sink' => $this->sink,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -2629,6 +2649,10 @@ class MyService_sink_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
   public function readFromJson(string $jsonText): void {
@@ -2748,6 +2772,10 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
       'data' => $this->data,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -2809,6 +2837,10 @@ class MyService_putDataById_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
   public function readFromJson(string $jsonText): void {
@@ -2905,6 +2937,10 @@ class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruc
       'id' => $this->id,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -2984,6 +3020,10 @@ class MyService_hasDataById_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
   public function readFromJson(string $jsonText): void {
@@ -3083,6 +3123,10 @@ class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruc
       'id' => $this->id,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -3162,6 +3206,10 @@ class MyService_getDataById_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
   public function readFromJson(string $jsonText): void {
@@ -3261,6 +3309,10 @@ class MyService_deleteDataById_args implements \IThriftStruct, \IThriftShapishSt
       'id' => $this->id,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -3319,6 +3371,10 @@ class MyService_deleteDataById_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
   public function readFromJson(string $jsonText): void {
@@ -3438,6 +3494,10 @@ class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruc
       'data' => $this->data,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 

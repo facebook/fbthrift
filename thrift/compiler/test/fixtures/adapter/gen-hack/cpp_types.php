@@ -139,6 +139,10 @@ class facebook_thrift_annotation_cpp_Ref implements \IThriftStruct, \IThriftShap
       'type' => $this->type,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -247,6 +251,10 @@ class facebook_thrift_annotation_cpp_Lazy implements \IThriftStruct, \IThriftSha
       'ref' => $this->ref,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -327,6 +335,10 @@ class facebook_thrift_annotation_cpp_DisableLazyChecksum implements \IThriftStru
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -433,6 +445,10 @@ class facebook_thrift_annotation_cpp_Adapter implements \IThriftStruct, \IThrift
       'name' => $this->name,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -542,6 +558,10 @@ class facebook_thrift_annotation_cpp_PackIsset implements \IThriftStruct, \IThri
       'atomic' => $this->atomic,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 

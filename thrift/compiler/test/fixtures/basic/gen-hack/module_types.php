@@ -309,6 +309,10 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       'idempotent' => $this->idempotent,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -405,6 +409,10 @@ class MyDataItem implements \IThriftStruct, \IThriftShapishStruct {
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -678,6 +686,10 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
       'myDataItem' => $this->myDataItem?->__toShape(),
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $this->_type = MyUnionEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);

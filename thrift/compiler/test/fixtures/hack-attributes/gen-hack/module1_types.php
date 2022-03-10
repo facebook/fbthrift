@@ -168,6 +168,10 @@ class MyThriftStruct implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 /**
@@ -302,6 +306,10 @@ class MySecondThriftStruct implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -479,6 +487,10 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }

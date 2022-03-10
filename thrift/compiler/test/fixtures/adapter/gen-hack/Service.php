@@ -397,6 +397,10 @@ class Service_func_args implements \IThriftStruct, \IThriftShapishStruct {
       'arg3' => $this->arg3?->__toShape(),
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -490,6 +494,10 @@ class Service_func_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
   public function readFromJson(string $jsonText): void {

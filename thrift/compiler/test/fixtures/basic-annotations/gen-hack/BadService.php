@@ -621,6 +621,10 @@ class BadService_bar_args implements \IThriftStruct, \IThriftShapishStruct {
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -697,6 +701,10 @@ class BadService_bar_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
   public function readFromJson(string $jsonText): void {
@@ -776,6 +784,10 @@ class BadService_BadInteraction_foo_args implements \IThriftStruct, \IThriftShap
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -831,6 +843,10 @@ class BadService_BadInteraction_foo_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
   public function readFromJson(string $jsonText): void {

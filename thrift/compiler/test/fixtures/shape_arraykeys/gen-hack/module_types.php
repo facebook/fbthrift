@@ -134,6 +134,10 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
       'a' => $this->a,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 /**
@@ -1747,5 +1751,9 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'optional_enum' => $this->optional_enum,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 

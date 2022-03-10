@@ -147,6 +147,10 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
         |> $$ === null ? null : dict($$),
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 /**
@@ -1028,6 +1032,10 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         |> $$ === null ? null : vec($$),
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 /**
@@ -1894,5 +1902,9 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
         |> $$ === null ? null : vec($$),
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 

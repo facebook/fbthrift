@@ -473,6 +473,10 @@ class MyService_first_args implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class MyService_first_result implements \IThriftStruct {
@@ -566,6 +570,10 @@ class MyService_first_result implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class MyService_second_args implements \IThriftStruct {
@@ -646,6 +654,10 @@ class MyService_second_args implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class MyService_second_result implements \IThriftStruct {
@@ -713,6 +725,10 @@ class MyService_second_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }

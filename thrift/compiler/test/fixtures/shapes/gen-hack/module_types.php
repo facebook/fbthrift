@@ -229,6 +229,10 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
       'stringValue' => $this->stringValue,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 /**
@@ -322,6 +326,10 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
       'a' => $this->a,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 /**
@@ -2353,5 +2361,9 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         |> dict($$),
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 

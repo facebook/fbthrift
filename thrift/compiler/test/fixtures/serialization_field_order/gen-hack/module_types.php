@@ -155,6 +155,10 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
       'field3' => $this->field3,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -334,6 +338,10 @@ class Foo2 implements \IThriftStruct, \IThriftShapishStruct {
       'field3' => $this->field3,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 

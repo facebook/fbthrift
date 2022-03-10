@@ -111,5 +111,9 @@ class foo_php_ns_TestStruct implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 

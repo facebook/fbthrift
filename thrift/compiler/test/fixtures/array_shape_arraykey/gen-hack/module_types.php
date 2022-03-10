@@ -161,6 +161,10 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
       'a' => $this->a,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 /**
@@ -1384,6 +1388,10 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'set_of_string' => $this->set_of_string,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 /**
@@ -2731,5 +2739,9 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
       'set_of_string' => $this->set_of_string,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 

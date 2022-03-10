@@ -465,6 +465,10 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
       'binaryField' => $this->binaryField,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -953,6 +957,10 @@ class Baz implements \IThriftStruct, \IThriftUnion<BazEnum>, \IThriftShapishStru
       'binaryField' => $this->binaryField,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $this->_type = BazEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);
@@ -1369,6 +1377,10 @@ class Bar implements \IThriftStruct, \IThriftShapishStruct {
       'optionalUnionField' => $this->optionalUnionField?->__toShape(),
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1662,6 +1674,10 @@ class StructWithFieldAdapter implements \IThriftStruct, \IThriftShapishStruct {
       'opt_boxed_field' => $this->opt_boxed_field,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 

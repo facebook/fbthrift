@@ -21,7 +21,7 @@
  * Base interface for Thrift structs
  */
 <<__ConsistentConstruct>>
-interface IThriftStruct extends IAnnotatedThriftStruct {
+interface IThriftStruct extends \HH\IMemoizeParam {
   const type TFieldSpec = shape(
     'var' => string,
     'type' => TType,

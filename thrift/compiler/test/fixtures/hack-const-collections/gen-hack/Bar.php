@@ -659,6 +659,10 @@ class Bar_baz_args implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class Bar_baz_result implements \IThriftStruct {
@@ -726,6 +730,10 @@ class Bar_baz_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }

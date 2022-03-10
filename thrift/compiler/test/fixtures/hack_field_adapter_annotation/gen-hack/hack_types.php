@@ -131,6 +131,10 @@ class ExperimentalAdapter implements \IThriftStruct, \IThriftShapishStruct {
       'adapted_generic_type' => $this->adapted_generic_type,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 

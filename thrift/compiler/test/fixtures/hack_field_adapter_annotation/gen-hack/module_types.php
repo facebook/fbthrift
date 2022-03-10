@@ -78,6 +78,10 @@ class AnnotaionStruct implements \IThriftStruct, \IThriftShapishStruct {
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -332,6 +336,10 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       'adapted_field' => $this->adapted_field,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -579,6 +587,10 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
       'union_adapted_type' => $this->union_adapted_type,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $this->_type = MyUnionEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);
@@ -758,6 +770,10 @@ class MyException extends \TException implements \IThriftStruct {
         ),
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
   public function readFromJson(string $jsonText): void {

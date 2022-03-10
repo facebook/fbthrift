@@ -2177,6 +2177,10 @@ class MyService_foo_args implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class MyService_foo_result implements \IThriftStruct {
@@ -2223,6 +2227,10 @@ class MyService_foo_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -2295,6 +2303,10 @@ class MyService_interact_args implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class MyService_interact_result implements \IThriftStruct {
@@ -2343,6 +2355,10 @@ class MyService_interact_result implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class MyService_interactFast_args implements \IThriftStruct {
@@ -2389,6 +2405,10 @@ class MyService_interactFast_args implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -2460,6 +2480,10 @@ class MyService_interactFast_result implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class MyService_serialize_args implements \IThriftStruct {
@@ -2506,6 +2530,10 @@ class MyService_serialize_args implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -2577,6 +2605,10 @@ class MyService_serialize_StreamResponse implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class MyService_serialize_FirstResponse implements \IThriftStruct {
@@ -2646,6 +2678,10 @@ class MyService_serialize_FirstResponse implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class MyService_MyInteraction_frobnicate_args implements \IThriftStruct {
@@ -2692,6 +2728,10 @@ class MyService_MyInteraction_frobnicate_args implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -2787,6 +2827,10 @@ class MyService_MyInteraction_frobnicate_result implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class MyService_MyInteraction_ping_args implements \IThriftStruct {
@@ -2835,6 +2879,10 @@ class MyService_MyInteraction_ping_args implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class MyService_MyInteraction_truthify_args implements \IThriftStruct {
@@ -2881,6 +2929,10 @@ class MyService_MyInteraction_truthify_args implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -2952,6 +3004,10 @@ class MyService_MyInteraction_truthify_StreamResponse implements \IThriftStruct 
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class MyService_MyInteraction_truthify_FirstResponse implements \IThriftStruct {
@@ -3000,6 +3056,10 @@ class MyService_MyInteraction_truthify_FirstResponse implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class MyService_MyInteraction_encode_args implements \IThriftStruct {
@@ -3046,6 +3106,10 @@ class MyService_MyInteraction_encode_args implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -3130,6 +3194,10 @@ class MyService_MyInteraction_encode_FirstResponse implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class MyService_MyInteraction_encode_SinkPayload implements \IThriftStruct {
@@ -3197,6 +3265,10 @@ class MyService_MyInteraction_encode_SinkPayload implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -3268,6 +3340,10 @@ class MyService_MyInteraction_encode_FinalResponse implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class MyService_MyInteractionFast_frobnicate_args implements \IThriftStruct {
@@ -3314,6 +3390,10 @@ class MyService_MyInteractionFast_frobnicate_args implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -3385,6 +3465,10 @@ class MyService_MyInteractionFast_frobnicate_result implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class MyService_MyInteractionFast_ping_args implements \IThriftStruct {
@@ -3433,6 +3517,10 @@ class MyService_MyInteractionFast_ping_args implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class MyService_MyInteractionFast_truthify_args implements \IThriftStruct {
@@ -3479,6 +3567,10 @@ class MyService_MyInteractionFast_truthify_args implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -3550,6 +3642,10 @@ class MyService_MyInteractionFast_truthify_StreamResponse implements \IThriftStr
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class MyService_MyInteractionFast_truthify_FirstResponse implements \IThriftStruct {
@@ -3598,6 +3694,10 @@ class MyService_MyInteractionFast_truthify_FirstResponse implements \IThriftStru
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class MyService_MyInteractionFast_encode_args implements \IThriftStruct {
@@ -3644,6 +3744,10 @@ class MyService_MyInteractionFast_encode_args implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -3728,6 +3832,10 @@ class MyService_MyInteractionFast_encode_FirstResponse implements \IThriftStruct
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class MyService_MyInteractionFast_encode_SinkPayload implements \IThriftStruct {
@@ -3795,6 +3903,10 @@ class MyService_MyInteractionFast_encode_SinkPayload implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -3866,6 +3978,10 @@ class MyService_MyInteractionFast_encode_FinalResponse implements \IThriftStruct
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class MyService_SerialInteraction_frobnicate_args implements \IThriftStruct {
@@ -3914,6 +4030,10 @@ class MyService_SerialInteraction_frobnicate_args implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class MyService_SerialInteraction_frobnicate_result implements \IThriftStruct {
@@ -3960,6 +4080,10 @@ class MyService_SerialInteraction_frobnicate_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }

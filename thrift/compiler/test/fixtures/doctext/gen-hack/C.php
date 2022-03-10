@@ -724,6 +724,10 @@ class C_f_args implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class C_f_result implements \IThriftStruct {
@@ -770,6 +774,10 @@ class C_f_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -895,6 +903,10 @@ class C_thing_args implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class C_thing_result implements \IThriftStruct {
@@ -988,6 +1000,10 @@ class C_thing_result implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class C_numbers_args implements \IThriftStruct {
@@ -1034,6 +1050,10 @@ class C_numbers_args implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -1114,6 +1134,10 @@ class C_numbers_StreamResponse implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class C_numbers_FirstResponse implements \IThriftStruct {
@@ -1160,6 +1184,10 @@ class C_numbers_FirstResponse implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }

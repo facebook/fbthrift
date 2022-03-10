@@ -109,6 +109,10 @@ class facebook_thrift_annotation_thrift_RequiresBackwardCompatibility implements
       'field_name' => $this->field_name,
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -189,6 +193,10 @@ class facebook_thrift_annotation_thrift_Experimental implements \IThriftStruct, 
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -270,6 +278,10 @@ class facebook_thrift_annotation_thrift_Deprecated implements \IThriftStruct, \I
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -355,6 +367,10 @@ class facebook_thrift_annotation_thrift_TerseWrite implements \IThriftStruct, \I
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -513,6 +529,10 @@ class facebook_thrift_annotation_thrift_SerializeInFieldIdOrder implements \IThr
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 

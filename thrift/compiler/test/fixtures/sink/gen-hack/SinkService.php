@@ -1998,6 +1998,10 @@ class SinkService_method_args implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class SinkService_method_FirstResponse implements \IThriftStruct {
@@ -2044,6 +2048,10 @@ class SinkService_method_FirstResponse implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -2120,6 +2128,10 @@ class SinkService_method_SinkPayload implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class SinkService_method_FinalResponse implements \IThriftStruct {
@@ -2194,6 +2206,10 @@ class SinkService_method_FinalResponse implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class SinkService_methodAndReponse_args implements \IThriftStruct {
@@ -2240,6 +2256,10 @@ class SinkService_methodAndReponse_args implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -2316,6 +2336,10 @@ class SinkService_methodAndReponse_FirstResponse implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class SinkService_methodAndReponse_SinkPayload implements \IThriftStruct {
@@ -2388,6 +2412,10 @@ class SinkService_methodAndReponse_SinkPayload implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -2464,6 +2492,10 @@ class SinkService_methodAndReponse_FinalResponse implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class SinkService_methodThrow_args implements \IThriftStruct {
@@ -2510,6 +2542,10 @@ class SinkService_methodThrow_args implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -2586,6 +2622,10 @@ class SinkService_methodThrow_FirstResponse implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class SinkService_methodThrow_SinkPayload implements \IThriftStruct {
@@ -2658,6 +2698,10 @@ class SinkService_methodThrow_SinkPayload implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -2734,6 +2778,10 @@ class SinkService_methodThrow_FinalResponse implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class SinkService_methodSinkThrow_args implements \IThriftStruct {
@@ -2782,6 +2830,10 @@ class SinkService_methodSinkThrow_args implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class SinkService_methodSinkThrow_FirstResponse implements \IThriftStruct {
@@ -2828,6 +2880,10 @@ class SinkService_methodSinkThrow_FirstResponse implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -2928,6 +2984,10 @@ class SinkService_methodSinkThrow_SinkPayload implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class SinkService_methodSinkThrow_FinalResponse implements \IThriftStruct {
@@ -3002,6 +3062,10 @@ class SinkService_methodSinkThrow_FinalResponse implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class SinkService_methodFinalThrow_args implements \IThriftStruct {
@@ -3050,6 +3114,10 @@ class SinkService_methodFinalThrow_args implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class SinkService_methodFinalThrow_FirstResponse implements \IThriftStruct {
@@ -3096,6 +3164,10 @@ class SinkService_methodFinalThrow_FirstResponse implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -3170,6 +3242,10 @@ class SinkService_methodFinalThrow_SinkPayload implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -3270,6 +3346,10 @@ class SinkService_methodFinalThrow_FinalResponse implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class SinkService_methodBothThrow_args implements \IThriftStruct {
@@ -3318,6 +3398,10 @@ class SinkService_methodBothThrow_args implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class SinkService_methodBothThrow_FirstResponse implements \IThriftStruct {
@@ -3364,6 +3448,10 @@ class SinkService_methodBothThrow_FirstResponse implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -3464,6 +3552,10 @@ class SinkService_methodBothThrow_SinkPayload implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class SinkService_methodBothThrow_FinalResponse implements \IThriftStruct {
@@ -3562,6 +3654,10 @@ class SinkService_methodBothThrow_FinalResponse implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class SinkService_methodFast_args implements \IThriftStruct {
@@ -3610,6 +3706,10 @@ class SinkService_methodFast_args implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class SinkService_methodFast_FirstResponse implements \IThriftStruct {
@@ -3656,6 +3756,10 @@ class SinkService_methodFast_FirstResponse implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -3732,6 +3836,10 @@ class SinkService_methodFast_SinkPayload implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class SinkService_methodFast_FinalResponse implements \IThriftStruct {
@@ -3804,6 +3912,10 @@ class SinkService_methodFast_FinalResponse implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }

@@ -445,6 +445,10 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $this->_type = ComplexUnionEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);
@@ -702,6 +706,10 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $this->_type = ListUnionEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);
@@ -910,6 +918,10 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $this->_type = DataUnionEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);
@@ -1083,6 +1095,10 @@ class Val implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
   public function readFromJson(string $jsonText): void {
@@ -1301,6 +1317,10 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $this->_type = ValUnionEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);
@@ -1501,6 +1521,10 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $this->_type = VirtualComplexUnionEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);
@@ -1595,6 +1619,10 @@ class NonCopyableStruct implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
   public function readFromJson(string $jsonText): void {
@@ -1736,6 +1764,10 @@ class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnion
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
   public function readFromJson(string $jsonText): void {

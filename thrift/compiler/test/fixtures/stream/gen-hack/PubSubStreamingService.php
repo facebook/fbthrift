@@ -1220,6 +1220,10 @@ class PubSubStreamingService_returnstream_args implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class PubSubStreamingService_returnstream_StreamResponse implements \IThriftStruct {
@@ -1289,6 +1293,10 @@ class PubSubStreamingService_returnstream_StreamResponse implements \IThriftStru
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class PubSubStreamingService_returnstream_FirstResponse implements \IThriftStruct {
@@ -1335,6 +1343,10 @@ class PubSubStreamingService_returnstream_FirstResponse implements \IThriftStruc
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -1405,6 +1417,10 @@ class PubSubStreamingService_streamthrows_args implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -1500,6 +1516,10 @@ class PubSubStreamingService_streamthrows_StreamResponse implements \IThriftStru
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class PubSubStreamingService_streamthrows_FirstResponse implements \IThriftStruct {
@@ -1546,6 +1566,10 @@ class PubSubStreamingService_streamthrows_FirstResponse implements \IThriftStruc
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -1616,6 +1640,10 @@ class PubSubStreamingService_boththrows_args implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -1711,6 +1739,10 @@ class PubSubStreamingService_boththrows_StreamResponse implements \IThriftStruct
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class PubSubStreamingService_boththrows_FirstResponse implements \IThriftStruct {
@@ -1785,6 +1817,10 @@ class PubSubStreamingService_boththrows_FirstResponse implements \IThriftStruct 
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class PubSubStreamingService_responseandstreamthrows_args implements \IThriftStruct {
@@ -1853,6 +1889,10 @@ class PubSubStreamingService_responseandstreamthrows_args implements \IThriftStr
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }
@@ -1948,6 +1988,10 @@ class PubSubStreamingService_responseandstreamthrows_StreamResponse implements \
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class PubSubStreamingService_responseandstreamthrows_FirstResponse implements \IThriftStruct {
@@ -2041,6 +2085,10 @@ class PubSubStreamingService_responseandstreamthrows_FirstResponse implements \I
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class PubSubStreamingService_returnstreamFast_args implements \IThriftStruct {
@@ -2131,6 +2179,10 @@ class PubSubStreamingService_returnstreamFast_args implements \IThriftStruct {
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class PubSubStreamingService_returnstreamFast_StreamResponse implements \IThriftStruct {
@@ -2200,6 +2252,10 @@ class PubSubStreamingService_returnstreamFast_StreamResponse implements \IThrift
     );
   }
 
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
 class PubSubStreamingService_returnstreamFast_FirstResponse implements \IThriftStruct {
@@ -2246,6 +2302,10 @@ class PubSubStreamingService_returnstreamFast_FirstResponse implements \IThriftS
       'fields' => dict[
       ],
     );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
   }
 
 }

@@ -68,6 +68,10 @@ class facebook_thrift_annotation_Struct implements \IThriftStruct, \IThriftShapi
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -140,6 +144,10 @@ class facebook_thrift_annotation_Union implements \IThriftStruct, \IThriftShapis
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -212,6 +220,10 @@ class facebook_thrift_annotation_Exception implements \IThriftStruct, \IThriftSh
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -284,6 +296,10 @@ class facebook_thrift_annotation_Field implements \IThriftStruct, \IThriftShapis
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -356,6 +372,10 @@ class facebook_thrift_annotation_Typedef implements \IThriftStruct, \IThriftShap
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -428,6 +448,10 @@ class facebook_thrift_annotation_Service implements \IThriftStruct, \IThriftShap
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -500,6 +524,10 @@ class facebook_thrift_annotation_Interaction implements \IThriftStruct, \IThrift
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -572,6 +600,10 @@ class facebook_thrift_annotation_Function implements \IThriftStruct, \IThriftSha
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -644,6 +676,10 @@ class facebook_thrift_annotation_EnumValue implements \IThriftStruct, \IThriftSh
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -716,6 +752,10 @@ class facebook_thrift_annotation_Const implements \IThriftStruct, \IThriftShapis
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -788,6 +828,10 @@ class facebook_thrift_annotation_FbthriftInternalEnum implements \IThriftStruct,
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -860,6 +904,10 @@ class facebook_thrift_annotation_FbthriftInternalScopeTransitive implements \ITh
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -949,6 +997,10 @@ class facebook_thrift_annotation_Structured implements \IThriftStruct, \IThriftS
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1034,6 +1086,10 @@ class facebook_thrift_annotation_Interface implements \IThriftStruct, \IThriftSh
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1131,6 +1187,10 @@ class facebook_thrift_annotation_RootDefinition implements \IThriftStruct, \IThr
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -1224,6 +1284,10 @@ class facebook_thrift_annotation_Definition implements \IThriftStruct, \IThriftS
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 

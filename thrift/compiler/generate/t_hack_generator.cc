@@ -408,6 +408,8 @@ class t_hack_generator : public t_oop_generator {
 
   void generate_json_reader(std::ofstream& out, const t_struct* tstruct);
 
+  void generate_instance_key(std::ofstream& out);
+
   /**
    * Helper rendering functions
    */
@@ -1094,6 +1096,14 @@ void t_hack_generator::generate_json_reader(
     }
     indent(out) << "\n";
   }
+  indent_down();
+  indent(out) << "}\n\n";
+}
+
+void t_hack_generator::generate_instance_key(std::ofstream& out) {
+  indent(out) << "public function getInstanceKey()[write_props]: string {\n";
+  indent_up();
+  indent(out) << "return \\TCompactSerializer::serialize($this);\n";
   indent_down();
   indent(out) << "}\n\n";
 }
@@ -3228,6 +3238,7 @@ void t_hack_generator::generate_php_struct_methods(
       type != ThriftStructType::RESULT) {
     generate_php_struct_shape_methods(out, tstruct);
   }
+  generate_instance_key(out);
   generate_json_reader(out, tstruct);
   generate_adapter_type_checks(out, tstruct);
   generate_structured_adapter_type_checks(

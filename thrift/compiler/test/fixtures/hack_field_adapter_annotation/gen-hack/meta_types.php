@@ -72,6 +72,10 @@ class facebook_thrift_annotation_Transitive implements \IThriftStruct, \IThriftS
     return shape(
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 

@@ -478,5 +478,9 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
         |> $$ === null ? null : ThriftUtil::toDArray($$, static::class),
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 

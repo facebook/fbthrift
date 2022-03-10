@@ -205,5 +205,9 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
       's' => ThriftUtil::toDArray(Dict\fill_keys($this->s->toValuesArray(), true), static::class),
     );
   }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
 }
 
