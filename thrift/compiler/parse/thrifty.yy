@@ -106,6 +106,7 @@ class t_container_type;
 %token<std::string>     tok_identifier
 %token<std::string>     tok_literal
 %token<t_doc>           tok_doctext
+%token<t_doc>           tok_inline_doc
 
 /**
  * Constant values
@@ -283,6 +284,7 @@ class t_container_type;
 %type<t_function_qualifier>        FunctionQualifier
 
 %type<t_doc>                       CaptureDocText
+%type<t_doc>                       InlineDocOptional
 %type<std::string>                 IntOrLiteral
 
 %type<bool>                        CommaOrSemicolonOptional
@@ -338,15 +340,26 @@ CommaOrSemicolonOptional:
   CommaOrSemicolon { $$ = true; }
 |                  { $$ = false; }
 
-CaptureDocText: { $$ = driver.capture_doctext(); }
+CaptureDocText: { $$ = driver.pop_doctext(); }
 
-/* TODO(dreiss): Try to DestroyDocText in all sorts or random places. */
-DestroyDocText: { driver.clear_doctext(); }
+ProgramDocText: {
+    /* when there is any doctext, assign it to the top level `program` */
+    driver.set_doctext(*driver.program, driver.pop_doctext());
+}
 
-/* We have to DestroyDocText here, otherwise it catches the doctext
+InlineDocOptional:
+  tok_inline_doc
+    {
+      driver.debug("Inline doc");
+      $$ = std::move($1);
+    }
+|
+  { $$ = boost::none; }
+
+/* We have to consume doctext here, otherwise it would apply the doctext
    on the first real element. */
 HeaderList:
-  HeaderList DestroyDocText Header { driver.debug("HeaderList -> HeaderList Header"); }
+  HeaderList ProgramDocText Header { driver.debug("HeaderList -> HeaderList Header"); }
 |                                  { driver.debug("HeaderList -> "); }
 
 Header:
@@ -478,10 +491,13 @@ Enum:
     }
 
 EnumValueList:
-  EnumValueList EnumValueAnnotated CommaOrSemicolonOptional
+  EnumValueList EnumValueAnnotated CommaOrSemicolonOptional InlineDocOptional
     {
       driver.debug("EnumValueList EnumValueAnnotated CommaOrSemicolonOptional");
       $$ = $1;
+      if ($4 != boost::none) {
+        driver.set_doctext(*$2, $4);
+      }
       $$->emplace_back(own($2));
     }
 |
@@ -813,10 +829,13 @@ MaybeThrows:
 |   { $$ = nullptr; }
 
 FieldList:
-  FieldList FieldAnnotated CommaOrSemicolonOptional
+  FieldList FieldAnnotated CommaOrSemicolonOptional InlineDocOptional
     {
       driver.debug("FieldList -> FieldAnnotated CommaOrSemicolonOptional");
       $$ = $1;
+      if ($4 != boost::none) {
+        driver.set_doctext(*$2, $4);
+      }
       $$->emplace_back($2);
     }
 |

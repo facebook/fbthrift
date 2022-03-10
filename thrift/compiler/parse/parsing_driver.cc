@@ -246,6 +246,7 @@ void parsing_driver::validate_not_ambiguous_enum(const std::string& name) {
     warning(msg);
   }
 }
+
 void parsing_driver::clear_doctext() {
   if (doctext && mode == parsing_mode::PROGRAM) {
     warning_strict([&](auto& o) {
@@ -256,7 +257,7 @@ void parsing_driver::clear_doctext() {
   doctext = boost::none;
 }
 
-t_doc parsing_driver::capture_doctext() {
+t_doc parsing_driver::pop_doctext() {
   if (mode != parsing_mode::PROGRAM) {
     return boost::none;
   }
@@ -302,6 +303,7 @@ t_doc parsing_driver::clean_up_doctext(std::string docstring) {
     None = 0,
     Star = 1, // length of '*'
     Slashes = 3, // length of '///'
+    InlineSlash = 4, // length of '///<'
   };
   Prefix found_prefix = None;
   std::string::size_type prefix_len = 0;
@@ -320,6 +322,9 @@ t_doc parsing_driver::clean_up_doctext(std::string docstring) {
         if (l_iter->at(pos) == '*') {
           found_prefix = Star;
           prefix_len = pos;
+        } else if (l_iter->compare(pos, 4, "///<") == 0) {
+          found_prefix = InlineSlash;
+          prefix_len = pos;
         } else if (l_iter->compare(pos, 3, "///") == 0) {
           found_prefix = Slashes;
           prefix_len = pos;
@@ -334,6 +339,8 @@ t_doc parsing_driver::clean_up_doctext(std::string docstring) {
     } else if (
         l_iter->size() > pos && pos == prefix_len &&
         ((found_prefix == Star && l_iter->at(pos) == '*') ||
+         (found_prefix == InlineSlash &&
+          l_iter->compare(pos, 4, "///<") == 0) ||
          (found_prefix == Slashes && l_iter->compare(pos, 3, "///") == 0))) {
       // Business as usual
     } else if (pos == std::string::npos) {
@@ -437,6 +444,17 @@ void parsing_driver::set_attributes(
     }
   }
   set_annotations(&node, std::move(annots));
+}
+
+void parsing_driver::set_doctext(t_node& node, t_doc doctext) const {
+  if (node.has_doc() && doctext) {
+    /* concatenating prefix doctext + inline doctext with a newline
+     * However, this syntax should be strongly discouraged */
+    std::string new_doc = node.doc() + "\n" + std::move(*doctext);
+    node.set_doc(std::move(new_doc));
+  } else if (doctext) {
+    node.set_doc(std::move(*doctext));
+  }
 }
 
 source_range parsing_driver::get_source_range(const YYLTYPE& loc) const {
@@ -850,22 +868,28 @@ double parsing_driver::parse_double(const char* text) {
   return val;
 }
 
-void parsing_driver::parse_doctext(const char* text, int lineno) {
+void parsing_driver::push_doctext(const char* text, int lineno) {
+  clear_doctext();
+  doctext = strip_doctext(text);
+  doctext_lineno = lineno;
+}
+
+t_doc parsing_driver::strip_doctext(const char* text) {
   if (mode != apache::thrift::compiler::parsing_mode::PROGRAM) {
-    return;
+    return boost::none;
   }
 
-  // Deal with prefix/suffix.
   std::string str{text};
   if (str.compare(0, 3, "/**") == 0) {
     str = str.substr(3, str.length() - 3 - 2);
   } else if (str.compare(0, 3, "///") == 0) {
     str = str.substr(3, str.length() - 3);
   }
+  if ((str.size() >= 1) && str[0] == '<') {
+    str = str.substr(1, str.length() - 1);
+  }
 
-  clear_doctext();
-  doctext = clean_up_doctext(str);
-  doctext_lineno = lineno;
+  return clean_up_doctext(str);
 }
 
 const t_service* parsing_driver::find_service(const std::string& name) {

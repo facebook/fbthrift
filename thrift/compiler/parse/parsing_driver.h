@@ -341,7 +341,16 @@ class parsing_driver {
    * Also prints a warning if we are discarding information.
    */
   void clear_doctext();
-  t_doc capture_doctext();
+
+  /** Return any doctext previously push-ed */
+  t_doc pop_doctext();
+
+  /** Strip comment chars and align leading whitespace on multiline doctext
+   */
+  t_doc strip_doctext(const char* text);
+
+  /** update doctext of given node */
+  void set_doctext(t_node& node, t_doc doctext) const;
 
   /**
    * Cleans up text commonly found in doxygen-like comments.
@@ -452,7 +461,14 @@ class parsing_driver {
   uint64_t parse_integer(const char* text, int offset, int base);
   double parse_double(const char* text);
 
-  void parse_doctext(const char* text, int lineno);
+  /** Consume doctext, store it in `driver.doctext`
+   *
+   * It is non-trivial for a yacc-style LR(1) parser to accept doctext
+   * as an optional prefix before either a definition or standalone at
+   * the header. Hence this method of "pushing" it into the driver and
+   * "pop-ing" it on the node as needed.
+   */
+  void push_doctext(const char* text, int lineno);
   int64_t to_int(uint64_t val, bool negative = false);
 
   const t_service* find_service(const std::string& name);

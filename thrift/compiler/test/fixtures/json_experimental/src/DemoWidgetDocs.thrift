@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+// @lint-ignore-every THRIFTFORMAT
 
 namespace py thrift.compiler.test.fixtures.json_experimental.src.DemoWidgetDocs
 namespace php thrift_php_demo
@@ -28,6 +30,9 @@ enum WidgetType {
   KNOB = 2,
   /** An actual person named Bob. */
   BOB = 3,
+  JOB = 4, /**< Comments should work inline, too */
+  ROB = 5, ///< C++ style comments, also
+           ///< and support for multiline
 }
 
 /**
@@ -74,4 +79,8 @@ struct WidgetOrder {
   2: i32 numWidgets;
   /** @must _ >= 0 */
   3: i32 priceCents;
+  4: i32 numComments;  ///< count of comments
+  5: string comments;  /**< all comments
+                        * may support multiline
+                        */
 }

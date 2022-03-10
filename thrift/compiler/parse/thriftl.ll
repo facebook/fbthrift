@@ -74,6 +74,7 @@ identifier    ([a-zA-Z_][\.a-zA-Z_0-9]*)
 whitespace    ([ \t\r\n]*)
 sillycomm     ("/*""*"*"*/")
 multicomm     ("/*"[^*]"/"*([^*/]|[^*]"/"|"*"[^/])*"*"*"*/")
+inline_doc    (("/**<"([^*/]|[^*]"/"|"*"[^/])*"*"*"*/")|("///<"(\n|[^\n][^\n]*){whitespace})+)
 doctext       (("/**"([^*/]|[^*]"/"|"*"[^/])*"*"*"*/")|("///"(\n|[^/\n][^\n]*){whitespace})+)
 comment       ("//"[^\n]*)
 unixcomment   ("#"[^\n]*)
@@ -160,7 +161,8 @@ sliteral      ("'"[^']*"'")
 
 {identifier}         { return yyparser::make_tok_identifier(std::string{yytext}, *yylloc); }
 
-{doctext}            { driver.parse_doctext(yytext, yylineno); }
+{inline_doc}         { return yyparser::make_tok_inline_doc(driver.strip_doctext(yytext), *yylloc); }
+{doctext}            { driver.push_doctext(yytext, yylineno); }
 
 .                    { driver.unexpected_token(yytext); }
 <<EOF>>              { return yyparser::make_tok_eof(*yylloc); }
