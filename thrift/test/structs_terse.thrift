@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+include "thrift/annotation/thrift.thrift"
 include "thrift/test/structs.thrift"
 
 namespace cpp2 apache.thrift.test
@@ -71,5 +72,6 @@ struct OptionalFieldsTerseStruct {
   5: optional list<structs.HasInt> shared_fields_const (
     cpp.ref_type = "shared_const",
   );
-  6: optional structs.HasInt boxed_field (thrift.box);
+  @thrift.Box
+  6: optional structs.HasInt boxed_field;
 }

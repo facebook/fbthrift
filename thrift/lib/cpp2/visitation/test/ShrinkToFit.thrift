@@ -16,6 +16,8 @@
 
 namespace cpp2 apache.thrift.test
 
+include "thrift/annotation/thrift.thrift"
+
 cpp_include "<deque>"
 cpp_include "<list>"
 cpp_include "<map>"
@@ -42,8 +44,10 @@ struct Fields {
     cpp.ref,
     cpp.ref_type = "shared",
   );
-  10: optional list<i32> listFieldBoxRef (thrift.box);
-  11: optional StructWithListField structFieldBoxRef (thrift.box);
+  @thrift.Box
+  10: optional list<i32> listFieldBoxRef;
+  @thrift.Box
+  11: optional StructWithListField structFieldBoxRef;
 }
 
 struct StructWithListField {

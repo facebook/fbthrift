@@ -15,6 +15,7 @@
  */
 
 include "thrift/annotation/cpp.thrift"
+include "thrift/annotation/thrift.thrift"
 cpp_include "thrift/test/AdapterTest.h"
 
 namespace cpp2 cpp2
@@ -157,7 +158,8 @@ struct TypeAdapterRefStruct {
   @cpp.Ref{type = cpp.RefType.Shared}
   6: required string req_shared_const_field;
   @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
-  7: optional string opt_box_field (thrift.box);
+  @thrift.Box
+  7: optional string opt_box_field;
 }
 
 struct FieldAdapterRefStruct {
@@ -180,7 +182,8 @@ struct FieldAdapterRefStruct {
   @cpp.Ref{type = cpp.RefType.Shared}
   6: required string req_shared_const_field;
   @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
-  7: optional string opt_box_field (thrift.box);
+  @thrift.Box
+  7: optional string opt_box_field;
   8: string meta;
 }
 

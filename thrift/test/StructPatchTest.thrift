@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+include "thrift/annotation/thrift.thrift"
 include "thrift/lib/thrift/patch.thrift"
 
 namespace cpp2 apache.thrift.test.patch
@@ -47,7 +48,8 @@ struct MyStructPatch {
 // eventually it should be a shared type-parameterized struct).
 struct MyStructValuePatch {
   // Assigns to a given struct. If set, all other operations are ignored.
-  1: optional MyStruct assign (thrift.box);
+  @thrift.Box
+  1: optional MyStruct assign;
 
   // Clears a given struct. Applied first
   2: bool clear;

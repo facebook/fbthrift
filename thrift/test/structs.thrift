@@ -16,6 +16,8 @@
 
 namespace cpp2 apache.thrift.test
 
+include "thrift/annotation/thrift.thrift"
+
 cpp_include "thrift/test/StructsExtra.h"
 
 struct Basic {
@@ -81,12 +83,14 @@ struct CppDataMethod {
 
 struct EmptiableOptionalFieldsStruct {
   1: optional i32 int_field;
-  2: optional list<i32> int_list_field_ref (thrift.box);
+  @thrift.Box
+  2: optional list<i32> int_list_field_ref;
 }
 
 struct NotEmptiableStruct {
   1: optional i32 int_field;
-  2: optional list<i32> int_list_field_ref (thrift.box);
+  @thrift.Box
+  2: optional list<i32> int_list_field_ref;
   3: i64 long_field;
 }
 
@@ -96,5 +100,6 @@ struct OptionalFieldsStruct {
   3: optional list<HasInt> shared_fields (cpp.ref_type = "shared");
   4: optional HasInt shared_field_const (cpp.ref_type = "shared_const");
   5: optional list<HasInt> shared_fields_const (cpp.ref_type = "shared_const");
-  6: optional HasInt boxed_field (thrift.box);
+  @thrift.Box
+  6: optional HasInt boxed_field;
 }

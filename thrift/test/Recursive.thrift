@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+include "thrift/annotation/thrift.thrift"
 include "thrift/test/Recursive2.thrift"
 
 namespace cpp2 apache.thrift.test
@@ -60,5 +61,6 @@ struct StructUsingAnnotation {
 }
 
 struct StructUsingThriftBox {
-  1: optional MyField field (thrift.box);
+  @thrift.Box
+  1: optional MyField field;
 }
