@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <type_traits>
 #include <vector>
 
 #include <thrift/compiler/ast/ast_visitor.h>
@@ -54,6 +55,7 @@ struct ast_mutators {
   // Access a specific mutator stage, growing the number of stages if needed.
   template <typename T>
   ast_mutator& operator[](T&& stage) {
+    static_assert(std::is_enum<T>::value, "");
     auto index = static_cast<size_t>(stage);
     if (stages.size() <= index) {
       stages.resize(index + 1);
