@@ -129,7 +129,7 @@ void process_throw_wrapped_handler_error(
     Cpp2RequestContext* const ctx,
     ContextStack* const stack,
     char const* const method) {
-  LOG(ERROR) << ew << " in function " << method;
+  VLOG(1) << ew << " in function " << method;
   if (auto trustedServerEx =
           dynamic_cast<const TrustedServerException*>(ew.get_exception())) {
     req->sendErrorWrapped(
