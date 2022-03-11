@@ -648,6 +648,10 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       folly::EventBase* eb,
       concurrency::ThreadManager* tm) override = 0;
 
+  // Sends an error response if validation fails.
+  static bool validateRpcKind(
+      const ResponseChannelRequest::UniquePtr& req, RpcKind kind);
+
  protected:
   template <typename ProtocolIn, typename Args>
   static void deserializeRequest(
@@ -679,10 +683,6 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
   template <typename ProtocolOut, typename Result>
   static SerializedResponse serializeResponse(
       ProtocolOut* prot, ContextStack* ctx, const Result& result);
-
-  // Sends an error response if validation fails.
-  static bool validateRpcKind(
-      const ResponseChannelRequest::UniquePtr& req, RpcKind kind);
 
   // Returns true if setup succeeded and sends an error response otherwise.
   // Always runs in eb thread.

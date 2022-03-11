@@ -643,6 +643,13 @@ void ThriftRocketServerHandler::handleRequestCommon(
             &found->metadata,
             serviceRequestInfo);
 
+        // Once we remove the old code we'll move validateRpcKind to a helper.
+        if (!GeneratedAsyncProcessor::validateRpcKind(
+                serverRequest.request(),
+                serverRequest.requestInfo()->rpcKind)) {
+          return;
+        }
+
         auto poolResult = AsyncProcessorHelper::selectResourcePool(
             *processor_, serverRequest, found->metadata);
         if (auto* reject = std::get_if<ServerRequestRejection>(&poolResult)) {
