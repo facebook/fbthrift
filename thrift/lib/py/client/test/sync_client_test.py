@@ -24,7 +24,5 @@ from thrift.py3lite.test.test_server import server_in_another_process
 class SyncClientTests(unittest.TestCase):
     def test_basic(self) -> None:
         with server_in_another_process() as path:
-            # pyre-fixme[6]: For 1st param expected `Type[Variable[TSyncClient
-            #  (bound to SyncClient)]]` but got `Type[Client]`.
             with get_client(TestService.Client, path=path) as client:
                 self.assertEqual(3, client.add(1, 2))
