@@ -44,18 +44,7 @@
 #endif
 
 //  all members are logically private to fbthrift; external use is deprecated
-//
-//  access_field would use decltype((static_cast<T&&>(t).name)) with the extra
-//  parens, except that clang++ -fms-extensions fails to parse it correctly
 #define APACHE_THRIFT_DEFINE_ACCESSOR(name)                                   \
-  template <>                                                                 \
-  struct access_field<::apache::thrift::tag::name> {                          \
-    template <typename T>                                                     \
-    FOLLY_ERASE constexpr auto operator()(T&& t) noexcept                     \
-        -> ::folly::like_t<T&&, decltype(::folly::remove_cvref_t<T>::name)> { \
-      return static_cast<T&&>(t).name;                                        \
-    }                                                                         \
-  };                                                                          \
   template <>                                                                 \
   struct invoke_reffer<::apache::thrift::tag::name> {                         \
     template <typename T, typename... A>                                      \
@@ -90,8 +79,6 @@ constexpr ptrdiff_t issetOffset(std::int16_t fieldIndex);
 template <typename T>
 constexpr ptrdiff_t unionTypeOffset();
 
-template <typename Tag>
-struct access_field;
 template <typename Tag>
 struct invoke_reffer;
 template <typename Tag>
@@ -154,10 +141,7 @@ struct invoke_reffer_thru {
 template <typename Tag>
 struct invoke_reffer_thru_or_access_field {
   template <typename... A>
-  using impl = folly::conditional_t<
-      folly::is_invocable_v<invoke_reffer_thru<Tag>, A...>,
-      invoke_reffer_thru<Tag>,
-      access_field<Tag>>;
+  using impl = invoke_reffer_thru<Tag>;
   template <typename... A>
   FOLLY_ERASE constexpr auto operator()(A&&... a) noexcept(
       noexcept(impl<A...>{}(static_cast<A&&>(a)...)))
