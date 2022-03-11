@@ -16,9 +16,19 @@
 
 package com.facebook.thrift.util;
 
+import com.facebook.thrift.payload.ClientResponsePayload;
+import java.util.Map;
 import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TProtocolException;
+import org.apache.thrift.transport.TTransportException;
+import reactor.core.Exceptions;
 
 public final class ExceptionUtil {
+
+  // These need to match the keys/values emitted by Cpp2Server
+  private static final String EXCEPTION_HEADER_KEY = "ex";
+  private static final String TRANSPORT_EXCEPTION = "3";
+  private static final String PROTOCOL_EXCEPTION = "4";
 
   private static final Class REACTIVE_EXCEPTION;
 
@@ -44,5 +54,33 @@ public final class ExceptionUtil {
       return new TException(t.getCause());
     }
     return new TException(t);
+  }
+
+  /**
+   * Prepare an unchecked {@link RuntimeException}.<br>
+   * If the errorResponse header contains transport or protocol exception, transform the exception
+   * into {@link TTransportException} or {@link TProtocolException}.
+   *
+   * @param errorResponse
+   * @return RuntimeException
+   */
+  public static RuntimeException propagate(ClientResponsePayload errorResponse) {
+    Map<String, String> headers = errorResponse.getHeaders();
+    Exception exception = errorResponse.getException();
+
+    if (headers != null) {
+      String value = headers.get(EXCEPTION_HEADER_KEY);
+      if (TRANSPORT_EXCEPTION.equals(value)) {
+        return new TTransportException(
+            exception.getMessage() != null
+                ? exception.getMessage()
+                : "Proxy hit a transport exception");
+      }
+      if (PROTOCOL_EXCEPTION.equals(value)) {
+        return new TProtocolException("Proxy hit a protocol exception");
+      }
+    }
+
+    return Exceptions.propagate(exception);
   }
 }

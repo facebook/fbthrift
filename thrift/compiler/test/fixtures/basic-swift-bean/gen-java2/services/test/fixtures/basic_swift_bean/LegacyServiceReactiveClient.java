@@ -24,11 +24,11 @@ public class LegacyServiceReactiveClient
   implements LegacyService.Reactive {
   private static final AtomicLong _interactionCounter = new AtomicLong(0);
 
-  private final org.apache.thrift.ProtocolId _protocolId;
-  private final reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient;
-  private final Map<String, String> _headers;
-  private final Map<String, String> _persistentHeaders;
-  private final Set<Long> _activeInteractions;
+  protected final org.apache.thrift.ProtocolId _protocolId;
+  protected final reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient;
+  protected final Map<String, String> _headers;
+  protected final Map<String, String> _persistentHeaders;
+  protected final Set<Long> _activeInteractions;
 
   private static final TField _getPoints_KEY_FIELD_DESC = new TField("key", TType.SET, (short)1);
   private static final TField _getPoints_LEGACY_STUFF_FIELD_DESC = new TField("legacyStuff", TType.I64, (short)-1);
@@ -116,7 +116,7 @@ public class LegacyServiceReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());});
+                .singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw com.facebook.thrift.util.ExceptionUtil.propagate(_p);});
       });
   }
 

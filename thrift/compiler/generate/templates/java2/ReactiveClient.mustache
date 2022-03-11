@@ -32,15 +32,17 @@ import com.facebook.thrift.client.ResponseWrapper;
 import com.facebook.thrift.client.RpcOptions;
 import com.facebook.thrift.util.Readers;
 
-public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} extends {{service:javaPackage}}.{{service:javaCapitalName}}ReactiveClient{{/service:extends}}
+public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}}extends {{service:javaPackage}}.{{service:javaCapitalName}}ReactiveClient{{/service:extends}}
   implements {{service:javaCapitalName}}.Reactive {
   private static final AtomicLong _interactionCounter = new AtomicLong(0);
+  {{^service:extends}}
 
-  private final org.apache.thrift.ProtocolId _protocolId;
-  private final reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient;
-  private final Map<String, String> _headers;
-  private final Map<String, String> _persistentHeaders;
-  private final Set<Long> _activeInteractions;
+  protected final org.apache.thrift.ProtocolId _protocolId;
+  protected final reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient;
+  protected final Map<String, String> _headers;
+  protected final Map<String, String> _persistentHeaders;
+  protected final Set<Long> _activeInteractions;
+  {{/service:extends}}
 
   {{#service:singleRequestFunctions}}
   {{#function:args}}
@@ -123,11 +125,13 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
 
   public {{service:javaCapitalName}}ReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient) {
     {{#service:extends}}super(_protocolId, _rpcClient);{{/service:extends}}
+    {{^service:extends}}
     this._protocolId = _protocolId;
     this._rpcClient = _rpcClient;
     this._headers = java.util.Collections.emptyMap();
     this._persistentHeaders = java.util.Collections.emptyMap();
     this._activeInteractions = ConcurrentHashMap.newKeySet();
+    {{/service:extends}}
   }
 
   public {{service:javaCapitalName}}ReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
@@ -135,12 +139,14 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
   }
 
   public {{service:javaCapitalName}}ReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders, AtomicLong interactionCounter, Set<Long> activeInteractions) {
-    {{#service:extends}}super(_protocolId, _rpcClient);{{/service:extends}}
+    {{#service:extends}}super(_protocolId, _rpcClient, _headers, _persistentHeaders, interactionCounter, activeInteractions);{{/service:extends}}
+    {{^service:extends}}
     this._protocolId = _protocolId;
     this._rpcClient = _rpcClient;
     this._headers = _headers;
     this._persistentHeaders = _persistentHeaders;
     this._activeInteractions = activeInteractions;
+    {{/service:extends}}
   }
 
   @java.lang.Override
@@ -181,7 +187,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
-                .setName("{{function:javaName}}")
+                .setName("{{function:name}}")
                 .setKind(org.apache.thrift.RpcKind.{{#function:oneway?}}SINGLE_REQUEST_NO_RESPONSE{{/function:oneway?}}{{^function:oneway?}}SINGLE_REQUEST_SINGLE_RESPONSE{{/function:oneway?}})
                 .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
@@ -197,7 +203,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
 
             return _rpc
                 {{#function:oneway?}}.singleRequestNoResponse(_crp, rpcOptions).thenReturn(ResponseWrapper.create(null, java.util.Collections.emptyMap(), java.util.Collections.emptyMap())){{/function:oneway?}}{{!
-                }}{{^function:oneway?}}.singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());}){{/function:oneway?}};
+                }}{{^function:oneway?}}.singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw com.facebook.thrift.util.ExceptionUtil.propagate(_p);}){{/function:oneway?}};
       });
   }
 
@@ -255,7 +261,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
     return _rpcClient
       .flatMapMany(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
-                .setName("{{function:javaName}}")
+                .setName("{{function:name}}")
                 .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_STREAMING_RESPONSE)
                 .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
@@ -348,7 +354,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
     return _rpcClient
       .flatMapMany(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
-                .setName("{{function:javaName}}")
+                .setName("{{function:name}}")
                 .setKind(org.apache.thrift.RpcKind.SINK)
                 .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
@@ -460,7 +466,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
       return _rpcClient
         .subscriberContext(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))
         .flatMap(_rpc -> {
-          String interactionName = "{{service:name}}.{{function:javaName}}";
+          String interactionName = "{{service:name}}.{{function:name}}";
           org.apache.thrift.RequestRpcMetadata.Builder _metadataBuilder = new org.apache.thrift.RequestRpcMetadata.Builder()
                   .setName(interactionName)
                   .setKind(org.apache.thrift.RpcKind.{{#function:oneway?}}SINGLE_REQUEST_NO_RESPONSE{{/function:oneway?}}{{^function:oneway?}}SINGLE_REQUEST_SINGLE_RESPONSE{{/function:oneway?}})
@@ -491,7 +497,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
 
           return _rpc
               {{#function:oneway?}}.singleRequestNoResponse(_crp, rpcOptions).thenReturn(ResponseWrapper.create(null, java.util.Collections.emptyMap(), java.util.Collections.emptyMap())){{/function:oneway?}}{{!
-              }}{{^function:oneway?}}.singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());}){{/function:oneway?}};
+              }}{{^function:oneway?}}.singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw com.facebook.thrift.util.ExceptionUtil.propagate(_p);}){{/function:oneway?}};
         });
     }
 
@@ -537,7 +543,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
       return _rpcClient
         .subscriberContext(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))
         .flatMapMany(_rpc -> {
-          String interactionName = "{{service:name}}.{{function:javaName}}";
+          String interactionName = "{{service:name}}.{{function:name}}";
           org.apache.thrift.RequestRpcMetadata.Builder _metadataBuilder = new org.apache.thrift.RequestRpcMetadata.Builder()
                   .setName(interactionName)
                   .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_STREAMING_RESPONSE)
