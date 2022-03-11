@@ -506,6 +506,8 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequests) {
 }
 
 TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsRestartServer) {
+  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(
+      /* restart lifecycle not supported yet */);
   if (this->isH2Transport()) {
     return;
   }
@@ -908,6 +910,7 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, SetMaxRequestsJoinWrites) {
   if (this->isHeaderTransport() || this->isH2Transport()) {
     return; // Joining writes is not implemented for Header/H2 transport.
   }
+  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* maxRequests limit with resourcePools does not include response IO time */);
 
   std::string message(10000000, 'a');
 
