@@ -77,7 +77,7 @@ public class MyNodeReactiveClient  extends test.fixtures.inheritance.MyRootReact
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
-                .setName("doMid")
+                .setName("do_mid")
                 .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE)
                 .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)

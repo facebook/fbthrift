@@ -181,7 +181,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
-                .setName("{{function:javaName}}")
+                .setName("{{function:name}}")
                 .setKind(org.apache.thrift.RpcKind.{{#function:oneway?}}SINGLE_REQUEST_NO_RESPONSE{{/function:oneway?}}{{^function:oneway?}}SINGLE_REQUEST_SINGLE_RESPONSE{{/function:oneway?}})
                 .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
@@ -255,7 +255,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
     return _rpcClient
       .flatMapMany(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
-                .setName("{{function:javaName}}")
+                .setName("{{function:name}}")
                 .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_STREAMING_RESPONSE)
                 .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
@@ -348,7 +348,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
     return _rpcClient
       .flatMapMany(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
-                .setName("{{function:javaName}}")
+                .setName("{{function:name}}")
                 .setKind(org.apache.thrift.RpcKind.SINK)
                 .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
@@ -460,7 +460,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
       return _rpcClient
         .subscriberContext(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))
         .flatMap(_rpc -> {
-          String interactionName = "{{service:name}}.{{function:javaName}}";
+          String interactionName = "{{service:name}}.{{function:name}}";
           org.apache.thrift.RequestRpcMetadata.Builder _metadataBuilder = new org.apache.thrift.RequestRpcMetadata.Builder()
                   .setName(interactionName)
                   .setKind(org.apache.thrift.RpcKind.{{#function:oneway?}}SINGLE_REQUEST_NO_RESPONSE{{/function:oneway?}}{{^function:oneway?}}SINGLE_REQUEST_SINGLE_RESPONSE{{/function:oneway?}})
@@ -537,7 +537,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
       return _rpcClient
         .subscriberContext(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))
         .flatMapMany(_rpc -> {
-          String interactionName = "{{service:name}}.{{function:javaName}}";
+          String interactionName = "{{service:name}}.{{function:name}}";
           org.apache.thrift.RequestRpcMetadata.Builder _metadataBuilder = new org.apache.thrift.RequestRpcMetadata.Builder()
                   .setName(interactionName)
                   .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_STREAMING_RESPONSE)

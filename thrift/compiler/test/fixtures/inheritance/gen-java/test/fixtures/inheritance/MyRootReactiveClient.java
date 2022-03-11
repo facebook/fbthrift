@@ -77,7 +77,7 @@ public class MyRootReactiveClient
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
-                .setName("doRoot")
+                .setName("do_root")
                 .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE)
                 .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)

@@ -77,7 +77,7 @@ public class MyLeafReactiveClient  extends test.fixtures.inheritance.MyNodeReact
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
-                .setName("doLeaf")
+                .setName("do_leaf")
                 .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE)
                 .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)

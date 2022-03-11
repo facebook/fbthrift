@@ -164,7 +164,7 @@ public class MyServiceReactiveClient
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
-                .setName("hasArgDocs")
+                .setName("has_arg_docs")
                 .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE)
                 .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
