@@ -189,6 +189,19 @@ class t_hack_generator : public t_oop_generator {
     RESULT,
   };
 
+  enum class ThriftShapishStructType {
+    SYNC = 1,
+    ASYNC = 2,
+    VISITED = 3,
+  };
+
+  bool is_async_struct(const t_struct* tstruct);
+
+  // Only use this to determine if struct uses IThriftShapishAsyncStruct
+  bool is_async_shapish_struct(const t_struct* tstruct);
+  bool is_async_type(const t_type* type);
+  bool is_async_field(const t_field& field);
+
   void generate_php_struct_definition(
       std::ofstream& out,
       const t_struct* tstruct,
@@ -221,8 +234,7 @@ class t_hack_generator : public t_oop_generator {
 
   void generate_php_union_enum(
       std::ofstream& out, const t_struct* tstruct, const std::string& name);
-  void generate_php_union_methods(
-      std::ofstream& out, const t_struct* tstruct);
+  void generate_php_union_methods(std::ofstream& out, const t_struct* tstruct);
   void generate_php_struct_fields(
       std::ofstream& out,
       const t_struct* tstruct,
@@ -799,6 +811,8 @@ class t_hack_generator : public t_oop_generator {
   std::string array_keyword_;
 
   bool has_hack_namespace;
+
+  std::map<std::string, ThriftShapishStructType> struct_async_type_;
 };
 
 void t_hack_generator::generate_json_enum(
@@ -2802,6 +2816,66 @@ void t_hack_generator::generate_php_structural_id(
     indent(out) << "const int STRUCTURAL_ID = "
                 << generate_structural_id(tstruct) << ";\n";
   }
+}
+
+bool t_hack_generator::is_async_struct(const t_struct* tstruct) {
+  for (const auto& field : tstruct->fields()) {
+    if (find_hack_wrapper(field)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool t_hack_generator::is_async_shapish_struct(const t_struct* tstruct) {
+  std::string parent_struct_name = hack_name(tstruct);
+  switch (struct_async_type_[parent_struct_name]) {
+    case ThriftShapishStructType::ASYNC:
+      return true;
+    case ThriftShapishStructType::SYNC:
+      return false;
+    case ThriftShapishStructType::VISITED:
+      // 'shapes' option cannot be used with recursive structs
+      // We should ideally throw an error here.
+      // But there are certain files that are able to bypass,
+      // so simply returning false.
+      return false;
+    default:
+      struct_async_type_[parent_struct_name] = ThriftShapishStructType::VISITED;
+  }
+
+  for (const auto& field : tstruct->fields()) {
+    if (is_async_field(field)) {
+      struct_async_type_[parent_struct_name] = ThriftShapishStructType::ASYNC;
+      return true;
+    }
+  }
+  struct_async_type_[parent_struct_name] = ThriftShapishStructType::SYNC;
+  return false;
+}
+
+bool t_hack_generator::is_async_field(const t_field& field) {
+  return find_hack_wrapper(field) ||
+      is_async_type(field.get_type()->get_true_type());
+}
+
+bool t_hack_generator::is_async_type(const t_type* type) {
+  type = type->get_true_type();
+  if (type->is_base_type() || type->is_enum()) {
+    return false;
+  } else if (type->is_container()) {
+    if (const auto* tlist = dynamic_cast<const t_list*>(type)) {
+      return is_async_type(tlist->get_elem_type());
+    } else if (const auto* tset = dynamic_cast<const t_set*>(type)) {
+      return is_async_type(tset->get_elem_type());
+    } else if (const auto* tmap = dynamic_cast<const t_map*>(type)) {
+      return is_async_type(tmap->get_key_type()) ||
+          is_async_type(tmap->get_val_type());
+    }
+  } else if (const auto* tstruct = dynamic_cast<const t_struct*>(type)) {
+    return is_async_shapish_struct(tstruct);
+  }
+  return false;
 }
 
 void t_hack_generator::generate_php_struct_definition(
