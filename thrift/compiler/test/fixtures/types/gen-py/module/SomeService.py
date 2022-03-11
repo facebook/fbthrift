@@ -515,6 +515,8 @@ binary_keyed_map_result.__getstate__ = lambda self: self.__dict__.copy()
 binary_keyed_map_result.__setstate__ = binary_keyed_map_result__setstate__
 
 class Client(Iface):
+  _fbthrift_force_cpp_transport = False
+
   def __enter__(self):
     return self
 

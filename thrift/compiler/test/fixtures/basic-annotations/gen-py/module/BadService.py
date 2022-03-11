@@ -251,6 +251,8 @@ bar_result.__getstate__ = lambda self: self.__dict__.copy()
 bar_result.__setstate__ = bar_result__setstate__
 
 class Client(Iface):
+  _fbthrift_force_cpp_transport = False
+
   def __enter__(self):
     return self
 

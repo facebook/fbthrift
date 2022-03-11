@@ -759,6 +759,8 @@ get500_result.__getstate__ = lambda self: self.__dict__.copy()
 get500_result.__setstate__ = get500_result__setstate__
 
 class Client(Iface):
+  _fbthrift_force_cpp_transport = False
+
   def __enter__(self):
     return self
 

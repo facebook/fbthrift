@@ -158,7 +158,6 @@ class t_py_generator : public t_concat_generator {
   void generate_service_helpers(const t_service* tservice);
   void generate_service_interface(const t_service* tservice, bool with_context);
   void generate_service_client(const t_service* tservice);
-  void generate_service_client_cpp_transport(const t_service* tservice);
   void generate_service_remote(const t_service* tservice);
   void generate_service_fuzzer(const t_service* tservice);
   void generate_service_server(const t_service* tservice, bool with_context);
@@ -2075,12 +2074,6 @@ void t_py_generator::generate_service(const t_service* tservice) {
              << "  write_results_after_future," << endl
              << ")" << endl;
 
-  if (gen_cpp_transport_) {
-    f_service_
-        << "from thrift.py.client.sync_client import SyncClient as _fbthrift_SyncClient"
-        << endl;
-  }
-
   f_service_ << endl;
 
   // Generate the three main parts of the service (well, two for now in PHP)
@@ -2090,11 +2083,7 @@ void t_py_generator::generate_service(const t_service* tservice) {
   }
 
   generate_service_helpers(tservice);
-  if (gen_cpp_transport_) {
-    generate_service_client_cpp_transport(tservice);
-  } else {
-    generate_service_client(tservice);
-  }
+  generate_service_client(tservice);
   generate_service_server(tservice, false);
   if (!gen_future_) {
     generate_service_server(tservice, true);
@@ -2240,6 +2229,11 @@ void t_py_generator::generate_service_client(const t_service* tservice) {
   f_service_ << "class Client(" << extends_client << "Iface):" << endl;
   indent_up();
   generate_python_docstring(f_service_, tservice);
+
+  f_service_ << indent() << "_fbthrift_force_cpp_transport = "
+             << (gen_cpp_transport_ ? "True" : "False") << endl
+             << endl;
+
   // Context Handlers
   if (!gen_asyncio_) {
     f_service_ << indent() << "def __enter__(self):" << endl
@@ -2508,61 +2502,6 @@ void t_py_generator::generate_service_client(const t_service* tservice) {
       indent_down();
       f_service_ << endl;
     }
-  }
-
-  indent_down();
-  f_service_ << endl;
-}
-
-/**
- * Generates a service client definition using C++ transport
- *
- * @param tservice The service to generate a server for.
- */
-void t_py_generator::generate_service_client_cpp_transport(
-    const t_service* tservice) {
-  string extends = "";
-  string extends_client = "";
-  if (tservice->get_extends() != nullptr) {
-    extends = type_name(tservice->get_extends());
-    extends_client = extends + ".Client, ";
-  }
-
-  f_service_ << "class Client(_fbthrift_SyncClient, " << extends_client
-             << "Iface):" << endl;
-  indent_up();
-  generate_python_docstring(f_service_, tservice);
-
-  const auto& functions = get_functions(tservice);
-  vector<t_function*>::const_iterator f_iter;
-  for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    const t_struct* arg_struct = (*f_iter)->get_paramlist();
-    const vector<t_field*>& fields = arg_struct->get_members();
-    vector<t_field*>::const_iterator fld_iter;
-    string funname = rename_reserved_keywords((*f_iter)->get_name());
-
-    // Open function
-    indent(f_service_) << "def " << function_signature(*f_iter) << ":" << endl;
-    indent_up();
-    generate_python_docstring(f_service_, (*f_iter));
-
-    // Construct args
-    std::string argsname = (*f_iter)->get_name() + "_args";
-    f_service_ << indent() << "args = " << argsname << "()" << endl;
-    for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
-      f_service_ << indent() << "args."
-                 << rename_reserved_keywords((*fld_iter)->get_name()) << " = "
-                 << rename_reserved_keywords((*fld_iter)->get_name()) << endl;
-    }
-
-    // Send request
-    f_service_ << indent() << "return self._send_request(\""
-               << tservice->get_name() << "\", \"" << (*f_iter)->get_name()
-               << "\", args, " << (*f_iter)->get_name() << "_result).success"
-               << endl;
-
-    indent_down();
-    f_service_ << endl;
   }
 
   indent_down();

@@ -374,6 +374,8 @@ pong_result.thrift_field_annotations = {
 }
 
 class Client(Iface):
+  _fbthrift_force_cpp_transport = False
+
   def __enter__(self):
     return self
 

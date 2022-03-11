@@ -52,6 +52,8 @@ class ContextIface:
 # HELPER FUNCTIONS AND STRUCTURES
 
 class Client(Iface):
+  _fbthrift_force_cpp_transport = False
+
   def __enter__(self):
     return self
 

@@ -516,6 +516,8 @@ getDataByKey1_result.__getstate__ = lambda self: self.__dict__.copy()
 getDataByKey1_result.__setstate__ = getDataByKey1_result__setstate__
 
 class Client(Iface):
+  _fbthrift_force_cpp_transport = False
+
   def __enter__(self):
     return self
 

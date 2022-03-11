@@ -209,6 +209,8 @@ pang_result.thrift_field_annotations = {
 }
 
 class Client(module.MyServicePrioParent.Client, Iface):
+  _fbthrift_force_cpp_transport = False
+
   def __enter__(self):
     return self
 

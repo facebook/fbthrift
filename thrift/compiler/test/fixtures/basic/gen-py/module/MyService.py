@@ -1631,6 +1631,8 @@ lobDataById_args.__getstate__ = lambda self: self.__dict__.copy()
 lobDataById_args.__setstate__ = lobDataById_args__setstate__
 
 class Client(Iface):
+  _fbthrift_force_cpp_transport = False
+
   def __enter__(self):
     return self
 
