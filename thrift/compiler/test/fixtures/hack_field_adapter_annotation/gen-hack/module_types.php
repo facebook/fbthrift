@@ -389,7 +389,7 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
    * Original thrift field:-
    * 1: i64 union_annotated_field
    */
-  private ?\MyFieldWrapper<?int> $union_annotated_field;
+  private ?\MyFieldWrapper<int> $union_annotated_field;
   /**
    * Original thrift field:-
    * 3: i64 union_adapted_type
@@ -431,7 +431,7 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
   public function reset()[write_props]: void {
     switch ($this->_type) {
       case MyUnionEnum::union_annotated_field:
-        \MyFieldAdapter::assign<?int>($this->union_annotated_field as nonnull, null);
+        $this->union_annotated_field = null;
         break;
       case MyUnionEnum::union_adapted_type:
         $this->union_adapted_type = null;
@@ -445,21 +445,21 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
   public function set_union_annotated_field(int $union_annotated_field)[write_props]: this {
     $this->reset();
     $this->_type = MyUnionEnum::union_annotated_field;
-    \MyFieldAdapter::assign<?int>($this->union_annotated_field as nonnull, $union_annotated_field);
+    $this->union_annotated_field = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<int, this>($union_annotated_field, 1, $this);
     return $this;
   }
 
-  public function get_union_annotated_field()[]: ?int {
-    return \MyFieldAdapter::toThrift<?int>($this->union_annotated_field as nonnull);
+  public function get_union_annotated_field()[]: ?\MyFieldWrapper<int> {
+    return $this->union_annotated_field;
   }
 
-  public function getx_union_annotated_field()[]: int {
+  public function getx_union_annotated_field()[]: \MyFieldWrapper<int> {
     invariant(
       $this->_type === MyUnionEnum::union_annotated_field,
       'get_union_annotated_field called on an instance of MyUnion whose current type is %s',
       (string)$this->_type,
     );
-    return \MyFieldAdapter::toThrift<?int>($this->union_annotated_field as nonnull) as nonnull;
+    return $this->union_annotated_field as nonnull;
   }
 
   public function set_union_adapted_type(\AdapterTestIntToString::THackType $union_adapted_type)[write_props]: this {
