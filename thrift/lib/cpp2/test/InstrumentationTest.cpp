@@ -20,6 +20,7 @@
 #include <thread>
 
 #include <folly/ThreadLocal.h>
+#include <folly/executors/CPUThreadPoolExecutor.h>
 #include <folly/experimental/coro/BlockingWait.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
@@ -36,7 +37,10 @@
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
+#include <thrift/lib/cpp2/server/ParallelConcurrencyController.h>
 #include <thrift/lib/cpp2/server/RequestDebugLog.h>
+#include <thrift/lib/cpp2/server/RoundRobinRequestPile.h>
+#include <thrift/lib/cpp2/server/ServerFlags.h>
 #include <thrift/lib/cpp2/server/ServerInstrumentation.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/DebugTestService.h>
@@ -97,6 +101,20 @@ class InstrumentationTestProcessor
             context,
             eb,
             tm);
+  }
+
+  void executeRequest(
+      ServerRequest&& request, const MethodMetadata& methodMetadata) override {
+    folly::RequestContext::get()->setContextData(
+        InstrumentationRequestPayload::getRequestToken(),
+        std::make_unique<InstrumentationRequestPayload>(
+            apache::thrift::detail::ServerRequestHelper::compressedRequest(
+                request)
+                .clone()
+                .uncompress()
+                .buffer));
+    InstrumentationTestServiceAsyncProcessor::executeRequest(
+        std::move(request), methodMetadata);
   }
 };
 
@@ -218,8 +236,30 @@ class DebuggingFrameHandler : public rocket::SetupFrameHandler {
       const RequestSetupMetadata& meta) override {
     if (meta.interfaceKind_ref().has_value() &&
         meta.interfaceKind_ref().value() == InterfaceKind::DEBUGGING) {
-      return rocket::ProcessorInfo{
-          debug_, tm_, origServer_, reqRegistry_.get()};
+      if (apache::thrift::useResourcePoolsFlagsSet()) {
+        auto asyncHandle = apache::thrift::ResourcePoolHandle::defaultAsync();
+        // Ensure there is an async handler set up in the resource pool.
+        if (!resourcePoolSet_.hasResourcePool(asyncHandle)) {
+          auto executor = std::make_shared<folly::CPUThreadPoolExecutor>(
+              1, std::make_shared<folly::NamedThreadFactory>("DebugInterface"));
+          apache::thrift::RoundRobinRequestPile::Options options;
+          auto requestPile =
+              std::make_unique<apache::thrift::RoundRobinRequestPile>(options);
+          auto concurrencyController =
+              std::make_unique<apache::thrift::ParallelConcurrencyController>(
+                  *requestPile.get(), *executor.get());
+          resourcePoolSet_.setResourcePool(
+              asyncHandle,
+              std::move(requestPile),
+              executor,
+              std::move(concurrencyController));
+        }
+        return rocket::ProcessorInfo(
+            debug_, nullptr, origServer_, reqRegistry_.get());
+      } else {
+        return rocket::ProcessorInfo(
+            debug_, tm_, origServer_, reqRegistry_.get());
+      }
     }
     return std::nullopt;
   }
@@ -229,6 +269,7 @@ class DebuggingFrameHandler : public rocket::SetupFrameHandler {
   DebugInterface debug_;
   std::shared_ptr<ThreadManager> tm_;
   folly::ThreadLocal<RequestsRegistry> reqRegistry_;
+  apache::thrift::ResourcePoolSet resourcePoolSet_;
 };
 
 namespace {
@@ -423,6 +464,8 @@ TEST_F(RequestInstrumentationTest, threadSnapshot) {
 }
 
 TEST_F(RequestInstrumentationTest, PendingTaskCount) {
+  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(
+      /* pendingTaskCounts in thread manager don't apply to resource pools */);
   auto client = makeRocketClient();
   folly::Baton baton;
   folly::Baton baton2;
@@ -487,8 +530,11 @@ TEST_F(RequestInstrumentationTest, debugInterfaceTest) {
     client->semifuture_sendRequest();
   }
 
-  auto echoed = debugClient->semifuture_echo("echome").get();
-  EXPECT_TRUE(folly::StringPiece(echoed).startsWith("echome:DebugInterface-"));
+  if (!useResourcePoolsFlagsSet()) {
+    auto echoed = debugClient->semifuture_echo("echome").get();
+    EXPECT_TRUE(
+        folly::StringPiece(echoed).startsWith("echome:DebugInterface-"));
+  }
 
   for (auto& reqSnapshot : getRequestSnapshots(2 * reqNum)) {
     auto methodName = reqSnapshot.getMethodName();
@@ -835,11 +881,11 @@ TEST(ThriftServerDeathTest, getSnapshotOnServerShutdown) {
           // connection and one without any connections
           server.setNumIOWorkerThreads(2);
           // We need at least 2 cpu threads for the test
-          auto tm = ThreadManager::newSimpleThreadManager(2);
-          tm->threadFactory(std::make_shared<PosixThreadFactory>(
+          server.setNumCPUWorkerThreads(2);
+          server.setThreadManagerType(
+              apache::thrift::BaseThriftServer::ThreadManagerType::SIMPLE);
+          server.setThreadFactory(std::make_shared<PosixThreadFactory>(
               PosixThreadFactory::ATTACHED));
-          tm->start();
-          server.setThreadManager(tm);
           server.setWorkersJoinTimeout(1s);
         });
 
@@ -852,8 +898,8 @@ TEST(ThriftServerDeathTest, getSnapshotOnServerShutdown) {
                         .getServerSnapshot()
                         .get();
                 ASSERT_EQ(snapshot.requests.size(), 1);
-                // We exit here with a specific exit code to test that this code
-                // is reached
+                // We exit here with a specific exit code to test that this
+                // code is reached
                 std::quick_exit(kExitCode);
               }),
               2s};
@@ -1067,6 +1113,7 @@ class MaxRequestsTest : public RequestInstrumentationTest,
 };
 
 TEST_P(MaxRequestsTest, Bypass) {
+  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* max requests bypass not supported */);
   auto client = rocket ? makeRocketClient() : makeHeaderClient();
 
   client->semifuture_sendRequest();
@@ -1178,7 +1225,8 @@ TEST_P(TimestampsTest, QueueTimeout) {
   } catch (const TApplicationException& ex) {
     ASSERT_EQ(ex.getType(), TApplicationException::TIMEOUT);
   }
-  // callCompleted should not be called for requests which timed out the queue.
+  // callCompleted should not be called for requests which timed out the
+  // queue.
   EXPECT_FALSE(timestamps.has_value());
 }
 
