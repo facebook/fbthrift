@@ -110,6 +110,11 @@ class FakeProcessorFactory final
       override {
     return {};
   }
+
+  std::optional<std::reference_wrapper<ServiceRequestInfoMap const>>
+  getServiceRequestInfoMap() const override {
+    return std::nullopt;
+  }
 };
 
 void testServerOneInput(const uint8_t* Data, size_t Size) {
