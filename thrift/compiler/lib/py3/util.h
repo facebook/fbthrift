@@ -26,11 +26,12 @@ namespace compiler {
 
 inline const std::unordered_set<std::string>& get_python_reserved_names() {
   static const std::unordered_set<std::string> keywords = {
-      "False",  "None",   "True",    "and",      "as",       "assert", "async",
-      "await",  "break",  "class",   "continue", "def",      "del",    "elif",
-      "else",   "except", "finally", "for",      "from",     "global", "if",
-      "import", "in",     "is",      "lambda",   "nonlocal", "not",    "or",
-      "pass",   "raise",  "return",  "try",      "while",    "with",   "yield",
+      "False",  "None",    "True",    "and",      "as",       "assert", "async",
+      "await",  "break",   "class",   "continue", "def",      "del",    "elif",
+      "else",   "except",  "finally", "for",      "from",     "global", "if",
+      "import", "in",      "is",      "lambda",   "nonlocal", "not",    "or",
+      "pass",   "raise",   "return",  "try",      "while",    "with",   "yield",
+      "cdef",   "cimport", "cpdef",   "cppclass", "ctypedef",
   };
   return keywords;
 }

@@ -1244,10 +1244,6 @@ class no_reserved_key_in_namespace_validator : virtual public validator {
 
  private:
   void validate(t_program* const prog) {
-    static const std::unordered_set<std::string> py3_reserved_keys = {
-        "include",
-    };
-
     const auto& py3_namespace = prog->get_namespace("py3");
     if (py3_namespace.empty()) {
       return;
@@ -1255,7 +1251,8 @@ class no_reserved_key_in_namespace_validator : virtual public validator {
 
     std::vector<std::string> namespace_tokens = split_namespace(py3_namespace);
     for (const auto& field_name : namespace_tokens) {
-      if (py3_reserved_keys.find(field_name) != py3_reserved_keys.end()) {
+      if (get_python_reserved_names().find(field_name) !=
+          get_python_reserved_names().end()) {
         std::ostringstream ss;
         ss << "Namespace '" << py3_namespace << "' contains reserved keyword '"
            << field_name << "'";
@@ -1267,10 +1264,10 @@ class no_reserved_key_in_namespace_validator : virtual public validator {
     std::vector<std::string> fields;
     boost::split(fields, prog->path(), boost::is_any_of(filepath_delimiters));
     for (const auto& field : fields) {
-      if (py3_reserved_keys.find(field) != py3_reserved_keys.end()) {
+      if (field == "include") {
         std::ostringstream ss;
-        ss << "Path '" << prog->path() << "' contains reserved keyword '"
-           << field << "'";
+        ss << "Path '" << prog->path()
+           << "' contains reserved keyword 'include'";
         add_error(boost::none, ss.str());
       }
     }
