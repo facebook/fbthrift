@@ -251,5 +251,18 @@ const std::shared_ptr<void>& RpcOptions::getCallerContext() const {
   return callerContext_;
 }
 
+void RpcOptions::setFaultToInject(
+    const std::string& key, const std::string& value) {
+  if (!faultsToInject_) {
+    faultsToInject_.emplace();
+  }
+  (*faultsToInject_)[key] = value;
+}
+
+const std::optional<std::unordered_map<std::string, std::string>>&
+RpcOptions::getFaultsToInject() const {
+  return faultsToInject_;
+}
+
 } // namespace thrift
 } // namespace apache

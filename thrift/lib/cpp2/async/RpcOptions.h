@@ -126,6 +126,10 @@ class RpcOptions {
   RpcOptions& setCallerContext(std::shared_ptr<void> callerContext);
   const std::shared_ptr<void>& getCallerContext() const;
 
+  void setFaultToInject(const std::string& key, const std::string& value);
+  const std::optional<std::unordered_map<std::string, std::string>>&
+  getFaultsToInject() const;
+
  private:
   using timeout_ms_t = uint32_t;
   timeout_ms_t timeout_{0};
@@ -156,6 +160,10 @@ class RpcOptions {
   std::shared_ptr<void> routingData_;
 
   std::shared_ptr<void> callerContext_;
+
+  // Defines faults to be injected within the routing layer, if any
+  std::optional<std::unordered_map<std::string, std::string>>
+      faultsToInject_; // fault ID --> value
 };
 
 } // namespace thrift
