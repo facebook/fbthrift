@@ -149,20 +149,8 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
    */
   private ?\MyFieldWrapper<int> $wrapped_field;
 
-  public function getWrapped_wrapped_field()[]: \MyFieldWrapper<int> {
+  public function get_wrapped_field()[]: \MyFieldWrapper<int> {
     return $this->wrapped_field as nonnull;
-  }
-
-  public function setWrapped_wrapped_field(\MyFieldWrapper<int> $wrapped_field)[write_props]: void {
-    \MyFieldAdapter::assignWrapped<int>($this->wrapped_field as nonnull, $wrapped_field);
-   }
-
-  public function get_wrapped_field()[]: int {
-    return \MyFieldAdapter::toThrift<int>($this->wrapped_field as nonnull);
-  }
-
-  public function set_wrapped_field(int $wrapped_field)[write_props]: void {
-    \MyFieldAdapter::assign<int>($this->wrapped_field as nonnull, $wrapped_field);
   }
 
   /**
@@ -171,20 +159,8 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
    */
   private ?\MyFieldWrapper<int> $annotated_field;
 
-  public function getWrapped_annotated_field()[]: \MyFieldWrapper<int> {
+  public function get_annotated_field()[]: \MyFieldWrapper<int> {
     return $this->annotated_field as nonnull;
-  }
-
-  public function setWrapped_annotated_field(\MyFieldWrapper<int> $annotated_field)[write_props]: void {
-    \MyFieldAdapter::assignWrapped<int>($this->annotated_field as nonnull, $annotated_field);
-   }
-
-  public function get_annotated_field()[]: int {
-    return \MyFieldAdapter::toThrift<int>($this->annotated_field as nonnull);
-  }
-
-  public function set_annotated_field(int $annotated_field)[write_props]: void {
-    \MyFieldAdapter::assign<int>($this->annotated_field as nonnull, $annotated_field);
   }
 
   /**
@@ -365,12 +341,6 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     \ThriftUtil::requireSameType<\MyAdapter::TThriftType, int>();
   }
 
-  private static function __hackExperimentalAdapterTypeChecks()[]: void{
-     \ThriftUtil::requireSameType<\MyFieldAdapter::TThriftType, int>();
-
-    (new \ThriftAdapterVerifier<int, \MyFieldWrapper<int>>())->requireSameReturnType(\MyFieldAdapter::fromThrift<int>,\MyFieldAdapter::toThrift<int>);
-  }
-
 }
 
 enum MyUnionEnum: int {
@@ -470,17 +440,6 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
         break;
     }
     $this->_type = MyUnionEnum::_EMPTY_;
-  }
-
-  public function getWrapped_union_annotated_field()[]: \MyFieldWrapper<?int> {
-    return $this->union_annotated_field as nonnull;
-  }
-
-  public function setWrapped_union_annotated_field(\MyFieldWrapper<?int> $union_annotated_field)[write_props]: this {
-    $this->reset();
-    $this->_type = MyUnionEnum::union_annotated_field;
-    \MyFieldAdapter::assignWrapped<?int>($this->union_annotated_field as nonnull, $union_annotated_field);
-    return $this;
   }
 
   public function set_union_annotated_field(int $union_annotated_field)[write_props]: this {
@@ -613,11 +572,6 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     \ThriftUtil::requireSameType<\AdapterTestIntToString::TThriftType, int>();
   }
 
-  private static function __hackExperimentalAdapterTypeChecks()[]: void{
- 
-    (new \ThriftAdapterVerifier<?int, \MyFieldWrapper<?int>>())->requireSameReturnType(\MyFieldAdapter::fromThrift<?int>,\MyFieldAdapter::toThrift<?int>);
-  }
-
 }
 
 /**
@@ -671,20 +625,8 @@ class MyException extends \TException implements \IThriftStruct {
    */
   private ?\MyFieldWrapper<string> $annotated_message;
 
-  public function getWrapped_annotated_message()[]: \MyFieldWrapper<string> {
+  public function get_annotated_message()[]: \MyFieldWrapper<string> {
     return $this->annotated_message as nonnull;
-  }
-
-  public function setWrapped_annotated_message(\MyFieldWrapper<string> $annotated_message)[write_props]: void {
-    \MyFieldAdapter::assignWrapped<string>($this->annotated_message as nonnull, $annotated_message);
-   }
-
-  public function get_annotated_message()[]: string {
-    return \MyFieldAdapter::toThrift<string>($this->annotated_message as nonnull);
-  }
-
-  public function set_annotated_message(string $annotated_message)[write_props]: void {
-    \MyFieldAdapter::assign<string>($this->annotated_message as nonnull, $annotated_message);
   }
 
 
@@ -792,11 +734,6 @@ class MyException extends \TException implements \IThriftStruct {
     if (idx($parsed, 'annotated_message') !== null) {
       $this->annotated_message = /* HH_FIXME[4110] */ $parsed['annotated_message'];
     }    
-  }
-
-  private static function __hackExperimentalAdapterTypeChecks()[]: void{
- 
-    (new \ThriftAdapterVerifier<string, \MyFieldWrapper<string>>())->requireSameReturnType(\MyFieldAdapter::fromThrift<string>,\MyFieldAdapter::toThrift<string>);
   }
 
 }

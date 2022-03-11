@@ -230,11 +230,7 @@ class t_hack_generator : public t_oop_generator {
   void generate_php_struct_field_methods(
       std::ofstream& out, const t_field* field, bool is_exception);
   void generate_php_field_adapter_methods(
-      std::ofstream& out,
-      const t_field& field,
-      const t_const* adapter_annotation_with_generic_type,
-      bool is_union,
-      bool nullable);
+      std::ofstream& out, const t_field& field, bool is_union, bool nullable);
   void generate_php_struct_methods(
       std::ofstream& out,
       const t_struct* tstruct,
@@ -276,8 +272,6 @@ class t_hack_generator : public t_oop_generator {
 
   void generate_adapter_type_checks(
       std::ofstream& out, const t_struct* tstruct);
-  void generate_structured_adapter_type_checks(
-      std::ofstream& out, const t_struct* tstruct, bool is_result);
 
   void generate_php_type_spec(std::ofstream& out, const t_type* t);
   void generate_php_struct_spec(std::ofstream& out, const t_struct* tstruct);
@@ -2922,35 +2916,6 @@ void t_hack_generator::generate_php_union_methods(
         find_structured_adapter_annotation_with_generic_type(field);
     const auto& fieldName = field.name();
     auto typehint = type_to_typehint(field.get_type());
-    if (adapter_annotation_with_generic_type) {
-      const auto* adapter_name = get_structured_adapter_annotation_name(
-          adapter_annotation_with_generic_type);
-
-      auto field_typehint =
-          field_to_typehint(field, /* is_field_nullable*/ true);
-      // getWrapped_<fieldName>()
-      indent(out) << "public function getWrapped_" << fieldName
-                  << "()[]: " << field_typehint << " {\n";
-      indent_up();
-      indent(out) << "return $this->" << fieldName << " as nonnull;\n";
-      indent_down();
-      indent(out) << "}\n\n";
-
-      // setWrapped_<fieldName>()
-      indent(out) << "public function setWrapped_" << fieldName << "("
-                  << field_typehint << " $" << fieldName
-                  << ")[write_props]: this {\n";
-      indent_up();
-      indent(out) << "$this->reset();\n";
-      indent(out) << "$this->_type = " << enumName << "::" << fieldName
-                  << ";\n";
-      indent(out) << *adapter_name << "::assignWrapped<?" << typehint
-                  << ">($this->" << fieldName << " as nonnull, $" << fieldName
-                  << ");\n";
-      indent(out) << "return $this;\n";
-      indent_down();
-      indent(out) << "}\n\n";
-    }
 
     // set_<fieldName>()
     indent(out) << "public function set_" << fieldName << "(" << typehint
@@ -3097,71 +3062,25 @@ void t_hack_generator::generate_php_struct_fields(
 
     if (adapter_annotation_with_generic_type) {
       generate_php_field_adapter_methods(
-          out,
-          field,
-          adapter_annotation_with_generic_type,
-          tstruct->is_union(),
-          nullable);
+          out, field, tstruct->is_union(), nullable);
     }
   }
 }
 
 void t_hack_generator::generate_php_field_adapter_methods(
-    std::ofstream& out,
-    const t_field& field,
-    const t_const* adapter_annotation_with_generic_type,
-    bool is_union,
-    bool nullable) {
+    std::ofstream& out, const t_field& field, bool is_union, bool nullable) {
   if (is_union) {
     return;
   }
-  const t_type* t = field.type()->get_true_type();
   const auto& fieldName = field.name();
-  const auto* adapter_name = get_structured_adapter_annotation_name(
-      adapter_annotation_with_generic_type);
-
-  auto field_typehint =
-      field_to_typehint(field, /*is_field_nullable*/ nullable);
-  auto typehint = (nullable ? "?" : "") + type_to_typehint(t);
-
   out << "\n";
 
-  // getWrapped_<fieldName>()
-  indent(out) << "public function getWrapped_" << fieldName
-              << "()[]: " << field_typehint << " {\n";
+  // get_<fieldName>()
+  indent(out) << "public function get_" << fieldName << "()[]: "
+              << field_to_typehint(field, /*is_field_nullable*/ nullable)
+              << " {\n";
   indent_up();
   indent(out) << "return $this->" << fieldName << " as nonnull;\n";
-  indent_down();
-  indent(out) << "}\n\n";
-
-  // setWrapped_<fieldName>()
-  indent(out) << "public function setWrapped_" << fieldName << "("
-              << field_typehint << " $" << fieldName << ")[write_props]: void"
-              << " {\n";
-  indent_up();
-
-  indent(out) << *adapter_name << "::assignWrapped<" << typehint << ">($this->"
-              << fieldName << " as nonnull, $" << fieldName << ");\n ";
-  indent_down();
-  indent(out) << "}\n\n";
-
-  // get_<fieldName>()
-  indent(out) << "public function get_" << fieldName << "()[]: " << typehint
-              << " {\n";
-  indent_up();
-  indent(out) << "return " << *adapter_name << "::toThrift<" << typehint
-              << ">($this->" << fieldName << " as nonnull);\n";
-  indent_down();
-  indent(out) << "}\n\n";
-
-  // set_<fieldName>()
-  indent(out) << "public function set_" << fieldName << "(" << typehint << " $"
-              << fieldName << ")[write_props]: void"
-              << " {\n";
-  indent_up();
-
-  indent(out) << *adapter_name << "::assign<" << typehint << ">($this->"
-              << fieldName << " as nonnull, $" << fieldName << ");\n";
   indent_down();
   indent(out) << "}\n\n";
 }
@@ -3241,8 +3160,6 @@ void t_hack_generator::generate_php_struct_methods(
   generate_instance_key(out);
   generate_json_reader(out, tstruct);
   generate_adapter_type_checks(out, tstruct);
-  generate_structured_adapter_type_checks(
-      out, tstruct, type == ThriftStructType::RESULT);
 }
 
 void t_hack_generator::generate_php_struct_constructor_field_assignment(
@@ -3707,74 +3624,6 @@ void t_hack_generator::generate_adapter_type_checks(
   for (const auto& kv : adapter_types_) {
     indent(out) << "\\ThriftUtil::requireSameType<" << kv.first
                 << "::TThriftType, " << kv.second << ">();\n";
-  }
-  indent_down();
-  indent(out) << "}\n\n";
-}
-
-void t_hack_generator::generate_structured_adapter_type_checks(
-    std::ofstream& out, const t_struct* tstruct, bool is_result) {
-  std::set<std::tuple<std::string, std::string, std::string>>
-      adapter_fields_with_generic_type_;
-  std::set<std::tuple<std::string, std::string>> adapter_fields_;
-  for (const auto& field : tstruct->fields()) {
-    if (const auto* field_adapter = find_structured_adapter_annotation(field)) {
-      auto adapter_name =
-          *get_structured_adapter_annotation_name(field_adapter);
-      auto t = field.get_type();
-      auto typehint = type_to_typehint(
-          t,
-          false,
-          false,
-          false,
-          /* ignore_adapter */
-          true);
-
-      if (const auto* generic_type =
-              get_structured_adapter_annotation_generic_type(field_adapter)) {
-        std::string dval = "";
-        if (field.default_value() != nullptr &&
-            !(t->is_struct() || t->is_xception())) {
-          dval = render_const_value(t, field.default_value());
-        } else {
-          dval = render_default_value(t);
-        }
-
-        // result structs only contain fields: success and e.
-        // success is whatever type the method returns, but must be nullable
-        // regardless, since if there is an exception we expect it to be null
-        bool nullable =
-            (is_result || field_is_nullable(tstruct, &field, dval) ||
-             nullable_everything_);
-        typehint = (nullable ? "?" : "") + typehint;
-        adapter_fields_with_generic_type_.emplace(
-            adapter_name, *generic_type, typehint);
-      } else {
-        adapter_fields_.emplace(adapter_name, typehint);
-      }
-    }
-  }
-
-  if (adapter_fields_.empty() && adapter_fields_with_generic_type_.empty()) {
-    return;
-  }
-
-  indent(out)
-      << "private static function __hackExperimentalAdapterTypeChecks()[]: void{\n ";
-  indent_up();
-  for (const auto& [adapter_name, typehint] : adapter_fields_) {
-    indent(out) << "\\ThriftUtil::requireSameType<" << adapter_name
-                << "::TThriftType, " << typehint << ">();\n";
-  }
-  out << "\n";
-
-  for (const auto& [adapter_name, adapter_generic_type, typehint] :
-       adapter_fields_with_generic_type_) {
-    indent(out) << "(new \\ThriftAdapterVerifier<" << typehint << ", "
-                << adapter_generic_type << "<" << typehint
-                << ">>())->requireSameReturnType(" << adapter_name
-                << "::fromThrift<" << typehint << ">," << adapter_name
-                << "::toThrift<" << typehint << ">);\n";
   }
   indent_down();
   indent(out) << "}\n\n";
