@@ -29,16 +29,10 @@ class VersioningTest : public TestSetup {
   void SetUp() override {
     // Setup two servers, for VersionOld and VersionNew
     handlerOld_ = std::make_shared<StrictMock<OldServiceMock>>();
-    serverOld_ = createServer(
-        std::make_shared<ThriftServerAsyncProcessorFactory<OldServiceMock>>(
-            handlerOld_),
-        portOld_);
+    serverOld_ = createServer(handlerOld_, portOld_);
 
     handlerNew_ = std::make_shared<StrictMock<NewServiceMock>>();
-    serverNew_ = createServer(
-        std::make_shared<ThriftServerAsyncProcessorFactory<NewServiceMock>>(
-            handlerNew_),
-        portNew_);
+    serverNew_ = createServer(handlerNew_, portNew_);
   }
 
   void TearDown() override {

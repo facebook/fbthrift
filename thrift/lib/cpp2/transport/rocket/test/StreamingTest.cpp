@@ -59,10 +59,7 @@ class StreamingTest : public TestSetup {
  protected:
   void SetUp() override {
     handler_ = std::make_shared<StrictMock<TestStreamServiceMock>>();
-    server_ = createServer(
-        std::make_shared<
-            ThriftServerAsyncProcessorFactory<TestStreamServiceMock>>(handler_),
-        port_);
+    server_ = createServer(handler_, port_);
   }
 
   void TearDown() override {
@@ -956,10 +953,7 @@ TEST_F(StreamingTest, ServerCompletesFirstResponseAfterClientTimeout) {
   // recreate server with one worker thread for server to make sure leak check
   // only happen after sync_leakCheckWithSleep's handler code returns.
   numWorkerThreads_ = 1;
-  server_ = createServer(
-      std::make_shared<
-          ThriftServerAsyncProcessorFactory<TestStreamServiceMock>>(handler_),
-      port_);
+  server_ = createServer(handler_, port_);
   folly::EventBase evb;
 
   auto makeChannel = [&] {
@@ -1000,6 +994,7 @@ TEST_F(StreamingTest, CloseClientWithMultipleActiveStreams) {
 }
 
 TEST_F(StreamingTest, SetMaxRequests) {
+  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* setMaxRequests concurency controller doesn't extend to stream end yet */);
   server_->setMaxRequests(2);
   connectToServer([&](std::unique_ptr<StreamServiceAsyncClient> client) {
     apache::thrift::RpcOptions rpcOptions;
@@ -1018,6 +1013,7 @@ TEST_F(StreamingTest, SetMaxRequests) {
 }
 
 TEST_F(StreamingTest, SetMaxRequestsStreamCancel) {
+  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* setMaxRequests concurency controller doesn't extend to stream end yet */);
   server_->setMaxRequests(2);
   connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
     apache::thrift::RpcOptions rpcOptions;
