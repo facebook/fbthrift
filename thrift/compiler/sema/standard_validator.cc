@@ -47,8 +47,8 @@ namespace {
 
 constexpr auto kCppRefUri = "facebook.com/thrift/annotation/cpp/Ref";
 constexpr auto kCppAdapterUri = "facebook.com/thrift/annotation/cpp/Adapter";
-constexpr auto kHackAdapterUri =
-    "facebook.com/thrift/annotation/hack/ExperimentalAdapter";
+constexpr auto kHackWrapperUri =
+    "facebook.com/thrift/annotation/hack/FieldWrapper";
 
 const t_structured* get_mixin_type(const t_field& field) {
   if (cpp2::is_mixin(field)) {
@@ -501,14 +501,14 @@ void validate_adapter_annotation(diagnostic_context& ctx, const t_field& node) {
 
 void validate_hack_adapter_annotation(
     diagnostic_context& ctx, const t_field& node) {
-  const t_const* field_adapter_annotation =
-      node.find_structured_annotation_or_null(kHackAdapterUri);
+  const t_const* field_wrapper =
+      node.find_structured_annotation_or_null(kHackWrapperUri);
 
-  if (field_adapter_annotation &&
+  if (field_wrapper &&
       t_typedef::get_first_annotation_or_null(
           &*node.type(), {"hack.adapter"})) {
     ctx.failure([&](auto& o) {
-      o << "`@hack.ExperimentalAdapter` cannot be combined with "
+      o << "`@hack.FieldWrapper` cannot be combined with "
            "`hack_adapter` in `"
         << node.name() << "`.";
     });

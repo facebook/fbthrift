@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,23 +18,15 @@ include "thrift/annotation/hack.thrift"
 include "thrift/annotation/meta.thrift"
 
 @meta.Transitive
-@hack.ExperimentalAdapter{
-  name = "\MyFieldAdapter",
-  adapted_generic_type = "\MyFieldWrapper",
-}
+@hack.FieldWrapper{name = "\MyFieldWrapper"}
 struct AnnotaionStruct {}
 
 struct MyStruct {
-  @hack.ExperimentalAdapter{
-    name = "\MyFieldAdapter",
-    adapted_generic_type = "\MyFieldWrapper",
-  }
+  @hack.FieldWrapper{name = "\MyFieldWrapper"}
   1: i64 wrapped_field;
   @AnnotaionStruct
   2: i64 annotated_field;
   3: i64 (hack.adapter = "\MyAdapter") adapted_type;
-  @hack.ExperimentalAdapter{name = "\MyFieldAdapter"}
-  4: i64 adapted_field;
 }
 
 union MyUnion {

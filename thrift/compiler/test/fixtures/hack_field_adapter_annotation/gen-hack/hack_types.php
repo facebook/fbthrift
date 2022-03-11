@@ -10,9 +10,9 @@ namespace facebook_thrift_annotation;
 
 /**
  * Original thrift struct:-
- * ExperimentalAdapter
+ * FieldWrapper
  */
-class ExperimentalAdapter implements \IThriftStruct, \IThriftShapishStruct {
+class FieldWrapper implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -20,40 +20,27 @@ class ExperimentalAdapter implements \IThriftStruct, \IThriftShapishStruct {
       'var' => 'name',
       'type' => \TType::STRING,
     ),
-    2 => shape(
-      'var' => 'adapted_generic_type',
-      'type' => \TType::STRING,
-    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'name' => 1,
-    'adapted_generic_type' => 2,
   ];
 
   const type TConstructorShape = shape(
     ?'name' => ?string,
-    ?'adapted_generic_type' => ?string,
   );
 
   const type TShape = shape(
     'name' => string,
-    ?'adapted_generic_type' => ?string,
   );
-  const int STRUCTURAL_ID = 2943979090244161490;
+  const int STRUCTURAL_ID = 2593878277785201336;
   /**
    * Original thrift field:-
    * 1: string name
    */
   public string $name;
-  /**
-   * Original thrift field:-
-   * 2: string adapted_generic_type
-   */
-  public ?string $adapted_generic_type;
 
-  public function __construct(?string $name = null, ?string $adapted_generic_type = null  )[] {
+  public function __construct(?string $name = null  )[] {
     $this->name = $name ?? '';
-    $this->adapted_generic_type = $adapted_generic_type;
   }
 
   public static function withDefaultValues()[]: this {
@@ -63,18 +50,17 @@ class ExperimentalAdapter implements \IThriftStruct, \IThriftShapishStruct {
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'name'),
-      Shapes::idx($shape, 'adapted_generic_type'),
     );
   }
 
   public function getName()[]: string {
-    return 'ExperimentalAdapter';
+    return 'FieldWrapper';
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
     return \tmeta_ThriftStruct::fromShape(
       shape(
-        "name" => "hack.ExperimentalAdapter",
+        "name" => "hack.FieldWrapper",
         "fields" => vec[
           \tmeta_ThriftField::fromShape(
             shape(
@@ -85,18 +71,6 @@ class ExperimentalAdapter implements \IThriftStruct, \IThriftShapishStruct {
                 )
               ),
               "name" => "name",
-            )
-          ),
-          \tmeta_ThriftField::fromShape(
-            shape(
-              "id" => 2,
-              "type" => \tmeta_ThriftType::fromShape(
-                shape(
-                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
-                )
-              ),
-              "name" => "adapted_generic_type",
-              "is_optional" => true,
             )
           ),
         ],
@@ -121,14 +95,12 @@ class ExperimentalAdapter implements \IThriftStruct, \IThriftShapishStruct {
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['name'],
-      Shapes::idx($shape, 'adapted_generic_type'),
     );
   }
 
   public function __toShape()[]: self::TShape {
     return shape(
       'name' => $this->name,
-      'adapted_generic_type' => $this->adapted_generic_type,
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -144,9 +116,6 @@ class ExperimentalAdapter implements \IThriftStruct, \IThriftShapishStruct {
 
     if (idx($parsed, 'name') !== null) {
       $this->name = /* HH_FIXME[4110] */ $parsed['name'];
-    }    
-    if (idx($parsed, 'adapted_generic_type') !== null) {
-      $this->adapted_generic_type = /* HH_FIXME[4110] */ $parsed['adapted_generic_type'];
     }    
   }
 

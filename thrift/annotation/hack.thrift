@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,15 +22,12 @@ namespace hack facebook_thrift_annotation
 // For example:
 //
 //   struct User {
-//     @hack.ExperimentalAdapter{name="MyAdapter", adapted_generic_type="MyWrapper"}
+//     @hack.FieldWrapper{name="MyWrapper"}
 //     1: i64 id;
 //   }
 //
 @scope.Field
-struct ExperimentalAdapter {
-  // The name of a Hack adapter class used to convert between Thrift and native
-  // Hack representation.
+struct FieldWrapper {
+  // The name of a Hack wrapper class used to wrap the field
   1: string name;
-  // The name of a Hack generic class used as adapted type
-  2: optional string adapted_generic_type;
-} (thrift.uri = "facebook.com/thrift/annotation/hack/ExperimentalAdapter")
+} (thrift.uri = "facebook.com/thrift/annotation/hack/FieldWrapper")
