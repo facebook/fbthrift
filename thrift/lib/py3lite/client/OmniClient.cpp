@@ -123,26 +123,25 @@ void OmniClient::oneway_send(
     const std::string& functionName,
     std::unique_ptr<folly::IOBuf> args,
     const std::unordered_map<std::string, std::string>& headers) {
-  // service name is not used in oneway calls (yet?), but accepting the param
-  // for API consistency
-  (void)serviceName;
-
   RpcOptions rpcOpts;
-  auto header = std::make_shared<apache::thrift::transport::THeader>();
-  header->setProtocolId(channel_->getProtocolId());
   for (const auto& entry : headers) {
     rpcOpts.setWriteHeader(entry.first, entry.second);
-    header->setHeader(entry.first, entry.second);
   }
 
-  SerializedRequest serializedRequest(std::move(args));
+  auto serviceAndFunction =
+      std::make_unique<std::pair<std::string, std::string>>(
+          serviceName, fmt::format("{}.{}", serviceName, functionName));
 
-  channel_->sendRequestNoResponse(
-      std::move(rpcOpts),
+  auto callbackAndFuture = makeOneWaySemiFutureCallback(channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  sendImpl(
+      rpcOpts,
       functionName,
-      std::move(serializedRequest),
-      std::move(header),
-      nullptr);
+      std::move(args),
+      serviceAndFunction->first.c_str(),
+      serviceAndFunction->second.c_str(),
+      std::move(callback),
+      RpcKind::SINGLE_REQUEST_NO_RESPONSE);
 }
 
 void OmniClient::oneway_send(
@@ -261,9 +260,16 @@ void OmniClient::sendImpl(
         std::move(header),
         createSinkClientCallback(toRequestClientCallbackPtr(
             std::move(callback), std::move(callbackContext))));
+  } else if (rpcKind == RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
+    callbackContext.oneWay = true;
+    channel_->sendRequestAsync<RpcKind::SINGLE_REQUEST_NO_RESPONSE>(
+        std::move(rpcOptions),
+        functionName,
+        std::move(serializedRequest),
+        std::move(header),
+        toRequestClientCallbackPtr(
+            std::move(callback), std::move(callbackContext)));
   } else {
-    // At the moment, we are only either sending SINGLE_REQUEST_SINGLE_RESPONSE
-    // or SINK. Add case for SINGLE_REQUEST_STREAMING_RESPONSE when needed.
     channel_->sendRequestAsync<RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE>(
         std::move(rpcOptions),
         functionName,

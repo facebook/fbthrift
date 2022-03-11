@@ -74,6 +74,14 @@ class SyncClientTests(unittest.TestCase):
                 self.assertIsNone(client.oneway())
                 time.sleep(1)  # wait for server to clear the queue
 
+    def test_oneway_with_rocket(self) -> None:
+        with server_in_another_process() as path:
+            with get_sync_client(
+                TestService, path=path, client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE
+            ) as client:
+                self.assertIsNone(client.oneway())
+                time.sleep(1)  # wait for server to clear the queue
+
     def test_unexpected_exception(self) -> None:
         with server_in_another_process() as path:
             with get_sync_client(TestService, path=path) as client:

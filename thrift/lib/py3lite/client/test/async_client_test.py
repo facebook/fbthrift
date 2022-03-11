@@ -79,6 +79,18 @@ class AsyncClientTests(TestCase):
                 self.assertIsNone(res)
                 await asyncio.sleep(1)  # wait for server to clear the queue
 
+    async def test_oneway_with_rocket(self) -> None:
+        async with server_in_event_loop() as addr:
+            async with get_client(
+                TestService,
+                host=addr.ip,
+                port=addr.port,
+                client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
+            ) as client:
+                res = await client.oneway()
+                self.assertIsNone(res)
+                await asyncio.sleep(1)  # wait for server to clear the queue
+
     async def test_unexpected_exception(self) -> None:
         async with server_in_event_loop() as addr:
             async with get_client(TestService, host=addr.ip, port=addr.port) as client:
