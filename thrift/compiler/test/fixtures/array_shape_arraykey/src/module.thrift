@@ -27,7 +27,6 @@ struct B {
   1: map<string, string> map_of_string_to_string;
   2: map<string, i32> map_of_string_to_i32;
   3: map<string, A> map_of_string_to_A;
-  4: map<string, B> map_of_string_to_self;
   5: map<string, list<A>> map_of_string_to_list_of_A;
   6: map<string, map<string, i32>> map_of_string_to_map_of_string_to_i32;
   7: map<string, map<string, A>> map_of_string_to_map_of_string_to_A;
@@ -36,8 +35,6 @@ struct B {
 
   10: list<string> list_of_string;
   11: list<i32> list_of_i32;
-  12: list<B> list_of_self;
-  13: list<list<B>> list_of_list_of_self;
   14: list<set<i32>> list_of_set_of_i32;
   15: list<map<string, list<A>>> list_of_map_of_string_to_list_of_A;
   16: list<map<string, A>> list_of_map_of_string_to_A;
@@ -49,8 +46,6 @@ struct B {
 struct C {
   1: optional A just_an_A;
   2: optional Enum just_an_enum;
-  3: optional C optional_sef;
-
   4: optional map<string, string> map_of_string_to_string;
   5: optional map<string, i32> map_of_string_to_i32;
   6: optional map<string, A> map_of_string_to_A;
@@ -66,8 +61,6 @@ struct C {
 
   13: optional list<string> list_of_string;
   14: optional list<map<string, A>> list_of_map_of_string_to_A;
-  15: optional list<B> list_of_self;
-  16: optional list<list<B>> list_of_list_of_self;
   17: optional list<map<string, list<A>>> list_of_map_of_string_to_list_of_A;
   18: optional list<i32> list_of_i32;
   19: optional map<string, list<string>> map_of_string_to_list_of_string;

@@ -39,8 +39,6 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
         @com.facebook.swift.codec.ThriftField(value=12, name="list_of_set_of_i32", requiredness=Requiredness.NONE) final List<Set<Integer>> listOfSetOfI32,
         @com.facebook.swift.codec.ThriftField(value=13, name="list_of_map_of_string_to_list_of_A", requiredness=Requiredness.NONE) final List<Map<String, List<test.fixtures.shapes.A>>> listOfMapOfStringToListOfA,
         @com.facebook.swift.codec.ThriftField(value=14, name="list_of_map_of_string_to_A", requiredness=Requiredness.NONE) final List<Map<String, test.fixtures.shapes.A>> listOfMapOfStringToA,
-        @com.facebook.swift.codec.ThriftField(value=15, name="list_of_self", requiredness=Requiredness.NONE) final List<test.fixtures.shapes.B> listOfSelf,
-        @com.facebook.swift.codec.ThriftField(value=16, name="map_of_string_to_self", requiredness=Requiredness.NONE) final Map<String, test.fixtures.shapes.B> mapOfStringToSelf,
         @com.facebook.swift.codec.ThriftField(value=17, name="just_an_enum", requiredness=Requiredness.NONE) final test.fixtures.shapes.Enum justAnEnum,
         @com.facebook.swift.codec.ThriftField(value=18, name="just_a_union", requiredness=Requiredness.NONE) final test.fixtures.shapes.Union justAUnion,
         @com.facebook.swift.codec.ThriftField(value=51, name="optional_just_an_A", requiredness=Requiredness.OPTIONAL) final test.fixtures.shapes.A optionalJustAnA,
@@ -78,8 +76,6 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
         this.listOfSetOfI32 = listOfSetOfI32;
         this.listOfMapOfStringToListOfA = listOfMapOfStringToListOfA;
         this.listOfMapOfStringToA = listOfMapOfStringToA;
-        this.listOfSelf = listOfSelf;
-        this.mapOfStringToSelf = mapOfStringToSelf;
         this.justAnEnum = justAnEnum;
         this.justAUnion = justAUnion;
         this.optionalJustAnA = optionalJustAnA;
@@ -120,8 +116,6 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       this.listOfSetOfI32 = null;
       this.listOfMapOfStringToListOfA = null;
       this.listOfMapOfStringToA = null;
-      this.listOfSelf = null;
-      this.mapOfStringToSelf = null;
       this.justAnEnum = test.fixtures.shapes.Enum.fromInteger(0);
       this.justAUnion = null;
       this.optionalJustAnA = null;
@@ -183,8 +177,6 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
         private List<Set<Integer>> listOfSetOfI32 = null;
         private List<Map<String, List<test.fixtures.shapes.A>>> listOfMapOfStringToListOfA = null;
         private List<Map<String, test.fixtures.shapes.A>> listOfMapOfStringToA = null;
-        private List<test.fixtures.shapes.B> listOfSelf = null;
-        private Map<String, test.fixtures.shapes.B> mapOfStringToSelf = null;
         private test.fixtures.shapes.Enum justAnEnum = test.fixtures.shapes.Enum.fromInteger(0);
         private test.fixtures.shapes.Union justAUnion = null;
         private test.fixtures.shapes.A optionalJustAnA = null;
@@ -340,22 +332,6 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
         }
     
         public List<Map<String, test.fixtures.shapes.A>> getListOfMapOfStringToA() { return listOfMapOfStringToA; }
-    
-            @com.facebook.swift.codec.ThriftField(value=15, name="list_of_self", requiredness=Requiredness.NONE)
-        public Builder setListOfSelf(List<test.fixtures.shapes.B> listOfSelf) {
-            this.listOfSelf = listOfSelf;
-            return this;
-        }
-    
-        public List<test.fixtures.shapes.B> getListOfSelf() { return listOfSelf; }
-    
-            @com.facebook.swift.codec.ThriftField(value=16, name="map_of_string_to_self", requiredness=Requiredness.NONE)
-        public Builder setMapOfStringToSelf(Map<String, test.fixtures.shapes.B> mapOfStringToSelf) {
-            this.mapOfStringToSelf = mapOfStringToSelf;
-            return this;
-        }
-    
-        public Map<String, test.fixtures.shapes.B> getMapOfStringToSelf() { return mapOfStringToSelf; }
     
             @com.facebook.swift.codec.ThriftField(value=17, name="just_an_enum", requiredness=Requiredness.NONE)
         public Builder setJustAnEnum(test.fixtures.shapes.Enum justAnEnum) {
@@ -549,8 +525,6 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             this.listOfSetOfI32 = other.listOfSetOfI32;
             this.listOfMapOfStringToListOfA = other.listOfMapOfStringToListOfA;
             this.listOfMapOfStringToA = other.listOfMapOfStringToA;
-            this.listOfSelf = other.listOfSelf;
-            this.mapOfStringToSelf = other.mapOfStringToSelf;
             this.justAnEnum = other.justAnEnum;
             this.justAUnion = other.justAUnion;
             this.optionalJustAnA = other.optionalJustAnA;
@@ -592,8 +566,6 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                 this.listOfSetOfI32,
                 this.listOfMapOfStringToListOfA,
                 this.listOfMapOfStringToA,
-                this.listOfSelf,
-                this.mapOfStringToSelf,
                 this.justAnEnum,
                 this.justAUnion,
                 this.optionalJustAnA,
@@ -666,12 +638,6 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
         private final List<Map<String, test.fixtures.shapes.A>> listOfMapOfStringToA;
     public static final int _LIST_OF_MAP_OF_STRING_TO_A = 14;
     private static final TField LIST_OF_MAP_OF_STRING_TO__A_FIELD_DESC = new TField("list_of_map_of_string_to_A", TType.LIST, (short)14);
-        private final List<test.fixtures.shapes.B> listOfSelf;
-    public static final int _LIST_OF_SELF = 15;
-    private static final TField LIST_OF_SELF_FIELD_DESC = new TField("list_of_self", TType.LIST, (short)15);
-        private final Map<String, test.fixtures.shapes.B> mapOfStringToSelf;
-    public static final int _MAP_OF_STRING_TO_SELF = 16;
-    private static final TField MAP_OF_STRING_TO_SELF_FIELD_DESC = new TField("map_of_string_to_self", TType.MAP, (short)16);
         private final test.fixtures.shapes.Enum justAnEnum;
     public static final int _JUST_AN_ENUM = 17;
     private static final TField JUST_AN_ENUM_FIELD_DESC = new TField("just_an_enum", TType.I32, (short)17);
@@ -767,10 +733,6 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       FIELD_METADATA.put(13, LIST_OF_MAP_OF_STRING_TO_LIST_OF__A_FIELD_DESC);
       NAMES_TO_IDS.put("listOfMapOfStringToA", 14);
       FIELD_METADATA.put(14, LIST_OF_MAP_OF_STRING_TO__A_FIELD_DESC);
-      NAMES_TO_IDS.put("listOfSelf", 15);
-      FIELD_METADATA.put(15, LIST_OF_SELF_FIELD_DESC);
-      NAMES_TO_IDS.put("mapOfStringToSelf", 16);
-      FIELD_METADATA.put(16, MAP_OF_STRING_TO_SELF_FIELD_DESC);
       NAMES_TO_IDS.put("justAnEnum", 17);
       FIELD_METADATA.put(17, JUST_AN_ENUM_FIELD_DESC);
       NAMES_TO_IDS.put("justAUnion", 18);
@@ -885,16 +847,6 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=14, name="list_of_map_of_string_to_A", requiredness=Requiredness.NONE)
     public List<Map<String, test.fixtures.shapes.A>> getListOfMapOfStringToA() { return listOfMapOfStringToA; }
-    
-    
-    @Nullable
-    @com.facebook.swift.codec.ThriftField(value=15, name="list_of_self", requiredness=Requiredness.NONE)
-    public List<test.fixtures.shapes.B> getListOfSelf() { return listOfSelf; }
-    
-    
-    @Nullable
-    @com.facebook.swift.codec.ThriftField(value=16, name="map_of_string_to_self", requiredness=Requiredness.NONE)
-    public Map<String, test.fixtures.shapes.B> getMapOfStringToSelf() { return mapOfStringToSelf; }
     
     
     @Nullable
@@ -1023,8 +975,6 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
         helper.add("listOfSetOfI32", listOfSetOfI32);
         helper.add("listOfMapOfStringToListOfA", listOfMapOfStringToListOfA);
         helper.add("listOfMapOfStringToA", listOfMapOfStringToA);
-        helper.add("listOfSelf", listOfSelf);
-        helper.add("mapOfStringToSelf", mapOfStringToSelf);
         helper.add("justAnEnum", justAnEnum);
         helper.add("justAUnion", justAUnion);
         helper.add("optionalJustAnA", optionalJustAnA);
@@ -1076,8 +1026,6 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             Objects.equals(listOfSetOfI32, other.listOfSetOfI32) &&
             Objects.equals(listOfMapOfStringToListOfA, other.listOfMapOfStringToListOfA) &&
             Objects.equals(listOfMapOfStringToA, other.listOfMapOfStringToA) &&
-            Objects.equals(listOfSelf, other.listOfSelf) &&
-            Objects.equals(mapOfStringToSelf, other.mapOfStringToSelf) &&
             Objects.equals(justAnEnum, other.justAnEnum) &&
             Objects.equals(justAUnion, other.justAUnion) &&
             Objects.equals(optionalJustAnA, other.optionalJustAnA) &&
@@ -1120,8 +1068,6 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             listOfSetOfI32,
             listOfMapOfStringToListOfA,
             listOfMapOfStringToA,
-            listOfSelf,
-            mapOfStringToSelf,
             justAnEnum,
             justAUnion,
             optionalJustAnA,
@@ -1546,43 +1492,6 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             oprot.readListEnd();
             }
             builder.setListOfMapOfStringToA(listOfMapOfStringToA);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _LIST_OF_SELF:
-          if (__field.type == TType.LIST) {
-            List<test.fixtures.shapes.B> listOfSelf;
-            {
-            TList _list = oprot.readListBegin();
-            listOfSelf = new ArrayList<test.fixtures.shapes.B>(Math.max(0, _list.size));
-            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
-                
-                test.fixtures.shapes.B _value1 = test.fixtures.shapes.B.read0(oprot);
-                listOfSelf.add(_value1);
-            }
-            oprot.readListEnd();
-            }
-            builder.setListOfSelf(listOfSelf);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
-        case _MAP_OF_STRING_TO_SELF:
-          if (__field.type == TType.MAP) {
-            Map<String, test.fixtures.shapes.B> mapOfStringToSelf;
-            {
-            TMap _map = oprot.readMapBegin();
-            mapOfStringToSelf = new HashMap<String, test.fixtures.shapes.B>(Math.max(0, _map.size));
-            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
-                
-                String _key1 = oprot.readString();
-                test.fixtures.shapes.B _value1 = test.fixtures.shapes.B.read0(oprot);
-                mapOfStringToSelf.put(_key1, _value1);
-            }
-            }
-            oprot.readMapEnd();
-            builder.setMapOfStringToSelf(mapOfStringToSelf);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
@@ -2144,27 +2053,6 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
         oprot.writeMapEnd();
         }
         oprot.writeListEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.listOfSelf != null) {
-        oprot.writeFieldBegin(LIST_OF_SELF_FIELD_DESC);
-        List<test.fixtures.shapes.B> _iter0 = this.listOfSelf;
-        oprot.writeListBegin(new TList(TType.STRUCT, _iter0.size()));
-        for (test.fixtures.shapes.B _iter1 : _iter0) {
-          _iter1.write0(oprot);
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.mapOfStringToSelf != null) {
-        oprot.writeFieldBegin(MAP_OF_STRING_TO_SELF_FIELD_DESC);
-        Map<String, test.fixtures.shapes.B> _iter0 = this.mapOfStringToSelf;
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.STRUCT, _iter0.size()));
-        for (Map.Entry<String, test.fixtures.shapes.B> _iter1 : _iter0.entrySet()) {
-          oprot.writeString(_iter1.getKey());
-          _iter1.getValue().write0(oprot);
-        }
-        oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
       oprot.writeFieldBegin(JUST_AN_ENUM_FIELD_DESC);

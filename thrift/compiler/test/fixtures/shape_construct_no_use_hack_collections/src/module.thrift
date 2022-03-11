@@ -39,10 +39,8 @@ struct Foo {
 struct TestStruct {
   1: Foo foo_struct = {"c": 99};
   2: TestUnion union_value;
-  3: TestStruct struct_of_self;
   4: list<Foo> list_of_struct_foo;
   5: map<string, Foo> map_of_string_to_struct_foo;
-  6: list<TestStruct> list_of_struct_self;
 }
 
 exception Baz {

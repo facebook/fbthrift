@@ -15,7 +15,7 @@ interface ServiceAsyncIf extends \IThriftAsyncIf {
    * Original thrift definition:-
    * i32
    *   func(1: string arg1,
-   *        2: MyStruct arg2);
+   *        2: include.MyStruct arg2);
    */
   public function func(string $arg1, ?MyStruct $arg2): Awaitable<int>;
 }
@@ -29,7 +29,7 @@ interface ServiceIf extends \IThriftSyncIf {
    * Original thrift definition:-
    * i32
    *   func(1: string arg1,
-   *        2: MyStruct arg2);
+   *        2: include.MyStruct arg2);
    */
   public function func(string $arg1, ?MyStruct $arg2): int;
 }
@@ -50,7 +50,7 @@ interface ServiceClientIf extends \IThriftSyncIf {
    * Original thrift definition:-
    * i32
    *   func(1: string arg1,
-   *        2: MyStruct arg2);
+   *        2: include.MyStruct arg2);
    */
   public function func(string $arg1, ?MyStruct $arg2): Awaitable<int>;
 }
@@ -173,7 +173,7 @@ class ServiceAsyncClient extends \ThriftClientBase implements ServiceAsyncClient
    * Original thrift definition:-
    * i32
    *   func(1: string arg1,
-   *        2: MyStruct arg2);
+   *        2: include.MyStruct arg2);
    */
   public async function func(string $arg1, ?MyStruct $arg2): Awaitable<int> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
@@ -209,7 +209,7 @@ class ServiceClient extends \ThriftClientBase implements ServiceClientIf {
    * Original thrift definition:-
    * i32
    *   func(1: string arg1,
-   *        2: MyStruct arg2);
+   *        2: include.MyStruct arg2);
    */
   public async function func(string $arg1, ?MyStruct $arg2): Awaitable<int> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
@@ -247,7 +247,7 @@ class ServiceClient extends \ThriftClientBase implements ServiceClientIf {
 
 // HELPER FUNCTIONS AND STRUCTURES
 
-class Service_func_args implements \IThriftStruct, \IThriftShapishStruct {
+class Service_func_args implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -271,10 +271,6 @@ class Service_func_args implements \IThriftStruct, \IThriftShapishStruct {
     ?'arg2' => ?MyStruct,
   );
 
-  const type TShape = shape(
-    'arg1' => string,
-    ?'arg2' => ?MyStruct::TShape,
-  );
   const int STRUCTURAL_ID = 6560600906529955702;
   public string $arg1;
   public ?MyStruct $arg2;
@@ -322,7 +318,7 @@ class Service_func_args implements \IThriftStruct, \IThriftShapishStruct {
                 shape(
                   "t_struct" => tmeta_ThriftStructType::fromShape(
                     shape(
-                      "name" => "module.MyStruct",
+                      "name" => "include.MyStruct",
                     )
                   ),
                 )
@@ -344,19 +340,6 @@ class Service_func_args implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  public static function __fromShape(self::TShape $shape)[]: this {
-    return new static(
-      $shape['arg1'],
-      Shapes::idx($shape, 'arg2') === null ? null : (MyStruct::__fromShape($shape['arg2'])),
-    );
-  }
-
-  public function __toShape()[]: self::TShape {
-    return shape(
-      'arg1' => $this->arg1,
-      'arg2' => $this->arg2?->__toShape(),
-    );
-  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -504,7 +487,7 @@ class ServiceStaticMetadata implements \IThriftServiceStaticMetadata {
                       shape(
                         "t_struct" => tmeta_ThriftStructType::fromShape(
                           shape(
-                            "name" => "module.MyStruct",
+                            "name" => "include.MyStruct",
                           )
                         ),
                       )
@@ -538,7 +521,8 @@ class ServiceStaticMetadata implements \IThriftServiceStaticMetadata {
             'enums' => dict[
             ],
             'structs' => dict[
-              'module.MyStruct' => MyStruct::getStructMetadata(),
+              'include.MyStruct' => MyStruct::getStructMetadata(),
+              'include.MyNestedStruct' => MyNestedStruct::getStructMetadata(),
             ],
             'exceptions' => dict[
             ],

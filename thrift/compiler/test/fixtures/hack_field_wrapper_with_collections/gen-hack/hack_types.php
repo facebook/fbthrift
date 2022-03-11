@@ -92,6 +92,14 @@ class FieldWrapper implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
+  public static function __stringifyMapKeys<T>(Map<arraykey, T> $m)[]: Map<string, T> {
+    $new = dict[];
+    foreach ($m as $k => $v) {
+      $new[(string)$k] = $v;
+    }
+    return new Map($new);
+  }
+
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['name'],

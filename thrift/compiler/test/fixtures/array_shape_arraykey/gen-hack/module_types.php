@@ -215,20 +215,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       ),
       'format' => 'harray',
     ),
-    4 => shape(
-      'var' => 'map_of_string_to_self',
-      'type' => \TType::MAP,
-      'ktype' => \TType::STRING,
-      'vtype' => \TType::STRUCT,
-      'key' => shape(
-        'type' => \TType::STRING,
-      ),
-      'val' => shape(
-        'type' => \TType::STRUCT,
-        'class' => B::class,
-      ),
-      'format' => 'harray',
-    ),
     5 => shape(
       'var' => 'map_of_string_to_list_of_A',
       'type' => \TType::MAP,
@@ -347,31 +333,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       ),
       'format' => 'harray',
     ),
-    12 => shape(
-      'var' => 'list_of_self',
-      'type' => \TType::LST,
-      'etype' => \TType::STRUCT,
-      'elem' => shape(
-        'type' => \TType::STRUCT,
-        'class' => B::class,
-      ),
-      'format' => 'harray',
-    ),
-    13 => shape(
-      'var' => 'list_of_list_of_self',
-      'type' => \TType::LST,
-      'etype' => \TType::LST,
-      'elem' => shape(
-        'type' => \TType::LST,
-        'etype' => \TType::STRUCT,
-        'elem' => shape(
-          'type' => \TType::STRUCT,
-          'class' => B::class,
-        ),
-        'format' => 'harray',
-      ),
-      'format' => 'harray',
-    ),
     14 => shape(
       'var' => 'list_of_set_of_i32',
       'type' => \TType::LST,
@@ -452,7 +413,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     'map_of_string_to_string' => 1,
     'map_of_string_to_i32' => 2,
     'map_of_string_to_A' => 3,
-    'map_of_string_to_self' => 4,
     'map_of_string_to_list_of_A' => 5,
     'map_of_string_to_map_of_string_to_i32' => 6,
     'map_of_string_to_map_of_string_to_A' => 7,
@@ -460,8 +420,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     'map_of_string_to_set_of_i32' => 9,
     'list_of_string' => 10,
     'list_of_i32' => 11,
-    'list_of_self' => 12,
-    'list_of_list_of_self' => 13,
     'list_of_set_of_i32' => 14,
     'list_of_map_of_string_to_list_of_A' => 15,
     'list_of_map_of_string_to_A' => 16,
@@ -473,7 +431,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     ?'map_of_string_to_string' => ?dict<string, string>,
     ?'map_of_string_to_i32' => ?dict<string, int>,
     ?'map_of_string_to_A' => ?dict<string, A>,
-    ?'map_of_string_to_self' => ?dict<string, B>,
     ?'map_of_string_to_list_of_A' => ?dict<string, vec<A>>,
     ?'map_of_string_to_map_of_string_to_i32' => ?dict<string, dict<string, int>>,
     ?'map_of_string_to_map_of_string_to_A' => ?dict<string, dict<string, A>>,
@@ -481,8 +438,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     ?'map_of_string_to_set_of_i32' => ?dict<string, keyset<int>>,
     ?'list_of_string' => ?vec<string>,
     ?'list_of_i32' => ?vec<int>,
-    ?'list_of_self' => ?vec<B>,
-    ?'list_of_list_of_self' => ?vec<vec<B>>,
     ?'list_of_set_of_i32' => ?vec<keyset<int>>,
     ?'list_of_map_of_string_to_list_of_A' => ?vec<dict<string, vec<A>>>,
     ?'list_of_map_of_string_to_A' => ?vec<dict<string, A>>,
@@ -494,7 +449,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     'map_of_string_to_string' => dict<arraykey, string>,
     'map_of_string_to_i32' => dict<arraykey, int>,
     'map_of_string_to_A' => dict<arraykey, A::TShape>,
-    'map_of_string_to_self' => dict<arraykey, B::TShape>,
     'map_of_string_to_list_of_A' => dict<arraykey, vec<A::TShape>>,
     'map_of_string_to_map_of_string_to_i32' => dict<arraykey, dict<arraykey, int>>,
     'map_of_string_to_map_of_string_to_A' => dict<arraykey, dict<arraykey, A::TShape>>,
@@ -502,15 +456,13 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     'map_of_string_to_set_of_i32' => dict<arraykey, keyset<int>>,
     'list_of_string' => vec<string>,
     'list_of_i32' => vec<int>,
-    'list_of_self' => vec<B::TShape>,
-    'list_of_list_of_self' => vec<vec<B::TShape>>,
     'list_of_set_of_i32' => vec<keyset<int>>,
     'list_of_map_of_string_to_list_of_A' => vec<dict<arraykey, vec<A::TShape>>>,
     'list_of_map_of_string_to_A' => vec<dict<arraykey, A::TShape>>,
     'set_of_i32' => keyset<int>,
     'set_of_string' => keyset<string>,
   );
-  const int STRUCTURAL_ID = 4431943889213326083;
+  const int STRUCTURAL_ID = 4382244206701168633;
   /**
    * Original thrift field:-
    * 1: map<string, string> map_of_string_to_string
@@ -526,11 +478,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
    * 3: map<string, struct module.A> map_of_string_to_A
    */
   public dict<string, A> $map_of_string_to_A;
-  /**
-   * Original thrift field:-
-   * 4: map<string, struct module.B> map_of_string_to_self
-   */
-  public dict<string, B> $map_of_string_to_self;
   /**
    * Original thrift field:-
    * 5: map<string, list<struct module.A>> map_of_string_to_list_of_A
@@ -568,16 +515,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
   public vec<int> $list_of_i32;
   /**
    * Original thrift field:-
-   * 12: list<struct module.B> list_of_self
-   */
-  public vec<B> $list_of_self;
-  /**
-   * Original thrift field:-
-   * 13: list<list<struct module.B>> list_of_list_of_self
-   */
-  public vec<vec<B>> $list_of_list_of_self;
-  /**
-   * Original thrift field:-
    * 14: list<set<i32>> list_of_set_of_i32
    */
   public vec<keyset<int>> $list_of_set_of_i32;
@@ -602,11 +539,10 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
    */
   public keyset<string> $set_of_string;
 
-  public function __construct(?dict<string, string> $map_of_string_to_string = null, ?dict<string, int> $map_of_string_to_i32 = null, ?dict<string, A> $map_of_string_to_A = null, ?dict<string, B> $map_of_string_to_self = null, ?dict<string, vec<A>> $map_of_string_to_list_of_A = null, ?dict<string, dict<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?dict<string, dict<string, A>> $map_of_string_to_map_of_string_to_A = null, ?dict<string, vec<int>> $map_of_string_to_list_of_i32 = null, ?dict<string, keyset<int>> $map_of_string_to_set_of_i32 = null, ?vec<string> $list_of_string = null, ?vec<int> $list_of_i32 = null, ?vec<B> $list_of_self = null, ?vec<vec<B>> $list_of_list_of_self = null, ?vec<keyset<int>> $list_of_set_of_i32 = null, ?vec<dict<string, vec<A>>> $list_of_map_of_string_to_list_of_A = null, ?vec<dict<string, A>> $list_of_map_of_string_to_A = null, ?keyset<int> $set_of_i32 = null, ?keyset<string> $set_of_string = null  )[] {
+  public function __construct(?dict<string, string> $map_of_string_to_string = null, ?dict<string, int> $map_of_string_to_i32 = null, ?dict<string, A> $map_of_string_to_A = null, ?dict<string, vec<A>> $map_of_string_to_list_of_A = null, ?dict<string, dict<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?dict<string, dict<string, A>> $map_of_string_to_map_of_string_to_A = null, ?dict<string, vec<int>> $map_of_string_to_list_of_i32 = null, ?dict<string, keyset<int>> $map_of_string_to_set_of_i32 = null, ?vec<string> $list_of_string = null, ?vec<int> $list_of_i32 = null, ?vec<keyset<int>> $list_of_set_of_i32 = null, ?vec<dict<string, vec<A>>> $list_of_map_of_string_to_list_of_A = null, ?vec<dict<string, A>> $list_of_map_of_string_to_A = null, ?keyset<int> $set_of_i32 = null, ?keyset<string> $set_of_string = null  )[] {
     $this->map_of_string_to_string = $map_of_string_to_string ?? dict[];
     $this->map_of_string_to_i32 = $map_of_string_to_i32 ?? dict[];
     $this->map_of_string_to_A = $map_of_string_to_A ?? dict[];
-    $this->map_of_string_to_self = $map_of_string_to_self ?? dict[];
     $this->map_of_string_to_list_of_A = $map_of_string_to_list_of_A ?? dict[];
     $this->map_of_string_to_map_of_string_to_i32 = $map_of_string_to_map_of_string_to_i32 ?? dict[];
     $this->map_of_string_to_map_of_string_to_A = $map_of_string_to_map_of_string_to_A ?? dict[];
@@ -614,8 +550,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     $this->map_of_string_to_set_of_i32 = $map_of_string_to_set_of_i32 ?? dict[];
     $this->list_of_string = $list_of_string ?? vec[];
     $this->list_of_i32 = $list_of_i32 ?? vec[];
-    $this->list_of_self = $list_of_self ?? vec[];
-    $this->list_of_list_of_self = $list_of_list_of_self ?? vec[];
     $this->list_of_set_of_i32 = $list_of_set_of_i32 ?? vec[];
     $this->list_of_map_of_string_to_list_of_A = $list_of_map_of_string_to_list_of_A ?? vec[];
     $this->list_of_map_of_string_to_A = $list_of_map_of_string_to_A ?? vec[];
@@ -632,7 +566,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       Shapes::idx($shape, 'map_of_string_to_string'),
       Shapes::idx($shape, 'map_of_string_to_i32'),
       Shapes::idx($shape, 'map_of_string_to_A'),
-      Shapes::idx($shape, 'map_of_string_to_self'),
       Shapes::idx($shape, 'map_of_string_to_list_of_A'),
       Shapes::idx($shape, 'map_of_string_to_map_of_string_to_i32'),
       Shapes::idx($shape, 'map_of_string_to_map_of_string_to_A'),
@@ -640,8 +573,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       Shapes::idx($shape, 'map_of_string_to_set_of_i32'),
       Shapes::idx($shape, 'list_of_string'),
       Shapes::idx($shape, 'list_of_i32'),
-      Shapes::idx($shape, 'list_of_self'),
-      Shapes::idx($shape, 'list_of_list_of_self'),
       Shapes::idx($shape, 'list_of_set_of_i32'),
       Shapes::idx($shape, 'list_of_map_of_string_to_list_of_A'),
       Shapes::idx($shape, 'list_of_map_of_string_to_A'),
@@ -733,43 +664,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
                 )
               ),
               "name" => "map_of_string_to_A",
-            )
-          ),
-          tmeta_ThriftField::fromShape(
-            shape(
-              "id" => 4,
-              "type" => tmeta_ThriftType::fromShape(
-                shape(
-                  "t_map" => tmeta_ThriftMapType::fromShape(
-                    shape(
-                      "keyType" => tmeta_ThriftType::fromShape(
-                        shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
-                        )
-                      ),
-                      "valueType" => tmeta_ThriftType::fromShape(
-                        shape(
-                          "t_typedef" => tmeta_ThriftTypedefType::fromShape(
-                            shape(
-                              "name" => "module.B",
-                              "underlyingType" => tmeta_ThriftType::fromShape(
-                                shape(
-                                  "t_struct" => tmeta_ThriftStructType::fromShape(
-                                    shape(
-                                      "name" => "module.B",
-                                    )
-                                  ),
-                                )
-                              ),
-                            )
-                          ),
-                        )
-                      ),
-                    )
-                  ),
-                )
-              ),
-              "name" => "map_of_string_to_self",
             )
           ),
           tmeta_ThriftField::fromShape(
@@ -990,78 +884,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 12,
-              "type" => tmeta_ThriftType::fromShape(
-                shape(
-                  "t_list" => tmeta_ThriftListType::fromShape(
-                    shape(
-                      "valueType" => tmeta_ThriftType::fromShape(
-                        shape(
-                          "t_typedef" => tmeta_ThriftTypedefType::fromShape(
-                            shape(
-                              "name" => "module.B",
-                              "underlyingType" => tmeta_ThriftType::fromShape(
-                                shape(
-                                  "t_struct" => tmeta_ThriftStructType::fromShape(
-                                    shape(
-                                      "name" => "module.B",
-                                    )
-                                  ),
-                                )
-                              ),
-                            )
-                          ),
-                        )
-                      ),
-                    )
-                  ),
-                )
-              ),
-              "name" => "list_of_self",
-            )
-          ),
-          tmeta_ThriftField::fromShape(
-            shape(
-              "id" => 13,
-              "type" => tmeta_ThriftType::fromShape(
-                shape(
-                  "t_list" => tmeta_ThriftListType::fromShape(
-                    shape(
-                      "valueType" => tmeta_ThriftType::fromShape(
-                        shape(
-                          "t_list" => tmeta_ThriftListType::fromShape(
-                            shape(
-                              "valueType" => tmeta_ThriftType::fromShape(
-                                shape(
-                                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
-                                    shape(
-                                      "name" => "module.B",
-                                      "underlyingType" => tmeta_ThriftType::fromShape(
-                                        shape(
-                                          "t_struct" => tmeta_ThriftStructType::fromShape(
-                                            shape(
-                                              "name" => "module.B",
-                                            )
-                                          ),
-                                        )
-                                      ),
-                                    )
-                                  ),
-                                )
-                              ),
-                            )
-                          ),
-                        )
-                      ),
-                    )
-                  ),
-                )
-              ),
-              "name" => "list_of_list_of_self",
-            )
-          ),
-          tmeta_ThriftField::fromShape(
-            shape(
               "id" => 14,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
@@ -1233,19 +1055,13 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           $_val0 ==> $_val0
             |> A::__fromShape($$),
         )),
-      self::__stringifyMapKeys($shape['map_of_string_to_self']
-        |> Dict\map(
-          $$,
-          $_val1 ==> $_val1
-            |> B::__fromShape($$),
-        )),
       self::__stringifyMapKeys($shape['map_of_string_to_list_of_A']
         |> Dict\map(
           $$,
-          $_val2 ==> $_val2
+          $_val1 ==> $_val1
             |> Vec\map(
               $$,
-              $_val3 ==> $_val3
+              $_val2 ==> $_val2
                 |> A::__fromShape($$),
             ),
         )),
@@ -1253,10 +1069,10 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       self::__stringifyMapKeys($shape['map_of_string_to_map_of_string_to_A']
         |> Dict\map(
           $$,
-          $_val4 ==> $_val4
+          $_val3 ==> $_val3
             |> Dict\map(
               $$,
-              $_val5 ==> $_val5
+              $_val4 ==> $_val4
                 |> A::__fromShape($$),
             ),
         )),
@@ -1264,33 +1080,17 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       self::__stringifyMapKeys($shape['map_of_string_to_set_of_i32']),
       $shape['list_of_string'],
       $shape['list_of_i32'],
-      $shape['list_of_self']
-        |> Vec\map(
-          $$,
-          $_val6 ==> $_val6
-            |> B::__fromShape($$),
-        ),
-      $shape['list_of_list_of_self']
-        |> Vec\map(
-          $$,
-          $_val7 ==> $_val7
-            |> Vec\map(
-              $$,
-              $_val8 ==> $_val8
-                |> B::__fromShape($$),
-            ),
-        ),
       $shape['list_of_set_of_i32'],
       $shape['list_of_map_of_string_to_list_of_A']
         |> Vec\map(
           $$,
-          $_val9 ==> $_val9
+          $_val5 ==> $_val5
             |> Dict\map(
               $$,
-              $_val10 ==> $_val10
+              $_val6 ==> $_val6
                 |> Vec\map(
                   $$,
-                  $_val11 ==> $_val11
+                  $_val7 ==> $_val7
                     |> A::__fromShape($$),
                 ),
             ),
@@ -1298,10 +1098,10 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       $shape['list_of_map_of_string_to_A']
         |> Vec\map(
           $$,
-          $_val12 ==> $_val12
+          $_val8 ==> $_val8
             |> Dict\map(
               $$,
-              $_val13 ==> $_val13
+              $_val9 ==> $_val9
                 |> A::__fromShape($$),
             ),
         ),
@@ -1315,11 +1115,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'map_of_string_to_string' => $this->map_of_string_to_string,
       'map_of_string_to_i32' => $this->map_of_string_to_i32,
       'map_of_string_to_A' => $this->map_of_string_to_A
-        |> Dict\map(
-          $$,
-          ($_val0) ==> $_val0->__toShape(),
-        ),
-      'map_of_string_to_self' => $this->map_of_string_to_self
         |> Dict\map(
           $$,
           ($_val0) ==> $_val0->__toShape(),
@@ -1347,20 +1142,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'map_of_string_to_set_of_i32' => $this->map_of_string_to_set_of_i32,
       'list_of_string' => $this->list_of_string,
       'list_of_i32' => $this->list_of_i32,
-      'list_of_self' => $this->list_of_self
-        |> Vec\map(
-          $$,
-          ($_val0) ==> $_val0->__toShape(),
-        ),
-      'list_of_list_of_self' => $this->list_of_list_of_self
-        |> Vec\map(
-          $$,
-          ($_val0) ==> $_val0
-            |> Vec\map(
-              $$,
-              ($_val1) ==> $_val1->__toShape(),
-            ),
-        ),
       'list_of_set_of_i32' => $this->list_of_set_of_i32,
       'list_of_map_of_string_to_list_of_A' => $this->list_of_map_of_string_to_list_of_A
         |> Vec\map(
@@ -1411,11 +1192,6 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
       'var' => 'just_an_enum',
       'type' => \TType::I32,
       'enum' => Enum::class,
-    ),
-    3 => shape(
-      'var' => 'optional_sef',
-      'type' => \TType::STRUCT,
-      'class' => C::class,
     ),
     4 => shape(
       'var' => 'map_of_string_to_string',
@@ -1599,31 +1375,6 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
       ),
       'format' => 'harray',
     ),
-    15 => shape(
-      'var' => 'list_of_self',
-      'type' => \TType::LST,
-      'etype' => \TType::STRUCT,
-      'elem' => shape(
-        'type' => \TType::STRUCT,
-        'class' => B::class,
-      ),
-      'format' => 'harray',
-    ),
-    16 => shape(
-      'var' => 'list_of_list_of_self',
-      'type' => \TType::LST,
-      'etype' => \TType::LST,
-      'elem' => shape(
-        'type' => \TType::LST,
-        'etype' => \TType::STRUCT,
-        'elem' => shape(
-          'type' => \TType::STRUCT,
-          'class' => B::class,
-        ),
-        'format' => 'harray',
-      ),
-      'format' => 'harray',
-    ),
     17 => shape(
       'var' => 'list_of_map_of_string_to_list_of_A',
       'type' => \TType::LST,
@@ -1697,7 +1448,6 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
   const dict<string, int> FIELDMAP = dict[
     'just_an_A' => 1,
     'just_an_enum' => 2,
-    'optional_sef' => 3,
     'map_of_string_to_string' => 4,
     'map_of_string_to_i32' => 5,
     'map_of_string_to_A' => 6,
@@ -1709,8 +1459,6 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     'map_of_string_to_set_of_i32' => 12,
     'list_of_string' => 13,
     'list_of_map_of_string_to_A' => 14,
-    'list_of_self' => 15,
-    'list_of_list_of_self' => 16,
     'list_of_map_of_string_to_list_of_A' => 17,
     'list_of_i32' => 18,
     'map_of_string_to_list_of_string' => 19,
@@ -1721,7 +1469,6 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
   const type TConstructorShape = shape(
     ?'just_an_A' => ?A,
     ?'just_an_enum' => ?Enum,
-    ?'optional_sef' => ?C,
     ?'map_of_string_to_string' => ?dict<string, string>,
     ?'map_of_string_to_i32' => ?dict<string, int>,
     ?'map_of_string_to_A' => ?dict<string, A>,
@@ -1733,8 +1480,6 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     ?'map_of_string_to_set_of_i32' => ?dict<string, keyset<int>>,
     ?'list_of_string' => ?vec<string>,
     ?'list_of_map_of_string_to_A' => ?vec<dict<string, A>>,
-    ?'list_of_self' => ?vec<B>,
-    ?'list_of_list_of_self' => ?vec<vec<B>>,
     ?'list_of_map_of_string_to_list_of_A' => ?vec<dict<string, vec<A>>>,
     ?'list_of_i32' => ?vec<int>,
     ?'map_of_string_to_list_of_string' => ?dict<string, vec<string>>,
@@ -1745,7 +1490,6 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
   const type TShape = shape(
     ?'just_an_A' => ?A::TShape,
     ?'just_an_enum' => ?Enum,
-    ?'optional_sef' => ?C::TShape,
     ?'map_of_string_to_string' => ?dict<arraykey, string>,
     ?'map_of_string_to_i32' => ?dict<arraykey, int>,
     ?'map_of_string_to_A' => ?dict<arraykey, A::TShape>,
@@ -1757,15 +1501,13 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     ?'map_of_string_to_set_of_i32' => ?dict<arraykey, keyset<int>>,
     ?'list_of_string' => ?vec<string>,
     ?'list_of_map_of_string_to_A' => ?vec<dict<arraykey, A::TShape>>,
-    ?'list_of_self' => ?vec<B::TShape>,
-    ?'list_of_list_of_self' => ?vec<vec<B::TShape>>,
     ?'list_of_map_of_string_to_list_of_A' => ?vec<dict<arraykey, vec<A::TShape>>>,
     ?'list_of_i32' => ?vec<int>,
     ?'map_of_string_to_list_of_string' => ?dict<arraykey, vec<string>>,
     ?'set_of_i32' => ?keyset<int>,
     ?'set_of_string' => ?keyset<string>,
   );
-  const int STRUCTURAL_ID = 1732184703676372405;
+  const int STRUCTURAL_ID = 7779248235937077517;
   /**
    * Original thrift field:-
    * 1: struct module.A just_an_A
@@ -1776,11 +1518,6 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
    * 2: enum module.Enum just_an_enum
    */
   public ?Enum $just_an_enum;
-  /**
-   * Original thrift field:-
-   * 3: struct module.C optional_sef
-   */
-  public ?C $optional_sef;
   /**
    * Original thrift field:-
    * 4: map<string, string> map_of_string_to_string
@@ -1838,16 +1575,6 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
   public ?vec<dict<string, A>> $list_of_map_of_string_to_A;
   /**
    * Original thrift field:-
-   * 15: list<struct module.B> list_of_self
-   */
-  public ?vec<B> $list_of_self;
-  /**
-   * Original thrift field:-
-   * 16: list<list<struct module.B>> list_of_list_of_self
-   */
-  public ?vec<vec<B>> $list_of_list_of_self;
-  /**
-   * Original thrift field:-
    * 17: list<map<string, list<struct module.A>>> list_of_map_of_string_to_list_of_A
    */
   public ?vec<dict<string, vec<A>>> $list_of_map_of_string_to_list_of_A;
@@ -1872,10 +1599,9 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
    */
   public ?keyset<string> $set_of_string;
 
-  public function __construct(?A $just_an_A = null, ?Enum $just_an_enum = null, ?C $optional_sef = null, ?dict<string, string> $map_of_string_to_string = null, ?dict<string, int> $map_of_string_to_i32 = null, ?dict<string, A> $map_of_string_to_A = null, ?dict<string, B> $map_of_string_to_self = null, ?dict<string, vec<A>> $map_of_string_to_list_of_A = null, ?dict<string, dict<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?dict<string, dict<string, A>> $map_of_string_to_map_of_string_to_A = null, ?dict<string, vec<int>> $map_of_string_to_list_of_i32 = null, ?dict<string, keyset<int>> $map_of_string_to_set_of_i32 = null, ?vec<string> $list_of_string = null, ?vec<dict<string, A>> $list_of_map_of_string_to_A = null, ?vec<B> $list_of_self = null, ?vec<vec<B>> $list_of_list_of_self = null, ?vec<dict<string, vec<A>>> $list_of_map_of_string_to_list_of_A = null, ?vec<int> $list_of_i32 = null, ?dict<string, vec<string>> $map_of_string_to_list_of_string = null, ?keyset<int> $set_of_i32 = null, ?keyset<string> $set_of_string = null  )[] {
+  public function __construct(?A $just_an_A = null, ?Enum $just_an_enum = null, ?dict<string, string> $map_of_string_to_string = null, ?dict<string, int> $map_of_string_to_i32 = null, ?dict<string, A> $map_of_string_to_A = null, ?dict<string, B> $map_of_string_to_self = null, ?dict<string, vec<A>> $map_of_string_to_list_of_A = null, ?dict<string, dict<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?dict<string, dict<string, A>> $map_of_string_to_map_of_string_to_A = null, ?dict<string, vec<int>> $map_of_string_to_list_of_i32 = null, ?dict<string, keyset<int>> $map_of_string_to_set_of_i32 = null, ?vec<string> $list_of_string = null, ?vec<dict<string, A>> $list_of_map_of_string_to_A = null, ?vec<dict<string, vec<A>>> $list_of_map_of_string_to_list_of_A = null, ?vec<int> $list_of_i32 = null, ?dict<string, vec<string>> $map_of_string_to_list_of_string = null, ?keyset<int> $set_of_i32 = null, ?keyset<string> $set_of_string = null  )[] {
     $this->just_an_A = $just_an_A;
     $this->just_an_enum = $just_an_enum;
-    $this->optional_sef = $optional_sef;
     $this->map_of_string_to_string = $map_of_string_to_string;
     $this->map_of_string_to_i32 = $map_of_string_to_i32;
     $this->map_of_string_to_A = $map_of_string_to_A;
@@ -1887,8 +1613,6 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     $this->map_of_string_to_set_of_i32 = $map_of_string_to_set_of_i32;
     $this->list_of_string = $list_of_string;
     $this->list_of_map_of_string_to_A = $list_of_map_of_string_to_A;
-    $this->list_of_self = $list_of_self;
-    $this->list_of_list_of_self = $list_of_list_of_self;
     $this->list_of_map_of_string_to_list_of_A = $list_of_map_of_string_to_list_of_A;
     $this->list_of_i32 = $list_of_i32;
     $this->map_of_string_to_list_of_string = $map_of_string_to_list_of_string;
@@ -1904,7 +1628,6 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     return new static(
       Shapes::idx($shape, 'just_an_A'),
       Shapes::idx($shape, 'just_an_enum'),
-      Shapes::idx($shape, 'optional_sef'),
       Shapes::idx($shape, 'map_of_string_to_string'),
       Shapes::idx($shape, 'map_of_string_to_i32'),
       Shapes::idx($shape, 'map_of_string_to_A'),
@@ -1916,8 +1639,6 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
       Shapes::idx($shape, 'map_of_string_to_set_of_i32'),
       Shapes::idx($shape, 'list_of_string'),
       Shapes::idx($shape, 'list_of_map_of_string_to_A'),
-      Shapes::idx($shape, 'list_of_self'),
-      Shapes::idx($shape, 'list_of_list_of_self'),
       Shapes::idx($shape, 'list_of_map_of_string_to_list_of_A'),
       Shapes::idx($shape, 'list_of_i32'),
       Shapes::idx($shape, 'map_of_string_to_list_of_string'),
@@ -1964,31 +1685,6 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
                 )
               ),
               "name" => "just_an_enum",
-              "is_optional" => true,
-            )
-          ),
-          tmeta_ThriftField::fromShape(
-            shape(
-              "id" => 3,
-              "type" => tmeta_ThriftType::fromShape(
-                shape(
-                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
-                    shape(
-                      "name" => "module.C",
-                      "underlyingType" => tmeta_ThriftType::fromShape(
-                        shape(
-                          "t_struct" => tmeta_ThriftStructType::fromShape(
-                            shape(
-                              "name" => "module.C",
-                            )
-                          ),
-                        )
-                      ),
-                    )
-                  ),
-                )
-              ),
-              "name" => "optional_sef",
               "is_optional" => true,
             )
           ),
@@ -2342,62 +2038,6 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 15,
-              "type" => tmeta_ThriftType::fromShape(
-                shape(
-                  "t_list" => tmeta_ThriftListType::fromShape(
-                    shape(
-                      "valueType" => tmeta_ThriftType::fromShape(
-                        shape(
-                          "t_struct" => tmeta_ThriftStructType::fromShape(
-                            shape(
-                              "name" => "module.B",
-                            )
-                          ),
-                        )
-                      ),
-                    )
-                  ),
-                )
-              ),
-              "name" => "list_of_self",
-              "is_optional" => true,
-            )
-          ),
-          tmeta_ThriftField::fromShape(
-            shape(
-              "id" => 16,
-              "type" => tmeta_ThriftType::fromShape(
-                shape(
-                  "t_list" => tmeta_ThriftListType::fromShape(
-                    shape(
-                      "valueType" => tmeta_ThriftType::fromShape(
-                        shape(
-                          "t_list" => tmeta_ThriftListType::fromShape(
-                            shape(
-                              "valueType" => tmeta_ThriftType::fromShape(
-                                shape(
-                                  "t_struct" => tmeta_ThriftStructType::fromShape(
-                                    shape(
-                                      "name" => "module.B",
-                                    )
-                                  ),
-                                )
-                              ),
-                            )
-                          ),
-                        )
-                      ),
-                    )
-                  ),
-                )
-              ),
-              "name" => "list_of_list_of_self",
-              "is_optional" => true,
-            )
-          ),
-          tmeta_ThriftField::fromShape(
-            shape(
               "id" => 17,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
@@ -2556,7 +2196,6 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     return new static(
       Shapes::idx($shape, 'just_an_A') === null ? null : (A::__fromShape($shape['just_an_A'])),
       Shapes::idx($shape, 'just_an_enum'),
-      Shapes::idx($shape, 'optional_sef') === null ? null : (C::__fromShape($shape['optional_sef'])),
       Shapes::idx($shape, 'map_of_string_to_string') === null ? null : (self::__stringifyMapKeys($shape['map_of_string_to_string'])),
       Shapes::idx($shape, 'map_of_string_to_i32') === null ? null : (self::__stringifyMapKeys($shape['map_of_string_to_i32'])),
       Shapes::idx($shape, 'map_of_string_to_A') === null ? null : (self::__stringifyMapKeys($shape['map_of_string_to_A']
@@ -2605,32 +2244,16 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
                 |> A::__fromShape($$),
             ),
         )),
-      Shapes::idx($shape, 'list_of_self') === null ? null : ($shape['list_of_self']
-        |> Vec\map(
-          $$,
-          $_val8 ==> $_val8
-            |> B::__fromShape($$),
-        )),
-      Shapes::idx($shape, 'list_of_list_of_self') === null ? null : ($shape['list_of_list_of_self']
-        |> Vec\map(
-          $$,
-          $_val9 ==> $_val9
-            |> Vec\map(
-              $$,
-              $_val10 ==> $_val10
-                |> B::__fromShape($$),
-            ),
-        )),
       Shapes::idx($shape, 'list_of_map_of_string_to_list_of_A') === null ? null : ($shape['list_of_map_of_string_to_list_of_A']
         |> Vec\map(
           $$,
-          $_val11 ==> $_val11
+          $_val8 ==> $_val8
             |> Dict\map(
               $$,
-              $_val12 ==> $_val12
+              $_val9 ==> $_val9
                 |> Vec\map(
                   $$,
-                  $_val13 ==> $_val13
+                  $_val10 ==> $_val10
                     |> A::__fromShape($$),
                 ),
             ),
@@ -2646,7 +2269,6 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     return shape(
       'just_an_A' => $this->just_an_A?->__toShape(),
       'just_an_enum' => $this->just_an_enum,
-      'optional_sef' => $this->optional_sef?->__toShape(),
       'map_of_string_to_string' => $this->map_of_string_to_string,
       'map_of_string_to_i32' => $this->map_of_string_to_i32,
       'map_of_string_to_A' => $this->map_of_string_to_A
@@ -2696,24 +2318,6 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
             $$,
             ($_val0) ==> $_val0
               |> Dict\map(
-                $$,
-                ($_val1) ==> $_val1->__toShape(),
-              ),
-          ),
-      'list_of_self' => $this->list_of_self
-        |> $$ === null 
-          ? null 
-          : Vec\map(
-            $$,
-            ($_val0) ==> $_val0->__toShape(),
-          ),
-      'list_of_list_of_self' => $this->list_of_list_of_self
-        |> $$ === null 
-          ? null 
-          : Vec\map(
-            $$,
-            ($_val0) ==> $_val0
-              |> Vec\map(
                 $$,
                 ($_val1) ==> $_val1->__toShape(),
               ),

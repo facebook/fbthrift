@@ -14,23 +14,14 @@
  * limitations under the License.
  */
 
-include "thrift/annotation/hack.thrift"
-include "thrift/annotation/meta.thrift"
-
-@meta.Transitive
-@hack.FieldWrapper{name = "\MyFieldWrapper"}
-struct AnnotaionStruct {}
+include "include.thrift"
 
 struct MyStruct {
-  @hack.FieldWrapper{name = "\MyFieldWrapper"}
-  1: i64 wrapped_field;
-  @AnnotaionStruct
-  2: i64 annotated_field;
-  3: i64 (hack.adapter = "\MyAdapter") adapted_type;
+  1: i64 int_field;
 }
 
 union MyUnion {
-  @AnnotaionStruct
+  @include.AnnotationStruct
   1: i64 union_annotated_field;
   3: i64 (hack.adapter = "\AdapterTestIntToString") union_adapted_type;
 }
@@ -38,10 +29,10 @@ union MyUnion {
 exception MyException {
   1: i64 code;
   2: string message;
-  @AnnotaionStruct
+  @include.AnnotationStruct
   3: string annotated_message;
 }
 
 service Service {
-  i32 func(1: string arg1, 2: MyStruct arg2);
+  i32 func(1: string arg1, 2: include.MyStruct arg2);
 }

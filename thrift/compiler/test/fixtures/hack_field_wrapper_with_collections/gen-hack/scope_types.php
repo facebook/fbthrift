@@ -58,6 +58,14 @@ class facebook_thrift_annotation_Struct implements \IThriftStruct, \IThriftShapi
     );
   }
 
+  public static function __stringifyMapKeys<T>(Map<arraykey, T> $m)[]: Map<string, T> {
+    $new = dict[];
+    foreach ($m as $k => $v) {
+      $new[(string)$k] = $v;
+    }
+    return new Map($new);
+  }
+
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
     );
@@ -132,6 +140,14 @@ class facebook_thrift_annotation_Union implements \IThriftStruct, \IThriftShapis
       'fields' => dict[
       ],
     );
+  }
+
+  public static function __stringifyMapKeys<T>(Map<arraykey, T> $m)[]: Map<string, T> {
+    $new = dict[];
+    foreach ($m as $k => $v) {
+      $new[(string)$k] = $v;
+    }
+    return new Map($new);
   }
 
   public static function __fromShape(self::TShape $shape)[]: this {
@@ -210,6 +226,14 @@ class facebook_thrift_annotation_Exception implements \IThriftStruct, \IThriftSh
     );
   }
 
+  public static function __stringifyMapKeys<T>(Map<arraykey, T> $m)[]: Map<string, T> {
+    $new = dict[];
+    foreach ($m as $k => $v) {
+      $new[(string)$k] = $v;
+    }
+    return new Map($new);
+  }
+
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
     );
@@ -284,6 +308,14 @@ class facebook_thrift_annotation_Field implements \IThriftStruct, \IThriftShapis
       'fields' => dict[
       ],
     );
+  }
+
+  public static function __stringifyMapKeys<T>(Map<arraykey, T> $m)[]: Map<string, T> {
+    $new = dict[];
+    foreach ($m as $k => $v) {
+      $new[(string)$k] = $v;
+    }
+    return new Map($new);
   }
 
   public static function __fromShape(self::TShape $shape)[]: this {
@@ -362,6 +394,14 @@ class facebook_thrift_annotation_Typedef implements \IThriftStruct, \IThriftShap
     );
   }
 
+  public static function __stringifyMapKeys<T>(Map<arraykey, T> $m)[]: Map<string, T> {
+    $new = dict[];
+    foreach ($m as $k => $v) {
+      $new[(string)$k] = $v;
+    }
+    return new Map($new);
+  }
+
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
     );
@@ -436,6 +476,14 @@ class facebook_thrift_annotation_Service implements \IThriftStruct, \IThriftShap
       'fields' => dict[
       ],
     );
+  }
+
+  public static function __stringifyMapKeys<T>(Map<arraykey, T> $m)[]: Map<string, T> {
+    $new = dict[];
+    foreach ($m as $k => $v) {
+      $new[(string)$k] = $v;
+    }
+    return new Map($new);
   }
 
   public static function __fromShape(self::TShape $shape)[]: this {
@@ -514,6 +562,14 @@ class facebook_thrift_annotation_Interaction implements \IThriftStruct, \IThrift
     );
   }
 
+  public static function __stringifyMapKeys<T>(Map<arraykey, T> $m)[]: Map<string, T> {
+    $new = dict[];
+    foreach ($m as $k => $v) {
+      $new[(string)$k] = $v;
+    }
+    return new Map($new);
+  }
+
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
     );
@@ -588,6 +644,14 @@ class facebook_thrift_annotation_Function implements \IThriftStruct, \IThriftSha
       'fields' => dict[
       ],
     );
+  }
+
+  public static function __stringifyMapKeys<T>(Map<arraykey, T> $m)[]: Map<string, T> {
+    $new = dict[];
+    foreach ($m as $k => $v) {
+      $new[(string)$k] = $v;
+    }
+    return new Map($new);
   }
 
   public static function __fromShape(self::TShape $shape)[]: this {
@@ -666,6 +730,14 @@ class facebook_thrift_annotation_EnumValue implements \IThriftStruct, \IThriftSh
     );
   }
 
+  public static function __stringifyMapKeys<T>(Map<arraykey, T> $m)[]: Map<string, T> {
+    $new = dict[];
+    foreach ($m as $k => $v) {
+      $new[(string)$k] = $v;
+    }
+    return new Map($new);
+  }
+
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
     );
@@ -740,6 +812,14 @@ class facebook_thrift_annotation_Const implements \IThriftStruct, \IThriftShapis
       'fields' => dict[
       ],
     );
+  }
+
+  public static function __stringifyMapKeys<T>(Map<arraykey, T> $m)[]: Map<string, T> {
+    $new = dict[];
+    foreach ($m as $k => $v) {
+      $new[(string)$k] = $v;
+    }
+    return new Map($new);
   }
 
   public static function __fromShape(self::TShape $shape)[]: this {
@@ -818,6 +898,14 @@ class facebook_thrift_annotation_FbthriftInternalEnum implements \IThriftStruct,
     );
   }
 
+  public static function __stringifyMapKeys<T>(Map<arraykey, T> $m)[]: Map<string, T> {
+    $new = dict[];
+    foreach ($m as $k => $v) {
+      $new[(string)$k] = $v;
+    }
+    return new Map($new);
+  }
+
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
     );
@@ -892,6 +980,14 @@ class facebook_thrift_annotation_FbthriftInternalScopeTransitive implements \ITh
       'fields' => dict[
       ],
     );
+  }
+
+  public static function __stringifyMapKeys<T>(Map<arraykey, T> $m)[]: Map<string, T> {
+    $new = dict[];
+    foreach ($m as $k => $v) {
+      $new[(string)$k] = $v;
+    }
+    return new Map($new);
   }
 
   public static function __fromShape(self::TShape $shape)[]: this {
@@ -987,6 +1083,14 @@ class facebook_thrift_annotation_Structured implements \IThriftStruct, \IThriftS
     );
   }
 
+  public static function __stringifyMapKeys<T>(Map<arraykey, T> $m)[]: Map<string, T> {
+    $new = dict[];
+    foreach ($m as $k => $v) {
+      $new[(string)$k] = $v;
+    }
+    return new Map($new);
+  }
+
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
     );
@@ -1074,6 +1178,14 @@ class facebook_thrift_annotation_Interface implements \IThriftStruct, \IThriftSh
       'fields' => dict[
       ],
     );
+  }
+
+  public static function __stringifyMapKeys<T>(Map<arraykey, T> $m)[]: Map<string, T> {
+    $new = dict[];
+    foreach ($m as $k => $v) {
+      $new[(string)$k] = $v;
+    }
+    return new Map($new);
   }
 
   public static function __fromShape(self::TShape $shape)[]: this {
@@ -1177,6 +1289,14 @@ class facebook_thrift_annotation_RootDefinition implements \IThriftStruct, \IThr
     );
   }
 
+  public static function __stringifyMapKeys<T>(Map<arraykey, T> $m)[]: Map<string, T> {
+    $new = dict[];
+    foreach ($m as $k => $v) {
+      $new[(string)$k] = $v;
+    }
+    return new Map($new);
+  }
+
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
     );
@@ -1272,6 +1392,14 @@ class facebook_thrift_annotation_Definition implements \IThriftStruct, \IThriftS
       'fields' => dict[
       ],
     );
+  }
+
+  public static function __stringifyMapKeys<T>(Map<arraykey, T> $m)[]: Map<string, T> {
+    $new = dict[];
+    foreach ($m as $k => $v) {
+      $new[(string)$k] = $v;
+    }
+    return new Map($new);
   }
 
   public static function __fromShape(self::TShape $shape)[]: this {

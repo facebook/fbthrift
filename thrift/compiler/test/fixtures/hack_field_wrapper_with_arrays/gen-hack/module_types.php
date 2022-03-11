@@ -8,162 +8,34 @@
 
 /**
  * Original thrift struct:-
- * AnnotaionStruct
- */
-class AnnotaionStruct implements \IThriftStruct, \IThriftShapishStruct {
-  use \ThriftSerializationTrait;
-
-  const dict<int, this::TFieldSpec> SPEC = dict[
-  ];
-  const dict<string, int> FIELDMAP = dict[
-  ];
-
-  const type TConstructorShape = shape(
-  );
-
-  const type TShape = shape(
-  );
-  const int STRUCTURAL_ID = 957977401221134810;
-
-  public function __construct(  )[] {
-  }
-
-  public static function withDefaultValues()[]: this {
-    return new static();
-  }
-
-  public static function fromShape(self::TConstructorShape $shape)[]: this {
-    return new static(
-    );
-  }
-
-  public function getName()[]: string {
-    return 'AnnotaionStruct';
-  }
-
-  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
-      shape(
-        "name" => "module.AnnotaionStruct",
-        "is_union" => false,
-      )
-    );
-  }
-
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
-    return shape(
-      'struct' => dict[
-        'facebook_thrift_annotation_Transitive' => facebook_thrift_annotation_Transitive::fromShape(
-          shape(
-          )
-        ),
-        '\facebook_thrift_annotation\FieldWrapper' => \facebook_thrift_annotation\FieldWrapper::fromShape(
-          shape(
-            "name" => "\MyFieldWrapper",
-          )
-        ),
-      ],
-      'fields' => dict[
-      ],
-    );
-  }
-
-  public static function __fromShape(self::TShape $shape)[]: this {
-    return new static(
-    );
-  }
-
-  public function __toShape()[]: self::TShape {
-    return shape(
-    );
-  }
-  public function getInstanceKey()[write_props]: string {
-    return \TCompactSerializer::serialize($this);
-  }
-
-  public function readFromJson(string $jsonText): void {
-    $parsed = json_decode($jsonText, true);
-
-    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
-      throw new \TProtocolException("Cannot parse the given json string.");
-    }
-
-  }
-
-}
-
-/**
- * Original thrift struct:-
  * MyStruct
  */
-class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
+class MyStruct implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
-      'var' => 'wrapped_field',
-      'is_wrapped' => true,
-      'type' => \TType::I64,
-    ),
-    2 => shape(
-      'var' => 'annotated_field',
-      'is_wrapped' => true,
-      'type' => \TType::I64,
-    ),
-    3 => shape(
-      'var' => 'adapted_type',
-      'adapter' => \MyAdapter::class,
+      'var' => 'int_field',
       'type' => \TType::I64,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
-    'wrapped_field' => 1,
-    'annotated_field' => 2,
-    'adapted_type' => 3,
+    'int_field' => 1,
   ];
 
   const type TConstructorShape = shape(
-    ?'wrapped_field' => ?int,
-    ?'annotated_field' => ?int,
-    ?'adapted_type' => ?\MyAdapter::THackType,
+    ?'int_field' => ?int,
   );
 
-  const type TShape = shape(
-    'wrapped_field' => int,
-    'annotated_field' => int,
-    'adapted_type' => \MyAdapter::THackType,
-  );
-  const int STRUCTURAL_ID = 3672151039112827748;
+  const int STRUCTURAL_ID = 8549930382776002541;
   /**
    * Original thrift field:-
-   * 1: i64 wrapped_field
+   * 1: i64 int_field
    */
-  private ?\MyFieldWrapper<int, this> $wrapped_field;
+  public int $int_field;
 
-  public function get_wrapped_field()[]: \MyFieldWrapper<int, this> {
-    return $this->wrapped_field as nonnull;
-  }
-
-  /**
-   * Original thrift field:-
-   * 2: i64 annotated_field
-   */
-  private ?\MyFieldWrapper<int, this> $annotated_field;
-
-  public function get_annotated_field()[]: \MyFieldWrapper<int, this> {
-    return $this->annotated_field as nonnull;
-  }
-
-  /**
-   * Original thrift field:-
-   * 3: i64 adapted_type
-   */
-  public \MyAdapter::THackType $adapted_type;
-
-  public function __construct(?int $wrapped_field = null, ?int $annotated_field = null, ?\MyAdapter::THackType $adapted_type = null  )[] {
-    $this->adapted_type = $adapted_type ?? \MyAdapter::fromThrift(0);
-    $this->wrapped_field = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<int, this>($wrapped_field ?? 0, 1, $this);
-    $this->annotated_field = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<int, this>($annotated_field ?? 0, 2, $this);
+  public function __construct(?int $int_field = null  )[] {
+    $this->int_field = $int_field ?? 0;
   }
 
   public static function withDefaultValues()[]: this {
@@ -172,9 +44,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
 
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
-      Shapes::idx($shape, 'wrapped_field'),
-      Shapes::idx($shape, 'annotated_field'),
-      Shapes::idx($shape, 'adapted_type'),
+      Shapes::idx($shape, 'int_field'),
     );
   }
 
@@ -195,29 +65,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
                   "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
                 )
               ),
-              "name" => "wrapped_field",
-            )
-          ),
-          tmeta_ThriftField::fromShape(
-            shape(
-              "id" => 2,
-              "type" => tmeta_ThriftType::fromShape(
-                shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
-                )
-              ),
-              "name" => "annotated_field",
-            )
-          ),
-          tmeta_ThriftField::fromShape(
-            shape(
-              "id" => 3,
-              "type" => tmeta_ThriftType::fromShape(
-                shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
-                )
-              ),
-              "name" => "adapted_type",
+              "name" => "int_field",
             )
           ),
         ],
@@ -230,44 +78,10 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'wrapped_field' => shape(
-          'field' => dict[
-            '\facebook_thrift_annotation\FieldWrapper' => \facebook_thrift_annotation\FieldWrapper::fromShape(
-              shape(
-                "name" => "\MyFieldWrapper",
-              )
-            ),
-          ],
-          'type' => dict[],
-        ),
-        'annotated_field' => shape(
-          'field' => dict[
-            'AnnotaionStruct' => AnnotaionStruct::fromShape(
-              shape(
-              )
-            ),
-          ],
-          'type' => dict[],
-        ),
       ],
     );
   }
 
-  public static function __fromShape(self::TShape $shape)[]: this {
-    return new static(
-      $shape['wrapped_field'],
-      $shape['annotated_field'],
-      $shape['adapted_type'],
-    );
-  }
-
-  public function __toShape()[]: self::TShape {
-    return shape(
-      'wrapped_field' => $this->wrapped_field,
-      'annotated_field' => $this->annotated_field,
-      'adapted_type' => $this->adapted_type,
-    );
-  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -279,19 +93,9 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
-    if (idx($parsed, 'wrapped_field') !== null) {
-      $this->wrapped_field = /* HH_FIXME[4110] */ $parsed['wrapped_field'];
+    if (idx($parsed, 'int_field') !== null) {
+      $this->int_field = /* HH_FIXME[4110] */ $parsed['int_field'];
     }    
-    if (idx($parsed, 'annotated_field') !== null) {
-      $this->annotated_field = /* HH_FIXME[4110] */ $parsed['annotated_field'];
-    }    
-    if (idx($parsed, 'adapted_type') !== null) {
-      $this->adapted_type = /* HH_FIXME[4110] */ $parsed['adapted_type'];
-    }    
-  }
-
-  private static function __hackAdapterTypeChecks()[]: void {
-    \ThriftUtil::requireSameType<\MyAdapter::TThriftType, int>();
   }
 
 }
@@ -306,7 +110,7 @@ enum MyUnionEnum: int {
  * Original thrift struct:-
  * MyUnion
  */
-class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftShapishStruct {
+class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
   use \ThriftUnionSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -333,10 +137,6 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     ?'union_adapted_type' => ?\AdapterTestIntToString::THackType,
   );
 
-  const type TShape = shape(
-    ?'union_annotated_field' => ?int,
-    ?'union_adapted_type' => ?\AdapterTestIntToString::THackType,
-  );
   const int STRUCTURAL_ID = 4654710099560546823;
   /**
    * Original thrift field:-
@@ -474,7 +274,7 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
       'fields' => dict[
         'union_annotated_field' => shape(
           'field' => dict[
-            'AnnotaionStruct' => AnnotaionStruct::fromShape(
+            'AnnotationStruct' => AnnotationStruct::fromShape(
               shape(
               )
             ),
@@ -485,19 +285,6 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     );
   }
 
-  public static function __fromShape(self::TShape $shape)[]: this {
-    return new static(
-      Shapes::idx($shape, 'union_annotated_field'),
-      Shapes::idx($shape, 'union_adapted_type'),
-    );
-  }
-
-  public function __toShape()[]: self::TShape {
-    return shape(
-      'union_annotated_field' => $this->union_annotated_field,
-      'union_adapted_type' => $this->union_adapted_type,
-    );
-  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -654,7 +441,7 @@ class MyException extends \TException implements \IThriftStruct {
       'fields' => dict[
         'annotated_message' => shape(
           'field' => dict[
-            'AnnotaionStruct' => AnnotaionStruct::fromShape(
+            'AnnotationStruct' => AnnotationStruct::fromShape(
               shape(
               )
             ),

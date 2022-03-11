@@ -45,8 +45,6 @@ struct B {
   12: list<set<i32>> list_of_set_of_i32;
   13: list<map<string, list<A>>> list_of_map_of_string_to_list_of_A;
   14: list<map<string, A>> list_of_map_of_string_to_A;
-  15: list<B> list_of_self;
-  16: map<string, B> map_of_string_to_self;
   17: Enum just_an_enum;
   18: Union just_a_union;
 

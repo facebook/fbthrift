@@ -554,30 +554,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       ),
       'format' => 'collection',
     ),
-    15 => shape(
-      'var' => 'list_of_self',
-      'type' => \TType::LST,
-      'etype' => \TType::STRUCT,
-      'elem' => shape(
-        'type' => \TType::STRUCT,
-        'class' => \test\fixtures\B::class,
-      ),
-      'format' => 'collection',
-    ),
-    16 => shape(
-      'var' => 'map_of_string_to_self',
-      'type' => \TType::MAP,
-      'ktype' => \TType::STRING,
-      'vtype' => \TType::STRUCT,
-      'key' => shape(
-        'type' => \TType::STRING,
-      ),
-      'val' => shape(
-        'type' => \TType::STRUCT,
-        'class' => \test\fixtures\B::class,
-      ),
-      'format' => 'collection',
-    ),
     17 => shape(
       'var' => 'just_an_enum',
       'type' => \TType::I32,
@@ -799,8 +775,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     'list_of_set_of_i32' => 12,
     'list_of_map_of_string_to_list_of_A' => 13,
     'list_of_map_of_string_to_A' => 14,
-    'list_of_self' => 15,
-    'map_of_string_to_self' => 16,
     'just_an_enum' => 17,
     'just_a_union' => 18,
     'optional_just_an_A' => 51,
@@ -840,8 +814,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     ?'list_of_set_of_i32' => ?Vector<Set<int>>,
     ?'list_of_map_of_string_to_list_of_A' => ?Vector<Map<string, Vector<\test\fixtures\A>>>,
     ?'list_of_map_of_string_to_A' => ?Vector<Map<string, \test\fixtures\A>>,
-    ?'list_of_self' => ?Vector<\test\fixtures\B>,
-    ?'map_of_string_to_self' => ?Map<string, \test\fixtures\B>,
     ?'just_an_enum' => ?\test\fixtures\Enum,
     ?'just_a_union' => ?\test\fixtures\Union,
     ?'optional_just_an_A' => ?\test\fixtures\A,
@@ -881,8 +853,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     'list_of_set_of_i32' => vec<dict<int, bool>>,
     'list_of_map_of_string_to_list_of_A' => vec<dict<string, vec<\test\fixtures\A::TShape>>>,
     'list_of_map_of_string_to_A' => vec<dict<string, \test\fixtures\A::TShape>>,
-    'list_of_self' => vec<\test\fixtures\B::TShape>,
-    'map_of_string_to_self' => dict<string, \test\fixtures\B::TShape>,
     ?'just_an_enum' => ?\test\fixtures\Enum,
     ?'just_a_union' => ?\test\fixtures\Union::TShape,
     ?'optional_just_an_A' => ?\test\fixtures\A::TShape,
@@ -906,7 +876,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     'list_of_string_with_default_value' => vec<string>,
     'map_of_string_to_list_of_i32_with_default_value' => dict<string, vec<int>>,
   );
-  const int STRUCTURAL_ID = 4145763473660405611;
+  const int STRUCTURAL_ID = 7290621384819644133;
   /**
    * Original thrift field:-
    * 1: struct module.A just_an_A
@@ -977,16 +947,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
    * 14: list<map<string, struct module.A>> list_of_map_of_string_to_A
    */
   public Vector<Map<string, \test\fixtures\A>> $list_of_map_of_string_to_A;
-  /**
-   * Original thrift field:-
-   * 15: list<struct module.B> list_of_self
-   */
-  public Vector<\test\fixtures\B> $list_of_self;
-  /**
-   * Original thrift field:-
-   * 16: map<string, struct module.B> map_of_string_to_self
-   */
-  public Map<string, \test\fixtures\B> $map_of_string_to_self;
   /**
    * Original thrift field:-
    * 17: enum module.Enum just_an_enum
@@ -1098,7 +1058,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
    */
   public Map<string, Vector<int>> $map_of_string_to_list_of_i32_with_default_value;
 
-  public function __construct(?\test\fixtures\A $just_an_A = null, ?Set<int> $set_of_i32 = null, ?Vector<int> $list_of_i32 = null, ?Vector<string> $list_of_string = null, ?Map<string, int> $map_of_string_to_i32 = null, ?Map<string, \test\fixtures\A> $map_of_string_to_A = null, ?Map<string, Vector<int>> $map_of_string_to_list_of_i32 = null, ?Map<string, Vector<\test\fixtures\A>> $map_of_string_to_list_of_A = null, ?Map<string, Set<int>> $map_of_string_to_set_of_i32 = null, ?Map<string, Map<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?Map<string, Map<string, \test\fixtures\A>> $map_of_string_to_map_of_string_to_A = null, ?Vector<Set<int>> $list_of_set_of_i32 = null, ?Vector<Map<string, Vector<\test\fixtures\A>>> $list_of_map_of_string_to_list_of_A = null, ?Vector<Map<string, \test\fixtures\A>> $list_of_map_of_string_to_A = null, ?Vector<\test\fixtures\B> $list_of_self = null, ?Map<string, \test\fixtures\B> $map_of_string_to_self = null, ?\test\fixtures\Enum $just_an_enum = null, ?\test\fixtures\Union $just_a_union = null, ?\test\fixtures\A $optional_just_an_A = null, ?Set<int> $optional_set_of_i32 = null, ?Vector<int> $optional_list_of_i32 = null, ?Vector<string> $optional_list_of_string = null, ?Map<string, int> $optional_map_of_string_to_i32 = null, ?Map<string, \test\fixtures\A> $optional_map_of_string_to_A = null, ?Map<string, Vector<int>> $optional_map_of_string_to_list_of_i32 = null, ?Map<string, Vector<\test\fixtures\A>> $optional_map_of_string_to_list_of_A = null, ?Map<string, Set<int>> $optional_map_of_string_to_set_of_i32 = null, ?\test\fixtures\Enum $optional_enum = null, ?\test\fixtures\Enum $required_enum_with_default = null, ?string $string_with_default_value = null, ?int $i32_with_default_value = null, ?float $double_with_default_value = null, ?\test\fixtures\Enum $enum_with_default_value = null, ?\test\fixtures\A $A_with_default_value = null, ?Set<int> $set_of_i32_with_default_value = null, ?Map<int, string> $map_of_i32_to_string_with_default_value = null, ?Vector<string> $list_of_string_with_default_value = null, ?Map<string, Vector<int>> $map_of_string_to_list_of_i32_with_default_value = null  )[] {
+  public function __construct(?\test\fixtures\A $just_an_A = null, ?Set<int> $set_of_i32 = null, ?Vector<int> $list_of_i32 = null, ?Vector<string> $list_of_string = null, ?Map<string, int> $map_of_string_to_i32 = null, ?Map<string, \test\fixtures\A> $map_of_string_to_A = null, ?Map<string, Vector<int>> $map_of_string_to_list_of_i32 = null, ?Map<string, Vector<\test\fixtures\A>> $map_of_string_to_list_of_A = null, ?Map<string, Set<int>> $map_of_string_to_set_of_i32 = null, ?Map<string, Map<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?Map<string, Map<string, \test\fixtures\A>> $map_of_string_to_map_of_string_to_A = null, ?Vector<Set<int>> $list_of_set_of_i32 = null, ?Vector<Map<string, Vector<\test\fixtures\A>>> $list_of_map_of_string_to_list_of_A = null, ?Vector<Map<string, \test\fixtures\A>> $list_of_map_of_string_to_A = null, ?\test\fixtures\Enum $just_an_enum = null, ?\test\fixtures\Union $just_a_union = null, ?\test\fixtures\A $optional_just_an_A = null, ?Set<int> $optional_set_of_i32 = null, ?Vector<int> $optional_list_of_i32 = null, ?Vector<string> $optional_list_of_string = null, ?Map<string, int> $optional_map_of_string_to_i32 = null, ?Map<string, \test\fixtures\A> $optional_map_of_string_to_A = null, ?Map<string, Vector<int>> $optional_map_of_string_to_list_of_i32 = null, ?Map<string, Vector<\test\fixtures\A>> $optional_map_of_string_to_list_of_A = null, ?Map<string, Set<int>> $optional_map_of_string_to_set_of_i32 = null, ?\test\fixtures\Enum $optional_enum = null, ?\test\fixtures\Enum $required_enum_with_default = null, ?string $string_with_default_value = null, ?int $i32_with_default_value = null, ?float $double_with_default_value = null, ?\test\fixtures\Enum $enum_with_default_value = null, ?\test\fixtures\A $A_with_default_value = null, ?Set<int> $set_of_i32_with_default_value = null, ?Map<int, string> $map_of_i32_to_string_with_default_value = null, ?Vector<string> $list_of_string_with_default_value = null, ?Map<string, Vector<int>> $map_of_string_to_list_of_i32_with_default_value = null  )[] {
     $this->just_an_A = $just_an_A;
     $this->set_of_i32 = $set_of_i32 ?? Set {};
     $this->list_of_i32 = $list_of_i32 ?? Vector {};
@@ -1113,8 +1073,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     $this->list_of_set_of_i32 = $list_of_set_of_i32 ?? Vector {};
     $this->list_of_map_of_string_to_list_of_A = $list_of_map_of_string_to_list_of_A ?? Vector {};
     $this->list_of_map_of_string_to_A = $list_of_map_of_string_to_A ?? Vector {};
-    $this->list_of_self = $list_of_self ?? Vector {};
-    $this->map_of_string_to_self = $map_of_string_to_self ?? Map {};
     $this->just_an_enum = $just_an_enum;
     $this->just_a_union = $just_a_union;
     $this->optional_just_an_A = $optional_just_an_A;
@@ -1180,8 +1138,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       Shapes::idx($shape, 'list_of_set_of_i32'),
       Shapes::idx($shape, 'list_of_map_of_string_to_list_of_A'),
       Shapes::idx($shape, 'list_of_map_of_string_to_A'),
-      Shapes::idx($shape, 'list_of_self'),
-      Shapes::idx($shape, 'map_of_string_to_self'),
       Shapes::idx($shape, 'just_an_enum'),
       Shapes::idx($shape, 'just_a_union'),
       Shapes::idx($shape, 'optional_just_an_A'),
@@ -1623,75 +1579,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
                 )
               ),
               "name" => "list_of_map_of_string_to_A",
-            )
-          ),
-          \tmeta_ThriftField::fromShape(
-            shape(
-              "id" => 15,
-              "type" => \tmeta_ThriftType::fromShape(
-                shape(
-                  "t_list" => \tmeta_ThriftListType::fromShape(
-                    shape(
-                      "valueType" => \tmeta_ThriftType::fromShape(
-                        shape(
-                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
-                            shape(
-                              "name" => "module.B",
-                              "underlyingType" => \tmeta_ThriftType::fromShape(
-                                shape(
-                                  "t_struct" => \tmeta_ThriftStructType::fromShape(
-                                    shape(
-                                      "name" => "module.B",
-                                    )
-                                  ),
-                                )
-                              ),
-                            )
-                          ),
-                        )
-                      ),
-                    )
-                  ),
-                )
-              ),
-              "name" => "list_of_self",
-            )
-          ),
-          \tmeta_ThriftField::fromShape(
-            shape(
-              "id" => 16,
-              "type" => \tmeta_ThriftType::fromShape(
-                shape(
-                  "t_map" => \tmeta_ThriftMapType::fromShape(
-                    shape(
-                      "keyType" => \tmeta_ThriftType::fromShape(
-                        shape(
-                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
-                        )
-                      ),
-                      "valueType" => \tmeta_ThriftType::fromShape(
-                        shape(
-                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
-                            shape(
-                              "name" => "module.B",
-                              "underlyingType" => \tmeta_ThriftType::fromShape(
-                                shape(
-                                  "t_struct" => \tmeta_ThriftStructType::fromShape(
-                                    shape(
-                                      "name" => "module.B",
-                                    )
-                                  ),
-                                )
-                              ),
-                            )
-                          ),
-                        )
-                      ),
-                    )
-                  ),
-                )
-              ),
-              "name" => "map_of_string_to_self",
             )
           ),
           \tmeta_ThriftField::fromShape(
@@ -2203,12 +2090,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           $val13 ==> \test\fixtures\A::__fromShape($val13),
         ),
       ),
-      (new Vector($shape['list_of_self']))->map(
-        $val14 ==> \test\fixtures\B::__fromShape($val14),
-      ),
-      (new Map($shape['map_of_string_to_self']))->map(
-        $val15 ==> \test\fixtures\B::__fromShape($val15),
-      ),
       Shapes::idx($shape, 'just_an_enum'),
       Shapes::idx($shape, 'just_a_union') === null ? null : (\test\fixtures\Union::__fromShape($shape['just_a_union'])),
       Shapes::idx($shape, 'optional_just_an_A') === null ? null : (\test\fixtures\A::__fromShape($shape['optional_just_an_A'])),
@@ -2217,18 +2098,18 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       Shapes::idx($shape, 'optional_list_of_string') === null ? null : ((new Vector($shape['optional_list_of_string']))),
       Shapes::idx($shape, 'optional_map_of_string_to_i32') === null ? null : ((new Map($shape['optional_map_of_string_to_i32']))),
       Shapes::idx($shape, 'optional_map_of_string_to_A') === null ? null : ((new Map($shape['optional_map_of_string_to_A']))->map(
-        $val16 ==> \test\fixtures\A::__fromShape($val16),
+        $val14 ==> \test\fixtures\A::__fromShape($val14),
       )),
       Shapes::idx($shape, 'optional_map_of_string_to_list_of_i32') === null ? null : ((new Map($shape['optional_map_of_string_to_list_of_i32']))->map(
-        $val17 ==> (new Vector($val17)),
+        $val15 ==> (new Vector($val15)),
       )),
       Shapes::idx($shape, 'optional_map_of_string_to_list_of_A') === null ? null : ((new Map($shape['optional_map_of_string_to_list_of_A']))->map(
-        $val18 ==> (new Vector($val18))->map(
-          $val19 ==> \test\fixtures\A::__fromShape($val19),
+        $val16 ==> (new Vector($val16))->map(
+          $val17 ==> \test\fixtures\A::__fromShape($val17),
         ),
       )),
       Shapes::idx($shape, 'optional_map_of_string_to_set_of_i32') === null ? null : ((new Map($shape['optional_map_of_string_to_set_of_i32']))->map(
-        $val20 ==> new Set(Keyset\keys($val20)),
+        $val18 ==> new Set(Keyset\keys($val18)),
       )),
       Shapes::idx($shape, 'optional_enum'),
       $shape['required_enum_with_default'],
@@ -2241,7 +2122,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       (new Map($shape['map_of_i32_to_string_with_default_value'])),
       (new Vector($shape['list_of_string_with_default_value'])),
       (new Map($shape['map_of_string_to_list_of_i32_with_default_value']))->map(
-        $val21 ==> (new Vector($val21)),
+        $val19 ==> (new Vector($val19)),
       ),
     );
   }
@@ -2304,14 +2185,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           |> dict($$),
       )
         |> vec($$),
-      'list_of_self' => $this->list_of_self->map(
-        ($_val0) ==> $_val0->__toShape(),
-      )
-        |> vec($$),
-      'map_of_string_to_self' => $this->map_of_string_to_self->map(
-        ($_val0) ==> $_val0->__toShape(),
-      )
-        |> dict($$),
       'just_an_enum' => $this->just_an_enum,
       'just_a_union' => $this->just_a_union?->__toShape(),
       'optional_just_an_A' => $this->optional_just_an_A?->__toShape(),
