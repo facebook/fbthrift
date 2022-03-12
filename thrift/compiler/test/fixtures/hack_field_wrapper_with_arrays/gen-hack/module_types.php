@@ -150,18 +150,6 @@ class MyUnion implements \IThriftAsyncStruct, \IThriftUnion<MyUnionEnum> {
   public ?\AdapterTestIntToString::THackType $union_adapted_type;
   protected MyUnionEnum $_type = MyUnionEnum::_EMPTY_;
 
-  public function __construct(?int $union_annotated_field = null, ?\AdapterTestIntToString::THackType $union_adapted_type = null  )[] {
-    $this->_type = MyUnionEnum::_EMPTY_;
-    if ($union_adapted_type !== null) {
-      $this->union_adapted_type = $union_adapted_type;
-      $this->_type = MyUnionEnum::union_adapted_type;
-    }
-    if ($union_annotated_field !== null) {
-      $this->union_annotated_field = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<?int, this>($union_annotated_field, 1, $this);
-      $this->_type = MyUnionEnum::union_annotated_field;
-    }
-  }
-
   public static function withDefaultValues()[]: this {
     return new static();
   }
@@ -369,11 +357,11 @@ class MyException extends \TException implements \IThriftAsyncStruct {
   }
 
 
-  public function __construct(?int $code = null, ?string $message = null, ?string $annotated_message = null  )[] {
+  public function __construct()[] {
     parent::__construct();
-    $this->code = $code ?? 0;
-    $this->message = $message ?? '';
-    $this->annotated_message = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<string, this>($annotated_message ?? '', 3, $this);
+    $this->code = 0;
+    $this->message = '';
+    $this->annotated_message = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<string, this>('', 3, $this);
   }
 
   public static function withDefaultValues()[]: this {

@@ -301,10 +301,10 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
    */
   public \MyAdapter::THackType $adapted_type;
 
-  public function __construct(?int $wrapped_field = null, ?int $annotated_field = null, ?\MyAdapter::THackType $adapted_type = null  )[] {
-    $this->adapted_type = $adapted_type ?? \MyAdapter::fromThrift(0);
-    $this->wrapped_field = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<int, this>($wrapped_field ?? 0, 1, $this);
-    $this->annotated_field = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<int, this>($annotated_field ?? 0, 2, $this);
+  public function __construct()[] {
+    $this->adapted_type = \MyAdapter::fromThrift(0);
+    $this->wrapped_field = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<int, this>(0, 1, $this);
+    $this->annotated_field = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<int, this>(0, 2, $this);
   }
 
   public static function withDefaultValues()[]: this {
