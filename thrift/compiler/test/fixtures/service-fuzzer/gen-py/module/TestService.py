@@ -552,6 +552,12 @@ class Client(Iface):
     self._seqid = 0
     self._fbthrift_cpp_transport = cpp_transport
 
+  def set_persistent_header(self, key, value):
+    if self._fbthrift_cpp_transport:
+      self._fbthrift_cpp_transport.set_persistent_header(key, value)
+    else:
+      self._oprot.trans.set_persistent_header(key, value)
+
   def init(self, int1=None, int2=None, int3=None, int4=None, int5=None, int6=None, int7=None, int8=None, int9=None, int10=None, int11=None, int12=None, int13=None, int14=None, int15=None, int16=None):
     """
     Parameters:

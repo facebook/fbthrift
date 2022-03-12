@@ -223,6 +223,12 @@ class Client(module.MyServicePrioParent.Client, Iface):
   def __init__(self, iprot=None, oprot=None, cpp_transport=None):
     module.MyServicePrioParent.Client.__init__(self, iprot, oprot, cpp_transport)
 
+  def set_persistent_header(self, key, value):
+    if self._fbthrift_cpp_transport:
+      self._fbthrift_cpp_transport.set_persistent_header(key, value)
+    else:
+      self._oprot.trans.set_persistent_header(key, value)
+
   def pang(self, ):
     if (self._fbthrift_cpp_transport):
       args = pang_args()

@@ -79,3 +79,6 @@ cdef class SyncClient:
                 raise TApplicationException(TApplicationException.UNKNOWN)
             else:
                 raise TApplicationException(TApplicationException.MISSING_RESULT)
+
+    def set_persistent_header(SyncClient self, string key, string value):
+        self._persistent_headers[key] = value

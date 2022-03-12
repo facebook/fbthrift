@@ -17,6 +17,7 @@ class Iface: ...  # EmptyService
 
 class Client(Iface, __T.ContextManager[Client]):  # EmptyService
     def __init__(self, iprot: __T.Optional[TProtocolBase], oprot: __T.Optional[TProtocolBase] = None, cpp_transport: __T.Optional[__T.TypeVar("SyncClient")] = None) -> None: ...
+    def set_persistent_header(self, key: str, value: str) -> None: ...
 
 class Processor(Iface, Thrift.TProcessor):  # EmptyService
     def __init__(self, handler: Iface) -> None:
