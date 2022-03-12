@@ -18,6 +18,8 @@ include "thrift/annotation/thrift.thrift"
 cpp_include "thrift/lib/cpp2/op/detail/Patch.h"
 
 namespace cpp2 apache.thrift.op
+namespace java.swift com.facebook.thrift.op
+namespace java2 com.facebook.thrift.op
 
 // A patch for a boolean value.
 @thrift.Experimental

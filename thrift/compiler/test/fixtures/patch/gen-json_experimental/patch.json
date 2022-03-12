@@ -1,0 +1,211 @@
+{
+  "__fbthrift": "@generated",
+  "thrift_module" : "patch",
+  "namespaces": {
+    "cpp2": "apache.thrift.op",
+    "java.swift": "com.facebook.thrift.op",
+    "java2": "com.facebook.thrift.op"
+  },  "structs" :
+  {
+      "BoolPatch" : {
+        "name" : "BoolPatch",
+        "fields" : {
+          "assign" : {
+            "name" : "assign",
+            "key" : 1,
+            "lineno" : 30,
+            "required" : "optional",
+            "type" : "bool"
+          },
+          "invert" : {
+            "name" : "invert",
+            "key" : 2,
+            "lineno" : 33,
+            "required" : "opt-in-req-out",
+            "type" : "bool"
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 26
+      },
+      "BytePatch" : {
+        "name" : "BytePatch",
+        "fields" : {
+          "assign" : {
+            "name" : "assign",
+            "key" : 1,
+            "lineno" : 45,
+            "required" : "optional",
+            "type" : "byte"
+          },
+          "add" : {
+            "name" : "add",
+            "key" : 2,
+            "lineno" : 48,
+            "required" : "opt-in-req-out",
+            "type" : "byte"
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 41
+      },
+      "I16Patch" : {
+        "name" : "I16Patch",
+        "fields" : {
+          "assign" : {
+            "name" : "assign",
+            "key" : 1,
+            "lineno" : 60,
+            "required" : "optional",
+            "type" : "i16"
+          },
+          "add" : {
+            "name" : "add",
+            "key" : 2,
+            "lineno" : 63,
+            "required" : "opt-in-req-out",
+            "type" : "i16"
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 56
+      },
+      "I32Patch" : {
+        "name" : "I32Patch",
+        "fields" : {
+          "assign" : {
+            "name" : "assign",
+            "key" : 1,
+            "lineno" : 75,
+            "required" : "optional",
+            "type" : "i32"
+          },
+          "add" : {
+            "name" : "add",
+            "key" : 2,
+            "lineno" : 78,
+            "required" : "opt-in-req-out",
+            "type" : "i32"
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 71
+      },
+      "I64Patch" : {
+        "name" : "I64Patch",
+        "fields" : {
+          "assign" : {
+            "name" : "assign",
+            "key" : 1,
+            "lineno" : 90,
+            "required" : "optional",
+            "type" : "i64"
+          },
+          "add" : {
+            "name" : "add",
+            "key" : 2,
+            "lineno" : 93,
+            "required" : "opt-in-req-out",
+            "type" : "i64"
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 86
+      },
+      "FloatPatch" : {
+        "name" : "FloatPatch",
+        "fields" : {
+          "assign" : {
+            "name" : "assign",
+            "key" : 1,
+            "lineno" : 105,
+            "required" : "optional",
+            "type" : "float"
+          },
+          "add" : {
+            "name" : "add",
+            "key" : 2,
+            "lineno" : 108,
+            "required" : "opt-in-req-out",
+            "type" : "float"
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 101
+      },
+      "DoublePatch" : {
+        "name" : "DoublePatch",
+        "fields" : {
+          "assign" : {
+            "name" : "assign",
+            "key" : 1,
+            "lineno" : 120,
+            "required" : "optional",
+            "type" : "double"
+          },
+          "add" : {
+            "name" : "add",
+            "key" : 2,
+            "lineno" : 123,
+            "required" : "opt-in-req-out",
+            "type" : "double"
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 116
+      },
+      "StringPatch" : {
+        "name" : "StringPatch",
+        "fields" : {
+          "assign" : {
+            "name" : "assign",
+            "key" : 1,
+            "lineno" : 135,
+            "required" : "optional",
+            "type" : "string"
+          },
+          "append" : {
+            "name" : "append",
+            "key" : 2,
+            "lineno" : 138,
+            "required" : "opt-in-req-out",
+            "type" : "string"
+          },
+          "prepend" : {
+            "name" : "prepend",
+            "key" : 3,
+            "lineno" : 141,
+            "required" : "opt-in-req-out",
+            "type" : "string"
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 131
+      },
+      "BinaryPatch" : {
+        "name" : "BinaryPatch",
+        "fields" : {
+          "assign" : {
+            "name" : "assign",
+            "key" : 1,
+            "lineno" : 153,
+            "required" : "optional",
+            "type" : "binary"
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 149
+      }
+      },
+  "source_path" : "thrift/lib/thrift/patch",
+  "py_namespace" : ""
+}
