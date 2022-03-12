@@ -10,7 +10,7 @@
  * Original thrift struct:-
  * Transitive
  */
-class facebook_thrift_annotation_Transitive implements \IThriftStruct, \IThriftShapishStruct {
+class facebook_thrift_annotation_Transitive implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

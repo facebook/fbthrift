@@ -10,7 +10,7 @@
  * Original thrift exception:-
  * CustomException
  */
-class CustomException extends \TException implements \IThriftStruct {
+class CustomException extends \TException implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

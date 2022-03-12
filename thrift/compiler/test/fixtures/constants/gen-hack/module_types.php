@@ -109,7 +109,7 @@ type MyMapIdentifier = Map<string, string>;
  * Original thrift struct:-
  * Internship
  */
-class Internship implements \IThriftStruct {
+class Internship implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -295,7 +295,7 @@ class Internship implements \IThriftStruct {
  * Original thrift struct:-
  * Range
  */
-class Range implements \IThriftStruct {
+class Range implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -401,7 +401,7 @@ class Range implements \IThriftStruct {
  * Original thrift struct:-
  * struct1
  */
-class struct1 implements \IThriftStruct {
+class struct1 implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -507,7 +507,7 @@ class struct1 implements \IThriftStruct {
  * Original thrift struct:-
  * struct2
  */
-class struct2 implements \IThriftStruct {
+class struct2 implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -679,7 +679,7 @@ class struct2 implements \IThriftStruct {
  * Original thrift struct:-
  * struct3
  */
-class struct3 implements \IThriftStruct {
+class struct3 implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -814,7 +814,7 @@ class struct3 implements \IThriftStruct {
  * Original thrift struct:-
  * struct4
  */
-class struct4 implements \IThriftStruct {
+class struct4 implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -952,7 +952,7 @@ enum union1Enum: int {
  * Original thrift struct:-
  * union1
  */
-class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
+class union1 implements \IThriftSyncStruct, \IThriftUnion<union1Enum> {
   use \ThriftUnionSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1134,7 +1134,7 @@ enum union2Enum: int {
  * Original thrift struct:-
  * union2
  */
-class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
+class union2 implements \IThriftSyncStruct, \IThriftUnion<union2Enum> {
   use \ThriftUnionSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

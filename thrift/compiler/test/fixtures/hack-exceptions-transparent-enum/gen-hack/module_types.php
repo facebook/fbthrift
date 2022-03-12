@@ -41,7 +41,7 @@ class MyEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
  * Original thrift exception:-
  * MyException
  */
-class MyException extends \TException implements \IThriftStruct {
+class MyException extends \TException implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

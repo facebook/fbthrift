@@ -82,7 +82,7 @@ class Company_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
  * Original thrift struct:-
  * Internship
  */
-class Internship implements \IThriftStruct {
+class Internship implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -218,7 +218,7 @@ class Internship implements \IThriftStruct {
  * Original thrift struct:-
  * Range
  */
-class Range implements \IThriftStruct {
+class Range implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

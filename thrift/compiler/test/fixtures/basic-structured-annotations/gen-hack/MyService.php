@@ -427,7 +427,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
 
 // HELPER FUNCTIONS AND STRUCTURES
 
-class MyService_first_args implements \IThriftStruct {
+class MyService_first_args implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -479,7 +479,7 @@ class MyService_first_args implements \IThriftStruct {
 
 }
 
-class MyService_first_result implements \IThriftStruct {
+class MyService_first_result implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -576,7 +576,7 @@ class MyService_first_result implements \IThriftStruct {
 
 }
 
-class MyService_second_args implements \IThriftStruct {
+class MyService_second_args implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -660,7 +660,7 @@ class MyService_second_args implements \IThriftStruct {
 
 }
 
-class MyService_second_result implements \IThriftStruct {
+class MyService_second_result implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

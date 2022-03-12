@@ -12,7 +12,7 @@ namespace facebook_thrift_annotation;
  * Original thrift struct:-
  * FieldWrapper
  */
-class FieldWrapper implements \IThriftStruct, \IThriftShapishStruct {
+class FieldWrapper implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

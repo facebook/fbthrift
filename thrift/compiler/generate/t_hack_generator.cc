@@ -3625,8 +3625,12 @@ void t_hack_generator::_generate_php_struct_definition(
   } else if (tstruct->is_exception()) {
     out << " extends \\TException";
   }
-  out << " implements \\IThriftStruct";
-
+  bool is_async = is_async_struct(tstruct);
+  if (is_async) {
+    out << " implements \\IThriftAsyncStruct";
+  } else {
+    out << " implements \\IThriftSyncStruct";
+  }
   if (tstruct->is_union()) {
     out << ", \\IThriftUnion<" << union_enum_name(name, tstruct->program())
         << ">";
@@ -3635,8 +3639,14 @@ void t_hack_generator::_generate_php_struct_definition(
   bool gen_shapes = shapes_ && type != ThriftStructType::EXCEPTION &&
       type != ThriftStructType::RESULT;
 
+  bool is_async_shapish = false;
   if (gen_shapes) {
-    out << ", \\IThriftShapishStruct";
+    is_async_shapish = is_async_shapish_struct(tstruct);
+    if (is_async_shapish) {
+      out << ", \\IThriftShapishAsyncStruct";
+    } else {
+      out << ", \\IThriftShapishSyncStruct";
+    }
   }
 
   out << " {\n";

@@ -513,7 +513,7 @@ class BarProcessor extends BarSyncProcessor {}
 
 // HELPER FUNCTIONS AND STRUCTURES
 
-class Bar_baz_args implements \IThriftStruct {
+class Bar_baz_args implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -748,7 +748,7 @@ class Bar_baz_args implements \IThriftStruct {
 
 }
 
-class Bar_baz_result implements \IThriftStruct {
+class Bar_baz_result implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

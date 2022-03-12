@@ -41,7 +41,7 @@ class MyEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
  * Original thrift struct:-
  * MyStruct
  */
-class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
+class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -351,7 +351,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
  * Original thrift struct:-
  * MyDataItem
  */
-class MyDataItem implements \IThriftStruct, \IThriftShapishStruct {
+class MyDataItem implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -435,7 +435,7 @@ enum MyUnionEnum: int {
  * Original thrift struct:-
  * MyUnion
  */
-class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftShapishStruct {
+class MyUnion implements \IThriftSyncStruct, \IThriftUnion<MyUnionEnum>, \IThriftShapishSyncStruct {
   use \ThriftUnionSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

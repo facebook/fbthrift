@@ -20,7 +20,7 @@ enum ComplexUnionEnum: int {
  * Original thrift struct:-
  * ComplexUnion
  */
-class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
+class ComplexUnion implements \IThriftSyncStruct, \IThriftUnion<ComplexUnionEnum> {
   use \ThriftUnionSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -516,7 +516,7 @@ enum ListUnionEnum: int {
  * Original thrift struct:-
  * ListUnion
  */
-class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
+class ListUnion implements \IThriftSyncStruct, \IThriftUnion<ListUnionEnum> {
   use \ThriftUnionSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -754,7 +754,7 @@ enum DataUnionEnum: int {
  * Original thrift struct:-
  * DataUnion
  */
-class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
+class DataUnion implements \IThriftSyncStruct, \IThriftUnion<DataUnionEnum> {
   use \ThriftUnionSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -946,7 +946,7 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
  * Original thrift struct:-
  * Val
  */
-class Val implements \IThriftStruct {
+class Val implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1143,7 +1143,7 @@ enum ValUnionEnum: int {
  * Original thrift struct:-
  * ValUnion
  */
-class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
+class ValUnion implements \IThriftSyncStruct, \IThriftUnion<ValUnionEnum> {
   use \ThriftUnionSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1357,7 +1357,7 @@ enum VirtualComplexUnionEnum: int {
  * Original thrift struct:-
  * VirtualComplexUnion
  */
-class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComplexUnionEnum> {
+class VirtualComplexUnion implements \IThriftSyncStruct, \IThriftUnion<VirtualComplexUnionEnum> {
   use \ThriftUnionSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1549,7 +1549,7 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
  * Original thrift struct:-
  * NonCopyableStruct
  */
-class NonCopyableStruct implements \IThriftStruct {
+class NonCopyableStruct implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1648,7 +1648,7 @@ enum NonCopyableUnionEnum: int {
  * Original thrift struct:-
  * NonCopyableUnion
  */
-class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnionEnum> {
+class NonCopyableUnion implements \IThriftSyncStruct, \IThriftUnion<NonCopyableUnionEnum> {
   use \ThriftUnionSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

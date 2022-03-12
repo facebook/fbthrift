@@ -429,7 +429,7 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceClientIf
 
 // HELPER FUNCTIONS AND STRUCTURES
 
-class SomeService_bounce_map_args implements \IThriftStruct {
+class SomeService_bounce_map_args implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -553,7 +553,7 @@ class SomeService_bounce_map_args implements \IThriftStruct {
 
 }
 
-class SomeService_bounce_map_result implements \IThriftStruct {
+class SomeService_bounce_map_result implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -676,7 +676,7 @@ class SomeService_bounce_map_result implements \IThriftStruct {
 
 }
 
-class SomeService_binary_keyed_map_args implements \IThriftStruct {
+class SomeService_binary_keyed_map_args implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -782,7 +782,7 @@ class SomeService_binary_keyed_map_args implements \IThriftStruct {
 
 }
 
-class SomeService_binary_keyed_map_result implements \IThriftStruct {
+class SomeService_binary_keyed_map_result implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

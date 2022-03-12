@@ -12,7 +12,7 @@ namespace test\namespace;
  * Original thrift struct:-
  * structured_annotation_with_namespace
  */
-class structured_annotation_with_namespace implements \IThriftStruct {
+class structured_annotation_with_namespace implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

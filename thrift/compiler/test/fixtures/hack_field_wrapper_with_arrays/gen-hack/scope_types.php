@@ -10,7 +10,7 @@
  * Original thrift struct:-
  * Struct
  */
-class facebook_thrift_annotation_Struct implements \IThriftStruct {
+class facebook_thrift_annotation_Struct implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -75,7 +75,7 @@ class facebook_thrift_annotation_Struct implements \IThriftStruct {
  * Original thrift struct:-
  * Union
  */
-class facebook_thrift_annotation_Union implements \IThriftStruct {
+class facebook_thrift_annotation_Union implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -140,7 +140,7 @@ class facebook_thrift_annotation_Union implements \IThriftStruct {
  * Original thrift struct:-
  * Exception
  */
-class facebook_thrift_annotation_Exception implements \IThriftStruct {
+class facebook_thrift_annotation_Exception implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -205,7 +205,7 @@ class facebook_thrift_annotation_Exception implements \IThriftStruct {
  * Original thrift struct:-
  * Field
  */
-class facebook_thrift_annotation_Field implements \IThriftStruct {
+class facebook_thrift_annotation_Field implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -270,7 +270,7 @@ class facebook_thrift_annotation_Field implements \IThriftStruct {
  * Original thrift struct:-
  * Typedef
  */
-class facebook_thrift_annotation_Typedef implements \IThriftStruct {
+class facebook_thrift_annotation_Typedef implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -335,7 +335,7 @@ class facebook_thrift_annotation_Typedef implements \IThriftStruct {
  * Original thrift struct:-
  * Service
  */
-class facebook_thrift_annotation_Service implements \IThriftStruct {
+class facebook_thrift_annotation_Service implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -400,7 +400,7 @@ class facebook_thrift_annotation_Service implements \IThriftStruct {
  * Original thrift struct:-
  * Interaction
  */
-class facebook_thrift_annotation_Interaction implements \IThriftStruct {
+class facebook_thrift_annotation_Interaction implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -465,7 +465,7 @@ class facebook_thrift_annotation_Interaction implements \IThriftStruct {
  * Original thrift struct:-
  * Function
  */
-class facebook_thrift_annotation_Function implements \IThriftStruct {
+class facebook_thrift_annotation_Function implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -530,7 +530,7 @@ class facebook_thrift_annotation_Function implements \IThriftStruct {
  * Original thrift struct:-
  * EnumValue
  */
-class facebook_thrift_annotation_EnumValue implements \IThriftStruct {
+class facebook_thrift_annotation_EnumValue implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -595,7 +595,7 @@ class facebook_thrift_annotation_EnumValue implements \IThriftStruct {
  * Original thrift struct:-
  * Const
  */
-class facebook_thrift_annotation_Const implements \IThriftStruct {
+class facebook_thrift_annotation_Const implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -660,7 +660,7 @@ class facebook_thrift_annotation_Const implements \IThriftStruct {
  * Original thrift struct:-
  * FbthriftInternalEnum
  */
-class facebook_thrift_annotation_FbthriftInternalEnum implements \IThriftStruct {
+class facebook_thrift_annotation_FbthriftInternalEnum implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -725,7 +725,7 @@ class facebook_thrift_annotation_FbthriftInternalEnum implements \IThriftStruct 
  * Original thrift struct:-
  * FbthriftInternalScopeTransitive
  */
-class facebook_thrift_annotation_FbthriftInternalScopeTransitive implements \IThriftStruct {
+class facebook_thrift_annotation_FbthriftInternalScopeTransitive implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -790,7 +790,7 @@ class facebook_thrift_annotation_FbthriftInternalScopeTransitive implements \ITh
  * Original thrift struct:-
  * Structured
  */
-class facebook_thrift_annotation_Structured implements \IThriftStruct {
+class facebook_thrift_annotation_Structured implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -872,7 +872,7 @@ class facebook_thrift_annotation_Structured implements \IThriftStruct {
  * Original thrift struct:-
  * Interface
  */
-class facebook_thrift_annotation_Interface implements \IThriftStruct {
+class facebook_thrift_annotation_Interface implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -950,7 +950,7 @@ class facebook_thrift_annotation_Interface implements \IThriftStruct {
  * Original thrift struct:-
  * RootDefinition
  */
-class facebook_thrift_annotation_RootDefinition implements \IThriftStruct {
+class facebook_thrift_annotation_RootDefinition implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1040,7 +1040,7 @@ class facebook_thrift_annotation_RootDefinition implements \IThriftStruct {
  * Original thrift struct:-
  * Definition
  */
-class facebook_thrift_annotation_Definition implements \IThriftStruct {
+class facebook_thrift_annotation_Definition implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

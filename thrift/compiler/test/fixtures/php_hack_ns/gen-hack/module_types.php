@@ -39,7 +39,7 @@ class foo_php_ns_Status_TEnumStaticMetadata implements \IThriftEnumStaticMetadat
  * Original thrift struct:-
  * TestStruct
  */
-class foo_php_ns_TestStruct implements \IThriftStruct {
+class foo_php_ns_TestStruct implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

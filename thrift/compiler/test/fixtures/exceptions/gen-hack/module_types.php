@@ -10,7 +10,7 @@
  * Original thrift exception:-
  * Fiery
  */
-class Fiery extends \TException implements \IThriftStruct {
+class Fiery extends \TException implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -92,7 +92,7 @@ class Fiery extends \TException implements \IThriftStruct {
  * Original thrift exception:-
  * Serious
  */
-class Serious extends \TException implements \IThriftStruct {
+class Serious extends \TException implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -180,7 +180,7 @@ class Serious extends \TException implements \IThriftStruct {
  * Original thrift exception:-
  * ComplexFieldNames
  */
-class ComplexFieldNames extends \TException implements \IThriftStruct {
+class ComplexFieldNames extends \TException implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -291,7 +291,7 @@ class ComplexFieldNames extends \TException implements \IThriftStruct {
  * Original thrift exception:-
  * CustomFieldNames
  */
-class CustomFieldNames extends \TException implements \IThriftStruct {
+class CustomFieldNames extends \TException implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -402,7 +402,7 @@ class CustomFieldNames extends \TException implements \IThriftStruct {
  * Original thrift exception:-
  * ExceptionWithPrimitiveField
  */
-class ExceptionWithPrimitiveField extends \TException implements \IThriftStruct {
+class ExceptionWithPrimitiveField extends \TException implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -508,7 +508,7 @@ class ExceptionWithPrimitiveField extends \TException implements \IThriftStruct 
  * Original thrift exception:-
  * Banal
  */
-class Banal extends \TException implements \IThriftStruct {
+class Banal extends \TException implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

@@ -10,7 +10,7 @@
  * Original thrift struct:-
  * MyStruct
  */
-class MyStruct implements \IThriftStruct {
+class MyStruct implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -110,7 +110,7 @@ enum MyUnionEnum: int {
  * Original thrift struct:-
  * MyUnion
  */
-class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
+class MyUnion implements \IThriftAsyncStruct, \IThriftUnion<MyUnionEnum> {
   use \ThriftUnionSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -317,7 +317,7 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
  * Original thrift exception:-
  * MyException
  */
-class MyException extends \TException implements \IThriftStruct {
+class MyException extends \TException implements \IThriftAsyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

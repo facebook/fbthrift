@@ -2212,7 +2212,7 @@ class MyServiceProcessor extends MyServiceSyncProcessor {}
 
 // HELPER FUNCTIONS AND STRUCTURES
 
-class MyService_ping_args implements \IThriftStruct, \IThriftShapishStruct {
+class MyService_ping_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -2285,7 +2285,7 @@ class MyService_ping_args implements \IThriftStruct, \IThriftShapishStruct {
 
 }
 
-class MyService_ping_result implements \IThriftStruct {
+class MyService_ping_result implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -2346,7 +2346,7 @@ class MyService_ping_result implements \IThriftStruct {
 
 }
 
-class MyService_getRandomData_args implements \IThriftStruct, \IThriftShapishStruct {
+class MyService_getRandomData_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -2419,7 +2419,7 @@ class MyService_getRandomData_args implements \IThriftStruct, \IThriftShapishStr
 
 }
 
-class MyService_getRandomData_result implements \IThriftStruct {
+class MyService_getRandomData_result implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -2504,7 +2504,7 @@ class MyService_getRandomData_result implements \IThriftStruct {
 
 }
 
-class MyService_sink_args implements \IThriftStruct, \IThriftShapishStruct {
+class MyService_sink_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -2605,7 +2605,7 @@ class MyService_sink_args implements \IThriftStruct, \IThriftShapishStruct {
 
 }
 
-class MyService_sink_result implements \IThriftStruct {
+class MyService_sink_result implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -2666,7 +2666,7 @@ class MyService_sink_result implements \IThriftStruct {
 
 }
 
-class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruct {
+class MyService_putDataById_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -2793,7 +2793,7 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
 
 }
 
-class MyService_putDataById_result implements \IThriftStruct {
+class MyService_putDataById_result implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -2854,7 +2854,7 @@ class MyService_putDataById_result implements \IThriftStruct {
 
 }
 
-class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruct {
+class MyService_hasDataById_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -2955,7 +2955,7 @@ class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruc
 
 }
 
-class MyService_hasDataById_result implements \IThriftStruct {
+class MyService_hasDataById_result implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -3040,7 +3040,7 @@ class MyService_hasDataById_result implements \IThriftStruct {
 
 }
 
-class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruct {
+class MyService_getDataById_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -3141,7 +3141,7 @@ class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruc
 
 }
 
-class MyService_getDataById_result implements \IThriftStruct {
+class MyService_getDataById_result implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -3226,7 +3226,7 @@ class MyService_getDataById_result implements \IThriftStruct {
 
 }
 
-class MyService_deleteDataById_args implements \IThriftStruct, \IThriftShapishStruct {
+class MyService_deleteDataById_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -3327,7 +3327,7 @@ class MyService_deleteDataById_args implements \IThriftStruct, \IThriftShapishSt
 
 }
 
-class MyService_deleteDataById_result implements \IThriftStruct {
+class MyService_deleteDataById_result implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -3388,7 +3388,7 @@ class MyService_deleteDataById_result implements \IThriftStruct {
 
 }
 
-class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruct {
+class MyService_lobDataById_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

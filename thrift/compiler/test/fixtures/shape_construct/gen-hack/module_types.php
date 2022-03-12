@@ -51,7 +51,7 @@ enum TestUnionEnum: int {
  * Original thrift struct:-
  * TestUnion
  */
-class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
+class TestUnion implements \IThriftSyncStruct, \IThriftUnion<TestUnionEnum> {
   use \ThriftUnionSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -478,7 +478,7 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
  * Original thrift struct:-
  * Foo
  */
-class Foo implements \IThriftStruct {
+class Foo implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -719,7 +719,7 @@ class Foo implements \IThriftStruct {
  * Original thrift struct:-
  * TestStruct
  */
-class TestStruct implements \IThriftStruct {
+class TestStruct implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1017,7 +1017,7 @@ class TestStruct implements \IThriftStruct {
  * Original thrift exception:-
  * Baz
  */
-class Baz extends \TException implements \IThriftStruct {
+class Baz extends \TException implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1189,7 +1189,7 @@ class Baz extends \TException implements \IThriftStruct {
  * Original thrift exception:-
  * OptBaz
  */
-class OptBaz extends \TException implements \IThriftStruct {
+class OptBaz extends \TException implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

@@ -10,7 +10,7 @@
  * Original thrift struct:-
  * AnnotationStruct
  */
-class AnnotationStruct implements \IThriftStruct {
+class AnnotationStruct implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -85,7 +85,7 @@ class AnnotationStruct implements \IThriftStruct {
  * Original thrift struct:-
  * MyStruct
  */
-class MyStruct implements \IThriftStruct {
+class MyStruct implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -196,7 +196,7 @@ class MyStruct implements \IThriftStruct {
  * Original thrift struct:-
  * MyNestedStruct
  */
-class MyNestedStruct implements \IThriftStruct {
+class MyNestedStruct implements \IThriftAsyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -380,7 +380,7 @@ class MyNestedStruct implements \IThriftStruct {
  * Original thrift struct:-
  * MyComplexStruct
  */
-class MyComplexStruct implements \IThriftStruct {
+class MyComplexStruct implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -966,7 +966,7 @@ class MyComplexStruct implements \IThriftStruct {
  * Original thrift struct:-
  * TestedCyclicNestedStruct_A
  */
-class TestedCyclicNestedStruct_A implements \IThriftStruct {
+class TestedCyclicNestedStruct_A implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1112,7 +1112,7 @@ class TestedCyclicNestedStruct_A implements \IThriftStruct {
  * Original thrift struct:-
  * TestedCyclicNestedStruct_B
  */
-class TestedCyclicNestedStruct_B implements \IThriftStruct {
+class TestedCyclicNestedStruct_B implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

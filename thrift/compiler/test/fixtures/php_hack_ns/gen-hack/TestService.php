@@ -243,7 +243,7 @@ class TestServiceClient extends \FooHackServiceClient implements TestServiceClie
 
 // HELPER FUNCTIONS AND STRUCTURES
 
-class TestService_ping_args implements \IThriftStruct {
+class TestService_ping_args implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -317,7 +317,7 @@ class TestService_ping_args implements \IThriftStruct {
 
 }
 
-class TestService_ping_result implements \IThriftStruct {
+class TestService_ping_result implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

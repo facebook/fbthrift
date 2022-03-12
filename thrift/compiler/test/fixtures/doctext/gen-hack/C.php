@@ -678,7 +678,7 @@ class CClient extends \ThriftClientBase implements CClientIf {
 
 // HELPER FUNCTIONS AND STRUCTURES
 
-class C_f_args implements \IThriftStruct {
+class C_f_args implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -730,7 +730,7 @@ class C_f_args implements \IThriftStruct {
 
 }
 
-class C_f_result implements \IThriftStruct {
+class C_f_result implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -782,7 +782,7 @@ class C_f_result implements \IThriftStruct {
 
 }
 
-class C_thing_args implements \IThriftStruct {
+class C_thing_args implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -909,7 +909,7 @@ class C_thing_args implements \IThriftStruct {
 
 }
 
-class C_thing_result implements \IThriftStruct {
+class C_thing_result implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1006,7 +1006,7 @@ class C_thing_result implements \IThriftStruct {
 
 }
 
-class C_numbers_args implements \IThriftStruct {
+class C_numbers_args implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1058,7 +1058,7 @@ class C_numbers_args implements \IThriftStruct {
 
 }
 
-class C_numbers_StreamResponse implements \IThriftStruct {
+class C_numbers_StreamResponse implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1140,7 +1140,7 @@ class C_numbers_StreamResponse implements \IThriftStruct {
 
 }
 
-class C_numbers_FirstResponse implements \IThriftStruct {
+class C_numbers_FirstResponse implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

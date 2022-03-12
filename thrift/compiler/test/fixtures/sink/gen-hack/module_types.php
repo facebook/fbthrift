@@ -10,7 +10,7 @@
  * Original thrift struct:-
  * InitialResponse
  */
-class InitialResponse implements \IThriftStruct {
+class InitialResponse implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -92,7 +92,7 @@ class InitialResponse implements \IThriftStruct {
  * Original thrift struct:-
  * FinalResponse
  */
-class FinalResponse implements \IThriftStruct {
+class FinalResponse implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -174,7 +174,7 @@ class FinalResponse implements \IThriftStruct {
  * Original thrift struct:-
  * SinkPayload
  */
-class SinkPayload implements \IThriftStruct {
+class SinkPayload implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -256,7 +256,7 @@ class SinkPayload implements \IThriftStruct {
  * Original thrift struct:-
  * CompatibleWithKeywordSink
  */
-class CompatibleWithKeywordSink implements \IThriftStruct {
+class CompatibleWithKeywordSink implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -338,7 +338,7 @@ class CompatibleWithKeywordSink implements \IThriftStruct {
  * Original thrift exception:-
  * InitialException
  */
-class InitialException extends \TException implements \IThriftStruct {
+class InitialException extends \TException implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -420,7 +420,7 @@ class InitialException extends \TException implements \IThriftStruct {
  * Original thrift exception:-
  * SinkException1
  */
-class SinkException1 extends \TException implements \IThriftStruct {
+class SinkException1 extends \TException implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -502,7 +502,7 @@ class SinkException1 extends \TException implements \IThriftStruct {
  * Original thrift exception:-
  * SinkException2
  */
-class SinkException2 extends \TException implements \IThriftStruct {
+class SinkException2 extends \TException implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

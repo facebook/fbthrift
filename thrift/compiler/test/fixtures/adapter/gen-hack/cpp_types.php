@@ -43,7 +43,7 @@ class facebook_thrift_annotation_cpp_RefType_TEnumStaticMetadata implements \ITh
  * Original thrift struct:-
  * Ref
  */
-class facebook_thrift_annotation_cpp_Ref implements \IThriftStruct, \IThriftShapishStruct {
+class facebook_thrift_annotation_cpp_Ref implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -160,7 +160,7 @@ class facebook_thrift_annotation_cpp_Ref implements \IThriftStruct, \IThriftShap
  * Original thrift struct:-
  * Lazy
  */
-class facebook_thrift_annotation_cpp_Lazy implements \IThriftStruct, \IThriftShapishStruct {
+class facebook_thrift_annotation_cpp_Lazy implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -273,7 +273,7 @@ class facebook_thrift_annotation_cpp_Lazy implements \IThriftStruct, \IThriftSha
  * Original thrift struct:-
  * DisableLazyChecksum
  */
-class facebook_thrift_annotation_cpp_DisableLazyChecksum implements \IThriftStruct, \IThriftShapishStruct {
+class facebook_thrift_annotation_cpp_DisableLazyChecksum implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -354,7 +354,7 @@ class facebook_thrift_annotation_cpp_DisableLazyChecksum implements \IThriftStru
  * Original thrift struct:-
  * Adapter
  */
-class facebook_thrift_annotation_cpp_Adapter implements \IThriftStruct, \IThriftShapishStruct {
+class facebook_thrift_annotation_cpp_Adapter implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -467,7 +467,7 @@ class facebook_thrift_annotation_cpp_Adapter implements \IThriftStruct, \IThrift
  * Original thrift struct:-
  * PackIsset
  */
-class facebook_thrift_annotation_cpp_PackIsset implements \IThriftStruct, \IThriftShapishStruct {
+class facebook_thrift_annotation_cpp_PackIsset implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

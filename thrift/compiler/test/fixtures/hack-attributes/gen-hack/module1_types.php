@@ -47,7 +47,7 @@ class MyThriftEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
  * MyThriftStruct
  */
 <<ClassAttribute>>
-class MyThriftStruct implements \IThriftStruct {
+class MyThriftStruct implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -178,7 +178,7 @@ class MyThriftStruct implements \IThriftStruct {
  * Original thrift struct:-
  * MySecondThriftStruct
  */
-class MySecondThriftStruct implements \IThriftStruct {
+class MySecondThriftStruct implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -325,7 +325,7 @@ enum UnionTestingEnum: int {
  * Original thrift struct:-
  * UnionTesting
  */
-class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenum\UnionTestingEnum> {
+class UnionTesting implements \IThriftSyncStruct, \IThriftUnion<\test\fixtures\jsenum\UnionTestingEnum> {
   use \ThriftUnionSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

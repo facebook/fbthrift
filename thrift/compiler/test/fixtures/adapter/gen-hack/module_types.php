@@ -14,7 +14,7 @@ type UnionWithAdapter = \Adapter2::THackType;
  * Original thrift struct:-
  * Foo
  */
-class Foo implements \IThriftStruct, \IThriftShapishStruct {
+class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -581,7 +581,7 @@ enum BazEnum: int {
  * Original thrift struct:-
  * Baz
  */
-class Baz implements \IThriftStruct, \IThriftUnion<BazEnum>, \IThriftShapishStruct {
+class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapishSyncStruct {
   use \ThriftUnionSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1027,7 +1027,7 @@ class Baz implements \IThriftStruct, \IThriftUnion<BazEnum>, \IThriftShapishStru
  * Original thrift struct:-
  * Bar
  */
-class Bar implements \IThriftStruct, \IThriftShapishStruct {
+class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1451,7 +1451,7 @@ class Bar implements \IThriftStruct, \IThriftShapishStruct {
  * Original thrift struct:-
  * StructWithFieldAdapter
  */
-class StructWithFieldAdapter implements \IThriftStruct, \IThriftShapishStruct {
+class StructWithFieldAdapter implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

@@ -441,7 +441,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
 
 // HELPER FUNCTIONS AND STRUCTURES
 
-class MyService_func_args implements \IThriftStruct, \IThriftShapishStruct {
+class MyService_func_args implements \IThriftSyncStruct, \IThriftShapishAsyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -583,7 +583,7 @@ class MyService_func_args implements \IThriftStruct, \IThriftShapishStruct {
 
 }
 
-class MyService_func_result implements \IThriftStruct {
+class MyService_func_result implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -676,7 +676,7 @@ class MyService_func_result implements \IThriftStruct {
 
 }
 
-class MyService_func1_args implements \IThriftStruct, \IThriftShapishStruct {
+class MyService_func1_args implements \IThriftSyncStruct, \IThriftShapishAsyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -818,7 +818,7 @@ class MyService_func1_args implements \IThriftStruct, \IThriftShapishStruct {
 
 }
 
-class MyService_func1_result implements \IThriftStruct {
+class MyService_func1_result implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[

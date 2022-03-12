@@ -142,7 +142,7 @@ class MyEnumA_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
  * Original thrift struct:-
  * decorated_struct
  */
-class decorated_struct implements \IThriftStruct {
+class decorated_struct implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -236,7 +236,7 @@ class decorated_struct implements \IThriftStruct {
  * Original thrift struct:-
  * ContainerStruct
  */
-class ContainerStruct implements \IThriftStruct {
+class ContainerStruct implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -736,7 +736,7 @@ class ContainerStruct implements \IThriftStruct {
  * Original thrift struct:-
  * CppTypeStruct
  */
-class CppTypeStruct implements \IThriftStruct {
+class CppTypeStruct implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -855,7 +855,7 @@ class CppTypeStruct implements \IThriftStruct {
  * Original thrift struct:-
  * VirtualStruct
  */
-class VirtualStruct implements \IThriftStruct {
+class VirtualStruct implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -949,7 +949,7 @@ class VirtualStruct implements \IThriftStruct {
  * Original thrift struct:-
  * MyStructWithForwardRefEnum
  */
-class MyStructWithForwardRefEnum implements \IThriftStruct {
+class MyStructWithForwardRefEnum implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1096,7 +1096,7 @@ class MyStructWithForwardRefEnum implements \IThriftStruct {
  * Original thrift struct:-
  * TrivialNumeric
  */
-class TrivialNumeric implements \IThriftStruct {
+class TrivialNumeric implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1222,7 +1222,7 @@ class TrivialNumeric implements \IThriftStruct {
  * Original thrift struct:-
  * TrivialNestedWithDefault
  */
-class TrivialNestedWithDefault implements \IThriftStruct {
+class TrivialNestedWithDefault implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1356,7 +1356,7 @@ class TrivialNestedWithDefault implements \IThriftStruct {
  * Original thrift struct:-
  * ComplexString
  */
-class ComplexString implements \IThriftStruct {
+class ComplexString implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1511,7 +1511,7 @@ class ComplexString implements \IThriftStruct {
  * Original thrift struct:-
  * ComplexNestedWithDefault
  */
-class ComplexNestedWithDefault implements \IThriftStruct {
+class ComplexNestedWithDefault implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1640,7 +1640,7 @@ class ComplexNestedWithDefault implements \IThriftStruct {
  * Original thrift struct:-
  * MinPadding
  */
-class MinPadding implements \IThriftStruct {
+class MinPadding implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1872,7 +1872,7 @@ class MinPadding implements \IThriftStruct {
  * Original thrift struct:-
  * MyStruct
  */
-class MyStruct implements \IThriftStruct {
+class MyStruct implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -2064,7 +2064,7 @@ class MyStruct implements \IThriftStruct {
  * Original thrift struct:-
  * MyDataItem
  */
-class MyDataItem implements \IThriftStruct {
+class MyDataItem implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -2129,7 +2129,7 @@ class MyDataItem implements \IThriftStruct {
  * Original thrift struct:-
  * Renaming
  */
-class Renaming implements \IThriftStruct {
+class Renaming implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -2223,7 +2223,7 @@ class Renaming implements \IThriftStruct {
  * Original thrift struct:-
  * AnnotatedTypes
  */
-class AnnotatedTypes implements \IThriftStruct {
+class AnnotatedTypes implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -2438,7 +2438,7 @@ class AnnotatedTypes implements \IThriftStruct {
  * Original thrift struct:-
  * ForwardUsageRoot
  */
-class ForwardUsageRoot implements \IThriftStruct {
+class ForwardUsageRoot implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -2595,7 +2595,7 @@ class ForwardUsageRoot implements \IThriftStruct {
  * Original thrift struct:-
  * ForwardUsageStruct
  */
-class ForwardUsageStruct implements \IThriftStruct {
+class ForwardUsageStruct implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -2698,7 +2698,7 @@ class ForwardUsageStruct implements \IThriftStruct {
  * Original thrift struct:-
  * ForwardUsageByRef
  */
-class ForwardUsageByRef implements \IThriftStruct {
+class ForwardUsageByRef implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -2801,7 +2801,7 @@ class ForwardUsageByRef implements \IThriftStruct {
  * Original thrift struct:-
  * NoexceptMoveEmpty
  */
-class NoexceptMoveEmpty implements \IThriftStruct {
+class NoexceptMoveEmpty implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -2866,7 +2866,7 @@ class NoexceptMoveEmpty implements \IThriftStruct {
  * Original thrift struct:-
  * NoexceptMoveSimpleStruct
  */
-class NoexceptMoveSimpleStruct implements \IThriftStruct {
+class NoexceptMoveSimpleStruct implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -2960,7 +2960,7 @@ class NoexceptMoveSimpleStruct implements \IThriftStruct {
  * Original thrift struct:-
  * NoexceptMoveComplexStruct
  */
-class NoexceptMoveComplexStruct implements \IThriftStruct {
+class NoexceptMoveComplexStruct implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -3336,7 +3336,7 @@ enum NoExceptMoveUnionEnum: int {
  * Original thrift struct:-
  * NoExceptMoveUnion
  */
-class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUnionEnum> {
+class NoExceptMoveUnion implements \IThriftSyncStruct, \IThriftUnion<NoExceptMoveUnionEnum> {
   use \ThriftUnionSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -3533,7 +3533,7 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
  * Original thrift struct:-
  * AllocatorAware
  */
-class AllocatorAware implements \IThriftStruct {
+class AllocatorAware implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -3888,7 +3888,7 @@ class AllocatorAware implements \IThriftStruct {
  * Original thrift struct:-
  * AllocatorAware2
  */
-class AllocatorAware2 implements \IThriftStruct {
+class AllocatorAware2 implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -3987,7 +3987,7 @@ class AllocatorAware2 implements \IThriftStruct {
  * Original thrift struct:-
  * TypedefStruct
  */
-class TypedefStruct implements \IThriftStruct {
+class TypedefStruct implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -4177,7 +4177,7 @@ class TypedefStruct implements \IThriftStruct {
  * Original thrift struct:-
  * StructWithDoubleUnderscores
  */
-class StructWithDoubleUnderscores implements \IThriftStruct {
+class StructWithDoubleUnderscores implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
