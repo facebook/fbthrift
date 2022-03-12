@@ -99,18 +99,16 @@ class node_metadata_cache {
   // - T(node_metadata_cache&, const N&)
   template <typename T, typename N>
   if_is_constructible<T> get(N& node) { // `node` must be an lvalue.
-    return get(node, []() { return std::make_unique<T>(); });
+    return get(node, [] { return std::make_unique<T>(); });
   }
   template <typename T, typename N>
-  if_is_constructible<T, const N&> get(N& node) { // `node` must be an lvalue.
-    return get(node, [&node]() {
-      return std::make_unique<T>(static_cast<const N&>(node));
-    });
+  if_is_constructible<T, N&> get(N& node) { // `node` must be an lvalue.
+    return get(node, [&node] { return std::make_unique<T>(node); });
   }
   template <typename T, typename N>
   if_is_constructible<T, node_metadata_cache&, const N&> get(
       N& node) { // `node` must be an lvalue.
-    return get(node, [this, &node]() {
+    return get(node, [this, &node] {
       return std::make_unique<T>(*this, static_cast<const N&>(node));
     });
   }

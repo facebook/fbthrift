@@ -54,8 +54,8 @@ class t_node {
 
   const std::string& doc() const { return doc_; }
   bool has_doc() const { return has_doc_; }
-  void set_doc(const std::string& doc) {
-    doc_ = doc;
+  void set_doc(std::string doc) {
+    doc_ = std::move(doc);
     has_doc_ = true;
   }
 

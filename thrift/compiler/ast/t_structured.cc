@@ -58,6 +58,14 @@ bool t_structured::try_append_field(std::unique_ptr<t_field>&& elem) {
   return true;
 }
 
+void t_structured::append_field(std::unique_ptr<t_field> elem) {
+  if (!try_append_field(std::move(elem))) {
+    throw std::runtime_error(
+        "Field identifier " + std::to_string(elem->get_key()) + " for \"" +
+        elem->get_name() + "\" has already been used");
+  }
+}
+
 const t_field* t_structured::get_field_by_id(int32_t id) const {
   auto existing = find_by_id(fields_id_order_, id);
   return existing.second ? *existing.first : nullptr;

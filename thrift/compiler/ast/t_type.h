@@ -225,6 +225,10 @@ class t_type_ref final {
   const t_type* operator->() const { return &deref(); }
   const t_type& operator*() const { return deref(); }
 
+  // Returns true the type reference has not been initalized.
+  bool empty() const noexcept { return type_ == nullptr; }
+  explicit operator bool() const { return !empty(); }
+
  private:
   friend class t_placeholder_typedef;
   const t_type* type_ = nullptr;
