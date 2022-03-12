@@ -285,6 +285,10 @@ class t_hack_generator : public t_oop_generator {
       std::ostream& out, t_name_generator& namer, const t_type* t);
   void generate_php_struct_from_shape(
       std::ofstream& out, const t_struct* tstruct);
+  void generate_php_struct_async_from_shape(
+      std::ofstream& out,
+      const t_struct* tstruct,
+      const std::string& struct_hack_name);
   void generate_php_struct_from_map(
       std::ofstream& out, const t_struct* tstruct);
   bool type_has_nested_struct(const t_type* t);
@@ -3118,12 +3122,15 @@ void t_hack_generator::generate_php_struct_methods(
     bool) {
   if (is_async_struct) {
     generate_php_struct_default_constructor(out, tstruct, type, name);
+    generate_php_struct_withDefaultValues_method(out);
+    generate_php_struct_async_from_shape(out, tstruct, name);
+    out << "\n";
   } else {
     generate_php_struct_constructor(out, tstruct, type, name);
+    generate_php_struct_withDefaultValues_method(out);
+    generate_php_struct_from_shape(out, tstruct);
+    out << "\n";
   }
-  generate_php_struct_withDefaultValues_method(out);
-  generate_php_struct_from_shape(out, tstruct);
-  out << "\n";
 
   if (from_map_construct_) {
     generate_php_struct_from_map(out, tstruct);
@@ -3751,6 +3758,48 @@ void t_hack_generator::generate_php_struct_from_shape(
   }
   indent_down();
   out << indent() << ");\n";
+  indent_down();
+  out << indent() << "}\n";
+}
+
+void t_hack_generator::generate_php_struct_async_from_shape(
+    std::ofstream& out,
+    const t_struct* tstruct,
+    const std::string& struct_hack_name) {
+  out << indent() << "public static async function genFromShape"
+      << "(self::TConstructorShape $shape)[zoned]: Awaitable<this> {\n";
+  indent_up();
+  out << indent() << "$obj = new static();\n";
+
+  for (const auto& field : tstruct->fields()) {
+    const std::string& name = field.name();
+    out << indent() << "$" << name << " = Shapes::idx($shape, '" << name
+        << "');\n";
+    out << indent() << "if ($" << name << " !== null) {\n";
+    indent_up();
+    if (const auto* field_wrapper = find_hack_wrapper(field)) {
+      if (tstruct->is_union()) {
+        out << indent() << "$obj->" << name << " = await " << *field_wrapper
+            << "::genFromThrift<" << type_to_typehint(field.get_type())
+            << ", this>($" << name << ", " << field.get_key() << ", $obj);\n";
+      } else {
+        out << indent() << "await $obj->get_" << name << "()->genWrap($" << name
+            << ");\n";
+      }
+    } else {
+      out << indent() << "$obj->" << name << " = $" << name << ";\n";
+    }
+
+    if (tstruct->is_union()) {
+      out << indent() << "$obj->_type = "
+          << union_field_to_enum(tstruct, &field, struct_hack_name) << ";\n";
+    }
+    indent_down();
+    out << indent() << "}\n";
+  }
+
+  out << indent() << "return $obj;\n";
+
   indent_down();
   out << indent() << "}\n";
 }

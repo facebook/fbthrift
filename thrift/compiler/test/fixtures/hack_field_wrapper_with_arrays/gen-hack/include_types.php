@@ -265,12 +265,21 @@ class MyNestedStruct implements \IThriftAsyncStruct {
     return new static();
   }
 
-  public static function fromShape(self::TConstructorShape $shape)[]: this {
-    return new static(
-      Shapes::idx($shape, 'wrapped_field'),
-      Shapes::idx($shape, 'annotated_field'),
-      Shapes::idx($shape, 'adapted_type'),
-    );
+  public static async function genFromShape(self::TConstructorShape $shape)[zoned]: Awaitable<this> {
+    $obj = new static();
+    $wrapped_field = Shapes::idx($shape, 'wrapped_field');
+    if ($wrapped_field !== null) {
+      await $obj->get_wrapped_field()->genWrap($wrapped_field);
+    }
+    $annotated_field = Shapes::idx($shape, 'annotated_field');
+    if ($annotated_field !== null) {
+      await $obj->get_annotated_field()->genWrap($annotated_field);
+    }
+    $adapted_type = Shapes::idx($shape, 'adapted_type');
+    if ($adapted_type !== null) {
+      $obj->adapted_type = $adapted_type;
+    }
+    return $obj;
   }
 
   public function getName()[]: string {
