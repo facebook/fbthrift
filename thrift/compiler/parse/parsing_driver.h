@@ -94,6 +94,7 @@ struct t_annotations {
   std::map<std::string, std::shared_ptr<const t_const>> objects;
 };
 using t_doc = boost::optional<std::string>;
+// TODO (partisan): Rename to t_stmt_attrs.
 struct t_def_attrs {
   t_doc doc;
   std::unique_ptr<t_struct_annotations> struct_annotations;
@@ -336,6 +337,9 @@ class parsing_driver {
    */
   void validate_not_ambiguous_enum(const std::string& name);
 
+  void validate_annotations_on_null_statement(
+      t_def_attrs* statement_attrs, t_annotations* annotations);
+
   /**
    * Clears any previously stored doctext string.
    * Also prints a warning if we are discarding information.
@@ -476,6 +480,9 @@ class parsing_driver {
 
   std::unique_ptr<t_const_value> copy_const_value(const std::string& name);
 
+  void set_parsed_definition();
+  void validate_header_location();
+
  private:
   class deleter {
    public:
@@ -519,6 +526,8 @@ class parsing_driver {
 
   std::vector<deleter> deleters_;
   diagnostic_context& ctx_;
+
+  std::unordered_set<std::string> programs_that_parsed_definition_;
 
   /**
    * Parse a single .thrift file. The file to parse is stored in params.program.

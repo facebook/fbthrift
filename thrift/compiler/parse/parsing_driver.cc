@@ -247,6 +247,23 @@ void parsing_driver::validate_not_ambiguous_enum(const std::string& name) {
   }
 }
 
+void parsing_driver::validate_annotations_on_null_statement(
+    t_def_attrs* statement_attrs, t_annotations* annotations) {
+  // Ideally the failures below have to be handled by a grammar, but it's not
+  // expressive enough to avoid conflicts when doing so.
+  if (statement_attrs != nullptr) {
+    bool has_annotations = statement_attrs->struct_annotations.get() != nullptr;
+    delete statement_attrs;
+    if (has_annotations) {
+      failure("Structured annotations are not supported for a given entity.");
+    }
+  }
+  if (annotations != nullptr) {
+    delete annotations;
+    failure("Annotations are not supported for a given entity.");
+  }
+}
+
 void parsing_driver::clear_doctext() {
   if (doctext && mode == parsing_mode::PROGRAM) {
     warning_strict([&](auto& o) {
@@ -941,6 +958,19 @@ std::unique_ptr<t_const_value> parsing_driver::copy_const_value(
     });
   }
   return std::make_unique<t_const_value>(name);
+}
+
+void parsing_driver::set_parsed_definition() {
+  if (mode == parsing_mode::PROGRAM) {
+    programs_that_parsed_definition_.insert(program->path());
+  }
+}
+
+void parsing_driver::validate_header_location() {
+  if (programs_that_parsed_definition_.find(program->path()) !=
+      programs_that_parsed_definition_.end()) {
+    failure("Headers must be specified before definitions.");
+  }
 }
 
 } // namespace compiler

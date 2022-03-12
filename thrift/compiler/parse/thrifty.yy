@@ -219,9 +219,11 @@ class t_container_type;
 
 %type<std::string>                 Identifier
 %type<std::string>                 FieldTypeIdentifier
-%type<t_def_attrs*>                DefinitionAttrs
+%type<t_def_attrs*>                StatementAttrs
+%type<t_named*>                    Header
 %type<t_named*>                    Definition
-%type<t_named*>                    DefinitionAnnotated
+%type<t_named*>                    Statement
+%type<t_named*>                    StatementAnnotated
 
 %type<t_typedef*>                  Typedef
 
@@ -300,9 +302,9 @@ class t_container_type;
  */
 
 Program:
-  HeaderList DefinitionList
+  StatementList
     {
-      driver.debug("Program -> Headers DefinitionList");
+      driver.debug("Program -> StatementList");
       driver.clear_doctext();
     }
 
@@ -356,22 +358,18 @@ InlineDocOptional:
 |
   { $$ = boost::none; }
 
-/* We have to consume doctext here, otherwise it would apply the doctext
-   on the first real element. */
-HeaderList:
-  HeaderList ProgramDocText Header { driver.debug("HeaderList -> HeaderList Header"); }
-|                                  { driver.debug("HeaderList -> "); }
-
 Header:
   tok_include tok_literal
     {
       driver.debug("Header -> tok_include tok_literal");
       driver.add_include(std::move($2));
+      $$ = nullptr;
     }
 | tok_package tok_literal
     {
       driver.debug("Header -> tok_package tok_literal");
       driver.set_package(std::move($2));
+      $$ = nullptr;
     }
 | tok_namespace Identifier Identifier
     {
@@ -379,6 +377,7 @@ Header:
       if (driver.mode == parsing_mode::PROGRAM) {
         driver.program->set_namespace(std::move($2), std::move($3));
       }
+      $$ = nullptr;
     }
 | tok_namespace Identifier tok_literal
     {
@@ -386,6 +385,7 @@ Header:
       if (driver.mode == parsing_mode::PROGRAM) {
         driver.program->set_namespace(std::move($2), std::move($3));
       }
+      $$ = nullptr;
     }
 | tok_cpp_include tok_literal
     {
@@ -393,40 +393,13 @@ Header:
       if (driver.mode == parsing_mode::PROGRAM) {
         driver.program->add_cpp_include($2);
       }
+      $$ = nullptr;
     }
 | tok_hs_include tok_literal
     {
       driver.debug("Header -> tok_hs_include tok_literal");
       // Do nothing. This syntax is handled by the hs compiler
-    }
-
-DefinitionAttrs:
-  CaptureDocText StructuredAnnotations
-    {
-      driver.debug("DefinitionAttrs -> CaptureDocText StructuredAnnotations");
       $$ = nullptr;
-      if ($1 || $2 != nullptr) {
-        driver.avoid_tokens_loc(@$, {{!$1, @2}}, {});
-        $$ = new t_def_attrs{std::move($1), own($2)};
-      }
-    }
-
-DefinitionList:
-  DefinitionList DefinitionAnnotated CommaOrSemicolonOptional
-    {
-      driver.debug("DefinitionList -> DefinitionList DefinitionAnnotated "
-        "CommaOrSemicolonOptional");
-      driver.add_def(own($2));
-    }
-|   { driver.debug("DefinitionList -> "); }
-
-DefinitionAnnotated:
-  DefinitionAttrs Definition Annotations
-    {
-      driver.debug("Definition -> DefinitionAttrs Definition Annotations");
-      driver.avoid_tokens_loc(@$, {{$1 == nullptr, @2}}, {{$3 == nullptr, @2}});
-      $$ = $2;
-      driver.set_attributes(*$$, own($1), own($3), @$);
     }
 
 Definition:
@@ -438,6 +411,58 @@ Definition:
 | Exception   { $$ = $1; }
 | Service     { $$ = $1; }
 | Interaction { $$ = $1; }
+
+Statement:
+  ProgramDocText Header
+    {
+      driver.debug("Statement -> ProgramDocText Header");
+      driver.validate_header_location();
+      $$ = $2;
+    }
+| Definition
+    {
+      driver.debug("Statement -> Definition");
+      driver.set_parsed_definition();
+      $$ = $1;
+    }
+
+StatementAnnotated:
+  StatementAttrs Statement Annotations
+    {
+      driver.debug("StatementAnnotated -> StatementAttrs Statement Annotations");
+      if ($2 == nullptr) {
+        driver.validate_annotations_on_null_statement($1, $3);
+        $$ = nullptr;
+      } else {
+        driver.avoid_tokens_loc(@$, {{$1 == nullptr, @2}}, {{$3 == nullptr, @2}});
+        $$ = $2;
+        driver.set_attributes(*$$, own($1), own($3), @$);
+      }
+    }
+
+StatementAttrs:
+  CaptureDocText StructuredAnnotations
+    {
+      driver.debug("StatementAttrs -> CaptureDocText StructuredAnnotations");
+      $$ = nullptr;
+      if ($1 || $2 != nullptr) {
+        driver.avoid_tokens_loc(@$, {{!$1, @2}}, {});
+        $$ = new t_def_attrs{std::move($1), own($2)};
+      }
+    }
+
+StatementList:
+  StatementList StatementAnnotated CommaOrSemicolonOptional
+    {
+      driver.debug("StatementList -> StatementList StatementAnnotated "
+        "CommaOrSemicolonOptional");
+      if ($2 != nullptr) {
+        driver.add_def(own($2));
+      }
+    }
+|   {
+      driver.debug("StatementList -> ");
+    }
 
 Integer:
   tok_int_constant
@@ -507,9 +532,9 @@ EnumValueList:
     }
 
 EnumValueAnnotated:
-  DefinitionAttrs EnumValue Annotations
+  StatementAttrs EnumValue Annotations
     {
-      driver.debug("DefinitionAttrs EnumValue Annotations");
+      driver.debug("StatementAttrs EnumValue Annotations");
       driver.avoid_tokens_loc(@$, {{$1 == nullptr, @2}}, {{$3 == nullptr, @2}});
       $$ = $2;
       driver.set_attributes(*$$, own($1), own($3), @$);
@@ -789,9 +814,9 @@ Function:
     }
 
 FunctionAnnotated:
-  DefinitionAttrs Function Annotations
+  StatementAttrs Function Annotations
     {
-      driver.debug("FunctionAnnotated => DefinitionAttrs Function Annotations");
+      driver.debug("FunctionAnnotated => StatementAttrs Function Annotations");
       driver.avoid_tokens_loc(@$, {{$1 == nullptr, @2}}, {{$3 == nullptr, @2}});
       $$ = $2;
       driver.set_attributes(*$$, own($1), own($3), @$);
@@ -856,9 +881,9 @@ Field:
     }
 
 FieldAnnotated:
-  DefinitionAttrs Field Annotations
+  StatementAttrs Field Annotations
     {
-      driver.debug("FieldAnnotated => DefinitionAttrs Field Annotations");
+      driver.debug("FieldAnnotated => StatementAttrs Field Annotations");
       driver.avoid_tokens_loc(@$, {{$1 == nullptr, @2}}, {{$3 == nullptr, @2}});
       $$ = $2;
       driver.set_attributes(*$$, own($1), own($3), @$);
