@@ -215,11 +215,11 @@ void validate_extends_service_function_name_uniqueness(
 void validate_throws_exceptions(diagnostic_context& ctx, const t_throws& node) {
   for (const auto& except : node.fields()) {
     auto except_type = except.type()->get_true_type();
-    if (dynamic_cast<const t_exception*>(except_type) == nullptr) {
-      ctx.failure(except, [&](auto& o) {
-        o << "Non-exception type, `" << except_type->name() << "`, in throws.";
-      });
-    }
+    ctx.check(
+        dynamic_cast<const t_exception*>(except_type), except, [&](auto& o) {
+          o << "Non-exception type, `" << except_type->name()
+            << "`, in throws.";
+        });
   }
 }
 
@@ -264,25 +264,25 @@ void validate_boxed_field_attributes(
     return;
   }
 
-  if (!dynamic_cast<const t_union*>(ctx.parent()) &&
-      node.qualifier() != t_field_qualifier::optional) {
-    ctx.failure([&](auto& o) {
-      o << "The `cpp.box` annotation can only be used with optional fields. Make sure `"
-        << node.name() << "` is optional.";
-    });
-  }
+  ctx.check(
+      dynamic_cast<const t_union*>(ctx.parent()) ||
+          node.qualifier() == t_field_qualifier::optional,
+      [&](auto& o) {
+        o << "The `cpp.box` annotation can only be used with optional fields. Make sure `"
+          << node.name() << "` is optional.";
+      });
 
-  if (node.has_annotation({
+  ctx.failure_if(
+      node.has_annotation({
           "cpp.ref",
           "cpp2.ref",
           "cpp.ref_type",
           "cpp2.ref_type",
-      })) {
-    ctx.failure([&](auto& o) {
-      o << "The `cpp.box` annotation cannot be combined with the `cpp.ref` or `cpp.ref_type` annotations. Remove one of the annotations from `"
-        << node.name() << "`.";
-    });
-  }
+      }),
+      [&](auto& o) {
+        o << "The `cpp.box` annotation cannot be combined with the `cpp.ref` or `cpp.ref_type` annotations. Remove one of the annotations from `"
+          << node.name() << "`.";
+      });
 }
 
 // Checks the attributes of a mixin field.
@@ -293,13 +293,13 @@ void validate_mixin_field_attributes(
   }
 
   auto* ttype = node.type()->get_true_type();
-  if (typeid(*ttype) != typeid(t_struct) && typeid(*ttype) != typeid(t_union)) {
-    ctx.failure([&](auto& o) {
-      o << "Mixin field `" << node.name()
-        << "` type must be a struct or union. Found `" << ttype->get_name()
-        << "`.";
-    });
-  }
+  ctx.check(
+      typeid(*ttype) == typeid(t_struct) || typeid(*ttype) == typeid(t_union),
+      [&](auto& o) {
+        o << "Mixin field `" << node.name()
+          << "` type must be a struct or union. Found `" << ttype->get_name()
+          << "`.";
+      });
 
   if (const auto* parent = dynamic_cast<const t_union*>(ctx.parent())) {
     ctx.failure([&](auto& o) {
@@ -346,13 +346,11 @@ void validate_enum_value_uniqueness(
   std::unordered_map<int32_t, const t_enum_value*> values;
   for (const auto& value : node.values()) {
     auto prev = values.emplace(value.get_value(), &value);
-    if (!prev.second) {
-      ctx.failure(value, [&](auto& o) {
-        o << "Duplicate value `" << value.name() << "=" << value.get_value()
-          << "` with value `" << prev.first->second->name() << "` in enum `"
-          << node.name() << "`.";
-      });
-    }
+    ctx.check(prev.second, value, [&](auto& o) {
+      o << "Duplicate value `" << value.name() << "=" << value.get_value()
+        << "` with value `" << prev.first->second->name() << "` in enum `"
+        << node.name() << "`.";
+    });
   }
 }
 
@@ -429,29 +427,23 @@ void validate_field_id(diagnostic_context& ctx, const t_field& node) {
     });
   }
 
-  if (node.id() == 0 &&
-      !node.has_annotation("cpp.deprecated_allow_zero_as_field_id")) {
-    ctx.failure([&](auto& o) {
-      o << "Zero value (0) not allowed as a field id for `" << node.get_name()
-        << "`";
-    });
-  }
+  ctx.failure_if(
+      node.id() == 0 &&
+          !node.has_annotation("cpp.deprecated_allow_zero_as_field_id"),
+      [&](auto& o) {
+        o << "Zero value (0) not allowed as a field id for `" << node.get_name()
+          << "`";
+      });
 
-  if (node.id() < t_field::min_id) {
-    ctx.failure([&](auto& o) {
-      o << "Reserved field id (" << node.id() << ") cannot be used for `"
-        << node.name() << "`.";
-    });
-  }
+  ctx.failure_if(node.id() < t_field::min_id, [&](auto& o) {
+    o << "Reserved field id (" << node.id() << ") cannot be used for `"
+      << node.name() << "`.";
+  });
 }
 
 void validate_compatibility_with_lazy_field(
     diagnostic_context& ctx, const t_structured& node) {
-  if (!has_lazy_field(node)) {
-    return;
-  }
-
-  if (node.has_annotation("cpp.methods")) {
+  if (has_lazy_field(node) && node.has_annotation("cpp.methods")) {
     ctx.failure([&](auto& o) {
       o << "cpp.methods is incompatible with lazy deserialization in struct `"
         << node.get_name() << "`";
@@ -479,12 +471,10 @@ void validate_adapter_annotation(diagnostic_context& ctx, const t_field& node) {
           annotations.begin(), annotations.end(), [](const auto& item) {
             return item.first->get_string() == "name";
           });
-      if (it == annotations.end()) {
-        ctx.failure([&](auto& o) {
-          o << "`@cpp.Adapter` cannot be used without `name` specified in `"
-            << node.name() << "`.";
-        });
-      }
+      ctx.failure_if(it == annotations.end(), [&](auto& o) {
+        o << "`@cpp.Adapter` cannot be used without `name` specified in `"
+          << node.name() << "`.";
+      });
       adapter_annotation = annotation;
       break;
     }
@@ -592,17 +582,15 @@ void validate_function_priority_annotation(
     std::string choices[] = {
         "HIGH_IMPORTANT", "HIGH", "IMPORTANT", "NORMAL", "BEST_EFFORT"};
     auto* end = choices + sizeof(choices) / sizeof(choices[0]);
-    if (std::find(choices, end, *priority) == end) {
-      ctx.failure([&](auto& o) {
-        o << "Bad priority '" << *priority << "'. Choose one of '";
-        auto delim = "";
-        for (const auto& choice : choices) {
-          o << delim << choice;
-          delim = "','";
-        }
-        o << "'.";
-      });
-    }
+    ctx.failure_if(std::find(choices, end, *priority) == end, [&](auto& o) {
+      o << "Bad priority '" << *priority << "'. Choose one of '";
+      auto delim = "";
+      for (const auto& choice : choices) {
+        o << delim << choice;
+        delim = "','";
+      }
+      o << "'.";
+    });
   }
 }
 
@@ -631,9 +619,7 @@ void validate_exception_php_annotations(
         o << "member specified as exception 'message' should be a valid"
           << " struct member, '" << v << "' in '" << node.name() << "' is not";
       });
-    }
-
-    if (!field->get_type()->is_string_or_binary()) {
+    } else if (!field->get_type()->is_string_or_binary()) {
       ctx.failure([&](auto& o) {
         o << "member specified as exception 'message' should be of type "
           << "STRING, '" << v << "' in '" << node.name() << "' is not";
@@ -647,19 +633,17 @@ void validate_oneway_function(diagnostic_context& ctx, const t_function& node) {
     return;
   }
 
-  if (node.return_type().get_type() == nullptr ||
-      !node.return_type().get_type()->is_void() ||
-      node.returned_interaction()) {
-    ctx.failure([&](auto& o) {
-      o << "Oneway methods must have void return type: " << node.name();
-    });
-  }
+  ctx.check(
+      node.return_type().get_type() != nullptr &&
+          node.return_type().get_type()->is_void() &&
+          !node.returned_interaction(),
+      [&](auto& o) {
+        o << "Oneway methods must have void return type: " << node.name();
+      });
 
-  if (!t_throws::is_null_or_empty(node.exceptions())) {
-    ctx.failure([&](auto& o) {
-      o << "Oneway methods can't throw exceptions: " << node.name();
-    });
-  }
+  ctx.check(t_throws::is_null_or_empty(node.exceptions()), [&](auto& o) {
+    o << "Oneway methods can't throw exceptions: " << node.name();
+  });
 }
 
 void validate_stream_exceptions_return_type(
@@ -668,12 +652,11 @@ void validate_stream_exceptions_return_type(
     return;
   }
 
-  if (node.return_type().get_type() == nullptr ||
-      !node.return_type().get_type()->is_streamresponse()) {
-    ctx.failure([&](auto& o) {
-      o << "`stream throws` only valid on stream methods: " << node.name();
-    });
-  }
+  ctx.check(
+      dynamic_cast<const t_stream_response*>(node.return_type().get_type()),
+      [&](auto& o) {
+        o << "`stream throws` only valid on stream methods: " << node.name();
+      });
 }
 
 void validate_interaction_factories(

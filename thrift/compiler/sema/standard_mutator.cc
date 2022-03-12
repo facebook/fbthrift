@@ -32,16 +32,14 @@ void propagate_process_in_event_base_annotation(
     diagnostic_context& ctx, mutator_context&, t_interaction& node) {
   for (auto* func : node.get_functions()) {
     func->set_is_interaction_member();
-    if (func->has_annotation("thread")) {
-      ctx.failure(
-          "Interaction methods cannot be individually annotated with "
-          "thread='eb'. Use process_in_event_base on the interaction instead.");
-    }
+    ctx.failure_if(
+        func->has_annotation("thread"),
+        "Interaction methods cannot be individually annotated with "
+        "thread='eb'. Use process_in_event_base on the interaction instead.");
   }
   if (node.has_annotation("process_in_event_base")) {
-    if (node.has_annotation("serial")) {
-      ctx.failure("EB interactions are already serial");
-    }
+    ctx.failure_if(
+        node.has_annotation("serial"), "EB interactions are already serial");
     for (auto* func : node.get_functions()) {
       func->set_annotation("thread", "eb");
     }
@@ -77,13 +75,11 @@ void mutate_terse_write_annotation_field(
 
   if (terse_write_annotation) {
     auto qual = node.qualifier();
-    if (qual != t_field_qualifier::unspecified) {
-      ctx.failure(node, [&](auto& o) {
-        o << "`@thrift.TerseWrite` cannot be used with qualified fields. Remove `"
-          << (qual == t_field_qualifier::required ? "required" : "optional")
-          << "` qualifier from field `" << node.name() << "`.";
-      });
-    }
+    ctx.check(qual == t_field_qualifier::unspecified, [&](auto& o) {
+      o << "`@thrift.TerseWrite` cannot be used with qualified fields. Remove `"
+        << (qual == t_field_qualifier::required ? "required" : "optional")
+        << "` qualifier from field `" << node.name() << "`.";
+    });
     node.set_qualifier(t_field_qualifier::terse);
   }
 }
@@ -122,10 +118,10 @@ void rectify_returned_interactions(
     diagnostic_context& ctx, mutator_context&, t_function& node) {
   auto check_is_interaction = [&](auto node) {
     const auto* type = node->get_true_type();
-    if (!type->is_service() ||
-        !static_cast<const t_service*>(type)->is_interaction()) {
-      ctx.failure("Only an interaction is allowed in this position");
-    }
+    ctx.check(
+        type->is_service() &&
+            static_cast<const t_service*>(type)->is_interaction(),
+        "Only an interaction is allowed in this position");
   };
 
   if (node.is_interaction_constructor()) {

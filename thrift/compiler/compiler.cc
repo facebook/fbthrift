@@ -471,13 +471,11 @@ compile_result compile(const std::vector<std::string>& arguments) {
 
   // Generate it!
   g_stage = "generation";
-  try {
+  ctx.try_or_failure(*program->root_program(), [&]() {
     if (generate(gparams, program->root_program())) {
       result.retcode = compile_retcode::success;
     }
-  } catch (const std::exception& e) {
-    ctx.failure(*program->root_program(), e.what());
-  }
+  });
   return result;
 }
 

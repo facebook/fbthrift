@@ -126,6 +126,10 @@ class node_metadata_cache {
 
 // A context aware reporter for diagnostic results.
 class diagnostic_context : public const_visitor_context {
+  template <typename With>
+  using if_with =
+      decltype(std::declval<With&>()(std::declval<std::ostream&>()));
+
  public:
   explicit diagnostic_context(
       std::function<void(diagnostic)> report_cb, diagnostic_params params = {})
@@ -193,9 +197,7 @@ class diagnostic_context : public const_visitor_context {
          std::move(name)});
   }
 
-  template <
-      typename With,
-      typename = decltype(std::declval<With&>()(std::declval<std::ostream&>()))>
+  template <typename With, typename = if_with<With>>
   void report(
       diagnostic_level level,
       std::string path,
@@ -218,9 +220,7 @@ class diagnostic_context : public const_visitor_context {
          std::move(name)});
   }
 
-  template <
-      typename With,
-      typename = decltype(std::declval<With&>()(std::declval<std::ostream&>()))>
+  template <typename With, typename = if_with<With>>
   void report(
       diagnostic_level level,
       std::string path,
@@ -242,9 +242,7 @@ class diagnostic_context : public const_visitor_context {
     });
   }
 
-  template <
-      typename With,
-      typename = decltype(std::declval<With&>()(std::declval<std::ostream&>()))>
+  template <typename With, typename = if_with<With>>
   void report(
       diagnostic_level level,
       int lineno,
@@ -260,9 +258,7 @@ class diagnostic_context : public const_visitor_context {
         std::forward<With>(with));
   }
 
-  template <
-      typename With,
-      typename = decltype(std::declval<With&>()(std::declval<std::ostream&>()))>
+  template <typename With, typename = if_with<With>>
   void report(
       diagnostic_level level, int lineno, std::string token, With&& with) {
     report(
@@ -278,9 +274,7 @@ class diagnostic_context : public const_visitor_context {
     report(level, node.lineno(), {}, std::move(msg));
   }
 
-  template <
-      typename With,
-      typename = decltype(std::declval<With&>()(std::declval<std::ostream&>()))>
+  template <typename With, typename = if_with<With>>
   void report(diagnostic_level level, const t_node& node, With&& with) {
     report(level, node.lineno(), {}, std::forward<With>(with));
   }
@@ -324,15 +318,51 @@ class diagnostic_context : public const_visitor_context {
     assert(current() != nullptr);
     report(level, current()->lineno(), {}, std::forward<With>(with));
   }
+  template <typename... Args>
+  void report_if(bool cond, Args&&... args) {
+    if (cond) {
+      report(std::forward<Args>(args)...);
+    }
+  }
+  template <typename E = std::exception, typename F>
+  void try_or_report(diagnostic_level level, F&& func) {
+    try_or_report_impl<E>(std::forward<F>(func), level);
+  }
+  template <typename E = std::exception, typename F>
+  void try_or_report(diagnostic_level level, const t_node& node, F&& func) {
+    try_or_report_impl<E>(std::forward<F>(func), level, node);
+  }
 
   template <typename... Args>
   void failure(Args&&... args) {
     report(diagnostic_level::failure, std::forward<Args>(args)...);
   }
   template <typename... Args>
+  void failure_if(bool cond, Args&&... args) {
+    report_if(cond, diagnostic_level::failure, std::forward<Args>(args)...);
+  }
+  template <typename... Args>
+  void check(bool cond, Args&&... args) {
+    failure_if(!cond, std::forward<Args>(args)...);
+  }
+  template <typename E = std::exception, typename... Args>
+  void try_or_failure(Args&&... args) {
+    try_or_report<E>(diagnostic_level::failure, std::forward<Args>(args)...);
+  }
+
+  template <typename... Args>
   void warning(Args&&... args) {
     report(diagnostic_level::warning, std::forward<Args>(args)...);
   }
+  template <typename... Args>
+  void warning_if(bool cond, Args&&... args) {
+    report_if(cond, diagnostic_level::warning, std::forward<Args>(args)...);
+  }
+  template <typename E = std::exception, typename... Args>
+  void try_or_warning(Args&&... args) {
+    try_or_report<E>(diagnostic_level::warning, std::forward<Args>(args)...);
+  }
+
   template <typename... Args>
   void warning_strict(Args&&... args) {
     if (params_.warn_level < 2) {
@@ -345,8 +375,17 @@ class diagnostic_context : public const_visitor_context {
     report(diagnostic_level::info, std::forward<Args>(args)...);
   }
   template <typename... Args>
+  void info_if(bool cond, Args&&... args) {
+    report_if(cond, diagnostic_level::info, std::forward<Args>(args)...);
+  }
+
+  template <typename... Args>
   void debug(Args&&... args) {
     report(diagnostic_level::debug, std::forward<Args>(args)...);
+  }
+  template <typename... Args>
+  void debug_if(bool cond, Args&&... args) {
+    report_if(cond, diagnostic_level::debug, std::forward<Args>(args)...);
   }
 
  private:
@@ -355,6 +394,15 @@ class diagnostic_context : public const_visitor_context {
 
   std::stack<const t_program*> programs_;
   diagnostic_params params_;
+
+  template <typename E, typename F, typename... Args>
+  void try_or_report_impl(F&& func, Args&&... args) {
+    try {
+      func();
+    } catch (const E& e) {
+      report(std::forward<Args>(args)..., e.what());
+    }
+  }
 };
 
 } // namespace compiler
