@@ -71,9 +71,6 @@ template <typename T>
 constexpr ptrdiff_t unionTypeOffset();
 
 template <typename Tag>
-struct invoke_reffer;
-
-template <typename Tag>
 struct invoke_reffer_thru {
   template <typename... A>
   FOLLY_ERASE constexpr auto operator()(A&&... a) noexcept(

@@ -32,6 +32,16 @@
 namespace apache {
 namespace thrift {
 
+namespace detail {
+template <typename Tag>
+struct invoke_reffer;
+} // namespace detail
+
+template <typename Tag>
+using access_field_fn = detail::invoke_reffer<Tag>;
+template <typename Tag>
+FOLLY_INLINE_VARIABLE constexpr access_field_fn<Tag> access_field{};
+
 enum FragileConstructor {
   FRAGILE,
 };
