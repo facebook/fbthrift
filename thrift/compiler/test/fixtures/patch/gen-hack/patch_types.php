@@ -10,7 +10,7 @@
  * Original thrift struct:-
  * BoolPatch
  */
-class BoolPatch implements \IThriftStruct, \IThriftShapishStruct {
+class BoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -155,7 +155,7 @@ class BoolPatch implements \IThriftStruct, \IThriftShapishStruct {
  * Original thrift struct:-
  * BytePatch
  */
-class BytePatch implements \IThriftStruct, \IThriftShapishStruct {
+class BytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -310,7 +310,7 @@ class BytePatch implements \IThriftStruct, \IThriftShapishStruct {
  * Original thrift struct:-
  * I16Patch
  */
-class I16Patch implements \IThriftStruct, \IThriftShapishStruct {
+class I16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -465,7 +465,7 @@ class I16Patch implements \IThriftStruct, \IThriftShapishStruct {
  * Original thrift struct:-
  * I32Patch
  */
-class I32Patch implements \IThriftStruct, \IThriftShapishStruct {
+class I32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -620,7 +620,7 @@ class I32Patch implements \IThriftStruct, \IThriftShapishStruct {
  * Original thrift struct:-
  * I64Patch
  */
-class I64Patch implements \IThriftStruct, \IThriftShapishStruct {
+class I64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -765,7 +765,7 @@ class I64Patch implements \IThriftStruct, \IThriftShapishStruct {
  * Original thrift struct:-
  * FloatPatch
  */
-class FloatPatch implements \IThriftStruct, \IThriftShapishStruct {
+class FloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -910,7 +910,7 @@ class FloatPatch implements \IThriftStruct, \IThriftShapishStruct {
  * Original thrift struct:-
  * DoublePatch
  */
-class DoublePatch implements \IThriftStruct, \IThriftShapishStruct {
+class DoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1055,7 +1055,7 @@ class DoublePatch implements \IThriftStruct, \IThriftShapishStruct {
  * Original thrift struct:-
  * StringPatch
  */
-class StringPatch implements \IThriftStruct, \IThriftShapishStruct {
+class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1230,7 +1230,7 @@ class StringPatch implements \IThriftStruct, \IThriftShapishStruct {
  * Original thrift struct:-
  * BinaryPatch
  */
-class BinaryPatch implements \IThriftStruct, \IThriftShapishStruct {
+class BinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
