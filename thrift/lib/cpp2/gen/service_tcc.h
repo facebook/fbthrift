@@ -129,7 +129,6 @@ void process_throw_wrapped_handler_error(
     Cpp2RequestContext* const ctx,
     ContextStack* const stack,
     char const* const method) {
-  VLOG(1) << ew << " in function " << method;
   if (auto trustedServerEx =
           dynamic_cast<const TrustedServerException*>(ew.get_exception())) {
     req->sendErrorWrapped(
@@ -138,6 +137,7 @@ void process_throw_wrapped_handler_error(
         std::string(trustedServerEx->errorCode()));
     return;
   }
+  LOG(ERROR) << "uncaught exception in function " << method << ": " << ew;
   if (stack) {
     stack->userExceptionWrapped(false, ew);
     stack->handlerErrorWrapped(ew);
