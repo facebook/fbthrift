@@ -53,15 +53,6 @@
         -> decltype(static_cast<T&&>(t).name##_ref(static_cast<A&&>(a)...)) { \
       return static_cast<T&&>(t).name##_ref(static_cast<A&&>(a)...);          \
     }                                                                         \
-  };                                                                          \
-  template <>                                                                 \
-  struct invoke_setter<::apache::thrift::tag::name> {                         \
-    template <typename T, typename... A>                                      \
-    FOLLY_ERASE constexpr auto operator()(T&& t, A&&... a) noexcept(          \
-        noexcept(static_cast<T&&>(t).set_##name(static_cast<A&&>(a)...)))     \
-        -> decltype(static_cast<T&&>(t).set_##name(static_cast<A&&>(a)...)) { \
-      return static_cast<T&&>(t).set_##name(static_cast<A&&>(a)...);          \
-    }                                                                         \
   }
 
 #define THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -81,8 +72,6 @@ constexpr ptrdiff_t unionTypeOffset();
 
 template <typename Tag>
 struct invoke_reffer;
-template <typename Tag>
-struct invoke_setter;
 
 template <typename Tag>
 struct invoke_reffer_thru {
@@ -207,7 +196,11 @@ FOLLY_ERASE constexpr S make_constant(
     type_class::variant, wrapped_struct_argument<A, T>... arg) {
   using _ = int[];
   S s;
-  void(_{0, (void(invoke_setter<A>{}(s, static_cast<T>(arg.ref))), 0)...});
+  void(
+      _{0,
+        (void(assign_struct_field(
+             invoke_reffer<A>{}(s), static_cast<T>(arg.ref))),
+         0)...});
   return s;
 }
 
