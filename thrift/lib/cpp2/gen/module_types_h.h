@@ -124,18 +124,6 @@ struct invoke_reffer_thru {
   }
 };
 
-template <typename Tag>
-struct invoke_reffer_thru_or_access_field {
-  template <typename... A>
-  using impl = invoke_reffer_thru<Tag>;
-  template <typename... A>
-  FOLLY_ERASE constexpr auto operator()(A&&... a) noexcept(
-      noexcept(impl<A...>{}(static_cast<A&&>(a)...)))
-      -> decltype(impl<A...>{}(static_cast<A&&>(a)...)) {
-    return impl<A...>{}(static_cast<A&&>(a)...);
-  }
-};
-
 template <typename A, typename Ref>
 struct wrapped_struct_argument {
   static_assert(std::is_reference<Ref>::value, "not a reference");

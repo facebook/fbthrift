@@ -26,7 +26,7 @@ namespace thrift {
 namespace detail {
 
 template <typename Tag>
-struct invoke_reffer_thru_or_access_field;
+struct invoke_reffer_thru;
 
 template <typename, typename, bool IsTry, typename Default = void>
 struct reflect_module_tag_selector {
@@ -125,7 +125,7 @@ struct variant_member_field_id {
 };
 
 template <typename A>
-using data_member_accessor = invoke_reffer_thru_or_access_field<A>;
+using data_member_accessor = invoke_reffer_thru<A>;
 
 template <typename... A>
 struct chained_data_member_accessor;
