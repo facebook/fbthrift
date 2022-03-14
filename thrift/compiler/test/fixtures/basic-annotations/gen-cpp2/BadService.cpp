@@ -26,6 +26,10 @@ std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const
   GoodServiceServiceInfoHolder GoodServiceSvIf::__fbthrift_serviceInfoHolder;
 
 
+std::unique_ptr<GoodServiceSvIf::BadInteractionIf> GoodServiceSvIf::createBadInteraction() {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("createBadInteraction");
+}
+
 ::std::int32_t GoodServiceSvIf::bar() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("bar");
 }

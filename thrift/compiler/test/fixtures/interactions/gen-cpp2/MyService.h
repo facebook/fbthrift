@@ -152,9 +152,9 @@ class SerialInteractionIf : public apache::thrift::SerialInteractionTile, public
  private:
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_frobnicate{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
-  virtual std::unique_ptr<MyInteractionIf> createMyInteraction() = 0;
-  virtual std::unique_ptr<MyInteractionFastIf> createMyInteractionFast() = 0;
-  virtual std::unique_ptr<SerialInteractionIf> createSerialInteraction() = 0;
+  virtual std::unique_ptr<MyInteractionIf> createMyInteraction();
+  virtual std::unique_ptr<MyInteractionFastIf> createMyInteractionFast();
+  virtual std::unique_ptr<SerialInteractionIf> createSerialInteraction();
   virtual void foo();
   virtual folly::Future<folly::Unit> future_foo();
   virtual folly::SemiFuture<folly::Unit> semifuture_foo();

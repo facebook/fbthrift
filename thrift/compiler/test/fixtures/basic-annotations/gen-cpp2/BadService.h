@@ -72,7 +72,7 @@ class BadInteractionIf : public apache::thrift::Tile, public apache::thrift::Ser
  private:
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_foo{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
-  virtual std::unique_ptr<BadInteractionIf> createBadInteraction() = 0;
+  virtual std::unique_ptr<BadInteractionIf> createBadInteraction();
   virtual ::std::int32_t bar();
   virtual folly::Future<::std::int32_t> future_bar();
   virtual folly::SemiFuture<::std::int32_t> semifuture_bar();
