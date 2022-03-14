@@ -50,7 +50,12 @@ class SimpleJSONProtocolWriter : public JSONProtocolWriterCommon {
     return ProtocolType::T_SIMPLE_JSON_PROTOCOL;
   }
 
-  static constexpr bool kSortKeys() { return false; }
+  static constexpr bool kSortKeys() {
+    // Produce JSON deterministically by sorting associative containers by
+    // original key (i.e.: 2 < 10 for integers, "10" < "2" for strings).
+    // Fields within objects are not sorted, they follow definition order.
+    return true;
+  }
 
   static constexpr bool kHasIndexSupport() { return false; }
 

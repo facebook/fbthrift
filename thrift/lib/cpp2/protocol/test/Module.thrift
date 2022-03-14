@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -104,19 +104,27 @@ struct StructWithF14VectorContainers {
 }
 
 struct OrderedFields {
-  1: map<string, i64> f1 = {"a": 1, "b": 2, "c": 3};
-  3: string f3 = "d";
-  2: set<string> f2 = ["a", "b", "c"];
+  1: map<string, i64> str_int = {"two": 2, "twenty": 20, "ten": 10, "one": 1};
+  2: set<string> strs = ["a", "b", "c"];
+  4: set<i32> ints = [20, 2, 1, 10];
+  5: map<i32, string> int_strs = {20: "twenty", 10: "ten", 2: "two", 1: "one"};
 }
 
 struct UnorderedFields {
-  2: set<string> (cpp.template = "std::unordered_set") f2 = ["a", "b", "c"];
-  1: map<string, i64> (cpp.template = "std::unordered_map") f1 = {
-    "a": 1,
-    "b": 2,
-    "c": 3,
+  1: map<string, i64> (cpp.template = "std::unordered_map") str_int = {
+    "two": 2,
+    "twenty": 20,
+    "ten": 10,
+    "one": 1,
   };
-  3: string f3 = "d";
+  2: set<string> (cpp.template = "std::unordered_set") strs = ["a", "b", "c"];
+  4: set<i32> (cpp.template = "std::unordered_set") ints = [20, 2, 1, 10];
+  5: map<i32, string> (cpp.template = "std::unordered_map") int_strs = {
+    20: "twenty",
+    10: "ten",
+    2: "two",
+    1: "one",
+  };
 }
 
 struct OptionalFields {

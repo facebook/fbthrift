@@ -66,6 +66,14 @@ TEST_F(SimpleJSONProtocolTest, roundtrip_struct_with_empty_map_string_i64) {
   EXPECT_EQ(orig, deserialized);
 }
 
+TEST_F(SimpleJSONProtocolTest, sort_keys) {
+  const OrderedFields srcOrdered;
+  const UnorderedFields srcUnordered;
+  EXPECT_EQ(
+      SimpleJSONSerializer::serialize<string>(srcOrdered),
+      SimpleJSONSerializer::serialize<string>(srcUnordered));
+}
+
 TEST_F(SimpleJSONProtocolTest, roundtrip_one_of_each_float_range) {
   // Test values for OneOfEach.{myDouble, myFloat} respectively
   const vector<tuple<double, float>> kTestCases = {
