@@ -19,6 +19,7 @@
 #include <iomanip>
 #include <map>
 #include <memory>
+#include <set>
 #include <sstream>
 #include <string>
 #include <type_traits>
@@ -1218,6 +1219,18 @@ class mstch_service : public mstch_base {
              &mstch_service::structured_annotations},
             {"interaction:serial?", &mstch_service::is_serial_interaction},
         });
+
+    // Collect performed interactions and cache them
+    for (auto const* function : get_functions()) {
+      if (function->get_returntype()->is_service()) {
+        interactions_.insert(
+            dynamic_cast<t_interaction const*>(function->get_returntype()));
+      } else if (auto interaction = function->returned_interaction()) {
+        interactions_.insert(dynamic_cast<t_interaction const*>(
+            (*interaction)->get_true_type()));
+      }
+    }
+    assert(interactions_.count(nullptr) == 0);
   }
 
   virtual std::string get_service_namespace(t_program const*) { return {}; }
@@ -1247,26 +1260,14 @@ class mstch_service : public mstch_base {
     });
   }
 
-  mstch::node has_interactions() {
-    auto& funcs = get_functions();
-    return std::any_of(funcs.cbegin(), funcs.cend(), [](auto const& func) {
-      return func->get_returntype()->is_service();
-    });
-  }
+  mstch::node has_interactions() { return !interactions_.empty(); }
   mstch::node interactions() {
     if (!service_->is_interaction()) {
       cache_->parsed_options_["parent_service_name"] = service_->get_name();
       cache_->parsed_options_["parent_service_cpp_name"] =
           cpp2::get_name(service_);
     }
-    std::vector<t_service const*> interactions;
-    for (auto const* function : get_functions()) {
-      if (function->get_returntype()->is_service()) {
-        interactions.push_back(
-            dynamic_cast<t_service const*>(function->get_returntype()));
-      }
-    }
-    return generate_services(interactions);
+    return generate_services(interactions_);
   }
   mstch::node structured_annotations() {
     return mstch_base::structured_annotations(service_);
@@ -1280,6 +1281,7 @@ class mstch_service : public mstch_base {
 
  protected:
   t_service const* service_;
+  std::set<t_interaction const*> interactions_;
 
   mstch::node generate_cached_extended_service(const t_service* service);
   virtual const std::vector<t_function*>& get_functions() const {
