@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include <thrift/lib/cpp2/TypeClass.h>
+#include <thrift/test/AdapterTest.h>
 #include <thrift/test/reflection/gen-cpp2/reflection_fatal_struct.h>
 
 #include <thrift/lib/cpp2/reflection/internal/test_helpers.h>
@@ -640,6 +642,52 @@ TEST(fatal_struct, renamed_field) {
   using fmeta = meta::member::boring_cxx_name;
   auto fname = fatal::to_instance<std::string, fmeta::name>();
   EXPECT_EQ("fancy.idl.name", fname);
+}
+
+TEST(fatal_struct, StructWithAdaptedField) {
+  using info = apache::thrift::reflect_struct<StructWithAdaptedField>;
+  using type_adapted_field = fatal::get<
+      info::members,
+      info::member::typeAdapted::name,
+      fatal::get_type::name>;
+  using field_adapted_field = fatal::get<
+      info::members,
+      info::member::fieldAdapted::name,
+      fatal::get_type::name>;
+  StructWithAdaptedField a;
+
+  using type_adapted_type = apache::thrift::test::Wrapper<IntStruct>;
+  using field_adapted_type = apache::thrift::test::
+      AdaptedWithContext<IntStruct, StructWithAdaptedField, 3>;
+
+  static_assert( //
+      std::is_same_v<
+          info::member::typeAdapted::type_class,
+          apache::thrift::type_class::structure>);
+  static_assert( //
+      std::is_same_v<
+          info::member::typeAdapted::type_class,
+          apache::thrift::type_class::structure>);
+  static_assert( //
+      std::is_same_v< //
+          info::member::fieldAdapted::type,
+          field_adapted_type>);
+  static_assert( //
+      std::is_same_v<
+          info::member::fieldAdapted::type_class,
+          apache::thrift::type_class::structure>);
+
+  type_adapted_field::field_ref_getter get_type_adapted;
+  static_assert( //
+      std::is_same_v<
+          apache::thrift::field_ref<type_adapted_type&>,
+          decltype(get_type_adapted(a))>);
+
+  field_adapted_field::field_ref_getter get_field_adapted;
+  static_assert( //
+      std::is_same_v<
+          apache::thrift::field_ref<field_adapted_type&>,
+          decltype(get_field_adapted(a))>);
 }
 
 } // namespace cpp_reflection

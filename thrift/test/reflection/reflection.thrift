@@ -22,9 +22,11 @@ namespace java.swift test_swift.cpp_reflection
 namespace php test_php.cpp_reflection
 namespace py3 test_py.cpp_reflection
 
+include "thrift/annotation/cpp.thrift"
 include "thrift/test/reflection/reflection_dep_B.thrift"
 include "thrift/test/reflection/reflection_dep_C.thrift"
 
+cpp_include "thrift/test/AdapterTest.h"
 cpp_include "thrift/test/reflection/fatal_custom_types.h"
 cpp_include "<deque>"
 cpp_include "<unordered_set>"
@@ -549,4 +551,16 @@ struct struct_with_renamed_field {
 
 union union_with_renamed_field {
   1: string fancy.idl.name (cpp.name = "boring_cxx_name");
+}
+
+struct IntStruct {
+  1: i32 field;
+}
+
+struct StructWithAdaptedField {
+  1: string meta;
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+  2: IntStruct typeAdapted;
+  @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
+  3: IntStruct fieldAdapted;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,6 +71,8 @@ FATAL_S(hasBox_name, "hasBox");
 FATAL_S(hasBoxSimple_name, "hasBoxSimple");
 FATAL_S(StructWithIOBufs, "StructWithIOBuf");
 FATAL_S(struct_with_renamed_fields, "struct_with_renamed_field");
+FATAL_S(IntStructs, "IntStruct");
+FATAL_S(StructWithAdaptedFields, "StructWithAdaptedField");
 
 FATAL_S(constant1s, "constant1");
 FATAL_S(constant2s, "constant2");
@@ -201,6 +203,8 @@ TEST(fatal, metadata) {
           fatal::pair<hasBoxSimple, hasBoxSimple_name>,
           fatal::pair<StructWithIOBuf, StructWithIOBufs>,
           fatal::pair<struct_with_renamed_field, struct_with_renamed_fields>,
+          fatal::pair<IntStruct, IntStructs>,
+          fatal::pair<StructWithAdaptedField, StructWithAdaptedFields>,
           fatal::pair<my_structA, my_structAs>>,
       info::structs>();
 
