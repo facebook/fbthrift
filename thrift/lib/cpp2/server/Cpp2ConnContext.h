@@ -298,6 +298,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   friend class GeneratedAsyncProcessor;
   friend class Tile;
   friend class TilePromise;
+  friend class HandlerCallbackBase;
 
   void setTransportType(TransportType transportType) {
     transportType_ = transportType;

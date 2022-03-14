@@ -108,6 +108,9 @@ class SerialInteractionTile : public Tile {
 
 class TilePromise final : public Tile {
  public:
+  explicit TilePromise(bool isFactoryFunction)
+      : factoryPending_(isFactoryFunction) {}
+
   bool __fbthrift_maybeEnqueue(
       std::unique_ptr<concurrency::Runnable>&& task,
       const concurrency::ThreadManager::ExecutionScope& scope) override;
@@ -119,6 +122,13 @@ class TilePromise final : public Tile {
 
  private:
   detail::InteractionTaskQueue continuations_;
+  bool factoryPending_;
+
+  struct FactoryException {
+    folly::exception_wrapper ew;
+    std::string exCode;
+  };
+  std::unique_ptr<FactoryException> factoryEx_;
 };
 
 class TilePtr {

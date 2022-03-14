@@ -694,7 +694,8 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       concurrency::ThreadManager* tm,
       RpcKind kind,
       ServerInterface* si,
-      folly::StringPiece interaction = "");
+      folly::StringPiece interaction = "",
+      bool isInteractionFactoryFunction = false);
 
   template <typename ChildType>
   static void processInThread(
@@ -728,7 +729,8 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       Cpp2RequestContext& ctx,
       concurrency::ThreadManager* tm,
       folly::EventBase& eb,
-      ServerInterface* si);
+      ServerInterface* si,
+      bool isFactoryFunction);
 
  protected:
   virtual std::unique_ptr<Tile> createInteractionImpl(const std::string& name);
@@ -1151,7 +1153,7 @@ class HandlerCallbackBase {
   static void releaseRequest(
       ResponseChannelRequest::UniquePtr request,
       folly::EventBase* eb,
-      TilePtr&& interaction = {});
+      TilePtr interaction = {});
 
   void exception(std::exception_ptr ex) { doException(ex); }
 
@@ -1221,6 +1223,9 @@ class HandlerCallbackBase {
 
   void sendReply(SerializedResponse response);
   void sendReply(ResponseAndServerStreamFactory&& responseAndStream);
+
+  bool fulfillTilePromise(std::unique_ptr<Tile> ptr);
+  void breakTilePromise();
 
 #if !FOLLY_HAS_COROUTINES
   [[noreturn]]
@@ -1354,8 +1359,48 @@ class HandlerCallback<void> : public HandlerCallbackBase {
   cob_ptr cp_;
 };
 
+template <typename InteractionIf, typename Response>
+struct TileAndResponse {
+  std::unique_ptr<InteractionIf> tile;
+  Response response;
+};
+template <typename InteractionIf>
+struct TileAndResponse<InteractionIf, void> {
+  std::unique_ptr<InteractionIf> tile;
+};
+
+template <typename InteractionIf, typename Response>
+class HandlerCallback<TileAndResponse<InteractionIf, Response>> final
+    : public HandlerCallback<Response> {
+ public:
+  void result(TileAndResponse<InteractionIf, Response>&& r) {
+    if (this->fulfillTilePromise(std::move(r.tile))) {
+      if constexpr (!std::is_void_v<Response>) {
+        HandlerCallback<Response>::result(std::move(r.response));
+      } else {
+        this->done();
+      }
+    }
+  }
+  void complete(folly::Try<TileAndResponse<InteractionIf, Response>>&& r) {
+    if (r.hasException()) {
+      this->exception(std::move(r.exception()));
+    } else {
+      this->result(std::move(r.value()));
+    }
+  }
+
+  using HandlerCallback<Response>::HandlerCallback;
+
+  ~HandlerCallback() override {
+    if (this->interaction_) {
+      this->breakTilePromise();
+    }
+  }
+};
+
 ////
-// Implemenation details
+// Implementation details
 ////
 
 template <typename ProtocolIn, typename Args>
@@ -1582,7 +1627,6 @@ void HandlerCallbackBase::callExceptionInEventBaseThread(F&& f, T&& ex) {
                                           ctx = std::move(ctx_),
                                           ex = std::forward<T>(ex),
                                           reqCtx = reqCtx_,
-                                          interaction = std::move(interaction_),
                                           eb = getEventBase()]() mutable {
       f(std::move(req), protoSeqId, ctx.get(), ex, reqCtx);
     });

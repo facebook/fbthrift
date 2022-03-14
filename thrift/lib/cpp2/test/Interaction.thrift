@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,6 +48,16 @@ service Calculator {
   performs AdditionFast;
   performs SerialAddition;
   i32 addPrimitive(1: i32 a, 2: i32 b);
+
+  Addition newAddition();
+  Addition, i32 initializedAddition(1: i32 a);
+  Addition, string stringifiedAddition(1: i32 a);
+}
+
+service Dummy {
+  void newAddition();
+  i32 initializedAddition(1: i32 a);
+  string stringifiedAddition(1: i32 a);
 }
 
 interaction Streaming {

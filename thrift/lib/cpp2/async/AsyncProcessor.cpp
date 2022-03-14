@@ -126,7 +126,8 @@ bool GeneratedAsyncProcessor::createInteraction(
     Cpp2RequestContext& ctx,
     concurrency::ThreadManager* tm,
     folly::EventBase& eb,
-    ServerInterface* si) {
+    ServerInterface* si,
+    bool isFactoryFunction) {
   eb.dcheckIsInEventBaseThread();
 
   auto nullthrows = [](std::unique_ptr<Tile> tile) {
@@ -138,8 +139,9 @@ bool GeneratedAsyncProcessor::createInteraction(
   };
   auto& conn = *ctx.getConnectionContext();
 
-  // In the eb model we create the interaction inline.
-  if (!tm) {
+  // In the eb model with old-style constructor we create the interaction
+  // inline.
+  if (!tm && !isFactoryFunction) {
     si->setEventBase(&eb);
     si->setRequestContext(&ctx);
     auto tile = folly::makeTryWith(
@@ -155,40 +157,46 @@ bool GeneratedAsyncProcessor::createInteraction(
     return conn.addTile(id, {tile->release(), &eb});
   }
 
-  // In the tm model we use a promise.
-  auto promisePtr = new TilePromise; // freed by RefGuard on next line
+  // Otherwise we use a promise.
+  auto promisePtr =
+      new TilePromise(isFactoryFunction); // freed by RefGuard on next line
   if (!conn.addTile(id, {promisePtr, &eb})) {
     return false;
   }
 
-  tm->add([=, &eb, &ctx, name = std::move(name), &conn] {
-    si->setEventBase(&eb);
-    si->setThreadManager(tm);
-    si->setRequestContext(&ctx);
+  // Old-style constructor + tm : schedule constructor and return
+  if (!isFactoryFunction) {
+    tm->add([=, &eb, &ctx, name = std::move(name), &conn] {
+      si->setEventBase(&eb);
+      si->setThreadManager(tm);
+      si->setRequestContext(&ctx);
 
-    std::exception_ptr ex;
-    try {
-      auto tilePtr = nullthrows(createInteractionImpl(name));
-      eb.add([=, &conn, &eb, t = std::move(tilePtr)]() mutable {
-        TilePtr tile{t.release(), &eb};
-        promisePtr->fulfill(*tile, *tm, eb);
-        conn.tryReplaceTile(id, std::move(tile));
+      std::exception_ptr ex;
+      try {
+        auto tilePtr = nullthrows(createInteractionImpl(name));
+        eb.add([=, &conn, &eb, t = std::move(tilePtr)]() mutable {
+          TilePtr tile{t.release(), &eb};
+          promisePtr->fulfill(*tile, *tm, eb);
+          conn.tryReplaceTile(id, std::move(tile));
+        });
+        return;
+      } catch (...) {
+        ex = std::current_exception();
+      }
+      DCHECK(ex);
+      eb.add([promisePtr, ex = std::move(ex)]() {
+        promisePtr->failWith(
+            folly::make_exception_wrapper<TApplicationException>(
+                folly::to<std::string>(
+                    "Interaction constructor failed with ",
+                    folly::exceptionStr(ex))),
+            kInteractionConstructorErrorErrorCode);
       });
-      return;
-    } catch (...) {
-      ex = std::current_exception();
-    }
-    DCHECK(ex);
-    eb.add([=, &conn, ex = std::move(ex)]() {
-      promisePtr->failWith(
-          folly::make_exception_wrapper<TApplicationException>(
-              folly::to<std::string>(
-                  "Interaction constructor failed with ",
-                  folly::exceptionStr(ex))),
-          kInteractionConstructorErrorErrorCode);
-      conn.removeTile(id);
     });
-  });
+    return true;
+  }
+
+  // Factory function: the handler method will fulfill the promise
   return true;
 }
 
@@ -267,7 +275,8 @@ bool GeneratedAsyncProcessor::setUpRequestProcessing(
     concurrency::ThreadManager* tm,
     RpcKind kind,
     ServerInterface* si,
-    folly::StringPiece interaction) {
+    folly::StringPiece interaction,
+    bool isInteractionFactoryFunction) {
   if (!validateRpcKind(req, kind)) {
     return false;
   }
@@ -284,7 +293,8 @@ bool GeneratedAsyncProcessor::setUpRequestProcessing(
                      *ctx,
                      tm,
                      *eb,
-                     si)) {
+                     si,
+                     isInteractionFactoryFunction)) {
         // Duplicate id is a contract violation so close the connection.
         // Terminate this interaction first so queued requests can't use it
         // (which could result in UB).
@@ -413,7 +423,7 @@ HandlerCallbackBase::~HandlerCallbackBase() {
 void HandlerCallbackBase::releaseRequest(
     ResponseChannelRequest::UniquePtr request,
     folly::EventBase* eb,
-    TilePtr&& interaction) {
+    TilePtr interaction) {
   DCHECK(request);
   DCHECK(eb != nullptr);
   if (!eb->inRunningEventBaseThread()) {
@@ -555,6 +565,44 @@ void HandlerCallbackBase::sendReply(
 #else
   std::terminate();
 #endif
+}
+
+bool HandlerCallbackBase::fulfillTilePromise(std::unique_ptr<Tile> ptr) {
+  if (!ptr) {
+    DLOG(FATAL) << "Nullptr interaction yielded from handler";
+    exception(TApplicationException(
+        TApplicationException::MISSING_RESULT,
+        "Nullptr interaction yielded from handler"));
+    return false;
+  }
+
+  auto fn = [ctx = reqCtx_,
+             interaction = std::move(interaction_),
+             ptr = std::move(ptr),
+             tm = tm_,
+             eb = eb_]() mutable {
+    TilePtr tile{ptr.release(), eb};
+    DCHECK(dynamic_cast<TilePromise*>(interaction.get()));
+    static_cast<TilePromise&>(*interaction).fulfill(*tile, *tm, *eb);
+    ctx->getConnectionContext()->tryReplaceTile(
+        ctx->getInteractionId(), std::move(tile));
+  };
+
+  eb_->runImmediatelyOrRunInEventBaseThread(std::move(fn));
+  return true;
+}
+
+void HandlerCallbackBase::breakTilePromise() {
+  auto fn = [interaction = std::move(interaction_)]() mutable {
+    DCHECK(dynamic_cast<TilePromise*>(interaction.get()));
+    static_cast<TilePromise&>(*interaction)
+        .failWith(
+            folly::make_exception_wrapper<TApplicationException>(
+                "Interaction constructor failed"),
+            kInteractionConstructorErrorErrorCode);
+  };
+
+  eb_->runImmediatelyOrRunInEventBaseThread(std::move(fn));
 }
 
 HandlerCallback<void>::HandlerCallback(

@@ -59,13 +59,24 @@ void Tile::decRef(folly::EventBase& eb, InteractionReleaseEvent event) {
 bool TilePromise::__fbthrift_maybeEnqueue(
     std::unique_ptr<concurrency::Runnable>&& task,
     const concurrency::ThreadManager::ExecutionScope& scope) {
+  // If the first request is a factory method we mustn't enqueue it
+  if (std::exchange(factoryPending_, false)) {
+    return false;
+  }
+
+  // If the factory failed, accept the task and immediately fail it
+  if (factoryEx_) {
+    dynamic_cast<InteractionTask&>(*task).failWith(
+        factoryEx_->ew, factoryEx_->exCode);
+    return true;
+  }
+
   continuations_.emplace(std::move(task), scope);
   return true;
 }
 
 void TilePromise::fulfill(
     Tile& tile, concurrency::ThreadManager& tm, folly::EventBase& eb) {
-  DCHECK(!continuations_.empty());
   tile.tm_ = &tm;
 
   // Inline destruction of this is possible at the setTile()
@@ -86,6 +97,8 @@ void TilePromise::fulfill(
 void TilePromise::failWith(
     folly::exception_wrapper ew, const std::string& exCode) {
   auto continuations = std::move(continuations_);
+  factoryEx_ =
+      folly::copy_to_unique_ptr(TilePromise::FactoryException{ew, exCode});
   while (!continuations.empty()) {
     auto& [task, scope] = continuations.front();
     dynamic_cast<InteractionTask&>(*task).failWith(ew, exCode);
