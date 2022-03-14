@@ -132,6 +132,7 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Bar");
     private final test.fixtures.adapter.Foo structField;
@@ -154,16 +155,22 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
     private static final TField OPTIONAL_UNION_FIELD_FIELD_DESC = new TField("optionalUnionField", TType.STRUCT, (short)6);
     static {
       NAMES_TO_IDS.put("structField", 1);
+      THRIFT_NAMES_TO_IDS.put("structField", 1);
       FIELD_METADATA.put(1, STRUCT_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("optionalStructField", 2);
+      THRIFT_NAMES_TO_IDS.put("optionalStructField", 2);
       FIELD_METADATA.put(2, OPTIONAL_STRUCT_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("structListField", 3);
+      THRIFT_NAMES_TO_IDS.put("structListField", 3);
       FIELD_METADATA.put(3, STRUCT_LIST_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("optionalStructListField", 4);
+      THRIFT_NAMES_TO_IDS.put("optionalStructListField", 4);
       FIELD_METADATA.put(4, OPTIONAL_STRUCT_LIST_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("unionField", 5);
+      THRIFT_NAMES_TO_IDS.put("unionField", 5);
       FIELD_METADATA.put(5, UNION_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("optionalUnionField", 6);
+      THRIFT_NAMES_TO_IDS.put("optionalUnionField", 6);
       FIELD_METADATA.put(6, OPTIONAL_UNION_FIELD_FIELD_DESC);
     }
     
@@ -248,7 +255,7 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
     
     public static Bar read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(Bar.NAMES_TO_IDS, Bar.FIELD_METADATA);
+      oprot.readStructBegin(Bar.NAMES_TO_IDS, Bar.THRIFT_NAMES_TO_IDS, Bar.FIELD_METADATA);
       Bar.Builder builder = new Bar.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

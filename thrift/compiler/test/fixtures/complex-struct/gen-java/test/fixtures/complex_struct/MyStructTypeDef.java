@@ -174,6 +174,7 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStructTypeDef");
     private final long myLongField;
@@ -205,22 +206,31 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
     private static final TField MY_MAP_LIST_OF_TYPE_DEF_FIELD_DESC = new TField("myMapListOfTypeDef", TType.MAP, (short)9);
     static {
       NAMES_TO_IDS.put("myLongField", 1);
+      THRIFT_NAMES_TO_IDS.put("myLongField", 1);
       FIELD_METADATA.put(1, MY_LONG_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("myLongTypeDef", 2);
+      THRIFT_NAMES_TO_IDS.put("myLongTypeDef", 2);
       FIELD_METADATA.put(2, MY_LONG_TYPE_DEF_FIELD_DESC);
       NAMES_TO_IDS.put("myStringField", 3);
+      THRIFT_NAMES_TO_IDS.put("myStringField", 3);
       FIELD_METADATA.put(3, MY_STRING_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("myStringTypedef", 4);
+      THRIFT_NAMES_TO_IDS.put("myStringTypedef", 4);
       FIELD_METADATA.put(4, MY_STRING_TYPEDEF_FIELD_DESC);
       NAMES_TO_IDS.put("myMapField", 5);
+      THRIFT_NAMES_TO_IDS.put("myMapField", 5);
       FIELD_METADATA.put(5, MY_MAP_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("myMapTypedef", 6);
+      THRIFT_NAMES_TO_IDS.put("myMapTypedef", 6);
       FIELD_METADATA.put(6, MY_MAP_TYPEDEF_FIELD_DESC);
       NAMES_TO_IDS.put("myListField", 7);
+      THRIFT_NAMES_TO_IDS.put("myListField", 7);
       FIELD_METADATA.put(7, MY_LIST_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("myListTypedef", 8);
+      THRIFT_NAMES_TO_IDS.put("myListTypedef", 8);
       FIELD_METADATA.put(8, MY_LIST_TYPEDEF_FIELD_DESC);
       NAMES_TO_IDS.put("myMapListOfTypeDef", 9);
+      THRIFT_NAMES_TO_IDS.put("myMapListOfTypeDef", 9);
       FIELD_METADATA.put(9, MY_MAP_LIST_OF_TYPE_DEF_FIELD_DESC);
     }
     
@@ -329,7 +339,7 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
     
     public static MyStructTypeDef read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(MyStructTypeDef.NAMES_TO_IDS, MyStructTypeDef.FIELD_METADATA);
+      oprot.readStructBegin(MyStructTypeDef.NAMES_TO_IDS, MyStructTypeDef.THRIFT_NAMES_TO_IDS, MyStructTypeDef.FIELD_METADATA);
       MyStructTypeDef.Builder builder = new MyStructTypeDef.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

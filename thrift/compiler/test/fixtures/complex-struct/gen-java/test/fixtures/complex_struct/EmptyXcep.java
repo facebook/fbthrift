@@ -23,6 +23,7 @@ public final class EmptyXcep extends org.apache.thrift.TBaseException implements
 
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
 
     private static final TStruct STRUCT_DESC = new TStruct("emptyXcep");
@@ -57,7 +58,7 @@ public final class EmptyXcep extends org.apache.thrift.TBaseException implements
     
     public static EmptyXcep read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(EmptyXcep.NAMES_TO_IDS, EmptyXcep.FIELD_METADATA);
+      oprot.readStructBegin(EmptyXcep.NAMES_TO_IDS, EmptyXcep.THRIFT_NAMES_TO_IDS, EmptyXcep.FIELD_METADATA);
       EmptyXcep.Builder builder = new EmptyXcep.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

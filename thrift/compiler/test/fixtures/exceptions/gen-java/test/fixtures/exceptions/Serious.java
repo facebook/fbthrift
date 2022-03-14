@@ -23,6 +23,7 @@ public final class Serious extends org.apache.thrift.TBaseException implements c
 
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
 
     private static final TStruct STRUCT_DESC = new TStruct("Serious");
@@ -84,7 +85,7 @@ public final class Serious extends org.apache.thrift.TBaseException implements c
     
     public static Serious read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(Serious.NAMES_TO_IDS, Serious.FIELD_METADATA);
+      oprot.readStructBegin(Serious.NAMES_TO_IDS, Serious.THRIFT_NAMES_TO_IDS, Serious.FIELD_METADATA);
       Serious.Builder builder = new Serious.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

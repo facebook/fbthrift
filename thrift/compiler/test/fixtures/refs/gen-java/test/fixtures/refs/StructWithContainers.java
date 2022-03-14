@@ -132,6 +132,7 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("StructWithContainers");
     private final List<Integer> listRef;
@@ -154,16 +155,22 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
     private static final TField LIST_REF_SHARED_CONST_FIELD_DESC = new TField("list_ref_shared_const", TType.LIST, (short)6);
     static {
       NAMES_TO_IDS.put("listRef", 1);
+      THRIFT_NAMES_TO_IDS.put("list_ref", 1);
       FIELD_METADATA.put(1, LIST_REF_FIELD_DESC);
       NAMES_TO_IDS.put("setRef", 2);
+      THRIFT_NAMES_TO_IDS.put("set_ref", 2);
       FIELD_METADATA.put(2, SET_REF_FIELD_DESC);
       NAMES_TO_IDS.put("mapRef", 3);
+      THRIFT_NAMES_TO_IDS.put("map_ref", 3);
       FIELD_METADATA.put(3, MAP_REF_FIELD_DESC);
       NAMES_TO_IDS.put("listRefUnique", 4);
+      THRIFT_NAMES_TO_IDS.put("list_ref_unique", 4);
       FIELD_METADATA.put(4, LIST_REF_UNIQUE_FIELD_DESC);
       NAMES_TO_IDS.put("setRefShared", 5);
+      THRIFT_NAMES_TO_IDS.put("set_ref_shared", 5);
       FIELD_METADATA.put(5, SET_REF_SHARED_FIELD_DESC);
       NAMES_TO_IDS.put("listRefSharedConst", 6);
+      THRIFT_NAMES_TO_IDS.put("list_ref_shared_const", 6);
       FIELD_METADATA.put(6, LIST_REF_SHARED_CONST_FIELD_DESC);
     }
     
@@ -248,7 +255,7 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
     
     public static StructWithContainers read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(StructWithContainers.NAMES_TO_IDS, StructWithContainers.FIELD_METADATA);
+      oprot.readStructBegin(StructWithContainers.NAMES_TO_IDS, StructWithContainers.THRIFT_NAMES_TO_IDS, StructWithContainers.FIELD_METADATA);
       StructWithContainers.Builder builder = new StructWithContainers.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

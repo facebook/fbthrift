@@ -46,6 +46,7 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyDataItem");
 static {
@@ -84,7 +85,7 @@ static {
     
     public static MyDataItem read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(MyDataItem.NAMES_TO_IDS, MyDataItem.FIELD_METADATA);
+      oprot.readStructBegin(MyDataItem.NAMES_TO_IDS, MyDataItem.THRIFT_NAMES_TO_IDS, MyDataItem.FIELD_METADATA);
       MyDataItem.Builder builder = new MyDataItem.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

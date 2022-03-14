@@ -46,6 +46,7 @@ public final class Empty implements com.facebook.thrift.payload.ThriftSerializab
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Empty");
 static {
@@ -84,7 +85,7 @@ static {
     
     public static Empty read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(Empty.NAMES_TO_IDS, Empty.FIELD_METADATA);
+      oprot.readStructBegin(Empty.NAMES_TO_IDS, Empty.THRIFT_NAMES_TO_IDS, Empty.FIELD_METADATA);
       Empty.Builder builder = new Empty.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

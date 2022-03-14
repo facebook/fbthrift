@@ -23,6 +23,7 @@ public final class OptXcep extends org.apache.thrift.TBaseException implements c
 
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
 
     private static final TStruct STRUCT_DESC = new TStruct("optXcep");
@@ -101,7 +102,7 @@ public final class OptXcep extends org.apache.thrift.TBaseException implements c
     
     public static OptXcep read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(OptXcep.NAMES_TO_IDS, OptXcep.FIELD_METADATA);
+      oprot.readStructBegin(OptXcep.NAMES_TO_IDS, OptXcep.THRIFT_NAMES_TO_IDS, OptXcep.FIELD_METADATA);
       OptXcep.Builder builder = new OptXcep.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

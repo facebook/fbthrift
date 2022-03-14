@@ -22,6 +22,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 public final class DataUnion implements com.facebook.thrift.payload.ThriftSerializable {
     private static final TStruct STRUCT_DESC = new TStruct("DataUnion");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
 
     public static final int _BINARYDATA = 1;
@@ -31,8 +32,10 @@ public final class DataUnion implements com.facebook.thrift.payload.ThriftSerial
 
     static {
       NAMES_TO_IDS.put("binaryData", 1);
+      THRIFT_NAMES_TO_IDS.put("binaryData", 1);
       FIELD_METADATA.put(1, BINARY_DATA_FIELD_DESC);
       NAMES_TO_IDS.put("stringData", 2);
+      THRIFT_NAMES_TO_IDS.put("stringData", 2);
       FIELD_METADATA.put(2, STRING_DATA_FIELD_DESC);
     }
 
@@ -195,7 +198,7 @@ public final class DataUnion implements com.facebook.thrift.payload.ThriftSerial
       DataUnion res = new DataUnion();
       res.value = null;
       res.id = (short) 0;
-      oprot.readStructBegin(DataUnion.NAMES_TO_IDS, DataUnion.FIELD_METADATA);
+      oprot.readStructBegin(DataUnion.NAMES_TO_IDS, DataUnion.THRIFT_NAMES_TO_IDS, DataUnion.FIELD_METADATA);
       TField __field = oprot.readFieldBegin();
       if (__field.type != TType.STOP) {
           switch (__field.id) {

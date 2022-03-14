@@ -76,6 +76,7 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStructMapFloatThrowExp");
     private final long myLongField;
@@ -86,8 +87,10 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
     private static final TField MAP_LIST_OF_FLOATS_FIELD_DESC = new TField("mapListOfFloats", TType.MAP, (short)2);
     static {
       NAMES_TO_IDS.put("myLongField", 1);
+      THRIFT_NAMES_TO_IDS.put("myLongField", 1);
       FIELD_METADATA.put(1, MY_LONG_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("mapListOfFloats", 2);
+      THRIFT_NAMES_TO_IDS.put("mapListOfFloats", 2);
       FIELD_METADATA.put(2, MAP_LIST_OF_FLOATS_FIELD_DESC);
     }
     
@@ -140,7 +143,7 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
     
     public static MyStructMapFloatThrowExp read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(MyStructMapFloatThrowExp.NAMES_TO_IDS, MyStructMapFloatThrowExp.FIELD_METADATA);
+      oprot.readStructBegin(MyStructMapFloatThrowExp.NAMES_TO_IDS, MyStructMapFloatThrowExp.THRIFT_NAMES_TO_IDS, MyStructMapFloatThrowExp.FIELD_METADATA);
       MyStructMapFloatThrowExp.Builder builder = new MyStructMapFloatThrowExp.Builder();
       while (true) {
         __field = oprot.readFieldBegin();
