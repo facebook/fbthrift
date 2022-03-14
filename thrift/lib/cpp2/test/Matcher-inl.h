@@ -28,13 +28,6 @@
 
 namespace apache::thrift {
 
-namespace detail {
-// Forward declaration from header `thrift/lib/cpp2/gen/module_types_h.h`
-// which is supposed to only be included by generated files.
-template <typename Tag>
-struct invoke_reffer;
-} // namespace detail
-
 namespace test::detail {
 
 template <typename FieldTag>
@@ -69,7 +62,7 @@ class ThriftFieldMatcher {
   }
 
  private:
-  using Accessor = thrift::detail::invoke_reffer<FieldTag>;
+  using Accessor = access_field_fn<FieldTag>;
   // For field_ref, we want to forward the value pointed to the matcher
   // directly (it's fully transparent).
   // For optional_field_ref, we don't want to do it becase the mental model
@@ -158,7 +151,7 @@ class IsThriftUnionWithMatcher {
   constexpr static inline bool SupportsReflection =
       fatal::has_variant_traits<T>::value;
 
-  using Accessor = thrift::detail::invoke_reffer<FieldTag>;
+  using Accessor = access_field_fn<FieldTag>;
 
   template <typename ThriftUnion>
   class Impl : public testing::MatcherInterface<ThriftUnion> {

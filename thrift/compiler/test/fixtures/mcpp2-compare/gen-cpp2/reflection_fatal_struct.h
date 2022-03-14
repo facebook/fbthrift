@@ -38,7 +38,7 @@ class ReflectionStruct_struct_traits {
     static constexpr ::apache::thrift::field_id_t id = 1;
     static constexpr auto optional = ::apache::thrift::optionality::required_of_writer;
     using getter = __fbthrift_refl_impl::data_member_accessor<::apache::thrift::tag::fieldA>;
-    using field_ref_getter = ::apache::thrift::detail::invoke_reffer<::apache::thrift::tag::fieldA>;
+    using field_ref_getter = ::apache::thrift::access_field_fn<::apache::thrift::tag::fieldA>;
     using type_class = ::apache::thrift::type_class::integral;
     using annotations = ::apache::thrift::reflected_annotations<__fbthrift_annotations::members::fieldA>;
   };
