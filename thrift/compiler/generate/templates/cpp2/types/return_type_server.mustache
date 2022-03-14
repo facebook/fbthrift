@@ -14,6 +14,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+%><%#function:creates_interaction?%><%!
+  %>apache::thrift::TileAndResponse<<%service:parent_service_cpp_name%>SvIf::<%function:created_interaction%>If, <%!
+%><%/function:creates_interaction?%><%!
 %><%#type:resolves_to_complex_return?%><%!
 %><%#function:stack_arguments?%><%!
   %><%type:cpp_type%><%!
@@ -24,4 +27,7 @@
 %><%/type:resolves_to_complex_return?%><%!
 %><%^type:resolves_to_complex_return?%><%!
   %><%type:cpp_type%><%!
-%><%/type:resolves_to_complex_return?%>
+%><%/type:resolves_to_complex_return?%><%!
+%><%#function:creates_interaction?%><%!
+  %>><%!
+%><%/function:creates_interaction?%>

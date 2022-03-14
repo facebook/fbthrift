@@ -448,12 +448,11 @@ class mstch_cpp2_type : public mstch_type {
     return resolved_type_->is_container() || resolved_type_->is_enum();
   }
   mstch::node resolves_to_complex_return() {
-    if (resolved_type_->is_service()) {
-      return false;
-    }
-    return resolved_type_->is_container() ||
-        resolved_type_->is_string_or_binary() || resolved_type_->is_struct() ||
-        resolved_type_->is_xception();
+    return is_complex_return(resolved_type_) && !resolved_type_->is_service();
+  }
+  static bool is_complex_return(const t_type* type) {
+    return type->is_container() || type->is_string_or_binary() ||
+        type->is_struct() || type->is_xception();
   }
   mstch::node resolves_to_fixed_size() {
     return resolved_type_->is_bool() || resolved_type_->is_byte() ||
@@ -1296,6 +1295,15 @@ class mstch_cpp2_function : public mstch_function {
             {"function:cpp_name", &mstch_cpp2_function::cpp_name},
             {"function:stack_arguments?",
              &mstch_cpp2_function::stack_arguments},
+            {"function:created_interaction",
+             &mstch_cpp2_function::created_interaction},
+            {"function:creates_interaction?",
+             &mstch_cpp2_function::creates_interaction},
+            {"function:in_or_creates_interaction?",
+             &mstch_cpp2_function::in_or_creates_interaction},
+            {"function:void?", &mstch_cpp2_function::is_void},
+            {"function:sync_returns_by_outparam?",
+             &mstch_cpp2_function::sync_returns_by_outparam},
         });
   }
   mstch::node coroutine() {
@@ -1308,6 +1316,25 @@ class mstch_cpp2_function : public mstch_function {
   mstch::node cpp_name() { return cpp2::get_name(function_); }
   mstch::node stack_arguments() {
     return cpp2::is_stack_arguments(cache_->parsed_options_, *function_);
+  }
+  mstch::node creates_interaction() {
+    return function_->returned_interaction().is_initialized();
+  }
+  mstch::node created_interaction() {
+    return cpp2::get_name(function_->returned_interaction()->get_type());
+  }
+  mstch::node in_or_creates_interaction() {
+    return function_->returned_interaction().is_initialized() ||
+        function_->is_interaction_member();
+  }
+  mstch::node is_void() {
+    return function_->return_type().deref().is_void() &&
+        !function_->returned_interaction();
+  }
+  mstch::node sync_returns_by_outparam() {
+    return mstch_cpp2_type::is_complex_return(
+               function_->return_type().deref().get_true_type()) &&
+        !function_->returned_interaction();
   }
 };
 

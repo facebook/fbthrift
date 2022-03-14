@@ -25,16 +25,16 @@
 folly::SemiFuture<<% > types/return_type_server_lift_unit%>> <% > service_common/service_class_name%>::semifuture_<%function:cpp_name%>(<% > service_common/function_param_list_server%>) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_<%function:cpp_name%>.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
-<%^type:resolves_to_complex_return?%>
-<%^type:void?%>
+<%^function:sync_returns_by_outparam?%>
+<%^function:void?%>
   return <%function:cpp_name%>(<% > service_common/param_list_move%>);
-<%/type:void?%>
-<%#type:void?%>
+<%/function:void?%>
+<%#function:void?%>
   <%function:cpp_name%>(<% > service_common/param_list_move%>);
   return folly::makeSemiFuture();
-<%/type:void?%>
-<%/type:resolves_to_complex_return?%>
-<%#type:resolves_to_complex_return?%>
+<%/function:void?%>
+<%/function:sync_returns_by_outparam?%>
+<%#function:sync_returns_by_outparam?%>
 <%#function:stack_arguments?%>
   <%type:cpp_type%> ret;
   <%function:cpp_name%>(ret<%function:comma%><% > service_common/param_list_move%>);
@@ -44,7 +44,7 @@ folly::SemiFuture<<% > types/return_type_server_lift_unit%>> <% > service_common
   <%function:cpp_name%>(*ret<%function:comma%><% > service_common/param_list_move%>);
 <%/function:stack_arguments?%>
   return folly::makeSemiFuture(std::move(ret));
-<%/type:resolves_to_complex_return?%>
+<%/function:sync_returns_by_outparam?%>
 }
 <%^service:interaction?%>
 
@@ -143,22 +143,22 @@ void <% > service_common/service_class_name%>::async_tm_<%function:cpp_name%>(st
 <%/function:coroutine?%>
       case apache::thrift::detail::si::InvocationType::Sync:
       {
-<%^type:resolves_to_complex_return?%>
-<%^type:void?%>
+<%^function:sync_returns_by_outparam?%>
+<%^function:void?%>
         callback->result(<%function:cpp_name%>(<% > service_common/param_list_move%>));
-<%/type:void?%>
-<%#type:void?%>
+<%/function:void?%>
+<%#function:void?%>
         <%function:cpp_name%>(<% > service_common/param_list_move%>);
 <%^function:oneway?%>
         callback->done();
 <%/function:oneway?%>
-<%/type:void?%>
-<%/type:resolves_to_complex_return?%>
-<%#type:resolves_to_complex_return?%>
+<%/function:void?%>
+<%/function:sync_returns_by_outparam?%>
+<%#function:sync_returns_by_outparam?%>
         <%type:cpp_type%> _return;
         <%function:cpp_name%>(_return<%function:comma%><% > service_common/param_list_move%>);
         callback->result(_return);
-<%/type:resolves_to_complex_return?%>
+<%/function:sync_returns_by_outparam?%>
         return;
       }
       default:
