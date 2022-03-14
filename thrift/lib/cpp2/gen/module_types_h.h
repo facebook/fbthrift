@@ -48,7 +48,7 @@
   template <>                                                                 \
   struct invoke_reffer<::apache::thrift::tag::name> {                         \
     template <typename T, typename... A>                                      \
-    FOLLY_ERASE constexpr auto operator()(T&& t, A&&... a) noexcept(          \
+    FOLLY_ERASE constexpr auto operator()(T&& t, A&&... a) const noexcept(    \
         noexcept(static_cast<T&&>(t).name##_ref(static_cast<A&&>(a)...)))     \
         -> decltype(static_cast<T&&>(t).name##_ref(static_cast<A&&>(a)...)) { \
       return static_cast<T&&>(t).name##_ref(static_cast<A&&>(a)...);          \
