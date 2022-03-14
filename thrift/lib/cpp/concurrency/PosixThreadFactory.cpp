@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -246,10 +246,12 @@ int PosixThreadFactory::Impl::toPthreadPriority(
       static_cast<float>(max_priority - min_priority) / quanta;
 
 #ifdef _MSC_VER
-  return static_cast<int>(min_priority + stepsperquanta * priority);
+  return static_cast<int>(
+      min_priority + stepsperquanta * folly::to_underlying(priority));
 #else
   if (priority >= LOWEST_PRI && priority <= HIGHEST_PRI) {
-    return static_cast<int>(min_priority + stepsperquanta * priority);
+    return static_cast<int>(
+        min_priority + stepsperquanta * folly::to_underlying(priority));
   } else if (priority == INHERITED_PRI && pthread_policy == SCHED_OTHER) {
     errno = 0;
     int prio = getpriority(PRIO_PROCESS, 0);
@@ -263,7 +265,8 @@ int PosixThreadFactory::Impl::toPthreadPriority(
     assert(false);
   }
 
-  return static_cast<int>(min_priority + stepsperquanta * NORMAL);
+  return static_cast<int>(
+      min_priority + stepsperquanta * folly::to_underlying(NORMAL));
 #endif
 }
 
