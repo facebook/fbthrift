@@ -34,11 +34,11 @@ struct MetadataForwarder {
   const metadata::ThriftStruct& meta =
       get_struct_metadata<folly::remove_cvref_t<T>>();
 
-  const bool kHasMetadata = !meta.fields_ref()->empty();
+  const bool kHasMetadata = !meta.fields()->empty();
 
   template <class... Args>
   FOLLY_ERASE void operator()(size_t idx, Args&&... args) {
-    f(kHasMetadata ? meta.fields_ref()[idx] : empty_thrift_field(),
+    f(kHasMetadata ? meta.fields()[idx] : empty_thrift_field(),
       std::forward<Args>(args)...);
   }
 };
