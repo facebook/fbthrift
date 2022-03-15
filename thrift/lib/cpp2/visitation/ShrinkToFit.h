@@ -18,6 +18,7 @@
 
 #include <folly/Traits.h>
 #include <folly/portability/Constexpr.h>
+#include <thrift/lib/cpp2/FieldRefTraits.h>
 #include <thrift/lib/cpp2/visitation/for_each.h>
 #include <thrift/lib/thrift/gen-cpp2/metadata_types.h>
 

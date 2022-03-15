@@ -27,7 +27,6 @@
 #include <folly/synchronization/Lock.h>
 #include <thrift/lib/cpp2/Adapt.h>
 #include <thrift/lib/cpp2/FieldRef.h>
-#include <thrift/lib/cpp2/FieldRefTraits.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/TypeClass.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
@@ -69,44 +68,6 @@ template <typename T>
 constexpr ptrdiff_t issetOffset(std::int16_t fieldIndex);
 template <typename T>
 constexpr ptrdiff_t unionTypeOffset();
-
-struct thru_field_ref_fn {
-  template <typename T>
-  FOLLY_ERASE constexpr T operator()(field_ref<T> ref) const noexcept {
-    return *ref;
-  }
-  template <typename T>
-  FOLLY_ERASE constexpr T operator()(optional_field_ref<T> ref) const noexcept {
-    return ref.value_unchecked();
-  }
-  template <typename T>
-  FOLLY_ERASE constexpr optional_boxed_field_ref<T> operator()(
-      optional_boxed_field_ref<T> ref) const noexcept {
-    return ref;
-  }
-  template <typename T>
-  FOLLY_ERASE constexpr T operator()(required_field_ref<T> ref) const noexcept {
-    return *ref;
-  }
-  template <
-      typename T,
-      typename D = folly::remove_cvref_t<T>,
-      std::enable_if_t<is_shared_or_unique_ptr<D>::value, int> = 0>
-  FOLLY_ERASE constexpr T&& operator()(T&& ref) const noexcept {
-    return static_cast<T&&>(ref);
-  }
-};
-FOLLY_INLINE_VARIABLE constexpr thru_field_ref_fn thru_field_ref{};
-
-template <typename Tag>
-struct invoke_reffer_thru {
-  template <typename... A>
-  FOLLY_ERASE constexpr auto operator()(A&&... a) noexcept(
-      noexcept(access_field<Tag>(static_cast<A&&>(a)...)))
-      -> decltype(thru_field_ref(access_field<Tag>(static_cast<A&&>(a)...))) {
-    return thru_field_ref(access_field<Tag>(static_cast<A&&>(a)...));
-  }
-};
 
 template <typename A, typename Ref>
 struct wrapped_struct_argument {
