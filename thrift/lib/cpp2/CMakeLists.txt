@@ -198,6 +198,7 @@ add_library(
   server/ResourcePool.cpp
   server/ResourcePoolHandle.cpp
   server/RoundRobinRequestPile.cpp
+  server/WeightedRequestPileQueue.cpp
   server/ServerFlags.cpp
   server/ServerInstrumentation.cpp
   server/ServiceHealthPoller.cpp
