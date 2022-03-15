@@ -56,6 +56,14 @@ std::optional<ServerRequestRejection> ResourcePool::accept(
     concurrencyController_->onEnqueued();
     return std::optional<ServerRequestRejection>(std::nullopt);
   } else {
+    // Trigger processing of request and check for queue timeouts.
+    if (!request.request()->getShouldStartProcessing()) {
+      auto eb = detail::ServerRequestHelper::eventBase(request);
+      HandlerCallbackBase::releaseRequest(
+          detail::ServerRequestHelper::request(std::move(request)), eb);
+      return std::optional<ServerRequestRejection>(std::nullopt);
+    }
+
     // This pool is sync, just now we execute the request inline.
     AsyncProcessorHelper::executeRequest(std::move(request));
     return std::optional<ServerRequestRejection>(std::nullopt);
