@@ -829,7 +829,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
 class MyService_MyInteraction extends \ThriftClientBase {
   private \InteractionId $interactionId;
 
-  public function __construct(\TProtocol $input, ?\TProtocol $output = null, ?\IThriftMigrationAsyncChannel $channel = null)[leak_safe] {
+  public function __construct(\TProtocol $input, ?\TProtocol $output = null, ?\IThriftMigrationAsyncChannel $channel = null) {
     parent::__construct($input, $output, $channel);
     if ($this->channel_ is nonnull) {
       $this->interactionId = $this->channel_->createInteraction("MyInteraction");
@@ -1415,7 +1415,7 @@ $rpc_options->setInteractionId($this->interactionId);
 class MyService_MyInteractionFast extends \ThriftClientBase {
   private \InteractionId $interactionId;
 
-  public function __construct(\TProtocol $input, ?\TProtocol $output = null, ?\IThriftMigrationAsyncChannel $channel = null)[leak_safe] {
+  public function __construct(\TProtocol $input, ?\TProtocol $output = null, ?\IThriftMigrationAsyncChannel $channel = null) {
     parent::__construct($input, $output, $channel);
     if ($this->channel_ is nonnull) {
       $this->interactionId = $this->channel_->createInteraction("MyInteractionFast");
@@ -1995,7 +1995,7 @@ $rpc_options->setInteractionId($this->interactionId);
 class MyService_SerialInteraction extends \ThriftClientBase {
   private \InteractionId $interactionId;
 
-  public function __construct(\TProtocol $input, ?\TProtocol $output = null, ?\IThriftMigrationAsyncChannel $channel = null)[leak_safe] {
+  public function __construct(\TProtocol $input, ?\TProtocol $output = null, ?\IThriftMigrationAsyncChannel $channel = null) {
     parent::__construct($input, $output, $channel);
     if ($this->channel_ is nonnull) {
       $this->interactionId = $this->channel_->createInteraction("SerialInteraction");

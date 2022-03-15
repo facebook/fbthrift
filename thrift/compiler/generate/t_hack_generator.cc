@@ -4328,11 +4328,10 @@ void t_hack_generator::generate_service_interactions(
 
     f_service_ << indent() << "private \\InteractionId $interactionId;\n\n";
 
-    f_service_
-        << indent() << "public function __construct("
-        << "\\TProtocol $input, "
-        << "?\\TProtocol $output = null, "
-        << "?\\IThriftMigrationAsyncChannel $channel = null)[leak_safe] {\n";
+    f_service_ << indent() << "public function __construct("
+               << "\\TProtocol $input, "
+               << "?\\TProtocol $output = null, "
+               << "?\\IThriftMigrationAsyncChannel $channel = null) {\n";
     indent_up();
     f_service_ << indent()
                << "parent::__construct($input, $output, $channel);\n";
