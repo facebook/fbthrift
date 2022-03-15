@@ -278,6 +278,32 @@ class ServerRequestRejection {
   TApplicationException impl_;
 };
 
+class AsyncProcessor;
+
+/**
+ * An AsyncProcessorSet make a collection of AsyncProcessor's available. It
+ * implements methods to allow the transport code to determine the correct
+ * AsyncProcessor to route a request to.
+ *
+ * Once migration to resource pools is complete AsyncProcessorSet and
+ * AsyncProcessor will become disjoint classes and the transport code will only
+ * deal with an AsyncProcessorSet. However, until then the AsyncProcessorSet
+ * interface is part of the AsyncProcessor class to suppor the way these are
+ * currently implemented for non resource pools path (but will only need to be
+ * implemented by objects that are used by the transport code directly).
+ */
+class AsyncProcessorSet : public TProcessorBase {
+ public:
+  virtual ~AsyncProcessorSet() = default;
+
+  // Returns the async processor and metadata that can execute the
+  // request identified by the methodMetadata.
+  virtual std::
+      pair<AsyncProcessor*, const AsyncProcessorFactory::MethodMetadata*>
+      getRequestsProcessor(
+          const AsyncProcessorFactory::MethodMetadata& methodMetadata);
+};
+
 // Returned to choose a resource pool
 using SelectPoolResult = std::variant<
     std::monostate, // No opinion (use a reasonable default)
@@ -293,10 +319,8 @@ using SelectPoolResult = std::variant<
  * GeneratedAsyncProcessor, which handles scheduling of methods on to the
  * ThreadManager (tm) or executing inline (eb).
  */
-class AsyncProcessor : public TProcessorBase {
+class AsyncProcessor : public AsyncProcessorSet {
  public:
-  virtual ~AsyncProcessor() = default;
-
   // Return the name of the service provided by this AsyncProcessor
   virtual const char* getServiceName();
 
