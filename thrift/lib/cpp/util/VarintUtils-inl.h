@@ -142,8 +142,7 @@ namespace detail {
 template <class Cursor, class T>
 uint8_t writeVarintSlow(Cursor& c, T value) {
   enum { maxSize = (8 * sizeof(T) + 6) / 7 };
-  typedef typename std::make_unsigned<T>::type un_type;
-  un_type unval = static_cast<un_type>(value);
+  auto unval = folly::to_unsigned(value);
 
   c.ensure(maxSize);
 
