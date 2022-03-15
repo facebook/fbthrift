@@ -22,6 +22,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 public final class Union1 implements com.facebook.thrift.payload.ThriftSerializable {
     private static final TStruct STRUCT_DESC = new TStruct("union1");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
 
     public static final int _I = 1;
@@ -31,8 +32,10 @@ public final class Union1 implements com.facebook.thrift.payload.ThriftSerializa
 
     static {
       NAMES_TO_IDS.put("i", 1);
+      THRIFT_NAMES_TO_IDS.put("i", 1);
       FIELD_METADATA.put(1, I_FIELD_DESC);
       NAMES_TO_IDS.put("d", 2);
+      THRIFT_NAMES_TO_IDS.put("d", 2);
       FIELD_METADATA.put(2, D_FIELD_DESC);
     }
 
@@ -195,7 +198,7 @@ public final class Union1 implements com.facebook.thrift.payload.ThriftSerializa
       Union1 res = new Union1();
       res.value = null;
       res.id = (short) 0;
-      oprot.readStructBegin(Union1.NAMES_TO_IDS, Union1.FIELD_METADATA);
+      oprot.readStructBegin(Union1.NAMES_TO_IDS, Union1.THRIFT_NAMES_TO_IDS, Union1.FIELD_METADATA);
       TField __field = oprot.readFieldBegin();
       if (__field.type != TType.STOP) {
           switch (__field.id) {

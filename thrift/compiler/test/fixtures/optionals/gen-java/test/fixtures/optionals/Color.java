@@ -104,6 +104,7 @@ public final class Color implements com.facebook.thrift.payload.ThriftSerializab
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Color");
     private final double red;
@@ -120,12 +121,16 @@ public final class Color implements com.facebook.thrift.payload.ThriftSerializab
     private static final TField ALPHA_FIELD_DESC = new TField("alpha", TType.DOUBLE, (short)4);
     static {
       NAMES_TO_IDS.put("red", 1);
+      THRIFT_NAMES_TO_IDS.put("red", 1);
       FIELD_METADATA.put(1, RED_FIELD_DESC);
       NAMES_TO_IDS.put("green", 2);
+      THRIFT_NAMES_TO_IDS.put("green", 2);
       FIELD_METADATA.put(2, GREEN_FIELD_DESC);
       NAMES_TO_IDS.put("blue", 3);
+      THRIFT_NAMES_TO_IDS.put("blue", 3);
       FIELD_METADATA.put(3, BLUE_FIELD_DESC);
       NAMES_TO_IDS.put("alpha", 4);
+      THRIFT_NAMES_TO_IDS.put("alpha", 4);
       FIELD_METADATA.put(4, ALPHA_FIELD_DESC);
     }
     
@@ -194,7 +199,7 @@ public final class Color implements com.facebook.thrift.payload.ThriftSerializab
     
     public static Color read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(Color.NAMES_TO_IDS, Color.FIELD_METADATA);
+      oprot.readStructBegin(Color.NAMES_TO_IDS, Color.THRIFT_NAMES_TO_IDS, Color.FIELD_METADATA);
       Color.Builder builder = new Color.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

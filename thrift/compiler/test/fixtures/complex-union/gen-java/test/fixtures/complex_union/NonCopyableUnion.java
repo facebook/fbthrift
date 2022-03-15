@@ -22,6 +22,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 public final class NonCopyableUnion implements com.facebook.thrift.payload.ThriftSerializable {
     private static final TStruct STRUCT_DESC = new TStruct("NonCopyableUnion");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
 
     public static final int _S = 1;
@@ -29,6 +30,7 @@ public final class NonCopyableUnion implements com.facebook.thrift.payload.Thrif
 
     static {
       NAMES_TO_IDS.put("s", 1);
+      THRIFT_NAMES_TO_IDS.put("s", 1);
       FIELD_METADATA.put(1, S_FIELD_DESC);
     }
 
@@ -153,7 +155,7 @@ public final class NonCopyableUnion implements com.facebook.thrift.payload.Thrif
       NonCopyableUnion res = new NonCopyableUnion();
       res.value = null;
       res.id = (short) 0;
-      oprot.readStructBegin(NonCopyableUnion.NAMES_TO_IDS, NonCopyableUnion.FIELD_METADATA);
+      oprot.readStructBegin(NonCopyableUnion.NAMES_TO_IDS, NonCopyableUnion.THRIFT_NAMES_TO_IDS, NonCopyableUnion.FIELD_METADATA);
       TField __field = oprot.readFieldBegin();
       if (__field.type != TType.STOP) {
           switch (__field.id) {

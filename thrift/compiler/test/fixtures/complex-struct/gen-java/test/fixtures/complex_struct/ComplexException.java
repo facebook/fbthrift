@@ -23,6 +23,7 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
 
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
 
     private static final TStruct STRUCT_DESC = new TStruct("complexException");
@@ -185,7 +186,7 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
     
     public static ComplexException read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(ComplexException.NAMES_TO_IDS, ComplexException.FIELD_METADATA);
+      oprot.readStructBegin(ComplexException.NAMES_TO_IDS, ComplexException.THRIFT_NAMES_TO_IDS, ComplexException.FIELD_METADATA);
       ComplexException.Builder builder = new ComplexException.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

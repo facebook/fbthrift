@@ -23,6 +23,7 @@ public final class Banal extends org.apache.thrift.TBaseException implements com
 
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
 
     private static final TStruct STRUCT_DESC = new TStruct("Banal");
@@ -57,7 +58,7 @@ public final class Banal extends org.apache.thrift.TBaseException implements com
     
     public static Banal read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(Banal.NAMES_TO_IDS, Banal.FIELD_METADATA);
+      oprot.readStructBegin(Banal.NAMES_TO_IDS, Banal.THRIFT_NAMES_TO_IDS, Banal.FIELD_METADATA);
       Banal.Builder builder = new Banal.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

@@ -76,6 +76,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
     private final test.fixtures.swift.enumstrict.MyEnum myEnum;
@@ -86,8 +87,10 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     private static final TField MY_BIG_ENUM_FIELD_DESC = new TField("myBigEnum", TType.I32, (short)2);
     static {
       NAMES_TO_IDS.put("myEnum", 1);
+      THRIFT_NAMES_TO_IDS.put("myEnum", 1);
       FIELD_METADATA.put(1, MY_ENUM_FIELD_DESC);
       NAMES_TO_IDS.put("myBigEnum", 2);
+      THRIFT_NAMES_TO_IDS.put("myBigEnum", 2);
       FIELD_METADATA.put(2, MY_BIG_ENUM_FIELD_DESC);
     }
     
@@ -140,7 +143,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     
     public static MyStruct read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(MyStruct.NAMES_TO_IDS, MyStruct.FIELD_METADATA);
+      oprot.readStructBegin(MyStruct.NAMES_TO_IDS, MyStruct.THRIFT_NAMES_TO_IDS, MyStruct.FIELD_METADATA);
       MyStruct.Builder builder = new MyStruct.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

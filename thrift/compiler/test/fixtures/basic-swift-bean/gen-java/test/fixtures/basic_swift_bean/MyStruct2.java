@@ -66,6 +66,7 @@ public final class MyStruct2 implements com.facebook.thrift.payload.ThriftSerial
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct2");
     private test.fixtures.basic_swift_bean.MyStruct1 myStruct1;
@@ -76,8 +77,10 @@ public final class MyStruct2 implements com.facebook.thrift.payload.ThriftSerial
     private static final TField MY_STRING_FIELD_DESC = new TField("myString", TType.STRING, (short)2);
 static {
       NAMES_TO_IDS.put("myStruct1", 1);
+      THRIFT_NAMES_TO_IDS.put("myStruct1", 1);
       FIELD_METADATA.put(1, MY_STRUCT1_FIELD_DESC);
       NAMES_TO_IDS.put("myString", 2);
+      THRIFT_NAMES_TO_IDS.put("myString", 2);
       FIELD_METADATA.put(2, MY_STRING_FIELD_DESC);
     }
     
@@ -142,7 +145,7 @@ static {
     
     public static MyStruct2 read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(MyStruct2.NAMES_TO_IDS, MyStruct2.FIELD_METADATA);
+      oprot.readStructBegin(MyStruct2.NAMES_TO_IDS, MyStruct2.THRIFT_NAMES_TO_IDS, MyStruct2.FIELD_METADATA);
       MyStruct2.Builder builder = new MyStruct2.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

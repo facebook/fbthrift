@@ -174,6 +174,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
     private final long major;
@@ -205,22 +206,31 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     private static final TField MY_UNION_FIELD_DESC = new TField("my_union", TType.STRUCT, (short)9);
     static {
       NAMES_TO_IDS.put("major", 2);
+      THRIFT_NAMES_TO_IDS.put("major", 2);
       FIELD_METADATA.put(2, MAJOR_FIELD_DESC);
       NAMES_TO_IDS.put("_package", 1);
+      THRIFT_NAMES_TO_IDS.put("package", 1);
       FIELD_METADATA.put(1, PACKAGE_FIELD_DESC);
       NAMES_TO_IDS.put("annotationWithQuote", 3);
+      THRIFT_NAMES_TO_IDS.put("annotation_with_quote", 3);
       FIELD_METADATA.put(3, ANNOTATION_WITH_QUOTE_FIELD_DESC);
       NAMES_TO_IDS.put("class_", 4);
+      THRIFT_NAMES_TO_IDS.put("class_", 4);
       FIELD_METADATA.put(4, CLASS__FIELD_DESC);
       NAMES_TO_IDS.put("annotationWithTrailingComma", 5);
+      THRIFT_NAMES_TO_IDS.put("annotation_with_trailing_comma", 5);
       FIELD_METADATA.put(5, ANNOTATION_WITH_TRAILING_COMMA_FIELD_DESC);
       NAMES_TO_IDS.put("emptyAnnotations", 6);
+      THRIFT_NAMES_TO_IDS.put("empty_annotations", 6);
       FIELD_METADATA.put(6, EMPTY_ANNOTATIONS_FIELD_DESC);
       NAMES_TO_IDS.put("myEnum", 7);
+      THRIFT_NAMES_TO_IDS.put("my_enum", 7);
       FIELD_METADATA.put(7, MY_ENUM_FIELD_DESC);
       NAMES_TO_IDS.put("cppTypeAnnotation", 8);
+      THRIFT_NAMES_TO_IDS.put("cpp_type_annotation", 8);
       FIELD_METADATA.put(8, CPP_TYPE_ANNOTATION_FIELD_DESC);
       NAMES_TO_IDS.put("myUnion", 9);
+      THRIFT_NAMES_TO_IDS.put("my_union", 9);
       FIELD_METADATA.put(9, MY_UNION_FIELD_DESC);
     }
     
@@ -329,7 +339,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     
     public static MyStruct read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(MyStruct.NAMES_TO_IDS, MyStruct.FIELD_METADATA);
+      oprot.readStructBegin(MyStruct.NAMES_TO_IDS, MyStruct.THRIFT_NAMES_TO_IDS, MyStruct.FIELD_METADATA);
       MyStruct.Builder builder = new MyStruct.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

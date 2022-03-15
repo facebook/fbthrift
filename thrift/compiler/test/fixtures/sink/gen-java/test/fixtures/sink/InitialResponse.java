@@ -62,6 +62,7 @@ public final class InitialResponse implements com.facebook.thrift.payload.Thrift
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("InitialResponse");
     private final String content;
@@ -69,6 +70,7 @@ public final class InitialResponse implements com.facebook.thrift.payload.Thrift
     private static final TField CONTENT_FIELD_DESC = new TField("content", TType.STRING, (short)1);
     static {
       NAMES_TO_IDS.put("content", 1);
+      THRIFT_NAMES_TO_IDS.put("content", 1);
       FIELD_METADATA.put(1, CONTENT_FIELD_DESC);
     }
     
@@ -113,7 +115,7 @@ public final class InitialResponse implements com.facebook.thrift.payload.Thrift
     
     public static InitialResponse read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(InitialResponse.NAMES_TO_IDS, InitialResponse.FIELD_METADATA);
+      oprot.readStructBegin(InitialResponse.NAMES_TO_IDS, InitialResponse.THRIFT_NAMES_TO_IDS, InitialResponse.FIELD_METADATA);
       InitialResponse.Builder builder = new InitialResponse.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

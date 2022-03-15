@@ -90,6 +90,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
     private final test.fixtures.refs.MyField optRef;
@@ -103,10 +104,13 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     private static final TField REQ_REF_FIELD_DESC = new TField("req_ref", TType.STRUCT, (short)3);
     static {
       NAMES_TO_IDS.put("optRef", 1);
+      THRIFT_NAMES_TO_IDS.put("opt_ref", 1);
       FIELD_METADATA.put(1, OPT_REF_FIELD_DESC);
       NAMES_TO_IDS.put("ref", 2);
+      THRIFT_NAMES_TO_IDS.put("ref", 2);
       FIELD_METADATA.put(2, REF_FIELD_DESC);
       NAMES_TO_IDS.put("reqRef", 3);
+      THRIFT_NAMES_TO_IDS.put("req_ref", 3);
       FIELD_METADATA.put(3, REQ_REF_FIELD_DESC);
     }
     
@@ -167,7 +171,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     
     public static MyStruct read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(MyStruct.NAMES_TO_IDS, MyStruct.FIELD_METADATA);
+      oprot.readStructBegin(MyStruct.NAMES_TO_IDS, MyStruct.THRIFT_NAMES_TO_IDS, MyStruct.FIELD_METADATA);
       MyStruct.Builder builder = new MyStruct.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

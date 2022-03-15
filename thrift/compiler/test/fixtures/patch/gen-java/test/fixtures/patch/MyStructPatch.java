@@ -174,6 +174,7 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStructPatch");
     private final com.facebook.thrift.op.BoolPatch boolVal;
@@ -205,22 +206,31 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
     private static final TField BINARY_VAL_FIELD_DESC = new TField("binaryVal", TType.STRUCT, (short)9);
     static {
       NAMES_TO_IDS.put("boolVal", 1);
+      THRIFT_NAMES_TO_IDS.put("boolVal", 1);
       FIELD_METADATA.put(1, BOOL_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("byteVal", 2);
+      THRIFT_NAMES_TO_IDS.put("byteVal", 2);
       FIELD_METADATA.put(2, BYTE_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("i16Val", 3);
+      THRIFT_NAMES_TO_IDS.put("i16Val", 3);
       FIELD_METADATA.put(3, I16_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("i32Val", 4);
+      THRIFT_NAMES_TO_IDS.put("i32Val", 4);
       FIELD_METADATA.put(4, I32_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("i64Val", 5);
+      THRIFT_NAMES_TO_IDS.put("i64Val", 5);
       FIELD_METADATA.put(5, I64_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("floatVal", 6);
+      THRIFT_NAMES_TO_IDS.put("floatVal", 6);
       FIELD_METADATA.put(6, FLOAT_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("doubleVal", 7);
+      THRIFT_NAMES_TO_IDS.put("doubleVal", 7);
       FIELD_METADATA.put(7, DOUBLE_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("stringVal", 8);
+      THRIFT_NAMES_TO_IDS.put("stringVal", 8);
       FIELD_METADATA.put(8, STRING_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("binaryVal", 9);
+      THRIFT_NAMES_TO_IDS.put("binaryVal", 9);
       FIELD_METADATA.put(9, BINARY_VAL_FIELD_DESC);
     }
     
@@ -329,7 +339,7 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
     
     public static MyStructPatch read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(MyStructPatch.NAMES_TO_IDS, MyStructPatch.FIELD_METADATA);
+      oprot.readStructBegin(MyStructPatch.NAMES_TO_IDS, MyStructPatch.THRIFT_NAMES_TO_IDS, MyStructPatch.FIELD_METADATA);
       MyStructPatch.Builder builder = new MyStructPatch.Builder();
       while (true) {
         __field = oprot.readFieldBegin();
