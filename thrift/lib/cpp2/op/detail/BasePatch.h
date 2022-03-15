@@ -17,6 +17,7 @@
 #pragma once
 
 #include <folly/Portability.h>
+#include <thrift/lib/cpp2/FieldRef.h>
 #include <thrift/lib/cpp2/op/Clear.h>
 
 namespace apache {
@@ -26,7 +27,8 @@ namespace detail {
 
 // Base class for all patch types.
 // - Patch: The Thrift struct representation for the patch.
-template <typename Patch>
+// - Derived: The leaf type deriving from this class.
+template <typename Patch, typename Derived>
 class BasePatch {
  public:
   BasePatch() = default;
@@ -38,6 +40,12 @@ class BasePatch {
 
   void reset() { op::clear<type::struct_t<Patch>>(patch_); }
 
+  // Automatically dereference non-optional fields.
+  template <typename T>
+  void apply(const field_ref<T>& field) const {
+    derived().apply(*field);
+  }
+
  protected:
   Patch patch_;
 
@@ -45,6 +53,9 @@ class BasePatch {
 
   // A fluent version of 'reset()'.
   FOLLY_NODISCARD Patch& resetAnd() { return (reset(), patch_); }
+
+  Derived& derived() { return static_cast<Derived&>(*this); }
+  const Derived& derived() const { return static_cast<const Derived&>(*this); }
 };
 
 // Base class for value patch types.
@@ -52,8 +63,8 @@ class BasePatch {
 // Patch must have the following fields:
 //   optional T assign;
 template <typename Patch, typename Derived>
-class BaseValuePatch : public BasePatch<Patch> {
-  using Base = BasePatch<Patch>;
+class BaseValuePatch : public BasePatch<Patch, Derived> {
+  using Base = BasePatch<Patch, Derived>;
 
  public:
   using value_type = std::decay_t<decltype(*std::declval<Patch>().assign())>;
@@ -77,6 +88,7 @@ class BaseValuePatch : public BasePatch<Patch> {
   }
 
  protected:
+  using Base::derived;
   using Base::patch_;
   using Base::resetAnd;
 
@@ -106,9 +118,6 @@ class BaseValuePatch : public BasePatch<Patch> {
     }
     return false;
   }
-
-  Derived& derived() { return static_cast<Derived&>(*this); }
-  const Derived& derived() const { return static_cast<Derived&>(*this); }
 };
 
 } // namespace detail

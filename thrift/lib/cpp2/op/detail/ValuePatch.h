@@ -36,6 +36,7 @@ class AssignPatch : public BaseValuePatch<Patch, AssignPatch<Patch>> {
   using T = typename Base::value_type;
 
  public:
+  using Base::apply;
   using Base::Base;
   using Base::hasAssign;
   using Base::operator=;
@@ -61,6 +62,7 @@ class BoolPatch : public BaseValuePatch<Patch, BoolPatch<Patch>> {
   using T = typename Base::value_type;
 
  public:
+  using Base::apply;
   using Base::Base;
   using Base::get;
   using Base::hasAssign;
@@ -106,6 +108,7 @@ class NumberPatch : public BaseValuePatch<Patch, NumberPatch<Patch>> {
   using T = typename Base::value_type;
 
  public:
+  using Base::apply;
   using Base::Base;
   using Base::hasAssign;
   using Base::operator=;
@@ -195,6 +198,7 @@ class StringPatch : public BaseValuePatch<Patch, StringPatch<Patch>> {
   using T = typename Base::value_type;
 
  public:
+  using Base::apply;
   using Base::Base;
   using Base::hasAssign;
   using Base::operator=;

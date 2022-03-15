@@ -28,7 +28,7 @@ namespace detail {
 // Helpers for unpacking and folding field tags.
 template <FieldId Id, typename P, typename T>
 void applyFieldPatch(const P& patch, T& val) {
-  op::getById<Id>(patch)->apply(*op::getById<Id>(val));
+  op::getById<Id>(patch)->apply(op::getById<Id>(val));
 }
 template <FieldId Id, typename P1, typename P2>
 void mergeFieldPatch(P1& lhs, const P2& rhs) {
@@ -68,6 +68,7 @@ class StructPatch : public BaseValuePatch<Patch, StructPatch<Patch>> {
   using T = typename Base::value_type;
 
  public:
+  using Base::apply;
   using Base::Base;
   using Base::hasAssign;
   using Base::operator=;
