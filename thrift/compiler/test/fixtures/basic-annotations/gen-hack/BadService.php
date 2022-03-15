@@ -249,7 +249,7 @@ class BadServiceClient extends \ThriftClientBase implements BadServiceClientIf {
 class BadService_BadInteraction extends \ThriftClientBase {
   private \InteractionId $interactionId;
 
-  public function __construct(\TProtocol $input, ?\TProtocol $output = null, ?\IThriftMigrationAsyncChannel $channel = null) {
+  public function __construct(\TProtocol $input, ?\TProtocol $output = null, ?\IThriftMigrationAsyncChannel $channel = null)[leak_safe] {
     parent::__construct($input, $output, $channel);
     if ($this->channel_ is nonnull) {
       $this->interactionId = $this->channel_->createInteraction("BadInteraction");
