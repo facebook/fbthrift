@@ -28,11 +28,11 @@ namespace thrift {
 namespace op {
 namespace detail {
 
-template <typename Patch, typename Derived>
+// Base class for all patch types.
+// - Patch: The Thrift struct representation for the patch.
+template <typename Patch>
 class BasePatch {
  public:
-  using value_type = std::decay_t<decltype(*std::declval<Patch>().assign())>;
-
   BasePatch() = default;
   explicit BasePatch(const Patch& patch) : patch_(patch) {}
   explicit BasePatch(Patch&& patch) noexcept : patch_(std::move(patch)) {}
@@ -40,22 +40,39 @@ class BasePatch {
   const Patch& get() const& { return patch_; }
   Patch&& get() && { return std::move(patch_); }
 
-  void reset() { resetAnd(); }
+  void reset() { op::clear<type::struct_t<Patch>>(patch_); }
+
+ protected:
+  Patch patch_;
+
+  ~BasePatch() = default; // abstract base class
+
+  // A fluent version of 'reset()'.
+  FOLLY_NODISCARD Patch& resetAnd() { return (reset(), patch_); }
+};
+
+// Base class for value patch.
+//
+// Patch must have the following fields:
+//   optional T assign;
+template <typename Patch, typename Derived>
+class BaseValuePatch : public BasePatch<Patch> {
+  using Base = BasePatch<Patch>;
+
+ public:
+  using value_type = std::decay_t<decltype(*std::declval<Patch>().assign())>;
+  using Base::Base;
+
+  template <typename U = value_type>
+  static Derived createAssign(U&& val) {
+    Derived patch;
+    patch.assign(std::forward<U>(val));
+    return patch;
+  }
 
   bool hasAssign() const noexcept { return patch_.assign().has_value(); }
   void assign(const value_type& val) { resetAnd().assign().emplace(val); }
   void assign(value_type&& val) { resetAnd().assign().emplace(std::move(val)); }
-
-  static Derived createAssign(value_type&& val) {
-    Derived patch;
-    patch.assign(std::move(val));
-    return patch;
-  }
-  static Derived createAssign(const value_type& val) {
-    Derived patch;
-    patch.assign(val);
-    return patch;
-  }
 
   Derived& operator=(const value_type& val) { return (assign(val), derived()); }
   Derived& operator=(value_type&& val) {
@@ -64,14 +81,10 @@ class BasePatch {
   }
 
  protected:
-  Patch patch_;
+  using Base::patch_;
+  using Base::resetAnd;
 
-  ~BasePatch() = default; // abstract base class
-
-  Patch& resetAnd() {
-    op::clear<type::struct_t<Patch>>(patch_);
-    return patch_;
-  }
+  ~BaseValuePatch() = default; // abstract base class
 
   value_type& assignOr(value_type& value) noexcept {
     return hasAssign() ? *patch_.assign() : value;
@@ -102,13 +115,40 @@ class BasePatch {
   const Derived& derived() const { return static_cast<Derived&>(*this); }
 };
 
+// A patch adapter that only supports 'assign',
+// which is the minimum any patch should support.
+//
+// Patch must have the following fields:
+//   optional T assign;
 template <typename Patch>
-class BoolPatch : public BasePatch<Patch, BoolPatch<Patch>> {
-  using Base = BasePatch<Patch, BoolPatch>;
+class AssignPatch : public BaseValuePatch<Patch, AssignPatch<Patch>> {
+  using Base = BaseValuePatch<Patch, AssignPatch>;
   using T = typename Base::value_type;
+
+ public:
+  using Base::Base;
+  using Base::hasAssign;
+  using Base::operator=;
+
+  bool empty() const { return !hasAssign(); }
+  void apply(T& val) const { applyAssign(val); }
+  template <typename U>
+  void merge(U&& next) {
+    mergeAssign(std::forward<U>(next));
+  }
+
+ private:
   using Base::applyAssign;
-  using Base::assignOr;
   using Base::mergeAssign;
+};
+
+// Patch must have the following fields:
+//   optional T assign;
+//   bool invert;
+template <typename Patch>
+class BoolPatch : public BaseValuePatch<Patch, BoolPatch<Patch>> {
+  using Base = BaseValuePatch<Patch, BoolPatch>;
+  using T = typename Base::value_type;
 
  public:
   using Base::Base;
@@ -116,10 +156,17 @@ class BoolPatch : public BasePatch<Patch, BoolPatch<Patch>> {
   using Base::hasAssign;
   using Base::operator=;
 
-  bool empty() const noexcept { return !hasAssign() && !invert_(); }
+  static BoolPatch createInvert() { return !BoolPatch{}; }
 
-  void apply(T& val) const noexcept {
-    if (!applyAssign(val) && invert_()) {
+  void invert() {
+    auto& val = assignOr(*patch_.invert());
+    val = !val;
+  }
+
+  bool empty() const { return !hasAssign() && !*patch_.invert(); }
+
+  void apply(T& val) const {
+    if (!applyAssign(val) && *patch_.invert()) {
       val = !val;
     }
   }
@@ -127,75 +174,37 @@ class BoolPatch : public BasePatch<Patch, BoolPatch<Patch>> {
   template <typename U>
   void merge(U&& next) {
     if (!mergeAssign(std::forward<U>(next))) {
-      invert_() ^= *next.get().invert();
+      *patch_.invert() ^= *next.get().invert();
     }
   }
 
-  void invert() noexcept {
-    auto& val = assignOr(invert_());
-    val = !val;
-  }
-  static BoolPatch createInvert() { return !BoolPatch{}; }
-
  private:
-  friend BoolPatch operator!(BoolPatch val) { return (val.invert(), val); }
-
-  T& invert_() noexcept { return *this->patch_.invert(); }
-  const T& invert_() const noexcept { return *this->patch_.invert(); }
-};
-
-template <typename Patch>
-class NumberPatch : public BasePatch<Patch, NumberPatch<Patch>> {
-  using Base = BasePatch<Patch, NumberPatch>;
-  using T = typename Base::value_type;
   using Base::applyAssign;
   using Base::assignOr;
   using Base::mergeAssign;
+  using Base::patch_;
+
+  friend BoolPatch operator!(BoolPatch val) { return (val.invert(), val); }
+};
+
+// Patch must have the following fields:
+//   optional T assign;
+//   T add;
+template <typename Patch>
+class NumberPatch : public BaseValuePatch<Patch, NumberPatch<Patch>> {
+  using Base = BaseValuePatch<Patch, NumberPatch>;
+  using T = typename Base::value_type;
 
  public:
   using Base::Base;
   using Base::hasAssign;
   using Base::operator=;
 
-  bool empty() const noexcept { return !hasAssign() && add_() == 0; }
-
-  void apply(T& val) const noexcept {
-    if (!applyAssign(val)) {
-      val += add_();
-    }
-  }
-
-  template <typename U>
-  void merge(U&& next) {
-    if (!mergeAssign(std::forward<U>(next))) {
-      add_() += *next.get().add();
-    }
-  }
-
-  template <typename U>
-  void add(U&& val) {
-    assignOr(add_()) += std::forward<U>(val);
-  }
-  template <typename U>
-  NumberPatch& operator+=(U&& val) noexcept {
-    add(std::forward<U>(val));
-    return *this;
-  }
   template <typename U>
   static NumberPatch createAdd(U&& val) {
     NumberPatch patch;
     patch.add(std::forward<U>(val));
     return patch;
-  }
-
-  template <typename U>
-  void subtract(U&& val) noexcept {
-    assignOr(add_()) -= std::forward<U>(val);
-  }
-  template <typename U>
-  NumberPatch& operator-=(U&& val) noexcept {
-    subtract(std::forward<T>(val));
-    return *this;
   }
   template <typename U>
   static NumberPatch createSubtract(U&& val) {
@@ -204,7 +213,49 @@ class NumberPatch : public BasePatch<Patch, NumberPatch<Patch>> {
     return patch;
   }
 
+  template <typename U>
+  void add(U&& val) {
+    assignOr(*patch_.add()) += std::forward<U>(val);
+  }
+
+  template <typename U>
+  void subtract(U&& val) {
+    assignOr(*patch_.add()) -= std::forward<U>(val);
+  }
+
+  bool empty() const { return !hasAssign() && *patch_.add() == 0; }
+
+  void apply(T& val) const {
+    if (!applyAssign(val)) {
+      val += *patch_.add();
+    }
+  }
+
+  template <typename U>
+  void merge(U&& next) {
+    if (!mergeAssign(std::forward<U>(next))) {
+      *patch_.add() += *next.get().add();
+    }
+  }
+
+  template <typename U>
+  NumberPatch& operator+=(U&& val) {
+    add(std::forward<U>(val));
+    return *this;
+  }
+
+  template <typename U>
+  NumberPatch& operator-=(U&& val) {
+    subtract(std::forward<T>(val));
+    return *this;
+  }
+
  private:
+  using Base::applyAssign;
+  using Base::assignOr;
+  using Base::mergeAssign;
+  using Base::patch_;
+
   template <typename U>
   friend NumberPatch operator+(NumberPatch lhs, U&& rhs) {
     lhs.add(std::forward<U>(rhs));
@@ -222,52 +273,22 @@ class NumberPatch : public BasePatch<Patch, NumberPatch<Patch>> {
     lhs.subtract(std::forward<U>(rhs));
     return lhs;
   }
-
-  T& add_() noexcept { return *this->patch_.add(); }
-  const T& add_() const noexcept { return *this->patch_.add(); }
 };
 
+// Patch must have the following fields:
+//   optional T assign;
+//   T append;
+//   T prepend;
 template <typename Patch>
-class StringPatch : public BasePatch<Patch, StringPatch<Patch>> {
-  using Base = BasePatch<Patch, StringPatch>;
+class StringPatch : public BaseValuePatch<Patch, StringPatch<Patch>> {
+  using Base = BaseValuePatch<Patch, StringPatch>;
   using T = typename Base::value_type;
-  using Base::applyAssign;
-  using Base::assignOr;
-  using Base::mergeAssign;
 
  public:
   using Base::Base;
   using Base::hasAssign;
   using Base::operator=;
 
-  bool empty() const noexcept {
-    return !hasAssign() && prepend_().empty() && append_().empty();
-  }
-
-  void apply(T& val) const {
-    if (!applyAssign(val)) {
-      val = prepend_() + val + append_();
-    }
-  }
-
-  template <typename U>
-  void merge(U&& next) {
-    if (!mergeAssign(std::forward<U>(next))) {
-      prepend_() =
-          *std::forward<U>(next).get().prepend() + std::move(prepend_());
-      append_().append(*std::forward<U>(next).get().append());
-    }
-  }
-
-  template <typename... Args>
-  void append(Args&&... args) {
-    assignOr(append_()).append(std::forward<Args>(args)...);
-  }
-  template <typename U>
-  StringPatch& operator+=(U&& val) {
-    assignOr(append_()) += std::forward<U>(val);
-    return *this;
-  }
   template <typename... Args>
   static StringPatch createAppend(Args&&... args) {
     StringPatch patch;
@@ -276,18 +297,55 @@ class StringPatch : public BasePatch<Patch, StringPatch<Patch>> {
   }
 
   template <typename U>
-  void prepend(U&& val) {
-    T& cur = assignOr(prepend_());
-    cur = std::forward<U>(val) + std::move(cur);
-  }
-  template <typename U>
   static StringPatch createPrepend(U&& val) {
     StringPatch patch;
     patch.prepend(std::forward<U>(val));
     return patch;
   }
 
+  template <typename... Args>
+  void append(Args&&... args) {
+    assignOr(*patch_.append()).append(std::forward<Args>(args)...);
+  }
+
+  template <typename U>
+  void prepend(U&& val) {
+    T& cur = assignOr(*patch_.prepend());
+    cur = std::forward<U>(val) + std::move(cur);
+  }
+
+  bool empty() const {
+    return !hasAssign() && patch_.prepend()->empty() &&
+        patch_.append()->empty();
+  }
+
+  void apply(T& val) const {
+    if (!applyAssign(val)) {
+      val = *patch_.prepend() + val + *patch_.append();
+    }
+  }
+
+  template <typename U>
+  void merge(U&& next) {
+    if (!mergeAssign(std::forward<U>(next))) {
+      *patch_.prepend() =
+          *std::forward<U>(next).get().prepend() + std::move(*patch_.prepend());
+      patch_.append()->append(*std::forward<U>(next).get().append());
+    }
+  }
+
+  template <typename U>
+  StringPatch& operator+=(U&& val) {
+    assignOr(*patch_.append()) += std::forward<U>(val);
+    return *this;
+  }
+
  private:
+  using Base::applyAssign;
+  using Base::assignOr;
+  using Base::mergeAssign;
+  using Base::patch_;
+
   template <typename U>
   friend StringPatch operator+(StringPatch lhs, U&& rhs) {
     return lhs += std::forward<U>(rhs);
@@ -297,11 +355,6 @@ class StringPatch : public BasePatch<Patch, StringPatch<Patch>> {
     rhs.prepend(std::forward<U>(lhs));
     return rhs;
   }
-
-  T& append_() noexcept { return *this->patch_.append(); }
-  const T& append_() const noexcept { return *this->patch_.append(); }
-  T& prepend_() noexcept { return *this->patch_.prepend(); }
-  const T& prepend_() const noexcept { return *this->patch_.prepend(); }
 };
 
 // Helpers for unpacking and folding field tags.
@@ -337,15 +390,14 @@ struct FieldPatch<type::fields<FieldTags...>> {
   }
 };
 
+// Patch must have the following fields:
+//   optional T assign;
+//   bool clear;
+//   P patch;
 template <typename Patch>
-class StructPatch : public BasePatch<Patch, StructPatch<Patch>> {
-  using Base = BasePatch<Patch, StructPatch>;
+class StructPatch : public BaseValuePatch<Patch, StructPatch<Patch>> {
+  using Base = BaseValuePatch<Patch, StructPatch>;
   using T = typename Base::value_type;
-  using Base::applyAssign;
-  using Base::mergeAssign;
-  using Base::resetAnd;
-  using Fields = ::apache::thrift::detail::st::struct_private_access::fields<T>;
-  using FieldPatch = detail::FieldPatch<Fields>;
 
  public:
   using Base::Base;
@@ -353,19 +405,32 @@ class StructPatch : public BasePatch<Patch, StructPatch<Patch>> {
   using Base::operator=;
   using patch_type = std::decay_t<decltype(*std::declval<Patch>().patch())>;
 
-  bool empty() const noexcept {
-    return !hasAssign() && !clear_() &&
-        // TODO(afuller): Use terse writes and switch to op::empty.
-        fieldPatch_() == patch_type{};
+  static StructPatch createClear() {
+    StructPatch patch;
+    patch.clear();
+    return patch;
   }
-  void apply(T& val) const noexcept {
+
+  void clear() { *patch_.clear() = true; }
+
+  // Convert to a patch, if needed, and return the
+  // patch object.
+  patch_type& patch() { return ensurePatch(); }
+  patch_type* operator->() { return &ensurePatch(); }
+
+  bool empty() const {
+    return !hasAssign() && !*patch_.clear() &&
+        // TODO(afuller): Use terse writes and switch to op::empty.
+        *patch_.patch() == patch_type{};
+  }
+  void apply(T& val) const {
     if (applyAssign(val)) {
       return;
     }
-    if (clear_()) {
+    if (*patch_.clear()) {
       thrift::clear(val);
     }
-    FieldPatch::apply(fieldPatch_(), val);
+    FieldPatch::apply(*patch_.patch(), val);
   }
 
   template <typename U>
@@ -378,61 +443,29 @@ class StructPatch : public BasePatch<Patch, StructPatch<Patch>> {
       *this = std::forward<U>(next);
     } else if (!mergeAssign(std::forward<U>(next))) {
       // Merge field patches.
-      FieldPatch::merge(fieldPatch_(), *std::forward<U>(next).get().patch());
+      FieldPatch::merge(*patch_.patch(), *std::forward<U>(next).get().patch());
     }
   }
 
-  void clear() { clear_() = true; }
-  static StructPatch createClear() {
-    StructPatch patch;
-    patch.clear();
-    return patch;
-  }
-
-  // Convert to a patch, if needed, and return the
-  // patch object.
-  patch_type& patch() { return ensurePatch(); }
-  patch_type* operator->() { return &ensurePatch(); }
-
  private:
-  bool& clear_() { return *this->patch_.clear(); }
-  const bool& clear_() const { return *this->patch_.clear(); }
-  patch_type& fieldPatch_() { return *this->patch_.patch(); }
-  const patch_type& fieldPatch_() const { return *this->patch_.patch(); }
+  using Base::applyAssign;
+  using Base::mergeAssign;
+  using Base::patch_;
+  using Base::resetAnd;
+  using Fields = ::apache::thrift::detail::st::struct_private_access::fields<T>;
+  using FieldPatch = detail::FieldPatch<Fields>;
 
   patch_type& ensurePatch() {
     if (hasAssign()) {
       // Ensure even unknown fields are cleared.
-      clear_() = true;
+      *patch_.clear() = true;
 
       // Split the assignment patch into a patch of assignments.
-      FieldPatch::forwardTo(std::move(*this->patch_.assign()), fieldPatch_());
-      this->patch_.assign().reset();
+      FieldPatch::forwardTo(std::move(*patch_.assign()), *patch_.patch());
+      patch_.assign().reset();
     }
     assert(!hasAssign());
-    return fieldPatch_();
-  }
-};
-
-// A patch adapter that only supports 'assign',
-// which is the minimum any patch should support.
-template <typename Patch>
-class AssignPatch : public BasePatch<Patch, AssignPatch<Patch>> {
-  using Base = BasePatch<Patch, AssignPatch>;
-  using T = typename Base::value_type;
-  using Base::applyAssign;
-  using Base::mergeAssign;
-
- public:
-  using Base::Base;
-  using Base::hasAssign;
-  using Base::operator=;
-
-  bool empty() const noexcept { return !hasAssign(); }
-  void apply(T& val) const noexcept { applyAssign(val); }
-  template <typename U>
-  void merge(U&& next) {
-    mergeAssign(std::forward<U>(next));
+    return *patch_.patch();
   }
 };
 
@@ -450,10 +483,10 @@ struct PatchAdapter {
 };
 
 // Adapter for all base types.
+using AssignPatchAdapter = PatchAdapter<AssignPatch>;
 using BoolPatchAdapter = PatchAdapter<BoolPatch>;
 using NumberPatchAdapter = PatchAdapter<NumberPatch>;
 using StringPatchAdapter = PatchAdapter<StringPatch>;
-using AssignPatchAdapter = PatchAdapter<AssignPatch>;
 
 } // namespace detail
 } // namespace op
