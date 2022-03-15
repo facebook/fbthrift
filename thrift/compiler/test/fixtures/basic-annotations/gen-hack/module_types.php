@@ -313,6 +313,7 @@ class MyException extends \TException implements \IThriftSyncStruct {
  * Original thrift struct:-
  * MyStruct
  */
+<<\SomeClass(\AnotherClass::class)>>
 class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 

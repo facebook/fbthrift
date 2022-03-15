@@ -3,17 +3,17 @@
   "thrift_module" : "module",
   "constants" : {
     "myStruct" : {
-      "lineno" : 59,
+      "lineno" : 60,
       "value" : { "major" : 42, "package" : "package", "my_enum" : 2 },
       "type_enum" : "STRUCT",
       "spec_args" : "MyStruct",
       "source_range" : {
         "begin" : {
-          "line" : 59,
+          "line" : 60,
           "column" : 1
         },
         "end" : {
-          "line" : 63,
+          "line" : 64,
           "column" : 2
         }
       }
@@ -256,6 +256,20 @@
           }
         }
 ,
+        "hack.attributes" : {
+          "value" : "\\SomeClass(\\AnotherClass::class)",
+          "source_range" : {
+            "begin" : {
+              "line" : 57,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 57,
+              "column" : 55
+            }
+          }
+        }
+,
         "thrift.uri" : {
           "value" : "facebook.com/thrift/compiler/test/fixtures/basic-annotations/src/module/MyStruct",
           "source_range" : {
@@ -488,13 +502,13 @@
           "column" : 1
         },
         "end" : {
-          "line" : 57,
+          "line" : 58,
           "column" : 2
         }
       }
     },
     "SecretStruct" : {
-      "lineno" : 88,
+      "lineno" : 89,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -504,11 +518,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 89,
+              "line" : 90,
               "column" : 3
             },
             "end" : {
-              "line" : 89,
+              "line" : 90,
               "column" : 12
             }
           }
@@ -522,11 +536,11 @@
               "value" : "1",
               "source_range" : {
                 "begin" : {
-                  "line" : 90,
+                  "line" : 91,
                   "column" : 23
                 },
                 "end" : {
-                  "line" : 90,
+                  "line" : 91,
                   "column" : 37
                 }
               }
@@ -534,11 +548,11 @@
           },
           "source_range" : {
             "begin" : {
-              "line" : 90,
+              "line" : 91,
               "column" : 3
             },
             "end" : {
-              "line" : 90,
+              "line" : 91,
               "column" : 38
             }
           }
@@ -546,11 +560,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 88,
+          "line" : 89,
           "column" : 1
         },
         "end" : {
-          "line" : 91,
+          "line" : 92,
           "column" : 2
         }
       }
@@ -558,7 +572,7 @@
   },
   "services" : {
     "MyService" : {
-      "lineno" : 65,
+      "lineno" : 66,
       "functions" : {
         "MyService.ping" : {
           "return_type" : {
@@ -571,11 +585,11 @@
           ],
           "source_range" : {
             "begin" : {
-              "line" : 66,
+              "line" : 67,
               "column" : 3
             },
             "end" : {
-              "line" : 66,
+              "line" : 67,
               "column" : 47
             }
           }
@@ -589,11 +603,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 67,
+              "line" : 68,
               "column" : 3
             },
             "end" : {
-              "line" : 67,
+              "line" : 68,
               "column" : 25
             }
           }
@@ -612,11 +626,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 68,
+              "line" : 69,
               "column" : 3
             },
             "end" : {
-              "line" : 68,
+              "line" : 69,
               "column" : 30
             }
           }
@@ -635,11 +649,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 69,
+              "line" : 70,
               "column" : 3
             },
             "end" : {
-              "line" : 69,
+              "line" : 70,
               "column" : 32
             }
           }
@@ -665,11 +679,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 70,
+              "line" : 71,
               "column" : 3
             },
             "end" : {
-              "line" : 74,
+              "line" : 75,
               "column" : 4
             }
           }
@@ -692,11 +706,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 75,
+              "line" : 76,
               "column" : 3
             },
             "end" : {
-              "line" : 75,
+              "line" : 76,
               "column" : 53
             }
           }
@@ -713,11 +727,11 @@
               "value" : "cppDoNothing",
               "source_range" : {
                 "begin" : {
-                  "line" : 76,
+                  "line" : 77,
                   "column" : 21
                 },
                 "end" : {
-                  "line" : 76,
+                  "line" : 77,
                   "column" : 46
                 }
               }
@@ -725,11 +739,11 @@
           },
           "source_range" : {
             "begin" : {
-              "line" : 76,
+              "line" : 77,
               "column" : 3
             },
             "end" : {
-              "line" : 76,
+              "line" : 77,
               "column" : 47
             }
           }
@@ -737,28 +751,28 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 65,
+          "line" : 66,
           "column" : 1
         },
         "end" : {
-          "line" : 77,
+          "line" : 78,
           "column" : 2
         }
       }
 
     },
     "MyServicePrioParent" : {
-      "lineno" : 79,
+      "lineno" : 80,
       "annotations" : {
         "priority" : {
           "value" : "HIGH",
           "source_range" : {
             "begin" : {
-              "line" : 82,
+              "line" : 83,
               "column" : 4
             },
             "end" : {
-              "line" : 82,
+              "line" : 83,
               "column" : 21
             }
           }
@@ -777,11 +791,11 @@
               "value" : "IMPORTANT",
               "source_range" : {
                 "begin" : {
-                  "line" : 80,
+                  "line" : 81,
                   "column" : 16
                 },
                 "end" : {
-                  "line" : 80,
+                  "line" : 81,
                   "column" : 38
                 }
               }
@@ -789,11 +803,11 @@
           },
           "source_range" : {
             "begin" : {
-              "line" : 80,
+              "line" : 81,
               "column" : 3
             },
             "end" : {
-              "line" : 80,
+              "line" : 81,
               "column" : 39
             }
           }
@@ -810,11 +824,11 @@
               "value" : "HIGH_IMPORTANT",
               "source_range" : {
                 "begin" : {
-                  "line" : 81,
+                  "line" : 82,
                   "column" : 16
                 },
                 "end" : {
-                  "line" : 81,
+                  "line" : 82,
                   "column" : 43
                 }
               }
@@ -822,11 +836,11 @@
           },
           "source_range" : {
             "begin" : {
-              "line" : 81,
+              "line" : 82,
               "column" : 3
             },
             "end" : {
-              "line" : 81,
+              "line" : 82,
               "column" : 44
             }
           }
@@ -834,11 +848,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 79,
+          "line" : 80,
           "column" : 1
         },
         "end" : {
-          "line" : 82,
+          "line" : 83,
           "column" : 22
         }
       }
@@ -849,7 +863,7 @@
         "type_enum" : "SERVICE",
         "spec_args" : "MyServicePrioParent"
       },
-      "lineno" : 84,
+      "lineno" : 85,
       "functions" : {
         "MyServicePrioChild.pang" : {
           "return_type" : {
@@ -863,11 +877,11 @@
               "value" : "BEST_EFFORT",
               "source_range" : {
                 "begin" : {
-                  "line" : 85,
+                  "line" : 86,
                   "column" : 16
                 },
                 "end" : {
-                  "line" : 85,
+                  "line" : 86,
                   "column" : 40
                 }
               }
@@ -875,11 +889,11 @@
           },
           "source_range" : {
             "begin" : {
-              "line" : 85,
+              "line" : 86,
               "column" : 3
             },
             "end" : {
-              "line" : 85,
+              "line" : 86,
               "column" : 41
             }
           }
@@ -887,28 +901,28 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 84,
+          "line" : 85,
           "column" : 1
         },
         "end" : {
-          "line" : 86,
+          "line" : 87,
           "column" : 2
         }
       }
 
     },
     "BadService" : {
-      "lineno" : 97,
+      "lineno" : 98,
       "annotations" : {
         "cpp.name" : {
           "value" : "GoodService",
           "source_range" : {
             "begin" : {
-              "line" : 100,
+              "line" : 101,
               "column" : 4
             },
             "end" : {
-              "line" : 100,
+              "line" : 101,
               "column" : 28
             }
           }
@@ -942,11 +956,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 99,
+              "line" : 100,
               "column" : 3
             },
             "end" : {
-              "line" : 99,
+              "line" : 100,
               "column" : 12
             }
           }
@@ -954,11 +968,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 97,
+          "line" : 98,
           "column" : 1
         },
         "end" : {
-          "line" : 100,
+          "line" : 101,
           "column" : 29
         }
       }
