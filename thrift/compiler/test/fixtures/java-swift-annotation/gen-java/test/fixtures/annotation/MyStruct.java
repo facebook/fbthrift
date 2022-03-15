@@ -133,7 +133,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
     private final long intField;
@@ -157,22 +156,16 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     private static final TField PASSWORD_FIELD_DESC = new TField("password", TType.STRING, (short)6);
     static {
       NAMES_TO_IDS.put("intField", 1);
-      THRIFT_NAMES_TO_IDS.put("intField", 1);
       FIELD_METADATA.put(1, INT_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("stringField", 2);
-      THRIFT_NAMES_TO_IDS.put("stringField", 2);
       FIELD_METADATA.put(2, STRING_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("detailField", 3);
-      THRIFT_NAMES_TO_IDS.put("detailField", 3);
       FIELD_METADATA.put(3, DETAIL_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("detailMap", 4);
-      THRIFT_NAMES_TO_IDS.put("detailMap", 4);
       FIELD_METADATA.put(4, DETAIL_MAP_FIELD_DESC);
       NAMES_TO_IDS.put("toto", 5);
-      THRIFT_NAMES_TO_IDS.put("titi", 5);
       FIELD_METADATA.put(5, TITI_FIELD_DESC);
       NAMES_TO_IDS.put("password", 6);
-      THRIFT_NAMES_TO_IDS.put("password", 6);
       FIELD_METADATA.put(6, PASSWORD_FIELD_DESC);
     }
     
@@ -257,7 +250,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     
     public static MyStruct read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(MyStruct.NAMES_TO_IDS, MyStruct.THRIFT_NAMES_TO_IDS, MyStruct.FIELD_METADATA);
+      oprot.readStructBegin(MyStruct.NAMES_TO_IDS, MyStruct.FIELD_METADATA);
       MyStruct.Builder builder = new MyStruct.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

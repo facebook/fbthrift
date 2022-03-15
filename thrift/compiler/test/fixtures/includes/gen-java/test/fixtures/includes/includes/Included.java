@@ -76,7 +76,6 @@ public final class Included implements com.facebook.thrift.payload.ThriftSeriali
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Included");
     private final long myIntField;
@@ -87,10 +86,8 @@ public final class Included implements com.facebook.thrift.payload.ThriftSeriali
     private static final TField MY_TRANSITIVE_FIELD_FIELD_DESC = new TField("MyTransitiveField", TType.STRUCT, (short)2);
     static {
       NAMES_TO_IDS.put("myIntField", 1);
-      THRIFT_NAMES_TO_IDS.put("MyIntField", 1);
       FIELD_METADATA.put(1, MY_INT_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("myTransitiveField", 2);
-      THRIFT_NAMES_TO_IDS.put("MyTransitiveField", 2);
       FIELD_METADATA.put(2, MY_TRANSITIVE_FIELD_FIELD_DESC);
     }
     
@@ -143,7 +140,7 @@ public final class Included implements com.facebook.thrift.payload.ThriftSeriali
     
     public static Included read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(Included.NAMES_TO_IDS, Included.THRIFT_NAMES_TO_IDS, Included.FIELD_METADATA);
+      oprot.readStructBegin(Included.NAMES_TO_IDS, Included.FIELD_METADATA);
       Included.Builder builder = new Included.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

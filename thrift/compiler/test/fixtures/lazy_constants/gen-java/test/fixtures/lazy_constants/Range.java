@@ -76,7 +76,6 @@ public final class Range implements com.facebook.thrift.payload.ThriftSerializab
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Range");
     private final int min;
@@ -87,10 +86,8 @@ public final class Range implements com.facebook.thrift.payload.ThriftSerializab
     private static final TField MAX_FIELD_DESC = new TField("max", TType.I32, (short)2);
     static {
       NAMES_TO_IDS.put("min", 1);
-      THRIFT_NAMES_TO_IDS.put("min", 1);
       FIELD_METADATA.put(1, MIN_FIELD_DESC);
       NAMES_TO_IDS.put("max", 2);
-      THRIFT_NAMES_TO_IDS.put("max", 2);
       FIELD_METADATA.put(2, MAX_FIELD_DESC);
     }
     
@@ -143,7 +140,7 @@ public final class Range implements com.facebook.thrift.payload.ThriftSerializab
     
     public static Range read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(Range.NAMES_TO_IDS, Range.THRIFT_NAMES_TO_IDS, Range.FIELD_METADATA);
+      oprot.readStructBegin(Range.NAMES_TO_IDS, Range.FIELD_METADATA);
       Range.Builder builder = new Range.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

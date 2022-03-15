@@ -66,7 +66,6 @@ public final class LegacyStruct implements com.facebook.thrift.payload.ThriftSer
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("LegacyStruct");
     private int normal;
@@ -77,10 +76,8 @@ public final class LegacyStruct implements com.facebook.thrift.payload.ThriftSer
     private static final TField BAD_FIELD_DESC = new TField("bad", TType.I32, (short)-1);
 static {
       NAMES_TO_IDS.put("normal", 1);
-      THRIFT_NAMES_TO_IDS.put("normal", 1);
       FIELD_METADATA.put(1, NORMAL_FIELD_DESC);
       NAMES_TO_IDS.put("bad", -1);
-      THRIFT_NAMES_TO_IDS.put("bad", -1);
       FIELD_METADATA.put(-1, BAD_FIELD_DESC);
     }
     
@@ -145,7 +142,7 @@ static {
     
     public static LegacyStruct read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(LegacyStruct.NAMES_TO_IDS, LegacyStruct.THRIFT_NAMES_TO_IDS, LegacyStruct.FIELD_METADATA);
+      oprot.readStructBegin(LegacyStruct.NAMES_TO_IDS, LegacyStruct.FIELD_METADATA);
       LegacyStruct.Builder builder = new LegacyStruct.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

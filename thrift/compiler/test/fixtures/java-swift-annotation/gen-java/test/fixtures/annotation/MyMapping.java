@@ -104,7 +104,6 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyMapping");
     private final com.foo.FastLongStringMap lsMap;
@@ -121,16 +120,12 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
     private static final TField REGULAR_BINARY_FIELD_DESC = new TField("regularBinary", TType.MAP, (short)4);
     static {
       NAMES_TO_IDS.put("lsMap", 1);
-      THRIFT_NAMES_TO_IDS.put("lsMap", 1);
       FIELD_METADATA.put(1, LS_MAP_FIELD_DESC);
       NAMES_TO_IDS.put("ioMap", 2);
-      THRIFT_NAMES_TO_IDS.put("ioMap", 2);
       FIELD_METADATA.put(2, IO_MAP_FIELD_DESC);
       NAMES_TO_IDS.put("binaryMap", 3);
-      THRIFT_NAMES_TO_IDS.put("binaryMap", 3);
       FIELD_METADATA.put(3, BINARY_MAP_FIELD_DESC);
       NAMES_TO_IDS.put("regularBinary", 4);
-      THRIFT_NAMES_TO_IDS.put("regularBinary", 4);
       FIELD_METADATA.put(4, REGULAR_BINARY_FIELD_DESC);
     }
     
@@ -199,7 +194,7 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
     
     public static MyMapping read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(MyMapping.NAMES_TO_IDS, MyMapping.THRIFT_NAMES_TO_IDS, MyMapping.FIELD_METADATA);
+      oprot.readStructBegin(MyMapping.NAMES_TO_IDS, MyMapping.FIELD_METADATA);
       MyMapping.Builder builder = new MyMapping.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

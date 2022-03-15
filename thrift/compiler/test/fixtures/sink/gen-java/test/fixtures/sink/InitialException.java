@@ -23,7 +23,6 @@ public final class InitialException extends org.apache.thrift.TBaseException imp
 
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
 
     private static final TStruct STRUCT_DESC = new TStruct("InitialException");
@@ -81,7 +80,7 @@ public final class InitialException extends org.apache.thrift.TBaseException imp
     
     public static InitialException read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(InitialException.NAMES_TO_IDS, InitialException.THRIFT_NAMES_TO_IDS, InitialException.FIELD_METADATA);
+      oprot.readStructBegin(InitialException.NAMES_TO_IDS, InitialException.FIELD_METADATA);
       InitialException.Builder builder = new InitialException.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

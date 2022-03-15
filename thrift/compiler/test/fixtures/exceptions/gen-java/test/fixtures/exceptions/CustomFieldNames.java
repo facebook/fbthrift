@@ -23,7 +23,6 @@ public final class CustomFieldNames extends org.apache.thrift.TBaseException imp
 
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
 
     private static final TStruct STRUCT_DESC = new TStruct("CustomFieldNames");
@@ -106,7 +105,7 @@ public final class CustomFieldNames extends org.apache.thrift.TBaseException imp
     
     public static CustomFieldNames read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(CustomFieldNames.NAMES_TO_IDS, CustomFieldNames.THRIFT_NAMES_TO_IDS, CustomFieldNames.FIELD_METADATA);
+      oprot.readStructBegin(CustomFieldNames.NAMES_TO_IDS, CustomFieldNames.FIELD_METADATA);
       CustomFieldNames.Builder builder = new CustomFieldNames.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

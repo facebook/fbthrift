@@ -188,7 +188,6 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Person");
     private final long id;
@@ -223,34 +222,24 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
     private static final TField VEHICLES_FIELD_DESC = new TField("vehicles", TType.LIST, (short)10);
     static {
       NAMES_TO_IDS.put("id", 1);
-      THRIFT_NAMES_TO_IDS.put("id", 1);
       FIELD_METADATA.put(1, ID_FIELD_DESC);
       NAMES_TO_IDS.put("name", 2);
-      THRIFT_NAMES_TO_IDS.put("name", 2);
       FIELD_METADATA.put(2, NAME_FIELD_DESC);
       NAMES_TO_IDS.put("age", 3);
-      THRIFT_NAMES_TO_IDS.put("age", 3);
       FIELD_METADATA.put(3, AGE_FIELD_DESC);
       NAMES_TO_IDS.put("address", 4);
-      THRIFT_NAMES_TO_IDS.put("address", 4);
       FIELD_METADATA.put(4, ADDRESS_FIELD_DESC);
       NAMES_TO_IDS.put("favoriteColor", 5);
-      THRIFT_NAMES_TO_IDS.put("favoriteColor", 5);
       FIELD_METADATA.put(5, FAVORITE_COLOR_FIELD_DESC);
       NAMES_TO_IDS.put("friends", 6);
-      THRIFT_NAMES_TO_IDS.put("friends", 6);
       FIELD_METADATA.put(6, FRIENDS_FIELD_DESC);
       NAMES_TO_IDS.put("bestFriend", 7);
-      THRIFT_NAMES_TO_IDS.put("bestFriend", 7);
       FIELD_METADATA.put(7, BEST_FRIEND_FIELD_DESC);
       NAMES_TO_IDS.put("petNames", 8);
-      THRIFT_NAMES_TO_IDS.put("petNames", 8);
       FIELD_METADATA.put(8, PET_NAMES_FIELD_DESC);
       NAMES_TO_IDS.put("afraidOfAnimal", 9);
-      THRIFT_NAMES_TO_IDS.put("afraidOfAnimal", 9);
       FIELD_METADATA.put(9, AFRAID_OF_ANIMAL_FIELD_DESC);
       NAMES_TO_IDS.put("vehicles", 10);
-      THRIFT_NAMES_TO_IDS.put("vehicles", 10);
       FIELD_METADATA.put(10, VEHICLES_FIELD_DESC);
     }
     
@@ -367,7 +356,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
     
     public static Person read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(Person.NAMES_TO_IDS, Person.THRIFT_NAMES_TO_IDS, Person.FIELD_METADATA);
+      oprot.readStructBegin(Person.NAMES_TO_IDS, Person.FIELD_METADATA);
       Person.Builder builder = new Person.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

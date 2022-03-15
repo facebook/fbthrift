@@ -90,7 +90,6 @@ public final class StructWithRefTypeSharedConst implements com.facebook.thrift.p
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("StructWithRefTypeSharedConst");
     private final test.fixtures.refs.Empty defField;
@@ -104,13 +103,10 @@ public final class StructWithRefTypeSharedConst implements com.facebook.thrift.p
     private static final TField REQ_FIELD_FIELD_DESC = new TField("req_field", TType.STRUCT, (short)3);
     static {
       NAMES_TO_IDS.put("defField", 1);
-      THRIFT_NAMES_TO_IDS.put("def_field", 1);
       FIELD_METADATA.put(1, DEF_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("optField", 2);
-      THRIFT_NAMES_TO_IDS.put("opt_field", 2);
       FIELD_METADATA.put(2, OPT_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("reqField", 3);
-      THRIFT_NAMES_TO_IDS.put("req_field", 3);
       FIELD_METADATA.put(3, REQ_FIELD_FIELD_DESC);
     }
     
@@ -171,7 +167,7 @@ public final class StructWithRefTypeSharedConst implements com.facebook.thrift.p
     
     public static StructWithRefTypeSharedConst read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(StructWithRefTypeSharedConst.NAMES_TO_IDS, StructWithRefTypeSharedConst.THRIFT_NAMES_TO_IDS, StructWithRefTypeSharedConst.FIELD_METADATA);
+      oprot.readStructBegin(StructWithRefTypeSharedConst.NAMES_TO_IDS, StructWithRefTypeSharedConst.FIELD_METADATA);
       StructWithRefTypeSharedConst.Builder builder = new StructWithRefTypeSharedConst.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

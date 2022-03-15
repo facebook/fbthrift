@@ -90,7 +90,6 @@ public final class MyStructValuePatch implements com.facebook.thrift.payload.Thr
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStructValuePatch");
     private final test.fixtures.patch.MyStruct assign;
@@ -104,13 +103,10 @@ public final class MyStructValuePatch implements com.facebook.thrift.payload.Thr
     private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
     static {
       NAMES_TO_IDS.put("assign", 1);
-      THRIFT_NAMES_TO_IDS.put("assign", 1);
       FIELD_METADATA.put(1, ASSIGN_FIELD_DESC);
       NAMES_TO_IDS.put("clear", 2);
-      THRIFT_NAMES_TO_IDS.put("clear", 2);
       FIELD_METADATA.put(2, CLEAR_FIELD_DESC);
       NAMES_TO_IDS.put("patch", 3);
-      THRIFT_NAMES_TO_IDS.put("patch", 3);
       FIELD_METADATA.put(3, PATCH_FIELD_DESC);
     }
     
@@ -171,7 +167,7 @@ public final class MyStructValuePatch implements com.facebook.thrift.payload.Thr
     
     public static MyStructValuePatch read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(MyStructValuePatch.NAMES_TO_IDS, MyStructValuePatch.THRIFT_NAMES_TO_IDS, MyStructValuePatch.FIELD_METADATA);
+      oprot.readStructBegin(MyStructValuePatch.NAMES_TO_IDS, MyStructValuePatch.FIELD_METADATA);
       MyStructValuePatch.Builder builder = new MyStructValuePatch.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

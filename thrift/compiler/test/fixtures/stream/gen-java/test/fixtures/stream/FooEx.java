@@ -23,7 +23,6 @@ public final class FooEx extends org.apache.thrift.TBaseException implements com
 
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
 
     private static final TStruct STRUCT_DESC = new TStruct("FooEx");
@@ -58,7 +57,7 @@ public final class FooEx extends org.apache.thrift.TBaseException implements com
     
     public static FooEx read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(FooEx.NAMES_TO_IDS, FooEx.THRIFT_NAMES_TO_IDS, FooEx.FIELD_METADATA);
+      oprot.readStructBegin(FooEx.NAMES_TO_IDS, FooEx.FIELD_METADATA);
       FooEx.Builder builder = new FooEx.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

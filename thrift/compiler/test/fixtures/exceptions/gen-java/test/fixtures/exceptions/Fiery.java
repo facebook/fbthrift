@@ -23,7 +23,6 @@ public final class Fiery extends org.apache.thrift.TBaseException implements com
 
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
 
     private static final TStruct STRUCT_DESC = new TStruct("Fiery");
@@ -81,7 +80,7 @@ public final class Fiery extends org.apache.thrift.TBaseException implements com
     
     public static Fiery read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(Fiery.NAMES_TO_IDS, Fiery.THRIFT_NAMES_TO_IDS, Fiery.FIELD_METADATA);
+      oprot.readStructBegin(Fiery.NAMES_TO_IDS, Fiery.FIELD_METADATA);
       Fiery.Builder builder = new Fiery.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

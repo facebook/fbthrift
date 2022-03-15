@@ -118,7 +118,6 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Internship");
     private final int weeks;
@@ -138,19 +137,14 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
     private static final TField SCHOOL_FIELD_DESC = new TField("school", TType.STRING, (short)5);
     static {
       NAMES_TO_IDS.put("weeks", 1);
-      THRIFT_NAMES_TO_IDS.put("weeks", 1);
       FIELD_METADATA.put(1, WEEKS_FIELD_DESC);
       NAMES_TO_IDS.put("title", 2);
-      THRIFT_NAMES_TO_IDS.put("title", 2);
       FIELD_METADATA.put(2, TITLE_FIELD_DESC);
       NAMES_TO_IDS.put("employer", 3);
-      THRIFT_NAMES_TO_IDS.put("employer", 3);
       FIELD_METADATA.put(3, EMPLOYER_FIELD_DESC);
       NAMES_TO_IDS.put("compensation", 4);
-      THRIFT_NAMES_TO_IDS.put("compensation", 4);
       FIELD_METADATA.put(4, COMPENSATION_FIELD_DESC);
       NAMES_TO_IDS.put("school", 5);
-      THRIFT_NAMES_TO_IDS.put("school", 5);
       FIELD_METADATA.put(5, SCHOOL_FIELD_DESC);
     }
     
@@ -227,7 +221,7 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
     
     public static Internship read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(Internship.NAMES_TO_IDS, Internship.THRIFT_NAMES_TO_IDS, Internship.FIELD_METADATA);
+      oprot.readStructBegin(Internship.NAMES_TO_IDS, Internship.FIELD_METADATA);
       Internship.Builder builder = new Internship.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

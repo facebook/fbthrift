@@ -118,7 +118,6 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Vehicle");
     private final test.fixtures.optionals.Color color;
@@ -138,19 +137,14 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
     private static final TField HAS_AC_FIELD_DESC = new TField("hasAC", TType.BOOL, (short)5);
     static {
       NAMES_TO_IDS.put("color", 1);
-      THRIFT_NAMES_TO_IDS.put("color", 1);
       FIELD_METADATA.put(1, COLOR_FIELD_DESC);
       NAMES_TO_IDS.put("licensePlate", 2);
-      THRIFT_NAMES_TO_IDS.put("licensePlate", 2);
       FIELD_METADATA.put(2, LICENSE_PLATE_FIELD_DESC);
       NAMES_TO_IDS.put("description", 3);
-      THRIFT_NAMES_TO_IDS.put("description", 3);
       FIELD_METADATA.put(3, DESCRIPTION_FIELD_DESC);
       NAMES_TO_IDS.put("name", 4);
-      THRIFT_NAMES_TO_IDS.put("name", 4);
       FIELD_METADATA.put(4, NAME_FIELD_DESC);
       NAMES_TO_IDS.put("hasAC", 5);
-      THRIFT_NAMES_TO_IDS.put("hasAC", 5);
       FIELD_METADATA.put(5, HAS_AC_FIELD_DESC);
     }
     
@@ -227,7 +221,7 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
     
     public static Vehicle read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(Vehicle.NAMES_TO_IDS, Vehicle.THRIFT_NAMES_TO_IDS, Vehicle.FIELD_METADATA);
+      oprot.readStructBegin(Vehicle.NAMES_TO_IDS, Vehicle.FIELD_METADATA);
       Vehicle.Builder builder = new Vehicle.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

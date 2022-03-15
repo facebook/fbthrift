@@ -22,7 +22,6 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializable {
     private static final TStruct STRUCT_DESC = new TStruct("MyUnion");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
 
     public static final int _MYENUM = 1;
@@ -40,22 +39,16 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
 
     static {
       NAMES_TO_IDS.put("myEnum", 1);
-      THRIFT_NAMES_TO_IDS.put("myEnum", 1);
       FIELD_METADATA.put(1, MY_ENUM_FIELD_DESC);
       NAMES_TO_IDS.put("myStruct", 2);
-      THRIFT_NAMES_TO_IDS.put("myStruct", 2);
       FIELD_METADATA.put(2, MY_STRUCT_FIELD_DESC);
       NAMES_TO_IDS.put("myDataItem", 3);
-      THRIFT_NAMES_TO_IDS.put("myDataItem", 3);
       FIELD_METADATA.put(3, MY_DATA_ITEM_FIELD_DESC);
       NAMES_TO_IDS.put("complexNestedStruct", 4);
-      THRIFT_NAMES_TO_IDS.put("complexNestedStruct", 4);
       FIELD_METADATA.put(4, COMPLEX_NESTED_STRUCT_FIELD_DESC);
       NAMES_TO_IDS.put("longValue", 5);
-      THRIFT_NAMES_TO_IDS.put("longValue", 5);
       FIELD_METADATA.put(5, LONG_VALUE_FIELD_DESC);
       NAMES_TO_IDS.put("intValue", 6);
-      THRIFT_NAMES_TO_IDS.put("intValue", 6);
       FIELD_METADATA.put(6, INT_VALUE_FIELD_DESC);
     }
 
@@ -370,7 +363,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       MyUnion res = new MyUnion();
       res.value = null;
       res.id = (short) 0;
-      oprot.readStructBegin(MyUnion.NAMES_TO_IDS, MyUnion.THRIFT_NAMES_TO_IDS, MyUnion.FIELD_METADATA);
+      oprot.readStructBegin(MyUnion.NAMES_TO_IDS, MyUnion.FIELD_METADATA);
       TField __field = oprot.readFieldBegin();
       if (__field.type != TType.STOP) {
           switch (__field.id) {

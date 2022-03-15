@@ -76,7 +76,6 @@ public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSer
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("SimpleStruct");
     private final long age;
@@ -87,10 +86,8 @@ public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSer
     private static final TField NAME_FIELD_DESC = new TField("name", TType.STRING, (short)2);
     static {
       NAMES_TO_IDS.put("age", 1);
-      THRIFT_NAMES_TO_IDS.put("age", 1);
       FIELD_METADATA.put(1, AGE_FIELD_DESC);
       NAMES_TO_IDS.put("name", 2);
-      THRIFT_NAMES_TO_IDS.put("name", 2);
       FIELD_METADATA.put(2, NAME_FIELD_DESC);
     }
     
@@ -143,7 +140,7 @@ public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSer
     
     public static SimpleStruct read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(SimpleStruct.NAMES_TO_IDS, SimpleStruct.THRIFT_NAMES_TO_IDS, SimpleStruct.FIELD_METADATA);
+      oprot.readStructBegin(SimpleStruct.NAMES_TO_IDS, SimpleStruct.FIELD_METADATA);
       SimpleStruct.Builder builder = new SimpleStruct.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

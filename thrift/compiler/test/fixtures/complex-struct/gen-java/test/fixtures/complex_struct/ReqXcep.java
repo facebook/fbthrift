@@ -23,7 +23,6 @@ public final class ReqXcep extends org.apache.thrift.TBaseException implements c
 
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
 
     private static final TStruct STRUCT_DESC = new TStruct("reqXcep");
@@ -102,7 +101,7 @@ public final class ReqXcep extends org.apache.thrift.TBaseException implements c
     
     public static ReqXcep read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(ReqXcep.NAMES_TO_IDS, ReqXcep.THRIFT_NAMES_TO_IDS, ReqXcep.FIELD_METADATA);
+      oprot.readStructBegin(ReqXcep.NAMES_TO_IDS, ReqXcep.FIELD_METADATA);
       ReqXcep.Builder builder = new ReqXcep.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

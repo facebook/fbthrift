@@ -452,7 +452,6 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("defaultStruct");
     private final long myLongDFset;
@@ -523,70 +522,48 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
     private static final TField ENUM_MAP_DFSET_FIELD_DESC = new TField("enumMapDFset", TType.MAP, (short)23);
     static {
       NAMES_TO_IDS.put("myLongDFset", 1);
-      THRIFT_NAMES_TO_IDS.put("myLongDFset", 1);
       FIELD_METADATA.put(1, MY_LONG_DFSET_FIELD_DESC);
       NAMES_TO_IDS.put("myLongDF", 2);
-      THRIFT_NAMES_TO_IDS.put("myLongDF", 2);
       FIELD_METADATA.put(2, MY_LONG_DF_FIELD_DESC);
       NAMES_TO_IDS.put("portDFset", 3);
-      THRIFT_NAMES_TO_IDS.put("portDFset", 3);
       FIELD_METADATA.put(3, PORT_DFSET_FIELD_DESC);
       NAMES_TO_IDS.put("portNum", 4);
-      THRIFT_NAMES_TO_IDS.put("portNum", 4);
       FIELD_METADATA.put(4, PORT_NUM_FIELD_DESC);
       NAMES_TO_IDS.put("myBinaryDFset", 5);
-      THRIFT_NAMES_TO_IDS.put("myBinaryDFset", 5);
       FIELD_METADATA.put(5, MY_BINARY_DFSET_FIELD_DESC);
       NAMES_TO_IDS.put("myBinary", 6);
-      THRIFT_NAMES_TO_IDS.put("myBinary", 6);
       FIELD_METADATA.put(6, MY_BINARY_FIELD_DESC);
       NAMES_TO_IDS.put("myByteDFSet", 7);
-      THRIFT_NAMES_TO_IDS.put("myByteDFSet", 7);
       FIELD_METADATA.put(7, MY_BYTE_DFSET_FIELD_DESC);
       NAMES_TO_IDS.put("myByte", 8);
-      THRIFT_NAMES_TO_IDS.put("myByte", 8);
       FIELD_METADATA.put(8, MY_BYTE_FIELD_DESC);
       NAMES_TO_IDS.put("myDoubleDFset", 9);
-      THRIFT_NAMES_TO_IDS.put("myDoubleDFset", 9);
       FIELD_METADATA.put(9, MY_DOUBLE_DFSET_FIELD_DESC);
       NAMES_TO_IDS.put("myDoubleDFZero", 10);
-      THRIFT_NAMES_TO_IDS.put("myDoubleDFZero", 10);
       FIELD_METADATA.put(10, MY_DOUBLE_DFZERO_FIELD_DESC);
       NAMES_TO_IDS.put("myDouble", 12);
-      THRIFT_NAMES_TO_IDS.put("myDouble", 12);
       FIELD_METADATA.put(12, MY_DOUBLE_FIELD_DESC);
       NAMES_TO_IDS.put("field3", 13);
-      THRIFT_NAMES_TO_IDS.put("field3", 13);
       FIELD_METADATA.put(13, FIELD3_FIELD_DESC);
       NAMES_TO_IDS.put("myList", 14);
-      THRIFT_NAMES_TO_IDS.put("myList", 14);
       FIELD_METADATA.put(14, MY_LIST_FIELD_DESC);
       NAMES_TO_IDS.put("mySet", 15);
-      THRIFT_NAMES_TO_IDS.put("mySet", 15);
       FIELD_METADATA.put(15, MY_SET_FIELD_DESC);
       NAMES_TO_IDS.put("simpleStruct", 16);
-      THRIFT_NAMES_TO_IDS.put("simpleStruct", 16);
       FIELD_METADATA.put(16, SIMPLE_STRUCT_FIELD_DESC);
       NAMES_TO_IDS.put("listStructDFset", 17);
-      THRIFT_NAMES_TO_IDS.put("listStructDFset", 17);
       FIELD_METADATA.put(17, LIST_STRUCT_DFSET_FIELD_DESC);
       NAMES_TO_IDS.put("myUnion", 18);
-      THRIFT_NAMES_TO_IDS.put("myUnion", 18);
       FIELD_METADATA.put(18, MY_UNION_FIELD_DESC);
       NAMES_TO_IDS.put("listUnionDFset", 19);
-      THRIFT_NAMES_TO_IDS.put("listUnionDFset", 19);
       FIELD_METADATA.put(19, LIST_UNION_DFSET_FIELD_DESC);
       NAMES_TO_IDS.put("mapNestlistStructDfSet", 20);
-      THRIFT_NAMES_TO_IDS.put("mapNestlistStructDfSet", 20);
       FIELD_METADATA.put(20, MAP_NESTLIST_STRUCT_DF_SET_FIELD_DESC);
       NAMES_TO_IDS.put("mapJavaTypeDFset", 21);
-      THRIFT_NAMES_TO_IDS.put("mapJavaTypeDFset", 21);
       FIELD_METADATA.put(21, MAP_JAVA_TYPE_DFSET_FIELD_DESC);
       NAMES_TO_IDS.put("emptyMap", 22);
-      THRIFT_NAMES_TO_IDS.put("emptyMap", 22);
       FIELD_METADATA.put(22, EMPTY_MAP_FIELD_DESC);
       NAMES_TO_IDS.put("enumMapDFset", 23);
-      THRIFT_NAMES_TO_IDS.put("enumMapDFset", 23);
       FIELD_METADATA.put(23, ENUM_MAP_DFSET_FIELD_DESC);
     }
     
@@ -799,7 +776,7 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
     
     public static DefaultStruct read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(DefaultStruct.NAMES_TO_IDS, DefaultStruct.THRIFT_NAMES_TO_IDS, DefaultStruct.FIELD_METADATA);
+      oprot.readStructBegin(DefaultStruct.NAMES_TO_IDS, DefaultStruct.FIELD_METADATA);
       DefaultStruct.Builder builder = new DefaultStruct.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

@@ -62,7 +62,6 @@ public final class NonCopyableStruct implements com.facebook.thrift.payload.Thri
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("NonCopyableStruct");
     private final long num;
@@ -70,7 +69,6 @@ public final class NonCopyableStruct implements com.facebook.thrift.payload.Thri
     private static final TField NUM_FIELD_DESC = new TField("num", TType.I64, (short)1);
     static {
       NAMES_TO_IDS.put("num", 1);
-      THRIFT_NAMES_TO_IDS.put("num", 1);
       FIELD_METADATA.put(1, NUM_FIELD_DESC);
     }
     
@@ -115,7 +113,7 @@ public final class NonCopyableStruct implements com.facebook.thrift.payload.Thri
     
     public static NonCopyableStruct read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(NonCopyableStruct.NAMES_TO_IDS, NonCopyableStruct.THRIFT_NAMES_TO_IDS, NonCopyableStruct.FIELD_METADATA);
+      oprot.readStructBegin(NonCopyableStruct.NAMES_TO_IDS, NonCopyableStruct.FIELD_METADATA);
       NonCopyableStruct.Builder builder = new NonCopyableStruct.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

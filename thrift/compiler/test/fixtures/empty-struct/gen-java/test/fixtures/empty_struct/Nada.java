@@ -22,7 +22,6 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 public final class Nada implements com.facebook.thrift.payload.ThriftSerializable {
     private static final TStruct STRUCT_DESC = new TStruct("Nada");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
 
 
@@ -112,7 +111,7 @@ public final class Nada implements com.facebook.thrift.payload.ThriftSerializabl
       Nada res = new Nada();
       res.value = null;
       res.id = (short) 0;
-      oprot.readStructBegin(Nada.NAMES_TO_IDS, Nada.THRIFT_NAMES_TO_IDS, Nada.FIELD_METADATA);
+      oprot.readStructBegin(Nada.NAMES_TO_IDS, Nada.FIELD_METADATA);
       TField __field = oprot.readFieldBegin();
       if (__field.type != TType.STOP) {
           switch (__field.id) {

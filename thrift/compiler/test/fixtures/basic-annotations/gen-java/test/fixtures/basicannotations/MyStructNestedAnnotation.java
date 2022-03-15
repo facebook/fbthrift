@@ -62,7 +62,6 @@ public final class MyStructNestedAnnotation implements com.facebook.thrift.paylo
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStructNestedAnnotation");
     private final String name;
@@ -70,7 +69,6 @@ public final class MyStructNestedAnnotation implements com.facebook.thrift.paylo
     private static final TField NAME_FIELD_DESC = new TField("name", TType.STRING, (short)1);
     static {
       NAMES_TO_IDS.put("name", 1);
-      THRIFT_NAMES_TO_IDS.put("name", 1);
       FIELD_METADATA.put(1, NAME_FIELD_DESC);
     }
     
@@ -115,7 +113,7 @@ public final class MyStructNestedAnnotation implements com.facebook.thrift.paylo
     
     public static MyStructNestedAnnotation read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(MyStructNestedAnnotation.NAMES_TO_IDS, MyStructNestedAnnotation.THRIFT_NAMES_TO_IDS, MyStructNestedAnnotation.FIELD_METADATA);
+      oprot.readStructBegin(MyStructNestedAnnotation.NAMES_TO_IDS, MyStructNestedAnnotation.FIELD_METADATA);
       MyStructNestedAnnotation.Builder builder = new MyStructNestedAnnotation.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

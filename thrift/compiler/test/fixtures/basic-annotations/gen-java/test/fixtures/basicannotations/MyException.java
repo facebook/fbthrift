@@ -23,7 +23,6 @@ public final class MyException extends org.apache.thrift.TBaseException implemen
 
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
 
     private static final TStruct STRUCT_DESC = new TStruct("MyException");
@@ -58,7 +57,7 @@ public final class MyException extends org.apache.thrift.TBaseException implemen
     
     public static MyException read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(MyException.NAMES_TO_IDS, MyException.THRIFT_NAMES_TO_IDS, MyException.FIELD_METADATA);
+      oprot.readStructBegin(MyException.NAMES_TO_IDS, MyException.FIELD_METADATA);
       MyException.Builder builder = new MyException.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

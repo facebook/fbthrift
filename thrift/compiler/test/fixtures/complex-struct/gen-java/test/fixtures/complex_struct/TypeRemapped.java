@@ -104,7 +104,6 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("TypeRemapped");
     private final it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap;
@@ -121,16 +120,12 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
     private static final TField BINARY_TEST_BUFFER_FIELD_DESC = new TField("binaryTestBuffer", TType.STRING, (short)4);
     static {
       NAMES_TO_IDS.put("lsMap", 1);
-      THRIFT_NAMES_TO_IDS.put("lsMap", 1);
       FIELD_METADATA.put(1, LS_MAP_FIELD_DESC);
       NAMES_TO_IDS.put("ioMap", 2);
-      THRIFT_NAMES_TO_IDS.put("ioMap", 2);
       FIELD_METADATA.put(2, IO_MAP_FIELD_DESC);
       NAMES_TO_IDS.put("bigInteger", 3);
-      THRIFT_NAMES_TO_IDS.put("BigInteger", 3);
       FIELD_METADATA.put(3, BIG_INTEGER_FIELD_DESC);
       NAMES_TO_IDS.put("binaryTestBuffer", 4);
-      THRIFT_NAMES_TO_IDS.put("binaryTestBuffer", 4);
       FIELD_METADATA.put(4, BINARY_TEST_BUFFER_FIELD_DESC);
     }
     
@@ -199,7 +194,7 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
     
     public static TypeRemapped read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(TypeRemapped.NAMES_TO_IDS, TypeRemapped.THRIFT_NAMES_TO_IDS, TypeRemapped.FIELD_METADATA);
+      oprot.readStructBegin(TypeRemapped.NAMES_TO_IDS, TypeRemapped.FIELD_METADATA);
       TypeRemapped.Builder builder = new TypeRemapped.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

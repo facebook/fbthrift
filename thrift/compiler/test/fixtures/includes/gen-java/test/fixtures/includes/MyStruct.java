@@ -90,7 +90,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
     private final test.fixtures.includes.includes.Included myIncludedField;
@@ -104,13 +103,10 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     private static final TField MY_INCLUDED_INT_FIELD_DESC = new TField("MyIncludedInt", TType.I64, (short)3);
     static {
       NAMES_TO_IDS.put("myIncludedField", 1);
-      THRIFT_NAMES_TO_IDS.put("MyIncludedField", 1);
       FIELD_METADATA.put(1, MY_INCLUDED_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("myOtherIncludedField", 2);
-      THRIFT_NAMES_TO_IDS.put("MyOtherIncludedField", 2);
       FIELD_METADATA.put(2, MY_OTHER_INCLUDED_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("myIncludedInt", 3);
-      THRIFT_NAMES_TO_IDS.put("MyIncludedInt", 3);
       FIELD_METADATA.put(3, MY_INCLUDED_INT_FIELD_DESC);
     }
     
@@ -171,7 +167,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     
     public static MyStruct read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(MyStruct.NAMES_TO_IDS, MyStruct.THRIFT_NAMES_TO_IDS, MyStruct.FIELD_METADATA);
+      oprot.readStructBegin(MyStruct.NAMES_TO_IDS, MyStruct.FIELD_METADATA);
       MyStruct.Builder builder = new MyStruct.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

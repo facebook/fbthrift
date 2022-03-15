@@ -90,7 +90,6 @@ public final class StructWithUnion implements com.facebook.thrift.payload.Thrift
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("StructWithUnion");
     private final test.fixtures.refs.MyUnion u;
@@ -104,13 +103,10 @@ public final class StructWithUnion implements com.facebook.thrift.payload.Thrift
     private static final TField F_FIELD_DESC = new TField("f", TType.STRUCT, (short)3);
     static {
       NAMES_TO_IDS.put("u", 1);
-      THRIFT_NAMES_TO_IDS.put("u", 1);
       FIELD_METADATA.put(1, U_FIELD_DESC);
       NAMES_TO_IDS.put("aDouble", 2);
-      THRIFT_NAMES_TO_IDS.put("aDouble", 2);
       FIELD_METADATA.put(2, A_DOUBLE_FIELD_DESC);
       NAMES_TO_IDS.put("f", 3);
-      THRIFT_NAMES_TO_IDS.put("f", 3);
       FIELD_METADATA.put(3, F_FIELD_DESC);
     }
     
@@ -171,7 +167,7 @@ public final class StructWithUnion implements com.facebook.thrift.payload.Thrift
     
     public static StructWithUnion read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(StructWithUnion.NAMES_TO_IDS, StructWithUnion.THRIFT_NAMES_TO_IDS, StructWithUnion.FIELD_METADATA);
+      oprot.readStructBegin(StructWithUnion.NAMES_TO_IDS, StructWithUnion.FIELD_METADATA);
       StructWithUnion.Builder builder = new StructWithUnion.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

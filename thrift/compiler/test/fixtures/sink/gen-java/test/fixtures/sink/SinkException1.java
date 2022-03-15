@@ -23,7 +23,6 @@ public final class SinkException1 extends org.apache.thrift.TBaseException imple
 
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
 
     private static final TStruct STRUCT_DESC = new TStruct("SinkException1");
@@ -81,7 +80,7 @@ public final class SinkException1 extends org.apache.thrift.TBaseException imple
     
     public static SinkException1 read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(SinkException1.NAMES_TO_IDS, SinkException1.THRIFT_NAMES_TO_IDS, SinkException1.FIELD_METADATA);
+      oprot.readStructBegin(SinkException1.NAMES_TO_IDS, SinkException1.FIELD_METADATA);
       SinkException1.Builder builder = new SinkException1.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

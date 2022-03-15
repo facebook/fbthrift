@@ -90,7 +90,6 @@ public final class Val implements com.facebook.thrift.payload.ThriftSerializable
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Val");
     private final String strVal;
@@ -104,13 +103,10 @@ public final class Val implements com.facebook.thrift.payload.ThriftSerializable
     private static final TField TYPEDEF_VALUE_FIELD_DESC = new TField("typedefValue", TType.MAP, (short)9);
     static {
       NAMES_TO_IDS.put("strVal", 1);
-      THRIFT_NAMES_TO_IDS.put("strVal", 1);
       FIELD_METADATA.put(1, STR_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("intVal", 2);
-      THRIFT_NAMES_TO_IDS.put("intVal", 2);
       FIELD_METADATA.put(2, INT_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("typedefValue", 9);
-      THRIFT_NAMES_TO_IDS.put("typedefValue", 9);
       FIELD_METADATA.put(9, TYPEDEF_VALUE_FIELD_DESC);
     }
     
@@ -171,7 +167,7 @@ public final class Val implements com.facebook.thrift.payload.ThriftSerializable
     
     public static Val read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(Val.NAMES_TO_IDS, Val.THRIFT_NAMES_TO_IDS, Val.FIELD_METADATA);
+      oprot.readStructBegin(Val.NAMES_TO_IDS, Val.FIELD_METADATA);
       Val.Builder builder = new Val.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

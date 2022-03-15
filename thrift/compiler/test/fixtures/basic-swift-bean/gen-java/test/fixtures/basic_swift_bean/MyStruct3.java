@@ -222,7 +222,6 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct3");
     private short myInt16;
@@ -263,40 +262,28 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
     private static final TField MY_EMPTY_MAP_LIST_FIELD_DESC = new TField("myEmptyMapList", TType.MAP, (short)12);
 static {
       NAMES_TO_IDS.put("myInt16", 1);
-      THRIFT_NAMES_TO_IDS.put("myInt16", 1);
       FIELD_METADATA.put(1, MY_INT16_FIELD_DESC);
       NAMES_TO_IDS.put("myInt32", 2);
-      THRIFT_NAMES_TO_IDS.put("myInt32", 2);
       FIELD_METADATA.put(2, MY_INT32_FIELD_DESC);
       NAMES_TO_IDS.put("myInt64", 3);
-      THRIFT_NAMES_TO_IDS.put("myInt64", 3);
       FIELD_METADATA.put(3, MY_INT64_FIELD_DESC);
       NAMES_TO_IDS.put("myString", 4);
-      THRIFT_NAMES_TO_IDS.put("myString", 4);
       FIELD_METADATA.put(4, MY_STRING_FIELD_DESC);
       NAMES_TO_IDS.put("myBool", 5);
-      THRIFT_NAMES_TO_IDS.put("myBool", 5);
       FIELD_METADATA.put(5, MY_BOOL_FIELD_DESC);
       NAMES_TO_IDS.put("myDouble", 6);
-      THRIFT_NAMES_TO_IDS.put("myDouble", 6);
       FIELD_METADATA.put(6, MY_DOUBLE_FIELD_DESC);
       NAMES_TO_IDS.put("mySet", 7);
-      THRIFT_NAMES_TO_IDS.put("mySet", 7);
       FIELD_METADATA.put(7, MY_SET_FIELD_DESC);
       NAMES_TO_IDS.put("myDataItem", 8);
-      THRIFT_NAMES_TO_IDS.put("MyDataItem", 8);
       FIELD_METADATA.put(8, MY_DATA_ITEM_FIELD_DESC);
       NAMES_TO_IDS.put("myList", 9);
-      THRIFT_NAMES_TO_IDS.put("myList", 9);
       FIELD_METADATA.put(9, MY_LIST_FIELD_DESC);
       NAMES_TO_IDS.put("myMapList", 10);
-      THRIFT_NAMES_TO_IDS.put("myMapList", 10);
       FIELD_METADATA.put(10, MY_MAP_LIST_FIELD_DESC);
       NAMES_TO_IDS.put("myEmptyList", 11);
-      THRIFT_NAMES_TO_IDS.put("myEmptyList", 11);
       FIELD_METADATA.put(11, MY_EMPTY_LIST_FIELD_DESC);
       NAMES_TO_IDS.put("myEmptyMapList", 12);
-      THRIFT_NAMES_TO_IDS.put("myEmptyMapList", 12);
       FIELD_METADATA.put(12, MY_EMPTY_MAP_LIST_FIELD_DESC);
     }
     
@@ -501,7 +488,7 @@ static {
     
     public static MyStruct3 read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(MyStruct3.NAMES_TO_IDS, MyStruct3.THRIFT_NAMES_TO_IDS, MyStruct3.FIELD_METADATA);
+      oprot.readStructBegin(MyStruct3.NAMES_TO_IDS, MyStruct3.FIELD_METADATA);
       MyStruct3.Builder builder = new MyStruct3.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

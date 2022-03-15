@@ -104,7 +104,6 @@ public final class StructWithFieldAdapter implements com.facebook.thrift.payload
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("StructWithFieldAdapter");
     private final int field;
@@ -121,16 +120,12 @@ public final class StructWithFieldAdapter implements com.facebook.thrift.payload
     private static final TField OPT_BOXED_FIELD_FIELD_DESC = new TField("opt_boxed_field", TType.I32, (short)4);
     static {
       NAMES_TO_IDS.put("field", 1);
-      THRIFT_NAMES_TO_IDS.put("field", 1);
       FIELD_METADATA.put(1, FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("sharedField", 2);
-      THRIFT_NAMES_TO_IDS.put("shared_field", 2);
       FIELD_METADATA.put(2, SHARED_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("optSharedField", 3);
-      THRIFT_NAMES_TO_IDS.put("opt_shared_field", 3);
       FIELD_METADATA.put(3, OPT_SHARED_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("optBoxedField", 4);
-      THRIFT_NAMES_TO_IDS.put("opt_boxed_field", 4);
       FIELD_METADATA.put(4, OPT_BOXED_FIELD_FIELD_DESC);
     }
     
@@ -199,7 +194,7 @@ public final class StructWithFieldAdapter implements com.facebook.thrift.payload
     
     public static StructWithFieldAdapter read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(StructWithFieldAdapter.NAMES_TO_IDS, StructWithFieldAdapter.THRIFT_NAMES_TO_IDS, StructWithFieldAdapter.FIELD_METADATA);
+      oprot.readStructBegin(StructWithFieldAdapter.NAMES_TO_IDS, StructWithFieldAdapter.FIELD_METADATA);
       StructWithFieldAdapter.Builder builder = new StructWithFieldAdapter.Builder();
       while (true) {
         __field = oprot.readFieldBegin();
