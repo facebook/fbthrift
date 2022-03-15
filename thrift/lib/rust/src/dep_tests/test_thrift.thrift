@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,6 +79,8 @@ struct Containers {
   1: map<string, string> m;
   2: list<string> l;
 }
+
+typedef double Double (rust.newtype, rust.type = "OrderedFloat<f64>", rust.ord)
 
 exception TestException {
   1: string message;
