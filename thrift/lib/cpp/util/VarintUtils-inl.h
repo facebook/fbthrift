@@ -75,7 +75,7 @@ void readVarintMediumSlow(CursorT& c, T& value, const uint8_t* p, size_t len) {
 
   // check that the available data is more than the longest possible varint or
   // that the last available byte ends a varint
-  if (LIKELY(len >= maxSize || (len > 0 && !(p[len - 1] & 0x80)))) {
+  if (FOLLY_LIKELY(len >= maxSize || (len > 0 && !(p[len - 1] & 0x80)))) {
     uint64_t result;
     const uint8_t* start = p;
     do {
@@ -172,7 +172,7 @@ uint8_t writeVarintSlow(Cursor& c, T value) {
 
 template <class Cursor, class T>
 uint8_t writeVarintUnrolled(Cursor& c, T value) {
-  if (LIKELY((value & ~0x7f) == 0)) {
+  if (FOLLY_LIKELY((value & ~0x7f) == 0)) {
     c.template write<uint8_t>(static_cast<uint8_t>(value));
     return 1;
   }
@@ -185,7 +185,7 @@ uint8_t writeVarintUnrolled(Cursor& c, T value) {
 template <class Cursor, class T>
 uint8_t writeVarintBMI2(Cursor& c, T valueS) {
   auto value = folly::to_unsigned(valueS);
-  if (LIKELY((value & ~0x7f) == 0)) {
+  if (FOLLY_LIKELY((value & ~0x7f) == 0)) {
     c.template write<uint8_t>(static_cast<uint8_t>(value));
     return 1;
   }
