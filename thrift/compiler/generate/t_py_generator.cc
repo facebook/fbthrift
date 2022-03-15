@@ -27,6 +27,7 @@
 #include <unordered_set>
 #include <vector>
 
+#include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
 
 #include <thrift/compiler/ast/t_typedef.h>
@@ -137,7 +138,7 @@ class t_py_generator : public t_concat_generator {
   void generate_py_struct(const t_struct* tstruct, bool is_exception);
   void generate_py_thrift_spec(
       std::ofstream& out, const t_struct* tstruct, bool is_exception);
-  void generate_py_string_dict(
+  void generate_py_annotation_dict(
       std::ofstream& out,
       const std::map<std::string, annotation_value>& fields);
   void generate_py_annotations(std::ofstream& out, const t_struct* tstruct);
@@ -295,7 +296,12 @@ class t_py_generator : public t_concat_generator {
   std::string type_to_enum(const t_type* ttype);
   std::string type_to_spec_args(const t_type* ttype);
   std::string get_real_py_module(const t_program* program);
-  std::string render_string(std::string value);
+
+  enum EscapeFlag {
+    EscapeQuote = 1 << 0,
+    EscapeBackslash = 1 << 1,
+  };
+  std::string render_string(std::string value, EscapeFlag = EscapeQuote);
   std::string render_ttype_declarations(const char* delimiter);
 
   std::string get_priority(
@@ -1065,13 +1071,13 @@ void t_py_generator::generate_const(const t_const* tconst) {
   f_consts_ << endl << endl;
 }
 
-string t_py_generator::render_string(string value) {
+string t_py_generator::render_string(string value, EscapeFlag flag) {
   std::ostringstream out;
-  size_t pos = 0;
-  // Escape all quotes
-  while ((pos = value.find('"', pos)) != string::npos) {
-    value.insert(pos, 1, '\\');
-    pos += 2;
+  if (flag & EscapeBackslash) {
+    boost::algorithm::replace_all(value, "\\", "\\\\");
+  }
+  if (flag & EscapeQuote) {
+    boost::algorithm::replace_all(value, "\"", "\\\"");
   }
   // If string contains multiple lines, then wrap it in triple quotes """
   std::string wrap(value.find("\n") == std::string::npos ? "\"" : "\"\"\"");
@@ -1584,12 +1590,17 @@ void t_py_generator::generate_py_thrift_spec(
   }
 }
 
-void t_py_generator::generate_py_string_dict(
+void t_py_generator::generate_py_annotation_dict(
     std::ofstream& out, const std::map<std::string, annotation_value>& fields) {
   indent_up();
   for (auto a_iter = fields.begin(); a_iter != fields.end(); ++a_iter) {
-    indent(out) << render_string(a_iter->first) << ": "
-                << render_string(a_iter->second.value) << "," << endl;
+    indent(out) << render_string(
+                       a_iter->first, EscapeFlag(EscapeQuote | EscapeBackslash))
+                << ": "
+                << render_string(
+                       a_iter->second.value,
+                       EscapeFlag(EscapeQuote | EscapeBackslash))
+                << "," << endl;
   }
   indent_down();
 }
@@ -1601,7 +1612,7 @@ void t_py_generator::generate_py_annotations(
 
   indent(out) << rename_reserved_keywords(tstruct->get_name())
               << ".thrift_struct_annotations = {" << endl;
-  generate_py_string_dict(out, tstruct->annotations());
+  generate_py_annotation_dict(out, tstruct->annotations());
   indent(out) << "}" << endl;
 
   indent(out) << rename_reserved_keywords(tstruct->get_name())
@@ -1615,7 +1626,7 @@ void t_py_generator::generate_py_annotations(
       continue;
     }
     indent(out) << field->get_key() << ": {" << endl;
-    generate_py_string_dict(out, field->annotations());
+    generate_py_annotation_dict(out, field->annotations());
     indent(out) << "}," << endl;
   }
   indent_down();
@@ -2165,7 +2176,7 @@ void t_py_generator::generate_service_interface(
   generate_python_docstring(f_service_, tservice);
   if (!tservice->annotations().empty()) {
     f_service_ << indent() << "annotations = {" << endl;
-    generate_py_string_dict(f_service_, tservice->annotations());
+    generate_py_annotation_dict(f_service_, tservice->annotations());
     f_service_ << indent() << "}" << endl << endl;
   }
   std::string service_priority = get_priority(tservice);

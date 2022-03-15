@@ -692,7 +692,7 @@ MyStruct.thrift_struct_annotations = {
   "cpp.adapter": "StaticCast",
   "cpp.internal.deprecated._data.method": "1",
   "cpp.name": "YourStruct",
-  "hack.attributes": "\SomeClass(\AnotherClass::class)",
+  "hack.attributes": "\\SomeClass(\\AnotherClass::class)",
   "thrift.uri": "facebook.com/thrift/compiler/test/fixtures/basic-annotations/src/module/MyStruct",
 }
 MyStruct.thrift_field_annotations = {
