@@ -24,11 +24,11 @@ public class PubSubStreamingServiceReactiveClient
   implements PubSubStreamingService.Reactive {
   private static final AtomicLong _interactionCounter = new AtomicLong(0);
 
-  private final org.apache.thrift.ProtocolId _protocolId;
-  private final reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient;
-  private final Map<String, String> _headers;
-  private final Map<String, String> _persistentHeaders;
-  private final Set<Long> _activeInteractions;
+  protected final org.apache.thrift.ProtocolId _protocolId;
+  protected final reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient;
+  protected final Map<String, String> _headers;
+  protected final Map<String, String> _persistentHeaders;
+  protected final Set<Long> _activeInteractions;
 
   private static final TField _returnstream_I32_FROM_FIELD_DESC = new TField("i32_from", TType.I32, (short)1);
   private static final TField _returnstream_I32_TO_FIELD_DESC = new TField("i32_to", TType.I32, (short)2);
