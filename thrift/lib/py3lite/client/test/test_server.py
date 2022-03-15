@@ -48,7 +48,7 @@ class TestServiceHandler(TestServiceInterface):
         raise ValueError("Surprise!")
 
     async def readHeader(self, key: str) -> str:
-        return get_context().read_headers[key]
+        return get_context().read_headers.get(key, "")
 
 
 class EchoServiceHandler(TestServiceHandler, EchoServiceInterface):

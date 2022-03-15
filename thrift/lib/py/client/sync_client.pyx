@@ -16,6 +16,7 @@
 
 cimport folly.iobuf
 
+from copy import copy
 from cython.operator cimport dereference as deref
 from folly.iobuf cimport IOBuf
 from libcpp.memory cimport make_unique
@@ -55,19 +56,25 @@ cdef class SyncClient:
             raise TApplicationException(TApplicationException.INVALID_PROTOCOL)
 
         cdef IOBuf args_iobuf = IOBuf(serialize(protocol_factory, args))
+
+        cdef unordered_map[string, string] headers = self._persistent_headers
+        for k, v in self._onetime_headers:
+            headers[k] = v
+        self._onetime_headers.clear()
+
         if response_cls is None:
             deref(self._omni_client).oneway_send(
                 service_name,
                 function_name,
                 args_iobuf.c_clone(),
-                self._persistent_headers,
+                headers,
             )
         else:
             resp = deref(self._omni_client).sync_send(
                 service_name,
                 function_name,
                 args_iobuf.c_clone(),
-                self._persistent_headers,
+                headers,
             )
             if resp.buf.hasValue():
                 response_iobuf = folly.iobuf.from_unique_ptr(cmove(resp.buf.value()))
@@ -82,3 +89,6 @@ cdef class SyncClient:
 
     def set_persistent_header(SyncClient self, string key, string value):
         self._persistent_headers[key] = value
+
+    def set_onetime_header(SyncClient self, string key, string value):
+        self._onetime_headers[key] = value

@@ -26,3 +26,45 @@ class SyncClientTests(unittest.TestCase):
         with server_in_another_process() as path:
             with get_client(TestService.Client, path=path) as client:
                 self.assertEqual(3, client.add(1, 2))
+
+    def test_persistent_header(self) -> None:
+        with server_in_another_process() as path:
+            with get_client(TestService.Client, path=path) as client:
+                client.set_persistent_header(
+                    "PERSISTENT_HEADER_KEY", "PERSISTENT_HEADER_VALUE"
+                )
+                self.assertEqual(
+                    "PERSISTENT_HEADER_VALUE",
+                    client.readHeader("PERSISTENT_HEADER_KEY"),
+                )
+
+    def test_onetime_header(self) -> None:
+        with server_in_another_process() as path:
+            with get_client(TestService.Client, path=path) as client:
+                client.set_onetime_header("ONETIME_HEADER_KEY", "ONETIME_HEADER_VALUE")
+                self.assertEqual(
+                    "ONETIME_HEADER_VALUE",
+                    client.readHeader("ONETIME_HEADER_KEY"),
+                )
+                self.assertEqual(
+                    "",
+                    client.readHeader("ONETIME_HEADER_KEY"),
+                )
+
+    def test_onetime_header_override_persistent_header(self) -> None:
+        with server_in_another_process() as path:
+            with get_client(TestService.Client, path=path) as client:
+                client.set_persistent_header("HEADER_KEY", "PERSISTENT_HEADER_VALUE")
+                self.assertEqual(
+                    "PERSISTENT_HEADER_VALUE",
+                    client.readHeader("HEADER_KEY"),
+                )
+                client.set_onetime_header("HEADER_KEY", "ONETIME_HEADER_VALUE")
+                self.assertEqual(
+                    "ONETIME_HEADER_VALUE",
+                    client.readHeader("HEADER_KEY"),
+                )
+                self.assertEqual(
+                    "PERSISTENT_HEADER_VALUE",
+                    client.readHeader("HEADER_KEY"),
+                )

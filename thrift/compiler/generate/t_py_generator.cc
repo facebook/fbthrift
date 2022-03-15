@@ -2303,6 +2303,16 @@ void t_py_generator::generate_service_client(const t_service* tservice) {
       << endl
       << endl;
 
+  f_service_
+      << indent() << "def set_onetime_header(self, key, value):" << endl
+      << indent() << "  if self._fbthrift_cpp_transport:" << endl
+      << indent()
+      << "    self._fbthrift_cpp_transport.set_onetime_header(key, value)"
+      << endl
+      << indent() << "  else:" << endl
+      << indent() << "    self._oprot.trans.set_header(key, value)" << endl
+      << endl;
+
   // Generate client method implementations
   const auto& functions = get_functions(tservice);
   vector<t_function*>::const_iterator f_iter;

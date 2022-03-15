@@ -21,3 +21,4 @@ from thrift.py3lite.client.omni_client cimport cOmniClient
 cdef class SyncClient:
     cdef unique_ptr[cOmniClient] _omni_client
     cdef unordered_map[string, string] _persistent_headers
+    cdef unordered_map[string, string] _onetime_headers
