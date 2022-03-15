@@ -18,6 +18,7 @@
 #include <thrift/lib/cpp2/op/Get.h>
 #include <thrift/lib/cpp2/op/Patch.h>
 #include <thrift/lib/cpp2/op/Testing.h>
+#include <thrift/lib/cpp2/op/detail/StructPatch.h>
 #include <thrift/lib/cpp2/type/Field.h>
 #include <thrift/test/gen-cpp2/StructPatchTest_types.h>
 
