@@ -123,7 +123,7 @@ class ClientBufferedStream {
 #if FOLLY_HAS_COROUTINES
   folly::coro::AsyncGenerator<T&&> toAsyncGenerator() && {
     return bufferOptions_.memSize
-        ? toAsyncGeneratorWithSizeTarget<false>(
+        ? toAsyncGeneratorWithSizeTarget(
               std::move(streamBridge_),
               bufferOptions_.chunkSize,
               decode_,
@@ -139,15 +139,10 @@ class ClientBufferedStream {
   };
   folly::coro::AsyncGenerator<PayloadAndHeader&&>
   toAsyncGeneratorWithHeader() && {
-    return bufferOptions_.memSize
-        ? toAsyncGeneratorWithSizeTarget<true>(
-              std::move(streamBridge_),
-              bufferOptions_.chunkSize,
-              decode_,
-              bufferOptions_.memSize,
-              bufferOptions_.maxChunkSize)
-        : toAsyncGeneratorImpl<true>(
-              std::move(streamBridge_), bufferOptions_.chunkSize, decode_);
+    CHECK_EQ(bufferOptions_.memSize, 0)
+        << "MemoryBufferSize not supported by toAsyncGeneratorWithHeader()";
+    return toAsyncGeneratorImpl<true>(
+        std::move(streamBridge_), bufferOptions_.chunkSize, decode_);
   }
 #endif // FOLLY_HAS_COROUTINES
 
@@ -268,10 +263,7 @@ class ClientBufferedStream {
     }
   }
 
-  template <bool WithHeader>
-  static folly::coro::AsyncGenerator<
-      std::conditional_t<WithHeader, PayloadAndHeader, T>&&>
-  toAsyncGeneratorWithSizeTarget(
+  static folly::coro::AsyncGenerator<T&&> toAsyncGeneratorWithSizeTarget(
       apache::thrift::detail::ClientStreamBridge::ClientPtr streamBridge,
       int32_t chunkBufferSize,
       folly::Try<T> (*decode)(folly::Try<StreamPayload>&&),
@@ -350,48 +342,22 @@ class ClientBufferedStream {
             : 0;
         if (payload.hasValue()) {
           if (!payload->payload) {
-            if constexpr (!WithHeader) {
-              FB_LOG_EVERY_MS(WARNING, 1000)
-                  << "Dropping unhandled stream header frame";
-              queue.pop();
-              continue;
-            }
-          } else {
-            windowSum -= std::exchange(
-                payloadSizesWindow[numReceivedPayloads % kEstimationWindowSize],
-                payloadSize);
-            windowSum += payloadSize;
-            numReceivedPayloads += 1;
-            maxPayloadSize = std::max(maxPayloadSize, payloadSize);
-          }
-        }
-        if constexpr (WithHeader) {
-          if (payload.hasValue()) {
-            PayloadAndHeader ret;
-            bool usedCredit = false;
-            ret.metadata = std::move(payload->metadata);
-            if (payload->payload) {
-              bufferMemSize -= payloadSize;
-              ret.payload = *decode(std::move(payload));
-              usedCredit = true;
-            }
+            FB_LOG_EVERY_MS(WARNING, 1000)
+                << "Dropping unhandled stream header frame";
             queue.pop();
-            co_yield std::move(ret);
-            if (!usedCredit) {
-              continue;
-            }
-          } else {
-            co_yield folly::coro::co_error(
-                decode(std::move(payload)).exception());
+            continue;
           }
-        } else {
-          if (payload.hasValue() && payload->payload) {
-            bufferMemSize -= payloadSize;
-          }
-          auto value = decode(std::move(payload));
-          queue.pop();
-          co_yield folly::coro::co_result(std::move(value));
+          windowSum -= std::exchange(
+              payloadSizesWindow[numReceivedPayloads % kEstimationWindowSize],
+              payloadSize);
+          windowSum += payloadSize;
+          numReceivedPayloads += 1;
+          maxPayloadSize = std::max(maxPayloadSize, payloadSize);
+          bufferMemSize -= payloadSize;
         }
+        auto value = decode(std::move(payload));
+        queue.pop();
+        co_yield folly::coro::co_result(std::move(value));
 
         DCHECK_LT(0, outstanding);
         --outstanding;
