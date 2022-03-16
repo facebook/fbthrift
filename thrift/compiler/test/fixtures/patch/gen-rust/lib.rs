@@ -52,8 +52,11 @@ pub mod types {
 
     #[derive(Clone, PartialEq)]
     pub struct MyStructValuePatch {
+        #[doc = "Assigns to a given struct. If set, all other operations are ignored."]
         pub assign: ::std::option::Option<crate::types::MyStruct>,
+        #[doc = "Clears a given struct. Applied first."]
         pub clear: ::std::primitive::bool,
+        #[doc = "Patches a given struct. Applied second."]
         pub patch: crate::types::MyStructPatch,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to

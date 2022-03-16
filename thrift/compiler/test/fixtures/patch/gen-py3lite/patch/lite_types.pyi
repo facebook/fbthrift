@@ -10,7 +10,20 @@ import typing as _typing
 import thrift.py3lite.types as _fbthrift_py3lite_types
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 
+import facebook.thrift.annotation.scope.lite_types
+
 import facebook.thrift.annotation.thrift.thrift.lite_types
+
+
+class GeneratePatch(_fbthrift_py3lite_types.Struct):
+    def __init__(
+        self,
+    ) -> None: ...
+
+    def __call__(
+        self,
+    ) -> GeneratePatch: ...
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[None]]]: ...
 
 
 class BoolPatch(_fbthrift_py3lite_types.Struct):

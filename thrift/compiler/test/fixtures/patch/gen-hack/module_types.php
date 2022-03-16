@@ -280,7 +280,12 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        'GeneratePatch' => GeneratePatch::fromShape(
+          shape(
+          )
+        ),
+      ],
       'fields' => dict[
       ],
     );
@@ -915,16 +920,22 @@ class MyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
   );
   const int STRUCTURAL_ID = 2768499115510098920;
   /**
+   * Assigns to a given struct. If set, all other operations are ignored.
+   * 
    * Original thrift field:-
    * 1: struct module.MyStruct assign
    */
   public ?MyStruct $assign;
   /**
+   * Clears a given struct. Applied first.
+   * 
    * Original thrift field:-
    * 2: bool clear
    */
   public bool $clear;
   /**
+   * Patches a given struct. Applied second.
+   * 
    * Original thrift field:-
    * 3: struct module.MyStructPatch patch
    */
@@ -1009,6 +1020,15 @@ class MyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
     return shape(
       'struct' => dict[],
       'fields' => dict[
+        'assign' => shape(
+          'field' => dict[],
+          'type' => dict[
+            'GeneratePatch' => GeneratePatch::fromShape(
+              shape(
+              )
+            ),
+          ],
+        ),
       ],
     );
   }

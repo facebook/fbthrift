@@ -287,7 +287,7 @@ cdef __StructSpec get_reflection__MyStructValuePatch():
             qualifier=__Qualifier.OPTIONAL,
             default=None,
             annotations={
-                """thrift.box""": """1""",            },
+                """thrift.box""": "1",            },
         ),
     )
     spec.add_field(

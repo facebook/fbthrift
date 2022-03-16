@@ -9,7 +9,23 @@ import thrift.py3lite.types as _fbthrift_py3lite_types
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 
 
+import facebook.thrift.annotation.scope.lite_types
+
 import facebook.thrift.annotation.thrift.thrift.lite_types
+
+
+class GeneratePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "patch.GeneratePatch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_GeneratePatch()
+
 
 
 class BoolPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
@@ -267,6 +283,8 @@ class BinaryPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
 import patch.lite_metadata
 
 
+def _fbthrift_metadata__struct_GeneratePatch():
+    return patch.lite_metadata.gen_metadata_struct_GeneratePatch()
 def _fbthrift_metadata__struct_BoolPatch():
     return patch.lite_metadata.gen_metadata_struct_BoolPatch()
 def _fbthrift_metadata__struct_BytePatch():
@@ -289,6 +307,7 @@ def _fbthrift_metadata__struct_BinaryPatch():
 
 
 _fbthrift_py3lite_types.fill_specs(
+    GeneratePatch,
     BoolPatch,
     BytePatch,
     I16Patch,

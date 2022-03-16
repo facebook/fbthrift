@@ -30,8 +30,17 @@ public class MyStructValuePatch implements TBase, java.io.Serializable, Cloneabl
   private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
   private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
 
+  /**
+   * Assigns to a given struct. If set, all other operations are ignored.
+   */
   public MyStruct assign;
+  /**
+   * Clears a given struct. Applied first.
+   */
   public boolean clear;
+  /**
+   * Patches a given struct. Applied second.
+   */
   public MyStructPatch patch;
   public static final int ASSIGN = 1;
   public static final int CLEAR = 2;
@@ -141,10 +150,16 @@ public class MyStructValuePatch implements TBase, java.io.Serializable, Cloneabl
     return new MyStructValuePatch(this);
   }
 
+  /**
+   * Assigns to a given struct. If set, all other operations are ignored.
+   */
   public MyStruct getAssign() {
     return this.assign;
   }
 
+  /**
+   * Assigns to a given struct. If set, all other operations are ignored.
+   */
   public MyStructValuePatch setAssign(MyStruct assign) {
     this.assign = assign;
     return this;
@@ -165,10 +180,16 @@ public class MyStructValuePatch implements TBase, java.io.Serializable, Cloneabl
     }
   }
 
+  /**
+   * Clears a given struct. Applied first.
+   */
   public boolean isClear() {
     return this.clear;
   }
 
+  /**
+   * Clears a given struct. Applied first.
+   */
   public MyStructValuePatch setClear(boolean clear) {
     this.clear = clear;
     setClearIsSet(true);
@@ -188,10 +209,16 @@ public class MyStructValuePatch implements TBase, java.io.Serializable, Cloneabl
     __isset_bit_vector.set(__CLEAR_ISSET_ID, __value);
   }
 
+  /**
+   * Patches a given struct. Applied second.
+   */
   public MyStructPatch getPatch() {
     return this.patch;
   }
 
+  /**
+   * Patches a given struct. Applied second.
+   */
   public MyStructValuePatch setPatch(MyStructPatch patch) {
     this.patch = patch;
     return this;

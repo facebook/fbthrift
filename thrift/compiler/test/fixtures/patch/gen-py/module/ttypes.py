@@ -493,9 +493,9 @@ class MyStructPatch:
 class MyStructValuePatch:
   """
   Attributes:
-   - assign
-   - clear
-   - patch
+   - assign: Assigns to a given struct. If set, all other operations are ignored.
+   - clear: Clears a given struct. Applied first.
+   - patch: Patches a given struct. Applied second.
   """
 
   thrift_spec = None
@@ -719,7 +719,7 @@ MyStructValuePatch.thrift_struct_annotations = {
 }
 MyStructValuePatch.thrift_field_annotations = {
   1: {
-    "thrift.box": "1",
+    "thrift.box": "",
   },
 }
 

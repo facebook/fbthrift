@@ -20,6 +20,13 @@ namespace py3 {
 
 
 template<>
+void reset_field<::apache::thrift::op::GeneratePatch>(
+    ::apache::thrift::op::GeneratePatch& obj, uint16_t index) {
+  switch (index) {
+  }
+}
+
+template<>
 void reset_field<::apache::thrift::op::BoolPatch>(
     ::apache::thrift::op::BoolPatch& obj, uint16_t index) {
   switch (index) {
@@ -134,6 +141,16 @@ void reset_field<::apache::thrift::op::BinaryPatch>(
       obj.assign_ref().copy_from(default_inst<::apache::thrift::op::BinaryPatch>().assign_ref());
       return;
   }
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::apache::thrift::op::GeneratePatch>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
 }
 
 template<>

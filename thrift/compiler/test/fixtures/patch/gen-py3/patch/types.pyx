@@ -53,11 +53,95 @@ import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
 import weakref as __weakref
 import builtins as _builtins
+cimport facebook.thrift.annotation.scope.types as _facebook_thrift_annotation_scope_types
+import facebook.thrift.annotation.scope.types as _facebook_thrift_annotation_scope_types
 cimport facebook.thrift.annotation.thrift.thrift.types as _facebook_thrift_annotation_thrift_thrift_types
 import facebook.thrift.annotation.thrift.thrift.types as _facebook_thrift_annotation_thrift_thrift_types
 
 cimport patch.types_reflection as _types_reflection
 
+
+
+@__cython.auto_pickle(False)
+cdef class GeneratePatch(thrift.py3.types.Struct):
+    def __init__(GeneratePatch self, **kwargs):
+        self._cpp_obj = make_shared[cGeneratePatch]()
+        self._fields_setter = _fbthrift_types_fields.__GeneratePatch_FieldsSetter._fbthrift_create(self._cpp_obj.get())
+        super().__init__(**kwargs)
+
+    def __call__(GeneratePatch self, **kwargs):
+        return self
+
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
+
+    cdef object _fbthrift_isset(self):
+        return thrift.py3.types._IsSet("GeneratePatch", {
+        })
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cGeneratePatch] cpp_obj):
+        __fbthrift_inst = <GeneratePatch>GeneratePatch.__new__(GeneratePatch)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
+        return __fbthrift_inst
+
+
+    def __hash__(GeneratePatch self):
+        return super().__hash__()
+
+    def __repr__(GeneratePatch self):
+        return super().__repr__()
+
+    def __str__(GeneratePatch self):
+        return super().__str__()
+
+
+    def __copy__(GeneratePatch self):
+        cdef shared_ptr[cGeneratePatch] cpp_obj = make_shared[cGeneratePatch](
+            deref(self._cpp_obj)
+        )
+        return GeneratePatch._fbthrift_create(cmove(cpp_obj))
+
+    def __richcmp__(self, other, int op):
+        r = self._fbthrift_cmp_sametype(other, op)
+        return __richcmp[cGeneratePatch](
+            self._cpp_obj,
+            (<GeneratePatch>other)._cpp_obj,
+            op,
+        ) if r is None else r
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__GeneratePatch()
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cGeneratePatch].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "patch.GeneratePatch"
+
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cGeneratePatch](idx)
+
+    def __cinit__(self):
+        self._fbthrift_struct_size = 0
+
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(GeneratePatch self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cGeneratePatch](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(GeneratePatch self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cGeneratePatch]()
+        with nogil:
+            needed = serializer.cdeserialize[cGeneratePatch](buf, self._cpp_obj.get(), proto)
+        return needed
 
 
 @__cython.auto_pickle(False)

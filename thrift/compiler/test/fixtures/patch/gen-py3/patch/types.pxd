@@ -38,6 +38,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 from folly.optional cimport cOptional as __cOptional
+cimport facebook.thrift.annotation.scope.types as _facebook_thrift_annotation_scope_types
 cimport facebook.thrift.annotation.thrift.thrift.types as _facebook_thrift_annotation_thrift_thrift_types
 
 cimport patch.types_fields as _fbthrift_types_fields
@@ -62,6 +63,17 @@ cdef extern from "thrift/lib/thrift/gen-cpp2/patch_metadata.h" namespace "apache
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "thrift/lib/thrift/gen-cpp2/patch_types_custom_protocol.h" namespace "::apache::thrift::op":
+
+    cdef cppclass cGeneratePatch "::apache::thrift::op::GeneratePatch":
+        cGeneratePatch() except +
+        cGeneratePatch(const cGeneratePatch&) except +
+        bint operator==(cGeneratePatch&)
+        bint operator!=(cGeneratePatch&)
+        bint operator<(cGeneratePatch&)
+        bint operator>(cGeneratePatch&)
+        bint operator<=(cGeneratePatch&)
+        bint operator>=(cGeneratePatch&)
+
 
     cdef cppclass cBoolPatch "::apache::thrift::op::BoolPatch":
         cBoolPatch() except +
@@ -179,6 +191,15 @@ cdef extern from "thrift/lib/thrift/gen-cpp2/patch_types_custom_protocol.h" name
         bint operator>=(cBinaryPatch&)
         __optional_field_ref[_folly_IOBuf] assign_ref()
 
+
+
+
+cdef class GeneratePatch(thrift.py3.types.Struct):
+    cdef shared_ptr[cGeneratePatch] _cpp_obj
+    cdef _fbthrift_types_fields.__GeneratePatch_FieldsSetter _fields_setter
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cGeneratePatch])
 
 
 

@@ -16,6 +16,7 @@
 
 #include <thrift/compiler/sema/standard_mutator.h>
 
+#include <thrift/compiler/sema/patch_mutator.h>
 #include <thrift/compiler/sema/standard_mutator_stage.h>
 
 namespace apache {
@@ -172,6 +173,7 @@ ast_mutators standard_mutators() {
     main.add_field_visitor(&mutate_terse_write_annotation_field);
     main.add_struct_visitor(&mutate_terse_write_annotation_struct);
   }
+  add_patch_mutators(mutators);
   return mutators;
 }
 

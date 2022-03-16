@@ -15,11 +15,18 @@
  */
 
 include "thrift/annotation/thrift.thrift"
+include "thrift/annotation/scope.thrift"
 cpp_include "thrift/lib/cpp2/op/detail/Patch.h"
 
 namespace cpp2 apache.thrift.op
 namespace java.swift com.facebook.thrift.op
 namespace java2 com.facebook.thrift.op
+
+// An annotation that indicates a patch representation
+// should be generated for the associated definition.
+@scope.Struct
+@thrift.Experimental
+struct GeneratePatch {} (thrift.uri = "facebook.com/thrift/op/GeneratePatch")
 
 // A patch for a boolean value.
 @thrift.Experimental

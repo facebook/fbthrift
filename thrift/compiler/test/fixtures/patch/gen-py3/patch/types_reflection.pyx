@@ -14,6 +14,7 @@ from thrift.py3.reflection cimport (
     Qualifier as __Qualifier,
 )
 
+cimport facebook.thrift.annotation.scope.types as _facebook_thrift_annotation_scope_types
 cimport facebook.thrift.annotation.thrift.thrift.types as _facebook_thrift_annotation_thrift_thrift_types
 
 cimport patch.types as _patch_types
@@ -24,6 +25,19 @@ from thrift.py3.types cimport (
 )
 
 
+cdef __StructSpec get_reflection__GeneratePatch():
+    cdef _patch_types.GeneratePatch defaults = _patch_types.GeneratePatch._fbthrift_create(
+        constant_shared_ptr[_patch_types.cGeneratePatch](
+            default_inst[_patch_types.cGeneratePatch]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
+        name="GeneratePatch",
+        kind=__StructType.STRUCT,
+        annotations={
+            """thrift.uri""": """facebook.com/thrift/op/GeneratePatch""",        },
+    )
+    return spec
 cdef __StructSpec get_reflection__BoolPatch():
     cdef _patch_types.BoolPatch defaults = _patch_types.BoolPatch._fbthrift_create(
         constant_shared_ptr[_patch_types.cBoolPatch](

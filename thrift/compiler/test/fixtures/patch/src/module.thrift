@@ -23,6 +23,7 @@ namespace java test.fixtures.patch
 namespace java2 test.fixtures.patch
 namespace java.swift test.fixtures.patch
 
+@patch.GeneratePatch
 struct MyStruct {
   1: bool boolVal;
   2: byte byteVal;
@@ -33,30 +34,4 @@ struct MyStruct {
   7: double doubleVal;
   8: string stringVal;
   9: binary (cpp.type = "::folly::IOBuf") binaryVal;
-}
-
-// TODO(afuller): Generate this via an annotation + ast_mutator.
-struct MyStructPatch {
-  1: patch.BoolPatch boolVal;
-  2: patch.BytePatch byteVal;
-  3: patch.I16Patch i16Val;
-  4: patch.I32Patch i32Val;
-  5: patch.I64Patch i64Val;
-  6: patch.FloatPatch floatVal;
-  7: patch.DoublePatch doubleVal;
-  8: patch.StringPatch stringVal;
-  9: patch.BinaryPatch binaryVal;
-}
-
-// TODO(afuller): Generate this via an annotation + ast_mutator (though
-// eventually it should be a shared type-parameterized struct).
-struct MyStructValuePatch {
-  // Assigns to a given struct. If set, all other operations are ignored.
-  1: optional MyStruct assign (thrift.box);
-
-  // Clears a given struct. Applied first
-  2: bool clear;
-
-  // Patches a given struct. Applied second.
-  3: MyStructPatch patch;
 }

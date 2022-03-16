@@ -38,10 +38,21 @@ from thrift.py3.types cimport (
 )
 from folly.optional cimport cOptional as __cOptional
 
+cimport facebook.thrift.annotation.scope.types as _facebook_thrift_annotation_scope_types
 cimport facebook.thrift.annotation.thrift.thrift.types as _facebook_thrift_annotation_thrift_thrift_types
 
 cimport patch.types as _patch_types
 
+
+
+ctypedef void (*__GeneratePatch_FieldsSetterFunc)(__GeneratePatch_FieldsSetter, object) except *
+
+cdef class __GeneratePatch_FieldsSetter(__StructFieldsSetter):
+    cdef _patch_types.cGeneratePatch* _struct_cpp_obj
+    cdef cumap[__cstring_view, __GeneratePatch_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __GeneratePatch_FieldsSetter _fbthrift_create(_patch_types.cGeneratePatch* struct_cpp_obj)
 
 
 ctypedef void (*__BoolPatch_FieldsSetterFunc)(__BoolPatch_FieldsSetter, object) except *

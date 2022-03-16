@@ -1,4 +1,4 @@
-# Copyright (c) Facebook, Inc. and its affiliates.
+# Copyright (c) Meta Platforms, Inc. and affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -63,10 +63,11 @@ add_library(
   util.cc
 
   parse/parsing_driver.cc
+  sema/const_checker.cc
+  sema/patch_mutator.cc
+  sema/scope_validator.cc
   sema/standard_mutator.cc
   sema/standard_validator.cc
-  sema/scope_validator.cc
-  sema/const_checker.cc
 
   ${FLEX_ThriftScanner_OUTPUTS}
   ${BISON_ThriftParser_OUTPUTS}

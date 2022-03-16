@@ -14,10 +14,33 @@ from typing_extensions import Final
 
 import sys
 import itertools
+import facebook.thrift.annotation.scope.types as _facebook_thrift_annotation_scope_types
 import facebook.thrift.annotation.thrift.thrift.types as _facebook_thrift_annotation_thrift_thrift_types
 
 
 __property__ = property
+
+
+class GeneratePatch(thrift.py3.types.Struct, _typing.Hashable):
+    class __fbthrift_IsSet:
+        pass
+
+    def __init__(
+        self, 
+    ) -> None: ...
+
+    def __call__(
+        self, 
+    ) -> GeneratePatch: ...
+
+    def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['GeneratePatch'], bytes]]: ...
+    def __hash__(self) -> int: ...
+    def __str__(self) -> str: ...
+    def __repr__(self) -> str: ...
+    def __lt__(self, other: 'GeneratePatch') -> bool: ...
+    def __gt__(self, other: 'GeneratePatch') -> bool: ...
+    def __le__(self, other: 'GeneratePatch') -> bool: ...
+    def __ge__(self, other: 'GeneratePatch') -> bool: ...
 
 
 class BoolPatch(thrift.py3.types.Struct, _typing.Hashable):

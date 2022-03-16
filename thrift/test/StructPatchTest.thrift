@@ -19,6 +19,7 @@ include "thrift/lib/thrift/patch.thrift"
 
 namespace cpp2 apache.thrift.test.patch
 
+@patch.GeneratePatch
 struct MyStruct {
   1: bool boolVal;
   2: byte byteVal;
@@ -30,30 +31,3 @@ struct MyStruct {
   8: string stringVal;
   9: binary (cpp.type = "::folly::IOBuf") binaryVal;
 } (thrift.uri = "facebook.com/thrift/test/patch/MyStruct")
-
-// TODO(afuller): Generate this via an annotation + ast_mutator.
-struct MyStructPatch {
-  1: patch.BoolPatch boolVal;
-  2: patch.BytePatch byteVal;
-  3: patch.I16Patch i16Val;
-  4: patch.I32Patch i32Val;
-  5: patch.I64Patch i64Val;
-  6: patch.FloatPatch floatVal;
-  7: patch.DoublePatch doubleVal;
-  8: patch.StringPatch stringVal;
-  9: patch.BinaryPatch binaryVal;
-} (thrift.uri = "facebook.com/thrift/test/patch/MyStructPatch")
-
-// TODO(afuller): Generate this via an annotation + ast_mutator (though
-// eventually it should be a shared type-parameterized struct).
-struct MyStructValuePatch {
-  // Assigns to a given struct. If set, all other operations are ignored.
-  @thrift.Box
-  1: optional MyStruct assign;
-
-  // Clears a given struct. Applied first
-  2: bool clear;
-
-  // Patches a given struct. Applied second.
-  3: MyStructPatch patch;
-} (thrift.uri = "facebook.com/thrift/test/patch/MyStructValuePatch")

@@ -10,10 +10,17 @@ import typing as _typing
 import folly.iobuf as _fbthrift_iobuf
 import thrift.py3.builder
 
+import facebook.thrift.annotation.scope.types as _facebook_thrift_annotation_scope_types
+import facebook.thrift.annotation.scope.builders as _facebook_thrift_annotation_scope_builders
 import facebook.thrift.annotation.thrift.thrift.types as _facebook_thrift_annotation_thrift_thrift_types
 import facebook.thrift.annotation.thrift.thrift.builders as _facebook_thrift_annotation_thrift_thrift_builders
 
 import patch.types as _patch_types
+
+
+class GeneratePatch_Builder(thrift.py3.builder.StructBuilder):
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
 
 class BoolPatch_Builder(thrift.py3.builder.StructBuilder):
