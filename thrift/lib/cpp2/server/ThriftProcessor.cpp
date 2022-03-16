@@ -129,6 +129,8 @@ void ThriftProcessor::onThriftRequest(
             serviceRequestInfo =
                 &requestInfo->get().at(request->getMethodName());
           }
+          auto [requestsProcessor, metadata] =
+              processor_->getRequestsProcessor(found.metadata);
           ServerRequest serverRequest(
               std::move(request),
               SerializedCompressedRequest(std::move(payload)),
@@ -136,8 +138,8 @@ void ThriftProcessor::onThriftRequest(
               reqContext,
               protoId,
               folly::RequestContext::saveContext(),
-              processor_.get(),
-              &found.metadata,
+              requestsProcessor,
+              metadata,
               serviceRequestInfo);
 
           auto poolResult = AsyncProcessorHelper::selectResourcePool(
