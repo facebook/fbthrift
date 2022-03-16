@@ -401,6 +401,20 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
     }
   }
 }
+
+template <typename Error, typename Callback, typename ResponseChannel>
+void handleStreamError(
+    Error&& error, Callback& callback, ResponseChannel* channel) {
+  error.handle(
+      [&](RocketException& ex) {
+        std::exchange(callback, nullptr)->onFirstResponseError(std::move(ex));
+      },
+      [&](...) {
+        channel->sendErrorWrapped(
+            std::forward<Error>(error), kUnknownErrorCode);
+      });
+}
+
 } // namespace
 
 ThriftServerRequestResponse::ThriftServerRequestResponse(
@@ -578,12 +592,7 @@ bool ThriftServerRequestStream::sendStreamThriftResponse(
   }
   if (auto error = processFirstResponse(
           metadata, data, getProtoId(), version_, getCompressionConfig())) {
-    error.handle(
-        [&](RocketException& ex) {
-          std::exchange(clientCallback_, nullptr)
-              ->onFirstResponseError(std::move(ex));
-        },
-        [&](...) { sendErrorWrapped(std::move(error), kUnknownErrorCode); });
+    handleStreamError(std::move(error), clientCallback_, this);
     return false;
   }
   context_.unsetMarkRequestComplete();
@@ -605,12 +614,7 @@ void ThriftServerRequestStream::sendStreamThriftResponse(
   }
   if (auto error = processFirstResponse(
           metadata, data, getProtoId(), version_, getCompressionConfig())) {
-    error.handle(
-        [&](RocketException& ex) {
-          std::exchange(clientCallback_, nullptr)
-              ->onFirstResponseError(std::move(ex));
-        },
-        [&](...) { sendErrorWrapped(std::move(error), kUnknownErrorCode); });
+    handleStreamError(std::move(error), clientCallback_, this);
     return;
   }
   context_.unsetMarkRequestComplete();
@@ -627,12 +631,7 @@ void ThriftServerRequestStream::sendSerializedError(
     std::unique_ptr<folly::IOBuf> exbuf) noexcept {
   if (auto error = processFirstResponse(
           metadata, exbuf, getProtoId(), version_, getCompressionConfig())) {
-    error.handle(
-        [&](RocketException& ex) {
-          std::exchange(clientCallback_, nullptr)
-              ->onFirstResponseError(std::move(ex));
-        },
-        [&](...) { sendErrorWrapped(std::move(error), kUnknownErrorCode); });
+    handleStreamError(std::move(error), clientCallback_, this);
     return;
   }
   std::exchange(clientCallback_, nullptr)
@@ -698,12 +697,7 @@ void ThriftServerRequestSink::sendSerializedError(
     std::unique_ptr<folly::IOBuf> exbuf) noexcept {
   if (auto error = processFirstResponse(
           metadata, exbuf, getProtoId(), version_, getCompressionConfig())) {
-    error.handle(
-        [&](RocketException& ex) {
-          std::exchange(clientCallback_, nullptr)
-              ->onFirstResponseError(std::move(ex));
-        },
-        [&](...) { sendErrorWrapped(std::move(error), kUnknownErrorCode); });
+    handleStreamError(std::move(error), clientCallback_, this);
     return;
   }
   std::exchange(clientCallback_, nullptr)
@@ -723,12 +717,7 @@ void ThriftServerRequestSink::sendSinkThriftResponse(
   }
   if (auto error = processFirstResponse(
           metadata, data, getProtoId(), version_, getCompressionConfig())) {
-    error.handle(
-        [&](RocketException& ex) {
-          std::exchange(clientCallback_, nullptr)
-              ->onFirstResponseError(std::move(ex));
-        },
-        [&](...) { sendErrorWrapped(std::move(error), kUnknownErrorCode); });
+    handleStreamError(std::move(error), clientCallback_, this);
     return;
   }
   context_.unsetMarkRequestComplete();
@@ -759,12 +748,7 @@ bool ThriftServerRequestSink::sendSinkThriftResponse(
   }
   if (auto error = processFirstResponse(
           metadata, data, getProtoId(), version_, getCompressionConfig())) {
-    error.handle(
-        [&](RocketException& ex) {
-          std::exchange(clientCallback_, nullptr)
-              ->onFirstResponseError(std::move(ex));
-        },
-        [&](...) { sendErrorWrapped(std::move(error), kUnknownErrorCode); });
+    handleStreamError(std::move(error), clientCallback_, this);
     return false;
   }
   context_.unsetMarkRequestComplete();
