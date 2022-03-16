@@ -243,5 +243,60 @@ TEST_F(UtilTest, get_gen_type_class) {
       "::apache::thrift::type_class::string",
       cpp2::get_gen_type_class(t_base_type::t_string()));
 }
+
+TEST_F(UtilTest, is_custom_type) {
+  t_program p("path/to/program.thrift");
+
+  {
+    auto cppType = t_base_type::t_string();
+    auto typeDef = t_typedef(&p, "Type", cppType);
+    EXPECT_FALSE(cpp2::is_custom_type(cppType));
+    EXPECT_FALSE(cpp2::is_custom_type(typeDef));
+    cppType.set_annotation("cpp.type", "folly::fbstring");
+    EXPECT_TRUE(cpp2::is_custom_type(cppType));
+    EXPECT_TRUE(cpp2::is_custom_type(typeDef));
+  }
+
+  {
+    auto cpp2Type = t_base_type::t_string();
+    auto typeDef = t_typedef(&p, "Type", cpp2Type);
+    EXPECT_FALSE(cpp2::is_custom_type(cpp2Type));
+    EXPECT_FALSE(cpp2::is_custom_type(typeDef));
+    cpp2Type.set_annotation("cpp2.type", "folly::fbstring");
+    EXPECT_TRUE(cpp2::is_custom_type(cpp2Type));
+    EXPECT_TRUE(cpp2::is_custom_type(typeDef));
+  }
+
+  const auto i32 = t_base_type::t_i32();
+  {
+    auto cppTemplate = t_list(&i32);
+    auto typeDef = t_typedef(&p, "Type", cppTemplate);
+    EXPECT_FALSE(cpp2::is_custom_type(cppTemplate));
+    EXPECT_FALSE(cpp2::is_custom_type(typeDef));
+    cppTemplate.set_annotation("cpp.template", "std::deque");
+    EXPECT_TRUE(cpp2::is_custom_type(cppTemplate));
+    EXPECT_TRUE(cpp2::is_custom_type(typeDef));
+  }
+
+  {
+    auto cpp2Template = t_list(&i32);
+    auto typeDef = t_typedef(&p, "Type", cpp2Template);
+    EXPECT_FALSE(cpp2::is_custom_type(cpp2Template));
+    EXPECT_FALSE(cpp2::is_custom_type(typeDef));
+    cpp2Template.set_annotation("cpp2.template", "std::deque");
+    EXPECT_TRUE(cpp2::is_custom_type(cpp2Template));
+    EXPECT_TRUE(cpp2::is_custom_type(typeDef));
+  }
+
+  {
+    auto cppAdapter = i32;
+    auto typeDef = t_typedef(&p, "Type", cppAdapter);
+    EXPECT_FALSE(cpp2::is_custom_type(cppAdapter));
+    EXPECT_FALSE(cpp2::is_custom_type(typeDef));
+    cppAdapter.set_annotation("cpp.adapter", "Adapter");
+    EXPECT_TRUE(cpp2::is_custom_type(cppAdapter));
+    EXPECT_TRUE(cpp2::is_custom_type(typeDef));
+  }
+}
 } // namespace
 } // namespace apache::thrift::compiler

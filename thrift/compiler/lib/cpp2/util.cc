@@ -47,14 +47,17 @@ const std::string& value_or_empty(const std::string* value) {
 
 } // namespace
 
+// TODO: check @cpp.Adapter
 bool is_custom_type(const t_type& type) {
-  return type.has_annotation({
-      "cpp.template",
-      "cpp2.template",
-      "cpp.type",
-      "cpp2.type",
-      "cpp.adapter",
-  });
+  return t_typedef::get_first_annotation_or_null(
+      &type,
+      {
+          "cpp.template",
+          "cpp2.template",
+          "cpp.type",
+          "cpp2.type",
+          "cpp.adapter",
+      });
 }
 
 bool is_orderable(
