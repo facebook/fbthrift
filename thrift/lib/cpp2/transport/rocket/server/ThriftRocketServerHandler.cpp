@@ -30,6 +30,7 @@
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/async/AsyncProcessorHelper.h>
+#include <thrift/lib/cpp2/async/MultiplexAsyncProcessor.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
@@ -186,6 +187,10 @@ void ThriftRocketServerHandler::handleSetupFrame(
       if (processorInfo) {
         bool valid = true;
         processorFactory_ = std::addressof(processorInfo->processorFactory_);
+        if (useResourcePoolsFlagsSet()) {
+          CHECK(
+              dynamic_cast<MultiplexAsyncProcessorFactory*>(processorFactory_));
+        }
         serviceMetadata_ =
             std::addressof(worker_->getMetadataForService(*processorFactory_));
         serviceRequestInfoMap_ = processorFactory_->getServiceRequestInfoMap();
@@ -210,6 +215,9 @@ void ThriftRocketServerHandler::handleSetupFrame(
     // no custom frame handler was found, do the default
     processorFactory_ =
         std::addressof(worker_->getServer()->getDecoratedProcessorFactory());
+    if (useResourcePoolsFlagsSet()) {
+      CHECK(dynamic_cast<MultiplexAsyncProcessorFactory*>(processorFactory_));
+    }
     serviceMetadata_ =
         std::addressof(worker_->getMetadataForService(*processorFactory_));
     serviceRequestInfoMap_ = processorFactory_->getServiceRequestInfoMap();
@@ -241,7 +249,6 @@ void ThriftRocketServerHandler::handleSetupFrame(
     compactProtocolWriter.setOutput(&queue);
     serverMeta.write(&compactProtocolWriter);
     connection.sendMetadataPush(std::move(queue).move());
-
   } catch (const std::exception& e) {
     return connection.close(folly::make_exception_wrapper<RocketException>(
         ErrorCode::INVALID_SETUP,

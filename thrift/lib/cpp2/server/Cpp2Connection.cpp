@@ -22,6 +22,7 @@
 #include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/async/AsyncProcessorHelper.h>
+#include <thrift/lib/cpp2/async/MultiplexAsyncProcessor.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
@@ -144,6 +145,9 @@ Cpp2Connection::Cpp2Connection(
           worker_.get()),
       transport_(transport),
       executor_(worker_->getServer()->getExecutor()) {
+  if (useResourcePoolsFlagsSet()) {
+    CHECK(dynamic_cast<MultiplexAsyncProcessorFactory*>(&processorFactory_));
+  }
   if (!useResourcePoolsFlagsSet()) {
     threadManager_ = worker_->getServer()->getThreadManager();
   }
