@@ -412,6 +412,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   std::vector<std::shared_ptr<server::TServerEventHandler>> eventHandlers_;
   AdaptiveConcurrencyController adaptiveConcurrencyController_;
 
+  bool usingCustomThreadManager_{false};
+
  protected:
   //! The server's listening addresses
   std::vector<folly::SocketAddress> addresses_;
@@ -472,6 +474,19 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   InjectedFailure maybeInjectFailure() const {
     return failureInjection_.test();
+  }
+
+  // This is meant to be used internally
+  // We separate setThreadManager and configureThreadManager
+  // so that we can have proper logging for the former
+  // These APIs will be deprecated eventually when ResourcePool
+  // migration is done.
+  void setThreadManagerInternal(
+      std::shared_ptr<apache::thrift::concurrency::ThreadManager>
+          threadManager) {
+    CHECK(configMutable());
+    std::lock_guard<std::mutex> lock(threadManagerMutex_);
+    threadManager_ = threadManager;
   }
 
   getHandlerFunc getHandler_;
@@ -596,15 +611,15 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   /**
    * Set Thread Manager (for queuing mode).
    * If not set, defaults to the number of worker threads.
+   * This is meant to be used as an external API
    *
    * @param threadManager a shared pointer to the thread manager
    */
   void setThreadManager(
       std::shared_ptr<apache::thrift::concurrency::ThreadManager>
           threadManager) {
-    CHECK(configMutable());
-    std::lock_guard<std::mutex> lock(threadManagerMutex_);
-    threadManager_ = threadManager;
+    setThreadManagerInternal(threadManager);
+    usingCustomThreadManager_ = true;
   }
 
   /**
@@ -614,12 +629,11 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setThreadManagerFromExecutor(
       folly::Executor* executor, std::string name = "") {
-    CHECK(configMutable());
-    std::lock_guard<std::mutex> lock(threadManagerMutex_);
     concurrency::ThreadManagerExecutorAdapter::Options opts(std::move(name));
-    threadManager_ =
+    setThreadManagerInternal(
         std::make_shared<concurrency::ThreadManagerExecutorAdapter>(
-            folly::getKeepAliveToken(executor), std::move(opts));
+            folly::getKeepAliveToken(executor), std::move(opts)));
+    usingCustomThreadManager_ = true;
   }
 
   /**
@@ -1464,6 +1478,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * it may be empty if ResourcePools are not in use.
    */
   ResourcePoolSet& resourcePoolSet() override { return resourcePoolSet_; }
+
+  bool getUsingCustomThreadManager() const { return usingCustomThreadManager_; }
 };
 } // namespace thrift
 } // namespace apache

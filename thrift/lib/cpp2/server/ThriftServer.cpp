@@ -629,7 +629,7 @@ void ThriftServer::setupThreadManager() {
       threadManager->setNamePrefix(poolThreadName);
     }
     threadManager->start();
-    setThreadManager(threadManager);
+    setThreadManagerInternal(threadManager);
   }
 }
 
