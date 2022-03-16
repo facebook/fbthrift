@@ -213,7 +213,7 @@ class ServerPublisherStream : private StreamServerCallback {
   }
 
   void publish(
-      folly::Try<std::conditional_t<WithHeader, PayloadAndHeader<T>, T>>&&
+      folly::Try<std::conditional_t<WithHeader, MessageVariant<T>, T>>&&
           payload) {
     bool close = !payload.hasValue();
 
@@ -222,17 +222,7 @@ class ServerPublisherStream : private StreamServerCallback {
             encodeOrQueue_.pushOrGetClosedPayload(std::move(payload))) {
       if (payload.hasValue()) {
         if constexpr (WithHeader) {
-          if (!payload->payload) {
-            StreamPayloadMetadata md;
-            md.otherMetadata() = std::move(payload->metadata);
-            queue_.push(folly::Try<StreamPayload>(
-                folly::in_place, nullptr, std::move(md)));
-          } else {
-            folly::Try<StreamPayload> sp =
-                (*encode)(std::move(*payload->payload));
-            sp->metadata.otherMetadata() = std::move(payload->metadata);
-            queue_.push(std::move(sp));
-          }
+          queue_.push(encodeMessageVariant(encode, std::move(payload.value())));
         } else {
           queue_.push((*encode)(std::move(payload.value())));
         }
@@ -289,17 +279,8 @@ class ServerPublisherStream : private StreamServerCallback {
         auto message = std::move(messages.front());
         if (message.hasValue()) {
           if constexpr (WithHeader) {
-            if (!message->payload) {
-              StreamPayloadMetadata md;
-              md.otherMetadata() = std::move(message->metadata);
-              stream->queue_.push(folly::Try<StreamPayload>(
-                  folly::in_place, nullptr, std::move(md)));
-            } else {
-              folly::Try<StreamPayload> sp =
-                  (*encode)(std::move(*message->payload));
-              sp->metadata.otherMetadata() = std::move(message->metadata);
-              stream->queue_.push(std::move(sp));
-            }
+            stream->queue_.push(
+                encodeMessageVariant(encode, std::move(message.value())));
           } else {
             stream->queue_.push((*encode)(std::move(message.value())));
           }
@@ -446,7 +427,7 @@ class ServerPublisherStream : private StreamServerCallback {
 
   using EncodeFn = apache::thrift::detail::StreamElementEncoder<T>;
   typename twowaybridge_detail::AtomicQueueOrPtr<
-      folly::Try<std::conditional_t<WithHeader, PayloadAndHeader<T>, T>>,
+      folly::Try<std::conditional_t<WithHeader, MessageVariant<T>, T>>,
       EncodeFn>
       encodeOrQueue_;
 
@@ -464,7 +445,7 @@ template <typename T, bool WithHeader>
 class ServerStreamPublisher {
  public:
   using ConditionalPayload =
-      std::conditional_t<WithHeader, detail::PayloadAndHeader<T>, T>;
+      std::conditional_t<WithHeader, detail::MessageVariant<T>, T>;
   void next(ConditionalPayload payload) const {
     impl_->publish(folly::Try<ConditionalPayload>(std::move(payload)));
   }

@@ -34,6 +34,9 @@ using TestTypes = ::testing::Types<
     TestStreamPublisherWithHeaderService>;
 TYPED_TEST_CASE(StreamServiceTest, TestTypes);
 
+using PayloadAndHeader = ClientBufferedStream<int32_t>::PayloadAndHeader;
+using UnorderedHeader = ClientBufferedStream<int32_t>::UnorderedHeader;
+
 TYPED_TEST(StreamServiceTest, Basic) {
   this->connectToServer(
       [](TestStreamServiceAsyncClient& client) -> folly::coro::Task<void> {
@@ -90,14 +93,20 @@ TYPED_TEST(StreamServiceTest, WithHeader) {
             (co_await client.co_range(0, 100)).toAsyncGeneratorWithHeader();
         int i = 0;
         while (auto t = co_await gen.next()) {
-          EXPECT_EQ(i, *t->payload);
-          if (t->metadata.otherMetadata_ref()) {
+          if (std::holds_alternative<PayloadAndHeader>(*t)) {
+            auto pair = std::get<PayloadAndHeader>(*t);
+            EXPECT_EQ(i, pair.payload);
             EXPECT_EQ(
-                std::to_string(i), (*t->metadata.otherMetadata_ref())["val"]);
+                std::to_string(i), (*pair.metadata.otherMetadata_ref())["val"]);
+
             t = co_await gen.next();
-            EXPECT_FALSE(t->payload);
+            EXPECT_TRUE(std::holds_alternative<UnorderedHeader>(*t));
             EXPECT_EQ(
-                std::to_string(i), (*t->metadata.otherMetadata_ref())["val"]);
+                std::to_string(i),
+                (*std::get<UnorderedHeader>(*t)
+                      .metadata.otherMetadata_ref())["val"]);
+          } else {
+            EXPECT_EQ(i, std::get<int32_t>(*t));
           }
           EXPECT_LE(++i, 101);
         }
@@ -306,16 +315,21 @@ TYPED_TEST(MultiStreamServiceTest, WithHeader) {
                                .toAsyncGeneratorWithHeader();
                 int i = 0;
                 while (auto t = co_await gen.next()) {
-                  EXPECT_EQ(i, *t->payload);
-                  if (t->metadata.otherMetadata_ref()) {
+                  if (std::holds_alternative<PayloadAndHeader>(*t)) {
+                    auto pair = std::get<PayloadAndHeader>(*t);
+                    EXPECT_EQ(i, pair.payload);
                     EXPECT_EQ(
                         std::to_string(i),
-                        (*t->metadata.otherMetadata_ref())["val"]);
+                        (*pair.metadata.otherMetadata_ref())["val"]);
+
                     t = co_await gen.next();
-                    EXPECT_FALSE(t->payload);
+                    EXPECT_TRUE(std::holds_alternative<UnorderedHeader>(*t));
                     EXPECT_EQ(
                         std::to_string(i),
-                        (*t->metadata.otherMetadata_ref())["val"]);
+                        (*std::get<UnorderedHeader>(*t)
+                              .metadata.otherMetadata_ref())["val"]);
+                  } else {
+                    EXPECT_EQ(i, std::get<int32_t>(*t));
                   }
                   EXPECT_LE(++i, 101);
                   co_await folly::coro::co_reschedule_on_current_executor;

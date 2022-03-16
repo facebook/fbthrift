@@ -55,18 +55,12 @@ class ServerStreamMultiPublisher {
         }
 
         if constexpr (WithHeader) {
-          if (!copy.payload) {
-            StreamPayloadMetadata md;
-            md.otherMetadata_ref() = std::move(copy.metadata);
-            auto sp = folly::Try<StreamPayload>(
-                folly::in_place, nullptr, std::move(md));
-            publishAll(std::move(sp), streams);
-          } else {
-            folly::Try<StreamPayload> sp = (*encode)(std::move(*copy.payload));
+          folly::Try<StreamPayload> sp =
+              detail::encodeMessageVariant(encode, std::move(copy));
+          if (sp->payload) {
             sp->payload->coalesce();
-            sp->metadata.otherMetadata_ref() = std::move(copy.metadata);
-            publishAll(std::move(sp), streams);
           }
+          publishAll(std::move(sp), streams);
         } else {
           auto encoded = (*encode)(std::move(copy));
           encoded->payload->coalesce();

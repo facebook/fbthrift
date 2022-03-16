@@ -18,6 +18,7 @@
 
 #include <algorithm>
 #include <array>
+#include <variant>
 
 #include <folly/GLog.h>
 #include <folly/Portability.h>
@@ -134,10 +135,14 @@ class ClientBufferedStream {
   }
 
   struct PayloadAndHeader {
-    std::optional<T> payload; // empty for header packet
+    T payload;
     StreamPayloadMetadata metadata;
   };
-  folly::coro::AsyncGenerator<PayloadAndHeader&&>
+  struct UnorderedHeader {
+    StreamPayloadMetadata metadata;
+  };
+  using MessageVariant = std::variant<T, PayloadAndHeader, UnorderedHeader>;
+  folly::coro::AsyncGenerator<MessageVariant&&>
   toAsyncGeneratorWithHeader() && {
     CHECK_EQ(bufferOptions_.memSize, 0)
         << "MemoryBufferSize not supported by toAsyncGeneratorWithHeader()";
@@ -170,7 +175,7 @@ class ClientBufferedStream {
 #if FOLLY_HAS_COROUTINES
   template <bool WithHeader>
   static folly::coro::AsyncGenerator<
-      std::conditional_t<WithHeader, PayloadAndHeader, T>&&>
+      std::conditional_t<WithHeader, MessageVariant, T>&&>
   toAsyncGeneratorImpl(
       apache::thrift::detail::ClientStreamBridge::ClientPtr streamBridge,
       int32_t chunkBufferSize,
@@ -231,16 +236,22 @@ class ClientBufferedStream {
         }
         if constexpr (WithHeader) {
           if (payload.hasValue()) {
-            PayloadAndHeader ret;
-            bool usedCredit = false;
-            ret.metadata = std::move(payload->metadata);
             if (payload->payload) {
-              ret.payload = *decode(std::move(payload));
-              usedCredit = true;
-            }
-            queue.pop();
-            co_yield std::move(ret);
-            if (!usedCredit) {
+              if (payload->metadata.otherMetadata().has_value()) {
+                PayloadAndHeader ret;
+                ret.metadata = std::move(payload->metadata);
+                ret.payload = *decode(std::move(payload));
+                queue.pop();
+                co_yield std::move(ret);
+              } else {
+                T ret = *decode(std::move(payload));
+                queue.pop();
+                co_yield std::move(ret);
+              }
+            } else {
+              UnorderedHeader ret{std::move(payload->metadata)};
+              queue.pop();
+              co_yield std::move(ret);
               continue;
             }
           } else {

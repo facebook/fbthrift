@@ -18,8 +18,10 @@
 
 #include <memory>
 #include <utility>
+#include <variant>
 
 #include <folly/ExceptionWrapper.h>
+#include <folly/Overload.h>
 #include <folly/Try.h>
 #include <folly/Utility.h>
 #include <folly/io/IOBuf.h>
@@ -109,9 +111,33 @@ class StreamElementEncoder {
 
 template <typename T>
 struct PayloadAndHeader {
-  std::optional<T> payload; // empty for header packet
+  T payload;
   transport::THeader::StringToStringMap metadata;
 };
+struct UnorderedHeader {
+  transport::THeader::StringToStringMap metadata;
+};
+template <typename T>
+using MessageVariant = std::variant<T, PayloadAndHeader<T>, UnorderedHeader>;
+
+template <typename T>
+folly::Try<StreamPayload> encodeMessageVariant(
+    StreamElementEncoder<T>* encode, MessageVariant<T>&& payload) {
+  return folly::variant_match(
+      std::move(payload),
+      [&](T&& val) { return (*encode)(std::move(val)); },
+      [&](PayloadAndHeader<T>&& val) {
+        auto ret = (*encode)(std::move(val.payload));
+        ret->metadata.otherMetadata() = std::move(val.metadata);
+        return ret;
+      },
+      [&](UnorderedHeader&& val) {
+        StreamPayloadMetadata md;
+        md.otherMetadata() = std::move(val.metadata);
+        return folly::Try<StreamPayload>(
+            folly::in_place, nullptr, std::move(md));
+      });
+}
 
 struct FOLLY_EXPORT EncodedError : std::exception {
   explicit EncodedError(std::unique_ptr<folly::IOBuf> buf)

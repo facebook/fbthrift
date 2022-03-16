@@ -85,37 +85,42 @@ apache::thrift::ServerStream<int32_t> TestStreamPublisherService::rangeThrowUDE(
 }
 
 using Pair = apache::thrift::detail::PayloadAndHeader<int32_t>;
+using MessageVariant = apache::thrift::detail::MessageVariant<int32_t>;
+using apache::thrift::detail::UnorderedHeader;
 
 apache::thrift::ServerStream<int32_t>
 TestStreamGeneratorWithHeaderService::range(int32_t from, int32_t to) {
-  return folly::coro::co_invoke([=]() -> folly::coro::AsyncGenerator<Pair&&> {
-    for (int i = from; i <= to; i++) {
-      co_yield Pair{i, {{"val", std::to_string(i)}}};
-      co_yield Pair{std::nullopt, {{"val", std::to_string(i)}}};
-    }
-  });
+  return folly::coro::co_invoke(
+      [=]() -> folly::coro::AsyncGenerator<MessageVariant&&> {
+        for (int i = from; i <= to; i++) {
+          co_yield Pair{i, {{"val", std::to_string(i)}}};
+          co_yield UnorderedHeader{{{"val", std::to_string(i)}}};
+        }
+      });
 }
 
 apache::thrift::ServerStream<int32_t>
 TestStreamGeneratorWithHeaderService::rangeThrow(int32_t from, int32_t to) {
-  return folly::coro::co_invoke([=]() -> folly::coro::AsyncGenerator<Pair&&> {
-    for (int i = from; i <= to; i++) {
-      co_yield Pair{i, {{"val", std::to_string(i)}}};
-      co_yield Pair{std::nullopt, {{"val", std::to_string(i)}}};
-    }
-    throw std::runtime_error("I am a search bar");
-  });
+  return folly::coro::co_invoke(
+      [=]() -> folly::coro::AsyncGenerator<MessageVariant&&> {
+        for (int i = from; i <= to; i++) {
+          co_yield Pair{i, {{"val", std::to_string(i)}}};
+          co_yield UnorderedHeader{{{"val", std::to_string(i)}}};
+        }
+        throw std::runtime_error("I am a search bar");
+      });
 }
 
 apache::thrift::ServerStream<int32_t>
 TestStreamGeneratorWithHeaderService::rangeThrowUDE(int32_t from, int32_t to) {
-  return folly::coro::co_invoke([=]() -> folly::coro::AsyncGenerator<Pair&&> {
-    for (int i = from; i <= to; i++) {
-      co_yield Pair{i, {{"val", std::to_string(i)}}};
-      co_yield Pair{std::nullopt, {{"val", std::to_string(i)}}};
-    }
-    throw UserDefinedException();
-  });
+  return folly::coro::co_invoke(
+      [=]() -> folly::coro::AsyncGenerator<MessageVariant&&> {
+        for (int i = from; i <= to; i++) {
+          co_yield Pair{i, {{"val", std::to_string(i)}}};
+          co_yield UnorderedHeader{{{"val", std::to_string(i)}}};
+        }
+        throw UserDefinedException();
+      });
 }
 
 apache::thrift::ServerStream<int32_t>
@@ -125,7 +130,7 @@ TestStreamPublisherWithHeaderService::range(int32_t from, int32_t to) {
 
   for (int i = from; i <= to; i++) {
     publisher.next(Pair{i, {{"val", std::to_string(i)}}});
-    publisher.next(Pair{std::nullopt, {{"val", std::to_string(i)}}});
+    publisher.next(UnorderedHeader{{{"val", std::to_string(i)}}});
   }
   std::move(publisher).complete();
 
@@ -139,7 +144,7 @@ TestStreamPublisherWithHeaderService::rangeThrow(int32_t from, int32_t to) {
 
   for (int i = from; i <= to; i++) {
     publisher.next(Pair{i, {{"val", std::to_string(i)}}});
-    publisher.next(Pair{std::nullopt, {{"val", std::to_string(i)}}});
+    publisher.next(UnorderedHeader{{{"val", std::to_string(i)}}});
   }
   std::move(publisher).complete(std::runtime_error("I am a search bar"));
 
@@ -153,7 +158,7 @@ TestStreamPublisherWithHeaderService::rangeThrowUDE(int32_t from, int32_t to) {
 
   for (int i = from; i <= to; i++) {
     publisher.next(Pair{i, {{"val", std::to_string(i)}}});
-    publisher.next(Pair{std::nullopt, {{"val", std::to_string(i)}}});
+    publisher.next(UnorderedHeader{{{"val", std::to_string(i)}}});
   }
   std::move(publisher).complete(UserDefinedException());
 
@@ -286,8 +291,7 @@ TestStreamMultiPublisherWithHeaderService::range(
                   co_await *waitForCancellation_;
                 }
                 multipub_.next(Pair{i, {{"val", std::to_string(i)}}});
-                multipub_.next(
-                    Pair{std::nullopt, {{"val", std::to_string(i)}}});
+                multipub_.next(UnorderedHeader{{{"val", std::to_string(i)}}});
                 co_await folly::coro::co_reschedule_on_current_executor;
               }
               if (ew) {

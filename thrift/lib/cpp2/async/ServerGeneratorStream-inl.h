@@ -22,7 +22,7 @@ namespace detail {
 template <bool WithHeader, typename T>
 ServerStreamFn<T> ServerGeneratorStream::fromAsyncGenerator(
     folly::coro::AsyncGenerator<
-        std::conditional_t<WithHeader, PayloadAndHeader<T>, T>&&>&& gen) {
+        std::conditional_t<WithHeader, MessageVariant<T>, T>&&>&& gen) {
   return [gen = std::move(gen)](
              folly::Executor::KeepAlive<> serverExecutor,
              StreamElementEncoder<T>* encode) mutable {
@@ -105,16 +105,11 @@ ServerStreamFn<T> ServerGeneratorStream::fromAsyncGenerator(
 
               auto&& item = **next;
               if constexpr (WithHeader) {
-                if (!item.payload) {
-                  StreamPayloadMetadata md;
-                  md.otherMetadata() = std::move(item.metadata);
-                  stream->publish(folly::Try<StreamPayload>(
-                      folly::in_place, nullptr, std::move(md)));
-                } else {
-                  folly::Try<StreamPayload> sp =
-                      (*encode)(*std::move(item.payload));
-                  sp->metadata.otherMetadata() = std::move(item.metadata);
-                  stream->publish(std::move(sp));
+                folly::Try<StreamPayload> sp =
+                    encodeMessageVariant(encode, std::move(item));
+                bool hasPayload = !!sp->payload;
+                stream->publish(std::move(sp));
+                if (hasPayload) {
                   --credits;
                 }
               } else {

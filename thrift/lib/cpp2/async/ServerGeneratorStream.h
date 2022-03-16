@@ -65,7 +65,7 @@ class ServerGeneratorStream : public TwoWayBridge<
   template <bool WithHeader, typename T>
   static ServerStreamFn<T> fromAsyncGenerator(
       folly::coro::AsyncGenerator<
-          std::conditional_t<WithHeader, PayloadAndHeader<T>, T>&&>&& gen);
+          std::conditional_t<WithHeader, MessageVariant<T>, T>&&>&& gen);
 #endif // FOLLY_HAS_COROUTINES
 
   void consume();

@@ -41,14 +41,17 @@ class ServerStreamMultiPublisher;
 template <typename T>
 class ServerStream {
  public:
+  using PayloadAndHeader = apache::thrift::detail::PayloadAndHeader<T>;
+  using UnorderedHeader = apache::thrift::detail::UnorderedHeader;
+  using MessageVariant = apache::thrift::detail::MessageVariant<T>;
+
 #if FOLLY_HAS_COROUTINES
   /* implicit */ ServerStream(folly::coro::AsyncGenerator<T&&>&& gen)
       : fn_(apache::thrift::detail::ServerGeneratorStream::
                 fromAsyncGenerator<false, T>(std::move(gen))) {}
 
-  using PayloadAndHeader = apache::thrift::detail::PayloadAndHeader<T>;
   /* implicit */ ServerStream(
-      folly::coro::AsyncGenerator<PayloadAndHeader&&>&& gen)
+      folly::coro::AsyncGenerator<MessageVariant&&>&& gen)
       : fn_(apache::thrift::detail::ServerGeneratorStream::
                 fromAsyncGenerator<true, T>(std::move(gen))) {}
 
