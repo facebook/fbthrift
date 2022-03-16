@@ -29,6 +29,7 @@
 #include <folly/container/F14Map.h>
 #include <folly/experimental/observer/Observer.h>
 #include <folly/io/IOBuf.h>
+#include <folly/io/SocketOptionMap.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/DelayedDestruction.h>
@@ -79,6 +80,7 @@ class RocketServerConnection final
     size_t egressBufferBackpressureThreshold{0};
     double egressBufferBackpressureRecoveryFactor{0.0};
     folly::Function<AllocIOBufFn>* allocIOBufFnPtr{nullptr};
+    const folly::SocketOptionMap* socketOptions{nullptr};
   };
 
   RocketServerConnection(

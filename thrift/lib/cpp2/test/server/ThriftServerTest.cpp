@@ -3239,6 +3239,54 @@ TEST(ThriftServer, SocketQueueTimeout) {
   checkSocketQueueTimeout(folly::kIsDebug ? 0ms : kDefaultTimeout);
 }
 
+TEST(ThriftServer, PerConnectionSocketOptions) {
+  class TestServiceHandler : public TestServiceSvIf {
+    void voidResponse() override {
+      auto socket = const_cast<folly::AsyncSocket*>(
+          this->getRequestContext()
+              ->getConnectionContext()
+              ->getTransport()
+              ->getUnderlyingTransport<folly::AsyncSocket>());
+      ASSERT_NE(socket, nullptr);
+      auto readSockOpt = [&](int level, int optname) -> int {
+        int value = -1;
+        socklen_t len = sizeof(value);
+        socket->getSockOpt(level, optname, &value, &len);
+        return value;
+      };
+      soKeepAlive = readSockOpt(SOL_SOCKET, SO_KEEPALIVE);
+      tcpKeepIdle = readSockOpt(IPPROTO_TCP, TCP_KEEPIDLE);
+      tcpKeepIntvl = readSockOpt(IPPROTO_TCP, TCP_KEEPINTVL);
+      tcpKeepCnt = readSockOpt(IPPROTO_TCP, TCP_KEEPCNT);
+    }
+
+   public:
+    int soKeepAlive = 0;
+    int tcpKeepIdle = 0;
+    int tcpKeepIntvl = 0;
+    int tcpKeepCnt = 0;
+  };
+
+  auto handler = std::make_shared<TestServiceHandler>();
+  ScopedServerInterfaceThread runner(handler, [](ThriftServer& server) {
+    folly::SocketOptionMap socketOptions{
+        {{SOL_SOCKET, SO_KEEPALIVE}, 1},
+        {{IPPROTO_TCP, TCP_KEEPIDLE}, 2},
+        {{IPPROTO_TCP, TCP_KEEPINTVL}, 3},
+        {{IPPROTO_TCP, TCP_KEEPCNT}, 4},
+    };
+    server.setPerConnectionSocketOptions(std::move(socketOptions));
+  });
+
+  auto client = runner.newClient<TestServiceAsyncClient>();
+  client->sync_voidResponse();
+
+  EXPECT_EQ(handler->soKeepAlive, 1);
+  EXPECT_EQ(handler->tcpKeepIdle, 2);
+  EXPECT_EQ(handler->tcpKeepIntvl, 3);
+  EXPECT_EQ(handler->tcpKeepCnt, 4);
+}
+
 TEST(ThriftServer, RocketOnly) {
   THRIFT_FLAG_SET_MOCK(server_rocket_upgrade_enabled, true);
   TestThriftServerFactory<TestInterface> factory;

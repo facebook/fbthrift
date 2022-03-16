@@ -29,6 +29,7 @@
 #include <folly/Portability.h>
 #include <folly/SocketAddress.h>
 #include <folly/Synchronized.h>
+#include <folly/io/SocketOptionMap.h>
 #include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/EventBase.h>
 
@@ -408,6 +409,15 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   ServerAttributeDynamic<bool> disableHeaderTransport_{
       THRIFT_FLAG_OBSERVE(server_reject_header_connections)};
+
+  /**
+   * Socket options that will be applied to every connection to clients.
+   * If the socket does not support the specific option, it is silently ignored.
+   * Refer to setsockopt() for more details.
+   */
+  ServerAttributeDynamic<folly::SocketOptionMap> perConnectionSocketOptions_{
+      folly::emptySocketOptionMap};
+
   std::shared_ptr<server::TServerEventHandler> eventHandler_;
   std::vector<std::shared_ptr<server::TServerEventHandler>> eventHandlers_;
   AdaptiveConcurrencyController adaptiveConcurrencyController_;
@@ -1464,6 +1474,16 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     disableHeaderTransport_.set(value, source);
   }
   bool isHeaderDisabled() const { return disableHeaderTransport_.get(); }
+
+  const folly::SocketOptionMap& getPerConnectionSocketOptions() const {
+    return perConnectionSocketOptions_.get();
+  }
+  void setPerConnectionSocketOptions(
+      folly::SocketOptionMap options,
+      AttributeSource source = AttributeSource::OVERRIDE,
+      DynamicAttributeTag = DynamicAttributeTag{}) {
+    perConnectionSocketOptions_.set(std::move(options), source);
+  }
 
   /**
    * Get the ResourcePoolSet used by this ThriftServer. There is always one, but

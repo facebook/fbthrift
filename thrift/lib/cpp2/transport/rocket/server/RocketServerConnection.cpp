@@ -87,6 +87,22 @@ RocketServerConnection::RocketServerConnection(
   if (rawSocket_) {
     rawSocket_->setBufferCallback(this);
     rawSocket_->setSendTimeout(cfg.socketWriteTimeout.count());
+
+    if (cfg.socketOptions != nullptr) {
+      auto sockfd = rawSocket_->getNetworkSocket();
+      for (auto& [option, value] : *cfg.socketOptions) {
+        if (auto err = option.apply(sockfd, value)) {
+          folly::SocketAddress address;
+          rawSocket_->getAddress(&address);
+          FB_LOG_EVERY_MS(WARNING, 60 * 1000) << fmt::format(
+              "Could not apply SocketOption(level={}, optname={}, value={}) to socket {}",
+              option.level,
+              option.optname,
+              value,
+              address.describe());
+        }
+      }
+    }
   }
 }
 
