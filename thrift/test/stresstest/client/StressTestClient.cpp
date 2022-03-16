@@ -24,9 +24,9 @@ namespace {
 constexpr double kHistogramMax = 1000.0 * 60.0; // 1 minute
 } // namespace
 
-StressTestClient::Stats::Stats() : latencyHistogram(50, 0.0, kHistogramMax) {}
+ClientRpcStats::ClientRpcStats() : latencyHistogram(50, 0.0, kHistogramMax) {}
 
-void StressTestClient::Stats::combine(const Stats& other) {
+void ClientRpcStats::combine(const ClientRpcStats& other) {
   latencyHistogram.merge(other.latencyHistogram);
   numSuccess += other.numSuccess;
   numFailure += other.numFailure;
@@ -69,7 +69,8 @@ folly::coro::Task<void> StressTestClient::timedExecute(Fn&& fn) {
     co_return;
   }
   auto elapsed = std::chrono::steady_clock::now() - start;
-  stats_.latencyHistogram.addValue(elapsed.count());
+  stats_.latencyHistogram.addValue(
+      std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count());
   stats_.numSuccess++;
 }
 

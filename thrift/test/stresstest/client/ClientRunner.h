@@ -18,7 +18,9 @@
 
 #include <folly/experimental/coro/AsyncScope.h>
 #include <folly/experimental/coro/Task.h>
+#include <folly/io/async/HHWheelTimer.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
+#include <folly/synchronization/RelaxedAtomic.h>
 #include <thrift/test/stresstest/client/StressTestBase.h>
 #include <thrift/test/stresstest/if/gen-cpp2/StressTest.h>
 
@@ -26,44 +28,37 @@ namespace apache {
 namespace thrift {
 namespace stress {
 
+class ClientThread;
+
 struct ClientConfig {
   uint64_t numClientThreads;
   uint64_t numClientsPerThread;
 };
 
-class ClientThread {
- public:
-  ClientThread(
-      size_t numClients,
-      const folly::SocketAddress& addr,
-      folly::CancellationSource& cancelSource);
-  ~ClientThread();
-
-  void run(const StressTestBase* test);
-  void stop();
-
-  StressTestClient::Stats getCombinedStats();
-
- private:
-  folly::coro::Task<void> runInternal(
-      StressTestClient* client, const StressTestBase* test);
-
-  folly::ScopedEventBaseThread thread_;
-  folly::coro::AsyncScope scope_;
-  std::vector<std::unique_ptr<StressTestClient>> clients_;
-  folly::CancellationSource& cancelSource_;
+struct ClientThreadMemoryStats {
+  void combine(const ClientThreadMemoryStats& other);
+  size_t threadStart{0};
+  size_t connectionsEstablished{0};
+  size_t p50{0};
+  size_t p99{0};
+  size_t p100{0};
+  size_t connectionsIdle{0};
 };
 
 class ClientRunner {
  public:
   ClientRunner(const ClientConfig& config, const folly::SocketAddress& addr);
+  ~ClientRunner();
 
   void run(const StressTestBase* test);
   void stop();
 
-  StressTestClient::Stats getCombinedStats();
+  ClientRpcStats getRpcStats() const;
+  ClientThreadMemoryStats getMemoryStats() const;
 
  private:
+  bool started_{false};
+  bool stopped_{false};
   folly::CancellationSource cancelSource_;
   std::vector<std::unique_ptr<ClientThread>> clientThreads_;
 };

@@ -16,11 +16,13 @@
 
 #include <thrift/test/stresstest/StressTest.h>
 
+#include <fmt/core.h>
 #include <folly/SocketAddress.h>
 #include <folly/init/Init.h>
 #include <folly/portability/GFlags.h>
 #include <thrift/test/stresstest/client/ClientRunner.h>
 #include <thrift/test/stresstest/client/StressTestRegistry.h>
+#include <thrift/test/stresstest/util/Util.h>
 
 using namespace apache::thrift::stress;
 
@@ -32,7 +34,42 @@ DEFINE_int64(runtime_s, 10, "Runtime of test in seconds");
 DEFINE_int64(client_threads, 1, "Nnumber of client threads");
 DEFINE_int64(clients_per_thread, 1, "Number of clients per client thread");
 
+struct StressTestStats {
+  ClientThreadMemoryStats memoryStats;
+  ClientRpcStats rpcStats;
+
+  void log() {
+    LOG(INFO) << fmt::format(
+        "Total requests:        {} ({} succeeded, {} failed)",
+        (rpcStats.numSuccess + rpcStats.numFailure),
+        rpcStats.numSuccess,
+        rpcStats.numFailure);
+    LOG(INFO) << fmt::format(
+        "Average QPS:           {:.2f}",
+        (static_cast<double>(rpcStats.numSuccess) / FLAGS_runtime_s));
+    LOG(INFO) << fmt::format(
+        "Request latency:       P50={:.2f}us, P99={:.2f}us, P100={:.2f}us",
+        rpcStats.latencyHistogram.getPercentileEstimate(.5),
+        rpcStats.latencyHistogram.getPercentileEstimate(.99),
+        rpcStats.latencyHistogram.getPercentileEstimate(1.0));
+    LOG(INFO) << "Allocated memory stats:";
+    LOG(INFO) << fmt::format(
+        "  Before test:         {} bytes", memoryStats.threadStart);
+    LOG(INFO) << fmt::format(
+        "  Clients connected:   {} bytes", memoryStats.connectionsEstablished);
+    LOG(INFO) << fmt::format(
+        "  During test:         P50={} bytes, P99={} bytes, P100={} bytes",
+        memoryStats.p50,
+        memoryStats.p99,
+        memoryStats.p100);
+    LOG(INFO) << fmt::format(
+        "  Clients idle:        {} bytes", memoryStats.connectionsIdle);
+  }
+};
+
 void runStressTest(std::unique_ptr<StressTestBase> test) {
+  resetMemoryStats();
+
   // initialize the client runner
   folly::SocketAddress addr(FLAGS_host, FLAGS_port);
   ClientConfig cfg{
@@ -40,25 +77,17 @@ void runStressTest(std::unique_ptr<StressTestBase> test) {
       .numClientsPerThread = static_cast<uint64_t>(FLAGS_clients_per_thread)};
   ClientRunner runner(cfg, addr);
 
+  // run the test and sleep for the duration
   runner.run(test.get());
-
-  // sleep for duration of the test
-  std::this_thread::sleep_until(
-      std::chrono::steady_clock::now() + std::chrono::seconds(FLAGS_runtime_s));
-
-  // stop runner
+  std::this_thread::sleep_for(std::chrono::seconds(FLAGS_runtime_s));
   runner.stop();
 
-  auto stats = runner.getCombinedStats();
-  LOG(INFO) << "Total requests: " << (stats.numSuccess + stats.numFailure)
-            << " (" << stats.numSuccess << "/" << stats.numFailure
-            << " succeeded/failed)";
-  LOG(INFO) << "Total QPS: "
-            << (static_cast<double>(stats.numSuccess) / FLAGS_runtime_s);
-  LOG(INFO) << "Latency: P50="
-            << stats.latencyHistogram.getPercentileEstimate(.5)
-            << ", P99=" << stats.latencyHistogram.getPercentileEstimate(.9)
-            << ", P1=" << stats.latencyHistogram.getPercentileEstimate(1.0);
+  // collect and print statistics
+  StressTestStats stats{
+      .memoryStats = runner.getMemoryStats(),
+      .rpcStats = runner.getRpcStats(),
+  };
+  stats.log();
 }
 
 int main(int argc, char* argv[]) {

@@ -24,31 +24,32 @@ namespace apache {
 namespace thrift {
 namespace stress {
 
+class ClientThread;
+
+struct ClientRpcStats {
+  ClientRpcStats();
+  void combine(const ClientRpcStats& other);
+
+  folly::Histogram<double> latencyHistogram;
+  uint64_t numSuccess{0};
+  uint64_t numFailure{0};
+};
+
 /**
  * Wrapper around the generated StressTestAsyncClient to transparently collect
  * statistics of requests being sent
  */
 class StressTestClient {
  public:
-  struct Stats {
-    Stats();
-    void combine(const Stats& other);
-
-    folly::Histogram<double> latencyHistogram;
-    uint64_t numSuccess{0};
-    uint64_t numFailure{0};
-  };
-
-  explicit StressTestClient(std::unique_ptr<StressTestAsyncClient> client)
-      : client_(std::move(client)) {}
+  explicit StressTestClient(
+      std::unique_ptr<StressTestAsyncClient> client, ClientRpcStats& stats)
+      : client_(std::move(client)), stats_(stats) {}
 
   folly::coro::Task<void> co_ping();
 
   folly::coro::Task<void> co_requestResponseEb(const BasicRequest& req);
 
   folly::coro::Task<void> co_requestResponseTm(const BasicRequest& req);
-
-  const Stats& getStats() const { return stats_; }
 
   bool connectionGood() const { return connectionGood_; }
 
@@ -57,7 +58,7 @@ class StressTestClient {
   folly::coro::Task<void> timedExecute(Fn&& fn);
 
   std::unique_ptr<StressTestAsyncClient> client_;
-  Stats stats_;
+  ClientRpcStats& stats_;
   bool connectionGood_{true};
 };
 
