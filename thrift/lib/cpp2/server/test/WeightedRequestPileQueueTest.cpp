@@ -128,15 +128,6 @@ TEST(WeightedRequestPileQueueTest, ApplyLimits) {
 
   auto task = [&] { queue.enqueue(1, 100); };
 
-  // we should let executor destructor run first to
-  // join the threads before we check the counter
-  auto g = folly::makeGuard([&] { EXPECT_EQ(queue.size(), 100); });
-
-  folly::CPUThreadPoolExecutor ex(32);
-  for (int i = 0; i < 1000; ++i) {
-    ex.add(task);
-  }
-
   // For two dimensional control block
   WeightedRequestPileQueue<int, true, TwoDimensionalControlBlock> queue2;
   queue2.setLimit({10, 10});
@@ -184,7 +175,13 @@ TEST(WeightedRequestPileQueueTest, ApplyLimits) {
 
   // we should let executor destructor run first to
   // join the threads before we check the counter
+  auto g = folly::makeGuard([&] { EXPECT_EQ(queue.size(), 100); });
   auto g2 = folly::makeGuard([&] { EXPECT_EQ(queue2.size(), 100); });
+
+  folly::CPUThreadPoolExecutor ex(32);
+  for (int i = 0; i < 1000; ++i) {
+    ex.add(task);
+  }
 
   for (int i = 0; i < 1000; ++i) {
     ex.add(task2);
