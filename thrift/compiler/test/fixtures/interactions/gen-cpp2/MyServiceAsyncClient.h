@@ -749,21 +749,16 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
   void fooT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback);
   std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> fooCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void interact(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_arg);
-  virtual void interact(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_arg);
+ void interact(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_arg);
  protected:
   void interactImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_arg, bool stealRpcOptions = false);
  public:
 
-  virtual void sync_interact(::std::int32_t p_arg);
-  virtual void sync_interact(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_arg);
+  void sync_interact(::std::int32_t p_arg);
+  void sync_interact(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_arg);
 
-  virtual folly::Future<folly::Unit> future_interact(::std::int32_t p_arg);
-  virtual folly::SemiFuture<folly::Unit> semifuture_interact(::std::int32_t p_arg);
-  virtual folly::Future<folly::Unit> future_interact(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_arg);
-  virtual folly::SemiFuture<folly::Unit> semifuture_interact(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_arg);
-  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_interact(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_arg);
-  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_interact(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_arg);
+  folly::SemiFuture<folly::Unit> semifuture_interact(::std::int32_t p_arg);
+  folly::SemiFuture<folly::Unit> semifuture_interact(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_arg);
 
 #if FOLLY_HAS_COROUTINES
 #if __clang__
@@ -829,34 +824,24 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void interact(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int32_t p_arg);
-
 
   static folly::exception_wrapper recv_wrapped_interact(::apache::thrift::ClientReceiveState& state);
   static void recv_interact(::apache::thrift::ClientReceiveState& state);
-  // Mock friendly virtual instance method
-  virtual void recv_instance_interact(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_interact(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_, typename RpcOptions>
   void interactT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_arg);
   std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> interactCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void interactFast(std::unique_ptr<apache::thrift::RequestCallback> callback);
-  virtual void interactFast(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ void interactFast(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
   void interactFastImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions = false);
  public:
 
-  virtual ::std::int32_t sync_interactFast();
-  virtual ::std::int32_t sync_interactFast(apache::thrift::RpcOptions& rpcOptions);
+  ::std::int32_t sync_interactFast();
+  ::std::int32_t sync_interactFast(apache::thrift::RpcOptions& rpcOptions);
 
-  virtual folly::Future<::std::int32_t> future_interactFast();
-  virtual folly::SemiFuture<::std::int32_t> semifuture_interactFast();
-  virtual folly::Future<::std::int32_t> future_interactFast(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::SemiFuture<::std::int32_t> semifuture_interactFast(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_interactFast(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_interactFast(apache::thrift::RpcOptions& rpcOptions);
+  folly::SemiFuture<::std::int32_t> semifuture_interactFast();
+  folly::SemiFuture<::std::int32_t> semifuture_interactFast(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
 #if __clang__
@@ -924,31 +909,24 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void interactFast(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
-
 
   static folly::exception_wrapper recv_wrapped_interactFast(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state);
   static ::std::int32_t recv_interactFast(::apache::thrift::ClientReceiveState& state);
-  // Mock friendly virtual instance method
-  virtual ::std::int32_t recv_instance_interactFast(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_interactFast(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_, typename RpcOptions>
   void interactFastT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback);
   std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> interactFastCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-  virtual void serialize(std::unique_ptr<apache::thrift::RequestCallback> callback);
-  virtual void serialize(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ void serialize(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
   void serializeImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::StreamClientCallback* callback, bool stealRpcOptions = false);
  public:
 
-  virtual apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> sync_serialize();
-  virtual apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> sync_serialize(apache::thrift::RpcOptions& rpcOptions);
+  apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> sync_serialize();
+  apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> sync_serialize(apache::thrift::RpcOptions& rpcOptions);
 
-  virtual folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> semifuture_serialize();
-  virtual folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> semifuture_serialize(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::SemiFuture<std::pair<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_serialize(apache::thrift::RpcOptions& rpcOptions);
+  folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> semifuture_serialize();
+  folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> semifuture_serialize(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
 #if __clang__
@@ -1019,12 +997,8 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
 #endif // FOLLY_HAS_COROUTINES
 
 
-
   static folly::exception_wrapper recv_wrapped_serialize(apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
   static apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> recv_serialize(::apache::thrift::ClientReceiveState& state);
-  // Mock friendly virtual instance method
-  virtual apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> recv_instance_serialize(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_serialize(apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_, typename RpcOptions>
   void serializeT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::StreamClientCallback* callback);

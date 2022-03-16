@@ -278,10 +278,6 @@ folly::exception_wrapper MyServiceAsyncClient::recv_instance_wrapped_foo(::apach
   return recv_wrapped_foo(state);
 }
 
-void MyServiceAsyncClient::interact(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_arg) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  interact(rpcOptions, std::move(callback), p_arg);
-}
 
 void MyServiceAsyncClient::interact(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_arg) {
   auto [ctx, header] = interactCtx(&rpcOptions);
@@ -376,22 +372,9 @@ void MyServiceAsyncClient::sync_interact(apache::thrift::RpcOptions& rpcOptions,
 }
 
 
-folly::Future<folly::Unit> MyServiceAsyncClient::future_interact(::std::int32_t p_arg) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  return future_interact(rpcOptions, p_arg);
-}
-
 folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_interact(::std::int32_t p_arg) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_interact(rpcOptions, p_arg);
-}
-
-folly::Future<folly::Unit> MyServiceAsyncClient::future_interact(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_arg) {
-  folly::Promise<folly::Unit> promise;
-  auto future = promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(promise), recv_wrapped_interact, channel_);
-  interact(rpcOptions, std::move(callback), p_arg);
-  return future;
 }
 
 folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_interact(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_arg) {
@@ -401,24 +384,7 @@ folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_interact(apache:
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_future_interact(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_arg) {
-  folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
-  auto future = promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(promise), recv_wrapped_interact, channel_);
-  interact(rpcOptions, std::move(callback), p_arg);
-  return future;
-}
 
-folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_semifuture_interact(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_arg) {
-  auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_interact, channel_);
-  auto callback = std::move(callbackAndFuture.first);
-  interact(rpcOptions, std::move(callback), p_arg);
-  return std::move(callbackAndFuture.second);
-}
-
-void MyServiceAsyncClient::interact(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int32_t p_arg) {
-  interact(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_arg);
-}
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
@@ -458,18 +424,7 @@ void MyServiceAsyncClient::recv_interact(::apache::thrift::ClientReceiveState& s
   }
 }
 
-void MyServiceAsyncClient::recv_instance_interact(::apache::thrift::ClientReceiveState& state) {
-  recv_interact(state);
-}
 
-folly::exception_wrapper MyServiceAsyncClient::recv_instance_wrapped_interact(::apache::thrift::ClientReceiveState& state) {
-  return recv_wrapped_interact(state);
-}
-
-void MyServiceAsyncClient::interactFast(std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  interactFast(rpcOptions, std::move(callback));
-}
 
 void MyServiceAsyncClient::interactFast(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto [ctx, header] = interactFastCtx(&rpcOptions);
@@ -564,22 +519,9 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
 }
 
 
-folly::Future<::std::int32_t> MyServiceAsyncClient::future_interactFast() {
-  ::apache::thrift::RpcOptions rpcOptions;
-  return future_interactFast(rpcOptions);
-}
-
 folly::SemiFuture<::std::int32_t> MyServiceAsyncClient::semifuture_interactFast() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_interactFast(rpcOptions);
-}
-
-folly::Future<::std::int32_t> MyServiceAsyncClient::future_interactFast(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<::std::int32_t> promise;
-  auto future = promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_interactFast, channel_);
-  interactFast(rpcOptions, std::move(callback));
-  return future;
 }
 
 folly::SemiFuture<::std::int32_t> MyServiceAsyncClient::semifuture_interactFast(apache::thrift::RpcOptions& rpcOptions) {
@@ -589,24 +531,7 @@ folly::SemiFuture<::std::int32_t> MyServiceAsyncClient::semifuture_interactFast(
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_future_interactFast(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
-  auto future = promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_interactFast, channel_);
-  interactFast(rpcOptions, std::move(callback));
-  return future;
-}
 
-folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_semifuture_interactFast(apache::thrift::RpcOptions& rpcOptions) {
-  auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_interactFast, channel_);
-  auto callback = std::move(callbackAndFuture.first);
-  interactFast(rpcOptions, std::move(callback));
-  return std::move(callbackAndFuture.second);
-}
-
-void MyServiceAsyncClient::interactFast(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
-  interactFast(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
-}
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
@@ -648,18 +573,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_interactFast(::std::
   return _return;
 }
 
-::std::int32_t MyServiceAsyncClient::recv_instance_interactFast(::apache::thrift::ClientReceiveState& state) {
-  return recv_interactFast(state);
-}
 
-folly::exception_wrapper MyServiceAsyncClient::recv_instance_wrapped_interactFast(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
-  return recv_wrapped_interactFast(_return, state);
-}
-
-void MyServiceAsyncClient::serialize(std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  serialize(rpcOptions, std::move(callback));
-}
 
 void MyServiceAsyncClient::serialize(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto [ctx, header] = serializeCtx(&rpcOptions);
@@ -758,12 +672,10 @@ apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> M
 }
 
 
-
 folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> MyServiceAsyncClient::semifuture_serialize() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_serialize(rpcOptions);
 }
-
 
 folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>> MyServiceAsyncClient::semifuture_serialize(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_serialize, channel_);
@@ -772,13 +684,6 @@ folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t
   return std::move(callbackAndFuture.second);
 }
 
-
-folly::SemiFuture<std::pair<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_semifuture_serialize(apache::thrift::RpcOptions& rpcOptions) {
-  auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_serialize, channel_);
-  auto callback = std::move(callbackAndFuture.first);
-  serialize(rpcOptions, std::move(callback));
-  return std::move(callbackAndFuture.second);
-}
 
 
 #if FOLLY_HAS_COROUTINES
@@ -821,13 +726,6 @@ apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> M
   return _return;
 }
 
-apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> MyServiceAsyncClient::recv_instance_serialize(::apache::thrift::ClientReceiveState& state) {
-  return recv_serialize(state);
-}
-
-folly::exception_wrapper MyServiceAsyncClient::recv_instance_wrapped_serialize(apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
-  return recv_wrapped_serialize(_return, state);
-}
 
 
 

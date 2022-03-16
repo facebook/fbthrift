@@ -15,7 +15,7 @@
   limitations under the License.
 
 %>
-<%^service:reduced_client?%>
+<%^service:reduced_client?%><%^function:creates_interaction?%>
 <%^type:streamresponse?%>
 folly::Future<<% > types/return_type_client_lift_unit%>> <% > service_common/client_class_name%>::future_<%function:cpp_name%>(<% > service_common/function_param_list_client%>) {
   ::apache::thrift::RpcOptions rpcOptions;
@@ -23,12 +23,12 @@ folly::Future<<% > types/return_type_client_lift_unit%>> <% > service_common/cli
 }
 <%/type:streamresponse?%>
 
-<%/service:reduced_client?%>
+<%/function:creates_interaction?%><%/service:reduced_client?%>
 folly::SemiFuture<<% > types/return_type_client_lift_unit%>> <% > service_common/client_class_name%>::semifuture_<%function:cpp_name%>(<% > service_common/function_param_list_client%>) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_<%function:cpp_name%>(rpcOptions<%function:comma%><% > service_common/param_list%>);
 }
-<%^service:reduced_client?%>
+<%^service:reduced_client?%><%^function:creates_interaction?%>
 
 <%^type:streamresponse?%>
 folly::Future<<% > types/return_type_client_lift_unit%>> <% > service_common/client_class_name%>::future_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_client%>) {
@@ -44,7 +44,7 @@ folly::Future<<% > types/return_type_client_lift_unit%>> <% > service_common/cli
   return future;
 }
 <%/type:streamresponse?%>
-<%/service:reduced_client?%>
+<%/function:creates_interaction?%><%/service:reduced_client?%>
 
 folly::SemiFuture<<% > types/return_type_client_lift_unit%>> <% > service_common/client_class_name%>::semifuture_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_client%>) {
 <%#function:oneway?%>
@@ -58,7 +58,7 @@ folly::SemiFuture<<% > types/return_type_client_lift_unit%>> <% > service_common
   return std::move(callbackAndFuture.second);
 }
 
-<%^function:oneway?%><%^service:reduced_client?%>
+<%^function:oneway?%><%^service:reduced_client?%><%^function:creates_interaction?%>
 <%^type:streamresponse?%>
 folly::Future<std::pair<<% > types/return_type_client_lift_unit%>, std::unique_ptr<apache::thrift::transport::THeader>>> <% > service_common/client_class_name%>::header_future_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_client%>) {
   folly::Promise<std::pair<<% > types/return_type_client_lift_unit%>, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
@@ -75,4 +75,4 @@ folly::SemiFuture<std::pair<<% > types/return_type_client_lift_unit%>, std::uniq
   <%function:cpp_name%>(rpcOptions, std::move(callback)<%function:comma%><% > service_common/param_list%>);
   return std::move(callbackAndFuture.second);
 }
-<%/service:reduced_client?%><%/function:oneway?%>
+<%/function:creates_interaction?%><%/service:reduced_client?%><%/function:oneway?%>

@@ -36,11 +36,11 @@
 
 <% > service_async_client_cpp/future_functions%>
 
-<%^service:reduced_client?%><%^type:streamresponse?%>
+<%^service:reduced_client?%><%^function:creates_interaction?%><%^type:streamresponse?%>
 void <%service:cpp_name%>AsyncClient::<%function:cpp_name%>(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback<%function:comma%><% > service_common/function_param_list_client%>) {
   <%function:cpp_name%>(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback))<%function:comma%><% > service_common/param_list%>);
 }
-<%/type:streamresponse?%><%/service:reduced_client?%>
+<%/type:streamresponse?%><%/function:creates_interaction?%><%/service:reduced_client?%>
 <%/function:returns_sink?%>
 
 <% > service_async_client_cpp/coroutine_functions%>
@@ -52,9 +52,9 @@ void <%service:cpp_name%>AsyncClient::<%function:cpp_name%>(folly::Function<void
 <% > service_async_client_cpp/received%>
 
 
-<%^service:interaction?%>
+<%^service:reduced_client?%><%^function:creates_interaction?%>
 <% > service_async_client_cpp/received_instance%>
-<%/service:interaction?%>
+<%/function:creates_interaction?%><%/service:reduced_client?%>
 
 <%/function:oneway?%>
 <%/function:starts_interaction?%><%#function:starts_interaction?%>
