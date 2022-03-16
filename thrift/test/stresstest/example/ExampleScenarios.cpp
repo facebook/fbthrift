@@ -58,3 +58,27 @@ THRIFT_STRESS_TEST(AsynchronousRequests) {
   // sleep for 100ms
   co_await folly::coro::sleep(std::chrono::milliseconds(100));
 }
+
+/**
+ * Send a request to stream 10 chunks of 512 bytes each, with 50ms processing
+ * time per chunk on the server side and 10ms delay between chunks on client
+ * side.
+ * Then, use a sink to send 5 chunks of 256 bytes each back to the server, with
+ * 50ms processing time per chunk on the server side and 10ms delay between
+ * chunks on client side.
+ */
+THRIFT_STRESS_TEST(SinkAndStream) {
+  StreamRequest streamReq;
+  streamReq.processInfo()->serverChunkProcessingTimeMs() = 50;
+  streamReq.processInfo()->clientChunkProcessingTimeMs() = 10;
+  streamReq.processInfo()->numChunks() = 10;
+  streamReq.processInfo()->chunkSize() = 512;
+  co_await client->co_streamTm(streamReq);
+
+  StreamRequest sinkReq;
+  sinkReq.processInfo()->serverChunkProcessingTimeMs() = 50;
+  sinkReq.processInfo()->clientChunkProcessingTimeMs() = 10;
+  sinkReq.processInfo()->numChunks() = 5;
+  sinkReq.processInfo()->chunkSize() = 256;
+  co_await client->co_sinkTm(sinkReq);
+}

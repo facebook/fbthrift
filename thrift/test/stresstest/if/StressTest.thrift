@@ -42,9 +42,31 @@ struct BasicResponse {
   1: binary payload;
 }
 
+struct StreamProcessInfo {
+  1: i64 initialResponseProcessingTimeMs;
+  2: i64 initialResponseSize;
+  3: i64 serverChunkProcessingTimeMs;
+  4: i64 clientChunkProcessingTimeMs; // client simulates work via sleep
+  5: WorkSimulationMode serverWorkSimulationMode;
+  6: i64 numChunks = 1; // must be >= 1
+  7: i64 chunkSize;
+  8: i64 finalResponseProcessingTimeMs; // only used in sinks
+  9: i64 finalResponseSize; // only used in sinks
+}
+
+struct StreamRequest {
+  1: StreamProcessInfo processInfo;
+  3: binary payload;
+}
+
 service StressTest {
   void ping() (thread = "eb");
 
   BasicResponse requestResponseTm(1: BasicRequest req);
   BasicResponse requestResponseEb(1: BasicRequest req) (thread = "eb");
+
+  BasicResponse, stream<BasicResponse> streamTm(1: StreamRequest req);
+  BasicResponse, sink<BasicResponse, BasicResponse> sinkTm(
+    1: StreamRequest req,
+  );
 }

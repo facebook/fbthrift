@@ -51,6 +51,10 @@ class StressTestClient {
 
   folly::coro::Task<void> co_requestResponseTm(const BasicRequest& req);
 
+  folly::coro::Task<void> co_streamTm(const StreamRequest& req);
+
+  folly::coro::Task<void> co_sinkTm(const StreamRequest& req);
+
   bool connectionGood() const { return connectionGood_; }
 
  private:

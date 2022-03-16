@@ -16,6 +16,9 @@
 
 #pragma once
 
+#include <folly/experimental/coro/AsyncGenerator.h>
+#include <folly/experimental/coro/Sleep.h>
+#include <folly/experimental/coro/Task.h>
 #include <thrift/test/stresstest/if/gen-cpp2/StressTest.h>
 
 namespace apache {
@@ -60,34 +63,110 @@ class StressTestHandler : public StressTestSvIf {
     requestResponseImpl(std::move(callback), std::move(request));
   }
 
+  ResponseAndServerStream<BasicResponse, BasicResponse> streamTm(
+      std::unique_ptr<StreamRequest> request) override {
+    simulateWork(
+        *request->processInfo()->initialResponseProcessingTimeMs(),
+        *request->processInfo()->serverWorkSimulationMode());
+    auto response =
+        makeBasicResponse(*request->processInfo()->initialResponseSize());
+    auto stream = folly::coro::co_invoke(
+        [this, request = std::move(request)]() mutable
+        -> folly::coro::AsyncGenerator<BasicResponse&&> {
+          auto numChunks = request->processInfo()->numChunks();
+          for (int64_t i = 0; i < numChunks; i++) {
+            co_await co_simulateWork(
+                *request->processInfo()->serverChunkProcessingTimeMs(),
+                *request->processInfo()->serverWorkSimulationMode());
+            co_yield makeBasicResponse(*request->processInfo()->chunkSize());
+          }
+        });
+    return {std::move(response), std::move(stream)};
+  }
+
+  ResponseAndSinkConsumer<BasicResponse, BasicResponse, BasicResponse> sinkTm(
+      std::unique_ptr<StreamRequest> request) override {
+    simulateWork(
+        *request->processInfo()->initialResponseProcessingTimeMs(),
+        *request->processInfo()->serverWorkSimulationMode());
+    auto response =
+        makeBasicResponse(*request->processInfo()->initialResponseSize());
+    auto consumer = SinkConsumer<BasicResponse, BasicResponse>{
+        [this, request = std::move(request)](
+            folly::coro::AsyncGenerator<BasicResponse&&> gen)
+            -> folly::coro::Task<BasicResponse> {
+          while (co_await gen.next()) {
+            co_await co_simulateWork(
+                *request->processInfo()->serverChunkProcessingTimeMs(),
+                *request->processInfo()->serverWorkSimulationMode());
+          }
+          co_await co_simulateWork(
+              *request->processInfo()->finalResponseProcessingTimeMs(),
+              *request->processInfo()->serverWorkSimulationMode());
+          co_return makeBasicResponse(
+              *request->processInfo()->finalResponseSize());
+        },
+        10 /* TODO: make buffer size a parameter */};
+    return {std::move(response), std::move(consumer)};
+  }
+
  private:
   void requestResponseImpl(
       std::unique_ptr<HandlerCallback<std::unique_ptr<BasicResponse>>> callback,
       std::unique_ptr<BasicRequest> request) const {
-    if (auto processingTime = *request->processInfo()->processingTimeMs();
-        processingTime > 0) {
-      switch (*request->processInfo()->workSimulationMode()) {
+    simulateWork(
+        *request->processInfo()->processingTimeMs(),
+        *request->processInfo()->workSimulationMode());
+    callback->result(
+        makeBasicResponse(*request->processInfo()->responseSize()));
+  }
+
+  void simulateWork(int64_t timeMs, WorkSimulationMode mode) const {
+    if (timeMs > 0) {
+      auto duration = std::chrono::milliseconds(timeMs);
+      switch (mode) {
         case WorkSimulationMode::Default: {
-          auto deadline = std::chrono::steady_clock::now() +
-              std::chrono::milliseconds(processingTime);
-          while (std::chrono::steady_clock::now() < deadline) {
-            // wait for deadline
-          }
+          busyWait(duration);
           break;
         }
         case WorkSimulationMode::Sleep: {
-          /* sleep override */ std::this_thread::sleep_for(
-              std::chrono::milliseconds(processingTime));
+          std::this_thread::sleep_for(duration);
           break;
         }
       }
     }
-    BasicResponse response;
-    if (auto responseSize = *request->processInfo()->responseSize();
-        responseSize > 0) {
-      response.payload() = std::string('x', responseSize);
+  }
+
+  folly::coro::Task<void> co_simulateWork(
+      int64_t timeMs, WorkSimulationMode mode) const {
+    if (timeMs > 0) {
+      auto duration = std::chrono::milliseconds(timeMs);
+      switch (mode) {
+        case WorkSimulationMode::Default: {
+          busyWait(duration);
+          break;
+        }
+        case WorkSimulationMode::Sleep: {
+          co_await folly::coro::sleep(duration);
+          break;
+        }
+      }
     }
-    callback->result(std::move(response));
+  }
+
+  void busyWait(std::chrono::milliseconds duration) const {
+    auto deadline = std::chrono::steady_clock::now() + duration;
+    while (std::chrono::steady_clock::now() < deadline) {
+      // wait for deadline
+    }
+  }
+
+  BasicResponse makeBasicResponse(int64_t payloadSize) const {
+    BasicResponse chunk;
+    if (payloadSize > 0) {
+      chunk.payload() = std::string('x', payloadSize);
+    }
+    return chunk;
   }
 };
 

@@ -16,12 +16,20 @@
 
 #include <thrift/test/stresstest/client/StressTestClient.h>
 
+#include <folly/experimental/coro/Sleep.h>
+
 namespace apache {
 namespace thrift {
 namespace stress {
 
 namespace {
 constexpr double kHistogramMax = 1000.0 * 60.0; // 1 minute
+
+folly::coro::Task<void> maybeSleep(const StreamRequest& req) {
+  if (auto dur = *req.processInfo()->clientChunkProcessingTimeMs(); dur > 0) {
+    co_await folly::coro::sleep(std::chrono::milliseconds(dur));
+  }
+}
 } // namespace
 
 ClientRpcStats::ClientRpcStats() : latencyHistogram(50, 0.0, kHistogramMax) {}
@@ -44,6 +52,37 @@ folly::coro::Task<void> StressTestClient::co_requestResponseEb(
 folly::coro::Task<void> StressTestClient::co_requestResponseTm(
     const BasicRequest& req) {
   co_await timedExecute([&]() { return client_->co_requestResponseTm(req); });
+}
+
+folly::coro::Task<void> StressTestClient::co_streamTm(
+    const StreamRequest& req) {
+  // time the entire stream from start to finish
+  co_await timedExecute([&]() -> folly::coro::Task<void> {
+    auto result = co_await client_->co_streamTm(req);
+    auto gen = std::move(result).stream.toAsyncGenerator();
+    while (co_await gen.next()) {
+      co_await maybeSleep(req);
+    }
+  });
+}
+
+folly::coro::Task<void> StressTestClient::co_sinkTm(const StreamRequest& req) {
+  // time the entire sink from start to finish
+  co_await timedExecute([&]() -> folly::coro::Task<void> {
+    auto result = co_await client_->co_sinkTm(req);
+    std::ignore =
+        result.sink.sink([&]() -> folly::coro::AsyncGenerator<BasicResponse&&> {
+          for (int64_t i = 0; i < req.processInfo()->numChunks(); i++) {
+            co_await maybeSleep(req);
+            BasicResponse chunk;
+            if (auto size = *req.processInfo()->chunkSize(); size > 0) {
+              chunk.payload() = std::string('x', size);
+            }
+            co_yield std::move(chunk);
+          }
+        }());
+    // (void)finalResponse; // we don't care about this
+  });
 }
 
 template <class Fn>
