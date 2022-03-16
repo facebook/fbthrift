@@ -27,7 +27,6 @@
 #include <thrift/lib/cpp2/async/AsyncProcessorHelper.h>
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
-#include <thrift/lib/cpp2/async/MultiplexAsyncProcessor.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
@@ -550,14 +549,8 @@ THRIFT_PLUGGABLE_FUNC_SET(
       if (meta.interfaceKind_ref() == InterfaceKind::MONITORING) {
         auto processorFactory = server_.getMonitoringInterface();
         DCHECK(processorFactory);
-        if (!multiplexFactory_) {
-          multiplexFactory_ = std::make_unique<MultiplexAsyncProcessorFactory>(
-              std::vector<std::shared_ptr<AsyncProcessorFactory>>{
-                  processorFactory});
-        }
-
         return rocket::ProcessorInfo{
-            *multiplexFactory_,
+            *processorFactory,
             std::make_shared<concurrency::ThreadManagerExecutorAdapter>(
                 folly::getGlobalCPUExecutor()),
             server_,
@@ -569,7 +562,6 @@ THRIFT_PLUGGABLE_FUNC_SET(
 
    private:
     ThriftServer& server_;
-    std::unique_ptr<MultiplexAsyncProcessorFactory> multiplexFactory_;
   };
   return std::make_unique<MonitoringConnectionHandler>(server);
 }

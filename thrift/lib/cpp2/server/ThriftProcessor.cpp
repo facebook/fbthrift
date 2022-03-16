@@ -25,7 +25,6 @@
 
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/AsyncProcessorHelper.h>
-#include <thrift/lib/cpp2/async/MultiplexAsyncProcessor.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
@@ -47,9 +46,6 @@ void ThriftProcessor::onThriftRequest(
   DCHECK(channel);
 
   auto& processorFactory = server_.getDecoratedProcessorFactory();
-  if (useResourcePoolsFlagsSet()) {
-    CHECK(dynamic_cast<MultiplexAsyncProcessorFactory*>(&processorFactory));
-  }
   if (processor_ == nullptr) {
     processor_ = processorFactory.getProcessor();
   }
