@@ -86,6 +86,7 @@ apache::thrift::ServerStream<int32_t> TestStreamPublisherService::rangeThrowUDE(
 
 using Pair = apache::thrift::detail::PayloadAndHeader<int32_t>;
 using MessageVariant = apache::thrift::detail::MessageVariant<int32_t>;
+using apache::thrift::detail::OrderedHeader;
 using apache::thrift::detail::UnorderedHeader;
 
 apache::thrift::ServerStream<int32_t>
@@ -95,6 +96,7 @@ TestStreamGeneratorWithHeaderService::range(int32_t from, int32_t to) {
         for (int i = from; i <= to; i++) {
           co_yield Pair{i, {{"val", std::to_string(i)}}};
           co_yield UnorderedHeader{{{"val", std::to_string(i)}}};
+          co_yield OrderedHeader{{{"val", std::to_string(i)}}};
         }
       });
 }
@@ -106,6 +108,7 @@ TestStreamGeneratorWithHeaderService::rangeThrow(int32_t from, int32_t to) {
         for (int i = from; i <= to; i++) {
           co_yield Pair{i, {{"val", std::to_string(i)}}};
           co_yield UnorderedHeader{{{"val", std::to_string(i)}}};
+          co_yield OrderedHeader{{{"val", std::to_string(i)}}};
         }
         throw std::runtime_error("I am a search bar");
       });
@@ -118,6 +121,7 @@ TestStreamGeneratorWithHeaderService::rangeThrowUDE(int32_t from, int32_t to) {
         for (int i = from; i <= to; i++) {
           co_yield Pair{i, {{"val", std::to_string(i)}}};
           co_yield UnorderedHeader{{{"val", std::to_string(i)}}};
+          co_yield OrderedHeader{{{"val", std::to_string(i)}}};
         }
         throw UserDefinedException();
       });
@@ -131,6 +135,7 @@ TestStreamPublisherWithHeaderService::range(int32_t from, int32_t to) {
   for (int i = from; i <= to; i++) {
     publisher.next(Pair{i, {{"val", std::to_string(i)}}});
     publisher.next(UnorderedHeader{{{"val", std::to_string(i)}}});
+    publisher.next(OrderedHeader{{{"val", std::to_string(i)}}});
   }
   std::move(publisher).complete();
 
@@ -145,6 +150,7 @@ TestStreamPublisherWithHeaderService::rangeThrow(int32_t from, int32_t to) {
   for (int i = from; i <= to; i++) {
     publisher.next(Pair{i, {{"val", std::to_string(i)}}});
     publisher.next(UnorderedHeader{{{"val", std::to_string(i)}}});
+    publisher.next(OrderedHeader{{{"val", std::to_string(i)}}});
   }
   std::move(publisher).complete(std::runtime_error("I am a search bar"));
 
@@ -159,6 +165,7 @@ TestStreamPublisherWithHeaderService::rangeThrowUDE(int32_t from, int32_t to) {
   for (int i = from; i <= to; i++) {
     publisher.next(Pair{i, {{"val", std::to_string(i)}}});
     publisher.next(UnorderedHeader{{{"val", std::to_string(i)}}});
+    publisher.next(OrderedHeader{{{"val", std::to_string(i)}}});
   }
   std::move(publisher).complete(UserDefinedException());
 
@@ -292,6 +299,7 @@ TestStreamMultiPublisherWithHeaderService::range(
                 }
                 multipub_.next(Pair{i, {{"val", std::to_string(i)}}});
                 multipub_.next(UnorderedHeader{{{"val", std::to_string(i)}}});
+                multipub_.next(OrderedHeader{{{"val", std::to_string(i)}}});
                 co_await folly::coro::co_reschedule_on_current_executor;
               }
               if (ew) {

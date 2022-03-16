@@ -141,7 +141,11 @@ class ClientBufferedStream {
   struct UnorderedHeader {
     StreamPayloadMetadata metadata;
   };
-  using MessageVariant = std::variant<T, PayloadAndHeader, UnorderedHeader>;
+  struct OrderedHeader {
+    StreamPayloadMetadata metadata;
+  };
+  using MessageVariant =
+      std::variant<T, PayloadAndHeader, UnorderedHeader, OrderedHeader>;
   folly::coro::AsyncGenerator<MessageVariant&&>
   toAsyncGeneratorWithHeader() && {
     CHECK_EQ(bufferOptions_.memSize, 0)
@@ -188,6 +192,15 @@ class ClientBufferedStream {
     int32_t outstanding = chunkBufferSize;
     size_t payloadDataSize = 0;
 
+    auto updateCredits = [&] {
+      if ((--outstanding <= chunkBufferSize / 2) ||
+          (payloadDataSize >= kRequestCreditPayloadSize)) {
+        streamBridge->requestN(chunkBufferSize - outstanding);
+        outstanding = chunkBufferSize;
+        payloadDataSize = 0;
+      }
+    };
+
     apache::thrift::detail::ClientStreamBridge::ClientQueue queue;
     class ReadyCallback : public apache::thrift::detail::ClientStreamConsumer {
      public:
@@ -222,21 +235,27 @@ class ClientBufferedStream {
         if (!payload.hasValue() && !payload.hasException()) {
           break;
         }
+        const size_t payloadSize = payload.hasValue() && payload->payload
+            ? payload->payload->computeChainDataLength()
+            : 0;
         if (payload.hasValue()) {
-          if (!payload->payload) {
+          if (!payloadSize) {
             if constexpr (!WithHeader) {
               FB_LOG_EVERY_MS(WARNING, 1000)
                   << "Dropping unhandled stream header frame";
+              if (payload->isOrderedHeader) {
+                updateCredits();
+              }
               queue.pop();
               continue;
             }
           } else {
-            payloadDataSize += payload->payload->computeChainDataLength();
+            payloadDataSize += payloadSize;
           }
         }
         if constexpr (WithHeader) {
           if (payload.hasValue()) {
-            if (payload->payload) {
+            if (payloadSize) {
               if (payload->metadata.otherMetadata().has_value()) {
                 PayloadAndHeader ret;
                 ret.metadata = std::move(payload->metadata);
@@ -248,6 +267,10 @@ class ClientBufferedStream {
                 queue.pop();
                 co_yield std::move(ret);
               }
+            } else if (payload->isOrderedHeader) {
+              OrderedHeader ret{std::move(payload->metadata)};
+              queue.pop();
+              co_yield std::move(ret);
             } else {
               UnorderedHeader ret{std::move(payload->metadata)};
               queue.pop();
@@ -263,13 +286,7 @@ class ClientBufferedStream {
           queue.pop();
           co_yield folly::coro::co_result(std::move(value));
         }
-
-        if ((--outstanding <= chunkBufferSize / 2) ||
-            (payloadDataSize >= kRequestCreditPayloadSize)) {
-          streamBridge->requestN(chunkBufferSize - outstanding);
-          outstanding = chunkBufferSize;
-          payloadDataSize = 0;
-        }
+        updateCredits();
       }
     }
   }
@@ -297,6 +314,40 @@ class ClientBufferedStream {
     size_t windowSum = 0;
     size_t numReceivedPayloads = 0;
     size_t maxPayloadSize = 0;
+
+    auto updateCredits = [&] {
+      DCHECK_LT(0, outstanding);
+      --outstanding;
+      // If enough payloads have been received estimate the recent average
+      // payload size, otherwise conservatively use the largest received
+      // size.
+      size_t estPayloadSize = std::max<size_t>(
+          numReceivedPayloads < kEstimationWindowSize
+              ? maxPayloadSize
+              : (windowSum + kEstimationWindowSize - 1) / kEstimationWindowSize,
+          1);
+      size_t outstandingSize = bufferMemSize + outstanding * estPayloadSize;
+      size_t spaceAvailable =
+          std::max<ssize_t>(memBufferTarget - outstandingSize, 0);
+
+      // Issue more credits when available space is at least 16kB (to
+      // amortize the request over 16kB worth of received payloads) or half
+      // of the buffer (to ensure there are enough outstanding credits in
+      // the small buffer / small payloads regime).
+      if (spaceAvailable >= kRequestCreditPayloadSize ||
+          spaceAvailable >= memBufferTarget / 2) {
+        // Convert to credits using the size estimate, but cap credits and
+        // outstanding requests to maxChunkBufferSize if this was requested
+        // in BufferOptions.
+        DCHECK_LE(outstanding, maxChunkBufferSize);
+        const int32_t remainingCredits = maxChunkBufferSize - outstanding;
+        int32_t request =
+            (spaceAvailable + estPayloadSize - 1) / estPayloadSize;
+        request = std::min(remainingCredits, request);
+        streamBridge->requestN(request);
+        outstanding += request;
+      }
+    };
 
     apache::thrift::detail::ClientStreamBridge::ClientQueueWithTailPtr queue;
     class ReadyCallback : public apache::thrift::detail::ClientStreamConsumer {
@@ -352,9 +403,12 @@ class ClientBufferedStream {
             ? payload->payload->computeChainDataLength()
             : 0;
         if (payload.hasValue()) {
-          if (!payload->payload) {
+          if (!payloadSize) {
             FB_LOG_EVERY_MS(WARNING, 1000)
                 << "Dropping unhandled stream header frame";
+            if (payload->isOrderedHeader) {
+              updateCredits();
+            }
             queue.pop();
             continue;
           }
@@ -369,38 +423,7 @@ class ClientBufferedStream {
         auto value = decode(std::move(payload));
         queue.pop();
         co_yield folly::coro::co_result(std::move(value));
-
-        DCHECK_LT(0, outstanding);
-        --outstanding;
-        // If enough payloads have been received estimate the recent average
-        // payload size, otherwise conservatively use the largest received size.
-        size_t estPayloadSize = std::max<size_t>(
-            numReceivedPayloads < kEstimationWindowSize
-                ? maxPayloadSize
-                : (windowSum + kEstimationWindowSize - 1) /
-                    kEstimationWindowSize,
-            1);
-        size_t outstandingSize = bufferMemSize + outstanding * estPayloadSize;
-        size_t spaceAvailable =
-            std::max<ssize_t>(memBufferTarget - outstandingSize, 0);
-
-        // Issue more credits when available space is at least 16kB (to amortize
-        // the request over 16kB worth of received payloads) or half of the
-        // buffer (to ensure there are enough outstanding credits in the small
-        // buffer / small payloads regime).
-        if (spaceAvailable >= kRequestCreditPayloadSize ||
-            spaceAvailable >= memBufferTarget / 2) {
-          // Convert to credits using the size estimate, but cap credits and
-          // outstanding requests to maxChunkBufferSize if this was requested
-          // in BufferOptions.
-          DCHECK_LE(outstanding, maxChunkBufferSize);
-          const int32_t remainingCredits = maxChunkBufferSize - outstanding;
-          int32_t request =
-              (spaceAvailable + estPayloadSize - 1) / estPayloadSize;
-          request = std::min(remainingCredits, request);
-          streamBridge->requestN(request);
-          outstanding += request;
-        }
+        updateCredits();
       }
     }
   }

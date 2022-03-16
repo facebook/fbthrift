@@ -36,6 +36,7 @@ TYPED_TEST_CASE(StreamServiceTest, TestTypes);
 
 using PayloadAndHeader = ClientBufferedStream<int32_t>::PayloadAndHeader;
 using UnorderedHeader = ClientBufferedStream<int32_t>::UnorderedHeader;
+using OrderedHeader = ClientBufferedStream<int32_t>::OrderedHeader;
 
 TYPED_TEST(StreamServiceTest, Basic) {
   this->connectToServer(
@@ -104,6 +105,13 @@ TYPED_TEST(StreamServiceTest, WithHeader) {
             EXPECT_EQ(
                 std::to_string(i),
                 (*std::get<UnorderedHeader>(*t)
+                      .metadata.otherMetadata_ref())["val"]);
+
+            t = co_await gen.next();
+            EXPECT_TRUE(std::holds_alternative<OrderedHeader>(*t));
+            EXPECT_EQ(
+                std::to_string(i),
+                (*std::get<OrderedHeader>(*t)
                       .metadata.otherMetadata_ref())["val"]);
           } else {
             EXPECT_EQ(i, std::get<int32_t>(*t));
@@ -327,6 +335,13 @@ TYPED_TEST(MultiStreamServiceTest, WithHeader) {
                     EXPECT_EQ(
                         std::to_string(i),
                         (*std::get<UnorderedHeader>(*t)
+                              .metadata.otherMetadata_ref())["val"]);
+
+                    t = co_await gen.next();
+                    EXPECT_TRUE(std::holds_alternative<OrderedHeader>(*t));
+                    EXPECT_EQ(
+                        std::to_string(i),
+                        (*std::get<OrderedHeader>(*t)
                               .metadata.otherMetadata_ref())["val"]);
                   } else {
                     EXPECT_EQ(i, std::get<int32_t>(*t));

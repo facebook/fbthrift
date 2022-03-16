@@ -107,7 +107,7 @@ ServerStreamFn<T> ServerGeneratorStream::fromAsyncGenerator(
               if constexpr (WithHeader) {
                 folly::Try<StreamPayload> sp =
                     encodeMessageVariant(encode, std::move(item));
-                bool hasPayload = !!sp->payload;
+                bool hasPayload = sp->payload || sp->isOrderedHeader;
                 stream->publish(std::move(sp));
                 if (hasPayload) {
                   --credits;

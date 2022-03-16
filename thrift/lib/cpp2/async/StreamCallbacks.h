@@ -44,10 +44,16 @@ struct FirstResponsePayload {
 };
 
 struct StreamPayload {
-  StreamPayload(std::unique_ptr<folly::IOBuf> p, StreamPayloadMetadata&& md)
-      : payload(std::move(p)), metadata(std::move(md)) {}
+  StreamPayload(
+      std::unique_ptr<folly::IOBuf> p,
+      StreamPayloadMetadata&& md,
+      bool isOrderedHdr = false)
+      : payload(std::move(p)),
+        metadata(std::move(md)),
+        isOrderedHeader(isOrderedHdr) {}
 
-  StreamPayload(const StreamPayload& oth) : metadata(oth.metadata) {
+  StreamPayload(const StreamPayload& oth)
+      : metadata(oth.metadata), isOrderedHeader(oth.isOrderedHeader) {
     if (oth.payload) {
       payload = oth.payload->clone();
     }
@@ -58,11 +64,14 @@ struct StreamPayload {
       payload = oth.payload->clone();
     }
     metadata = oth.metadata;
+    isOrderedHeader = oth.isOrderedHeader;
     return *this;
   }
 
   std::unique_ptr<folly::IOBuf> payload;
   StreamPayloadMetadata metadata;
+  // OrderedHeader is sent as a PAYLOAD frame with an empty payload
+  bool isOrderedHeader;
 };
 
 struct HeadersPayload {
@@ -117,8 +126,12 @@ struct PayloadAndHeader {
 struct UnorderedHeader {
   transport::THeader::StringToStringMap metadata;
 };
+struct OrderedHeader {
+  transport::THeader::StringToStringMap metadata;
+};
 template <typename T>
-using MessageVariant = std::variant<T, PayloadAndHeader<T>, UnorderedHeader>;
+using MessageVariant =
+    std::variant<T, PayloadAndHeader<T>, UnorderedHeader, OrderedHeader>;
 
 template <typename T>
 folly::Try<StreamPayload> encodeMessageVariant(
@@ -136,6 +149,15 @@ folly::Try<StreamPayload> encodeMessageVariant(
         md.otherMetadata() = std::move(val.metadata);
         return folly::Try<StreamPayload>(
             folly::in_place, nullptr, std::move(md));
+      },
+      [&](OrderedHeader&& val) {
+        StreamPayloadMetadata md;
+        md.otherMetadata() = std::move(val.metadata);
+        return folly::Try<StreamPayload>(
+            folly::in_place,
+            nullptr,
+            std::move(md),
+            /* isOrderedHeader */ true);
       });
 }
 

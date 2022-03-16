@@ -370,6 +370,7 @@ StreamChannelStatusResponse RocketClient::handleStreamResponse(
     if (streamPayload.hasException()) {
       return serverCallback.onStreamError(std::move(streamPayload.exception()));
     }
+    streamPayload->isOrderedHeader = true;
     auto payloadMetadataRef = streamPayload->metadata.payloadMetadata_ref();
     if (payloadMetadataRef &&
         payloadMetadataRef->getType() == PayloadMetadata::exceptionMetadata) {

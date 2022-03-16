@@ -43,6 +43,7 @@ class ServerStream {
  public:
   using PayloadAndHeader = apache::thrift::detail::PayloadAndHeader<T>;
   using UnorderedHeader = apache::thrift::detail::UnorderedHeader;
+  using OrderedHeader = apache::thrift::detail::OrderedHeader;
   using MessageVariant = apache::thrift::detail::MessageVariant<T>;
 
 #if FOLLY_HAS_COROUTINES

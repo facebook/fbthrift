@@ -87,7 +87,7 @@ void ServerGeneratorStream::processPayloads() {
       DCHECK(!isClientClosed());
       auto& payload = messages.front();
       if (payload.hasValue()) {
-        auto alive = payload->payload
+        auto alive = payload->payload || payload->isOrderedHeader
             ? streamClientCallback_->onStreamNext(std::move(payload.value()))
             : streamClientCallback_->onStreamHeaders(
                   HeadersPayload(std::move(payload->metadata)));

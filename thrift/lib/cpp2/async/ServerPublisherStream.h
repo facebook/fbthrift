@@ -360,7 +360,7 @@ class ServerPublisherStream : private StreamServerCallback {
         DCHECK(!queue_.isClosed());
         auto payload = std::move(buffer.front());
         if (payload.hasValue()) {
-          bool hasPayload = payload->payload != nullptr;
+          bool hasPayload = payload->payload || payload->isOrderedHeader;
           auto alive = hasPayload
               ? streamClientCallback_->onStreamNext(std::move(payload.value()))
               : streamClientCallback_->onStreamHeaders(
