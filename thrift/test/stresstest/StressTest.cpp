@@ -48,6 +48,17 @@ void runStressTest(std::unique_ptr<StressTestBase> test) {
 
   // stop runner
   runner.stop();
+
+  auto stats = runner.getCombinedStats();
+  LOG(INFO) << "Total requests: " << (stats.numSuccess + stats.numFailure)
+            << " (" << stats.numSuccess << "/" << stats.numFailure
+            << " succeeded/failed)";
+  LOG(INFO) << "Total QPS: "
+            << (static_cast<double>(stats.numSuccess) / FLAGS_runtime_s);
+  LOG(INFO) << "Latency: P50="
+            << stats.latencyHistogram.getPercentileEstimate(.5)
+            << ", P99=" << stats.latencyHistogram.getPercentileEstimate(.9)
+            << ", P1=" << stats.latencyHistogram.getPercentileEstimate(1.0);
 }
 
 int main(int argc, char* argv[]) {

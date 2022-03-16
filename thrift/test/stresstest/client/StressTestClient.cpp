@@ -20,21 +20,57 @@ namespace apache {
 namespace thrift {
 namespace stress {
 
+namespace {
+constexpr double kHistogramMax = 1000.0 * 60.0; // 1 minute
+} // namespace
+
+StressTestClient::Stats::Stats() : latencyHistogram(50, 0.0, kHistogramMax) {}
+
+void StressTestClient::Stats::combine(const Stats& other) {
+  latencyHistogram.merge(other.latencyHistogram);
+  numSuccess += other.numSuccess;
+  numFailure += other.numFailure;
+}
+
 folly::coro::Task<void> StressTestClient::co_ping() {
-  // TODO: collect statistics
-  co_await client_->co_ping();
+  co_await timedExecute([&]() { return client_->co_ping(); });
 }
 
 folly::coro::Task<void> StressTestClient::co_requestResponseEb(
     const BasicRequest& req) {
-  // TODO: collect statistics
-  co_await client_->co_requestResponseEb(req);
+  co_await timedExecute([&]() { return client_->co_requestResponseEb(req); });
 }
 
 folly::coro::Task<void> StressTestClient::co_requestResponseTm(
     const BasicRequest& req) {
-  // TODO: collect statistics
-  co_await client_->co_requestResponseTm(req);
+  co_await timedExecute([&]() { return client_->co_requestResponseTm(req); });
+}
+
+template <class Fn>
+folly::coro::Task<void> StressTestClient::timedExecute(Fn&& fn) {
+  if (!connectionGood_) {
+    co_return;
+  }
+  auto start = std::chrono::steady_clock::now();
+  try {
+    co_await fn();
+  } catch (folly::OperationCancelled&) {
+    // cancelled requests do not count as failures
+    throw;
+  } catch (transport::TTransportException& e) {
+    // assume fatal issue with connection, stop using this client
+    // TODO: Improve handling of connection issues
+    LOG(ERROR) << e.what();
+    connectionGood_ = false;
+    co_return;
+  } catch (std::exception& e) {
+    LOG(WARNING) << "Request failed: " << e.what();
+    stats_.numFailure++;
+    co_return;
+  }
+  auto elapsed = std::chrono::steady_clock::now() - start;
+  stats_.latencyHistogram.addValue(elapsed.count());
+  stats_.numSuccess++;
 }
 
 } // namespace stress

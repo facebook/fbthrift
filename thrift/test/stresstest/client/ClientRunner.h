@@ -42,6 +42,8 @@ class ClientThread {
   void run(const StressTestBase* test);
   void stop();
 
+  StressTestClient::Stats getCombinedStats();
+
  private:
   folly::coro::Task<void> runInternal(
       StressTestClient* client, const StressTestBase* test);
@@ -58,6 +60,8 @@ class ClientRunner {
 
   void run(const StressTestBase* test);
   void stop();
+
+  StressTestClient::Stats getCombinedStats();
 
  private:
   folly::CancellationSource cancelSource_;

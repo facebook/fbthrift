@@ -57,10 +57,19 @@ void ClientThread::stop() {
       scope_.joinAsync().scheduleOn(thread_.getEventBase()));
 }
 
+StressTestClient::Stats ClientThread::getCombinedStats() {
+  StressTestClient::Stats combinedStats;
+  for (auto& client : clients_) {
+    combinedStats.combine(client->getStats());
+  }
+  return combinedStats;
+}
+
 folly::coro::Task<void> ClientThread::runInternal(
     StressTestClient* client, const StressTestBase* test) {
   while (!(co_await folly::coro::co_current_cancellation_token)
-              .isCancellationRequested()) {
+              .isCancellationRequested() &&
+         client->connectionGood()) {
     co_await test->runWorkload(client);
   }
 }
@@ -84,6 +93,14 @@ void ClientRunner::stop() {
   for (auto& clientThread : clientThreads_) {
     clientThread->stop();
   }
+}
+
+StressTestClient::Stats ClientRunner::getCombinedStats() {
+  StressTestClient::Stats combinedStats;
+  for (auto& clientThread : clientThreads_) {
+    combinedStats.combine(clientThread->getCombinedStats());
+  }
+  return combinedStats;
 }
 
 } // namespace stress
