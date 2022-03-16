@@ -100,7 +100,7 @@ void readVarintMediumSlow(CursorT& c, T& value, const uint8_t* p, size_t len) {
     value = static_cast<T>(result);
     c.skipNoAdvance(p - start);
   } else {
-    readVarintSlow<T, CursorT>(c, value);
+    readVarintSlow(c, value);
   }
 }
 
@@ -119,8 +119,7 @@ void readVarint(CursorT& c, T& value) {
     value = static_cast<T>(*p);
     c.skipNoAdvance(1);
   } else {
-    apache::thrift::util::detail::readVarintMediumSlow<T, CursorT>(
-        c, value, p, len);
+    apache::thrift::util::detail::readVarintMediumSlow(c, value, p, len);
   }
 }
 
@@ -132,7 +131,7 @@ template <
         bool>::type = false>
 T readVarint(CursorT& c) {
   T value;
-  readVarint<T, CursorT>(c, value);
+  readVarint(c, value);
   return value;
 }
 
@@ -177,7 +176,7 @@ uint8_t writeVarintUnrolled(Cursor& c, T value) {
     return 1;
   }
 
-  return apache::thrift::util::detail::writeVarintSlow<Cursor, T>(c, value);
+  return apache::thrift::util::detail::writeVarintSlow(c, value);
 }
 
 #ifdef __BMI2__
