@@ -639,8 +639,6 @@ void ThriftRocketServerHandler::handleRequestCommon(
           return;
         }
 
-        auto [requestsProcessor, metadata] =
-            processor_->getRequestsProcessor(found->metadata);
         ServerRequest serverRequest(
             std::move(request),
             std::move(serializedCompressedRequest),
@@ -648,8 +646,8 @@ void ThriftRocketServerHandler::handleRequestCommon(
             cpp2ReqCtx,
             protocolId,
             folly::RequestContext::saveContext(),
-            requestsProcessor,
-            metadata,
+            processor_.get(),
+            &found->metadata,
             serviceRequestInfo);
 
         // Once we remove the old code we'll move validateRpcKind to a helper.

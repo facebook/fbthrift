@@ -657,8 +657,6 @@ void Cpp2Connection::requestReceived(
               serviceRequestInfo = &serviceRequestInfoMap_->get().at(
                   reqContext->getMethodName());
             }
-            auto [requestsProcessor, metadata] =
-                processor_->getRequestsProcessor(found.metadata);
             ServerRequest serverRequest(
                 std::move(req),
                 SerializedCompressedRequest(std::move(serializedRequest)),
@@ -666,8 +664,8 @@ void Cpp2Connection::requestReceived(
                 reqContext,
                 protoId,
                 folly::RequestContext::saveContext(),
-                requestsProcessor,
-                metadata,
+                processor_.get(),
+                &found.metadata,
                 serviceRequestInfo);
 
             auto poolResult = AsyncProcessorHelper::selectResourcePool(
