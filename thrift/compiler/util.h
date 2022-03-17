@@ -112,7 +112,8 @@ auto make_scope_guard(F&& f) {
 //  Given a container of objects and a function to obtain dependencies,
 //  produces a vector of those nodes in a topologicaly sorted order.
 template <typename T, typename ForwardIt, typename Edges>
-std::vector<T> topological_sort(ForwardIt begin, ForwardIt end, Edges edges) {
+std::vector<T> topological_sort(
+    ForwardIt begin, ForwardIt end, const Edges& edges) {
   struct IterState {
     T node;
     std::vector<T> edges;
@@ -137,7 +138,7 @@ std::vector<T> topological_sort(ForwardIt begin, ForwardIt end, Edges edges) {
       continue;
     }
     std::stack<IterState> st;
-    st.emplace(*it, edges(*it));
+    st.emplace(*it, edges.at(*it));
     visited.insert(*it);
     while (!st.empty()) {
       IterState& s = st.top();
@@ -148,7 +149,7 @@ std::vector<T> topological_sort(ForwardIt begin, ForwardIt end, Edges edges) {
       }
 
       if (visited.find(*s.pos) == visited.end()) {
-        st.emplace(*s.pos, edges(*s.pos));
+        st.emplace(*s.pos, edges.at(*s.pos));
         visited.insert(*s.pos);
       }
       ++s.pos;

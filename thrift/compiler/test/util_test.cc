@@ -262,7 +262,7 @@ TEST_F(UtilTest, scope_guard_throws_death) {
 }
 
 TEST_F(UtilTest, topological_sort_example) {
-  std::map<std::string, std::set<std::string>> graph{
+  std::map<std::string, std::vector<std::string>> graph{
       {"e", {"c", "a"}},
       {"d", {"b", "c"}},
       {"c", {"d", "b", "a"}},
@@ -274,9 +274,7 @@ TEST_F(UtilTest, topological_sort_example) {
   for (const auto& kvp : graph) {
     vertices.push_back(kvp.first);
   }
-  auto result = topological_sort<std::string>(
-      vertices.begin(), vertices.end(), [&](auto item) {
-        return std::vector<std::string>(graph[item].begin(), graph[item].end());
-      });
+  auto result =
+      topological_sort<std::string>(vertices.begin(), vertices.end(), graph);
   EXPECT_EQ(std::vector<std::string>({"b", "a", "d", "c", "e"}), result);
 }

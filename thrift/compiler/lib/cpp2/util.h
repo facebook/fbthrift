@@ -41,6 +41,11 @@ namespace cpp2 {
 
 bool is_custom_type(const t_type& type);
 
+std::unordered_map<t_struct*, std::vector<t_struct*>> gen_dependency_graph(
+    const t_program* program,
+    const std::vector<t_struct*>& objects,
+    bool sort_objects_with_map_dependency);
+
 inline std::vector<std::string> get_gen_namespace_components(
     t_program const& program) {
   return gen::cpp::namespace_resolver::gen_namespace_components(program);

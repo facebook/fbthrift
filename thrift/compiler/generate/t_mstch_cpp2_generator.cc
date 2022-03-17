@@ -1802,8 +1802,10 @@ class mstch_cpp2_program : public mstch_program {
         has_option("sort_objects_with_map_dependency");
 
     if (!split_id_) {
-      objects_ = gen_sorted_objects(
+      auto edges = cpp2::gen_dependency_graph(
           program_, prog_objects, sort_objects_with_map_dependency);
+      objects_ = topological_sort<t_struct*>(
+          prog_objects.begin(), prog_objects.end(), edges);
       enums_ = prog_enums;
       return;
     }
@@ -1822,56 +1824,6 @@ class mstch_cpp2_program : public mstch_program {
         enums_->push_back(prog_enums[i - prog_objects.size()]);
       }
     }
-  }
-
-  static std::vector<t_struct*> gen_sorted_objects(
-      const t_program* program,
-      const std::vector<t_struct*>& objects,
-      bool sort_objects_with_map_dependency) {
-    auto edges = [program, sort_objects_with_map_dependency](t_struct* obj) {
-      std::vector<t_struct*> deps;
-      for (auto& f : obj->fields()) {
-        // Ignore ref fields.
-        if (cpp2::is_explicit_ref(&f)) {
-          continue;
-        }
-
-        auto add_dependency = [&](const t_type* type) {
-          if (sort_objects_with_map_dependency) {
-            // must reference type underlying typedef
-            // as incomplete types are not allowed
-            type = type->get_true_type();
-          }
-          if (const auto strct = dynamic_cast<const t_struct*>(type)) {
-            // We're only interested in types defined in the current program.
-            if (!strct->is_exception() && strct->program() == program) {
-              // TODO(afuller): Remove const cast, once the return type also has
-              // const elements.
-              deps.emplace_back(const_cast<t_struct*>(strct));
-            }
-          }
-        };
-
-        auto t = f.type()->get_true_type();
-        if (auto map = dynamic_cast<t_map const*>(t)) {
-          if (!sort_objects_with_map_dependency || cpp2::is_custom_type(*map)) {
-            add_dependency(map->get_key_type());
-            add_dependency(map->get_val_type());
-          }
-        } else {
-          add_dependency(t);
-        }
-      }
-
-      // Order all deps in the order they are defined in.
-      std::sort(
-          deps.begin(), deps.end(), [](const t_struct* a, const t_struct* b) {
-            return a->get_lineno() < b->get_lineno();
-          });
-
-      return deps;
-    };
-    return topological_sort<t_struct*>(objects.begin(), objects.end(), edges);
   }
 };
 
