@@ -723,7 +723,7 @@ public class THeaderTransport extends TFramedTransport {
 
   private static String getClientMetadata() {
     return String.format(
-        "{\"agent\":\"nifty.THeaderTransport.java\",\"clientMetadata\":{\"build_rule\":\"%s\"}}",
+        "{\"agent\":\"javadeprecated.THeaderTransport.java\",\"otherMetadata\":{\"build_rule\":\"%s\"}}",
         getClientBuildRule());
   }
 
