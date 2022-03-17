@@ -87,7 +87,7 @@ class DummyChannel : public apache::thrift::RequestChannel {
   }
 };
 
-class Client : public TestServiceAsyncClient {
+class MockClient : public TestServiceAsyncClient {
  public:
   using TestServiceAsyncClient::TestServiceAsyncClient;
 
@@ -133,7 +133,7 @@ enum class Flavor {
 template <Flavor flavor, bool oneway>
 void bench(size_t iters) {
   folly::BenchmarkSuspender susp;
-  Client client(std::make_shared<DummyChannel>());
+  MockClient client(std::make_shared<DummyChannel>());
   if (!oneway) {
     client.sync_echoInt(0); // prime DummyChannel
   }

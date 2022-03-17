@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@ using namespace apache::thrift;
 using namespace facebook::thrift::test;
 using namespace std::chrono;
 
-using apache::thrift::test::Client;
 using apache::thrift::util::ScopedServerThread;
 
 DEFINE_uint32(rps, 100, "Request per second [default: 100]");
@@ -43,7 +42,7 @@ int main(int argc, char* argv[]) {
   thread.start(server);
 
   const auto addr = server->getAddress();
-  Client client("::1", addr.getPort());
+  apache::thrift::test::Client client("::1", addr.getPort());
 
   std::atomic<bool> loggerEnabled{true};
   std::thread logger([&client, &loggerEnabled] {
