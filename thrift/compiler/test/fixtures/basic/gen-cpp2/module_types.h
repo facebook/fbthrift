@@ -10,6 +10,7 @@
 
 #include <thrift/lib/cpp2/type/Tag.h>
 
+#include "thrift/annotation/gen-cpp2/hack_types.h"
 
 namespace apache {
 namespace thrift {
@@ -21,9 +22,11 @@ struct myEnum;
 struct oneway;
 struct readonly;
 struct idempotent;
+struct floatSet;
 struct myEnum;
 struct myStruct;
 struct myDataItem;
+struct floatSet;
 } // namespace tag
 namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_MyIntField
@@ -54,6 +57,10 @@ APACHE_THRIFT_DEFINE_ACCESSOR(readonly);
 #define APACHE_THRIFT_ACCESSOR_idempotent
 APACHE_THRIFT_DEFINE_ACCESSOR(idempotent);
 #endif
+#ifndef APACHE_THRIFT_ACCESSOR_floatSet
+#define APACHE_THRIFT_ACCESSOR_floatSet
+APACHE_THRIFT_DEFINE_ACCESSOR(floatSet);
+#endif
 #ifndef APACHE_THRIFT_ACCESSOR_myEnum
 #define APACHE_THRIFT_ACCESSOR_myEnum
 APACHE_THRIFT_DEFINE_ACCESSOR(myEnum);
@@ -65,6 +72,10 @@ APACHE_THRIFT_DEFINE_ACCESSOR(myStruct);
 #ifndef APACHE_THRIFT_ACCESSOR_myDataItem
 #define APACHE_THRIFT_ACCESSOR_myDataItem
 APACHE_THRIFT_DEFINE_ACCESSOR(myDataItem);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_floatSet
+#define APACHE_THRIFT_ACCESSOR_floatSet
+APACHE_THRIFT_DEFINE_ACCESSOR(floatSet);
 #endif
 } // namespace detail
 } // namespace thrift
@@ -226,7 +237,8 @@ class MyStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::enum_t<::cpp2::MyEnum>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::bool_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{6}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{7}, ::apache::thrift::type::bool_t>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{7}, ::apache::thrift::type::bool_t>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{8}, ::apache::thrift::type::set<::apache::thrift::type::float_t>>
   >;
 
   void __fbthrift_clear();
@@ -244,7 +256,7 @@ class MyStruct final  {
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::cpp2::MyDataItem MyDataField__arg, ::cpp2::MyEnum myEnum__arg, bool oneway__arg, bool readonly__arg, bool idempotent__arg);
+  MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::cpp2::MyDataItem MyDataField__arg, ::cpp2::MyEnum myEnum__arg, bool oneway__arg, bool readonly__arg, bool idempotent__arg, ::std::set<float> floatSet__arg);
 
   MyStruct(MyStruct&&) noexcept;
 
@@ -271,7 +283,9 @@ class MyStruct final  {
  private:
   bool __fbthrift_field_idempotent;
  private:
-  apache::thrift::detail::isset_bitset<7, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
+  ::std::set<float> __fbthrift_field_floatSet;
+ private:
+  apache::thrift::detail::isset_bitset<8, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -557,6 +571,46 @@ class MyStruct final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> idempotent() && {
     return {static_cast<T&&>(this->__fbthrift_field_idempotent), __isset.at(6), __isset.bit(6)};
   }
+
+  template <typename..., typename T = ::std::set<float>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> floatSet_ref() const& {
+    return {this->__fbthrift_field_floatSet, __isset.at(7), __isset.bit(7)};
+  }
+
+  template <typename..., typename T = ::std::set<float>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> floatSet_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_floatSet), __isset.at(7), __isset.bit(7)};
+  }
+
+  template <typename..., typename T = ::std::set<float>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> floatSet_ref() & {
+    return {this->__fbthrift_field_floatSet, __isset.at(7), __isset.bit(7)};
+  }
+
+  template <typename..., typename T = ::std::set<float>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> floatSet_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_floatSet), __isset.at(7), __isset.bit(7)};
+  }
+
+  template <typename..., typename T = ::std::set<float>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> floatSet() const& {
+    return {this->__fbthrift_field_floatSet, __isset.at(7), __isset.bit(7)};
+  }
+
+  template <typename..., typename T = ::std::set<float>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> floatSet() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_floatSet), __isset.at(7), __isset.bit(7)};
+  }
+
+  template <typename..., typename T = ::std::set<float>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> floatSet() & {
+    return {this->__fbthrift_field_floatSet, __isset.at(7), __isset.bit(7)};
+  }
+
+  template <typename..., typename T = ::std::set<float>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> floatSet() && {
+    return {static_cast<T&&>(this->__fbthrift_field_floatSet), __isset.at(7), __isset.bit(7)};
+  }
  private:
   template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &;
   template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&;
@@ -590,6 +644,10 @@ class MyStruct final  {
   template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() const&  { return idempotent_ref(); }
   template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() &&      { return std::move(*this).idempotent_ref(); }
   template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() const&& { return std::move(*this).idempotent_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{8}>() &       { return floatSet_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{8}>() const&  { return floatSet_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{8}>() &&      { return std::move(*this).floatSet_ref(); }
+  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{8}>() const&& { return std::move(*this).floatSet_ref(); }
 
  public:
 
@@ -666,6 +724,15 @@ class MyStruct final  {
     idempotent_ref() = idempotent_;
     return __fbthrift_field_idempotent;
   }
+  const ::std::set<float>& get_floatSet() const&;
+  ::std::set<float> get_floatSet() &&;
+
+  template <typename T_MyStruct_floatSet_struct_setter = ::std::set<float>>
+  [[deprecated("Use `FOO.floatSet_ref() = BAR;` instead of `FOO.set_floatSet(BAR);`")]]
+  ::std::set<float>& set_floatSet(T_MyStruct_floatSet_struct_setter&& floatSet_) {
+    floatSet_ref() = std::forward<T_MyStruct_floatSet_struct_setter>(floatSet_);
+    return __fbthrift_field_floatSet;
+  }
 
   template <class Protocol_>
   unsigned long read(Protocol_* iprot);
@@ -705,7 +772,8 @@ class MyUnion final  {
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::enum_t<::cpp2::MyEnum>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::struct_t<::cpp2::MyStruct>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::cpp2::MyDataItem>>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::cpp2::MyDataItem>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::set<::apache::thrift::type::float_t>>
   >;
 
   void __fbthrift_clear();
@@ -723,6 +791,7 @@ class MyUnion final  {
     myEnum = 1,
     myStruct = 2,
     myDataItem = 3,
+    floatSet = 4,
   } ;
 
   MyUnion()
@@ -746,6 +815,11 @@ class MyUnion final  {
       case Type::myDataItem:
       {
         set_myDataItem(std::move(rhs.value_.myDataItem));
+        break;
+      }
+      case Type::floatSet:
+      {
+        set_floatSet(std::move(rhs.value_.floatSet));
         break;
       }
       default:
@@ -777,6 +851,11 @@ class MyUnion final  {
         set_myDataItem(rhs.value_.myDataItem);
         break;
       }
+      case Type::floatSet:
+      {
+        set_floatSet(rhs.value_.floatSet);
+        break;
+      }
       default:
       {
         assert(false);
@@ -803,6 +882,11 @@ class MyUnion final  {
       case Type::myDataItem:
       {
         set_myDataItem(std::move(rhs.value_.myDataItem));
+        break;
+      }
+      case Type::floatSet:
+      {
+        set_floatSet(std::move(rhs.value_.floatSet));
         break;
       }
       default:
@@ -835,6 +919,11 @@ class MyUnion final  {
         set_myDataItem(rhs.value_.myDataItem);
         break;
       }
+      case Type::floatSet:
+      {
+        set_floatSet(rhs.value_.floatSet);
+        break;
+      }
       default:
       {
         assert(false);
@@ -851,6 +940,7 @@ class MyUnion final  {
     ::cpp2::MyEnum myEnum;
     ::cpp2::MyStruct myStruct;
     ::cpp2::MyDataItem myDataItem;
+    ::std::set<float> floatSet;
 
     storage_type() {}
     ~storage_type() {}
@@ -908,6 +998,27 @@ class MyUnion final  {
     return value_.myDataItem;
   }
 
+  ::std::set<float>& set_floatSet(::std::set<float> const &t) {
+    __fbthrift_clear();
+    type_ = Type::floatSet;
+    ::new (std::addressof(value_.floatSet)) ::std::set<float>(t);
+    return value_.floatSet;
+  }
+
+  ::std::set<float>& set_floatSet(::std::set<float>&& t) {
+    __fbthrift_clear();
+    type_ = Type::floatSet;
+    ::new (std::addressof(value_.floatSet)) ::std::set<float>(std::move(t));
+    return value_.floatSet;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::set<float>, T...>> ::std::set<float>& set_floatSet(T&&... t) {
+    __fbthrift_clear();
+    type_ = Type::floatSet;
+    ::new (std::addressof(value_.floatSet)) ::std::set<float>(std::forward<T>(t)...);
+    return value_.floatSet;
+  }
+
   ::cpp2::MyEnum const& get_myEnum() const {
     if (type_ != Type::myEnum) {
       ::apache::thrift::detail::throw_on_bad_field_access();
@@ -929,6 +1040,13 @@ class MyUnion final  {
     return value_.myDataItem;
   }
 
+  ::std::set<float> const& get_floatSet() const {
+    if (type_ != Type::floatSet) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.floatSet;
+  }
+
   ::cpp2::MyEnum& mutable_myEnum() {
     assert(type_ == Type::myEnum);
     return value_.myEnum;
@@ -944,6 +1062,11 @@ class MyUnion final  {
     return value_.myDataItem;
   }
 
+  ::std::set<float>& mutable_floatSet() {
+    assert(type_ == Type::floatSet);
+    return value_.floatSet;
+  }
+
   ::cpp2::MyEnum move_myEnum() {
     assert(type_ == Type::myEnum);
     return std::move(value_.myEnum);
@@ -957,6 +1080,11 @@ class MyUnion final  {
   ::cpp2::MyDataItem move_myDataItem() {
     assert(type_ == Type::myDataItem);
     return std::move(value_.myDataItem);
+  }
+
+  ::std::set<float> move_floatSet() {
+    assert(type_ == Type::floatSet);
+    return std::move(value_.floatSet);
   }
 
   template <typename..., typename T = ::cpp2::MyEnum>
@@ -1016,6 +1144,25 @@ class MyUnion final  {
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myDataItem_ref() && {
     return {std::move(value_.myDataItem), type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
+  template <typename..., typename T = ::std::set<float>>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> floatSet_ref() const& {
+    return {value_.floatSet, type_, floatSet, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+  }
+
+  template <typename..., typename T = ::std::set<float>>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> floatSet_ref() const&& {
+    return {std::move(value_.floatSet), type_, floatSet, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+  }
+
+  template <typename..., typename T = ::std::set<float>>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&> floatSet_ref() & {
+    return {value_.floatSet, type_, floatSet, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+  }
+
+  template <typename..., typename T = ::std::set<float>>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> floatSet_ref() && {
+    return {std::move(value_.floatSet), type_, floatSet, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+  }
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
@@ -1059,7 +1206,7 @@ template <> struct TEnumDataStorage<::cpp2::MyUnion::Type>;
 template <> struct TEnumTraits<::cpp2::MyUnion::Type> {
   using type = ::cpp2::MyUnion::Type;
 
-  static constexpr std::size_t const size = 3;
+  static constexpr std::size_t const size = 4;
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 

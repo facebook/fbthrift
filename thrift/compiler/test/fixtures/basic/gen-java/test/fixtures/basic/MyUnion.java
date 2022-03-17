@@ -31,6 +31,8 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
     private static final TField MY_STRUCT_FIELD_DESC = new TField("myStruct", TType.STRUCT, (short)2);
     public static final int _MYDATAITEM = 3;
     private static final TField MY_DATA_ITEM_FIELD_DESC = new TField("myDataItem", TType.STRUCT, (short)3);
+    public static final int _FLOATSET = 4;
+    private static final TField FLOAT_SET_FIELD_DESC = new TField("floatSet", TType.SET, (short)4);
 
     static {
       NAMES_TO_IDS.put("myEnum", 1);
@@ -42,6 +44,9 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       NAMES_TO_IDS.put("myDataItem", 3);
       THRIFT_NAMES_TO_IDS.put("myDataItem", 3);
       FIELD_METADATA.put(3, MY_DATA_ITEM_FIELD_DESC);
+      NAMES_TO_IDS.put("floatSet", 4);
+      THRIFT_NAMES_TO_IDS.put("floatSet", 4);
+      FIELD_METADATA.put(4, FLOAT_SET_FIELD_DESC);
     }
 
     private Object value;
@@ -72,6 +77,13 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         this.id = 3;
     }
     
+    @ThriftConstructor
+    @Deprecated
+    public MyUnion(final Set<Float> floatSet) {
+        this.value = floatSet;
+        this.id = 4;
+    }
+    
     public static MyUnion fromMyEnum(final test.fixtures.basic.MyEnum myEnum) {
         MyUnion res = new MyUnion();
         res.value = myEnum;
@@ -90,6 +102,13 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         MyUnion res = new MyUnion();
         res.value = myDataItem;
         res.id = 3;
+        return res;
+    }
+    
+    public static MyUnion fromFloatSet(final Set<Float> floatSet) {
+        MyUnion res = new MyUnion();
+        res.value = floatSet;
+        res.id = 4;
         return res;
     }
     
@@ -130,6 +149,18 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         return this.id == 3;
     }
 
+    @com.facebook.swift.codec.ThriftField(value=4, name="floatSet", requiredness=Requiredness.NONE)
+    public Set<Float> getFloatSet() {
+        if (this.id != 4) {
+            throw new IllegalStateException("Not a floatSet element!");
+        }
+        return (Set<Float>) value;
+    }
+
+    public boolean isSetFloatSet() {
+        return this.id == 4;
+    }
+
     @ThriftUnionId
     public short getThriftId() {
         return this.id;
@@ -155,6 +186,10 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         }
         if (isSetMyDataItem()) {
             visitor.visitMyDataItem(getMyDataItem());
+            return;
+        }
+        if (isSetFloatSet()) {
+            visitor.visitFloatSet(getFloatSet());
             return;
         }
     }
@@ -196,6 +231,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         void visitMyEnum(test.fixtures.basic.MyEnum myEnum);
         void visitMyStruct(test.fixtures.basic.MyStruct myStruct);
         void visitMyDataItem(test.fixtures.basic.MyDataItem myDataItem);
+        void visitFloatSet(Set<Float> floatSet);
     }
 
     public void write0(TProtocol oprot) throws TException {
@@ -222,6 +258,17 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         oprot.writeFieldBegin(MY_DATA_ITEM_FIELD_DESC);
         test.fixtures.basic.MyDataItem myDataItem = (test.fixtures.basic.MyDataItem)this.value;
         myDataItem.write0(oprot);
+        oprot.writeFieldEnd();
+        break;
+      }
+      case _FLOATSET: {
+        oprot.writeFieldBegin(FLOAT_SET_FIELD_DESC);
+        Set<Float> _iter0 = (Set<Float>)this.value;
+        oprot.writeSetBegin(new TSet(TType.FLOAT, _iter0.size()));
+        for (float _iter1 : _iter0) {
+          oprot.writeFloat(_iter1);
+        }
+        oprot.writeSetEnd();
         oprot.writeFieldEnd();
         break;
       }
@@ -261,6 +308,22 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
             if (__field.type == MY_DATA_ITEM_FIELD_DESC.type) {
               test.fixtures.basic.MyDataItem myDataItem = test.fixtures.basic.MyDataItem.read0(oprot);
               res.value = myDataItem;
+            }
+            break;
+          case _FLOATSET:
+            if (__field.type == FLOAT_SET_FIELD_DESC.type) {
+              Set<Float> floatSet;
+            {
+            TSet _set = oprot.readSetBegin();
+            floatSet = new HashSet<Float>(Math.max(0, _set.size));
+            for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
+                
+                float _value1 = oprot.readFloat();
+                floatSet.add(_value1);
+            }
+            oprot.readSetEnd();
+            }
+              res.value = floatSet;
             }
             break;
           default:

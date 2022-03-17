@@ -11,6 +11,7 @@ from thrift.py3.server import RequestContext, ServiceInterface
 from abc import abstractmethod, ABCMeta
 
 import module.types as _module_types
+import hack.types as _hack_types
 
 _MyServiceInterfaceT = _typing.TypeVar('_MyServiceInterfaceT', bound='MyServiceInterface')
 
@@ -75,6 +76,12 @@ class MyServiceInterface(
         id: int,
         data: str
     ) -> None: ...
+
+
+    @abstractmethod
+    async def invalid_return_for_hack(
+        self
+    ) -> _typing.AbstractSet[float]: ...
     pass
 
 

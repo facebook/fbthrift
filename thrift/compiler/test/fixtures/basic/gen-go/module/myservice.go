@@ -10,6 +10,8 @@ import (
 	"sync"
 	"fmt"
 	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
+	hack0 "hack"
+
 )
 
 // (needed to ensure safety because of naive import list construction.)
@@ -19,6 +21,7 @@ var _ = sync.Mutex{}
 var _ = bytes.Equal
 var _ = context.Background
 
+var _ = hack0.GoUnusedProtection__
 type MyService interface {
   Ping() (err error)
   GetRandomData() (_r string, err error)
@@ -42,6 +45,7 @@ type MyService interface {
   //  - Id
   //  - Data
   LobDataById(id int64, data string) (err error)
+  InvalidReturnForHack() (_r []float32, err error)
 }
 
 type MyServiceClientInterface interface {
@@ -68,6 +72,7 @@ type MyServiceClientInterface interface {
   //  - Id
   //  - Data
   LobDataById(id int64, data string) (err error)
+  InvalidReturnForHack() (_r []float32, err error)
 }
 
 type MyServiceClient struct {
@@ -232,6 +237,22 @@ func (p *MyServiceClient) LobDataById(id int64, data string) (err error) {
   err = p.CC.SendMsg("lobDataById", &args, thrift.ONEWAY)
   if err != nil { return }
   return
+}
+
+func (p *MyServiceClient) InvalidReturnForHack() (_r []float32, err error) {
+  var args MyServiceInvalidReturnForHackArgs
+  err = p.CC.SendMsg("invalid_return_for_hack", &args, thrift.CALL)
+  if err != nil { return }
+  return p.recvInvalidReturnForHack()
+}
+
+
+func (p *MyServiceClient) recvInvalidReturnForHack() (value []float32, err error) {
+  var __result MyServiceInvalidReturnForHackResult
+  err = p.CC.RecvMsg("invalid_return_for_hack", &__result)
+  if err != nil { return }
+
+  return __result.GetSuccess(), nil
 }
 
 
@@ -422,6 +443,24 @@ func (p *MyServiceThreadsafeClient) LobDataById(id int64, data string) (err erro
   return
 }
 
+func (p *MyServiceThreadsafeClient) InvalidReturnForHack() (_r []float32, err error) {
+  p.Mu.Lock()
+  defer p.Mu.Unlock()
+  var args MyServiceInvalidReturnForHackArgs
+  err = p.CC.SendMsg("invalid_return_for_hack", &args, thrift.CALL)
+  if err != nil { return }
+  return p.recvInvalidReturnForHack()
+}
+
+
+func (p *MyServiceThreadsafeClient) recvInvalidReturnForHack() (value []float32, err error) {
+  var __result MyServiceInvalidReturnForHackResult
+  err = p.CC.RecvMsg("invalid_return_for_hack", &__result)
+  if err != nil { return }
+
+  return __result.GetSuccess(), nil
+}
+
 
 type MyServiceChannelClient struct {
   RequestChannel thrift.RequestChannel
@@ -544,6 +583,16 @@ func (p *MyServiceChannelClient) LobDataById(ctx context.Context, id int64, data
   return nil
 }
 
+func (p *MyServiceChannelClient) InvalidReturnForHack(ctx context.Context) (_r []float32, err error) {
+  args := MyServiceInvalidReturnForHackArgs{
+  }
+  var __result MyServiceInvalidReturnForHackResult
+  err = p.RequestChannel.Call(ctx, "invalid_return_for_hack", &args, &__result)
+  if err != nil { return }
+
+  return __result.GetSuccess(), nil
+}
+
 
 type MyServiceProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
@@ -575,24 +624,26 @@ func (p *MyServiceProcessor) FunctionServiceMap() map[string]string {
 }
 
 func NewMyServiceProcessor(handler MyService) *MyServiceProcessor {
-  self0 := &MyServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
-  self0.processorMap["ping"] = &myServiceProcessorPing{handler:handler}
-  self0.processorMap["getRandomData"] = &myServiceProcessorGetRandomData{handler:handler}
-  self0.processorMap["sink"] = &myServiceProcessorSink{handler:handler}
-  self0.processorMap["putDataById"] = &myServiceProcessorPutDataById{handler:handler}
-  self0.processorMap["hasDataById"] = &myServiceProcessorHasDataById{handler:handler}
-  self0.processorMap["getDataById"] = &myServiceProcessorGetDataById{handler:handler}
-  self0.processorMap["deleteDataById"] = &myServiceProcessorDeleteDataById{handler:handler}
-  self0.processorMap["lobDataById"] = &myServiceProcessorLobDataById{handler:handler}
-  self0.functionServiceMap["ping"] = "MyService"
-  self0.functionServiceMap["getRandomData"] = "MyService"
-  self0.functionServiceMap["sink"] = "MyService"
-  self0.functionServiceMap["putDataById"] = "MyService"
-  self0.functionServiceMap["hasDataById"] = "MyService"
-  self0.functionServiceMap["getDataById"] = "MyService"
-  self0.functionServiceMap["deleteDataById"] = "MyService"
-  self0.functionServiceMap["lobDataById"] = "MyService"
-  return self0
+  self3 := &MyServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
+  self3.processorMap["ping"] = &myServiceProcessorPing{handler:handler}
+  self3.processorMap["getRandomData"] = &myServiceProcessorGetRandomData{handler:handler}
+  self3.processorMap["sink"] = &myServiceProcessorSink{handler:handler}
+  self3.processorMap["putDataById"] = &myServiceProcessorPutDataById{handler:handler}
+  self3.processorMap["hasDataById"] = &myServiceProcessorHasDataById{handler:handler}
+  self3.processorMap["getDataById"] = &myServiceProcessorGetDataById{handler:handler}
+  self3.processorMap["deleteDataById"] = &myServiceProcessorDeleteDataById{handler:handler}
+  self3.processorMap["lobDataById"] = &myServiceProcessorLobDataById{handler:handler}
+  self3.processorMap["invalid_return_for_hack"] = &myServiceProcessorInvalidReturnForHack{handler:handler}
+  self3.functionServiceMap["ping"] = "MyService"
+  self3.functionServiceMap["getRandomData"] = "MyService"
+  self3.functionServiceMap["sink"] = "MyService"
+  self3.functionServiceMap["putDataById"] = "MyService"
+  self3.functionServiceMap["hasDataById"] = "MyService"
+  self3.functionServiceMap["getDataById"] = "MyService"
+  self3.functionServiceMap["deleteDataById"] = "MyService"
+  self3.functionServiceMap["lobDataById"] = "MyService"
+  self3.functionServiceMap["invalid_return_for_hack"] = "MyService"
+  return self3
 }
 
 type myServiceProcessorPing struct {
@@ -1015,6 +1066,60 @@ func (p *myServiceProcessorLobDataById) Run(argStruct thrift.Struct) (thrift.Wri
     }
   }
   return nil, nil
+}
+
+type myServiceProcessorInvalidReturnForHack struct {
+  handler MyService
+}
+
+func (p *MyServiceInvalidReturnForHackResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
+func (p *myServiceProcessorInvalidReturnForHack) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
+  args := MyServiceInvalidReturnForHackArgs{}
+  if err := args.Read(iprot); err != nil {
+    return nil, err
+  }
+  iprot.ReadMessageEnd()
+  return &args, nil
+}
+
+func (p *myServiceProcessorInvalidReturnForHack) Write(seqId int32, result thrift.WritableStruct, oprot thrift.Protocol) (err thrift.Exception) {
+  var err2 error
+  messageType := thrift.REPLY
+  switch result.(type) {
+  case thrift.ApplicationException:
+    messageType = thrift.EXCEPTION
+  }
+  if err2 = oprot.WriteMessageBegin("invalid_return_for_hack", messageType, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(); err == nil && err2 != nil {
+    err = err2
+  }
+  return err
+}
+
+func (p *myServiceProcessorInvalidReturnForHack) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
+  var __result MyServiceInvalidReturnForHackResult
+  if retval, err := p.handler.InvalidReturnForHack(); err != nil {
+    switch err.(type) {
+    default:
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing invalid_return_for_hack: " + err.Error(), err)
+      return x, x
+    }
+  } else {
+    __result.Success = retval
+  }
+  return &__result, nil
 }
 
 
@@ -2548,6 +2653,219 @@ func (p *MyServiceLobDataByIdArgs) String() string {
   idVal := fmt.Sprintf("%v", p.Id)
   dataVal := fmt.Sprintf("%v", p.Data)
   return fmt.Sprintf("MyServiceLobDataByIdArgs({Id:%s Data:%s})", idVal, dataVal)
+}
+
+type MyServiceInvalidReturnForHackArgs struct {
+  thrift.IRequest
+}
+
+func NewMyServiceInvalidReturnForHackArgs() *MyServiceInvalidReturnForHackArgs {
+  return &MyServiceInvalidReturnForHackArgs{}
+}
+
+type MyServiceInvalidReturnForHackArgsBuilder struct {
+  obj *MyServiceInvalidReturnForHackArgs
+}
+
+func NewMyServiceInvalidReturnForHackArgsBuilder() *MyServiceInvalidReturnForHackArgsBuilder{
+  return &MyServiceInvalidReturnForHackArgsBuilder{
+    obj: NewMyServiceInvalidReturnForHackArgs(),
+  }
+}
+
+func (p MyServiceInvalidReturnForHackArgsBuilder) Emit() *MyServiceInvalidReturnForHackArgs{
+  return &MyServiceInvalidReturnForHackArgs{
+  }
+}
+
+func (p *MyServiceInvalidReturnForHackArgs) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *MyServiceInvalidReturnForHackArgs) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("invalid_return_for_hack_args"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *MyServiceInvalidReturnForHackArgs) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("MyServiceInvalidReturnForHackArgs({})")
+}
+
+// Attributes:
+//  - Success
+type MyServiceInvalidReturnForHackResult struct {
+  thrift.IResponse
+  Success []float32 `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
+}
+
+func NewMyServiceInvalidReturnForHackResult() *MyServiceInvalidReturnForHackResult {
+  return &MyServiceInvalidReturnForHackResult{}
+}
+
+var MyServiceInvalidReturnForHackResult_Success_DEFAULT []float32
+
+func (p *MyServiceInvalidReturnForHackResult) GetSuccess() []float32 {
+  return p.Success
+}
+func (p *MyServiceInvalidReturnForHackResult) IsSetSuccess() bool {
+  return p != nil && p.Success != nil
+}
+
+type MyServiceInvalidReturnForHackResultBuilder struct {
+  obj *MyServiceInvalidReturnForHackResult
+}
+
+func NewMyServiceInvalidReturnForHackResultBuilder() *MyServiceInvalidReturnForHackResultBuilder{
+  return &MyServiceInvalidReturnForHackResultBuilder{
+    obj: NewMyServiceInvalidReturnForHackResult(),
+  }
+}
+
+func (p MyServiceInvalidReturnForHackResultBuilder) Emit() *MyServiceInvalidReturnForHackResult{
+  return &MyServiceInvalidReturnForHackResult{
+    Success: p.obj.Success,
+  }
+}
+
+func (m *MyServiceInvalidReturnForHackResultBuilder) Success(success []float32) *MyServiceInvalidReturnForHackResultBuilder {
+  m.obj.Success = success
+  return m
+}
+
+func (m *MyServiceInvalidReturnForHackResult) SetSuccess(success []float32) *MyServiceInvalidReturnForHackResult {
+  m.Success = success
+  return m
+}
+
+func (p *MyServiceInvalidReturnForHackResult) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 0:
+      if err := p.ReadField0(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *MyServiceInvalidReturnForHackResult)  ReadField0(iprot thrift.Protocol) error {
+  _, size, err := iprot.ReadSetBegin()
+  if err != nil {
+    return thrift.PrependError("error reading set begin: ", err)
+  }
+  tSet := make([]float32, 0, size)
+  p.Success =  tSet
+  for i := 0; i < size; i ++ {
+    var _elem5 float32
+    if v, err := iprot.ReadFloat(); err != nil {
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _elem5 = v
+    }
+    p.Success = append(p.Success, _elem5)
+  }
+  if err := iprot.ReadSetEnd(); err != nil {
+    return thrift.PrependError("error reading set end: ", err)
+  }
+  return nil
+}
+
+func (p *MyServiceInvalidReturnForHackResult) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("invalid_return_for_hack_result"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField0(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *MyServiceInvalidReturnForHackResult) writeField0(oprot thrift.Protocol) (err error) {
+  if p.IsSetSuccess() {
+    if err := oprot.WriteFieldBegin("success", thrift.SET, 0); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) }
+    if err := oprot.WriteSetBegin(thrift.FLOAT, len(p.Success)); err != nil {
+      return thrift.PrependError("error writing set begin: ", err)
+    }
+    set := make(map[float32]bool, len(p.Success))
+    for _, v := range p.Success {
+      if ok := set[v]; ok {
+        return thrift.PrependError("", fmt.Errorf("%T error writing set field: slice is not unique", v))
+      }
+      set[v] = true
+    }
+    for _, v := range p.Success {
+      if err := oprot.WriteFloat(float32(v)); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+    }
+    if err := oprot.WriteSetEnd(); err != nil {
+      return thrift.PrependError("error writing set end: ", err)
+    }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 0:success: ", p), err) }
+  }
+  return err
+}
+
+func (p *MyServiceInvalidReturnForHackResult) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  successVal := fmt.Sprintf("%v", p.Success)
+  return fmt.Sprintf("MyServiceInvalidReturnForHackResult({Success:%s})", successVal)
 }
 
 

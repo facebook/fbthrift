@@ -10,6 +10,7 @@
 
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include "thrift/compiler/test/fixtures/basic/gen-cpp2/module_types.h"
+#include "thrift/annotation/gen-cpp2/hack_metadata.h"
 
 namespace cpp2 {
 class MyServiceSvIf;
@@ -61,6 +62,7 @@ class ServiceMetadata<::cpp2::MyServiceSvIf> {
   static void gen_getDataById(ThriftMetadata& metadata, ThriftService& context);
   static void gen_deleteDataById(ThriftMetadata& metadata, ThriftService& context);
   static void gen_lobDataById(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_invalid_return_for_hack(ThriftMetadata& metadata, ThriftService& context);
 };
 template <>
 class ServiceMetadata<::cpp2::DbMixedStackArgumentsSvIf> {

@@ -107,3 +107,106 @@ class FieldWrapper implements \IThriftSyncStruct {
 
 }
 
+/**
+ * Original thrift struct:-
+ * SkipCodegen
+ */
+class SkipCodegen implements \IThriftSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'reason',
+      'type' => \TType::STRING,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'reason' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'reason' => ?string,
+  );
+
+  const int STRUCTURAL_ID = 3707764047816594739;
+  /**
+   * Original thrift field:-
+   * 1: string reason
+   */
+  public string $reason;
+
+  public function __construct(?string $reason = null  )[] {
+    $this->reason = $reason ?? '';
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'reason'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'SkipCodegen';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "hack.SkipCodegen",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "reason",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        '\facebook_thrift_annotation_Field' => \facebook_thrift_annotation_Field::fromShape(
+          shape(
+          )
+        ),
+        '\facebook_thrift_annotation_Function' => \facebook_thrift_annotation_Function::fromShape(
+          shape(
+          )
+        ),
+      ],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'reason') !== null) {
+      $this->reason = /* HH_FIXME[4110] */ $parsed['reason'];
+    }    
+  }
+
+}
+

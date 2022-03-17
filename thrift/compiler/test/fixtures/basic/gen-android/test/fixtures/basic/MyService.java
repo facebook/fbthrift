@@ -47,6 +47,8 @@ public class MyService {
 
     public void lobDataById(Long id, String data) throws TException;
 
+    public Set<Float> invalid_return_for_hack() throws TException;
+
   }
 
   public interface AsyncIface {
@@ -66,6 +68,8 @@ public class MyService {
     public void deleteDataById(Long id, AsyncMethodCallback resultHandler) throws TException;
 
     public void lobDataById(Long id, String data, AsyncMethodCallback resultHandler) throws TException;
+
+    public void invalid_return_for_hack(AsyncMethodCallback resultHandler) throws TException;
 
   }
 
@@ -415,6 +419,49 @@ public class MyService {
       return;
     }
 
+    public Set<Float> invalid_return_for_hack() throws TException
+    {
+      ContextStack ctx = getContextStack("MyService.invalid_return_for_hack", null);
+      this.setContextStack(ctx);
+      send_invalid_return_for_hack();
+      return recv_invalid_return_for_hack();
+    }
+
+    public void send_invalid_return_for_hack() throws TException
+    {
+      ContextStack ctx = this.getContextStack();
+      super.preWrite(ctx, "MyService.invalid_return_for_hack", null);
+      oprot_.writeMessageBegin(new TMessage("invalid_return_for_hack", TMessageType.CALL, seqid_));
+      invalid_return_for_hack_args args = new invalid_return_for_hack_args();
+      args.write(oprot_);
+      oprot_.writeMessageEnd();
+      oprot_.getTransport().flush();
+      super.postWrite(ctx, "MyService.invalid_return_for_hack", args);
+      return;
+    }
+
+    public Set<Float> recv_invalid_return_for_hack() throws TException
+    {
+      ContextStack ctx = super.getContextStack();
+      long bytes;
+      TMessageType mtype;
+      super.preRead(ctx, "MyService.invalid_return_for_hack");
+      TMessage msg = iprot_.readMessageBegin();
+      if (msg.type == TMessageType.EXCEPTION) {
+        TApplicationException x = TApplicationException.read(iprot_);
+        iprot_.readMessageEnd();
+        throw x;
+      }
+      invalid_return_for_hack_result result = invalid_return_for_hack_result.deserialize(iprot_);
+      iprot_.readMessageEnd();
+      super.postRead(ctx, "MyService.invalid_return_for_hack", result);
+
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new TApplicationException(TApplicationException.MISSING_RESULT, "invalid_return_for_hack failed: unknown result");
+    }
+
   }
   public static class AsyncClient extends TAsyncClient implements AsyncIface {
     public static class Factory implements TAsyncClientFactory<AsyncClient> {
@@ -433,16 +480,16 @@ public class MyService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void ping(AsyncMethodCallback resultHandler11) throws TException {
+    public void ping(AsyncMethodCallback resultHandler20) throws TException {
       checkReady();
-      ping_call method_call = new ping_call(resultHandler11, this, ___protocolFactory, ___transport);
+      ping_call method_call = new ping_call(resultHandler20, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class ping_call extends TAsyncMethodCall {
-      public ping_call(AsyncMethodCallback resultHandler12, TAsyncClient client8, TProtocolFactory protocolFactory9, TNonblockingTransport transport10) throws TException {
-        super(client8, protocolFactory9, transport10, resultHandler12, false);
+      public ping_call(AsyncMethodCallback resultHandler21, TAsyncClient client17, TProtocolFactory protocolFactory18, TNonblockingTransport transport19) throws TException {
+        super(client17, protocolFactory18, transport19, resultHandler21, false);
       }
 
       public void write_args(TProtocol prot) throws TException {
@@ -462,16 +509,16 @@ public class MyService {
       }
     }
 
-    public void getRandomData(AsyncMethodCallback resultHandler16) throws TException {
+    public void getRandomData(AsyncMethodCallback resultHandler25) throws TException {
       checkReady();
-      getRandomData_call method_call = new getRandomData_call(resultHandler16, this, ___protocolFactory, ___transport);
+      getRandomData_call method_call = new getRandomData_call(resultHandler25, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getRandomData_call extends TAsyncMethodCall {
-      public getRandomData_call(AsyncMethodCallback resultHandler17, TAsyncClient client13, TProtocolFactory protocolFactory14, TNonblockingTransport transport15) throws TException {
-        super(client13, protocolFactory14, transport15, resultHandler17, false);
+      public getRandomData_call(AsyncMethodCallback resultHandler26, TAsyncClient client22, TProtocolFactory protocolFactory23, TNonblockingTransport transport24) throws TException {
+        super(client22, protocolFactory23, transport24, resultHandler26, false);
       }
 
       public void write_args(TProtocol prot) throws TException {
@@ -491,17 +538,17 @@ public class MyService {
       }
     }
 
-    public void sink(Long sink, AsyncMethodCallback resultHandler21) throws TException {
+    public void sink(Long sink, AsyncMethodCallback resultHandler30) throws TException {
       checkReady();
-      sink_call method_call = new sink_call(sink, resultHandler21, this, ___protocolFactory, ___transport);
+      sink_call method_call = new sink_call(sink, resultHandler30, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class sink_call extends TAsyncMethodCall {
       private Long sink;
-      public sink_call(Long sink, AsyncMethodCallback resultHandler22, TAsyncClient client18, TProtocolFactory protocolFactory19, TNonblockingTransport transport20) throws TException {
-        super(client18, protocolFactory19, transport20, resultHandler22, false);
+      public sink_call(Long sink, AsyncMethodCallback resultHandler31, TAsyncClient client27, TProtocolFactory protocolFactory28, TNonblockingTransport transport29) throws TException {
+        super(client27, protocolFactory28, transport29, resultHandler31, false);
         this.sink = sink;
       }
 
@@ -523,9 +570,9 @@ public class MyService {
       }
     }
 
-    public void putDataById(Long id, String data, AsyncMethodCallback resultHandler26) throws TException {
+    public void putDataById(Long id, String data, AsyncMethodCallback resultHandler35) throws TException {
       checkReady();
-      putDataById_call method_call = new putDataById_call(id, data, resultHandler26, this, ___protocolFactory, ___transport);
+      putDataById_call method_call = new putDataById_call(id, data, resultHandler35, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
@@ -533,8 +580,8 @@ public class MyService {
     public static class putDataById_call extends TAsyncMethodCall {
       private Long id;
       private String data;
-      public putDataById_call(Long id, String data, AsyncMethodCallback resultHandler27, TAsyncClient client23, TProtocolFactory protocolFactory24, TNonblockingTransport transport25) throws TException {
-        super(client23, protocolFactory24, transport25, resultHandler27, false);
+      public putDataById_call(Long id, String data, AsyncMethodCallback resultHandler36, TAsyncClient client32, TProtocolFactory protocolFactory33, TNonblockingTransport transport34) throws TException {
+        super(client32, protocolFactory33, transport34, resultHandler36, false);
         this.id = id;
         this.data = data;
       }
@@ -558,17 +605,17 @@ public class MyService {
       }
     }
 
-    public void hasDataById(Long id, AsyncMethodCallback resultHandler31) throws TException {
+    public void hasDataById(Long id, AsyncMethodCallback resultHandler40) throws TException {
       checkReady();
-      hasDataById_call method_call = new hasDataById_call(id, resultHandler31, this, ___protocolFactory, ___transport);
+      hasDataById_call method_call = new hasDataById_call(id, resultHandler40, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class hasDataById_call extends TAsyncMethodCall {
       private Long id;
-      public hasDataById_call(Long id, AsyncMethodCallback resultHandler32, TAsyncClient client28, TProtocolFactory protocolFactory29, TNonblockingTransport transport30) throws TException {
-        super(client28, protocolFactory29, transport30, resultHandler32, false);
+      public hasDataById_call(Long id, AsyncMethodCallback resultHandler41, TAsyncClient client37, TProtocolFactory protocolFactory38, TNonblockingTransport transport39) throws TException {
+        super(client37, protocolFactory38, transport39, resultHandler41, false);
         this.id = id;
       }
 
@@ -590,17 +637,17 @@ public class MyService {
       }
     }
 
-    public void getDataById(Long id, AsyncMethodCallback resultHandler36) throws TException {
+    public void getDataById(Long id, AsyncMethodCallback resultHandler45) throws TException {
       checkReady();
-      getDataById_call method_call = new getDataById_call(id, resultHandler36, this, ___protocolFactory, ___transport);
+      getDataById_call method_call = new getDataById_call(id, resultHandler45, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getDataById_call extends TAsyncMethodCall {
       private Long id;
-      public getDataById_call(Long id, AsyncMethodCallback resultHandler37, TAsyncClient client33, TProtocolFactory protocolFactory34, TNonblockingTransport transport35) throws TException {
-        super(client33, protocolFactory34, transport35, resultHandler37, false);
+      public getDataById_call(Long id, AsyncMethodCallback resultHandler46, TAsyncClient client42, TProtocolFactory protocolFactory43, TNonblockingTransport transport44) throws TException {
+        super(client42, protocolFactory43, transport44, resultHandler46, false);
         this.id = id;
       }
 
@@ -622,17 +669,17 @@ public class MyService {
       }
     }
 
-    public void deleteDataById(Long id, AsyncMethodCallback resultHandler41) throws TException {
+    public void deleteDataById(Long id, AsyncMethodCallback resultHandler50) throws TException {
       checkReady();
-      deleteDataById_call method_call = new deleteDataById_call(id, resultHandler41, this, ___protocolFactory, ___transport);
+      deleteDataById_call method_call = new deleteDataById_call(id, resultHandler50, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class deleteDataById_call extends TAsyncMethodCall {
       private Long id;
-      public deleteDataById_call(Long id, AsyncMethodCallback resultHandler42, TAsyncClient client38, TProtocolFactory protocolFactory39, TNonblockingTransport transport40) throws TException {
-        super(client38, protocolFactory39, transport40, resultHandler42, false);
+      public deleteDataById_call(Long id, AsyncMethodCallback resultHandler51, TAsyncClient client47, TProtocolFactory protocolFactory48, TNonblockingTransport transport49) throws TException {
+        super(client47, protocolFactory48, transport49, resultHandler51, false);
         this.id = id;
       }
 
@@ -654,9 +701,9 @@ public class MyService {
       }
     }
 
-    public void lobDataById(Long id, String data, AsyncMethodCallback resultHandler46) throws TException {
+    public void lobDataById(Long id, String data, AsyncMethodCallback resultHandler55) throws TException {
       checkReady();
-      lobDataById_call method_call = new lobDataById_call(id, data, resultHandler46, this, ___protocolFactory, ___transport);
+      lobDataById_call method_call = new lobDataById_call(id, data, resultHandler55, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
@@ -664,8 +711,8 @@ public class MyService {
     public static class lobDataById_call extends TAsyncMethodCall {
       private Long id;
       private String data;
-      public lobDataById_call(Long id, String data, AsyncMethodCallback resultHandler47, TAsyncClient client43, TProtocolFactory protocolFactory44, TNonblockingTransport transport45) throws TException {
-        super(client43, protocolFactory44, transport45, resultHandler47, true);
+      public lobDataById_call(Long id, String data, AsyncMethodCallback resultHandler56, TAsyncClient client52, TProtocolFactory protocolFactory53, TNonblockingTransport transport54) throws TException {
+        super(client52, protocolFactory53, transport54, resultHandler56, true);
         this.id = id;
         this.data = data;
       }
@@ -688,6 +735,35 @@ public class MyService {
       }
     }
 
+    public void invalid_return_for_hack(AsyncMethodCallback resultHandler60) throws TException {
+      checkReady();
+      invalid_return_for_hack_call method_call = new invalid_return_for_hack_call(resultHandler60, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class invalid_return_for_hack_call extends TAsyncMethodCall {
+      public invalid_return_for_hack_call(AsyncMethodCallback resultHandler61, TAsyncClient client57, TProtocolFactory protocolFactory58, TNonblockingTransport transport59) throws TException {
+        super(client57, protocolFactory58, transport59, resultHandler61, false);
+      }
+
+      public void write_args(TProtocol prot) throws TException {
+        prot.writeMessageBegin(new TMessage("invalid_return_for_hack", TMessageType.CALL, 0));
+        invalid_return_for_hack_args args = new invalid_return_for_hack_args();
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public Set<Float> getResult() throws TException {
+        if (getState() != State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        TMemoryInputTransport memoryTransport = new TMemoryInputTransport(getFrameBuffer().array());
+        TProtocol prot = super.client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_invalid_return_for_hack();
+      }
+    }
+
   }
 
   public static class Processor implements TProcessor {
@@ -704,6 +780,7 @@ public class MyService {
       processMap_.put("getDataById", new getDataById());
       processMap_.put("deleteDataById", new deleteDataById());
       processMap_.put("lobDataById", new lobDataById());
+      processMap_.put("invalid_return_for_hack", new invalid_return_for_hack());
     }
 
     protected static interface ProcessFunction {
@@ -895,6 +972,27 @@ public class MyService {
         iface_.lobDataById(args.id, args.data);
         return;
       }
+    }
+
+    private class invalid_return_for_hack implements ProcessFunction {
+      public void process(int seqid, TProtocol iprot, TProtocol oprot, TConnectionContext server_ctx) throws TException
+      {
+        Object handler_ctx = event_handler_.getContext("MyService.invalid_return_for_hack", server_ctx);
+        invalid_return_for_hack_args args = new invalid_return_for_hack_args();
+        event_handler_.preRead(handler_ctx, "MyService.invalid_return_for_hack");
+        args.read(iprot);
+        iprot.readMessageEnd();
+        event_handler_.postRead(handler_ctx, "MyService.invalid_return_for_hack", args);
+        invalid_return_for_hack_result result = new invalid_return_for_hack_result();
+        result.success = iface_.invalid_return_for_hack();
+        event_handler_.preWrite(handler_ctx, "MyService.invalid_return_for_hack", result);
+        oprot.writeMessageBegin(new TMessage("invalid_return_for_hack", TMessageType.REPLY, seqid));
+        result.write(oprot);
+        oprot.writeMessageEnd();
+        oprot.getTransport().flush();
+        event_handler_.postWrite(handler_ctx, "MyService.invalid_return_for_hack", result);
+      }
+
     }
 
   }
@@ -2802,6 +2900,257 @@ public class MyService {
       if (this.data != null) {
         oprot.writeFieldBegin(DATA_FIELD_DESC);
         oprot.writeString(this.data);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      return toString(1, true);
+    }
+
+    @Override
+    public String toString(int indent, boolean prettyPrint) {
+      return TBaseHelper.toStringHelper(this, indent, prettyPrint);
+    }
+
+    public void validate() throws TException {
+      // check for required fields
+    }
+
+  }
+
+  public static class invalid_return_for_hack_args implements TBase, java.io.Serializable, Cloneable   {
+    private static final TStruct STRUCT_DESC = new TStruct("invalid_return_for_hack_args");
+
+
+    public invalid_return_for_hack_args() {
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public invalid_return_for_hack_args(invalid_return_for_hack_args other) {
+    }
+
+    public invalid_return_for_hack_args deepCopy() {
+      return new invalid_return_for_hack_args(this);
+    }
+
+    @Override
+    public boolean equals(Object _that) {
+      if (_that == null)
+        return false;
+      if (this == _that)
+        return true;
+      if (!(_that instanceof invalid_return_for_hack_args))
+        return false;
+      invalid_return_for_hack_args that = (invalid_return_for_hack_args)_that;
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return Arrays.deepHashCode(new Object[] {});
+    }
+
+    // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
+    public void read(TProtocol iprot) throws TException {
+      throw new TException("unimplemented in android immutable structure");
+    }
+
+    public static invalid_return_for_hack_args deserialize(TProtocol iprot) throws TException {
+      TField __field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) {
+          break;
+        }
+        switch (__field.id)
+        {
+          default:
+            TProtocolUtil.skip(iprot, __field.type);
+            break;
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      invalid_return_for_hack_args _that;
+      _that = new invalid_return_for_hack_args(
+      );
+      _that.validate();
+      return _that;
+    }
+
+    public void write(TProtocol oprot) throws TException {
+      validate();
+
+      oprot.writeStructBegin(STRUCT_DESC);
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      return toString(1, true);
+    }
+
+    @Override
+    public String toString(int indent, boolean prettyPrint) {
+      return TBaseHelper.toStringHelper(this, indent, prettyPrint);
+    }
+
+    public void validate() throws TException {
+      // check for required fields
+    }
+
+  }
+
+  public static class invalid_return_for_hack_result implements TBase, java.io.Serializable, Cloneable   {
+    private static final TStruct STRUCT_DESC = new TStruct("invalid_return_for_hack_result");
+    private static final TField SUCCESS_FIELD_DESC = new TField("success", TType.SET, (short)0);
+
+    public Set<Float> success;
+    public static final int SUCCESS = 0;
+
+    // isset id assignments
+
+
+    public invalid_return_for_hack_result() {
+    }
+
+    public invalid_return_for_hack_result(
+        Set<Float> success) {
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public invalid_return_for_hack_result(invalid_return_for_hack_result other) {
+      if (other.isSetSuccess()) {
+        this.success = TBaseHelper.deepCopy(other.success);
+      }
+    }
+
+    public invalid_return_for_hack_result deepCopy() {
+      return new invalid_return_for_hack_result(this);
+    }
+
+    public Set<Float> getSuccess() {
+      return this.success;
+    }
+
+    public invalid_return_for_hack_result setSuccess(Set<Float> success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    // Returns true if field success is set (has been assigned a value) and false otherwise
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean __value) {
+      if (!__value) {
+        this.success = null;
+      }
+    }
+
+    @Override
+    public boolean equals(Object _that) {
+      if (_that == null)
+        return false;
+      if (this == _that)
+        return true;
+      if (!(_that instanceof invalid_return_for_hack_result))
+        return false;
+      invalid_return_for_hack_result that = (invalid_return_for_hack_result)_that;
+
+      if (!TBaseHelper.equalsNobinary(this.isSetSuccess(), that.isSetSuccess(), this.success, that.success)) { return false; }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return Arrays.deepHashCode(new Object[] {success});
+    }
+
+    // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
+    public void read(TProtocol iprot) throws TException {
+      throw new TException("unimplemented in android immutable structure");
+    }
+
+    public static invalid_return_for_hack_result deserialize(TProtocol iprot) throws TException {
+      Set<Float> tmp_success = null;
+      TField __field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) {
+          break;
+        }
+        switch (__field.id)
+        {
+          case SUCCESS:
+            if (__field.type == TType.SET) {
+              {
+                TSet _set62 = iprot.readSetBegin();
+                tmp_success = new HashSet<Float>(Math.max(0, 2*_set62.size));
+                for (int _i63 = 0; 
+                     (_set62.size < 0) ? iprot.peekSet() : (_i63 < _set62.size); 
+                     ++_i63)
+                {
+                  Float _elem64;
+                  _elem64 = iprot.readFloat();
+                  tmp_success.add(_elem64);
+                }
+                iprot.readSetEnd();
+              }
+            } else {
+              TProtocolUtil.skip(iprot, __field.type);
+            }
+            break;
+          default:
+            TProtocolUtil.skip(iprot, __field.type);
+            break;
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      invalid_return_for_hack_result _that;
+      _that = new invalid_return_for_hack_result(
+        tmp_success
+      );
+      _that.validate();
+      return _that;
+    }
+
+    public void write(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+
+      if (this.isSetSuccess()) {
+        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+        {
+          oprot.writeSetBegin(new TSet(TType.FLOAT, this.success.size()));
+          for (Float _iter65 : this.success)          {
+            oprot.writeFloat(_iter65);
+          }
+          oprot.writeSetEnd();
+        }
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

@@ -31,3 +31,9 @@ struct FieldWrapper {
   // The name of a Hack wrapper class used to wrap the field
   1: string name;
 } (thrift.uri = "facebook.com/thrift/annotation/hack/FieldWrapper")
+
+@scope.Field
+@scope.Function
+struct SkipCodegen {
+  1: string reason;
+} (thrift.uri = "facebook.com/thrift/annotation/hack/SkipCodegen")

@@ -29,10 +29,12 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
   private static final TField MY_ENUM_FIELD_DESC = new TField("myEnum", TType.I32, (short)1);
   private static final TField MY_STRUCT_FIELD_DESC = new TField("myStruct", TType.STRUCT, (short)2);
   private static final TField MY_DATA_ITEM_FIELD_DESC = new TField("myDataItem", TType.STRUCT, (short)3);
+  private static final TField FLOAT_SET_FIELD_DESC = new TField("floatSet", TType.SET, (short)4);
 
   public static final int MYENUM = 1;
   public static final int MYSTRUCT = 2;
   public static final int MYDATAITEM = 3;
+  public static final int FLOATSET = 4;
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -44,6 +46,9 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
         new StructMetaData(TType.STRUCT, MyStruct.class)));
     tmpMetaDataMap.put(MYDATAITEM, new FieldMetaData("myDataItem", TFieldRequirementType.DEFAULT, 
         new StructMetaData(TType.STRUCT, MyDataItem.class)));
+    tmpMetaDataMap.put(FLOATSET, new FieldMetaData("floatSet", TFieldRequirementType.DEFAULT, 
+        new SetMetaData(TType.SET, 
+            new FieldValueMetaData(TType.FLOAT))));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -81,6 +86,12 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
     return x;
   }
 
+  public static MyUnion floatSet(Set<Float> __value) {
+    MyUnion x = new MyUnion();
+    x.setFloatSet(__value);
+    return x;
+  }
+
 
   @Override
   protected void checkType(short setField, Object __value) throws ClassCastException {
@@ -100,6 +111,11 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
           break;
         }
         throw new ClassCastException("Was expecting value of type MyDataItem for field 'myDataItem', but got " + __value.getClass().getSimpleName());
+      case FLOATSET:
+        if (__value instanceof Set) {
+          break;
+        }
+        throw new ClassCastException("Was expecting value of type Set<Float> for field 'floatSet', but got " + __value.getClass().getSimpleName());
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
@@ -129,6 +145,11 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
             break;
           case MYDATAITEM:
             if (__field.type == MY_DATA_ITEM_FIELD_DESC.type) {
+              setField_ = __field.id;
+            }
+            break;
+          case FLOATSET:
+            if (__field.type == FLOAT_SET_FIELD_DESC.type) {
               setField_ = __field.id;
             }
             break;
@@ -169,6 +190,25 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
           return myDataItem;
         }
         break;
+      case FLOATSET:
+        if (__field.type == FLOAT_SET_FIELD_DESC.type) {
+          Set<Float> floatSet;
+          {
+            TSet _set4 = iprot.readSetBegin();
+            floatSet = new HashSet<Float>(Math.max(0, 2*_set4.size));
+            for (int _i5 = 0; 
+                 (_set4.size < 0) ? iprot.peekSet() : (_i5 < _set4.size); 
+                 ++_i5)
+            {
+              float _elem6;
+              _elem6 = iprot.readFloat();
+              floatSet.add(_elem6);
+            }
+            iprot.readSetEnd();
+          }
+          return floatSet;
+        }
+        break;
     }
     TProtocolUtil.skip(iprot, __field.type);
     return null;
@@ -189,6 +229,16 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
         MyDataItem myDataItem = (MyDataItem)getFieldValue();
         myDataItem.write(oprot);
         return;
+      case FLOATSET:
+        Set<Float> floatSet = (Set<Float>)getFieldValue();
+        {
+          oprot.writeSetBegin(new TSet(TType.FLOAT, floatSet.size()));
+          for (float _iter7 : floatSet)          {
+            oprot.writeFloat(_iter7);
+          }
+          oprot.writeSetEnd();
+        }
+        return;
       default:
         throw new IllegalStateException("Cannot write union with unknown field " + setField);
     }
@@ -203,6 +253,8 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
         return MY_STRUCT_FIELD_DESC;
       case MYDATAITEM:
         return MY_DATA_ITEM_FIELD_DESC;
+      case FLOATSET:
+        return FLOAT_SET_FIELD_DESC;
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
@@ -260,6 +312,14 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
 
   public void setMyDataItem(MyDataItem __value) {
     __setValue(MYDATAITEM, __value);
+  }
+
+  public Set<Float> getFloatSet() {
+    return (Set<Float>) __getValue(FLOATSET);
+  }
+
+  public void setFloatSet(Set<Float> __value) {
+    __setValue(FLOATSET, __value);
   }
 
   public boolean equals(Object other) {

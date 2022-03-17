@@ -241,6 +241,23 @@ _readField_idempotent:
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           7,
+          8,
+          apache::thrift::protocol::T_SET))) {
+    goto _loop;
+  }
+_readField_floatSet:
+  {
+    _readState.beforeSubobject(iprot);
+    this->__fbthrift_field_floatSet = ::std::set<float>();
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::floating_point>, ::std::set<float>>::readWithContext(*iprot, this->__fbthrift_field_floatSet, _readState);
+    _readState.afterSubobject(iprot);
+    
+  }
+ this->__isset.set(7, true);
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          8,
           0,
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
@@ -317,6 +334,14 @@ _loop:
         goto _skip;
       }
     }
+    case 8:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_SET))) {
+        goto _readField_floatSet;
+      } else {
+        goto _skip;
+      }
+    }
     default:
     {
 _skip:
@@ -360,6 +385,10 @@ uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("idempotent", apache::thrift::protocol::T_BOOL, 7);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, bool>::serializedSize<false>(*prot_, this->__fbthrift_field_idempotent);
   }
+  {
+    xfer += prot_->serializedFieldSize("floatSet", apache::thrift::protocol::T_SET, 8);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::floating_point>, ::std::set<float>>::serializedSize<false>(*prot_, this->__fbthrift_field_floatSet);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -395,6 +424,10 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
   {
     xfer += prot_->serializedFieldSize("idempotent", apache::thrift::protocol::T_BOOL, 7);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, bool>::serializedSize<false>(*prot_, this->__fbthrift_field_idempotent);
+  }
+  {
+    xfer += prot_->serializedFieldSize("floatSet", apache::thrift::protocol::T_SET, 8);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::floating_point>, ::std::set<float>>::serializedSize<false>(*prot_, this->__fbthrift_field_floatSet);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -452,6 +485,13 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_BOOL, 7, kPrevFieldId>(*prot_, "idempotent", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, bool>::write(*prot_, this->__fbthrift_field_idempotent);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    constexpr int16_t kPrevFieldId = 7;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_SET, 8, kPrevFieldId>(*prot_, "floatSet", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::floating_point>, ::std::set<float>>::write(*prot_, this->__fbthrift_field_floatSet);
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();
@@ -523,6 +563,20 @@ void MyUnion::readNoXfer(Protocol_* iprot) {
         }
         break;
       }
+      case 4:
+      {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_SET)) {
+          this->set_floatSet();
+          _readState.beforeSubobject(iprot);
+          value_.floatSet = ::std::set<float>();
+          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::floating_point>, ::std::set<float>>::readWithContext(*iprot, value_.floatSet, _readState);
+          _readState.afterSubobject(iprot);
+          
+        } else {
+          _readState.skip(iprot);
+        }
+        break;
+      }
       default:
       {
         _readState.skip(iprot);
@@ -561,6 +615,12 @@ uint32_t MyUnion::serializedSize(Protocol_ const* prot_) const {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataItem>::serializedSize<false>(*prot_, value_.myDataItem);
       break;
     }
+    case MyUnion::Type::floatSet:
+    {
+      xfer += prot_->serializedFieldSize("floatSet", apache::thrift::protocol::T_SET, 4);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::floating_point>, ::std::set<float>>::serializedSize<false>(*prot_, value_.floatSet);
+      break;
+    }
     case MyUnion::Type::__EMPTY__:;
   }
   xfer += prot_->serializedSizeStop();
@@ -588,6 +648,12 @@ uint32_t MyUnion::serializedSizeZC(Protocol_ const* prot_) const {
     {
       xfer += prot_->serializedFieldSize("myDataItem", apache::thrift::protocol::T_STRUCT, 3);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataItem>::serializedSize<true>(*prot_, value_.myDataItem);
+      break;
+    }
+    case MyUnion::Type::floatSet:
+    {
+      xfer += prot_->serializedFieldSize("floatSet", apache::thrift::protocol::T_SET, 4);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::floating_point>, ::std::set<float>>::serializedSize<false>(*prot_, value_.floatSet);
       break;
     }
     case MyUnion::Type::__EMPTY__:;
@@ -622,6 +688,14 @@ uint32_t MyUnion::write(Protocol_* prot_) const {
       constexpr int16_t kPrevFieldId = 2;
       xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, kPrevFieldId>(*prot_, "myDataItem", false);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataItem>::write(*prot_, value_.myDataItem);
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case MyUnion::Type::floatSet:
+    {
+      constexpr int16_t kPrevFieldId = 3;
+      xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_SET, 4, kPrevFieldId>(*prot_, "floatSet", false);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::floating_point>, ::std::set<float>>::write(*prot_, value_.floatSet);
       xfer += prot_->writeFieldEnd();
       break;
     }

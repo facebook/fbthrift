@@ -65,6 +65,9 @@ void reset_field<::cpp2::MyStruct>(
     case 6:
       obj.idempotent_ref().copy_from(default_inst<::cpp2::MyStruct>().idempotent_ref());
       return;
+    case 7:
+      obj.floatSet_ref().copy_from(default_inst<::cpp2::MyStruct>().floatSet_ref());
+      return;
   }
 }
 

@@ -32,6 +32,7 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
         __fbthrift_inst._setters[__cstring_view(<const char*>"oneway")] = __MyStruct_FieldsSetter._set_field_4
         __fbthrift_inst._setters[__cstring_view(<const char*>"readonly")] = __MyStruct_FieldsSetter._set_field_5
         __fbthrift_inst._setters[__cstring_view(<const char*>"idempotent")] = __MyStruct_FieldsSetter._set_field_6
+        __fbthrift_inst._setters[__cstring_view(<const char*>"floatSet")] = __MyStruct_FieldsSetter._set_field_7
         return __fbthrift_inst
 
     cdef void set_field(__MyStruct_FieldsSetter self, const char* name, object value) except *:
@@ -104,6 +105,13 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, bool):
             raise TypeError(f'idempotent is not a { bool !r}.')
         deref(self._struct_cpp_obj).idempotent_ref().assign(_fbthrift_value)
+
+    cdef void _set_field_7(self, _fbthrift_value) except *:
+        # for field floatSet
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 7)
+            return
+        deref(self._struct_cpp_obj).floatSet_ref().assign(deref(_module_types.Set__float(_fbthrift_value)._cpp_obj))
 
 
 @__cython.auto_pickle(False)

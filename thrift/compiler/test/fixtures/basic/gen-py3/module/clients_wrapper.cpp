@@ -146,6 +146,21 @@ MyServiceClientWrapper::lobDataById(
   return _future;
 }
 
+folly::Future<std::set<float>>
+MyServiceClientWrapper::invalid_return_for_hack(
+    apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
+  folly::Promise<std::set<float>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::set<float>>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_invalid_return_for_hack, channel_);
+  client->invalid_return_for_hack(
+    rpcOptions,
+    std::move(callback)
+  );
+  return _future;
+}
+
 folly::Future<std::string>
 DbMixedStackArgumentsClientWrapper::getDataByKey0(
     apache::thrift::RpcOptions& rpcOptions,

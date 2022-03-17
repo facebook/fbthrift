@@ -67,6 +67,7 @@ StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
     {5, "oneway", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
     {6, "readonly", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
     {7, "idempotent", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
+    {8, "floatSet", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_FLOAT_TYPE)), std::vector<ThriftConstStruct>{*cvStruct("hack.SkipCodegen", {{"reason", cvString(R"(Invalid key type)")}}).cv_struct_ref(), }},
   };
   for (const auto& f : module_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -93,6 +94,7 @@ StructMetadata<::cpp2::MyUnion>::gen(ThriftMetadata& metadata) {
     {1, "myEnum", false, std::make_unique<Enum<::cpp2::MyEnum>>("module.MyEnum"), std::vector<ThriftConstStruct>{}},
     {2, "myStruct", false, std::make_unique<Struct<::cpp2::MyStruct>>("module.MyStruct"), std::vector<ThriftConstStruct>{}},
     {3, "myDataItem", false, std::make_unique<Struct<::cpp2::MyDataItem>>("module.MyDataItem"), std::vector<ThriftConstStruct>{}},
+    {4, "floatSet", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_FLOAT_TYPE)), std::vector<ThriftConstStruct>{*cvStruct("hack.SkipCodegen", {{"reason", cvString(R"(Invalid key type)")}}).cv_struct_ref(), }},
   };
   for (const auto& f : module_MyUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -234,6 +236,16 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_lobDataById(ThriftMetadata& met
   func.is_oneway_ref() = true;
   service.functions_ref()->push_back(std::move(func));
 }
+void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_invalid_return_for_hack(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name_ref() = "invalid_return_for_hack";
+  auto func_ret_type = std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_FLOAT_TYPE));
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
+  func.is_oneway_ref() = false;
+  func.structured_annotations_ref()->push_back(*cvStruct("hack.SkipCodegen", {{"reason", cvString(R"(Invalid key type)")}}).cv_struct_ref());
+  service.functions_ref()->push_back(std::move(func));
+}
 
 void ServiceMetadata<::cpp2::MyServiceSvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
   const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
@@ -258,6 +270,7 @@ const ThriftServiceContextRef* ServiceMetadata<::cpp2::MyServiceSvIf>::genRecurs
     ServiceMetadata<::cpp2::MyServiceSvIf>::gen_getDataById,
     ServiceMetadata<::cpp2::MyServiceSvIf>::gen_deleteDataById,
     ServiceMetadata<::cpp2::MyServiceSvIf>::gen_lobDataById,
+    ServiceMetadata<::cpp2::MyServiceSvIf>::gen_invalid_return_for_hack,
   };
   for (auto& function_gen : functions) {
     function_gen(metadata, module_MyService);

@@ -15,6 +15,7 @@ from thrift.py3lite.server import ServiceInterface, oneway, PythonUserException
 
 import module.lite_types
 import module.lite_metadata
+import hack.lite_types
 
 class MyServiceInterface(
     ServiceInterface,
@@ -36,6 +37,7 @@ class MyServiceInterface(
             b"getDataById": self._fbthrift__handler_getDataById,
             b"deleteDataById": self._fbthrift__handler_deleteDataById,
             b"lobDataById": self._fbthrift__handler_lobDataById,
+            b"invalid_return_for_hack": self._fbthrift__handler_invalid_return_for_hack,
         }
         return {**super().getFunctionTable(), **functionTable}
 
@@ -158,6 +160,19 @@ class MyServiceInterface(
         args_struct = deserialize(module.lite_types._fbthrift_MyService_lobDataById_args, args, protocol)
         value = await self.lobDataById(args_struct.id,args_struct.data,)
 
+
+
+    async def invalid_return_for_hack(
+            self
+        ) -> _typing.AbstractSet[float]:
+        raise NotImplementedError("async def invalid_return_for_hack is not implemented")
+
+    async def _fbthrift__handler_invalid_return_for_hack(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) -> _fbthrift_iobuf.IOBuf:
+        args_struct = deserialize(module.lite_types._fbthrift_MyService_invalid_return_for_hack_args, args, protocol)
+        value = await self.invalid_return_for_hack()
+        return_struct = module.lite_types._fbthrift_MyService_invalid_return_for_hack_result(success=value)
+
+        return serialize_iobuf(return_struct, protocol)
 
 class DbMixedStackArgumentsInterface(
     ServiceInterface,

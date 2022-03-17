@@ -16,6 +16,8 @@ import sys
 if sys.version_info[0] >= 3:
   long = int
 
+import hack.ttypes
+
 
 import pprint
 import warnings
@@ -58,6 +60,7 @@ class MyStruct:
    - oneway
    - readonly
    - idempotent
+   - floatSet
   """
 
   thrift_spec = None
@@ -116,6 +119,21 @@ class MyStruct:
           self.idempotent = iprot.readBool()
         else:
           iprot.skip(ftype)
+      elif fid == 8:
+        if ftype == TType.SET:
+          self.floatSet = set()
+          (_etype3, _size0) = iprot.readSetBegin()
+          if _size0 >= 0:
+            for _i4 in range(_size0):
+              _elem5 = iprot.readFloat()
+              self.floatSet.add(_elem5)
+          else: 
+            while iprot.peekSet():
+              _elem6 = iprot.readFloat()
+              self.floatSet.add(_elem6)
+          iprot.readSetEnd()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -157,6 +175,13 @@ class MyStruct:
       oprot.writeFieldBegin('idempotent', TType.BOOL, 7)
       oprot.writeBool(self.idempotent)
       oprot.writeFieldEnd()
+    if self.floatSet != None:
+      oprot.writeFieldBegin('floatSet', TType.SET, 8)
+      oprot.writeSetBegin(TType.FLOAT, len(self.floatSet))
+      for iter7 in self.floatSet:
+        oprot.writeFloat(iter7)
+      oprot.writeSetEnd()
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -193,6 +218,10 @@ class MyStruct:
       self.readonly = json_obj['readonly']
     if 'idempotent' in json_obj and json_obj['idempotent'] is not None:
       self.idempotent = json_obj['idempotent']
+    if 'floatSet' in json_obj and json_obj['floatSet'] is not None:
+      self.floatSet = set_cls()
+      for _tmp_e8 in json_obj['floatSet']:
+        self.floatSet.add(float(_tmp_e8))
 
   def __repr__(self):
     L = []
@@ -225,6 +254,10 @@ class MyStruct:
       value = pprint.pformat(self.idempotent, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    idempotent=%s' % (value))
+    if self.floatSet is not None:
+      value = pprint.pformat(self.floatSet, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    floatSet=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -312,6 +345,7 @@ class MyUnion(object):
    - myEnum
    - myStruct
    - myDataItem
+   - floatSet
   """
 
   thrift_spec = None
@@ -321,6 +355,7 @@ class MyUnion(object):
   MYENUM = 1
   MYSTRUCT = 2
   MYDATAITEM = 3
+  FLOATSET = 4
   
   @staticmethod
   def isUnion():
@@ -338,6 +373,10 @@ class MyUnion(object):
     assert self.field == 3
     return self.value
 
+  def get_floatSet(self):
+    assert self.field == 4
+    return self.value
+
   def set_myEnum(self, value):
     self.field = 1
     self.value = value
@@ -348,6 +387,10 @@ class MyUnion(object):
 
   def set_myDataItem(self, value):
     self.field = 3
+    self.value = value
+
+  def set_floatSet(self, value):
+    self.field = 4
     self.value = value
 
   def getType(self):
@@ -368,6 +411,10 @@ class MyUnion(object):
       padding = ' ' * 11
       value = padding.join(value.splitlines(True))
       member = '\n    %s=%s' % ('myDataItem', value)
+    if self.field == 4:
+      padding = ' ' * 9
+      value = padding.join(value.splitlines(True))
+      member = '\n    %s=%s' % ('floatSet', value)
     return "%s(%s)" % (self.__class__.__name__, member)
 
   def read(self, iprot):
@@ -408,6 +455,23 @@ class MyUnion(object):
           self.set_myDataItem(myDataItem)
         else:
           iprot.skip(ftype)
+      elif fid == 4:
+        if ftype == TType.SET:
+          floatSet = set()
+          (_etype12, _size9) = iprot.readSetBegin()
+          if _size9 >= 0:
+            for _i13 in range(_size9):
+              _elem14 = iprot.readFloat()
+              floatSet.add(_elem14)
+          else: 
+            while iprot.peekSet():
+              _elem15 = iprot.readFloat()
+              floatSet.add(_elem15)
+          iprot.readSetEnd()
+          assert self.field == 0 and self.value is None
+          self.set_floatSet(floatSet)
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -435,6 +499,14 @@ class MyUnion(object):
       oprot.writeFieldBegin('myDataItem', TType.STRUCT, 3)
       myDataItem = self.value
       myDataItem.write(oprot)
+      oprot.writeFieldEnd()
+    if self.field == 4:
+      oprot.writeFieldBegin('floatSet', TType.SET, 4)
+      floatSet = self.value
+      oprot.writeSetBegin(TType.FLOAT, len(floatSet))
+      for iter16 in floatSet:
+        oprot.writeFloat(iter16)
+      oprot.writeSetEnd()
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeUnionEnd()
@@ -473,6 +545,11 @@ class MyUnion(object):
       myDataItem = MyDataItem()
       myDataItem.readFromJson(obj['myDataItem'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
       self.set_myDataItem(myDataItem)
+    if 'floatSet' in obj:
+      floatSet = set_cls()
+      for _tmp_e17 in obj['floatSet']:
+        floatSet.add(float(_tmp_e17))
+      self.set_floatSet(floatSet)
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):
@@ -493,6 +570,7 @@ MyStruct.thrift_spec = (
   (5, TType.BOOL, 'oneway', None, None, 2, ), # 5
   (6, TType.BOOL, 'readonly', None, None, 2, ), # 6
   (7, TType.BOOL, 'idempotent', None, None, 2, ), # 7
+  (8, TType.SET, 'floatSet', (TType.FLOAT,None), None, 2, ), # 8
 )
 
 MyStruct.thrift_struct_annotations = {
@@ -500,7 +578,7 @@ MyStruct.thrift_struct_annotations = {
 MyStruct.thrift_field_annotations = {
 }
 
-def MyStruct__init__(self, MyIntField=None, MyStringField=None, MyDataField=None, myEnum=None, oneway=None, readonly=None, idempotent=None,):
+def MyStruct__init__(self, MyIntField=None, MyStringField=None, MyDataField=None, myEnum=None, oneway=None, readonly=None, idempotent=None, floatSet=None,):
   self.MyIntField = MyIntField
   self.MyStringField = MyStringField
   self.MyDataField = MyDataField
@@ -508,6 +586,7 @@ def MyStruct__init__(self, MyIntField=None, MyStringField=None, MyDataField=None
   self.oneway = oneway
   self.readonly = readonly
   self.idempotent = idempotent
+  self.floatSet = floatSet
 
 MyStruct.__init__ = MyStruct__init__
 
@@ -519,6 +598,7 @@ def MyStruct__setstate__(self, state):
   state.setdefault('oneway', None)
   state.setdefault('readonly', None)
   state.setdefault('idempotent', None)
+  state.setdefault('floatSet', None)
   self.__dict__ = state
 
 MyStruct.__getstate__ = lambda self: self.__dict__.copy()
@@ -539,6 +619,7 @@ MyUnion.thrift_spec = (
   (1, TType.I32, 'myEnum', MyEnum, None, 2, ), # 1
   (2, TType.STRUCT, 'myStruct', [MyStruct, MyStruct.thrift_spec, False], None, 2, ), # 2
   (3, TType.STRUCT, 'myDataItem', [MyDataItem, MyDataItem.thrift_spec, False], None, 2, ), # 3
+  (4, TType.SET, 'floatSet', (TType.FLOAT,None), None, 2, ), # 4
 )
 
 MyUnion.thrift_struct_annotations = {
@@ -546,7 +627,7 @@ MyUnion.thrift_struct_annotations = {
 MyUnion.thrift_field_annotations = {
 }
 
-def MyUnion__init__(self, myEnum=None, myStruct=None, myDataItem=None,):
+def MyUnion__init__(self, myEnum=None, myStruct=None, myDataItem=None, floatSet=None,):
   self.field = 0
   self.value = None
   if myEnum is not None:
@@ -561,6 +642,10 @@ def MyUnion__init__(self, myEnum=None, myStruct=None, myDataItem=None,):
     assert self.field == 0 and self.value is None
     self.field = 3
     self.value = myDataItem
+  if floatSet is not None:
+    assert self.field == 0 and self.value is None
+    self.field = 4
+    self.value = floatSet
 
 MyUnion.__init__ = MyUnion__init__
 

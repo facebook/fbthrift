@@ -31,7 +31,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         @com.facebook.swift.codec.ThriftField(value=4, name="myEnum", requiredness=Requiredness.NONE) final test.fixtures.basic.MyEnum myEnum,
         @com.facebook.swift.codec.ThriftField(value=5, name="oneway", requiredness=Requiredness.NONE) final boolean oneway,
         @com.facebook.swift.codec.ThriftField(value=6, name="readonly", requiredness=Requiredness.NONE) final boolean readonly,
-        @com.facebook.swift.codec.ThriftField(value=7, name="idempotent", requiredness=Requiredness.NONE) final boolean idempotent
+        @com.facebook.swift.codec.ThriftField(value=7, name="idempotent", requiredness=Requiredness.NONE) final boolean idempotent,
+        @com.facebook.swift.codec.ThriftField(value=8, name="floatSet", requiredness=Requiredness.NONE) final Set<Float> floatSet
     ) {
         this.myIntField = myIntField;
         this.myStringField = myStringField;
@@ -40,6 +41,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         this.oneway = oneway;
         this.readonly = readonly;
         this.idempotent = idempotent;
+        this.floatSet = floatSet;
     }
     
     @ThriftConstructor
@@ -51,6 +53,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       this.oneway = false;
       this.readonly = false;
       this.idempotent = false;
+      this.floatSet = null;
     }
     
     public static class Builder {
@@ -62,6 +65,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         private boolean oneway = false;
         private boolean readonly = false;
         private boolean idempotent = false;
+        private Set<Float> floatSet = null;
     
         @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
         public Builder setMyIntField(long myIntField) {
@@ -119,6 +123,14 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     
         public boolean isIdempotent() { return idempotent; }
     
+            @com.facebook.swift.codec.ThriftField(value=8, name="floatSet", requiredness=Requiredness.NONE)
+        public Builder setFloatSet(Set<Float> floatSet) {
+            this.floatSet = floatSet;
+            return this;
+        }
+    
+        public Set<Float> getFloatSet() { return floatSet; }
+    
         public Builder() { }
         public Builder(MyStruct other) {
             this.myIntField = other.myIntField;
@@ -128,6 +140,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             this.oneway = other.oneway;
             this.readonly = other.readonly;
             this.idempotent = other.idempotent;
+            this.floatSet = other.floatSet;
         }
     
         @ThriftConstructor
@@ -139,7 +152,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                 this.myEnum,
                 this.oneway,
                 this.readonly,
-                this.idempotent
+                this.idempotent,
+                this.floatSet
             );
             return result;
         }
@@ -169,6 +183,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         private final boolean idempotent;
     public static final int _IDEMPOTENT = 7;
     private static final TField IDEMPOTENT_FIELD_DESC = new TField("idempotent", TType.BOOL, (short)7);
+        private final Set<Float> floatSet;
+    public static final int _FLOATSET = 8;
+    private static final TField FLOAT_SET_FIELD_DESC = new TField("floatSet", TType.SET, (short)8);
     static {
       NAMES_TO_IDS.put("myIntField", 1);
       FIELD_METADATA.put(1, MY_INT_FIELD_FIELD_DESC);
@@ -184,6 +201,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       FIELD_METADATA.put(6, READONLY_FIELD_DESC);
       NAMES_TO_IDS.put("idempotent", 7);
       FIELD_METADATA.put(7, IDEMPOTENT_FIELD_DESC);
+      NAMES_TO_IDS.put("floatSet", 8);
+      FIELD_METADATA.put(8, FLOAT_SET_FIELD_DESC);
     }
     
     
@@ -220,6 +239,11 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     @com.facebook.swift.codec.ThriftField(value=7, name="idempotent", requiredness=Requiredness.NONE)
     public boolean isIdempotent() { return idempotent; }
     
+    
+    @Nullable
+    @com.facebook.swift.codec.ThriftField(value=8, name="floatSet", requiredness=Requiredness.NONE)
+    public Set<Float> getFloatSet() { return floatSet; }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
@@ -230,6 +254,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         helper.add("oneway", oneway);
         helper.add("readonly", readonly);
         helper.add("idempotent", idempotent);
+        helper.add("floatSet", floatSet);
         return helper.toString();
     }
     
@@ -252,6 +277,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             Objects.equals(oneway, other.oneway) &&
             Objects.equals(readonly, other.readonly) &&
             Objects.equals(idempotent, other.idempotent) &&
+            Objects.equals(floatSet, other.floatSet) &&
             true;
     }
     
@@ -264,7 +290,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             myEnum,
             oneway,
             readonly,
-            idempotent
+            idempotent,
+            floatSet
         });
     }
     
@@ -337,6 +364,24 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _FLOATSET:
+          if (__field.type == TType.SET) {
+            Set<Float> floatSet;
+            {
+            TSet _set = oprot.readSetBegin();
+            floatSet = new HashSet<Float>(Math.max(0, _set.size));
+            for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
+                
+                float _value1 = oprot.readFloat();
+                floatSet.add(_value1);
+            }
+            oprot.readSetEnd();
+            }
+            builder.setFloatSet(floatSet);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -374,6 +419,16 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       oprot.writeFieldBegin(IDEMPOTENT_FIELD_DESC);
       oprot.writeBool(this.idempotent);
       oprot.writeFieldEnd();
+      if (this.floatSet != null) {
+        oprot.writeFieldBegin(FLOAT_SET_FIELD_DESC);
+        Set<Float> _iter0 = this.floatSet;
+        oprot.writeSetBegin(new TSet(TType.FLOAT, _iter0.size()));
+        for (float _iter1 : _iter0) {
+          oprot.writeFloat(_iter1);
+        }
+        oprot.writeSetEnd();
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }

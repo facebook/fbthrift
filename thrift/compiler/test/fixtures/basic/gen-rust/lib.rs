@@ -21,6 +21,7 @@ pub mod types {
         pub oneway: ::std::primitive::bool,
         pub readonly: ::std::primitive::bool,
         pub idempotent: ::std::primitive::bool,
+        pub floatSet: ::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
         // the definition in Thrift. If you don't want this, add the annotation
@@ -44,6 +45,7 @@ pub mod types {
         myEnum(crate::types::MyEnum),
         myStruct(crate::types::MyStruct),
         myDataItem(crate::types::MyDataItem),
+        floatSet(::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>),
         UnknownField(::std::primitive::i32),
     }
 
@@ -167,6 +169,7 @@ pub mod types {
                 oneway: ::std::default::Default::default(),
                 readonly: ::std::default::Default::default(),
                 idempotent: ::std::default::Default::default(),
+                floatSet: ::std::default::Default::default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
         }
@@ -183,6 +186,7 @@ pub mod types {
                 .field("oneway", &self.oneway)
                 .field("readonly", &self.readonly)
                 .field("idempotent", &self.idempotent)
+                .field("floatSet", &self.floatSet)
                 .finish()
         }
     }
@@ -221,6 +225,9 @@ pub mod types {
             p.write_field_begin("idempotent", ::fbthrift::TType::Bool, 7);
             ::fbthrift::Serialize::write(&self.idempotent, p);
             p.write_field_end();
+            p.write_field_begin("floatSet", ::fbthrift::TType::Set, 8);
+            ::fbthrift::Serialize::write(&self.floatSet, p);
+            p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -235,6 +242,7 @@ pub mod types {
                 ::fbthrift::Field::new("MyDataField", ::fbthrift::TType::Struct, 3),
                 ::fbthrift::Field::new("MyIntField", ::fbthrift::TType::I64, 1),
                 ::fbthrift::Field::new("MyStringField", ::fbthrift::TType::String, 2),
+                ::fbthrift::Field::new("floatSet", ::fbthrift::TType::Set, 8),
                 ::fbthrift::Field::new("idempotent", ::fbthrift::TType::Bool, 7),
                 ::fbthrift::Field::new("myEnum", ::fbthrift::TType::I32, 4),
                 ::fbthrift::Field::new("oneway", ::fbthrift::TType::Bool, 5),
@@ -247,6 +255,7 @@ pub mod types {
             let mut field_oneway = ::std::option::Option::None;
             let mut field_readonly = ::std::option::Option::None;
             let mut field_idempotent = ::std::option::Option::None;
+            let mut field_floatSet = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -259,6 +268,7 @@ pub mod types {
                     (::fbthrift::TType::Bool, 5) => field_oneway = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Bool, 6) => field_readonly = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Bool, 7) => field_idempotent = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Set, 8) => field_floatSet = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -272,6 +282,7 @@ pub mod types {
                 oneway: field_oneway.unwrap_or_default(),
                 readonly: field_readonly.unwrap_or_default(),
                 idempotent: field_idempotent.unwrap_or_default(),
+                floatSet: field_floatSet.unwrap_or_default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
@@ -369,6 +380,11 @@ pub mod types {
                     ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
+                MyUnion::floatSet(inner) => {
+                    p.write_field_begin("floatSet", ::fbthrift::TType::Set, 4);
+                    ::fbthrift::Serialize::write(inner, p);
+                    p.write_field_end();
+                }
                 MyUnion::UnknownField(_) => {}
             }
             p.write_field_stop();
@@ -382,6 +398,7 @@ pub mod types {
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("floatSet", ::fbthrift::TType::Set, 4),
                 ::fbthrift::Field::new("myDataItem", ::fbthrift::TType::Struct, 3),
                 ::fbthrift::Field::new("myEnum", ::fbthrift::TType::I32, 1),
                 ::fbthrift::Field::new("myStruct", ::fbthrift::TType::Struct, 2),
@@ -404,6 +421,10 @@ pub mod types {
                     (::fbthrift::TType::Struct, 3, false) => {
                         once = true;
                         alt = ::std::option::Option::Some(MyUnion::myDataItem(::fbthrift::Deserialize::read(p)?));
+                    }
+                    (::fbthrift::TType::Set, 4, false) => {
+                        once = true;
+                        alt = ::std::option::Option::Some(MyUnion::floatSet(::fbthrift::Deserialize::read(p)?));
                     }
                     (fty, _, false) => p.skip(fty)?,
                     (badty, badid, true) => return ::std::result::Result::Err(::std::convert::From::from(::fbthrift::ApplicationException::new(
@@ -436,6 +457,7 @@ pub mod types {
 
 #[doc(hidden)]
 pub mod dependencies {
+    pub use hack as hack;
 }
 
 pub mod services {
@@ -1386,6 +1408,128 @@ pub mod services {
                 ::std::result::Result::Ok(alt)
             }
         }
+
+        #[derive(Clone, Debug)]
+        pub enum InvalidReturnForHackExn {
+            Success(::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>),
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for InvalidReturnForHackExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                InvalidReturnForHackExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::ExceptionInfo for InvalidReturnForHackExn {
+            fn exn_name(&self) -> &'static str {
+                match self {
+                    InvalidReturnForHackExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    InvalidReturnForHackExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                match self {
+                    InvalidReturnForHackExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    InvalidReturnForHackExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                match self {
+                    InvalidReturnForHackExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    InvalidReturnForHackExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for InvalidReturnForHackExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    InvalidReturnForHackExn::Success(_) => ::fbthrift::ResultType::Return,
+                    InvalidReturnForHackExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                }
+            }
+        }
+
+        impl ::fbthrift::GetTType for InvalidReturnForHackExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+        }
+
+        impl<P> ::fbthrift::Serialize<P> for InvalidReturnForHackExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                if let InvalidReturnForHackExn::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
+                p.write_struct_begin("InvalidReturnForHack");
+                match self {
+                    InvalidReturnForHackExn::Success(inner) => {
+                        p.write_field_begin(
+                            "Success",
+                            ::fbthrift::TType::Set,
+                            0i16,
+                        );
+                        inner.write(p);
+                        p.write_field_end();
+                    }
+                    InvalidReturnForHackExn::ApplicationException(_aexn) => unreachable!(),
+                }
+                p.write_field_stop();
+                p.write_struct_end();
+            }
+        }
+
+        impl<P> ::fbthrift::Deserialize<P> for InvalidReturnForHackExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
+                static RETURNS: &[::fbthrift::Field] = &[
+                    ::fbthrift::Field::new("Success", ::fbthrift::TType::Set, 0),
+                ];
+                let _ = p.read_struct_begin(|_| ())?;
+                let mut once = false;
+                let mut alt = ::std::option::Option::None;
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
+                            p.read_field_end()?;
+                            break;
+                        }
+                        ((::fbthrift::TType::Set, 0i32), false) => {
+                            once = true;
+                            alt = ::std::option::Option::Some(InvalidReturnForHackExn::Success(::fbthrift::Deserialize::read(p)?));
+                        }
+                        ((ty, _id), false) => p.skip(ty)?,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                                format!(
+                                    "unwanted extra union {} field ty {:?} id {}",
+                                    "InvalidReturnForHackExn",
+                                    badty,
+                                    badid,
+                                ),
+                            )
+                        )),
+                    }
+                    p.read_field_end()?;
+                }
+                p.read_struct_end()?;
+                alt.ok_or_else(||
+                    ::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::MissingResult,
+                        format!("Empty union {}", "InvalidReturnForHackExn"),
+                    )
+                    .into(),
+                )
+            }
+        }
     }
 
     pub mod db_mixed_stack_arguments {
@@ -1699,6 +1843,10 @@ pub mod client {
             arg_id: ::std::primitive::i64,
             arg_data: &::std::primitive::str,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + ::std::marker::Send + 'static>>;
+
+        fn invalid_return_for_hack(
+            &self,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>, crate::errors::my_service::InvalidReturnForHackError>> + ::std::marker::Send + 'static>>;
     }
 
     struct Args_MyService_ping<'a> {
@@ -1840,6 +1988,20 @@ pub mod client {
             p.write_field_begin("data", ::fbthrift::TType::String, 2i16);
             ::fbthrift::Serialize::write(&self.data, p);
             p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    struct Args_MyService_invalid_return_for_hack<'a> {
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_MyService_invalid_return_for_hack<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "MyService.invalid_return_for_hack"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -2205,6 +2367,48 @@ pub mod client {
             .instrument(::tracing::info_span!("MyService.lobDataById"))
             .boxed()
         }
+
+        fn invalid_return_for_hack(
+            &self,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>, crate::errors::my_service::InvalidReturnForHackError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
+            use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
+            const_cstr! {
+                SERVICE_NAME = "MyService";
+                METHOD_NAME = "MyService.invalid_return_for_hack";
+            }
+            let args = self::Args_MyService_invalid_return_for_hack {
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            // need to do call setup outside of async block because T: Transport isn't Send
+            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("invalid_return_for_hack", &args) {
+                ::std::result::Result::Ok(res) => res,
+                ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+            };
+
+            let call = self.transport()
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
+                .instrument(::tracing::trace_span!("call", function = "MyService.invalid_return_for_hack"));
+
+            async move {
+                let reply_env = call.await?;
+
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::my_service::InvalidReturnForHackExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
+
+                match res {
+                    ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
+                    ::std::result::Result::Err(aexn) =>
+                        ::std::result::Result::Err(crate::errors::my_service::InvalidReturnForHackError::ApplicationException(aexn))
+                }
+            }
+            .instrument(::tracing::info_span!("MyService.invalid_return_for_hack"))
+            .boxed()
+        }
     }
 
     impl<'a, T> MyService for T
@@ -2274,6 +2478,12 @@ pub mod client {
             self.as_ref().lobDataById(
                 arg_id,
                 arg_data,
+            )
+        }
+        fn invalid_return_for_hack(
+            &self,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>, crate::errors::my_service::InvalidReturnForHackError>> + ::std::marker::Send + 'static>> {
+            self.as_ref().invalid_return_for_hack(
             )
         }
     }
@@ -2694,6 +2904,16 @@ pub mod server {
                 ),
             ))
         }
+        async fn invalid_return_for_hack(
+            &self,
+        ) -> ::std::result::Result<::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>, crate::services::my_service::InvalidReturnForHackExn> {
+            ::std::result::Result::Err(crate::services::my_service::InvalidReturnForHackExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
+                    "MyService",
+                    "invalid_return_for_hack",
+                ),
+            ))
+        }
     }
 
     #[::async_trait::async_trait]
@@ -2763,6 +2983,12 @@ pub mod server {
             (**self).lobDataById(
                 id, 
                 data, 
+            ).await
+        }
+        async fn invalid_return_for_hack(
+            &self,
+        ) -> ::std::result::Result<::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>, crate::services::my_service::InvalidReturnForHackExn> {
+            (**self).invalid_return_for_hack(
             ).await
         }
     }
@@ -2995,6 +3221,29 @@ pub mod server {
             ::std::result::Result::Ok(Self {
                 id: field_id.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "MyService.lobDataById", "id"))?,
                 data: field_data.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "MyService.lobDataById", "data"))?,
+            })
+        }
+    }
+
+    struct Args_MyService_invalid_return_for_hack {
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyService_invalid_return_for_hack {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyService.invalid_return_for_hack"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+            ];
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
             })
         }
     }
@@ -3484,6 +3733,63 @@ pub mod server {
 
             ::std::result::Result::Ok(res)
         }
+
+        #[::tracing::instrument(skip_all, fields(method = "MyService.invalid_return_for_hack"))]
+        async fn handle_invalid_return_for_hack<'a>(
+            &'a self,
+            p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
+            ctx_stack: &mut R::ContextStack,
+        ) -> ::anyhow::Result<crate::services::my_service::InvalidReturnForHackExn> {
+            use ::const_cstr::const_cstr;
+            use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
+            const_cstr! {
+                SERVICE_NAME = "MyService";
+                METHOD_NAME = "MyService.invalid_return_for_hack";
+            }
+            ::fbthrift::ContextStack::pre_read(ctx_stack)?;
+            let _args: self::Args_MyService_invalid_return_for_hack = ::fbthrift::Deserialize::read(p)?;
+            ::fbthrift::ContextStack::on_read_data(ctx_stack, &::fbthrift::SerializedMessage {
+                protocol: P::PROTOCOL_ID,
+                method_name: METHOD_NAME.as_cstr(),
+                buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
+            })?;
+            ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
+
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.invalid_return_for_hack(
+                )
+            )
+            .catch_unwind()
+            .instrument(::tracing::info_span!("service_handler", method = "MyService.invalid_return_for_hack"))
+            .await;
+
+            // nested results - panic catch on the outside, method on the inside
+            let res = match res {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                    ::tracing::info!(method = "MyService.invalid_return_for_hack", "success");
+                    crate::services::my_service::InvalidReturnForHackExn::Success(res)
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_service::InvalidReturnForHackExn::Success(_))) => {
+                    panic!(
+                        "{} attempted to return success via error",
+                        "invalid_return_for_hack",
+                    )
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
+                    ::tracing::error!(method = "MyService.invalid_return_for_hack", exception = ?exn);
+                    exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.invalid_return_for_hack", exn);
+                    crate::services::my_service::InvalidReturnForHackExn::ApplicationException(aexn)
+                }
+            };
+
+            ::std::result::Result::Ok(res)
+        }
     }
 
     #[::async_trait::async_trait]
@@ -3510,6 +3816,7 @@ pub mod server {
                 b"getDataById" => ::std::result::Result::Ok(5usize),
                 b"deleteDataById" => ::std::result::Result::Ok(6usize),
                 b"lobDataById" => ::std::result::Result::Ok(7usize),
+                b"invalid_return_for_hack" => ::std::result::Result::Ok(8usize),
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
@@ -3682,6 +3989,27 @@ pub mod server {
                     let res = self.handle_lobDataById(_p, _r, &mut ctx_stack).await?;
                     let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                         "lobDataById",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        _r,
+                        &mut ctx_stack,
+                        res
+                    )?;
+                    Ok(env)
+                }
+                8usize => {
+                    use const_cstr::const_cstr;
+                    const_cstr! {
+                        SERVICE_NAME = "MyService";
+                        METHOD_NAME = "MyService.invalid_return_for_hack";
+                    }
+                    let mut ctx_stack = _r.get_context_stack(
+                        SERVICE_NAME.as_cstr(),
+                        METHOD_NAME.as_cstr(),
+                    )?;
+                    let res = self.handle_invalid_return_for_hack(_p, _r, &mut ctx_stack).await?;
+                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "invalid_return_for_hack",
                         METHOD_NAME.as_cstr(),
                         _seqid,
                         _r,
@@ -4358,6 +4686,7 @@ pub mod mock {
         pub getDataById: r#impl::my_service::getDataById<'mock>,
         pub deleteDataById: r#impl::my_service::deleteDataById<'mock>,
         pub lobDataById: r#impl::my_service::lobDataById<'mock>,
+        pub invalid_return_for_hack: r#impl::my_service::invalid_return_for_hack<'mock>,
         _marker: ::std::marker::PhantomData<&'mock ()>,
     }
 
@@ -4372,6 +4701,7 @@ pub mod mock {
                 getDataById: r#impl::my_service::getDataById::unimplemented(),
                 deleteDataById: r#impl::my_service::deleteDataById::unimplemented(),
                 lobDataById: r#impl::my_service::lobDataById::unimplemented(),
+                invalid_return_for_hack: r#impl::my_service::invalid_return_for_hack::unimplemented(),
                 _marker: ::std::marker::PhantomData,
             }
         }
@@ -4441,6 +4771,13 @@ pub mod mock {
             let mut closure = self.lobDataById.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i64, ::std::string::String) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_id.clone(), arg_data.to_owned())))
+        }
+        fn invalid_return_for_hack(
+            &self,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>, crate::errors::my_service::InvalidReturnForHackError>> + ::std::marker::Send + 'static>> {
+            let mut closure = self.invalid_return_for_hack.closure.lock().unwrap();
+            let closure: &mut dyn ::std::ops::FnMut() -> _ = &mut **closure;
+            ::std::boxed::Box::pin(::futures::future::ready(closure()))
         }
     }
 
@@ -4834,6 +5171,50 @@ pub mod mock {
                     *closure = ::std::boxed::Box::new(move |_: ::std::primitive::i64, _: ::std::string::String| ::std::result::Result::Err(exception.clone().into()));
                 }
             }
+
+            pub struct invalid_return_for_hack<'mock> {
+                pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
+                    dyn ::std::ops::FnMut() -> ::std::result::Result<
+                        ::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>,
+                        crate::errors::my_service::InvalidReturnForHackError,
+                    > + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                >>,
+            }
+
+            impl<'mock> invalid_return_for_hack<'mock> {
+                pub fn unimplemented() -> Self {
+                    invalid_return_for_hack {
+                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
+                            "{}::{} is not mocked",
+                            "MyService",
+                            "invalid_return_for_hack",
+                        ))),
+                    }
+                }
+
+                pub fn ret(&self, value: ::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>) {
+                    self.mock(move || value.clone());
+                }
+
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> ::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
+                }
+
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut() -> ::std::result::Result<::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>, crate::errors::my_service::InvalidReturnForHackError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || mock());
+                }
+
+                pub fn throw<E>(&self, exception: E)
+                where
+                    E: ::std::convert::Into<crate::errors::my_service::InvalidReturnForHackError>,
+                    E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
+                }
+            }
         }
         pub mod db_mixed_stack_arguments {
 
@@ -5049,6 +5430,21 @@ pub mod errors {
                         ::std::result::Result::Ok(res),
                     crate::services::my_service::LobDataByIdExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(LobDataByIdError::ApplicationException(aexn)),
+                }
+            }
+        }
+
+        pub type InvalidReturnForHackError = ::fbthrift::NonthrowingFunctionError;
+
+        impl ::std::convert::From<crate::services::my_service::InvalidReturnForHackExn> for
+            ::std::result::Result<::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>, InvalidReturnForHackError>
+        {
+            fn from(e: crate::services::my_service::InvalidReturnForHackExn) -> Self {
+                match e {
+                    crate::services::my_service::InvalidReturnForHackExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::InvalidReturnForHackExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(InvalidReturnForHackError::ApplicationException(aexn)),
                 }
             }
         }

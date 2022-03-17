@@ -53,6 +53,8 @@ import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
 import weakref as __weakref
 import builtins as _builtins
+cimport hack.types as _hack_types
+import hack.types as _hack_types
 
 cimport module.types_reflection as _types_reflection
 
@@ -163,6 +165,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
           "oneway": deref(self._cpp_obj).oneway_ref().has_value(),
           "readonly": deref(self._cpp_obj).readonly_ref().has_value(),
           "idempotent": deref(self._cpp_obj).idempotent_ref().has_value(),
+          "floatSet": deref(self._cpp_obj).floatSet_ref().has_value(),
         })
 
     @staticmethod
@@ -231,6 +234,16 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def idempotent(self):
         return self.idempotent_impl()
 
+    cdef inline floatSet_impl(self):
+
+        if self.__fbthrift_cached_floatSet is None:
+            self.__fbthrift_cached_floatSet = Set__float._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).floatSet_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_floatSet
+
+    @property
+    def floatSet(self):
+        return self.floatSet_impl()
+
 
     def __hash__(MyStruct self):
         return super().__hash__()
@@ -274,7 +287,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return __get_field_name_by_index[cMyStruct](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 7
+        self._fbthrift_struct_size = 8
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyStruct self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -382,13 +395,15 @@ cdef class MyUnion(thrift.py3.types.Union):
         self, *,
         MyEnum myEnum=None,
         MyStruct myStruct=None,
-        MyDataItem myDataItem=None
+        MyDataItem myDataItem=None,
+        floatSet=None
     ):
         self._cpp_obj = __to_shared_ptr(cmove(MyUnion._make_instance(
           NULL,
           myEnum,
           myStruct,
           myDataItem,
+          floatSet,
         )))
         self._load_cache()
 
@@ -402,6 +417,8 @@ cdef class MyUnion(thrift.py3.types.Union):
             return MyUnion(myStruct=value)
         if isinstance(value, MyDataItem):
             return MyUnion(myDataItem=value)
+        if isinstance(value, Set__float):
+            return MyUnion(floatSet=value)
         raise ValueError(f"Unable to derive correct union field for value: {value}")
 
     @staticmethod
@@ -409,7 +426,8 @@ cdef class MyUnion(thrift.py3.types.Union):
         cMyUnion* base_instance,
         MyEnum myEnum,
         MyStruct myStruct,
-        MyDataItem myDataItem
+        MyDataItem myDataItem,
+        object floatSet
     ) except *:
         cdef unique_ptr[cMyUnion] c_inst = make_unique[cMyUnion]()
         cdef bint any_set = False
@@ -427,6 +445,11 @@ cdef class MyUnion(thrift.py3.types.Union):
             if any_set:
                 raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_myDataItem(deref((<MyDataItem?> myDataItem)._cpp_obj))
+            any_set = True
+        if floatSet is not None:
+            if any_set:
+                raise TypeError("At most one field may be set when initializing a union")
+            deref(c_inst).set_floatSet(<cset[float]>deref(Set__float(floatSet)._cpp_obj))
             any_set = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -457,6 +480,12 @@ cdef class MyUnion(thrift.py3.types.Union):
             raise AttributeError(f'Union contains a value of type {self.type.name}, not myDataItem')
         return self.value
 
+    @property
+    def floatSet(self):
+        if self.type.value != 4:
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not floatSet')
+        return self.value
+
 
     def __hash__(MyUnion self):
         return  super().__hash__()
@@ -472,6 +501,8 @@ cdef class MyUnion(thrift.py3.types.Union):
             self.value = MyStruct._fbthrift_create(make_shared[cMyStruct](deref(self._cpp_obj).get_myStruct()))
         elif type == 3:
             self.value = MyDataItem._fbthrift_create(make_shared[cMyDataItem](deref(self._cpp_obj).get_myDataItem()))
+        elif type == 4:
+            self.value = Set__float._fbthrift_create(make_shared[cset[float]](deref(self._cpp_obj).get_floatSet()))
 
     def __copy__(MyUnion self):
         cdef shared_ptr[cMyUnion] cpp_obj = make_shared[cMyUnion](
@@ -505,7 +536,7 @@ cdef class MyUnion(thrift.py3.types.Union):
         return __get_field_name_by_index[cMyUnion](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 3
+        self._fbthrift_struct_size = 4
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyUnion self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -522,4 +553,84 @@ cdef class MyUnion(thrift.py3.types.Union):
         self._load_cache()
         return needed
 
+
+@__cython.auto_pickle(False)
+cdef class Set__float(thrift.py3.types.Set):
+    def __init__(self, items=None):
+        if isinstance(items, Set__float):
+            self._cpp_obj = (<Set__float> items)._cpp_obj
+        else:
+            self._cpp_obj = Set__float._make_instance(items)
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cset[float]] c_items):
+        __fbthrift_inst = <Set__float>Set__float.__new__(Set__float)
+        __fbthrift_inst._cpp_obj = cmove(c_items)
+        return __fbthrift_inst
+
+    def __copy__(Set__float self):
+        cdef shared_ptr[cset[float]] cpp_obj = make_shared[cset[float]](
+            deref(self._cpp_obj)
+        )
+        return Set__float._fbthrift_create(cmove(cpp_obj))
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    @staticmethod
+    cdef shared_ptr[cset[float]] _make_instance(object items) except *:
+        cdef shared_ptr[cset[float]] c_inst = make_shared[cset[float]]()
+        if items is not None:
+            for item in items:
+                if not isinstance(item, (float, int)):
+                    raise TypeError(f"{item!r} is not of type float")
+                deref(c_inst).insert(item)
+        return c_inst
+
+    def __contains__(self, item):
+        if not self or item is None:
+            return False
+        if not isinstance(item, float):
+            return False
+        return pbool(deref(self._cpp_obj).count(item))
+
+
+    def __iter__(self):
+        if not self:
+            return
+        cdef __set_iter[cset[float]] itr = __set_iter[cset[float]](self._cpp_obj)
+        cdef float citem = 0
+        for i in range(deref(self._cpp_obj).size()):
+            itr.genNext(self._cpp_obj, citem)
+            yield citem
+
+    def __hash__(self):
+        return super().__hash__()
+
+    def __richcmp__(self, other, int op):
+        if isinstance(other, Set__float):
+            # C level comparisons
+            return __setcmp(
+                self._cpp_obj,
+                (<Set__float> other)._cpp_obj,
+                op,
+            )
+        return self._fbthrift_py_richcmp(other, op)
+
+    cdef _fbthrift_do_set_op(self, other, __cSetOp op):
+        if not isinstance(other, Set__float):
+            other = Set__float(other)
+        cdef shared_ptr[cset[float]] result
+        return Set__float._fbthrift_create(__set_op[cset[float]](
+            self._cpp_obj,
+            (<Set__float>other)._cpp_obj,
+            op,
+        ))
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__Set__float()
+
+
+Set.register(Set__float)
 

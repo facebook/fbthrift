@@ -179,4 +179,21 @@ public class MyServiceReactiveAsyncWrapper
     return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.lobDataByIdWrapper(id,data, rpcOptions));
   }
 
+  @java.lang.Override
+  public com.google.common.util.concurrent.ListenableFuture<Set<Float>> invalidReturnForHack() {
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.invalidReturnForHack());
+  }
+
+  @java.lang.Override
+  public com.google.common.util.concurrent.ListenableFuture<Set<Float>> invalidReturnForHack(
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.invalidReturnForHack( rpcOptions));
+  }
+
+  @java.lang.Override
+  public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<Set<Float>>> invalidReturnForHackWrapper(
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+    return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.invalidReturnForHackWrapper( rpcOptions));
+  }
+
 }

@@ -18,6 +18,7 @@ import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 import thrift.py3lite.types as _fbthrift_py3lite_types
 import module.lite_types
 import module.lite_metadata
+import hack.lite_types
 
 
 class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
@@ -155,6 +156,23 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
                 None,
             )
 
+        async def invalid_return_for_hack(
+            self
+        ) -> _typing.AbstractSet[float]:
+            resp = await self._send_request(
+                "MyService",
+                "invalid_return_for_hack",
+                module.lite_types._fbthrift_MyService_invalid_return_for_hack_args(),
+                module.lite_types._fbthrift_MyService_invalid_return_for_hack_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
 
     class Sync(_fbthrift_py3lite_SyncClient):
         @staticmethod
@@ -280,6 +298,23 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
                     id=id,
                     data=data,),
                 None,
+            )
+
+        def invalid_return_for_hack(
+            self
+        ) -> _typing.AbstractSet[float]:
+            resp = self._send_request(
+                "MyService",
+                "invalid_return_for_hack",
+                module.lite_types._fbthrift_MyService_invalid_return_for_hack_args(),
+                module.lite_types._fbthrift_MyService_invalid_return_for_hack_result,
+            )
+            # shortcut to success path for non-void returns
+            if resp.success is not None:
+                return resp.success
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
             )
 
 

@@ -25,6 +25,8 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apach
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int64_t*>> MyService_deleteDataById_pargs;
 typedef apache::thrift::ThriftPresult<true> MyService_deleteDataById_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int64_t*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::string, ::std::string*>> MyService_lobDataById_pargs;
+typedef apache::thrift::ThriftPresult<false> MyService_invalid_return_for_hack_pargs;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::set<::apache::thrift::type_class::floating_point>, ::std::set<float>*>> MyService_invalid_return_for_hack_presult;
 
 template <typename Protocol_, typename RpcOptions>
 void MyServiceAsyncClient::pingT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback) {
@@ -144,6 +146,20 @@ void MyServiceAsyncClient::lobDataByIdT(Protocol_* prot, RpcOptions&& rpcOptions
                 "lobDataById",
                 ::apache::thrift::FunctionQualifier::OneWay);
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, Protocol_>(prot, std::forward<RpcOptions>(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);
+}
+
+template <typename Protocol_, typename RpcOptions>
+void MyServiceAsyncClient::invalid_return_for_hackT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback) {
+
+  MyService_invalid_return_for_hack_pargs args;
+  auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
+  auto writer = [&](Protocol_* p) { args.write(p); };
+
+  static ::apache::thrift::MethodMetadata::Data* methodMetadata =
+        new ::apache::thrift::MethodMetadata::Data(
+                "invalid_return_for_hack",
+                ::apache::thrift::FunctionQualifier::Unspecified);
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::forward<RpcOptions>(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);
 }
 
 
@@ -1586,5 +1602,193 @@ void MyServiceAsyncClient::lobDataById(folly::Function<void (::apache::thrift::C
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
+void MyServiceAsyncClient::invalid_return_for_hack(std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  invalid_return_for_hack(rpcOptions, std::move(callback));
+}
+
+void MyServiceAsyncClient::invalid_return_for_hack(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  auto [ctx, header] = invalid_return_for_hackCtx(&rpcOptions);
+  apache::thrift::RequestCallback::Context callbackContext;
+  callbackContext.protocolId =
+      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+  auto* contextStack = ctx.get();
+  if (callback) {
+    callbackContext.ctx = std::move(ctx);
+  }
+  auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
+  invalid_return_for_hackImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback));
+}
+
+void MyServiceAsyncClient::invalid_return_for_hackImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions) {
+  switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
+    case apache::thrift::protocol::T_BINARY_PROTOCOL:
+    {
+      apache::thrift::BinaryProtocolWriter writer;
+      if (stealRpcOptions) {
+        invalid_return_for_hackT(&writer, std::move(rpcOptions), std::move(header), contextStack, std::move(callback));
+      } else {
+        invalid_return_for_hackT(&writer, rpcOptions, std::move(header), contextStack, std::move(callback));
+      }
+      break;
+    }
+    case apache::thrift::protocol::T_COMPACT_PROTOCOL:
+    {
+      apache::thrift::CompactProtocolWriter writer;
+      if (stealRpcOptions) {
+        invalid_return_for_hackT(&writer, std::move(rpcOptions), std::move(header), contextStack, std::move(callback));
+      } else {
+        invalid_return_for_hackT(&writer, rpcOptions, std::move(header), contextStack, std::move(callback));
+      }
+      break;
+    }
+    default:
+    {
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
+    }
+  }
+}
+
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> MyServiceAsyncClient::invalid_return_for_hackCtx(apache::thrift::RpcOptions* rpcOptions) {
+  auto header = std::make_shared<apache::thrift::transport::THeader>(
+      apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
+  header->setProtocolId(channel_->getProtocolId());
+  if (rpcOptions) {
+    header->setHeaders(rpcOptions->releaseWriteHeaders());
+  }
+
+  auto ctx = apache::thrift::ContextStack::createWithClientContext(
+      handlers_,
+      getServiceName(),
+      "MyService.invalid_return_for_hack",
+      *header);
+
+  return {std::move(ctx), std::move(header)};
+}
+
+void MyServiceAsyncClient::sync_invalid_return_for_hack(::std::set<float>& _return) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  sync_invalid_return_for_hack(rpcOptions, _return);
+}
+
+void MyServiceAsyncClient::sync_invalid_return_for_hack(apache::thrift::RpcOptions& rpcOptions, ::std::set<float>& _return) {
+  apache::thrift::ClientReceiveState returnState;
+  apache::thrift::ClientSyncCallback<false> callback(&returnState);
+  auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+  auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
+  auto ctxAndHeader = invalid_return_for_hackCtx(&rpcOptions);
+  auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
+  callback.waitUntilDone(
+    evb,
+    [&] {
+      invalid_return_for_hackImpl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback));
+    });
+
+  if (returnState.isException()) {
+    returnState.exception().throw_exception();
+  }
+  returnState.resetProtocolId(protocolId);
+  returnState.resetCtx(std::move(ctxAndHeader.first));
+  SCOPE_EXIT {
+    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
+      rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
+    }
+  };
+  return folly::fibers::runInMainContext([&] {
+      recv_invalid_return_for_hack(_return, returnState);
+  });
+}
+
+
+folly::Future<::std::set<float>> MyServiceAsyncClient::future_invalid_return_for_hack() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return future_invalid_return_for_hack(rpcOptions);
+}
+
+folly::SemiFuture<::std::set<float>> MyServiceAsyncClient::semifuture_invalid_return_for_hack() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_invalid_return_for_hack(rpcOptions);
+}
+
+folly::Future<::std::set<float>> MyServiceAsyncClient::future_invalid_return_for_hack(apache::thrift::RpcOptions& rpcOptions) {
+  folly::Promise<::std::set<float>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<::std::set<float>>>(std::move(promise), recv_wrapped_invalid_return_for_hack, channel_);
+  invalid_return_for_hack(rpcOptions, std::move(callback));
+  return future;
+}
+
+folly::SemiFuture<::std::set<float>> MyServiceAsyncClient::semifuture_invalid_return_for_hack(apache::thrift::RpcOptions& rpcOptions) {
+  auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_invalid_return_for_hack, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  invalid_return_for_hack(rpcOptions, std::move(callback));
+  return std::move(callbackAndFuture.second);
+}
+
+folly::Future<std::pair<::std::set<float>, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_future_invalid_return_for_hack(apache::thrift::RpcOptions& rpcOptions) {
+  folly::Promise<std::pair<::std::set<float>, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::set<float>>>(std::move(promise), recv_wrapped_invalid_return_for_hack, channel_);
+  invalid_return_for_hack(rpcOptions, std::move(callback));
+  return future;
+}
+
+folly::SemiFuture<std::pair<::std::set<float>, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_semifuture_invalid_return_for_hack(apache::thrift::RpcOptions& rpcOptions) {
+  auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_invalid_return_for_hack, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  invalid_return_for_hack(rpcOptions, std::move(callback));
+  return std::move(callbackAndFuture.second);
+}
+
+void MyServiceAsyncClient::invalid_return_for_hack(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
+  invalid_return_for_hack(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
+}
+
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
+folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_invalid_return_for_hack(::std::set<float>& _return, ::apache::thrift::ClientReceiveState& state) {
+  if (state.isException()) {
+    return std::move(state.exception());
+  }
+  if (!state.hasResponseBuffer()) {
+    return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
+  }
+
+  using result = MyService_invalid_return_for_hack_presult;
+  switch (state.protocolId()) {
+    case apache::thrift::protocol::T_BINARY_PROTOCOL:
+    {
+      apache::thrift::BinaryProtocolReader reader;
+      return apache::thrift::detail::ac::recv_wrapped<result>(
+          &reader, state, _return);
+    }
+    case apache::thrift::protocol::T_COMPACT_PROTOCOL:
+    {
+      apache::thrift::CompactProtocolReader reader;
+      return apache::thrift::detail::ac::recv_wrapped<result>(
+          &reader, state, _return);
+    }
+    default:
+    {
+    }
+  }
+  return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
+}
+
+void MyServiceAsyncClient::recv_invalid_return_for_hack(::std::set<float>& _return, ::apache::thrift::ClientReceiveState& state) {
+  auto ew = recv_wrapped_invalid_return_for_hack(_return, state);
+  if (ew) {
+    ew.throw_exception();
+  }
+}
+
+void MyServiceAsyncClient::recv_instance_invalid_return_for_hack(::std::set<float>& _return, ::apache::thrift::ClientReceiveState& state) {
+  return recv_invalid_return_for_hack(_return, state);
+}
+
+folly::exception_wrapper MyServiceAsyncClient::recv_instance_wrapped_invalid_return_for_hack(::std::set<float>& _return, ::apache::thrift::ClientReceiveState& state) {
+  return recv_wrapped_invalid_return_for_hack(_return, state);
+}
+
 
 } // cpp2

@@ -25,6 +25,8 @@ struct VisitUnion<::cpp2::MyUnion> {
       return f(1, *static_cast<T&&>(t).myStruct_ref());
     case Union::Type::myDataItem:
       return f(2, *static_cast<T&&>(t).myDataItem_ref());
+    case Union::Type::floatSet:
+      return f(3, *static_cast<T&&>(t).floatSet_ref());
     case Union::Type::__EMPTY__: ;
     }
   }

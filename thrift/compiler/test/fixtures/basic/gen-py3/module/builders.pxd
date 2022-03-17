@@ -10,6 +10,8 @@ cimport folly.iobuf as _fbthrift_iobuf
 
 cimport thrift.py3.builder
 
+cimport hack.types as _hack_types
+cimport hack.builders as _hack_builders
 
 cimport module.types as _module_types
 
@@ -21,6 +23,7 @@ cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public pbool oneway
     cdef public pbool readonly
     cdef public pbool idempotent
+    cdef public set floatSet
 
 
 cdef class MyDataItem_Builder(thrift.py3.builder.StructBuilder):
@@ -31,5 +34,6 @@ cdef class MyUnion_Builder(thrift.py3.builder.StructBuilder):
     cdef public _module_types.MyEnum myEnum
     cdef public object myStruct
     cdef public object myDataItem
+    cdef public set floatSet
 
 

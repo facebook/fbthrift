@@ -13,6 +13,7 @@ from thrift.py3.reflection cimport (
 
 import folly.iobuf as _fbthrift_iobuf
 
+cimport hack.types as _hack_types
 
 cimport module.types as _module_types
 
@@ -176,6 +177,19 @@ cdef __InterfaceSpec get_reflection__MyService(bint for_clients):
                 ),
             ),
             result=None,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    spec.add_method(
+        __MethodSpec._fbthrift_create(
+            name="invalid_return_for_hack",
+            arguments=(
+            ),
+            result=_module_types.Set__float,
             result_kind=__NumberType.NOT_A_NUMBER,
             exceptions=(
             ),

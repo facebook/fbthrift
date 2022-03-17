@@ -29,10 +29,12 @@ public class MyUnion extends TUnion<MyUnion> {
   private static final TField MY_ENUM_FIELD_DESC = new TField("myEnum", TType.I32, (short)1);
   private static final TField MY_STRUCT_FIELD_DESC = new TField("myStruct", TType.STRUCT, (short)2);
   private static final TField MY_DATA_ITEM_FIELD_DESC = new TField("myDataItem", TType.STRUCT, (short)3);
+  private static final TField FLOAT_SET_FIELD_DESC = new TField("floatSet", TType.SET, (short)4);
 
   public static final int MYENUM = 1;
   public static final int MYSTRUCT = 2;
   public static final int MYDATAITEM = 3;
+  public static final int FLOATSET = 4;
 
   public static final Map<Integer, FieldMetaData> metaDataMap = new HashMap<>();
 
@@ -70,6 +72,12 @@ public class MyUnion extends TUnion<MyUnion> {
     return x;
   }
 
+  public static MyUnion floatSet(Set<Float> __value) {
+    MyUnion x = new MyUnion();
+    x.setFloatSet(__value);
+    return x;
+  }
+
 
   @Override
   protected Object readValue(TProtocol iprot, TField __field) throws TException {
@@ -95,6 +103,25 @@ public class MyUnion extends TUnion<MyUnion> {
           return myDataItem;
         }
         break;
+      case FLOATSET:
+        if (__field.type == FLOAT_SET_FIELD_DESC.type) {
+          Set<Float> floatSet;
+          {
+            TSet _set4 = iprot.readSetBegin();
+            floatSet = new HashSet<Float>(Math.max(0, 2*_set4.size));
+            for (int _i5 = 0; 
+                 (_set4.size < 0) ? iprot.peekSet() : (_i5 < _set4.size); 
+                 ++_i5)
+            {
+              Float _elem6;
+              _elem6 = iprot.readFloat();
+              floatSet.add(_elem6);
+            }
+            iprot.readSetEnd();
+          }
+          return floatSet;
+        }
+        break;
     }
     TProtocolUtil.skip(iprot, __field.type);
     return null;
@@ -115,6 +142,16 @@ public class MyUnion extends TUnion<MyUnion> {
         MyDataItem myDataItem = (MyDataItem)getFieldValue();
         myDataItem.write(oprot);
         return;
+      case FLOATSET:
+        Set<Float> floatSet = (Set<Float>)getFieldValue();
+        {
+          oprot.writeSetBegin(new TSet(TType.FLOAT, floatSet.size()));
+          for (Float _iter7 : floatSet)          {
+            oprot.writeFloat(_iter7);
+          }
+          oprot.writeSetEnd();
+        }
+        return;
       default:
         throw new IllegalStateException("Cannot write union with unknown field " + setField);
     }
@@ -129,6 +166,8 @@ public class MyUnion extends TUnion<MyUnion> {
         return MY_STRUCT_FIELD_DESC;
       case MYDATAITEM:
         return MY_DATA_ITEM_FIELD_DESC;
+      case FLOATSET:
+        return FLOAT_SET_FIELD_DESC;
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
@@ -186,6 +225,14 @@ public class MyUnion extends TUnion<MyUnion> {
 
   public void setMyDataItem(MyDataItem __value) {
     __setValue(MYDATAITEM, __value);
+  }
+
+  public Set<Float> getFloatSet() {
+    return (Set<Float>) __getValue(FLOATSET);
+  }
+
+  public void setFloatSet(Set<Float> __value) {
+    __setValue(FLOATSET, __value);
   }
 
   public boolean equals(Object other) {

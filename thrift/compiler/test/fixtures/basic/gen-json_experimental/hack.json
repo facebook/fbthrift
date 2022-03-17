@@ -1,0 +1,41 @@
+{
+  "__fbthrift": "@generated",
+  "thrift_module" : "hack",
+  "namespaces": {
+    "hack": "facebook_thrift_annotation"
+  },  "structs" :
+  {
+      "FieldWrapper" : {
+        "name" : "FieldWrapper",
+        "fields" : {
+          "name" : {
+            "name" : "name",
+            "key" : 1,
+            "lineno" : 32,
+            "required" : "opt-in-req-out",
+            "type" : "string"
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 30
+      },
+      "SkipCodegen" : {
+        "name" : "SkipCodegen",
+        "fields" : {
+          "reason" : {
+            "name" : "reason",
+            "key" : 1,
+            "lineno" : 38,
+            "required" : "opt-in-req-out",
+            "type" : "string"
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 37
+      }
+      },
+  "source_path" : "thrift/annotation/hack",
+  "py_namespace" : ""
+}

@@ -10,6 +10,8 @@ import (
 	"sync"
 	"fmt"
 	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
+	hack0 "hack"
+
 )
 
 // (needed to ensure safety because of naive import list construction.)
@@ -19,6 +21,7 @@ var _ = sync.Mutex{}
 var _ = bytes.Equal
 var _ = context.Background
 
+var _ = hack0.GoUnusedProtection__
 type DbMixedStackArguments interface {
   // Parameters:
   //  - Key
@@ -266,12 +269,12 @@ func (p *DbMixedStackArgumentsProcessor) FunctionServiceMap() map[string]string 
 }
 
 func NewDbMixedStackArgumentsProcessor(handler DbMixedStackArguments) *DbMixedStackArgumentsProcessor {
-  self2 := &DbMixedStackArgumentsProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
-  self2.processorMap["getDataByKey0"] = &dbMixedStackArgumentsProcessorGetDataByKey0{handler:handler}
-  self2.processorMap["getDataByKey1"] = &dbMixedStackArgumentsProcessorGetDataByKey1{handler:handler}
-  self2.functionServiceMap["getDataByKey0"] = "DbMixedStackArguments"
-  self2.functionServiceMap["getDataByKey1"] = "DbMixedStackArguments"
-  return self2
+  self6 := &DbMixedStackArgumentsProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
+  self6.processorMap["getDataByKey0"] = &dbMixedStackArgumentsProcessorGetDataByKey0{handler:handler}
+  self6.processorMap["getDataByKey1"] = &dbMixedStackArgumentsProcessorGetDataByKey1{handler:handler}
+  self6.functionServiceMap["getDataByKey0"] = "DbMixedStackArguments"
+  self6.functionServiceMap["getDataByKey1"] = "DbMixedStackArguments"
+  return self6
 }
 
 type dbMixedStackArgumentsProcessorGetDataByKey0 struct {

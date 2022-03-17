@@ -38,6 +38,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 from folly.optional cimport cOptional as __cOptional
+cimport hack.types as _hack_types
 
 cimport module.types_fields as _fbthrift_types_fields
 
@@ -86,6 +87,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[cbool] oneway_ref()
         __field_ref[cbool] readonly_ref()
         __field_ref[cbool] idempotent_ref()
+        __field_ref[cset[float]] floatSet_ref()
 
 
     cdef cppclass cMyDataItem "::cpp2::MyDataItem":
@@ -103,6 +105,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         cMyUnion__type_myEnum "::cpp2::MyUnion::Type::myEnum",
         cMyUnion__type_myStruct "::cpp2::MyUnion::Type::myStruct",
         cMyUnion__type_myDataItem "::cpp2::MyUnion::Type::myDataItem",
+        cMyUnion__type_floatSet "::cpp2::MyUnion::Type::floatSet",
 
     cdef cppclass cMyUnion "::cpp2::MyUnion":
         cMyUnion() except +
@@ -120,6 +123,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         cMyStruct& set_myStruct(const cMyStruct&)
         const cMyDataItem& get_myDataItem() const
         cMyDataItem& set_myDataItem(const cMyDataItem&)
+        const cset[float]& get_floatSet() const
+        cset[float]& set_floatSet(const cset[float]&)
 
 
 
@@ -134,8 +139,10 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef inline object oneway_impl(self)
     cdef inline object readonly_impl(self)
     cdef inline object idempotent_impl(self)
+    cdef inline object floatSet_impl(self)
     cdef MyDataItem __fbthrift_cached_MyDataField
     cdef object __fbthrift_cached_myEnum
+    cdef Set__float __fbthrift_cached_floatSet
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyStruct])
@@ -166,11 +173,19 @@ cdef class MyUnion(thrift.py3.types.Union):
         cMyUnion* base_instance,
         MyEnum myEnum,
         MyStruct myStruct,
-        MyDataItem myDataItem
+        MyDataItem myDataItem,
+        object floatSet
     ) except *
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyUnion])
 
+
+cdef class Set__float(thrift.py3.types.Set):
+    cdef shared_ptr[cset[float]] _cpp_obj
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cset[float]])
+    @staticmethod
+    cdef shared_ptr[cset[float]] _make_instance(object items) except *
 
 

@@ -31,6 +31,7 @@ struct ForEachField<::cpp2::MyStruct> {
     f(4, static_cast<T&&>(t).oneway_ref()...);
     f(5, static_cast<T&&>(t).readonly_ref()...);
     f(6, static_cast<T&&>(t).idempotent_ref()...);
+    f(7, static_cast<T&&>(t).floatSet_ref()...);
   }
 };
 
@@ -41,6 +42,7 @@ struct ForEachField<::cpp2::MyUnion> {
     f(0, static_cast<T&&>(t).myEnum_ref()...);
     f(1, static_cast<T&&>(t).myStruct_ref()...);
     f(2, static_cast<T&&>(t).myDataItem_ref()...);
+    f(3, static_cast<T&&>(t).floatSet_ref()...);
   }
 };
 } // namespace detail

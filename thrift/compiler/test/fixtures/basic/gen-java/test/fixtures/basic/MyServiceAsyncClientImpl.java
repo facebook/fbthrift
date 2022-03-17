@@ -32,6 +32,7 @@ public class MyServiceAsyncClientImpl extends AbstractThriftClient implements My
     private ThriftMethodHandler getDataByIdMethodHandler;
     private ThriftMethodHandler deleteDataByIdMethodHandler;
     private ThriftMethodHandler lobDataByIdMethodHandler;
+    private ThriftMethodHandler invalidReturnForHackMethodHandler;
 
     // Method Exceptions
     private static final Class[] pingExceptions = new Class[] {
@@ -49,6 +50,8 @@ public class MyServiceAsyncClientImpl extends AbstractThriftClient implements My
     private static final Class[] deleteDataByIdExceptions = new Class[] {
         org.apache.thrift.TException.class};
     private static final Class[] lobDataByIdExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] invalidReturnForHackExceptions = new Class[] {
         org.apache.thrift.TException.class};
 
     public MyServiceAsyncClientImpl(
@@ -74,6 +77,7 @@ public class MyServiceAsyncClientImpl extends AbstractThriftClient implements My
       getDataByIdMethodHandler = methodHandlerMap.get("getDataById");
       deleteDataByIdMethodHandler = methodHandlerMap.get("deleteDataById");
       lobDataByIdMethodHandler = methodHandlerMap.get("lobDataById");
+      invalidReturnForHackMethodHandler = methodHandlerMap.get("invalidReturnForHack");
     }
 
     public MyServiceAsyncClientImpl(
@@ -101,6 +105,7 @@ public class MyServiceAsyncClientImpl extends AbstractThriftClient implements My
       getDataByIdMethodHandler = methodHandlerMap.get("getDataById");
       deleteDataByIdMethodHandler = methodHandlerMap.get("deleteDataById");
       lobDataByIdMethodHandler = methodHandlerMap.get("lobDataById");
+      invalidReturnForHackMethodHandler = methodHandlerMap.get("invalidReturnForHack");
     }
 
     @java.lang.Override
@@ -296,6 +301,27 @@ public class MyServiceAsyncClientImpl extends AbstractThriftClient implements My
         RpcOptions rpcOptions) {
         try {
           return executeWrapperWithOptions(lobDataByIdMethodHandler, lobDataByIdExceptions, rpcOptions, id, data);
+        } catch (Throwable t) {
+          throw new RuntimeTException(t.getMessage(), t);
+        }
+    }
+
+    @java.lang.Override
+    public ListenableFuture<Set<Float>> invalidReturnForHack() {
+        return invalidReturnForHack(RpcOptions.EMPTY);
+    }
+
+    @java.lang.Override
+    public ListenableFuture<Set<Float>> invalidReturnForHack(
+        RpcOptions rpcOptions) {
+        return FutureUtil.transform(invalidReturnForHackWrapper(rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<Set<Float>>> invalidReturnForHackWrapper(
+        RpcOptions rpcOptions) {
+        try {
+          return executeWrapperWithOptions(invalidReturnForHackMethodHandler, invalidReturnForHackExceptions, rpcOptions);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }

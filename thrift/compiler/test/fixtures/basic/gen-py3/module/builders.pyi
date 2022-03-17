@@ -10,6 +10,8 @@ import typing as _typing
 import folly.iobuf as _fbthrift_iobuf
 import thrift.py3.builder
 
+import hack.types as _hack_types
+import hack.builders as _hack_builders
 
 import module.types as _module_types
 
@@ -22,6 +24,7 @@ class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     oneway: _typing.Optional[bool]
     readonly: _typing.Optional[bool]
     idempotent: _typing.Optional[bool]
+    floatSet: _typing.Optional[set]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
@@ -35,6 +38,7 @@ class MyUnion_Builder(thrift.py3.builder.StructBuilder):
     myEnum: _typing.Optional[_module_types.MyEnum]
     myStruct: _typing.Any
     myDataItem: _typing.Any
+    floatSet: _typing.Optional[set]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

@@ -10,6 +10,7 @@
 
 #include "thrift/compiler/test/fixtures/basic/gen-cpp2/MyServiceAsyncClient.h"
 #include "thrift/compiler/test/fixtures/basic/gen-cpp2/module_types.h"
+#include "thrift/annotation/gen-cpp2/hack_types.h"
 
 namespace folly {
   class IOBuf;
@@ -72,6 +73,10 @@ class MyServiceSvIf : public apache::thrift::ServerInterface {
   virtual folly::Future<folly::Unit> future_lobDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data);
   virtual folly::SemiFuture<folly::Unit> semifuture_lobDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data);
   virtual void async_tm_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, ::std::int64_t p_id, std::unique_ptr<::std::string> p_data);
+  virtual void invalid_return_for_hack(::std::set<float>& /*_return*/);
+  virtual folly::Future<std::unique_ptr<::std::set<float>>> future_invalid_return_for_hack();
+  virtual folly::SemiFuture<std::unique_ptr<::std::set<float>>> semifuture_invalid_return_for_hack();
+  virtual void async_tm_invalid_return_for_hack(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<float>>>> callback);
  private:
   static MyServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_ping{apache::thrift::detail::si::InvocationType::AsyncTm};
@@ -82,6 +87,7 @@ class MyServiceSvIf : public apache::thrift::ServerInterface {
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_getDataById{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_deleteDataById{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_lobDataById{apache::thrift::detail::si::InvocationType::AsyncTm};
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_invalid_return_for_hack{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
 class MyServiceSvNull : public MyServiceSvIf {
@@ -94,6 +100,7 @@ class MyServiceSvNull : public MyServiceSvIf {
   void getDataById(::std::string& /*_return*/, ::std::int64_t /*id*/) override;
   void deleteDataById(::std::int64_t /*id*/) override;
   void lobDataById(::std::int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) override;
+  void invalid_return_for_hack(::std::set<float>& /*_return*/) override;
 };
 
 class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
@@ -193,6 +200,16 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   void executeRequest_lobDataById(apache::thrift::ServerRequest&& serverRequest);
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_lobDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void setUpAndProcess_invalid_return_for_hack(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void executeRequest_invalid_return_for_hack(apache::thrift::ServerRequest&& serverRequest);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_invalid_return_for_hack(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static apache::thrift::SerializedResponse return_invalid_return_for_hack(apache::thrift::ContextStack* ctx, ::std::set<float> const& _return);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_wrapped_invalid_return_for_hack(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
   MyServiceAsyncProcessor(MyServiceSvIf* iface) :
       iface_(iface) {}

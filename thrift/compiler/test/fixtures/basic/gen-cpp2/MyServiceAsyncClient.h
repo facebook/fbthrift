@@ -9,6 +9,7 @@
 #include <thrift/lib/cpp2/gen/client_h.h>
 
 #include "thrift/compiler/test/fixtures/basic/gen-cpp2/module_types.h"
+#include "thrift/annotation/gen-cpp2/hack_types.h"
 
 namespace apache { namespace thrift {
   class Cpp2RequestContext;
@@ -754,6 +755,101 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_, typename RpcOptions>
   void lobDataByIdT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int64_t p_id, const ::std::string& p_data);
   std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> lobDataByIdCtx(apache::thrift::RpcOptions* rpcOptions);
+ public:
+  virtual void invalid_return_for_hack(std::unique_ptr<apache::thrift::RequestCallback> callback);
+  virtual void invalid_return_for_hack(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ protected:
+  void invalid_return_for_hackImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions = false);
+ public:
+
+  virtual void sync_invalid_return_for_hack(::std::set<float>& _return);
+  virtual void sync_invalid_return_for_hack(apache::thrift::RpcOptions& rpcOptions, ::std::set<float>& _return);
+
+  virtual folly::Future<::std::set<float>> future_invalid_return_for_hack();
+  virtual folly::SemiFuture<::std::set<float>> semifuture_invalid_return_for_hack();
+  virtual folly::Future<::std::set<float>> future_invalid_return_for_hack(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<::std::set<float>> semifuture_invalid_return_for_hack(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::Future<std::pair<::std::set<float>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_invalid_return_for_hack(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::pair<::std::set<float>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_invalid_return_for_hack(apache::thrift::RpcOptions& rpcOptions);
+
+#if FOLLY_HAS_COROUTINES
+#if __clang__
+  template <int = 0>
+  folly::coro::Task<::std::set<float>> co_invalid_return_for_hack() {
+    return co_invalid_return_for_hack<false>(nullptr);
+  }
+  template <int = 0>
+  folly::coro::Task<::std::set<float>> co_invalid_return_for_hack(apache::thrift::RpcOptions& rpcOptions) {
+    return co_invalid_return_for_hack<true>(&rpcOptions);
+  }
+#else
+  folly::coro::Task<::std::set<float>> co_invalid_return_for_hack() {
+    co_return co_await folly::coro::detachOnCancel(semifuture_invalid_return_for_hack());
+  }
+  folly::coro::Task<::std::set<float>> co_invalid_return_for_hack(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await folly::coro::detachOnCancel(semifuture_invalid_return_for_hack(rpcOptions));
+  }
+#endif
+ private:
+  template <bool hasRpcOptions>
+  folly::coro::Task<::std::set<float>> co_invalid_return_for_hack(apache::thrift::RpcOptions* rpcOptions) {
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    const bool cancellable = cancelToken.canBeCancelled();
+    apache::thrift::ClientReceiveState returnState;
+    apache::thrift::ClientSyncCallback<false> callback(&returnState);
+    auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+    auto [ctx, header] = invalid_return_for_hackCtx(rpcOptions);
+    using CancellableCallback = apache::thrift::CancellableRequestClientCallback<false>;
+    auto cancellableCallback = cancellable ? CancellableCallback::create(&callback, channel_) : nullptr;
+    static apache::thrift::RpcOptions defaultRpcOptions;
+    auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
+    if constexpr (hasRpcOptions) {
+      invalid_return_for_hackImpl(*rpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback));
+    } else {
+      invalid_return_for_hackImpl(defaultRpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback));
+    }
+    if (cancellable) {
+      folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
+      co_await callback.co_waitUntilDone();
+    } else {
+      co_await callback.co_waitUntilDone();
+    }
+    if (returnState.isException()) {
+      co_yield folly::coro::co_error(std::move(returnState.exception()));
+    }
+    returnState.resetProtocolId(protocolId);
+    returnState.resetCtx(std::move(ctx));
+    SCOPE_EXIT {
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
+      }
+    };
+    ::std::set<float> _return;
+    if (auto ew = recv_wrapped_invalid_return_for_hack(_return, returnState)) {
+      co_yield folly::coro::co_error(std::move(ew));
+    }
+    co_return _return;
+  }
+ public:
+#endif // FOLLY_HAS_COROUTINES
+
+  virtual void invalid_return_for_hack(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
+
+
+  static folly::exception_wrapper recv_wrapped_invalid_return_for_hack(::std::set<float>& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_invalid_return_for_hack(::std::set<float>& _return, ::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual void recv_instance_invalid_return_for_hack(::std::set<float>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_invalid_return_for_hack(::std::set<float>& _return, ::apache::thrift::ClientReceiveState& state);
+ private:
+  template <typename Protocol_, typename RpcOptions>
+  void invalid_return_for_hackT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback);
+  std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> invalid_return_for_hackCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
 };
 

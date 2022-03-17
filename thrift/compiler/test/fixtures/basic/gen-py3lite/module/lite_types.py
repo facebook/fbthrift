@@ -11,6 +11,8 @@ import thrift.py3lite.types as _fbthrift_py3lite_types
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 
 
+import hack.lite_types
+
 
 class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -63,6 +65,13 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value
         ),
+        (
+            8,  # id
+            True,  # isUnqualified
+            "floatSet",  # name
+            lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_float),  # typeinfo
+            None,  # default value
+        ),
     )
 
     @staticmethod
@@ -110,6 +119,13 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
             True,  # isUnqualified
             "myDataItem",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyDataItem),  # typeinfo
+            None,  # default value
+        ),
+        (
+            4,  # id
+            True,  # isUnqualified
+            "floatSet",  # name
+            lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_float),  # typeinfo
             None,  # default value
         ),
     )
@@ -302,6 +318,23 @@ class _fbthrift_MyService_lobDataById_args(metaclass=_fbthrift_py3lite_types.Str
 
 
 
+class _fbthrift_MyService_invalid_return_for_hack_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+    )
+
+class _fbthrift_MyService_invalid_return_for_hack_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            0,  # id
+            False,  # isUnqualified
+            "success",  # name
+            lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_float),  # typeinfo
+            None,  # default value
+
+        ),
+    )
+
+
 class _fbthrift_DbMixedStackArguments_getDataByKey0_args(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -366,6 +399,8 @@ _fbthrift_py3lite_types.fill_specs(
     _fbthrift_MyService_deleteDataById_args,
     _fbthrift_MyService_deleteDataById_result,
     _fbthrift_MyService_lobDataById_args,
+    _fbthrift_MyService_invalid_return_for_hack_args,
+    _fbthrift_MyService_invalid_return_for_hack_result,
     _fbthrift_DbMixedStackArguments_getDataByKey0_args,
     _fbthrift_DbMixedStackArguments_getDataByKey0_result,
     _fbthrift_DbMixedStackArguments_getDataByKey1_args,

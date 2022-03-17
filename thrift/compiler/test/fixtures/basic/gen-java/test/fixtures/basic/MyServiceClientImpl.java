@@ -31,6 +31,7 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
     private ThriftMethodHandler getDataByIdMethodHandler;
     private ThriftMethodHandler deleteDataByIdMethodHandler;
     private ThriftMethodHandler lobDataByIdMethodHandler;
+    private ThriftMethodHandler invalidReturnForHackMethodHandler;
 
     // Method Exceptions
     private static final Class[] pingExceptions = new Class[] {
@@ -48,6 +49,8 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
     private static final Class[] deleteDataByIdExceptions = new Class[] {
         org.apache.thrift.TException.class};
     private static final Class[] lobDataByIdExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] invalidReturnForHackExceptions = new Class[] {
         org.apache.thrift.TException.class};
 
     public MyServiceClientImpl(
@@ -73,6 +76,7 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       getDataByIdMethodHandler = methodHandlerMap.get("getDataById");
       deleteDataByIdMethodHandler = methodHandlerMap.get("deleteDataById");
       lobDataByIdMethodHandler = methodHandlerMap.get("lobDataById");
+      invalidReturnForHackMethodHandler = methodHandlerMap.get("invalidReturnForHack");
     }
 
     public MyServiceClientImpl(
@@ -100,6 +104,7 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       getDataByIdMethodHandler = methodHandlerMap.get("getDataById");
       deleteDataByIdMethodHandler = methodHandlerMap.get("deleteDataById");
       lobDataByIdMethodHandler = methodHandlerMap.get("lobDataById");
+      invalidReturnForHackMethodHandler = methodHandlerMap.get("invalidReturnForHack");
     }
 
     @java.lang.Override
@@ -316,6 +321,30 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
         return FutureUtil.get(executeWrapperWithOptions(lobDataByIdMethodHandler, lobDataByIdExceptions, rpcOptions, id, data));
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
+    }
+
+    @java.lang.Override
+    public Set<Float> invalidReturnForHack() throws org.apache.thrift.TException {
+      return invalidReturnForHackWrapper(RpcOptions.EMPTY).getData();
+    }
+
+    @java.lang.Override
+    public Set<Float> invalidReturnForHack(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return invalidReturnForHackWrapper(rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Set<Float>> invalidReturnForHackWrapper(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      try {
+        return FutureUtil.get(executeWrapperWithOptions(invalidReturnForHackMethodHandler, invalidReturnForHackExceptions, rpcOptions));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;

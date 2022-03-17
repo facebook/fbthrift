@@ -26,6 +26,7 @@ from thrift.py3.client cimport cClientWrapper
 
 cimport module.types as _module_types
 
+cimport hack.types as _hack_types
 
 cdef extern from "src/gen-cpp2/MyService.h" namespace "::cpp2":
   cdef cppclass cMyServiceAsyncClient "::cpp2::MyServiceAsyncClient":
@@ -66,6 +67,7 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
     cFollyFuture[cFollyUnit] lobDataById(cRpcOptions, 
       cint64_t arg_id,
       string arg_data,)
+    cFollyFuture[cset[float]] invalid_return_for_hack(cRpcOptions, )
 
 
   cdef cppclass cDbMixedStackArgumentsClientWrapper "::cpp2::DbMixedStackArgumentsClientWrapper":

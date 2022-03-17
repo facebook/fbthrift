@@ -19,3 +19,5 @@ cdef __StructSpec get_reflection__MyStruct()
 cdef __StructSpec get_reflection__MyDataItem()
 
 cdef __StructSpec get_reflection__MyUnion()
+
+cdef __SetSpec get_reflection__Set__float()

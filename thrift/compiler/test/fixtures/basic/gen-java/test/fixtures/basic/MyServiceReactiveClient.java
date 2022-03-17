@@ -46,6 +46,7 @@ public class MyServiceReactiveClient
   private static final TField _lobDataById_ID_FIELD_DESC = new TField("id", TType.I64, (short)1);
   private static final TField _lobDataById_DATA_FIELD_DESC = new TField("data", TType.STRING, (short)2);
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _lobDataById_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _invalidReturnForHack_EXCEPTION_READERS = java.util.Collections.emptyMap();
 
   static {
   }
@@ -513,6 +514,52 @@ public class MyServiceReactiveClient
   @java.lang.Override
   public reactor.core.publisher.Mono<Void> lobDataById(final long id, final String data) {
     return lobDataById(id, data,  com.facebook.thrift.client.RpcOptions.EMPTY);
+  }
+
+  private com.facebook.thrift.payload.Writer _createinvalidReturnForHackWriter() {
+    return oprot -> {
+      try {
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private static final com.facebook.thrift.payload.Reader _invalidReturnForHack_READER = Readers.setReader(Readers.floatReader());
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Set<Float>>> invalidReturnForHackWrapper( final com.facebook.thrift.client.RpcOptions rpcOptions) {
+    return _rpcClient
+      .flatMap(_rpc -> {
+        org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
+                .setName("invalid_return_for_hack")
+                .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE)
+                .setOtherMetadata(getHeaders(rpcOptions))
+                .setProtocol(_protocolId)
+                .build();
+
+            com.facebook.thrift.payload.ClientRequestPayload<Set<Float>> _crp =
+                com.facebook.thrift.payload.ClientRequestPayload.create(
+                    _createinvalidReturnForHackWriter(),
+                    _invalidReturnForHack_READER,
+                    _invalidReturnForHack_EXCEPTION_READERS,
+                    _metadata,
+                    java.util.Collections.emptyMap());
+
+            return _rpc
+                .singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw com.facebook.thrift.util.ExceptionUtil.propagate(_p);});
+      });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<Set<Float>> invalidReturnForHack( final com.facebook.thrift.client.RpcOptions rpcOptions) {
+    return invalidReturnForHackWrapper( rpcOptions).map(_p -> _p.getData());
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<Set<Float>> invalidReturnForHack() {
+    return invalidReturnForHack( com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
 

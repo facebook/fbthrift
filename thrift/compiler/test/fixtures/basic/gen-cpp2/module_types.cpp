@@ -159,6 +159,7 @@ MyStruct::MyStruct(MyStruct&& other) noexcept  :
     __fbthrift_field_oneway(std::move(other.__fbthrift_field_oneway)),
     __fbthrift_field_readonly(std::move(other.__fbthrift_field_readonly)),
     __fbthrift_field_idempotent(std::move(other.__fbthrift_field_idempotent)),
+    __fbthrift_field_floatSet(std::move(other.__fbthrift_field_floatSet)),
     __isset(other.__isset) {
 }
 
@@ -170,19 +171,21 @@ MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
     this->__fbthrift_field_oneway = std::move(other.__fbthrift_field_oneway);
     this->__fbthrift_field_readonly = std::move(other.__fbthrift_field_readonly);
     this->__fbthrift_field_idempotent = std::move(other.__fbthrift_field_idempotent);
+    this->__fbthrift_field_floatSet = std::move(other.__fbthrift_field_floatSet);
     __isset = other.__isset;
     return *this;
 }
 
 
-MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::cpp2::MyDataItem MyDataField__arg, ::cpp2::MyEnum myEnum__arg, bool oneway__arg, bool readonly__arg, bool idempotent__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::cpp2::MyDataItem MyDataField__arg, ::cpp2::MyEnum myEnum__arg, bool oneway__arg, bool readonly__arg, bool idempotent__arg, ::std::set<float> floatSet__arg) :
     __fbthrift_field_MyIntField(std::move(MyIntField__arg)),
     __fbthrift_field_MyStringField(std::move(MyStringField__arg)),
     __fbthrift_field_MyDataField(std::move(MyDataField__arg)),
     __fbthrift_field_myEnum(std::move(myEnum__arg)),
     __fbthrift_field_oneway(std::move(oneway__arg)),
     __fbthrift_field_readonly(std::move(readonly__arg)),
-    __fbthrift_field_idempotent(std::move(idempotent__arg)) {
+    __fbthrift_field_idempotent(std::move(idempotent__arg)),
+    __fbthrift_field_floatSet(std::move(floatSet__arg)) {
   __isset.set(folly::index_constant<0>(), true);
   __isset.set(folly::index_constant<1>(), true);
   __isset.set(folly::index_constant<2>(), true);
@@ -190,6 +193,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField
   __isset.set(folly::index_constant<4>(), true);
   __isset.set(folly::index_constant<5>(), true);
   __isset.set(folly::index_constant<6>(), true);
+  __isset.set(folly::index_constant<7>(), true);
 }
 
 
@@ -201,6 +205,7 @@ void MyStruct::__fbthrift_clear() {
   this->__fbthrift_field_oneway = bool();
   this->__fbthrift_field_readonly = bool();
   this->__fbthrift_field_idempotent = bool();
+  this->__fbthrift_field_floatSet.clear();
   __isset = {};
 }
 
@@ -233,6 +238,9 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   if (!(lhs.idempotent_ref() == rhs.idempotent_ref())) {
     return false;
   }
+  if (!(lhs.floatSet_ref() == rhs.floatSet_ref())) {
+    return false;
+  }
   return true;
 }
 
@@ -261,6 +269,9 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   if (!(lhs.idempotent_ref() == rhs.idempotent_ref())) {
     return lhs.idempotent_ref() < rhs.idempotent_ref();
   }
+  if (!(lhs.floatSet_ref() == rhs.floatSet_ref())) {
+    return lhs.floatSet_ref() < rhs.floatSet_ref();
+  }
   return false;
 }
 
@@ -270,6 +281,14 @@ const ::cpp2::MyDataItem& MyStruct::get_MyDataField() const& {
 
 ::cpp2::MyDataItem MyStruct::get_MyDataField() && {
   return std::move(__fbthrift_field_MyDataField);
+}
+
+const ::std::set<float>& MyStruct::get_floatSet() const& {
+  return __fbthrift_field_floatSet;
+}
+
+::std::set<float> MyStruct::get_floatSet() && {
+  return std::move(__fbthrift_field_floatSet);
 }
 
 
@@ -282,6 +301,7 @@ void swap(MyStruct& a, MyStruct& b) {
   swap(a.oneway_ref().value(), b.oneway_ref().value());
   swap(a.readonly_ref().value(), b.readonly_ref().value());
   swap(a.idempotent_ref().value(), b.idempotent_ref().value());
+  swap(a.floatSet_ref().value(), b.floatSet_ref().value());
   swap(a.__isset, b.__isset);
 }
 
@@ -364,6 +384,9 @@ void MyUnion::__fbthrift_clear() {
     case Type::myDataItem:
       destruct(value_.myDataItem);
       break;
+    case Type::floatSet:
+      destruct(value_.floatSet);
+      break;
     default:
       assert(false);
       break;
@@ -380,6 +403,8 @@ bool MyUnion::operator==(const MyUnion& rhs) const {
       return value_.myStruct == rhs.value_.myStruct;
     case Type::myDataItem:
       return value_.myDataItem == rhs.value_.myDataItem;
+    case Type::floatSet:
+      return value_.floatSet == rhs.value_.floatSet;
     default:
       return true;
   }
@@ -399,6 +424,8 @@ bool MyUnion::operator<(const MyUnion& rhs) const {
       return lhs.value_.myStruct < rhs.value_.myStruct;
     case Type::myDataItem:
       return lhs.value_.myDataItem < rhs.value_.myDataItem;
+    case Type::floatSet:
+      return lhs.value_.floatSet < rhs.value_.floatSet;
     default:
       return false;
   }

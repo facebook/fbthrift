@@ -50,6 +50,7 @@ FUNCTIONS = {
     'getDataById': Function('getDataById', 'MyService', 'string', [('i64', 'id', 'i64')]),
     'deleteDataById': Function('deleteDataById', 'MyService', 'void', [('i64', 'id', 'i64')]),
     'lobDataById': Function('lobDataById', 'MyService', None, [('i64', 'id', 'i64'), ('string', 'data', 'string')]),
+    'invalid_return_for_hack': Function('invalid_return_for_hack', 'MyService', 'set<float>', []),
 }
 
 SERVICE_NAMES = ['MyService', ]

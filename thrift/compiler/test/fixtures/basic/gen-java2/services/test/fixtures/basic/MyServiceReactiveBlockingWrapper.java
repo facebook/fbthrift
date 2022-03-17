@@ -203,5 +203,25 @@ public class MyServiceReactiveBlockingWrapper
         throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
       }
   }
+  @java.lang.Override
+  public Set<Float> invalidReturnForHack() throws org.apache.thrift.TException {
+      return invalidReturnForHackWrapper(com.facebook.thrift.client.RpcOptions.EMPTY).getData();
+  }
+
+  @java.lang.Override
+  public Set<Float> invalidReturnForHack(
+        com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return invalidReturnForHackWrapper(rpcOptions).getData();
+  }
+
+  @java.lang.Override
+  public com.facebook.thrift.client.ResponseWrapper<Set<Float>> invalidReturnForHackWrapper(
+    com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      try {
+        return _delegate.invalidReturnForHackWrapper(rpcOptions).block();
+      } catch (Throwable t) {
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
+  }
 
 }

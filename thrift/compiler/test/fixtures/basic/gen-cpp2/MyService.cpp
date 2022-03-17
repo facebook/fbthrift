@@ -499,6 +499,67 @@ void MyServiceSvIf::async_tm_lobDataById(std::unique_ptr<apache::thrift::Handler
   }
 }
 
+void MyServiceSvIf::invalid_return_for_hack(::std::set<float>& /*_return*/) {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("invalid_return_for_hack");
+}
+
+folly::SemiFuture<std::unique_ptr<::std::set<float>>> MyServiceSvIf::semifuture_invalid_return_for_hack() {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_invalid_return_for_hack.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  auto ret = std::make_unique<::std::set<float>>();
+  invalid_return_for_hack(*ret);
+  return folly::makeSemiFuture(std::move(ret));
+}
+
+folly::Future<std::unique_ptr<::std::set<float>>> MyServiceSvIf::future_invalid_return_for_hack() {
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_invalid_return_for_hack.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  return apache::thrift::detail::si::future(semifuture_invalid_return_for_hack(), getInternalKeepAlive());
+}
+
+void MyServiceSvIf::async_tm_invalid_return_for_hack(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<float>>>> callback) {
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
+  auto invocationType = __fbthrift_invocation_invalid_return_for_hack.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_invalid_return_for_hack.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_invalid_return_for_hack();
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_invalid_return_for_hack();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
+        ::std::set<float> _return;
+        invalid_return_for_hack(_return);
+        callback->result(_return);
+        return;
+      }
+      default:
+      {
+        folly::assume_unreachable();
+      }
+    }
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
+}
+
 void MyServiceSvNull::ping() {
   return;
 }
@@ -526,6 +587,8 @@ void MyServiceSvNull::deleteDataById(::std::int64_t /*id*/) {
 void MyServiceSvNull::lobDataById(::std::int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) {
   return;
 }
+
+void MyServiceSvNull::invalid_return_for_hack(::std::set<float>& /*_return*/) {}
 
 
 
@@ -594,6 +657,11 @@ const MyServiceAsyncProcessor::ProcessMap MyServiceAsyncProcessor::kOwnProcessMa
      &MyServiceAsyncProcessor::setUpAndProcess_lobDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
      &MyServiceAsyncProcessor::executeRequest_lobDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
      &MyServiceAsyncProcessor::executeRequest_lobDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"invalid_return_for_hack",
+    {&MyServiceAsyncProcessor::setUpAndProcess_invalid_return_for_hack<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &MyServiceAsyncProcessor::setUpAndProcess_invalid_return_for_hack<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &MyServiceAsyncProcessor::executeRequest_invalid_return_for_hack<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &MyServiceAsyncProcessor::executeRequest_invalid_return_for_hack<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& MyServiceServiceInfoHolder::requestInfoMap() const {
@@ -642,6 +710,11 @@ apache::thrift::ServiceRequestInfoMap MyServiceServiceInfoHolder::staticRequestI
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE,
      "MyService.lobDataById",
+     std::nullopt}},
+  {"invalid_return_for_hack",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "MyService.invalid_return_for_hack",
      std::nullopt}},
   };
 

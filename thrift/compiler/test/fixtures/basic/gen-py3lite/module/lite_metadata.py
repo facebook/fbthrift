@@ -7,6 +7,8 @@
 import apache.thrift.metadata.lite_types as _fbthrift_metadata
 
 
+import hack.lite_metadata
+
 # TODO (ffrancet): This general pattern can be optimized by using tuples and dicts
 # instead of re-generating thrift structs
 def _fbthrift_gen_metadata_struct_MyStruct(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
@@ -29,6 +31,9 @@ def _fbthrift_gen_metadata_struct_MyStruct(metadata_struct: _fbthrift_metadata.T
         ]),
         _fbthrift_metadata.ThriftField(id=7, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BOOL_TYPE), name="idempotent", is_optional=False, structured_annotations=[
         ]),
+        _fbthrift_metadata.ThriftField(id=8, type=_fbthrift_metadata.ThriftType(t_set=_fbthrift_metadata.ThriftSetType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_DOUBLE_TYPE))), name="floatSet", is_optional=False, structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="hack.SkipCodegen"), fields= { "reason": _fbthrift_metadata.ThriftConstValue(cv_string="Invalid key type"),  }),
+        ]),
     ]
     struct_dict = dict(metadata_struct.structs)
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
@@ -44,6 +49,7 @@ def _fbthrift_gen_metadata_struct_MyStruct(metadata_struct: _fbthrift_metadata.T
      # oneway
      # readonly
      # idempotent
+     # floatSet
 
     return new_struct
 def gen_metadata_struct_MyStruct() -> _fbthrift_metadata.ThriftMetadata:
@@ -84,6 +90,9 @@ def _fbthrift_gen_metadata_struct_MyUnion(metadata_struct: _fbthrift_metadata.Th
         ]),
         _fbthrift_metadata.ThriftField(id=3, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.MyDataItem")), name="myDataItem", is_optional=False, structured_annotations=[
         ]),
+        _fbthrift_metadata.ThriftField(id=4, type=_fbthrift_metadata.ThriftType(t_set=_fbthrift_metadata.ThriftSetType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_DOUBLE_TYPE))), name="floatSet", is_optional=False, structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="hack.SkipCodegen"), fields= { "reason": _fbthrift_metadata.ThriftConstValue(cv_string="Invalid key type"),  }),
+        ]),
     ]
     struct_dict = dict(metadata_struct.structs)
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
@@ -95,6 +104,7 @@ def _fbthrift_gen_metadata_struct_MyUnion(metadata_struct: _fbthrift_metadata.Th
     new_struct = _fbthrift_gen_metadata_enum_MyEnum(new_struct) # myEnum
     new_struct = _fbthrift_gen_metadata_struct_MyStruct(new_struct) # myStruct
     new_struct = _fbthrift_gen_metadata_struct_MyDataItem(new_struct) # myDataItem
+     # floatSet
 
     return new_struct
 def gen_metadata_struct_MyUnion() -> _fbthrift_metadata.ThriftMetadata:
@@ -159,6 +169,11 @@ def _fbthrift_gen_metadata_service_MyService(metadata_struct: _fbthrift_metadata
         ], exceptions = [
         ], is_oneway=True, structured_annotations=[
         ]),
+        _fbthrift_metadata.ThriftFunction(name="invalid_return_for_hack", return_type=_fbthrift_metadata.ThriftType(t_set=_fbthrift_metadata.ThriftSetType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_DOUBLE_TYPE))), arguments=[
+        ], exceptions = [
+        ], is_oneway=False, structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="hack.SkipCodegen"), fields= { "reason": _fbthrift_metadata.ThriftConstValue(cv_string="Invalid key type"),  }),
+        ]),
     ]
 
     service_dict = dict(metadata_struct.services)
@@ -195,6 +210,9 @@ def _fbthrift_gen_metadata_service_MyService(metadata_struct: _fbthrift_metadata
     
      # id
      # data
+
+
+    
 
 
     

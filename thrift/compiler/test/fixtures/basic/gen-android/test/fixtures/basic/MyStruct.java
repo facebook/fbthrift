@@ -33,6 +33,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   private static final TField ONEWAY_FIELD_DESC = new TField("oneway", TType.BOOL, (short)5);
   private static final TField READONLY_FIELD_DESC = new TField("readonly", TType.BOOL, (short)6);
   private static final TField IDEMPOTENT_FIELD_DESC = new TField("idempotent", TType.BOOL, (short)7);
+  private static final TField FLOAT_SET_FIELD_DESC = new TField("floatSet", TType.SET, (short)8);
 
   public final Long MyIntField;
   public final String MyStringField;
@@ -45,6 +46,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   public final Boolean oneway;
   public final Boolean readonly;
   public final Boolean idempotent;
+  public final Set<Float> floatSet;
   public static final int MYINTFIELD = 1;
   public static final int MYSTRINGFIELD = 2;
   public static final int MYDATAFIELD = 3;
@@ -52,6 +54,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   public static final int ONEWAY = 5;
   public static final int READONLY = 6;
   public static final int IDEMPOTENT = 7;
+  public static final int FLOATSET = 8;
 
   public MyStruct(
       Long MyIntField,
@@ -60,7 +63,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       MyEnum myEnum,
       Boolean oneway,
       Boolean readonly,
-      Boolean idempotent) {
+      Boolean idempotent,
+      Set<Float> floatSet) {
     this.MyIntField = MyIntField;
     this.MyStringField = MyStringField;
     this.MyDataField = MyDataField;
@@ -68,6 +72,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     this.oneway = oneway;
     this.readonly = readonly;
     this.idempotent = idempotent;
+    this.floatSet = floatSet;
   }
 
   /**
@@ -108,6 +113,11 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       this.idempotent = TBaseHelper.deepCopy(other.idempotent);
     } else {
       this.idempotent = null;
+    }
+    if (other.isSetFloatSet()) {
+      this.floatSet = TBaseHelper.deepCopy(other.floatSet);
+    } else {
+      this.floatSet = null;
     }
   }
 
@@ -182,6 +192,15 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     return this.idempotent != null;
   }
 
+  public Set<Float> getFloatSet() {
+    return this.floatSet;
+  }
+
+  // Returns true if field floatSet is set (has been assigned a value) and false otherwise
+  public boolean isSetFloatSet() {
+    return this.floatSet != null;
+  }
+
   @Override
   public boolean equals(Object _that) {
     if (_that == null)
@@ -206,12 +225,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
 
     if (!TBaseHelper.equalsNobinary(this.isSetIdempotent(), that.isSetIdempotent(), this.idempotent, that.idempotent)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetFloatSet(), that.isSetFloatSet(), this.floatSet, that.floatSet)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {MyIntField, MyStringField, MyDataField, myEnum, oneway, readonly, idempotent});
+    return Arrays.deepHashCode(new Object[] {MyIntField, MyStringField, MyDataField, myEnum, oneway, readonly, idempotent, floatSet});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -227,6 +248,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     Boolean tmp_oneway = null;
     Boolean tmp_readonly = null;
     Boolean tmp_idempotent = null;
+    Set<Float> tmp_floatSet = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -286,6 +308,25 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case FLOATSET:
+          if (__field.type == TType.SET) {
+            {
+              TSet _set0 = iprot.readSetBegin();
+              tmp_floatSet = new HashSet<Float>(Math.max(0, 2*_set0.size));
+              for (int _i1 = 0; 
+                   (_set0.size < 0) ? iprot.peekSet() : (_i1 < _set0.size); 
+                   ++_i1)
+              {
+                Float _elem2;
+                _elem2 = iprot.readFloat();
+                tmp_floatSet.add(_elem2);
+              }
+              iprot.readSetEnd();
+            }
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -303,6 +344,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       ,tmp_oneway
       ,tmp_readonly
       ,tmp_idempotent
+      ,tmp_floatSet
     );
     _that.validate();
     return _that;
@@ -345,6 +387,17 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     if (this.idempotent != null) {
       oprot.writeFieldBegin(IDEMPOTENT_FIELD_DESC);
       oprot.writeBool(this.idempotent);
+      oprot.writeFieldEnd();
+    }
+    if (this.floatSet != null) {
+      oprot.writeFieldBegin(FLOAT_SET_FIELD_DESC);
+      {
+        oprot.writeSetBegin(new TSet(TType.FLOAT, this.floatSet.size()));
+        for (Float _iter3 : this.floatSet)        {
+          oprot.writeFloat(_iter3);
+        }
+        oprot.writeSetEnd();
+      }
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();

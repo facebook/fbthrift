@@ -33,6 +33,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   private static final TField ONEWAY_FIELD_DESC = new TField("oneway", TType.BOOL, (short)5);
   private static final TField READONLY_FIELD_DESC = new TField("readonly", TType.BOOL, (short)6);
   private static final TField IDEMPOTENT_FIELD_DESC = new TField("idempotent", TType.BOOL, (short)7);
+  private static final TField FLOAT_SET_FIELD_DESC = new TField("floatSet", TType.SET, (short)8);
 
   public long MyIntField;
   public String MyStringField;
@@ -45,6 +46,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   public boolean oneway;
   public boolean readonly;
   public boolean idempotent;
+  public Set<Float> floatSet;
   public static final int MYINTFIELD = 1;
   public static final int MYSTRINGFIELD = 2;
   public static final int MYDATAFIELD = 3;
@@ -52,6 +54,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   public static final int ONEWAY = 5;
   public static final int READONLY = 6;
   public static final int IDEMPOTENT = 7;
+  public static final int FLOATSET = 8;
 
   // isset id assignments
   private static final int __MYINTFIELD_ISSET_ID = 0;
@@ -78,6 +81,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
         new FieldValueMetaData(TType.BOOL)));
     tmpMetaDataMap.put(IDEMPOTENT, new FieldMetaData("idempotent", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.BOOL)));
+    tmpMetaDataMap.put(FLOATSET, new FieldMetaData("floatSet", TFieldRequirementType.DEFAULT, 
+        new SetMetaData(TType.SET, 
+            new FieldValueMetaData(TType.FLOAT))));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -95,7 +101,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       MyEnum myEnum,
       boolean oneway,
       boolean readonly,
-      boolean idempotent) {
+      boolean idempotent,
+      Set<Float> floatSet) {
     this();
     this.MyIntField = MyIntField;
     setMyIntFieldIsSet(true);
@@ -108,6 +115,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     setReadonlyIsSet(true);
     this.idempotent = idempotent;
     setIdempotentIsSet(true);
+    this.floatSet = floatSet;
   }
 
   public static class Builder {
@@ -118,6 +126,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     private boolean oneway;
     private boolean readonly;
     private boolean idempotent;
+    private Set<Float> floatSet;
 
     BitSet __optional_isset = new BitSet(4);
 
@@ -163,6 +172,11 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return this;
     }
 
+    public Builder setFloatSet(final Set<Float> floatSet) {
+      this.floatSet = floatSet;
+      return this;
+    }
+
     public MyStruct build() {
       MyStruct result = new MyStruct();
       if (__optional_isset.get(__MYINTFIELD_ISSET_ID)) {
@@ -180,6 +194,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       if (__optional_isset.get(__IDEMPOTENT_ISSET_ID)) {
         result.setIdempotent(this.idempotent);
       }
+      result.setFloatSet(this.floatSet);
       return result;
     }
   }
@@ -207,6 +222,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     this.oneway = TBaseHelper.deepCopy(other.oneway);
     this.readonly = TBaseHelper.deepCopy(other.readonly);
     this.idempotent = TBaseHelper.deepCopy(other.idempotent);
+    if (other.isSetFloatSet()) {
+      this.floatSet = TBaseHelper.deepCopy(other.floatSet);
+    }
   }
 
   public MyStruct deepCopy() {
@@ -385,6 +403,31 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     __isset_bit_vector.set(__IDEMPOTENT_ISSET_ID, __value);
   }
 
+  public Set<Float> getFloatSet() {
+    return this.floatSet;
+  }
+
+  public MyStruct setFloatSet(Set<Float> floatSet) {
+    this.floatSet = floatSet;
+    return this;
+  }
+
+  public void unsetFloatSet() {
+    this.floatSet = null;
+  }
+
+  // Returns true if field floatSet is set (has been assigned a value) and false otherwise
+  public boolean isSetFloatSet() {
+    return this.floatSet != null;
+  }
+
+  public void setFloatSetIsSet(boolean __value) {
+    if (!__value) {
+      this.floatSet = null;
+    }
+  }
+
+  @SuppressWarnings("unchecked")
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case MYINTFIELD:
@@ -443,6 +486,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       }
       break;
 
+    case FLOATSET:
+      if (__value == null) {
+        unsetFloatSet();
+      } else {
+        setFloatSet((Set<Float>)__value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -470,6 +521,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
 
     case IDEMPOTENT:
       return new Boolean(isIdempotent());
+
+    case FLOATSET:
+      return getFloatSet();
 
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -500,12 +554,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
 
     if (!TBaseHelper.equalsNobinary(this.idempotent, that.idempotent)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetFloatSet(), that.isSetFloatSet(), this.floatSet, that.floatSet)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {MyIntField, MyStringField, MyDataField, myEnum, oneway, readonly, idempotent});
+    return Arrays.deepHashCode(new Object[] {MyIntField, MyStringField, MyDataField, myEnum, oneway, readonly, idempotent, floatSet});
   }
 
   @Override
@@ -573,6 +629,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(idempotent, other.idempotent);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetFloatSet()).compareTo(other.isSetFloatSet());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(floatSet, other.floatSet);
     if (lastComparison != 0) { 
       return lastComparison;
     }
@@ -644,6 +708,25 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case FLOATSET:
+          if (__field.type == TType.SET) {
+            {
+              TSet _set0 = iprot.readSetBegin();
+              this.floatSet = new HashSet<Float>(Math.max(0, 2*_set0.size));
+              for (int _i1 = 0; 
+                   (_set0.size < 0) ? iprot.peekSet() : (_i1 < _set0.size); 
+                   ++_i1)
+              {
+                float _elem2;
+                _elem2 = iprot.readFloat();
+                this.floatSet.add(_elem2);
+              }
+              iprot.readSetEnd();
+            }
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -688,6 +771,17 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     oprot.writeFieldBegin(IDEMPOTENT_FIELD_DESC);
     oprot.writeBool(this.idempotent);
     oprot.writeFieldEnd();
+    if (this.floatSet != null) {
+      oprot.writeFieldBegin(FLOAT_SET_FIELD_DESC);
+      {
+        oprot.writeSetBegin(new TSet(TType.FLOAT, this.floatSet.size()));
+        for (float _iter3 : this.floatSet)        {
+          oprot.writeFloat(_iter3);
+        }
+        oprot.writeSetEnd();
+      }
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -775,6 +869,17 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     sb.append(space);
     sb.append(":").append(space);
     sb.append(TBaseHelper.toString(this.isIdempotent(), indent + 1, prettyPrint));
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("floatSet");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getFloatSet() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getFloatSet(), indent + 1, prettyPrint));
+    }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
     sb.append(")");

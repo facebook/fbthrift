@@ -15,6 +15,7 @@ cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
         yield "oneway", self.oneway
         yield "readonly", self.readonly
         yield "idempotent", self.idempotent
+        yield "floatSet", self.floatSet
 
 cdef class MyDataItem_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.MyDataItem
@@ -29,4 +30,5 @@ cdef class MyUnion_Builder(thrift.py3.builder.StructBuilder):
         yield "myEnum", self.myEnum
         yield "myStruct", self.myStruct
         yield "myDataItem", self.myDataItem
+        yield "floatSet", self.floatSet
 

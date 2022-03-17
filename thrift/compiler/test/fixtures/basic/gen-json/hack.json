@@ -1,0 +1,70 @@
+{
+  "__fbthrift": {"@generated": 0},
+  "thrift_module" : "hack",
+  "structs" : {
+    "FieldWrapper" : {
+      "lineno" : 30,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "name" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 32,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 32,
+              "column" : 17
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 29,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 33,
+          "column" : 68
+        }
+      }
+    },
+    "SkipCodegen" : {
+      "lineno" : 37,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "reason" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 38,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 38,
+              "column" : 19
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 35,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 39,
+          "column" : 67
+        }
+      }
+    }
+  }
+}

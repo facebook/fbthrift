@@ -53,6 +53,8 @@ from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
 cimport module.types as _module_types
 import module.types as _module_types
+import hack.types as _hack_types
+cimport hack.types as _hack_types
 
 cimport module.services_reflection as _services_reflection
 
@@ -66,6 +68,22 @@ from module.services_wrapper cimport cMyServiceInterface
 from module.services_wrapper cimport cDbMixedStackArgumentsInterface
 
 
+
+@cython.auto_pickle(False)
+cdef class Promise_cset__float:
+    cdef cFollyPromise[unique_ptr[cset[float]]]* cPromise
+
+    def __cinit__(self):
+        self.cPromise = new cFollyPromise[unique_ptr[cset[float]]](cFollyPromise[unique_ptr[cset[float]]].makeEmpty())
+
+    def __dealloc__(self):
+        del self.cPromise
+
+    @staticmethod
+    cdef _fbthrift_create(cFollyPromise[unique_ptr[cset[float]]] cPromise):
+        cdef Promise_cset__float inst = Promise_cset__float.__new__(Promise_cset__float)
+        inst.cPromise[0] = cmove(cPromise)
+        return inst
 
 @cython.auto_pickle(False)
 cdef class Promise_binary:
@@ -186,6 +204,10 @@ cdef class MyServiceInterface(
             id,
             data):
         raise NotImplementedError("async def lobDataById is not implemented")
+
+    async def invalid_return_for_hack(
+            self):
+        raise NotImplementedError("async def invalid_return_for_hack is not implemented")
 
     @classmethod
     def __get_reflection__(cls):
@@ -384,6 +406,21 @@ cdef api void call_cy_MyService_lobDataById(
             __promise,
             arg_id,
             arg_data
+        )
+    )
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+cdef api void call_cy_MyService_invalid_return_for_hack(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[cset[float]]] cPromise
+):
+    cdef Promise_cset__float __promise = Promise_cset__float._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+    asyncio.get_event_loop().create_task(
+        MyService_invalid_return_for_hack_coro(
+            self,
+            __promise
         )
     )
     __THRIFT_REQUEST_CONTEXT.reset(__context_token)
@@ -648,6 +685,35 @@ async def MyService_lobDataById_coro(
         ))
     else:
         promise.cPromise.setValue(c_unit)
+
+async def MyService_invalid_return_for_hack_coro(
+    object self,
+    Promise_cset__float promise
+):
+    try:
+        result = await self.invalid_return_for_hack()
+        result = _module_types.Set__float(result)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler invalid_return_for_hack:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler invalid_return_for_hack:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[cset[float]](deref((<_module_types.Set__float?> result)._cpp_obj)))
 
 async def MyService_onStartServing_coro(
     object self,

@@ -13,6 +13,7 @@ import typing as _typing
 from types import TracebackType
 
 import module.types as _module_types
+import hack.types as _hack_types
 
 
 _MyServiceT = _typing.TypeVar('_MyServiceT', bound='MyService')
@@ -67,6 +68,11 @@ class MyService(thrift.py3.client.Client):
         data: str,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
+
+    async def invalid_return_for_hack(
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
+    ) -> _typing.AbstractSet[float]: ...
 
 
 

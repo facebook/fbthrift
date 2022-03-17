@@ -52,6 +52,8 @@ class MyServiceClientWrapper : public ::thrift::py3::ClientWrapper {
       apache::thrift::RpcOptions& rpcOptions,
       int64_t arg_id,
       std::string arg_data);
+    folly::Future<std::set<float>> invalid_return_for_hack(
+      apache::thrift::RpcOptions& rpcOptions);
 };
 
 

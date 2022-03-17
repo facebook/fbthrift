@@ -49,6 +49,8 @@ from asyncio import get_event_loop as asyncio_get_event_loop, shield as asyncio_
 
 cimport module.types as _module_types
 import module.types as _module_types
+cimport hack.types as _hack_types
+import hack.types as _hack_types
 
 cimport module.services_reflection as _services_reflection
 
@@ -157,6 +159,19 @@ cdef void MyService_lobDataById_callback(
     else:
         try:
             pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
+cdef void MyService_invalid_return_for_hack_callback(
+    cFollyTry[cset[float]]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(_module_types.Set__float._fbthrift_create(make_shared[cset[float]](result.value())))
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
@@ -399,6 +414,26 @@ cdef class MyService(thrift.py3.client.Client):
                 data.encode('UTF-8'),
             ),
             MyService_lobDataById_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
+
+    @cython.always_allow_keywords(True)
+    def invalid_return_for_hack(
+            MyService self,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[cset[float]](
+            self._executor,
+            down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).invalid_return_for_hack(rpc_options._cpp_obj, 
+            ),
+            MyService_invalid_return_for_hack_callback,
             <PyObject *> __userdata
         )
         return asyncio_shield(__future)

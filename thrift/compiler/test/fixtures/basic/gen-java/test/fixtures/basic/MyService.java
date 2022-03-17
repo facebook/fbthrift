@@ -150,6 +150,19 @@ public interface MyService extends java.io.Closeable {
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
+
+        @ThriftMethod(value = "invalid_return_for_hack")
+        ListenableFuture<Set<Float>> invalidReturnForHack();
+
+        default ListenableFuture<Set<Float>> invalidReturnForHack(
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default ListenableFuture<ResponseWrapper<Set<Float>>> invalidReturnForHackWrapper(
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
     }
     @java.lang.Override void close();
 
@@ -282,6 +295,19 @@ public interface MyService extends java.io.Closeable {
         throw new UnsupportedOperationException();
     }
 
+    @ThriftMethod(value = "invalid_return_for_hack")
+    Set<Float> invalidReturnForHack() throws org.apache.thrift.TException;
+
+    default Set<Float> invalidReturnForHack(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
+    default ResponseWrapper<Set<Float>> invalidReturnForHackWrapper(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
     @com.facebook.swift.service.ThriftService("MyService")
     interface Reactive extends reactor.core.Disposable {
         @ThriftMethod(value = "ping")
@@ -370,6 +396,17 @@ public interface MyService extends java.io.Closeable {
         }
 
         default reactor.core.publisher.Mono<ResponseWrapper<Void>> lobDataByIdWrapper(final long id, final String data, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        @ThriftMethod(value = "invalid_return_for_hack")
+        reactor.core.publisher.Mono<Set<Float>> invalidReturnForHack();
+
+        default reactor.core.publisher.Mono<Set<Float>> invalidReturnForHack(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default reactor.core.publisher.Mono<ResponseWrapper<Set<Float>>> invalidReturnForHackWrapper(RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 

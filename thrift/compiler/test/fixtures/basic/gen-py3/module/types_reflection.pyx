@@ -14,6 +14,7 @@ from thrift.py3.reflection cimport (
     Qualifier as __Qualifier,
 )
 
+cimport hack.types as _hack_types
 
 cimport module.types as _module_types
 
@@ -119,6 +120,18 @@ cdef __StructSpec get_reflection__MyStruct():
             },
         ),
     )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=8,
+            name="floatSet",
+            type=_module_types.Set__float,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
     return spec
 cdef __StructSpec get_reflection__MyDataItem():
     cdef _module_types.MyDataItem defaults = _module_types.MyDataItem._fbthrift_create(
@@ -176,4 +189,22 @@ cdef __StructSpec get_reflection__MyUnion():
             },
         ),
     )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=4,
+            name="floatSet",
+            type=_module_types.Set__float,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
     return spec
+cdef __SetSpec get_reflection__Set__float():
+    return __SetSpec._fbthrift_create(
+        value=float,
+        kind=__NumberType.FLOAT,
+     )
+

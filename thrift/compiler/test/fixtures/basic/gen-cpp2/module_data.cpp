@@ -21,15 +21,17 @@ const std::array<folly::StringPiece, 2> TEnumDataStorage<::cpp2::MyEnum>::names 
   "MyValue2",
 }};
 
-const std::array<::cpp2::MyUnion::Type, 3> TEnumDataStorage<::cpp2::MyUnion::Type>::values = {{
+const std::array<::cpp2::MyUnion::Type, 4> TEnumDataStorage<::cpp2::MyUnion::Type>::values = {{
   type::myEnum,
   type::myStruct,
   type::myDataItem,
+  type::floatSet,
 }};
-const std::array<folly::StringPiece, 3> TEnumDataStorage<::cpp2::MyUnion::Type>::names = {{
+const std::array<folly::StringPiece, 4> TEnumDataStorage<::cpp2::MyUnion::Type>::names = {{
   "myEnum",
   "myStruct",
   "myDataItem",
+  "floatSet",
 }};
 
 const std::array<folly::StringPiece, 0> TStructDataStorage<::cpp2::MyDataItem>::fields_names = {{
@@ -39,7 +41,7 @@ const std::array<int16_t, 0> TStructDataStorage<::cpp2::MyDataItem>::fields_ids 
 const std::array<protocol::TType, 0> TStructDataStorage<::cpp2::MyDataItem>::fields_types = {{
 }};
 
-const std::array<folly::StringPiece, 7> TStructDataStorage<::cpp2::MyStruct>::fields_names = {{
+const std::array<folly::StringPiece, 8> TStructDataStorage<::cpp2::MyStruct>::fields_names = {{
   "MyIntField",
   "MyStringField",
   "MyDataField",
@@ -47,8 +49,9 @@ const std::array<folly::StringPiece, 7> TStructDataStorage<::cpp2::MyStruct>::fi
   "oneway",
   "readonly",
   "idempotent",
+  "floatSet",
 }};
-const std::array<int16_t, 7> TStructDataStorage<::cpp2::MyStruct>::fields_ids = {{
+const std::array<int16_t, 8> TStructDataStorage<::cpp2::MyStruct>::fields_ids = {{
   1,
   2,
   3,
@@ -56,8 +59,9 @@ const std::array<int16_t, 7> TStructDataStorage<::cpp2::MyStruct>::fields_ids = 
   5,
   6,
   7,
+  8,
 }};
-const std::array<protocol::TType, 7> TStructDataStorage<::cpp2::MyStruct>::fields_types = {{
+const std::array<protocol::TType, 8> TStructDataStorage<::cpp2::MyStruct>::fields_types = {{
   TType::T_I64,
   TType::T_STRING,
   TType::T_STRUCT,
@@ -65,22 +69,26 @@ const std::array<protocol::TType, 7> TStructDataStorage<::cpp2::MyStruct>::field
   TType::T_BOOL,
   TType::T_BOOL,
   TType::T_BOOL,
+  TType::T_SET,
 }};
 
-const std::array<folly::StringPiece, 3> TStructDataStorage<::cpp2::MyUnion>::fields_names = {{
+const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::MyUnion>::fields_names = {{
   "myEnum",
   "myStruct",
   "myDataItem",
+  "floatSet",
 }};
-const std::array<int16_t, 3> TStructDataStorage<::cpp2::MyUnion>::fields_ids = {{
+const std::array<int16_t, 4> TStructDataStorage<::cpp2::MyUnion>::fields_ids = {{
   1,
   2,
   3,
+  4,
 }};
-const std::array<protocol::TType, 3> TStructDataStorage<::cpp2::MyUnion>::fields_types = {{
+const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::MyUnion>::fields_types = {{
   TType::T_I32,
   TType::T_STRUCT,
   TType::T_STRUCT,
+  TType::T_SET,
 }};
 
 } // namespace thrift

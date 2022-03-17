@@ -43,6 +43,8 @@ struct VisitByFieldId<::cpp2::MyStruct> {
       return f(5, static_cast<T&&>(t).readonly_ref());
     case 7:
       return f(6, static_cast<T&&>(t).idempotent_ref());
+    case 8:
+      return f(7, static_cast<T&&>(t).floatSet_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::MyStruct");
     }
@@ -60,6 +62,8 @@ struct VisitByFieldId<::cpp2::MyUnion> {
       return f(1, static_cast<T&&>(t).myStruct_ref());
     case 3:
       return f(2, static_cast<T&&>(t).myDataItem_ref());
+    case 4:
+      return f(3, static_cast<T&&>(t).floatSet_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::MyUnion");
     }

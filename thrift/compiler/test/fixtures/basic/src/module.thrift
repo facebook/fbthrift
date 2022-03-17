@@ -21,6 +21,8 @@ namespace java test.fixtures.basic
 namespace java2 test.fixtures.basic
 namespace java.swift test.fixtures.basic
 
+include "thrift/annotation/hack.thrift"
+
 enum MyEnum {
   MyValue1 = 0,
   MyValue2 = 1,
@@ -35,6 +37,8 @@ struct MyStruct {
   5: bool oneway;
   6: bool readonly;
   7: bool idempotent;
+  @hack.SkipCodegen{reason = "Invalid key type"}
+  8: set<float> floatSet;
 }
 
 struct MyDataItem {}
@@ -43,6 +47,8 @@ union MyUnion {
   1: MyEnum myEnum;
   2: MyStruct myStruct;
   3: MyDataItem myDataItem;
+  @hack.SkipCodegen{reason = "Invalid key type"}
+  4: set<float> floatSet;
 }
 
 service MyService {
@@ -55,6 +61,9 @@ service MyService {
   readonly string getDataById(1: i64 id);
   idempotent void deleteDataById(1: i64 id);
   oneway void lobDataById(1: i64 id, 2: string data);
+
+  @hack.SkipCodegen{reason = "Invalid key type"}
+  set<float> invalid_return_for_hack();
 }
 
 service DbMixedStackArguments {

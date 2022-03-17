@@ -26,6 +26,8 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apach
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int64_t*>> MyService_deleteDataById_pargs;
 typedef apache::thrift::ThriftPresult<true> MyService_deleteDataById_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int64_t*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::string, ::std::string*>> MyService_lobDataById_pargs;
+typedef apache::thrift::ThriftPresult<false> MyService_invalid_return_for_hack_pargs;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::set<::apache::thrift::type_class::floating_point>, ::std::set<float>*>> MyService_invalid_return_for_hack_presult;
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::setUpAndProcess_ping(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
@@ -773,6 +775,101 @@ void MyServiceAsyncProcessor::process_lobDataById(apache::thrift::ResponseChanne
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx);
   iface_->async_tm_lobDataById(std::move(callback), args.get<0>().ref(), std::move(uarg_data));
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void MyServiceAsyncProcessor::setUpAndProcess_invalid_return_for_hack(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
+    return;
+  }
+  auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestExecutionScope(std::move(scope));
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServiceAsyncProcessor::process_invalid_return_for_hack<ProtocolIn_, ProtocolOut_>, this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void MyServiceAsyncProcessor::executeRequest_invalid_return_for_hack(apache::thrift::ServerRequest&& serverRequest) {
+  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
+  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
+  // make sure getRequestContext is null
+  // so async calls don't accidentally use it
+  iface_->setRequestContext(nullptr);
+  MyService_invalid_return_for_hack_pargs args;
+  try {
+    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+  }
+  catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
+    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
+        ew
+        , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+        , nullptr
+        , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+        , "invalid_return_for_hack");
+    return;
+  }
+  auto requestPileNotification = apache::thrift::detail::ServerRequestHelper::requestPileNotification(serverRequest);
+  auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<float>>>>(
+    apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
+    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , return_invalid_return_for_hack<ProtocolIn_,ProtocolOut_>
+    , throw_wrapped_invalid_return_for_hack<ProtocolIn_, ProtocolOut_>
+    , serverRequest.requestContext()->getProtoSeqId()
+    , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
+    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , serverRequest.requestContext()
+    , requestPileNotification.first, requestPileNotification.second
+    , concurrencyControllerNotification.first, concurrencyControllerNotification.second
+    
+    );
+  iface_->async_tm_invalid_return_for_hack(std::move(callback));
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void MyServiceAsyncProcessor::process_invalid_return_for_hack(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  if (!req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
+    return;
+  }
+  // make sure getRequestContext is null
+  // so async calls don't accidentally use it
+  iface_->setRequestContext(nullptr);
+  MyService_invalid_return_for_hack_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.invalid_return_for_hack", ctx));
+  try {
+    deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
+  }
+  catch (const std::exception& ex) {
+    folly::exception_wrapper ew(std::current_exception(), ex);
+    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
+        ew, std::move(req), ctx, eb, "invalid_return_for_hack");
+    return;
+  }
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<float>>>>(std::move(req), std::move(ctxStack), return_invalid_return_for_hack<ProtocolIn_,ProtocolOut_>, throw_wrapped_invalid_return_for_hack<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  iface_->async_tm_invalid_return_for_hack(std::move(callback));
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+apache::thrift::SerializedResponse MyServiceAsyncProcessor::return_invalid_return_for_hack(apache::thrift::ContextStack* ctx, ::std::set<float> const& _return) {
+  ProtocolOut_ prot;
+  MyService_invalid_return_for_hack_presult result;
+  result.get<0>().value = const_cast<::std::set<float>*>(&_return);
+  result.setIsSet(0, true);
+  return serializeResponse(&prot, ctx, result);
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+void MyServiceAsyncProcessor::throw_wrapped_invalid_return_for_hack(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+  if (!ew) {
+    return;
+  }
+  {
+    (void)protoSeqId;
+    apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
+        ew, std::move(req), reqCtx, ctx, "invalid_return_for_hack");
+    return;
+  }
 }
 
 

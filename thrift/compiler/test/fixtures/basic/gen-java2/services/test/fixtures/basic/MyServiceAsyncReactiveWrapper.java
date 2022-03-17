@@ -64,4 +64,9 @@ public class MyServiceAsyncReactiveWrapper
         return com.facebook.thrift.util.FutureUtil.toMono(_delegate.lobDataById(id, data));
     }
 
+    @java.lang.Override
+    public reactor.core.publisher.Mono<Set<Float>> invalidReturnForHack() {
+        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.invalidReturnForHack());
+    }
+
 }

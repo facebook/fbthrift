@@ -112,4 +112,15 @@ public class MyServiceBlockingReactiveWrapper
             }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
     }
 
+    @java.lang.Override
+    public reactor.core.publisher.Mono<Set<Float>> invalidReturnForHack() {
+        return reactor.core.publisher.Mono.fromSupplier(() -> {
+                try {
+                    return _delegate.invalidReturnForHack();
+                } catch (Throwable _e) {
+                    throw reactor.core.Exceptions.propagate(_e);
+                }
+            }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+    }
+
 }

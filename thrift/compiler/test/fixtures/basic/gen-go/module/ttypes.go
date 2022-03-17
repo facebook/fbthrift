@@ -10,6 +10,8 @@ import (
 	"sync"
 	"fmt"
 	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
+	hack0 "hack"
+
 )
 
 // (needed to ensure safety because of naive import list construction.)
@@ -19,6 +21,7 @@ var _ = sync.Mutex{}
 var _ = bytes.Equal
 var _ = context.Background
 
+var _ = hack0.GoUnusedProtection__
 var GoUnusedProtection__ int;
 
 type MyEnum int64
@@ -71,6 +74,7 @@ func MyEnumPtr(v MyEnum) *MyEnum { return &v }
 //  - Oneway
 //  - Readonly
 //  - Idempotent
+//  - FloatSet
 type MyStruct struct {
   MyIntField int64 `thrift:"MyIntField,1" db:"MyIntField" json:"MyIntField"`
   MyStringField string `thrift:"MyStringField,2" db:"MyStringField" json:"MyStringField"`
@@ -79,6 +83,7 @@ type MyStruct struct {
   Oneway bool `thrift:"oneway,5" db:"oneway" json:"oneway"`
   Readonly bool `thrift:"readonly,6" db:"readonly" json:"readonly"`
   Idempotent bool `thrift:"idempotent,7" db:"idempotent" json:"idempotent"`
+  FloatSet []float32 `thrift:"floatSet,8" db:"floatSet" json:"floatSet"`
 }
 
 func NewMyStruct() *MyStruct {
@@ -118,6 +123,10 @@ func (p *MyStruct) GetReadonly() bool {
 func (p *MyStruct) GetIdempotent() bool {
   return p.Idempotent
 }
+
+func (p *MyStruct) GetFloatSet() []float32 {
+  return p.FloatSet
+}
 func (p *MyStruct) IsSetMyDataField() bool {
   return p != nil && p.MyDataField != nil
 }
@@ -141,6 +150,7 @@ func (p MyStructBuilder) Emit() *MyStruct{
     Oneway: p.obj.Oneway,
     Readonly: p.obj.Readonly,
     Idempotent: p.obj.Idempotent,
+    FloatSet: p.obj.FloatSet,
   }
 }
 
@@ -179,6 +189,11 @@ func (m *MyStructBuilder) Idempotent(idempotent bool) *MyStructBuilder {
   return m
 }
 
+func (m *MyStructBuilder) FloatSet(floatSet []float32) *MyStructBuilder {
+  m.obj.FloatSet = floatSet
+  return m
+}
+
 func (m *MyStruct) SetMyIntField(myIntField int64) *MyStruct {
   m.MyIntField = myIntField
   return m
@@ -211,6 +226,11 @@ func (m *MyStruct) SetReadonly(readonly bool) *MyStruct {
 
 func (m *MyStruct) SetIdempotent(idempotent bool) *MyStruct {
   m.Idempotent = idempotent
+  return m
+}
+
+func (m *MyStruct) SetFloatSet(floatSet []float32) *MyStruct {
+  m.FloatSet = floatSet
   return m
 }
 
@@ -253,6 +273,10 @@ func (p *MyStruct) Read(iprot thrift.Protocol) error {
       }
     case 7:
       if err := p.ReadField7(iprot); err != nil {
+        return err
+      }
+    case 8:
+      if err := p.ReadField8(iprot); err != nil {
         return err
       }
     default:
@@ -333,6 +357,28 @@ func (p *MyStruct)  ReadField7(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *MyStruct)  ReadField8(iprot thrift.Protocol) error {
+  _, size, err := iprot.ReadSetBegin()
+  if err != nil {
+    return thrift.PrependError("error reading set begin: ", err)
+  }
+  tSet := make([]float32, 0, size)
+  p.FloatSet =  tSet
+  for i := 0; i < size; i ++ {
+    var _elem1 float32
+    if v, err := iprot.ReadFloat(); err != nil {
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _elem1 = v
+    }
+    p.FloatSet = append(p.FloatSet, _elem1)
+  }
+  if err := iprot.ReadSetEnd(); err != nil {
+    return thrift.PrependError("error reading set end: ", err)
+  }
+  return nil
+}
+
 func (p *MyStruct) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("MyStruct"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -343,6 +389,7 @@ func (p *MyStruct) Write(oprot thrift.Protocol) error {
   if err := p.writeField5(oprot); err != nil { return err }
   if err := p.writeField6(oprot); err != nil { return err }
   if err := p.writeField7(oprot); err != nil { return err }
+  if err := p.writeField8(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -421,6 +468,31 @@ func (p *MyStruct) writeField7(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *MyStruct) writeField8(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("floatSet", thrift.SET, 8); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 8:floatSet: ", p), err) }
+  if err := oprot.WriteSetBegin(thrift.FLOAT, len(p.FloatSet)); err != nil {
+    return thrift.PrependError("error writing set begin: ", err)
+  }
+  set := make(map[float32]bool, len(p.FloatSet))
+  for _, v := range p.FloatSet {
+    if ok := set[v]; ok {
+      return thrift.PrependError("", fmt.Errorf("%T error writing set field: slice is not unique", v))
+    }
+    set[v] = true
+  }
+  for _, v := range p.FloatSet {
+    if err := oprot.WriteFloat(float32(v)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+  }
+  if err := oprot.WriteSetEnd(); err != nil {
+    return thrift.PrependError("error writing set end: ", err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 8:floatSet: ", p), err) }
+  return err
+}
+
 func (p *MyStruct) String() string {
   if p == nil {
     return "<nil>"
@@ -438,7 +510,8 @@ func (p *MyStruct) String() string {
   onewayVal := fmt.Sprintf("%v", p.Oneway)
   readonlyVal := fmt.Sprintf("%v", p.Readonly)
   idempotentVal := fmt.Sprintf("%v", p.Idempotent)
-  return fmt.Sprintf("MyStruct({MyIntField:%s MyStringField:%s MyDataField:%s MyEnum:%s Oneway:%s Readonly:%s Idempotent:%s})", myIntFieldVal, myStringFieldVal, myDataFieldVal, myEnumVal, onewayVal, readonlyVal, idempotentVal)
+  floatSetVal := fmt.Sprintf("%v", p.FloatSet)
+  return fmt.Sprintf("MyStruct({MyIntField:%s MyStringField:%s MyDataField:%s MyEnum:%s Oneway:%s Readonly:%s Idempotent:%s FloatSet:%s})", myIntFieldVal, myStringFieldVal, myDataFieldVal, myEnumVal, onewayVal, readonlyVal, idempotentVal, floatSetVal)
 }
 
 type MyDataItem struct {
@@ -510,10 +583,12 @@ func (p *MyDataItem) String() string {
 //  - MyEnum
 //  - MyStruct
 //  - MyDataItem
+//  - FloatSet
 type MyUnion struct {
   MyEnum *MyEnum `thrift:"myEnum,1,optional" db:"myEnum" json:"myEnum,omitempty"`
   MyStruct *MyStruct `thrift:"myStruct,2,optional" db:"myStruct" json:"myStruct,omitempty"`
   MyDataItem *MyDataItem `thrift:"myDataItem,3,optional" db:"myDataItem" json:"myDataItem,omitempty"`
+  FloatSet []float32 `thrift:"floatSet,4,optional" db:"floatSet" json:"floatSet,omitempty"`
 }
 
 func NewMyUnion() *MyUnion {
@@ -541,6 +616,11 @@ func (p *MyUnion) GetMyDataItem() *MyDataItem {
   }
 return p.MyDataItem
 }
+var MyUnion_FloatSet_DEFAULT []float32
+
+func (p *MyUnion) GetFloatSet() []float32 {
+  return p.FloatSet
+}
 func (p *MyUnion) CountSetFieldsMyUnion() int {
   count := 0
   if (p.IsSetMyEnum()) {
@@ -550,6 +630,9 @@ func (p *MyUnion) CountSetFieldsMyUnion() int {
     count++
   }
   if (p.IsSetMyDataItem()) {
+    count++
+  }
+  if (p.IsSetFloatSet()) {
     count++
   }
   return count
@@ -568,6 +651,10 @@ func (p *MyUnion) IsSetMyDataItem() bool {
   return p != nil && p.MyDataItem != nil
 }
 
+func (p *MyUnion) IsSetFloatSet() bool {
+  return p != nil && p.FloatSet != nil
+}
+
 type MyUnionBuilder struct {
   obj *MyUnion
 }
@@ -583,6 +670,7 @@ func (p MyUnionBuilder) Emit() *MyUnion{
     MyEnum: p.obj.MyEnum,
     MyStruct: p.obj.MyStruct,
     MyDataItem: p.obj.MyDataItem,
+    FloatSet: p.obj.FloatSet,
   }
 }
 
@@ -601,6 +689,11 @@ func (m *MyUnionBuilder) MyDataItem(myDataItem *MyDataItem) *MyUnionBuilder {
   return m
 }
 
+func (m *MyUnionBuilder) FloatSet(floatSet []float32) *MyUnionBuilder {
+  m.obj.FloatSet = floatSet
+  return m
+}
+
 func (m *MyUnion) SetMyEnum(myEnum *MyEnum) *MyUnion {
   m.MyEnum = myEnum
   return m
@@ -613,6 +706,11 @@ func (m *MyUnion) SetMyStruct(myStruct *MyStruct) *MyUnion {
 
 func (m *MyUnion) SetMyDataItem(myDataItem *MyDataItem) *MyUnion {
   m.MyDataItem = myDataItem
+  return m
+}
+
+func (m *MyUnion) SetFloatSet(floatSet []float32) *MyUnion {
+  m.FloatSet = floatSet
   return m
 }
 
@@ -639,6 +737,10 @@ func (p *MyUnion) Read(iprot thrift.Protocol) error {
       }
     case 3:
       if err := p.ReadField3(iprot); err != nil {
+        return err
+      }
+    case 4:
+      if err := p.ReadField4(iprot); err != nil {
         return err
       }
     default:
@@ -682,6 +784,28 @@ func (p *MyUnion)  ReadField3(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *MyUnion)  ReadField4(iprot thrift.Protocol) error {
+  _, size, err := iprot.ReadSetBegin()
+  if err != nil {
+    return thrift.PrependError("error reading set begin: ", err)
+  }
+  tSet := make([]float32, 0, size)
+  p.FloatSet =  tSet
+  for i := 0; i < size; i ++ {
+    var _elem2 float32
+    if v, err := iprot.ReadFloat(); err != nil {
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _elem2 = v
+    }
+    p.FloatSet = append(p.FloatSet, _elem2)
+  }
+  if err := iprot.ReadSetEnd(); err != nil {
+    return thrift.PrependError("error reading set end: ", err)
+  }
+  return nil
+}
+
 func (p *MyUnion) Write(oprot thrift.Protocol) error {
   if c := p.CountSetFieldsMyUnion(); c > 1 {
     return fmt.Errorf("%T write union: no more than one field must be set (%d set).", p, c)
@@ -691,6 +815,7 @@ func (p *MyUnion) Write(oprot thrift.Protocol) error {
   if err := p.writeField1(oprot); err != nil { return err }
   if err := p.writeField2(oprot); err != nil { return err }
   if err := p.writeField3(oprot); err != nil { return err }
+  if err := p.writeField4(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -736,6 +861,33 @@ func (p *MyUnion) writeField3(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *MyUnion) writeField4(oprot thrift.Protocol) (err error) {
+  if p.IsSetFloatSet() {
+    if err := oprot.WriteFieldBegin("floatSet", thrift.SET, 4); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:floatSet: ", p), err) }
+    if err := oprot.WriteSetBegin(thrift.FLOAT, len(p.FloatSet)); err != nil {
+      return thrift.PrependError("error writing set begin: ", err)
+    }
+    set := make(map[float32]bool, len(p.FloatSet))
+    for _, v := range p.FloatSet {
+      if ok := set[v]; ok {
+        return thrift.PrependError("", fmt.Errorf("%T error writing set field: slice is not unique", v))
+      }
+      set[v] = true
+    }
+    for _, v := range p.FloatSet {
+      if err := oprot.WriteFloat(float32(v)); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+    }
+    if err := oprot.WriteSetEnd(); err != nil {
+      return thrift.PrependError("error writing set end: ", err)
+    }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 4:floatSet: ", p), err) }
+  }
+  return err
+}
+
 func (p *MyUnion) String() string {
   if p == nil {
     return "<nil>"
@@ -759,6 +911,7 @@ func (p *MyUnion) String() string {
   } else {
     myDataItemVal = fmt.Sprintf("%v", p.MyDataItem)
   }
-  return fmt.Sprintf("MyUnion({MyEnum:%s MyStruct:%s MyDataItem:%s})", myEnumVal, myStructVal, myDataItemVal)
+  floatSetVal := fmt.Sprintf("%v", p.FloatSet)
+  return fmt.Sprintf("MyUnion({MyEnum:%s MyStruct:%s MyDataItem:%s FloatSet:%s})", myEnumVal, myStructVal, myDataItemVal, floatSetVal)
 }
 
