@@ -14,7 +14,7 @@
 
 import unittest
 
-from thrift.py3lite.universal_name import (
+from thrift.py3lite.conformance.universal_name import (
     contains_universal_hash,
     find_by_universal_hash,
     get_universal_hash,
