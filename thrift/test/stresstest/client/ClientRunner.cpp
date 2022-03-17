@@ -17,7 +17,6 @@
 #include <thrift/test/stresstest/client/ClientRunner.h>
 
 #include <folly/experimental/coro/BlockingWait.h>
-#include <thrift/test/stresstest/client/ClientFactory.h>
 #include <thrift/test/stresstest/util/Util.h>
 
 namespace apache {
@@ -36,7 +35,7 @@ void ClientThreadMemoryStats::combine(const ClientThreadMemoryStats& other) {
 class ClientThread : public folly::HHWheelTimer::Callback {
  public:
   ClientThread(
-      size_t numClients,
+      const ClientConfig& cfg,
       const folly::SocketAddress& addr,
       folly::CancellationSource& cancelSource)
       : memoryHistogram_(50, 0, 1024 * 1024 * 1024 /* 1GB */),
@@ -46,9 +45,9 @@ class ClientThread : public folly::HHWheelTimer::Callback {
     evb->runInEventBaseThreadAndWait([&]() {
       // capture baseline memory usage
       memoryStats_.threadStart = getThreadMemoryUsage();
-      for (size_t i = 0; i < numClients; i++) {
+      for (size_t i = 0; i < cfg.numClientsPerThread; i++) {
         clients_.emplace_back(std::make_unique<StressTestClient>(
-            ClientFactory::createClient(addr, evb), rpcStats_));
+            ClientFactory::createClient(addr, evb, cfg.connConfig), rpcStats_));
       }
       // capture memory usage after connections are established
       memoryStats_.connectionsEstablished = getThreadMemoryUsage();
@@ -119,8 +118,8 @@ ClientRunner::ClientRunner(
     const ClientConfig& config, const folly::SocketAddress& addr)
     : clientThreads_() {
   for (size_t i = 0; i < config.numClientThreads; i++) {
-    clientThreads_.emplace_back(std::make_unique<ClientThread>(
-        config.numClientsPerThread, addr, cancelSource_));
+    clientThreads_.emplace_back(
+        std::make_unique<ClientThread>(config, addr, cancelSource_));
   }
 }
 

@@ -34,6 +34,23 @@ DEFINE_int64(runtime_s, 10, "Runtime of test in seconds");
 DEFINE_int64(client_threads, 1, "Nnumber of client threads");
 DEFINE_int64(clients_per_thread, 1, "Number of clients per client thread");
 
+DEFINE_string(
+    security,
+    "",
+    "Set to 'FIZZ' or 'TLS' to enable security (requires certPath, keyPath and caPath to be specified)");
+DEFINE_string(
+    certPath,
+    "folly/io/async/test/certs/tests-cert.pem",
+    "Path to client certificate file");
+DEFINE_string(
+    keyPath,
+    "folly/io/async/test/certs/tests-key.pem",
+    "Path to client key file");
+DEFINE_string(
+    caPath,
+    "folly/io/async/test/certs/ca-cert.pem",
+    "Path to client trusted CA file");
+
 struct StressTestStats {
   ClientThreadMemoryStats memoryStats;
   ClientRpcStats rpcStats;
@@ -67,6 +84,27 @@ struct StressTestStats {
   }
 };
 
+ClientConnectionConfig getClientConnectionConfig() {
+  ClientSecurity security;
+  if (FLAGS_security.empty()) {
+    security = ClientSecurity::None;
+  } else {
+    if (FLAGS_security == "TLS") {
+      security = ClientSecurity::TLS;
+    } else if (FLAGS_security == "FIZZ") {
+      security = ClientSecurity::FIZZ;
+    } else {
+      LOG(FATAL) << "Unrecognized option for security: " << FLAGS_security;
+    }
+  }
+  return ClientConnectionConfig{
+      .security = security,
+      .certPath = FLAGS_certPath,
+      .keyPath = FLAGS_keyPath,
+      .trustedCertsPath = FLAGS_caPath,
+  };
+}
+
 void runStressTest(std::unique_ptr<StressTestBase> test) {
   resetMemoryStats();
 
@@ -74,7 +112,8 @@ void runStressTest(std::unique_ptr<StressTestBase> test) {
   folly::SocketAddress addr(FLAGS_host, FLAGS_port);
   ClientConfig cfg{
       .numClientThreads = static_cast<uint64_t>(FLAGS_client_threads),
-      .numClientsPerThread = static_cast<uint64_t>(FLAGS_clients_per_thread)};
+      .numClientsPerThread = static_cast<uint64_t>(FLAGS_clients_per_thread),
+      .connConfig = getClientConnectionConfig()};
   ClientRunner runner(cfg, addr);
 
   // run the test and sleep for the duration

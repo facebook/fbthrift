@@ -23,10 +23,25 @@ namespace apache {
 namespace thrift {
 namespace stress {
 
+enum class ClientSecurity {
+  None = 0,
+  TLS,
+  FIZZ,
+};
+
+struct ClientConnectionConfig {
+  ClientSecurity security;
+  std::string certPath;
+  std::string keyPath;
+  std::string trustedCertsPath;
+};
+
 class ClientFactory {
  public:
   static std::unique_ptr<StressTestAsyncClient> createClient(
-      const folly::SocketAddress& addr, folly::EventBase* evb);
+      const folly::SocketAddress& addr,
+      folly::EventBase* evb,
+      const ClientConnectionConfig& cfg);
 };
 
 } // namespace stress

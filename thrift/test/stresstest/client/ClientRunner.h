@@ -21,6 +21,7 @@
 #include <folly/io/async/HHWheelTimer.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <folly/synchronization/RelaxedAtomic.h>
+#include <thrift/test/stresstest/client/ClientFactory.h>
 #include <thrift/test/stresstest/client/StressTestBase.h>
 #include <thrift/test/stresstest/if/gen-cpp2/StressTest.h>
 
@@ -33,6 +34,7 @@ class ClientThread;
 struct ClientConfig {
   uint64_t numClientThreads;
   uint64_t numClientsPerThread;
+  ClientConnectionConfig connConfig;
 };
 
 struct ClientThreadMemoryStats {

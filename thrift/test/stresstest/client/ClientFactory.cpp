@@ -16,6 +16,9 @@
 
 #include <thrift/test/stresstest/client/ClientFactory.h>
 
+#include <fizz/client/AsyncFizzClient.h>
+#include <folly/FileUtil.h>
+#include <folly/io/async/AsyncSSLSocket.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 
@@ -25,21 +28,89 @@ namespace stress {
 
 namespace {
 
-folly::AsyncTransport::UniquePtr createSocket(
-    const folly::SocketAddress& addr, folly::EventBase* evb) {
-  return folly::AsyncTransport::UniquePtr(new folly::AsyncSocket(evb, addr));
+class ConnectCallback : public folly::AsyncSocket::ConnectCallback,
+                        public folly::DelayedDestruction {
+ public:
+  void connectSuccess() noexcept override { destroy(); }
+  void connectErr(const folly::AsyncSocketException& ex) noexcept override {
+    LOG(FATAL) << "Socket connection failed: " << ex.what();
+  }
+};
+
+std::shared_ptr<folly::SSLContext> getSslContext(
+    const ClientConnectionConfig& cfg) {
+  static auto sslContext = [&]() {
+    auto ctx = std::make_shared<folly::SSLContext>();
+    ctx->loadCertificate(cfg.certPath.c_str());
+    ctx->loadPrivateKey(cfg.keyPath.c_str());
+    ctx->loadTrustedCertificates(cfg.trustedCertsPath.c_str());
+    ctx->setVerificationOption(folly::SSLContext::SSLVerifyPeerEnum::VERIFY);
+    return ctx;
+  }();
+  return sslContext;
 }
 
-ClientChannel::Ptr createChannel(folly::AsyncTransport::UniquePtr sock) {
-  return RocketClientChannel::newChannel(std::move(sock));
+std::shared_ptr<fizz::client::FizzClientContext> getFizzContext(
+    const ClientConnectionConfig& cfg) {
+  static auto fizzContext = [&]() {
+    auto ctx = std::make_shared<fizz::client::FizzClientContext>();
+    ctx->setSupportedAlpns({"rs"});
+    if (!cfg.certPath.empty() && !cfg.keyPath.empty()) {
+      std::string cert, key;
+      folly::readFile(cfg.certPath.c_str(), cert);
+      folly::readFile(cfg.keyPath.c_str(), key);
+      auto selfCert = fizz::CertUtils::makeSelfCert(cert, key);
+      ctx->setClientCertificate(std::move(selfCert));
+    }
+    return ctx;
+  }();
+  return fizzContext;
+}
+
+std::shared_ptr<fizz::DefaultCertificateVerifier> getFizzVerifier(
+    const ClientConnectionConfig& cfg) {
+  if (!cfg.trustedCertsPath.empty()) {
+    return fizz::DefaultCertificateVerifier::createFromCAFile(
+        fizz::VerificationContext::Client, cfg.trustedCertsPath);
+  } else {
+    return std::make_shared<fizz::DefaultCertificateVerifier>(
+        fizz::VerificationContext::Client);
+  }
+}
+
+folly::AsyncTransport::UniquePtr createSocket(
+    const folly::SocketAddress& addr,
+    folly::EventBase* evb,
+    const ClientConnectionConfig& cfg) {
+  folly::AsyncSocket::UniquePtr sock;
+  switch (cfg.security) {
+    case ClientSecurity::None: {
+      sock = folly::AsyncSocket::newSocket(evb);
+      sock->connect(new ConnectCallback(), addr);
+      return sock;
+    }
+    case ClientSecurity::TLS: {
+      sock = folly::AsyncSSLSocket::newSocket(getSslContext(cfg), evb);
+      sock->connect(new ConnectCallback(), addr);
+      return sock;
+    }
+    case ClientSecurity::FIZZ: {
+      auto fizzClient = fizz::client::AsyncFizzClient::UniquePtr(
+          new fizz::client::AsyncFizzClient(evb, getFizzContext(cfg)));
+      fizzClient->connect(
+          addr, new ConnectCallback(), getFizzVerifier(cfg), {}, {});
+      return fizzClient;
+    }
+  }
 }
 
 } // namespace
 
 std::unique_ptr<StressTestAsyncClient> ClientFactory::createClient(
-    const folly::SocketAddress& addr, folly::EventBase* evb) {
-  auto sock = createSocket(addr, evb);
-  auto chan = createChannel(std::move(sock));
+    const folly::SocketAddress& addr,
+    folly::EventBase* evb,
+    const ClientConnectionConfig& cfg) {
+  auto chan = RocketClientChannel::newChannel(createSocket(addr, evb, cfg));
   return std::make_unique<StressTestAsyncClient>(std::move(chan));
 }
 
