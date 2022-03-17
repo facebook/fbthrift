@@ -1163,21 +1163,31 @@ class mstch_cpp2_struct : public mstch_struct {
  protected:
   // Computes the alignment of field on the target platform.
   // Returns 0 if cannot compute the alignment.
-  static size_t compute_alignment(t_field const* field) {
+  static size_t compute_alignment(
+      t_field const* field, std::unordered_map<t_field const*, size_t>& memo) {
+    auto find = memo.emplace(field, 0);
+    auto& ret = find.first->second;
+    if (!find.second) {
+      return ret;
+    }
     if (cpp2::is_ref(field)) {
-      return 8;
+      return ret = 8;
     }
     t_type const* type = field->get_type();
+    if (cpp2::is_custom_type(*type)) {
+      return ret = 0;
+    }
+
     switch (type->get_type_value()) {
       case t_type::type::t_bool:
       case t_type::type::t_byte:
-        return 1;
+        return ret = 1;
       case t_type::type::t_i16:
-        return 2;
+        return ret = 2;
       case t_type::type::t_i32:
       case t_type::type::t_float:
       case t_type::type::t_enum:
-        return 4;
+        return ret = 4;
       case t_type::type::t_i64:
       case t_type::type::t_double:
       case t_type::type::t_string:
@@ -1185,7 +1195,7 @@ class mstch_cpp2_struct : public mstch_struct {
       case t_type::type::t_list:
       case t_type::type::t_set:
       case t_type::type::t_map:
-        return 8;
+        return ret = 8;
       case t_type::type::t_struct: {
         size_t align = 1;
         const size_t kMaxAlign = 8;
@@ -1198,25 +1208,25 @@ class mstch_cpp2_struct : public mstch_struct {
               field->get_name() + "`.");
         }
         for (auto const& field : strct->fields()) {
-          size_t field_align = compute_alignment(&field);
+          size_t field_align = compute_alignment(&field, memo);
           if (field_align == 0) {
             // Unknown alignment, bail out.
-            return 0;
+            return ret = 0;
           }
           align = std::max(align, field_align);
           if (align == kMaxAlign) {
             // No need to continue because the struct already has the maximum
             // alignment.
-            return align;
+            return ret = align;
           }
         }
         // The __isset member that is generated in the presence of non-required
         // fields doesn't affect the alignment, because, having only bool
         // fields, it has the alignments of 1.
-        return align;
+        return ret = align;
       }
       default:
-        return 0;
+        return ret = 0;
     }
   }
 
@@ -1239,8 +1249,9 @@ class mstch_cpp2_struct : public mstch_struct {
     };
     std::vector<FieldAlign> field_alignments;
     field_alignments.reserve(strct_->fields().size());
+    std::unordered_map<t_field const*, size_t> memo;
     for (const auto& field : strct_->fields()) {
-      auto align = compute_alignment(&field);
+      auto align = compute_alignment(&field, memo);
       if (align == 0) {
         // Unknown alignment, don't reorder anything.
         return fields_in_layout_order_ = strct_->fields().copy();
