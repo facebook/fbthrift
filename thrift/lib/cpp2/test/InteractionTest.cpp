@@ -140,6 +140,17 @@ TEST(InteractionTest, TerminateWithoutSetupPRC) {
   auto adder = client->createAddition();
 }
 
+TEST(InteractionTest, TerminateStressPRC) {
+  ScopedServerInterfaceThread runner{std::make_shared<SemiCalculatorHandler>()};
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
+
+  for (int i = 0; i < 100; i++) {
+    auto adder = client->createAddition();
+    adder.semifuture_noop();
+  }
+}
+
 TEST(InteractionTest, IsDetachable) {
   ScopedServerInterfaceThread runner{std::make_shared<SemiCalculatorHandler>()};
   folly::EventBase eb;
