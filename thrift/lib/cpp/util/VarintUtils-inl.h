@@ -119,7 +119,7 @@ void readVarint(CursorT& c, T& value) {
     value = static_cast<T>(*p);
     c.skipNoAdvance(1);
   } else {
-    apache::thrift::util::detail::readVarintMediumSlow(c, value, p, len);
+    detail::readVarintMediumSlow(c, value, p, len);
   }
 }
 
@@ -176,7 +176,7 @@ uint8_t writeVarintUnrolled(Cursor& c, T value) {
     return 1;
   }
 
-  return apache::thrift::util::detail::writeVarintSlow(c, value);
+  return detail::writeVarintSlow(c, value);
 }
 
 #ifdef __BMI2__
