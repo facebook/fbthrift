@@ -54,9 +54,6 @@
     }                                                                         \
   }
 
-#define THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-#define THRIFT_IGNORE_ISSET_USE_WARNING_END
-
 namespace apache {
 namespace thrift {
 
