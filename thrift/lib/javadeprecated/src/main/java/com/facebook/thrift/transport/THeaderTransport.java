@@ -723,8 +723,19 @@ public class THeaderTransport extends TFramedTransport {
 
   private static String getClientMetadata() {
     return String.format(
-        "{\"agent\":\"javadeprecated.THeaderTransport.java\",\"otherMetadata\":{\"build_rule\":\"%s\"}}",
-        getClientBuildRule());
+        "{\"agent\":\"javadeprecated.THeaderTransport.java\",\"otherMetadata\":{\"build_rule\":\"%s\",\"tw_cluster\":\"%s\",\"tw_user\":\"%s\",\"tw_job\":\"%s\"}}",
+        getClientBuildRule(),
+        nullSafe(System.getenv("TW_JOB_CLUSTER")),
+        nullSafe(System.getenv("TW_JOB_USER")),
+        nullSafe(System.getenv("TW_JOB_NAME")));
+  }
+
+  private static String nullSafe(String s) {
+    if (s == null) {
+      return "<unknown>";
+    } else {
+      return s;
+    }
   }
 
   private static String getClientBuildRule() {
