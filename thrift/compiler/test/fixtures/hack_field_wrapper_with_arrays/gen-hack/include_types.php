@@ -10,7 +10,7 @@
  * Original thrift struct:-
  * AnnotationStruct
  */
-class AnnotationStruct implements \IThriftSyncStruct {
+class AnnotationStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -21,6 +21,8 @@ class AnnotationStruct implements \IThriftSyncStruct {
   const type TConstructorShape = shape(
   );
 
+  const type TShape = shape(
+  );
   const int STRUCTURAL_ID = 957977401221134810;
 
   public function __construct(  )[] {
@@ -71,6 +73,19 @@ class AnnotationStruct implements \IThriftSyncStruct {
     );
   }
 
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -90,7 +105,7 @@ class AnnotationStruct implements \IThriftSyncStruct {
  * Original thrift struct:-
  * MyStruct
  */
-class MyStruct implements \IThriftSyncStruct {
+class MyStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -108,6 +123,9 @@ class MyStruct implements \IThriftSyncStruct {
     ?'nested_struct' => ?MyNestedStruct,
   );
 
+  const type TShape = shape(
+    ?'nested_struct' => ?MyNestedStruct::TShape,
+  );
   const int STRUCTURAL_ID = 6466034702854646588;
   /**
    * Original thrift field:-
@@ -183,6 +201,21 @@ class MyStruct implements \IThriftSyncStruct {
     );
   }
 
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'nested_struct') === null ? null : (MyNestedStruct::__fromShape($shape['nested_struct'])),
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'nested_struct' => $this->nested_struct?->__toShape(),
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -208,7 +241,7 @@ class MyStruct implements \IThriftSyncStruct {
  * Original thrift struct:-
  * MyNestedStruct
  */
-class MyNestedStruct implements \IThriftAsyncStruct {
+class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -240,6 +273,11 @@ class MyNestedStruct implements \IThriftAsyncStruct {
     ?'adapted_type' => ?\MyAdapter::THackType,
   );
 
+  const type TShape = shape(
+    'wrapped_field' => int,
+    'annotated_field' => int,
+    'adapted_type' => \MyAdapter::THackType,
+  );
   const int STRUCTURAL_ID = 3672151039112827748;
   /**
    * Original thrift field:-
@@ -389,6 +427,25 @@ class MyNestedStruct implements \IThriftAsyncStruct {
     );
   }
 
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['wrapped_field'],
+      $shape['annotated_field'],
+      $shape['adapted_type'],
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'wrapped_field' => $this->wrapped_field,
+      'annotated_field' => $this->annotated_field,
+      'adapted_type' => $this->adapted_type,
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -421,7 +478,7 @@ class MyNestedStruct implements \IThriftAsyncStruct {
  * Original thrift struct:-
  * MyComplexStruct
  */
-class MyComplexStruct implements \IThriftSyncStruct {
+class MyComplexStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -565,6 +622,14 @@ class MyComplexStruct implements \IThriftSyncStruct {
     ?'list_of_map_of_string_to_MyStruct' => ?vec<dict<string, MyStruct>>,
   );
 
+  const type TShape = shape(
+    'map_of_string_to_MyStruct' => dict<arraykey, MyStruct::TShape>,
+    'map_of_string_to_list_of_MyStruct' => dict<arraykey, vec<MyStruct::TShape>>,
+    'map_of_string_to_map_of_string_to_i32' => dict<arraykey, dict<arraykey, int>>,
+    'map_of_string_to_map_of_string_to_MyStruct' => dict<arraykey, dict<arraykey, MyStruct::TShape>>,
+    'list_of_map_of_string_to_list_of_MyStruct' => vec<dict<arraykey, vec<MyStruct::TShape>>>,
+    'list_of_map_of_string_to_MyStruct' => vec<dict<arraykey, MyStruct::TShape>>,
+  );
   const int STRUCTURAL_ID = 8703607584527805207;
   /**
    * Original thrift field:-
@@ -883,6 +948,116 @@ class MyComplexStruct implements \IThriftSyncStruct {
     );
   }
 
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      self::__stringifyMapKeys($shape['map_of_string_to_MyStruct']
+        |> Dict\map(
+          $$,
+          $_val0 ==> $_val0
+            |> MyStruct::__fromShape($$),
+        )),
+      self::__stringifyMapKeys($shape['map_of_string_to_list_of_MyStruct']
+        |> Dict\map(
+          $$,
+          $_val1 ==> $_val1
+            |> Vec\map(
+              $$,
+              $_val2 ==> $_val2
+                |> MyStruct::__fromShape($$),
+            ),
+        )),
+      self::__stringifyMapKeys($shape['map_of_string_to_map_of_string_to_i32']),
+      self::__stringifyMapKeys($shape['map_of_string_to_map_of_string_to_MyStruct']
+        |> Dict\map(
+          $$,
+          $_val3 ==> $_val3
+            |> Dict\map(
+              $$,
+              $_val4 ==> $_val4
+                |> MyStruct::__fromShape($$),
+            ),
+        )),
+      $shape['list_of_map_of_string_to_list_of_MyStruct']
+        |> Vec\map(
+          $$,
+          $_val5 ==> $_val5
+            |> Dict\map(
+              $$,
+              $_val6 ==> $_val6
+                |> Vec\map(
+                  $$,
+                  $_val7 ==> $_val7
+                    |> MyStruct::__fromShape($$),
+                ),
+            ),
+        ),
+      $shape['list_of_map_of_string_to_MyStruct']
+        |> Vec\map(
+          $$,
+          $_val8 ==> $_val8
+            |> Dict\map(
+              $$,
+              $_val9 ==> $_val9
+                |> MyStruct::__fromShape($$),
+            ),
+        ),
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'map_of_string_to_MyStruct' => $this->map_of_string_to_MyStruct
+        |> Dict\map(
+          $$,
+          ($_val0) ==> $_val0->__toShape(),
+        ),
+      'map_of_string_to_list_of_MyStruct' => $this->map_of_string_to_list_of_MyStruct
+        |> Dict\map(
+          $$,
+          ($_val0) ==> $_val0
+            |> Vec\map(
+              $$,
+              ($_val1) ==> $_val1->__toShape(),
+            ),
+        ),
+      'map_of_string_to_map_of_string_to_i32' => $this->map_of_string_to_map_of_string_to_i32,
+      'map_of_string_to_map_of_string_to_MyStruct' => $this->map_of_string_to_map_of_string_to_MyStruct
+        |> Dict\map(
+          $$,
+          ($_val0) ==> $_val0
+            |> Dict\map(
+              $$,
+              ($_val1) ==> $_val1->__toShape(),
+            ),
+        ),
+      'list_of_map_of_string_to_list_of_MyStruct' => $this->list_of_map_of_string_to_list_of_MyStruct
+        |> Vec\map(
+          $$,
+          ($_val0) ==> $_val0
+            |> Dict\map(
+              $$,
+              ($_val1) ==> $_val1
+                |> Vec\map(
+                  $$,
+                  ($_val2) ==> $_val2->__toShape(),
+                ),
+            ),
+        ),
+      'list_of_map_of_string_to_MyStruct' => $this->list_of_map_of_string_to_MyStruct
+        |> Vec\map(
+          $$,
+          ($_val0) ==> $_val0
+            |> Dict\map(
+              $$,
+              ($_val1) ==> $_val1->__toShape(),
+            ),
+        ),
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -1015,270 +1190,6 @@ class MyComplexStruct implements \IThriftSyncStruct {
         $_container73 []= $_elem74;
       }
       $this->list_of_map_of_string_to_MyStruct = $_container73;
-    }    
-  }
-
-}
-
-/**
- * Original thrift struct:-
- * TestedCyclicNestedStruct_A
- */
-class TestedCyclicNestedStruct_A implements \IThriftSyncStruct {
-  use \ThriftSerializationTrait;
-
-  const dict<int, this::TFieldSpec> SPEC = dict[
-    1 => shape(
-      'var' => 'b_field',
-      'type' => \TType::STRUCT,
-      'class' => TestedCyclicNestedStruct_B::class,
-    ),
-    2 => shape(
-      'var' => 'nested_struct',
-      'type' => \TType::STRUCT,
-      'class' => MyNestedStruct::class,
-    ),
-  ];
-  const dict<string, int> FIELDMAP = dict[
-    'b_field' => 1,
-    'nested_struct' => 2,
-  ];
-
-  const type TConstructorShape = shape(
-    ?'b_field' => ?TestedCyclicNestedStruct_B,
-    ?'nested_struct' => ?MyNestedStruct,
-  );
-
-  const int STRUCTURAL_ID = 7873294091931719786;
-  /**
-   * Original thrift field:-
-   * 1: struct include.TestedCyclicNestedStruct_B b_field
-   */
-  public ?TestedCyclicNestedStruct_B $b_field;
-  /**
-   * Original thrift field:-
-   * 2: struct include.MyNestedStruct nested_struct
-   */
-  public ?MyNestedStruct $nested_struct;
-
-  public function __construct(?TestedCyclicNestedStruct_B $b_field = null, ?MyNestedStruct $nested_struct = null  )[] {
-    $this->b_field = $b_field;
-    $this->nested_struct = $nested_struct;
-  }
-
-  public static function withDefaultValues()[]: this {
-    return new static();
-  }
-
-  public static function fromShape(self::TConstructorShape $shape)[]: this {
-    return new static(
-      Shapes::idx($shape, 'b_field'),
-      Shapes::idx($shape, 'nested_struct'),
-    );
-  }
-
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
-    return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'b_field'),
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'nested_struct'),
-    );
-  }
-
-  public function getName()[]: string {
-    return 'TestedCyclicNestedStruct_A';
-  }
-
-  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
-      shape(
-        "name" => "include.TestedCyclicNestedStruct_A",
-        "fields" => vec[
-          tmeta_ThriftField::fromShape(
-            shape(
-              "id" => 1,
-              "type" => tmeta_ThriftType::fromShape(
-                shape(
-                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
-                    shape(
-                      "name" => "include.TestedCyclicNestedStruct_B",
-                      "underlyingType" => tmeta_ThriftType::fromShape(
-                        shape(
-                          "t_struct" => tmeta_ThriftStructType::fromShape(
-                            shape(
-                              "name" => "include.TestedCyclicNestedStruct_B",
-                            )
-                          ),
-                        )
-                      ),
-                    )
-                  ),
-                )
-              ),
-              "name" => "b_field",
-            )
-          ),
-          tmeta_ThriftField::fromShape(
-            shape(
-              "id" => 2,
-              "type" => tmeta_ThriftType::fromShape(
-                shape(
-                  "t_struct" => tmeta_ThriftStructType::fromShape(
-                    shape(
-                      "name" => "include.MyNestedStruct",
-                    )
-                  ),
-                )
-              ),
-              "name" => "nested_struct",
-            )
-          ),
-        ],
-        "is_union" => false,
-      )
-    );
-  }
-
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-      ],
-    );
-  }
-
-  public function getInstanceKey()[write_props]: string {
-    return \TCompactSerializer::serialize($this);
-  }
-
-  public function readFromJson(string $jsonText): void {
-    $parsed = json_decode($jsonText, true);
-
-    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
-      throw new \TProtocolException("Cannot parse the given json string.");
-    }
-
-    if (idx($parsed, 'b_field') !== null) {
-      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['b_field']);
-      $_tmp1 = TestedCyclicNestedStruct_B::withDefaultValues();
-      $_tmp1->readFromJson($_tmp0);
-      $this->b_field = $_tmp1;
-    }    
-    if (idx($parsed, 'nested_struct') !== null) {
-      $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['nested_struct']);
-      $_tmp3 = MyNestedStruct::withDefaultValues();
-      $_tmp3->readFromJson($_tmp2);
-      $this->nested_struct = $_tmp3;
-    }    
-  }
-
-}
-
-/**
- * Original thrift struct:-
- * TestedCyclicNestedStruct_B
- */
-class TestedCyclicNestedStruct_B implements \IThriftSyncStruct {
-  use \ThriftSerializationTrait;
-
-  const dict<int, this::TFieldSpec> SPEC = dict[
-    1 => shape(
-      'var' => 'annotated_field',
-      'type' => \TType::STRUCT,
-      'class' => TestedCyclicNestedStruct_A::class,
-    ),
-  ];
-  const dict<string, int> FIELDMAP = dict[
-    'annotated_field' => 1,
-  ];
-
-  const type TConstructorShape = shape(
-    ?'annotated_field' => ?TestedCyclicNestedStruct_A,
-  );
-
-  const int STRUCTURAL_ID = 3590986871352973122;
-  /**
-   * Original thrift field:-
-   * 1: struct include.TestedCyclicNestedStruct_A annotated_field
-   */
-  public ?TestedCyclicNestedStruct_A $annotated_field;
-
-  public function __construct(?TestedCyclicNestedStruct_A $annotated_field = null  )[] {
-    $this->annotated_field = $annotated_field;
-  }
-
-  public static function withDefaultValues()[]: this {
-    return new static();
-  }
-
-  public static function fromShape(self::TConstructorShape $shape)[]: this {
-    return new static(
-      Shapes::idx($shape, 'annotated_field'),
-    );
-  }
-
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
-    return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'annotated_field'),
-    );
-  }
-
-  public function getName()[]: string {
-    return 'TestedCyclicNestedStruct_B';
-  }
-
-  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
-      shape(
-        "name" => "include.TestedCyclicNestedStruct_B",
-        "fields" => vec[
-          tmeta_ThriftField::fromShape(
-            shape(
-              "id" => 1,
-              "type" => tmeta_ThriftType::fromShape(
-                shape(
-                  "t_struct" => tmeta_ThriftStructType::fromShape(
-                    shape(
-                      "name" => "include.TestedCyclicNestedStruct_A",
-                    )
-                  ),
-                )
-              ),
-              "name" => "annotated_field",
-            )
-          ),
-        ],
-        "is_union" => false,
-      )
-    );
-  }
-
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-      ],
-    );
-  }
-
-  public function getInstanceKey()[write_props]: string {
-    return \TCompactSerializer::serialize($this);
-  }
-
-  public function readFromJson(string $jsonText): void {
-    $parsed = json_decode($jsonText, true);
-
-    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
-      throw new \TProtocolException("Cannot parse the given json string.");
-    }
-
-    if (idx($parsed, 'annotated_field') !== null) {
-      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['annotated_field']);
-      $_tmp1 = TestedCyclicNestedStruct_A::withDefaultValues();
-      $_tmp1->readFromJson($_tmp0);
-      $this->annotated_field = $_tmp1;
     }    
   }
 

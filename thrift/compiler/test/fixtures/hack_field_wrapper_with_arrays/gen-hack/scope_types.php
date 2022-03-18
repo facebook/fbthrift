@@ -10,7 +10,7 @@
  * Original thrift struct:-
  * Struct
  */
-class facebook_thrift_annotation_Struct implements \IThriftSyncStruct {
+class facebook_thrift_annotation_Struct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -21,6 +21,8 @@ class facebook_thrift_annotation_Struct implements \IThriftSyncStruct {
   const type TConstructorShape = shape(
   );
 
+  const type TShape = shape(
+  );
   const int STRUCTURAL_ID = 957977401221134810;
 
   public function __construct(  )[] {
@@ -61,6 +63,19 @@ class facebook_thrift_annotation_Struct implements \IThriftSyncStruct {
     );
   }
 
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -80,7 +95,7 @@ class facebook_thrift_annotation_Struct implements \IThriftSyncStruct {
  * Original thrift struct:-
  * Union
  */
-class facebook_thrift_annotation_Union implements \IThriftSyncStruct {
+class facebook_thrift_annotation_Union implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -91,6 +106,8 @@ class facebook_thrift_annotation_Union implements \IThriftSyncStruct {
   const type TConstructorShape = shape(
   );
 
+  const type TShape = shape(
+  );
   const int STRUCTURAL_ID = 957977401221134810;
 
   public function __construct(  )[] {
@@ -131,6 +148,19 @@ class facebook_thrift_annotation_Union implements \IThriftSyncStruct {
     );
   }
 
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -150,7 +180,7 @@ class facebook_thrift_annotation_Union implements \IThriftSyncStruct {
  * Original thrift struct:-
  * Exception
  */
-class facebook_thrift_annotation_Exception implements \IThriftSyncStruct {
+class facebook_thrift_annotation_Exception implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -161,6 +191,8 @@ class facebook_thrift_annotation_Exception implements \IThriftSyncStruct {
   const type TConstructorShape = shape(
   );
 
+  const type TShape = shape(
+  );
   const int STRUCTURAL_ID = 957977401221134810;
 
   public function __construct(  )[] {
@@ -201,6 +233,19 @@ class facebook_thrift_annotation_Exception implements \IThriftSyncStruct {
     );
   }
 
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -220,7 +265,7 @@ class facebook_thrift_annotation_Exception implements \IThriftSyncStruct {
  * Original thrift struct:-
  * Field
  */
-class facebook_thrift_annotation_Field implements \IThriftSyncStruct {
+class facebook_thrift_annotation_Field implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -231,6 +276,8 @@ class facebook_thrift_annotation_Field implements \IThriftSyncStruct {
   const type TConstructorShape = shape(
   );
 
+  const type TShape = shape(
+  );
   const int STRUCTURAL_ID = 957977401221134810;
 
   public function __construct(  )[] {
@@ -271,6 +318,19 @@ class facebook_thrift_annotation_Field implements \IThriftSyncStruct {
     );
   }
 
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -290,7 +350,7 @@ class facebook_thrift_annotation_Field implements \IThriftSyncStruct {
  * Original thrift struct:-
  * Typedef
  */
-class facebook_thrift_annotation_Typedef implements \IThriftSyncStruct {
+class facebook_thrift_annotation_Typedef implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -301,6 +361,8 @@ class facebook_thrift_annotation_Typedef implements \IThriftSyncStruct {
   const type TConstructorShape = shape(
   );
 
+  const type TShape = shape(
+  );
   const int STRUCTURAL_ID = 957977401221134810;
 
   public function __construct(  )[] {
@@ -341,6 +403,19 @@ class facebook_thrift_annotation_Typedef implements \IThriftSyncStruct {
     );
   }
 
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -360,7 +435,7 @@ class facebook_thrift_annotation_Typedef implements \IThriftSyncStruct {
  * Original thrift struct:-
  * Service
  */
-class facebook_thrift_annotation_Service implements \IThriftSyncStruct {
+class facebook_thrift_annotation_Service implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -371,6 +446,8 @@ class facebook_thrift_annotation_Service implements \IThriftSyncStruct {
   const type TConstructorShape = shape(
   );
 
+  const type TShape = shape(
+  );
   const int STRUCTURAL_ID = 957977401221134810;
 
   public function __construct(  )[] {
@@ -411,6 +488,19 @@ class facebook_thrift_annotation_Service implements \IThriftSyncStruct {
     );
   }
 
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -430,7 +520,7 @@ class facebook_thrift_annotation_Service implements \IThriftSyncStruct {
  * Original thrift struct:-
  * Interaction
  */
-class facebook_thrift_annotation_Interaction implements \IThriftSyncStruct {
+class facebook_thrift_annotation_Interaction implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -441,6 +531,8 @@ class facebook_thrift_annotation_Interaction implements \IThriftSyncStruct {
   const type TConstructorShape = shape(
   );
 
+  const type TShape = shape(
+  );
   const int STRUCTURAL_ID = 957977401221134810;
 
   public function __construct(  )[] {
@@ -481,6 +573,19 @@ class facebook_thrift_annotation_Interaction implements \IThriftSyncStruct {
     );
   }
 
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -500,7 +605,7 @@ class facebook_thrift_annotation_Interaction implements \IThriftSyncStruct {
  * Original thrift struct:-
  * Function
  */
-class facebook_thrift_annotation_Function implements \IThriftSyncStruct {
+class facebook_thrift_annotation_Function implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -511,6 +616,8 @@ class facebook_thrift_annotation_Function implements \IThriftSyncStruct {
   const type TConstructorShape = shape(
   );
 
+  const type TShape = shape(
+  );
   const int STRUCTURAL_ID = 957977401221134810;
 
   public function __construct(  )[] {
@@ -551,6 +658,19 @@ class facebook_thrift_annotation_Function implements \IThriftSyncStruct {
     );
   }
 
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -570,7 +690,7 @@ class facebook_thrift_annotation_Function implements \IThriftSyncStruct {
  * Original thrift struct:-
  * EnumValue
  */
-class facebook_thrift_annotation_EnumValue implements \IThriftSyncStruct {
+class facebook_thrift_annotation_EnumValue implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -581,6 +701,8 @@ class facebook_thrift_annotation_EnumValue implements \IThriftSyncStruct {
   const type TConstructorShape = shape(
   );
 
+  const type TShape = shape(
+  );
   const int STRUCTURAL_ID = 957977401221134810;
 
   public function __construct(  )[] {
@@ -621,6 +743,19 @@ class facebook_thrift_annotation_EnumValue implements \IThriftSyncStruct {
     );
   }
 
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -640,7 +775,7 @@ class facebook_thrift_annotation_EnumValue implements \IThriftSyncStruct {
  * Original thrift struct:-
  * Const
  */
-class facebook_thrift_annotation_Const implements \IThriftSyncStruct {
+class facebook_thrift_annotation_Const implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -651,6 +786,8 @@ class facebook_thrift_annotation_Const implements \IThriftSyncStruct {
   const type TConstructorShape = shape(
   );
 
+  const type TShape = shape(
+  );
   const int STRUCTURAL_ID = 957977401221134810;
 
   public function __construct(  )[] {
@@ -691,6 +828,19 @@ class facebook_thrift_annotation_Const implements \IThriftSyncStruct {
     );
   }
 
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -710,7 +860,7 @@ class facebook_thrift_annotation_Const implements \IThriftSyncStruct {
  * Original thrift struct:-
  * FbthriftInternalEnum
  */
-class facebook_thrift_annotation_FbthriftInternalEnum implements \IThriftSyncStruct {
+class facebook_thrift_annotation_FbthriftInternalEnum implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -721,6 +871,8 @@ class facebook_thrift_annotation_FbthriftInternalEnum implements \IThriftSyncStr
   const type TConstructorShape = shape(
   );
 
+  const type TShape = shape(
+  );
   const int STRUCTURAL_ID = 957977401221134810;
 
   public function __construct(  )[] {
@@ -761,6 +913,19 @@ class facebook_thrift_annotation_FbthriftInternalEnum implements \IThriftSyncStr
     );
   }
 
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -780,7 +945,7 @@ class facebook_thrift_annotation_FbthriftInternalEnum implements \IThriftSyncStr
  * Original thrift struct:-
  * FbthriftInternalScopeTransitive
  */
-class facebook_thrift_annotation_FbthriftInternalScopeTransitive implements \IThriftSyncStruct {
+class facebook_thrift_annotation_FbthriftInternalScopeTransitive implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -791,6 +956,8 @@ class facebook_thrift_annotation_FbthriftInternalScopeTransitive implements \ITh
   const type TConstructorShape = shape(
   );
 
+  const type TShape = shape(
+  );
   const int STRUCTURAL_ID = 957977401221134810;
 
   public function __construct(  )[] {
@@ -831,6 +998,19 @@ class facebook_thrift_annotation_FbthriftInternalScopeTransitive implements \ITh
     );
   }
 
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -850,7 +1030,7 @@ class facebook_thrift_annotation_FbthriftInternalScopeTransitive implements \ITh
  * Original thrift struct:-
  * Structured
  */
-class facebook_thrift_annotation_Structured implements \IThriftSyncStruct {
+class facebook_thrift_annotation_Structured implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -861,6 +1041,8 @@ class facebook_thrift_annotation_Structured implements \IThriftSyncStruct {
   const type TConstructorShape = shape(
   );
 
+  const type TShape = shape(
+  );
   const int STRUCTURAL_ID = 957977401221134810;
 
   public function __construct(  )[] {
@@ -918,6 +1100,19 @@ class facebook_thrift_annotation_Structured implements \IThriftSyncStruct {
     );
   }
 
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -937,7 +1132,7 @@ class facebook_thrift_annotation_Structured implements \IThriftSyncStruct {
  * Original thrift struct:-
  * Interface
  */
-class facebook_thrift_annotation_Interface implements \IThriftSyncStruct {
+class facebook_thrift_annotation_Interface implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -948,6 +1143,8 @@ class facebook_thrift_annotation_Interface implements \IThriftSyncStruct {
   const type TConstructorShape = shape(
   );
 
+  const type TShape = shape(
+  );
   const int STRUCTURAL_ID = 957977401221134810;
 
   public function __construct(  )[] {
@@ -1001,6 +1198,19 @@ class facebook_thrift_annotation_Interface implements \IThriftSyncStruct {
     );
   }
 
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -1020,7 +1230,7 @@ class facebook_thrift_annotation_Interface implements \IThriftSyncStruct {
  * Original thrift struct:-
  * RootDefinition
  */
-class facebook_thrift_annotation_RootDefinition implements \IThriftSyncStruct {
+class facebook_thrift_annotation_RootDefinition implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1031,6 +1241,8 @@ class facebook_thrift_annotation_RootDefinition implements \IThriftSyncStruct {
   const type TConstructorShape = shape(
   );
 
+  const type TShape = shape(
+  );
   const int STRUCTURAL_ID = 957977401221134810;
 
   public function __construct(  )[] {
@@ -1096,6 +1308,19 @@ class facebook_thrift_annotation_RootDefinition implements \IThriftSyncStruct {
     );
   }
 
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -1115,7 +1340,7 @@ class facebook_thrift_annotation_RootDefinition implements \IThriftSyncStruct {
  * Original thrift struct:-
  * Definition
  */
-class facebook_thrift_annotation_Definition implements \IThriftSyncStruct {
+class facebook_thrift_annotation_Definition implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1126,6 +1351,8 @@ class facebook_thrift_annotation_Definition implements \IThriftSyncStruct {
   const type TConstructorShape = shape(
   );
 
+  const type TShape = shape(
+  );
   const int STRUCTURAL_ID = 957977401221134810;
 
   public function __construct(  )[] {
@@ -1187,6 +1414,19 @@ class facebook_thrift_annotation_Definition implements \IThriftSyncStruct {
     );
   }
 
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }

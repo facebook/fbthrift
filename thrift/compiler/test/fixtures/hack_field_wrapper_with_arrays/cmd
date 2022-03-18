@@ -1,2 +1,2 @@
-hack:json,arrays,shape_arraykeys,frommap_construct src/module.thrift
-hack:json,arrays,shape_arraykeys,frommap_construct src/include.thrift
+hack:json,arrays,shapes,shape_arraykeys,frommap_construct src/module.thrift
+hack:json,arrays,shapes,shape_arraykeys,frommap_construct src/include.thrift

@@ -2528,37 +2528,43 @@ bool t_hack_generator::field_is_nullable(
       (t->is_enum() && field->get_req() != t_field::e_req::required);
 }
 
+void t_hack_generator::generate_php_struct_stringifyMapKeys_method(
+    std::ofstream& out) {
+  if (!shape_arraykeys_) {
+    return;
+  }
+  std::string arg_return_type;
+  if (arrays_) {
+    arg_return_type = "dict";
+  } else if (no_use_hack_collections_) {
+    arg_return_type = "darray";
+  } else if (const_collections_) {
+    arg_return_type = "\\ConstMap";
+  } else {
+    arg_return_type = "Map";
+  }
+  indent(out) << "public static function __stringifyMapKeys<T>("
+              << arg_return_type << "<arraykey, T> $m)[]: " << arg_return_type
+              << "<string, T> {\n";
+  indent_up();
+  if (arrays_ || no_use_hack_collections_) {
+    indent(out) << "return Dict\\map_keys($m, $key ==> (string)$key);\n";
+  } else {
+    indent(out) << "$new = dict[];\n";
+    indent(out) << "foreach ($m as $k => $v) {\n";
+    indent_up();
+    indent(out) << "$new[(string)$k] = $v;\n";
+    indent_down();
+    indent(out) << "}\n";
+    indent(out) << "return new Map($new);\n";
+  }
+  indent_down();
+  indent(out) << "}\n\n";
+}
+
 void t_hack_generator::generate_php_struct_shape_methods(
     std::ofstream& out, const t_struct* tstruct) {
-  if (shape_arraykeys_) {
-    std::string arg_return_type;
-    if (arrays_) {
-      arg_return_type = "dict";
-    } else if (no_use_hack_collections_) {
-      arg_return_type = "darray";
-    } else if (const_collections_) {
-      arg_return_type = "\\ConstMap";
-    } else {
-      arg_return_type = "Map";
-    }
-    indent(out) << "public static function __stringifyMapKeys<T>("
-                << arg_return_type << "<arraykey, T> $m)[]: " << arg_return_type
-                << "<string, T> {\n";
-    indent_up();
-    if (arrays_ || no_use_hack_collections_) {
-      indent(out) << "return Dict\\map_keys($m, $key ==> (string)$key);\n";
-    } else {
-      indent(out) << "$new = dict[];\n";
-      indent(out) << "foreach ($m as $k => $v) {\n";
-      indent_up();
-      indent(out) << "$new[(string)$k] = $v;\n";
-      indent_down();
-      indent(out) << "}\n";
-      indent(out) << "return new Map($new);\n";
-    }
-    indent_down();
-    indent(out) << "}\n\n";
-  }
+  generate_php_struct_stringifyMapKeys_method(out);
 
   indent(out)
       << "public static function __fromShape(self::TShape $shape)[]: this {\n";

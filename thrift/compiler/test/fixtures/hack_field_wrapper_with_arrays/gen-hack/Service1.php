@@ -441,7 +441,7 @@ class Service1Client extends \ThriftClientBase implements Service1ClientIf {
 
 // HELPER FUNCTIONS AND STRUCTURES
 
-class Service1_func_args implements \IThriftSyncStruct {
+class Service1_func_args implements \IThriftSyncStruct, \IThriftShapishAsyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -465,6 +465,10 @@ class Service1_func_args implements \IThriftSyncStruct {
     ?'arg2' => ?MyStruct,
   );
 
+  const type TShape = shape(
+    'arg1' => string,
+    ?'arg2' => ?MyStruct::TShape,
+  );
   const int STRUCTURAL_ID = 6560600906529955702;
   public string $arg1;
   public ?MyStruct $arg2;
@@ -543,6 +547,23 @@ class Service1_func_args implements \IThriftSyncStruct {
     );
   }
 
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['arg1'],
+      Shapes::idx($shape, 'arg2') === null ? null : (MyStruct::__fromShape($shape['arg2'])),
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'arg1' => $this->arg1,
+      'arg2' => $this->arg2?->__toShape(),
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -667,7 +688,7 @@ class Service1_func_result implements \IThriftSyncStruct {
 
 }
 
-class Service1_func1_args implements \IThriftSyncStruct {
+class Service1_func1_args implements \IThriftSyncStruct, \IThriftShapishAsyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -691,6 +712,10 @@ class Service1_func1_args implements \IThriftSyncStruct {
     ?'arg2' => ?MyStruct,
   );
 
+  const type TShape = shape(
+    'arg1' => string,
+    ?'arg2' => ?MyStruct::TShape,
+  );
   const int STRUCTURAL_ID = 6560600906529955702;
   public string $arg1;
   public ?MyStruct $arg2;
@@ -769,6 +794,23 @@ class Service1_func1_args implements \IThriftSyncStruct {
     );
   }
 
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['arg1'],
+      Shapes::idx($shape, 'arg2') === null ? null : (MyStruct::__fromShape($shape['arg2'])),
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'arg1' => $this->arg1,
+      'arg2' => $this->arg2?->__toShape(),
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }

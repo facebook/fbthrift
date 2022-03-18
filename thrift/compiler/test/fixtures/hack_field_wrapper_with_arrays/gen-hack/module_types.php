@@ -10,7 +10,7 @@
  * Original thrift struct:-
  * MyStruct
  */
-class MyStruct implements \IThriftSyncStruct {
+class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -27,6 +27,9 @@ class MyStruct implements \IThriftSyncStruct {
     ?'int_field' => ?int,
   );
 
+  const type TShape = shape(
+    'int_field' => int,
+  );
   const int STRUCTURAL_ID = 8549930382776002541;
   /**
    * Original thrift field:-
@@ -89,6 +92,21 @@ class MyStruct implements \IThriftSyncStruct {
     );
   }
 
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['int_field'],
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'int_field' => $this->int_field,
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -117,7 +135,7 @@ enum MyUnionEnum: int {
  * Original thrift struct:-
  * MyUnion
  */
-class MyUnion implements \IThriftAsyncStruct, \IThriftUnion<MyUnionEnum> {
+class MyUnion implements \IThriftAsyncStruct, \IThriftUnion<MyUnionEnum>, \IThriftShapishAsyncStruct {
   use \ThriftUnionSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -144,6 +162,10 @@ class MyUnion implements \IThriftAsyncStruct, \IThriftUnion<MyUnionEnum> {
     ?'union_adapted_type' => ?\AdapterTestIntToString::THackType,
   );
 
+  const type TShape = shape(
+    ?'union_annotated_field' => ?int,
+    ?'union_adapted_type' => ?\AdapterTestIntToString::THackType,
+  );
   const int STRUCTURAL_ID = 4654710099560546823;
   /**
    * Original thrift field:-
@@ -305,6 +327,23 @@ class MyUnion implements \IThriftAsyncStruct, \IThriftUnion<MyUnionEnum> {
     );
   }
 
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'union_annotated_field'),
+      Shapes::idx($shape, 'union_adapted_type'),
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'union_annotated_field' => $this->union_annotated_field,
+      'union_adapted_type' => $this->union_adapted_type,
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }

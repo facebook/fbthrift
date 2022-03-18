@@ -47,15 +47,6 @@ struct MyComplexStruct {
   6: list<map<string, MyStruct>> list_of_map_of_string_to_MyStruct;
 }
 
-struct TestedCyclicNestedStruct_A {
-  1: TestedCyclicNestedStruct_B b_field;
-  2: MyNestedStruct nested_struct;
-}
-
-struct TestedCyclicNestedStruct_B {
-  1: TestedCyclicNestedStruct_A annotated_field;
-}
-
 service Service1 {
   MyStruct func(1: string arg1, 2: MyStruct arg2);
   MyStruct func1(1: string arg1, 2: MyStruct arg2);
