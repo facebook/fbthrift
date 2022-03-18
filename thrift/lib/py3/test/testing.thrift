@@ -305,7 +305,7 @@ struct ComplexRef {
   10: optional set<ComplexRef> set_const_shared_ref (
     cpp2.ref_type = "shared_const",
   );
-  11: optional ComplexRef recursive (cpp.box);
+  11: optional ComplexRef recursive (thrift.box);
 }
 
 struct StructuredAnnotation {

@@ -516,7 +516,7 @@ cdef __StructSpec get_reflection__StructWithBox():
             qualifier=__Qualifier.OPTIONAL,
             default=None,
             annotations={
-                """cpp.box""": """1""",            },
+                """thrift.box""": """1""",            },
         ),
     )
     spec.add_field(
@@ -528,7 +528,7 @@ cdef __StructSpec get_reflection__StructWithBox():
             qualifier=__Qualifier.OPTIONAL,
             default=None,
             annotations={
-                """cpp.box""": """1""",            },
+                """thrift.box""": """1""",            },
         ),
     )
     spec.add_field(
@@ -540,7 +540,7 @@ cdef __StructSpec get_reflection__StructWithBox():
             qualifier=__Qualifier.OPTIONAL,
             default=None,
             annotations={
-                """cpp.box""": """1""",            },
+                """thrift.box""": """1""",            },
         ),
     )
     return spec

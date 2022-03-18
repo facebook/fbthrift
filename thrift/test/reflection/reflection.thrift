@@ -520,25 +520,25 @@ struct hasRefSharedConstSimple {
 }
 
 struct hasBox {
-  6: optional structA anOptionalStruct (cpp.box);
+  6: optional structA anOptionalStruct (thrift.box);
   7: optional list<string> (cpp.template = "std::deque") anOptionalList (
-    cpp.box,
+    thrift.box,
   );
   8: optional set<string> (cpp.template = "std::unordered_set") anOptionalSet (
-    cpp.box,
+    thrift.box,
   );
   9: optional map<string, string> (
     cpp.template = "std::unordered_map",
-  ) anOptionalMap (cpp.box);
-  10: optional unionA anOptionalUnion (cpp.box);
+  ) anOptionalMap (thrift.box);
+  10: optional unionA anOptionalUnion (thrift.box);
 }
 
 struct hasBoxSimple {
-  6: optional structA anOptionalStruct (cpp.box);
-  7: optional list<string> anOptionalList (cpp.box);
-  8: optional set<string> anOptionalSet (cpp.box);
-  9: optional map<string, string> anOptionalMap (cpp.box);
-  10: optional unionA anOptionalUnion (cpp.box);
+  6: optional structA anOptionalStruct (thrift.box);
+  7: optional list<string> anOptionalList (thrift.box);
+  8: optional set<string> anOptionalSet (thrift.box);
+  9: optional map<string, string> anOptionalMap (thrift.box);
+  10: optional unionA anOptionalUnion (thrift.box);
 }
 
 struct StructWithIOBuf {

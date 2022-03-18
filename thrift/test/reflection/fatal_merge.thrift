@@ -222,10 +222,10 @@ const NestedRefSharedConstExample kNestedRefSharedConstExample = {
 };
 
 struct NestedBox {
-  1: optional Basic a (cpp.box);
-  2: optional Basic b (cpp.box);
-  3: optional string c (cpp.box);
-  4: optional string d (cpp.box);
+  1: optional Basic a (thrift.box);
+  2: optional Basic b (thrift.box);
+  3: optional string c (thrift.box);
+  4: optional string d (thrift.box);
 }
 
 struct NestedBoxExample {

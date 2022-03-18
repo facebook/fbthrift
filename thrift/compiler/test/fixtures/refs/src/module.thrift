@@ -104,9 +104,9 @@ struct StructWithRef {
 }
 
 struct StructWithBox {
-  1: optional string a (cpp.box);
-  2: optional list<i64> b (cpp.box);
-  3: optional StructWithRef c (cpp.box);
+  1: optional string a (thrift.box);
+  2: optional list<i64> b (thrift.box);
+  3: optional StructWithRef c (thrift.box);
 }
 
 const StructWithRef kStructWithRef = {

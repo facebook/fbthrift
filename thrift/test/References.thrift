@@ -47,7 +47,7 @@ struct ReferringStruct {
   12: required PlainStruct req_shared_const_field (
     cpp2.ref_type = "shared_const",
   );
-  13: optional PlainStruct opt_box_field (cpp.box);
+  13: optional PlainStruct opt_box_field (thrift.box);
 }
 
 struct ReferringStructWithBaseTypeFields {
@@ -79,7 +79,7 @@ struct ReferringStructWithStringFields {
   10: string def_shared_const_field (cpp2.ref_type = "shared_const");
   11: optional string opt_shared_const_field (cpp2.ref_type = "shared_const");
   12: required string req_shared_const_field (cpp2.ref_type = "shared_const");
-  13: optional string opt_box_field (cpp.box);
+  13: optional string opt_box_field (thrift.box);
 }
 
 struct ReferringStructWithListFields {

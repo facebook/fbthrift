@@ -1282,7 +1282,7 @@ class CompilerFailureTest(unittest.TestCase):
             textwrap.dedent(
                 """\
                 struct A {
-                    1: optional i64 field (cpp.ref, cpp.box)
+                    1: optional i64 field (cpp.ref, thrift.box)
                 }
                 """
             ),
@@ -1307,7 +1307,7 @@ class CompilerFailureTest(unittest.TestCase):
             textwrap.dedent(
                 """\
                 struct A {
-                    1: i64 field (cpp.box)
+                    1: i64 field (thrift.box)
                 }
                 """
             ),
