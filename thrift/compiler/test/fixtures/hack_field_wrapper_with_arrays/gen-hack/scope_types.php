@@ -35,6 +35,11 @@ class facebook_thrift_annotation_Struct implements \IThriftSyncStruct {
     );
   }
 
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+    );
+  }
+
   public function getName()[]: string {
     return 'Struct';
   }
@@ -96,6 +101,11 @@ class facebook_thrift_annotation_Union implements \IThriftSyncStruct {
   }
 
   public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
     );
   }
@@ -165,6 +175,11 @@ class facebook_thrift_annotation_Exception implements \IThriftSyncStruct {
     );
   }
 
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+    );
+  }
+
   public function getName()[]: string {
     return 'Exception';
   }
@@ -226,6 +241,11 @@ class facebook_thrift_annotation_Field implements \IThriftSyncStruct {
   }
 
   public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
     );
   }
@@ -295,6 +315,11 @@ class facebook_thrift_annotation_Typedef implements \IThriftSyncStruct {
     );
   }
 
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+    );
+  }
+
   public function getName()[]: string {
     return 'Typedef';
   }
@@ -356,6 +381,11 @@ class facebook_thrift_annotation_Service implements \IThriftSyncStruct {
   }
 
   public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
     );
   }
@@ -425,6 +455,11 @@ class facebook_thrift_annotation_Interaction implements \IThriftSyncStruct {
     );
   }
 
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+    );
+  }
+
   public function getName()[]: string {
     return 'Interaction';
   }
@@ -486,6 +521,11 @@ class facebook_thrift_annotation_Function implements \IThriftSyncStruct {
   }
 
   public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
     );
   }
@@ -555,6 +595,11 @@ class facebook_thrift_annotation_EnumValue implements \IThriftSyncStruct {
     );
   }
 
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+    );
+  }
+
   public function getName()[]: string {
     return 'EnumValue';
   }
@@ -616,6 +661,11 @@ class facebook_thrift_annotation_Const implements \IThriftSyncStruct {
   }
 
   public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
     );
   }
@@ -685,6 +735,11 @@ class facebook_thrift_annotation_FbthriftInternalEnum implements \IThriftSyncStr
     );
   }
 
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+    );
+  }
+
   public function getName()[]: string {
     return 'FbthriftInternalEnum';
   }
@@ -750,6 +805,11 @@ class facebook_thrift_annotation_FbthriftInternalScopeTransitive implements \ITh
     );
   }
 
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+    );
+  }
+
   public function getName()[]: string {
     return 'FbthriftInternalScopeTransitive';
   }
@@ -811,6 +871,11 @@ class facebook_thrift_annotation_Structured implements \IThriftSyncStruct {
   }
 
   public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
     );
   }
@@ -897,6 +962,11 @@ class facebook_thrift_annotation_Interface implements \IThriftSyncStruct {
     );
   }
 
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+    );
+  }
+
   public function getName()[]: string {
     return 'Interface';
   }
@@ -971,6 +1041,11 @@ class facebook_thrift_annotation_RootDefinition implements \IThriftSyncStruct {
   }
 
   public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
     );
   }
@@ -1061,6 +1136,11 @@ class facebook_thrift_annotation_Definition implements \IThriftSyncStruct {
   }
 
   public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
     );
   }

@@ -35,6 +35,11 @@ class AnnotationStruct implements \IThriftSyncStruct {
     );
   }
 
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+    );
+  }
+
   public function getName()[]: string {
     return 'AnnotationStruct';
   }
@@ -121,6 +126,13 @@ class MyStruct implements \IThriftSyncStruct {
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'nested_struct'),
+    );
+  }
+
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'nested_struct'),
     );
   }
 
@@ -277,6 +289,26 @@ class MyNestedStruct implements \IThriftAsyncStruct {
     }
     $adapted_type = Shapes::idx($shape, 'adapted_type');
     if ($adapted_type !== null) {
+      $obj->adapted_type = $adapted_type;
+    }
+    return $obj;
+  }
+
+  public static async function genFromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[zoned]: Awaitable<this> {
+    $obj = new static();
+    $wrapped_field = idx($map, 'wrapped_field');
+    if ($wrapped_field !== null) {
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      await $obj->get_wrapped_field()->genWrap($wrapped_field);
+    }
+    $annotated_field = idx($map, 'annotated_field');
+    if ($annotated_field !== null) {
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      await $obj->get_annotated_field()->genWrap($annotated_field);
+    }
+    $adapted_type = idx($map, 'adapted_type');
+    if ($adapted_type !== null) {
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
       $obj->adapted_type = $adapted_type;
     }
     return $obj;
@@ -586,6 +618,23 @@ class MyComplexStruct implements \IThriftSyncStruct {
       Shapes::idx($shape, 'map_of_string_to_map_of_string_to_MyStruct'),
       Shapes::idx($shape, 'list_of_map_of_string_to_list_of_MyStruct'),
       Shapes::idx($shape, 'list_of_map_of_string_to_MyStruct'),
+    );
+  }
+
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'map_of_string_to_MyStruct'),
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'map_of_string_to_list_of_MyStruct'),
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'map_of_string_to_map_of_string_to_i32'),
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'map_of_string_to_map_of_string_to_MyStruct'),
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'list_of_map_of_string_to_list_of_MyStruct'),
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'list_of_map_of_string_to_MyStruct'),
     );
   }
 
@@ -1028,6 +1077,15 @@ class TestedCyclicNestedStruct_A implements \IThriftSyncStruct {
     );
   }
 
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'b_field'),
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'nested_struct'),
+    );
+  }
+
   public function getName()[]: string {
     return 'TestedCyclicNestedStruct_A';
   }
@@ -1157,6 +1215,13 @@ class TestedCyclicNestedStruct_B implements \IThriftSyncStruct {
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'annotated_field'),
+    );
+  }
+
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'annotated_field'),
     );
   }
 

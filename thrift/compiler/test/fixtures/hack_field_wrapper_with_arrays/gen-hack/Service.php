@@ -291,6 +291,15 @@ class Service_func_args implements \IThriftSyncStruct {
     );
   }
 
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'arg1'),
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'arg2'),
+    );
+  }
+
   public function getName()[]: string {
     return 'Service_func_args';
   }
@@ -394,6 +403,13 @@ class Service_func_result implements \IThriftSyncStruct {
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'success'),
+    );
+  }
+
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'success'),
     );
   }
 

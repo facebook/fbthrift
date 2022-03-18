@@ -291,11 +291,26 @@ class t_hack_generator : public t_oop_generator {
       const std::string& struct_hack_name);
   void generate_php_struct_from_map(
       std::ofstream& out, const t_struct* tstruct);
+  void generate_php_struct_async_from_map(
+      std::ofstream& out,
+      const t_struct* tstruct,
+      const std::string& struct_hack_name);
   bool type_has_nested_struct(const t_type* t);
   bool field_is_nullable(
       const t_struct* tstruct, const t_field* field, std::string dval);
   void generate_php_struct_shape_methods(
       std::ofstream& out, const t_struct* tstruct);
+  void generate_php_struct_stringifyMapKeys_method(std::ofstream& out);
+
+  void generate_php_struct_async_shape_methods(
+      std::ofstream& out,
+      const t_struct* tstruct,
+      const std::string& struct_hack_name);
+  bool generate_php_struct_async_fromShape_method_helper(
+      std::ostream& out,
+      const t_type* ttype,
+      t_name_generator& namer,
+      std::string val);
 
   void generate_adapter_type_checks(
       std::ofstream& out, const t_struct* tstruct);
@@ -3125,16 +3140,20 @@ void t_hack_generator::generate_php_struct_methods(
     generate_php_struct_withDefaultValues_method(out);
     generate_php_struct_async_from_shape(out, tstruct, name);
     out << "\n";
+    if (from_map_construct_) {
+      generate_php_struct_async_from_map(out, tstruct, name);
+      out << "\n";
+    }
   } else {
     generate_php_struct_constructor(out, tstruct, type, name);
     generate_php_struct_withDefaultValues_method(out);
     generate_php_struct_from_shape(out, tstruct);
     out << "\n";
-  }
 
-  if (from_map_construct_) {
-    generate_php_struct_from_map(out, tstruct);
-    out << "\n";
+    if (from_map_construct_) {
+      generate_php_struct_from_map(out, tstruct);
+      out << "\n";
+    }
   }
 
   out << indent() << "public function getName()[]: string {\n"
@@ -3826,6 +3845,62 @@ void t_hack_generator::generate_php_struct_from_map(
   }
   indent_down();
   out << indent() << ");\n";
+  indent_down();
+  out << indent() << "}\n";
+}
+
+void t_hack_generator::generate_php_struct_async_from_map(
+    std::ofstream& out,
+    const t_struct* tstruct,
+    const std::string& struct_hack_name) {
+  out << indent() << "public static async function genFromMap_DEPRECATED(";
+  if (strict_types_) {
+    // Generate constructor from Map
+    out << (const_collections_ ? "\\Const" : "") << "Map<string, mixed> $map";
+  } else {
+    // Generate constructor from KeyedContainer
+    out << (soft_attribute_ ? "<<__Soft>> " : "@")
+        << "KeyedContainer<string, mixed> $map";
+  }
+  out << ")[zoned]: Awaitable<this> {\n";
+  indent_up();
+  out << indent() << "$obj = new static();\n";
+
+  for (const auto& field : tstruct->fields()) {
+    const std::string& field_name = field.name();
+
+    out << indent() << "$" << field_name << " = idx($map, '" << field_name
+        << "');\n";
+    out << indent() << "if ($" << field_name << " !== null) {\n";
+    indent_up();
+
+    out << indent()
+        << "/* HH_FIXME[4110] For backwards compatibility with map's mixed values. */\n";
+    if (const auto* field_wrapper = find_hack_wrapper(field)) {
+      if (tstruct->is_union()) {
+        out << indent() << "$obj->" << field.name() << " = await "
+            << *field_wrapper << "::genFromThrift<"
+            << type_to_typehint(field.get_type()) << ", this>($" << field_name
+            << ", " << field.get_key() << ", $obj);\n";
+      } else {
+        out << indent() << "await $obj->get_" << field_name << "()->genWrap($"
+            << field_name << ");\n";
+      }
+    } else {
+      out << indent() << "$obj->" << field_name << " = $" << field_name
+          << ";\n";
+    }
+
+    if (tstruct->is_union()) {
+      out << indent() << "$obj->_type = "
+          << union_field_to_enum(tstruct, &field, struct_hack_name) << ";\n";
+    }
+    indent_down();
+    out << indent() << "}\n";
+  }
+
+  out << indent() << "return $obj;\n";
+
   indent_down();
   out << indent() << "}\n";
 }

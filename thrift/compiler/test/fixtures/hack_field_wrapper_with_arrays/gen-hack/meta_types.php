@@ -35,6 +35,11 @@ class facebook_thrift_annotation_Transitive implements \IThriftSyncStruct {
     );
   }
 
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+    );
+  }
+
   public function getName()[]: string {
     return 'Transitive';
   }

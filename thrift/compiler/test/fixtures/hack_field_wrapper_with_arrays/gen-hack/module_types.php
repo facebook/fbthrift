@@ -48,6 +48,13 @@ class MyStruct implements \IThriftSyncStruct {
     );
   }
 
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'int_field'),
+    );
+  }
+
   public function getName()[]: string {
     return 'MyStruct';
   }
@@ -163,6 +170,23 @@ class MyUnion implements \IThriftAsyncStruct, \IThriftUnion<MyUnionEnum> {
     }
     $union_adapted_type = Shapes::idx($shape, 'union_adapted_type');
     if ($union_adapted_type !== null) {
+      $obj->union_adapted_type = $union_adapted_type;
+      $obj->_type = MyUnionEnum::union_adapted_type;
+    }
+    return $obj;
+  }
+
+  public static async function genFromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[zoned]: Awaitable<this> {
+    $obj = new static();
+    $union_annotated_field = idx($map, 'union_annotated_field');
+    if ($union_annotated_field !== null) {
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      $obj->union_annotated_field = await \MyFieldWrapper::genFromThrift<int, this>($union_annotated_field, 1, $obj);
+      $obj->_type = MyUnionEnum::union_annotated_field;
+    }
+    $union_adapted_type = idx($map, 'union_adapted_type');
+    if ($union_adapted_type !== null) {
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
       $obj->union_adapted_type = $union_adapted_type;
       $obj->_type = MyUnionEnum::union_adapted_type;
     }
@@ -388,6 +412,26 @@ class MyException extends \TException implements \IThriftAsyncStruct {
     }
     $annotated_message = Shapes::idx($shape, 'annotated_message');
     if ($annotated_message !== null) {
+      await $obj->get_annotated_message()->genWrap($annotated_message);
+    }
+    return $obj;
+  }
+
+  public static async function genFromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[zoned]: Awaitable<this> {
+    $obj = new static();
+    $code = idx($map, 'code');
+    if ($code !== null) {
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      $obj->code = $code;
+    }
+    $message = idx($map, 'message');
+    if ($message !== null) {
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      $obj->message = $message;
+    }
+    $annotated_message = idx($map, 'annotated_message');
+    if ($annotated_message !== null) {
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
       await $obj->get_annotated_message()->genWrap($annotated_message);
     }
     return $obj;

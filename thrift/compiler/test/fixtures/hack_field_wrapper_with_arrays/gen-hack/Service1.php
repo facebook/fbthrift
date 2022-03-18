@@ -485,6 +485,15 @@ class Service1_func_args implements \IThriftSyncStruct {
     );
   }
 
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'arg1'),
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'arg2'),
+    );
+  }
+
   public function getName()[]: string {
     return 'Service1_func_args';
   }
@@ -592,6 +601,13 @@ class Service1_func_result implements \IThriftSyncStruct {
     );
   }
 
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'success'),
+    );
+  }
+
   public function getName()[]: string {
     return 'Service1_func_result';
   }
@@ -692,6 +708,15 @@ class Service1_func1_args implements \IThriftSyncStruct {
     return new static(
       Shapes::idx($shape, 'arg1'),
       Shapes::idx($shape, 'arg2'),
+    );
+  }
+
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'arg1'),
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'arg2'),
     );
   }
 
@@ -799,6 +824,13 @@ class Service1_func1_result implements \IThriftSyncStruct {
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'success'),
+    );
+  }
+
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'success'),
     );
   }
 

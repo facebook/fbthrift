@@ -50,6 +50,13 @@ class FieldWrapper implements \IThriftSyncStruct {
     );
   }
 
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'name'),
+    );
+  }
+
   public function getName()[]: string {
     return 'FieldWrapper';
   }
